@@ -16,7 +16,7 @@ use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
  *
  * Scan the imported triples (which are now in the sink graph) and filter out
  * all that are not Joinup entities, as solutions, releases, distributions,
- * licences, owners or contact information.
+ * owners or contact information.
  *
  * @PipelineStep(
  *   id = "remove_unsupported_data",
@@ -44,8 +44,12 @@ class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements Pi
       //   existing collection.
       // - Collections are exposing also a lot of Joinup/Drupal specific logic
       //   (such as OG, etc.) and that cannot be provided via an import.
+      // We also exclude licenses are these are not supposed to be imported by
+      // any external repository. Licenses that do not exist as an option in
+      // the site, should be proposed through the support form before importing
+      // related entities.
       // @todo Reconsider this decision, if case.
-      if ($mapping->getTargetEntityTypeId() === 'rdf_entity' && $mapping->getTargetBundle() !== 'collection') {
+      if ($mapping->getTargetEntityTypeId() === 'rdf_entity' && !in_array($mapping->getTargetBundle(), ['collection', 'licence'])) {
         $rdf_entity_bundle_uris[] = $mapping->getRdfType();
       }
     }

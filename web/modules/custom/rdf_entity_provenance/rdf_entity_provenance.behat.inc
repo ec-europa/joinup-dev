@@ -102,17 +102,39 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Asserts that a 'provenance_activity' entity exists, given a referral.
-   *
-   * This method also returns the provenance activity, makes it useful to be
-   * called from other assertions.
+   * Returns a 'provenance_activity' entity given a referral.
    *
    * @param string $referral
    *   The entity label or ID for existing entities, or the ID as URI for
    *   provenance activities referring not imported entities.
    *
-   * @return \Drupal\rdf_entity\RdfInterface
+   * @return \Drupal\rdf_entity\RdfInterface|null
    *   The 'provenance_activity' RDF entity.
+   *
+   * @throws \Exception
+   *   If $referral was passed as entity label and that entity doesn't exist.
+   */
+  protected function getActivityForReferral(string $referral): ?RdfInterface {
+    $id = !UrlHelper::isValid($referral, TRUE) ? $this->getRdfEntityByLabel($referral)->id() : $referral;
+    /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $helper */
+    $helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
+    $activity = $helper->loadProvenanceActivity($id);
+    if (empty($activity)) {
+      return NULL;
+    }
+
+    // Deal with the Behat static cache invalidation issue.
+    /** @var \Drupal\rdf_entity\RdfInterface $return */
+    $return = \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadUnchanged($activity->id());
+    return $return;
+  }
+
+  /**
+   * Asserts that a 'provenance_activity' entity exists, given a referral.
+   *
+   * @param string $referral
+   *   The entity label or ID for existing entities, or the ID as URI for
+   *   provenance activities referring not imported entities.
    *
    * @throws \Exception
    *   If $referral was passed as entity label and that entity doesn't exist or
@@ -120,17 +142,29 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
    *
    * @Then (the ):referral (entity )should have a related provenance activity
    */
-  public function getActivityForReferral(string $referral): RdfInterface {
-    $id = !UrlHelper::isValid($referral, TRUE) ? $this->getRdfEntityByLabel($referral)->id() : $referral;
-    /** @var \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $helper */
-    $helper = \Drupal::service('rdf_entity_provenance.provenance_helper');
-    if (!$activity = $helper->loadProvenanceActivity($id)) {
+  public function assertActivityForReferral(string $referral): void {
+    if (!$this->getActivityForReferral($referral)) {
       throw new \Exception("There's no provenance activity for '$referral'.");
     }
-    // Deal with the Behat static cache invalidation issue.
-    /** @var \Drupal\rdf_entity\RdfInterface $return */
-    $return = \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadUnchanged($activity->id());
-    return $return;
+  }
+
+  /**
+   * Asserts that a 'provenance_activity' entity does not exist.
+   *
+   * @param string $referral
+   *   The entity label or ID for existing entities, or the ID as URI for
+   *   provenance activities referring not imported entities.
+   *
+   * @throws \Exception
+   *   If $referral was passed as entity label and that entity doesn't exist or
+   *   there is a provenance activity recorded for the referred entity.
+   *
+   * @Then (the ):referral (entity )should not have a related provenance activity
+   */
+  public function assertNoActivityForReferral(string $referral): void {
+    if ($this->getActivityForReferral($referral)) {
+      throw new \Exception("A provenance activity for '$referral' was found but should have not.");
+    }
   }
 
   /**
