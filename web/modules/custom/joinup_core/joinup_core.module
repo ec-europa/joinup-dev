@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -26,6 +27,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\search_api\IndexInterface;
@@ -900,6 +902,29 @@ function joinup_core_user_predelete(EntityInterface $entity) {
 }
 
 /**
+ * Invalidate Joinup user membership cache tags after a user is updated.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $user
+ *   The user entity.
+ *
+ * @see joinup_core_og_membership_invalidate_group_tags()
+ */
+function joinup_core_user_update(EntityInterface $user) {
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  $memberships = $membership_manager->getMemberships($user);
+
+  $tags = [];
+  foreach ($memberships as $membership) {
+    $tag = $membership->getGroupEntityType() . ':' . $membership->getGroupId();
+    $tags_to_invalidate = Cache::buildTags('joinup-membership', [$tag]);
+    $tags = Cache::mergeTags($tags, $tags_to_invalidate);
+  }
+
+  Cache::invalidateTags($tags);
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Adds result counts to the role options on the membership overview for
@@ -1250,4 +1275,29 @@ function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string 
   // The first two items will always be langcode and ID.
   $id = array_pop($key_parts);
   return $id;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function joinup_core_og_membership_presave(OgMembershipInterface $entity) {
+  joinup_core_og_membership_invalidate_group_tags($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function joinup_core_og_membership_predelete(OgMembershipInterface $entity) {
+  joinup_core_og_membership_invalidate_group_tags($entity);
+}
+
+/**
+ * Invalidates the Joinup tags related to a group of a membership.
+ *
+ * @param \Drupal\og\OgMembershipInterface $entity
+ *   The og membership entity.
+ */
+function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
+  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
+  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
 }

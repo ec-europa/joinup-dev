@@ -175,6 +175,7 @@ class GroupAdministratorsController extends ControllerBase {
       (string) $this->t('Collection name'),
       (string) $this->t('Collection URL'),
       (string) $this->t('Username'),
+      (string) $this->t('E-mail address'),
       (string) $this->t('User profile URL'),
       (string) $this->t('User role'),
     ];
@@ -194,6 +195,8 @@ class GroupAdministratorsController extends ControllerBase {
 
           $user = $membership->getOwner();
           $username = joinup_user_get_display_name($user);
+          $email = $user->getEmail();
+
           try {
             $user_url = $user->toUrl()->setAbsolute()->toString();
           }
@@ -206,6 +209,7 @@ class GroupAdministratorsController extends ControllerBase {
             $group->label(),
             $group_url,
             $username,
+            $email,
             $user_url,
             $role->getName(),
           ]);
@@ -267,7 +271,9 @@ class GroupAdministratorsController extends ControllerBase {
             // only the user name.
             $user_cell = ['#markup' => $username];
           }
-          $rows[] = [$group_cell, $user_cell, ['#markup' => $role->getName()]];
+          $email_cell = ['#markup' => $user->getEmail()];
+          $role_cell = ['#markup' => $role->getName()];
+          $rows[] = [$group_cell, $user_cell, $email_cell, $role_cell];
         }
       }
     }
@@ -289,6 +295,7 @@ class GroupAdministratorsController extends ControllerBase {
         '#header' => [
           $this->t('Collection'),
           $this->t('User name'),
+          $this->t('E-mail'),
           $this->t('Role'),
         ],
         '#attributes' => ['class' => ['collection-administrator-report']],

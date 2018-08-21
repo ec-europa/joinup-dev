@@ -5,6 +5,7 @@
  * Post update functions for the Joinup User module.
  */
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -24,4 +25,11 @@ function joinup_user_post_update_joinup_reports() {
   foreach (['moderator', 'administrator'] as $rid) {
     user_role_grant_permissions($rid, ['access joinup reports']);
   }
+}
+
+/**
+ * Grant the authenticated users the 'never autoplay videos' permission.
+ */
+function joinup_user_post_update_add_never_autoplay_permission() {
+  user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, ['never autoplay videos']);
 }
