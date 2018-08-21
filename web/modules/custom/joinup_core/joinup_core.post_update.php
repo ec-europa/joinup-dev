@@ -107,6 +107,9 @@ function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
 
   // Merge in solution types.
   _joinup_core_post_update_ctt_duplicates_merge_solution_types();
+
+  // Move all content from the duplicated solutions to the original one.
+  _joinup_core_post_update_ctt_duplicates_merge_content();
 }
 
 /**
@@ -227,6 +230,47 @@ function _joinup_core_post_update_ctt_duplicates_merge_solution_types() {
       $original_group->set('field_is_solution_type', $new_types);
       $original_group->skip_notification;
       $original_group->save();
+    }
+  }
+}
+
+/**
+ * Move content from duplicates to the original entity.
+ */
+function _joinup_core_post_update_ctt_duplicates_merge_content() {
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicates_ids) {
+    $original_group = Rdf::load($original_id);
+    if (empty($original_group)) {
+      continue;
+    }
+
+    foreach ($duplicates_ids as $duplicate_id) {
+      $duplicate_group = Rdf::load($duplicate_id);
+      if (empty($duplicate_group)) {
+        continue;
+      }
+
+      // Unset the relationship to any distribution so that they can properly
+      // moved.
+      $duplicate_group->set('field_is_distribution', NULL);
+      $duplicate_group->skip_notification = 1;
+      $duplicate_group->save();
+
+      $content_ids = $membership_manager->getGroupContentIds($duplicate_group);
+      foreach ($content_ids as $entity_type => $entity_ids) {
+        // Avoid processing other group content like og menu instances.
+        if (!in_array($entity_type, ['node', 'rdf_entity'])) {
+          continue;
+        }
+        $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+        foreach ($storage->loadMultiple($entity_ids) as $entity) {
+          $entity->set(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $original_id);
+          $entity->skip_notification = 1;
+          $entity->save();
+        }
+      }
     }
   }
 }
