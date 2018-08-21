@@ -5,6 +5,9 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+
 /**
  * Enable the Sub-Pathauto module.
  */
@@ -89,6 +92,50 @@ function joinup_core_post_update_remove_action_transfer_solution_ownership() {
  */
 function joinup_core_post_update_install_tallinn() {
   \Drupal::service('module_installer')->install(['tallinn']);
+}
+
+/**
+ * Handle the duplicated solutions in the CTT repository.
+ */
+function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
+  // Create the original duplicates in case they do not exist.
+  _joinup_core_post_update_ctt_duplicates_create_duplicates();
+}
+
+/**
+ * Create original entities for CTT.
+ */
+function _joinup_core_post_update_ctt_duplicates_create_duplicates() {
+  // During migration, it might be that among the duplicates, the wrong version
+  // was maintained. Create a clone of the duplicate entity to use as the
+  // original.
+  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
+    $group = Rdf::load($original_id);
+    // In case the original entity is not found, it means that the entity with
+    // the duplicate id was kept after the migration.
+    if (!empty($group)) {
+      continue;
+    }
+
+    foreach ($duplicate_ids as $duplicate_id) {
+      if (!($duplicate_group = Rdf::load($duplicate_id))) {
+        continue;
+      }
+      break;
+    }
+
+    if (empty($duplicate_group)) {
+      return;
+    }
+
+    $original_group = clone $duplicate_group;
+    $original_group->set('id', $original_id);
+    $original_group->enforceIsNew();
+    // Unset related distributions so that they are moved later properly.
+    $original_group->set('field_is_distribution', NULL);
+    $original_group->skip_notification = TRUE;
+    $original_group->save();
+  }
 }
 
 /**
