@@ -343,25 +343,25 @@ Feature: Navigation menu for custom pages
     And custom_page content:
       | title      | collection                | status      |
       | TOCO 1     | Table of contents outline | published   |
+      | TOCO 2     | Table of contents outline | published   |
       | TOCO 1-1   | Table of contents outline | published   |
       | TOCO 1-1-1 | Table of contents outline | published   |
+      | TOCO 2-1   | Table of contents outline | published   |
       | TOCO 1-1-2 | Table of contents outline | published   |
       | TOCO 1-2   | Table of contents outline | published   |
-      | TOCO 2     | Table of contents outline | published   |
-      | TOCO 2-1   | Table of contents outline | published   |
-      | TOCO 2-1-1 | Table of contents outline | published   |
       | TOCO 2-1-2 | Table of contents outline | unpublished |
+      | TOCO 2-1-1 | Table of contents outline | published   |
     And the following custom page menu structure:
       | title      | parent   | weight |
-      | TOCO 1     |          | 1      |
-      | TOCO 1-1   | TOCO 1   | 1      |
-      | TOCO 1-1-1 | TOCO 1-1 | 1      |
-      | TOCO 1-1-2 | TOCO 1-1 | 2      |
       | TOCO 1-2   | TOCO 1   | 2      |
-      | TOCO 2     |          | 2      |
+      | TOCO 1-1-2 | TOCO 1-1 | 2      |
       | TOCO 2-1   | TOCO 2   | 1      |
-      | TOCO 2-1-1 | TOCO 2-1 | 1      |
+      | TOCO 1     |          | 1      |
+      | TOCO 1-1-1 | TOCO 1-1 | 1      |
+      | TOCO 2     |          | 2      |
       | TOCO 2-1-2 | TOCO 2-1 | 1      |
+      | TOCO 1-1   | TOCO 1   | 1      |
+      | TOCO 2-1-1 | TOCO 2-1 | 1      |
 
     When I am logged in as a member of the "Table of contents outline" collection
     And I go to the homepage of the "Table of contents outline" collection
