@@ -100,6 +100,10 @@ function joinup_core_post_update_install_tallinn() {
 function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
   // Create the original duplicates in case they do not exist.
   _joinup_core_post_update_ctt_duplicates_create_duplicates();
+
+  // Merge in the memberships from the solutions into the original entity's
+  // list of memberships.
+  _joinup_core_post_update_ctt_duplicates_merge_memberships();
 }
 
 /**
@@ -135,6 +139,63 @@ function _joinup_core_post_update_ctt_duplicates_create_duplicates() {
     $original_group->set('field_is_distribution', NULL);
     $original_group->skip_notification = TRUE;
     $original_group->save();
+  }
+}
+
+/**
+ * Merge memberships in duplicated solutions of ctt.
+ */
+function _joinup_core_post_update_ctt_duplicates_merge_memberships() {
+  // Generate a pseudo function that loads all memberships indexed by uid.
+  $memberships_by_uid = function (string $id) {
+    $membership_storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+    $memberships = $membership_storage->loadByProperties([
+      'entity_type' => 'rdf_entity',
+      'entity_id' => $id,
+    ]);
+
+    foreach ($memberships as $key => $membership) {
+      unset($memberships[$key]);
+      // Prepend "uid:" to each key to avoid conflicts with membership ids.
+      $memberships['uid:' . $membership->getOwnerId()] = $membership;
+    }
+    return $memberships;
+  };
+
+  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
+    $group = Rdf::load($original_id);
+    // In case the original entity is not found, it means that the entity with
+    // the duplicate id was kept after the migration.
+    if (empty($group)) {
+      continue;
+    }
+
+    /** @var \Drupal\og\OgMembershipInterface[] $memberships */
+    $memberships = $memberships_by_uid($original_id);
+    foreach ($duplicate_ids as $duplicate_id) {
+      /** @var \Drupal\og\OgMembershipInterface[] $duplicate_memberships */
+      $duplicate_memberships = $memberships_by_uid($duplicate_id);
+      foreach ($duplicate_memberships as $key => $duplicate_membership) {
+        // If the membership does not exist in the original entity, transfer it
+        // and maintain the values.
+        if (!isset($memberships[$key])) {
+          $duplicate_membership->setGroup($group);
+          $duplicate_membership->skip_notification = 1;
+          $duplicate_membership->save();
+        }
+        // If the membership does exist in the original entity, add the roles to
+        // the existing membership. We do not need to filter anything out since
+        // og is already handling it in ::setRoles.
+        // @see \Drupal\og\OgMembershipInterface::getRoles.
+        else {
+          $duplicate_roles = $duplicate_memberships[$key]->getRoles();
+          $original_membership = $memberships[$key];
+          $original_membership->setRoles($duplicate_roles);
+          $original_membership->skip_notification = 1;
+          $original_membership->save();
+        }
+      }
+    }
   }
 }
 
