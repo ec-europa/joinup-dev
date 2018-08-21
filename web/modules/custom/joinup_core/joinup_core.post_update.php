@@ -350,7 +350,7 @@ function _joinup_core_get_duplicated_ids(): array {
       'http://administracionelectronica.gob.es/ctt/badaral_1',
     ],
     'http://administracionelectronica.gob.es/ctt/sicres' => [
-      'http://administracionelectronica.gob.es/ctt/sicres',
+      'http://administracionelectronica.gob.es/ctt/sicres_1',
     ],
     'http://administracionelectronica.gob.es/ctt/pruebalola' => [
       'http://administracionelectronica.gob.es/ctt/pruebalola_1',
