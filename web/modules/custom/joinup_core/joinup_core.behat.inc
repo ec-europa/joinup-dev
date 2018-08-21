@@ -8,12 +8,15 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\EntityTrait;
 use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for functionalities provided by Joinup core module.
  */
 class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+
+  use EntityTrait;
 
   /**
    * Asserts that only the expected chips are shown in the page.
@@ -61,6 +64,19 @@ class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     $button->press();
+  }
+
+  /**
+   * Visits a taxonomy term page.
+   *
+   * @param string $name
+   *   The taxonomy term name.
+   *
+   * @Given I go to the :name (taxonomy )term( page)
+   */
+  public function visitTaxonomyTermPage(string $name) {
+    $term = static::getEntityByLabel('taxonomy_term', $name);
+    $this->visitPath($term->toUrl()->toString());
   }
 
 }
