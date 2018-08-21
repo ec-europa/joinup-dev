@@ -16,7 +16,7 @@ use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
  *
  * Scan the imported triples (which are now in the sink graph) and filter out
  * all that are not Joinup entities, as solutions, releases, distributions,
- * licences, owners or contact information.
+ * owners or contact information.
  *
  * @PipelineStep(
  *   id = "remove_unsupported_data",

@@ -225,7 +225,6 @@ Feature: As a site moderator I am able to import RDF files.
     And I delete the provenance activity of "http://example.com/owner/1" entity
     And I delete the provenance activity of "http://example.com/owner/2" entity
     And I delete the provenance activity of "http://example.com/contact/1" entity
-    And I delete the "Federated open license" licence
     And I delete the "Contact" contact information
     And I delete the "The Publisher" owner
     And I delete the "A local authority" owner

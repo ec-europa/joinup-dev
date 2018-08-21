@@ -102,7 +102,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Returns a 'provenance_activity' entity exists, given a referral.
+   * Returns a 'provenance_activity' entity given a referral.
    *
    * @param string $referral
    *   The entity label or ID for existing entities, or the ID as URI for
@@ -132,15 +132,9 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
   /**
    * Asserts that a 'provenance_activity' entity exists, given a referral.
    *
-   * This method also returns the provenance activity, makes it useful to be
-   * called from other assertions.
-   *
    * @param string $referral
    *   The entity label or ID for existing entities, or the ID as URI for
    *   provenance activities referring not imported entities.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface
-   *   The 'provenance_activity' RDF entity.
    *
    * @throws \Exception
    *   If $referral was passed as entity label and that entity doesn't exist or
@@ -148,11 +142,10 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
    *
    * @Then (the ):referral (entity )should have a related provenance activity
    */
-  public function assertActivityForReferral(string $referral): RdfInterface {
-    if (!$activity = $this->getActivityForReferral($referral)) {
+  public function assertActivityForReferral(string $referral): void {
+    if (!$this->getActivityForReferral($referral)) {
       throw new \Exception("There's no provenance activity for '$referral'.");
     }
-    return $activity;
   }
 
   /**
@@ -169,7 +162,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
    * @Then (the ):referral (entity )should not have a related provenance activity
    */
   public function assertNoActivityForReferral(string $referral): void {
-    if ($activity = $this->getActivityForReferral($referral)) {
+    if ($this->getActivityForReferral($referral)) {
       throw new \Exception("A provenance activity for '$referral' was found but should have not.");
     }
   }
