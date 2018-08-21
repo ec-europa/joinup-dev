@@ -110,6 +110,9 @@ function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
 
   // Move all content from the duplicated solutions to the original one.
   _joinup_core_post_update_ctt_duplicates_merge_content();
+
+  // Delete duplicates.
+  _joinup_core_post_update_ctt_duplicates_delete_duplicates();
 }
 
 /**
@@ -271,6 +274,18 @@ function _joinup_core_post_update_ctt_duplicates_merge_content() {
           $entity->save();
         }
       }
+    }
+  }
+}
+
+/**
+ * Remove ctt duplicates.
+ */
+function _joinup_core_post_update_ctt_duplicates_delete_duplicates() {
+  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicated_ids) {
+    foreach (Rdf::loadMultiple($duplicated_ids) as $entity) {
+      $entity->skip_notification = 1;
+      $entity->delete();
     }
   }
 }
