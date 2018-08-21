@@ -104,6 +104,9 @@ function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
   // Merge in the memberships from the solutions into the original entity's
   // list of memberships.
   _joinup_core_post_update_ctt_duplicates_merge_memberships();
+
+  // Merge in solution types.
+  _joinup_core_post_update_ctt_duplicates_merge_solution_types();
 }
 
 /**
@@ -195,6 +198,35 @@ function _joinup_core_post_update_ctt_duplicates_merge_memberships() {
           $original_membership->save();
         }
       }
+    }
+  }
+}
+
+/**
+ * Merges in solution types from duplicates towards the original solution.
+ */
+function _joinup_core_post_update_ctt_duplicates_merge_solution_types() {
+  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicates_ids) {
+    $original_group = Rdf::load($original_id);
+    if (empty($original_group)) {
+      continue;
+    }
+
+    foreach ($duplicates_ids as $duplicate_id) {
+      $duplicate_group = Rdf::load($duplicate_id);
+      if (empty($duplicate_group)) {
+        continue;
+      }
+
+      $original_solution_types = !$original_group->get('field_is_solution_type')->isEmpty() ? $original_group->get('field_is_solution_type') : [];
+      $duplicate_solution_types = !$duplicate_group->get('field_is_solution_type')->isEmpty() ? $duplicate_group->get('field_is_solution_type') : [];
+      $new_types = array_merge($original_solution_types, $duplicate_solution_types);
+      if (empty($new_types)) {
+        continue;
+      }
+      $original_group->set('field_is_solution_type', $new_types);
+      $original_group->skip_notification;
+      $original_group->save();
     }
   }
 }
