@@ -193,10 +193,9 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     $curr = NULL;
     do {
       $prev = $curr;
-      $key = key($flattened_menu);
       $curr = current($flattened_menu);
       next($flattened_menu);
-    } while ($key && $key !== $active_link_id);
+    } while ($curr && $curr->getPluginId() !== $active_link_id);
 
     return $prev ? $prev : NULL;
   }
@@ -216,15 +215,11 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
 
     reset($flattened_menu);
     do {
-      $key = key($flattened_menu);
-      next($flattened_menu);
-    } while ($key && $key !== $active_link_id);
+      $curr = current($flattened_menu);
+      $next = next($flattened_menu);
+    } while ($curr && $curr->getPluginId() !== $active_link_id);
 
-    if (($key === $active_link_id) && ($return = current($flattened_menu))) {
-      return $return;
-    }
-
-    return NULL;
+    return $next ? $next : NULL;
   }
 
   /**
@@ -248,8 +243,10 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       return NULL;
     }
 
-    if (isset($tree[$active_link_id])) {
-      return $parent;
+    foreach ($tree as $menu_element) {
+      if ($menu_element->link->getPluginId() === $active_link_id) {
+        return $parent;
+      }
     }
 
     foreach ($tree as $menu_link_id => $menu_item) {
@@ -305,6 +302,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       $this->menuTree = $this->menuLinkTree->load($og_menu_id, $menu_tree_parameters);
       $manipulators = [
         ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+        ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
       ];
       $this->menuTree = $this->menuLinkTree->transform($this->menuTree, $manipulators);
     }
