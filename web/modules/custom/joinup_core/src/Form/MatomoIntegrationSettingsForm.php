@@ -10,27 +10,27 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Settings form for integration with the Piwik analytics platform.
+ * Settings form for integration with the Matomo analytics platform.
  *
  * This allows to control at which time intervals data about visit and download
- * counts are retrieved from the Piwik server.
+ * counts are retrieved from the Matomo server.
  *
- * @see \Drupal\joinup_core\EventSubscriber\RefreshCachedPiwikDataEventSubscriber
+ * @see \Drupal\joinup_core\EventSubscriber\RefreshCachedMatomoDataEventSubscriber
  */
-class PiwikIntegrationSettingsForm extends ConfigFormBase {
+class MatomoIntegrationSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['joinup_core.piwik_settings'];
+    return ['joinup_core.matomo_settings'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'piwik_integration_settings';
+    return 'matomo_integration_settings';
   }
 
   /**
@@ -48,7 +48,7 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
   protected $entityTypeBundleInfo;
 
   /**
-   * Constructs a new PiwikIntegrationSettingsForm.
+   * Constructs a new MatomoIntegrationSettingsForm.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The factory for configuration objects.
@@ -79,12 +79,12 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('joinup_core.piwik_settings');
+    $config = $this->config('joinup_core.matomo_settings');
 
     $form['introduction'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('These settings control the period for which visits and download counts are retrieved from the Piwik analytics platform, and which type of metric to use.'),
+      '#value' => $this->t('These settings control the period for which visits and download counts are retrieved from the Matomo analytics platform, and which type of metric to use.'),
     ];
 
     // Visit counts of community content are used to determine the results of
@@ -121,7 +121,7 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
     $form['visit_counts']['help'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('Visit counts are used to determine which content is shown in the "Recommended content" block on the homepage. Shorter time periods will cause the recommended content to be more fresh and dynamic, while longer periods will cause them to be more stable.<br />The difference between "visits" and "hits" is that a "visit" is a special metric in Piwik which measures visitor engagement rather than simply counting the number of page requests. Repeated requests to the same page by the same user in a short time frame do not count as a "visit" but they do count as a "hit".'),
+      '#value' => $this->t('Visit counts are used to determine which content is shown in the "Recommended content" block on the homepage. Shorter time periods will cause the recommended content to be more fresh and dynamic, while longer periods will cause them to be more stable.<br />The difference between "visits" and "hits" is that a "visit" is a special metric in Matomo which measures visitor engagement rather than simply counting the number of page requests. Repeated requests to the same page by the same user in a short time frame do not count as a "visit" but they do count as a "hit".'),
     ];
 
     // Download counts of distributions are shown on solutions.
@@ -239,7 +239,7 @@ class PiwikIntegrationSettingsForm extends ConfigFormBase {
       }, $values[$key]);
     }
 
-    $this->config('joinup_core.piwik_settings')
+    $this->config('joinup_core.matomo_settings')
       ->set('visit_counts', $values['visit_counts'])
       ->set('download_counts', $values['download_counts'])
       ->set('launch_date', $values['launch_date'])
