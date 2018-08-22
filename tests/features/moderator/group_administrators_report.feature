@@ -11,13 +11,13 @@ Feature: Group administrators report
       | Bony fishes        |
 
     And users:
-      | Username | First name  | Family name |
-      | najib    | Najib       | Randall     |
-      | melor    | Melor       | Vescovi     |
-      | kita     | Panteleimon | Kita        |
-      | major    | Major       | Jakobsen    |
-      | victor   | Victor      | Otto        |
-      | melissa  | Melissa     | Kevorkian   |
+      | Username | First name  | Family name | E-mail                       |
+      | najib    | Najib       | Randall     | randall@najib-industries.com |
+      | melor    | Melor       | Vescovi     | melor1998@hotmail.com        |
+      | kita     | Panteleimon | Kita        | pantopanto@gmail.com         |
+      | major    | Major       | Jakobsen    | Major_Jakobsen@mail.dk       |
+      | victor   | Victor      | Otto        | votto@fishes.co.uk           |
+      | melissa  | Melissa     | Kevorkian   | mkevorkian@fishes.co.uk      |
 
     And collection user memberships:
       | collection         | user    | roles                      | state   |
@@ -34,13 +34,13 @@ Feature: Group administrators report
     And I click "Collection administrators"
 
     Then the "collection administrator report" table should contain the following columns:
-      | Collection         | User name         | Role          |
-      | Large living birds | Najib Randall     | administrator |
-      | Large living birds | Melor Vescovi     | facilitator   |
-      | Large living birds | Panteleimon Kita  | facilitator   |
-      | Bony fishes        | Victor Otto       | administrator |
-      | Bony fishes        | Victor Otto       | facilitator   |
-      | Bony fishes        | Melissa Kevorkian | facilitator   |
+      | Collection         | User name         | E-mail                       | Role          |
+      | Large living birds | Najib Randall     | randall@najib-industries.com | administrator |
+      | Large living birds | Melor Vescovi     | melor1998@hotmail.com        | facilitator   |
+      | Large living birds | Panteleimon Kita  | pantopanto@gmail.com         | facilitator   |
+      | Bony fishes        | Victor Otto       | votto@fishes.co.uk           | administrator |
+      | Bony fishes        | Victor Otto       | votto@fishes.co.uk           | facilitator   |
+      | Bony fishes        | Melissa Kevorkian | mkevorkian@fishes.co.uk      | facilitator   |
 
     And the "collection administrator report" table should not contain the following columns:
       | Collection         | User name      |
