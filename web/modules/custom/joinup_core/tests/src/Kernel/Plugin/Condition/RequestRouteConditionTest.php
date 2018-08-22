@@ -22,7 +22,7 @@ class RequestRouteConditionTest extends KernelTestBase {
   public static $modules = [
     'joinup_core',
     'og',
-    'piwik_reporting_api',
+    'matomo_reporting_api',
     'system',
   ];
 
