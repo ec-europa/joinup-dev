@@ -31,6 +31,7 @@ Feature: Filtering the member list
     When I go to the homepage of the "Coffee makers" collection
     And I click "Members" in the "Left sidebar"
     Then the following fields should not be present "Username, First name, Family name"
+    But the following fields should be present "Roles"
 
     Examples:
       | user       |
@@ -70,3 +71,27 @@ Feature: Filtering the member list
     And I press "Apply"
     Then I should see the link "King Emerson"
     But I should not see the link "Seamus Emerson"
+
+    When I clear the field "Username"
+    And I clear the field "Family name"
+    And I press "Apply"
+    And I select "Owner (1)" from "Roles"
+    And I press "Apply"
+    Then I should see the link "King Seabrooke"
+    But I should not see the link "King Emerson"
+    And I should not see the link "Seamus Emerson"
+    And I should not see the link "Brooke Kingsley"
+    And I should not see the link "Nell Gibb"
+
+    When I select "Facilitator (2)" from "Roles"
+    And I press "Apply"
+    Then I should see the link "King Emerson"
+    And I should see the link "King Seabrooke"
+    But I should not see the link "Seamus Emerson"
+    And I should not see the link "Brooke Kingsley"
+    And I should not see the link "Nell Gibb"
+    And I fill in "Family name" with "eme"
+    And I press "Apply"
+    Then I should see the link "King Emerson"
+    But I should not see the link "King Seabrooke"
+    And the option with text "Facilitator (1)" from select "Roles" is selected
