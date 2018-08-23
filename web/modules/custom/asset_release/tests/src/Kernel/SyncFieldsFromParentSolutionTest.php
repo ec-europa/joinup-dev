@@ -46,7 +46,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'og',
     'options',
     'owner',
-    'piwik_reporting_api',
+    'matomo_reporting_api',
     'rdf_schema_field_validation',
     'rdf_draft',
     'rdf_entity',

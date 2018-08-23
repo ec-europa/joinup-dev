@@ -271,23 +271,23 @@ function joinup_form_views_exposed_form_alter(&$form, FormStateInterface $form_s
   }
 
   $current_user = \Drupal::currentUser();
-  if (\Drupal::currentUser()->hasPermission('filter membership overview')) {
+  $has_permission = $current_user->hasPermission('filter membership overview');
+  if ($has_permission) {
     return;
   }
 
-  // If the user doesn't have permission to filter the membership table, deny
-  // access to the filter fields, and also remove the filters from the view
-  // because otherwise Views will try to filter using empty values, and the
-  // result will be empty.
-  $form['#access'] = $current_user->hasPermission('filter membership overview');
-
   $display = $view->getDisplay();
   foreach ([
-    'name',
-    'field_user_first_name_value',
-    'field_user_family_name_value',
-  ] as $id) {
-    unset($display->handlers['filter'][$id]);
+    'name' => 'username',
+    'field_user_first_name_value' => 'first_name',
+    'field_user_family_name_value' => 'family_name',
+  ] as $display_id => $form_element_id) {
+    // If the user doesn't have permission to filter the membership table, deny
+    // access to the filter fields, and also remove the filters from the view
+    // because otherwise Views will try to filter using empty values, and the
+    // result will be empty.
+    $form[$form_element_id]['#access'] = $has_permission;
+    unset($display->handlers['filter'][$display_id]);
   }
 }
 
