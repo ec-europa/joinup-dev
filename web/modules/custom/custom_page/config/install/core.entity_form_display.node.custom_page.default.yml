@@ -11,9 +11,9 @@ dependencies:
     - node.type.custom_page
   module:
     - allowed_formats
+    - custom_page
     - file
     - image
-    - search_api_field
     - text
 id: node.custom_page.default
 targetEntityType: node
@@ -43,7 +43,7 @@ content:
     weight: 3
     settings: {  }
     third_party_settings: {  }
-    type: search_api_field_default
+    type: search_api_field_custom_page
     region: content
   field_custom_page_logo:
     weight: 4
