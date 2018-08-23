@@ -108,7 +108,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    /** @var \Drupal\link\LinkItemInterface $item */
+    /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */
     $item = $items[$delta];
     $default_values = $item->get('value')->getValue();
     $facets = $this->getFacets();
