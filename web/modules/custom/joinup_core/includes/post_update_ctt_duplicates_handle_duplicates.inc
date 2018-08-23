@@ -72,7 +72,7 @@ function _joinup_core_post_update_ctt_duplicates_merge_content() {
       $content_ids = $membership_manager->getGroupContentIds($duplicate_group);
       foreach ($content_ids as $entity_type_id => $entity_ids) {
         // Avoid processing other group content like og menu instances.
-        if (!in_array($entity_type_id, ['node', 'rdf_entity'])) {
+        if ($entity_type_id === 'rdf_entity') {
           continue;
         }
         $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
