@@ -165,8 +165,9 @@ class ThreeWayMergeStepTest extends StepTestBase {
     // Check that incoming values are preseved over local ones.
     $this->assertEquals('Asset', $solution->label());
     $this->assertEquals('This is an Asset.', $solution->get('field_is_description')->value);
-    // Check that a missed incoming value is copied from the local entity.
-    $this->assertEquals('http://example.com/status', $solution->get('field_status')->target_id);
+    // Ensure that when an incoming value is empty, the local value gets emptied
+    // too e.g. related solutions.
+    $this->assertTrue($solution->get('field_status')->isEmpty());
   }
 
   /**
