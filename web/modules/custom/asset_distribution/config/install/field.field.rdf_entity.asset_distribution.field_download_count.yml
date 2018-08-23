@@ -11,7 +11,7 @@ field_name: field_download_count
 entity_type: rdf_entity
 bundle: asset_distribution
 label: 'Download count'
-description: 'The number of times the file attached to this distribution has been downloaded. This data is retrieved from the Piwik analytics platform and is updated on regular intervals, causing any manually entered data to be overwritten.'
+description: 'The number of times the file attached to this distribution has been downloaded. This data is retrieved from the Matomo analytics platform and is updated on regular intervals, causing any manually entered data to be overwritten.'
 required: false
 translatable: false
 default_value: {  }

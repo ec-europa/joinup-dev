@@ -17,6 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * The filter to normalize embedded videos.
  *
+ * This filter should be processed before video_embed_wysiwyg as it parses
+ * iframes and should not parse iframes created by other providers to avoid
+ * generating duplicated div elements.
+ *
  * @Filter(
  *   id = "joinup_video",
  *   title = @Translation("Joinup Video Embed"),

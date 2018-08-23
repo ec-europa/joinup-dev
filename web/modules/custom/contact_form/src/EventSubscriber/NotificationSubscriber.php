@@ -38,7 +38,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
 
     // Separately handle the reporting of content.
     if ($category === 'report') {
-      $this->sendReportMessage($event);
+      $event->setSuccess($this->sendReportMessage($event));
       return;
     }
 
@@ -46,10 +46,10 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $recipient = $this->configFactory->get('contact_form.settings')->get('default_recipient');
     /** @var \Drupal\message\MessageInterface $message */
     $message = $event->getEntity();
-    $this->messageDelivery
+    $event->setSuccess($this->messageDelivery
       ->setMessage($message)
       ->setRecipientsAsEmails([$recipient])
-      ->sendMail();
+      ->sendMail());
   }
 
   /**
@@ -105,18 +105,21 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    *
    * @param \Drupal\joinup_notification\Event\NotificationEvent $event
    *   The event object.
+   *
+   * @return bool
+   *   If the delivery succeeded.
    */
   protected function sendReportMessage(NotificationEvent $event) {
     $message = $event->getEntity();
     $entity = $this->getEntityFromUrl($message->get('field_contact_url')->first()->uri);
     // If there is no entity found, do not send an email.
     if (empty($entity)) {
-      return;
+      return FALSE;
     }
     $user_data = $this->getReportUserData();
     $user_data = $this->getUsersMessages($user_data, $entity);
     $arguments = $this->generateReportArguments($message);
-    $this->sendUserDataMessages($user_data, $arguments);
+    return $this->sendUserDataMessages($user_data, $arguments);
   }
 
   /**
