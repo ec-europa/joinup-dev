@@ -13,10 +13,10 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
-use Drupal\piwik_reporting_api\PiwikQueryFactoryInterface;
+use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 
 /**
- * Event subscriber that updates stale data with fresh results from Piwik.
+ * Event subscriber that updates stale data with fresh results from Matomo.
  */
 class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberBase {
 
@@ -35,11 +35,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   const FIELD_NAME_VISIT_COUNT = 'field_visit_count';
 
   /**
-   * The Piwik query factory.
+   * The Matomo query factory.
    *
-   * @var \Drupal\piwik_reporting_api\PiwikQueryFactoryInterface
+   * @var \Drupal\matomo_reporting_api\MatomoQueryFactoryInterface
    */
-  protected $piwikQueryFactory;
+  protected $matomoQueryFactory;
 
   /**
    * The config factory.
@@ -56,29 +56,29 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   protected $loggerFactory;
 
   /**
-   * The Piwik settings config object.
+   * The Matomo settings config object.
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected $piwikSettings;
+  protected $matomoSettings;
 
   /**
-   * Constructs a new RefreshCachedPiwikDataEventSubscriber object.
+   * Constructs a new RefreshCachedMatomoDataEventSubscriber object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The system time service.
-   * @param \Drupal\piwik_reporting_api\PiwikQueryFactoryInterface $piwikQueryFactory
-   *   The Piwik query factory.
+   * @param \Drupal\matomo_reporting_api\MatomoQueryFactoryInterface $matomoQueryFactory
+   *   The Matomo query factory.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
    *   The logger factory.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, TimeInterface $time, PiwikQueryFactoryInterface $piwikQueryFactory, ConfigFactoryInterface $configFactory, LoggerChannelFactoryInterface $loggerFactory) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, TimeInterface $time, MatomoQueryFactoryInterface $matomoQueryFactory, ConfigFactoryInterface $configFactory, LoggerChannelFactoryInterface $loggerFactory) {
     parent::__construct($entityTypeManager, $time);
-    $this->piwikQueryFactory = $piwikQueryFactory;
+    $this->matomoQueryFactory = $matomoQueryFactory;
     $this->configFactory = $configFactory;
     $this->loggerFactory = $loggerFactory;
   }
@@ -91,8 +91,8 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
 
     // All requests are sent by POST method to handle the amount of concurrent
     // requests in terms of request length.
-    $this->piwikQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
-    $query = $this->piwikQueryFactory->getQuery('API.getBulkRequest');
+    $this->matomoQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
+    $query = $this->matomoQueryFactory->getQuery('API.getBulkRequest');
 
     $url_index = 0;
     foreach ($items as $index => $item) {
@@ -178,7 +178,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The time period in days, or 0 for all time. Defaults to 0.
    */
   protected function getTimePeriod($bundle) {
-    $settings = $this->getPiwikSettings($bundle);
+    $settings = $this->getMatomoSettings($bundle);
     if (!empty($settings['period'])) {
       return $settings['period'];
     }
@@ -192,11 +192,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The bundle for which to retrieve the action type.
    *
    * @return string
-   *   The action type to retrieve, as a parameter to be used in a Piwik API
+   *   The action type to retrieve, as a parameter to be used in a Matomo API
    *   call. Defaults to 'nb_hits'.
    */
   protected function getType($bundle) {
-    $settings = $this->getPiwikSettings($bundle);
+    $settings = $this->getMatomoSettings($bundle);
     if (!empty($settings['type'])) {
       return $settings['type'];
     }
@@ -214,26 +214,26 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   to 'visit_counts'.
    */
   protected function getMethod($bundle) {
-    $settings = $this->getPiwikSettings($bundle);
+    $settings = $this->getMatomoSettings($bundle);
     return !empty($settings['method']) ? $settings['method'] : 'visit_counts';
   }
 
   /**
-   * Returns the Piwik API method that applies to the given bundle.
+   * Returns the Matomo API method that applies to the given bundle.
    *
    * @param string $bundle
    *   The bundle for which to retrieve the API method.
    *
    * @return string
-   *   The Piwik API method. Defaults to 'Actions.getPageUrl'.
+   *   The Matomo API method. Defaults to 'Actions.getPageUrl'.
    */
-  protected function getPiwikMethod($bundle) {
+  protected function getMatomoMethod($bundle) {
     $method = $this->getMethod($bundle);
     return $method === 'download_counts' ? 'Actions.getDownload' : 'Actions.getPageUrl';
   }
 
   /**
-   * Returns the Piwik URL parameter name that applies to the given bundle.
+   * Returns the Matomo URL parameter name that applies to the given bundle.
    *
    * @param string $bundle
    *   The bundle for which to retrieve the URL parameter name.
@@ -297,7 +297,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   /**
    * Returns the configuration for the given bundle.
    *
-   * This can be configured by moderators in the 'Piwik Integration' settings
+   * This can be configured by moderators in the 'Matomo Integration' settings
    * form.
    *
    * @param string $bundle
@@ -307,12 +307,12 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The configuration array, or FALSE if there is no configuration for this
    *   bundle.
    */
-  protected function getPiwikSettings($bundle) {
-    if (empty($this->piwikSettings)) {
-      $this->piwikSettings = $this->configFactory->get('joinup_core.piwik_settings');
+  protected function getMatomoSettings($bundle) {
+    if (empty($this->matomoSettings)) {
+      $this->matomoSettings = $this->configFactory->get('joinup_core.matomo_settings');
     }
     foreach (['visit_counts', 'download_counts'] as $method) {
-      $settings = $this->piwikSettings->get($method);
+      $settings = $this->matomoSettings->get($method);
       if (array_key_exists($bundle, $settings)) {
         $settings[$bundle]['method'] = $method;
         return $settings[$bundle];
@@ -342,14 +342,14 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $bundle = $entity->bundle();
     $period = $this->getTimePeriod($bundle);
     $type = $this->getType($bundle);
-    $method = $this->getPiwikMethod($bundle);
+    $method = $this->getMatomoMethod($bundle);
     $url_parameter_name = $this->getUrlParameterName($bundle);
     $url_parameter = $this->getUrlParameter($entity);
 
-    $sub_query = $this->piwikQueryFactory->getQuery($method);
+    $sub_query = $this->matomoQueryFactory->getQuery($method);
     $date_range = [
       // If the period is 0 we should get all results since launch.
-      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.piwik_settings')->get('launch_date'),
+      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.matomo_settings')->get('launch_date'),
       (new DateTimePlus())->format('Y-m-d'),
     ];
 
