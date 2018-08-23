@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains update functions related to duplicates of the ctt community.
+ * Contains helper functions related to duplicates of the CTT community.
  */
 
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -12,11 +12,11 @@ use Drupal\rdf_entity\Entity\Rdf;
 /**
  * Create original entities for CTT.
  */
-function _joinup_core_post_update_ctt_duplicates_create_duplicates() {
+function _spain_ctt_duplicates_create_duplicates() {
   // During migration, it might be that among the duplicates, the wrong version
   // was maintained. Create a clone of the duplicate entity to use as the
   // original.
-  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
+  foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicate_ids) {
     $group = Rdf::load($original_id);
     // In case the original entity is not found, it means that the entity with
     // the duplicate id was kept after the migration.
@@ -48,10 +48,10 @@ function _joinup_core_post_update_ctt_duplicates_create_duplicates() {
 /**
  * Move content from duplicates to the original entity.
  */
-function _joinup_core_post_update_ctt_duplicates_merge_content() {
+function _spain_ctt_duplicates_merge_content() {
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
-  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicates_ids) {
+  foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicates_ids) {
     $original_group = Rdf::load($original_id);
     if (empty($original_group)) {
       continue;
@@ -89,8 +89,8 @@ function _joinup_core_post_update_ctt_duplicates_merge_content() {
 /**
  * Remove ctt duplicates.
  */
-function _joinup_core_post_update_ctt_duplicates_delete_duplicates() {
-  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicated_ids) {
+function _spain_ctt_duplicates_delete_duplicates() {
+  foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicated_ids) {
     foreach (Rdf::loadMultiple($duplicated_ids) as $entity) {
       $entity->skip_notification = TRUE;
       $entity->delete();
@@ -101,12 +101,12 @@ function _joinup_core_post_update_ctt_duplicates_delete_duplicates() {
 /**
  * Update the affiliates of the ctt collection.
  */
-function _joinup_core_post_update_ctt_duplicates_collection_relations() {
+function _spain_ctt_duplicates_collection_relations() {
   // The id of the ctt collection.
   $id = 'http://administracionelectronica.gob.es/ctt';
 
   $collection = Rdf::load($id);
-  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
+  foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicate_ids) {
     $collection->field_ar_affiliates->appendItem($original_id);
   }
   $collection->skip_notification = TRUE;
@@ -114,7 +114,7 @@ function _joinup_core_post_update_ctt_duplicates_collection_relations() {
 
   $connection = \Drupal::service('sparql_endpoint');
   // Update all other references.
-  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
+  foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicate_ids) {
     $ids = SparqlArg::serializeUris($duplicate_ids, ' ');
     if (!empty($ids)) {
       $query = <<<QUERY
@@ -152,7 +152,7 @@ QUERY;
  *   An associative array of ids where each entry is an array of ids of
  *   duplicates.
  */
-function _joinup_core_get_duplicated_ids(): array {
+function _span_ctt_get_duplicated_ids(): array {
   return [
     'http://administracionelectronica.gob.es/ctt/dscp' => [
       'http://administracionelectronica.gob.es/ctt/dscp_1',

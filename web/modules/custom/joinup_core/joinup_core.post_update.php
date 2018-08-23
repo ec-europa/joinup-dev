@@ -107,20 +107,8 @@ function joinup_core_post_update_install_piwik2matomo() {
 }
 
 /**
- * Handle the duplicated solutions in the CTT repository.
+ * Enable 'spain_ctt' module.
  */
-function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
-  require __DIR__ . '/includes/post_update_ctt_duplicates_handle_duplicates.inc';
-
-  // Create the original duplicates in case they do not exist.
-  _joinup_core_post_update_ctt_duplicates_create_duplicates();
-
-  // Move all content from the duplicated solutions to the original one.
-  _joinup_core_post_update_ctt_duplicates_merge_content();
-
-  // Delete duplicates.
-  _joinup_core_post_update_ctt_duplicates_delete_duplicates();
-
-  // Update the ctt collection relationships.
-  _joinup_core_post_update_ctt_duplicates_collection_relations();
+function joinup_core_post_update_install_spain_ctt() {
+  \Drupal::service('module_installer')->install(['spain_ctt']);
 }
