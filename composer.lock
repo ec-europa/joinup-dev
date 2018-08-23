@@ -5457,8 +5457,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+2-dev",
-                    "datestamp": "1525107184",
+                    "version": "8.x-1.0-alpha4+1-dev",
+                    "datestamp": "1486397282",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5714,16 +5714,16 @@
         },
         {
             "name": "ec-europa/joinup-tallinn-dashboard",
-            "version": "dev-ISAICP-4649",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "8aea377a7a2a6554b3fc40dcf4f50012635df4e9"
+                "reference": "38a77d0c495dbc107ac8e8be5eece4fcab4884e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/8aea377a7a2a6554b3fc40dcf4f50012635df4e9",
-                "reference": "8aea377a7a2a6554b3fc40dcf4f50012635df4e9",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/38a77d0c495dbc107ac8e8be5eece4fcab4884e5",
+                "reference": "38a77d0c495dbc107ac8e8be5eece4fcab4884e5",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5736,7 +5736,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-08-09T11:51:03+00:00"
+            "time": "2018-08-23T16:48:13+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -5779,7 +5779,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
+                "source": "https://github.com/ec-europa/virtuoso/tree/master",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
             "time": "2018-04-16T07:12:39+00:00"
@@ -6205,7 +6205,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10519,7 +10519,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527522480",
+                    "datestamp": "1527523080",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10583,12 +10583,6 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/klausi/coder/zipball/984c54a7b1e8f27ff1c32348df69712afd86b17f",
-                "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f",
-                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
