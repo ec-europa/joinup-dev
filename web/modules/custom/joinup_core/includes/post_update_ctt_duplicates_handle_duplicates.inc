@@ -46,63 +46,6 @@ function _joinup_core_post_update_ctt_duplicates_create_duplicates() {
 }
 
 /**
- * Merge memberships in duplicated solutions of ctt.
- */
-function _joinup_core_post_update_ctt_duplicates_merge_memberships() {
-  // Generate a pseudo function that loads all memberships indexed by uid.
-  $memberships_by_uid = function (string $id) {
-    $membership_storage = \Drupal::entityTypeManager()->getStorage('og_membership');
-    $memberships = $membership_storage->loadByProperties([
-      'entity_type' => 'rdf_entity',
-      'entity_id' => $id,
-    ]);
-
-    $return = [];
-    foreach ($memberships as $key => $membership) {
-      $return[$membership->getOwnerId()] = $membership;
-    }
-    return $return;
-  };
-
-  foreach (_joinup_core_get_duplicated_ids() as $original_id => $duplicate_ids) {
-    $group = Rdf::load($original_id);
-    // In case the original entity is not found, it means that the entity with
-    // the duplicate id was kept after the migration.
-    if (empty($group)) {
-      continue;
-    }
-
-    /** @var \Drupal\og\OgMembershipInterface[] $memberships */
-    $memberships = $memberships_by_uid($original_id);
-    foreach ($duplicate_ids as $duplicate_id) {
-      /** @var \Drupal\og\OgMembershipInterface[] $duplicate_memberships */
-      $duplicate_memberships = $memberships_by_uid($duplicate_id);
-      foreach ($duplicate_memberships as $key => $duplicate_membership) {
-        // If the membership does not exist in the original entity, transfer it
-        // and maintain the values.
-        if (!isset($memberships[$key])) {
-          $duplicate_membership->setGroup($group);
-          $duplicate_membership->skip_notification = TRUE;
-          $duplicate_membership->save();
-        }
-        // If the membership does exist in the original entity, add the roles to
-        // the existing membership.
-        else {
-          $original_membership = $memberships[$key];
-          $duplicate_membership_roles = $duplicate_memberships[$key]->getRoles();
-          $original_membership_roles = $original_membership->getRoles();
-          if (array_diff($original_membership_roles, $duplicate_membership_roles)) {
-            $original_membership->setRoles(array_merge($original_membership_roles, $duplicate_membership_roles));
-            $original_membership->skip_notification = TRUE;
-            $original_membership->save();
-          }
-        }
-      }
-    }
-  }
-}
-
-/**
  * Move content from duplicates to the original entity.
  */
 function _joinup_core_post_update_ctt_duplicates_merge_content() {

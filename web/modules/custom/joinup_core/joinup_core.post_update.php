@@ -115,10 +115,6 @@ function joinup_core_post_update_ctt_duplicates_handle_duplicates() {
   // Create the original duplicates in case they do not exist.
   _joinup_core_post_update_ctt_duplicates_create_duplicates();
 
-  // Merge in the memberships from the solutions into the original entity's
-  // list of memberships.
-  _joinup_core_post_update_ctt_duplicates_merge_memberships();
-
   // Move all content from the duplicated solutions to the original one.
   _joinup_core_post_update_ctt_duplicates_merge_content();
 
