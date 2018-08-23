@@ -22,6 +22,13 @@ use Drupal\user\UserInterface;
  * Implements hook_ENTITY_TYPE_update().
  *
  * Send a notification whenever an admin updates a user profile.
+ *
+ * @todo This is a very complicated, hard to follow and hard to maintain
+ * implementation. Basically what we need here is to move the whole logic in the
+ * form API layer and avoid using all the confusing workarounds with the storing
+ * the form ID in a service. Then we can drop also the form alter and the
+ * 'joinup_user.active_form_submit' service. Fix this in ISAICP-4698.
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4698
  */
 function joinup_user_user_update(UserInterface $account) {
   $current_user = \Drupal::currentUser()->getAccount();
@@ -302,6 +309,34 @@ function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormSta
  */
 function joinup_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'joinup_user_form_alter_validate';
+}
+
+/**
+ * Implements joinup_user_FORM_ID_alter().
+ */
+function joinup_user_form_user_register_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#submit'][] = 'joinup_user_submit_spam_guard';
+}
+
+/**
+ * Represents an additional submit callback for the user registration form.
+ *
+ * @param array $form
+ *   The form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ */
+function joinup_user_submit_spam_guard(array $form, FormStateInterface $form_state) {
+  $user_id = $form_state->getFormObject()->getEntity()->id();
+  // We reload the user entity because the one stored in the form state is not
+  // entirely formed, and it's possible to triggers errors when other modules
+  // are participating to the entity deletion.
+  $user = User::load($user_id);
+  // If the user's family and fist names are identical, this is 99.99% spam.
+  if ($user->get('field_user_family_name')->value === $user->get('field_user_first_name')->value) {
+    $user->skip_notification = TRUE;
+    $user->delete();
+  }
 }
 
 /**
