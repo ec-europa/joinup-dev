@@ -126,6 +126,8 @@ function custom_page_menu_local_actions_alter(&$local_actions) {
 
 /**
  * Implements hook_search_api_query_TAG_alter().
+ *
+ * Alters the Search API query in custom pages for the content listing field.
  */
 function custom_page_search_api_query_search_api_field_field_cp_content_listing_alter(QueryInterface &$query) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
@@ -136,8 +138,19 @@ function custom_page_search_api_query_search_api_field_field_cp_content_listing_
     return;
   }
 
-  // Show only content belonging to the same group.
-  $query->addCondition('entity_groups', [$group->id()], 'IN');
+  $field_value = $query->getOption('search_api_field item')->value;
+
+  if (!empty($field_value['show_shared'])) {
+    $or = $query
+      ->createConditionGroup('or')
+      ->addCondition('field_shared_in', [$group->id()], 'IN')
+      ->addCondition('entity_groups', [$group->id()], 'IN');
+    $query->addConditionGroup($or);
+  }
+  else {
+    // Show only content belonging to the same group.
+    $query->addCondition('entity_groups', [$group->id()], 'IN');
+  }
 
   // Remove the page itself from the results.
   $query->addCondition($entity->getEntityType()->getKey('id'), $entity->id(), '<>');
