@@ -58,6 +58,7 @@ default:
         Primary menu: '.region-primary-menu'
         SevenHeader: '.region-header'
         Table of contents: '#block-table-of-contents'
+        Table of contents outline: '#block-toc-outline'
         Unpublished content area: '.block-entity-unpublished'
       drupal:
         drupal_root: '${website.drupal.dir}'

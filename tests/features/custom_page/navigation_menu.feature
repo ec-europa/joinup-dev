@@ -335,3 +335,110 @@ Feature: Navigation menu for custom pages
       | Bodypack           | Frameless          |
       | Internal frame     | Frameless          |
       | External frame     |                    |
+
+  Scenario: Show appropriate menu entries in the table of contents outline.
+    Given the following collections:
+      | title                     | state     |
+      | Table of contents outline | validated |
+    And custom_page content:
+      | title      | collection                | status      |
+      | TOCO 1     | Table of contents outline | published   |
+      | TOCO 2     | Table of contents outline | published   |
+      | TOCO 1-1   | Table of contents outline | published   |
+      | TOCO 1-1-1 | Table of contents outline | published   |
+      | TOCO 2-1   | Table of contents outline | published   |
+      | TOCO 1-1-2 | Table of contents outline | published   |
+      | TOCO 1-2   | Table of contents outline | published   |
+      | TOCO 2-1-2 | Table of contents outline | unpublished |
+      | TOCO 2-1-1 | Table of contents outline | published   |
+    And the following custom page menu structure:
+      | title      | parent   | weight |
+      | TOCO 1-2   | TOCO 1   | 2      |
+      | TOCO 1-1-2 | TOCO 1-1 | 2      |
+      | TOCO 2-1   | TOCO 2   | 1      |
+      | TOCO 1     |          | 1      |
+      | TOCO 1-1-1 | TOCO 1-1 | 1      |
+      | TOCO 2     |          | 2      |
+      | TOCO 2-1-2 | TOCO 2-1 | 1      |
+      | TOCO 1-1   | TOCO 1   | 1      |
+      | TOCO 2-1-1 | TOCO 2-1 | 1      |
+
+    When I am logged in as a member of the "Table of contents outline" collection
+    And I go to the homepage of the "Table of contents outline" collection
+    Then I should not see the "Table of contents outline" region
+
+    When I visit the "TOCO 1" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"
+    # This link does not exist because the outline does not contain connection to the default links just as TOC does.
+    And I should not see the link "About" in the "Table of contents outline"
+
+    # Navigate through the outline. Most links are asserted by clicking on them.
+    When I click "TOCO 1-1" in the "Table of contents outline"
+    Then I should see the link "TOCO 1" in the "Table of contents outline"
+    And I should see the link "TOCO 1-1-1" in the "Table of contents outline"
+    And I should see the link "Up" in the "Table of contents outline"
+    And I click "TOCO 1-1-1" in the "Table of contents outline"
+    And I click "TOCO 1-1-2" in the "Table of contents outline"
+    And I click "TOCO 1-2" in the "Table of contents outline"
+    And I click "TOCO 2" in the "Table of contents outline"
+    And I click "TOCO 2-1" in the "Table of contents outline"
+    And I click "TOCO 2-1-1" in the "Table of contents outline"
+    Then I should not see the link "TOCO 2-1-2" in the "Table of contents outline"
+    # Navigate backwards.
+    And I click "TOCO 2-1" in the "Table of contents outline"
+    And I click "TOCO 2" in the "Table of contents outline"
+    And I click "TOCO 1-2" in the "Table of contents outline"
+    And I click "TOCO 1-1-2" in the "Table of contents outline"
+    And I click "TOCO 1-1-1" in the "Table of contents outline"
+    And I click "TOCO 1-1" in the "Table of contents outline"
+    And I click "TOCO 1" in the "Table of contents outline"
+    # Navigate through the "Up" link.
+    When I visit the "TOCO 2" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"
+    When I visit the "TOCO 1-2" custom page
+    And I click "Up" in the "Table of contents outline"
+    Then I should see the heading "TOCO 1"
+    When I visit the "TOCO 1-1-2" custom page
+    And I click "Up" in the "Table of contents outline"
+    Then I should see the heading "TOCO 1-1"
+
+    # Verify that the menu only shows on the canonical route.
+    When I am logged in as a moderator
+    And I visit the "TOCO 1" custom page
+    And I click "Edit" in the "Entity actions" region
+    Then I should not see the "Table of contents outline" region
+
+    When I disable "TOCO 1-1-2" in the navigation menu of the "Table of contents outline" collection
+    And I visit the "TOCO 1-1-1" custom page
+    Then I should not see the link "TOCO 1-1-2" in the "Table of contents outline"
+
+  @javascript
+  Scenario: Assert cache invalidation of the TOC outline.
+    Given the following collections:
+      | title                            | state     |
+      | Table of contents outline cached | validated |
+    And custom_page content:
+      | title           | collection                       | status    |
+      | TOCO cached 1   | Table of contents outline cached | published |
+      | TOCO cached 1-1 | Table of contents outline cached | published |
+    And the following custom page menu structure:
+      | title           | parent        | weight |
+      | TOCO cached 1   |               | 1      |
+      | TOCO cached 1-1 | TOCO cached 1 | 1      |
+    When I visit the "TOCO cached 1-1" custom page
+    Then I should see the link "Up" in the "Table of contents outline"
+
+    When I am logged in as a facilitator of the "Table of contents outline cached" collection
+    And I go to the "Table of contents outline cached" collection
+    And I click the contextual link "Edit menu" in the "Left sidebar" region
+    When I drag the "TOCO cached 1-1" table row to the left
+    Then the menu table should be:
+      | title           | parent |
+      | Overview        |        |
+      | Members         |        |
+      | About           |        |
+      | TOCO cached 1   |        |
+      | TOCO cached 1-1 |        |
+    When I press "Save"
+    And I visit the "TOCO cached 1-1" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"
