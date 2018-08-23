@@ -183,7 +183,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = Rdf::load('http://asset', ['staging']);
 
-    // Check that incoming values are preseved over local ones.
+    // Check that incoming values are preserved over local ones.
     $this->assertEquals('Asset', $solution->label());
     $this->assertEquals('This is an Asset.', $solution->get('field_is_description')->value);
     // Ensure that when an incoming value is empty, the local value gets emptied
