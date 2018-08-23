@@ -11,7 +11,7 @@ field_name: field_visit_count
 entity_type: node
 bundle: discussion
 label: 'Visit count'
-description: 'The number of visits this page has had. This is updated periodically with data from the Piwik web analytics platform.'
+description: 'The number of visits this page has had. This is updated periodically with data from the Matomo web analytics platform.'
 required: false
 translatable: false
 default_value: {  }

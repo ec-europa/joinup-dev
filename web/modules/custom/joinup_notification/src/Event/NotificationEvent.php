@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\Event;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -25,6 +27,13 @@ class NotificationEvent extends Event {
   protected $entity;
 
   /**
+   * If the event succeeded.
+   *
+   * @var bool
+   */
+  protected $success = TRUE;
+
+  /**
    * Constructs a notification event object.
    *
    * @param string $operation
@@ -32,7 +41,7 @@ class NotificationEvent extends Event {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity object.
    */
-  public function __construct($operation, EntityInterface $entity) {
+  public function __construct(string $operation, EntityInterface $entity) {
     $this->operation = $operation;
     $this->entity = $entity;
   }
@@ -43,7 +52,7 @@ class NotificationEvent extends Event {
    * @return string
    *   The operation string.
    */
-  public function getOperation() {
+  public function getOperation(): string {
     return $this->operation;
   }
 
@@ -52,9 +61,12 @@ class NotificationEvent extends Event {
    *
    * @param string $operation
    *   The operation string.
+   *
+   * @return $this
    */
-  public function setOperation($operation) {
+  public function setOperation($operation): self {
     $this->operation = $operation;
+    return $this;
   }
 
   /**
@@ -63,7 +75,7 @@ class NotificationEvent extends Event {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The entity object.
    */
-  public function getEntity() {
+  public function getEntity(): EntityInterface {
     return $this->entity;
   }
 
@@ -72,9 +84,35 @@ class NotificationEvent extends Event {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity object.
+   *
+   * @return $this
    */
-  public function setEntity(EntityInterface $entity) {
+  public function setEntity(EntityInterface $entity): self {
     $this->entity = $entity;
+    return $this;
+  }
+
+  /**
+   * Sets the success flag.
+   *
+   * @param bool $success
+   *   If the event succeeded.
+   *
+   * @return $this
+   */
+  public function setSuccess(bool $success): self {
+    $this->success = $success;
+    return $this;
+  }
+
+  /**
+   * Tells if the operation succeeded.
+   *
+   * @return bool
+   *   If the event succeeded.
+   */
+  public function isSuccessful(): bool {
+    return $this->success;
   }
 
 }
