@@ -5,7 +5,7 @@ namespace Drupal\adms_validator\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 use EasyRdf\Sparql\Result;
@@ -33,7 +33,7 @@ class AdmsValidatorForm extends FormBase {
   /**
    * The Sparql endpoint.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparqlEndpoint;
 
@@ -49,10 +49,10 @@ class AdmsValidatorForm extends FormBase {
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint
    *   The Sparql endpoint.
    */
-  public function __construct(Connection $sparql_endpoint) {
+  public function __construct(ConnectionInterface $sparql_endpoint) {
     $this->sparqlEndpoint = $sparql_endpoint;
   }
 

@@ -329,7 +329,7 @@ function joinup_core_entity_type_alter(array &$entity_types) {
  * get cached in the 'cache_entity' bin, avoiding performance issues.
  */
 function joinup_core_taxonomy_term_storage_load(array $terms) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
 
   $query = <<<QUERY
