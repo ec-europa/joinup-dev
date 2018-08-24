@@ -1,0 +1,394 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/node\/701221?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/tallinn_report"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/704183?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/uid": [
+            {
+                "href": "http:\/\/default\/user\/704183?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/og_audience": [
+            {
+                "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": 701221
+        }
+    ],
+    "uuid": [
+        {
+            "value": "e2e102b7-3fec-4366-9d79-d0f0e733d097"
+        }
+    ],
+    "vid": [
+        {
+            "value": 21780
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "tallinn_report"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2018-06-24T21:42:19+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/704183?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "dd1afd82-cb79-47d9-948f-6cd5907de766"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/704183?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "dd1afd82-cb79-47d9-948f-6cd5907de766"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/og_audience": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "title": [
+        {
+            "value": "Austria",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-30T19:21:22+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-06-24T21:42:19+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "sticky": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "report": [
+        {
+            "uri": "internal:\/contact?category=report&uri=\/node\/701221",
+            "title": "Report abusive content",
+            "options": []
+        }
+    ],
+    "field_tallinn_action_1": [
+        {
+            "status": "completed",
+            "value": "<p>The Austrian E-Government Act explicitly foresees&nbsp;a right for citizens and business to interact digitally with public Administration on federal level. The respective Provision (\u00a71a) will enter into force on 1 January 2020. At the same time, federal authorities are obliged to offer such way of digital interaction.<\/p>\r\n\r\n<p>For checking&nbsp;the \"digital compliance\" of new legal provisions, a Guideline has been developed:<\/p>\r\n\r\n<p><a href=\"http:\/\/archiv.bundeskanzleramt.at\/DocView.axd?CobId=47411\">http:\/\/archiv.bundeskanzleramt.at\/DocView.axd?CobId=47411<\/a>&nbsp;(currently, an update process is undertaken)<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.ris.bka.gv.at\/GeltendeFassung.wxe?Abfrage=Bundesnormen&Gesetzesnummer=20003230&FassungVom=2020-01-01",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_10": [
+        {
+            "status": "in_progress",
+            "value": "<p>The conducting of the directly applicable eIDAS Regulation required an adjustment of the domestic laws that currently regulate the topics of electronic identification (E-Government Act (E-GovG) and\/or electronic signatures (SigG), whereby a new signature and trust service law (SVG) was issued in place of the SigG that has been repealed.<\/p>\r\n\r\n<p>Digital Services requiring high Quality authenticatoin generally use the open source building blocks which have been vreated to easily integrate the AT eID usage into Services. These open source building blocks are currently adapted to also integrate the notified eID means under eIDAS.<\/p>\r\n\r\n<p>With the amendment of the E-Government Act, a further development of the AT eID (so-called Citizen Card concept) has been enabled. As soon as the technical implementation steps of this adapted eID allow for it, the eIDAS&nbsp;notification of&nbsp; the AT eID will be made.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "http:\/\/www.buergerkarte.at\/en\/index.html",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_11": [
+        {
+            "status": "in_progress",
+            "value": "<p>The conducting of the directly applicable eIDAS Regulation required an adjustment of the domestic laws that currently regulate the topics of electronic identification (E-GovG) and\/or electronic signatures (SigG), whereby a new signature and trust service law (SVG) was issued in place of the SigG that has been repealed.<\/p>\r\n\r\n<p>Qualified signatures are part of the AT eID which means that the uptake and usage is relatively high (more than on Million active users in AT). Authorities are using eSeals when issuing authentic electronic documents. Also the\u00b4official publication of the AT law is done using eSeals. Websites generally use https and as soon as the most common Browsers&nbsp;allow for (recognize them automatically), Website&nbsp;authentication using eIDAS compliant certificates will be state of the art in AT.&nbsp;<\/p>\r\n",
+            "format": "content_editor",
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_12": [
+        {
+            "status": "completed",
+            "value": "<p>The Austrian eID is is already in use in the private sector. The open source modules described above are generally available also for the private sector. The AT concept already implements and supports mandates and delegations.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/joinup.ec.europa.eu\/collection\/e-government-innovation-center-egiz",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_13": [
+        {
+            "status": "in_progress",
+            "value": "<p>In 2015, the so-called Cyber Security Plattform has been set up in order to coordinate and link the main stakeholder in the area of cyber security.&nbsp;See the link below for extensive Information.<\/p>\r\n\r\n<p>The implementation of the NIS Directive is&nbsp;on its way.&nbsp;<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.bundeskanzleramt.gv.at\/cyber-sicherheit-plattform",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_14": [
+        {
+            "status": "in_progress",
+            "value": "<p>The Austrian public administration launched a one-stop-shop <strong>Business Service Portal called 'Unternehmensserviceportal (USP)'<\/strong>. The portal aims to serve as a single entry point for businesses to the administration. By offering information and transaction services, it intends to help businesses to fulfil their legal obligations and to reduce their administrative burdens. In accordance with the Unternehmensserviceportalgesetz (USPG), the Federal Ministry of Finance assigned the Federal Computing Centre [Bundesrechenzentrum&nbsp;GmbH] with the task of setting up and operating&nbsp;USP.gv.at. Based on business situations,&nbsp;e.g.&nbsp;Starting up [Gr\u00fcndung], the&nbsp;USP&nbsp;provides neutral information on an inter-administrative level. Businesses which are registered with the&nbsp;USP&nbsp;are able to conduct transactions with government authorities by using applications such as FinanzOnline or&nbsp;ELDA&nbsp;via the&nbsp;USP. Furthermore, user management is available for registered businesses.<\/p>\r\n\r\n<p>The citizen portal <strong>HELP.gv.at <\/strong>offers various possibilites managing own personal data. Steps beyond this service have already been started.<\/p>\r\n\r\n<p><strong>oesterreich.gv.a<\/strong>t will offer an even wider range of personal data management. First results of oesterreich.gv.at are expected to be seen in 2018. There, also the creatin of a kind of \"Cockpit\" is envisaged, where the user should be enabled to see his data used by public authorities (using his eID).&nbsp;<\/p>\r\n\r\n<p>&nbsp;<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.USP.gv.at",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_15": [
+        {
+            "status": "completed",
+            "value": "<p>With <strong>data.gv.at <\/strong>an internationally prize-winning&nbsp;central platform for open, non-personal and non-infrastructure-critical administration data has been created in Austria which aims to make it possible for users to find the required data and applications quickly and easily via a single electronic point of contact. The portal, as a central \u201cAustria\u201d catalogue, brings together the meta data of the decentralised data catalogues in Austria. The applications&nbsp;that have been created up to now on the basis of these data records can be retrieved directly on the platform.<\/p>\r\n\r\n<p>A study has been conducted in 2017 on the potentials of further opening data sets. This study is available at <a href=\"https:\/\/www.data.gv.at\/katalog\/dataset\/05f6c1e4-ae72-45a5-b249-105212463591\/resource\/d0380f08-a842-4bd1-ac5a-4559c2079121\/download\/171024ogd-berichtweb.pdf\">https:\/\/www.data.gv.at\/katalog\/dataset\/05f6c1e4-ae72-45a5-b249-105212463591\/resource\/d0380f08-a842-4bd1-ac5a-4559c2079121\/download\/171024ogd-berichtweb.pdf<\/a><\/p>\r\n\r\n<p>The Open Data Portal of Austria&nbsp;is the equivalent of <strong>data.gv.at <\/strong>for the open non-government data of Austria. It offers the opportunity for business, science, culture, NGOs and civilian society to provide all users with non-personal data.&nbsp;With the Portal <a href=\"http:\/\/www.data.gv.at\">www.data.gv.at<\/a>&nbsp;AT is promoting&nbsp;to make public data available as open data.&nbsp;<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.data.gv.at",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_16": [
+        {
+            "status": "completed",
+            "value": "<p>\"No document may be lost, either today or tomorrow, and not in a hundred years either.\" After appropriate preparation, this basic principle is followed by the Digital Archive Austria - a storage system at two locations and a software based on the Open Archival Information System (OAIS) reference model.<\/p>\r\n\r\n<p>The comprehensive use of the electronic file system in the federal administration also requires professional archiving. According to the Federal Archive Act, the Austrian State Archive is not only responsible for the orderly selection, takeover and storage of the electronic original file but also for the long-term (=permanent) legibility of the data. This is ensured by the setting up of a storage system, the Digital Archive Austria, and the corresponding software. In the interest of cost efficiency, a general licence was procured by the Federal Chancellery which makes it possible for all Austrian provinces, cities, municipalities and other public bodies to use this archive solution without their own tendering but with their own client.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.federal-chancellery.gv.at\/digital-archive",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_17": [
+        {
+            "status": "in_progress",
+            "value": "<p>Austria sees the re-use of emerging joint solutions as a constant process and in that sense still in progress. As a good example we introduced the Austrian Interoperability Framework. The purpose of the Austrian Interoperability Framework (AIF) is:<\/p>\r\n\r\n<ul>\r\n\t<li>to promote and support the delivery of Austrian public services by fostering cross-border, cross-organisation and cross-sector interoperability;<\/li>\r\n\t<li>to guide public administrations in their work to provide Austrian public services to businesses and citizens;<\/li>\r\n\t<li>to complement and tie together the various Organisational Interoperability Frameworks (OIFs) at Austrian level. This non-technical document addresses all those involved in defining, designing and implementing Austrian public services. The AIF should be taken into account when making decisions on Austrian public services that support the implementation of Austrian policy initiatives. The AIF should also be considered when establishing public services that in the future may be reused as part of Austrian public services. The AIF contributes to the better functioning of the internal market by increasing interoperability among Austrian public administrations<\/li>\r\n<\/ul>\r\n\r\n<p>Another good example is the early usage of the CEF eIDAS Nodes.&nbsp;<a href=\"https:\/\/ec.europa.eu\/cefdigital\/wiki\/x\/KABfAQ\" rel=\"nofollow\">CEF eID<\/a>&nbsp;announced in January 2017 that the Netherlands, Austria and Germany have managed to connect their identification and authentication systems via their (technically&nbsp;compliant) eIDAS nodes in production, making it possible to use Austrian or German eID to access the Dutch national eID infrastructure.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.ref.gv.at\/AG-II-Architektur-AIF-1-0-0.3272.0.html",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_18": [
+        {
+            "status": "in_progress",
+            "value": "<p>As a principle open standards apply in Austrian solutions wherever possible. e.g. In this manner the card-based citizen card and the mobile phone signature are part of a security infrastructure that is not only available in the communication between administration and citizens. By using the corresponding, freely available Open Source modules, companies can also use its online services and make communication with their customers more secure.<\/p>\r\n\r\n<p>The AT open source module are available on the Joinup platform.<\/p>\r\n\r\n<p>Overview: <a href=\"http:\/\/www.egiz.gv.at\/en\/e-government\/8-joinup\/\">http:\/\/www.egiz.gv.at\/en\/e-government\/8-joinup\/<\/a><\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.digital.austria.gv.at\/modules-for-online-applications",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_19": [
+        {
+            "status": "completed",
+            "value": "<p>Austria offers a wide spread of services coming from the public sector to businesses and other institutions. Two internationally recognized solutions are eID (Handy-Signatur and B\u00fcrgerkarte) and the electronic delivery (E-Zustellung).<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.bmdw.gv.at\/Digitalisierung\/ElektronischeZustellung\/Seiten\/default.aspx",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_2": [
+        {
+            "status": "completed",
+            "value": "<p>A cross-sector working group from federal government, provinces, cities and local communities already carried out the following evaluation with the following insight:<\/p>\r\n\r\n<p>Improvement in the quality of the registers is a central theme, since only valid data can promote their use in electronic procedures. A core register needs to be defined for natural and legal persons with the necessary attributes and optimal processes for entering and updating the data. Cleaning up, merging and synchronising registers should be drawn up on this basis. Updates must be made to be required by law to ensure that the register basis is kept current. Wherever data privacy allows, the transmission of data must be made legal and automated queries must be made possible. Standardised technical interfaces need to be created to be used for all registers. With the creation of these kinds of automated mechanisms, it should be a duty of the authorities to support queries to the register. This would remove the need for businesses and citizens to submit information which is already saved in central registers (e.g., Central Register of Residents). Since personal information in particular plays a central role for optimisation for many different procedures, implementing a Central Register of Civil Status (including Births, Marriages and Deaths) should be carried out quickly. This Central Register of Births, Marriages and Deaths would be the key to an optimal procedure flow with the focus on \"one-stop\".<\/p>\r\n\r\n<p>The evaluation has since formed the basis for a number of specific implementation measures, which contributes to a gradual improvement in the data inventory kept by the administration. Of pivotal importance in this context is particularly the register cores mentioned at the beginning for natural and non-natural persons whose functionality is firstly provided by the central civil status and nationality register (for natural persons) and secondly by the business register (for non-natural persons).<\/p>\r\n\r\n<p>The AT E-Government Act contains an explicit Provision (\u00a717 (2)) which foresees the following:<\/p>\r\n\r\n<p>If authorities must determine the accuracy of data and the data is contained in a electronic register of public sector Controllers and the data subject has consented to the acquisition of the data or&nbsp;such acquisition through official channels is authorised by law, then authorities shall acquire the data themselves via electronic communications to the extent this is necessary. The authorities are obliged&nbsp;to advise the data subject\/cititzen of the possibility of consenting. As a consequence, the data acquisition shall replace the presentation of proof of the data by the parties or persons involved.<\/p>\r\n\r\n<p>&nbsp;<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.ris.bka.gv.at\/Dokument.wxe?ResultFunctionToken=2233db89-53d3-468c-97ef-bb1abdc0c3e1&Position=1&Abfrage=Bundesnormen&Kundmachungsorgan=&Index=&Titel=e-govg&Gesetzesnummer=&VonArtikel=&BisArtikel=&VonParagraf=&BisParagraf=&VonAnlage=&BisAnlage=&Typ=&Kundmachungsnummer=&Unterzeichnungsdatum=&FassungVom=24.06.2018&VonInkrafttretedatum=&BisInkrafttretedatum=&VonAusserkrafttretedatum=&BisAusserkrafttretedatum=&NormabschnittnummerKombination=Und&ImRisSeitVonDatum=&ImRisSeitBisDatum=&ImRisSeit=Undefined&ResultPageSize=100&Suchworte=&Dokumentnummer=NOR40203366",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_20": [
+        {
+            "status": "completed",
+            "value": "<p>Bringing eGovernment as a crucial skill among civil public servants has already turned into a tradition in Austria. The academy for civil servants (Verwaltungsakademie) offers various trainings in the field of eGovernment and is going beyond that by offering ICT trainings for civil exams (that is&nbsp;compulsory for most federal civil servants).<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.oeffentlicherdienst.gv.at\/vab\/seminarprogramm\/in_verwaltung_arbeiten\/egovernment_2018.html",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_21": [
+        {
+            "status": "completed",
+            "value": "<p>A Big Data position paper was drawn up within the framework of a BLSG project group and this paper has been available as a download since July 2016 on the reference server (www.ref.gv.at) and expresses the common viewpoint of public administration on the topic of Big Data. The position paper provides basic information for strategic decisions. A&nbsp;particular focus here was placed on the structural, legal, economic and technical aspects of Big Data in the administrative environment. The paper is supplemented by a best practice section that shows some examples of successfully implemented Big Data projects from administration and business.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.ref.gv.at\/Veroeffentlichte-Informationen.3368.0.html",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_22": [
+        {
+            "status": "completed",
+            "value": "<p>Austria has a long tradition of sharing and developing good eGovernment practices at all levels of government.&nbsp;The eGovernment reference server (https:\/\/www.ref.gv.at) was developed for improved exchange of information in basic issues of eGovernment in Austria. Proposals from the working groups drawn up between regional authorities and the resulting conventions are published in the form of \u201cRecommendations\u201d and \u201cInformation\u201d at the reference server.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.ref.gv.at\/",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_23": [
+        {
+            "status": "completed",
+            "value": "<p>The new federal government emphasizes digitalization.&nbsp;Competences have been bundled in new Federal Ministry for Digital and Economic Affairs. The role of the <strong>Chief Digital Officers (CDO)<\/strong>&nbsp;is newly established. The CDOs are responsible for the coordination of digitalization actions and the development of the new digitalization strategy. As an instrument of support the new Federal Government decided upon the implementation of an <strong>Agency for Digitalization<\/strong> that supports the CDOs and advances digitalization in Austria.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.bundeskanzleramt.gv.at\/documents\/131008\/877075\/21_13+MRV.pdf\/c49ce9c2-0142-4667-bc46-1727f6d7c4b2",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_24": [
+        {
+            "status": "completed",
+            "value": "<p>The eGovernment Innovation Centre (eGovernment Innovationszentrum, or EGIZ) was established at the same time as the platform Digital Austria. The initiative from the Federal Chancellery and the Graz University of Technology supports the Chancellery in the development of a federal ICT strategy and carries out technical research on innovations in the field of eGovernment. The main areas of focus of the EGIZ include various topics on IT security, continued education and information, strategic and technical consulting for public administration and participating in international collaborative projects. Since 2006, the EGIZ has been working in close cooperation with the Centre for eGovernment at the Danube University in Krems in the areas of edemocracy and eGovernment education and training.<\/p>\r\n\r\n<p>The Work Programme of the new Government foresees the creation of regulatory sandboxes for blockchain Technology and artificial intelligence.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.bundeskanzleramt.gv.at\/documents\/131008\/569203\/Regierungsprogramm_2017%e2%80%932022.pdf\/b2fe3f65-5a04-47b6-913d-2fe512ff4ce6",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_25": [
+        {
+            "status": "completed",
+            "value": "<p>The Austrian Federal Computing Centre (Bundesrechenzentrum or BRZ) is the austrian market-leading technology partner of the Austrian public sector, using state-of-the-art technology for the development of cutting-edge solutions in the field of administration. We offer our customers innovative, tailor-made products that comply with the most stringent security standards.<\/p>\r\n\r\n<p>Within the framework of the strategic initiatives, the BRZ continuously strive to keep abreast of innovative developments on the IT market. The key issue for the BRZ is how technologies such as big data, cloud computing, mobility, blockchain, artificial intelligence, etc. can be used to drive developments in the administrative field.&nbsp;Nowadays European cooperation is a prerequisite for state-of-the-art e-government. The European integration also targets the Digital Single Market. Collaboration at EU level is therefore essential to provide integrated services. The BRZ is co-founder of Euritas - European Association of Public IT Service Providers.<\/p>\r\n\r\n<p>Agile development is key for development of new comprehensive Solutions such as the new platform <a href=\"http:\/\/www.oesterreich.gv.at\">www.oesterreich.gv.at<\/a><\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.brz.gv.at\/en\/",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_3": [
+        {
+            "status": "in_progress",
+            "value": "<p>Fit4Internet is an initiative by the federal government rising digital expertise of citizens as the main goal. Adressing young people, senior citizens and middle aged employess, three focus groups have been identified for this initiative as the&nbsp;starting Point.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.bundeskanzleramt.gv.at\/documents\/131008\/877075\/21_11_mrv.pdf\/b7dd55ca-370c-4fa6-a8a6-70ead1783dc5",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_4": [
+        {
+            "status": "in_progress",
+            "value": "<p>Austria is&nbsp;currently developing the platform \u201coesterreich.gv.at\u201d. With this platform&nbsp;Austria offers a citizen- and enterprise-centered electronic access to a range of information und gradually bundle the most important administrative procedures on the smartphone.<\/p>\r\n\r\n<p>Implementation measures concerning the Web Accessibility Directive are running.<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.oesterreich.gv.at\/",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_5": [
+        {
+            "status": "in_progress",
+            "value": "<p>Austria is part of eJustice projects opening up registers cross-border. E.g. As part of a transparent eGovernment approach the Austrian land register can already&nbsp;be accessed online.<\/p>\r\n\r\n<p>With the Portal <a href=\"http:\/\/www.data.gv.at\">www.data.gv.at<\/a>&nbsp;AT is promoting&nbsp;to make public data available as open data.&nbsp;<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/e-justice.europa.eu\/content_land_registers_in_member_states-109-at-en.do?member=1",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_6": [
+        {
+            "status": "completed",
+            "value": "<p>A permanent improvement of eGovernment services offers good user experience for citizens and businesses.<\/p>\r\n\r\n<p>E.g. Since the end of July 2017 the Business Service Portal ('Unternehmensserviceportal') has provided information and certain transaction services to help people set up new businesses. It builds on the Austrian public&nbsp; administration's one-stop-shop for business and serves as a single entry point for businesses to the administration. All administrative actions required to start a one-man business can be conducted via this portal (eGr\u00fcndung). The transaction is free of charge, fast and requires electronic signature (such as the mobile phone signature). Given that one-man companies are the most used form of business in Austria, this will further facilitate the start-up process and reduce the administrative burden for businesses.<\/p>\r\n\r\n<p>Further activities for broad application of OOP are on their way.<\/p>\r\n\r\n<p>Generally, AT introduced a legal Provision to re-use public Register data (OOP) - see \u00a717 (2) E-Government Act (please refer for more information to what is described and linked above under Action 2)<\/p>\r\n",
+            "format": "content_editor",
+            "uri": "https:\/\/www.usp.gv.at\/Portal.Node\/usp\/public\/content\/gruendung\/egruendung\/269403.html",
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_7": [
+        {
+            "status": "completed",
+            "value": "<p>A cross-sector working group from federal government, provinces, cities and local communities already carried out the following evaluation with the following insight:<\/p>\r\n\r\n<p>Improvement in the quality of the registers is a central theme, since only valid data can promote their use in electronic procedures. A core register needs to be defined for natural and legal persons with the necessary attributes and optimal processes for entering and updating the data. Cleaning up, merging and synchronising registers should be drawn up on this basis. Updates must be made to be required by law to ensure that the register basis is kept current. Wherever data privacy allows, the transmission of data must be made legal and automated queries must be made possible. Standardised technical interfaces need to be created to be used for all registers. With the creation of these kinds of automated mechanisms, it should be a duty of the authorities to support queries to the register. This would remove the need for businesses and citizens to submit information which is already saved in central registers (e.g., Central Register of Residents). Since personal information in particular plays a central role for optimisation for many different procedures, implementing a Central Register of Civil Status (including Births, Marriages and Deaths) should be carried out quickly. This Central Register of Births, Marriages and Deaths would be the key to an optimal procedure flow with the focus on \"one-stop\".<\/p>\r\n\r\n<p>The evaluation has since formed the basis for a number of specific implementation measures, which contributes to a gradual improvement in the data inventory kept by the administration. Of pivotal importance in this context is particularly the register cores mentioned at the beginning for natural and non-natural persons whose functionality is firstly provided by the central civil status and nationality register (for natural persons) and secondly by the business register (for non-natural persons).<\/p>\r\n",
+            "format": "content_editor",
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_8": [
+        {
+            "status": "completed",
+            "value": "<p>A cross-sector working group from federal government, provinces, cities and local communities already carried out the following evaluation with the following insight:<\/p>\r\n\r\n<p>Improvement in the quality of the registers is a central theme, since only valid data can promote their use in electronic procedures. A core register needs to be defined for natural and legal persons with the necessary attributes and optimal processes for entering and updating the data. Cleaning up, merging and synchronising registers should be drawn up on this basis. Updates must be made to be required by law to ensure that the register basis is kept current. Wherever data privacy allows, the transmission of data must be made legal and automated queries must be made possible. Standardised technical interfaces need to be created to be used for all registers. With the creation of these kinds of automated mechanisms, it should be a duty of the authorities to support queries to the register. This would remove the need for businesses and citizens to submit information which is already saved in central registers (e.g., Central Register of Residents). Since personal information in particular plays a central role for optimisation for many different procedures, implementing a Central Register of Civil Status (including Births, Marriages and Deaths) should be carried out quickly. This Central Register of Births, Marriages and Deaths would be the key to an optimal procedure flow with the focus on \"one-stop\".<\/p>\r\n\r\n<p>The evaluation has since formed the basis for a number of specific implementation measures, which contributes to a gradual improvement in the data inventory kept by the administration. Of pivotal importance in this context is particularly the register cores mentioned at the beginning for natural and non-natural persons whose functionality is firstly provided by the central civil status and nationality register (for natural persons) and secondly by the business register (for non-natural persons).<\/p>\r\n",
+            "format": "content_editor",
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_9": [
+        {
+            "status": "completed",
+            "value": "<p>A cross-sector working group from federal government, provinces, cities and local communities already carried out the following evaluation with the following insight:<\/p>\r\n\r\n<p>Improvement in the quality of the registers is a central theme, since only valid data can promote their use in electronic procedures. A core register needs to be defined for natural and legal persons with the necessary attributes and optimal processes for entering and updating the data. Cleaning up, merging and synchronising registers should be drawn up on this basis. Updates must be made to be required by law to ensure that the register basis is kept current. Wherever data privacy allows, the transmission of data must be made legal and automated queries must be made possible. Standardised technical interfaces need to be created to be used for all registers. With the creation of these kinds of automated mechanisms, it should be a duty of the authorities to support queries to the register. This would remove the need for businesses and citizens to submit information which is already saved in central registers (e.g., Central Register of Residents). Since personal information in particular plays a central role for optimisation for many different procedures, implementing a Central Register of Civil Status (including Births, Marriages and Deaths) should be carried out quickly. This Central Register of Births, Marriages and Deaths would be the key to an optimal procedure flow with the focus on \"one-stop\".<\/p>\r\n\r\n<p>The evaluation has since formed the basis for a number of specific implementation measures, which contributes to a gradual improvement in the data inventory kept by the administration. Of pivotal importance in this context is particularly the register cores mentioned at the beginning for natural and non-natural persons whose functionality is firstly provided by the central civil status and nationality register (for natural persons) and secondly by the business register (for non-natural persons).<\/p>\r\n",
+            "format": "content_editor",
+            "uri": null,
+            "lang": "en"
+        }
+    ]
+}

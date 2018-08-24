@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b8a51e371e256e8c327874e5e11c343",
+    "content-hash": "f1040cc3515f3a3ecf7653b2044a9ff9",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4462,7 +4462,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha8",
-                    "datestamp": "1533737284",
+                    "datestamp": "1535029084",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5711,6 +5711,32 @@
                 }
             ],
             "time": "2018-08-01T11:20:25+00:00"
+        },
+        {
+            "name": "ec-europa/joinup-tallinn-dashboard",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
+                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/9de48819dfbc679825347bf68f6fcaa0e372f494",
+                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494",
+                "shasum": ""
+            },
+            "type": "drupal-library",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Javascript application that shows teh Tallinn Agreement dashboard.",
+            "homepage": "https://github.com/ec-europa/joinup-tallinn-dashboard",
+            "support": {
+                "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
+                "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
+            },
+            "time": "2018-08-24T13:04:52+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -13109,6 +13135,7 @@
         "drupal/view_unpublished": 15,
         "drupal/views_data_export": 20,
         "ec-europa/infra": 20,
+        "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "behat/mink-selenium2-driver": 20,

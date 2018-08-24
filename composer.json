@@ -65,6 +65,7 @@
         "drush/drush": "^9.0.0",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
+        "ec-europa/joinup-tallinn-dashboard": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "2.1.0",
         "jacklmoore/autosize": "dev-master",
@@ -139,6 +140,7 @@
     },
     "extra": {
         "installer-paths": {
+            "web/modules/custom/joinup_communities/tallinn/lib": ["ec-europa/joinup-tallinn-dashboard"],
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
@@ -236,6 +238,14 @@
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/redirect.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/rdf_entity.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
         },
         {
             "type": "vcs",
