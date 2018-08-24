@@ -71,6 +71,19 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Visits a taxonomy term page.
+   *
+   * @param string $name
+   *   The taxonomy term name.
+   *
+   * @Given I go to the :name (taxonomy )term( page)
+   */
+  public function visitTaxonomyTermPage(string $name) {
+    $term = static::getEntityByLabel('taxonomy_term', $name);
+    $this->visitPath($term->toUrl()->toString());
+  }
+
+  /**
    * Asserts that a list of fields are disabled.
    *
    * @param string $fields
@@ -120,19 +133,6 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
     if (!empty($found)) {
       throw new Exception('The following fields were disabled: ' . implode(', ', $found));
     }
-  }
-
-  /**
-   * Visits a taxonomy term page.
-   *
-   * @param string $name
-   *   The taxonomy term name.
-   *
-   * @Given I go to the :name (taxonomy )term( page)
-   */
-  public function visitTaxonomyTermPage(string $name) {
-    $term = static::getEntityByLabel('taxonomy_term', $name);
-    $this->visitPath($term->toUrl()->toString());
   }
 
 }

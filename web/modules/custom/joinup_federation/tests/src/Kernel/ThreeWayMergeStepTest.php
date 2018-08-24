@@ -110,6 +110,26 @@ class ThreeWayMergeStepTest extends StepTestBase {
         ],
       ],
     ])->save();
+    FieldStorageConfig::create([
+      'type' => 'text_long',
+      'entity_type' => 'rdf_entity',
+      'field_name' => 'field_is_textfield',
+    ])->setThirdPartySetting('rdf_entity', 'mapping', [
+      'value' => [
+        'predicate' => 'http://joinup.eu/not-defined-in-schema/textfield',
+        'format' => 't_literal',
+      ],
+      'format' => [
+        'predicate' => '',
+        'format' => '',
+      ],
+    ])->save();
+    FieldConfig::create([
+      'entity_type' => 'rdf_entity',
+      'bundle' => 'solution',
+      'field_name' => 'field_is_textfield',
+      'label' => 'Not defined description',
+    ])->save();
 
     $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../solution/config/install/rdf_entity.mapping.rdf_entity.solution.yml'));
     RdfEntityMapping::create($mapping)->save();
@@ -136,6 +156,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'label' => 'This will be overridden',
       'field_is_description' => 'Also this...',
       'field_status' => 'http://example.com/status',
+      'field_is_textfield' => 'This value should not be empty after re-import.',
     ])->save();
     Rdf::create([
       'rid' => 'collection',
@@ -162,11 +183,15 @@ class ThreeWayMergeStepTest extends StepTestBase {
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = Rdf::load('http://asset', ['staging']);
 
-    // Check that incoming values are preseved over local ones.
+    // Check that incoming values are preserved over local ones.
     $this->assertEquals('Asset', $solution->label());
     $this->assertEquals('This is an Asset.', $solution->get('field_is_description')->value);
-    // Check that a missed incoming value is copied from the local entity.
-    $this->assertEquals('http://example.com/status', $solution->get('field_status')->target_id);
+    // Ensure that when an incoming value is empty, the local value gets emptied
+    // too e.g. related solutions.
+    $this->assertTrue($solution->get('field_status')->isEmpty());
+    // Local values persist over incoming values when the field is not defined
+    // in schema e.g. workflow status.
+    $this->assertFalse($solution->get('field_is_textfield')->isEmpty());
   }
 
   /**

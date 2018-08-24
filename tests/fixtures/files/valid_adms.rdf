@@ -141,7 +141,6 @@
         <dc:description xml:lang="en">Some description of a standalone distribution</dc:description>
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
         <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-27T18:53:57+03:00</dc:issued>
-        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-06-14T09:58:01+03:00</dc:modified>
         <dc:license rdf:resource="http://example.com/license/1"/>
         <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
         <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_standalone.zip</dcat:accessURL>
