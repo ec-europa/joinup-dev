@@ -31,16 +31,16 @@ Feature:
       | France Report  |
       | Romania Report |
 
-    # Moderators can see all reports in the Tallinn Initiative page.
-    When I click "Tallinn initiative" in the "Left sidebar" region
+    # Moderators can see all reports in the Implementation monitoring page.
+    When I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report  |
       | Romania Report |
 
-    # Facilitators can see all reports in the Tallinn Initiative page.
+    # Facilitators can see all reports in the Implementation monitoring page.
     Given I am logged in as "sherlock"
     When I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report  |
       | Romania Report |
@@ -48,14 +48,14 @@ Feature:
     # Each user can only see his report.
     Given I am logged in as "gheorghe"
     When I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | Romania Report |
     But I should not see the text "France Report"
 
     Given I am logged in as "dominique"
     When I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report |
     But I should not see the text "Romania Report"
@@ -64,13 +64,13 @@ Feature:
     # The tallinn facet should not be shown.
     Given I am an anonymous user
     When I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should not see the following facet items "Tallinn reports"
 
     # Verify that editing a report, does not put it in the last position.
     Given I am logged in as chef
     When I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report  |
       | Romania Report |
@@ -78,7 +78,7 @@ Feature:
     When I go to the "tallinn_report" content "Romania Report" edit screen
     And I press "Save"
     And I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the following tiles in the correct order:
       | France Report  |
       | Romania Report |
@@ -90,7 +90,11 @@ Feature:
     And I fill in "Authored by" with "dominique"
     When I press "Save"
     Then I should see the error message "The user dominique cannot be set as author of this report as he/she already owns 'France Report'."
-    But I fill in "Authored by" with "vasile"
+
+    # Test the same but as facilitator to verify the functionality for him as well.
+    Given I am logged in as "sherlock"
+    When I visit the tallinn_report content "Romania Report" edit screen
+    And I fill in "Authored by" with "vasile"
     When I press "Save"
     Then I should see "Tallinn report Romania Report has been updated."
     # Reports cannot be added via UI.

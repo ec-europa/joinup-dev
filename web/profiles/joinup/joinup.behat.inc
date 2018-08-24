@@ -645,7 +645,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
-        'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
         'state' => 'field_state',

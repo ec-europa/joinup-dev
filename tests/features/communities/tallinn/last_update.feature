@@ -14,7 +14,7 @@ Feature:
       | Romania Report | Tallinn Ministerial Declaration | 02-07-2018 | 02-07-2018 |
     When I am logged in as "karma"
     And I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the text "Last update: -" in the "Romania Report" tile
     And I should not see the text "02/07/2018" in the "Romania Report" tile
 
@@ -24,5 +24,5 @@ Feature:
       | Romania Report | Tallinn Ministerial Declaration | 01-07-2018 | 02-07-2018 |
     When I am logged in as "karma"
     And I go to the "Tallinn Ministerial Declaration" collection
-    And I click "Tallinn initiative" in the "Left sidebar" region
+    And I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the text "Last update: 02/07/2018" in the "Romania Report" tile

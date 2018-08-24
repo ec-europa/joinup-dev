@@ -8,7 +8,6 @@ dependencies:
     - field.storage.node.field_news_headline
     - field.storage.node.field_event_agenda
     - field.storage.node.field_location
-    - field.storage.node.field_event_adtl_address_info
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
     - field.storage.node.field_event_date
@@ -186,14 +185,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_location
-  field_event_adtl_address_info:
-    label: 'Additional address info'
-    datasource_id: 'entity:node'
-    property_path: field_event_adtl_address_info
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_event_adtl_address_info
   field_organisation:
     label: Organisation
     datasource_id: 'entity:node'
@@ -435,7 +426,6 @@ processor_settings:
       - field_news_headline
       - field_event_agenda
       - field_location
-      - field_event_adtl_address_info
       - field_scope
       - label
       - field_isr_release_notes
@@ -497,7 +487,6 @@ processor_settings:
       - field_news_headline
       - field_event_agenda
       - field_location
-      - field_event_adtl_address_info
       - field_organisation
       - field_scope
       - label
@@ -553,7 +542,6 @@ processor_settings:
       - field_news_headline
       - field_event_agenda
       - field_location
-      - field_event_adtl_address_info
       - field_organisation
       - label
       - field_isr_release_notes
@@ -580,7 +568,6 @@ processor_settings:
       - field_news_headline
       - field_event_agenda
       - field_location
-      - field_event_adtl_address_info
       - field_organisation
       - label
       - field_isr_release_notes

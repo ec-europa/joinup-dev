@@ -13,6 +13,7 @@ group_id: null
 permissions:
   - 'add user'
   - 'administer comments'
+  - 'administer tallinn settings'
   - 'approve and deny subscription'
   - 'create asset_distribution rdf_entity'
   - 'create asset_release rdf_entity'

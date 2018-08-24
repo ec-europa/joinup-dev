@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f26ad7671f31e4856caa50035d97a8dd",
+    "content-hash": "4f74168b07b4fc5d72dfda5f18901e54",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5711,6 +5711,32 @@
                 }
             ],
             "time": "2018-08-01T11:20:25+00:00"
+        },
+        {
+            "name": "ec-europa/joinup-tallinn-dashboard",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
+                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/9de48819dfbc679825347bf68f6fcaa0e372f494",
+                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494",
+                "shasum": ""
+            },
+            "type": "drupal-library",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Javascript application that shows teh Tallinn Agreement dashboard.",
+            "homepage": "https://github.com/ec-europa/joinup-tallinn-dashboard",
+            "support": {
+                "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
+                "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
+            },
+            "time": "2018-08-24T13:04:52+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -13109,6 +13135,7 @@
         "drupal/view_unpublished": 15,
         "drupal/views_data_export": 20,
         "ec-europa/infra": 20,
+        "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "behat/mink-selenium2-driver": 20,
