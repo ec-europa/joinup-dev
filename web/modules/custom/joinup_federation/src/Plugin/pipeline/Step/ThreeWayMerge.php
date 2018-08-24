@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
@@ -51,6 +53,13 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   protected $fieldValidator;
 
   /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
@@ -67,12 +76,15 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *   The entity field manager service.
    * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $field_validator
    *   The field validator service.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator, TimeInterface $time) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->fieldValidator = $field_validator;
+    $this->time = $time;
   }
 
   /**
@@ -86,7 +98,8 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       $container->get('sparql_endpoint'),
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
-      $container->get('rdf_schema_field_validation.schema_field_validator')
+      $container->get('rdf_schema_field_validation.schema_field_validator'),
+      $container->get('datetime.time')
     );
   }
 
@@ -202,6 +215,15 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       if (in_array($field_name, ['id', 'rid', 'graph', 'uuid', 'uid'])) {
         continue;
       }
+
+      // If the changed timestamp is not present, fill it in even if it is
+      // defined in schema.
+      if ($field_name === 'changed' && $incoming_entity->get($field_name)->isEmpty() && ($incoming_entity instanceof EntityChangedInterface)) {
+        $incoming_entity->set($field_name, $this->time->getRequestTime());
+        $changed = TRUE;
+        continue;
+      }
+
       // Only stored fields are allowed.
       if ($field_definition->isComputed()) {
         continue;
