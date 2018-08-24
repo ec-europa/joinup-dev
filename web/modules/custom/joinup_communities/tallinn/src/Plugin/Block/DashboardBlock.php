@@ -121,6 +121,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
         '#attributes' => [
           'class' => [
             'tallinn-chart',
+            'row',
           ],
         ],
         '#attached' => [
@@ -182,7 +183,6 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
               '#type' => 'container',
               '#attributes' => [
                 'class' => [
-                  'mdl-layout',
                   'tallinn-chart__selects',
                 ],
               ],
@@ -212,7 +212,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
             '#type' => 'container',
             '#attributes' => [
               'class' => [
-                'mdl-layout',
+                'mdl-cell mdl-cell--12-col',
               ],
             ],
             '1.1.3.1' => [
@@ -258,7 +258,9 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The build render array.
    */
   protected function addSelectors(array &$build): void {
-    foreach ([1, 2, 3] as $select) {
+    // Additional counter, because not all elements in the loop are selects.
+    $id_counter = 1;
+    foreach ([1, 2, 3, 4] as $select) {
       switch ($select) {
         case 1:
           $options = [
@@ -268,41 +270,64 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
           break;
 
         case 2:
-          $options = [
-            '' => $this->t('No selection'),
-            'All members' => $this->t('All member states'),
-          ] + Tallinn::COUNTRIES;
+          $options = [];
           $label = $this->t('compared to');
           break;
 
         case 3:
+          $options = [
+            '' => $this->t('No selection'),
+            'All members' => $this->t('All member states'),
+          ] + Tallinn::COUNTRIES;
+          $label = '';
+          break;
+
+        case 4:
           $options = ['' => $this->t('Principles')];
           $label = $this->t('from');
+          $label_class = 'tallinn-chart__text-container';
       }
-
-      $build['1']['1.1']['1.1.2']['1.1.2.1']["1.1.2.1.$select"] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'tallinn-chart__selector-container',
-          ],
-        ],
-        [
-          '#markup' => $label,
-          '#prefix' => '<span>',
-          '#suffix' => '</span>',
-        ],
-        [
-          '#type' => 'select',
-          '#options' => $options,
+      if (!empty($options)) {
+        $build['1']['1.1']['1.1.2']['1.1.2.1']["1.1.2.1.$select"] = [
+          '#type' => 'container',
           '#attributes' => [
-            'id' => "select$select",
             'class' => [
-              'tallinn-chart__selector',
+              'tallinn-chart__selector-container',
             ],
           ],
-        ],
-      ];
+          [
+            '#markup' => $label,
+            '#prefix' => isset($label_class) ? '<span class="' . $label_class . '">' : '<span>',
+            '#suffix' => '</span>',
+          ],
+          [
+            '#type' => 'select',
+            '#options' => $options,
+            '#attributes' => [
+              'id' => "select$id_counter",
+              'class' => [
+                'tallinn-chart__selector',
+              ],
+            ],
+          ],
+        ];
+        $id_counter++;
+      }
+      else {
+        $build['1']['1.1']['1.1.2']['1.1.2.1']["1.1.2.1.$select"] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'tallinn-chart__text-container',
+            ],
+          ],
+          [
+            '#markup' => $label,
+            '#prefix' => '<span>',
+            '#suffix' => '</span>',
+          ],
+        ];
+      }
     }
   }
 
