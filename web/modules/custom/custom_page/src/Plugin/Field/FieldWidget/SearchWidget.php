@@ -42,7 +42,7 @@ class SearchWidget extends DefaultSearchWidget {
 
     $element['wrapper']['show_shared'] = [
       '#type' => 'checkbox',
-      '#title' => t('Include content shared in the collection.'),
+      '#title' => t('Include content shared in the collection'),
       '#default_value' => $default_values['show_shared'] ?? FALSE,
       '#weight' => -10,
     ];
