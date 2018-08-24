@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe93f3a2a226243ae137033114ed4d42",
+    "content-hash": "7daa918303f133a781f9c2605f4ecdd3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4439,77 +4439,43 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha8",
+            "version": "dev-drupal-8.6.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "8.x-1.0-alpha8"
+                "url": "https://github.com/ec-europa/rdf_entity.git",
+                "reference": "4e8e247a9080be28758cf1e0517a943cbed2ef71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha8.zip",
-                "reference": "8.x-1.0-alpha8",
-                "shasum": "af039d4679e9cfb6c2140a12b454cf76076e88ae"
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/4e8e247a9080be28758cf1e0517a943cbed2ef71",
+                "reference": "4e8e247a9080be28758cf1e0517a943cbed2ef71",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "*",
                 "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
                 "php": ">=7.1"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-alpha8",
-                    "datestamp": "1535029084",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                    "Modernize the connection class @see https://github.com/ec-europa/rdf_entity/pull/52": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/52.diff"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
                 }
             },
-            "notification-url": "https://packages.drupal.org/8/downloads",
+            "autoload": {
+                "classmap": [
+                    "driver/sparql/Connection.php"
+                ]
+            },
             "license": [
                 "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
-                },
-                {
-                    "name": "dublutz",
-                    "homepage": "https://www.drupal.org/user/980246"
-                },
-                {
-                    "name": "idimopoulos",
-                    "homepage": "https://www.drupal.org/user/2578708"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sandervd",
-                    "homepage": "https://www.drupal.org/user/346775"
-                },
-                {
-                    "name": "sardara",
-                    "homepage": "https://www.drupal.org/user/2353864"
-                }
             ],
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
             "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
-                "source": "https://cgit.drupalcode.org/rdf_entity",
-                "issues": "https://drupal.org/project/issues/rdf_entity"
-            }
+                "issues": "https://drupal.org/project/issues/rdf_entity",
+                "source": "https://cgit.drupalcode.org/rdf_entity"
+            },
+            "time": "2018-08-28T07:39:56+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -13130,6 +13096,7 @@
         "drupal/phingdrushtask": 20,
         "drupal/piwik_reporting_api": 20,
         "drupal/r4032login": 20,
+        "drupal/rdf_entity": 20,
         "drupal/redis": 5,
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
