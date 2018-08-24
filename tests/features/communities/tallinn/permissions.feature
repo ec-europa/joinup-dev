@@ -90,7 +90,11 @@ Feature:
     And I fill in "Authored by" with "dominique"
     When I press "Save"
     Then I should see the error message "The user dominique cannot be set as author of this report as he/she already owns 'France Report'."
-    But I fill in "Authored by" with "vasile"
+
+    # Test the same but as facilitator to verify the functionality for him as well.
+    Given I am logged in as "sherlock"
+    When I visit the tallinn_report content "Romania Report" edit screen
+    And I fill in "Authored by" with "vasile"
     When I press "Save"
     Then I should see "Tallinn report Romania Report has been updated."
     # Reports cannot be added via UI.

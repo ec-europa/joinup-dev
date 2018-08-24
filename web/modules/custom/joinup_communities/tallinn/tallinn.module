@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
 
@@ -35,10 +36,40 @@ function tallinn_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_module_implements_alter().
+ *
+ * We are setting the implementations of the tallinn module to be the last one
+ * called as it should override all other implementations. Like this, we avoid
+ * joinup profile hiding the authoring field we are enabling for tallinn
+ * reports.
+ *
+ * @see tallinn_form_node_tallinn_report_edit_form_alter()
+ * @see joinup_form_node_form_alter()
+ */
+function tallinn_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_alter' && isset($implementations['tallinn'])) {
+    unset($implementations['tallinn']);
+    $implementations['tallinn'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
  */
 function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  $form['uid']['#access'] = \Drupal::currentUser()->hasPermission('administer nodes');
+  $access = FALSE;
+  $current_user = \Drupal::currentUser();
+  if ($current_user->hasPermission('administer nodes')) {
+    $access = TRUE;
+  }
+  elseif ($tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID)) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $membership = $membership_manager->getMembership($tallinn_collection, $current_user);
+    $access = $membership && $membership->hasRole('rdf_entity-collection-facilitator');
+  }
+
+  $form['uid']['#access'] = $access;
   $form['#validate'][] = 'tallinn_report_author_uniqueness';
 }
 
