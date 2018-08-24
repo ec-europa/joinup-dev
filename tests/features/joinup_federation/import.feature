@@ -94,8 +94,16 @@ Feature: As a site moderator I am able to import RDF files.
 
   Scenario: Test a successful import.
     Given solutions:
-      | uri                           | title                       | description         | state     |
-      | http://example.com/solution/2 | Local version of Solution 2 | Initial description | validated |
+      | uri                           | title                       | description         | state     | modification date |
+      | http://example.com/solution/2 | Local version of Solution 2 | Initial description | validated | 15-07-2018        |
+    And the following distribution:
+      | uri               | http://example.com/distribution/3          |
+      | title             | Local version of a standalone distribution |
+      | description       | No one cares.                              |
+      | access url        | http://example.com/file.zip                |
+      | parent            | Local version of Solution 2                |
+      | creation date     | 15-07-2018                                 |
+      | modification date | 15-07-2018                                 |
     And collection:
       | uri        | http://administracionelectronica.gob.es/ctt |
       | title      | Spain                                       |
