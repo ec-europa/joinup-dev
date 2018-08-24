@@ -128,6 +128,6 @@ hidden:
   field_user_subscription_events: true
   langcode: true
   language: true
-  piwik: true
+  matomo: true
   simplenews: true
   timezone: true

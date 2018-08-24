@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.message.contact_form_submission.field_contact_attachment
     - field.field.message.contact_form_submission.field_contact_category
+    - field.field.message.contact_form_submission.field_contact_copy
     - field.field.message.contact_form_submission.field_contact_email
     - field.field.message.contact_form_submission.field_contact_first_name
     - field.field.message.contact_form_submission.field_contact_last_name
@@ -35,6 +36,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_contact_copy:
+    weight: 10
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_contact_email:
     weight: 4

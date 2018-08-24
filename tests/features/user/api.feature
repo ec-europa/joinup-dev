@@ -6,15 +6,15 @@ Feature: User API
 
   Scenario: Programmatically create a user
     Given the following user:
-      | Username             | Leonardo Da Vinci                            |
-      | Password             | Mona Lisa                                    |
-      | E-mail               |                                              |
-      | Status               | 1                                            |
-      | First name           | Leonardo                                     |
-      | Family name          | di ser Piero da Vinci                        |
-      | Photo                | leonardo.jpg                                 |
-      | Business title       | invention, painting, sculpting, architecture |
-      | Organisation         | Verrocchio's workshop                        |
+      | Username       | Leonardo Da Vinci                            |
+      | Password       | Mona Lisa                                    |
+      | E-mail         |                                              |
+      | Status         | active                                       |
+      | First name     | Leonardo                                     |
+      | Family name    | di ser Piero da Vinci                        |
+      | Photo          | leonardo.jpg                                 |
+      | Business title | invention, painting, sculpting, architecture |
+      | Organisation   | Verrocchio's workshop                        |
      # @Fixme unimplemented.
      # | Professional domain  |                                              |
      # | Nationality          |                                              |
