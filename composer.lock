@@ -5718,12 +5718,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "38a77d0c495dbc107ac8e8be5eece4fcab4884e5"
+                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/38a77d0c495dbc107ac8e8be5eece4fcab4884e5",
-                "reference": "38a77d0c495dbc107ac8e8be5eece4fcab4884e5",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/9de48819dfbc679825347bf68f6fcaa0e372f494",
+                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5736,7 +5736,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-08-23T16:48:13+00:00"
+            "time": "2018-08-24T13:04:52+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
