@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7daa918303f133a781f9c2605f4ecdd3",
+    "content-hash": "b0904cadfdb2e0124700720a50df4bcc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2239,16 +2239,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.5.6",
+            "version": "8.6.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "7d7184a69ac90ce53929ce99f18458043416107a"
+                "reference": "2b8e6adebc84259f246bd52ef4faa9dcdd64e1b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/7d7184a69ac90ce53929ce99f18458043416107a",
-                "reference": "7d7184a69ac90ce53929ce99f18458043416107a",
+                "url": "https://api.github.com/repos/drupal/core/zipball/2b8e6adebc84259f246bd52ef4faa9dcdd64e1b9",
+                "reference": "2b8e6adebc84259f246bd52ef4faa9dcdd64e1b9",
                 "shasum": ""
             },
             "require": {
@@ -2366,10 +2366,12 @@
                 "drupal/link": "self.version",
                 "drupal/locale": "self.version",
                 "drupal/media": "self.version",
+                "drupal/media_library": "self.version",
                 "drupal/menu_link_content": "self.version",
                 "drupal/menu_ui": "self.version",
                 "drupal/migrate": "self.version",
                 "drupal/migrate_drupal": "self.version",
+                "drupal/migrate_drupal_multilingual": "self.version",
                 "drupal/migrate_drupal_ui": "self.version",
                 "drupal/minimal": "self.version",
                 "drupal/node": "self.version",
@@ -2401,7 +2403,8 @@
                 "drupal/user": "self.version",
                 "drupal/views": "self.version",
                 "drupal/views_ui": "self.version",
-                "drupal/workflows": "self.version"
+                "drupal/workflows": "self.version",
+                "drupal/workspaces": "self.version"
             },
             "require-dev": {
                 "behat/mink": "1.7.x-dev",
@@ -2412,7 +2415,7 @@
                 "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
                 "mikey179/vfsstream": "^1.2",
                 "phpspec/prophecy": "^1.4",
-                "phpunit/phpunit": "^4.8.35 || ^6.1",
+                "phpunit/phpunit": "^4.8.35 || ^6.5",
                 "symfony/css-selector": "^3.4.0",
                 "symfony/debug": "^3.4.0",
                 "symfony/phpunit-bridge": "^3.4.3"
@@ -2449,21 +2452,21 @@
                     "merge-extra": false
                 },
                 "patches_applied": {
+                    "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-08-17/85494-234.patch",
                     "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
                     "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-291.patch",
-                    "Allow Tours to be taken by users that cannot access the Toolbar (e.g. anonymous users) @see https://www.drupal.org/node/2069073": "https://www.drupal.org/files/issues/2018-06-19/2069073-55.patch",
+                    "Allow Tours to be taken by users that cannot access the Toolbar (e.g. anonymous users) @see https://www.drupal.org/node/2069073": "https://www.drupal.org/files/issues/2018-08-22/2069073-64.patch",
                     "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2018-06-11/2303877-27.patch",
-                    "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
-                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
+                    "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2018-08-22/2320877-26.patch",
+                    "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2018-08-22/2497909-84.patch",
                     "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-38.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
                     "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
                     "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
-                    "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-12.patch",
+                    "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
-                    "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-07-09/2725259-58.patch",
-                    "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-08-17/85494-234.patch"
+                    "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-08-22/2725259-85.patch"
                 }
             },
             "autoload": {
@@ -2487,7 +2490,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2018-08-01T20:50:42+00:00"
+            "time": "2018-08-17T18:43:58+00:00"
         },
         {
             "name": "drupal/csv_serialization",
