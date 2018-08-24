@@ -46,7 +46,7 @@
         "drupal/piwik": "~1.2.0",
         "drupal/piwik_reporting_api": "dev-1.x",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "^1.0.0-alpha8",
+        "drupal/rdf_entity": "dev-drupal-8.6.x",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.0@RC",
         "drupal/search_api": "1.6.0",
@@ -195,8 +195,7 @@
                 "Cannot redirect from a private file path @see https://www.drupal.org/project/redirect/issues/2985288#comment-12683792": "https://www.drupal.org/files/issues/2018-07-12/2985288-4.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
-                "Modernize the connection class @see https://github.com/ec-europa/rdf_entity/pull/52": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/52.diff"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
