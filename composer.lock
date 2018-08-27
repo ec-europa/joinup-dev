@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1040cc3515f3a3ecf7653b2044a9ff9",
+    "content-hash": "9db6ef31e2ab5e6dc634f6f2db8a5544",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5727,6 +5727,11 @@
                 "shasum": ""
             },
             "type": "drupal-library",
+            "extra": {
+                "patches_applied": {
+                    "PR #6": "https://patch-diff.githubusercontent.com/raw/ec-europa/joinup-tallinn-dashboard/pull/6.diff"
+                }
+            },
             "license": [
                 "GPL-2.0+"
             ],
