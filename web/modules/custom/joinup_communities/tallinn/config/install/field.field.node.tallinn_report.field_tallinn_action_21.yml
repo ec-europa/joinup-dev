@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_21
 field_name: field_tallinn_action_21
 entity_type: node
 bundle: tallinn_report
-label: 'Action 21'
+label: 'Use of data and analytics (big data)'
 description: 'Prepare and implement initiatives to widen and deepen the use of data and analytics (including big data) in our countries to move to data-driven public services and make full use of data for better decision-making.'
 required: false
 translatable: true

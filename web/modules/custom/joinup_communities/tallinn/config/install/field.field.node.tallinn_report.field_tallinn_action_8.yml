@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_8
 field_name: field_tallinn_action_8
 entity_type: node
 bundle: tallinn_report
-label: 'Action 8'
+label: 'Culture of re-use of data within PAs'
 description: 'Work to create a culture of re-use, including responsible and transparent re-use of data within our administrations.'
 required: false
 translatable: true

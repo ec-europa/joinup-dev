@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_11
 field_name: field_tallinn_action_11
 entity_type: node
 bundle: tallinn_report
-label: 'Action 11'
+label: 'Use eIDAS framework in digital public services'
 description: 'Work to make our digital public services secure and properly identifiable by using the eIDAS framework for qualified electronic trust services, including by advancing the take-up of qualified website authentication certificates and qualified electronic seals.'
 required: false
 translatable: true

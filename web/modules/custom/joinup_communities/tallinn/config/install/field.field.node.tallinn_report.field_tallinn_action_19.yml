@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_19
 field_name: field_tallinn_action_19
 entity_type: node
 bundle: tallinn_report
-label: 'Action 19'
+label: 'ICT solutions more readily available for reuse by 3rd parties'
 description: 'Make ICT solutions owned by or developed for the public administrations more readily available for reuse in private sector and civil society, for example, by developing and publishing terms and conditions on how third parties may reuse the solutions.'
 required: false
 translatable: true
