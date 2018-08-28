@@ -522,14 +522,21 @@ function joinup_theme_preprocess_block(&$variables) {
     $variables['content']['#theme'] = $variables['content']['#theme'] . '__' . $block_id;
   }
 
-  // The front page is also shown as a listing of entities.
-  if ($block_id === 'frontpageblock') {
-    $variables['is_listing'] = TRUE;
-  }
+  switch ($block_id) {
+    // The front page is also shown as a listing of entities.
+    case 'frontpageblock':
+      $variables['is_listing'] = TRUE;
+      break;
 
-  // Add block separated suggestion for bottom navigation.
-  if ($block_id === 'navigation_bottom') {
-    $variables['content']['#extra_suggestion'] = 'block__separated';
+    // Add block separated suggestion for bottom navigation.
+    case 'navigation_bottom':
+      $variables['content']['#extra_suggestion'] = 'block__separated';
+      break;
+
+    // Add class to navigation bottom links on custom pages.
+    case 'toc_outline':
+      $variables['content']['#attributes']['class'][] = 'navigation-bottom__links';
+      break;
   }
 
   // Set default title tag.

@@ -17,6 +17,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\custom_page\CustomPageOgMenuLinksManagerInterface;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Render\Markup;
 
 /**
  * Provides a block with the outline of a table of content in a custom page.
@@ -147,7 +148,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     if ($prev) {
       $links['prev'] = [
         'url' => $prev->getUrlObject(),
-        'title' => $prev->getTitle(),
+        'title' => Markup::create('<span class="icon icon--previous"></span>' . $prev->getTitle()),
       ];
     }
     if ($up) {
@@ -159,7 +160,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     if ($next) {
       $links['next'] = [
         'url' => $next->getUrlObject(),
-        'title' => $next->getTitle(),
+        'title' => Markup::create($next->getTitle() . '<span class="icon icon--next"></span>'),
       ];
     }
 
