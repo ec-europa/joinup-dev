@@ -104,9 +104,9 @@ Feature: Global search
       | title      | headline            | body                      | keywords | collection       | state     |
       | News omega | News headline delta | The epsilon news content. | Alphabet | Collection alpha | validated |
     And event content:
-      | title             | short title       | body                                | agenda         | location       | additional info address | organisation        | scope         | keywords | collection       | solution       | state     |
-      | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | Event address           | European Commission | International | Alphabet |                  | Solution alpha | validated |
-      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Rue de events           | Event organisation  |               |          | Collection alpha |                | validated |
+      | title             | short title       | body                                | agenda         | location       | organisation        | scope         | keywords | collection       | solution       | state     |
+      | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | European Commission | International | Alphabet |                  | Solution alpha | validated |
+      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Event organisation  |               |          | Collection alpha |                | validated |
     And document content:
       | title          | document type | short title          | body                                    | keywords | collection       | state     |
       | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
@@ -169,7 +169,7 @@ Feature: Global search
     Then the page should show the tiles "Event Omega"
     When I enter "location" in the header search bar and hit enter
     Then the page should show the tiles "Alternative event"
-    When I enter "address" in the header search bar and hit enter
+    When I enter "place" in the header search bar and hit enter
     Then the page should show the tiles "Event Omega"
     When I enter "organisation" in the header search bar and hit enter
     Then the page should show the tiles "Alternative event"

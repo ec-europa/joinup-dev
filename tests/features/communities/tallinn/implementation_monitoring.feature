@@ -4,7 +4,7 @@ Feature: Display of reports for the Tallinn initiative.
   As a privileged user
   I need to be able to see the reports I have access to.
 
-  Scenario: Only the report entries are shown in the "Tallinn initiative" page.
+  Scenario: Only the report entries are shown in the "Implementation monitoring" page.
     Given users:
       | Username     |
       | Jayda Ingham |
@@ -28,7 +28,7 @@ Feature: Display of reports for the Tallinn initiative.
     And I should see the "Ministerial Declaration on eGovernment" tile
 
     # Only report content should be shown in the initiative page.
-    When I click "Tallinn initiative" in the "Left sidebar" region
+    When I click "Implementation monitoring" in the "Left sidebar" region
     Then I should see the "Italy report" tile
     But I should not see the "Results are out" tile
     And I should not see the "Ministerial Declaration on eGovernment" tile

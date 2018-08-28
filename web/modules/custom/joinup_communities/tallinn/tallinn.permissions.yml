@@ -1,3 +1,7 @@
-view any tallinn_report content:
+'view any tallinn_report content':
   title: 'View any Tallinn report content'
   description: 'Allows user to access all tallinn reports. By default, view access is denied.'
+
+'administer tallinn settings':
+  title: 'Administer Tallinn settings'
+  description: 'Allows users granted with this permission to administer Tallinn settings.'

@@ -1114,6 +1114,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks that the HTTP response is cached by Drupal dynamic cache.
+   *
+   * @Then the response should be cached
+   */
+  public function assertResponseCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'HIT');
+  }
+
+  /**
+   * Checks that the HTTP response is not cached by Drupal dynamic cache.
+   *
+   * @Then the response should not be cached
+   */
+  public function assertResponseNotCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'MISS');
+  }
+
+  /**
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
