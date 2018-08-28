@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_15
 field_name: field_tallinn_action_15
 entity_type: node
 bundle: tallinn_report
-label: 'Action 15'
+label: 'Data open by-default approach/ enable APIs'
 description: 'Increase the availability and quality of open government data that is of value to economy and society, including by adopting the open-by-default approach and enabling more the automatic linkages to databases (for example, by application programming interfaces).'
 required: false
 translatable: true

@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_1
 field_name: field_tallinn_action_1
 entity_type: node
 bundle: tallinn_report
-label: 'Action 1'
+label: 'Option digitally interaction with PAs'
 description: 'Provide citizens and businesses with the option to interact digitally with public administrations, if they choose to, while following the “User-centricity principles for design and delivery of digital public services” as set out in the Annex of this declaration.'
 required: false
 translatable: true
