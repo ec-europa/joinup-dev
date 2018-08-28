@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.event_date
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: eventdate
+theme: joinup_theme
+region: filters
+weight: -9
+provider: null
+plugin: 'facet_block:event_date'
+settings:
+  id: 'facet_block:event_date'
+  label: 'Content overview - Event date'
+  provider: facets
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: view.content_overview.page_1
+    negate: false
+    context_mapping: {  }

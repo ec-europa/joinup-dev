@@ -31,11 +31,9 @@ function search_api_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInt
     $solr_field_names = joinup_search_fieldnames_from_index($query->getIndex());
 
     foreach ($definition as $facet_identifier => $facet_attribute) {
-      $field_name = $facet_attribute['field_name'];
-      $condition = $facet_attribute['field_condition'];
       // Translate the field name to the index field name.
-      $solr_field_name = $solr_field_names[$field_name];
-      $filter = $solr_field_name . ':' . $condition;
+      $solr_field_name = $solr_field_names[$facet_attribute['field_name']];
+      $filter = search_api_arbitrary_facet_create_filter_query($solr_field_name, $facet_attribute['field_condition'], isset($facet_attribute['field_operator']) ? $facet_attribute['field_operator'] : NULL);
       $facet->createQuery($facet_identifier, $filter);
     }
 
@@ -43,6 +41,111 @@ function search_api_arbitrary_facet_search_api_solr_query_alter(SolariumQueryInt
     if (isset($options['operator']) && strtolower($options['operator']) === 'or') {
       $facet->setExcludes(['arbitrary:' . $facet_name]);
     }
+  }
+}
+
+/**
+ * Converts condition data into a normal query.
+ *
+ * Mimics the solr's filter creation. Formatting values is not supported yet.
+ *
+ * @param string $field
+ *   The solr field.
+ * @param mixed $value
+ *   The value.
+ * @param string $operator
+ *   The operator.
+ *
+ * @return string
+ *   A solr query string.
+ *
+ * @see \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend::createFilterQuery
+ */
+function search_api_arbitrary_facet_create_filter_query($field, $value, $operator = '=') {
+  if (!is_array($value)) {
+    $value = [$value];
+  }
+
+  if (1 == count($value)) {
+    $value = array_shift($value);
+
+    switch ($operator) {
+      case 'IN':
+        $operator = '=';
+        break;
+
+      case 'NOT IN':
+        $operator = '<>';
+        break;
+    }
+  }
+
+  switch ($operator) {
+    case '<>':
+      if (is_null($value)) {
+        return "$field:[* TO *]";
+      }
+      else {
+        return "(*:* -$field:$value)";
+      }
+
+    case '<':
+      return "$field:{* TO $value}";
+
+    case '<=':
+      return "$field:[* TO $value]";
+
+    case '>=':
+      return "$field:[$value TO *]";
+
+    case '>':
+      return "$field:{{$value} TO *}";
+
+    case 'BETWEEN':
+      return "$field:[" . array_shift($value) . ' TO ' . array_shift($value) . ']';
+
+    case 'NOT BETWEEN':
+      return "(*:* -$field:[" . array_shift($value) . ' TO ' . array_shift($value) . '])';
+
+    case 'IN':
+      $parts = [];
+      $null = FALSE;
+      foreach ($value as $v) {
+        if (is_null($v)) {
+          $null = TRUE;
+        }
+        else {
+          $parts[] = "$field:$v";
+        }
+      }
+      if ($null) {
+        // @see https://stackoverflow.com/questions/4238609/how-to-query-solr-for-empty-fields/28859224#28859224
+        return "(*:* -$field:[* TO *])";
+      }
+      return '(' . implode(" ", $parts) . ')';
+
+    case 'NOT IN':
+      $parts = [];
+      $null = FALSE;
+      foreach ($value as $v) {
+        if (is_null($v)) {
+          $null = TRUE;
+        }
+        else {
+          $parts[] = "-$field:$v";
+        }
+      }
+      return '(' . ($null ? "$field:[* TO *]" : '*:*') . ' ' . implode(" ", $parts) . ')';
+
+    case '=':
+    default:
+      if (is_null($value)) {
+        // @see https://stackoverflow.com/questions/4238609/how-to-query-solr-for-empty-fields/28859224#28859224
+        return "(*:* -$field:[* TO *])";
+      }
+      else {
+        return "$field:$value";
+      }
   }
 }
 
@@ -119,4 +222,13 @@ function search_api_arbitrary_facet_config_schema_info_alter(array &$definitions
     'label' => 'The arbitrary facet plugin',
     'type' => 'string',
   ];
+}
+
+/**
+ * Implements hook_facets_search_api_query_type_mapping_alter().
+ */
+function search_api_arbitrary_facet_facets_search_api_query_type_mapping_alter($backend_plugin_id, array &$query_types) {
+  if ($backend_plugin_id === 'search_api_solr') {
+    $query_types['facet_query'] = 'facet_query';
+  }
 }

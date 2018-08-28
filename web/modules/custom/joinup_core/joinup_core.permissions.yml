@@ -1,6 +1,12 @@
-administer piwik integration:
-  title: 'Administer Piwik integration'
-  description: 'Grants access to the Piwik Integration settings form.'
+administer matomo integration:
+  title: 'Administer Matomo integration'
+  description: 'Grants access to the Matomo Integration settings form.'
 access uri converter:
   title: 'Access URI encoder/decoder'
   description: 'Allow a user to use the web-based RDF ID/URI encoder and decoder.'
+access joinup reports:
+  title: 'Access Joinup reports'
+  description: 'Users granted with this permission are able to access the Joinup reports.'
+
+permission_callbacks:
+  - \Drupal\joinup_core\JoinupPermissions::groupOwnershipPermissions

@@ -18,6 +18,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup\KeyboardEventKeyCodes as Key;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -36,6 +37,8 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
 use Drupal\User\Entity\User;
 use GuzzleHttp\Client;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
 
@@ -90,7 +93,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $regex = '/' . preg_quote($text, '/') . '/ui';
     $message = sprintf('The text "%s" was not found anywhere in the text of the current page.', $text);
 
-    PHPUnit_Framework_Assert::assertRegExp($regex, $actual, $message);
+    Assert::assertRegExp($regex, $actual, $message);
   }
 
   /**
@@ -286,7 +289,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_options = array_values($this->getSelectOptions($field));
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_options, "The '{$select}' select doesn't contain all the wanted options.");
+    if (array_intersect($options, $available_options) !== $options) {
+      throw new \Exception("Options are not included in select.");
+    }
   }
 
   /**
@@ -334,7 +339,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
     // The PHPUnit assertion will allow to understand easily which values are
     // missing and which one are extra.
-    \PHPUnit_Framework_Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
+    Assert::assertEquals($options, $available_options, "The '{$select}' select options don't match the wanted ones.");
   }
 
   /**
@@ -352,7 +357,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    \PHPUnit_Framework_Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
+    Assert::assertEmpty(array_intersect($available_options, $options), "The '{$select}' select options include at least one of the given values.");
   }
 
   /**
@@ -370,7 +375,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_optgroups = array_values($this->getSelectOptgroups($field));
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
-    \PHPUnit_Framework_Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
+    Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
   }
 
   /**
@@ -507,7 +512,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       ->count()
       ->execute();
 
-    PHPUnit_Framework_Assert::assertEquals($count, $revision_count);
+    Assert::assertEquals($count, $revision_count);
   }
 
   /**
@@ -523,7 +528,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertPublicationState($title, $state) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getEntityByLabel('node', $title);
-    \PHPUnit_Framework_Assert::assertSame($node->isPublished(), $state === 'published');
+    Assert::assertSame($node->isPublished(), $state === 'published');
   }
 
   /**
@@ -616,7 +621,10 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   protected static function getNodeFieldNameFromAlias($type, $alias) {
     $aliases = [
-      'custom_page' => [],
+      'custom_page' => [
+        'attachments' => 'field_attachment',
+        'logo' => 'field_custom_page_logo',
+      ],
       'discussion' => [
         'content' => 'body',
         'state' => 'field_state',
@@ -637,7 +645,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
-        'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
         'state' => 'field_state',
@@ -732,18 +739,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I fill in :field_group with the :date_component :value
    */
   public function fillDateField($field_group, $date_component, $value) {
-    // Get the datetime fields and check which one of them has the label
-    // provided. This is because datetime fields have use a complex widget and
-    // render their title as a simple header, not as a label for the field.
-    $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--type-datetime');
-    $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field_group) {
-      return $field_selector->has('named', ['content', $field_group]);
-    });
+    $field_selectors = $this->findDateFields($field_group);
     if (count($field_selectors) > 1) {
       throw new \Exception("More than one elements were found.");
     }
     $field_selector = reset($field_selectors);
-
     $field_selector->fillField(ucfirst($date_component), $value);
   }
 
@@ -790,6 +790,64 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Finds a datetime field.
+   *
+   * First, get the fields that use a datetime widget. Fields of type 'created'
+   * also use the timestamp widget so this method must be able to handle them
+   * too. Datetime fields have use a complex widget and render their title as a
+   * simple header, not as a label for the field.
+   *
+   * @param string $field
+   *   The field name.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements found.
+   *
+   * @throws \Exception
+   *   Thrown when the field was not found.
+   */
+  public function findDateFields($field) {
+    $field_selectors = $this->getSession()->getPage()->findAll('css', '.field--widget-datetime-timestamp');
+    $field_selectors = array_filter($field_selectors, function ($field_selector) use ($field) {
+      return $field_selector->has('named', ['content', $field]);
+    });
+    if (empty($field_selectors)) {
+      throw new \Exception("Date field {$field} was not found.");
+    }
+    return $field_selectors;
+  }
+
+  /**
+   * Checks, that the given date time field contains the requested text.
+   *
+   * Example: Then the "date" date field should contain the datetime
+   * "31-1-1222 22:22:22".
+   *
+   * The format of the datetime is "DD-MM-YYYY HH:mm:ii"
+   *
+   * @param string $field
+   *   The field name.
+   * @param string $value
+   *   The value that is checked to be found.
+   *
+   * @throws \Exception
+   *   Thrown when more than one fields were found or when the field does not
+   *   contain the required text.
+   *
+   * @Then the :field date field should contain the datetime :value
+   */
+  public function assertDateFieldContains($field, $value) {
+    $elements = $this->findDateFields($field);
+    if (count($elements) > 1) {
+      throw new \Exception("More than one elements were found.");
+    }
+    $element = reset($elements);
+    $date = $element->findField('Date')->getValue();
+    $time = $element->findField('Time')->getValue();
+    Assert::assertEquals(trim($date . ' ' . $time), $value);
+  }
+
+  /**
    * Checks that the given node has the expected workflow state.
    *
    * @param string $title
@@ -804,7 +862,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function assertNodeWorkflowState($title, $type, $state) {
     $node = $this->getNodeByTitle($title, $type);
     $actual = $this->getEntityStateField($node)->get('value')->getString();
-    \PHPUnit_Framework_Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+    Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
   }
 
   /**
@@ -902,15 +960,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the page should show( only) the tiles :headings
    */
   public function assertUnorderedTilesPresent($headings) {
-    $tiles_in_page = array_map(function ($element) {
-      /** @var \Behat\Mink\Element\NodeElement $element */
-      return $element->getText();
-    }, $this->getTiles());
+    $tiles_in_page = array_keys($this->getTiles());
     $headings = $this->explodeCommaSeparatedStepArgument($headings);
 
     sort($headings);
     sort($tiles_in_page);
-    \PHPUnit_Framework_Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
+    Assert::assertEquals($headings, $tiles_in_page, 'The found tiles mismatch the expected ones.');
   }
 
   /**
@@ -925,12 +980,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) see the( following) tiles in the :region region:
    */
   public function assertTilesInBlock(TableNode $titles_table, $region) {
-    $results = $this->getTiles($region);
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+    $headings_in_page = array_keys($this->getTiles($region));
     $headings_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
+    Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found in the wanted region or were not in the proper order.');
   }
 
   /**
@@ -946,22 +998,20 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     try {
       // This will fail if the region does not exist. The region does not exist
       // if there is no content rendered inside.
-      $results = $this->getTiles($region);
+      $headings_in_page = array_keys($this->getTiles($region));
     }
     catch (Exception $e) {
       return;
     }
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+
     $headings_not_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
+    Assert::assertEmpty(array_intersect($headings_in_page, $headings_not_expected), 'At least one tile was found in the region but should not.');
   }
 
   /**
    * Assert that the text is visible in a given region.
    *
-   * @Then I (should )see the text :text in the :region region
+   * @Then I see the text :text in the :region region
    */
   public function assertTextVisible($text, $region) {
     $actual = $this->getRegion($region)->getText();
@@ -998,12 +1048,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I( should) see the( following) tiles in the correct order:
    */
   public function assertOrderedTilesPresent(TableNode $titles_table) {
-    $results = $this->getTiles();
-    $headings_in_page = array_map(function ($result) {
-      return $result->getText();
-    }, $results);
+    $headings_in_page = array_keys($this->getTiles());
     $headings_expected = $titles_table->getColumn(0);
-    \PHPUnit_Framework_Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
+    Assert::assertEquals($headings_expected, $headings_in_page, 'The expected tiles were not found or were not in the proper order.');
   }
 
   /**
@@ -1049,46 +1096,50 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Asserts the presence of a contextual link in a specific tile.
+   * Asserts the presence of contextual links in a specific tile.
    *
-   * @param string $link
-   *   The text of the contextual link.
+   * @param string $links
+   *   A comma separated list of link texts.
    * @param string $heading
    *   The heading of the tile.
    *
    * @throws \Exception
-   *   Thrown when the expected contextual link is not found in the tile.
+   *   Thrown when the expected contextual links are not found in the tile.
    *
-   * @Then I (should )see the contextual link :link in the :heading tile
+   * @Then I (should )see the contextual link(s) :links in the :heading tile
    */
-  public function assertContextualLinkPresentInTile($link, $heading) {
+  public function assertContextualLinkPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
+    $found_links = array_keys($this->findContextualLinkPaths($element));
 
-    if (!isset($links[$link])) {
-      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
+    $not_found = array_diff($links, $found_links);
+    if (!empty($not_found)) {
+      throw new \Exception(sprintf("Contextual links '%s' not found in the tile '%s'", implode(', ', $not_found), $heading));
     }
   }
 
   /**
-   * Asserts the presence of a contextual link in a specific tile.
+   * Asserts the absence of contextual links in a specific tile.
    *
-   * @param string $link
-   *   The text of the contextual link.
+   * @param string $links
+   *   A comma separated list of link texts.
    * @param string $heading
    *   The heading of the tile.
    *
    * @throws \Exception
-   *   Thrown when the expected contextual link is not found in the tile.
+   *   Thrown when the expected contextual links are not found in the tile.
    *
-   * @Then I should not see the contextual link :link in the :heading tile
+   * @Then I should not see the contextual link(s) :links in the :heading tile
    */
-  public function assertContextualLinkNotPresentInTile($link, $heading) {
+  public function assertContextualLinkNotPresentInTile($links, $heading) {
+    $links = $this->explodeCommaSeparatedStepArgument($links);
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
+    $found_links = array_keys($this->findContextualLinkPaths($element));
 
-    if (isset($links[$link])) {
-      throw new \Exception("Unexpected contextual link '$link' found in the tile '$heading'.");
+    $found = array_intersect($found_links, $links);
+    if (!empty($found)) {
+      throw new \Exception(sprintf("Unexpected contextual link '%s' found in the tile '%s'", implode(', ', $found), $heading));
     }
   }
 
@@ -1109,13 +1160,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function iClickTheContextualLinkInTile($link, $heading) {
     $element = $this->getTileByHeading($heading);
-    $links = $this->findContextualLinksInElement($element);
-
-    if (!isset($links[$link])) {
-      throw new \Exception("Contextual link '$link' not found in the tile '$heading'");
-    }
-
-    $this->getSession()->visit($this->locatePath($links[$link]));
+    $this->clickContextualLink($element, $link);
   }
 
   /**
@@ -1155,7 +1200,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // might be present in wysiwygs or are used to add multiple values to a
       // field.
       $actual = count($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
-      \PHPUnit_Framework_Assert::assertEquals($count, $actual);
+      Assert::assertEquals($count, $actual);
     }
   }
 
@@ -1193,7 +1238,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertPlusButtonMenuPresent() {
     $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
-    \PHPUnit_Framework_Assert::assertNotEmpty($element);
+    Assert::assertNotEmpty($element);
   }
 
   /**
@@ -1203,7 +1248,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertPlusButtonMenuNotPresent() {
     $element = $this->getSession()->getPage()->find('css', 'div.add-content-menu ul');
-    \PHPUnit_Framework_Assert::assertEmpty($element);
+    Assert::assertEmpty($element);
   }
 
   /**
@@ -1314,6 +1359,22 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Presses a button in a given WYSIWYG editor.
+   *
+   * @param string $button
+   *   The label of the button to press.
+   * @param string $label
+   *   The label of the field containing the WYSIWYG editor.
+   *
+   * @Then I press the button :button in the :label wysiwyg editor
+   */
+  public function pressButtonInWysiwyg($button, $label) {
+    self::assertJavaScriptEnabledBrowser();
+
+    $this->pressWysiwygButton($label, $button);
+  }
+
+  /**
    * Checks that a given field label is associated with a WYSIWYG editor.
    *
    * @param string $label
@@ -1322,7 +1383,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then I should see the :label wysiwyg editor
    */
   public function assertWysiwyg($label) {
-    PHPUnit_Framework_Assert::assertTrue($this->hasWysiwyg($label));
+    Assert::assertTrue($this->hasWysiwyg($label));
   }
 
   /**
@@ -1334,7 +1395,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the :label field should not have a wysiwyg editor
    */
   public function assertNoWysiwyg($label) {
-    PHPUnit_Framework_Assert::assertFalse($this->hasWysiwyg($label));
+    Assert::assertFalse($this->hasWysiwyg($label));
   }
 
   /**
@@ -1440,7 +1501,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if (empty($element)) {
       throw new \Exception('The current workflow state field is not present on the page.');
     }
-    \PHPUnit_Framework_Assert::assertEquals($state, trim($element->getText()));
+    Assert::assertEquals($state, trim($element->getText()));
   }
 
   /**
@@ -1482,7 +1543,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @throws \Exception
    *   Thrown when the field does not have a description.
-   * @throws \PHPUnit_Framework_ExpectationFailedException
+   * @throws \PHPUnit\Framework\ExpectationFailedException
    *   Thrown when none of the field's descriptions match the given text.
    *
    * @Then I should see the description :description for (the ):label( field)
@@ -1495,15 +1556,15 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
     foreach ($elements as $element) {
       try {
-        \PHPUnit_Framework_Assert::assertContains($description, $element->getText());
+        Assert::assertContains($description, $element->getText());
         // The description was found, stop searching.
         return;
       }
-      catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+      catch (ExpectationFailedException $e) {
         // The description did not match the expected string, keep searching.
       }
     }
-    throw new \PHPUnit_Framework_ExpectationFailedException("The description $description was not found for the $label field.");
+    throw new ExpectationFailedException("The description $description was not found for the $label field.");
   }
 
   /**
@@ -1523,7 +1584,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-item ")]//div[contains(concat(" ", normalize-space(@class), " "), " description ")]';
     $elements = $this->getSession()->getPage()->findAll('xpath', $xpath);
     foreach ($elements as $element) {
-      \PHPUnit_Framework_Assert::assertNotEquals($description, trim($element->getText()));
+      Assert::assertNotEquals($description, trim($element->getText()));
     }
   }
 
@@ -1560,11 +1621,11 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertCurrentUserProfilePictureVisible() {
     if ($this->getUserManager()->currentUserIsAnonymous()) {
-      throw new \PHPUnit_Framework_ExpectationFailedException('No user is currently logged in.');
+      throw new ExpectationFailedException('No user is currently logged in.');
     }
     $user = User::load($this->getUserManager()->getCurrentUser()->uid);
     if ($user->field_user_photo->isEmpty()) {
-      throw new \PHPUnit_Framework_ExpectationFailedException('The currently logged in user does not have a profile picture.');
+      throw new ExpectationFailedException('The currently logged in user does not have a profile picture.');
     }
     /** @var \Drupal\file\FileInterface $photo */
     $photo = File::load($user->field_user_photo->target_id);
@@ -1720,7 +1781,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
       $wrapper_selector = Unicode::strtolower("stats__wrapper__$type");
       $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
       $element = $this->getSession()->getPage()->find('xpath', $xpath);
-      PHPUnit_Framework_Assert::assertEquals($expected_value, $element->getText());
+      Assert::assertEquals($expected_value, $element->getText());
     }
   }
 
@@ -1780,7 +1841,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
     $href = $link_element->getAttribute('href');
 
-    \PHPUnit_Framework_Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
+    Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
   }
 
   /**
@@ -1837,7 +1898,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   public function thePersistentUrlShouldContain($pattern) {
     $field_selector = $this->getSession()->getPage()->find('css', '.permalink');
     $href = $field_selector->getAttribute('href');
-    \PHPUnit_Framework_Assert::assertContains($pattern, $href);
+    Assert::assertContains($pattern, $href);
   }
 
   /**
@@ -1949,7 +2010,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $attribute = trim($element->getAttribute('href'), '/');
-    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
+    Assert::assertEquals($href, $attribute, "The link '$link' doesn't point to the expected path '$href'.");
   }
 
   /**
@@ -1978,7 +2039,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $attribute = trim($element->getAttribute('href'), '/');
-    PHPUnit_Framework_Assert::assertEquals($href, $attribute, "The link '$link' in the region '$region' doesn't point to the expected path '$href'.");
+    Assert::assertEquals($href, $attribute, "The link '$link' in the region '$region' doesn't point to the expected path '$href'.");
   }
 
   /**
@@ -2072,7 +2133,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $link = reset($links);
-    \PHPUnit_Framework_Assert::assertEquals($text, $link->getText());
+    Assert::assertEquals($text, $link->getText());
   }
 
   /**
@@ -2181,6 +2242,272 @@ JS;
         '@found' => implode(', ', $invalid_tags),
       ]));
     }
+  }
+
+  /**
+   * Asserts that a tour is available on the current page.
+   *
+   * @Then a tour should be available
+   */
+  public function assertTourAvailable() {
+    // The tour element in the header.
+    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
+    // The tour button.
+    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
+
+    if (empty($element_help) && empty($element_button)) {
+      throw new \Exception("No tour is available on the page.");
+    }
+  }
+
+  /**
+   * Asserts that a tour is not available on the current page.
+   *
+   * @Then a tour should not be available
+   */
+  public function assertTourNotAvailable() {
+    // The tour element in the header.
+    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
+    // The tour button.
+    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
+
+    PHPUnit_Framework_Assert::assertEmpty($element_help);
+    PHPUnit_Framework_Assert::assertEmpty($element_button);
+  }
+
+  /**
+   * Press the enter key in the keyboard.
+   *
+   * Works only in Javascript-enabled browsers.
+   *
+   * @param string $field
+   *   The field where to press the enter key.
+   *
+   * @throws \Exception
+   *   Thrown when the browser doesn't support Javascript or when the field is
+   *   not found.
+   *
+   * @When I hit enter( in the keyboard) on the field :field
+   */
+  public function hitEnterKeyboard($field) {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires Javascript to run.');
+    }
+
+    $element = $this->getSession()->getPage()->findField($field);
+    if (!$element) {
+      throw new \Exception("Could not find field '$field'");
+    }
+
+    $element->keyDown("\r");
+    try {
+      $element->keyUp("\r");
+    }
+    catch (StaleElementReference $e) {
+      // Depending on the implementation of the user interaction we are trying
+      // to trigger by pressing the enter key, it is posssible the action is
+      // triggered on the keydown event or on the keyup event. If it is
+      // implemented on the keydown event then it might happen that the page
+      // refreshes immediately without waiting for the key to be released.
+      // Ignore the fact that the field might already be gone when performing
+      // the keyup event.
+    }
+  }
+
+  /**
+   * Asserts that a tile is marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is not marked as pinned.
+   *
+   * @Then the :tile tile should be marked as pinned
+   */
+  public function assertTileMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if (!$element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is not marked as pinned, but it should be.");
+    }
+  }
+
+  /**
+   * Asserts that a tile is not marked as pinned.
+   *
+   * @param string $heading
+   *   The heading of the tile.
+   *
+   * @throws \Exception
+   *   Thrown when the tile is marked as pinned.
+   *
+   * @Then the :tile tile should not be marked as pinned
+   */
+  public function assertTileNotMarkedAsPinned($heading) {
+    $element = $this->getTileByHeading($heading);
+
+    if ($element->find('css', '.icon--pin')) {
+      throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
+    }
+  }
+
+  /**
+   * Asserts that a user is subscribed to specific bundles in a collection.
+   *
+   * @param string $user
+   *   The user name.
+   * @param string $bundles
+   *   A list of bundles separated by commas.
+   * @param string $type
+   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
+   *   entity types respectively.
+   * @param string $group_label
+   *   The group name.
+   * @param string $group_bundle
+   *   The group bundle.
+   *
+   * @throws \Exception
+   *   Throws exception if invalid data passed as arguments or if the subscribed
+   *   bundles for the given type do not match the expected ones.
+   *
+   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
+   */
+  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
+    if ($type === 'content') {
+      $type = 'node';
+    }
+    elseif ($type === 'rdf') {
+      $type = 'rdf_entity';
+    }
+    else {
+      throw new Exception("Unsupported type {$type}.");
+    }
+
+    $user = $this->getUserByName($user);
+    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
+    $og_membership = $this->getMembershipByGroupAndUser($group, $user);
+
+    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
+    $bundles = array_map(function ($bundle) use ($type) {
+      return $type . ':' . trim($bundle);
+    }, $bundles);
+
+    // This can also be accessed with:
+    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
+    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
+    $og_bundles = array_map(function ($row) {
+      return $row['entity_type'] . ':' . $row['bundle'];
+    }, $og_bundles);
+
+    sort($bundles);
+    sort($og_bundles);
+    Assert::assertEquals($bundles, $og_bundles);
+  }
+
+  /**
+   * Clears a field (input, textarea, select) value.
+   *
+   * @param string $field
+   *   The field name.
+   *
+   * @Then I clear (the content of )the field :field
+   */
+  public function clearField($field) {
+    $this->getSession()->getPage()->fillField($field, '');
+  }
+
+  /**
+   * Asserts the order and nesting of rows of a draggable menu table.
+   *
+   * It requires a Javascript browser to run as many draggable classes are set
+   * by Javascript.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The menu data.
+   *
+   * @Then the (draggable )menu table should be:
+   */
+  public function assertDraggableMenuTable(TableNode $table) {
+    self::assertJavaScriptEnabledBrowser();
+
+    /** @var \Behat\Mink\Element\NodeElement[] $rows */
+    $rows = $this->getSession()->getPage()->findAll('css', '#menu-overview tbody tr.draggable');
+    $expected = $table->getColumnsHash();
+    Assert::assertSameSize($expected, $rows);
+
+    foreach ($expected as $delta => $data) {
+      $current_row = $rows[$delta];
+      $title_element = $current_row->find('css', 'td:first-of-type a:not(.tabledrag-handle)');
+      Assert::assertEquals($data['title'], trim($title_element->getText()));
+
+      $menu_link = $this->getMenuLinkByTitle($data['title']);
+      $parent_input = $current_row->find('css', 'input[name="links[menu_plugin_id:' . $menu_link->getPluginId() . '][parent]"]');
+
+      if (!$parent_input) {
+        throw new \Exception('Cannot find parent input field.');
+      }
+
+      // When a parent is available, the line should be indented. Find all
+      // indentation elements to assert later on based on the parent value.
+      $indentation = $current_row->findAll('css', 'div.indentation');
+
+      if ($data['parent'] === '') {
+        Assert::assertEmpty($parent_input->getValue());
+        Assert::assertCount(0, $indentation, "The menu link '{$data['title']}' should not be indented but it is.");
+      }
+      else {
+        $parent_link = $this->getMenuLinkByTitle($data['parent']);
+        Assert::assertEquals($parent_link->getPluginId(), $parent_input->getValue());
+        Assert::assertNotCount(0, $indentation, "The menu link '{$data['title']}' should be indented but it's not.");
+      }
+    }
+  }
+
+  /**
+   * Drags a table row one position towards a direction.
+   *
+   * Instead of using the mouse, it uses the keyboard keys so that precise
+   * control can be achieved.
+   *
+   * @param string $title
+   *   The title of the menu link that belongs to the row.
+   * @param string $direction
+   *   The direction to move the row to. One of "up", "down", "left", "right".
+   *
+   * @Then I drag the :title table row( to the) :direction
+   */
+  public function dragTableRowTowardsDirection($title, $direction) {
+    self::assertJavaScriptEnabledBrowser();
+
+    if (!in_array($direction, ['left', 'right', 'up', 'down'])) {
+      throw new \Exception('Invalid direction specified.');
+    }
+
+    $handle = $this->findDraggableTableRowByTitle($title)->find('css', 'a.tabledrag-handle');
+    $handle->focus();
+
+    switch ($direction) {
+      case 'left':
+        $key = Key::LEFT_ARROW;
+        break;
+
+      case 'right':
+        $key = Key::RIGHT_ARROW;
+        break;
+
+      case 'up':
+        $key = Key::UP_ARROW;
+        break;
+
+      case 'down':
+      default:
+        $key = Key::DOWN_ARROW;
+    }
+
+    $handle->keyDown($key);
+    $handle->keyUp($key);
+    $handle->blur();
   }
 
 }

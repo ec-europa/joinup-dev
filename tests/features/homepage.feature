@@ -12,10 +12,9 @@ Feature: Homepage
       | Solutions   | 0 |
       | Collections | 0 |
       | Content     | 0 |
-    # Test that the page is successfully cached. When we assert that the user is
-    # not logged in at the start of the test the homepage is already probed and
-    # subsequently cached.
-    And the page should be cached
+    # Test that the page is successfully cached.
+    When I reload the page
+    Then the page should be cached
 
     Given the following collections:
       | title               | state            |
@@ -211,3 +210,10 @@ Feature: Homepage
     # The header should still be shown in the other pages.
     When I click "Collections"
     Then I should see the small header
+
+  Scenario: Only specific social network links are available in the footer.
+    When I am on the homepage
+    Then I should see the link "LinkedIn" in the Footer region
+    And I should see the link "Twitter" in the Footer region
+    But I should not see the link "Facebook" in the Footer region
+    And I should not see the link "Google+" in the Footer region

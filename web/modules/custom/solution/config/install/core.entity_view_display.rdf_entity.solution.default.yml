@@ -21,6 +21,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_metrics_page
     - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_owner
+    - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
     - field.field.rdf_entity.solution.field_is_solution_type
@@ -41,32 +42,87 @@ dependencies:
     - field.field.rdf_entity.solution.field_status
     - rdf_entity.rdfentity.solution
   module:
+    - ds
+    - field_group
     - search_api_field
+    - smart_trim
     - user
+third_party_settings:
+  field_group:
+    group_solution_abstract_wrapper:
+      children:
+        - field_is_description
+        - read_more
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Abstract wrapper'
 id: rdf_entity.solution.default
 targetEntityType: rdf_entity
 bundle: solution
 mode: default
 content:
   field_is_content:
-    weight: 2
+    weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
     type: search_api_field
     region: content
+  field_is_description:
+    type: smart_trim
+    weight: 37
+    region: content
+    label: hidden
+    settings:
+      trim_length: 500
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: p_wrapper
   rdf_entity_field_is_content_inline_facets:
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   rdf_entity_field_is_content_top:
-    weight: 0
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  read_more:
+    weight: 38
     region: content
     settings: {  }
     third_party_settings: {  }
   related_solutions:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -80,7 +136,6 @@ hidden:
   field_is_banner: true
   field_is_business_process: true
   field_is_contact_information: true
-  field_is_description: true
   field_is_distribution: true
   field_is_documentation: true
   field_is_elibrary_creation: true
@@ -93,6 +148,7 @@ hidden:
   field_is_metrics_page: true
   field_is_moderation: true
   field_is_owner: true
+  field_is_pinned_in: true
   field_is_product_type: true
   field_is_related_solutions: true
   field_is_solution_type: true

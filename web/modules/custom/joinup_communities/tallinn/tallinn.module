@@ -1,0 +1,183 @@
+<?php
+
+/**
+ * @file
+ * Contains functions and hook implementations for the tallinn module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\search_api\Query\QueryInterface;
+use Drupal\user\Entity\User;
+
+define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3');
+
+/**
+ * Implements hook_theme().
+ */
+function tallinn_theme($existing, $type, $theme, $path) {
+  return [
+    'tallinn_entry_formatter' => [
+      'variables' => [
+        'title' => '',
+        'status' => [],
+        'status_classes' => '',
+        'explanation' => [],
+        'uri' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * We are setting the implementations of the tallinn module to be the last one
+ * called as it should override all other implementations. Like this, we avoid
+ * joinup profile hiding the authoring field we are enabling for tallinn
+ * reports.
+ *
+ * @see tallinn_form_node_tallinn_report_edit_form_alter()
+ * @see joinup_form_node_form_alter()
+ */
+function tallinn_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_alter' && isset($implementations['tallinn'])) {
+    unset($implementations['tallinn']);
+    $implementations['tallinn'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $access = FALSE;
+  $current_user = \Drupal::currentUser();
+  if ($current_user->hasPermission('administer nodes')) {
+    $access = TRUE;
+  }
+  elseif ($tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID)) {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $membership = $membership_manager->getMembership($tallinn_collection, $current_user);
+    $access = $membership && $membership->hasRole('rdf_entity-collection-facilitator');
+  }
+
+  $form['uid']['#access'] = $access;
+  $form['#validate'][] = 'tallinn_report_author_uniqueness';
+}
+
+/**
+ * Validates that each report has a different user as author.
+ *
+ * @param array $form
+ *   The form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function tallinn_report_author_uniqueness(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\node\NodeInterface $report */
+  $report = $form_object->getEntity();
+  $author = User::load($form_state->getValue(['uid', 0, 'target_id']));
+
+  if (!$author->isAnonymous()) {
+    // Get all reports, other than the current, that are owned by the same user.
+    $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->condition('type', 'tallinn_report')
+      ->condition('uid', $author->id());
+    if (!$report->isNew()) {
+      $query->condition('nid', $report->id(), '<>');
+    }
+    if (($nids = $query->execute()) && ($reports = Node::loadMultiple($nids))) {
+      $titles = implode(', ', array_map(function (NodeInterface $report) {
+        return "'" . $report->label() . "'";
+      }, $reports));
+      $form_state->setErrorByName('uid', t('The user %user cannot be set as author of this report as he/she already owns @titles.', [
+        '%user' => $author->getDisplayName(),
+        '@titles' => $titles,
+      ]));
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create_access().
+ *
+ * Disallow adding new reports via UI.
+ */
+function tallinn_node_create_access(AccountInterface $account, array $context, $entity_bundle) {
+  return $entity_bundle === 'tallinn_report' ? AccessResult::forbidden() : AccessResult::neutral();
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Tallinn entities are only accessible by the owners, the facilitators of the
+ * Tallinn collection and the moderators.
+ */
+function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($node->getType() !== 'tallinn_report' || $op !== 'view') {
+    return AccessResult::neutral();
+  }
+
+  if ($account->isAnonymous()) {
+    return AccessResult::forbidden();
+  }
+
+  if ($account->id() === $node->getOwnerId()) {
+    return AccessResult::allowed();
+  }
+
+  $access = $node->access('view any tallinn_report content', $account);
+  return $access ? AccessResult::allowed() : AccessResult::forbidden();
+}
+
+/**
+ * Implements hook_search_api_query_TAG_alter().
+ *
+ * Do not show the tallinn report records as part of the collection content
+ * field. They will be shown in the corresponding page.
+ */
+function tallinn_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
+  $query->addCondition('entity_bundle', 'tallinn_report', '<>');
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function tallinn_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->bundle() !== 'custom_page') {
+    return;
+  }
+  if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== TALLINN_COMMUNITY_ID) {
+    return;
+  }
+
+  // Since the entities are only viewable by their authors - apart from users
+  // that can view all of them - the search api field facets will display a
+  // wrong amount of results as they do not respect the view access - unlike the
+  // search api field formatter. Remove the facets as the item limit is set to
+  // the amount of the report entities.
+  // Unset the facets only if there is a facet showing a tab for tallinn
+  // reports. Tallinn reports are only shown on one page and on that page, only
+  // tallinn reports are shown, so the check is straight forward.
+  if (isset($build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type']) && $build['node_field_cp_content_listing_top'][0][0]['big_icons']['#items'][0]['#title']['#type'] === 'tallinn_report') {
+    unset($build['node_field_cp_content_listing_top']);
+  }
+
+  // By default, results are not sorted. Sort results by title.
+  if (isset($build['field_cp_content_listing']['#results'])) {
+    uasort($build['field_cp_content_listing']['#results'], function ($first, $second) {
+      return $first['#entity']->label() <=> $second['#entity']->label();
+    });
+  }
+  $build['field_cp_content_listing']['#cache']['contexts'][] = 'og_role';
+}

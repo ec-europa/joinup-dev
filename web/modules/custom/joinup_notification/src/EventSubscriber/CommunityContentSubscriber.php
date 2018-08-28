@@ -6,11 +6,11 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\NotificationEvents;
-use Drupal\message_notify\MessageNotifier;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManager;
 use Drupal\og\OgRoleInterface;
@@ -79,15 +79,15 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\JoinupRelationManager $joinup_core_relations_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinup_core_relations_manager
    *   The relation manager service.
-   * @param \Drupal\message_notify\MessageNotifier $message_notifier
-   *   The message notifier service.
+   * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
+   *   The message deliver service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManager $joinup_core_relations_manager, MessageNotifier $message_notifier, RevisionManagerInterface $revision_manager) {
-    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $joinup_core_relations_manager, $message_notifier);
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManagerInterface $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $joinup_core_relations_manager, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
 
@@ -234,16 +234,17 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // The storage class passes the loaded entity to the hooks when a delete
     // operation occurs. This returns the wrong state of the entity so the
     // latest revision is forced here.
-    $latest_revision = $this->revisionManager->loadLatestRevision($this->entity);
-    $state = $latest_revision->get($this->stateField)->first()->value;
-    if (empty($this->config[$this->workflow->getId()][$state])) {
-      return;
-    }
+    if ($latest_revision = $this->revisionManager->loadLatestRevision($this->entity)) {
+      $state = $latest_revision->get($this->stateField)->first()->value;
+      if (empty($this->config[$this->workflow->getId()][$state])) {
+        return;
+      }
 
-    $transition_action = $state === 'deletion_request' ? t('approved your request of deletion for') : t('deleted');
-    $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$state]);
-    $arguments = ['@transition:request_action:past' => $transition_action];
-    $this->sendUserDataMessages($user_data, $arguments);
+      $transition_action = $state === 'deletion_request' ? t('approved your request of deletion for') : t('deleted');
+      $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$state]);
+      $arguments = ['@transition:request_action:past' => $transition_action];
+      $this->sendUserDataMessages($user_data, $arguments);
+    }
   }
 
   /**

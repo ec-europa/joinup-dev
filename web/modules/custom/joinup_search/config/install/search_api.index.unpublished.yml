@@ -8,9 +8,9 @@ dependencies:
     - field.storage.node.field_news_headline
     - field.storage.node.field_event_agenda
     - field.storage.node.field_location
-    - field.storage.node.field_event_adtl_address_info
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
+    - field.storage.node.field_event_date
     - field.storage.rdf_entity.field_isr_release_notes
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_ci_name
@@ -24,6 +24,8 @@ dependencies:
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_is_pinned_in
+    - field.storage.rdf_entity.field_is_solution_type
     - field.storage.user.field_user_first_name
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_organisation
@@ -183,14 +185,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_location
-  field_event_adtl_address_info:
-    label: 'Additional address info'
-    datasource_id: 'entity:node'
-    property_path: field_event_adtl_address_info
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_event_adtl_address_info
   field_organisation:
     label: Organisation
     datasource_id: 'entity:node'
@@ -217,6 +211,14 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: sticky
     type: boolean
+  field_event_date:
+    label: Date
+    datasource_id: 'entity:node'
+    property_path: field_event_date
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_event_date
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -333,6 +335,32 @@ field_settings:
         - field.storage.rdf_entity.field_owner_name
       module:
         - rdf_entity
+  field_is_pinned_in:
+    label: 'Pinned in'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_is_pinned_in
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_is_pinned_in
+  field_is_solution_type:
+    label: 'Solution type'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_is_solution_type
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_is_solution_type
+  rdf_created:
+    label: 'Authored on'
+    datasource_id: 'entity:rdf_entity'
+    property_path: created
+    type: date
+  rdf_changed:
+    label: Changed
+    datasource_id: 'entity:rdf_entity'
+    property_path: changed
+    type: date
   uid:
     label: 'User ID'
     datasource_id: 'entity:user'
@@ -387,59 +415,6 @@ processor_settings:
   joinup_entity_latest_revision: {  }
   joinup_entity_status:
     inverse: true
-  add_url: {  }
-  aggregated_field: {  }
-  html_filter:
-    all_fields: false
-    fields:
-      - body
-      - field_event_agenda
-      - field_isr_release_notes
-      - field_licence_description
-      - field_ar_description
-      - field_ad_description
-      - field_isr_description
-      - field_ar_abstract
-      - field_is_description
-    title: true
-    alt: true
-    tags:
-      h1: 5
-      h2: 3
-      h3: 2
-      strong: 2
-      b: 2
-    weights:
-      preprocess_index: -15
-      preprocess_query: -15
-  ignorecase:
-    all_fields: false
-    fields:
-      - title
-      - body
-      - field_short_title
-      - field_news_headline
-      - field_event_agenda
-      - field_location
-      - field_event_adtl_address_info
-      - field_organisation
-      - label
-      - field_isr_release_notes
-      - isr_field_ci_name
-      - isr_field_owner_name
-      - field_licence_description
-      - field_ar_description
-      - field_ad_description
-      - field_isr_description
-      - field_ar_abstract
-      - field_is_description
-      - field_user_first_name
-      - field_user_family_name
-      - field_user_organisation
-    weights:
-      preprocess_index: -50
-      preprocess_query: -50
-  rendered_item: {  }
   stopwords:
     all_fields: false
     fields:
@@ -450,7 +425,6 @@ processor_settings:
       - field_news_headline
       - field_event_agenda
       - field_location
-      - field_event_adtl_address_info
       - field_scope
       - label
       - field_isr_release_notes
@@ -499,6 +473,9 @@ processor_settings:
     weights:
       preprocess_index: -47
       preprocess_query: -47
+  add_url: {  }
+  rendered_item: {  }
+  aggregated_field: {  }
   tokenizer:
     all_fields: false
     fields:
@@ -509,7 +486,6 @@ processor_settings:
       - field_news_headline
       - field_event_agenda
       - field_location
-      - field_event_adtl_address_info
       - field_organisation
       - field_scope
       - label
@@ -533,6 +509,55 @@ processor_settings:
     weights:
       preprocess_index: -49
       preprocess_query: -49
+  html_filter:
+    all_fields: false
+    fields:
+      - body
+      - field_event_agenda
+      - field_isr_release_notes
+      - field_licence_description
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_is_description
+    title: true
+    alt: true
+    tags:
+      h1: 5
+      h2: 3
+      h3: 2
+      strong: 2
+      b: 2
+    weights:
+      preprocess_index: -15
+      preprocess_query: -15
+  ignorecase:
+    all_fields: false
+    fields:
+      - title
+      - body
+      - field_short_title
+      - field_news_headline
+      - field_event_agenda
+      - field_location
+      - field_organisation
+      - label
+      - field_isr_release_notes
+      - isr_field_ci_name
+      - isr_field_owner_name
+      - field_licence_description
+      - field_ar_description
+      - field_ad_description
+      - field_isr_description
+      - field_ar_abstract
+      - field_is_description
+      - field_user_first_name
+      - field_user_family_name
+      - field_user_organisation
+    weights:
+      preprocess_index: -50
+      preprocess_query: -50
   transliteration:
     all_fields: false
     fields:
@@ -542,7 +567,6 @@ processor_settings:
       - field_news_headline
       - field_event_agenda
       - field_location
-      - field_event_adtl_address_info
       - field_organisation
       - label
       - field_isr_release_notes

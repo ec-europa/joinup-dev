@@ -5,14 +5,36 @@ dependencies:
     - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
     - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - ds
+    - field_group
     - file
     - link
     - search_api_field
     - text
     - user
+third_party_settings:
+  field_group:
+    group_attachment:
+      children:
+        - field_attachment
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        label: Attachments
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: Attachments
 id: node.custom_page.default
 targetEntityType: node
 bundle: custom_page
@@ -27,10 +49,21 @@ content:
     region: content
   field_attachment:
     weight: 51
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_table
+    label: hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset__show_more
+    type: file_default
     region: content
   field_cp_content_listing:
     type: search_api_field
@@ -51,7 +84,7 @@ content:
     third_party_settings: {  }
   report:
     label: hidden
-    weight: 50
+    weight: 5
     region: content
     settings:
       trim_length: 80
@@ -62,5 +95,6 @@ content:
     third_party_settings: {  }
     type: link
 hidden:
+  field_custom_page_logo: true
   langcode: true
   og_audience: true

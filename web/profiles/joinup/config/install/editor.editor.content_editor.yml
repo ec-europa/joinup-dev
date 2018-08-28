@@ -6,7 +6,6 @@ dependencies:
   module:
     - ckeditor
     - editor_file
-    - linkit
 third_party_settings:
   editor_file:
     status: true
@@ -48,6 +47,7 @@ settings:
             - DrupalImage
             - DrupalFile
             - Table
+            - video_embed
         -
           name: Tools
           items:
@@ -68,8 +68,17 @@ settings:
     drupallink:
       linkit_enabled: true
       linkit_profile: default
+    language:
+      language_list: un
     stylescombo:
       styles: ''
+    video_embed:
+      defaults:
+        children:
+          autoplay: false
+          responsive: true
+          width: '854'
+          height: '480'
 image_upload:
   status: true
   scheme: public

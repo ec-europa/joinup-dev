@@ -1,7 +1,14 @@
 # Add handy links to configuration forms to the administration menu.
-joinup_core.piwik_integration_settings:
-  title: 'Piwik integration'
-  route_name: joinup_core.piwik_integration_settings
+joinup_core.admin_reporting:
+  route_name: joinup_core.admin_reporting
+  parent: system.admin
+  description: 'Access Joinup reports.'
+  title: 'Reporting'
+  weight: 75
+
+joinup_core.matomo_integration_settings:
+  title: 'Matomo integration'
+  route_name: joinup_core.matomo_integration_settings
   description: 'Configure when download and visit counts are refreshed.'
   parent: system.admin
   weight: 0

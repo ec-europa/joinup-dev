@@ -89,10 +89,20 @@ content:
         template_suggestion: ''
     region: content
   last_update:
+    label: hidden
+    type: joinup_timestamp_timeago
     weight: 4
-    region: content
-    settings: {  }
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+      tooltip_format: long
+      tooltip_format_custom: ''
+      timeago_settings:
+        strings:
+          seconds: 'few seconds'
     third_party_settings: {  }
+    region: content
   members:
     weight: 6
     region: content
@@ -125,3 +135,4 @@ hidden:
   og_group: true
   rdf_entity_field_collection_content_inline_facets: true
   rdf_entity_field_collection_content_top: true
+  read_more: true

@@ -1,0 +1,394 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/node\/701243?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/tallinn_report"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/11738?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/uid": [
+            {
+                "href": "http:\/\/default\/user\/704355?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/og_audience": [
+            {
+                "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": 701243
+        }
+    ],
+    "uuid": [
+        {
+            "value": "dd2999a4-ee3e-485f-a6bc-b3fe35435a54"
+        }
+    ],
+    "vid": [
+        {
+            "value": 21843
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "tallinn_report"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2018-06-28T07:28:43+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11738?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "83316c58-71e7-4f0a-841c-9ee1677cebdc"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/704355?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cfab35d1-0a56-492d-ae5f-c4d83cce9787"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/tallinn_report\/og_audience": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "title": [
+        {
+            "value": "Romania",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-30T19:21:22+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-06-28T07:28:43+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "sticky": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "report": [
+        {
+            "uri": "internal:\/contact?category=report&uri=\/node\/701243",
+            "title": "Report abusive content",
+            "options": []
+        }
+    ],
+    "field_tallinn_action_1": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_10": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_11": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_12": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_13": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_14": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_15": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_16": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_17": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_18": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_19": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_2": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_20": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_21": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_22": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_23": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_24": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_25": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_3": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_4": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_5": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_6": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_7": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_8": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ],
+    "field_tallinn_action_9": [
+        {
+            "status": "no_data",
+            "value": null,
+            "format": null,
+            "uri": null,
+            "lang": "en"
+        }
+    ]
+}

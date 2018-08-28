@@ -1,6 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
+
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Helper methods to deal with entities.
@@ -12,7 +18,7 @@ trait EntityTrait {
    *
    * If multiple entities have the same label then the first one is returned.
    *
-   * @param string $entity_type
+   * @param string $entity_type_id
    *   The entity type to check.
    * @param string $label
    *   The label to check.
@@ -22,14 +28,19 @@ trait EntityTrait {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The requested entity.
    *
-   * @throws \Exception
+   * @throws \RuntimeException
    *   Thrown when an entity with the given type, label and bundle does not
    *   exist.
    */
-  protected function getEntityByLabel($entity_type, $label, $bundle = NULL) {
+  protected static function getEntityByLabel(string $entity_type_id, string $label, string $bundle = NULL): EntityInterface {
     $entity_manager = \Drupal::entityTypeManager();
-    $storage = $entity_manager->getStorage($entity_type);
-    $entity = $entity_manager->getDefinition($entity_type);
+    try {
+      $storage = $entity_manager->getStorage($entity_type_id);
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      throw new \RuntimeException('Storage not found', NULL, $e);
+    }
+    $entity = $entity_manager->getDefinition($entity_type_id);
 
     $query = $storage->getQuery()
       ->condition($entity->getKey('label'), $label)
@@ -47,7 +58,37 @@ trait EntityTrait {
       return $storage->load($result);
     }
 
-    throw new \Exception("The entity with label '$label' was not found.");
+    throw new \RuntimeException("The entity with label '$label' was not found.");
+  }
+
+  /**
+   * Mapping of human readable entity type names to machine names.
+   *
+   * @return array
+   *   The entity type mapping.
+   */
+  protected static function entityTypeAliases(): array {
+    return [
+      'content' => 'node',
+    ];
+  }
+
+  /**
+   * Translates human readable entity types to machine names.
+   *
+   * @param string $entity_type_label
+   *   The human readable entity type. Case insensitive.
+   *
+   * @return string
+   *   The machine name of the entity type.
+   */
+  protected static function translateEntityTypeAlias(string $entity_type_label): string {
+    $entity_type_label = strtolower($entity_type_label);
+    $aliases = self::entityTypeAliases();
+    if (array_key_exists($entity_type_label, $aliases)) {
+      $entity_type_label = $aliases[$entity_type_label];
+    }
+    return $entity_type_label;
   }
 
   /**
@@ -65,18 +106,38 @@ trait EntityTrait {
    * @throws \Exception
    *    Thrown when the menu item is not found.
    */
-  public function getMenuLinkByTitle($title) {
+  public function getMenuLinkByTitle(string $title): MenuLinkContentInterface {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = \Drupal::service('entity_type.manager');
     $menu_links = $entity_type_manager->getStorage('menu_link_content')->loadByProperties(
       ['title' => $title]
     );
     if (empty($menu_links)) {
-      throw new \Exception("The menu parent with title '{$title}' was not found.");
+      throw new \Exception("The menu link with title '{$title}' was not found.");
     }
 
-    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $parent_link */
     return reset($menu_links);
+  }
+
+  /**
+   * Forces a reindex of the entity in search_api.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to reindex.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown when an entity with a non-existing storage is passed.
+   */
+  protected function forceSearchApiReindex(EntityInterface $entity): void {
+    // Invalidate any static cache, so that all computed fields are calculated
+    // with updated values.
+    // For example, the "collection" computed field of solutions.
+    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->resetCache([$entity->id()]);
+    // In order to avoid copying code from search_api_entity_update(), we
+    // need to fake an update event. Said function requires the "original"
+    // property to be populated, so just fill it with the entity itself.
+    $entity->original = $entity;
+    search_api_entity_update($entity);
   }
 
 }

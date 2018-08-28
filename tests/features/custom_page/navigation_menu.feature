@@ -152,20 +152,20 @@ Feature: Navigation menu for custom pages
     Then the "Edit menu" link in the "Navigation menu block" should not be visible
     And the "Add new page" link in the "Navigation menu block" should not be visible
 
-  Scenario: The menu sub pages should be shown in a separate block.
+  Scenario: The menu sub-pages should be shown in a separate block.
     Given the following collection:
       | title  | Hidden Ship |
       | logo   | logo.png    |
       | banner | banner.jpg  |
       | state  | validated   |
     And custom_page content:
-      | title                       | body      | collection  | status      |
-      | The Burning Angel           | Test body | Hidden Ship | published   |
-      | Snake of Pleasure           | Test body | Hidden Ship | published   |
-      | The Slaves of the Shores    | Test body | Hidden Ship | published   |
-      | The Slaves of the Sea       | Test body | Hidden Ship | published   |
-      | The Slaves of the Mountains | Test body | Hidden Ship | published   |
-      | The Slaves of the Air       | Test body | Hidden Ship | unpublished |
+      | title                       | body      | collection  | status      | logo     |
+      | The Burning Angel           | Test body | Hidden Ship | published   | logo.png |
+      | Snake of Pleasure           | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Shores    | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Sea       | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Mountains | Test body | Hidden Ship | published   | logo.png |
+      | The Slaves of the Air       | Test body | Hidden Ship | unpublished | logo.png |
     # The custom page menu items were created automatically in the above step.
     And the following custom page menu structure:
       | title                       | parent            | weight |
@@ -196,15 +196,18 @@ Feature: Navigation menu for custom pages
       | The Slaves of the Sea    |
       # The Slaves of the Air is unpublished and the facilitator can see it.
       | The Slaves of the Air    |
+    And the logo should be shown in the "The Slaves of the Shores" custom page tile
+    And the logo should be shown in the "Snake of Pleasure" custom page tile
+    And the logo should be shown in the "The Slaves of the Air" custom page tile
     But I should not see the "The Slaves of the Mountains" tile
 
     When I am not logged in
     And I go to the homepage of the "Hidden Ship" collection
     And I click "The Burning Angel" in the "Navigation menu block" region
     Then I should see the following tiles in the "Subpages menu" region:
-      | The Slaves of the Shores    |
-      | Snake of Pleasure           |
-      | The Slaves of the Sea       |
+      | The Slaves of the Shores |
+      | Snake of Pleasure        |
+      | The Slaves of the Sea    |
 
     # Publish an entity will result in showing it to the menu if it is meant to.
     When I am logged in as a moderator
@@ -242,3 +245,112 @@ Feature: Navigation menu for custom pages
     And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
     Then I should see the link "An army of furry little killing machines" in the "Navigation menu"
     And I should not see the link "Tree eaters" in the "Navigation menu"
+
+  @javascript
+  Scenario: Only custom page entries can be nested in the collection navigation menu.
+    Given the following collection:
+      | title | Ergonomic backpacks |
+      | state | validated           |
+    And custom_page content:
+      | title              | collection          | status    |
+      | Types of backpacks | Ergonomic backpacks | published |
+      | Frameless          | Ergonomic backpacks | published |
+      | External frame     | Ergonomic backpacks | published |
+      | Internal frame     | Ergonomic backpacks | published |
+      | Bodypack           | Ergonomic backpacks | published |
+    And the following collection menu structure:
+      | title              | parent             | weight |
+      | Types of backpacks |                    | 3      |
+      | Frameless          | Types of backpacks | 4      |
+      | External frame     | Types of backpacks | 5      |
+      | Internal frame     |                    | 6      |
+      # Force a reserved page to be nested. This is not possible through the UI.
+      | About              | Bodypack           | 7      |
+
+    When I am logged in as a facilitator of the "Ergonomic backpacks" collection
+    And I go to the "Ergonomic backpacks" collection
+    And I click the contextual link "Edit menu" in the "Left sidebar" region
+    # The "About" page has been moved back to first level.
+    Then the menu table should be:
+      | title              | parent             |
+      | Overview           |                    |
+      | Members            |                    |
+      | Bodypack           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     | Types of backpacks |
+      | Internal frame     |                    |
+    When I drag the "External frame" table row to the left
+    Then the menu table should be:
+      | title              | parent             |
+      | Overview           |                    |
+      | Members            |                    |
+      | Bodypack           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     |                    |
+    When I drag the "Internal frame" table row to the right
+    Then the menu table should be:
+      | title              | parent             |
+      | Overview           |                    |
+      | Members            |                    |
+      | Bodypack           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     | External frame     |
+    # Maximum indentation level is one.
+    When I drag the "Internal frame" table row to the right
+    Then the menu table should be:
+      | title              | parent             |
+      | Overview           |                    |
+      | Members            |                    |
+      | Bodypack           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     | External frame     |
+    # Links that don't refer to a node cannot be nested.
+    When I drag the "Members" table row to the right
+    And I drag the "About" table row to the right
+    Then the menu table should be:
+      | title              | parent             |
+      | Overview           |                    |
+      | Members            |                    |
+      | Bodypack           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     | External frame     |
+    # But they can still be re-ordered up and down.
+    When I drag the "Overview" table row down
+    When I drag the "About" table row up
+    Then the menu table should be:
+      | title              | parent             |
+      | Members            |                    |
+      | Overview           |                    |
+      | About              |                    |
+      | Bodypack           |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     | External frame     |
+    # Links pointing to nodes can be moved too.
+    When I drag the "Bodypack" table row down
+    And I drag the "Bodypack" table row down
+    Then the menu table should be:
+      | title              | parent             |
+      | Members            |                    |
+      | Overview           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | Bodypack           | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     | External frame     |

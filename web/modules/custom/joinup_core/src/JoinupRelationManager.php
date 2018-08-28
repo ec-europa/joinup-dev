@@ -1,19 +1,31 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service to manage relations for the group content entities.
+ *
+ * @todo This module depends on functionality provided by a number of modules
+ *   such as Collection and Solution that depend on joinup_core themselves. This
+ *   causes a circular dependency. It should be moved to the installation
+ *   profile.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4543
  */
-class JoinupRelationManager implements ContainerInjectionInterface {
+class JoinupRelationManager implements JoinupRelationManagerInterface, ContainerInjectionInterface {
 
   /**
    * The entity type manager.
@@ -53,16 +65,9 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   }
 
   /**
-   * Retrieves the parent of the entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface|null
-   *   The rdf entity the passed entity belongs to, or NULL when no group is
-   *    found.
+   * {@inheritdoc}
    */
-  public function getParent(EntityInterface $entity) {
+  public function getParent(EntityInterface $entity): ?RdfInterface {
     $groups = $this->membershipManager->getGroups($entity);
     if (empty($groups['rdf_entity'])) {
       return NULL;
@@ -72,15 +77,9 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   }
 
   /**
-   * Retrieves the moderation state of the parent.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return int
-   *   The moderation status.
+   * {@inheritdoc}
    */
-  public function getParentModeration(EntityInterface $entity) {
+  public function getParentModeration(EntityInterface $entity): ?int {
     $parent = $this->getParent($entity);
     if (!$parent) {
       return NULL;
@@ -91,19 +90,13 @@ class JoinupRelationManager implements ContainerInjectionInterface {
     ];
 
     $moderation = $parent->{$field_array[$parent->bundle()]}->value;
-    return $moderation;
+    return (int) $moderation;
   }
 
   /**
-   * Retrieves the state of the parent.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return string
-   *   The state of the parent entity.
+   * {@inheritdoc}
    */
-  public function getParentState(EntityInterface $entity) {
+  public function getParentState(EntityInterface $entity): string {
     $parent = $this->getParent($entity);
     $field_array = [
       'collection' => 'field_ar_state',
@@ -115,43 +108,30 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   }
 
   /**
-   * Retrieves the eLibrary settings of the parent.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return string
-   *   The state of the parent entity.
+   * {@inheritdoc}
    */
-  public function getParentElibrary(EntityInterface $entity) {
+  // @codingStandardsIgnoreLine
+  public function getParentELibraryCreationOption(EntityInterface $entity): int {
     $parent = $this->getParent($entity);
     $field_array = [
       'collection' => 'field_ar_elibrary_creation',
       'solution' => 'field_is_elibrary_creation',
     ];
 
-    $e_library = $parent->{$field_array[$parent->bundle()]}->first()->value;
+    $e_library = (int) $parent->{$field_array[$parent->bundle()]}->first()->value;
     return $e_library;
   }
 
   /**
-   * Retrieves all the users that have the administrator role in a group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group entity.
-   * @param array $state
-   *   (optional) An array of membership states to retrieve. Defaults to active.
-   *
-   * @return array
-   *   An array of users that are administrators of the entity group.
+   * {@inheritdoc}
    */
-  public function getGroupOwners(EntityInterface $entity, array $state = [OgMembershipInterface::STATE_ACTIVE]) {
-    $role_id = $entity->getEntityTypeId() . '-' . $entity->bundle() . '-administrator';
+  public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
+    $memberships = $this->getGroupMembershipsByRoles($entity, ['administrator'], $states);
 
     $users = [];
-    foreach ($this->getGroupMemberships($entity, $state) as $membership) {
+    foreach ($memberships as $membership) {
       $user = $membership->getOwner();
-      if (!empty($user) && $membership->hasRole($role_id)) {
+      if (!empty($user)) {
         $users[$user->id()] = $user;
       }
     }
@@ -160,18 +140,10 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   }
 
   /**
-   * Retrieves all the members with any role in a certain group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group entity.
-   * @param array $state
-   *   (optional) An array of membership states to retrieve. Defaults to active.
-   *
-   * @return array
-   *   An array of users that are members of the entity group.
+   * {@inheritdoc}
    */
-  public function getGroupUsers(EntityInterface $entity, array $state = [OgMembershipInterface::STATE_ACTIVE]) {
-    return array_reduce($this->getGroupMemberships($entity, $state), function ($users, OgMembershipInterface $membership) {
+  public function getGroupUsers(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
+    return array_reduce($this->getGroupMemberships($entity, $states), function ($users, OgMembershipInterface $membership) {
       $user = $membership->getOwner();
       if (!empty($user)) {
         $users[] = $user;
@@ -181,20 +153,12 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   }
 
   /**
-   * Retrieves all the memberships of a certain entity group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group entity.
-   * @param array $state
-   *   (optional) An array of membership states to retrieve. Defaults to active.
-   *
-   * @return \Drupal\og\OgMembershipInterface[]
-   *   The memberships of the group.
+   * {@inheritdoc}
    */
-  public function getGroupMemberships(EntityInterface $entity, array $state = [OgMembershipInterface::STATE_ACTIVE]) {
+  public function getGroupMemberships(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
     /** @var \Drupal\og\OgMembershipInterface[] $memberships */
     $memberships = $this->entityTypeManager->getStorage('og_membership')->loadByProperties([
-      'state' => $state,
+      'state' => $states,
       'entity_type' => $entity->getEntityTypeId(),
       'entity_id' => $entity->id(),
     ]);
@@ -203,41 +167,25 @@ class JoinupRelationManager implements ContainerInjectionInterface {
   }
 
   /**
-   * Retrieves all the user memberships with a certain role and state.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user to get the memberships for.
-   * @param string $role
-   *   The role id.
-   * @param array $state
-   *   (optional) An array of membership states to retrieve. Defaults to active.
-   *
-   * @return \Drupal\og\OgMembershipInterface[]
-   *   An array of OG memberships that match the criteria.
+   * {@inheritdoc}
    */
-  public function getUserMembershipsByRole(AccountInterface $user, $role, array $state = [OgMembershipInterface::STATE_ACTIVE]) {
+  public function getUserMembershipsByRole(AccountInterface $user, string $role, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
     $storage = $this->entityTypeManager->getStorage('og_membership');
 
     // Fetch all the memberships of the user, filtered by role and state.
     $query = $storage->getQuery();
     $query->condition('uid', $user->id());
     $query->condition('roles', $role);
-    $query->condition('state', $state, 'IN');
+    $query->condition('state', $states, 'IN');
     $result = $query->execute();
 
     return $storage->loadMultiple($result);
   }
 
   /**
-   * Retrieves all the collections where a user is the sole owner.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user to retrieve memberships for.
-   *
-   * @return \Drupal\rdf_entity\Entity\Rdf[]
-   *   An array of collections.
+   * {@inheritdoc}
    */
-  public function getCollectionsWhereSoleOwner(AccountInterface $user) {
+  public function getCollectionsWhereSoleOwner(AccountInterface $user): array {
     $memberships = $this->getUserMembershipsByRole($user, 'rdf_entity-collection-administrator');
 
     // Prepare a list of collections where the user is the sole owner.
@@ -251,6 +199,75 @@ class JoinupRelationManager implements ContainerInjectionInterface {
     }
 
     return $collections;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getGroupMembershipsByRoles(EntityInterface $entity, array $role_names, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
+    $entity_type_id = $entity->getEntityTypeId();
+    $bundle_id = $entity->bundle();
+
+    $role_ids = array_map(function (string $role_name) use ($entity_type_id, $bundle_id): string {
+      return implode('-', [$entity_type_id, $bundle_id, $role_name]);
+    }, $role_names);
+
+    $memberships = [];
+    foreach ($this->getGroupMemberships($entity, $states) as $membership) {
+      foreach ($role_ids as $role_id) {
+        if ($membership->hasRole($role_id)) {
+          $memberships[$membership->id()] = $membership;
+          continue;
+        }
+      }
+    }
+
+    return $memberships;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCollectionIds(): array {
+    return $this->getRdfEntityIdsByBundle('collection');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSolutionIds(): array {
+    return $this->getRdfEntityIdsByBundle('solution');
+  }
+
+  /**
+   * Returns the entity IDs of the RDF entities with the given bundle ID.
+   *
+   * @param string $bundle
+   *   The bundle ID.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   */
+  protected function getRdfEntityIdsByBundle(string $bundle): array {
+    try {
+      // Since the Joinup Core module depends on the RDF Entity module we can
+      // reasonably assume that the entity storage is defined and is valid. If
+      // it is not this is due to exceptional circumstances occuring at runtime.
+      $storage = $this->entityTypeManager->getStorage('rdf_entity');
+      $definition = $this->entityTypeManager->getDefinition('rdf_entity');
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      throw new \RuntimeException('The RDF entity storage is not valid.');
+    }
+    catch (PluginNotFoundException $e) {
+      throw new \RuntimeException('The RDF entity storage is not defined.');
+    }
+
+    $bundle_key = $definition->getKey('bundle');
+
+    $query = $storage->getQuery();
+    $query->condition($bundle_key, $bundle);
+    return $query->execute();
   }
 
 }

@@ -12,7 +12,7 @@ dependencies:
     - node.type.video
   module:
     - ds
-    - text
+    - smart_trim
     - user
 id: node.video.view_mode_tile
 targetEntityType: node
@@ -21,10 +21,18 @@ mode: view_mode_tile
 content:
   body:
     label: hidden
-    type: text_trimmed
+    type: smart_trim
     weight: 0
     settings:
       trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
     third_party_settings:
       ds:
         ft:

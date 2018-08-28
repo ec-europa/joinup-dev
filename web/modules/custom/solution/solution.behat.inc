@@ -13,6 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityReferenceTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -30,6 +31,7 @@ use Drupal\rdf_entity\Entity\Rdf;
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use ConfigReadOnlyTrait;
+  use EntityTrait;
   use EntityReferenceTrait;
   use FileTrait;
   use NodeTrait;
@@ -215,7 +217,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // As each given step is executed in the same request
     // we need to reset the mapping.
     $storage = \Drupal::entityManager()->getStorage('rdf_entity');
-    $storage->getGraphHandler()->resetRequestGraphs();
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
@@ -292,6 +293,9 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       foreach ($values['field_ar_affiliates'] as $collection_label) {
         $collection = $this->getRdfEntityByLabel(trim($collection_label), 'collection');
         solution_update_collection_affiliation($solution->id(), $collection->id());
+        // Reindex the solution, so that the value of the "collection" computed
+        // field will be populated and indexed correctly.
+        $this->forceSearchApiReindex($solution);
       }
     }
 
@@ -490,6 +494,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'collection' => 'field_ar_affiliates',
       'featured' => 'field_site_featured',
       'pinned site-wide' => 'field_site_pinned',
+      'pinned in' => 'field_is_pinned_in',
     ];
   }
 

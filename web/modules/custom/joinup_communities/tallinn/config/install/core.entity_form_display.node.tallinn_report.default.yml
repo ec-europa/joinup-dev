@@ -1,0 +1,321 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.tallinn_report.field_tallinn_action_1
+    - field.field.node.tallinn_report.field_tallinn_action_10
+    - field.field.node.tallinn_report.field_tallinn_action_11
+    - field.field.node.tallinn_report.field_tallinn_action_12
+    - field.field.node.tallinn_report.field_tallinn_action_13
+    - field.field.node.tallinn_report.field_tallinn_action_14
+    - field.field.node.tallinn_report.field_tallinn_action_15
+    - field.field.node.tallinn_report.field_tallinn_action_16
+    - field.field.node.tallinn_report.field_tallinn_action_17
+    - field.field.node.tallinn_report.field_tallinn_action_18
+    - field.field.node.tallinn_report.field_tallinn_action_19
+    - field.field.node.tallinn_report.field_tallinn_action_2
+    - field.field.node.tallinn_report.field_tallinn_action_20
+    - field.field.node.tallinn_report.field_tallinn_action_21
+    - field.field.node.tallinn_report.field_tallinn_action_22
+    - field.field.node.tallinn_report.field_tallinn_action_23
+    - field.field.node.tallinn_report.field_tallinn_action_24
+    - field.field.node.tallinn_report.field_tallinn_action_25
+    - field.field.node.tallinn_report.field_tallinn_action_3
+    - field.field.node.tallinn_report.field_tallinn_action_4
+    - field.field.node.tallinn_report.field_tallinn_action_5
+    - field.field.node.tallinn_report.field_tallinn_action_6
+    - field.field.node.tallinn_report.field_tallinn_action_7
+    - field.field.node.tallinn_report.field_tallinn_action_8
+    - field.field.node.tallinn_report.field_tallinn_action_9
+    - node.type.tallinn_report
+  module:
+    - field_group
+third_party_settings:
+  field_group:
+    group_tallinn_tabs_group:
+      children:
+        - group_tallinn_tab_1
+        - group_tallinn_tab_2
+        - group_tallinn_tab_3
+        - group_tallinn_tab_4
+        - group_tallinn_tab_5
+        - group_tallinn_tab_6
+      parent_name: ''
+      weight: 2
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: Categories
+    group_tallinn_tab_1:
+      children:
+        - field_tallinn_action_1
+        - field_tallinn_action_2
+        - field_tallinn_action_3
+        - field_tallinn_action_4
+        - field_tallinn_action_5
+      parent_name: group_tallinn_tabs_group
+      weight: 7
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: '▪ Ensure that European citizens and businesses may interact digitally with public administration, if they choose to do so and whenever feasible and appropriate from a cost-benefit and user-centricity perspective.<br />▪ Work to ensure the consistent quality of user experience in digital public services as set out in the Annex “User-centricity principles for design and delivery of digital public services” of the Tallinn Declaration.<br />▪ Work to increase the readiness of European citizens and businesses to interact digitally with the public administrations.'
+        required_fields: true
+      label: 'Digital-by-default, inclusiveness and accessibility'
+    group_tallinn_tab_2:
+      children:
+        - field_tallinn_action_6
+        - field_tallinn_action_7
+        - field_tallinn_action_8
+        - field_tallinn_action_9
+      parent_name: group_tallinn_tabs_group
+      weight: 8
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Implement for key public services, at least as an option that citizens and businesses shall supply the same information only once to a public administration.<br />▪ Public administration offices take action if permitted to internally re-use this data, in due respect of data protection rules.'
+        required_fields: true
+      label: 'Once Only'
+    group_tallinn_tab_3:
+      children:
+        - field_tallinn_action_10
+        - field_tallinn_action_11
+        - field_tallinn_action_12
+        - field_tallinn_action_13
+      parent_name: group_tallinn_tabs_group
+      weight: 9
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Ensure that information security and privacy needs are taken into consideration when designing public services and public administration information and communication technology (ICT) solutions, following a risk-based approach and using state-of-the-art solutions.<br />▪ Work to increase the uptake of national eID schemes, including to make them more user-friendly and especially more suitable for mobile platforms, while ensuring their appropriate security levels.'
+        required_fields: true
+      label: 'Trustworthiness and Security'
+    group_tallinn_tab_4:
+      children:
+        - field_tallinn_action_14
+        - field_tallinn_action_15
+        - field_tallinn_action_16
+      parent_name: group_tallinn_tabs_group
+      weight: 10
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Make it possible for citizens and businesses to better manage (e.g. access, check and inquire about the use of, submit corrections to, authorise (re)use of) their personal data held by public administrations, at least in base registries and/or similar databases where feasible.'
+        required_fields: true
+      label: 'Openness and transparency'
+    group_tallinn_tab_5:
+      children:
+        - field_tallinn_action_17
+        - field_tallinn_action_18
+        - field_tallinn_action_19
+      parent_name: group_tallinn_tabs_group
+      weight: 11
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Work on national interoperability frameworks based on the European Interoperability Framework (EIF), while respecting also the relevant national standards, and adhere to EIF for cross-border digital public services.'
+        required_fields: true
+      label: 'Interoperability by default'
+    group_tallinn_tab_6:
+      children:
+        - field_tallinn_action_20
+        - field_tallinn_action_21
+        - field_tallinn_action_22
+        - field_tallinn_action_23
+        - field_tallinn_action_24
+        - field_tallinn_action_25
+      parent_name: group_tallinn_tabs_group
+      weight: 12
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Take steps to increase the digital leadership skills within the public administration.<br />▪ Prepare and implement initiatives to widen and deepen the use of data and analytics.<br />▪ Expand and deepen the exchange and sharing of good eGovernment practices.<br />▪ Make efforts to ensure adequate and timely funding resources for the prioritised digital transformation in the public administrations.<br />▪ Devote resources for more and faster experimentation with emerging ICT within the public administration.<br />▪ Work to modernise the design of public services.'
+        required_fields: true
+      label: 'Horizontal enabling policy steps'
+id: node.tallinn_report.default
+targetEntityType: node
+bundle: tallinn_report
+mode: default
+content:
+  field_tallinn_action_1:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_10:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_11:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_12:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_13:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_14:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_15:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_16:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_17:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_18:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_19:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_2:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_20:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_21:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_22:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_23:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_24:
+    type: tallinn_entry_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_25:
+    type: tallinn_entry_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_3:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_4:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_5:
+    type: tallinn_entry_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_6:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_7:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_8:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_9:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  title: true
+  created: true
+  current_workflow_state: true
+  langcode: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  url_redirects: true

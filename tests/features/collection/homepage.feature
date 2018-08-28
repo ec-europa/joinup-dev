@@ -6,11 +6,11 @@ Feature: Collection homepage
 
   Background:
     Given users:
-      | Username |
-      | Frodo    |
-      | Boromir  |
-      | Legoloas |
-      | Gimli    |
+      | Username | Status |
+      | Frodo    | active |
+      | Boromir  | active |
+      | Legoloas | active |
+      | Gimli    | active |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
@@ -45,18 +45,11 @@ Feature: Collection homepage
 
   Scenario: The collection homepage shows the collection metrics.
     When I go to the homepage of the "Middle earth daily" collection
+    Then a tour should be available
     Then I see the text "3 Members" in the "Header" region
     Then I see the text "1 Solution" in the "Header" region
-    Then I see the days passed since "2017-07-05"
-    # Test caching of the metrics: Members.
-    # Gimli is not a member yet.
-    When I am logged in as Gimli
-    And I go to the homepage of the "Middle earth daily" collection
-    And I press the "Join this collection" button
-    And I go to the homepage of the "Middle earth daily" collection
-    Then I see the text "4 Members" in the "Header" region
 
-    # see ISAICP-3599
+    # @see ISAICP-3599
     # Test caching of the metrics: Solutions.
 #    Then I delete the "Bilbo's book" solution
 #    When I am logged in as Gimli
@@ -70,7 +63,6 @@ Feature: Collection homepage
 #    And I click "Edit" in the "Entity actions" region
 #    Then I press "Update"
 #    And I go to the homepage of the "Middle earth daily" collection
-#    And I should see the text "0 days ago"
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection
@@ -152,6 +144,12 @@ Feature: Collection homepage
     Then I should see the following tiles in the correct order:
       | Rohirrim make extraordinary deal                  |
       | Breaking: Gandalf supposedly plans his retirement |
+
+  Scenario: Search engines and link crawlers should not follow advanced search link.
+    Given I go to the homepage of the "Middle earth daily" collection
+    Then search engines should be discouraged to follow the link "Advanced search"
+    When I click "Supplier exchange" in the "collection policy domain" inline facet
+    Then search engines should be discouraged to follow the link "Advanced search"
 
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262

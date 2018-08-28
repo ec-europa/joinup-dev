@@ -6,7 +6,6 @@ label: Administrator
 weight: 4
 is_admin: false
 permissions:
-  - 'access uri converter'
   - 'administer account settings'
   - 'administer redirects'
   - 'edit collection rdf entity'

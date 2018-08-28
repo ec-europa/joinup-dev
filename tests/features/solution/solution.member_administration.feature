@@ -24,34 +24,35 @@ Feature: Solution membership administration
       | The Missing Sons | Guadalupe Norman | facilitator |
       | The Missing Sons | Marcia Garcia    |             |
 
-  Scenario: Only privileged members should be able to add facilitators
+  Scenario: Only privileged members should be able to add members
     When I am not logged in
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as an authenticated
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as "Marcia Garcia"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should not see the link "Add facilitators"
+    Then I should not see the link "Add members"
 
     When I am logged in as "Guadalupe Norman"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
+    Then I should see the link "Add members"
 
     # Add a facilitator.
-    When I click "Add facilitators"
-    And I fill in "Email or name" with "marcia_garcia@example.com"
-    And I press "Filter"
-    Then I should see the text "Marcia Garcia (marcia_garcia@example.com)"
-    When I check "Marcia Garcia (marcia_garcia@example.com)"
-    And I press "Add facilitators"
+    When I click "Add members"
+    And I fill in "E-mail" with "marcia_garcia@example.com"
+    And I press "Add"
+    Then the page should show only the chips:
+      | Marcia Garcia |
+    When I select "Facilitator" from "Role"
+    And I press "Add members"
     # Submitting the form takes us back to the "Members" page.
     Then I should see the heading "Members"
 
@@ -59,22 +60,22 @@ Feature: Solution membership administration
     When I am logged in as "Marcia Garcia"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
-    When I click "Add facilitators"
-    Then I should see the heading "Add facilitators"
+    Then I should see the link "Add members"
+    When I click "Add members"
+    Then I should see the heading "Add members"
 
   @email
   Scenario: Assign and remove new role to a member
     When I am logged in as "Guadalupe Norman"
     And I go to the "The Missing Sons" solution
     And I click "Members" in the "Left sidebar"
-    Then I should see the link "Add facilitators"
+    Then I should see the link "Add members"
     Then I check the box "Update the member Marcia Garcia"
     Then I select "Add the facilitator role to the selected members" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
       | Add the facilitator role to the selected members was applied to 1 item. |
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | Marcia Garcia                                                                             |
       | subject   | Your role has been change to The Missing Sons                                             |
       | body      | A solution moderator has changed your role in this group to Member, Solution facilitator. |
@@ -83,7 +84,7 @@ Feature: Solution membership administration
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
       | Remove the facilitator role from the selected members was applied to 1 item. |
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | Marcia Garcia                                                       |
       | subject   | Your role has been change to The Missing Sons                       |
       | body      | A solution moderator has changed your role in this group to Member. |

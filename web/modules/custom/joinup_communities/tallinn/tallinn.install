@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Contains installation functions for the tallinn module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function tallinn_uninstall() {
+  \Drupal::state()->delete('tallinn.dashboard.access_policy');
+}

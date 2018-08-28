@@ -11,12 +11,12 @@ dependencies:
 id: contentbundle
 theme: joinup_theme
 region: filters
-weight: -10
+weight: -11
 provider: null
 plugin: 'facet_block:content_bundle'
 settings:
   id: 'facet_block:content_bundle'
-  label: 'Content bundle'
+  label: 'Content overview - Content bundle'
   provider: facets
   label_display: '0'
 visibility:

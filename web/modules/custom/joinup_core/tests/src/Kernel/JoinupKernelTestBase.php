@@ -5,7 +5,12 @@ namespace Drupal\Tests\joinup_core\Kernel;
 use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
 
 /**
- * Provides a base class for Joinup kernel tests.
+ * Provides a base class for entity tests in Joinup.
+ *
+ * This class is not intended for generic kernel tests but only for entity
+ * tests. It will be renamed to JoinupEntityKernelTestBase to avoid confusion.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4542
  *
  * Mainly, assures the connection to the triple store database.
  *

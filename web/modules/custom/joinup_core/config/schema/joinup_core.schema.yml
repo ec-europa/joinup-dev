@@ -89,23 +89,23 @@ plugin.plugin_configuration.search_api_processor.joinup_entity_status:
       label: 'Inverse'
     roles:
 
-joinup_core.piwik_settings:
+joinup_core.matomo_settings:
   type: config_object
-  label: 'Piwik integration settings'
+  label: 'Matomo integration settings'
   mapping:
     visit_counts:
       type: sequence
       sequence:
-        type: joinup_core.piwik_settings.visit_counts.[%key]
+        type: joinup_core.matomo_settings.visit_counts.[%key]
     download_counts:
       type: sequence
       sequence:
-        type: joinup_core.piwik_settings.download_counts.[%key]
+        type: joinup_core.matomo_settings.download_counts.[%key]
     launch_date:
       type: string
       label: 'The date when the website was launched, in ISO-8601 extended format.'
 
-joinup_core.piwik_settings.*.*:
+joinup_core.matomo_settings.*.*:
   type: mapping
   mapping:
     period:
@@ -118,3 +118,22 @@ joinup_core.piwik_settings.*.*:
 entity_reference_selection.grouped_rdf_taxonomy_term_selection:default:
   type: entity_reference_selection.default
   label: 'RDF taxonomy term selection handler settings'
+
+# Schema for 'joinup_timestamp_timeago' formatter settings.
+field.formatter.settings.joinup_timestamp_timeago:
+  type: field.formatter.settings.timestamp
+  label: 'Joinup Timestamp Timeago display format settings'
+  mapping:
+    tooltip_format:
+      type: string
+      label: 'Tooltip date format'
+    tooltip_format_custom:
+      type: string
+      label: 'Tooltip custom date format'
+    timeago_settings:
+      type: ignore
+      label: 'Timeago plugin settings'
+
+action.configuration.joinup_transfer_group_ownership:
+  type: action_configuration_default
+  label: 'Transfer the ownership of the group to the selected member'

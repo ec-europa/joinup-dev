@@ -28,19 +28,31 @@ joinup.collection_tca_form:
   requirements:
     _permission: 'propose collection rdf entity'
 
-joinup.legal_notice:
-  path: '/joinup/legal-notice'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
-    _title: 'Legal notice'
-  requirements:
-    _access: 'TRUE'
-
 joinup.eligibility_criteria:
   path: '/joinup/eligibility-criteria'
   defaults:
     _controller: '\Drupal\joinup\Controller\JoinupController::eligibilityCriteria'
     _title: 'Eligibility criteria'
+  requirements:
+    _access: 'TRUE'
+
+joinup.group_administrators_report:
+  path: '/admin/reporting/group-administrators/{entity_type_id}/{bundle_id}/{format}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\GroupAdministratorsController::report'
+    _title_callback: '\Drupal\joinup\Controller\GroupAdministratorsController::reportTitle'
+    format: 'html'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\GroupAdministratorsController::access'
+    _permission: 'administer group'
+  options:
+    _admin_route: TRUE
+
+joinup.legal_notice:
+  path: '/joinup/legal-notice'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
+    _title: 'Legal notice'
   requirements:
     _access: 'TRUE'
 
@@ -68,7 +80,7 @@ joinup.site_unfeature:
     _title: 'Remove from featured'
     field_name: field_site_featured
     value: false
-    message: '@bundle %title has been removed from the feature contents.'
+    message: '@bundle %title has been removed from the featured contents.'
   requirements:
     _permission: 'unfeature entity'
     _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
@@ -111,3 +123,33 @@ joinup.site_unpin:
     parameters:
       entity:
         type: entity:{entity_type}
+
+joinup.pin_entity:
+  path: '/pin/group/{entity_type}/{entity}/add/{collection}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinEntityController::pin'
+    _title: 'Pin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinEntityController::pinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+      collection:
+        type: entity:rdf_entity
+
+joinup.unpin_entity:
+  path: '/pin/group/{entity_type}/{entity}/remove/{collection}'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\PinEntityController::unpin'
+    _title: 'Unpin'
+  requirements:
+    _custom_access: '\Drupal\joinup\Controller\PinEntityController::unpinAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+      collection:
+        type: entity:rdf_entity

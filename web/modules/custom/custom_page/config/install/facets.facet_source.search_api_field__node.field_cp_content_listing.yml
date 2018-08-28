@@ -5,3 +5,4 @@ id: search_api_field__node.field_cp_content_listing
 name: 'search_api_field:node.field_cp_content_listing'
 filter_key: ''
 url_processor: query_string
+breadcrumb: {  }

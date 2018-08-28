@@ -8,7 +8,7 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_core\JoinupRelationManager;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\user\Form\UserCancelForm as CoreUserCancelForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,7 +23,7 @@ class UserCancelForm extends CoreUserCancelForm {
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManager
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -36,10 +36,10 @@ class UserCancelForm extends CoreUserCancelForm {
    *   The entity type bundle service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
-   * @param \Drupal\joinup_core\JoinupRelationManager $relation_manager
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupRelationManager $relation_manager) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupRelationManagerInterface $relation_manager) {
     parent::__construct($entity_manager, $entity_type_bundle_info, $time);
 
     $this->relationManager = $relation_manager;
@@ -65,6 +65,9 @@ class UserCancelForm extends CoreUserCancelForm {
     $collections = $this->relationManager->getCollectionsWhereSoleOwner($this->entity);
 
     if (!empty($collections)) {
+      // No access to the 'Cancel' button should be given if the user is the
+      // sole owner of a collection.
+      $form['actions']['submit']['#access'] = FALSE;
       $form = [
         'collections' => [
           '#theme' => 'item_list',

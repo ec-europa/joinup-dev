@@ -5,17 +5,28 @@
  * Contains step definitions for the Joinup project.
  */
 
+declare(strict_types = 1);
+
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Mink\Exception\ExpectationException;
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\joinup\HtmlManipulator;
+use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
+use WebDriver\Exception;
+use WebDriver\Key;
 
 /**
  * Defines generic step definitions.
@@ -26,13 +37,17 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ContextualLinksTrait;
   use EntityTrait;
   use TraversingTrait;
+  use UserTrait;
   use UtilityTrait;
 
   /**
-   * Define ASCII values for key presses.
+   * Checks that a 200 OK response occurred.
+   *
+   * @Then I should get a valid web page
    */
-  const KEY_LEFT = 37;
-  const KEY_RIGHT = 39;
+  public function assertSuccessfulResponse() {
+    $this->assertSession()->statusCodeEquals(200);
+  }
 
   /**
    * Checks that a 403 Access Denied error occurred.
@@ -47,7 +62,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present.
@@ -78,7 +93,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are not present on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when a column name is incorrect.
@@ -100,7 +115,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present and visible on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when an expected field is not present or is not visible.
@@ -142,7 +157,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fields are present but not visible on the page.
    *
    * @param string $fields
-   *    Fields.
+   *   Fields.
    *
    * @throws \Exception
    *   Thrown when a field is not present or is visible.
@@ -183,7 +198,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found.
@@ -210,7 +225,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present and visible on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found or is not visible.
@@ -246,7 +261,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * Assert that certain fieldsets are present and visible on the page.
    *
    * @param string $fieldsets
-   *    The fieldset names to search for, separated by comma.
+   *   The fieldset names to search for, separated by comma.
    *
    * @throws \Exception
    *   Thrown when a fieldset is not found or is visible.
@@ -378,18 +393,18 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the option with text :option from select :select is selected
    */
   public function assertFieldOptionSelected($option, $select) {
-    $selectField = $this->getSession()->getPage()->find('css', $select);
-    if ($selectField === NULL) {
+    $element = $this->findSelect($select);
+    if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
-    $optionField = $selectField->find('xpath', '//option[@selected="selected"]');
-    if ($optionField === NULL) {
+    $option_element = $element->find('xpath', '//option[@selected="selected"]');
+    if (!$option_element) {
       throw new \Exception(sprintf('No option is selected in the %s select in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
 
-    if ($optionField->getHtml() != $option) {
-      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $optionField->getHtml()));
+    if ($option_element->getText() !== $option) {
+      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
     }
   }
 
@@ -430,6 +445,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that the radio button option should be selected.
+   *
    * @Then the :radio radio button should not be selected
    */
   public function assertRadioButtonNotChecked($radio) {
@@ -494,12 +511,76 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I should have a :username user
    */
-  public function assertUserExistence($username) {
-    $user = user_load_by_name($username);
+  public function assertUserExists(string $username): void {
+    $user = $this->getUserByName($username);
 
     if (empty($user)) {
       throw new \Exception("Unable to load expected user " . $username);
     }
+  }
+
+  /**
+   * Checks that user doesn't exist.
+   *
+   * @param string $username
+   *   The username of the user.
+   *
+   * @throws \Exception
+   *   Thrown when the user is found.
+   *
+   * @Then I should not have a :username user
+   */
+  public function assertUserNotExists(string $username): void {
+    if (user_load_by_name($username)) {
+      throw new \Exception("The user '$username' exists but it should not exist.");
+    }
+  }
+
+  /**
+   * Checks the status of the given user.
+   *
+   * @param string $username
+   *   The name of the user to statusilize.
+   * @param string $status
+   *   The expected status, can be either 'active' or 'blocked'.
+   *
+   * @throws \Exception
+   *   Thrown when the user does not exist or doesn't have the expected status.
+   *
+   * @Then the account for :username should be :status
+   */
+  public function assertUserStatus(string $username, string $status): void {
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $this->getUserByName($username);
+    $expected_status = $status === 'active';
+
+    if (empty($user)) {
+      throw new \Exception("Unable to load expected user $username.");
+    }
+
+    if ($user->isActive() !== $expected_status) {
+      throw new \Exception("The user does not have the $status status.");
+    }
+  }
+
+  /**
+   * Deletes the user account with the given name.
+   *
+   * This intended to be used for user accounts that are created through the UI
+   * and are not cleaned up automatically when a test ends.
+   *
+   * @param string $username
+   *   The name of the user to delete.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when an error occurs while the user is being deleted.
+   *
+   * @Then I delete the :username user
+   */
+  public function deleteUser(string $username): void {
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $this->getUserByName($username);
+    $user->delete();
   }
 
   /**
@@ -530,13 +611,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I click the contextual link :text in the :region region
    */
   public function iClickTheContextualLinkInTheRegion($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
-
-    if (!isset($links[$text])) {
-      throw new \Exception(sprintf('Could not find a contextual link %s in the region %s. Available: %s', $text, $region, implode(', ', $links)));
-    }
-
-    $this->getSession()->visit($this->locatePath($links[$text]));
+    $this->clickContextualLink($this->getRegion($region), $text);
   }
 
   /**
@@ -553,7 +628,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the contextual link :text in the :region region
    */
   public function assertContextualLinkInRegionPresent($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
       throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
@@ -574,7 +649,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )not see the contextual link :text in the :region region
    */
   public function assertContextualLinkInRegionNotPresent($text, $region) {
-    $links = $this->findContextualLinksInRegion($region);
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
       throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
@@ -601,7 +676,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!in_array($direction, ['left', 'right'])) {
       throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
     }
-    $key = $direction === 'left' ? static::KEY_LEFT : static::KEY_RIGHT;
+    $key = $direction === 'left' ? BrowserKey::LEFT_ARROW : BrowserKey::RIGHT_ARROW;
 
     // Locate the slider starting from the label:
     // - Find the label with the given label text.
@@ -636,8 +711,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the contextual links button in the :region( region)
    * @Then the contextual links button should be visible in the :region( region)
    */
-  public function assertContextualLinkButtonVisible($region) {
-    $button = $this->findContextualLinkButtonInRegion($region);
+  public function assertContextualLinkButtonVisible(string $region): void {
+    $button = $this->findContextualLinkButton($this->getRegion($region));
     $this->assertVisuallyVisible($button);
   }
 
@@ -649,8 +724,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I click the contextual links button in the :region( region)
    */
-  public function clickContextualLinkButton($region) {
-    $button = $this->findContextualLinkButtonInRegion($region);
+  public function clickContextualLinkButton(string $region): void {
+    $button = $this->findContextualLinkButton($this->getRegion($region));
     $button->click();
   }
 
@@ -1036,6 +1111,205 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertPageNotCached() {
     $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
+  }
+
+  /**
+   * Checks that the HTTP response is cached by Drupal dynamic cache.
+   *
+   * @Then the response should be cached
+   */
+  public function assertResponseCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'HIT');
+  }
+
+  /**
+   * Checks that the HTTP response is not cached by Drupal dynamic cache.
+   *
+   * @Then the response should not be cached
+   */
+  public function assertResponseNotCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'MISS');
+  }
+
+  /**
+   * Attempts to check a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   *
+   * @Given I select/check the :row_text row
+   */
+  public function checkTableselectRow(string $text): void {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->check();
+  }
+
+  /**
+   * Attempts to uncheck a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @Given I deselect/uncheck the :row_text row
+   */
+  public function uncheckTableselectRow(string $text): void {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->uncheck();
+  }
+
+  /**
+   * Attempts to fetch a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The checkbox element.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   */
+  protected function getRowCheckboxByText(string $text): NodeElement {
+    $page = $this->getSession()->getPage();
+    $rows = $page->findAll('css', 'tr');
+    if (empty($rows)) {
+      throw new \Exception(sprintf('No rows found on the page %s', $this->getSession()->getCurrentUrl()));
+    }
+    $found = FALSE;
+    /** @var \Behat\Mink\Element\NodeElement $row */
+    foreach ($rows as $row) {
+      if (strpos($row->getText(), $text) !== FALSE) {
+        $found = TRUE;
+        break;
+      }
+    }
+    if (!$found) {
+      throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
+    }
+    if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
+      throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+    }
+
+    return $checkbox;
+  }
+
+  /**
+   * Runs a batch operations process.
+   *
+   * @Given I wait for the batch process to finish
+   */
+  public function waitForBatchProcess() {
+    while ($refresh = $this->getSession()
+      ->getPage()
+      ->find('css', 'meta[http-equiv="Refresh"]')) {
+      $content = $refresh->getAttribute('content');
+      $url = str_replace('0; URL=', '', $content);
+      $this->getSession()->visit($url);
+    }
+  }
+
+  /**
+   * Clears the static cache of DatabaseCacheTagsChecksum.
+   *
+   * Static caches are typically cleared at the end of the request since a
+   * typical web request is short lived and the process disappears when the page
+   * is delivered. But if a Behat test is using DrupalContext then Drupal will
+   * be bootstrapped early on (in the BeforeSuiteScope step). This starts a
+   * request which is not short lived, but can live for several minutes while
+   * the tests run. During the lifetime of this request there will be steps
+   * executed that do requests of their own, changing the state of the Drupal
+   * site. This does not however update any of the statically cached data of the
+   * parent request, so this is totally unaware of the changes. This causes
+   * unexpected behaviour like the failure to invalidate some caches because
+   * DatabaseCacheTagsChecksum::invalidateTags() keeps a local storage of which
+   * cache tags were invalidated, and this is not reset in time.
+   *
+   * For this reason, in such limited cases, where we need to clear the cache
+   * tags cache, we tag the Behat feature with @clearStaticCache. This ensures
+   * that static cache is cleared after each step.
+   *
+   * CAUTION: Use the @clearStaticCache tag only in scenarios where you have
+   * trouble with the static caching being preserved across step requests,
+   * because clearing the static cache too often might affect performance.
+   *
+   * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
+   * @see https://github.com/jhedstrom/drupalextension/issues/133
+   *
+   * @AfterStep
+   */
+  public function clearCacheTagsStaticCache(AfterStepScope $event) {
+    $feature = $event->getFeature();
+    if ($feature->hasTag('clearStaticCache')) {
+      parent::clearStaticCaches();
+    }
+  }
+
+  /**
+   * Waits until a text is dynamically added to the page.
+   *
+   * @Given I wait until the page contains the text :text
+   */
+  public function iWaitUntilPageContains($text) {
+    $text = addslashes($text);
+    $this->getSession()->wait(60000,
+      "jQuery(':contains(\"$text\")').length > 0"
+    );
+  }
+
+  /**
+   * Strips elements from tables that are only readable by screen readers.
+   *
+   * @AfterTableFetch
+   */
+  public static function stripScreenReaderElements(AfterTableFetchScope $scope) {
+    $html_manipulator = new HtmlManipulator($scope->getHtml());
+    $scope->setHtml($html_manipulator->removeElements('.visually-hidden')->html());
+  }
+
+  /**
+   * Fills in the autocomplete field with the given text.
+   *
+   * This differs from MinkContext::fillField() in that this will no remove the
+   * focus on the field after entering the text, so that the autocomplete
+   * results will not disappear. The final action taken on the field will be the
+   * "keyup" event for the last character.
+   *
+   * @param string $field
+   *   The ID, name, label or value of the autocomplete field to fill in.
+   * @param string $value
+   *   The text to type in the autocomplete field.
+   *
+   * @When I type :value in the :field autocomplete field
+   */
+  public function fillAutoCompleteField(string $field, string $value): void {
+    $this->assertJavaScriptEnabledBrowser();
+
+    $driver = $this->getSession()->getDriver();
+    if (!$driver instanceof Selenium2Driver) {
+      throw new \RuntimeException("Only Selenium is currently supported for typing in autocomplete fields.");
+    }
+
+    $xpath = $this->getSession()->getSelectorsHandler()->selectorToXpath('named', ['field', $field]);
+    try {
+      $element = $driver->getWebDriverSession()->element('xpath', $xpath);
+    }
+    catch (Exception $e) {
+      throw new \RuntimeException("Field with locator '$field' was not found in the page.");
+    }
+
+    // Clear any existing data in the field before typing the new data.
+    $value = str_repeat(Key::BACKSPACE . Key::DELETE, strlen($element->attribute('value'))) . $value;
+
+    // Fill in the field by directly using the postValue() method of the
+    // webdriver. This executes the keystrokes that make up the text but will
+    // not remove focus from the field so the autocomplete results remain
+    // visible and can be inspected.
+    $element->postValue(['value' => [$value]]);
   }
 
 }

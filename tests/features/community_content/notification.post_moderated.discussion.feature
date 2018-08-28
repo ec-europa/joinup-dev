@@ -37,8 +37,12 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I fill in "Content" with "CC notify create publish"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                                    |
-      | subject   | Joinup: Content has been published                                                                                                                                          |
+      | recipient | CC owner                                                                                                                                                                   |
+      | subject   | Joinup: Content has been published                                                                                                                                         |
+      | body      | CC Member has published the new discussion - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
+    And the following email should have been sent:
+      | recipient | Notify moderator                                                                                                                                                           |
+      | subject   | Joinup: Content has been published                                                                                                                                         |
       | body      | CC Member has published the new discussion - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -84,8 +88,8 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                        |
-      | subject   | Joinup: Content has been updated                                                                                                                                 |
+      | recipient | CC member                                                                                                                                                               |
+      | subject   | Joinup: Content has been updated                                                                                                                                        |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the discussion - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.
@@ -95,7 +99,11 @@ Feature: Notification test for the discussion transitions on a post moderated pa
     And I click "Edit" in the "Entity actions" region
     And I click "Delete"
     And I press "Delete"
-    Then the following email should have been sent:
+    Then the following email should not have been sent:
       | recipient | CC member                                                                                                                |
       | subject   | Joinup: Content has been deleted                                                                                         |
       | body      | Facilitator CC Facilitator has deleted the discussion - "CC notify post delete" in the collection: "CC post collection". |
+    But the following email should have been sent:
+      | recipient | CC member                                                                                                          |
+      | subject   | Joinup: The discussion "CC notify post delete" was deleted in the space of "CC post collection"                    |
+      | body      | for your information, the discussion "CC notify post delete" was deleted from the "CC post collection" collection. |

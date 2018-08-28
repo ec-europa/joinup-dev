@@ -35,10 +35,14 @@ Feature: Submit the contact form
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
       | template           | Contact form submission          |
-      | recipient          | digit-joinup@ec.europa.eu        |
+      | from               | digit-joinup@ec.europa.eu        |
+      | recipient_mail     | digit-joinup@ec.europa.eu        |
       | subject            | Joinup - Contact form submission |
       | body               | Dear sir, madam, ...             |
       | signature_required | no                               |
+    And I should see the following success messages:
+      | success messages                                              |
+      | Your message has been submitted. Thank you for your feedback. |
 
   Scenario: Check required fields
     When I am on the contact form

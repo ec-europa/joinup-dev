@@ -4,6 +4,7 @@ namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\MinkContext as DrupalExtensionMinkContext;
 use Drupal\joinup\Traits\MaterialDesignTrait;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Provides step definitions for interacting with Mink.
@@ -54,7 +55,7 @@ class MinkContext extends DrupalExtensionMinkContext {
       $xpath = '//*[text()[contains(.,"' . $text . '")]]';
       foreach ($this->getSession()->getPage()->findAll('xpath', $xpath) as $element) {
         if ($element->isVisible()) {
-          throw new \PHPUnit_Framework_ExpectationFailedException("Element with text '$text' is visually visible.");
+          throw new ExpectationFailedException("Element with text '$text' is visually visible.");
         }
       }
     }
@@ -63,6 +64,22 @@ class MinkContext extends DrupalExtensionMinkContext {
     else {
       parent::assertPageNotContainsText($text);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * The parent method already waits for animations to finish. We want to add
+   * a friendlier name to explain in the tests that we are waiting for
+   * animations and not for AJAX operations in that step.
+   *
+   * @Given I wait for animations to finish
+   */
+  public function iWaitForAjaxToFinish($event = NULL) {
+    // We're just adding a step definition, not changing the actual code. Trick
+    // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
+    $tricksy = TRUE;
+    parent::iWaitForAjaxToFinish($event);
   }
 
 }

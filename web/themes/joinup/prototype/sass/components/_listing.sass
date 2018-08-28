@@ -52,7 +52,9 @@
   padding: 20px
 
 .listing__field
-  margin-bottom: 15px
+  margin-bottom: $tile-margin
+  &.listing__tags
+    margin-bottom: 0
 
 .listing__title,
 .listing__title a
@@ -127,6 +129,21 @@
 
 .listing__action-link__wrapper
   padding: 0 20px
+  a
+    position: relative
+    +z-index(highlight+1)
+
+.listing__link
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  +z-index(highlight)
+  & > a
+    display: block
+    width: 100%
+    height: 100%
 
 // Modifiers
 // --------------------------------------------------
@@ -171,18 +188,37 @@
     margin-right: 20px
 
 .listing__subtitle:first-of-type
-  margin-top: 5px
+  margin-top: $tile-margin-small
 
 // Set fixed height for fields.
 .listing__card
   +breakpoint(xs)
     min-height: 285px
 
+.listing__text-container
+  +breakpoint(xs)
+    overflow: hidden
+    margin-bottom: $tile-margin
+    .listing__field:last-child
+      margin-bottom: 0
+
+.listing__text-container--news,
+.listing__text-container--document
+  +breakpoint(xs)
+    +calc-space(7, $row-height, $tile-margin, 1, $row-height-small, $tile-margin-small)
+
+.listing__text-container--licence,
+.listing__text-container--newsletter,
+.listing__text-container--discussion
+  +breakpoint(xs)
+    +calc-space(8, $row-height, $tile-margin)
+
 .listing__title
-  +number-rows(1, $row-height)
+  +number-rows(3, $row-height)
 
 .listing__card--collection,
-.listing__card--solution
+.listing__card--solution,
+.listing__card--custom-page
   .listing__title
     +number-rows(3, $row-height)
 
@@ -200,19 +236,10 @@
   +number-rows(1, $row-height)
 
 .listing__subtitle
-  +number-rows(1, $row-height-small)
+  +number-rows(1, $row-height-small, true)
 
 .listing__teaser
-  +number-rows(4, $row-height)
-
-.listing__card--discussion,
-.listing__card--document
-  .listing__teaser
-    +number-rows(4, $row-height)
-
-.listing__card--custom-page
-  .listing__teaser
-    +number-rows(7, $row-height)
+  +number-rows(7, $row-height)
 
 .listing__card--user
   .listing__teaser
@@ -226,6 +253,9 @@
     top: 1px
     margin-left: 6px
     +icon-size(16px)
+  a
+    position: relative
+    +z-index(highlight+1)
 
 .listing__single
   .label,
@@ -234,6 +264,8 @@
     vertical-align: middle
     a
       color: $color-base
+      position: relative
+      +z-index(highlight+1)
   .value
     display: inline
   .label

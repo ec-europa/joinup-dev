@@ -26,7 +26,7 @@ See our [contributors guide](.github/CONTRIBUTING.md).
 ## Running your own instance of Joinup
 
 ### Requirements
-* A regular LAMP stack
+* A regular LAMP stack running PHP 7.1.0 or higher
 * Virtuoso 7 (Triplestore database)
 * SASS compiler
 * Apache Solr
@@ -65,7 +65,7 @@ run the Behat test, please refer directly to the documention of
     ```
 
 * Install Virtuoso. For basic instructions, see [setting up
-  Virtuoso](/web/modules/custom/rdf_entity/README.md).
+  Virtuoso](https://github.com/ec-europa/rdf_entity/blob/8.x-1.x/README.md).
   Due to [a bug in Virtuoso 6](https://github.com/openlink/virtuoso-opensource/issues/303) it is recommended to use Virtuoso 7.
   During installation some RDF based taxonomies will be imported from the `resources/fixtures` folder.
   Make sure Virtuoso can read from this folder by adding it to the `DirsAllowed`
@@ -202,5 +202,5 @@ there is information on handling draft in CRUD operations for rdf entities.
 there is information on how to handle notifications in Joinup.
 * In [Joinup core module](web/modules/custom/joinup_core/README.md) there is
 information on how to handle and create workflows.
-* In [Piwik analytics](docs/piwik.md) you find information about working with
+* In [Matomo analytics](docs/matomo.md) you find information about working with
 the web analytics platform used in Joinup.

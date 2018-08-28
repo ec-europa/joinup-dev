@@ -30,13 +30,13 @@ joinup_core.not_found:
   requirements:
     _access: 'TRUE'
 
-joinup_core.piwik_integration_settings:
-  path: '/admin/statistics/piwik-settings'
+joinup_core.matomo_integration_settings:
+  path: '/admin/statistics/matomo-settings'
   defaults:
-    _form: '\Drupal\joinup_core\Form\PiwikIntegrationSettingsForm'
-    _title: 'Piwik integration'
+    _form: '\Drupal\joinup_core\Form\MatomoIntegrationSettingsForm'
+    _title: 'Matomo integration'
   requirements:
-    _permission: 'administer piwik integration'
+    _permission: 'administer matomo integration'
   options:
     _admin_route: TRUE
 
@@ -48,8 +48,17 @@ joinup_core.file_field_info:
   requirements:
       _permission: 'administer content types'
 
-joinup_core.id_redirect:
+# @todo Remove this when the w21 redirect has been updated.
+joinup_core.id_redirect.deprecated:
   path: '/data/{uuid}'
+  defaults:
+    _controller: '\Drupal\joinup_core\Controller\IdRedirect::redirectToRdfEntity'
+    namespace: w21
+  requirements:
+    _access: 'TRUE'
+
+joinup_core.id_redirect:
+  path: '/data/{namespace}/{uuid}'
   defaults:
     _controller: '\Drupal\joinup_core\Controller\IdRedirect::redirectToRdfEntity'
   requirements:
@@ -64,3 +73,19 @@ joinup_core.rdf_entity_uri_web_converter_page:
     _permission: 'access uri converter'
   options:
     _admin_route: TRUE
+
+joinup_core.admin_reporting:
+  path: '/admin/reporting'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Reporting'
+  requirements:
+    _permission: 'access joinup reports'
+
+joinup_core.transfer_group_ownership_confirm:
+  path: '/group/transfer/ownership'
+  defaults:
+    _form: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm'
+    _title: Transfer
+  requirements:
+    _custom_access: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm::access'

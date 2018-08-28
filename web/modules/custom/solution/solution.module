@@ -5,10 +5,13 @@
  * Contains hooks regarding the solution rdf entity bundle.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -20,6 +23,7 @@ use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\user\Entity\User;
@@ -220,9 +224,7 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
 
   // Add the reference field both to the published and the draft collection.
   foreach (['default', 'draft'] as $graph) {
-    $storage->setRequestGraphs($collection_id, [$graph]);
-    $collection = $storage->load($collection_id);
-    $storage->getGraphHandler()->resetRequestGraphs([$collection_id]);
+    $collection = $storage->load($collection_id, [$graph]);
     if (empty($collection)) {
       continue;
     }
@@ -236,6 +238,15 @@ function solution_update_collection_affiliation($solution_id, $collection_id) {
     $collection->set('graph', $graph);
     $collection->save();
   }
+
+  // At this point the solution has already been indexed without the parent so
+  // The queries that are based on the affiliated collection will present false
+  // data. Reset the cache related to the solution and re index it so that the
+  // entity_groups property is properly set.
+  // @todo Avoid indexing twice the solution entity in ISAICP-4446.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4446
+  $storage->resetCache([$solution_id]);
+  search_api_entity_insert(Rdf::load($solution_id));
 }
 
 /**
@@ -266,35 +277,42 @@ function solution_rdf_entity_access(EntityInterface $entity, $operation, Account
 /**
  * Implements hook_entity_extra_field_info().
  */
-function solution_entity_extra_field_info() {
+function solution_entity_extra_field_info(): array {
   $fields = [];
 
   $solution = RdfEntityType::load('solution');
   if ($solution) {
+    $display = &$fields['rdf_entity'][$solution->id()]['display'];
     // Append some additional fields to the solution entity display containing
     // related information.
     // @see solution_rdf_entity_view()
-    $fields['rdf_entity'][$solution->id()]['display']['releases_overview'] = [
+    $display['releases_overview'] = [
       'label' => t('Releases overview'),
-      'description' => t('A link to the releases overview page'),
+      'description' => t('A link to the releases overview page.'),
       'visible' => FALSE,
     ];
-    $fields['rdf_entity'][$solution->id()]['display']['related_solutions'] = [
+    $display['related_solutions'] = [
       'label' => t('Related solutions: explicit + EIRA'),
       'description' => t('Solutions either explicitly or referenced through EIRA.'),
       'visible' => FALSE,
     ];
-    $fields['rdf_entity'][$solution->id()]['display']['download_total'] = [
+    $display['download_total'] = [
       'label' => t('Total distribution downloads'),
       'description' => t('The total downloads of all distributions in this collection.'),
       'visible' => FALSE,
     ];
-    $fields['rdf_entity'][$solution->id()]['display']['collections'] = [
+    $display['collections'] = [
       'label' => t('Collections'),
       'description' => t('The collections this solution is affiliated to.'),
       'visible' => FALSE,
     ];
+    $display['read_more'] = [
+      'label' => t('Read more'),
+      'description' => t('Shows a link to the about page of the solution.'),
+      'visible' => FALSE,
+    ];
   }
+
   return $fields;
 }
 
@@ -329,7 +347,7 @@ function solution_rdf_entity_load($entities) {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
   if ($entity->bundle() != 'solution') {
     return;
   }
@@ -396,6 +414,21 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       'prefix' => ['#markup' => '<span class="stats__icon icon icon--collections"></span>'],
       'link' => $collection->toLink($collection->label())->toRenderable(),
     ];
+  }
+
+  // Read more link to the about page.
+  if ($display->getComponent('read_more')) {
+    try {
+      $link = $entity->toLink(t('Read more'), 'about-page', [
+        'attributes' => [
+          'class' => ['about-page', 'read-more', 'fieldset__read-more'],
+        ],
+      ]);
+      $build['read_more'] = $link->toRenderable();
+    }
+    catch (EntityMalformedException $e) {
+      // Don't include a read more link that leads to a malformed entity.
+    }
   }
 }
 
@@ -496,17 +529,16 @@ function solution_build_related_solutions_list(array $ids) {
  * Default graph is published. Draft graph is draft.
  */
 function solution_rdf_entity_presave(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 
   $state = $entity->field_is_state->value;
   if (in_array($state, ['draft', 'proposed', 'needs_update', 'blacklisted'])) {
-    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+    $entity->set('graph', 'draft');
   }
   elseif (in_array($state, ['validated', 'deletion_request'])) {
-    \Drupal::entityManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -544,10 +576,11 @@ function solution_invalidate_collection(EntityInterface $entity) {
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $entity->id())
       ->execute();
-    $tags = [];
     if ($ids) {
-      foreach ($ids as $id) {
-        $tags[] = "rdf_entity:$id";
+      $tags = [];
+      /* @var \Drupal\rdf_entity\RdfInterface $collection */
+      foreach (Rdf::loadMultiple($ids) as $collection) {
+        $tags = Cache::mergeTags($tags, $collection->getCacheTagsToInvalidate());
       }
       Cache::invalidateTags(Cache::buildTags('og-group-content', $tags));
     }
@@ -589,8 +622,7 @@ function solution_get_collection_ids(RdfInterface $solution) {
  * (the entity becomes unpublished).
  */
 function solution_rdf_entity_update(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'solution' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
     return;
   }
 
@@ -598,11 +630,11 @@ function solution_rdf_entity_update(EntityInterface $entity) {
   // transition made. This should move to an event subscriber.
   $state = $entity->field_is_state->value;
   if (in_array($state, ['validated', 'deletion_request'])) {
-    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
   if ($state == 'blacklisted') {
     /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'default');
+    \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'default');
   }
   solution_invalidate_collection($entity);
 }

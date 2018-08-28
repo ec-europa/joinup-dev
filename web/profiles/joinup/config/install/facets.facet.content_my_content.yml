@@ -52,7 +52,7 @@ processor_configs:
     processor_id: url_processor_handler
     weights:
       pre_query: -10
-      build: -10
+      build: -9
     settings: {  }
 empty_behavior:
   behavior: none

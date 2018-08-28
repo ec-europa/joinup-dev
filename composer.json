@@ -6,48 +6,53 @@
     "require": {
         "php": ">=7.1.0",
         "SEMICeu/adms-ap_validator": "dev-master",
-        "composer/composer": "~1.0",
+        "composer/composer": "^1.7.1",
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
-        "cweagans/composer-patches": "~1.6",
+        "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
-        "drupal/cached_computed_field": "^1.0-beta2",
+        "drupal/cached_computed_field": "1.x-dev",
+        "drupal/changed_fields": "^2.0",
         "drupal/config_readonly": "~1.0",
-        "drupal/config_sync": "^1.0-alpha5",
+        "drupal/config_sync": "1.x-dev",
         "drupal/config_update": "~1.4",
-        "drupal/console": "^1.0.1",
-        "drupal/core": "~8.4",
+        "drupal/core": "^8.5.4",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
-        "drupal/facets": "^1.0-alpha11",
+        "drupal/email_registration": "^1.0",
+        "drupal/facets": "^1.0-beta1",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
+        "drupal/flag": "^4.0@alpha",
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
         "drupal/linkit": "^5.0-beta6",
-        "drupal/message": "^1.0-beta2",
+        "drupal/matomo": "^1.7",
+        "drupal/matomo_reporting_api": "~2.0",
+        "drupal/message": "^1.0-rc2",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0-alpha6",
-        "drupal/migrate_spreadsheet": "^1.0-beta4",
-        "drupal/og": "dev-8.x-1.x#0704fc26c3fefbda6dc6f8b538719e50c938fe64 as 1.0",
+        "drupal/migrate_spreadsheet": "^1.0-beta6",
+        "drupal/og": "dev-8.x-1.x#bb8dc168ba5d5c7ee99bc1349e42a8ce6a797258 as 1.0",
         "drupal/og_menu": "^1.0-alpha3",
         "drupal/password_policy": "^3.0-alpha4",
-        "drupal/pathauto": "1.x-dev#59a7bef00f6829a27c6a5dc41a6f8bb188bf5805",
-        "drupal/persistent_login": "dev-1.x#1320f841da3c",
+        "drupal/pathauto": "~1.1",
+        "drupal/persistent_login": "^1.0-alpha4",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
-        "drupal/piwik": "~1.0",
-        "drupal/piwik_reporting_api": "^1.0-beta2",
+        "drupal/piwik": "~1.2.0",
+        "drupal/piwik_reporting_api": "dev-1.x",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "dev-pathauto-support",
-        "drupal/redirect": "dev-1.x#1aa7894ba038656d56df945ddf3b8f840ba958a0",
+        "drupal/rdf_entity": "^1.0.0-alpha8",
+        "drupal/redirect": "^1.0",
         "drupal/redis": "^1.0@RC",
-        "drupal/search_api": "~1.5",
+        "drupal/search_api": "1.6.0",
         "drupal/search_api_solr": "~1.1",
         "drupal/simplenews": "^1.0-alpha3",
+        "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
         "drupal/state_machine": "^1.0-beta3",
         "drupal/subpathauto": "^1.0@beta",
@@ -55,13 +60,15 @@
         "drupal/token": "~1.0",
         "drupal/video_embed_field": "~1.5",
         "drupal/view_unpublished": "~1.0@alpha",
-        "drush/drush": "^9.0.0-beta7",
+        "drupal/views_bulk_operations": "^1.0",
+        "drupal/views_data_export": "1.x-dev#124b526d65c48661587cb19b37674cda6573c7bd",
+        "drush/drush": "^9.0.0",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
-        "ec-europa/material-design-lite": "dev-version-1.1.3",
-        "ec-europa/virtuoso": "dev-master",
+        "ec-europa/joinup-tallinn-dashboard": "dev-master",
+        "ec-europa/material-design-lite": "dev-joinup",
+        "ec-europa/virtuoso": "2.1.0",
         "jacklmoore/autosize": "dev-master",
-        "minimaxir/big-list-of-naughty-strings": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
         "predis/predis": "~1.1",
@@ -71,23 +78,26 @@
         "webmozart/path-util": "~2.3"
     },
     "require-dev": {
-        "behat/behat": "3.3.1",
+        "behat/behat": "~3.4",
+        "behat/gherkin": "^4.5.1",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
-        "behat/mink-selenium2-driver": "dev-master#46404b04c761feff4feab4d8d75957225e21a73c",
-        "drupal/admin_toolbar": "~1.17",
+        "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
+        "drupal/admin_toolbar": "^1.23",
         "drupal/coder": "^8.2.9",
-        "drupal/config_devel": "dev-1.x#e0b2a62c4f596bf9fe93923f2a98db0a0afffc9d",
+        "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
-        "drupal/default_content": "dev-1.x#68c30918ecd4c48f578070641c97a3b35c86a5df",
+        "drupal/default_content": "^1.0-alpha7",
         "drupal/devel": "~1.0@alpha",
-        "drupal/drupal-extension": "dev-master#7756b54f2604e4762147190dec888102da253cbc",
+        "drupal/drupal-extension": "^4.0.0@alpha",
+        "drupal/stage_file_proxy": "dev-1.x#6d9fd4bf3b13e92a0051b8e0d625889a6d74f66f",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "mikey179/vfsStream": "~1.2",
+        "lovers-of-behat/table-extension": "^1.1.1",
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
-        "phpunit/phpunit": "^4.8.28",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "~2.8"
     },
     "conflict": {
@@ -107,7 +117,8 @@
             "DrupalProject\\": "src"
         },
         "classmap": [
-            "scripts/composer/ScriptHandler.php"
+            "scripts/composer/ScriptHandler.php",
+            "scripts/composer/RemoveWrongPatchedObjects.php"
         ]
     },
     "scripts": {
@@ -119,14 +130,17 @@
             "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
         ],
         "post-install-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ],
         "post-update-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ]
     },
     "extra": {
         "installer-paths": {
+            "web/modules/custom/joinup_communities/tallinn/lib": ["ec-europa/joinup-tallinn-dashboard"],
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
@@ -135,27 +149,34 @@
             "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": 1,
         "patches": {
+            "behat/gherkin": {
+                "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
+            },
             "drupal/core": {
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
-                "Incorrect handling of file upload limit exceeded - file widget disappears, @see https://www.drupal.org/node/1489692": "https://www.drupal.org/files/issues/1489692-93.patch",
-                "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-273.patch",
+                "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2061377-291.patch",
+                "Allow Tours to be taken by users that cannot access the Toolbar (e.g. anonymous users) @see https://www.drupal.org/node/2069073": "https://www.drupal.org/files/issues/2018-06-19/2069073-55.patch",
+                "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2018-06-11/2303877-27.patch",
                 "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2320877-16.patch",
-                "Duplicate AJAX wrapper around a file field. @see https://www.drupal.org/node/2346893": "https://www.drupal.org/files/issues/duplicate_ajax_wrapper-2346893-194-reroll.patch",
-                "Help texts do not show in link fields. @see https://www.drupal.org/node/2421001": "https://www.drupal.org/files/issues/2421001-112.patch",
                 "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2497909-66.patch",
                 "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-38.patch",
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
-                "Support fast rollbacks. @see https://www.drupal.org/node/2821988": "https://www.drupal.org/files/issues/2821988-37.patch",
-                "Check permissions when 'Add terms' @see https://www.drupal.org/node/2845021": "https://www.drupal.org/files/issues/2845021-6_0.patch",
-                "Don't compute children and parents of a new term @see https://www.drupal.org/node/2845361": "https://www.drupal.org/files/issues/2845361-2.patch",
-                "Incorrect field name is used in views integration for multi-value base fields @see https://www.drupal.org/node/2846614": "https://www.drupal.org/files/issues/2846614-112.patch",
-                "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-8.patch",
-                "Remove cached languages from ContentEntityBase @see https://www.drupal.org/node/2303877": "https://www.drupal.org/files/issues/2303877-22.patch"
+                "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
+                "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
+                "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
+                "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-12.patch",
+                "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
+                "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-07-09/2725259-58.patch"
+            },
+            "drupal/email_registration": {
+                "Display name vs Username. @see https://www.drupal.org/project/email_registration/issues/2871604": "https://www.drupal.org/files/issues/8.x-1.x-2871604-dont_change_account_name.patch",
+                "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2927109-7.patch"
             },
             "drupal/facets": {
-                "Allow altering widget plugin definitions. @see https://www.drupal.org/node/2909457": "https://www.drupal.org/files/issues/widgetmanager.patch",
-                "Facet links should be page-less @see https://www.drupal.org/node/2898189": "https://www.drupal.org/files/issues/facet_links_should_be-2898189-13.patch"
+                "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
@@ -164,17 +185,29 @@
             "drupal/linkit": {
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
             },
+            "drupal/matomo_reporting_api": {
+                "Migrate from 'piwik_reporting_api' @see https://www.drupal.org/project/matomo_reporting_api/issues/2993831": "https://www.drupal.org/files/issues/2018-08-20/2993831-2.patch"
+            },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+            },
+            "drupal/redirect": {
+                "Cannot redirect from a private file path @see https://www.drupal.org/project/redirect/issues/2985288#comment-12683792": "https://www.drupal.org/files/issues/2018-07-12/2985288-4.patch"
+            },
+            "drupal/rdf_entity": {
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
+                "Modernize the connection class @see https://github.com/ec-europa/rdf_entity/pull/52": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/52.diff"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
-                "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch",
-                "Drush 9 port of commands @see https://www.drupal.org/node/2914478": "https://www.drupal.org/files/issues/2914478-9.patch"
+                "Adapt UnsavedIndexConfiguration to #2303877": "resources/patch/serach_api.adapt-to-2303877.patch"
             },
             "drupal/simplenews": {
                 "Avoid double sync of fields from subscription to user when user is being saved @see https://www.drupal.org/node/2914814": "https://www.drupal.org/files/issues/2914814-2.patch"
+            },
+            "drupal/smart_trim": {
+                "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
             },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
@@ -185,8 +218,8 @@
             "drupal/subpathauto": {
                 "Redirect module causes redirect back to unaliased path. @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2875026-2.patch"
             },
-            "drupal/redirect": {
-                "Find all redirects given a destination URI @see https://www.drupal.org/node/2884587": "https://www.drupal.org/files/issues/2884587-2.patch"
+            "drupal/swiftmailer": {
+                "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
@@ -194,13 +227,25 @@
             },
             "drupal/video_embed_field": {
                 "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+            },
+            "drupal/views_data_export": {
+                "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch",
+                "Download link returns 406 with Drupal ^8.5.0 @see https://www.drupal.org/project/views_data_export/issues/2951185": "https://www.drupal.org/files/issues/2951185-2.patch"
             }
         }
     },
     "repositories": [
         {
             "type": "vcs",
+            "url": "https://git.drupal.org/project/redirect.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/ec-europa/rdf_entity.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
         },
         {
             "type": "vcs",
@@ -245,12 +290,12 @@
             "type": "package",
             "package": {
                 "name": "ec-europa/material-design-lite",
-                "version": "dev-version-1.1.3",
+                "version": "dev-joinup",
                 "type": "drupal-theme-library",
                 "source": {
                     "url": "git@github.com:ec-europa/material-design-lite.git",
                     "type": "git",
-                    "reference": "version-1.1.3"
+                    "reference": "joinup"
                 }
             }
         },
@@ -270,18 +315,6 @@
         {
             "type": "package",
             "package": {
-                "name": "minimaxir/big-list-of-naughty-strings",
-                "version": "dev-master",
-                "source": {
-                    "url": "git@github.com:minimaxir/big-list-of-naughty-strings.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
                 "name": "SEMICeu/adms-ap_validator",
                 "version": "dev-master",
                 "source": {
@@ -292,21 +325,8 @@
             }
         },
         {
-            "type": "package",
-            "package": {
-                "name": "ec-europa/virtuoso",
-                "version": "dev-master",
-                "source": {
-                    "url": "git@github.com:ec-europa/virtuoso.git",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "autoload": {
-                    "psr-4": {
-                        "Virtuoso\\": "src"
-                    }
-                }
-            }
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/virtuoso.git"
         }
     ]
 }

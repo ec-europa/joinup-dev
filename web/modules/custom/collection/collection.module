@@ -5,24 +5,30 @@
  * Main functions and hook implementations of the Collection module.
  */
 
+declare(strict_types = 1);
+
+use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\joinup_core\ELibraryCreationOptions;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Solarium\QueryType\Select\Query\Query;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -229,14 +235,13 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     }
   }
 
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || !in_array($entity->bundle(), $enabled_bundles)) {
+  if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
   $state = $entity->field_ar_state->value;
   if (in_array($state, ['draft', 'proposed'])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'draft');
+    $entity->set('graph', 'draft');
   }
   elseif (in_array($state, [
     'validated',
@@ -244,7 +249,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     'deletion_request',
     'archived',
   ])) {
-    \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->getGraphHandler()->setTargetGraphToEntity($entity, 'default');
+    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -261,13 +266,12 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
  * - When the entity is saved into the default graph, the draft must be deleted.
  */
 function collection_rdf_entity_update(EntityInterface $entity) {
-  $enabled_bundles = \Drupal::config('rdf_draft.settings')->get('revision_bundle_rdf_entity');
-  if (empty($enabled_bundles) || $entity->bundle() != 'collection' || !in_array($entity->bundle(), $enabled_bundles)) {
+  if ($entity->bundle() !== 'collection' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }
 
   if ($entity->field_ar_state->value === 'validated') {
-    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph($entity->id(), 'draft');
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
 }
 
@@ -292,6 +296,13 @@ function collection_module_implements_alter(&$implementations, $hook) {
 function collection_entity_extra_field_info() {
   $fields = [];
   $collection = RdfEntityType::load('collection');
+
+  // This hook can fire before the collection bundle config is defined, in that
+  // case we have nothing meaningful to add.
+  if (empty($collection)) {
+    return;
+  }
+
   // Add the join/leave collection form as field.
   // @todo will be removed in ISAICP-2743
   $display = &$fields['rdf_entity'][$collection->id()]['display'];
@@ -313,9 +324,9 @@ function collection_entity_extra_field_info() {
     'visible' => FALSE,
   ];
 
-  $display['last_update'] = [
-    'label' => t('Last update'),
-    'description' => t('Days since last update to the collection'),
+  $display['read_more'] = [
+    'label' => t('Read more'),
+    'description' => t('Shows a link to the about page of the collection'),
     'visible' => FALSE,
   ];
 
@@ -325,11 +336,11 @@ function collection_entity_extra_field_info() {
 /**
  * Implements hook_ENTITY_TYPE_view().
  *
- * Populates the extra field 'join_collection'.
+ * Shows extra fields for the collection bundle.
  */
 function collection_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   /** @var \Drupal\rdf_entity\RdfInterface $entity */
-  if ($entity->bundle() != 'collection') {
+  if ($entity->bundle() !== 'collection') {
     return;
   }
 
@@ -349,7 +360,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   if ($display->getComponent('members')) {
     $member_count = collection_member_count($entity);
     $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    // @see collection_og_membership_presave()
+    // @see joinup_core_og_membership_invalidate_group_tags()
     $tags = Cache::buildTags('joinup-membership', [$tag]);
     $build['members'] = [
       '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
@@ -361,8 +372,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
   // Solution count.
   if ($display->getComponent('solutions')) {
     $solution_count = collection_solution_count($entity);
-    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    $tags = Cache::buildTags('og-group-content', [$tag]);
+    $tags = Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate());
     $tags = Cache::mergeTags($tags, ['rdf_entity_list']);
     $build['solutions'] = [
       '#markup' => \Drupal::translation()->formatPlural($solution_count, '@solution_count Solution', '@solution_count Solutions', ['@solution_count' => $solution_count]),
@@ -372,22 +382,29 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       ],
     ];
   }
-  if ($display->getComponent('last_update')) {
-    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    $tags = Cache::buildTags('og-group-content', [$tag]);
-    $days_since_update = collection_last_change($entity);
-    $build['last_update']['#cache'] = [
-      // Invalidate when community content is saved.
-      'tags' => $tags,
-    ];
-    if ($days_since_update === NULL) {
-      $build['last_update']['#markup'] = '-';
-    }
-    else {
-      $build['last_update'] = [
-        '#markup' => \Drupal::translation()->formatPlural($days_since_update, '@days day ago', '@days days ago', ['@days' => $days_since_update]),
-      ];
-    }
+
+  // Read more link to the about page.
+  if ($display->getComponent('read_more')) {
+    $build['read_more'] = $entity->toLink(t('Read more'), 'about-page', [
+      'attributes' => [
+        'class' => ['about-page', 'read-more', 'fieldset__read-more'],
+      ],
+    ])->toRenderable();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  if ($entity->bundle() !== 'collection' || $display->getMode() !== 'default') {
+    return;
+  }
+
+  // Hide the description when the abstract is available.
+  if (Element::children($build['field_ar_abstract'])) {
+    $build['field_ar_description']['#access'] = FALSE;
   }
 }
 
@@ -401,12 +418,13 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
  *   Amount of members.
  */
 function collection_member_count(RdfInterface $entity) {
-  return \Drupal::entityQuery('og_membership')
+  $query = \Drupal::database()->select('og_membership', 'om');
+  $query->innerJoin('users_field_data', 'ufd', 'om.uid = ufd.uid');
+  $query->condition('ufd.status', 1)
     ->condition('entity_type', 'rdf_entity')
     ->condition('entity_id', $entity->id())
-    ->condition('state', OgMembershipInterface::STATE_ACTIVE)
-    ->count()
-    ->execute();
+    ->condition('state', OgMembershipInterface::STATE_ACTIVE);
+  return $query->countQuery()->execute()->fetchField();
 }
 
 /**
@@ -424,44 +442,19 @@ function collection_solution_count(RdfInterface $entity) {
   foreach ($solutions as $solution) {
     $solution_ids[] = $solution->getValue()['target_id'];
   }
-  $solution_count = 0;
+  $results = 0;
   if ($solution_ids) {
-    $solution_count = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $solution_count */
+    $solution_count = \Drupal::entityQuery('rdf_entity');
+    // @todo Chain the query methods.
+    // @see https://github.com/ec-europa/rdf_entity/issues/26
+    $solution_count->setGraphType(['default']);
+    $results = $solution_count->condition('rid', 'solution')
       ->condition('id', $solution_ids, 'IN')
-      ->condition('field_is_state', 'validated')
       ->count()
       ->execute();
   }
-  return $solution_count;
-}
-
-/**
- * Determine when the last change was made to the collection content.
- *
- * @param \Drupal\rdf_entity\RdfInterface $entity
- *   The collection.
- *
- * @return null|string
- *   Days since last change.
- */
-function collection_last_change(RdfInterface $entity) {
-  $last_changed_nid = \Drupal::entityQuery('node')
-    ->condition('og_audience', $entity->id())
-    ->condition('status', TRUE)
-    ->sort('changed', 'DESC')
-    ->range(0, 1)
-    ->execute();
-  // No content yet.
-  if (empty($last_changed_nid)) {
-    return NULL;
-  }
-  $last_changed_node = Node::load(array_pop($last_changed_nid));
-  $node_last_updated_time = $last_changed_node->getChangedTime();
-  // Seconds since last update.
-  $interval = \Drupal::time()->getRequestTime() - $node_last_updated_time;
-  // Convert to days.
-  return floor($interval / 86400);
+  return $results;
 }
 
 /**
@@ -472,7 +465,6 @@ function collection_last_change(RdfInterface $entity) {
  * - Only show content related to the collection.
  * - Do not show the collection itself in the search results.
  * - Exclude custom pages.
- * - Sort by sticky and score.
  */
 function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
@@ -492,19 +484,80 @@ function collection_search_api_query_search_api_field_field_collection_content_a
 
   // Exclude custom pages from the collection overview.
   $query->addCondition('entity_bundle', 'custom_page', '<>');
-
-  // Sort by sticky and then by score. The "score" field has the special name
-  // "search_api_relevance".
-  $query->sort('sticky', QueryInterface::SORT_DESC);
-  $query->sort('search_api_relevance', QueryInterface::SORT_DESC);
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
+ * Implements hook_search_api_solr_query_alter().
+ *
+ * Alters the Solr query for the collection content on the collection homepage,
+ * except when the 'event' filter is applied, by setting the sorts as follows:
+ * to sort the results with the following cascade of criteria:
+ * - entities pinned in the context of the collection;
+ * - the score (relevancy) in the Solr index. The most relevant are on top.
+ * - newer entities go first.
  */
-function collection_og_membership_presave(OgMembershipInterface $entity) {
-  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
-  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
+function collection_search_api_solr_query_alter(Query $solarium_query, QueryInterface $query) {
+  if (!$query->hasTag('search_api_field_field_collection_content')) {
+    return;
+  }
+
+  // This alter is aware only about collection content searches except when the
+  // filter 'event' is applied. When the 'event' filter is applied, the event
+  // date is used to sort, in joinup_search_search_api_query_alter().
+  // @see joinup_search_search_api_query_alter()
+  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  if (!$entity = $query->getOption('search_api_field entity')) {
+    return;
+  }
+
+  // In order to sort by the pinned status of the entity, we need to create a
+  // sort function query. The values that are used for sort are evaluated at
+  // runtime instead of being retrieved from the index.
+  // An entity is pinned when:
+  // - for nodes, when they are belong to the current collection and the sticky
+  //   field is set to true;
+  // - for solutions, when they are pinned inside the current collection.
+  // The query() Solr function query is a good candidate for doing custom sorts,
+  // but it will return the score of the subquery. The score can be different
+  // between single results and can range from a small fraction above zero to
+  // infinite.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_field_is_pinned_in:<id>'},0))"
+  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'})"
+  // @codingStandardsIgnoreEnd
+  // The and() operator will return false when the subquery score is lower than
+  // 1, so both of the above will fail the sorting.
+  // Solr 6.x has the gt(x,y) function, that will return true if x is greater
+  // than y. By using gt(), any positive score can be transformed to true.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_field_is_pinned_in:<id>'},0),0))"
+  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'}),0)"
+  // @codingStandardsIgnoreEnd
+  // Unfortunately, Solr 5.x doesn't support the gt() function.
+  // Both Solr versions support the termfreq() function, which will return the
+  // number of occurrences of a term in a field of the document.
+  // Alternatively, also the exists() function could be used in conjunction with
+  // the query() function, but it looks more expensive.
+  // Example:
+  // @codingStandardsIgnoreLine
+  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_field_is_pinned_in:<id>'},0)))"
+  // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
+  // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
+  $computed_sort = sprintf(
+    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    $solarium_query->getHelper()->escapePhrase($entity->id())
+  );
+  $solarium_query->setSorts([
+    $computed_sort => 'desc',
+    'score' => 'desc',
+    'ds_entity_created' => 'desc',
+  ]);
 }
 
 /**
@@ -524,4 +577,61 @@ function collection_node_access(NodeInterface $node, $op, AccountInterface $acco
   }
 
   return AccessResult::forbiddenIf($parent->get('field_ar_closed')->value && $account->isAnonymous())->addCacheableDependency($parent);
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ */
+function collection_entity_bundle_field_info(EntityTypeInterface $entity_type, $bundle, array $base_field_definitions) {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'collection') {
+    return [
+      'last_update' => BaseFieldDefinition::create('timestamp')
+        ->setLabel(t('Last updated'))
+        ->setDescription(t('The last updated time considering also compounding entities.'))
+        ->setComputed(TRUE)
+        ->setClass(LastUpdatedFieldItemList::class)
+        ->setDisplayConfigurable('view', TRUE)
+        ->setCardinality(1),
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function collection_node_delete(NodeInterface $node) {
+  if (!$node->hasField('og_audience') || !$node->isPublished()) {
+    return;
+  }
+
+  /** @var \Drupal\rdf_entity\RdfInterface $group */
+  if (($group = $node->og_audience->entity) && $group->bundle() === 'collection') {
+    // Touch the parent collection in order to update its changed timestamp.
+    $group->skip_notification = TRUE;
+    $group->setChangedTime(\Drupal::time()->getRequestTime())->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function collection_rdf_entity_delete(RdfInterface $solution) {
+  if (($solution->bundle() !== 'solution') || ($solution->field_is_state->value !== 'validated')) {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $ids = $storage->getQuery()
+    ->condition('rid', 'collection')
+    ->condition('field_ar_affiliates', $solution->id())
+    ->execute();
+  if ($ids) {
+    // Touch the parent collections in order to update their changed timestamp.
+    $request_time = \Drupal::time()->getRequestTime();
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    foreach ($storage->loadMultiple($ids) as $collection) {
+      $collection->skip_notification = TRUE;
+      $collection->setChangedTime($request_time)->save();
+    }
+  }
 }

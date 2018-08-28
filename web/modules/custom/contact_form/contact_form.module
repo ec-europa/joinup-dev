@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the Contact Form module.
  */
 
+use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Form\FormStateInterface;
@@ -71,7 +72,16 @@ function contact_form_form_message_contact_form_submission_submit(&$form, FormSt
 
   $event_dispatcher = \Drupal::getContainer()->get('event_dispatcher');
   $event_dispatcher->dispatch(ContactFormEvents::CONTACT_FORM_EVENT, $event);
-  drupal_set_message(t('Your message has been submitted. Thanks for your feedback.'));
+
+  if ($event->isSuccessful()) {
+    \Drupal::messenger()->addStatus(t('Your message has been submitted. Thank you for your feedback.'));
+  }
+  else {
+    \Drupal::messenger()->addError(t('The message submission failed.'));
+    \Drupal::logger('contact')->error('Cannot send contact form message.', [
+      'message' => $event->getEntity()->toArray(),
+    ]);
+  }
 }
 
 /**
@@ -95,4 +105,66 @@ function contact_form_tokens($type, $tokens, array $data, array $options, Bubble
     $replacements[$tokens['contact-form']] = \Drupal::urlGenerator()->generateFromRoute('contact_form.contact_page', [], ['absolute' => TRUE]);
   }
   return $replacements;
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Alter the sender of outgoing mails sent from the contact form so they will be
+ * handled by support desk software and turned into tickets.
+ *
+ * @todo This doesn't belong in the Joinup distribution and should be removed.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3988
+ */
+function contact_form_mail_alter(&$message) {
+  if ($message['key'] !== 'contact_form_submission') {
+    return;
+  }
+
+  $from = \Drupal::service('config.factory')->get('contact_form.settings')->get('contact_form_from');
+  if (!empty($from) && \Drupal::service('email.validator')->isValid($from)) {
+    $message['from'] = $from;
+  }
+}
+
+/**
+ * Implements hook_mail().
+ *
+ * Send a notification to the contact form submitter.
+ */
+function contact_form_mail($key, &$message, $params) {
+  if ($key !== 'contact_form_sender') {
+    return;
+  }
+
+  /** @var \Drupal\message\MessageInterface $entity */
+  $entity = $params['message'];
+  $name = "{$entity->field_contact_first_name->value} {$entity->field_contact_last_name->value}";
+
+  $message['subject'] = t('Joinup: Contact form notification');
+
+  $message['body'][] = t('Dear @name', ['@name' => $name]);
+  $message['body'][] = t('Thank you for submitting your message to the Joinup Support.');
+
+  if ($entity->field_contact_copy->value) {
+    $message['body'][] = t('This is the message you submitted through the online form:');
+    $subject = check_markup($entity->field_contact_subject->value, $entity->field_contact_subject->format);
+    $subject = PlainTextOutput::renderFromHtml($subject);
+    $message['body'][] = t('Subject: %subject', ['%subject' => $subject]);
+    $message['body'][] = t('Content:');
+    $message['body'][] = '<blockquote>';
+    $message['body'][] = check_markup($entity->field_contact_message->value, $entity->field_contact_message->format);
+    $message['body'][] = '</blockquote>';
+    $message['body'][] = t('Thank you for your interest, we will reply as soon as possible.');
+  }
+  else {
+    $message['body'][] = t('We will reply as soon as possible.');
+  }
+
+  $message['body'][] = t('Kind regards,');
+  $message['body'][] = t('The Joinup Support Team');
+
+  // Send as HTML.
+  $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
 }

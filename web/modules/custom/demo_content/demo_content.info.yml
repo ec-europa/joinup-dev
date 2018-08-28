@@ -7,6 +7,19 @@ dependencies:
   - default_content
 
 default_content:
+  menu_link_content:
+    - f3c9c1c5-71ba-4620-a80b-de92f137c82b
+  node:
+    # Custom page
+    - 9d7b6405-061a-4064-ae7e-b34c67f3afad
+    # Tallinn report
+    - e2e102b7-3fec-4366-9d79-d0f0e733d097
+    - 5312c767-2d2a-4518-9bd2-296a0b799af7
+    - a5cdffc3-d3bf-4dcf-82a5-4cff7b439d43
+    - dd2999a4-ee3e-485f-a6bc-b3fe35435a54
+  ogmenu_instance:
+    # Navigation.
+    - f347cef4-ea22-4b12-bb88-7464585db70e
   rdf_entity:
     # Asset Distribution
     - 51794c8d-9691-472a-8072-862812ba8bfe
@@ -19,6 +32,7 @@ default_content:
     - 4e56d06c-c8c3-40fd-b2a0-773301ebe9b8
     - 4d0a6736-b28a-4cf4-aefd-d7c4f5af70bb
     - 11c81d8f-1527-4044-a694-b847d66362e1
+    - http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3
     # Contact information
     - 8b672838-7d24-4050-9983-f1eba5e988a8
     - 882aec35-389b-46af-ab39-c6d834f9a457

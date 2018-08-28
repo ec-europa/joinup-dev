@@ -11,8 +11,8 @@
     <!-- Import Phing targets related to Apache Solr. -->
     <import file="${project.basedir}/build.solr.xml" optional="true" />
 
-    <!-- Import Phing targets related to Piwik. -->
-    <import file="${project.basedir}/build.piwik.xml" optional="true" />
+    <!-- Import Phing targets related to Matomo. -->
+    <import file="${project.basedir}/build.matomo.xml" optional="true" />
 
     <!-- Import Phing targets related to Redis cache. -->
     <import file="${project.basedir}/build.redis.xml" optional="true" />
@@ -22,9 +22,6 @@
 
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
-
-    <echo msg="Loading Remove Patched Packages task." />
-    <taskdef name="removepatchedpackages" classname="\DrupalProject\Phing\RemovePatchedPackagesTask" />
 
     <echo msg="Loading After Import RDF fixtures task." />
     <taskdef name="afterrdffixturesimport" classname="\DrupalProject\Phing\AfterFixturesImportCleanup" />
@@ -37,6 +34,12 @@
 
     <echo msg="Loading Amazon S3 list task." />
     <taskdef name="s3list" classname="\DrupalProject\Phing\AwsS3ListTask" />
+
+    <echo msg="Loading Truncate Cache Tables task." />
+    <taskdef name="truncatecachetables" classname="\DrupalProject\Phing\TruncateCacheTablesTask" />
+
+    <echo msg="Loading Empty MySQL Database task." />
+    <taskdef name="emptymysqldatabase" classname="\DrupalProject\Phing\MySqlEmptyDatabaseTask" />
 
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
@@ -58,11 +61,15 @@
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
         </drush>
+
         <!-- Set the auto-increment default values for some tables. -->
         <setmysqlautoincrement />
-        <phingcall target="writable-settings-folder" />
-        <phingcall target="writable-settings-php" />
-        <append destFile="${website.settings.php}" text="${website.transactions}${line.separator}" />
+
+        <!-- Set the transaction type to READ-COMMITTED. -->
+        <phingcall target="set-mysql-transaction-type" />
+
+        <!-- Create the private files directory -->
+        <phingcall target="create-private-files-directory" />
 
         <!-- Make sure persistent session cookies are disabled. -->
         <phingcall target="disable-persistent-session-cookies" />
@@ -74,16 +81,6 @@
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
             Password="${sparql.password}" />
-    </target>
-
-    <target name="purge-rdf-backend">
-        <rdf-purge
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            SolrUrl="${solr.server.url}"
-            SolrCores="${solr.cores}" />
     </target>
 
     <target name="import-rdf-fixtures">
@@ -119,72 +116,84 @@
         </drush>
     </target>
 
-    <!-- Download database backups from Amazon S3. -->
+    <!-- Download database backups from the ASDA server. -->
     <target name="download-databases" depends="download-virtuoso-database, download-sql-database" />
 
-    <!-- Downloads a backup of the Virtuoso database from Amazon S3. -->
+    <!-- Downloads a backup of the Virtuoso database from the ASDA server. -->
     <target name="download-virtuoso-database">
         <mkdir dir="${exports.virtuoso.destination.folder}" />
         <echo msg="Fetching list of files to download." />
-        <s3list
-                region="${aws.region}"
-                bucket="${exports.s3.bucket}"
-                key="${exports.s3.key}"
-                secret="${exports.s3.secret}"
-                prefix="${exports.virtuoso.source.folder}"
-                propertyName="exports.virtuoso.sources" />
-        <foreach
-                list="${exports.virtuoso.sources}"
-                target="fetch-virtuoso-database-dump"
-                param="exports.virtuoso.source" />
+        <httpget
+                url="${exports.virtuoso.source}"
+                authUser="${asda.username}"
+                authPassword="${asda.password}"
+                authScheme="basic"
+                dir="${exports.virtuoso.destination.folder}"
+        />
+        <untar file="${exports.virtuoso.destination.folder}JOINUP_VIRTUOSO_PRD_LATEST.tar.gz" todir="${exports.virtuoso.destination.folder}" />
+
+        <copy todir="${exports.virtuoso.destination.folder}">
+            <fileset dir="${exports.virtuoso.destination.folder}virtuoso_dump/">
+                <include name="*.bp"/>
+            </fileset>
+        </copy>
+        <delete>
+            <fileset dir="${exports.virtuoso.destination.folder}">
+                <include name="*.tar.gz" />
+                <include name="virtuoso_dump/" />
+            </fileset>
+        </delete>
     </target>
 
-    <!-- Downloads a single Virtuoso backup file from Amazon S3. -->
-    <target name="fetch-virtuoso-database-dump">
-        <echo msg="Downloading ${exports.virtuoso.source}." />
-        <s3dl
-                region="${aws.region}"
-                bucket="${exports.s3.bucket}"
-                key="${exports.s3.key}"
-                secret="${exports.s3.secret}"
-                object="${exports.virtuoso.source}"
-                prefix="${exports.virtuoso.source.folder}"
-                target="${exports.virtuoso.destination.folder}${exports.virtuoso.source}" />
-    </target>
-
-    <!-- Downloads a backup of the SQL database from Amazon S3. -->
+    <!-- Downloads a backup of the SQL database from the ASDA server. -->
     <target name="download-sql-database">
-        <echo msg="Downloading SQL database dump from Amazon S3." />
-        <s3dl
-                region="${aws.region}"
-                bucket="${exports.s3.bucket}"
-                key="${exports.s3.key}"
-                secret="${exports.s3.secret}"
-                object="${exports.sql.source}"
-                target="${exports.sql.destination}" />
+        <echo msg="Downloading SQL database dump from ASDA." />
+        <httpget
+                url="${exports.sql.source}"
+                authUser="${asda.username}"
+                authPassword="${asda.password}"
+                authScheme="basic"
+                dir="${tmp.dir}"
+        />
+        <copy file="${tmp.dir}/JOINUP_PRD_LATEST.sql.gz" tofile="${exports.sql.destination}" overwrite="true"/>
+        <delete file="${tmp.dir}/dump.sql" failonerror="false" />
+        <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />
     </target>
 
-    <target name="restore-mysql-dump">
-        <drush
-                command="sql-drop"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-        </drush>
+    <target name="restore-mysql-dump" depends="empty-mysql-database">
         <drush
                 command="sql-query"
                 assume="yes"
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="file" value="${exports.sql.destination}" />
+            <option name="file" value="${tmp.dir}/dump.sql" />
         </drush>
+        <!-- Make sure to truncate the cache tables immediately after importing.
+             The dump might contain stale data since we use Redis on production
+             for caching. -->
+        <phingcall target="truncate-cache-tables" />
+    </target>
+
+    <target name="empty-mysql-database">
+        <echo message="Drop all MySQL tables from the database." />
+        <emptymysqldatabase
+                url="${drupal.db.dsn}"
+                userId="${drupal.db.user}"
+                password="${drupal.db.password}" />
+    </target>
+
+    <target name="truncate-cache-tables">
+        <echo message="Truncating cache tables." />
+        <truncatecachetables
+                url="${drupal.db.dsn}"
+                userId="${drupal.db.user}"
+                password="${drupal.db.password}" />
     </target>
 
     <target name="restore-databases" depends="restore-mysql-dump, virtuoso-restore-backup" />
 
-    <target name="rebuild-environment" depends="restore-databases, import-rdf-fixtures, execute-updates" />
+    <target name="rebuild-environment" depends="restore-databases, execute-updates" />
 
     <!-- Set up PHPUnit. -->
     <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
@@ -227,16 +236,6 @@
         </drush>
     </target>
 
-    <target name="purge-rdf-content">
-        <drush
-            command="rdf-entity-purge"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-        </drush>
-    </target>
-
     <target name="clear-cache">
         <drush
                 command="cr"
@@ -254,16 +253,68 @@
         <mkdir dir="${sass.output.dir}" />
         <sass
             executable="${sass.bin}"
+            flags="--sourcemap=${sass.sourcemap}"
             style="${sass.style}"
             input="${sass.input}"
             output="${sass.output.dir}/${sass.output.file}" />
     </target>
 
+    <!-- Set the transaction type to READ-COMMITTED. -->
+    <target name="set-mysql-transaction-type"
+            description="Sets the MySQL transaction to READ-COMMITTED"
+            depends="writable-settings-folder, writable-settings-php">
+
+        <!-- Avoid duplicates in settings.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$databases\['default'\]\['default'\]\['init_commands'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <append destFile="${website.settings.php}" text="$databases['default']['default']['init_commands'] = ['isolation' => &quot;SET SESSION tx_isolation='READ-COMMITTED'&quot;];${line.separator}" />
+    </target>
+
+    <!-- Create the private files directory -->
+    <target name="create-private-files-directory"
+            description="Create Drupal private files directory."
+            depends="enable-dev-settings, writable-settings-folder, writable-settings-local-php">
+
+        <!-- Create the directory if doesn't already exist. -->
+        <mkdir dir="${drupal.private_files.dir}"/>
+
+        <!-- Avoid duplicates in settings.local.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$settings\['file_private_path'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <!-- Add the settings.local.php setting. -->
+        <append destFile="${website.settings.local.php}" text="$settings['file_private_path'] = '${drupal.private_files.dir}';${line.separator}" />
+    </target>
+
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
-    <target name="disable-persistent-session-cookies">
-        <phingcall target="writable-settings-folder" />
-        <phingcall target="writable-services-yml" />
+    <target name="disable-persistent-session-cookies"
+        description="Disable persistent session cookies"
+        depends="writable-settings-folder, writable-services-yml">
+
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="services.yml" />
@@ -327,6 +378,17 @@
         </if>
     </target>
 
+    <target name="ensure-search-api-solr-site-hash">
+        <drush
+                command="php:eval"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>'\Drupal\search_api_solr\Utility\Utility::getSiteHash();'</param>
+        </drush>
+    </target>
+
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
         <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
@@ -353,6 +415,39 @@
         </drush>
     </target>
 
+    <!-- Enable and configure the stage_file_proxy module. -->
+    <target name="setup-stage-file-proxy" description="Set up the file proxy settings.">
+        <drush
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>stage_file_proxy</param>
+        </drush>
+        <phingcall target="configure-stage-file-proxy"/>
+    </target>
+
+    <target name="configure-stage-file-proxy">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <!-- Comment out previous configuration. -->
+                <replaceregexp>
+                    <regexp
+                            pattern="^[^#](.*stage_file_proxy.*\.settings.*)$"
+                            replace="#\1"
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append
+                destFile="${website.settings.local.php}"
+                text="$config['stage_file_proxy.settings']['origin'] = '${stage_file_proxy.origin}';${line.separator}$config['stage_file_proxy.settings']['hotlink'] = ${stage_file_proxy.hotlink};${line.separator}" />
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
@@ -366,11 +461,11 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="create-demo-users, setup-virtuoso-permissions, purge-rdf-backend, import-rdf-fixtures, enable-uat-modules, enable-dev-settings, configure-apache-solr-drupal, acceptance-migration, configure-piwik-drupal, clear-cache" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-rdf-backend, clean-redis-settings, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users" />
 
 </project>

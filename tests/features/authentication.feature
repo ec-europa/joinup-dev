@@ -8,7 +8,7 @@ Feature: User authentication
     When I visit "user"
     Then I should see the text "Sign in"
     And I should see the text "Reset your password"
-    And I should see the text "Username"
+    And I should see the text "E-mail or username"
     And I should see the text "Password"
     But I should not see the text "Sign out"
     And I should not see the text "My account"
@@ -31,34 +31,36 @@ Feature: User authentication
     Then I should see the error message "Access denied. You must sign in to view this page."
 
     Examples:
-      | path                               |
-      | admin                              |
-      | admin/config                       |
-      | admin/config/search/redirect       |
-      | admin/content                      |
-      | admin/content/rdf                  |
-      | admin/people                       |
-      | admin/structure                    |
-      | admin/structure/views              |
-      | propose/collection                 |
-      | propose/solution                   |
-      | dashboard                          |
-      | node                               |
-      | node/add                           |
-      | node/add/custom_page               |
-      | node/add/discussion                |
-      | node/add/document                  |
-      | node/add/event                     |
-      | node/add/news                      |
-      | rdf_entity/add                     |
-      | rdf_entity/add/asset_distribution  |
-      | rdf_entity/add/asset_release       |
-      | rdf_entity/add/collection          |
-      | rdf_entity/add/contact_information |
-      | rdf_entity/add/licence             |
-      | rdf_entity/add/owner               |
-      | rdf_entity/add/solution            |
-      | licence                            |
+      | path                                                           |
+      | admin                                                          |
+      | admin/config                                                   |
+      | admin/config/search/redirect                                   |
+      | admin/content                                                  |
+      | admin/content/rdf                                              |
+      | admin/people                                                   |
+      | admin/reporting/group-administrators/rdf_entity/collection     |
+      | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/structure                                                |
+      | admin/structure/views                                          |
+      | propose/collection                                             |
+      | propose/solution                                               |
+      | dashboard                                                      |
+      | node                                                           |
+      | node/add                                                       |
+      | node/add/custom_page                                           |
+      | node/add/discussion                                            |
+      | node/add/document                                              |
+      | node/add/event                                                 |
+      | node/add/news                                                  |
+      | rdf_entity/add                                                 |
+      | rdf_entity/add/asset_distribution                              |
+      | rdf_entity/add/asset_release                                   |
+      | rdf_entity/add/collection                                      |
+      | rdf_entity/add/contact_information                             |
+      | rdf_entity/add/licence                                         |
+      | rdf_entity/add/owner                                           |
+      | rdf_entity/add/solution                                        |
+      | licence                                                        |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -79,33 +81,35 @@ Feature: User authentication
     Then I should get an access denied error
 
     Examples:
-      | path                               |
-      | admin                              |
-      | admin/config                       |
-      | admin/content                      |
-      | admin/content/rdf                  |
-      | admin/people                       |
-      | admin/structure                    |
-      | admin/structure/views              |
-      | dashboard                          |
-      | propose/solution                   |
-      | licence                            |
-      | licence/add                        |
-      | node                               |
-      | node/add                           |
-      | node/add/custom_page               |
-      | node/add/discussion                |
-      | node/add/document                  |
-      | node/add/event                     |
-      | node/add/news                      |
-      | rdf_entity/add                     |
-      | rdf_entity/add/asset_distribution  |
-      | rdf_entity/add/asset_release       |
-      | rdf_entity/add/collection          |
-      | rdf_entity/add/contact_information |
-      | rdf_entity/add/licence             |
-      | rdf_entity/add/owner               |
-      | rdf_entity/add/solution            |
+      | path                                                           |
+      | admin                                                          |
+      | admin/config                                                   |
+      | admin/content                                                  |
+      | admin/content/rdf                                              |
+      | admin/people                                                   |
+      | admin/reporting/group-administrators/rdf_entity/collection     |
+      | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/structure                                                |
+      | admin/structure/views                                          |
+      | dashboard                                                      |
+      | propose/solution                                               |
+      | licence                                                        |
+      | licence/add                                                    |
+      | node                                                           |
+      | node/add                                                       |
+      | node/add/custom_page                                           |
+      | node/add/discussion                                            |
+      | node/add/document                                              |
+      | node/add/event                                                 |
+      | node/add/news                                                  |
+      | rdf_entity/add                                                 |
+      | rdf_entity/add/asset_distribution                              |
+      | rdf_entity/add/asset_release                                   |
+      | rdf_entity/add/collection                                      |
+      | rdf_entity/add/contact_information                             |
+      | rdf_entity/add/licence                                         |
+      | rdf_entity/add/owner                                           |
+      | rdf_entity/add/solution                                        |
 
   @api
   Scenario Outline: Moderator can access pages they are authorized to
@@ -113,13 +117,15 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path               |
-      | admin/people       |
-      | admin/content/rdf  |
-      | dashboard          |
-      | licence            |
-      | licence/add        |
-      | propose/collection |
+      | path                                                           |
+      | admin/people                                                   |
+      | admin/content/rdf                                              |
+      | admin/reporting/group-administrators/rdf_entity/collection     |
+      | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | dashboard                                                      |
+      | licence                                                        |
+      | licence/add                                                    |
+      | propose/collection                                             |
 
   @api
   Scenario Outline: Moderator cannot access restricted pages

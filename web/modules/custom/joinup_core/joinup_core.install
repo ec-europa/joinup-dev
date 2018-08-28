@@ -60,3 +60,109 @@ function joinup_core_requirements($phase) {
 function joinup_core_update_8100(&$sandbox) {
   \Drupal::service('module_installer')->install(['config_sync']);
 }
+
+/**
+ * Delete the queue of the cached_computed_field module.
+ */
+function joinup_core_update_8101() {
+  $queue = \Drupal::queue('cached_computed_field_expired_fields', FALSE);
+  $queue->deleteQueue();
+}
+
+/**
+ * Update the predicates for fields 'solution_type' and 'test_resource_type'.
+ */
+function joinup_core_update_8102() {
+  /** @var \Drupal\Core\Database\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+INSERT { GRAPH ?g { ?subject <http://joinup.eu/test_resource_type> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/solution/published>
+    <http://joinup.eu/asset_release/draft>
+    <http://joinup.eu/asset_release/published>
+  }
+}
+QUERY;
+  $connection->query($query);
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } }
+INSERT { GRAPH ?g { ?subject <http://purl.org/dc/terms/type> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://purl.org/dc/terms/DCMIType> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/solution/published>
+  }
+}
+QUERY;
+  $connection->query($query);
+}
+
+/**
+ * Fix the spatial coverage predicate for collections and solutions.
+ */
+function joinup_core_update_8103() {
+  /** @var \Drupal\Core\Database\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://www.w3.org/ns/dcat#spatial> ?object } }
+INSERT { GRAPH ?g { ?subject <http://purl.org/dc/terms/spatial> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://www.w3.org/ns/dcat#spatial> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/collection/published>
+    <http://joinup.eu/collection/draft>
+    <http://joinup.eu/solution/published>
+    <http://joinup.eu/solution/draft>
+  }
+}
+QUERY;
+  $connection->query($query);
+}
+
+/**
+ * Fix the documentation predicate.
+ */
+function joinup_core_update_8104() {
+  /** @var \Drupal\Core\Database\Connection $query */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <http://xmlns.com/foaf/spec/#term_page> ?object } }
+INSERT { GRAPH ?g { ?subject <http://xmlns.com/foaf/0.1/page> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <http://xmlns.com/foaf/spec/#term_page> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/solution/published>
+    <http://joinup.eu/solution/draft>
+    <http://joinup.eu/asset_release/published>
+    <http://joinup.eu/asset_release/draft>
+  }
+}
+QUERY;
+  $connection->query($query);
+}
+
+/**
+ * Fix the release notes predicate.
+ */
+function joinup_core_update_8105() {
+  /** @var \Drupal\Core\Database\Connection $query */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+DELETE { GRAPH ?g { ?subject <https://www.w3.org/TR/vocab-adms/#adms-versionnotes> ?object } }
+INSERT { GRAPH ?g { ?subject <http://www.w3.org/ns/adms#versionNotes> ?object } }
+WHERE {
+  GRAPH ?g { ?subject <https://www.w3.org/TR/vocab-adms/#adms-versionnotes> ?object } .
+  VALUES ?g {
+    <http://joinup.eu/asset_release/published>
+    <http://joinup.eu/asset_release/draft>
+  }
+}
+QUERY;
+  $connection->query($query);
+}

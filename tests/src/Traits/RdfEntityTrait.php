@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Helper methods for using collections in tests.
@@ -20,13 +24,13 @@ trait RdfEntityTrait {
    * @param string $type
    *   Optional RDF entity type.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The RDF entity.
    *
    * @throws \InvalidArgumentException
    *   Thrown when an RDF entity with the given name and type does not exist.
    */
-  protected static function getRdfEntityByLabel($label, $type = NULL) {
+  protected static function getRdfEntityByLabel(string $label, string $type = NULL): RdfInterface {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('label', $label)
       ->range(0, 1);
@@ -62,7 +66,7 @@ trait RdfEntityTrait {
    * @throws \InvalidArgumentException
    *   Thrown when an RDF entity with the given name and type does not exist.
    */
-  protected function getRdfEntityByLabelUnchanged($title, $type) {
+  protected function getRdfEntityByLabelUnchanged(string $title, string $type): RdfInterface {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', $type)
       ->condition('label', $title)
@@ -73,9 +77,21 @@ trait RdfEntityTrait {
       throw new \InvalidArgumentException("The $type entity with the name '$title' was not found.");
     }
 
-    return \Drupal::entityTypeManager()
-      ->getStorage('rdf_entity')
-      ->loadUnchanged(reset($result));
+    try {
+      $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+    }
+    catch (InvalidPluginDefinitionException $e) {
+      // This method is not intended to be used in systems that do not have the
+      // RDF Entity module enabled. This means we can reasonably assume that the
+      // entity storage definition is valid. If it is not this is due to highly
+      // exceptional circumstances occuring at runtime.
+      throw new \RuntimeException('The RDF entity storage has an invalid definition.', 0, $e);
+    }
+
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
+    $entity = $storage->loadUnchanged(reset($result));
+
+    return $entity;
   }
 
   /**
@@ -90,7 +106,7 @@ trait RdfEntityTrait {
    *   Thrown when the number of RDF entities does not
    *   match the expectation.
    */
-  protected function assertRdfEntityCount($number, $type) {
+  protected function assertRdfEntityCount(int $number, string $type): void {
     $actual = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', $type)
       ->count()
@@ -114,7 +130,7 @@ trait RdfEntityTrait {
    *
    * @see \Drupal\DrupalExtension\Context\RawDrupalContext::parseEntityFields()
    */
-  public function parseRdfEntityFields(array $fields) {
+  public function parseRdfEntityFields(array $fields): array {
     $entity = (object) $fields;
     parent::parseEntityFields('rdf_entity', $entity);
     return (array) $entity;
@@ -128,10 +144,13 @@ trait RdfEntityTrait {
    * @param array $values
    *   An array of field values.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The newly created entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the entity cannot be saved.
    */
-  protected function createRdfEntity($bundle, array $values) {
+  protected static function createRdfEntity(string $bundle, array $values): RdfInterface {
     // Convert timestamp fields from human-readable to timestamp.
     // @todo Replace this with a Behat hook.
     foreach (['changed', 'created'] as $field) {

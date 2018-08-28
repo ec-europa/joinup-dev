@@ -10,13 +10,15 @@ dependencies:
     - field.field.node.discussion.field_replies
     - field.field.node.discussion.field_shared_in
     - field.field.node.discussion.field_site_featured
+    - field.field.node.discussion.field_site_pinned
     - field.field.node.discussion.field_state
     - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
+    - ds
     - options
-    - text
+    - smart_trim
     - user
 id: node.discussion.moderation
 targetEntityType: node
@@ -24,15 +26,34 @@ bundle: discussion
 mode: moderation
 content:
   body:
-    weight: 2
+    weight: 1
     label: hidden
     settings:
       trim_length: 600
-    third_party_settings: {  }
-    type: text_summary_or_trimmed
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: smart_trim
     region: content
   field_state:
-    weight: 1
+    weight: 0
     label: inline
     settings: {  }
     third_party_settings: {  }
@@ -45,7 +66,10 @@ hidden:
   field_replies: true
   field_shared_in: true
   field_site_featured: true
+  field_site_pinned: true
   field_visit_count: true
+  flag_subscribe_discussions: true
+  invite_link: true
   langcode: true
   links: true
   og_audience: true

@@ -1,6 +1,12 @@
 services:
-  contact_form.event_subscriber:
+  contact_form.recipient_notification.subscriber:
     class: Drupal\contact_form\EventSubscriber\NotificationSubscriber
-    arguments: ['@entity_type.manager', '@config.factory', '@current_user', '@og.group_type_manager', '@og.membership_manager', '@joinup_core.workflow.helper', '@joinup_core.relations_manager', '@message_notify.sender']
+    parent: joinup_notification.notification_subscriber_base
+    tags:
+      - { name: event_subscriber }
+  contact_form.sender_notification.subscriber:
+    class: Drupal\contact_form\EventSubscriber\SenderNotificationSubscriber
+    arguments:
+      - '@plugin.manager.mail'
     tags:
       - { name: event_subscriber }

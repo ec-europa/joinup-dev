@@ -1,4 +1,5 @@
 <div class="section section--featured section--featured-lg">
+  {{ page.featured.tourbutton_2 }}
   <div class="anonymous-menu">
     <ul class="anonymous-menu__list">
       <li class="anonymous-menu__item">
@@ -21,7 +22,7 @@
           id="search-bar__input">
         </form>
       </div>
-      {{ page.featured }}
+      {{ page.featured|without('tourbutton_2') }}
     </div>
     <div class="featured-lg__overlay"></div>
   </div>
