@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0904cadfdb2e0124700720a50df4bcc",
+    "content-hash": "4594e77c9849ce77f292919d8603ffcc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2462,11 +2462,12 @@
                     "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2556069-38.patch",
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
                     "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
+                    "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-08-22/2725259-85.patch",
                     "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
-                    "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-08-22/2725259-85.patch"
+                    "Check first if views data exists in datetime_range module @see https://www.drupal.org/project/drupal/issues/2995578": "https://www.drupal.org/files/issues/2018-08-28/2995578-2.patch"
                 }
             },
             "autoload": {
