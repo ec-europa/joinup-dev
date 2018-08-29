@@ -16,7 +16,7 @@ trap 'STATUS=$?' ERR
 # Set the interval to 0 to disable automatic checkpoints. At the end of the update
 # The interval will be restored, and a manual checkpoint will be fired in order to
 # write all the transactions of the updates into the disk.
-echo "Disable automatic checkpoints."
+echo "Disabling automatic checkpoints."
 ./vendor/bin/phing set-virtuoso-checkpoint -Dinterval="-1"
 
 # Perform the necessary steps for the update
@@ -40,9 +40,10 @@ touch disable-config-readonly
 ./vendor/bin/drush cs-update --discard-overrides --yes
 ./vendor/bin/drush search-api:reset-tracker --yes
 ./vendor/bin/drush cache-rebuild --yes
-echo "Rebuilding node access records..."
+echo "Rebuilding node access records."
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
-echo "Perform a manual checkpoint."
+
+echo "Creating a manual checkpoint."
 ./vendor/bin/phing execute-virtuoso-checkpoint
 
 echo "Restoring the virtuoso checkpoint interval."
