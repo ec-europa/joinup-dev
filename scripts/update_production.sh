@@ -21,6 +21,21 @@ echo "Disable automatic checkpoints."
 
 # Perform the necessary steps for the update
 cd ${PROJECT_ROOT}
+
+# Make sure config is writable when performing updates. This depends on the
+# following code being present in web/sites/default/settings.php:
+# $settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');
+grep -Fq '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../disable-config-readonly'\'');' web/sites/default/settings.php
+
+if [ ${STATUS} -ne 0 ]; then
+  echo "The following line is missing from web/sites/default/settings.php:"
+  echo '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../disable-config-readonly'\'');'
+  exit ${STATUS}
+fi
+
+echo "Disabling config_readonly."
+touch disable-config-readonly
+
 ./vendor/bin/drush updatedb --yes
 ./vendor/bin/drush cs-update --discard-overrides --yes
 ./vendor/bin/drush search-api:reset-tracker --yes
@@ -32,6 +47,9 @@ echo "Perform a manual checkpoint."
 
 echo "Restoring the virtuoso checkpoint interval."
 ./vendor/bin/phing set-virtuoso-checkpoint -Dinterval=60
+
+echo "Enabling config_readonly."
+rm disable-config-readonly
 
 # Check if any of the steps returned an error.
 if [ ${STATUS} -ne 0 ]; then
