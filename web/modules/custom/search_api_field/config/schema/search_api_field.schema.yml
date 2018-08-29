@@ -45,7 +45,7 @@ field.value.search_api_field:
                 label: 'Region'
         enabled:
           type: integer
-          value: 'Enabled'
+          label: 'Enabled'
         query_presets:
           type: string
           label: 'Query presets'
