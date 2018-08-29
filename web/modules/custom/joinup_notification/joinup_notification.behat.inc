@@ -358,7 +358,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       throw new \Exception("No mail change verification E-mail has been sent to $mail.");
     }
 
-    $pattern = '#http://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
+    $pattern = '#https?://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
     if (!preg_match($pattern, $mail_sent['plain'], $match)) {
       throw new \Exception("The mail change verification E-mail doesn't contain a valid verification link.");
     }
