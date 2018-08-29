@@ -25,7 +25,7 @@ cd ${PROJECT_ROOT}
 # Make sure config is writable when performing updates. This depends on the
 # following code being present in web/sites/default/settings.php:
 # $settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');
-grep -Fq '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../disable-config-readonly'\'');' web/sites/default/settings.php
+grep -Fqx '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../disable-config-readonly'\'');' web/sites/default/settings.php
 
 if [ ${STATUS} -ne 0 ]; then
   echo "The following line is missing from web/sites/default/settings.php:"
