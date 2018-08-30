@@ -17,6 +17,7 @@ use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
@@ -169,8 +170,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
 
     // Remove the blacklisted entities, if any.
     if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist))) {
-      // Delete blacklisted entities from 'staging' graph.
-      $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
+      $blacklist_ids = SparqlArg::serializeUris($blacklist, ' ');
+      $this->sparql->query("WITH <{$this->getGraphUri('sink')}> DELETE { ?entity_id ?p ?o } WHERE { ?entity_id ?p ?o . VALUES ?entity_id { {$blacklist_ids} } }");
     }
 
     // Persist data for next steps.
