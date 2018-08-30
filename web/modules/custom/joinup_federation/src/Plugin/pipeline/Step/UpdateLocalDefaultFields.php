@@ -158,7 +158,7 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
 
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {
-      $entity_exists = in_array($id, $local_entities);
+      $entity_exists = isset($local_entities[$id]);
       // The entity already exists.
       if ($entity_exists) {
         // Check for bundle mismatch between the incoming and the local entity.
