@@ -128,7 +128,7 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
 
     $this->setBatchValue('remaining_incoming_ids', $incoming_ids);
     // Set a separate value for the upcoming steps.
-    $this->setPersistentDataValue('incoming_ids', $incoming_ids);
+    $this->setPersistentDataValue('entities', $incoming_ids);
     return ceil(count($incoming_ids) / self::BATCH_SIZE);
   }
 

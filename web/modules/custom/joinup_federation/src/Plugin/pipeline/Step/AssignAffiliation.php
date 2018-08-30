@@ -75,7 +75,7 @@ class AssignAffiliation extends JoinupFederationStepPluginBase implements Pipeli
    * {@inheritdoc}
    */
   public function initBatchProcess() {
-    $incoming_ids = $this->getPersistentDataValue('incoming_ids');
+    $incoming_ids = $this->getPersistentDataValue('entities');
     $this->setBatchValue('remaining_incoming_ids', $incoming_ids);
     return ceil(count($incoming_ids) / self::BATCH_SIZE);
   }

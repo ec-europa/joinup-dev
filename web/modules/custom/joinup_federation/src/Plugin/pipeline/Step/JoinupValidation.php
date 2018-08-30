@@ -110,7 +110,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    * {@inheritdoc}
    */
   public function initBatchProcess() {
-    $ids = array_keys($this->getPersistentDataValue('incoming_ids'));
+    $ids = array_keys($this->getPersistentDataValue('entities'));
     $this->setBatchValue('remaining_ids', $ids);
     return ceil(count($ids) / static::BATCH_SIZE);
   }
