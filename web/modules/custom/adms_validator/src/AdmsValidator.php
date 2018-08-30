@@ -32,8 +32,12 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function validateByGraphUri(string $graph_uri): AdmsValidationResult {
-    $query_result = $this->sparqlEndpoint->query(self::validationQuery($graph_uri));
+  public function validateByGraphUri(string $graph_uri, string $query = NULL): AdmsValidationResult {
+    if (empty($query)) {
+      $query = self::validationQuery($graph_uri);
+    }
+
+    $query_result = $this->sparqlEndpoint->query($query);
     return new AdmsValidationResult($query_result, $graph_uri, $this->sparqlEndpoint);
   }
 
@@ -80,7 +84,7 @@ class AdmsValidator implements AdmsValidatorInterface {
    * @return string
    *   The query to use for validation.
    */
-  protected function validationQuery(string $uri): string {
+  public static function validationQuery(string $uri): string {
     $adms_ap_rules = DRUPAL_ROOT . "/../vendor/" . self::SEMIC_VALIDATION_QUERY_PATH;
     $query = file_get_contents($adms_ap_rules);
 

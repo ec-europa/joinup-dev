@@ -28,11 +28,14 @@ interface AdmsValidatorInterface {
    *
    * @param string $graph_uri
    *   The graph URI.
+   * @param string $query
+   *   (Optional) Provide the query to validate against. If empty, the default
+   *   query will be used.
    *
    * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
    */
-  public function validateByGraphUri(string $graph_uri): AdmsValidationResult;
+  public function validateByGraphUri(string $graph_uri, string $query = NULL): AdmsValidationResult;
 
   /**
    * Validates the triples from a graph object.
