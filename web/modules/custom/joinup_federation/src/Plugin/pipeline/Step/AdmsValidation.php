@@ -7,6 +7,8 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -20,9 +22,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("ADMS Validation"),
  * )
  */
-class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
+class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface, PipelineStepWithBatchInterface {
 
   use PipelineStepWithRedirectResponseTrait;
+  use PipelineStepWithBatchTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 1;
 
   /**
    * The ADMS validator service.
@@ -66,7 +76,23 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
   /**
    * {@inheritdoc}
    */
+  public function initBatchProcess() {
+    $this->setBatchValue('single_iteration', self::BATCH_SIZE);
+    return self::BATCH_SIZE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('single_iteration');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute() {
+    $this->setBatchValue('single_iteration', 0);
     $graph_uri = $this->getGraphUri('sink_plus_taxo');
     $validation = $this->admsValidator->validateByGraphUri($graph_uri);
 
