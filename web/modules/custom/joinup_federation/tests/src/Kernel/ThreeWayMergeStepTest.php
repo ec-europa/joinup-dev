@@ -7,6 +7,7 @@ namespace Drupal\Tests\joinup_federation\Kernel;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\joinup_federation\Plugin\pipeline\Step\EntitiesToStorage;
 use Drupal\pipeline\PipelineState;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityGraph;
@@ -16,7 +17,10 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
 /**
- * Tests the '3_way_merge' process step plugin.
+ * Tests the 3-way-merge process step plugin.
+ *
+ * The 3-way-merge consists of the steps 'update_local_default_fields' and
+ * 'entities_to_storage'.
  *
  * @group joinup_federation
  */
@@ -29,9 +33,10 @@ class ThreeWayMergeStepTest extends StepTestBase {
     return [
       'remove_unsupported_data' => [],
       'add_joinup_vocabularies' => [],
-      '3_way_merge' => [
+      'update_local_default_fields' => [
         'collection' => 'http://catalog',
       ],
+      'entities_to_storage' => [],
     ];
   }
 
@@ -176,12 +181,18 @@ class ThreeWayMergeStepTest extends StepTestBase {
     $this->pipeline->clearGraph($this->pipeline->getGraphUri('sink_plus_taxo'));
 
     $state = (new PipelineState())
-      ->setStepId('3_way_merge')
+      ->setStepId('update_local_default_fields')
       ->setBatchValue('remaining_incoming_ids', ['http://asset' => TRUE]);
-    $this->runPipelineStep('3_way_merge', $state);
+    $this->runPipelineStep('update_local_default_fields', $state);
+
+    $solution = Rdf::load('http://asset');
+    $state = (new PipelineState())
+      ->setStepId('entities_to_storage')
+      ->setBatchValue(EntitiesToStorage::ENTITIES_TO_STORAGE_KEY, ['http://asset' => $solution]);
+    $this->runPipelineStep('entities_to_storage', $state);
 
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = Rdf::load('http://asset', ['staging']);
+    $solution = \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadUnchanged('http://asset', ['staging']);
 
     // Check that incoming values are preserved over local ones.
     $this->assertEquals('Asset', $solution->label());

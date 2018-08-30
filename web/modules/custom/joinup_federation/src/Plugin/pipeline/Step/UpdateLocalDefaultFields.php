@@ -182,6 +182,7 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
       }
 
       if ($needs_save) {
+        $this->handleAffiliation($incoming_entity, $entity_exists);
         $entities[$incoming_entity->id()] = $incoming_entity;
       }
     }
@@ -279,6 +280,53 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
         $field->applyDefaultValue();
       }
     }
+  }
+
+  /**
+   * Handles the incoming solution affiliation.
+   *
+   * For existing solutions, we only check if the configured collection ID
+   * matches the solution affiliation. For new solutions, we affiliate the
+   * solution to the configured collection.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $incoming_solution
+   *   The local solution.
+   * @param bool $entity_exists
+   *   If the incoming entity already exits on the system.
+   *
+   * @throws \Exception
+   *   If the configured collection is different than the collection of the
+   *   local solution.
+   */
+  protected function handleAffiliation(RdfInterface $incoming_solution, bool $entity_exists): void {
+    // Check only solutions.
+    if ($incoming_solution->bundle() !== 'solution') {
+      return;
+    }
+
+    // If this plugin was not configured to assign a collection, exit early.
+    if (!$collection_id = $this->getConfiguration()['collection']) {
+      return;
+    }
+
+    if (!$entity_exists) {
+      $incoming_solution->set('collection', $collection_id);
+      return;
+    }
+
+    // Check for collection mismatch when federating an existing solution.
+    $match = FALSE;
+    foreach ($incoming_solution->get('collection') as $item) {
+      if ($item->target_id === $collection_id) {
+        $match = TRUE;
+        break;
+      }
+    }
+
+    if (!$match) {
+      throw new \Exception("Plugin 'update_local_default_fields' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
+    }
+    // For an existing solution we don't make any changes to its affiliation.
   }
 
 }
