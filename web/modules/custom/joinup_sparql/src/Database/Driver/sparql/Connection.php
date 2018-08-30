@@ -28,7 +28,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
       // reasonable amount of time and then we retry one more time.
       // @see http://docs.openlinksw.com/virtuoso/checkpoint/
       sleep(5);
-      return $this->query($query);
+      return parent::query($query);
     }
   }
 
@@ -45,7 +45,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
       // reasonable amount of time and then we retry one more time.
       // @see http://docs.openlinksw.com/virtuoso/checkpoint/
       sleep(5);
-      return $this->update($query);
+      return parent::update($query);
     }
   }
 
