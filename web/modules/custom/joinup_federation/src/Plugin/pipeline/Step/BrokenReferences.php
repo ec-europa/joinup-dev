@@ -35,7 +35,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    *
    * @var int
    */
-  const BATCH_SIZE = 10;
+  const BATCH_SIZE = 2;
 
   /**
    * The RDF schema field validator service.

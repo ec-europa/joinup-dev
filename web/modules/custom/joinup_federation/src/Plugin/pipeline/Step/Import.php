@@ -33,7 +33,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
    *
    * @var int
    */
-  const BATCH_SIZE = 10;
+  const BATCH_SIZE = 5;
 
   /**
    * The entity field manager service.
