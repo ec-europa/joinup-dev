@@ -22,11 +22,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Ensures values for empty fields from the staging graph.
  *
  * @PipelineStep(
- *   id = "3_way_merge",
+ *   id = "update_local_default_fields",
  *   label = @Translation("Set default or local values to empty fields"),
  * )
  */
-class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
+class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
   use PipelineStepWithBatchTrait;
   use SparqlEntityStorageTrait;
@@ -34,8 +34,8 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   /**
    * The batch size.
    *
-   * The three way merge is the heaviest process in the import sequence, thus
-   * the batch size is 1.
+   * This step is the heaviest in all the wizard, thus the batch size needs to
+   * be 1.
    *
    * @var int
    */
@@ -109,13 +109,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
-    return ['collection' => NULL] + parent::defaultConfiguration();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function initBatchProcess() {
     $whitelist = $this->getPersistentDataValue('whitelist');
     $this->unsetPersistentDataValue('whitelist');
@@ -134,8 +127,9 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
     }
 
     $this->setBatchValue('remaining_incoming_ids', $incoming_ids);
-
-    return count($incoming_ids);
+    // Set a separate value for the upcoming steps.
+    $this->setPersistentDataValue('incoming_ids', $incoming_ids);
+    return ceil(count($incoming_ids) / self::BATCH_SIZE);
   }
 
   /**
@@ -160,11 +154,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
     $local_entities = $local_ids ? Rdf::loadMultiple($local_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
 
     // Collect here entity IDs that are about to be saved.
-    $entities = $this->hasPersistentDataValue('entities') ? $this->getPersistentDataValue('entities') : [];
+    $entities = $this->hasPersistentDataValue(EntitiesToStorage::ENTITIES_TO_STORAGE_KEY) ? $this->getPersistentDataValue(EntitiesToStorage::ENTITIES_TO_STORAGE_KEY) : [];
 
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {
-      $entity_exists = isset($local_entities[$id]);
+      $entity_exists = in_array($id, $local_entities);
       // The entity already exists.
       if ($entity_exists) {
         // Check for bundle mismatch between the incoming and the local entity.
@@ -188,15 +182,12 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       }
 
       if ($needs_save) {
-        $this->handleAffiliation($incoming_entity, $entity_exists);
-        $incoming_entity->skip_notification = TRUE;
-        $incoming_entity->save();
-        $entities[$incoming_entity->id()] = $entity_exists;
+        $entities[$incoming_entity->id()] = $incoming_entity;
       }
     }
 
     // Persist the list so we can reuse it in the next steps.
-    $this->setPersistentDataValue('entities', $entities);
+    $this->setPersistentDataValue(EntitiesToStorage::ENTITIES_TO_STORAGE_KEY, $entities);
   }
 
   /**
@@ -238,20 +229,14 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
         continue;
       }
 
-      $columns = $field_definition->getFieldStorageDefinition()->getColumns();
-      foreach ($columns as $column_name => $column_schema) {
-        // Check if the field is an ADMS-AP field.
-        $incoming_field = $incoming_entity->get($field_name);
-        $local_field = $local_entity->get($field_name);
-        // Assign only if the incoming field is empty.
-        if ($incoming_field->isEmpty()) {
-          $incoming_field->setValue($local_field->getValue());
-          $changed = TRUE;
-          // Don't check the rest of the columns because the whole field has
-          // been already assigned.
-          break;
-        }
-      }
+      $incoming_field = $incoming_entity->get($field_name);
+      $local_field = $local_entity->get($field_name);
+
+      // At this point we are dealing only with local fields. Always assign
+      // the local value to avoid allowing users to override local values like
+      // the moderation status.
+      $incoming_field->setValue($local_field->getValue());
+      $changed = TRUE;
     }
 
     return $changed;
@@ -294,53 +279,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
         $field->applyDefaultValue();
       }
     }
-  }
-
-  /**
-   * Handles the incoming solution affiliation.
-   *
-   * For existing solutions, we only check if the configured collection ID
-   * matches the solution affiliation. For new solutions, we affiliate the
-   * solution to the configured collection.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $incoming_solution
-   *   The local solution.
-   * @param bool $entity_exists
-   *   If the incoming entity already exits on the system.
-   *
-   * @throws \Exception
-   *   If the configured collection is different than the collection of the
-   *   local solution.
-   */
-  protected function handleAffiliation(RdfInterface $incoming_solution, bool $entity_exists): void {
-    // Check only solutions.
-    if ($incoming_solution->bundle() !== 'solution') {
-      return;
-    }
-
-    // If this plugin was not configured to assign a collection, exit early.
-    if (!$collection_id = $this->getConfiguration()['collection']) {
-      return;
-    }
-
-    if (!$entity_exists) {
-      $incoming_solution->set('collection', $collection_id);
-      return;
-    }
-
-    // Check for collection mismatch when federating an existing solution.
-    $match = FALSE;
-    foreach ($incoming_solution->get('collection') as $item) {
-      if ($item->target_id === $collection_id) {
-        $match = TRUE;
-        break;
-      }
-    }
-
-    if (!$match) {
-      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
-    }
-    // For an existing solution we don't make any changes to its affiliation.
   }
 
 }
