@@ -17,36 +17,88 @@ Feature:
       | title               | collection | created           | body                                        | state     |
       | 20 year anniversary | Nintendo64 | 2018-10-01 4:29am | The console was released in September 1996. | validated |
 
-  Scenario: Community content listing widget should be shown only to moderators
+  Scenario: Community content listing widget should be shown only to moderators.
     Given I am logged in as a facilitator of the "Nintendo64" collection
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should not be present "Display a community content listing, Query presets, Limit"
+    And the following fields should not be present "Display a community content listing, Include content shared in the collection, Query presets, Limit"
 
     Given I am logged in as a moderator
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should be present "Display a community content listing, Query presets, Limit"
+    And the following fields should be present "Display a community content listing, Include content shared in the collection, Query presets, Limit"
 
-  Scenario: Configure a custom page to show only news of its collection
+  Scenario: Configure a custom page to show a community content listing.
     Given I am logged in as a moderator
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in the following:
+      | Title | Latest content                        |
+      | Body  | Shows all content for this collection |
+    And I check "Display a community content listing"
+    And I press "Save"
+    Then I should see the heading "Latest content"
+    And I should see the "Rare Nintendo64 disk drive discovered" tile
+    And I should see the "20 year anniversary" tile
+    # Content from other collections should not be shown.
+    But I should not see the "NEC VR4300 CPU" tile
+
+    # Change the page to list only news.
+    When I click "Edit" in the "Entity actions" region
+    When I fill in the following:
       | Title | Latest news                        |
       | Body  | Shows all news for this collection |
-    And I check "Display a community content listing"
     And I fill in "Query presets" with "entity_bundle|news"
     And I press "Save"
     Then I should see the heading "Latest news"
     And I should see the "Rare Nintendo64 disk drive discovered" tile
-    # I should not see content that is not a discussion.
-    And I should not see the text "20 year anniversary"
-    # I should not see the discussions of another collection.
-    But I should not see the text "NEC VR4300 CPU"
+    But I should not see the "20 year anniversary" tile
+    And I should not see the "NEC VR4300 CPU" tile
+
+    When I click "Edit" in the "Entity actions" region
+    And I check "Include content shared in the collection"
+    And I press "Save"
+    # Only news are displayed.
+    Then I should see the "Rare Nintendo64 disk drive discovered" tile
+    But I should not see the "20 year anniversary" tile
+    And I should not see the "NEC VR4300 CPU" tile
+
+    # Share a news inside the collection.
+    Given I am logged in as a facilitator of the "Nintendo64" collection
+    When I go to the "NEC VR4300 CPU" news
+    And I click "Share"
+    And I check "Nintendo64"
+    And I press "Share"
+    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+
+    When I go to the "Latest news" custom page
+    Then I should see the "Rare Nintendo64 disk drive discovered" tile
+    And I should see the "NEC VR4300 CPU" tile
+    But I should not see the "20 year anniversary" tile
+
+    # The news is removed from the list as soon as it's removed from sharing.
+    When I go to the homepage of the "Nintendo64" collection
+    And I click the contextual link "Unshare" in the "NEC VR4300 CPU" tile
+    And I check "Nintendo64"
+    And I press "Submit"
+    Then I should see the success message "Item was unshared from the following collections: Nintendo64"
+
+    When I go to the "Latest news" custom page
+    Then I should see the "Rare Nintendo64 disk drive discovered" tile
+    But I should not see the "20 year anniversary" tile
+    And I should not see the "NEC VR4300 CPU" tile
+
+    Given I am logged in as a moderator
+    When I go to the "Latest news" custom page
+    And I click "Edit" in the "Entity actions" region
+    And I uncheck "Display a community content listing"
+    And I press "Save"
+    Then I should not see the "Rare Nintendo64 disk drive discovered" tile
+    And I should not see the "20 year anniversary" tile
+    And I should not see the "NEC VR4300 CPU" tile
 
   Scenario: Content type tabs should be mutually exclusive and show only items with results.
     Given I am logged in as a moderator

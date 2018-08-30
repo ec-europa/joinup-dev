@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_13
 field_name: field_tallinn_action_13
 entity_type: node
 bundle: tallinn_report
-label: 'Action 13'
+label: 'Cybersecurity capacity / implementation of NIS directive'
 description: 'Co-ordinate, exchange and collaborate more with each other to increase our strategic, operational, research and development capacity in the area of cybersecurity, in particular via the implementation of the network and information security (NIS) directive11 to strengthen the security and resilience of our public administration and services.'
 required: false
 translatable: true

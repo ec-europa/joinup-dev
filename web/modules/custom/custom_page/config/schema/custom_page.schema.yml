@@ -1,0 +1,40 @@
+# Extend the default search_api_field schema to add the "show_shared" key.
+field.field.node.custom_page.field_cp_content_listing:
+  type: field_config_base
+  label: 'Field'
+  mapping:
+    default_value:
+      type: sequence
+      label: 'Default values'
+      sequence:
+        type: field.value.[%parent.%parent.field_type]
+        label: 'Default value'
+        mapping:
+          value:
+            type: mapping
+            label: 'Value'
+            mapping:
+              fields:
+                type: sequence
+                label: 'Field name'
+                sequence:
+                  type: mapping
+                  mapping:
+                    weight:
+                      type: integer
+                      label: 'Weight'
+                    region:
+                      type: string
+                      label: 'Region'
+              enabled:
+                type: integer
+                label: 'Enabled'
+              query_presets:
+                type: string
+                label: 'Query presets'
+              limit:
+                type: integer
+                label: 'Limit'
+              show_shared:
+                type: boolean
+                label: 'Show shared'

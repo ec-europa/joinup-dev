@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_25
 field_name: field_tallinn_action_25
 entity_type: node
 bundle: tallinn_report
-label: 'Action 25'
+label: 'Modern design of public services'
 description: 'Work to modernise the design of public services, procurement and contracting arrangements, to make them compatible with modern and agile ways of developing and deploying digital technology.'
 required: false
 translatable: true

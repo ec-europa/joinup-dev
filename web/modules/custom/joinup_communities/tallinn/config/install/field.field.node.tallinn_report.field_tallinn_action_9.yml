@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_9
 field_name: field_tallinn_action_9
 entity_type: node
 bundle: tallinn_report
-label: 'Action 9'
+label: 'Use of available funding for implementing once-only'
 description: 'Make use of available funding to digitise all necessary key data and implement data exchange services between administrations for applying once only on both national and/or cross-border levels.'
 required: false
 translatable: true
