@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
+use Drupal\adms_validator\AdmsValidator;
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
@@ -77,38 +78,89 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
    * {@inheritdoc}
    */
   public function initBatchProcess() {
-    $this->setBatchValue('single_iteration', self::BATCH_SIZE);
-    return self::BATCH_SIZE;
+    $graph_uri = $this->getGraphUri('sink_plus_taxo');
+    $query = AdmsValidator::validationQuery($graph_uri);
+    preg_match('/GRAPH.*?\{(?<where_clause>.*)\}.*?}.*?\Z/s', $query, $matches);
+    $sub_queries = explode('UNION', $matches['where_clause']);
+    $this->setBatchValue('queries', $sub_queries);
+    return ceil(count($sub_queries, self::BATCH_SIZE));
   }
 
   /**
    * {@inheritdoc}
    */
   public function batchProcessIsCompleted() {
-    return !$this->getBatchValue('single_iteration');
+    return !$this->getBatchValue('queries');
   }
 
   /**
    * {@inheritdoc}
    */
   public function execute() {
-    $this->setBatchValue('single_iteration', 0);
-    $graph_uri = $this->getGraphUri('sink_plus_taxo');
-    $validation = $this->admsValidator->validateByGraphUri($graph_uri);
+    $query_array = $this->extractNextSubset('queries', self::BATCH_SIZE);
+    foreach ($query_array as $query) {
+      $query = $this->getPreparedQuery($query);
+      $graph_uri = $this->getGraphUri('sink_plus_taxo');
+      $validation = $this->admsValidator->validateByGraphUri($graph_uri, $query);
+      if (!$validation->isSuccessful()) {
+        throw (new PipelineStepExecutionLogicException())->setError([
+          [
+            '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
+          ],
+          $validation->toTable(),
+        ]);
+      }
+    }
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function onBatchProcessCompleted() {
     // Cleanup the 'sink_plus_taxo' graph.
     $this->pipeline->clearGraph($this->getGraphUri('sink_plus_taxo'));
+    return $this;
+  }
 
-    if ($validation->isSuccessful()) {
-      return;
-    }
+  /**
+   * Prepares and returns a query ready to be executed.
+   *
+   * @param string $where_clause
+   *   The where clause part of the query.
+   *
+   * @return string
+   *   The query prepared for execution.
+   */
+  protected function getPreparedQuery($where_clause) {
+    $graph = $this->getGraphUri('sink_plus_taxo');
+    $query = <<<QUERY
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns>
+PREFIX v: <http://www.w3.org/2006/vcard/ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX cpsvapit: <http://dati.gov.it/onto/cpsvapit#>
+PREFIX dcatapit: <http://dati.gov.it/onto/dcatapit#>
+PREFIX locn: <https://www.w3.org/ns/locn#>
+PREFIX dataeu: <http://data.europa.eu/m8g/>
+PREFIX cpsv: <http://purl.org/vocab/cpsv#>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX adms: <http://www.w3.org/ns/adms#>
+PREFIX spdx: <http://spdx.org/rdf/terms#>
+PREFIX schema: <http://schema.org/>
 
-    throw (new PipelineStepExecutionLogicException())->setError([
-      [
-        '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
-      ],
-      $validation->toTable(),
-    ]);
+SELECT ?Class_Name ?Rule_ID ?Rule_Severity ?Rule_Description ?Message (?s AS ?Subject) (?p AS ?Predicate)
+WHERE{
+GRAPH <{$graph}>
+{$where_clause}
+}
+QUERY;
+
+    return $query;
   }
 
 }
