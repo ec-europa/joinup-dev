@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f74168b07b4fc5d72dfda5f18901e54",
+    "content-hash": "fe93f3a2a226243ae137033114ed4d42",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2462,7 +2462,8 @@
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2890012-12.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
-                    "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-07-09/2725259-58.patch"
+                    "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-07-09/2725259-58.patch",
+                    "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-08-17/85494-234.patch"
                 }
             },
             "autoload": {
@@ -5718,12 +5719,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494"
+                "reference": "9d1dd9b5eb7a139342003c2ed9306be3c3e9065f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/9de48819dfbc679825347bf68f6fcaa0e372f494",
-                "reference": "9de48819dfbc679825347bf68f6fcaa0e372f494",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/9d1dd9b5eb7a139342003c2ed9306be3c3e9065f",
+                "reference": "9d1dd9b5eb7a139342003c2ed9306be3c3e9065f",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5736,7 +5737,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-08-24T13:04:52+00:00"
+            "time": "2018-08-28T19:36:21+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",

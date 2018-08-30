@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_3
 field_name: field_tallinn_action_3
 entity_type: node
 bundle: tallinn_report
-label: 'Action 3'
+label: 'Readiness to interact digitally with PAs'
 description: 'Take steps to further increase the readiness of citizens and businesses to interact digitally with public administrations by developing their digital skills as well as promoting the available digital public services (including cross-border ones).'
 required: false
 translatable: true

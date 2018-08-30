@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_10
 field_name: field_tallinn_action_10
 entity_type: node
 bundle: tallinn_report
-label: 'Action 10'
+label: 'Use across sectors of eIDAS regulation'
 description: 'Speed up preparations in our countries to ensure timely implementation and promote the widespread  se across sectors of the Regulation on electronic identification (eID) and trust services for electronic transactions in the internal market (eIDAS)10, including to undertake the voluntary notification of electronic identity schemes used for access to public services at earliest possibility.'
 required: false
 translatable: true

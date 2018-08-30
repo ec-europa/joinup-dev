@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_5
 field_name: field_tallinn_action_5
 entity_type: node
 bundle: tallinn_report
-label: 'Action 5'
+label: 'Linkages to information held in PA systems'
 description: 'Take steps to enable seamless digital delivery of services across sectors and collaboration in public service provision, by allowing EU institutions, private sector and civil society linkages to information held in public administration databases and systems in appropriate policy areas.'
 required: false
 translatable: true

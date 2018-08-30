@@ -284,7 +284,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
 
         case 4:
           $options = ['' => $this->t('Principles')];
-          $label = $this->t('from');
+          $label = $this->t('for');
           $label_class = 'tallinn-chart__text-container';
       }
       if (!empty($options)) {

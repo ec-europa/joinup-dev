@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_6
 field_name: field_tallinn_action_6
 entity_type: node
 bundle: tallinn_report
-label: 'Action 6'
+label: 'Once-only options in digital public services'
 description: 'Take steps to identify redundant administrative burden in public services and introduce once only options for citizens and businesses in digital public services by collaboration and data exchange across our administrations at national, regional and local level as well as with other countries for cross-border digital public services.'
 required: false
 translatable: true
