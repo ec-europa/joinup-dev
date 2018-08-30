@@ -164,9 +164,23 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       ];
     }
 
+    // Add classes to navigation container.
+    $classes = ['navigation-bottom__links'];
+
+    // Add special classes if some links are missing.
+    if (empty($prev) && empty($up)) {
+      $classes[] = 'navigation-bottom__links--only-next';
+    }
+    elseif (empty($up)) {
+      $classes[] = 'navigation-bottom__links--without-up';
+    }
+
     $build = [
       '#theme' => 'links',
       '#links' => $links,
+      '#attributes' => [
+        'class' => $classes,
+      ],
     ];
 
     $og_menu_id = $this->getOgMenuName();

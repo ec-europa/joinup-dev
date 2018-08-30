@@ -23,31 +23,44 @@ ul.navigation-bottom__list
         text-decoration: none
 
 // Style table of contents navigation
-ul.navigation-bottom__links
-  padding: 0
-  display: flex
-  margin: $table-margin 0 0 0
+.navigation-bottom__links
+  ul
+    padding: 0
+    display: flex
+    margin: $table-margin 0 0 0
   li
     list-style: none
     a
       color: $color-base
       text-decoration: none
+      display: flex
       &:hover
         text-decoration: underline
+      .icon
+        line-height: $row-height-small
     &.prev,
     &.next
       width: 46%
     &.up
       width: 8%
-      min-width: 30px
-      text-align: center
+      min-width: 40px
+      a
+        justify-content: center
     &.prev
       .icon
         padding-right: 5px
     &.next
       text-align: right
+      a
+        justify-content: flex-end
       .icon
         padding-left: 5px
+  &--only-next
+    ul
+      justify-content: flex-end
+  &--without-up
+    ul
+      justify-content: space-between
 
 // Modifiers
 // --------------------------------------------------

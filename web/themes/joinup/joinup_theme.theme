@@ -532,11 +532,6 @@ function joinup_theme_preprocess_block(&$variables) {
     case 'navigation_bottom':
       $variables['content']['#extra_suggestion'] = 'block__separated';
       break;
-
-    // Add class to navigation bottom links on custom pages.
-    case 'toc_outline':
-      $variables['content']['#attributes']['class'][] = 'navigation-bottom__links';
-      break;
   }
 
   // Set default title tag.
