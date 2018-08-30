@@ -12,6 +12,8 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\rdf_entity\Database\Driver\sparql\Connection;
@@ -29,11 +31,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("User selection"),
  * )
  */
-class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
+class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithBatchInterface {
 
   use AdmsSchemaEntityReferenceFieldsTrait;
   use PipelineStepWithFormTrait;
   use SparqlEntityStorageTrait;
+  use PipelineStepWithBatchTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 1;
 
   /**
    * The RDF entity provenance helper service.
@@ -121,6 +131,21 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   /**
    * {@inheritdoc}
    */
+  public function initBatchProcess() {
+    $this->setBatchValue('single_iteration', self::BATCH_SIZE);
+    return self::BATCH_SIZE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('single_iteration');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function execute() {
     $user_selection = $this->getPersistentDataValue('user_selection');
     $this->unsetPersistentDataValue('user_selection');
@@ -152,6 +177,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $this
       ->setPersistentDataValue('whitelist', $this->whitelist)
       ->setPersistentDataValue('blacklist', $blacklist);
+
+    $this->setBatchValue('single_iteration', 0);
   }
 
   /**

@@ -34,9 +34,12 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   /**
    * The batch size.
    *
+   * The three way merge is the heaviest process in the import sequence, thus
+   * the batch size is 1.
+   *
    * @var int
    */
-  const BATCH_SIZE = 20;
+  const BATCH_SIZE = 1;
 
   /**
    * The entity field manager service.
@@ -132,7 +135,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
     $this->setBatchValue('remaining_incoming_ids', $incoming_ids);
 
-    return ceil(count($incoming_ids) / static::BATCH_SIZE);
+    return count($incoming_ids);
   }
 
   /**
