@@ -1,0 +1,10 @@
+type: module
+name: 'Joinup feration'
+description: 'Allow modules to implement pipelines for RDF data federation.'
+core: 8.x
+package: Joinup
+dependencies:
+  - pipeline
+  - rdf_entity
+  - rdf_entity_provenance
+  - rdf_schema_field_validation

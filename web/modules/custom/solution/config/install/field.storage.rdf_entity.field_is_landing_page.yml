@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       uri:
         predicate: 'http://www.w3.org/ns/dcat#landingPage'
-        format: 'xsd:string'
+        format: resource
       title:
         predicate: ''
         format: ''

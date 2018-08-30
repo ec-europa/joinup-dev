@@ -303,6 +303,10 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
  * Implements hook_entity_type_alter().
  */
 function joinup_core_entity_type_alter(array &$entity_types) {
+  if (!isset($entity_types['rdf_entity'])) {
+    return;
+  }
+
   // Provides a workaround for asset_release and solution RDF entity bundles.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
   // @todo Remove when ISAICP-3126 gets in.
@@ -385,7 +389,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   if ($view_mode !== 'full') {
     return;
   }
-  $graph = $entity->get('graph')->first()->value;
+  $graph = $entity->get('graph')->target_id;
   if ($graph !== 'default' || !$entity->hasGraph('draft')) {
     return;
   }

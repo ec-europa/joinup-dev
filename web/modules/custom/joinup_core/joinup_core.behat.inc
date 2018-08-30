@@ -7,14 +7,18 @@
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\TraversingTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for functionalities provided by Joinup core module.
  */
-class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupCoreSubContext extends DrupalSubContextBase {
+
+  use UtilityTrait;
+  use TraversingTrait;
 
   use EntityTrait;
 
@@ -77,6 +81,58 @@ class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function visitTaxonomyTermPage(string $name) {
     $term = static::getEntityByLabel('taxonomy_term', $name);
     $this->visitPath($term->toUrl()->toString());
+  }
+
+  /**
+   * Asserts that a list of fields are disabled.
+   *
+   * @param string $fields
+   *   A list of comma separated field labels.
+   *
+   * @throws \Exception
+   *   Thrown when a field is not found by name or is not disabled.
+   *
+   * @Then the following fields should be disabled :fields
+   */
+  public function givenDisabledFields(string $fields): void {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $found = [];
+    foreach ($fields as $field) {
+      $element = $this->findDisabledField($field);
+      if (empty($element)) {
+        $found[] = $field;
+      }
+    }
+
+    if (!empty($found)) {
+      throw new Exception('The following fields were not found or were enabled: ' . implode(', ', $found));
+    }
+  }
+
+  /**
+   * Asserts that a list of fields are not disabled.
+   *
+   * @param string $fields
+   *   A list of comma separated field labels.
+   *
+   * @throws \Exception
+   *   Thrown when a field is not found by name or is disabled.
+   *
+   * @Then the following fields should not be disabled :fields
+   */
+  public function givenNotDisabledFields(string $fields): void {
+    $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $found = [];
+    foreach ($fields as $field) {
+      $element = $this->findDisabledField($field);
+      if (!empty($element)) {
+        $found[] = $field;
+      }
+    }
+
+    if (!empty($found)) {
+      throw new Exception('The following fields were disabled: ' . implode(', ', $found));
+    }
   }
 
 }
