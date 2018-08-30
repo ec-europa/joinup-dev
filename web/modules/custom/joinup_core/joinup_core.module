@@ -29,6 +29,7 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
@@ -503,7 +504,7 @@ function joinup_core_element_info_alter(array &$info) {
 /**
  * Implements hook_ENTITY_TYPE_insert() for RDF entities.
  */
-function joinup_core_rdf_entity_insert(EntityInterface $entity) {
+function joinup_core_rdf_entity_insert(RdfInterface $entity) {
   // When a collection or solution is created, create a new navigation menu and
   // associate it with the new collection or solution. This menu can be used to
   // link to custom pages, member overviews, an about page etc.
@@ -542,6 +543,9 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     ]);
     $link->save();
   }
+
+  // Invalidate all caches tagged with rdf_entity_list:{$entity->bundle()}.
+  joinup_core_invalidate_rdf_entity_bundle_list_cache($entity);
 }
 
 /**
@@ -1301,4 +1305,14 @@ function joinup_core_og_membership_predelete(OgMembershipInterface $entity) {
 function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
   $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
   Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
+}
+
+/**
+ * Invalidates the cache tags of the list of entities having the same bundle.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+ *   The RDF entity.
+ */
+function joinup_core_invalidate_rdf_entity_bundle_list_cache(RdfInterface $rdf_entity) {
+  Cache::invalidateTags(["rdf_entity_list:{$rdf_entity->bundle()}"]);
 }
