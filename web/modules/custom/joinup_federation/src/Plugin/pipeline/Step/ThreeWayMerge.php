@@ -22,11 +22,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Ensures values for empty fields from the staging graph.
  *
  * @PipelineStep(
- *   id = "update_local_default_fields",
+ *   id = "3_way_merge",
  *   label = @Translation("Set default or local values to empty fields"),
  * )
  */
-class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
+class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
   use PipelineStepWithBatchTrait;
   use SparqlEntityStorageTrait;
@@ -34,8 +34,8 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
   /**
    * The batch size.
    *
-   * This step is the heaviest in all the wizard, thus the batch size needs to
-   * be 1.
+   * The three way merge is the heaviest process in the import sequence, thus
+   * the batch size is 1.
    *
    * @var int
    */
@@ -109,6 +109,13 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return ['collection' => NULL] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function initBatchProcess() {
     $whitelist = $this->getPersistentDataValue('whitelist');
     $this->unsetPersistentDataValue('whitelist');
@@ -127,9 +134,8 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
     }
 
     $this->setBatchValue('remaining_incoming_ids', $incoming_ids);
-    // Set a separate value for the upcoming steps.
-    $this->setPersistentDataValue('entities', $incoming_ids);
-    return ceil(count($incoming_ids) / self::BATCH_SIZE);
+
+    return count($incoming_ids);
   }
 
   /**
@@ -154,7 +160,7 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
     $local_entities = $local_ids ? Rdf::loadMultiple($local_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
 
     // Collect here entity IDs that are about to be saved.
-    $entities = $this->hasPersistentDataValue(EntitiesToStorage::ENTITIES_TO_STORAGE_KEY) ? $this->getPersistentDataValue(EntitiesToStorage::ENTITIES_TO_STORAGE_KEY) : [];
+    $entities = $this->hasPersistentDataValue('entities') ? $this->getPersistentDataValue('entities') : [];
 
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {
@@ -183,12 +189,14 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
 
       if ($needs_save) {
         $this->handleAffiliation($incoming_entity, $entity_exists);
-        $entities[$incoming_entity->id()] = $incoming_entity;
+        $incoming_entity->skip_notification = TRUE;
+        $incoming_entity->save();
+        $entities[$incoming_entity->id()] = $entity_exists;
       }
     }
 
     // Persist the list so we can reuse it in the next steps.
-    $this->setPersistentDataValue(EntitiesToStorage::ENTITIES_TO_STORAGE_KEY, $entities);
+    $this->setPersistentDataValue('entities', $entities);
   }
 
   /**
@@ -230,14 +238,20 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
         continue;
       }
 
-      $incoming_field = $incoming_entity->get($field_name);
-      $local_field = $local_entity->get($field_name);
-
-      // At this point we are dealing only with local fields. Always assign
-      // the local value to avoid allowing users to override local values like
-      // the moderation status.
-      $incoming_field->setValue($local_field->getValue());
-      $changed = TRUE;
+      $columns = $field_definition->getFieldStorageDefinition()->getColumns();
+      foreach ($columns as $column_name => $column_schema) {
+        // Check if the field is an ADMS-AP field.
+        $incoming_field = $incoming_entity->get($field_name);
+        $local_field = $local_entity->get($field_name);
+        // Assign only if the incoming field is empty.
+        if ($incoming_field->isEmpty()) {
+          $incoming_field->setValue($local_field->getValue());
+          $changed = TRUE;
+          // Don't check the rest of the columns because the whole field has
+          // been already assigned.
+          break;
+        }
+      }
     }
 
     return $changed;
@@ -324,7 +338,7 @@ class UpdateLocalDefaultFields extends JoinupFederationStepPluginBase implements
     }
 
     if (!$match) {
-      throw new \Exception("Plugin 'update_local_default_fields' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
+      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
     }
     // For an existing solution we don't make any changes to its affiliation.
   }
