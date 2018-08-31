@@ -16,7 +16,7 @@ function spain_ctt_install() {
   require __DIR__ . '/includes/remove_duplicates.inc';
 
   $id = 'http://administracionelectronica.gob.es/ctt';
-  if(empty(Rdf::load($id))) {
+  if (empty(Rdf::load($id))) {
     return;
   }
 
