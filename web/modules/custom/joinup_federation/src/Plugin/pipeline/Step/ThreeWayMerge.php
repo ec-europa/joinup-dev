@@ -238,20 +238,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
         continue;
       }
 
-      $columns = $field_definition->getFieldStorageDefinition()->getColumns();
-      foreach ($columns as $column_name => $column_schema) {
-        // Check if the field is an ADMS-AP field.
-        $incoming_field = $incoming_entity->get($field_name);
-        $local_field = $local_entity->get($field_name);
-        // Assign only if the incoming field is empty.
-        if ($incoming_field->isEmpty()) {
-          $incoming_field->setValue($local_field->getValue());
-          $changed = TRUE;
-          // Don't check the rest of the columns because the whole field has
-          // been already assigned.
-          break;
-        }
-      }
+      $incoming_field = $incoming_entity->get($field_name);
+      $local_field = $local_entity->get($field_name);
+
+      // Always keep the local values for non schema defined field.
+      $incoming_field->setValue($local_field->getValue());
     }
 
     return $changed;
