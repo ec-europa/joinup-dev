@@ -243,6 +243,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
       // Always keep the local values for non schema defined field.
       $incoming_field->setValue($local_field->getValue());
+      $changed = TRUE;
     }
 
     return $changed;
