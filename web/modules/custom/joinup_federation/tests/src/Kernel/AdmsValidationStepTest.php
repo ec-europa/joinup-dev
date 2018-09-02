@@ -2,7 +2,9 @@
 
 namespace Drupal\Tests\joinup_federation\Kernel;
 
+use Drupal\adms_validator\AdmsValidator;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\PipelineState;
 use EasyRdf\Graph;
 
 /**
@@ -38,14 +40,23 @@ class AdmsValidationStepTest extends StepTestBase {
    * @dataProvider providerTestAdmsValidationStepPlugin
    */
   public function testAdmsValidationStepPlugin(string $rdf_file, bool $expected_valid): void {
+    $graph_uri = static::getTestingGraphs()['sink_plus_taxo'];
     $graph = new Graph();
     $graph->parseFile(__DIR__ . "/../../fixtures/$rdf_file");
-    $this->createGraphStore()->replace($graph, static::getTestingGraphs()['sink_plus_taxo']);
+    $this->createGraphStore()->replace($graph, $graph_uri);
 
     if (!$expected_valid) {
       $this->expectException(PipelineStepExecutionLogicException::class);
     }
-    $this->runPipelineStep('adms_validation');
+
+    $state = new PipelineState();
+    $query = AdmsValidator::validationQuery($graph_uri);
+    preg_match('/GRAPH.*?\{(?<where_clause>.*)\}.*?}.*?\Z/s', $query, $matches);
+    $sub_queries = explode('UNION', $matches['where_clause']);
+    $state
+      ->setStepId('adms_validation')
+      ->setBatchValue('queries', $sub_queries);
+    $this->runPipelineStep('adms_validation', $state);
   }
 
   /**
