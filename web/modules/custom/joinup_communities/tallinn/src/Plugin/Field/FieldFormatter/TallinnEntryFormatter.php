@@ -2,8 +2,10 @@
 
 namespace Drupal\tallinn\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\Url;
 use Drupal\tallinn\Plugin\Field\FieldType\TallinnEntryItem;
@@ -24,6 +26,48 @@ class TallinnEntryFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  public static function defaultSettings() {
+    return [
+      'trim_length' => '80',
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::settingsForm($form, $form_state);
+
+    $elements['trim_length'] = [
+      '#type' => 'number',
+      '#title' => t('Trim link text length'),
+      '#field_suffix' => t('characters'),
+      '#default_value' => $this->getSetting('trim_length'),
+      '#min' => 1,
+      '#description' => t('Leave blank to allow unlimited link text lengths.'),
+    ];
+
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = [];
+
+    $settings = $this->getSettings();
+
+    if (!empty($settings['trim_length'])) {
+      $summary[] = t('Link text trimmed to @limit characters', ['@limit' => $settings['trim_length']]);
+    }
+
+    return $summary;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     // All fields are single-value fields.
     $item = $items->first();
@@ -31,6 +75,7 @@ class TallinnEntryFormatter extends FormatterBase {
       return [];
     }
 
+    $settings = $this->getSettings();
     $value = $item->getValue();
     $element = [
       '#theme' => 'tallinn_entry_formatter',
@@ -57,10 +102,17 @@ class TallinnEntryFormatter extends FormatterBase {
     }
 
     if (!empty($value['uri'])) {
+      $link_title = $value['uri'];
+
+      // Trim the link text to the desired length.
+      if (!empty($settings['trim_length'])) {
+        $link_title = Unicode::truncate($value['uri'], $settings['trim_length'], FALSE, TRUE);
+      }
+
       $element['#uri'] = [
         '#type' => 'link',
         '#url' => Url::fromUri($value['uri']),
-        '#title' => $value['uri'],
+        '#title' => $link_title,
       ];
     }
 
