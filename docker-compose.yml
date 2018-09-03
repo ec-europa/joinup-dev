@@ -1,0 +1,75 @@
+version: '2'
+services:
+  web:
+    image: fpfis/httpd-php-dev:7.1
+    working_dir: /var/www/html
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/var/www/html # Non Mac users.
+      # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
+    environment:
+      XDEBUG_CONFIG: "remote_enable=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+      # For Xdebug setup, run this command in the terminal:
+      # For Mac users: sudo ifconfig en0 alias 10.254.254.254 255.255.255.0
+      # For Linux users: sudo ip addr add 10.254.254.254/32 dev lo label lo:1
+
+  mysql:
+    image: percona/percona-server:5.6
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#    ports:
+#      - 3306:3306
+
+  selenium:
+    image: selenium/standalone-chrome-debug:3.11
+    environment:
+    - DISPLAY=:99
+    - SE_OPTS=-debug
+    ports:
+    - "5900:5900"
+    expose:
+    - '4444'
+
+  sass:
+    image: pablofelix/sass
+    volumes:
+     - $PWD:/app/
+    entrypoint:
+     - watch
+     - web/themes/joinup/prototype/sass/app.sass
+
+  sparql:
+    image: tenforce/virtuoso
+    environment:
+    - SPARQL_UPDATE=true
+    - DBA_PASSWORD=dba
+    ports:
+      - "8890:8890"
+
+  solr:
+    image: solr
+    ports:
+     - "8983:8983"
+    volumes:
+      #- data:/opt/solr/server/solr/mycores
+      - ./resources/solr:/solr
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - solr # Create a core named 'solr'
+      - /solr
+#volumes:
+#  data:
+#### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
+
+#volumes:
+#  nfsmount:
+#    driver: local
+#    driver_opts:
+#      type: nfs
+#      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+#      device: ":${PWD}/"
+
+#### End Mac users.
