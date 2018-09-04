@@ -310,7 +310,7 @@ abstract class NotificationSubscriberBase {
         $actor_first_name . ' ' . $actor_family_name :
         $actor->get('full_name')->value;
     }
-    $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page', [], ['absolute' => TRUE])->toString();
+    $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page')->toUriString();
     $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
 
     return $arguments;
