@@ -167,6 +167,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
     // Save the entities.
     foreach ($entities_to_save as $local_entity) {
       $local_entity->skip_notification = TRUE;
+      $local_entity->search_api_skip_tracking = TRUE;
       $local_entity->save();
     }
 
