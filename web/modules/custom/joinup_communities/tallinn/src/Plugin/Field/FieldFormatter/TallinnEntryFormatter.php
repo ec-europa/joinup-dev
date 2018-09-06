@@ -110,6 +110,9 @@ class TallinnEntryFormatter extends FormatterBase {
         '#type' => 'link',
         '#url' => Url::fromUri($value['uri']),
         '#title' => $link_title,
+        '#attributes' => [
+          'title' => $value['uri'],
+        ],
       ];
     }
 
