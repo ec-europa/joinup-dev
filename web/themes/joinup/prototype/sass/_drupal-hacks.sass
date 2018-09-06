@@ -437,11 +437,14 @@ details .details-title
 // Fixes on tallinn edit form.
 .node-tallinn-report-edit-form
   .vertical-tabs__pane > .form__description
-    margin-bottom: $field-margin
+    margin-bottom: $form-margin
+    font-size: $font-size-small
   .vertical-tabs__pane > summary
     display: block
     font-size: $font-size-h2
     pointer-events: none
+    &::-webkit-details-marker
+      display: none
 
 
 
