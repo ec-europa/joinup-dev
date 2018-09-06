@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_licence\Controller;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -52,10 +53,10 @@ class LicenceOverviewController extends ControllerBase {
    *
    * This is mimicking the rdf_entity's overview builder class.
    *
-   * @see Drupal\rdf_entity\Entity\Controller\RdfListBuilder
+   * @see \Drupal\rdf_entity\Entity\Controller\RdfListBuilder
    *
-   * @return string
-   *   Return Hello string.
+   * @return array
+   *   The build render array.
    */
   public function overview() {
     $query = $this->entityStorage->getQuery()
@@ -65,23 +66,32 @@ class LicenceOverviewController extends ControllerBase {
     $query->tableSort($header);
     $rids = $query->execute();
 
-    $licences = Rdf::loadMultiple($rids);
-    $rows = [];
-    foreach ($licences as $licence) {
-      $rows[] = $this->buildRow($licence);
-    }
+    $cacheable_metadata = (new CacheableMetadata())
+      // Tag the response cache with rdf_entity_list:licence so that this page
+      // cache is invalidated when a new licence is added.
+      // @see joinup_core_rdf_entity_insert()
+      ->addCacheTags(['rdf_entity_list:licence']);
 
-    $build['table'] = [
-      '#type' => 'table',
-      '#header' => $this->buildHeader(),
-      '#rows' => [],
-      '#empty' => $this->t('There are no licences yet.'),
-    ];
-    foreach ($licences as $licence) {
+    $rows = [];
+    foreach (Rdf::loadMultiple($rids) as $id => $licence) {
       if ($row = $this->buildRow($licence)) {
-        $build['table']['#rows'][$licence->id()] = $row;
+        $rows[$id] = $row;
+        // The list cache should be invalidated on each licence change/delete.
+        $cacheable_metadata->addCacheableDependency($licence);
       }
     }
+
+    $build = [
+      [
+        '#type' => 'table',
+        '#header' => $this->buildHeader(),
+        '#rows' => $rows,
+        '#empty' => $this->t('There are no licences yet.'),
+      ],
+    ];
+
+    // Add cacheable metadata.
+    $cacheable_metadata->applyTo($build);
 
     return $build;
   }
