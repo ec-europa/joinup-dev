@@ -167,7 +167,7 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
  *   The term ID as URI or NULL, if the term doesn't exists.
  */
 function asset_distribution_get_file_type_term_by_mime($mime_type) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
 
   $query = <<<QUERY
