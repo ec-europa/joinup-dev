@@ -40,11 +40,11 @@ class TallinnEntryFormatter extends FormatterBase {
 
     $elements['trim_length'] = [
       '#type' => 'number',
-      '#title' => t('Trim link text length'),
-      '#field_suffix' => t('characters'),
+      '#title' => $this->t('Trim link text length'),
+      '#field_suffix' => $this->t('characters'),
       '#default_value' => $this->getSetting('trim_length'),
       '#min' => 1,
-      '#description' => t('Leave blank to allow unlimited link text lengths.'),
+      '#description' => $this->t('Leave blank to allow unlimited link text lengths.'),
     ];
 
     return $elements;
@@ -54,12 +54,10 @@ class TallinnEntryFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary = [];
+    $summary = parent::settingsSummary();
 
-    $settings = $this->getSettings();
-
-    if (!empty($settings['trim_length'])) {
-      $summary[] = t('Link text trimmed to @limit characters', ['@limit' => $settings['trim_length']]);
+    if ($trim_length = $this->getSetting('trim_length')) {
+      $summary[] = $this->t('Link text trimmed to @limit characters', ['@limit' => $trim_length]);
     }
 
     return $summary;
@@ -75,7 +73,6 @@ class TallinnEntryFormatter extends FormatterBase {
       return [];
     }
 
-    $settings = $this->getSettings();
     $value = $item->getValue();
     $element = [
       '#theme' => 'tallinn_entry_formatter',
@@ -105,8 +102,8 @@ class TallinnEntryFormatter extends FormatterBase {
       $link_title = $value['uri'];
 
       // Trim the link text to the desired length.
-      if (!empty($settings['trim_length'])) {
-        $link_title = Unicode::truncate($value['uri'], $settings['trim_length'], FALSE, TRUE);
+      if ($trim_length = $this->getSetting('trim_length')) {
+        $link_title = Unicode::truncate($value['uri'], $trim_length, FALSE, TRUE);
       }
 
       $element['#uri'] = [
