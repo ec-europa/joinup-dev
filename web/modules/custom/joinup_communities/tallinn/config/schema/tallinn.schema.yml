@@ -1,0 +1,9 @@
+# Schema configuration for the tallinn module.
+
+field.formatter.settings.tallinn_entry:
+  type: mapping
+  label: 'Tallinn entry format settings'
+  mapping:
+    trim_length:
+      type: integer
+      label: 'Trim link text length'
