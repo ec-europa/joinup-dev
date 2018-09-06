@@ -190,7 +190,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       if ($needs_save) {
         $this->handleAffiliation($incoming_entity, $entity_exists);
         $incoming_entity->skip_notification = TRUE;
-        $incoming_entity->search_api_skip_tracking = TRUE;
         $incoming_entity->save();
         $entities[$incoming_entity->id()] = $entity_exists;
       }
