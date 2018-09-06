@@ -13,12 +13,12 @@ use Drupal\rdf_entity\Entity\Rdf;
  * Handle the duplicated solutions in the CTT repository.
  */
 function spain_ctt_install() {
-  require __DIR__ . '/includes/remove_duplicates.inc';
-
   $id = 'http://administracionelectronica.gob.es/ctt';
   if (empty(Rdf::load($id))) {
     return;
   }
+
+  require __DIR__ . '/includes/remove_duplicates.inc';
 
   // Create the original duplicates in case they do not exist.
   _spain_ctt_duplicates_create_duplicates();
