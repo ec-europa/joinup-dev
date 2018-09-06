@@ -79,7 +79,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
    */
   public function initBatchProcess() {
     $graph_uri = $this->getGraphUri('sink_plus_taxo');
-    $query = AdmsValidator::validationQuery($graph_uri);
+    $query = $this->admsValidator->getValidationQuery($graph_uri);
     preg_match('/GRAPH.*?\{(?<where_clause>.*)\}.*?}.*?\Z/s', $query, $matches);
     $sub_queries = explode('UNION', $matches['where_clause']);
     $this->setBatchValue('queries', $sub_queries);
@@ -101,7 +101,8 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
     foreach ($query_array as $query) {
       $query = $this->getPreparedQuery($query);
       $graph_uri = $this->getGraphUri('sink_plus_taxo');
-      $validation = $this->admsValidator->validateByGraphUri($graph_uri, $query);
+      $this->admsValidator->setValidationQuery($query);
+      $validation = $this->admsValidator->validateByGraphUri($graph_uri);
       if (!$validation->isSuccessful()) {
         throw (new PipelineStepExecutionLogicException())->setError([
           [

@@ -50,7 +50,7 @@ class AdmsValidationStepTest extends StepTestBase {
     }
 
     $state = new PipelineState();
-    $query = AdmsValidator::validationQuery($graph_uri);
+    $query = AdmsValidator::getDefaultValidationQuery($graph_uri);
     preg_match('/GRAPH.*?\{(?<where_clause>.*)\}.*?}.*?\Z/s', $query, $matches);
     $sub_queries = explode('UNION', $matches['where_clause']);
     $state

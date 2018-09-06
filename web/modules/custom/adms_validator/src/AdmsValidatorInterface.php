@@ -28,14 +28,11 @@ interface AdmsValidatorInterface {
    *
    * @param string $graph_uri
    *   The graph URI.
-   * @param string $query
-   *   (Optional) Provide the query to validate against. If empty, the default
-   *   query will be used.
    *
    * @return \Drupal\adms_validator\AdmsValidationResult
    *   A list of schema validation errors.
    */
-  public function validateByGraphUri(string $graph_uri, string $query = NULL): AdmsValidationResult;
+  public function validateByGraphUri(string $graph_uri): AdmsValidationResult;
 
   /**
    * Validates the triples from a graph object.
@@ -73,5 +70,35 @@ interface AdmsValidatorInterface {
    *   A list of schema validation errors.
    */
   public function validateFile(string $file_uri_or_path, string $graph_uri): AdmsValidationResult;
+
+  /**
+   * Returns the validation query that is set to be used by the validator.
+   *
+   * @param string $graph_uri
+   *   The graph uri to replace the in the query.
+   *
+   * @return string
+   *   The validation query as a string.
+   */
+  public function getValidationQuery(string $graph_uri): string;
+
+  /**
+   * Sets the validation query to be used by the adms validator.
+   *
+   * @param string $validation_query
+   *   The validation query as a string.
+   */
+  public function setValidationQuery(string $validation_query): void;
+
+  /**
+   * Builds the default SPARQL query to be used for validation.
+   *
+   * @param string $uri
+   *   The graph URI.
+   *
+   * @return string
+   *   The query to use for validation.
+   */
+   protected static function getDefaultValidationQuery(string $uri): string;
 
 }
