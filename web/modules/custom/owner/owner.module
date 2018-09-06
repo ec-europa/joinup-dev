@@ -202,7 +202,7 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
  *   True is the entity is being referenced, false otherwise.
  */
 function owner_is_owner_referenced(EntityInterface $entity) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
 
   // Check in Sparql if the owner id is set as object in any triple.

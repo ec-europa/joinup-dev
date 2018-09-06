@@ -50,7 +50,7 @@ function joinup_form_install_settings_form_alter(&$form, FormStateInterface $for
   $form['sparql']['namespace'] = [
     '#type' => 'textfield',
     '#title' => 'Namespace',
-    '#default_value' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
+    '#default_value' => 'Drupal\\Driver\\Database\\sparql',
     '#required' => TRUE,
   ];
 

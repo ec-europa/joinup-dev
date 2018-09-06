@@ -8,7 +8,7 @@ use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -34,7 +34,7 @@ class AdmsValidatorForm extends FormBase {
   /**
    * The SPARQL endpoint.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -56,10 +56,10 @@ class AdmsValidatorForm extends FormBase {
    *   The Sparql endpoint.
    * @param \Symfony\Component\HttpFoundation\Session\Session $session
    *   The current user session.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    */
-  public function __construct(AdmsValidatorInterface $adms_validator, Session $session, Connection $sparql) {
+  public function __construct(AdmsValidatorInterface $adms_validator, Session $session, ConnectionInterface $sparql) {
     $this->admsValidator = $adms_validator;
     $this->sessionId = $session->getId();
     $this->sparql = $sparql;
