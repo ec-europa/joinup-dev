@@ -65,7 +65,7 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
     'prefix' => '',
     'host' => $host,
     'port' => $port,
-    'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
+    'namespace' => 'Drupal\\Driver\\Database\\sparql',
     'driver' => 'sparql',
   ];
   $settings['databases'][$key][$target] = (object) [
