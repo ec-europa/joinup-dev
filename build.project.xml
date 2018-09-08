@@ -17,6 +17,9 @@
     <!-- Import Phing targets related to Redis cache. -->
     <import file="${project.basedir}/build.redis.xml" optional="true" />
 
+    <!-- Import Phing targets related to UAT environment. -->
+    <import file="${project.basedir}/build.uat.xml" optional="true" />
+
     <!-- Import Phing targets related to Virtuoso. -->
     <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
 
