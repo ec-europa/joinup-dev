@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "128b8566d3702aa9c8ade102ef334ce6",
+    "content-hash": "ffa0bdaba648c87f22c5de9bcab96ce6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5869,16 +5869,16 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "2.1.0",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/virtuoso.git",
-                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb"
+                "reference": "bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/16abb3e90b49b24a46da07c0eeb4df552c2874cb",
-                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f",
+                "reference": "bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f",
                 "shasum": ""
             },
             "type": "library",
@@ -5897,10 +5897,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/master",
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.2",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
-            "time": "2018-04-16T07:12:39+00:00"
+            "time": "2018-09-08T13:33:44+00:00"
         },
         {
             "name": "egulias/email-validator",
