@@ -32,6 +32,8 @@ drupal.demo.users = administrator
 # The base URL. This is used for doing functional tests in Behat and PHPUnit.
 drupal.base_url = http://localhost
 
+# The namespace of the sparql connection class.
+sparql.namespace = Drupal\\Driver\\Database\\sparql
 
 # Paths
 # -----
