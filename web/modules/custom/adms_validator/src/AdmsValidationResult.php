@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\adms_validator;
 
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use EasyRdf\Sparql\Result;
 
 /**
@@ -21,13 +21,13 @@ class AdmsValidationResult {
    *   The result of the validation query.
    * @param string $graph_uri
    *   The graph URI.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    *
    * @todo Remove $graph_uri, $sparql params in ISAICP-4296.
    * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
-  public function __construct(Result $result, $graph_uri, Connection $sparql) {
+  public function __construct(Result $result, $graph_uri, ConnectionInterface $sparql) {
     $skipped_rules = [100, 101, 102, 103];
     foreach ($result as $error) {
       // @todo Remove this hack in ISAICP-4296.
@@ -100,13 +100,13 @@ class AdmsValidationResult {
    *
    * @param string $graph_uri
    *   The graph URI.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    *
    * @todo Remove this hack in ISAICP-4296.
    * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4296
    */
-  protected function applyRules100To103($graph_uri, Connection $sparql) {
+  protected function applyRules100To103($graph_uri, ConnectionInterface $sparql) {
     $rules = [
       100 => [
         'prefix' => 'dcat:Dataset',
