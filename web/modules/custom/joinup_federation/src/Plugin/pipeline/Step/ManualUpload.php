@@ -47,7 +47,6 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
     $this->unsetPersistentDataValue('fid');
     $graph_array = $this->fileToRdfPhp($fid);
     $this->setBatchValue('graph_array', $graph_array);
-    $this->setBatchValue('graph_store', $this->createGraphStore());
     return ceil(count($graph_array) / static::BATCH_SIZE);
   }
 
@@ -63,9 +62,7 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
    */
   public function execute() {
     $resources = $this->extractNextSubset('graph_array', static::BATCH_SIZE);
-
-    /** @var \EasyRdf\GraphStore $graph_store */
-    $graph_store = $this->getBatchValue('graph_store');
+    $graph_store = $this->createGraphStore();
     $graph_uri = $this->getGraphUri('sink');
 
     try {
