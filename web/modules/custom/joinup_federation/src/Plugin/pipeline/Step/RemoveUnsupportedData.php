@@ -7,6 +7,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
@@ -25,33 +26,10 @@ use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
  *   label = @Translation("Remove data not supported by Joinup"),
  * )
  */
-class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface, PipelineStepWithBatchInterface {
+class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
 
-  use PipelineStepWithRedirectResponseTrait;
+  use PipelineStepWithClientRedirectResponseTrait;
   use RdfEntityGraphStoreTrait;
-  use PipelineStepWithBatchTrait;
-
-  /**
-   * The batch size.
-   *
-   * @var int
-   */
-  const BATCH_SIZE = 1;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function initBatchProcess() {
-    $this->setBatchValue('single_iteration', self::BATCH_SIZE);
-    return self::BATCH_SIZE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function batchProcessIsCompleted() {
-    return !$this->getBatchValue('single_iteration');
-  }
 
   /**
    * {@inheritdoc}
@@ -99,7 +77,6 @@ WHERE {
 }
 Ouery;
     $this->sparql->query($query);
-    $this->setBatchValue('single_iteration', 0);
   }
 
 }

@@ -5,9 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
-use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
+use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
@@ -26,18 +24,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Add Joinup vocabularies"),
  * )
  */
-class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface, PipelineStepWithBatchInterface {
+class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
 
-  use PipelineStepWithRedirectResponseTrait;
+  use PipelineStepWithClientRedirectResponseTrait;
   use RdfEntityGraphStoreTrait;
-  use PipelineStepWithBatchTrait;
-
-  /**
-   * The batch size.
-   *
-   * @var int
-   */
-  const BATCH_SIZE = 1;
 
   /**
    * The SPARQL graph handler service.
@@ -81,21 +71,6 @@ class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements Pi
   /**
    * {@inheritdoc}
    */
-  public function initBatchProcess() {
-    $this->setBatchValue('single_iteration', self::BATCH_SIZE);
-    return self::BATCH_SIZE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function batchProcessIsCompleted() {
-    return !$this->getBatchValue('single_iteration');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function execute() {
     $query = [
       "ADD <{$this->getGraphUri('sink')}> TO <{$this->getGraphUri('sink_plus_taxo')}>;",
@@ -104,7 +79,6 @@ class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements Pi
       $query[] = "ADD <{$graph_uri['default']}> TO <{$this->getGraphUri('sink_plus_taxo')}>;";
     }
     $this->sparql->query(implode("\n", $query));
-    $this->setBatchValue('single_iteration', 0);
   }
 
 }
