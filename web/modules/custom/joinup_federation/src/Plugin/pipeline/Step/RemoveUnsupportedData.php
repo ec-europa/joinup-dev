@@ -5,10 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
-use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
-use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;

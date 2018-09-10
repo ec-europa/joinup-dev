@@ -12,8 +12,6 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
-use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
