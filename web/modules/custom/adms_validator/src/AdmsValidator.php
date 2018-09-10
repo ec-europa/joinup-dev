@@ -99,7 +99,7 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  protected static function getDefaultValidationQuery(string $uri): string {
+  public static function getDefaultValidationQuery(string $uri): string {
     $adms_ap_rules = DRUPAL_ROOT . "/../vendor/" . self::SEMIC_VALIDATION_QUERY_PATH;
     $query = file_get_contents($adms_ap_rules);
 

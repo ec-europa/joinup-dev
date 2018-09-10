@@ -99,6 +99,6 @@ interface AdmsValidatorInterface {
    * @return string
    *   The query to use for validation.
    */
-   protected static function getDefaultValidationQuery(string $uri): string;
+   public static function getDefaultValidationQuery(string $uri): string;
 
 }
