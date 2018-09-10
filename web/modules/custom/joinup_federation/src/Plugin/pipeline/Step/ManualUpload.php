@@ -70,6 +70,9 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
       $graph_store->insert($sub_graph);
     }
     catch (\Exception $exception) {
+      // Fake the end of the batch process until the pipeline module supports
+      // an exit mechanism in batch processes.
+      $this->setBatchValue('graph_array', []);
       throw (new PipelineStepExecutionLogicException())->setError([
         '#markup' => $this->t('Could not store triples in triple store. Reason: @message', [
           '@message' => $exception->getMessage(),
