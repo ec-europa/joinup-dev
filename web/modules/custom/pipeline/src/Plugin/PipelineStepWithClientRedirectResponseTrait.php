@@ -37,7 +37,7 @@ trait PipelineStepWithClientRedirectResponseTrait {
         // Even though this is shown in the end of the step, the user only sees
         // a flow of iterations i.e. what is being run. It is more user friendly
         // to provide the user with information of what is running.
-        '#markup' => t('Finished step "%step".', ['%step' => $this->getPluginDefinition()['label']]),
+        '#markup' => t('Finished step %step.', ['%step' => $this->getPluginDefinition()['label']]),
       ]
     ];
   }
