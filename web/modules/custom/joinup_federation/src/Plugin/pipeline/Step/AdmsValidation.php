@@ -104,14 +104,38 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
       $this->admsValidator->setValidationQuery($query);
       $validation = $this->admsValidator->validateByGraphUri($graph_uri);
       if (!$validation->isSuccessful()) {
-        throw (new PipelineStepExecutionLogicException())->setError([
-          [
-            '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
-          ],
-          $validation->toTable(),
-        ]);
+        throw (new PipelineStepExecutionLogicException())->setError($validation->toRows());
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildBatchProcessErrorMessage() {
+    $rows = array_reduce($this->getBatchErrorMessages(), function (array $rows, array $row_group): array {
+      return array_merge($rows, $row_group);
+
+    }, []);
+
+    if (!$rows) {
+      return $rows;
+    }
+
+    return [
+      '#theme' => 'table',
+      '#header' => [
+        $this->t('Class name'),
+        $this->t('Message'),
+        $this->t('Object'),
+        $this->t('Predicate'),
+        $this->t('Rule description'),
+        $this->t('Rule ID'),
+        $this->t('Rule severity'),
+        $this->t('Subject'),
+      ],
+      '#rows' => $rows,
+    ];
   }
 
   /**
