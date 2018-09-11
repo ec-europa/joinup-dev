@@ -21,7 +21,7 @@ trait PipelineStepWithClientRedirectResponseTrait {
       '#attached' => [
         'html_head' => [
           [
-            0 =>  [
+            0 => [
               '#tag' => 'meta',
               '#attributes' => [
                 'http-equiv' => 'Refresh',
@@ -38,7 +38,7 @@ trait PipelineStepWithClientRedirectResponseTrait {
         // a flow of iterations i.e. what is being run. It is more user friendly
         // to provide the user with information of what is running.
         '#markup' => t('Finished step %step.', ['%step' => $this->getPluginDefinition()['label']]),
-      ]
+      ],
     ];
   }
 
