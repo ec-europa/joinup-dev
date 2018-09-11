@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_sparql\Database\Driver\sparql;
+namespace Drupal\Driver\Database\joinup_sparql;
 
-use Drupal\rdf_entity\Database\Driver\sparql\Connection as BaseConnection;
+use Drupal\Driver\Database\sparql\Connection as BaseConnection;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Exception\SparqlQueryException;
 use EasyRdf\Sparql\Result;
@@ -12,6 +12,10 @@ use EasyRdf\Sparql\Result;
 /**
  * @addtogroup database
  * @{
+ */
+
+/**
+ * SPARQL connection service set up for virtuoso and Joinup.
  */
 class Connection extends BaseConnection implements ConnectionInterface {
 
