@@ -115,7 +115,6 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
   public function buildBatchProcessErrorMessage() {
     $rows = array_reduce($this->getBatchErrorMessages(), function (array $rows, array $row_group): array {
       return array_merge($rows, $row_group);
-
     }, []);
 
     if (!$rows) {
@@ -123,18 +122,25 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
     }
 
     return [
-      '#theme' => 'table',
-      '#header' => [
-        $this->t('Class name'),
-        $this->t('Message'),
-        $this->t('Object'),
-        $this->t('Predicate'),
-        $this->t('Rule description'),
-        $this->t('Rule ID'),
-        $this->t('Rule severity'),
-        $this->t('Subject'),
+      [
+        0 => [
+          '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
+        ],
+        1 => [
+          '#theme' => 'table',
+          '#header' => [
+            $this->t('Class name'),
+            $this->t('Message'),
+            $this->t('Object'),
+            $this->t('Predicate'),
+            $this->t('Rule description'),
+            $this->t('Rule ID'),
+            $this->t('Rule severity'),
+            $this->t('Subject'),
+          ],
+          '#rows' => $rows,
+        ],
       ],
-      '#rows' => $rows,
     ];
   }
 
