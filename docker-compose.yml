@@ -32,15 +32,18 @@ services:
     expose:
     - '4444'
 
+  # This will compile the CSS once when docker-compose is started.
   sass:
     image: pablofelix/sass
     volumes:
-     - $PWD:/app/
+    - $PWD:/app/
     entrypoint:
-     - watch
-     - web/themes/joinup/prototype/sass/app.sass
+    - watch
+    - -t compressed
+    - /app/web/themes/joinup/prototype/sass/app.sass
+    - /app/web/themes/joinup/css/style.min.css
 
-  sparql:
+  virtuoso:
     image: tenforce/virtuoso
     environment:
     - SPARQL_UPDATE=true
@@ -48,18 +51,29 @@ services:
     ports:
       - "8890:8890"
 
-  solr:
+  solr_published:
     image: solr
     ports:
-     - "8983:8983"
+     - "8982:8983"
     volumes:
       #- data:/opt/solr/server/solr/mycores
       - ./resources/solr:/solr
     entrypoint:
       - docker-entrypoint.sh
       - solr-precreate
-      - solr # Create a core named 'solr'
-      - /solr
+      - drupal_published # Create a core named 'drupal_published'
+
+  solr_unpublished:
+    image: solr
+    ports:
+     - "8983:8983"
+    volumes:
+     #- data:/opt/solr/server/solr/mycores
+    - ./resources/solr:/solr
+    entrypoint:
+     - docker-entrypoint.sh
+     - solr-precreate
+     - drupal_unpublished # Create a core named 'drupal_unpublished'
 #volumes:
 #  data:
 #### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
