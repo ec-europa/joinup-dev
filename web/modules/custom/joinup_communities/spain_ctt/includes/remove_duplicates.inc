@@ -154,6 +154,18 @@ QUERY;
  */
 function _span_ctt_get_duplicated_ids(): array {
   return [
+    'http://administracionelectronica.gob.es/ctt/archive' => [
+      'http://administracionelectronica.gob.es/ctt/archive_1',
+    ],
+    'http://administracionelectronica.gob.es/ctt/eemgde' => [
+      'http://administracionelectronica.gob.es/ctt/eemgde_1',
+    ],
+    'http://administracionelectronica.gob.es/ctt/regfia' => [
+      'http://administracionelectronica.gob.es/ctt/regfia_1',
+    ],
+    'http://administracionelectronica.gob.es/ctt/documentoe' => [
+      'http://administracionelectronica.gob.es/ctt/documentoe_1',
+    ],
     'http://administracionelectronica.gob.es/ctt/dscp' => [
       'http://administracionelectronica.gob.es/ctt/dscp_1',
     ],
