@@ -84,7 +84,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * {@inheritdoc}
+   * Returns the headers for the facet table.
    */
   protected function getTableHeader() {
     return [
