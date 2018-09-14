@@ -38,3 +38,12 @@ field.field.node.custom_page.field_cp_content_listing:
               show_shared:
                 type: boolean
                 label: 'Show shared'
+              query_builder:
+                type: mapping
+                label: 'Query builder'
+                mapping:
+                  filters:
+                    type: sequence
+                    label: 'Filters'
+                    sequence:
+                      type: search_api_field.plugin.filter.[plugin]

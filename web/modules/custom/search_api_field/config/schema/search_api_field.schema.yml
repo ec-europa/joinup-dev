@@ -52,3 +52,22 @@ field.value.search_api_field:
         limit:
           type: integer
           label: 'Limit'
+        query_builder:
+          type: mapping
+          label: 'Query builder'
+          mapping:
+            filters:
+              type: sequence
+              sequence:
+                type: search_api_field.plugin.filter.[plugin]
+
+search_api_field_plugin_filter:
+  type: mapping
+  label: 'Search API field filter'
+  mapping:
+    plugin:
+      type: string
+      label: 'Plugin'
+    field:
+      type: string
+      label: 'Field identifier'
