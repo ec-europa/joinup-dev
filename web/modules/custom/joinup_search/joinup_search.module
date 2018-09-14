@@ -13,6 +13,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\ConditionGroupInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
+use Solarium\QueryType\Select\Query\Query;
 
 /**
  * Implements hook_entity_field_access().
@@ -147,4 +149,66 @@ function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index
       $fields[$alias] = $solr_field;
     }
   }
+}
+
+/**
+ * Implements hook_search_api_solr_query_alter().
+ */
+function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
+  if (
+    !$solarium_query instanceof Query
+  ) {
+    return;
+  }
+
+  /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */
+  if (!$item = $query->getOption('search_api_field item')) {
+    return;
+  }
+
+  $value = $item->value;
+  if (empty($value['query_builder'])) {
+    return;
+  }
+
+  // Extract all the plugins used.
+  $plugin_ids = array_column($value['query_builder'], 'plugin');
+  $autocomplete_plugin_ids = ['node_entity_autocomplete', 'rdf_entity_autocomplete'];
+  // If any plugin other than the direct entity reference ones are used,
+  // bail out.
+  if (array_diff(array_unique($plugin_ids), $autocomplete_plugin_ids)) {
+    return;
+  }
+
+  // Get the real names used to index on Solr.
+  /** @var \Drupal\search_api_solr\Plugin\search_api\backend\SearchApiSolrBackend $solr_backend */
+  $solr_backend = $query->getIndex()->getServerInstance()->getBackend();
+  $solr_fields = $solr_backend->getSolrFieldNames($query->getIndex());
+
+  // Build a sorting function that attributes a weight following the order of
+  // the elements in the UI.
+  $plugins = array_reverse($value['query_builder'], TRUE);
+  $sort = '';
+  foreach ($plugins as $delta => $plugin_config) {
+    $field = $plugin_config['field'];
+    if (!isset($solr_fields[$field]) || empty($plugin_config['target_id'])) {
+      continue;
+    }
+
+    if (empty($sort)) {
+      $sort = $delta;
+      continue;
+    }
+
+    $sort = sprintf(
+      'if(termfreq(%s,%s),%s,%s)',
+      $solr_fields[$field],
+      $solarium_query->getHelper()->escapePhrase($plugin_config['target_id']),
+      $delta,
+      $sort
+    );
+  }
+
+  $sorts = $solarium_query->getSorts();
+  $solarium_query->setSorts([$sort => 'asc'] + $sorts);
 }
