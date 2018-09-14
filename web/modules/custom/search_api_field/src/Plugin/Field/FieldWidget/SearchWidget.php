@@ -631,7 +631,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
 
     $field_name = $this->fieldDefinition->getName();
     $field_state = static::getWidgetState($form['#parents'], $field_name, $form_state);
-    $widget = NestedArray::getValue($form, $field_state['array_parents']);
+    $widget = NestedArray::getValue($form_state->getCompleteForm(), $field_state['array_parents']);
 
     // Clean the values, skipping submitted button values and placing everything
     // under a 'value' array element which will be serialized.
@@ -661,7 +661,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
           $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
 
           $subform = $widget[$delta]['wrapper']['query_builder']['filters'][$plugin_delta]['plugin'];
-          $subform_state = SubformState::createForSubform($subform, $form, $form_state);
+          $subform_state = SubformState::createForSubform($subform, $form_state->getCompleteForm(), $form_state);
           $plugin->submitConfigurationForm($subform, $subform_state);
 
           // Don't specify a key, so that plugins are re-indexed.
