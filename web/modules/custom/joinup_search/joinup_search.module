@@ -167,12 +167,12 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
   }
 
   $value = $item->value;
-  if (empty($value['query_builder'])) {
+  if (empty($value['query_builder']['filters'])) {
     return;
   }
 
   // Extract all the plugins used.
-  $plugin_ids = array_column($value['query_builder'], 'plugin');
+  $plugin_ids = array_column($value['query_builder']['filters'], 'plugin');
   $autocomplete_plugin_ids = ['node_entity_autocomplete', 'rdf_entity_autocomplete'];
   // If any plugin other than the direct entity reference ones are used,
   // bail out.
@@ -187,7 +187,7 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
 
   // Build a sorting function that attributes a weight following the order of
   // the elements in the UI.
-  $plugins = array_reverse($value['query_builder'], TRUE);
+  $plugins = array_reverse($value['query_builder']['filters'], TRUE);
   $sort = '';
   foreach ($plugins as $delta => $plugin_config) {
     $field = $plugin_config['field'];

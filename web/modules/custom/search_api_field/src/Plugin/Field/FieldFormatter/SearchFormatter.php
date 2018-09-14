@@ -162,7 +162,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
 
     if (!empty($settings['query_builder'])) {
-      $this->applyQueryBuilderFilters($query, $settings['query_builder']);
+      $this->applyQueryBuilderConfiguration($query, $settings['query_builder']);
     }
 
     $hooks = [
@@ -341,14 +341,14 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    *
    * @param \Drupal\search_api\Query\QueryInterface $query
    *   The search query object.
-   * @param array $filters
-   *   A list of filter plugin configuration.
+   * @param array $configuration
+   *   The query builder configuration.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
-  protected function applyQueryBuilderFilters(QueryInterface $query, array $filters): void {
+  protected function applyQueryBuilderConfiguration(QueryInterface $query, array $configuration): void {
     $or = $query->createConditionGroup('OR');
-    foreach ($filters as $delta => $plugin_config) {
+    foreach ($configuration['filters'] as $delta => $plugin_config) {
       /** @var \Drupal\search_api_field\Plugin\FilterPluginInterface $plugin */
       $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
       $plugin->applyFilter($or);

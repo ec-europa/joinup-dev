@@ -474,11 +474,11 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
     if (!isset($field_state['query_builder'][$delta])) {
       $default_value = $item->get('value')->getValue();
-      $field_state['query_builder'][$delta] = $default_value['query_builder'] ?? [];
+      $field_state['query_builder'][$delta] = $default_value['query_builder'] ?? ['filters' => []];
       static::setWidgetState($parents, $field_name, $form_state, $field_state);
     }
 
-    $filters = $field_state['query_builder'][$delta];
+    $filters = $field_state['query_builder'][$delta]['filters'];
     $element['filters'] = [
       '#type' => 'table',
       '#header' => [
@@ -572,7 +572,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $parents = $widget['#field_parents'];
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
     // Add the selected filter to the list for this specific delta.
-    $field_state['query_builder'][$element['#delta']][] = [
+    $field_state['query_builder'][$element['#delta']]['filters'][] = [
       'plugin' => $plugin['id'],
       'field' => $field->getFieldIdentifier(),
     ];
@@ -601,7 +601,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $field_name = $widget['#field_name'];
     $parents = $widget['#field_parents'];
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
-    unset($field_state['query_builder'][$element['#delta']][$plugin_delta]);
+    unset($field_state['query_builder'][$element['#delta']]['filters'][$plugin_delta]);
     static::setWidgetState($parents, $field_name, $form_state, $field_state);
 
     $form_state->setRebuild();
@@ -650,8 +650,13 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       $cleaned_values[$delta]['value']['query_presets'] = $values[$delta]['wrapper']['query_presets'];
       $cleaned_values[$delta]['value']['limit'] = $values[$delta]['wrapper']['limit'];
 
-      if (!empty($field_state['query_builder'][$delta])) {
-        foreach ($field_state['query_builder'][$delta] as $plugin_delta => $plugin_config) {
+      if (!empty($values[$delta]['wrapper']['query_builder']['filters'])) {
+        $filter_values = $values[$delta]['wrapper']['query_builder']['filters'];
+        // Re-order values in case JS is not used.
+        uasort($filter_values, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
+
+        foreach (array_keys($filter_values) as $plugin_delta) {
+          $plugin_config = $field_state['query_builder'][$delta]['filters'][$plugin_delta];
           /** @var \Drupal\search_api_field\Plugin\FilterPluginInterface $plugin */
           $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
 
@@ -659,7 +664,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
           $subform_state = SubformState::createForSubform($subform, $form, $form_state);
           $plugin->submitConfigurationForm($subform, $subform_state);
 
-          $cleaned_values[$delta]['value']['query_builder'][$plugin_delta] = $plugin->getConfiguration();
+          // Don't specify a key, so that plugins are re-indexed.
+          $cleaned_values[$delta]['value']['query_builder']['filters'][] = $plugin->getConfiguration();
         }
       }
     }
