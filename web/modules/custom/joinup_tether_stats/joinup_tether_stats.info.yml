@@ -4,4 +4,7 @@ description: A module that integrates with the tether_stats module to track link
 core: 8.x
 package: Joinup
 dependencies:
-- tether_stats
+  - tether_stats
+
+config_devel:
+  - tether_stats.settings

@@ -1,0 +1,20 @@
+active: true
+filter:
+  mode: include
+  rules:
+    route:
+      - entity.rdf_entity.canonical
+      - entity.node.canonical
+    url:
+      - node/%
+      - discussion/%
+      - document/%
+      - event/%
+      - news/%
+      - tether-stats/track
+      - rdf_entity/%
+allow_query_string_elements: false
+chart_plugin: tether_stats_google_charts
+advanced:
+  element_ttl: 432000
+  first_activation_time: 1536844015
