@@ -159,15 +159,7 @@ class TrackedHostedFileDownloadFormatter extends FileFormatterBase implements Co
           '#type' => 'link',
           '#title' => $this->getSetting('hosted_files_title'),
           '#url' => Url::fromUri(file_create_url($file->getFileUri())),
-          '#attributes' => [
-            'id' => Html::getUniqueId('tracked-file-download'),
-            'class' => ['track-download'],
-            'data-tracking' => Url::fromRoute('asset_distribution.track_download', [
-              'file' => $file->id(),
-            ])->toString(),
-            // Force the download of the file in HTML5 compatible browsers.
-            'download' => $file->getFilename(),
-          ],
+
         ];
 
         // Pass field item attributes to the theme function.
