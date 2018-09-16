@@ -57,6 +57,7 @@
         "drupal/state_machine": "^1.0-beta3",
         "drupal/subpathauto": "^1.0@beta",
         "drupal/swiftmailer": "^1.0@beta",
+        "drupal/tether_stats": "dev-1.x",
         "drupal/token": "~1.0",
         "drupal/video_embed_field": "~1.5",
         "drupal/view_unpublished": "~1.0@alpha",
@@ -226,6 +227,9 @@
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
+            },
+            "drupal/tether_stats": {
+                "Support entities with string ids. @see https://www.drupal.org/project/tether_stats/issues/2999887": "https://www.drupal.org/files/issues/2018-09-15/tether_stats-support_string_ids-2999887-4-D8.patch"
             },
             "drupal/video_embed_field": {
                 "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
