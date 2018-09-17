@@ -21,14 +21,14 @@ trait PipelineStepWithClientRedirectResponseTrait {
       '#attached' => [
         'html_head' => [
           [
-            0 => [
+            [
               '#tag' => 'meta',
               '#attributes' => [
                 'http-equiv' => 'Refresh',
                 'content' => '0; URL=' . \Drupal::service('path.current')->getPath(),
               ],
             ],
-            1 => 'joinup_federation',
+            'joinup_federation',
           ],
         ],
       ],

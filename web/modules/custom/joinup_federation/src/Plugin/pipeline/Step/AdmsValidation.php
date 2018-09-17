@@ -126,10 +126,10 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
 
     return [
       [
-        0 => [
+        [
           '#markup' => $this->t('Imported data is not ADMS v2 compliant:'),
         ],
-        1 => [
+        [
           '#theme' => 'table',
           '#header' => [
             $this->t('Class name'),
