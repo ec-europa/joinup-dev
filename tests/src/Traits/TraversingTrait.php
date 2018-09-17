@@ -349,26 +349,4 @@ trait TraversingTrait {
     return $element;
   }
 
-  /**
-   * Retrieves a row of a draggable table by its title.
-   *
-   * The code returns the first row found in the page.
-   *
-   * @param string $title
-   *   The title of the row.
-   *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The row element.
-   */
-  protected function findDraggableTableRowByTitle($title) {
-    $xpath = '//tr[@class and contains(concat(" ", normalize-space(@class), " "), " draggable ")][.//a[text()="' . $title . '"]]';
-    $row = $this->getSession()->getPage()->find('xpath', $xpath);
-
-    if (!$row) {
-      throw new \Exception("Cannot find row for the menu link '$title'");
-    }
-
-    return $row;
-  }
-
 }
