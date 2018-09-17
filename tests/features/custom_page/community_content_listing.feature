@@ -17,21 +17,23 @@ Feature:
       | title               | collection | created           | body                                        | state     |
       | 20 year anniversary | Nintendo64 | 2018-10-01 4:29am | The console was released in September 1996. | validated |
 
-  Scenario: Community content listing widget should be shown only to moderators.
+  Scenario: Community content listing widget should be shown to facilitators and moderators.
     Given I am logged in as a facilitator of the "Nintendo64" collection
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should not be present "Display a community content listing, Include content shared in the collection, Query presets, Limit"
+    And the following fields should be present "Display a community content listing, Include content shared in the collection, Query presets, Limit"
+    And I should see the button "Add and configure filter"
 
     Given I am logged in as a moderator
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     And the following fields should be present "Display a community content listing, Include content shared in the collection, Query presets, Limit"
+    And I should see the button "Add and configure filter"
 
   Scenario: Configure a custom page to show a community content listing.
-    Given I am logged in as a moderator
+    Given I am logged in as a facilitator of the "Nintendo64" collection
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
@@ -91,9 +93,7 @@ Feature:
     But I should not see the "20 year anniversary" tile
     And I should not see the "NEC VR4300 CPU" tile
 
-    Given I am logged in as a moderator
-    When I go to the "Latest news" custom page
-    And I click "Edit" in the "Entity actions" region
+    When I click "Edit" in the "Entity actions" region
     And I uncheck "Display a community content listing"
     And I press "Save"
     Then I should not see the "Rare Nintendo64 disk drive discovered" tile
@@ -101,7 +101,7 @@ Feature:
     And I should not see the "NEC VR4300 CPU" tile
 
   Scenario: Content type tabs should be mutually exclusive and show only items with results.
-    Given I am logged in as a moderator
+    Given I am logged in as a facilitator of the "Nintendo64" collection
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
@@ -112,18 +112,18 @@ Feature:
     And I press "Save"
     Then I should see the heading "Collection content"
     # Verify that unwanted facets are not shown in the page.
-    # Assertion of the existing ones will be done through clicks in the
-    # interface.
-    And I should not see the following facet items "asset distribution, asset release, collection, contact information, custom page, licence, owner, solution"
+    And I should see the following facet items "Discussion, Event, News" in this order
     And I should see the following tiles in the correct order:
       | 20 year anniversary                   |
       | Rare Nintendo64 disk drive discovered |
+      | What's your favourite N64 game?       |
+      | Searching for green pad.              |
     # Filter on news.
     When I click the News content tab
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
     And I should not see the heading "20 year anniversary"
     # Some unwanted facets were showing after selecting one of the tabs.
-    And I should not see the following facet items "asset distribution, asset release, collection, contact information, custom page, licence, owner, solution"
+    And I should see the following facet items "News, Discussion, Event" in this order
     # Filter on events.
     When I click the Event content tab
     Then I should see the heading "20 year anniversary"
