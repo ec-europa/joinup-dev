@@ -88,6 +88,32 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    */
   public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {
     $items = $event->getExpiredItems()->getItems();
+    foreach ($items as $item) {
+      if ($entity = $this->getEntity($item)) {
+        // @todo: This should take the entity data below instead.
+        // $entity_type = $entity->getEntityTypeId();
+        // $entity_id = $entity->id();
+        $url = $entity->toUrl()->toString();
+        $query = \Drupal::database()->select('tether_stats_element', 't');
+        $query->fields('t', ['count']);
+        // $query->condition('entity_type', $entity_type);
+        // $query->condition('entity_id', $entity_id);
+        $query->condition('url', $url);
+        // @todo: Distinguish between hits and clicks.
+        $count = $query->execute()->fetchField();
+        $this->updateFieldValue($item, $count ?? 0);
+      }
+    }
+  }
+
+  /**
+   * Deprecated method.
+   *
+   * @param \Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface $event
+   *   The event object.
+   */
+  public function refreshExpiredFieldsDeprecated(RefreshExpiredFieldsEventInterface $event) {
+    $items = $event->getExpiredItems()->getItems();
 
     // All requests are sent by POST method to handle the amount of concurrent
     // requests in terms of request length.
