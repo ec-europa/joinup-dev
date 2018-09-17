@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "128b8566d3702aa9c8ade102ef334ce6",
+    "content-hash": "f36e608ad556890bdfab7f6d8e43a7b7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5566,8 +5566,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+1-dev",
-                    "datestamp": "1486397282",
+                    "version": "8.x-1.0-alpha4+2-dev",
+                    "datestamp": "1525107184",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5889,7 +5889,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/master",
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
             "time": "2018-04-16T07:12:39+00:00"
