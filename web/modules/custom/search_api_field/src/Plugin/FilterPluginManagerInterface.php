@@ -13,14 +13,15 @@ use Drupal\search_api\Item\FieldInterface;
 interface FilterPluginManagerInterface extends PluginManagerInterface {
 
   /**
-   * Retrieve a filter plugin definition for a specific field.
+   * Retrieve filter plugin definitions for a specific field.
    *
    * @param \Drupal\search_api\Item\FieldInterface $field
    *   The Search API field.
    *
-   * @return string|null
-   *   The plugin ID if one is found. Null otherwise.
+   * @return mixed[]
+   *   An array of plugin definitions (empty array if no definitions were
+   *   found). Keys are plugin IDs.
    */
-  public function getDefinitionForField(FieldInterface $field);
+  public function getDefinitionsForField(FieldInterface $field): array;
 
 }

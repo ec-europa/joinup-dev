@@ -437,12 +437,10 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       ],
     ];
 
-    $available_fields = [];
+    $options = [];
     foreach ($index->getFields() as $field_id => $field) {
-      $definition = $this->filterPluginManager->getDefinitionForField($field);
-
-      if ($definition) {
-        $available_fields[$field_id] = $field->getLabel();
+      foreach ($this->filterPluginManager->getDefinitionsForField($field) as $plugin_id => $plugin_definition) {
+        $options["{$field_id}:{$plugin_id}"] = $plugin_definition['label'] ?? $field->getLabel();
       }
     }
 
@@ -451,7 +449,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
 
     $element['field'] = [
       '#type' => 'select',
-      '#options' => $available_fields,
+      '#options' => $options,
       '#required' => FALSE,
     ];
     $element['add'] = [
@@ -559,10 +557,10 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $button = $form_state->getTriggeringElement();
     $wrapper = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
 
-    // Get the filter plugin for the selected field.
-    $field_id = $form_state->getValue(array_merge($wrapper['#parents'], ['field']));
-    $field = $this->getSearchApiIndex()->getField($field_id);
-    $plugin = $this->filterPluginManager->getDefinitionForField($field);
+    // Extract field id and plugin id from the selected option. Since field ids
+    // cannot contain special characters, it's safe to explode on the first
+    // colon.
+    list($field_id, $plugin_id) = explode(':', $form_state->getValue($wrapper['field']['#parents']), 2);
 
     // Extract element and widget elements.
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -3));
@@ -573,8 +571,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
     // Add the selected filter to the list for this specific delta.
     $field_state['query_builder'][$element['#delta']]['filters'][] = [
-      'plugin' => $plugin['id'],
-      'field' => $field->getFieldIdentifier(),
+      'plugin' => $plugin_id,
+      'field' => $field_id,
     ];
     static::setWidgetState($parents, $field_name, $form_state, $field_state);
 

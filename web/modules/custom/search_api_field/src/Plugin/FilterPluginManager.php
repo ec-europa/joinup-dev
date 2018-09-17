@@ -43,7 +43,7 @@ class FilterPluginManager extends DefaultPluginManager implements FilterPluginMa
   /**
    * {@inheritdoc}
    */
-  public function getDefinitionForField(FieldInterface $field) {
+  public function getDefinitionsForField(FieldInterface $field): array {
     if (empty($this->pluginsByType)) {
       $this->pluginsByType = [
         'data_types' => [],
@@ -64,15 +64,21 @@ class FilterPluginManager extends DefaultPluginManager implements FilterPluginMa
       }
     }
 
-    $plugin_id = NULL;
+    $plugins_ids = [];
+    // Use field specific definitions if available.
     if (!empty($this->pluginsByType['fields'][$field->getFieldIdentifier()])) {
-      $plugin_id = reset($this->pluginsByType['fields'][$field->getFieldIdentifier()]);
+      $plugins_ids = $this->pluginsByType['fields'][$field->getFieldIdentifier()];
     }
     elseif (!empty($this->pluginsByType['data_types'][$field->getType()])) {
-      $plugin_id = reset($this->pluginsByType['data_types'][$field->getType()]);
+      $plugins_ids = $this->pluginsByType['data_types'][$field->getType()];
     }
 
-    return $plugin_id ? $this->getDefinition($plugin_id) : NULL;
+    $definitions = [];
+    foreach ($plugins_ids as $plugins_id) {
+      $definitions[$plugins_id] = $this->getDefinition($plugins_id);
+    }
+
+    return $definitions;
   }
 
 }
