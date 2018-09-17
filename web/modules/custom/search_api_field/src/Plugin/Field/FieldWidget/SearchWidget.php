@@ -477,38 +477,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       ],
     ];
 
-    $options = [];
-    foreach ($index->getFields() as $field_id => $field) {
-      foreach ($this->filterPluginManager->getDefinitionsForField($field) as $plugin_id => $plugin_definition) {
-        $options["{$field_id}:{$plugin_id}"] = $plugin_definition['label'] ?? $field->getLabel();
-      }
-    }
-
     $parents = $form['#parents'];
     $field_name = $this->fieldDefinition->getName();
-
-    $element['field'] = [
-      '#type' => 'select',
-      '#options' => $options,
-      '#required' => FALSE,
-    ];
-    $element['add'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Add and configure filter'),
-      '#name' => 'add_filter',
-      '#submit' => [[$this, 'submitAddFilter']],
-      '#ajax' => [
-        'callback' => [$this, 'ajaxUpdateQueryBuilder'],
-        'wrapper' => $wrapper_id,
-      ],
-      '#limit_validation_errors' => [
-        array_merge(
-          $parents,
-          [$field_name, $delta, 'wrapper', 'query_builder']
-        ),
-      ],
-    ];
-
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
     if (!isset($field_state['query_builder'][$delta])) {
       $default_value = $item->get('value')->getValue();
@@ -562,6 +532,36 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
         '#attributes' => ['class' => 'draggable', 'tabledrag-leaf'],
       ];
     }
+
+    $options = [];
+    foreach ($index->getFields() as $field_id => $field) {
+      foreach ($this->filterPluginManager->getDefinitionsForField($field) as $plugin_id => $plugin_definition) {
+        $options["{$field_id}:{$plugin_id}"] = $plugin_definition['label'] ?? $field->getLabel();
+      }
+    }
+
+    $element['field'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Available filters'),
+      '#options' => $options,
+      '#required' => FALSE,
+    ];
+    $element['add'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Add and configure filter'),
+      '#name' => 'add_filter',
+      '#submit' => [[$this, 'submitAddFilter']],
+      '#ajax' => [
+        'callback' => [$this, 'ajaxUpdateQueryBuilder'],
+        'wrapper' => $wrapper_id,
+      ],
+      '#limit_validation_errors' => [
+        array_merge(
+          $parents,
+          [$field_name, $delta, 'wrapper', 'query_builder']
+        ),
+      ],
+    ];
 
     return $element;
   }
