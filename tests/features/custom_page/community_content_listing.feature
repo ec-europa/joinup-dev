@@ -16,6 +16,10 @@ Feature:
     And event content:
       | title               | collection | created           | body                                        | state     |
       | 20 year anniversary | Nintendo64 | 2018-10-01 4:29am | The console was released in September 1996. | validated |
+    And discussion content:
+      | title                           | collection | content                 | created          | state     |
+      | What's your favourite N64 game? | Nintendo64 | Post title and reasons. | 2018-11-17 10:17 | validated |
+      | Searching for green pad.        | Nintendo64 | Looking for a used one. | 2018-11-17 10:18 | validated |
 
   Scenario: Community content listing widget should be shown to facilitators and moderators.
     Given I am logged in as a facilitator of the "Nintendo64" collection
@@ -69,7 +73,6 @@ Feature:
     And I should not see the "NEC VR4300 CPU" tile
 
     # Share a news inside the collection.
-    Given I am logged in as a facilitator of the "Nintendo64" collection
     When I go to the "NEC VR4300 CPU" news
     And I click "Share"
     And I check "Nintendo64"
@@ -99,6 +102,87 @@ Feature:
     Then I should not see the "Rare Nintendo64 disk drive discovered" tile
     And I should not see the "20 year anniversary" tile
     And I should not see the "NEC VR4300 CPU" tile
+
+  @javascript
+  Scenario: Configure a custom page to show specific tiles.
+    Given I am logged in as a facilitator of the "Nintendo64" collection
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page" in the plus button menu
+    Then I should see the heading "Add custom page"
+    When I fill in "Title" with "Chosen content"
+    And I enter "Shows a specific set of tiles." in the "Body" wysiwyg editor
+    And I check "Display a community content listing"
+    And I press "Save"
+    Then I should see the heading "Chosen content"
+    And I should see the following tiles in the correct order:
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
+      | 20 year anniversary                   |
+      | Rare Nintendo64 disk drive discovered |
+
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    Then the available options in the "Available filters" select should be "Discussion, Document, Event, News, Solution"
+    When I select "Discussion" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in "Discussion" with "What's your favourite N64 game?"
+    And I select "News" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in "News" with "Rare Nintendo64 disk drive discovered"
+    And I press "Save"
+    Then I should see the heading "Chosen content"
+    And I should see the following tiles in the correct order:
+      | What's your favourite N64 game?       |
+      | Rare Nintendo64 disk drive discovered |
+
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    And I select "Event" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in "Event" with "20 year anniversary"
+    And I drag the table row at position 3 up
+    And I drag the table row at position 2 up
+    And I press "Save"
+    And I should see the following tiles in the correct order:
+      | 20 year anniversary                   |
+      | What's your favourite N64 game?       |
+      | Rare Nintendo64 disk drive discovered |
+
+    # Content that doesn't belong to the collection won't show up, even when selected.
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    And I select "News" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in the latest "News" field with "NEC VR4300 CPU"
+    And I check "Include content shared in the collection"
+    And I press "Save"
+    Then I should see the following tiles in the correct order:
+      | 20 year anniversary                   |
+      | What's your favourite N64 game?       |
+      | Rare Nintendo64 disk drive discovered |
+
+    # Content shared in the collection will be shown.
+    When I go to the "NEC VR4300 CPU" news
+    And I click "Share"
+    And I check "Nintendo64"
+    And I press "Share" in the "Modal buttons" region
+    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+    When I go to the "Chosen content" custom page
+    Then I should see the following tiles in the correct order:
+      | 20 year anniversary                   |
+      | What's your favourite N64 game?       |
+      | Rare Nintendo64 disk drive discovered |
+      | NEC VR4300 CPU                        |
+
+    # Disabling inclusion of shared content will remove it from the list, even if still referenced.
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    And I uncheck "Include content shared in the collection"
+    And I press "Save"
+    Then I should see the following tiles in the correct order:
+      | 20 year anniversary                   |
+      | What's your favourite N64 game?       |
+      | Rare Nintendo64 disk drive discovered |
 
   Scenario: Content type tabs should be mutually exclusive and show only items with results.
     Given I am logged in as a facilitator of the "Nintendo64" collection
