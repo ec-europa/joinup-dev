@@ -84,42 +84,6 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   }
 
   /**
-   * Returns the headers for the facet table.
-   */
-  protected function getTableHeader() {
-    return [
-      $this->t('Field'),
-      $this->t('Weight'),
-      $this->t('Parent'),
-      $this->t('Label'),
-      ['data' => $this->t('Format'), 'colspan' => 3],
-    ];
-  }
-
-  /**
-   * Get defined facet regions.
-   *
-   * @return array
-   *   List of facet regions.
-   */
-  protected function getRegions() {
-    $storage = $this->fieldDefinition->getFieldStorageDefinition();
-    $facet_regions = $storage->getSetting('facet_regions');
-    $regions = [];
-    foreach ($facet_regions as $id => $label) {
-      $regions[$id] = [
-        'title' => $label,
-        'message' => $this->t('No field is displayed.'),
-      ];
-    }
-    $regions['hidden'] = [
-      'title' => $this->t('Disabled', [], ['context' => 'Plural']),
-      'message' => $this->t('No field is hidden.'),
-    ];
-    return $regions;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
@@ -315,6 +279,42 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
 
     // Return the whole table.
     return $form['fields'];
+  }
+
+  /**
+   * Returns the headers for the facet table.
+   */
+  protected function getTableHeader() {
+    return [
+      $this->t('Field'),
+      $this->t('Weight'),
+      $this->t('Parent'),
+      $this->t('Label'),
+      ['data' => $this->t('Format'), 'colspan' => 3],
+    ];
+  }
+
+  /**
+   * Get defined facet regions.
+   *
+   * @return array
+   *   List of facet regions.
+   */
+  protected function getRegions() {
+    $storage = $this->fieldDefinition->getFieldStorageDefinition();
+    $facet_regions = $storage->getSetting('facet_regions');
+    $regions = [];
+    foreach ($facet_regions as $id => $label) {
+      $regions[$id] = [
+        'title' => $label,
+        'message' => $this->t('No field is displayed.'),
+      ];
+    }
+    $regions['hidden'] = [
+      'title' => $this->t('Disabled', [], ['context' => 'Plural']),
+      'message' => $this->t('No field is hidden.'),
+    ];
+    return $regions;
   }
 
   /**
