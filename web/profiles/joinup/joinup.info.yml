@@ -227,6 +227,7 @@ config_devel:
   - swiftmailer.transport
   - system.date
   - system.theme
+  - tether_stats.settings
   - user.flood
   - user.mail
   - user.settings
