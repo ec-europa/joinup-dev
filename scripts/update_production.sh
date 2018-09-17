@@ -48,6 +48,8 @@ if [ ${ERROR_COUNT} -ne 0 ]; then
   # is called in an AND (&&) chained list of commands, all commands chained
   # after this script are not executed. Restore exiting with error as soon as
   # all of ISAICP-4702, ISAICP-4701 and ISAICP-4092 are fixed.
+  # @todo Uncomment the next line in ISAICP-4773.
+  # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4773
   # exit 1
 fi
 
