@@ -87,8 +87,10 @@ interface AdmsValidatorInterface {
    *
    * @param string $validation_query
    *   The validation query as a string.
+   *
+   * @return $this
    */
-  public function setValidationQuery(string $validation_query): void;
+  public function setValidationQuery(string $validation_query): self;
 
   /**
    * Builds the default SPARQL query to be used for validation.

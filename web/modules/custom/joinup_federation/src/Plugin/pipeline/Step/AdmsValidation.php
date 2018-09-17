@@ -101,8 +101,11 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
     foreach ($query_array as $query) {
       $query = $this->getPreparedQuery($query);
       $graph_uri = $this->getGraphUri('sink_plus_taxo');
-      $this->admsValidator->setValidationQuery($query);
-      $validation = $this->admsValidator->validateByGraphUri($graph_uri);
+
+      $validation = $this->admsValidator
+        ->setValidationQuery($query)
+        ->validateByGraphUri($graph_uri);
+
       if (!$validation->isSuccessful()) {
         throw (new PipelineStepExecutionLogicException())->setError($validation->toRows());
       }

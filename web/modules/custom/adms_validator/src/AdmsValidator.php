@@ -42,8 +42,9 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function setValidationQuery(string $validation_query): void {
+  public function setValidationQuery(string $validation_query): AdmsValidatorInterface {
     $this->validationQuery = $validation_query;
+    return $this;
   }
 
   /**
