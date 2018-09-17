@@ -5,8 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\rdf_schema_field_validation;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Exception\UnmappedFieldException;
 use Drupal\rdf_entity\RdfEntityMappingInterface;
@@ -20,7 +19,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   /**
    * The database connection.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparqlEndpoint;
 
@@ -41,14 +40,14 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   /**
    * Constructs a new SchemaFieldValidator object.
    *
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint
    *   The database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\rdf_entity\RdfFieldHandlerInterface $field_hanlder
    *   The rdf field handler service.
    */
-  public function __construct(Connection $sparql_endpoint, EntityTypeManagerInterface $entity_type_manager, RdfFieldHandlerInterface $field_hanlder) {
+  public function __construct(ConnectionInterface $sparql_endpoint, EntityTypeManagerInterface $entity_type_manager, RdfFieldHandlerInterface $field_hanlder) {
     $this->sparqlEndpoint = $sparql_endpoint;
     $this->entityTypeManager = $entity_type_manager;
     $this->fieldHanlder = $field_hanlder;

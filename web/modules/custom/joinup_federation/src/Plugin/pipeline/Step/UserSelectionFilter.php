@@ -12,9 +12,12 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
@@ -29,9 +32,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("User selection"),
  * )
  */
-class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface {
+class UserSelectionFilter extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponseInterface {
 
   use AdmsSchemaEntityReferenceFieldsTrait;
+  use PipelineStepWithClientRedirectResponseTrait;
   use PipelineStepWithFormTrait;
   use SparqlEntityStorageTrait;
 
@@ -79,7 +83,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -92,7 +96,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $rdf_schema_field_validator
    *   The RDF schema field validator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->provenanceHelper = $rdf_entity_provenance_helper;
@@ -144,14 +148,15 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
 
     // Remove the blacklisted entities, if any.
     if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist))) {
-      // Delete blacklisted entities from 'staging' graph.
-      $this->getRdfStorage()->deleteFromGraph(Rdf::loadMultiple($blacklist), 'staging');
+      $blacklist_ids = SparqlArg::serializeUris($blacklist, ' ');
+      $this->sparql->query("WITH <{$this->getGraphUri('sink')}> DELETE { ?entity_id ?p ?o } WHERE { ?entity_id ?p ?o . VALUES ?entity_id { {$blacklist_ids} } }");
     }
 
     // Persist data for next steps.
     $this
       ->setPersistentDataValue('whitelist', $this->whitelist)
       ->setPersistentDataValue('blacklist', $blacklist);
+
   }
 
   /**

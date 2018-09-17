@@ -14,7 +14,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
    */
   protected $spaqlEndpoint;
 

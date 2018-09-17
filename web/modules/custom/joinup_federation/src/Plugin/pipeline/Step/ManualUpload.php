@@ -8,6 +8,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
+use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
@@ -23,24 +25,54 @@ use EasyRdf\Graph;
  *   label = @Translation("Manual upload"),
  * )
  */
-class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponseInterface {
+class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponseInterface, PipelineStepWithBatchInterface {
 
   use PipelineStepWithFormTrait;
   use PipelineStepWithRedirectResponseTrait;
   use RdfEntityGraphStoreTrait;
+  use PipelineStepWithBatchTrait;
+
+  /**
+   * The batch size.
+   *
+   * @var int
+   */
+  const BATCH_SIZE = 10;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function initBatchProcess() {
+    $fid = $this->getPersistentDataValue('fid');
+    $this->unsetPersistentDataValue('fid');
+    $graph_array = $this->fileToRdfPhp($fid);
+    $this->setBatchValue('graph_array', $graph_array);
+    return ceil(count($graph_array) / static::BATCH_SIZE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function batchProcessIsCompleted() {
+    return !$this->getBatchValue('graph_array');
+  }
 
   /**
    * {@inheritdoc}
    */
   public function execute() {
+    $resources = $this->extractNextSubset('graph_array', static::BATCH_SIZE);
+    $graph_store = $this->createGraphStore();
+    $graph_uri = $this->getGraphUri('sink');
+
     try {
-      $fid = $this->getPersistentDataValue('fid');
-      $this->unsetPersistentDataValue('fid');
-      $this->createGraphStore()->replace($this->fileToGraph($fid));
-      // We don't persist this value in the persistent data store.
-      $this->unsetPersistentDataValue('fid');
+      $sub_graph = new Graph($graph_uri, $resources);
+      $graph_store->insert($sub_graph);
     }
     catch (\Exception $exception) {
+      // Fake the end of the batch process until the pipeline module supports
+      // an exit mechanism in batch processes.
+      $this->setBatchValue('graph_array', []);
       throw (new PipelineStepExecutionLogicException())->setError([
         '#markup' => $this->t('Could not store triples in triple store. Reason: @message', [
           '@message' => $exception->getMessage(),
@@ -91,15 +123,15 @@ class ManualUpload extends JoinupFederationStepPluginBase implements PipelineSte
    * @param int $fid
    *   The file ID.
    *
-   * @return \EasyRdf\Graph
+   * @return array
    *   A collection of triples.
    */
-  protected function fileToGraph(int $fid): Graph {
+  protected function fileToRdfPhp(int $fid): array {
     $file = File::load($fid);
     $graph = new Graph($this->getGraphUri('sink'));
     $graph->parseFile($file->getFileUri());
     $file->delete();
-    return $graph;
+    return $graph->toRdfPhp();
   }
 
 }

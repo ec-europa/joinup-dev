@@ -71,4 +71,36 @@ interface AdmsValidatorInterface {
    */
   public function validateFile(string $file_uri_or_path, string $graph_uri): AdmsValidationResult;
 
+  /**
+   * Returns the validation query that is set to be used by the validator.
+   *
+   * @param string $graph_uri
+   *   The graph uri to replace the in the query.
+   *
+   * @return string
+   *   The validation query as a string.
+   */
+  public function getValidationQuery(string $graph_uri): string;
+
+  /**
+   * Sets the validation query to be used by the adms validator.
+   *
+   * @param string $validation_query
+   *   The validation query as a string.
+   *
+   * @return $this
+   */
+  public function setValidationQuery(string $validation_query): self;
+
+  /**
+   * Builds the default SPARQL query to be used for validation.
+   *
+   * @param string $uri
+   *   The graph URI.
+   *
+   * @return string
+   *   The query to use for validation.
+   */
+  public static function getDefaultValidationQuery(string $uri): string;
+
 }

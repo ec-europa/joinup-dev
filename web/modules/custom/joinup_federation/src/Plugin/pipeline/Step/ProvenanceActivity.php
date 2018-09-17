@@ -8,7 +8,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -54,14 +54,14 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $rdf_entity_provenance_helper
    *   The RDF entity provenance helper service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Connection $sparql, ProvenanceHelperInterface $rdf_entity_provenance_helper, AccountProxyInterface $current_user) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $sparql, ProvenanceHelperInterface $rdf_entity_provenance_helper, AccountProxyInterface $current_user) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->provenanceHelper = $rdf_entity_provenance_helper;
     $this->currentUser = $current_user;

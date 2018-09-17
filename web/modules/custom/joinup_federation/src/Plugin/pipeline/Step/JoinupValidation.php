@@ -9,7 +9,7 @@ use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -32,7 +32,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    *
    * @var int
    */
-  const BATCH_SIZE = 40;
+  const BATCH_SIZE = 5;
 
   /**
    * Non-critical violations map.
@@ -83,12 +83,12 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $constraint_manager
    *   The constraint plugin manager service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Connection $sparql, PluginManagerInterface $constraint_manager) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $sparql, PluginManagerInterface $constraint_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->constraintManager = $constraint_manager;
   }

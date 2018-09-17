@@ -18,3 +18,5 @@ step is a plugin of type `pipeline_step`.
   to be computed based on the decision of pipeline and step methods. In this way
   the pipeline flow is dynamic, it can have a conditional path depending on the
   data gathered during the execution and allowing even loops.
+* Add support for steps that use the batch processing mechanism to allow
+  exit on iteration failure and not wait all iterations to finish.

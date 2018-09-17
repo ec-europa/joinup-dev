@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\adms_validator;
 
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 use EasyRdf\Graph;
 
@@ -18,14 +18,39 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * The connection to the SPARQL backend.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\Connection
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparqlEndpoint;
 
   /**
+   * The validation query.
+   *
+   * @var string
+   */
+  protected $validationQuery;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getValidationQuery(string $graph_uri = NULL): string {
+    if (empty($this->validationQuery)) {
+      $this->validationQuery = self::getDefaultValidationQuery($graph_uri);
+    }
+    return $this->validationQuery;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setValidationQuery(string $validation_query): AdmsValidatorInterface {
+    $this->validationQuery = $validation_query;
+    return $this;
+  }
+
+  /**
    * Constructs a new AdmsValidator object.
    */
-  public function __construct(Connection $sparql_endpoint) {
+  public function __construct(ConnectionInterface $sparql_endpoint) {
     $this->sparqlEndpoint = $sparql_endpoint;
   }
 
@@ -33,7 +58,8 @@ class AdmsValidator implements AdmsValidatorInterface {
    * {@inheritdoc}
    */
   public function validateByGraphUri(string $graph_uri): AdmsValidationResult {
-    $query_result = $this->sparqlEndpoint->query(self::validationQuery($graph_uri));
+    $query = $this->getValidationQuery($graph_uri);
+    $query_result = $this->sparqlEndpoint->query($query);
     return new AdmsValidationResult($query_result, $graph_uri, $this->sparqlEndpoint);
   }
 
@@ -72,15 +98,9 @@ class AdmsValidator implements AdmsValidatorInterface {
   }
 
   /**
-   * Builds the SPARQL query to be used for validation.
-   *
-   * @param string $uri
-   *   The graph URI.
-   *
-   * @return string
-   *   The query to use for validation.
+   * {@inheritdoc}
    */
-  protected function validationQuery(string $uri): string {
+  public static function getDefaultValidationQuery(string $uri): string {
     $adms_ap_rules = DRUPAL_ROOT . "/../vendor/" . self::SEMIC_VALIDATION_QUERY_PATH;
     $query = file_get_contents($adms_ap_rules);
 

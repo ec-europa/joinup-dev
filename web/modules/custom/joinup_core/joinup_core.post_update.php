@@ -127,7 +127,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
  * Fix the banner predicate [ISAICP-4332].
  */
 function joinup_core_post_update_fix_banner_predicate() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
   SELECT ?graph ?entity_id ?image_uri
@@ -190,7 +190,7 @@ function joinup_core_post_update_fix_owner_predicate() {
   $rdf_entity_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
   $rdf_entity_mapping->save();
 
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?type
@@ -238,7 +238,7 @@ QUERY;
  * Fix data type of the solution contact point[ISAICP-4334].
  */
 function joinup_core_post_update_fix_solution_contact_datatypea() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   // Two issues are to be fixed here.
   // 1. The contact reference should be a resource instead of a literal.
@@ -294,7 +294,7 @@ QUERY;
  * Fix data type of the access url field [ISAICP-4349].
  */
 function joinup_core_post_update_fix_access_url_datatype() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?predicate ?access_url

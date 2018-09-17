@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\Connection;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -34,9 +34,12 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   /**
    * The batch size.
    *
+   * The three way merge is the heaviest process in the import sequence, thus
+   * the batch size is 1.
+   *
    * @var int
    */
-  const BATCH_SIZE = 20;
+  const BATCH_SIZE = 1;
 
   /**
    * The entity field manager service.
@@ -68,7 +71,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -79,7 +82,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, Connection $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator, TimeInterface $time) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator, TimeInterface $time) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
@@ -235,20 +238,12 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
         continue;
       }
 
-      $columns = $field_definition->getFieldStorageDefinition()->getColumns();
-      foreach ($columns as $column_name => $column_schema) {
-        // Check if the field is an ADMS-AP field.
-        $incoming_field = $incoming_entity->get($field_name);
-        $local_field = $local_entity->get($field_name);
-        // Assign only if the incoming field is empty.
-        if ($incoming_field->isEmpty()) {
-          $incoming_field->setValue($local_field->getValue());
-          $changed = TRUE;
-          // Don't check the rest of the columns because the whole field has
-          // been already assigned.
-          break;
-        }
-      }
+      $incoming_field = $incoming_entity->get($field_name);
+      $local_field = $local_entity->get($field_name);
+
+      // Always keep the local values for non schema defined field.
+      $incoming_field->setValue($local_field->getValue());
+      $changed = TRUE;
     }
 
     return $changed;
