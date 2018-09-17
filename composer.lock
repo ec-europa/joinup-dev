@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffa0bdaba648c87f22c5de9bcab96ce6",
+    "content-hash": "b909ff7e8ec45467ecaa3e4eca003e38",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2347,16 +2347,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.6.0",
+            "version": "8.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "4a2507b102fcedc74507fd372131f2ed72913429"
+                "reference": "1c8b96c89288daf4d145c6dbcf1e8f0d0c9d7970"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/4a2507b102fcedc74507fd372131f2ed72913429",
-                "reference": "4a2507b102fcedc74507fd372131f2ed72913429",
+                "url": "https://api.github.com/repos/drupal/core/zipball/1c8b96c89288daf4d145c6dbcf1e8f0d0c9d7970",
+                "reference": "1c8b96c89288daf4d145c6dbcf1e8f0d0c9d7970",
                 "shasum": ""
             },
             "require": {
@@ -2599,7 +2599,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2018-09-05T22:16:20+00:00"
+            "time": "2018-09-10T11:50:07+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -4185,7 +4185,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.2",
-                    "datestamp": "1524421084",
+                    "datestamp": "1536407884",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5327,7 +5327,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1527232684",
+                    "datestamp": "1536408480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5836,12 +5836,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "9d1dd9b5eb7a139342003c2ed9306be3c3e9065f"
+                "reference": "c7d2f5d00486f1745a975934ec70d069c1b26b34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/9d1dd9b5eb7a139342003c2ed9306be3c3e9065f",
-                "reference": "9d1dd9b5eb7a139342003c2ed9306be3c3e9065f",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/c7d2f5d00486f1745a975934ec70d069c1b26b34",
+                "reference": "c7d2f5d00486f1745a975934ec70d069c1b26b34",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5854,7 +5854,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-08-28T19:36:21+00:00"
+            "time": "2018-09-11T13:55:15+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
