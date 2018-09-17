@@ -7,6 +7,7 @@
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
@@ -2503,6 +2504,35 @@ JS;
 
     $row = $this->findDraggableTableRowByPosition($position);
     $this->dragTableRowTowardsDirection($row, $direction);
+  }
+
+  /**
+   * Fills the last form field matching the selector with a value.
+   *
+   * Useful for dynamic parts of a form where a field can be added multiple
+   * times, like multiple cardinality fields.
+   *
+   * @param string $field
+   *   The field selector.
+   * @param string $value
+   *   The field value.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when no field with the given selector are found.
+   *
+   * @Then I fill in the latest :field field with :value
+   */
+  public function fillLastFieldWithLabel($field, $value) {
+    $page = $this->getSession()->getPage();
+    $fields = $page->findAll('named', ['field', $field]);
+
+    if (empty($fields)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value|placeholder', $field);
+    }
+
+    /** @var \Behat\Mink\Element\NodeElement $last */
+    $last = array_pop($fields);
+    $last->setValue($value);
   }
 
 }
