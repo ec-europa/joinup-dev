@@ -2,7 +2,6 @@
 
 namespace Drupal\asset_distribution\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;

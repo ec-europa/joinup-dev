@@ -97,7 +97,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
         $query = \Drupal::database()->select('tether_stats_element', 't');
         $query->fields('t', ['count']);
         // $query->condition('entity_type', $entity_type);
-        // $query->condition('entity_id', $entity_id);
+        // $query->condition('entity_id', $entity_id);.
         $query->condition('url', $url);
         // @todo: Distinguish between hits and clicks.
         $count = $query->execute()->fetchField();
