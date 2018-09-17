@@ -26,7 +26,8 @@ Feature:
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should be present "Display a community content listing, Include content shared in the collection, Query presets, Limit"
+    And the following fields should be present "Display a community content listing, Include content shared in the collection"
+    And the following fields should not be present "Query presets, Limit"
     And I should see the button "Add and configure filter"
 
     Given I am logged in as a moderator
@@ -53,8 +54,10 @@ Feature:
     But I should not see the "NEC VR4300 CPU" tile
 
     # Change the page to list only news.
-    When I click "Edit" in the "Entity actions" region
-    When I fill in the following:
+    Given I am logged in as a moderator
+    When I go to the "Latest content" custom page
+    And I click "Edit" in the "Entity actions" region
+    And I fill in the following:
       | Title | Latest news                        |
       | Body  | Shows all news for this collection |
     And I fill in "Query presets" with "entity_bundle|news"
@@ -64,6 +67,8 @@ Feature:
     But I should not see the "20 year anniversary" tile
     And I should not see the "NEC VR4300 CPU" tile
 
+    Given I am logged in as a facilitator of the "Nintendo64" collection
+    And I go to the "Latest news" custom page
     When I click "Edit" in the "Entity actions" region
     And I check "Include content shared in the collection"
     And I press "Save"
@@ -184,6 +189,39 @@ Feature:
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
+    # Create a solution and add it to the list.
+    Given the following solution:
+      | title      | N64 cartridge cleaner |
+      | state      | validated             |
+      | collection | Nintendo64            |
+    When I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    # Simulate reordering and removal of rows.
+    And I drag the table row at position 4 up
+    And I drag the table row at position 3 up
+    And I drag the table row at position 1 down
+    And I press "Remove filter"
+    And I wait for AJAX to finish
+    And I select "Solution" from "Available filters"
+    And I press "Add and configure filter"
+    And I fill in "Solution" with "N64 cartridge cleaner"
+    And I press "Save"
+    Then I should see the following tiles in the correct order:
+      | 20 year anniversary                   |
+      | What's your favourite N64 game?       |
+      | Rare Nintendo64 disk drive discovered |
+      | N64 cartridge cleaner                 |
+
+    # Query presets should still apply when available.
+    When I am logged in as a moderator
+    And I go to the "Chosen content" custom page
+    And I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    And I fill in "Query presets" with "entity_bundle|solution"
+    And I press "Save"
+    Then I should see the following tiles in the correct order:
+      | N64 cartridge cleaner                 |
+
   Scenario: Content type tabs should be mutually exclusive and show only items with results.
     Given I am logged in as a facilitator of the "Nintendo64" collection
     When I go to the homepage of the "Nintendo64" collection
@@ -198,10 +236,10 @@ Feature:
     # Verify that unwanted facets are not shown in the page.
     And I should see the following facet items "Discussion, Event, News" in this order
     And I should see the following tiles in the correct order:
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
       | 20 year anniversary                   |
       | Rare Nintendo64 disk drive discovered |
-      | What's your favourite N64 game?       |
-      | Searching for green pad.              |
     # Filter on news.
     When I click the News content tab
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
