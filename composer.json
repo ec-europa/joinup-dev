@@ -233,6 +233,9 @@
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch",
                 "Download link returns 406 with Drupal ^8.5.0 @see https://www.drupal.org/project/views_data_export/issues/2951185": "https://www.drupal.org/files/issues/2951185-2.patch"
+            },
+            "drush/drush": {
+                "When an update fails, updatedb is still exiting with 0. @see https://github.com/drush-ops/drush/pull/3673": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/3673.patch"
             }
         }
     },
