@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "128b8566d3702aa9c8ade102ef334ce6",
+    "content-hash": "f36e608ad556890bdfab7f6d8e43a7b7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2347,16 +2347,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.6.0",
+            "version": "8.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "4a2507b102fcedc74507fd372131f2ed72913429"
+                "reference": "1c8b96c89288daf4d145c6dbcf1e8f0d0c9d7970"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/4a2507b102fcedc74507fd372131f2ed72913429",
-                "reference": "4a2507b102fcedc74507fd372131f2ed72913429",
+                "url": "https://api.github.com/repos/drupal/core/zipball/1c8b96c89288daf4d145c6dbcf1e8f0d0c9d7970",
+                "reference": "1c8b96c89288daf4d145c6dbcf1e8f0d0c9d7970",
                 "shasum": ""
             },
             "require": {
@@ -2599,7 +2599,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2018-09-05T22:16:20+00:00"
+            "time": "2018-09-10T11:50:07+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -4768,7 +4768,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1519387684",
+                    "datestamp": "1514109785",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5574,8 +5574,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+1-dev",
-                    "datestamp": "1486397282",
+                    "version": "8.x-1.0-alpha4+2-dev",
+                    "datestamp": "1525107184",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5836,12 +5836,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "9d1dd9b5eb7a139342003c2ed9306be3c3e9065f"
+                "reference": "c7d2f5d00486f1745a975934ec70d069c1b26b34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/9d1dd9b5eb7a139342003c2ed9306be3c3e9065f",
-                "reference": "9d1dd9b5eb7a139342003c2ed9306be3c3e9065f",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/c7d2f5d00486f1745a975934ec70d069c1b26b34",
+                "reference": "c7d2f5d00486f1745a975934ec70d069c1b26b34",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5854,7 +5854,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-08-28T19:36:21+00:00"
+            "time": "2018-09-11T13:55:15+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
@@ -5897,7 +5897,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/master",
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
             "time": "2018-04-16T07:12:39+00:00"
@@ -6356,7 +6356,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2017-07-12T23:38:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10690,7 +10690,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527523080",
+                    "datestamp": "1527522480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10754,6 +10754,12 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/984c54a7b1e8f27ff1c32348df69712afd86b17f",
+                "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
