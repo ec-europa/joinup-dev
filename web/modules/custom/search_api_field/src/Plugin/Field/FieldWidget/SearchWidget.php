@@ -86,6 +86,44 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   /**
    * {@inheritdoc}
    */
+  public static function defaultSettings() {
+    return [
+      'query_builder' => FALSE,
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element = parent::settingsForm($form, $form_state);
+
+    $element['query_builder'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable query builder.'),
+      '#description' => $this->t('Shows the query builder interface in the form.'),
+      '#default_value' => !empty($this->getSetting('query_builder')),
+    ];
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+
+    if (!empty($this->getSetting('query_builder'))) {
+      $summary[] = $this->t('Query builder enabled.');
+    }
+
+    return $summary;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */
     $item = $items[$delta];
@@ -168,7 +206,9 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       ],
     ];
 
-    $element['wrapper']['query_builder'] = $this->buildQueryBuilder($item, $delta, $form, $form_state);
+    if (!empty($this->getSetting('query_builder'))) {
+      $element['wrapper']['query_builder'] = $this->buildQueryBuilder($item, $delta, $form, $form_state);
+    }
 
     $element['wrapper']['query_presets'] = [
       '#type' => 'textarea',

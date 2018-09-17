@@ -23,6 +23,14 @@ field.storage_settings.search_api_field:
           type: string
           label: 'View mode'
 
+field.widget.settings.search_api_field_default:
+  type: mapping
+  label: 'Search API field widget'
+  mapping:
+    query_builder:
+      type: boolean
+      label: 'Enable query builder'
+
 field.value.search_api_field:
   type: mapping
   label: 'Default value'
