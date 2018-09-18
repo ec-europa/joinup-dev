@@ -471,7 +471,9 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     // Wrap everything with a container for ajax rebuilds.
     $wrapper_id = Html::getUniqueId('query-builder-wrapper');
     $element = [
-      '#type' => 'container',
+      '#type' => 'details',
+      '#title' => $this->t('Query builder'),
+      '#open' => TRUE,
       '#attributes' => [
         'id' => $wrapper_id,
       ],

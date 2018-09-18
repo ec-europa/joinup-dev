@@ -26,7 +26,7 @@ Feature:
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should be present "Display a community content listing, Include content shared in the collection"
+    And the following fields should be present "Display a community content listing, Show also content shared in the collection"
     And the following fields should not be present "Query presets, Limit"
     And I should see the button "Add and configure filter"
 
@@ -34,7 +34,7 @@ Feature:
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should be present "Display a community content listing, Include content shared in the collection, Query presets, Limit"
+    And the following fields should be present "Display a community content listing, Show also content shared in the collection, Query presets, Limit"
     And I should see the button "Add and configure filter"
 
   Scenario: Configure a custom page to show a community content listing.
@@ -70,7 +70,7 @@ Feature:
     Given I am logged in as a facilitator of the "Nintendo64" collection
     And I go to the "Latest news" custom page
     When I click "Edit" in the "Entity actions" region
-    And I check "Include content shared in the collection"
+    And I check "Show also content shared in the collection"
     And I press "Save"
     # Only news are displayed.
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -159,7 +159,7 @@ Feature:
     And I select "News" from "Available filters"
     And I press "Add and configure filter"
     And I fill in the latest "News" field with "NEC VR4300 CPU"
-    And I check "Include content shared in the collection"
+    And I check "Show also content shared in the collection"
     And I press "Save"
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
@@ -182,7 +182,7 @@ Feature:
     # Disabling inclusion of shared content will remove it from the list, even if still referenced.
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    And I uncheck "Include content shared in the collection"
+    And I uncheck "Show also content shared in the collection"
     And I press "Save"
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |

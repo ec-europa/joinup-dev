@@ -101,8 +101,14 @@ class SearchWidget extends DefaultSearchWidget {
 
     $element['wrapper']['show_shared'] = [
       '#type' => 'checkbox',
-      '#title' => t('Include content shared in the collection'),
+      '#title' => $this->t('Show also content shared in the collection'),
+      '#description' => $this->t('When this option is unchecked, only content created inside the collection will be shown. When checked, shared content will be included in the listing.'),
       '#default_value' => $default_values['show_shared'] ?? FALSE,
+      '#weight' => -10,
+    ];
+
+    $element['wrapper']['query_builder']['explanation'] = [
+      '#markup' => $this->t("Note: the filters below don't apply any restriction to the suggestions shown. Restrictions are only applied at visualisation time, so only content belonging to or shared in the collection will be shown."),
       '#weight' => -10,
     ];
 
