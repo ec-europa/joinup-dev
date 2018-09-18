@@ -17,6 +17,9 @@
     <!-- Import Phing targets related to Redis cache. -->
     <import file="${project.basedir}/build.redis.xml" optional="true" />
 
+    <!-- Import Phing targets related to UAT environment. -->
+    <import file="${project.basedir}/build.uat.xml" optional="true" />
+
     <!-- Import Phing targets related to Virtuoso. -->
     <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
 
@@ -60,6 +63,7 @@
             <param>install_configure_form.enable_update_status_emails='NULL'</param>
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
+            <param>install_settings_form.sparql.namespace=${sparql.namespace}</param>
         </drush>
 
         <!-- Set the auto-increment default values for some tables. -->
