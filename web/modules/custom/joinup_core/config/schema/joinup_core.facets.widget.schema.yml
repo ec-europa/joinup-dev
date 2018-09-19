@@ -14,3 +14,9 @@ facet.widget.config.links_inline:
       type: label
       translatable: true
       label: 'Suffix text'
+    cache_contexts:
+      type: sequence
+      label: 'Cache contexts'
+      sequence:
+        type: string
+        labe: 'Cache context'
