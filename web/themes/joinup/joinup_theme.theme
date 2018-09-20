@@ -820,6 +820,17 @@ function joinup_theme_preprocess_form_element(&$variables) {
         $variables['label']['#title'] = $arguments['@title'];
       }
     }
+
+    // Additional margin for custom elements.
+    $additional_wrappers = [
+      'field_cp_content_listing[0][enabled]',
+      'field_cp_content_listing[0][wrapper][show_shared]',
+      'field_cp_content_listing[0][wrapper][query_presets]',
+    ];
+
+    if (isset($variables['name']) && in_array($variables['name'], $additional_wrappers)) {
+      $variables['attributes']['class'][] = 'form-wrapper';
+    }
   }
 }
 
