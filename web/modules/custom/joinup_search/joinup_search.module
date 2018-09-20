@@ -23,7 +23,7 @@ use Solarium\QueryType\Select\Query\Query;
  * page one.
  */
 function joinup_search_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
-  // Limit access to search fields only on edi.
+  // Limit access to search fields only on edit.
   if ($operation !== 'edit' || $field_definition->getType() !== 'search_api_field') {
     return AccessResult::neutral();
   }
@@ -33,8 +33,8 @@ function joinup_search_entity_field_access($operation, FieldDefinitionInterface 
     return AccessResult::neutral();
   }
 
-  // Forbid access if the user has not the permission of administer search
-  // fields.
+  // Forbid access if the user does not have the "administer search fields"
+  // permission.
   return AccessResult::forbiddenIf(!$account->hasPermission('administer search fields'))
     ->addCacheContexts(['user.permissions']);
 }

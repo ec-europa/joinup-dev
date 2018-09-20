@@ -11,7 +11,7 @@ use Drupal\joinup_community_content\CommunityContentHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a autocomplete filter plugin for specific bundles.
+ * Provides an autocomplete filter plugin for specific bundles.
  */
 class BundleAutocompleteDeriver extends DeriverBase implements ContainerDeriverInterface {
 
