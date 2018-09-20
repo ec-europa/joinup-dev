@@ -105,3 +105,10 @@ function joinup_core_post_update_install_piwik2matomo() {
   // the codebase. For this reason they will be removed from the codebase in a
   // follow-up.
 }
+
+/**
+ * Enable 'spain_ctt' module.
+ */
+function joinup_core_post_update_install_spain_ctt() {
+  \Drupal::service('module_installer')->install(['spain_ctt']);
+}

@@ -90,9 +90,7 @@ Feature: Sharing content between collections
 
     # The shared content should be shown amongst the other content tiles.
     When I go to the homepage of the "Classic Rock" collection
-    Then I should see the "New D'n'B compilation released" tile
-    And I should see the "Rockabilly is still rocking" tile
-    And I should see the "Interesting content" tile
+    Then the page should show only the tiles "New D'n'B compilation released, Rockabilly is still rocking, Interesting content"
 
     # It should not be shared in the other collection.
     When I go to the homepage of the "Drum'n'Bass" collection
@@ -133,9 +131,7 @@ Feature: Sharing content between collections
     # I should still be on the same page, but the collection content should be
     # changed. The "Interesting content" should no longer be visible.
     Then I should see the success message "Item was unshared from the following collections: Classic Rock."
-    And I should see the "New D'n'B compilation released" tile
-    And I should see the "Rockabilly is still rocking" tile
-    But I should not see the "Interesting content" tile
+    And the page should show only the tiles "New D'n'B compilation released, Rockabilly is still rocking"
 
     # Verify that the content is again shareable.
     When I go to the content page of the type "<content type>" with the title "Interesting content"

@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Spain CTT module.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Handle the duplicated solutions in the CTT repository.
+ */
+function spain_ctt_install() {
+  require __DIR__ . '/includes/remove_duplicates.inc';
+
+  // Create the original duplicates in case they do not exist.
+  _spain_ctt_duplicates_create_duplicates();
+
+  // Move all content from the duplicated solutions to the original one.
+  _spain_ctt_duplicates_merge_content();
+
+  // Delete duplicates.
+  _spain_ctt_duplicates_delete_duplicates();
+
+  // Update the ctt collection relationships.
+  _spain_ctt_duplicates_collection_relations();
+}

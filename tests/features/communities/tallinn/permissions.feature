@@ -111,12 +111,12 @@ Feature:
     # Set the status to "In progress" but don't fill the "Explanations" field.
     Given I select "In progress" from "Implementation status"
     And I press "Save"
-    Then I should see the error message "Action 1: Explanations field is required when the status is In progress."
+    Then I should see the error message "Option digitally interaction with PAs: Explanations field is required when the status is In progress."
 
     # Set the status to "Completed" but don't fill the "Explanations" field.
     Given I select "Completed" from "Implementation status"
     And I press "Save"
-    Then I should see the error message "Action 1: Explanations field is required when the status is Completed."
+    Then I should see the error message "Option digitally interaction with PAs: Explanations field is required when the status is Completed."
 
     Given I fill in "Explanations" with "This is done"
     And I press "Save"

@@ -17,6 +17,8 @@ widget:
     prefix_text: ''
     suffix_text: ''
     arbitrary_facet_plugin: events_arbitrary
+    cache_contexts:
+      - user
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
