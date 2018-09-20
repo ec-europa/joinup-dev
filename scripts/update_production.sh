@@ -23,12 +23,14 @@ echo "Disabling automatic checkpoints."
 cd ${PROJECT_ROOT}
 
 # Make sure config is writable when performing updates. This depends on the
-# following code being present in web/sites/default/settings.php:
+# following code being present in web/sites/default/settings.php or
+# web/sites/default/settings.local.php:
 # $settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');
-grep -Fqx '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../disable-config-readonly'\'');' web/sites/default/settings.php
+grep -Fqx '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../disable-config-readonly'\'');' web/sites/default/{settings.php,settings.local.php}
 
 if [ ${STATUS} -ne 0 ]; then
-  echo "The following line is missing from web/sites/default/settings.php:"
+  echo "The following line is missing from web/sites/default/settings.php"
+  echo "or web/sites/default/settings.local.php:"
   echo '$settings['\''config_readonly'\''] = !file_exists(getcwd() . '\''/../disable-config-readonly'\'');'
   exit ${STATUS}
 fi
