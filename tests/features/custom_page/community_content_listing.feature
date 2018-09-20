@@ -200,6 +200,9 @@ Feature:
     And I drag the table row at position 4 up
     And I drag the table row at position 3 up
     And I drag the table row at position 1 down
+    # Remove the first two rows.
+    And I press "Remove filter"
+    And I wait for AJAX to finish
     And I press "Remove filter"
     And I wait for AJAX to finish
     And I select "Solution" from "Available filters"
@@ -207,7 +210,6 @@ Feature:
     And I fill in "Solution" with "N64 cartridge cleaner"
     And I press "Save"
     Then I should see the following tiles in the correct order:
-      | 20 year anniversary                   |
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
       | N64 cartridge cleaner                 |
