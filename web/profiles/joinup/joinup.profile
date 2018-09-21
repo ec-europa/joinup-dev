@@ -47,9 +47,30 @@ function joinup_form_install_settings_form_alter(&$form, FormStateInterface $for
     '#max' => 65535,
     '#required' => TRUE,
   ];
+  $form['sparql']['namespace'] = [
+    '#type' => 'textfield',
+    '#title' => 'Namespace',
+    '#default_value' => 'Drupal\\Driver\\Database\\sparql',
+    '#required' => TRUE,
+  ];
 
   $form['actions']['save']['#limit_validation_errors'][] = ['sparql'];
+  $form['#validate'][] = 'joinup_form_install_settings_validate';
   $form['actions']['save']['#submit'][] = 'joinup_form_install_settings_form_save';
+}
+
+/**
+ * Validation callback for the installation form.
+ *
+ * Ensures that the connection class exists.
+ */
+function joinup_form_install_settings_validate($form, FormStateInterface $form_state) {
+  $namespace = $form_state->getValue(['sparql', 'namespace']);
+  $class = trim($namespace) . '\\Connection';
+  // Try to load the connection class.
+  if (!class_exists($class)) {
+    $form_state->setError($form['sparql']['namespace'], "Class {$class} could not be detected.");
+  }
 }
 
 /**
@@ -58,6 +79,7 @@ function joinup_form_install_settings_form_alter(&$form, FormStateInterface $for
 function joinup_form_install_settings_form_save($form, FormStateInterface $form_state) {
   $host = $form_state->getValue(['sparql', 'host']);
   $port = $form_state->getValue(['sparql', 'port']);
+  $namespace = $form_state->getValue(['sparql', 'namespace']);
   // @see rdf_entity.services.yml
   $key = 'sparql_default';
   $target = 'default';
@@ -65,7 +87,7 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
     'prefix' => '',
     'host' => $host,
     'port' => $port,
-    'namespace' => 'Drupal\\Driver\\Database\\sparql',
+    'namespace' => $namespace,
     'driver' => 'sparql',
   ];
   $settings['databases'][$key][$target] = (object) [
