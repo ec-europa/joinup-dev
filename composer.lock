@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f36e608ad556890bdfab7f6d8e43a7b7",
+    "content-hash": "b909ff7e8ec45467ecaa3e4eca003e38",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.67.9",
+            "version": "3.67.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "bc580636c7e7c4ed4293776bfac250f726554a41"
+                "reference": "cdc7180ae87b23d8b34eb8eb8176002081b32c3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/bc580636c7e7c4ed4293776bfac250f726554a41",
-                "reference": "bc580636c7e7c4ed4293776bfac250f726554a41",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cdc7180ae87b23d8b34eb8eb8176002081b32c3d",
+                "reference": "cdc7180ae87b23d8b34eb8eb8176002081b32c3d",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-09-10T21:52:39+00:00"
+            "time": "2018-09-13T18:34:42+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -207,16 +207,16 @@
         },
         {
             "name": "chi-teck/drupal-code-generator",
-            "version": "1.26.0",
+            "version": "1.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Chi-teck/drupal-code-generator.git",
-                "reference": "3090fabdbf3dd4b66e0fa0e4ed5d8adab6deb974"
+                "reference": "b026b08e0414d85409ad2875202983a3aaa96f64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/3090fabdbf3dd4b66e0fa0e4ed5d8adab6deb974",
-                "reference": "3090fabdbf3dd4b66e0fa0e4ed5d8adab6deb974",
+                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/b026b08e0414d85409ad2875202983a3aaa96f64",
+                "reference": "b026b08e0414d85409ad2875202983a3aaa96f64",
                 "shasum": ""
             },
             "require": {
@@ -229,6 +229,11 @@
                 "bin/dcg"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "files": [
                     "src/bootstrap.php"
@@ -242,7 +247,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal code generator",
-            "time": "2018-08-06T08:54:16+00:00"
+            "time": "2018-09-16T05:32:56+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -382,16 +387,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "049797d727261bf27f2690430d935067710049c2"
+                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/049797d727261bf27f2690430d935067710049c2",
-                "reference": "049797d727261bf27f2690430d935067710049c2",
+                "url": "https://api.github.com/repos/composer/installers/zipball/cfcca6b1b60bc4974324efb5783c13dca6932b5b",
+                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b",
                 "shasum": ""
             },
             "require": {
@@ -498,7 +503,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2017-12-29T09:13:20+00:00"
+            "time": "2018-08-27T06:10:37+00:00"
         },
         {
             "name": "composer/semver",
@@ -2236,8 +2241,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4760,7 +4765,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1514109785",
+                    "datestamp": "1519387684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5566,8 +5571,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+2-dev",
-                    "datestamp": "1525107184",
+                    "version": "8.x-1.0-alpha4+1-dev",
+                    "datestamp": "1486397282",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5666,6 +5671,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "9.x-dev"
+                },
+                "patches_applied": {
+                    "When an update fails, updatedb is still exiting with 0. @see https://github.com/drush-ops/drush/pull/3673": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/3673.patch"
                 }
             },
             "autoload": {
@@ -5861,16 +5869,16 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "2.1.0",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/virtuoso.git",
-                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb"
+                "reference": "bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/16abb3e90b49b24a46da07c0eeb4df552c2874cb",
-                "reference": "16abb3e90b49b24a46da07c0eeb4df552c2874cb",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f",
+                "reference": "bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f",
                 "shasum": ""
             },
             "type": "library",
@@ -5889,10 +5897,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.0",
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.2",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
-            "time": "2018-04-16T07:12:39+00:00"
+            "time": "2018-09-08T13:33:44+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -6348,7 +6356,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10682,7 +10690,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527522480",
+                    "datestamp": "1527523080",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10746,12 +10754,6 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/klausi/coder/zipball/984c54a7b1e8f27ff1c32348df69712afd86b17f",
-                "reference": "984c54a7b1e8f27ff1c32348df69712afd86b17f",
-                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
