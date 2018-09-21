@@ -84,7 +84,7 @@
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "drupal/admin_toolbar": "^1.23",
-        "drupal/coder": "^8.2.9",
+        "drupal/coder": "^8.3.0",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
         "drupal/default_content": "^1.0-alpha7",
@@ -155,6 +155,9 @@
         "patches": {
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
+            },
+            "drupal/coder": {
+                "Fatal error: class not found @see https://github.com/pfrenssen/coder/issues/14": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/15.patch"
             },
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-08-29/85494-248.patch",

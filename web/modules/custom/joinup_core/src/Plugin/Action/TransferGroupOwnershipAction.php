@@ -151,9 +151,8 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    *   If the user is allowed to transfer the ownership of the group.
    */
   public function canTransferOwnership(RdfInterface $group, AccountInterface $account): bool {
-    return
-      // The user has proper site-wide permission for this operation.
-      $account->hasPermission("administer {$group->bundle()} ownership") ||
+    // The user has proper site-wide permission for this operation.
+    return $account->hasPermission("administer {$group->bundle()} ownership") ||
       // Or the user is the current group owner.
       $this->isGroupOwner($group, $account);
   }
@@ -170,9 +169,11 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
    *   If the given account is owner of the given group.
    */
   protected function isGroupOwner(RdfInterface $group, AccountInterface $account): bool {
-    return
-      ($membership = Og::getMembership($group, $account)) &&
-      $membership->hasRole("rdf_entity-{$group->bundle()}-administrator");
+    $membership = Og::getMembership($group, $account);
+    if ($membership) {
+      return $membership->hasRole("rdf_entity-{$group->bundle()}-administrator");
+    }
+    return FALSE;
   }
 
 }
