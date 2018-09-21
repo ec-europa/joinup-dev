@@ -19,8 +19,8 @@ use Solarium\QueryType\Select\Query\Query;
 /**
  * Implements hook_entity_field_access().
  *
- * Grant access to fields of type search only to moderators except for custom
- * page one.
+ * Grant access to fields of type search only to moderators except from
+ * custom_page pages.
  */
 function joinup_search_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
   // Limit access to search fields only on edit.
