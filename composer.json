@@ -68,7 +68,7 @@
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
-        "ec-europa/virtuoso": "2.1.0",
+        "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
@@ -237,6 +237,9 @@
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch",
                 "Download link returns 406 with Drupal ^8.5.0 @see https://www.drupal.org/project/views_data_export/issues/2951185": "https://www.drupal.org/files/issues/2951185-2.patch"
+            },
+            "drush/drush": {
+                "When an update fails, updatedb is still exiting with 0. @see https://github.com/drush-ops/drush/pull/3673": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/3673.patch"
             }
         }
     },
