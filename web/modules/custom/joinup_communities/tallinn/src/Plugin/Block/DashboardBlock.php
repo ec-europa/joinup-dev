@@ -170,6 +170,10 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
               ],
               '#value' => $this->t('Download csv data'),
             ],
+            '1.1.1.3' => [
+              '#type' => 'item',
+              '#markup' => $this->t('Download the table representing the comparison you are displaying.'),
+            ],
           ],
           '1.1.2' => [
             '#type' => 'container',
