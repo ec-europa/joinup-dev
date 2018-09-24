@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b28166b56f6e0bcad33f185bd3f11d2c",
+    "content-hash": "f156737a5c0cf212bc8696368ba51fb0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -10773,6 +10773,11 @@
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
+            "extra": {
+                "patches_applied": {
+                    "Fatal error: class not found @see https://github.com/pfrenssen/coder/issues/14": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/15.patch"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\": "coder_sniffer/Drupal/",
