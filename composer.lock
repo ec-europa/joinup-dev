@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52d1af2059172509744fb88d8fb04bd8",
+    "content-hash": "4743bb42131f54a364258664cdd5afb7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4474,7 +4474,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha10",
-                    "datestamp": "1536225484",
+                    "datestamp": "1539069780",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5178,14 +5178,15 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1519655285",
+                    "datestamp": "1519655459",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch"
+                    "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
+                    "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2018-09-18/3000553-spool-drush-command-full_0.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10583,7 +10584,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527522480",
+                    "datestamp": "1527523080",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
