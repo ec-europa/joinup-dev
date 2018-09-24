@@ -9,5 +9,16 @@
  * Implements hook_uninstall().
  */
 function tallinn_uninstall() {
-  \Drupal::state()->delete('tallinn.dashboard.access_policy');
+  \Drupal::state()->delete('tallinn.access_policy');
+}
+
+/**
+ * Rename the Tallinn access policy switch.
+ */
+function tallinn_update_8100() {
+  $state = \Drupal::state();
+  if ($access_policy = $state->get('tallinn.dashboard.access_policy')) {
+    $state->set('tallinn.access_policy', $access_policy);
+    $state->delete('tallinn.dashboard.access_policy');
+  }
 }

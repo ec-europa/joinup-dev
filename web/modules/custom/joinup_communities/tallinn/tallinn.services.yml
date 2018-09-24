@@ -1,4 +1,4 @@
 services:
   tallinn.dashboard.access:
     class: 'Drupal\tallinn\DashboardAccess'
-    arguments: ['@state', '@og.access']
+    arguments: ['@state', '@og.access', '@og.membership_manager']

@@ -8,6 +8,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\State\StateInterface;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 
@@ -31,25 +32,38 @@ class DashboardAccess implements DashboardAccessInterface {
   protected $ogAccess;
 
   /**
+   * The OG membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $ogMembershipManager;
+
+  /**
    * Creates a new service instance.
    *
    * @param \Drupal\Core\State\StateInterface $state
    *   The state service.
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access service.
+   * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
+   *   The OG membership manager service.
    */
-  public function __construct(StateInterface $state, OgAccessInterface $og_access) {
+  public function __construct(StateInterface $state, OgAccessInterface $og_access, MembershipManagerInterface $og_membership_manager) {
     $this->state = $state;
     $this->ogAccess = $og_access;
+    $this->ogMembershipManager = $og_membership_manager;
   }
 
   /**
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
+    $access_policy = $this->state->get('tallinn.access_policy', 'restricted');
     return AccessResult::allowedIf(
       // Either the access is public.
-      ($this->state->get('tallinn.dashboard.access_policy', 'restricted') === 'public') ||
+      ($access_policy === 'public') ||
+      // Or the access is limited to the collection members.
+      (($access_policy === 'collection') && $this->ogMembershipManager->isMember(Rdf::load(TALLINN_COMMUNITY_ID), $account)) ||
       // Or the user has site-wide access permission.
       $account->hasPermission('administer tallinn settings') ||
       // Or the user has group access permission.
