@@ -1,4 +1,4 @@
 services:
-  tallinn.dashbord.access:
+  tallinn.dashboard.access:
     class: 'Drupal\tallinn\DashboardAccess'
     arguments: ['@state', '@og.access']
