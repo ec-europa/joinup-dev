@@ -353,7 +353,7 @@ function solution_build_related_solutions_list(array $ids) {
   $entities = Rdf::loadMultiple($ids);
   $delta = 0;
   $elements = [];
-  /**@var EntityInterface $referenced_solution */
+  /** @var \Drupal\Core\Entity\EntityInterface $referenced_solution */
   foreach ($entities as $id => $referenced_solution) {
     // Make sure no draft content ends up in shared cache.
     $anonymous_user = User::getAnonymousUser();
