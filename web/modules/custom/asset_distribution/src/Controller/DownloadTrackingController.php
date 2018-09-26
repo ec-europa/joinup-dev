@@ -106,6 +106,9 @@ class DownloadTrackingController extends ControllerBase {
     // This takes place here as we need to return a modal ajax form and we
     // cannot have tether stats mess with the javascript on the page, because it
     // cancels the rest of the click actions.
+    //
+    // Inspired by tether_stats module's track controller.
+    // @see: \Drupal\tether_stats\Controller\TetherStatsTrackController::track
     $entity = $this->getDistributionFromFile($file);
     if (!empty($entity)) {
       $identity_set = new TetherStatsIdentitySet([
