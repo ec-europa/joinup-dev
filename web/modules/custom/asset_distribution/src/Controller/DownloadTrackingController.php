@@ -94,23 +94,6 @@ class DownloadTrackingController extends ControllerBase {
    *   The generated response.
    */
   public function trackDownload(FileInterface $file) {
-    $response = $this->currentUser->isAnonymous()
-      ? $this->trackAnonymousDownload($file)
-      : $this->trackAuthenticatedDownload($file);
-
-    return $response;
-  }
-
-  /**
-   * Tracks a download done by an anonymous user.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The distribution file that has been downloaded.
-   *
-   * @return array
-   *   The form array.
-   */
-  protected function trackAnonymousDownload(FileInterface $file) {
     /*
      * Part of the POC.
      *
@@ -143,6 +126,24 @@ class DownloadTrackingController extends ControllerBase {
     /*
      * End of POC part.
      */
+
+    $response = $this->currentUser->isAnonymous()
+      ? $this->trackAnonymousDownload($file)
+      : $this->trackAuthenticatedDownload($file);
+
+    return $response;
+  }
+
+  /**
+   * Tracks a download done by an anonymous user.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The distribution file that has been downloaded.
+   *
+   * @return array
+   *   The form array.
+   */
+  protected function trackAnonymousDownload(FileInterface $file) {
     return $this->formBuilder->getForm(AnonymousDownloadForm::class, $file);
   }
 
