@@ -3,4 +3,5 @@ type: module
 description: A module that integrates with the tether_stats module to track links in Joinup.
 core: 8.x
 package: Joinup
-dependencies: {  }
+dependencies:
+  - tether_stats
