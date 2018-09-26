@@ -172,7 +172,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
             ],
             '1.1.1.3' => [
               '#type' => 'item',
-              '#markup' => $this->t('Download the table representing the comparison you are displaying.'),
+              '#markup' => $this->t('The above-represented data are provided in tabular format.'),
               '#prefix' => '<div class="csv-download-text">',
               '#suffix' => '</div>',
             ],
