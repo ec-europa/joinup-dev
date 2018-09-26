@@ -1,5 +1,0 @@
-services:
-  joinup_tether_stats.distribution_download_subscriber:
-    class: Drupal\joinup_tether_stats\EventSubscriber\TetherStatsDistributionDownloadSubscriber
-    tags:
-      - { name: event_subscriber }
