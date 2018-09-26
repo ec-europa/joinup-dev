@@ -11,6 +11,8 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\file_url\FileUrlHandler;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\tether_stats\TetherStatsIdentitySet;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -109,6 +111,38 @@ class DownloadTrackingController extends ControllerBase {
    *   The form array.
    */
   protected function trackAnonymousDownload(FileInterface $file) {
+    /*
+     * Part of the POC.
+     *
+     * Services below can be injected in the controller and
+     * normally should be. However, this is a POC and it can even be that this
+     * should not be part of the controller. Probably, an event should be thrown
+     * here so that other modules can intervene and perform their own functions.
+     */
+    // Generate a download event for tether_stats as well and fire it.
+    // This takes place here as we need to return a modal ajax form and we
+    // cannot have tether stats mess with the javascript on the page, because it
+    // cancels the rest of the click actions.
+    $entity = $this->getDistributionFromFile($file);
+    if (!empty($entity)) {
+      $identity_set = new TetherStatsIdentitySet([
+        'entity_type' => $entity->getEntityTypeId(),
+        'entity_id' => $entity->id(),
+        'derivative' => 'distribution_download',
+      ]);
+
+      /** @var \Drupal\tether_stats\TetherStatsStorageInterface $tether_storage */
+      $tether_storage = \Drupal::service('tether_stats.manager')->getStorage();
+      $element = $tether_storage->createElementFromIdentitySet($identity_set);
+
+      /** @var \Symfony\Component\HttpFoundation\RequestStack $request_stack */
+      $request_stack = \Drupal::service('request_stack');
+      $ip_address = $request_stack->getCurrentRequest()->getClientIp();
+      $tether_storage->trackActivity($element->getId(), 'click', REQUEST_TIME, $ip_address, session_id(), $_SERVER['HTTP_USER_AGENT']);
+    }
+    /*
+     * End of POC part.
+     */
     return $this->formBuilder->getForm(AnonymousDownloadForm::class, $file);
   }
 
@@ -146,6 +180,23 @@ class DownloadTrackingController extends ControllerBase {
    *   Allowed when the file exists, neutral otherwise.
    */
   public function isDistributionFile(FileInterface $file, AccountInterface $account) {
+    $entity = $this->getDistributionFromFile($file);
+    if (empty($entity)) {
+      return AccessResult::forbidden();
+    }
+    return $entity->access('view', $account, TRUE);
+  }
+
+  /**
+   * Return the distribution parent of a file.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The file object.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface|null
+   *   The parent distribution or null if none is found.
+   */
+  protected function getDistributionFromFile(FileInterface $file): ?RdfInterface {
     $query = $this->rdfStorage->getQuery();
     $file_url_handler = $this->fileUrlHandler;
 
@@ -154,13 +205,7 @@ class DownloadTrackingController extends ControllerBase {
       ->condition('field_ad_access_url', $file_url_handler::fileToUrl($file));
     $results = $query->execute();
 
-    if (empty($results)) {
-      return AccessResult::forbidden();
-    }
-
-    $entity = $this->rdfStorage->load(array_pop($results));
-
-    return $entity->access('view', $account, TRUE);
+    return empty($results) ? NULL : $this->rdfStorage->load(array_pop($results));
   }
 
 }

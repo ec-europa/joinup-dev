@@ -91,15 +91,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     foreach ($items as $item) {
       if ($entity = $this->getEntity($item)) {
         // @todo: This should take the entity data below instead.
-        // $entity_type = $entity->getEntityTypeId();
-        // $entity_id = $entity->id();
-        $url = $entity->toUrl()->toString();
+        $entity_type = $entity->getEntityTypeId();
+        $entity_id = $entity->id();
         $query = \Drupal::database()->select('tether_stats_element', 't');
         $query->fields('t', ['count']);
-        // $query->condition('entity_type', $entity_type);
-        // $query->condition('entity_id', $entity_id);.
-        $query->condition('url', $url);
-        // @todo: Distinguish between hits and clicks.
+        $query->condition('entity_type', $entity_type);
+        $query->condition('entity_id', $entity_id);
+        $query->condition('derivative', 'distribution_download');
         $count = $query->execute()->fetchField();
         $this->updateFieldValue($item, $count ?? 0);
       }

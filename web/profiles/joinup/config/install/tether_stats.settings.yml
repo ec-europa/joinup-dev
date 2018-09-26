@@ -5,6 +5,7 @@ filter:
     route:
       - entity.rdf_entity.canonical
       - entity.node.canonical
+      - asset_distribution.track_download
     url:
       - node/%
       - discussion/%
@@ -13,6 +14,7 @@ filter:
       - news/%
       - tether-stats/track
       - rdf_entity/%
+      - distribution/track/#
 allow_query_string_elements: false
 chart_plugin: tether_stats_google_charts
 advanced:
