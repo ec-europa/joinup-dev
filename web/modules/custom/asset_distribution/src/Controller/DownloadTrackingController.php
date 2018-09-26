@@ -121,7 +121,7 @@ class DownloadTrackingController extends ControllerBase {
       /** @var \Symfony\Component\HttpFoundation\RequestStack $request_stack */
       $request_stack = \Drupal::service('request_stack');
       $ip_address = $request_stack->getCurrentRequest()->getClientIp();
-      $tether_storage->trackActivity($element->getId(), 'click', REQUEST_TIME, $ip_address, session_id(), $_SERVER['HTTP_USER_AGENT']);
+      $tether_storage->trackActivity($element->getId(), 'click', REQUEST_TIME, $ip_address, session_id(), $_SERVER['HTTP_USER_AGENT'], NULL, $this->currentUser->isAnonymous() ? NULL : $this->currentUser->id());
     }
     /*
      * End of POC part.
