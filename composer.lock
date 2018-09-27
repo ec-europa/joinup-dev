@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f156737a5c0cf212bc8696368ba51fb0",
+    "content-hash": "2e26d7fb35848c34ec7d20888219b3ed",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.67.15",
+            "version": "3.67.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "527f7e6105ccfc27fd6d27aacdcaa293e66a4a96"
+                "reference": "6c8bc0f42ba73bab85da67c3af9131e455c3f14c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/527f7e6105ccfc27fd6d27aacdcaa293e66a4a96",
-                "reference": "527f7e6105ccfc27fd6d27aacdcaa293e66a4a96",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6c8bc0f42ba73bab85da67c3af9131e455c3f14c",
+                "reference": "6c8bc0f42ba73bab85da67c3af9131e455c3f14c",
                 "shasum": ""
             },
             "require": {
@@ -147,7 +147,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-09-19T18:53:48+00:00"
+            "time": "2018-09-26T20:06:30+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -207,16 +207,16 @@
         },
         {
             "name": "chi-teck/drupal-code-generator",
-            "version": "1.26.1",
+            "version": "1.26.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Chi-teck/drupal-code-generator.git",
-                "reference": "b026b08e0414d85409ad2875202983a3aaa96f64"
+                "reference": "1f80a46a4d820690ef3374001f8304878b73a549"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/b026b08e0414d85409ad2875202983a3aaa96f64",
-                "reference": "b026b08e0414d85409ad2875202983a3aaa96f64",
+                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/1f80a46a4d820690ef3374001f8304878b73a549",
+                "reference": "1f80a46a4d820690ef3374001f8304878b73a549",
                 "shasum": ""
             },
             "require": {
@@ -247,7 +247,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal code generator",
-            "time": "2018-09-16T05:32:56+00:00"
+            "time": "2018-09-26T04:06:26+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -1015,16 +1015,16 @@
         },
         {
             "name": "consolidation/site-alias",
-            "version": "1.1.2",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/site-alias.git",
-                "reference": "d6fa92e4aaf5ba95cde4454be7ea3165e7e2f17a"
+                "reference": "247f3e52604b9d76a075e6c06d5d1dd73bbae892"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/site-alias/zipball/d6fa92e4aaf5ba95cde4454be7ea3165e7e2f17a",
-                "reference": "d6fa92e4aaf5ba95cde4454be7ea3165e7e2f17a",
+                "url": "https://api.github.com/repos/consolidation/site-alias/zipball/247f3e52604b9d76a075e6c06d5d1dd73bbae892",
+                "reference": "247f3e52604b9d76a075e6c06d5d1dd73bbae892",
                 "shasum": ""
             },
             "require": {
@@ -1067,7 +1067,7 @@
                 }
             ],
             "description": "Template project for PHP libraries.",
-            "time": "2018-08-22T01:07:08+00:00"
+            "time": "2018-09-22T04:11:38+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -5310,17 +5310,17 @@
         },
         {
             "name": "drupal/token",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/token",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/token-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "fd8d854eaa3fd7698694f4d9a9d66dc437e19cd0"
+                "url": "https://ftp.drupal.org/files/projects/token-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "6382a7e1aabbd8246f1117a26bf4916d285b401d"
             },
             "require": {
                 "drupal/core": "^8.5"
@@ -5331,8 +5331,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1536408480",
+                    "version": "8.x-1.5",
+                    "datestamp": "1537557481",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5912,16 +5912,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "1.2.14",
+            "version": "1.2.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "5642614492f0ca2064c01d60cc33284cc2f731a9"
+                "reference": "758a77525bdaabd6c0f5669176bd4361cb2dda9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5642614492f0ca2064c01d60cc33284cc2f731a9",
-                "reference": "5642614492f0ca2064c01d60cc33284cc2f731a9",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/758a77525bdaabd6c0f5669176bd4361cb2dda9e",
+                "reference": "758a77525bdaabd6c0f5669176bd4361cb2dda9e",
                 "shasum": ""
             },
             "require": {
@@ -5960,7 +5960,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2017-02-03T22:48:59+00:00"
+            "time": "2018-09-25T20:59:41+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -10757,27 +10757,22 @@
         },
         {
             "name": "drupal/coder",
-            "version": "8.3.0",
+            "version": "8.3.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
-                "reference": "fd3321a777a645dd683a8c6ecf4978012357717b"
+                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=5.4.0",
-                "squizlabs/php_codesniffer": "^3.0.0",
+                "squizlabs/php_codesniffer": "^3.0.1",
                 "symfony/yaml": ">=2.0.0"
             },
             "require-dev": {
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
-            "extra": {
-                "patches_applied": {
-                    "Fatal error: class not found @see https://github.com/pfrenssen/coder/issues/14": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/15.patch"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\": "coder_sniffer/Drupal/",
@@ -10795,7 +10790,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-08-29T23:39:17+00:00"
+            "time": "2018-09-21T14:22:49+00:00"
         },
         {
             "name": "drupal/config_devel",
@@ -10870,17 +10865,17 @@
         },
         {
             "name": "drupal/config_inspector",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_inspector",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "3ba3a31ea02323203ceae7ef7f80c091ced2e2f3"
+                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "1f7b27c4b1c800a605a6d6583d0b1d120794658e"
             },
             "require": {
                 "drupal/core": "*"
@@ -10891,8 +10886,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1448357340",
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1537879680",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -10901,7 +10896,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -10921,10 +10916,12 @@
                     "homepage": "https://www.drupal.org/user/93488"
                 }
             ],
-            "description": "Provides a configuration data and structure inspector tool.",
-            "homepage": "https://www.drupal.org/project/config_inspector",
+            "description": "Provides a configuration data and structure inspector tool",
+            "homepage": "https://drupal.org/project/config_inspector",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_inspector"
+                "source": "https://cgit.drupalcode.org/config_inspector",
+                "issues": "https://drupal.org/project/issues/config_inspector",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
             }
         },
         {
@@ -11082,16 +11079,16 @@
         },
         {
             "name": "drupal/drupal-driver",
-            "version": "v2.0.0-alpha3",
+            "version": "v2.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "4c56f48ebf35646cfe012cad01c5c3405b2273b3"
+                "reference": "395de88a9ea73b0dcaa89a3ffc2c29248cccc4aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/4c56f48ebf35646cfe012cad01c5c3405b2273b3",
-                "reference": "4c56f48ebf35646cfe012cad01c5c3405b2273b3",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/395de88a9ea73b0dcaa89a3ffc2c29248cccc4aa",
+                "reference": "395de88a9ea73b0dcaa89a3ffc2c29248cccc4aa",
                 "shasum": ""
             },
             "require": {
@@ -11137,7 +11134,7 @@
                 "test",
                 "web"
             ],
-            "time": "2018-06-21T22:12:03+00:00"
+            "time": "2018-09-21T19:08:45+00:00"
         },
         {
             "name": "drupal/drupal-extension",
@@ -11339,7 +11336,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -13113,16 +13111,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.3.1",
+            "version": "3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "628a481780561150481a9ec74709092b9759b3ec"
+                "reference": "6ad28354c04b364c3c71a34e4a18b629cc3b231e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/628a481780561150481a9ec74709092b9759b3ec",
-                "reference": "628a481780561150481a9ec74709092b9759b3ec",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6ad28354c04b364c3c71a34e4a18b629cc3b231e",
+                "reference": "6ad28354c04b364c3c71a34e4a18b629cc3b231e",
                 "shasum": ""
             },
             "require": {
@@ -13160,7 +13158,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-07-26T23:47:18+00:00"
+            "time": "2018-09-23T23:08:17+00:00"
         },
         {
             "name": "symfony/browser-kit",
