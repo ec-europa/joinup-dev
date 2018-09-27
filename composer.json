@@ -34,6 +34,8 @@
         "drupal/matomo_reporting_api": "~2.0",
         "drupal/message": "^1.0-rc2",
         "drupal/message_notify": "~1.0",
+        "drupal/message_private": "dev-1.x#14229da80350017065e0857c66fa9a95ec9cf32a",
+        "drupal/message_thread": "dev-1.x#b511ebbfa22a9c17f4c323697d3c87312fd09a2f",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0-alpha6",
         "drupal/migrate_spreadsheet": "^1.0-beta6",
@@ -190,6 +192,17 @@
             },
             "drupal/matomo_reporting_api": {
                 "Migrate from 'piwik_reporting_api' @see https://www.drupal.org/project/matomo_reporting_api/issues/2993831": "https://www.drupal.org/files/issues/2018-08-20/2993831-2.patch"
+            },
+            "drupal/message_private": {
+                "Move configuration under config/install @see https://github.com/mccrodp/message_private/pull/39": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/39.diff",
+                "There's no $this in a procedural function @see https://github.com/mccrodp/message_private/pull/40": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/40.diff",
+                "Fix exception when saving a new reply @see https://github.com/mccrodp/message_private/pull/41": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/41.diff"
+            },
+            "drupal/message_thread": {
+                "Views not created @see https://www.drupal.org/project/message_thread/issues/3002801": "https://www.drupal.org/files/issues/2018-09-27/3002801-2.patch",
+                "Core version missed from .info.yml @see https://www.drupal.org/project/message_thread/issues/3002777": "https://www.drupal.org/files/issues/2018-09-27/3002777-2.patch",
+                "Routing exception during install @see https://www.drupal.org/project/message_thread/issues/3003027": "https://www.drupal.org/files/issues/2018-09-28/3003027-2.patch",
+                "Action on user/{user}/conversations page to add new conversation @see https://www.drupal.org/project/message_thread/issues/3003037": "https://www.drupal.org/files/issues/2018-09-28/3003037-2.patch"
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"

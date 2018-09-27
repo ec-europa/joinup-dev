@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e26d7fb35848c34ec7d20888219b3ed",
+    "content-hash": "4dc87eaaca51c51a9a8451ce2f1c0e80",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3772,6 +3772,51 @@
             }
         },
         {
+            "name": "drupal/message_history",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_history",
+                "reference": "0593cdc6f022805e7799f1d2b6db66e1f9db6d71"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/message": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1498223043",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Borchert (stBorchert)",
+                    "homepage": "https://www.drupal.org/u/stborchert",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Records which user has read which message.",
+            "homepage": "https://drupal.org/project/message_history",
+            "support": {
+                "source": "https://cgit.drupalcode.org/message_history",
+                "issues": "https://drupal.org/project/issues/message_history"
+            },
+            "time": "2017-06-23T13:01:37+00:00"
+        },
+        {
             "name": "drupal/message_notify",
             "version": "1.0.0-beta1",
             "source": {
@@ -3827,6 +3872,175 @@
                 "source": "https://cgit.drupalcode.org/message_notify",
                 "issues": "https://drupal.org/project/issues/message_notify",
                 "irc": "irc://irc.freenode.org/drupal"
+            }
+        },
+        {
+            "name": "drupal/message_private",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_private",
+                "reference": "14229da80350017065e0857c66fa9a95ec9cf32a"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/message": "*",
+                "drupal/message_notify": "*",
+                "drupal/message_ui": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha5+0-dev",
+                    "datestamp": "1531453721",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                },
+                "patches_applied": {
+                    "Move configuration under config/install @see https://github.com/mccrodp/message_private/pull/39": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/39.diff",
+                    "There's no $this in a procedural function @see https://github.com/mccrodp/message_private/pull/40": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/40.diff",
+                    "Fix exception when saving a new reply @see https://github.com/mccrodp/message_private/pull/41": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/41.diff"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "New Zeal",
+                    "homepage": "https://www.drupal.org/user/93571"
+                },
+                {
+                    "name": "mccrodp",
+                    "homepage": "https://www.drupal.org/user/678774"
+                },
+                {
+                    "name": "svendecabooter",
+                    "homepage": "https://www.drupal.org/user/35369"
+                }
+            ],
+            "description": "Message Private",
+            "homepage": "https://www.drupal.org/project/message_private",
+            "support": {
+                "source": "http://cgit.drupalcode.org/message_private"
+            },
+            "time": "2018-07-13T01:20:26+00:00"
+        },
+        {
+            "name": "drupal/message_thread",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_thread",
+                "reference": "b511ebbfa22a9c17f4c323697d3c87312fd09a2f"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/message_history": "*",
+                "drupal/message_private": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta7+0-dev",
+                    "datestamp": "1537928580",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Views not created @see https://www.drupal.org/project/message_thread/issues/3002801": "https://www.drupal.org/files/issues/2018-09-27/3002801-2.patch",
+                    "Core version missed from .info.yml @see https://www.drupal.org/project/message_thread/issues/3002777": "https://www.drupal.org/files/issues/2018-09-27/3002777-2.patch",
+                    "Routing exception during install @see https://www.drupal.org/project/message_thread/issues/3003027": "https://www.drupal.org/files/issues/2018-09-28/3003027-2.patch",
+                    "Action on user/{user}/conversations page to add new conversation @see https://www.drupal.org/project/message_thread/issues/3003037": "https://www.drupal.org/files/issues/2018-09-28/3003037-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "New Zeal",
+                    "homepage": "https://www.drupal.org/user/93571"
+                }
+            ],
+            "description": "Message Thread",
+            "homepage": "https://www.drupal.org/project/message_thread",
+            "support": {
+                "source": "http://cgit.drupalcode.org/message_thread"
+            },
+            "time": "2018-09-26T02:19:01+00:00"
+        },
+        {
+            "name": "drupal/message_ui",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_ui",
+                "reference": "8.x-1.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message_ui-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "eb9bf7355ed8ff37bf82ae0db17c562524ec64da"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/message": "*"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.2",
+                "drupal/message": "*",
+                "drupal/message_notify": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1534126084",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "New Zeal",
+                    "homepage": "https://www.drupal.org/user/93571"
+                },
+                {
+                    "name": "RoySegall",
+                    "homepage": "https://www.drupal.org/user/1812910"
+                },
+                {
+                    "name": "mccrodp",
+                    "homepage": "https://www.drupal.org/user/678774"
+                }
+            ],
+            "description": "Message UI",
+            "homepage": "https://www.drupal.org/project/message_ui",
+            "support": {
+                "source": "http://cgit.drupalcode.org/message_ui"
             }
         },
         {
@@ -13382,6 +13596,8 @@
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/inline_entity_form": 20,
+        "drupal/message_private": 20,
+        "drupal/message_thread": 20,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/piwik_reporting_api": 20,
