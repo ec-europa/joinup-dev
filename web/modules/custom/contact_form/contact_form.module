@@ -6,9 +6,12 @@
  */
 
 use Drupal\Component\Render\PlainTextOutput;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\user\Entity\User;
 
@@ -167,4 +170,15 @@ function contact_form_mail($key, &$message, $params) {
 
   // Send as HTML.
   $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function contact_form_message_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity->bundle() !== 'contact_form_submission') {
+    return AccessResult::neutral();
+  }
+  // Allow users to access the contact form messages and its attachments.
+  return AccessResult::allowedIf($account->hasPermission('access contact form messages'));
 }
