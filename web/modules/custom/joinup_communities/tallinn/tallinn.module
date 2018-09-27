@@ -136,6 +136,19 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
     return AccessResult::allowed();
   }
 
+  // If the Tallinn access policy is in 'collection' mode, all collection
+  // members are able to access any report.
+  if (\Drupal::state()->get('tallinn.access_policy', 'restricted') === 'collection') {
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    if ($collection = $node->og_audience->entity) {
+      /** @var \Drupal\og\MembershipManagerInterface $og_membership_manager */
+      $og_membership_manager = \Drupal::service('og.membership_manager');
+      if ($og_membership_manager->isMember($collection, $account)) {
+        return AccessResult::allowed();
+      }
+    }
+  }
+
   $access = $node->access('view any tallinn_report content', $account);
   return $access ? AccessResult::allowed() : AccessResult::forbidden();
 }

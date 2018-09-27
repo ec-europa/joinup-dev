@@ -69,7 +69,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('tallinn.dashbord.access')
+      $container->get('tallinn.dashboard.access')
     );
   }
 
