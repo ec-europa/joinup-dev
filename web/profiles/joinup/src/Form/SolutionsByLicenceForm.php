@@ -65,7 +65,7 @@ class SolutionsByLicenceForm extends FormBase {
       '#title' => $this->t('Licence'),
       '#options' => $form_state->get('licence_options'),
       '#default_value' => $form_state->getValue('licence_option'),
-      '#empty_option' => $this->t(' - All - '),
+      '#empty_option' => ' - All - ',
     ];
     $form['filter'] = [
       '#type' => 'submit',
