@@ -160,7 +160,7 @@ QUERY;
   protected function getCountQuery(string $licence_id = NULL): string {
     $query = <<<QUERY
 SELECT COUNT(*) as ?total
-WHERE { 
+WHERE {
   {
     {
       ?solution <http://www.w3.org/ns/dcat#distribution> ?distribution .
@@ -203,7 +203,7 @@ QUERY;
   protected function getQuery(int $offset, string $licence_id = NULL): string {
     $query = <<<QUERY
 SELECT ?solution ?licence_label ?licence ?solution_label
-WHERE { 
+WHERE {
   {
     {
       ?solution <http://www.w3.org/ns/dcat#distribution> ?distribution .
