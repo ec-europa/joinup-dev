@@ -29,7 +29,7 @@ Feature: Submit the contact form
       | Message        | Dear sir, madam, ...        |
     And I attach the file "logo.png" to "Attachment"
     # We need to wait 5 seconds for the honeypot validation to pass.
-    Then I wait for the honeypot validation to pass
+    And I wait for the honeypot validation to pass
     And I press "Submit"
 
     # Both moderators should have received the notification e-mail.
