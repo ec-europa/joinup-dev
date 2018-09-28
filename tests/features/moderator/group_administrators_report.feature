@@ -22,25 +22,25 @@ Feature: Group administrators report
     And collection user memberships:
       | collection         | user    | roles                      | state   |
       | Large living birds | najib   | administrator              | active  |
+      | Bony fishes        | victor  | administrator, facilitator | active  |
       | Large living birds | melor   | facilitator                | active  |
+      | Bony fishes        | melissa | facilitator                | active  |
       | Large living birds | kita    | facilitator                | blocked |
       | Large living birds | major   |                            | blocked |
-      | Bony fishes        | victor  | administrator, facilitator | active  |
-      | Bony fishes        | melissa | facilitator                | active  |
       | Bony fishes        | melor   |                            | active  |
 
     And I am logged in as a moderator
     And I click "Reporting" in the "Administration toolbar" region
     And I click "Collection administrators"
 
-    Then the "collection administrator report" table should contain the following columns:
+    Then the "collection administrator report" table should be:
       | Collection         | User name         | E-mail                       | Role          |
-      | Large living birds | Najib Randall     | randall@najib-industries.com | administrator |
-      | Large living birds | Melor Vescovi     | melor1998@hotmail.com        | facilitator   |
-      | Large living birds | Panteleimon Kita  | pantopanto@gmail.com         | facilitator   |
+      | Bony fishes        | Melissa Kevorkian | mkevorkian@fishes.co.uk      | facilitator   |
       | Bony fishes        | Victor Otto       | votto@fishes.co.uk           | administrator |
       | Bony fishes        | Victor Otto       | votto@fishes.co.uk           | facilitator   |
-      | Bony fishes        | Melissa Kevorkian | mkevorkian@fishes.co.uk      | facilitator   |
+      | Large living birds | Melor Vescovi     | melor1998@hotmail.com        | facilitator   |
+      | Large living birds | Najib Randall     | randall@najib-industries.com | administrator |
+      | Large living birds | Panteleimon Kita  | pantopanto@gmail.com         | facilitator   |
 
     And the "collection administrator report" table should not contain the following columns:
       | Collection         | User name      |
