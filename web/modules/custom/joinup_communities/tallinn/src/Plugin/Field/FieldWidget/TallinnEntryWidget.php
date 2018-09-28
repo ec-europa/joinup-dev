@@ -37,7 +37,7 @@ class TallinnEntryWidget extends WidgetBase {
 
     $element = [
       '#type' => 'details',
-      '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
+      '#title' => $this->fieldDefinition->getDescription(),
       // Store the label as well in order to use it in the validation if needed.
       '#label' => $this->fieldDefinition->getLabel(),
       '#open' => TRUE,

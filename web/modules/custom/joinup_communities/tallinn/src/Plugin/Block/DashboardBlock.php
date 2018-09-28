@@ -69,7 +69,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('tallinn.dashbord.access')
+      $container->get('tallinn.dashboard.access')
     );
   }
 
@@ -264,7 +264,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       switch ($select) {
         case 1:
           $options = [
-            'All members' => $this->t('All member states'),
+            'All members' => $this->t('EU + EFTA'),
           ] + Tallinn::COUNTRIES;
           $label = '';
           break;
@@ -277,7 +277,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
         case 3:
           $options = [
             '' => $this->t('No selection'),
-            'All members' => $this->t('All member states'),
+            'All members' => $this->t('EU + EFTA'),
           ] + Tallinn::COUNTRIES;
           $label = '';
           break;

@@ -117,7 +117,7 @@ class TallinnSubContext extends DrupalSubContextBase {
     Rdf::load('http://example.com/owner')->delete();
 
     // Clear the dashboard access policy state.
-    \Drupal::state()->delete('tallinn.dashboard.access_policy');
+    \Drupal::state()->delete('tallinn.access_policy');
   }
 
 }

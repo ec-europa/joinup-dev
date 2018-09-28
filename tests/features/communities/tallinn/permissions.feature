@@ -1,11 +1,12 @@
 @api @tallinn
 Feature:
   - As a user, author of a Tallinn Report node, I want to be able to edit the
-  node that I own but I cannot edit other user's Tallinn Reports.
+    node that I own but I cannot edit other user's Tallinn Reports.
   - As a moderator, when editing a Tallinn Report node, I want to be able
-  edit the author of the node.
+    edit the author of the node.
 
   Background:
+
     Given users:
       | Username  | Roles     |
       | vasile    |           |
@@ -24,6 +25,7 @@ Feature:
       | France Report  | dominique | Tallinn Ministerial Declaration |
 
   Scenario: Test view access on Tallinn Reports.
+
     # Test that the tallinn tiles are not visible in the overview page.
     Given I am logged in as chef
     When I go to the "Tallinn Ministerial Declaration" collection
@@ -60,7 +62,51 @@ Feature:
       | France Report |
     But I should not see the text "Romania Report"
 
+    Given I am an anonymous user
+    When I go to the "Tallinn Ministerial Declaration" collection
+    And I click "Implementation monitoring" in the "Left sidebar" region
+    Then I should not see the text "Romania Report"
+    And I should not see the text "France Report"
+
+  Scenario: When the access policy is in 'collection' mode, all members of the
+    collection are able to see any report.
+
+    Given I am logged in as chef
+    And I go to "/admin/config/content/tallinn"
+    When I select the radio button "Collection (moderators and Tallinn collection members)"
+    And I press "Save configuration"
+    Then the radio button "Collection (moderators and Tallinn collection members)" from field "Access to the dashboard data" should be selected
+
+    Given I am logged in as dominique
+    When I go to the "Tallinn Ministerial Declaration" collection
+    And I click "Implementation monitoring" in the "Left sidebar" region
+    Then I should see the following tiles in the correct order:
+      | France Report  |
+      | Romania Report |
+
+    Given I am logged in as vasile
+    When I go to the "Tallinn Ministerial Declaration" collection
+    And I click "Implementation monitoring" in the "Left sidebar" region
+    Then I should see the following tiles in the correct order:
+      | France Report  |
+      | Romania Report |
+
+    # The report owner sees only his report as he's not a collection member.
+    Given I am logged in as gheorghe
+    When I go to the "Tallinn Ministerial Declaration" collection
+    And I click "Implementation monitoring" in the "Left sidebar" region
+    Then I should see the following tiles in the correct order:
+      | Romania Report |
+    But I should not see the text "France Report"
+
+    Given I am an anonymous user
+    When I go to the "Tallinn Ministerial Declaration" collection
+    And I click "Implementation monitoring" in the "Left sidebar" region
+    Then I should not see the text "Romania Report"
+    And I should not see the text "France Report"
+
   Scenario: Test that the page is showing the results properly.
+
     # The tallinn facet should not be shown.
     Given I am an anonymous user
     When I go to the "Tallinn Ministerial Declaration" collection

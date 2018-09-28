@@ -58,9 +58,10 @@ class TallinnSettingsForm extends FormBase {
         '#title' => $this->t('Access to the dashboard data'),
         '#options' => [
           'public' => $this->t('Public'),
-          'restricted' => $this->t('Restricted (only moderators and Tallinn collection facilitators)'),
+          'collection' => $this->t('Collection (moderators and Tallinn collection members)'),
+          'restricted' => $this->t('Restricted (moderators and Tallinn collection facilitators)'),
         ],
-        '#default_value' => $this->state->get('tallinn.dashboard.access_policy', 'restricted'),
+        '#default_value' => $this->state->get('tallinn.access_policy', 'restricted'),
       ],
       'actions' => [
         '#type' => 'actions',
@@ -77,10 +78,10 @@ class TallinnSettingsForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $this->state->set('tallinn.dashboard.access_policy', $form_state->getValue('access_policy'));
+    $this->state->set('tallinn.access_policy', $form_state->getValue('access_policy'));
     // Invalidate 'tallinn_dashboard' cache.
     Cache::invalidateTags(['tallinn_dashboard']);
-    $this->messenger()->addStatus($this->t('Permissions successfully updated.'));
+    $this->messenger()->addStatus($this->t('Access policy successfully updated.'));
   }
 
 }
