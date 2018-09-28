@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @file
  * Main functions and hook implementations of the Contact Form module.
