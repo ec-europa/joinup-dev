@@ -10,7 +10,6 @@ declare(strict_types = 1);
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\message\Entity\MessageTemplate;
 use PHPUnit\Framework\Assert;
@@ -18,7 +17,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat step definitions for testing notifications.
  */
-class JoinupNotificationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
 
