@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types = 1);
-
 /**
  * @file
  * Contains \JoinupNotificationSubContext.
  */
+
+declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Component\Render\MarkupInterface;
