@@ -277,8 +277,9 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   protected function getPublishedIndex() {
     // The Joinup profile is depending on the Search API module so we can
     // reasonably assume that the entity storage for it is defined. Since entity
-    // storage in Drupal is dynamic, Drupal core has built in checks for missing
-    // storage and will throw exceptions if these are missing or not defined.
+    // storage in Drupal is dynamic, Drupal core performs a number of checks
+    // when the storage is accessed and will throw exceptions if it is missing
+    // or ill-defined. These checks are not applicable to our situation.
     // Instead of letting these hypothetical exceptions bubble up we convert
     // them to unchecked runtime exceptions. Unchecked exceptions will still be
     // thrown and logged in the extremely rare case that the storage would go
