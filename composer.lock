@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f156737a5c0cf212bc8696368ba51fb0",
+    "content-hash": "a3086f7e9c31cc426e9b2c918bf7f577",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4773,7 +4773,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1514109785",
+                    "datestamp": "1519387684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10698,7 +10698,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527522480",
+                    "datestamp": "1527523080",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11339,7 +11339,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -11572,16 +11573,16 @@
         },
         {
             "name": "lovers-of-behat/table-extension",
-            "version": "1.1.1",
+            "version": "dev-full-table-assert",
             "source": {
                 "type": "git",
-                "url": "https://github.com/LoversOfBehat/TableExtension.git",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef"
+                "url": "https://github.com/ec-europa/TableExtension.git",
+                "reference": "c484a0977287f815d235be583b0ad31ad2b7ba3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LoversOfBehat/TableExtension/zipball/89b48b31768eac9f21f857ab00ac43715fb7a7ef",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef",
+                "url": "https://api.github.com/repos/ec-europa/TableExtension/zipball/c484a0977287f815d235be583b0ad31ad2b7ba3c",
+                "reference": "c484a0977287f815d235be583b0ad31ad2b7ba3c",
                 "shasum": ""
             },
             "require": {
@@ -11603,7 +11604,6 @@
                     "LoversOfBehat\\TableExtension\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11614,7 +11614,10 @@
                 }
             ],
             "description": "Behat extension to inspect HTML tables",
-            "time": "2018-06-27T06:53:23+00:00"
+            "support": {
+                "source": "https://github.com/ec-europa/TableExtension/tree/full-table-assert"
+            },
+            "time": "2018-09-28T12:12:08+00:00"
         },
         {
             "name": "mikey179/vfsStream",
@@ -13410,7 +13413,8 @@
         "drupal/devel": 15,
         "drupal/drupal-extension": 15,
         "drupal/stage_file_proxy": 20,
-        "jcalderonzumba/gastonjs": 20
+        "jcalderonzumba/gastonjs": 20,
+        "lovers-of-behat/table-extension": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
