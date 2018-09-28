@@ -163,48 +163,5 @@ function _span_ctt_get_duplicated_ids(): array {
     'http://administracionelectronica.gob.es/ctt/regfia' => [
       'http://administracionelectronica.gob.es/ctt/regfia_1',
     ],
-    'http://administracionelectronica.gob.es/ctt/documentoe' => [
-      'http://administracionelectronica.gob.es/ctt/documentoe_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/dscp' => [
-      'http://administracionelectronica.gob.es/ctt/dscp_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/pau' => [
-      'http://administracionelectronica.gob.es/ctt/pau_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/pfiaragon' => [
-      'http://administracionelectronica.gob.es/ctt/pfiaragon_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/dir3' => [
-      'http://administracionelectronica.gob.es/ctt/dir3_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/svd' => [
-      'http://administracionelectronica.gob.es/ctt/svd_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/scsp' => [
-      'http://administracionelectronica.gob.es/ctt/scsp_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/tsa' => [
-      'http://administracionelectronica.gob.es/ctt/tsa_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/afirma' => [
-      'http://administracionelectronica.gob.es/ctt/afirma_1',
-      'http://administracionelectronica.gob.es/ctt/afirma_2',
-    ],
-    'http://administracionelectronica.gob.es/ctt/codice' => [
-      'http://administracionelectronica.gob.es/ctt/codice_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/badaral' => [
-      'http://administracionelectronica.gob.es/ctt/badaral_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/sicres' => [
-      'http://administracionelectronica.gob.es/ctt/sicres_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/alpadron' => [
-      'http://administracionelectronica.gob.es/ctt/alpadron_1',
-    ],
-    'http://administracionelectronica.gob.es/ctt/avanzalocalgis' => [
-      'http://administracionelectronica.gob.es/ctt/avanzalocalgis_1',
-    ],
   ];
 }
