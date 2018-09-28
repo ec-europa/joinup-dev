@@ -200,7 +200,7 @@ QUERY;
   protected function getQuery(int $offset, string $licence_id = NULL): string {
     $query = <<<QUERY
 SELECT DISTINCT ?solution ?licence_label ?licence ?solution_label
-WHERE { 
+WHERE {
   {
     {
       ?solution <http://www.w3.org/ns/dcat#distribution> ?distribution .
