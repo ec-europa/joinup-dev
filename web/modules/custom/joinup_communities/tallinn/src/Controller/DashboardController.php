@@ -65,7 +65,7 @@ class DashboardController extends ControllerBase {
   public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('entity_field.manager'),
-      $container->get('tallinn.dashbord.access')
+      $container->get('tallinn.dashboard.access')
     );
   }
 
