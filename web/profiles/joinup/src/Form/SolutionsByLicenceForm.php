@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Form;
 
 use Drupal\Core\Form\FormBase;
@@ -10,14 +12,14 @@ use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * A simple page that presents a TCA form for the collection creation.
+ * A reporting page that presents solutions indexed by related licences.
  */
 class SolutionsByLicenceForm extends FormBase {
 
   /**
    * The items per page.
    */
-  const ITEMS_PER_PAGE = 50;
+  protected const ITEMS_PER_PAGE = 50;
 
   /**
    * The SPARQL connection.
@@ -109,18 +111,10 @@ class SolutionsByLicenceForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRebuild();
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirect('rdf_entity.propose_form', [
-      'rdf_type' => 'collection',
-    ]);
+    // The only case where the form is submitted is by clicking the filter.
+    // Rebuild to filter by licence.
+    $form_state->setRebuild();
   }
 
   /**
@@ -159,28 +153,31 @@ QUERY;
    */
   protected function getCountQuery(string $licence_id = NULL): string {
     $query = <<<QUERY
-SELECT COUNT(*) as ?total
-WHERE { 
-  {
+SELECT COUNT(*) AS ?total
+WHERE {
+  SELECT DISTINCT ?solution ?licence_label ?licence ?solution_label (COUNT(*) as ?total)
+  WHERE {
     {
-      ?solution <http://www.w3.org/ns/dcat#distribution> ?distribution .
-      ?distribution <http://purl.org/dc/terms/license> ?licence .
-      FILTER NOT EXISTS { ?solution <http://purl.org/dc/terms/isVersionOf> ?version } .
-    }
-    UNION
+      {
+        ?solution <http://www.w3.org/ns/dcat#distribution> ?distribution .
+        ?distribution <http://purl.org/dc/terms/license> ?licence .
+        FILTER NOT EXISTS { ?solution <http://purl.org/dc/terms/isVersionOf> ?version } .
+      }
+      UNION
+      {
+        ?solution <http://purl.org/dc/terms/hasVersion> ?release .
+        ?release <http://www.w3.org/ns/dcat#distribution> ?distribution .
+        ?distribution <http://purl.org/dc/terms/license> ?licence .
+      }
+    } .
     {
-      ?solution <http://purl.org/dc/terms/hasVersion> ?release .
-      ?release <http://www.w3.org/ns/dcat#distribution> ?distribution .
-      ?distribution <http://purl.org/dc/terms/license> ?licence .
-    }
-  } .
-  {
-    ?solution a <http://www.w3.org/ns/adms#Asset> .
-    ?solution <http://purl.org/dc/terms/title> ?solution_label .
-    ?licence a <http://purl.org/dc/terms/LicenseDocument> .
-    ?licence <http://purl.org/dc/terms/title> ?licence_label .
-  } .
-  @extra_condition
+      ?solution a <http://www.w3.org/ns/adms#Asset> .
+      ?solution <http://purl.org/dc/terms/title> ?solution_label .
+      ?licence a <http://purl.org/dc/terms/LicenseDocument> .
+      ?licence <http://purl.org/dc/terms/title> ?licence_label .
+    } .
+    @extra_condition
+  }
 }
 QUERY;
 
@@ -202,7 +199,7 @@ QUERY;
    */
   protected function getQuery(int $offset, string $licence_id = NULL): string {
     $query = <<<QUERY
-SELECT ?solution ?licence_label ?licence ?solution_label
+SELECT DISTINCT ?solution ?licence_label ?licence ?solution_label
 WHERE { 
   {
     {

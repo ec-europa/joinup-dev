@@ -9,8 +9,10 @@ Feature: Solutions by licence report
     And I go to "/admin/reporting/solutions-by-licences"
     Then the response status code should be 403
 
-    When I am logged in as a user with the 'access joinup reports' permission
-    And I go to "/admin/reporting/solutions-by-licences"
+    When I am logged in as a moderator
+    And I am on the homepage
+    And I click "Reporting" in the "Administration toolbar" region
+    And I click "Solutions by licence"
     Then the response status code should be 200
 
   Scenario: List licences and their solutions.
@@ -34,14 +36,15 @@ Feature: Solutions by licence report
       | title   | Solution_by_licence_2.tar |
       | licence | Commercial                |
     And the following release:
-      | title          | Solution by licence 2     |
-      | release number | 1                         |
-      | distribution   | Solution_by_licence_2.tar |
-      | is version of  | Solution by licence 2     |
-      | state          | validated                 |
+      | title          | Solution by licence 2 release |
+      | release number | 1                             |
+      | distribution   | Solution_by_licence_2.tar     |
+      | is version of  | Solution by licence 2         |
+      | state          | validated                     |
 
-    When I am logged in as a user with the 'access joinup reports' permission
-    And I go to "/admin/reporting/solutions-by-licences"
+    When I am logged in as a moderator
+    And I click "Reporting" in the "Administration toolbar" region
+    And I click "Solutions by licence"
     Then I should see the following links:
       | Open source           |
       | Free for all          |
