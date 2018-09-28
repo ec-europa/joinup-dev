@@ -292,7 +292,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       throw new \RuntimeException('The Search API Index entity storage is not found.', 0, $e);
     }
     catch (InvalidPluginDefinitionException $e) {
-      throw new \RuntimeException('The Search API Index entity storage is not defined.', 0, $e);
+      throw new \RuntimeException('The Search API Index entity storage definition is invalid.', 0, $e);
     }
 
     return $index;
