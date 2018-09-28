@@ -23,6 +23,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a block with the recommended community content for the current user.
  *
+ * This is the block that is responsible for the content and tiles that are
+ * shown on the homepage.
+ *
  * @Block(
  *  id = "recommended_content",
  *  admin_label = @Translation("Recommended content"),
