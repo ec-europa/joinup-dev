@@ -372,20 +372,30 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *
    * @BeforeScenario @email
    */
-  public function beforeEmailScenario() {
-    // Temporarily bypass read only config so that we can set up the testing
-    // mail system.
-    $this->bypassReadOnlyConfig();
+  public function beforeEmailScenario(): void {
+    // Check if the user is overriding the mail system configuration in
+    // settings.php, and abort the test if this is the case.
+    $settings = \Drupal::configFactory()->get('mailsystem.settings');
+    $settings_are_overridden = $settings->hasOverrides('defaults.sender');
+    $settings_are_using_test_mail_collector = $settings->get('defaults.sender') === 'test_mail_collector';
+    if ($settings_are_overridden && !$settings_are_using_test_mail_collector) {
+      throw new \Exception('Cannot inspect emails since the "mailsystem.settings.defaults.sender" is overridden in settings.php.');
+    }
+    // Set up the testing mail system. This is only needed if we aren't already
+    // using it.
+    if (!$settings_are_using_test_mail_collector) {
+      self::bypassReadOnlyConfig();
 
-    $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
-    $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
-    $this->mailConfig
-      ->set('defaults.sender', 'test_mail_collector')
-      ->save();
+      $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
+      $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
+      $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
+
+      self::restoreReadOnlyConfig();
+    }
+
+    // Clear out any mails from previous scenarios.
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
-
-    $this->restoreReadOnlyConfig();
   }
 
   /**
@@ -393,14 +403,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *
    * @AfterScenario @email
    */
-  public function afterEmailScenario() {
+  public function afterEmailScenario(): void {
     // Temporarily bypass read only config so that we can restore the original
     // mail handler.
-    $this->bypassReadOnlyConfig();
+    if (!empty($this->savedMailDefaults)) {
+      self::bypassReadOnlyConfig();
 
-    $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
+      $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
 
-    $this->restoreReadOnlyConfig();
+      self::restoreReadOnlyConfig();
+    }
   }
 
 }
