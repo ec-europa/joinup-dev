@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4dc87eaaca51c51a9a8451ce2f1c0e80",
+    "content-hash": "b6991e3cf569446a74187b5b9049e962",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3902,6 +3902,7 @@
                     }
                 },
                 "patches_applied": {
+                    "Support drupal/message_ui #45 @see https://github.com/mccrodp/message_private/pull/44": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/44.diff",
                     "Move configuration under config/install @see https://github.com/mccrodp/message_private/pull/39": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/39.diff",
                     "There's no $this in a procedural function @see https://github.com/mccrodp/message_private/pull/40": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/40.diff",
                     "Fix exception when saving a new reply @see https://github.com/mccrodp/message_private/pull/41": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/41.diff"
@@ -3959,7 +3960,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Views not created @see https://www.drupal.org/project/message_thread/issues/3002801": "https://www.drupal.org/files/issues/2018-09-27/3002801-2.patch",
+                    "Multiple problems with module configuration @see https://www.drupal.org/project/message_thread/issues/3002801": "https://www.drupal.org/files/issues/2018-09-30/3002801-4.patch",
                     "Core version missed from .info.yml @see https://www.drupal.org/project/message_thread/issues/3002777": "https://www.drupal.org/files/issues/2018-09-27/3002777-2.patch",
                     "Routing exception during install @see https://www.drupal.org/project/message_thread/issues/3003027": "https://www.drupal.org/files/issues/2018-09-28/3003027-2.patch",
                     "Action on user/{user}/conversations page to add new conversation @see https://www.drupal.org/project/message_thread/issues/3003037": "https://www.drupal.org/files/issues/2018-09-28/3003037-2.patch"
@@ -3984,17 +3985,11 @@
         },
         {
             "name": "drupal/message_ui",
-            "version": "1.0.0-beta3",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/message_ui",
-                "reference": "8.x-1.0-beta3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/message_ui-8.x-1.0-beta3.zip",
-                "reference": "8.x-1.0-beta3",
-                "shasum": "eb9bf7355ed8ff37bf82ae0db17c562524ec64da"
+                "reference": "cb8dbeccc6b9a2a56708decc24fa3ad8adc55b14"
             },
             "require": {
                 "drupal/core": "*",
@@ -4011,12 +4006,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta3",
-                    "datestamp": "1534126084",
+                    "version": "8.x-1.0-beta2+1-dev",
+                    "datestamp": "1533852480",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Allow to restrict the message templates that are exposing UI @see https://github.com/RoySegall/message_ui/pull/45": "https://patch-diff.githubusercontent.com/raw/RoySegall/message_ui/pull/45.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4041,7 +4039,8 @@
             "homepage": "https://www.drupal.org/project/message_ui",
             "support": {
                 "source": "http://cgit.drupalcode.org/message_ui"
-            }
+            },
+            "time": "2018-07-16T15:15:07+00:00"
         },
         {
             "name": "drupal/migrate_drush",
@@ -13598,6 +13597,7 @@
         "drupal/inline_entity_form": 20,
         "drupal/message_private": 20,
         "drupal/message_thread": 20,
+        "drupal/message_ui": 20,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/piwik_reporting_api": 20,

@@ -31,6 +31,8 @@ use Drupal\user\Entity\User;
  *    successfully sent.
  */
 function contact_form_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['created']['#access'] = FALSE;
+
   // Fill in the credentials if the user is logged in.
   $user = \Drupal::currentUser();
   if ($user->isAuthenticated()) {
@@ -56,7 +58,7 @@ function contact_form_form_message_contact_form_submission_form_alter(&$form, Fo
     honeypot_add_form_protection(
       $form,
       $form_state,
-      ['honeypot', 'time_restriction']
+      ['honeypot'/* temporary disabled in PoC ISAICP-4781, 'time_restriction'*/]
     );
   }
 
