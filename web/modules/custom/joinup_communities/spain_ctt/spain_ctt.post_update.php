@@ -6,6 +6,7 @@
  */
 
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Clean more solution duplicates in the ctt collection.
@@ -36,8 +37,17 @@ function spain_ctt_post_update_clean_ctt_duplicates() {
 
   /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
   $pathauto_generator = \Drupal::service('pathauto.generator');
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
   foreach (Rdf::loadMultiple($entity_ids) as $entity) {
+    $old_alias = $entity->toUrl()->toString();
     $pathauto_generator->updateEntityAlias($entity, 'update');
+    $new_alias = $entity->toUrl()->toString();
+    Redirect::create([
+      'redirect_source' => $old_alias,
+      'redirect_redirect' => $new_alias,
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
   }
 }
 
