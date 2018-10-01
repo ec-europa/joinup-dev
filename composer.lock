@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e26d7fb35848c34ec7d20888219b3ed",
+    "content-hash": "ec853d2ca79bdc36e5caec83412d7179",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4718,6 +4718,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "lockMayBeAvailable always returns FALSE @see https://www.drupal.org/project/redis/issues/2996655": "https://www.drupal.org/files/issues/2018-10-01/2996655-16-includes-3002634-2.patch"
                 }
             },
             "autoload": {
@@ -4773,7 +4776,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1514109785",
+                    "datestamp": "1519387684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10698,7 +10701,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527522480",
+                    "datestamp": "1527523080",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
