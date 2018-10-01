@@ -170,6 +170,12 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
               ],
               '#value' => $this->t('Download csv data'),
             ],
+            '1.1.1.3' => [
+              '#type' => 'item',
+              '#markup' => $this->t('The above-represented data are provided in tabular format.'),
+              '#prefix' => '<div class="csv-download-text">',
+              '#suffix' => '</div>',
+            ],
           ],
           '1.1.2' => [
             '#type' => 'container',
