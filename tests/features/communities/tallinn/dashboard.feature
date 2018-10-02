@@ -61,7 +61,7 @@ Feature:
     When I go to "/admin/config/content/tallinn"
     Then the response status code should be 200
     And I should see the heading "Tallinn Settings"
-    And the radio button "Restricted (moderators and Tallinn collection facilitators)" from field "Access to the dashboard data" should be selected
+    And the radio button "Restricted (moderators and Tallinn collection facilitators)" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
     # Make the dashboard data endpoint limited to collection.
     Given I select the radio button "Collection (moderators and Tallinn collection members)"
@@ -69,7 +69,7 @@ Feature:
     Then I should see the following success messages:
       | success messages                    |
       | Access policy successfully updated. |
-    And the radio button "Collection (moderators and Tallinn collection members)" from field "Access to the dashboard data" should be selected
+    And the radio button "Collection (moderators and Tallinn collection members)" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
     Given I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
@@ -118,7 +118,7 @@ Feature:
     When I go to "/admin/config/content/tallinn"
     Then the response status code should be 200
     And I should see the heading "Tallinn Settings"
-    And the radio button "Collection (moderators and Tallinn collection members)" from field "Access to the dashboard data" should be selected
+    And the radio button "Collection (moderators and Tallinn collection members)" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
     # Make the dashboard data endpoint public.
     Given I select the radio button "Public"
@@ -126,7 +126,7 @@ Feature:
     Then I should see the following success messages:
       | success messages                    |
       | Access policy successfully updated. |
-    And the radio button "Public" from field "Access to the dashboard data" should be selected
+    And the radio button "Public" from field "Access to Tallinn Ministerial Declaration data" should be selected
 
     Given I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200

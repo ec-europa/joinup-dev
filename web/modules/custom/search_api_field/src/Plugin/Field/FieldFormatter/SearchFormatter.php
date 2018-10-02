@@ -172,7 +172,10 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
     $render['#cache'] = [
       'tags' => $tags,
-      'contexts' => ['url.path'],
+      'contexts' => [
+        'url.path',
+        'user',
+      ],
     ];
 
     // Add some information about the field.

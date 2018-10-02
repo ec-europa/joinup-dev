@@ -55,7 +55,7 @@ class TallinnSettingsForm extends FormBase {
     return [
       'access_policy' => [
         '#type' => 'radios',
-        '#title' => $this->t('Access to the dashboard data'),
+        '#title' => $this->t('Access to Tallinn Ministerial Declaration data'),
         '#options' => [
           'public' => $this->t('Public'),
           'collection' => $this->t('Collection (moderators and Tallinn collection members)'),
