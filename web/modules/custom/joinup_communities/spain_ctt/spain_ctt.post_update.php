@@ -12,10 +12,24 @@ use Drupal\redirect\Entity\Redirect;
  * Clean more solution duplicates in the ctt collection.
  */
 function spain_ctt_post_update_clean_ctt_duplicates() {
-  // The list of entries to be cleaned has been updated. We only need to call
-  // the install function again.
-  require __DIR__ . '/spain_ctt.install';
-  spain_ctt_install();
+  $id = 'http://administracionelectronica.gob.es/ctt';
+  if (empty(Rdf::load($id))) {
+    return;
+  }
+
+  require __DIR__ . '/includes/remove_duplicates.inc';
+
+  // Create the original duplicates in case they do not exist.
+  _spain_ctt_duplicates_create_duplicates();
+
+  // Move all content from the duplicated solutions to the original one.
+  _spain_ctt_duplicates_merge_content();
+
+  // Delete duplicates.
+  _spain_ctt_duplicates_delete_duplicates();
+
+  // Update the ctt collection relationships.
+  _spain_ctt_duplicates_collection_relations();
 
   // For the below entities, now that their duplicates are cleaned, rebuild the
   // url alias to remove the unnecessary suffix.
