@@ -43,14 +43,14 @@ Feature: Submit the contact form
     And I should see the following success messages:
       | success messages                                              |
       | Your message has been submitted. Thank you for your feedback. |
-    When I click the link matching the "#https?://[^/].*?/contact_form/\d{4}-\d{2}/logo(_\d+)?.png#" pattern from the email sent to "digit-joinup@ec.europa.eu"
+    When I click the link for the "logo.png" attachment in the contact form confirmation email sent to "digit-joinup@ec.europa.eu"
     # For anonymous users, the file should not be accessible.
     # The redirection to the login page returns a 200 code instead of a 403 so check for the error message instead.
     Then I should see the text "Access denied. You must sign in to view this page."
     When I am logged in as a moderator
     # Private files from contact forms are stored in
     # "<base url>/<private system path>/contact_form/<year>_<month>/<file>"
-    And I click the link matching the "#https?://[^/].*?/contact_form/\d{4}-\d{2}/logo(_\d+)?.png#" pattern from the email sent to "digit-joinup@ec.europa.eu"
+    And I click the link for the "logo.png" attachment in the contact form confirmation email sent to "digit-joinup@ec.europa.eu"
     # The server responds with an image.
     Then the content type of the response should be 'image/png'
 

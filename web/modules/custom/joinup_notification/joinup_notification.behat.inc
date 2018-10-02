@@ -377,24 +377,44 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
 
-    $found = FALSE;
-    foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
-      if ($mail_sent['key'] === 'mail_change_verification' && $mail_sent['to'] === $mail) {
-        $found = TRUE;
-        break;
-      }
-    }
-
-    if (!$found) {
-      throw new \Exception("No mail change verification E-mail has been sent to $mail.");
-    }
-
     $pattern = '#https?://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
-    if (!preg_match($pattern, $mail_sent['plain'], $match)) {
-      throw new \Exception("The mail change verification E-mail doesn't contain a valid verification link.");
-    }
+    $no_mail_message = "No mail change verification E-mail has been sent to $mail.";
+    $no_match_message = "The mail change verification E-mail doesn't contain a valid verification link.";
+    $this->assertMailLinkMatchingPattern($pattern, $mail, $no_mail_message, $no_match_message, 'mail_change_verification');
+  }
 
-    $this->visitPath($match[0]);
+  /**
+   * Clicks on a link for an attachment in a contact form confirmation mail.
+   *
+   * Note that if multiple messages have been sent to the same user, all of them
+   * will be checked but only the first instance of the link matching the
+   * pattern will be clicked.
+   *
+   * @param string $filename
+   *   The name of the file that was attached to the contact form.
+   * @param string $mail
+   *   The recipient's mail.
+   *
+   * @throws \Exception
+   *   If no mail was found linked to the given email or if the link to the file
+   *   attachment was not found.
+   *
+   * @When I click the link for the :filename attachment in the contact form confirmation email sent to :mail
+   */
+  public function clickAttachmentInContactFormConfirmationMail(string $filename, string $mail): void {
+    $this->assertEmailTagPresent();
+
+    // In case multiple files with the same name were uploaded, the File module
+    // will append a number to the file. Account for this.
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    $name = pathinfo($filename, PATHINFO_FILENAME);
+    $filename_pattern = $name . '(_\d+)?.' . $extension;
+
+    $pattern = '#https?://[^/].*?/contact_form/\d{4}-\d{2}/' . $filename_pattern . '#';
+    $no_mail_message = "No mail was found to have been sent to '$mail'.";
+    $no_match_message = "No link to an attachment with filename '$filename' was found in the emails sent to '$mail'.";
+
+    $this->assertMailLinkMatchingPattern($pattern, $mail, $no_mail_message, $no_match_message, 'contact_form_submission');
   }
 
   /**
@@ -408,18 +428,30 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *   The pattern that the link should match to.
    * @param string $mail
    *   The recipient's mail.
+   * @param string $no_mail_message
+   *   The exception message to show when no mail was found that matches the
+   *   given e-mail address.
+   * @param string $no_match_message
+   *   The exception message to show when the given pattern was not found in the
+   *   messages sent to the given e-mail address.
+   * @param string $template
+   *   Optional message template to filter the messages by.
    *
    * @throws \Exception
    *   If no mail was found linked to the given email or if the pattern did not
    *   find any matches.
-   *
-   * @Given I click the link matching the :pattern pattern from the email sent to :mail
    */
-  public function clickMailLinkMatchingPattern(string $pattern, string $mail): void {
+  protected function assertMailLinkMatchingPattern(string $pattern, string $mail, string $no_mail_message, string $no_match_message, ?string $template = NULL): void {
     $this->assertEmailTagPresent();
 
     $found = FALSE;
     foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
+      // Optionally filter by mail template.
+      if (!empty($template) && $mail_sent['key'] !== $template) {
+        continue;
+      }
+
+      // Filter out messages that do not match the given e-mail address.
       if ($mail_sent['to'] !== $mail) {
         continue;
       }
@@ -434,10 +466,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       return;
     }
 
-    $error_message = $found ?
-      "The pattern did not match anything in the emails sent to '{$mail}'." :
-      "No mail was found to have been sent to '{$mail}'.";
-    throw new \Exception($error_message);
+    if ($found) {
+      throw new \Exception($no_match_message);
+    }
+    throw new \Exception($no_mail_message);
   }
 
   /**
