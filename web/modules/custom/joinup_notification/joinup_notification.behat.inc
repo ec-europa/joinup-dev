@@ -72,7 +72,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @todo Uncomment this line when TagTrait is available in DrupalExtension.
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
-
     /** @var string $template */
     /** @var string $recipient */
     /** @var string $recipient_mail */
@@ -203,7 +202,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @todo Uncomment this line when TagTrait is available in DrupalExtension.
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
-
     try {
       // Reusing ::assertEmailSent().
       $this->assertEmailSent($table);
@@ -236,7 +234,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @todo Uncomment this line when TagTrait is available in DrupalExtension.
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
-
     $lines_of_text = $table->getColumnsHash();
     $user = user_load_by_name($user);
     $recipient = $user->getEmail();
@@ -292,7 +289,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @todo Uncomment this line when TagTrait is available in DrupalExtension.
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
-
     \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     if (empty($mails)) {
@@ -332,7 +328,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @todo Uncomment this line when TagTrait is available in DrupalExtension.
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
-
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
   }
@@ -352,7 +347,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @todo Uncomment this line when TagTrait is available in DrupalExtension.
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
-
     $mails = \Drupal::state()->get('system.test_mail_collector');
 
     if (count($mails) != $count) {
@@ -376,7 +370,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     // @todo Uncomment this line when TagTrait is available in DrupalExtension.
     // @see https://github.com/jhedstrom/drupalextension/pull/510
     // $this->assertEmailTagPresent();
-
     $pattern = '#https?://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
     $no_mail_message = "No mail change verification E-mail has been sent to $mail.";
     $no_match_message = "The mail change verification E-mail doesn't contain a valid verification link.";
@@ -434,7 +427,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @param string $no_match_message
    *   The exception message to show when the given pattern was not found in the
    *   messages sent to the given e-mail address.
-   * @param string $template
+   * @param string|null $template
    *   Optional message template to filter the messages by.
    *
    * @throws \Exception
@@ -442,8 +435,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *   find any matches.
    */
   protected function assertMailLinkMatchingPattern(string $pattern, string $mail, string $no_mail_message, string $no_match_message, ?string $template = NULL): void {
-    $this->assertEmailTagPresent();
-
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
     $found = FALSE;
     foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
       // Optionally filter by mail template.
