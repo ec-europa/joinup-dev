@@ -273,6 +273,8 @@ class GroupAdministratorsController extends ControllerBase {
           }
           $email_cell = ['#markup' => $user->getEmail()];
           $role_cell = ['#markup' => $role->getName()];
+          // Concatenate the array without keys and the an array with, in order
+          // to avoid codesniffer complaints.
           $rows[] = [
             $group_cell,
             $user_cell,
