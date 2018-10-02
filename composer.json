@@ -236,9 +236,6 @@
             },
             "drush/drush": {
                 "When an update fails, updatedb is still exiting with 0. @see https://github.com/drush-ops/drush/pull/3673": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/3673.patch"
-            },
-            "ec-europa/joinup-tallinn-dashboard": {
-                "CSV delimiter": "https://patch-diff.githubusercontent.com/raw/ec-europa/joinup-tallinn-dashboard/pull/8.diff"
             }
         }
     },
