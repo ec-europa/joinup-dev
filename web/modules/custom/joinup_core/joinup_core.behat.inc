@@ -82,47 +82,6 @@ class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Clicks on a link matching a pattern given the email text and the recipient.
-   *
-   * Note that if multiple messages have been sent to the same user, all of them
-   * will be checked but only the first instance of the link matching the
-   * pattern will be clicked.
-   *
-   * @param string $pattern
-   *   The pattern that the link should match to.
-   * @param string $mail
-   *   The recipient's mail.
-   *
-   * @throws \Exception
-   *   If no mail was found linked to the given email or if the pattern did not
-   *   find any matches.
-   *
-   * @Given I click the link matching the :pattern pattern from the email sent to :mail
-   */
-  public function clickMailLinkMatchingPattern(string $pattern, string $mail): void {
-    $found = FALSE;
-    foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
-      if ($mail_sent['to'] !== $mail) {
-        continue;
-      }
-
-      // This is a flag that a message was found to have been sent to the user.
-      $found = TRUE;
-      if (!preg_match($pattern, $mail_sent['plain'], $match)) {
-        continue;
-      }
-
-      $this->visitPath($match[0]);
-      return;
-    }
-
-    $error_message = $found ?
-      "The pattern did not match anything in the emails sent to '{$mail}'." :
-      "No mail was found to have been sent to '{$mail}'.";
-    throw new \Exception($error_message);
-  }
-
-  /**
    * Asserts the content type of the response from the server.
    *
    * @param string $content_type
