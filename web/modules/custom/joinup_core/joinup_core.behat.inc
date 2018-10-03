@@ -10,6 +10,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\UserTrait;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -21,6 +22,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
   use TraversingTrait;
 
   use EntityTrait;
+  use UserTrait;
 
   /**
    * Asserts that only the expected chips are shown in the page.
@@ -133,6 +135,18 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
     if (!empty($found)) {
       throw new Exception('The following fields were disabled: ' . implode(', ', $found));
     }
+  }
+
+  /**
+   * Asserts the content type of the response from the server.
+   *
+   * @param string $content_type
+   *   The expected content type.
+   *
+   * @Then the content type of the response should be :content_type
+   */
+  public function assertResponseContentType($content_type) {
+    $this->assertSession()->responseHeaderEquals('Content-Type', $content_type);
   }
 
 }

@@ -320,7 +320,8 @@ function solution_get_related_solutions_ids(EntityInterface $entity) {
   if ($eira) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
-      ->condition('field_is_solution_type', $eira, 'IN');
+      ->condition('field_is_solution_type', $eira, 'IN')
+      ->range(0, 5);
     $eira_ids = $query->execute();
   }
 
