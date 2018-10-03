@@ -163,5 +163,8 @@ function _span_ctt_get_duplicated_ids(): array {
     'http://administracionelectronica.gob.es/ctt/regfia' => [
       'http://administracionelectronica.gob.es/ctt/regfia_1',
     ],
+    'http://administracionelectronica.gob.es/ctt/documentoe' => [
+      'http://administracionelectronica.gob.es/ctt/documentoe_1',
+    ],
   ];
 }

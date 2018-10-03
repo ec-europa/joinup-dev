@@ -35,6 +35,7 @@ function spain_ctt_post_update_clean_ctt_duplicates() {
   // url alias to remove the unnecessary suffix.
   $entity_ids = [
     'http://administracionelectronica.gob.es/ctt/archive',
+    'http://administracionelectronica.gob.es/ctt/documentoe',
     'http://administracionelectronica.gob.es/ctt/eemgde',
     'http://administracionelectronica.gob.es/ctt/regfia',
     'http://administracionelectronica.gob.es/ctt/dscp',
