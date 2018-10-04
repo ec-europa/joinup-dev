@@ -317,9 +317,9 @@ function solution_entity_extra_field_info(): array {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_load().
+ * Implements hook_ENTITY_TYPE_storage_load().
  */
-function solution_rdf_entity_load($entities) {
+function solution_rdf_entity_storage_load(array $entities) {
   /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
   foreach ($entities as $entity) {
     if ($entity->bundle() != 'solution') {
@@ -459,7 +459,8 @@ function solution_get_related_solutions_ids(EntityInterface $entity) {
   if ($eira) {
     $query = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'solution')
-      ->condition('field_is_solution_type', $eira, 'IN');
+      ->condition('field_is_solution_type', $eira, 'IN')
+      ->range(0, 5);
     $eira_ids = $query->execute();
   }
 
@@ -492,7 +493,7 @@ function solution_build_related_solutions_list(array $ids) {
   $entities = Rdf::loadMultiple($ids);
   $delta = 0;
   $elements = [];
-  /**@var EntityInterface $referenced_solution */
+  /** @var \Drupal\Core\Entity\EntityInterface $referenced_solution */
   foreach ($entities as $id => $referenced_solution) {
     // Make sure no draft content ends up in shared cache.
     $anonymous_user = User::getAnonymousUser();

@@ -1,5 +1,5 @@
 tallinn.settings:
   title: 'Tallinn settings'
-  description: 'Configure  Tallinn Ministerial Declaration module.'
+  description: 'Configure Tallinn Ministerial Declaration module.'
   parent: system.admin_config_content
   route_name: tallinn.settings

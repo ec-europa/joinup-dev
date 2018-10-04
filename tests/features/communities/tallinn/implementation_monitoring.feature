@@ -29,6 +29,7 @@ Feature: Display of reports for the Tallinn initiative.
 
     # Only report content should be shown in the initiative page.
     When I click "Implementation monitoring" in the "Left sidebar" region
+    Then I should see the text "The above-represented data are provided in tabular format."
     Then I should see the "Italy report" tile
     But I should not see the "Results are out" tile
     And I should not see the "Ministerial Declaration on eGovernment" tile
