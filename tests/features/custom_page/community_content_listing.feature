@@ -222,7 +222,22 @@ Feature:
     And I fill in "Query presets" with "entity_bundle|solution"
     And I press "Save"
     Then I should see the following tiles in the correct order:
-      | N64 cartridge cleaner                 |
+      | N64 cartridge cleaner |
+
+    # When a query preset is entered, the query builder should not be available
+    # anymore to facilitators.
+    Given I am logged in as a facilitator of the "Nintendo64" collection
+    And I go to the "Chosen content" custom page
+    And I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    Then the following field should not be present "Available filters"
+
+    # Moderators should still have access to the query builder.
+    When I am logged in as a moderator
+    And I go to the "Chosen content" custom page
+    And I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
+    Then the following field should be present "Available filters"
 
   Scenario: Content type tabs should be mutually exclusive and show only items with results.
     Given I am logged in as a facilitator of the "Nintendo64" collection
