@@ -4,11 +4,12 @@ Feature: Group administrators report
   As a moderator
   I want to be able to see a report about group administrators and be able to download the data
 
+  # Lower case entries in the scenario ensure case insensitive comparison.
   Scenario: Show a list of people with administrative roles in collections
     Given collections:
       | title              |
       | Large living birds |
-      | Bony fishes        |
+      | bony fishes        |
 
     And users:
       | Username | First name  | Family name | E-mail                       |
@@ -17,17 +18,17 @@ Feature: Group administrators report
       | kita     | Panteleimon | Kita        | pantopanto@gmail.com         |
       | major    | Major       | Jakobsen    | Major_Jakobsen@mail.dk       |
       | victor   | Victor      | Otto        | votto@fishes.co.uk           |
-      | melissa  | Melissa     | Kevorkian   | mkevorkian@fishes.co.uk      |
+      | melissa  | melissa     | Kevorkian   | mkevorkian@fishes.co.uk      |
 
     And collection user memberships:
       | collection         | user    | roles                      | state   |
       | Large living birds | najib   | administrator              | active  |
-      | Bony fishes        | victor  | administrator, facilitator | active  |
+      | bony fishes        | victor  | administrator, facilitator | active  |
       | Large living birds | melor   | facilitator                | active  |
-      | Bony fishes        | melissa | facilitator                | active  |
+      | bony fishes        | melissa | facilitator                | active  |
       | Large living birds | kita    | facilitator                | blocked |
       | Large living birds | major   |                            | blocked |
-      | Bony fishes        | melor   |                            | active  |
+      | bony fishes        | melor   |                            | active  |
 
     And I am logged in as a moderator
     And I click "Reporting" in the "Administration toolbar" region
@@ -35,9 +36,9 @@ Feature: Group administrators report
 
     Then the "collection administrator report" table should be:
       | Collection         | User name         | E-mail                       | Role          |
-      | Bony fishes        | Melissa Kevorkian | mkevorkian@fishes.co.uk      | facilitator   |
-      | Bony fishes        | Victor Otto       | votto@fishes.co.uk           | administrator |
-      | Bony fishes        | Victor Otto       | votto@fishes.co.uk           | facilitator   |
+      | bony fishes        | melissa Kevorkian | mkevorkian@fishes.co.uk      | facilitator   |
+      | bony fishes        | Victor Otto       | votto@fishes.co.uk           | administrator |
+      | bony fishes        | Victor Otto       | votto@fishes.co.uk           | facilitator   |
       | Large living birds | Melor Vescovi     | melor1998@hotmail.com        | facilitator   |
       | Large living birds | Najib Randall     | randall@najib-industries.com | administrator |
       | Large living birds | Panteleimon Kita  | pantopanto@gmail.com         | facilitator   |
@@ -45,4 +46,4 @@ Feature: Group administrators report
     And the "collection administrator report" table should not contain the following columns:
       | Collection         | User name      |
       | Large living birds | Major Jacobsen |
-      | Bony fishes        | Melor Vescovi  |
+      | bony fishes        | Melor Vescovi  |

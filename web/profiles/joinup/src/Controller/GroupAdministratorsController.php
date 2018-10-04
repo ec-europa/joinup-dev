@@ -282,9 +282,9 @@ class GroupAdministratorsController extends ControllerBase {
             $role_cell,
           ] + [
             // Add extra data to the row to allow sorting later.
-            '#group' => $group->label(),
-            '#username' => $username,
-            '#role' => $role->getName(),
+            '#group' => strtolower($group->label()),
+            '#username' => strtolower($username),
+            '#role' => strtolower($role->getName()),
           ];
         }
       }
