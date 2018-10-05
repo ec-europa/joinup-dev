@@ -19,6 +19,9 @@ Feature: Input filter
       | Google docs             | Sample docs.google.com iframe      | value: <iframe frameborder="0" height="800" marginheight="0" marginwidth="0" src="https://docs.google.com/forms/d/1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4/viewform?embedded=true" width="100%">Loading...</iframe> - format: content_editor                                                                                                                                                                                                                               | Netflix group | validated |
       | Joinup iframe           | Sample joinup.ec.europa.eu iframe  | value: <iframe frameborder="0" height="800" marginheight="0" marginwidth="0" src="/homepage" width="100%"></iframe> - format: content_editor                                                                                                                                                                                                                                                                                                                                   | Netflix group | validated |
       | Quoted texts            | Quoted texts                       | value: <q>This is a famous quote.</q> ~ Joinup developer. - format: content_editor                                                                                                                                                                                                                                                                                                                                                                                             | Netflix group | validated |
+    And discussion content:
+      | title      | body             | collection    | state     |
+      | Discussion | Start discussion | Netflix group | validated |
   Scenario: Ensure all required formats are supported in the content editor.
     When I go to the "Jessica Jones returns" news
     Then I should see the "iframe" element in the Content region
@@ -35,6 +38,13 @@ Feature: Input filter
     Then I should not see the "iframe" element with the "src" attribute set to "https://www.example.com" in the "Content" region
     When I go to the "Quoted texts" news
     Then the response should contain "<q>This is a famous quote.</q> ~ Joinup developer."
+
+    Given I am logged in as an authenticated
+    When I go to the "Discussion" discussion
+    And I fill in "Create comment" with "<q>Quoted</q>"
+    And I wait for the honeypot validation to pass
+    When I press "Post comment"
+    Then the page should contain the html text "<q>Quoted</q"
 
   @javascript
   Scenario: Tags h1, h5, h6 can exist in a formatted text but the user does not have these options on the editor.
