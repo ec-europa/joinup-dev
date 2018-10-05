@@ -95,6 +95,13 @@ class SearchWidget extends DefaultSearchWidget {
       $element['wrapper'][$key]['#access'] = $administrative_access;
     }
 
+    // If the custom query presets field is filled in, hide also the query
+    // builder as users with administrative access are taking care of the
+    // query shown in this page.
+    if (!$administrative_access && strlen($element['wrapper']['query_presets']['#default_value']) > 0) {
+      $element['wrapper']['query_builder']['#access'] = FALSE;
+    }
+
     /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */
     $item = $items[$delta];
     $default_values = $item->get('value')->getValue();
