@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c18b85df5f798bf34e85e7323677595e",
+    "content-hash": "4f5d9da210199f926e056b5917205976",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4718,6 +4718,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "lockMayBeAvailable always returns FALSE @see https://www.drupal.org/project/redis/issues/2996655": "https://www.drupal.org/files/issues/2018-10-01/2996655-16-includes-3002634-2.patch"
                 }
             },
             "autoload": {
@@ -5844,12 +5847,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "c7d2f5d00486f1745a975934ec70d069c1b26b34"
+                "reference": "8ea911dee68fc8bbd2161d851b3f9dec5582301d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/c7d2f5d00486f1745a975934ec70d069c1b26b34",
-                "reference": "c7d2f5d00486f1745a975934ec70d069c1b26b34",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/8ea911dee68fc8bbd2161d851b3f9dec5582301d",
+                "reference": "8ea911dee68fc8bbd2161d851b3f9dec5582301d",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5862,7 +5865,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-09-11T13:55:15+00:00"
+            "time": "2018-10-02T14:49:10+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
