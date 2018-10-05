@@ -34,7 +34,7 @@
         "drupal/matomo_reporting_api": "~2.0",
         "drupal/message": "^1.0-rc2",
         "drupal/message_notify": "~1.0",
-        "drupal/message_private": "dev-1.x#14229da80350017065e0857c66fa9a95ec9cf32a",
+        "drupal/message_private": "dev-1.x#d81d8a1d997406859fcc823a27afe6d967a6200c",
         "drupal/message_thread": "dev-1.x#b511ebbfa22a9c17f4c323697d3c87312fd09a2f",
         "drupal/message_ui": "dev-1.x#cb8dbeccc6b9a2a56708decc24fa3ad8adc55b14",
         "drupal/migrate_drush": "~1.1",
@@ -195,10 +195,7 @@
                 "Migrate from 'piwik_reporting_api' @see https://www.drupal.org/project/matomo_reporting_api/issues/2993831": "https://www.drupal.org/files/issues/2018-08-20/2993831-2.patch"
             },
             "drupal/message_private": {
-                "Support drupal/message_ui #45 @see https://github.com/mccrodp/message_private/pull/44": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/44.diff",
-                "Move configuration under config/install @see https://github.com/mccrodp/message_private/pull/39": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/39.diff",
-                "There's no $this in a procedural function @see https://github.com/mccrodp/message_private/pull/40": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/40.diff",
-                "Fix exception when saving a new reply @see https://github.com/mccrodp/message_private/pull/41": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/41.diff"
+                "Support drupal/message_ui #45 @see https://www.drupal.org/project/message_private/issues/3004303": "https://www.drupal.org/files/issues/2018-10-05/3004303-3.patch"
             },
             "drupal/message_thread": {
                 "Multiple problems with module configuration @see https://www.drupal.org/project/message_thread/issues/3002801": "https://www.drupal.org/files/issues/2018-09-30/3002801-4.patch",

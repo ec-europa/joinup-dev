@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6991e3cf569446a74187b5b9049e962",
+    "content-hash": "c1c225fd97fa1dec863a966069de86ab",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1987,7 +1987,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2241,8 +2245,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2710,6 +2714,10 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -3880,11 +3888,10 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/message_private",
-                "reference": "14229da80350017065e0857c66fa9a95ec9cf32a"
+                "reference": "d81d8a1d997406859fcc823a27afe6d967a6200c"
             },
             "require": {
-                "drupal/core": "*",
-                "drupal/message": "*",
+                "drupal/core": "~8.0",
                 "drupal/message_notify": "*",
                 "drupal/message_ui": "*"
             },
@@ -3894,18 +3901,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha5+0-dev",
-                    "datestamp": "1531453721",
+                    "version": "8.x-1.0-alpha5+3-dev",
+                    "datestamp": "1538655484",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Support drupal/message_ui #45 @see https://github.com/mccrodp/message_private/pull/44": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/44.diff",
-                    "Move configuration under config/install @see https://github.com/mccrodp/message_private/pull/39": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/39.diff",
-                    "There's no $this in a procedural function @see https://github.com/mccrodp/message_private/pull/40": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/40.diff",
-                    "Fix exception when saving a new reply @see https://github.com/mccrodp/message_private/pull/41": "https://patch-diff.githubusercontent.com/raw/mccrodp/message_private/pull/41.diff"
+                    "Support drupal/message_ui #45 @see https://www.drupal.org/project/message_private/issues/3004303": "https://www.drupal.org/files/issues/2018-10-05/3004303-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3916,6 +3920,10 @@
                 {
                     "name": "New Zeal",
                     "homepage": "https://www.drupal.org/user/93571"
+                },
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
                 },
                 {
                     "name": "mccrodp",
@@ -3931,7 +3939,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/message_private"
             },
-            "time": "2018-07-13T01:20:26+00:00"
+            "time": "2018-10-04T12:45:37+00:00"
         },
         {
             "name": "drupal/message_thread",
@@ -6569,7 +6577,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
