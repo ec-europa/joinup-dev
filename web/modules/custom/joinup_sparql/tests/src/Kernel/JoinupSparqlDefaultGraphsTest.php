@@ -64,8 +64,19 @@ class JoinupSparqlDefaultGraphsTest extends KernelTestBase {
     // Check that loading explicitly from a candidate list, that includes the
     // 'arbitrary' graph, works.
     $this->assertNotNull(Rdf::load($id, ['draft', 'arbitrary']));
+    // Same for entity query.
+    $ids = $this->getQuery()
+      ->graphs(['draft', 'arbitrary'])
+      ->condition('id', $id)
+      ->execute();
+    $this->assertCount(1, $ids);
+    $this->assertEquals($id, reset($ids));
+
     // Check that loading the entity from the default graphs returns NULL.
     $this->assertNull(Rdf::load($id));
+    // Same for entity query.
+    $ids = $this->getQuery()->condition('id', $id)->execute();
+    $this->assertEmpty($ids);
   }
 
   /**
@@ -74,6 +85,19 @@ class JoinupSparqlDefaultGraphsTest extends KernelTestBase {
   public function tearDown(): void {
     Rdf::load('http://example.com/apple', ['arbitrary'])->delete();
     parent::tearDown();
+  }
+
+  /**
+   * Returns the entity query.
+   *
+   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   *   The SPARQL entity query.
+   */
+  protected function getQuery() {
+    return $this->container
+      ->get('entity_type.manager')
+      ->getStorage('rdf_entity')
+      ->getQuery();
   }
 
 }
