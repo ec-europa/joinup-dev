@@ -51,6 +51,7 @@ Feature: Filtering the member list
     And I press "Apply"
     Then the "member administration" table should be:
       # The first column is empty as it contains the bulk operations checkbox.
+      # @todo: Fix this after ISAICP-4836 is implemented.
       |  | Name            | Member since            | State   | Roles |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |       |
       |  | Nell Gibb       | Thu, 01/02/2018 - 00:00 | blocked |       |
