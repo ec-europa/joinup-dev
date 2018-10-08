@@ -18,6 +18,7 @@ use Drupal\Core\Url;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup_core\Controller\IdRedirect;
 use Drupal\node\NodeInterface;
 
 /**
@@ -383,6 +384,8 @@ function joinup_theme_preprocess_page_title(&$variables) {
 
   $variables['visually_hidden_class'] = '';
 
+  // @todo Move the permalink computing outside the theme layer, in ISAICP-4724.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4724
   if ($permalink = joinup_build_permalink($route_match)) {
     $variables['permalink'] = $permalink;
   }
@@ -429,17 +432,24 @@ function joinup_build_permalink(RouteMatchInterface $route_match) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = NULL;
 
-  foreach (['node', 'rdf_entity'] as $type) {
-    $param = $route_match->getParameter($type);
-    $entity = isset($param) ? $param : $entity;
-  }
-
-  if (!$entity) {
+  if (!($parameters = $route_match->getRouteObject()->getOption('parameters')) || empty($parameters)) {
     return FALSE;
   }
 
-  // Entity id is pointing to the publication office redirect.
-  if (strstr($entity->id(), 'http://data.europa.eu/w21/') !== FALSE) {
+  foreach ($parameters as $key => $info) {
+    if (!empty($info['type']) && $info['type'] == "entity:$key") {
+      $type = $key;
+      break;
+    }
+  }
+
+  if (!isset($type) || !($entity = $route_match->getParameter($type))) {
+    return FALSE;
+  }
+
+  // Entity ID is pointing to the publication office redirect.
+  $namespaces = implode('|', array_keys(IdRedirect::getEntityTypeFromPersistentUriNamespace()));
+  if (preg_match('{^http://data.europa.eu/(?:' . $namespaces . ')/}', $entity->id())) {
     return $entity->id();
   }
 
@@ -827,6 +837,17 @@ function joinup_theme_preprocess_form_element(&$variables) {
       if (!empty($arguments['@title'])) {
         $variables['label']['#title'] = $arguments['@title'];
       }
+    }
+
+    // Additional margin for custom elements.
+    $additional_wrappers = [
+      'field_cp_content_listing[0][enabled]',
+      'field_cp_content_listing[0][wrapper][show_shared]',
+      'field_cp_content_listing[0][wrapper][query_presets]',
+    ];
+
+    if (isset($variables['name']) && in_array($variables['name'], $additional_wrappers)) {
+      $variables['attributes']['class'][] = 'form-wrapper';
     }
   }
 }
@@ -1246,8 +1267,10 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
     'field_ar_elibrary_creation',
   ];
 
-  if (in_array($variables['element']['#name'], $slider_field_names)) {
-    $suggestions[] = 'select__slider';
+  if (isset($variables['element']['#name'])) {
+    if (in_array($variables['element']['#name'], $slider_field_names)) {
+      $suggestions[] = 'select__slider';
+    }
   }
 }
 

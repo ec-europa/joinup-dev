@@ -11,11 +11,14 @@
     <!-- Import Phing targets related to Apache Solr. -->
     <import file="${project.basedir}/build.solr.xml" optional="true" />
 
-    <!-- Import Phing targets related to Piwik. -->
-    <import file="${project.basedir}/build.piwik.xml" optional="true" />
+    <!-- Import Phing targets related to Matomo. -->
+    <import file="${project.basedir}/build.matomo.xml" optional="true" />
 
     <!-- Import Phing targets related to Redis cache. -->
     <import file="${project.basedir}/build.redis.xml" optional="true" />
+
+    <!-- Import Phing targets related to UAT environment. -->
+    <import file="${project.basedir}/build.uat.xml" optional="true" />
 
     <!-- Import Phing targets related to Virtuoso. -->
     <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
@@ -60,6 +63,7 @@
             <param>install_configure_form.enable_update_status_emails='NULL'</param>
             <param>install_settings_form.sparql.host=${sparql.host}</param>
             <param>install_settings_form.sparql.port=${sparql.port}</param>
+            <param>install_settings_form.sparql.namespace=${sparql.namespace}</param>
         </drush>
 
         <!-- Set the auto-increment default values for some tables. -->
@@ -461,11 +465,11 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-piwik-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-piwik-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users" />
 
 </project>

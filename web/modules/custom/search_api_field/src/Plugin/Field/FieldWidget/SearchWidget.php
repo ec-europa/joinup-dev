@@ -108,7 +108,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    /** @var \Drupal\link\LinkItemInterface $item */
+    /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */
     $item = $items[$delta];
     $default_values = $item->get('value')->getValue();
     $facets = $this->getFacets();
@@ -117,7 +117,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       '#type' => 'checkbox',
       '#title' => $this->t('Enable the search field'),
       '#description' => $this->t('Uncheck to disable completely the functionality.'),
-      '#default_value' => isset($default_values['enabled']) ? $default_values['enabled'] : 1,
+      '#default_value' => $default_values['enabled'] ?? TRUE,
     ];
 
     // Construct a string that represents the name of the enabled field.

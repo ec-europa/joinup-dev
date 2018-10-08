@@ -2,18 +2,22 @@
 
 namespace Drupal\search_api_arbitrary_facet;
 
+use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\facets\Widget\WidgetPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facets\FacetInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class ArbitraryFacetWidgetDecorator.
  */
-class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
-  use StringTranslationTrait;
+class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerFactoryPluginInterface {
+
   use DependencySerializationTrait;
+  use StringTranslationTrait;
 
   /**
    * The decorated widget.
@@ -38,12 +42,26 @@ class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface {
    *   The plugin ID for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Cache\Context\CacheContextsManager $cache_contexts_manager
+   *   The cache contexts manager service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheContextsManager $cache_contexts_manager) {
     // Instantiate the decorated object.
     $class = $plugin_definition['decorated_class'];
-    $this->original = new $class($configuration, $plugin_id, $plugin_definition);
+    $this->original = new $class($configuration, $plugin_id, $plugin_definition, $cache_contexts_manager);
     $this->arbitraryFacetManager = \Drupal::getContainer()->get('plugin.manager.arbitrary_facet');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('cache_contexts_manager')
+    );
   }
 
   /**

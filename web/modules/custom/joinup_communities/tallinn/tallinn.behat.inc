@@ -5,13 +5,13 @@
  * Contains \TallinnSubContext.
  */
 
-use Behat\Behat\Hook\Scope\AfterFeatureScope;
-use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Behat step definitions and related methods provided by the tallinn module.
@@ -23,58 +23,101 @@ class TallinnSubContext extends DrupalSubContextBase {
   use RdfEntityTrait;
 
   /**
-   * Creates the standard 'Tallinn' collection.
+   * Creates the standard 'Tallinn' collection and several dependencies.
    *
-   * @param \Behat\Behat\Hook\Scope\BeforeFeatureScope $scope
-   *   The scope of the event.
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when one of the entities could not be created, for example because
+   *   it already exists.
    *
-   * @beforeFeature @tallinn
+   * @beforeScenario @tallinn
    */
-  public static function setupTallinnData(BeforeFeatureScope $scope) {
-    // The Tallinn collection might have been created for other purposes.
-    if (Rdf::load(TALLINN_COMMUNITY_ID)) {
-      return;
-    }
+  public function setupTallinnData() {
+    // Create two policy domain terms.
+    Term::create([
+      'vid' => 'policy_domain',
+      'tid' => 'http://example.com/term/1',
+      'name' => 'Term 1',
+    ])->save();
+    Term::create([
+      'vid' => 'policy_domain',
+      'tid' => 'http://example.com/term/2',
+      'name' => 'Term 2',
+      'parent' => 'http://example.com/term/1',
+    ])->save();
 
-    // Create the Tallinn entity and the custom page OG menu link.
-    static::createRdfEntity('collection', [
+    // Create an owner.
+    Rdf::create([
+      'rid' => 'owner',
+      'id' => 'http://example.com/owner',
+      'field_owner_name' => 'Owner',
+    ])->save();
+
+    // Create the Tallinn entity.
+    Rdf::create([
+      'rid' => 'collection',
       'id' => TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn Ministerial Declaration',
       'field_ar_state' => 'validated',
-    ]);
-    \Drupal::state()->set('tallinn_testing_collection', TRUE);
-    /** @var \Drupal\node\NodeInterface $custom_page */
-    $custom_page = static::getEntityByLabel('node', 'Tallinn initiative', 'custom_page');
-    \Drupal::service('custom_page.og_menu_links_manager')->addLink($custom_page);
+      'field_policy_domain' => 'http://example.com/term/2',
+      'field_ar_owner' => 'http://example.com/owner',
+    ])->save();
+
+    // The 'Implementation monitoring' standard custom page.
+    Node::create([
+      'type' => 'custom_page',
+      'uuid' => '9d7b6405-061a-4064-ae7e-b34c67f3afad',
+      'title' => 'Implementation monitoring',
+      'og_audience' => TALLINN_COMMUNITY_ID,
+      'body' => [
+        [
+          'value' => '{block:tallinn_dashboard}',
+          'format' => 'content_editor',
+        ],
+      ],
+      'field_cp_content_listing' => [
+        [
+          'value' => [
+            'fields' => [
+              'field_cp_content_listing_content_type' => [
+                'weight' => 0,
+                'region' => 'top',
+              ],
+            ],
+            'enabled' => 1,
+            'query_presets' => 'entity_bundle|tallinn_report',
+            // Show all tallinn reports in one page.
+            'limit' => '33',
+          ],
+        ],
+      ],
+    ])->save();
   }
 
   /**
-   * Clears the collection if it has been created by the test.
+   * Clears the content created for the purpose of this test.
    *
-   * @param \Behat\Behat\Hook\Scope\AfterFeatureScope $scope
-   *   The scope of the event.
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when one of the created entities could not be deleted.
    *
-   * @afterFeature @tallinn
+   * @afterScenario @tallinn
    */
-  public static function cleanTallinnData(AfterFeatureScope $scope) {
-    $state = \Drupal::state();
-    if ($state->get('tallinn_testing_collection')) {
-      $state->delete('tallinn_testing_collection');
-      $collection = Rdf::load(TALLINN_COMMUNITY_ID);
-      $collection->skip_notification = TRUE;
+  public function cleanTallinnData() {
+    /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+    $entity_repository = \Drupal::service('entity.repository');
+    $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad')->delete();
 
-      // Save OG orphans policy.
-      $og_config = \Drupal::configFactory()->getEditable('og.settings');
-      $delete_orphans = $og_config->get('delete_orphans');
-      // Keep group content.
-      static::bypassReadOnlyConfig();
-      $og_config->set('delete_orphans', FALSE)->save();
-      // Delete collection.
-      $collection->delete();
-      // Restore OG policy.
-      $og_config->set('delete_orphans', $delete_orphans)->save();
-      static::restoreReadOnlyConfig();
+    $collection = Rdf::load(TALLINN_COMMUNITY_ID);
+    $collection->skip_notification = TRUE;
+    $collection->delete();
+
+    // Delete related entities.
+    foreach (['http://example.com/term/2', 'http://example.com/term/1'] as $id) {
+      Term::load($id)->delete();
     }
+    Rdf::load('http://example.com/owner')->delete();
+
+    // Clear the dashboard access policy state.
+    \Drupal::state()->delete('tallinn.access_policy');
   }
 
 }

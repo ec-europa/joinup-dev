@@ -33,6 +33,20 @@ Feature:
       | title       | Persistent licence                                             |
       | description | Persistent licence                                             |
       | uri         | http://data.europa.eu/w21/4205229d-92b6-4cac-80af-d8c2296d923c |
+    # An arbitrary non-'publication office redirect'.
+    And the following licence:
+      | title | Other Persistent licence   |
+      | uri   | http://example.com/licence |
+    # Has a URI that looks like a publication office redirect but has an
+    # unsupported namespace.
+    And the following licence:
+      | title | Wrong publication office namespace                                |
+      | uri   | http://data.europa.eu/unsupp/30aea866-fc89-4e45-b909-3d130acf49bf |
+
+    And "eira" terms:
+      | tid                                   | name         | description                                |
+      | http://data.europa.eu/dr8/DreamDomain | Dream Domain | You're safe from pain in the dream domain. |
+
     And discussion content:
       | title                 | body                  | collection            | state     |
       | Persistent discussion | Persistent discussion | Persistent collection | validated |
@@ -66,6 +80,12 @@ Feature:
     When I go to the "Persistent licence" licence
     Then the persistent url should contain "http://data.europa.eu/w21"
 
+    When I go to the "Other Persistent licence" licence
+    Then the persistent url should contain "/rdf_entity/http"
+
+    When I go to the "Wrong publication office namespace" licence
+    Then the persistent url should contain "/rdf_entity/http"
+
     When I visit the "Persistent document" document
     Then the persistent url should contain "/node/"
 
@@ -88,15 +108,29 @@ Feature:
     # actual page that contains the content in human digestible format.
     Given I am on "data/ffb0ffc9-7704-45d3-95b3-42706b6320e5"
     Then I should see the heading "Persistent solution"
+    And I am on "data/w21/ffb0ffc9-7704-45d3-95b3-42706b6320e5"
+    Then I should see the heading "Persistent solution"
 
     Given I am on "data/37b8103e-26e5-4c81-8ce5-43ced02ff7d0"
+    Then I should see the heading "Persistent collection"
+    And I am on "data/w21/37b8103e-26e5-4c81-8ce5-43ced02ff7d0"
     Then I should see the heading "Persistent collection"
 
     Given I am on "data/98004ec9-62f3-4734-a1b6-af7e4838b09c"
     Then I should see the heading "Persistent release 23"
+    And I am on "data/w21/98004ec9-62f3-4734-a1b6-af7e4838b09c"
+    Then I should see the heading "Persistent release 23"
 
     Given I am on "data/643a2a52-da3b-4594-92bb-295d8134e1fb"
+    Then I should see the heading "Persistent distribution"
+    And I am on "data/w21/643a2a52-da3b-4594-92bb-295d8134e1fb"
     Then I should see the heading "Persistent distribution"
 
     Given I am on "data/4205229d-92b6-4cac-80af-d8c2296d923c"
     Then I should see the heading "Persistent licence"
+    And I am on "data/w21/4205229d-92b6-4cac-80af-d8c2296d923c"
+    Then I should see the heading "Persistent licence"
+
+    Given I am on "data/dr8/DreamDomain"
+    Then I should see the heading "Dream Domain"
+    And I should see "You're safe from pain in the dream domain."

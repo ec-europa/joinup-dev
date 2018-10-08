@@ -1,9 +1,9 @@
 services:
-  state_machine_revisions.paramconverter.latest_revision:
-    class: Drupal\state_machine_revisions\ParamConverter\EntityRevisionConverter
-    arguments: ['@entity.manager', '@state_machine_revisions.revision_manager']
+  state_machine_revisions.route_subscriber:
+    class: Drupal\state_machine_revisions\Routing\StateMachineRevisionsRouteSubscriber
+    arguments: ['@entity_type.manager', '@entity_field.manager']
     tags:
-      - { name: paramconverter, priority: 5 }
+      - { name: event_subscriber }
   state_machine_revisions.workflow_transition:
     class: Drupal\state_machine_revisions\EventSubscriber\WorkflowTransitionEventSubscriber
     arguments: ['@state_machine_revisions.revision_manager']

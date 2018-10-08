@@ -5,10 +5,12 @@
  * Contains \JoinupNotificationSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\DrupalExtension\ScenarioTagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\message\Entity\MessageTemplate;
 use PHPUnit\Framework\Assert;
@@ -16,9 +18,10 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat step definitions for testing notifications.
  */
-class JoinupNotificationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
+  use ScenarioTagTrait;
 
   /**
    * The mail system storage settings.
@@ -66,6 +69,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following email should have been sent:
    */
   public function assertEmailSent(TableNode $table) {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
     /** @var string $template */
     /** @var string $recipient */
     /** @var string $recipient_mail */
@@ -112,10 +118,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
       // mail body line to a certain amount of characters (77 by default).
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = trim($mail['body']);
+      $mail_body = trim((string) $mail['body']);
       $mail_body = preg_replace("/[\r\n\t]+/", ' ', $mail_body);
 
-      // If the original mail body is markup, we need to:
+      // If the original mail body consists of renderable markup, we need to:
       // - undo the encoding done by Twig to quotes;
       // - remove the HTML to simplify the matching on the body text.
       // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
@@ -193,6 +199,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then the following email should not have been sent:
    */
   public function assertEmailNotSent(TableNode $table) {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
     try {
       // Reusing ::assertEmailSent().
       $this->assertEmailSent($table);
@@ -222,6 +231,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then the email sent to :user with subject :subject contains the( following lines of) text:
    */
   public function assertEmailSentAndContainsText(string $user, string $subject, TableNode $table) {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
     $lines_of_text = $table->getColumnsHash();
     $user = user_load_by_name($user);
     $recipient = $user->getEmail();
@@ -274,6 +286,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    *   Thrown if no emails are found or no user exists with the given data.
    */
   protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
     \Drupal::state()->resetCache();
     $mails = \Drupal::state()->get('system.test_mail_collector');
     if (empty($mails)) {
@@ -310,6 +325,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Given all (the )e-mails have been sent
    */
   public function clearMailCollectorCache() {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
   }
@@ -326,6 +344,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    * @Then :count e-mail(s) should have been sent
    */
   public function assertNumberOfEmailSent($count) {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
     $mails = \Drupal::state()->get('system.test_mail_collector');
 
     if (count($mails) != $count) {
@@ -334,24 +355,159 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
   }
 
   /**
+   * Clicks on the mail change link received via a verification E-mail.
+   *
+   * @param string $mail
+   *   The recipient E-mail address.
+   *
+   * @throws \Exception
+   *   If no mail change verification E-mail was sent to the given address or
+   *   the E-mail doesn't contain a valid verification link.
+   *
+   * @Given I click the mail change link from the email sent to :mail
+   */
+  public function clickMailChangeLinkFromMail(string $mail): void {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
+    $pattern = '#https?://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
+    $no_mail_message = "No mail change verification E-mail has been sent to $mail.";
+    $no_match_message = "The mail change verification E-mail doesn't contain a valid verification link.";
+    $this->assertMailLinkMatchingPattern($pattern, $mail, $no_mail_message, $no_match_message, 'mail_change_verification');
+  }
+
+  /**
+   * Clicks on a link for an attachment in a contact form confirmation mail.
+   *
+   * Note that if multiple messages have been sent to the same user, all of them
+   * will be checked but only the first instance of the link matching the
+   * pattern will be clicked.
+   *
+   * @param string $filename
+   *   The name of the file that was attached to the contact form.
+   * @param string $mail
+   *   The recipient's mail.
+   *
+   * @throws \Exception
+   *   If no mail was found linked to the given email or if the link to the file
+   *   attachment was not found.
+   *
+   * @When I click the link for the :filename attachment in the contact form confirmation email sent to :mail
+   */
+  public function clickAttachmentInContactFormConfirmationMail(string $filename, string $mail): void {
+    $this->assertEmailTagPresent();
+
+    // In case multiple files with the same name were uploaded, the File module
+    // will append a number to the file. Account for this.
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    $name = pathinfo($filename, PATHINFO_FILENAME);
+    $filename_pattern = $name . '(_\d+)?.' . $extension;
+
+    $pattern = '#https?://[^/].*?/contact_form/\d{4}-\d{2}/' . $filename_pattern . '#';
+    $no_mail_message = "No mail was found to have been sent to '$mail'.";
+    $no_match_message = "No link to an attachment with filename '$filename' was found in the emails sent to '$mail'.";
+
+    $this->assertMailLinkMatchingPattern($pattern, $mail, $no_mail_message, $no_match_message, 'contact_form_submission');
+  }
+
+  /**
+   * Clicks on a link matching a pattern given the email text and the recipient.
+   *
+   * Note that if multiple messages have been sent to the same user, all of them
+   * will be checked but only the first instance of the link matching the
+   * pattern will be clicked.
+   *
+   * @param string $pattern
+   *   The pattern that the link should match to.
+   * @param string $mail
+   *   The recipient's mail.
+   * @param string $no_mail_message
+   *   The exception message to show when no mail was found that matches the
+   *   given e-mail address.
+   * @param string $no_match_message
+   *   The exception message to show when the given pattern was not found in the
+   *   messages sent to the given e-mail address.
+   * @param string|null $template
+   *   Optional message template to filter the messages by.
+   *
+   * @throws \Exception
+   *   If no mail was found linked to the given email or if the pattern did not
+   *   find any matches.
+   */
+  protected function assertMailLinkMatchingPattern(string $pattern, string $mail, string $no_mail_message, string $no_match_message, ?string $template = NULL): void {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
+    $found = FALSE;
+    foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
+      // Optionally filter by mail template.
+      if (!empty($template) && $mail_sent['key'] !== $template) {
+        continue;
+      }
+
+      // Filter out messages that do not match the given e-mail address.
+      if ($mail_sent['to'] !== $mail) {
+        continue;
+      }
+
+      // This is a flag that a message was found to have been sent to the user.
+      $found = TRUE;
+      if (!preg_match($pattern, $mail_sent['plain'], $match)) {
+        continue;
+      }
+
+      $this->visitPath($match[0]);
+      return;
+    }
+
+    if ($found) {
+      throw new \Exception($no_match_message);
+    }
+    throw new \Exception($no_mail_message);
+  }
+
+  /**
+   * Checks if the current scenario or feature has the @email tag.
+   *
+   * Call this in steps that use the test mail collector so that the developer
+   * is alerted if this tag is not present.
+   */
+  protected function assertEmailTagPresent(): void {
+    // @todo Change this to use TagTrait once ScenarioTagTrait is deprecated.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    $tags = $this->getScenario()->getTags();
+    Assert::assertTrue(in_array('email', $tags));
+  }
+
+  /**
    * Swaps the mailing system settings with a test one.
    *
    * @BeforeScenario @email
    */
-  public function beforeEmailScenario() {
-    // Temporarily bypass read only config so that we can set up the testing
-    // mail system.
-    $this->bypassReadOnlyConfig();
+  public function beforeEmailScenario(): void {
+    // Check if the user is overriding the mail system configuration in
+    // settings.php, and abort the test if this is the case.
+    $settings = \Drupal::configFactory()->get('mailsystem.settings');
+    $settings_are_overridden = $settings->hasOverrides('defaults.sender');
+    $settings_are_using_test_mail_collector = $settings->get('defaults.sender') === 'test_mail_collector';
+    if ($settings_are_overridden && !$settings_are_using_test_mail_collector) {
+      throw new \Exception('Cannot inspect emails since the "mailsystem.settings.defaults.sender" is overridden in settings.php.');
+    }
+    // Set up the testing mail system. This is only needed if we aren't already
+    // using it.
+    if (!$settings_are_using_test_mail_collector) {
+      self::bypassReadOnlyConfig();
 
-    $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
-    $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
-    $this->mailConfig
-      ->set('defaults.sender', 'test_mail_collector')
-      ->save();
+      $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
+      $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
+      $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
+
+      self::restoreReadOnlyConfig();
+    }
+
+    // Clear out any mails from previous scenarios.
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
-
-    $this->restoreReadOnlyConfig();
   }
 
   /**
@@ -359,14 +515,16 @@ class JoinupNotificationSubContext extends DrupalSubContextBase implements Drupa
    *
    * @AfterScenario @email
    */
-  public function afterEmailScenario() {
+  public function afterEmailScenario(): void {
     // Temporarily bypass read only config so that we can restore the original
     // mail handler.
-    $this->bypassReadOnlyConfig();
+    if (!empty($this->savedMailDefaults)) {
+      self::bypassReadOnlyConfig();
 
-    $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
+      $this->mailConfig->set('defaults.sender', $this->savedMailDefaults)->save();
 
-    $this->restoreReadOnlyConfig();
+      self::restoreReadOnlyConfig();
+    }
   }
 
 }

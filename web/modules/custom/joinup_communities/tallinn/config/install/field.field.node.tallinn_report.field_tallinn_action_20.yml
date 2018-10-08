@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_20
 field_name: field_tallinn_action_20
 entity_type: node
 bundle: tallinn_report
-label: 'Action 20'
+label: 'Digital skills within the PAs'
 description: 'Take steps to increase the digital leadership skills among top civil and public servants and digital skills more widely within the public administration at all levels, as a necessary precondition to any successful digital transformation of public administrations.'
 required: false
 translatable: true

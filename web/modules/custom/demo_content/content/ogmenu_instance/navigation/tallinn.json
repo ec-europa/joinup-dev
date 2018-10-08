@@ -1,0 +1,56 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/structure\/ogmenu_instance\/2938?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/ogmenu_instance\/navigation"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/ogmenu_instance\/navigation\/og_audience": [
+            {
+                "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json",
+                "lang": "en"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 2938
+        }
+    ],
+    "type": [
+        {
+            "target_id": "navigation"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "f347cef4-ea22-4b12-bb88-7464585db70e"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/ogmenu_instance\/navigation\/og_audience": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3"
+                    }
+                ],
+                "lang": "en"
+            }
+        ]
+    }
+}

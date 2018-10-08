@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_23
 field_name: field_tallinn_action_23
 entity_type: node
 bundle: tallinn_report
-label: 'Action 23'
+label: 'Funding resources for the digital transformation in PAs'
 description: 'Make efforts to ensure adequate and timely funding resources for the prioritised digital transformation in our public administrations, at all levels.'
 required: false
 translatable: true
