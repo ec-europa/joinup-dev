@@ -44,7 +44,7 @@ Feature: Input filter
     And I fill in "Create comment" with "<q>Quoted</q>"
     And I wait for the honeypot validation to pass
     When I press "Post comment"
-    Then the page should contain the html text "<q>Quoted</q"
+    Then the page should contain the html text "<q>Quoted</q>"
 
   @javascript
   Scenario: Tags h1, h5, h6 can exist in a formatted text but the user does not have these options on the editor.
