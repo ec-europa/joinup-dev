@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "122d799ba4f18743a20b8e03e2cb8f0f",
+    "content-hash": "f29f12fca4714b50c441ec8c8fe661de",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1987,7 +1987,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2241,8 +2245,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2710,6 +2714,10 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -4552,7 +4560,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "400c24da2191820b5a787d6adfd8e4a9b6f19b93"
+                "reference": "400d1af03cea13e43b4cee3673bd1c8420ae265b"
             },
             "require": {
                 "drupal/core": "*",
@@ -4565,8 +4573,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha10+0-dev",
-                    "datestamp": "1536225180",
+                    "version": "8.x-1.0-alpha11+0-dev",
+                    "datestamp": "1539069484",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4617,7 +4625,7 @@
                 "source": "https://cgit.drupalcode.org/rdf_entity",
                 "issues": "https://drupal.org/project/issues/rdf_entity"
             },
-            "time": "2018-09-06T09:08:46+00:00"
+            "time": "2018-10-08T15:16:49+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -4763,7 +4771,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1514109785",
+                    "datestamp": "1519387684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4843,7 +4851,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.2",
-                    "datestamp": "1509546906",
+                    "datestamp": "1529312013",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11560,16 +11568,16 @@
         },
         {
             "name": "lovers-of-behat/table-extension",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LoversOfBehat/TableExtension.git",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef"
+                "reference": "c178ebfc96c36c8aca9b313959733534b4b11a7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LoversOfBehat/TableExtension/zipball/89b48b31768eac9f21f857ab00ac43715fb7a7ef",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef",
+                "url": "https://api.github.com/repos/LoversOfBehat/TableExtension/zipball/c178ebfc96c36c8aca9b313959733534b4b11a7c",
+                "reference": "c178ebfc96c36c8aca9b313959733534b4b11a7c",
                 "shasum": ""
             },
             "require": {
@@ -11602,7 +11610,7 @@
                 }
             ],
             "description": "Behat extension to inspect HTML tables",
-            "time": "2018-06-27T06:53:23+00:00"
+            "time": "2018-10-08T08:43:00+00:00"
         },
         {
             "name": "mikey179/vfsStream",
