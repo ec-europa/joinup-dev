@@ -2426,7 +2426,7 @@ JS;
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The menu data.
    *
-   * @Then the (draggable )menu table should be:
+   * @Then the draggable menu table should be:
    */
   public function assertDraggableMenuTable(TableNode $table) {
     self::assertJavaScriptEnabledBrowser();

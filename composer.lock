@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec853d2ca79bdc36e5caec83412d7179",
+    "content-hash": "045362fb825c41ca8d08785b4b0a67e1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4768,7 +4768,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1519387684",
+                    "datestamp": "1514109785",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6359,7 +6359,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2017-07-12T23:38:25+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10693,7 +10693,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.24",
-                    "datestamp": "1527523080",
+                    "datestamp": "1527522480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11565,16 +11565,16 @@
         },
         {
             "name": "lovers-of-behat/table-extension",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LoversOfBehat/TableExtension.git",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef"
+                "reference": "c178ebfc96c36c8aca9b313959733534b4b11a7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LoversOfBehat/TableExtension/zipball/89b48b31768eac9f21f857ab00ac43715fb7a7ef",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef",
+                "url": "https://api.github.com/repos/LoversOfBehat/TableExtension/zipball/c178ebfc96c36c8aca9b313959733534b4b11a7c",
+                "reference": "c178ebfc96c36c8aca9b313959733534b4b11a7c",
                 "shasum": ""
             },
             "require": {
@@ -11607,7 +11607,7 @@
                 }
             ],
             "description": "Behat extension to inspect HTML tables",
-            "time": "2018-06-27T06:53:23+00:00"
+            "time": "2018-10-08T08:43:00+00:00"
         },
         {
             "name": "mikey179/vfsStream",

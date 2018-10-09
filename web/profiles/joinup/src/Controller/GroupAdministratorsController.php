@@ -273,10 +273,39 @@ class GroupAdministratorsController extends ControllerBase {
           }
           $email_cell = ['#markup' => $user->getEmail()];
           $role_cell = ['#markup' => $role->getName()];
-          $rows[] = [$group_cell, $user_cell, $email_cell, $role_cell];
+          // Concatenate the array without keys and the an array with, in order
+          // to avoid codesniffer complaints.
+          $rows[] = [
+            $group_cell,
+            $user_cell,
+            $email_cell,
+            $role_cell,
+          ] + [
+            // Add extra data to the row to allow sorting later.
+            '#group' => strtolower($group->label()),
+            '#username' => strtolower($username),
+            '#role' => strtolower($role->getName()),
+          ];
         }
       }
     }
+
+    // Order the rows by the group label, username and role.
+    uasort($rows, function ($a, $b) {
+      $order = $a['#group'] <=> $b['#group'];
+
+      // If the group has the same label, sort on username.
+      if ($order === 0) {
+        $order = $a['#username'] <=> $b['#username'];
+      }
+
+      // At last, sort by role.
+      if ($order === 0) {
+        $order = $a['#role'] <=> $b['#role'];
+      }
+
+      return $order;
+    });
 
     // Add a link to download the report as a CSV file.
     $url = Url::fromRouteMatch($this->routeMatch);
