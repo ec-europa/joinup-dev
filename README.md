@@ -208,4 +208,4 @@ the web analytics platform used in Joinup.
 # Docker
 
 For information about getting started with Joinup on Docker, see the explicit
-[README file](docker/README.md).
+[README file](resources/docker/README.md).

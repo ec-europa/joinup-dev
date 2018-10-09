@@ -53,12 +53,13 @@ services:
 
   solr_published:
     build:
-      context: ./docker/solr
+      context: ./resources/docker/solr
     ports:
      - "8982:8983"
-    volumes:
-      #- data:/opt/solr/server/solr/mycores
-      - ./resources/solr/drupal_published:/opt/solr/server/drupal_published
+# @todo: The volumes are created as owned by root and that prevents the container to copy the files over.
+#    volumes:
+#     - data:/opt/solr/server/solr/mycores
+#      - ../docker/solr/solr_published/data:/opt/solr/server/solr/mycores
     entrypoint:
      - docker-entrypoint.sh
      - solr-precreate
@@ -67,12 +68,13 @@ services:
 
   solr_unpublished:
     build:
-      context: ./docker/solr
+      context: ./resources/docker/solr
     ports:
      - "8983:8983"
-    volumes:
-     #- data:/opt/solr/server/solr/mycores
-      - ./resources/solr/drupal_unpublished:/opt/solr/server/drupal_unpublished
+# @todo: The volumes are created as owned by root and that prevents the container to copy the files over.
+#    volumes:
+#     - data:/opt/solr/server/solr/mycores
+#      - ../docker/solr/solr_unpublished/data:/opt/solr/server/solr/mycores
     entrypoint:
      - docker-entrypoint.sh
      - solr-precreate
