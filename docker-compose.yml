@@ -32,6 +32,8 @@ services:
       MYSQL_USER: 'joinup'
       MYSQL_PASSWORD: 'joinup'
       MYSQL_DATABASE: 'joinup'
+    volumes:
+      - mysql:/var/lib/mysql
 
   virtuoso:
     image: tenforce/virtuoso
@@ -56,10 +58,9 @@ services:
       context: ./resources/docker/solr
     ports:
      - "8982:8983"
-# @todo: The volumes are created as owned by root and that prevents the container to copy the files over.
-#    volumes:
-#     - data:/opt/solr/server/solr/mycores
-#      - ../docker/solr/solr_published/data:/opt/solr/server/solr/mycores
+    volumes:
+      # - data:/opt/solr/server/solr/mycores
+      - solr_published:/opt/solr/server/solr
     entrypoint:
      - docker-entrypoint.sh
      - solr-precreate
@@ -71,18 +72,20 @@ services:
       context: ./resources/docker/solr
     ports:
      - "8983:8983"
-# @todo: The volumes are created as owned by root and that prevents the container to copy the files over.
-#    volumes:
-#     - data:/opt/solr/server/solr/mycores
-#      - ../docker/solr/solr_unpublished/data:/opt/solr/server/solr/mycores
+    volumes:
+      # - data:/opt/solr/server/solr/mycores
+      - solr_unpublished:/opt/solr/server/solr
     entrypoint:
      - docker-entrypoint.sh
      - solr-precreate
      - drupal_unpublished
      - "/opt/docker-solr/configsets/drupal"
 
-#volumes:
-#  data:
+volumes:
+  mysql:
+  solr_published:
+  solr_unpublished:
+
 #### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
 
 #volumes:

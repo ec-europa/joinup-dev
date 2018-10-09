@@ -87,13 +87,23 @@ docker-compose exec my_container_name "/bin/bash"
 Depending on the container (and its base image), it might be that `/bin/bash` is not available. In that case, `/bin/sh`
 and `sh` are good substitutes.
 
+#### Accessing the volumes
+Some containers, like solr, create volumes that sync data from and towards the container. These volumes are constructed
+using the top-level `volumes` entry in the docker-compose file and inherit all properties from the containers.
+
+These volumes help retain the data between builds. The since no directory is defined, the local driver will set the
+default directory, which is `/var/lib/docker/volumes/<volume identifier>`.
+
+This directory is owned by the user that creates it within the container so the directory listing will have to run with
+root privileges.
+
+Please, note that the volume names, as with the docker services, will be prefixed with the name of the folder that the
+project lies within e.g. if you install the project on the `myproject` folder, the `mysql` volume, will be named
+`myproject_mysql`.
+
 ## Useful commands.
-To build a container without using cache, run `docker-compose build <container> --no-cache`.
-This is useful in case your container is e.g. based on a Dockerfile and you have made
-changes. In that case, the docker-compose will still use the cached image, even if the
-docker container is manually rebuilt through `docker build`. 
-
-To rebuild all containers on startup use the following command: `docker-compose up --force-recreate`
-
-If a container persists still, use `docker-compose rm <container_id>` to remove it from the 
-docker-compose cache and then recreate the containers.
+* When a service is not based on an image, but is built through a Dockerfile, the image is cached in docker-compose
+after first build. If changes are made, it can be rebuild using `docker-compose build <container> --no-cache`.
+* To rebuild all containers on startup use the `--force-recreate` flag as such: `docker-compose up --force-recreate`
+* If a container persists still, use `docker-compose rm <container_id>` to remove it from the docker-compose cache and
+then recreate the containers.
