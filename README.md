@@ -204,3 +204,8 @@ there is information on how to handle notifications in Joinup.
 information on how to handle and create workflows.
 * In [Matomo analytics](docs/matomo.md) you find information about working with
 the web analytics platform used in Joinup.
+
+# Docker
+
+For information about getting started with Joinup on Docker, see the explicit
+[README file](docker/README.md).

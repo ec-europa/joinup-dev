@@ -1,8 +1,7 @@
 version: '2'
 services:
   web:
-    image: fpfis/httpd-php-dev:7.1
-    working_dir: /var/www/html
+    image: fpfis/httpd-php-dev
     ports:
       - 8080:8080
     volumes:
@@ -15,12 +14,32 @@ services:
       # For Mac users: sudo ifconfig en0 alias 10.254.254.254 255.255.255.0
       # For Linux users: sudo ip addr add 10.254.254.254/32 dev lo label lo:1
 
+# This will compile the CSS once when docker-compose is started.
+  sass:
+    image: pablofelix/sass
+    volumes:
+      - $PWD:/app/
+    entrypoint:
+      - watch
+      - -t compressed
+      - /app/web/themes/joinup/prototype/sass/app.sass
+      - /app/web/themes/joinup/css/style.min.css
+
   mysql:
     image: percona/percona-server:5.6
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-#    ports:
-#      - 3306:3306
+      MYSQL_USER: 'joinup'
+      MYSQL_PASSWORD: 'joinup'
+      MYSQL_DATABASE: 'joinup'
+
+  virtuoso:
+    image: tenforce/virtuoso
+    environment:
+    - SPARQL_UPDATE=true
+    - DBA_PASSWORD=dba
+    ports:
+      - "8890:8890"
 
   selenium:
     image: selenium/standalone-chrome-debug:3.11
@@ -32,48 +51,34 @@ services:
     expose:
     - '4444'
 
-  # This will compile the CSS once when docker-compose is started.
-  sass:
-    image: pablofelix/sass
-    volumes:
-    - $PWD:/app/
-    entrypoint:
-    - watch
-    - -t compressed
-    - /app/web/themes/joinup/prototype/sass/app.sass
-    - /app/web/themes/joinup/css/style.min.css
-
-  virtuoso:
-    image: tenforce/virtuoso
-    environment:
-    - SPARQL_UPDATE=true
-    - DBA_PASSWORD=dba
-    ports:
-      - "8890:8890"
-
   solr_published:
-    image: solr
+    build:
+      context: ./docker/solr
     ports:
      - "8982:8983"
     volumes:
       #- data:/opt/solr/server/solr/mycores
-      - ./resources/solr:/solr
+      - ./resources/solr/drupal_published:/opt/solr/server/drupal_published
     entrypoint:
-      - docker-entrypoint.sh
-      - solr-precreate
-      - drupal_published # Create a core named 'drupal_published'
+     - docker-entrypoint.sh
+     - solr-precreate
+     - drupal_published
+     - "/opt/docker-solr/configsets/drupal"
 
   solr_unpublished:
-    image: solr
+    build:
+      context: ./docker/solr
     ports:
      - "8983:8983"
     volumes:
      #- data:/opt/solr/server/solr/mycores
-    - ./resources/solr:/solr
+      - ./resources/solr/drupal_unpublished:/opt/solr/server/drupal_unpublished
     entrypoint:
      - docker-entrypoint.sh
      - solr-precreate
-     - drupal_unpublished # Create a core named 'drupal_unpublished'
+     - drupal_unpublished
+     - "/opt/docker-solr/configsets/drupal"
+
 #volumes:
 #  data:
 #### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
