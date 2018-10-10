@@ -41,18 +41,8 @@ The image used is [selenium/standalone-chrome-debug](https://hub.docker.com/r/se
 These two services are identical and are using a local Dockerfile that extends the default container
 [solr](https://hub.docker.com/_/solr/). This container is extended and comes with the search_api_solr configuration
 files installed in /opt/docker-solr/configsets/drupal/conf.
-According to the official documentation, to pre-create a core using a docker-compose file, the following entrypoint must
-be set:
-```yaml
-entrypoint:
-    - docker-entrypoint.sh
-    - solr-precreate
-    - my_core_name
-```
-The `solr-precreate` script however, takes a second parameter which is the default configuration files. The parameter
-expects a directory which contains a directory named `conf` and the configuration files are inside. According to the
-above, it is enough to add the the parent directory of the `conf` directory as a fourth entry in the `entrypoint:`
-array as such:
+Adding the directory of the `conf` directory as the last parameter of the solr-precreate, allows the files to be
+installed in the new core:
 ```yaml
 entrypoint:
     - docker-entrypoint.sh
@@ -72,12 +62,6 @@ From the project root, run
 ```bash
 docker-compose exec web "./vendor/bin/phing" "build-dev"
 docker-compose exec web "./vendor/bin/phing" "install-dev"
-```
-The `web` keyword is the name of the web container as declared in the docker-compose.yml file. The commands are split up
-as blank spaces are not recognized within a quoted string and are converted wrongly. The above is the same as running
-```bash
-docker-compose exec web ./vendor/bin/phing build-dev
-docker-compose exec web ./vendor/bin/phing install-dev
 ```
 #### Accessing the containers
 All containers are accessible through the command
