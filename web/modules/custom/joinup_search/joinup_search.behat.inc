@@ -114,7 +114,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
 
     $present = array_map('trim', $present);
-    Assert::assertEquals($present, $labels);
+    Assert::assertEquals($labels, $present);
   }
 
   /**

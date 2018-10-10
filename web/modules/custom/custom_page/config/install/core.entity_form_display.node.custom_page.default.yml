@@ -41,7 +41,8 @@ content:
     region: content
   field_cp_content_listing:
     weight: 3
-    settings: {  }
+    settings:
+      query_builder: true
     third_party_settings: {  }
     type: search_api_field_custom_page
     region: content

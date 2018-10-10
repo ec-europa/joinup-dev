@@ -2,14 +2,18 @@
 
 namespace Drupal\search_api_field\Plugin\Field\FieldWidget;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\facets\Entity\Facet;
 use Drupal\search_api_field\Plugin\Field\FieldType\SearchItem;
+use Drupal\search_api_field\Plugin\FilterPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -33,6 +37,13 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   protected $entityTypeManager;
 
   /**
+   * The filter plugin manager service.
+   *
+   * @var \Drupal\search_api_field\Plugin\FilterPluginManagerInterface
+   */
+  protected $filterPluginManager;
+
+  /**
    * Constructs a SearchWidget object.
    *
    * @param string $plugin_id
@@ -47,11 +58,14 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
    *   Any third party settings.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\search_api_field\Plugin\FilterPluginManagerInterface $filter_plugin_manager
+   *   The filter plugin manager service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, FilterPluginManagerInterface $filter_plugin_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
 
     $this->entityTypeManager = $entity_type_manager;
+    $this->filterPluginManager = $filter_plugin_manager;
   }
 
   /**
@@ -64,44 +78,47 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       $configuration['field_definition'],
       $configuration['settings'],
       $configuration['third_party_settings'],
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('plugin.manager.search_api_field.filter')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getTableHeader() {
+  public static function defaultSettings() {
     return [
-      $this->t('Field'),
-      $this->t('Weight'),
-      $this->t('Parent'),
-      $this->t('Label'),
-      ['data' => $this->t('Format'), 'colspan' => 3],
-    ];
+      'query_builder' => FALSE,
+    ] + parent::defaultSettings();
   }
 
   /**
-   * Get defined facet regions.
-   *
-   * @return array
-   *   List of facet regions.
+   * {@inheritdoc}
    */
-  protected function getRegions() {
-    $storage = $this->fieldDefinition->getFieldStorageDefinition();
-    $facet_regions = $storage->getSetting('facet_regions');
-    $regions = [];
-    foreach ($facet_regions as $id => $label) {
-      $regions[$id] = [
-        'title' => $label,
-        'message' => $this->t('No field is displayed.'),
-      ];
-    }
-    $regions['hidden'] = [
-      'title' => $this->t('Disabled', [], ['context' => 'Plural']),
-      'message' => $this->t('No field is hidden.'),
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element = parent::settingsForm($form, $form_state);
+
+    $element['query_builder'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable query builder.'),
+      '#description' => $this->t('Shows the query builder interface in the form.'),
+      '#default_value' => !empty($this->getSetting('query_builder')),
     ];
-    return $regions;
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+
+    if (!empty($this->getSetting('query_builder'))) {
+      $summary[] = $this->t('Query builder enabled.');
+    }
+
+    return $summary;
   }
 
   /**
@@ -188,6 +205,10 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
         ],
       ],
     ];
+
+    if (!empty($this->getSetting('query_builder'))) {
+      $element['wrapper']['query_builder'] = $this->buildQueryBuilder($item, $delta, $form, $form_state);
+    }
 
     $element['wrapper']['query_presets'] = [
       '#type' => 'textarea',
@@ -301,6 +322,42 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   }
 
   /**
+   * Returns the headers for the facet table.
+   */
+  protected function getTableHeader() {
+    return [
+      $this->t('Field'),
+      $this->t('Weight'),
+      $this->t('Parent'),
+      $this->t('Label'),
+      ['data' => $this->t('Format'), 'colspan' => 3],
+    ];
+  }
+
+  /**
+   * Get defined facet regions.
+   *
+   * @return array
+   *   List of facet regions.
+   */
+  protected function getRegions() {
+    $storage = $this->fieldDefinition->getFieldStorageDefinition();
+    $facet_regions = $storage->getSetting('facet_regions');
+    $regions = [];
+    foreach ($facet_regions as $id => $label) {
+      $regions[$id] = [
+        'title' => $label,
+        'message' => $this->t('No field is displayed.'),
+      ];
+    }
+    $regions['hidden'] = [
+      'title' => $this->t('Disabled', [], ['context' => 'Plural']),
+      'message' => $this->t('No field is hidden.'),
+    ];
+    return $regions;
+  }
+
+  /**
    * Build draggable facet row.
    *
    * @param \Drupal\facets\Entity\Facet $facet
@@ -391,12 +448,230 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
   }
 
   /**
+   * Builds the query builder form interface.
+   *
+   * @param \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item
+   *   The value for the specific delta of this field.
+   * @param int $delta
+   *   The order of this item in the array of sub-elements (0, 1, 2, etc.).
+   * @param array $form
+   *   The form structure where widgets are being attached to.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return array
+   *   The form structure for the query builder.
+   */
+  protected function buildQueryBuilder(SearchItem $item, int $delta, array &$form, FormStateInterface $form_state) {
+    $index = $this->getSearchApiIndex();
+    if (!$index) {
+      return [];
+    }
+
+    // Wrap everything with a container for ajax rebuilds.
+    $wrapper_id = Html::getUniqueId('query-builder-wrapper');
+    $element = [
+      '#type' => 'details',
+      '#title' => $this->t('Query builder'),
+      '#open' => TRUE,
+      '#attributes' => [
+        'id' => $wrapper_id,
+      ],
+    ];
+
+    $parents = $form['#parents'];
+    $field_name = $this->fieldDefinition->getName();
+    $field_state = static::getWidgetState($parents, $field_name, $form_state);
+    if (!isset($field_state['query_builder'][$delta])) {
+      $default_value = $item->get('value')->getValue();
+      $field_state['query_builder'][$delta] = $default_value['query_builder'] ?? ['filters' => []];
+      static::setWidgetState($parents, $field_name, $form_state, $field_state);
+    }
+
+    $filters = $field_state['query_builder'][$delta]['filters'];
+    $element['filters'] = [
+      '#type' => 'table',
+      '#header' => [
+        $this->t('Filter'),
+        $this->t('Weight'),
+        $this->t('Operations'),
+      ],
+      '#empty' => $this->t('Add a filter to configure it.'),
+      '#tabledrag' => [
+        [
+          'action' => 'order',
+          'relationship' => 'sibling',
+          'group' => 'table-sort-weight',
+        ],
+      ],
+    ];
+    foreach ($filters as $plugin_delta => $plugin_config) {
+      /** @var \Drupal\search_api_field\Plugin\FilterPluginInterface $plugin */
+      $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
+
+      $subform = &$element['filters'][$plugin_delta];
+      $subform = [];
+      $subform_state = SubformState::createForSubform($subform, $form, $form_state);
+
+      $element['filters'][$plugin_delta] = [
+        'plugin' => $plugin->buildConfigurationForm($subform, $subform_state),
+        'weight' => [
+          '#type' => 'weight',
+          '#default_value' => $plugin_delta,
+          '#attributes' => ['class' => ['table-sort-weight']],
+        ],
+        'remove_button' => [
+          '#type' => 'submit',
+          '#value' => $this->t('Remove filter'),
+          '#name' => 'remove_filter_' . $plugin_delta,
+          '#submit' => [[$this, 'submitRemoveFilter']],
+          '#ajax' => [
+            'callback' => [$this, 'ajaxUpdateQueryBuilder'],
+            'wrapper' => $wrapper_id,
+          ],
+          '#limit_validation_errors' => [],
+        ],
+        '#attributes' => ['class' => 'draggable', 'tabledrag-leaf'],
+      ];
+    }
+
+    $options = [];
+    foreach ($index->getFields() as $field_id => $field) {
+      foreach ($this->filterPluginManager->getDefinitionsForField($field) as $plugin_id => $plugin_definition) {
+        $options["{$field_id}:{$plugin_id}"] = $plugin_definition['label'] ?? $field->getLabel();
+      }
+    }
+
+    $element['field'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Available filters'),
+      '#options' => $options,
+      '#required' => FALSE,
+    ];
+    $element['add'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Add and configure filter'),
+      '#name' => 'add_filter',
+      '#submit' => [[$this, 'submitAddFilter']],
+      '#ajax' => [
+        'callback' => [$this, 'ajaxUpdateQueryBuilder'],
+        'wrapper' => $wrapper_id,
+      ],
+      '#limit_validation_errors' => [
+        array_merge(
+          $parents,
+          [$field_name, $delta, 'wrapper', 'query_builder']
+        ),
+      ],
+    ];
+
+    return $element;
+  }
+
+  /**
+   * Ajax callback to re-render the query builder wrapper.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return array
+   *   The form portion to render.
+   */
+  public function ajaxUpdateQueryBuilder(array $form, FormStateInterface $form_state) {
+    $button = $form_state->getTriggeringElement();
+    $wrapper_parents = array_slice($button['#array_parents'], 0, array_search('query_builder', $button['#array_parents'], TRUE));
+    $element = NestedArray::getValue($form, $wrapper_parents);
+
+    return $element['query_builder'];
+  }
+
+  /**
+   * Submit handler for the add filter button.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function submitAddFilter(array $form, FormStateInterface $form_state) {
+    $button = $form_state->getTriggeringElement();
+    $wrapper = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
+
+    // Extract field id and plugin id from the selected option. Since field ids
+    // cannot contain special characters, it's safe to explode on the first
+    // colon.
+    list($field_id, $plugin_id) = explode(':', $form_state->getValue($wrapper['field']['#parents']), 2);
+
+    // Extract element and widget elements.
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -3));
+    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
+
+    $field_name = $widget['#field_name'];
+    $parents = $widget['#field_parents'];
+    $field_state = static::getWidgetState($parents, $field_name, $form_state);
+    // Add the selected filter to the list for this specific delta.
+    $field_state['query_builder'][$element['#delta']]['filters'][] = [
+      'plugin' => $plugin_id,
+      'field' => $field_id,
+    ];
+    static::setWidgetState($parents, $field_name, $form_state, $field_state);
+
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Submit handler for the remove filter button.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function submitRemoveFilter(array $form, FormStateInterface $form_state) {
+    $button = $form_state->getTriggeringElement();
+    $filter = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
+    $plugin_delta = end($filter['#array_parents']);
+
+    // Extract element and widget elements.
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -5));
+    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -6));
+
+    $field_name = $widget['#field_name'];
+    $parents = $widget['#field_parents'];
+    $field_state = static::getWidgetState($parents, $field_name, $form_state);
+    unset($field_state['query_builder'][$element['#delta']]['filters'][$plugin_delta]);
+    static::setWidgetState($parents, $field_name, $form_state, $field_state);
+
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Gets the search API index configured in the field storage.
+   *
+   * @return \Drupal\search_api\IndexInterface|null
+   *   The index entity. Null if not found.
+   */
+  protected function getSearchApiIndex() {
+    $index_id = $this->fieldDefinition->getSetting('index');
+    /** @var \Drupal\search_api\IndexInterface $index */
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load($index_id);
+
+    return $index;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     if (empty($values)) {
       return $values;
     }
+
+    $field_name = $this->fieldDefinition->getName();
+    $field_state = static::getWidgetState($form['#parents'], $field_name, $form_state);
+    $widget = NestedArray::getValue($form_state->getCompleteForm(), $field_state['array_parents']);
 
     // Clean the values, skipping submitted button values and placing everything
     // under a 'value' array element which will be serialized.
@@ -414,7 +689,27 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       $cleaned_values[$delta]['value']['enabled'] = $values[$delta]['enabled'];
       $cleaned_values[$delta]['value']['query_presets'] = $values[$delta]['wrapper']['query_presets'];
       $cleaned_values[$delta]['value']['limit'] = $values[$delta]['wrapper']['limit'];
+
+      if (!empty($values[$delta]['wrapper']['query_builder']['filters'])) {
+        $filter_values = $values[$delta]['wrapper']['query_builder']['filters'];
+        // Re-order values in case JS is not used.
+        uasort($filter_values, ['Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
+
+        foreach (array_keys($filter_values) as $plugin_delta) {
+          $plugin_config = $field_state['query_builder'][$delta]['filters'][$plugin_delta];
+          /** @var \Drupal\search_api_field\Plugin\FilterPluginInterface $plugin */
+          $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
+
+          $subform = $widget[$delta]['wrapper']['query_builder']['filters'][$plugin_delta]['plugin'];
+          $subform_state = SubformState::createForSubform($subform, $form_state->getCompleteForm(), $form_state);
+          $plugin->submitConfigurationForm($subform, $subform_state);
+
+          // Don't specify a key, so that plugins are re-indexed.
+          $cleaned_values[$delta]['value']['query_builder']['filters'][] = $plugin->getConfiguration();
+        }
+      }
     }
+
     return $cleaned_values;
   }
 

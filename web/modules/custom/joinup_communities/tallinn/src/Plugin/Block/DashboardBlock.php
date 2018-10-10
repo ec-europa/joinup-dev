@@ -69,7 +69,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('tallinn.dashbord.access')
+      $container->get('tallinn.dashboard.access')
     );
   }
 
@@ -170,6 +170,12 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
               ],
               '#value' => $this->t('Download csv data'),
             ],
+            '1.1.1.3' => [
+              '#type' => 'item',
+              '#markup' => $this->t('The above-represented data are provided in tabular format.'),
+              '#prefix' => '<div class="csv-download-text">',
+              '#suffix' => '</div>',
+            ],
           ],
           '1.1.2' => [
             '#type' => 'container',
@@ -264,7 +270,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
       switch ($select) {
         case 1:
           $options = [
-            'All members' => $this->t('All member states'),
+            'All members' => $this->t('EU + EFTA'),
           ] + Tallinn::COUNTRIES;
           $label = '';
           break;
@@ -277,7 +283,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
         case 3:
           $options = [
             '' => $this->t('No selection'),
-            'All members' => $this->t('All member states'),
+            'All members' => $this->t('EU + EFTA'),
           ] + Tallinn::COUNTRIES;
           $label = '';
           break;
