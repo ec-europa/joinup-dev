@@ -112,3 +112,10 @@ function joinup_core_post_update_install_piwik2matomo() {
 function joinup_core_post_update_install_spain_ctt() {
   \Drupal::service('module_installer')->install(['spain_ctt']);
 }
+
+/**
+ * Enable the joinup_sparql module.
+ */
+function joinup_core_post_update_install_joinup_sparql() {
+  \Drupal::service('module_installer')->install(['joinup_sparql']);
+}
