@@ -90,14 +90,14 @@ display:
               empty_column: false
               responsive: ''
             created:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             state:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''

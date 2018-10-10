@@ -206,7 +206,8 @@ content:
     region: content
   field_collection_content:
     weight: 1
-    settings: {  }
+    settings:
+      query_builder: false
     third_party_settings: {  }
     type: search_api_field_default
     region: content

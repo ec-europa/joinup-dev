@@ -67,7 +67,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when an expected field is not present.
    *
-   * @Then (the following )fields should be present :fields
+   * @Then (the following )field(s) should be present :fields
    */
   public function assertFieldsPresent($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
@@ -98,7 +98,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Then (the following )fields should not be present :fields
+   * @Then (the following )field(s) should not be present :fields
    */
   public function assertFieldsNotPresent($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
