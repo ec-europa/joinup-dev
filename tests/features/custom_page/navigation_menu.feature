@@ -325,7 +325,7 @@ Feature: Navigation menu for custom pages
     And I drag the "Internal frame" table row up
     And I drag the "Internal frame" table row to the right
     And I drag the "Internal frame" table row to the right
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
       | Overview           |                    |
@@ -432,7 +432,7 @@ Feature: Navigation menu for custom pages
     And I go to the "Table of contents outline cached" collection
     And I click the contextual link "Edit menu" in the "Left sidebar" region
     When I drag the "TOCO cached 1-1" table row to the left
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title           | parent |
       | Overview        |        |
       | Members         |        |
