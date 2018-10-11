@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f29f12fca4714b50c441ec8c8fe661de",
+    "content-hash": "b28166b56f6e0bcad33f185bd3f11d2c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1987,7 +1987,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2241,8 +2245,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2710,6 +2714,10 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -5755,11 +5763,6 @@
                 "semsol/arc2": "~2.2"
             },
             "type": "library",
-            "extra": {
-                "patches_applied": {
-                    "Http client configuration parameters. @see https://github.com/njh/easyrdf/pull/304": "https://patch-diff.githubusercontent.com/raw/njh/easyrdf/pull/304.patch"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "EasyRdf\\": "lib"
@@ -10768,11 +10771,6 @@
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
-            "extra": {
-                "patches_applied": {
-                    "Fatal error: class not found @see https://github.com/pfrenssen/coder/issues/14": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/15.patch"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\": "coder_sniffer/Drupal/",
@@ -11336,8 +11334,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",
