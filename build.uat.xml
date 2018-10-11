@@ -97,6 +97,9 @@ if (php_sapi_name() !== 'cli') {
 }
 </append>
 
+        <!-- Allow to disable config_readonly by creating a `disable-config-readonly` file in the project root. -->
+        <phingcall target="configure-config-readonly-disabling" />
+
         <!-- services.yml -->
 
         <!-- Create services.yml. Override any existing file. -->
@@ -105,6 +108,30 @@ if (php_sapi_name() !== 'cli') {
         <!-- Disable persistent session cookies in services.yml. -->
         <phingcall target="disable-persistent-session-cookies" />
 
+    </target>
+
+    <!-- Allow to disable config_readonly by creating a file named `disable-config-readonly` in the project root. -->
+    <target name="configure-config-readonly-disabling"
+            description="Allow to disable config_readonly by creating a file named `disable-config-readonly` in the project root."
+            depends="enable-dev-settings, writable-settings-folder, writable-settings-local-php">
+
+        <!-- Avoid duplicates in settings.local.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$settings\['config_readonly'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <!-- Add the settings.local.php setting. -->
+        <append destFile="${website.settings.local.php}" text="$settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');${line.separator}" />
     </target>
 
 </project>

@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\UserTrait;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -17,6 +18,7 @@ use PHPUnit\Framework\Assert;
 class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityTrait;
+  use UserTrait;
 
   /**
    * Asserts that only the expected chips are shown in the page.
@@ -77,6 +79,18 @@ class JoinupCoreSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function visitTaxonomyTermPage(string $name) {
     $term = static::getEntityByLabel('taxonomy_term', $name);
     $this->visitPath($term->toUrl()->toString());
+  }
+
+  /**
+   * Asserts the content type of the response from the server.
+   *
+   * @param string $content_type
+   *   The expected content type.
+   *
+   * @Then the content type of the response should be :content_type
+   */
+  public function assertResponseContentType($content_type) {
+    $this->assertSession()->responseHeaderEquals('Content-Type', $content_type);
   }
 
 }
