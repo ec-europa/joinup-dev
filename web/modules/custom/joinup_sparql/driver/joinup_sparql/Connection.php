@@ -7,6 +7,9 @@ namespace Drupal\Driver\Database\joinup_sparql;
 use Drupal\Driver\Database\sparql\Connection as BaseConnection;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Exception\SparqlQueryException;
+use EasyRdf\Http;
+use EasyRdf\Http\Client as HttpClient;
+use EasyRdf\Sparql\Client;
 use EasyRdf\Sparql\Result;
 
 /**
@@ -53,6 +56,15 @@ class Connection extends BaseConnection implements ConnectionInterface {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public static function open(array &$connection_options = []): Client {
+    $client = new HttpClient();
+    $client->setConfig(['timeout' => '30']);
+    Http::setDefaultHttpClient($client);
+    return parent::open($connection_options);
+  }
 }
 
 /**
