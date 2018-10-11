@@ -29,12 +29,14 @@ trait OgTrait {
    *   - OgMembershipInterface::STATE_ACTIVE
    *   - OgMembershipInterface::STATE_PENDING
    *   - OgMembershipInterface::STATE_BLOCKED.
+   * @param int $created
+   *   (Optional) The created time of the membership.
    *
    * @throws \Exception
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], $state = NULL) {
+  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], $state = NULL, int $created = NULL) {
     if (!Og::isGroup($group->getEntityTypeId(), $group->bundle())) {
       throw new \Exception("The {$group->label()} is not a group.");
     }
@@ -52,6 +54,9 @@ trait OgTrait {
       $membership = OgMembership::create()
         ->setOwner($user)
         ->setGroup($group);
+    }
+    if (!empty($created)) {
+      $membership->setCreatedTime($created);
     }
     if (!empty($state)) {
       $membership->setState($state);
@@ -254,8 +259,8 @@ trait OgTrait {
     }
 
     $state = !empty($values['state']) ? $values['state'] : NULL;
-
-    $this->subscribeUserToGroup($member, $group, $roles, $state);
+    $timestamp = !empty($values['created']) ? strtotime($values['created']) : NULL;
+    $this->subscribeUserToGroup($member, $group, $roles, $state, $timestamp);
   }
 
   /**

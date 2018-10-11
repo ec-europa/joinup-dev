@@ -45,6 +45,7 @@ dependencies:
   - joinup_newsletter
   - joinup_notification
   - joinup_search
+  - joinup_sparql
   - joinup_subscription
   - joinup_user
   - joinup_video
