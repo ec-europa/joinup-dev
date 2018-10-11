@@ -271,7 +271,7 @@ Feature: Navigation menu for custom pages
     And I go to the "Ergonomic backpacks" collection
     And I click the contextual link "Edit menu" in the "Left sidebar" region
     # The "About" page has been moved back to first level.
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -282,7 +282,7 @@ Feature: Navigation menu for custom pages
       | External frame     | Types of backpacks |
       | Internal frame     |                    |
     When I drag the "External frame" table row to the left
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -293,7 +293,7 @@ Feature: Navigation menu for custom pages
       | External frame     |                    |
       | Internal frame     |                    |
     When I drag the "Internal frame" table row to the right
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -305,7 +305,7 @@ Feature: Navigation menu for custom pages
       | Internal frame     | External frame     |
     # Maximum indentation level is one.
     When I drag the "Internal frame" table row to the right
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -318,7 +318,7 @@ Feature: Navigation menu for custom pages
     # Links that don't refer to a node cannot be nested.
     When I drag the "Members" table row to the right
     And I drag the "About" table row to the right
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -331,7 +331,7 @@ Feature: Navigation menu for custom pages
     # But they can still be re-ordered up and down.
     When I drag the "Overview" table row down
     When I drag the "About" table row up
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
       | Overview           |                    |
@@ -344,7 +344,7 @@ Feature: Navigation menu for custom pages
     # Links pointing to nodes can be moved too.
     When I drag the "Bodypack" table row down
     And I drag the "Bodypack" table row down
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
       | Overview           |                    |

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Cache\Cache;
@@ -13,6 +15,7 @@ use Drupal\search_api\ParseMode\ParseModePluginManager;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
+use Drupal\search_api_field\Plugin\FilterPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -51,6 +54,13 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
   protected $request;
 
   /**
+   * The filter plugin manager.
+   *
+   * @var \Drupal\search_api_field\Plugin\FilterPluginManagerInterface
+   */
+  private $filterPluginManager;
+
+  /**
    * Constructs a SearchFormatter object.
    *
    * @param string $plugin_id
@@ -73,11 +83,14 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    *   The current request object.
    * @param \Drupal\search_api\ParseMode\ParseModePluginManager $parse_mode_manager
    *   The query parse mode manager.
+   * @param \Drupal\search_api_field\Plugin\FilterPluginManagerInterface $filter_plugin_manager
+   *   The filter plugin manager.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, Request $request, ParseModePluginManager $parse_mode_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, Request $request, ParseModePluginManager $parse_mode_manager, FilterPluginManagerInterface $filter_plugin_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
 
     $this->entityTypeManager = $entity_type_manager;
+    $this->filterPluginManager = $filter_plugin_manager;
     $this->parseModeManager = $parse_mode_manager;
     $this->request = $request;
   }
@@ -96,14 +109,15 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       $configuration['third_party_settings'],
       $container->get('entity_type.manager'),
       $container->get('request_stack')->getCurrentRequest(),
-      $container->get('plugin.manager.search_api.parse_mode')
+      $container->get('plugin.manager.search_api.parse_mode'),
+      $container->get('plugin.manager.search_api_field.filter')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $entity = $items->getEntity();
     $field_definition = $this->fieldDefinition;
 
@@ -147,8 +161,12 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       $this->applyPresets($query, $settings['query_presets']);
     }
 
+    if (!empty($settings['query_builder'])) {
+      $this->applyQueryBuilderConfiguration($query, $settings['query_builder']);
+    }
+
     $hooks = [
-      'search_api_field_',
+      'search_api_field',
       'search_api_field_' . $field_definition->getName(),
     ];
     foreach ($hooks as $hook) {
@@ -172,7 +190,10 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
     }
     $render['#cache'] = [
       'tags' => $tags,
-      'contexts' => ['url.path'],
+      'contexts' => [
+        'url.path',
+        'user',
+      ],
     ];
 
     // Add some information about the field.
@@ -199,7 +220,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    * @return array
    *   The render array for the search results.
    */
-  protected function renderSearchResults(ResultSetInterface $result, $limit) {
+  protected function renderSearchResults(ResultSetInterface $result, $limit): array {
     $view_mode_settings = $this->fieldDefinition->getSetting('view_modes');
 
     $results = [];
@@ -289,7 +310,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    * @param string $presets
    *   The presets string.
    */
-  protected function applyPresets(QueryInterface $query, $presets) {
+  protected function applyPresets(QueryInterface $query, string $presets): void {
     $list = explode("\n", $presets);
     $list = array_map('trim', $list);
     $list = array_filter($list, 'strlen');
@@ -316,6 +337,26 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
         $query->addCondition($field, $value, $operator);
       }
     }
+  }
+
+  /**
+   * Applies the query builder filters configured in the field instance.
+   *
+   * @param \Drupal\search_api\Query\QueryInterface $query
+   *   The search query object.
+   * @param array $configuration
+   *   The query builder configuration.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   */
+  protected function applyQueryBuilderConfiguration(QueryInterface $query, array $configuration): void {
+    $or = $query->createConditionGroup('OR');
+    foreach ($configuration['filters'] as $delta => $plugin_config) {
+      /** @var \Drupal\search_api_field\Plugin\FilterPluginInterface $plugin */
+      $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
+      $plugin->applyFilter($or);
+    }
+    $query->addConditionGroup($or);
   }
 
 }
