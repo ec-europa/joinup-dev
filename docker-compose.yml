@@ -9,7 +9,8 @@ services:
       - .:/var/www/html # Non Mac users.
       # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
     environment:
-      XDEBUG_CONFIG: "remote_enable=1 remote_host=172.19.0.1 remote_port=9000 idekey=PHPSTORM remote_autostart=1"
+      XDEBUG_CONFIG: "remote_enable=1 xdebug.remote_connect_back=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=0"
+      PHP_XDEBUG_ENABLED: 1
       PHP_IDE_CONFIG: "serverName=Docker"
       PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -S mail:1025"
       # For Xdebug setup, run this command in the terminal:
