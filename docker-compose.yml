@@ -9,14 +9,14 @@ services:
       - .:/var/www/html # Non Mac users.
       # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
     environment:
-      XDEBUG_CONFIG: "remote_enable=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=1"
+      XDEBUG_CONFIG: "remote_enable=1 remote_host=172.19.0.1 remote_port=9000 idekey=PHPSTORM remote_autostart=1"
       PHP_IDE_CONFIG: "serverName=Docker"
       PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -S mail:1025"
       # For Xdebug setup, run this command in the terminal:
       # For Mac users: sudo ifconfig en0 alias 10.254.254.254 255.255.255.0
       # For Linux users: sudo ip addr add 10.254.254.254/32 dev lo label lo:1
 
-# This will compile the CSS once when docker-compose is started.
+  # This will compile the CSS once when docker-compose is started.
   sass:
     image: pablofelix/sass
     volumes:
@@ -46,16 +46,13 @@ services:
       - "8890:8890"
 
   mail:
-      image: mailhog/mailhog
-      ports:
-        - "1025:1025"
-        - "8025:8025"
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
   selenium:
     image: selenium/standalone-chrome-debug:3.11
-    environment:
-      - DISPLAY=:99
-      - SE_OPTS=-debug
     ports:
       - "5900:5900"
     expose:
