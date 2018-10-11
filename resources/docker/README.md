@@ -85,6 +85,18 @@ Please, note that the volume names, as with the docker services, will be prefixe
 project lies within e.g. if you install the project on the `myproject` folder, the `mysql` volume, will be named
 `myproject_mysql`.
 
+## XDEBUG
+The xdebug configuration is set up by default in the web container. The default configuration sets up the port to 9000
+and the default remote host ip to `172.19.0.1`. This is the IP assigned by default by docker to the host machine so that
+containers can communicate with it. To verify the ip of your host you can inspect the network of your group of
+containers. The following guide should help you through the process:
+* Use `docker network ls` to list all networks. The network for Joinup should be named by default as `joinup_default`.
+Note that the network will not exist before docker-compose builds the file.
+* Use `docker network inspect <network_name>` where `<network_name>` is the name of your network assigned by
+docker-compose. In this case, it should be `docker network inspect joinup_default`.
+* Search for the top level `IPAM` index and spot the `Gateway` Ip option. This is the Ip of the host machine for the
+containers.
+
 ## Useful commands.
 * When a service is not based on an image, but is built through a Dockerfile, the image is cached in docker-compose
 after first build. If changes are made, it can be rebuild using `docker-compose build <container> --no-cache`.
