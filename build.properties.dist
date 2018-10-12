@@ -30,7 +30,9 @@ drupal.admin.email = admin@example.com
 drupal.demo.users = administrator
 
 # The base URL. This is used for doing functional tests in Behat and PHPUnit.
-drupal.base_url = http://localhost
+# 'web' is the hostname of the apache docker container. For local development, this should be
+# overridden.
+drupal.base_url = http://web:8080
 
 # The namespace of the sparql connection class.
 sparql.namespace = Drupal\\Driver\\Database\\sparql
@@ -85,11 +87,15 @@ behat.base_url = ${drupal.base_url}
 # The browser to use for testing, either 'firefox' or 'chrome'.
 behat.browser_name = chrome
 
+# The webdriver host.  'selenium' is the hostname of the apache docker container.
+# For local development, this should be overridden.
+behat.webdriver_host = selenium
+
 # The port of the webdriver host (e.g. Selenium or PhantomJS).
 behat.webdriver_port = 4444
 
 # The URL of the webdriver host (e.g. Selenium or PhantomJS).
-behat.webdriver_url = http://localhost:${behat.webdriver_port}/wd/hub
+behat.webdriver_url = http://${behat.webdriver_host}:${behat.webdriver_port}/wd/hub
 
 # The location to search for Behat subcontexts.
 behat.subcontexts.path = ${website.modules.dir}
