@@ -59,6 +59,10 @@ services:
       - "5900:5900"
     expose:
       - "4440"
+    volumes:
+      # Needed due to chrome having issues with memory usage. Firefox does not face this issue.
+      # @see: https://github.com/elgalu/docker-selenium/issues/20
+      - "/dev/shm:/dev/shm"
 
   solr_published:
     build:
