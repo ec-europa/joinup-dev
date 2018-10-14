@@ -6,51 +6,13 @@
 
 ## Containers
 To run Joinup in containers, we are using the following images:
-
-#### fpfis/httpd-php-dev:7.1
-This image is maintained by the fpfis team. More information can be
-found in the [github repo](https://github.com/fpfis/httpd-php-dev/).
-
-Default settings:
-* Project root: `/var/www/html`.
-* Web root: `/var/www/html/web`.
-* docker.web.port: 8080
-
-#### sass
-The image used is [pablofelix/sass](https://hub.docker.com/r/pablofelix/sass/) and will compile the sass files during the build up.
-The container exits after compilation.
-
-#### mysql
-The image used is percona/percona-server:5.6
-The variables to be set are:
-* MYSQL_ALLOW_EMPTY_PASSWORD
-* MYSQL_USER
-* MYSQL_PASSWORD
-* MYSQL_DATABASE
-
-The credentials should be the same as those declared in the settings.php file.
-
-#### virtuoso
-The image used is [tenforce/virtuoso](https://hub.docker.com/r/tenforce/virtuoso/)
-The image comes with the SPARQL_UPDATE permission already set and the default database password.
-
-#### selenium
-The image used is [selenium/standalone-chrome-debug](https://hub.docker.com/r/selenium/standalone-chrome-debug/)
-
-#### solr_published and solr_unpublished
-These two services are identical and are using a local Dockerfile that extends the default container
-[solr](https://hub.docker.com/_/solr/). This container is extended and comes with the search_api_solr configuration
+* [fpfis/httpd-php-dev:7.1](https://github.com/fpfis/httpd-php-dev/)
+* [pablofelix/sass](https://hub.docker.com/r/pablofelix/sass/)
+* [percona/percona-server:5.6](https://hub.docker.com/r/percona/percona-server/)
+* [tenforce/virtuoso](https://hub.docker.com/r/tenforce/virtuoso/)
+* [selenium/standalone-chrome-debug](https://hub.docker.com/r/selenium/standalone-chrome-debug/)
+* [solr:6](https://hub.docker.com/_/solr/). This container is extended and comes with the search_api_solr configuration
 files installed in /opt/docker-solr/configsets/drupal/conf.
-Adding the directory of the `conf` directory as the last parameter of the solr-precreate, allows the files to be
-installed in the new core:
-```yaml
-entrypoint:
-    - docker-entrypoint.sh
-    - solr-precreate
-    - my_core_name
-    - /opt/docker-solr/configsets/drupal
-```
-Note that the `conf` directory is not included in the entry.
 
 ## How to run
 
@@ -60,9 +22,10 @@ From the project root, run `docker-compose up`. This command will download, buil
 #### Install the website
 From the project root, run
 ```bash
-docker-compose exec web "./vendor/bin/phing" "build-dev"
-docker-compose exec web "./vendor/bin/phing" "install-dev"
+docker-compose exec --user [user] web "./vendor/bin/phing" "build-dev"
+docker-compose exec --user [user] web "./vendor/bin/phing" "install-dev"
 ```
+
 #### Accessing the containers
 All containers are accessible through the command
 ```bash
@@ -71,12 +34,16 @@ docker-compose exec my_container_name "/bin/bash"
 Depending on the container (and its base image), it might be that `/bin/bash` is not available. In that case, `/bin/sh`
 and `sh` are good substitutes.
 
+*IMPORTANT:* Depending on your configuration, it might be that you have to change the ownership of all the files in
+order to have a successful installation and to be able to run the tests properly. For a possible solution, please, refer
+to the section [Handling permissions](#handling-permissions)
+
 #### Accessing the volumes
 Some containers, like solr, create volumes that sync data from and towards the container. These volumes are constructed
 using the top-level `volumes` entry in the docker-compose file and inherit all properties from the containers.
 
 These volumes help retain the data between builds. The since no directory is defined, the local driver will set the
-default directory, which is `/var/lib/docker/volumes/<volume identifier>`.
+default directory, which is `/var/lib/docker/volumes/[volume identifier]`.
 
 This directory is owned by the user that creates it within the container so the directory listing will have to run with
 root privileges.
@@ -92,15 +59,54 @@ In order to get XDEBUG working, run the following command depending on your envi
 * Mac: `sudo ifconfig en0 alias 10.254.254.254 255.255.255.0`
 
 The web container is set to use `10.254.254.254` as a remote host for xdebug and the port 9000.
+
 #### PhpStorm
 For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
 that the mappings have to be set.
 After you have created the server under `File | Settings | Languages & Frameworks | PHP | Servers`, enable the `Use path
 mappings` option and set the absolute path on the server for your project root. By default, this is `/var/www/html`.
 
-## Useful commands.
+## Useful commands
 * When a service is not based on an image, but is built through a Dockerfile, the image is cached in docker-compose
 after first build. If changes are made, it can be rebuild using `docker-compose build <container> --no-cache`.
 * To rebuild all containers on startup use the `--force-recreate` flag as such: `docker-compose up --force-recreate`
 * If a container persists still, use `docker-compose rm <container_id>` to remove it from the docker-compose cache and
 then recreate the containers.
+
+## Override default configuration
+In your local environment, on the project root, you can create a second docker-compose yml file called
+`docker-compose.local.yml`. This file is ignored by git. In that file, you can set up services overrides and setup your
+own settings on the environment. Below is an example of the docker-compose.override.yml that allows the user that runs
+apache to have its UID and GID changed (the group's id changes) and sets up the server to run on port 80.
+```yaml
+version: '2'
+services:
+  web:
+    build:
+      args:
+        DAEMON_UID: "1000"
+        DAEMON_GID: "1000"
+    expose:
+      - "80"
+    ports:
+      - "80:80"
+    environment:
+      PORT: "80"
+```
+The rest of the service will get the properties from the original composer file.
+
+To run the containers by reading all overrides, use the following command: `docker-composer -f docker-compose.yml
+-f docker-compose.local.yml up`. Please, note, that the last file in the command has bigger priority. More than one
+overrides can be provided.
+
+## Handling permissions
+The web container is having the apache service configured to run as user www-data and group www-data. By default, both
+the UID and GID of this user/group is 82. Docker does not offer a solution for mimicking a user from the host to the
+container so it might be a bit annoying when testing live while developing.
+
+As a solution the [Dockerfile](web/Dockerfile) is offering a way to change the UID and GID of the www-data user while
+the original docker container (fpfis/httpd-php-dev) is offering a way to override the user and group itself. While a new
+user is not created, if, for example your host user, owner of the files, is having the UID 1000 and its group GID is
+also 1000, you can override these settings and allow all files to be owned by you. Like this, ownership and permission
+issues related to the containers should not occur. The way to do this is described above in the section '[Override
+default configuration](#override-default-configuration)'.
