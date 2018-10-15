@@ -1,0 +1,9 @@
+version: '2'
+services:
+  mysql:
+    volumes:
+      - "./tmp/dump.sql:/docker-entrypoint-initdb.d/dump.sql"
+
+  virtuoso:
+    volumes:
+      - "./tmp/dump-virtuoso:/my/path/to/the/virtuoso/db/toLoad"
