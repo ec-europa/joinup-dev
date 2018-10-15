@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1c225fd97fa1dec863a966069de86ab",
+    "content-hash": "74382c575a4bac0a2ad2b834f34c9651",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3780,51 +3780,6 @@
             }
         },
         {
-            "name": "drupal/message_history",
-            "version": "dev-1.x",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/message_history",
-                "reference": "0593cdc6f022805e7799f1d2b6db66e1f9db6d71"
-            },
-            "require": {
-                "drupal/core": "*",
-                "drupal/message": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1498223043",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Stefan Borchert (stBorchert)",
-                    "homepage": "https://www.drupal.org/u/stborchert",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "Records which user has read which message.",
-            "homepage": "https://drupal.org/project/message_history",
-            "support": {
-                "source": "https://cgit.drupalcode.org/message_history",
-                "issues": "https://drupal.org/project/issues/message_history"
-            },
-            "time": "2017-06-23T13:01:37+00:00"
-        },
-        {
             "name": "drupal/message_notify",
             "version": "1.0.0-beta1",
             "source": {
@@ -3950,9 +3905,18 @@
                 "reference": "b511ebbfa22a9c17f4c323697d3c87312fd09a2f"
             },
             "require": {
-                "drupal/core": "*",
-                "drupal/message_history": "*",
-                "drupal/message_private": "*"
+                "drupal/core": "^8.6",
+                "drupal/message": "^1.0",
+                "drupal/message_notify": "^1.0",
+                "drupal/message_private": "^1.0",
+                "drupal/message_ui": "^1.0",
+                "php": "^5.5|^7.0"
+            },
+            "require-dev": {
+                "composer/installers": "^1.2",
+                "drupal-composer/drupal-scaffold": "^2.5",
+                "drupal/coder": "^8.2",
+                "webflo/drupal-core-require-dev": "~8.5"
             },
             "type": "drupal-module",
             "extra": {
@@ -3960,12 +3924,23 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta7+0-dev",
-                    "datestamp": "1537928580",
+                    "version": "8.x-1.0-beta8+0-dev",
+                    "datestamp": "1539479884",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "installer-paths": {
+                    "../build/core": [
+                        "type:drupal-core"
+                    ],
+                    "../build/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "../build/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ]
                 },
                 "patches_applied": {
                     "Multiple problems with module configuration @see https://www.drupal.org/project/message_thread/issues/3002801": "https://www.drupal.org/files/issues/2018-09-30/3002801-4.patch",
@@ -3984,8 +3959,8 @@
                     "homepage": "https://www.drupal.org/user/93571"
                 }
             ],
-            "description": "Message Thread",
-            "homepage": "https://www.drupal.org/project/message_thread",
+            "description": "Adds Message threads to private messaging.",
+            "homepage": "https://www.drupal.org/project/message_private",
             "support": {
                 "source": "http://cgit.drupalcode.org/message_thread"
             },
@@ -4793,7 +4768,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha10",
-                    "datestamp": "1536225484",
+                    "datestamp": "1539069780",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4931,6 +4906,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "lockMayBeAvailable always returns FALSE @see https://www.drupal.org/project/redis/issues/2996655": "https://www.drupal.org/files/issues/2018-10-01/2996655-16-includes-3002634-2.patch"
                 }
             },
             "autoload": {
@@ -4986,7 +4964,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1514109785",
+                    "datestamp": "1519387684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5066,7 +5044,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.2",
-                    "datestamp": "1509546906",
+                    "datestamp": "1529312013",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11421,6 +11399,50 @@
             "time": "2018-04-17T17:48:19+00:00"
         },
         {
+            "name": "drupal/message_history",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_history",
+                "reference": "0593cdc6f022805e7799f1d2b6db66e1f9db6d71"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/message": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1498223043",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Borchert (stBorchert)",
+                    "homepage": "https://www.drupal.org/u/stborchert",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Records which user has read which message.",
+            "homepage": "https://drupal.org/project/message_history",
+            "support": {
+                "source": "https://cgit.drupalcode.org/message_history",
+                "issues": "https://drupal.org/project/issues/message_history"
+            }
+        },
+        {
             "name": "drupal/renderviz",
             "version": "1.0.0-alpha1",
             "source": {
@@ -11783,16 +11805,16 @@
         },
         {
             "name": "lovers-of-behat/table-extension",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LoversOfBehat/TableExtension.git",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef"
+                "reference": "c178ebfc96c36c8aca9b313959733534b4b11a7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LoversOfBehat/TableExtension/zipball/89b48b31768eac9f21f857ab00ac43715fb7a7ef",
-                "reference": "89b48b31768eac9f21f857ab00ac43715fb7a7ef",
+                "url": "https://api.github.com/repos/LoversOfBehat/TableExtension/zipball/c178ebfc96c36c8aca9b313959733534b4b11a7c",
+                "reference": "c178ebfc96c36c8aca9b313959733534b4b11a7c",
                 "shasum": ""
             },
             "require": {
@@ -11825,7 +11847,7 @@
                 }
             ],
             "description": "Behat extension to inspect HTML tables",
-            "time": "2018-06-27T06:53:23+00:00"
+            "time": "2018-10-08T08:43:00+00:00"
         },
         {
             "name": "mikey179/vfsStream",
