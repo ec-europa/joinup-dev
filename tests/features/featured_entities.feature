@@ -72,14 +72,14 @@ Feature: Featuring content site-wide
     When I click the contextual link "Feature" in the "Ionizing radiation types" tile
     Then I should see the success message "<label> Ionizing radiation types has been set as featured content."
     # Content should be marked as featured only in "global" pages.
-    But the "Ionizing radiation types" tile should not be marked as featured
+    But the "Ionizing radiation types" <content type> tile should not be marked as featured
 
     When I click "Keep up to date" in the "Header menu" region
     Then the "Ionizing radiation types" tile should be marked as featured
 
     When I click the contextual link "Remove from featured" in the "Ionizing radiation types" tile
     Then I should see the success message "<label> Ionizing radiation types has been removed from the featured contents."
-    And the "Ionizing radiation types" tile should not be marked as featured
+    And the "Ionizing radiation types" <content type> tile should not be marked as featured
 
     Examples:
       | content type | label      |
@@ -112,7 +112,7 @@ Feature: Featuring content site-wide
     When I am logged in as a moderator
     And I click "<header link>"
     Then I should see the contextual link "Feature" in the "<unfeatured>" tile
-    And the "<unfeatured>" tile should not be marked as featured
+    And the "<unfeatured>" <content type> tile should not be marked as featured
     And I should see the contextual link "Remove from featured" in the "<featured>" tile
     And the "<featured>" tile should be marked as featured
     But I should not see the contextual link "Remove from featured" in the "<unfeatured>" tile
@@ -122,11 +122,21 @@ Feature: Featuring content site-wide
     Then I should see the success message "<label> <unfeatured> has been set as featured content."
     And the "<featured>" tile should be marked as featured
 
+    # Due to the bug described in ISAICP-4352, we have to temporary add the next
+    # two lines. Manually testing or running this Behat test locally doesn't
+    # require this cache clear but it fails on the Continuous PHP bot for some
+    # obscure reasons that are very hard to be tracked.
+    # TODO: Remove these two lines in ISAICP-4849.
+    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4352.
+    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4849.
+    And the cache has been cleared
+    And I reload the page
+
     And I click the contextual link "Remove from featured" in the "<unfeatured>" tile
     Then I should see the success message "<label> <unfeatured> has been removed from the featured contents."
-    And the "<unfeatured>" tile should not be marked as featured
+    And the "<unfeatured>" <content type> tile should not be marked as featured
 
     Examples:
-      | header link | featured                      | unfeatured                  | label      |
-      | Collections | Tidy Neutron                  | Reborn Eternal Gamma        | Collection |
-      | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution   |
+      | header link | featured                      | unfeatured                  | label      | content type |
+      | Collections | Tidy Neutron                  | Reborn Eternal Gamma        | Collection | collection   |
+      | Solutions   | Opensource neutron generators | Gamma-sensible spectroscopy | Solution   | solution     |
