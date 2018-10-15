@@ -31,6 +31,7 @@ Feature: As a user of the website
     And I should see the link "View draft"
     And I should see the link "View"
     But I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     # @todo: Fix the visibility issue.
     And I should see the link "Edit" in the "Entity actions" region
@@ -46,6 +47,7 @@ Feature: As a user of the website
     # "View draft" should not be shown.
     And I should not see the link "View Draft"
     And I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
 
 
@@ -61,6 +63,7 @@ Feature: As a user of the website
     And I should not see the heading "Construction of Scent"
     And I should see the link "View draft"
     And I should see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     When I click "View draft"
     # The header still shows the published title but the draft title is included
@@ -71,6 +74,7 @@ Feature: As a user of the website
     When I am an anonymous user
     And I go to the homepage of the "Destruction of Scent" collection
     And I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
 
     # Publish draft version of the collection.

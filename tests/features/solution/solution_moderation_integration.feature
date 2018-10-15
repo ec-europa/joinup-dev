@@ -33,6 +33,7 @@ Feature: As a user of the website
     # @todo: Fix the visibility issue.
     And I should see the link "View"
     But I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     And I should see the link "Edit" in the "Entity actions" region
 
@@ -47,6 +48,7 @@ Feature: As a user of the website
     # "View draft" should not be shown.
     And I should not see the link "View Draft"
     And I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
 
     # Edit as facilitator and save as draft.
@@ -61,6 +63,7 @@ Feature: As a user of the website
     And I should see the link "View draft"
     When I click "View draft"
     And I should see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     # The header still shows the published title but the draft title is included
     # in the page.
@@ -70,6 +73,7 @@ Feature: As a user of the website
     When I am an anonymous user
     And I go to the homepage of the "Flight of Night" solution
     And I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
 
     # Publish draft version of the solution.

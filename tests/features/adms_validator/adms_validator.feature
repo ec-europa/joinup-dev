@@ -22,4 +22,5 @@ Feature: Validate an ADMS-AP file through the UI
       When I attach the file "empty.rdf" to "File"
       And I press "Upload"
       Then I should see the following warning messages:
+        | warning messages                           |
         | The provided file is not a valid RDF file. |
