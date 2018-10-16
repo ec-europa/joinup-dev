@@ -56,6 +56,21 @@ Feature:
     Given I click "Manage content"
     Then I should see "Manage content" in the Header
 
+    # Download the list as CSV.
+    When I click "Subscribe to Manage content"
+    Then the response should contain "Type;Title;\"Created on\";\"Last update\";Published;URL"
+    And the response should contain "Document;\"The Panama Papers\";"
+    And the response should contain "Discussion;\"The Ultimate Debate\";"
+    And the response should contain "Event;\"Version 2.0 Launch Party\";"
+    And the response should contain "News;\"Exports Leap Despite Currency Gain\";"
+    And the response should contain "\"Custom page\";HOWTOs;"
+    And the response should contain "\"Custom page\";\"Looking for Support?\";"
+
+    When I go to the homepage of the "Vintage Art" collection
+    Then I should see the link "Manage content"
+    Given I click "Manage content"
+    Then I should see "Manage content" in the Header
+
     # Select rows.
     Given I select the "The Panama Papers" row
     And I select the "The Ultimate Debate" row
