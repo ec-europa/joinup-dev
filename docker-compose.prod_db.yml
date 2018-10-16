@@ -6,4 +6,4 @@ services:
 
   virtuoso:
     volumes:
-      - "./tmp/dump-virtuoso:/my/path/to/the/virtuoso/db/toLoad"
+      - "./tmp/dump-virtuoso:/toLoad"
