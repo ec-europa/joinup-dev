@@ -134,6 +134,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
 
       if ($changed) {
         $entity->skip_notification = TRUE;
+        $entity->search_api_skip_tracking = TRUE;
         $entity->save();
       }
     }
