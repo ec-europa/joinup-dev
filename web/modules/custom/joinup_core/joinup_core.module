@@ -386,7 +386,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   if ($view_mode !== 'full') {
     return;
   }
-  $graph = $entity->get('graph')->first()->value;
+  $graph = $entity->get('graph')->target_id;
   if ($graph !== 'default' || !$entity->hasGraph('draft')) {
     return;
   }
