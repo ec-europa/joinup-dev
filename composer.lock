@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbd16bb19a181222d45a2b02cad893e5",
+    "content-hash": "fc16dec194798db166226f75f4561f7a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5912,7 +5912,8 @@
             "type": "library",
             "extra": {
                 "patches_applied": {
-                    "Add a target to setup the SPARQL update permission @see https://github.com/ec-europa/virtuoso/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/3.diff"
+                    "Add a target to setup the SPARQL update permission @see https://github.com/ec-europa/virtuoso/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/3.diff",
+                    "Complete virtuoso task base @see https://github.com/ec-europa/virtuoso/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/4.diff"
                 }
             },
             "autoload": {
