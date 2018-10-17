@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "6f203e53f51cade194a7dace31d4bf1e",
-=======
-    "content-hash": "58a0a26f7792040b59459e1c77b003da",
->>>>>>> origin/develop
+    "content-hash": "6f829101d71188ed4469a8cb17114798",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2722,10 +2718,6 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
-                },
-                {
-                    "name": "joelpittet",
-                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -5725,13 +5717,6 @@
                 },
                 "branch-alias": {
                     "dev-master": "9.x-dev"
-<<<<<<< HEAD
-                },
-                "patches_applied": {
-                    "When an update fails, updatedb is still exiting with 0. @see https://github.com/drush-ops/drush/pull/3673": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/3673.patch",
-                    "Call services that need destruction at the end of request": "https://github.com/drush-ops/drush/commit/346f165cb160c554293dc4839bcba28e4368051d.diff"
-=======
->>>>>>> origin/develop
                 }
             },
             "autoload": {
@@ -11382,8 +11367,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",
