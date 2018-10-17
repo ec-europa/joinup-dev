@@ -114,8 +114,6 @@ Feature:
     Then I should see the link "HOWTOs" in the "Navigation menu block" region
     And I should see the heading "Decadent Art"
     And I should not see the link "Looking for Support?" in the "Navigation menu block" region
-    But I should see the following tiles in the "Subpages menu" region:
-      | Looking for Support? |
 
     # Try moving a child page without moving the parent page. This should move
     # the child to the root of the menu.
