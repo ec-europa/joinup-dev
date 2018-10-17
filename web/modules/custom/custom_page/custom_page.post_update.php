@@ -114,3 +114,13 @@ function custom_page_post_update_menu_links(array &$sandbox) {
     $menu_link->set('link', $new_uri)->save();
   }
 }
+
+/**
+ * Remove the "Menu sub pages" block.
+ */
+function custom_page_post_update_delete_sub_pages_menu_block() {
+  $block = \Drupal::entityTypeManager()->getStorage('block')->load('menusubpages');
+  if ($block) {
+    $block->delete();
+  }
+}

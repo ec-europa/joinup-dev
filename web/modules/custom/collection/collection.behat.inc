@@ -537,14 +537,16 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Given (the following )collection menu structure:
    */
   public function givenCollectionMenuStructure(TableNode $menu_table) {
+    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     foreach ($menu_table->getColumnsHash() as $values) {
-      $child_link = $this->getMenuLinkByTitle($values['title']);
-      $child_link->set('weight', $values['weight']);
-      if (!empty($values['parent'])) {
+      if (isset($values['parent']) && !empty($values['parent'])) {
         $parent_link = $this->getMenuLinkByTitle($values['parent']);
-        $child_link->set('parent', $parent_link->getPluginId());
+        $values['parent'] = $parent_link->getPluginId();
       }
-      $child_link->save();
+
+      $child_link = $this->getMenuLinkByTitle($values['title']);
+      $menu_link_manager->updateDefinition($child_link->getPluginId(), $values);
     }
   }
 
