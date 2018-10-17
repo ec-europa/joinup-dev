@@ -239,7 +239,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    * {@inheritdoc}
    */
   public function clearGraph(string $graph_uri): JoinupFederationPipelineInterface {
-    $this->sparql->update("CLEAR GRAPH <$graph_uri>");
+    $this->sparql->query("DEFINE sql:log-enable 3 CLEAR GRAPH <$graph_uri>");
     return $this;
   }
 
