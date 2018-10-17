@@ -61,13 +61,16 @@ Feature: As a user of the website
     Then I should see the heading "Flight of Night"
     And I should not see the heading "Flight of Day"
     And I should see the link "View draft"
-    When I click "View draft"
     And I should see the following warning messages:
       | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
+    When I click "View draft"
     # The header still shows the published title but the draft title is included
     # in the page.
     Then I should see the heading "Flight of Day"
+    But I should not see the following warning messages:
+      | warning messages                                                                     |
+      | You are viewing the published version. To view the latest draft version, click here. |
 
     # Ensure that the message is not shown to non privileged users.
     When I am an anonymous user
