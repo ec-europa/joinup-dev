@@ -245,14 +245,22 @@
     <!-- Compile SASS to CSS. -->
     <target name="compile-sass"
             description="Compile the SASS to CSS.">
-        <!-- Make sure the CSS directory exists. -->
-        <mkdir dir="${sass.output.dir}" />
-        <sass
-            executable="${sass.bin}"
-            flags="--sourcemap=${sass.sourcemap}"
-            style="${sass.style}"
-            input="${sass.input}"
-            output="${sass.output.dir}/${sass.output.file}" />
+        <if>
+            <available file="${sass.bin}" type="file" property="sass.bin.exists" />
+            <then>
+                <!-- Make sure the CSS directory exists. -->
+                <mkdir dir="${sass.output.dir}" />
+                <sass
+                        executable="${sass.bin}"
+                        flags="--sourcemap=${sass.sourcemap}"
+                        style="${sass.style}"
+                        input="${sass.input}"
+                        output="${sass.output.dir}/${sass.output.file}" />
+            </then>
+            <else>
+                <echo msg="The sass binary was not found. Skipping." />
+            </else>
+        </if>
     </target>
 
     <!-- Set the transaction type to READ-COMMITTED. -->
@@ -452,16 +460,16 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
 
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users" />
 
 </project>

@@ -32,10 +32,10 @@ services:
   mysql:
     image: mysql:5.6
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_USER: 'joinup'
-      MYSQL_PASSWORD: 'joinup'
-      MYSQL_DATABASE: 'joinup'
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_USER: 'db_user'
+      MYSQL_PASSWORD: 'db_pass'
+      MYSQL_DATABASE: 'db_name'
 
   virtuoso:
     build:
