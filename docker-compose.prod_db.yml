@@ -6,4 +6,7 @@ services:
 
   virtuoso:
     volumes:
-      - "./tmp/dump-virtuoso:/toLoad"
+      - "./tmp/dump-virtuoso:/data/backupToRestore"
+    environment:
+      - BACKUP_PREFIX=JOINUP_FULL_DUMP_
+
