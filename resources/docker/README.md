@@ -22,8 +22,8 @@ From the project root, run `docker-compose up`. This command will download, buil
 #### Install the website
 From the project root, run
 ```bash
-docker-compose exec --user [user] web "./vendor/bin/phing" "build-dev"
-docker-compose exec --user [user] web "./vendor/bin/phing" "install-dev"
+docker-compose exec --user www-data web ./vendor/bin/phing build-dev
+docker-compose exec --user www-data web ./vendor/bin/phing install-dev
 ```
 
 #### Accessing the containers
@@ -98,6 +98,29 @@ The rest of the service will get the properties from the original composer file.
 To run the containers by reading all overrides, use the following command: `docker-composer -f docker-compose.yml
 -f docker-compose.local.yml up`. Please, note, that the last file in the command has bigger priority. More than one
 overrides can be provided.
+
+## Rebuild from existing databases
+By default, the phing target `download-databases` sends the downloaded databases to the `tmp` folder of the project
+root. The virtuoso dumps are stored in the sub directory `dump-virtuoso` and the mysql dump is located in the `tmp`
+folder itself.
+In the project root, there is also the docker-compose.prod_db.yml which contains overrides for restoring the databases
+according to the image requirements. What it does, is that it maps the dump.sql (the mysql dump) within the startup
+directory of the mysql image, and the virtuoso dumps within the startup directory of the virtuoso image.
+
+To start the machines with the databases restored, run the following command:  
+`docker-compose -f docker-compose.yml -f docker-compose.prod_db.yml up`  
+and the images will be started.
+
+After the images have been built and the databases have been restored, run the following command to execute the
+updates  
+`docker-compose exec --user www-data web ./vendor/bin/phing execute-updates`.
+
+Finally, in order to run a full re-index of the site, run the command  
+`docker-compose exec --user www-data web ./vendor/bin/phing reindex-apache-solr`.
+
+**IMPORTANT**: All images start normally and the web server is available almost immediately. However, mysql container will
+not start until the backup is restored so for the first few minutes, depending on the size of the database dump, the web
+server will receive connection denials. Please, wait until the mysql import is finishes before accessing the site.
 
 ## Handling permissions
 The web container is having the apache service configured to run as user www-data and group www-data. By default, both
