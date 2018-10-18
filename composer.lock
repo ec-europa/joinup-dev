@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f829101d71188ed4469a8cb17114798",
+    "content-hash": "025632912b6dd059ff0e83104b2e51fb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3813,6 +3813,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
