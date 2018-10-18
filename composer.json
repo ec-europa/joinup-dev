@@ -32,6 +32,7 @@
         "drupal/linkit": "^5.0-beta6",
         "drupal/matomo": "^1.7",
         "drupal/matomo_reporting_api": "~2.0",
+        "drupal/menu_admin_per_menu": "^1.0",
         "drupal/message": "^1.0-rc2",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
