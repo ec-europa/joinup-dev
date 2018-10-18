@@ -32,6 +32,7 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -2173,16 +2174,42 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @param string $heading
    *   The heading of the tile.
+   * @param string $type
+   *   The tile bundle.
    *
    * @throws \Exception
-   *   Thrown when the tile is marked as featured.
+   *   If the $type is not solution nor community content or the tile is marked
+   *   as featured.
    *
-   * @Then the :tile tile should not be marked as featured
+   * @Then the :tile :type tile should not be marked as featured
+   *
+   * @todo Due to the bug described in ISAICP-4352, we have to temporary check
+   * if a tile is not featured via backend, rather than checking the DOM.
+   * Manually testing or running this Behat step definition Behat in test
+   * locally doesn't works with DOM check, but for some obscure reasons, that
+   * are very hard to be tracked, tests are failing in Continuous PHP bot.
+   * Revert back the check that a tile is not featured by checking the DOM, in
+   * ISAICP-4849.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4849
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4352
    */
-  public function assertTileNotMarkedAsFeatured($heading) {
-    $element = $this->getTileByHeading($heading);
+  public function assertTileNotMarkedAsFeatured($heading, $type) {
+    if (in_array($type, ['collection', 'solution'])) {
+      $entity_type_id = 'rdf_entity';
+    }
+    elseif (in_array($type, CommunityContentHelper::getBundles())) {
+      $entity_type_id = 'node';
+    }
+    else {
+      throw new \Exception("Invalid bundle '$type'.");
+    }
+    $entity = static::getEntityByLabel($entity_type_id, $heading);
 
-    if ($element->find('css', '.listing__card.is-featured')) {
+    /** @var \Drupal\joinup\PinServiceInterface $pin_service */
+    $pin_service = \Drupal::service('joinup.pin_service');
+
+    if ($pin_service->isEntityPinned($entity)) {
       throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
     }
   }

@@ -84,7 +84,9 @@
     </div>
   {% endif %}
 </article>
-<div class="block--facets {{ block_class }}">
-  {{ content.node_field_cp_content_listing_top }}
-</div>
+{% if content.node_field_cp_content_listing_top|render %}
+  <div class="block--facets {{ block_class }}">
+    {{ content.node_field_cp_content_listing_top }}
+  </div>
+{% endif %}
 {{ content.field_cp_content_listing }}
