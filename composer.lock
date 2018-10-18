@@ -4475,7 +4475,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha10",
-                    "datestamp": "1539069780",
+                    "datestamp": "1536225484",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5782,12 +5782,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git",
-                "reference": "8ea911dee68fc8bbd2161d851b3f9dec5582301d"
+                "reference": "3ba9f87964fb6ece3c8f53904e47405e12f93ae0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/8ea911dee68fc8bbd2161d851b3f9dec5582301d",
-                "reference": "8ea911dee68fc8bbd2161d851b3f9dec5582301d",
+                "url": "https://api.github.com/repos/ec-europa/joinup-tallinn-dashboard/zipball/3ba9f87964fb6ece3c8f53904e47405e12f93ae0",
+                "reference": "3ba9f87964fb6ece3c8f53904e47405e12f93ae0",
                 "shasum": ""
             },
             "type": "drupal-library",
@@ -5800,7 +5800,7 @@
                 "issues": "https://github.com/ec-europa/joinup-tallinn-dashboard/issues",
                 "source": "https://github.com/ec-europa/joinup-tallinn-dashboard"
             },
-            "time": "2018-10-02T14:49:10+00:00"
+            "time": "2018-10-18T19:51:00+00:00"
         },
         {
             "name": "ec-europa/material-design-lite",
