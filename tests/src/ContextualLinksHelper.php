@@ -105,19 +105,23 @@ class ContextualLinksHelper {
     /** @var \Symfony\Component\BrowserKit\Client $client */
     $client = clone $this->getSession()->getDriver()->getClient();
 
-    $contextual_ids = array_map(function (NodeElement $element): string {
-      return $element->getAttribute('data-contextual-id');
-    }, $element->findAll('xpath', '//*[@data-contextual-id]'));
+    $ids = [];
+    $tokens = [];
+    foreach ($element->findAll('xpath', '//*[@data-contextual-id]') as $element) {
+      $ids[] = $element->getAttribute('data-contextual-id');
+      $tokens[] = $element->getAttribute('data-contextual-token');
+    }
 
     // @see Drupal.behaviors.contextual.attach(), contextual.js
     $client->request('POST', '/contextual/render', [
-      'ids' => $contextual_ids,
+      'ids' => $ids,
+      'tokens' => $tokens,
     ]);
 
     $links = [];
     $response = json_decode($client->getResponse()->getContent(), TRUE);
     if ($response) {
-      foreach ($contextual_ids as $id) {
+      foreach ($ids as $id) {
         if (isset($response[$id])) {
           $crawler = new Crawler();
           $crawler->addHtmlContent($response[$id]);
