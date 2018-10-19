@@ -86,59 +86,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   /**
    * {@inheritdoc}
    */
-  public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {
-    $items = $event->getExpiredItems()->getItems();
-
-    // All requests are sent by POST method to handle the amount of concurrent
-    // requests in terms of request length.
-    $this->matomoQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
-    $query = $this->matomoQueryFactory->getQuery('API.getBulkRequest');
-
-    $url_index = 0;
-    foreach ($items as $index => $item) {
-      if (!$entity = $this->getEntity($item)) {
-        continue;
-      }
-
-      // Only refresh the field if it has actually expired. It might have been
-      // updated already since it has been added to the processing queue.
-      if (!$this->fieldNeedsRefresh($item)) {
-        continue;
-      }
-
-      if ($parameters = $this->getSubQueryParameters($entity)) {
-        $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));
-      }
-      else {
-        // Update the entity so that it wont be requested to update the value
-        // every time.
-        $this->updateFieldValue($item, 0);
-        unset($items[$index]);
-      }
-    }
-
-    try {
-      $response = $query->execute()->getResponse();
-    }
-    catch (\Exception $e) {
-      $this->loggerFactory->get('joinup_core')->error($e->getMessage());
-      return;
-    }
-
-    foreach ($items as $index => $expired_item) {
-      $bundle = $this->getEntity($expired_item)->bundle();
-      $type = $this->getType($bundle);
-      $response_item = $response[$index];
-      $count = 0;
-      foreach ($response_item as $result) {
-        if (!empty($result->$type)) {
-          $count = $count + (int) $result->$type;
-        }
-      }
-
-      $this->updateFieldValue($expired_item, $count);
-    }
-  }
+  public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {}
 
   /**
    * Gets the correct URL parameter for the query.
