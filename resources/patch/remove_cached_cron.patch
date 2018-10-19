@@ -1,0 +1,23 @@
+diff --git a/cached_computed_field.module b/cached_computed_field.module
+index 9143380..447578f 100644
+--- a/cached_computed_field.module
++++ b/cached_computed_field.module
+@@ -9,17 +9,7 @@
+  * Implements hook_cron().
+  */
+ function cached_computed_field_cron() {
+-  /** @var \Drupal\cached_computed_field\CachedComputedFieldManagerInterface $field_manager */
+-  $field_manager = \Drupal::service('cached_computed_field.manager');
+-
+-  // If there are any items in the queue, process them. If not, repopulate the
+-  // queue.
+-  if ($field_manager->getQueue()->numberOfItems()) {
+-    $field_manager->processQueue();
+-  }
+-  else {
+-    $field_manager->populateQueue();
+-  }
++  return;
+ }
+ 
+ /**
