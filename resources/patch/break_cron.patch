@@ -1,0 +1,28 @@
+diff --git a/core/lib/Drupal/Core/Cron.php b/core/lib/Drupal/Core/Cron.php
+index fb097ce..ac624c6 100644
+--- a/core/lib/Drupal/Core/Cron.php
++++ b/core/lib/Drupal/Core/Cron.php
+@@ -124,12 +124,23 @@ public function run() {
+ 
+     $return = FALSE;
+ 
++    // If the request breaks before this point, then the problem lies with the
++    // request itself.
++    sleep(15);
++    $this->logger->debug('Checkpoint, after the request was done, before the lock acquire is attempted.');
++
+     // Try to acquire cron lock.
+     if (!$this->lock->acquire('cron', 900.0)) {
+       // Cron is still running normally.
+       $this->logger->warning('Attempting to re-run cron while it is already running.');
+     }
+     else {
++      // If the request breaks before this point, then the problem lies with the
++      // lock acquire (probably caused by a database log).
++      sleep(15);
++      $this->logger->debug('Checkpoint, after the request was done, before the lock acquire is attempted.');
++      // If the request breaks after the first 30s, then the problem is caused
++      // probably by the first available cron job that runs.
+       $this->invokeCronHandlers();
+       $this->setCronLastTime();
+ 
