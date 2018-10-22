@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a193ee60133ee64713aff44dc1d2fd7a",
+    "content-hash": "0e4f550c09eeeff64cfc4969ea94676e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2665,6 +2665,7 @@
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
+                    "Profile provided configuration entities can have unmeetable dependencies @see https://www.drupal.org/node/2922417": "resources/patch/2922417-38-no-conflict.patch",
                     "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
                     "https://www.drupal.org/project/drupal/issues/2943172": "https://www.drupal.org/files/issues/2018-07-05/2943172-kernel-test-base-3.patch"
                 }
