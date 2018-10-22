@@ -1217,6 +1217,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           text: view
+          bypass_access_check: true
           output_url_as_text: true
           absolute: true
           entity_type: node
