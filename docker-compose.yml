@@ -6,8 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - .:/var/www/html # Non Mac users.
-      # - nfsmount:/var/www/html # Mac Users with the nfsmount volume.
+      - .:/var/www/html
     environment:
       XDEBUG_CONFIG: "remote_enable=1 xdebug.remote_connect_back=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=0"
       DOCUMENT_ROOT: "/var/www/html/web"
@@ -89,15 +88,3 @@ services:
 
 volumes:
   virtuoso:
-
-#### Mac users: uncomment the "volumes" key to enable the NFS file sharing. You can find more information about Docker for Mac here: https://github.com/openeuropa/openeuropa/blob/master/docs/starting/tooling.md#using-docker-on-macos
-
-#volumes:
-#  nfsmount:
-#    driver: local
-#    driver_opts:
-#      type: nfs
-#      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-#      device: ":${PWD}/"
-
-#### End Mac users.

@@ -134,3 +134,10 @@ user is not created, if, for example your host user, owner of the files, is havi
 also 1000, you can override these settings and allow all files to be owned by you. Like this, ownership and permission
 issues related to the containers should not occur. The way to do this is described above in the section '[Override
 default configuration](#override-default-configuration)'.
+
+## Running in Mac
+Mac users have to define the volumes in a different way than linux. For the default docker-compose profile of Joinup,
+there is also a [docker-compose.mac.yml](./docker-compose.mac.yml) file provided in the `resources/docker` directory.
+Mac users should start the containers by running  
+`docker-compose -f docker-compose.yml -f resources/docker/docker-compose.mac.yml up`  
+in order to have the volumes set up correctly.
