@@ -548,13 +548,17 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       }
     }
 
-    $element['field'] = [
+    $element['add_more'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['add-more-wrapper']],
+    ];
+    $element['add_more']['field'] = [
       '#type' => 'select',
       '#title' => $this->t('Available filters'),
       '#options' => $options,
       '#required' => FALSE,
     ];
-    $element['add'] = [
+    $element['add_more']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Add and configure filter'),
       '#name' => 'add_filter',
@@ -611,8 +615,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     list($field_id, $plugin_id) = explode(':', $form_state->getValue($wrapper['field']['#parents']), 2);
 
     // Extract element and widget elements.
-    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -3));
-    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
+    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -5));
 
     $field_name = $widget['#field_name'];
     $parents = $widget['#field_parents'];
