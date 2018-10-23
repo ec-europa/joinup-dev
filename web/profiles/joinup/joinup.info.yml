@@ -138,6 +138,7 @@ config_devel:
   - block.block.spatial_coverage_facet
   - block.block.statistics
   - block.block.support
+  - block.block.support_homepage
   - block.block.table_of_contents
   - block.block.toc_outline
   - block.block.tourbutton
