@@ -492,7 +492,10 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['filters'] = [
       '#type' => 'table',
       '#header' => [
-        $this->t('Filter'),
+        [
+          'data' => $this->t('Filter'),
+          'colspan' => 2,
+        ],
         $this->t('Weight'),
         $this->t('Operations'),
       ],
@@ -514,6 +517,9 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       $subform_state = SubformState::createForSubform($subform, $form, $form_state);
 
       $element['filters'][$plugin_delta] = [
+        'drag_handle' => [
+          '#wrapper_attributes' => ['class' => ['tabledrag-handle-cell']],
+        ],
         'plugin' => $plugin->buildConfigurationForm($subform, $subform_state),
         'weight' => [
           '#type' => 'weight',
