@@ -537,7 +537,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
           ],
           '#limit_validation_errors' => [],
         ],
-        '#attributes' => ['class' => 'draggable', 'tabledrag-leaf'],
+        '#attributes' => ['class' => ['draggable']],
       ];
     }
 
