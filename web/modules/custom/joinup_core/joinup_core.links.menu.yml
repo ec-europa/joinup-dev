@@ -35,3 +35,20 @@ joinup_core.edit_support_menu:
   description: 'Allows to manage of the user support menu.'
   parent: system.admin
   weight: 0
+
+joinup_core.support.tour:
+  title: 'Take a tour'
+  menu_name: support
+  url: 'internal:#'
+  class: Drupal\joinup_core\Plugin\Menu\TourMenuLink
+  options:
+    attributes:
+      class:
+        - js-tour-start-button
+  weight: -200
+
+joinup_core.support.contact:
+  title: 'Contact support'
+  menu_name: support
+  url: 'internal:/contact'
+  weight: -100
