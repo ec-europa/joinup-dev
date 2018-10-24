@@ -1,3 +1,31 @@
+{#
+/**
+ * @file
+ * Theme override for a collection of search results.
+ *
+ * Available variables:
+ * - search_title: The title accompanying the search results.
+ * - no_of_results: A text string indicating the number of search results that
+ *   were found.
+ * - results: The search results.
+ * - pager: The pager.
+ * - entity_type: The entity type machine name of the entity that contains the
+ *   Search API field.
+ * - bundle: The bundle name of the entity that contains the Search API field.
+ * - field_name: The machine name of the Search API field.
+ * - entity: The entity object that contains the Search API field.
+ * - form: The search form.
+ * - no_results_found: A text string mentioning that no results were found.
+ *   This will be empty if there are search results.
+ * - search_help: A text string containing some helpful tips to increase the
+ *   likelyhood to find search results. This will be empty if there are search
+ *   results.
+ *
+ * @see \Drupal\search_api_field\Plugin\Field\FieldFormatter\SearchFormatter::viewElements()
+ *
+ * @ingroup themeable
+ */
+#}
 {% if no_results_found %}
   {{ no_results_found }}
 {% else %}
