@@ -96,7 +96,7 @@ class TourMenuLink extends MenuLinkDefault {
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return Cache::mergeContexts(['route'], parent::getCacheContexts());
+    return Cache::mergeContexts(['route.name'], parent::getCacheContexts());
   }
 
 }
