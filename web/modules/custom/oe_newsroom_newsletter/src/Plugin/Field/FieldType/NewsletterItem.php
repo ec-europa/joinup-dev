@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Drupal\oe_newsroom_newsletter\Plugin\Field\FieldType;
+
+use Drupal\Component\Utility\Random;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemBase;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\TypedData\DataDefinition;
+
+/**
+ * Defines the field type for OpenEuropa Newsroom Newsletter fields.
+ *
+ * @FieldType(
+ *   id = "oe_newsroom_newsletter",
+ *   label = @Translation("Newsroom newsletter"),
+ *   description = @Translation("Stores the configuration for a Newsroom newsletter."),
+ *   default_widget = "oe_newsroom_newsletter_default",
+ *   default_formatter = "string"
+ * )
+ */
+class NewsletterItem extends FieldItemBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmpty() {
+    return $this->get('universe')->getValue() === NULL || $this->get('service_id')->getValue() === NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+    return [
+      'enabled' => DataDefinition::create('boolean')
+        ->setLabel(t('Enable newsletter subscriptions')),
+      'universe' => DataDefinition::create('string')
+        ->setLabel(t('The Newsroom universe acronym')),
+      'service_id' => DataDefinition::create('integer')
+        ->setLabel(t('The Newsroom newsletter service ID.')),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function schema(FieldStorageDefinitionInterface $field_definition) {
+    return [
+      'columns' => [
+        'enabled' => [
+          'description' => 'Whether or not subscribing to newsletters is currently enabled.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'size' => 'tiny',
+        ],
+        'universe' => [
+          'description' => 'The Newsroom universe acronym.',
+          'type' => 'varchar',
+          'length' => 100,
+        ],
+        'service_id' => [
+          'description' => 'The Newsroom service ID.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'size' => 'normal',
+        ],
+      ],
+      'indexes' => [
+        'universe' => ['universe'],
+        'service_id' => ['service_id'],
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function generateSampleValue(FieldDefinitionInterface $field_definition) {
+    $random = new Random();
+    $values = [
+      'enabled' => TRUE,
+      'universe' => $random->word(mt_rand(1, 50)),
+      'service_id' => mt_rand(1, 1000),
+    ];
+    return $values;
+  }
+
+}
