@@ -129,7 +129,7 @@ SELECT ?entity_id ?label
 FROM <http://joinup.eu/licence/published>
 WHERE {
   ?entity_id a <http://purl.org/dc/terms/LicenseDocument> .
-  ?entity_id <http://purl.org/dc/terms/title> ?label .
+  ?entity_id <http://www.w3.org/2000/01/rdf-schema#label> ?label .
 }
 ORDER BY ASC(?label)
 QUERY;
@@ -174,7 +174,7 @@ WHERE {
       ?solution a <http://www.w3.org/ns/adms#Asset> .
       ?solution <http://purl.org/dc/terms/title> ?solution_label .
       ?licence a <http://purl.org/dc/terms/LicenseDocument> .
-      ?licence <http://purl.org/dc/terms/title> ?licence_label .
+      ?licence <http://www.w3.org/2000/01/rdf-schema#label> ?licence_label .
     } .
     @extra_condition
   }
@@ -218,7 +218,7 @@ WHERE {
     ?solution a <http://www.w3.org/ns/adms#Asset> .
     ?solution <http://purl.org/dc/terms/title> ?solution_label .
     ?licence a <http://purl.org/dc/terms/LicenseDocument> .
-    ?licence <http://purl.org/dc/terms/title> ?licence_label .
+    ?licence <http://www.w3.org/2000/01/rdf-schema#label> ?licence_label .
   } .
   @extra_condition
 }
