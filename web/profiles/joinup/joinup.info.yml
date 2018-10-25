@@ -55,6 +55,7 @@ dependencies:
   - menu_ui
   - moderation
   - node
+  - oe_newsroom_newsletter
   - og
   - og_menu
   - options
