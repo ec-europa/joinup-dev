@@ -550,7 +550,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
 
     $element['add_more'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['add-more-wrapper']],
+      '#attributes' => ['class' => ['form__add-more-wrapper']],
     ];
     $element['add_more']['field'] = [
       '#type' => 'select',
