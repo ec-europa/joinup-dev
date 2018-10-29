@@ -9,7 +9,6 @@ dependencies:
   - comment
   - ds
   - facets
-  - joinup_sparql
   - image
   - link
   - matomo_reporting_api

@@ -152,81 +152,6 @@ Feature: Navigation menu for custom pages
     Then the "Edit menu" link in the "Navigation menu block" should not be visible
     And the "Add new page" link in the "Navigation menu block" should not be visible
 
-  Scenario: The menu sub-pages should be shown in a separate block.
-    Given the following collection:
-      | title  | Hidden Ship |
-      | logo   | logo.png    |
-      | banner | banner.jpg  |
-      | state  | validated   |
-    And custom_page content:
-      | title                       | body      | collection  | status      | logo     |
-      | The Burning Angel           | Test body | Hidden Ship | published   | logo.png |
-      | Snake of Pleasure           | Test body | Hidden Ship | published   | logo.png |
-      | The Slaves of the Shores    | Test body | Hidden Ship | published   | logo.png |
-      | The Slaves of the Sea       | Test body | Hidden Ship | published   | logo.png |
-      | The Slaves of the Mountains | Test body | Hidden Ship | published   | logo.png |
-      | The Slaves of the Air       | Test body | Hidden Ship | unpublished | logo.png |
-    # The custom page menu items were created automatically in the above step.
-    And the following custom page menu structure:
-      | title                       | parent            | weight |
-      | Snake of Pleasure           | The Burning Angel | 2      |
-      | The Slaves of the Shores    | The Burning Angel | 1      |
-      | The Slaves of the Sea       | The Burning Angel | 4      |
-      | The Slaves of the Mountains | The Burning Angel | 3      |
-      | The Slaves of the Air       | The Burning Angel | 5      |
-    And I go to the "Hidden Ship" collection
-    When I click "The Burning Angel" in the "Navigation menu block" region
-    Then I should see the link "The Burning Angel" in the "Navigation menu block" region
-    But I should not see the link "Snake of Pleasure" in the "Navigation menu block" region
-    And I should not see the link "The Slaves of the Shores" in the "Navigation menu block" region
-    Then I should see the following tiles in the "Subpages menu" region:
-      | The Slaves of the Shores    |
-      | Snake of Pleasure           |
-      | The Slaves of the Mountains |
-      | The Slaves of the Sea       |
-
-    # Disabled links should not be shown in the sub pages menu.
-    When I am logged in as a facilitator of the "Hidden Ship" collection
-    And I disable "The Slaves of the Mountains" in the navigation menu of the "Hidden Ship" collection
-    And I go to the homepage of the "Hidden Ship" collection
-    And I click "The Burning Angel" in the "Navigation menu block" region
-    Then I should see the following tiles in the "Subpages menu" region:
-      | The Slaves of the Shores |
-      | Snake of Pleasure        |
-      | The Slaves of the Sea    |
-      # The Slaves of the Air is unpublished and the facilitator can see it.
-      | The Slaves of the Air    |
-    And the logo should be shown in the "The Slaves of the Shores" custom page tile
-    And the logo should be shown in the "Snake of Pleasure" custom page tile
-    And the logo should be shown in the "The Slaves of the Air" custom page tile
-    But I should not see the "The Slaves of the Mountains" tile
-
-    When I am not logged in
-    And I go to the homepage of the "Hidden Ship" collection
-    And I click "The Burning Angel" in the "Navigation menu block" region
-    Then I should see the following tiles in the "Subpages menu" region:
-      | The Slaves of the Shores |
-      | Snake of Pleasure        |
-      | The Slaves of the Sea    |
-
-    # Publish an entity will result in showing it to the menu if it is meant to.
-    When I am logged in as a moderator
-    And I go to the "The Slaves of the Air" custom page
-    When I open the header local tasks menu
-    And I click "Edit" in the "Entity actions" region
-    And I check "Published"
-    And I press "Save"
-    Then I should see the heading "The Slaves of the Air"
-
-    When I am not logged in
-    And I go to the homepage of the "Hidden Ship" collection
-    And I click "The Burning Angel" in the "Navigation menu block" region
-    Then I should see the following tiles in the "Subpages menu" region:
-      | The Slaves of the Shores |
-      | Snake of Pleasure        |
-      | The Slaves of the Sea    |
-      | The Slaves of the Air    |
-
   Scenario: Synchronize titles of custom pages and menu links
     Given the following collection:
       | title | Ravenous wood-munching alphabeavers |
@@ -245,6 +170,58 @@ Feature: Navigation menu for custom pages
     And I go to the homepage of the "Ravenous wood-munching alphabeavers" collection
     Then I should see the link "An army of furry little killing machines" in the "Navigation menu"
     And I should not see the link "Tree eaters" in the "Navigation menu"
+
+  Scenario: Only active links of the table of content is expanded.
+    Given the following collections:
+      | title                        | state     |
+      | Table of contents collection | validated |
+    And custom_page content:
+      | title           | collection                   |
+      | Custom page 1   | Table of contents collection |
+      | Custom page 2   | Table of contents collection |
+      | Custom page 1-1 | Table of contents collection |
+      | Custom page 1-2 | Table of contents collection |
+      | Custom page 2-1 | Table of contents collection |
+    And the following custom page menu structure:
+      | title           | parent        | weight |
+      | Custom page 1   |               | 1      |
+      | Custom page 2   |               | 2      |
+      | Custom page 1-1 | Custom page 1 | 1      |
+      | Custom page 1-2 | Custom page 1 | 2      |
+      | Custom page 2-1 | Custom page 2 | 1      |
+
+    When I am logged in as a member of the "Table of contents collection" collection
+    And I go to the homepage of the "Table of contents collection" collection
+    Then I should not see the "Table of contents" region
+
+    When I visit the "Custom page 1" custom page
+    Then I should see the link "Custom page 1" in the "Table of contents"
+    And I should see the link "Custom page 2" in the "Table of contents"
+    And I should see the link "Custom page 1-1" in the "Table of contents"
+    And I should see the link "Custom page 1-2" in the "Table of contents"
+    But I should not see the link "Custom page 2-1" in the "Table of contents"
+
+    # Ensure that the default links are not shown.
+    And I should not see the link "Overview" in the "Table of contents"
+    And I should not see the link "Members" in the "Table of contents"
+    And I should not see the link "About" in the "Table of contents"
+    But I should see the link "Overview" in the "Navigation menu block"
+    And I should see the link "Members" in the "Navigation menu block"
+    And I should see the link "About" in the "Navigation menu block"
+
+    # Change a page to verify that appropriate children are expanded.
+    When I visit the "Custom page 2" custom page
+    Then I should see the link "Custom page 1" in the "Table of contents"
+    And I should see the link "Custom page 2" in the "Table of contents"
+    And I should see the link "Custom page 2-1" in the "Table of contents"
+    But I should not see the link "Custom page 1-1" in the "Table of contents"
+    And I should not see the link "Custom page 1-2" in the "Table of contents"
+
+    # Verify that the menu only shows on the canonical route.
+    When I am logged in as a moderator
+    And I visit the "Custom page 1" custom page
+    And I click "Edit" in the "Entity actions" region
+    Then I should not see the "Table of contents" region
 
   @javascript
   Scenario: Only custom page entries can be nested in the collection navigation menu.
@@ -271,7 +248,7 @@ Feature: Navigation menu for custom pages
     And I go to the "Ergonomic backpacks" collection
     And I click the contextual link "Edit menu" in the "Left sidebar" region
     # The "About" page has been moved back to first level.
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -282,7 +259,7 @@ Feature: Navigation menu for custom pages
       | External frame     | Types of backpacks |
       | Internal frame     |                    |
     When I drag the "External frame" table row to the left
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -293,19 +270,7 @@ Feature: Navigation menu for custom pages
       | External frame     |                    |
       | Internal frame     |                    |
     When I drag the "Internal frame" table row to the right
-    Then the menu table should be:
-      | title              | parent             |
-      | Overview           |                    |
-      | Members            |                    |
-      | Bodypack           |                    |
-      | About              |                    |
-      | Types of backpacks |                    |
-      | Frameless          | Types of backpacks |
-      | External frame     |                    |
-      | Internal frame     | External frame     |
-    # Maximum indentation level is one.
-    When I drag the "Internal frame" table row to the right
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -318,7 +283,19 @@ Feature: Navigation menu for custom pages
     # Links that don't refer to a node cannot be nested.
     When I drag the "Members" table row to the right
     And I drag the "About" table row to the right
-    Then the menu table should be:
+    Then the draggable menu table should be:
+      | title              | parent             |
+      | Overview           |                    |
+      | Members            |                    |
+      | Bodypack           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     | External frame     |
+    # Nor cannot have child rows.
+    When I drag the "Bodypack" table row to the right
+    Then the draggable menu table should be:
       | title              | parent             |
       | Overview           |                    |
       | Members            |                    |
@@ -331,7 +308,7 @@ Feature: Navigation menu for custom pages
     # But they can still be re-ordered up and down.
     When I drag the "Overview" table row down
     When I drag the "About" table row up
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
       | Overview           |                    |
@@ -344,7 +321,7 @@ Feature: Navigation menu for custom pages
     # Links pointing to nodes can be moved too.
     When I drag the "Bodypack" table row down
     And I drag the "Bodypack" table row down
-    Then the menu table should be:
+    Then the draggable menu table should be:
       | title              | parent             |
       | Members            |                    |
       | Overview           |                    |
@@ -354,3 +331,126 @@ Feature: Navigation menu for custom pages
       | Bodypack           | Types of backpacks |
       | External frame     |                    |
       | Internal frame     | External frame     |
+    # Maximum indentation level is two.
+    When I drag the "Bodypack" table row to the right
+    And I drag the "Internal frame" table row to the left
+    And I drag the "Internal frame" table row up
+    And I drag the "Internal frame" table row to the right
+    And I drag the "Internal frame" table row to the right
+    Then the draggable menu table should be:
+      | title              | parent             |
+      | Members            |                    |
+      | Overview           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | Bodypack           | Frameless          |
+      | Internal frame     | Frameless          |
+      | External frame     |                    |
+
+  Scenario: Show appropriate menu entries in the table of contents outline.
+    Given the following collections:
+      | title                     | state     |
+      | Table of contents outline | validated |
+    And custom_page content:
+      | title      | collection                | status      |
+      | TOCO 1     | Table of contents outline | published   |
+      | TOCO 2     | Table of contents outline | published   |
+      | TOCO 1-1   | Table of contents outline | published   |
+      | TOCO 1-1-1 | Table of contents outline | published   |
+      | TOCO 2-1   | Table of contents outline | published   |
+      | TOCO 1-1-2 | Table of contents outline | published   |
+      | TOCO 1-2   | Table of contents outline | published   |
+      | TOCO 2-1-2 | Table of contents outline | unpublished |
+      | TOCO 2-1-1 | Table of contents outline | published   |
+    And the following custom page menu structure:
+      | title      | parent   | weight |
+      | TOCO 1-2   | TOCO 1   | 2      |
+      | TOCO 1-1-2 | TOCO 1-1 | 2      |
+      | TOCO 2-1   | TOCO 2   | 1      |
+      | TOCO 1     |          | 1      |
+      | TOCO 1-1-1 | TOCO 1-1 | 1      |
+      | TOCO 2     |          | 2      |
+      | TOCO 2-1-2 | TOCO 2-1 | 1      |
+      | TOCO 1-1   | TOCO 1   | 1      |
+      | TOCO 2-1-1 | TOCO 2-1 | 1      |
+
+    When I am logged in as a member of the "Table of contents outline" collection
+    And I go to the homepage of the "Table of contents outline" collection
+    Then I should not see the "Table of contents outline" region
+
+    When I visit the "TOCO 1" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"
+    # This link does not exist because the outline does not contain connection to the default links just as TOC does.
+    And I should not see the link "About" in the "Table of contents outline"
+
+    # Navigate through the outline. Most links are asserted by clicking on them.
+    When I click "TOCO 1-1" in the "Table of contents outline"
+    Then I should see the link "TOCO 1" in the "Table of contents outline"
+    And I should see the link "TOCO 1-1-1" in the "Table of contents outline"
+    And I should see the link "Up" in the "Table of contents outline"
+    And I click "TOCO 1-1-1" in the "Table of contents outline"
+    And I click "TOCO 1-1-2" in the "Table of contents outline"
+    And I click "TOCO 1-2" in the "Table of contents outline"
+    And I click "TOCO 2" in the "Table of contents outline"
+    And I click "TOCO 2-1" in the "Table of contents outline"
+    And I click "TOCO 2-1-1" in the "Table of contents outline"
+    Then I should not see the link "TOCO 2-1-2" in the "Table of contents outline"
+    # Navigate backwards.
+    And I click "TOCO 2-1" in the "Table of contents outline"
+    And I click "TOCO 2" in the "Table of contents outline"
+    And I click "TOCO 1-2" in the "Table of contents outline"
+    And I click "TOCO 1-1-2" in the "Table of contents outline"
+    And I click "TOCO 1-1-1" in the "Table of contents outline"
+    And I click "TOCO 1-1" in the "Table of contents outline"
+    And I click "TOCO 1" in the "Table of contents outline"
+    # Navigate through the "Up" link.
+    When I visit the "TOCO 2" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"
+    When I visit the "TOCO 1-2" custom page
+    And I click "Up" in the "Table of contents outline"
+    Then I should see the heading "TOCO 1"
+    When I visit the "TOCO 1-1-2" custom page
+    And I click "Up" in the "Table of contents outline"
+    Then I should see the heading "TOCO 1-1"
+
+    # Verify that the menu only shows on the canonical route.
+    When I am logged in as a moderator
+    And I visit the "TOCO 1" custom page
+    And I click "Edit" in the "Entity actions" region
+    Then I should not see the "Table of contents outline" region
+
+    When I disable "TOCO 1-1-2" in the navigation menu of the "Table of contents outline" collection
+    And I visit the "TOCO 1-1-1" custom page
+    Then I should not see the link "TOCO 1-1-2" in the "Table of contents outline"
+
+  @javascript
+  Scenario: Assert cache invalidation of the TOC outline.
+    Given the following collections:
+      | title                            | state     |
+      | Table of contents outline cached | validated |
+    And custom_page content:
+      | title           | collection                       | status    |
+      | TOCO cached 1   | Table of contents outline cached | published |
+      | TOCO cached 1-1 | Table of contents outline cached | published |
+    And the following custom page menu structure:
+      | title           | parent        | weight |
+      | TOCO cached 1   |               | 1      |
+      | TOCO cached 1-1 | TOCO cached 1 | 1      |
+    When I visit the "TOCO cached 1-1" custom page
+    Then I should see the link "Up" in the "Table of contents outline"
+
+    When I am logged in as a facilitator of the "Table of contents outline cached" collection
+    And I go to the "Table of contents outline cached" collection
+    And I click the contextual link "Edit menu" in the "Left sidebar" region
+    When I drag the "TOCO cached 1-1" table row to the left
+    Then the draggable menu table should be:
+      | title           | parent |
+      | Overview        |        |
+      | Members         |        |
+      | About           |        |
+      | TOCO cached 1   |        |
+      | TOCO cached 1-1 |        |
+    When I press "Save"
+    And I visit the "TOCO cached 1-1" custom page
+    Then I should not see the link "Up" in the "Table of contents outline"

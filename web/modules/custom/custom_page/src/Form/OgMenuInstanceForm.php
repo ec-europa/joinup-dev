@@ -47,7 +47,7 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
   /**
    * The maximum depth of a menu links tree.
    */
-  const MAX_DEPTH = 2;
+  const MAX_DEPTH = 3;
 
   /**
    * The Symfony route matcher.
@@ -215,8 +215,8 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
         $form['links'][$id]['id'] = $element['id'];
         $form['links'][$id]['parent'] = $element['parent'];
 
-        // Disable nesting of rows where the value is forced as empty.
-        if (!empty($element['parent']['#disable_nesting'])) {
+        // Instruct tabledrag JS library to disallow any nesting if needed.
+        if (!empty($element['#disable_nesting'])) {
           $form['links'][$id]['#attributes']['class'][] = 'tabledrag-root';
           $form['links'][$id]['#attributes']['class'][] = 'tabledrag-leaf';
           // Remove any indentation on the row.
@@ -294,7 +294,7 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           $form[$id]['parent']['#value'] = '';
           // Mark the element so that any nesting operation, both as parent and
           // as children, will be prevented.
-          $form[$id]['parent']['#disable_nesting'] = TRUE;
+          $form[$id]['#disable_nesting'] = TRUE;
         }
 
         // Build a list of operations. This form is shown to users that do not

@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Theme override to display a menu.
+ *
+ * This template will be used to override the default view of the og navigation menu
+ * so that it can be displayed as a table of contents instead of a sidebar menu.
+ *
+ * @see joinup_theme_theme_suggestions_menu_alter().
+ * @see menu--og--navigation.html.twig.
+ */
+#}
+{% import _self as menus %}
+
+{#
+  We call a macro which calls itself to render the full tree.
+  @see http://twig.sensiolabs.org/doc/tags/macro.html
+#}
+<div class="navigation-bottom">
+  {{ menus.menu_links(items, attributes, 0) }}
+
+  {% macro menu_links(items, attributes, menu_level) %}
+    {% import _self as menus %}
+    {% if items %}
+      {% if menu_level == 0 %}
+        <ul{{ attributes.addClass('navigation-bottom__list') }}>
+      {% else %}
+        <ul class="navigation-bottom__list">
+      {% endif %}
+      {% for item in items %}
+        <li{{ item.attributes }}>
+          {{ link(item.title, item.url) }}
+          {% if item.below %}
+            {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  {% endmacro %}
+</div>

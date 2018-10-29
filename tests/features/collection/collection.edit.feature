@@ -18,7 +18,9 @@ Scenario: Edit a collection
   When I click the contextual link "Edit" in the Header region
   Then the following fields should be present "Title, Description, Abstract, Policy domain, Spatial coverage, Closed collection, eLibrary creation, Moderated, Motivation"
   And the following field widgets should be present "Contact information, Owner"
-  And the following fields should not be present "Langcode, Translation, Affiliates"
-  And I fill in "Title" with "Überwaldean Sea Eels"
+  And the following fields should not be present "Langcode, Translation, Affiliates, Enable the search field, Query presets, Limit"
+  # Query builder is disabled in collections.
+  And I should not see the button "Add and configure filter"
+  When I fill in "Title" with "Überwaldean Sea Eels"
   And I press the "Save as draft" button
   Then I should see the heading "Überwaldean Sea Eels"

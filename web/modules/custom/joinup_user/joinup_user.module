@@ -31,6 +31,12 @@ use Drupal\user\UserInterface;
  * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4698
  */
 function joinup_user_user_update(UserInterface $account) {
+  if (!$account->getEmail()) {
+    // Drupal allows accounts without E-mail when the account is created by an
+    // administrator.
+    return;
+  }
+
   $current_user = \Drupal::currentUser()->getAccount();
   // Email should only fire when a user alters another user's account.
   if ($account->isAnonymous() || $current_user->isAnonymous() || $current_user->id() == $account->id()) {

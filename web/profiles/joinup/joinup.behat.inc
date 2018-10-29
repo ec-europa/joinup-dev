@@ -7,6 +7,7 @@
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
@@ -18,7 +19,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\joinup\KeyboardEventKeyCodes as Key;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -26,11 +26,13 @@ use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TabledragTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -54,6 +56,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use TabledragTrait;
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
@@ -986,7 +989,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Checks that non of the given tiles are available on the page.
+   * Checks that none of the given tiles are available on the page.
    *
    * Table format:
    * | Tile title 1 |
@@ -2171,16 +2174,42 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @param string $heading
    *   The heading of the tile.
+   * @param string $type
+   *   The tile bundle.
    *
    * @throws \Exception
-   *   Thrown when the tile is marked as featured.
+   *   If the $type is not solution nor community content or the tile is marked
+   *   as featured.
    *
-   * @Then the :tile tile should not be marked as featured
+   * @Then the :tile :type tile should not be marked as featured
+   *
+   * @todo Due to the bug described in ISAICP-4352, we have to temporary check
+   * if a tile is not featured via backend, rather than checking the DOM.
+   * Manually testing or running this Behat step definition Behat in test
+   * locally doesn't works with DOM check, but for some obscure reasons, that
+   * are very hard to be tracked, tests are failing in Continuous PHP bot.
+   * Revert back the check that a tile is not featured by checking the DOM, in
+   * ISAICP-4849.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4849
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4352
    */
-  public function assertTileNotMarkedAsFeatured($heading) {
-    $element = $this->getTileByHeading($heading);
+  public function assertTileNotMarkedAsFeatured($heading, $type) {
+    if (in_array($type, ['collection', 'solution'])) {
+      $entity_type_id = 'rdf_entity';
+    }
+    elseif (in_array($type, CommunityContentHelper::getBundles())) {
+      $entity_type_id = 'node';
+    }
+    else {
+      throw new \Exception("Invalid bundle '$type'.");
+    }
+    $entity = static::getEntityByLabel($entity_type_id, $heading);
 
-    if ($element->find('css', '.listing__card.is-featured')) {
+    /** @var \Drupal\joinup\PinServiceInterface $pin_service */
+    $pin_service = \Drupal::service('joinup.pin_service');
+
+    if ($pin_service->isEntityPinned($entity)) {
       throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
     }
   }
@@ -2437,7 +2466,7 @@ JS;
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The menu data.
    *
-   * @Then the (draggable )menu table should be:
+   * @Then the draggable menu table should be:
    */
   public function assertDraggableMenuTable(TableNode $table) {
     self::assertJavaScriptEnabledBrowser();
@@ -2476,7 +2505,7 @@ JS;
   }
 
   /**
-   * Drags a table row one position towards a direction.
+   * Drags a table row, specified by title, one position towards a direction.
    *
    * Instead of using the mouse, it uses the keyboard keys so that precise
    * control can be achieved.
@@ -2488,37 +2517,60 @@ JS;
    *
    * @Then I drag the :title table row( to the) :direction
    */
-  public function dragTableRowTowardsDirection($title, $direction) {
+  public function dragTitledTableRowTowardsDirection($title, $direction) {
     self::assertJavaScriptEnabledBrowser();
 
-    if (!in_array($direction, ['left', 'right', 'up', 'down'])) {
-      throw new \Exception('Invalid direction specified.');
+    $row = $this->findDraggableTableRowByTitle($title);
+    $this->dragTableRowTowardsDirection($row, $direction);
+  }
+
+  /**
+   * Drags a table row, specified by its position, towards a direction.
+   *
+   * Instead of using the mouse, it uses the keyboard keys so that precise
+   * control can be achieved.
+   *
+   * @param int $position
+   *   The position of the row in the table. First position starts at 1.
+   * @param string $direction
+   *   The direction to move the row to. One of "up", "down", "left", "right".
+   *
+   * @Then I drag the table row at position :position( to the) :direction
+   */
+  public function findTableRowByPositionAndDragTowardsDirection($position, $direction) {
+    self::assertJavaScriptEnabledBrowser();
+
+    $row = $this->findDraggableTableRowByPosition($position);
+    $this->dragTableRowTowardsDirection($row, $direction);
+  }
+
+  /**
+   * Fills the last form field matching the selector with a value.
+   *
+   * Useful for dynamic parts of a form where a field can be added multiple
+   * times, like multiple cardinality fields.
+   *
+   * @param string $field
+   *   The field selector.
+   * @param string $value
+   *   The field value.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when no field with the given selector are found.
+   *
+   * @Then I fill in the latest :field field with :value
+   */
+  public function fillLastFieldWithLabel($field, $value) {
+    $page = $this->getSession()->getPage();
+    $fields = $page->findAll('named', ['field', $field]);
+
+    if (empty($fields)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value|placeholder', $field);
     }
 
-    $handle = $this->findDraggableTableRowByTitle($title)->find('css', 'a.tabledrag-handle');
-    $handle->focus();
-
-    switch ($direction) {
-      case 'left':
-        $key = Key::LEFT_ARROW;
-        break;
-
-      case 'right':
-        $key = Key::RIGHT_ARROW;
-        break;
-
-      case 'up':
-        $key = Key::UP_ARROW;
-        break;
-
-      case 'down':
-      default:
-        $key = Key::DOWN_ARROW;
-    }
-
-    $handle->keyDown($key);
-    $handle->keyUp($key);
-    $handle->blur();
+    /** @var \Behat\Mink\Element\NodeElement $last */
+    $last = array_pop($fields);
+    $last->setValue($value);
   }
 
 }

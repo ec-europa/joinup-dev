@@ -30,6 +30,7 @@ Feature: Add comments
     And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should see the following success messages:
+      | success messages                                                                                     |
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should not see "I've heard this story..."
     And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
@@ -76,6 +77,7 @@ Feature: Add comments
     And I wait for the honeypot validation to pass
     And I press "Post comment"
     Then I should not see the following success messages:
+      | success messages                                                                                     |
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And the page should contain the html text "Mr scandal was doing something weird the other day."
     # The author's full name should be shown, not the username.
@@ -105,6 +107,7 @@ Feature: Add comments
     And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
+      | success messages                                                                                     |
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
 

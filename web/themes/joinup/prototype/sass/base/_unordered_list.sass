@@ -4,32 +4,18 @@
 //
 // Styleguide 1.7
 
-article
+article, .navigation-bottom
   ul
     padding-left: 15px
     list-style-type: none
     li
-      position: relative
       padding-left: 15px
       margin-bottom: 4px
+      text-indent: -12px
       &:before
-        position: absolute
-        top: 10px
-        left: 0
-        display: block
-        content: ''
-        background: $color-base
-        +border-radius(50%)
-
-    // Indent
-    li
-      &:before
-        width: 4px
-        height: 4px
+        padding-right: 6px
+        content: "\002022"
+        color: $color-base
 
     ul, ol
       padding-left: 15px
-      li
-        &:before
-          width: 2px
-          height: 2px
