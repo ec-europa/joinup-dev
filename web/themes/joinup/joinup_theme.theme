@@ -1675,3 +1675,14 @@ function joinup_theme_preprocess_menu__og__navigation__region_content_bottom(arr
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Collections might have a newsletter. Pass the necessary data that can be used
+ * to render the subscription form inside a tile.
+ */
+function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_content__collection(array &$variables): void {
+  $hey = 0;
+  $hey++;
+}
