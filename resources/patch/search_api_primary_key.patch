@@ -1,0 +1,166 @@
+diff --git a/search_api.install b/search_api.install
+index 23926bfa..66496ed5 100644
+--- a/search_api.install
++++ b/search_api.install
+@@ -36,6 +36,13 @@ function search_api_schema() {
+         'length' => 2048,
+         'not null' => TRUE,
+       ],
++      'hashed_id' => [
++        'description' => 'An hashed, unique identifier for this item.',
++        'type' => 'char',
++        'length' => 64,
++        'not null' => TRUE,
++        'binary' => TRUE,
++      ],
+       'changed' => [
+         'description' => 'A timestamp indicating when the item was last changed',
+         'type' => 'int',
+@@ -339,3 +346,61 @@ function search_api_update_8104() {
+ 
+   return NULL;
+ }
++
++/**
++ * Adds an fixed-length hashed ID column and a primary key to boost performance.
++ */
++function search_api_update_8105() {
++  $schema = Database::getConnection()->schema();
++  $schema->addField('search_api_item', 'hashed_id', [
++    'description' => 'An hashed, unique identifier for this item.',
++    'type' => 'char',
++    'length' => 64,
++    'not null' => TRUE,
++    'binary' => TRUE,
++    'initial_from_field' => 'sha2(`item_id`, 256)',
++  ]);
++
++  $schema->dropIndex('search_api_item', 'indexing');
++  $schema->addIndex('search_api_item', 'indexing', ['index_id', 'status', 'changed', 'item_id', 'hashed_id'], [
++    'description' => 'Stores the items which should be indexed for each index, and their state.',
++    'fields' => [
++      'index_id' => [
++        'description' => 'The ID of the index this item belongs to',
++        'type' => 'varchar',
++        'length' => 50,
++        'not null' => TRUE,
++      ],
++      'datasource' => [
++        'description' => 'The plugin ID of the datasource this item belongs to',
++        'type' => 'varchar',
++        'length' => 50,
++        'not null' => TRUE,
++      ],
++      'item_id' => [
++        'description' => 'The unique identifier of this item',
++        'type' => 'varchar',
++        'length' => 2048,
++        'not null' => TRUE,
++      ],
++      'hashed_id' => [
++        'description' => 'An hashed, unique identifier for this item.',
++        'type' => 'varchar',
++        'length' => 64,
++        'not null' => TRUE,
++      ],
++      'changed' => [
++        'description' => 'A timestamp indicating when the item was last changed',
++        'type' => 'int',
++        'unsigned' => TRUE,
++        'not null' => TRUE,
++      ],
++      'status' => [
++        'description' => 'Boolean indicating the reindexation status, "1" when we need to reindex, "0" otherwise',
++        'type' => 'int',
++        'not null' => TRUE,
++      ],
++    ],
++  ]);
++  $schema->addPrimaryKey('search_api_item', ['hashed_id', 'index_id']);
++}
+diff --git a/src/Plugin/search_api/tracker/Basic.php b/src/Plugin/search_api/tracker/Basic.php
+index bcfa99ad..115ee378 100644
+--- a/src/Plugin/search_api/tracker/Basic.php
++++ b/src/Plugin/search_api/tracker/Basic.php
+@@ -154,7 +154,7 @@ class Basic extends TrackerPluginBase implements PluginFormInterface {
+    */
+   protected function createInsertStatement() {
+     return $this->getDatabaseConnection()->insert('search_api_item')
+-      ->fields(['index_id', 'datasource', 'item_id', 'changed', 'status']);
++      ->fields(['index_id', 'datasource', 'item_id', 'hashed_id', 'changed', 'status']);
+   }
+ 
+   /**
+@@ -218,14 +218,18 @@ class Basic extends TrackerPluginBase implements PluginFormInterface {
+         // We have to make sure we don't try to insert duplicate items.
+         $select = $this->createSelectStatement()
+           ->fields('sai', ['item_id']);
+-        $select->condition('item_id', $ids_chunk, 'IN');
++
++        // Convert all the ids to the hashed ones for performances.
++        $hashed_ids = array_combine($ids_chunk, array_map([$this, 'hash'], $ids_chunk));
++
++        $select->condition('hashed_id', $hashed_ids, 'IN');
+         $existing = $select
+           ->execute()
+           ->fetchCol();
+         $existing = array_flip($existing);
+ 
+         $insert = $this->createInsertStatement();
+-        foreach ($ids_chunk as $item_id) {
++        foreach ($hashed_ids as $item_id => $hashed_id) {
+           if (isset($existing[$item_id])) {
+             continue;
+           }
+@@ -234,6 +238,7 @@ class Basic extends TrackerPluginBase implements PluginFormInterface {
+             'index_id' => $index_id,
+             'datasource' => $datasource_id,
+             'item_id' => $item_id,
++            'hashed_id' => $hashed_id,
+             'changed' => $this->getTimeService()->getRequestTime(),
+             'status' => $this::STATUS_NOT_INDEXED,
+           ]);
+@@ -265,7 +270,7 @@ class Basic extends TrackerPluginBase implements PluginFormInterface {
+           'status' => $this::STATUS_NOT_INDEXED,
+         ]);
+         if ($ids_chunk) {
+-          $update->condition('item_id', $ids_chunk, 'IN');
++          $update->condition('hashed_id', array_map([$this, 'hash'], $ids_chunk), 'IN');
+         }
+         // Update the status of unindexed items only if the item order is LIFO.
+         // (Otherwise, an item that's regularly being updated might never get
+@@ -316,7 +321,7 @@ class Basic extends TrackerPluginBase implements PluginFormInterface {
+       foreach ($ids_chunks as $ids_chunk) {
+         $update = $this->createUpdateStatement();
+         $update->fields(['status' => $this::STATUS_INDEXED]);
+-        $update->condition('item_id', $ids_chunk, 'IN');
++        $update->condition('hashed_id', array_map([$this, 'hash'], $ids_chunk), 'IN');
+         $update->execute();
+       }
+     }
+@@ -338,7 +343,7 @@ class Basic extends TrackerPluginBase implements PluginFormInterface {
+       foreach ($ids_chunks as $ids_chunk) {
+         $delete = $this->createDeleteStatement();
+         if ($ids_chunk) {
+-          $delete->condition('item_id', $ids_chunk, 'IN');
++          $delete->condition('hashed_id', array_map([$this, 'hash'], $ids_chunk), 'IN');
+         }
+         $delete->execute();
+       }
+@@ -436,4 +441,16 @@ class Basic extends TrackerPluginBase implements PluginFormInterface {
+     }
+   }
+ 
++  /**
++   * Hashes a value with sha256 algorithm.
++   *
++   * @param string $data
++   *   The data to hash.
++   *
++   * @return string
++   */
++  protected function hash($data) {
++    return hash('sha256', $data);
++  }
++
+ }
