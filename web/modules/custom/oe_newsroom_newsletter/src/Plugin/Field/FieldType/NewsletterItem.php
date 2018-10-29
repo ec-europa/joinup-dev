@@ -9,6 +9,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 
 /**
  * Defines the field type for OpenEuropa Newsroom Newsletter fields.
@@ -18,10 +19,10 @@ use Drupal\Core\TypedData\DataDefinition;
  *   label = @Translation("Newsroom newsletter"),
  *   description = @Translation("Stores the configuration for a Newsroom newsletter."),
  *   default_widget = "oe_newsroom_newsletter_default",
- *   default_formatter = "string"
+ *   default_formatter = "oe_newsroom_newsletter_subscribe_form"
  * )
  */
-class NewsletterItem extends FieldItemBase {
+class NewsletterItem extends FieldItemBase implements NewsletterItemInterface {
 
   /**
    * {@inheritdoc}
@@ -86,6 +87,46 @@ class NewsletterItem extends FieldItemBase {
       'service_id' => mt_rand(1, 1000),
     ];
     return $values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUniverse(): ?string {
+    try {
+      return $this->get('universe')->getValue();
+    }
+    catch (MissingDataException $e) {
+      return NULL;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getServiceId(): ?int {
+    try {
+      $service_id = $this->get('service_id')->getValue();
+      if (!empty($service_id)) {
+        return (int) $service_id;
+      }
+      return NULL;
+    }
+    catch (MissingDataException $e) {
+      return NULL;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEnabled(): bool {
+    try {
+      return !$this->isEmpty() && $this->get('enabled')->getValue();
+    }
+    catch (MissingDataException $e) {
+      return FALSE;
+    }
   }
 
 }
