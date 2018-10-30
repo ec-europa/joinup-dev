@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @newsroom
 Feature: Subscribing to collection newsletters
   In order to promote my collection
   As a collection owner
@@ -6,9 +6,9 @@ Feature: Subscribing to collection newsletters
 
   Background:
     Given users:
-      | Username           | Roles     |
-      | Afroditi Andreas   | moderator |
-      | Filippos Demetriou |           |
+      | Username           |
+      | Filippos Demetriou |
+      | Tatiana Andreas    |
     And the following contact:
       | email | charalambos.demetriou@example.com |
       | name  | Charalambos Demetriou             |
@@ -16,61 +16,29 @@ Feature: Subscribing to collection newsletters
       | name              |
       | Antonios Katsaros |
     And the following collections:
-      | title               | description         | logo     | banner     | owner         | contact information | state     | policy domain           |
-      | The Willing Consort | The Willing Consort | logo.png | banner.jpg | April Hawkins | Jody Rodriquez      | validated | Statistics and Analysis |
+      | title    | description             | logo     | banner     | owner             | contact information   | state     | policy domain           |
+      | Volkor X | We do not come in peace | logo.png | banner.jpg | Antonios Katsaros | Charalambos Demetriou | validated | Statistics and Analysis |
     And the following collection user memberships:
-      | collection          | user        | roles              |
-      | The Willing Consort | Karl Fields | owner, facilitator |
+      | collection | user               | roles       |
+      | Volkor X   | Filippos Demetriou | owner       |
+      | Volkor X   | Tatiana Andreas    | facilitator |
 
-  Scenario: 'Comment form' should not be accessible on an archived collection content.
-    Given discussion content:
-      | title               | collection          | state     |
-      | The Weeping's Stars | The Willing Consort | validated |
-    When I am logged in as "Lee Reeves"
-    And I go to the "The Weeping's Stars" discussion
-    Then the following fields should be present "Create comment"
-    And I should see the button "Post comment"
+  # This is a temporary measure. The newsletter subscription possibility is
+  # currently only available for moderators while it is being evaluated. If this
+  # works well it can be unlocked for all other collections in the future and it
+  # will be possible for owners and/or facilitators to edit this data.
+  Scenario: Only moderators can enter the subscription information for a collection.
+    Given I am logged in as a moderator
+    And I go to the "Volkor X" collection
+    And I click the contextual link "Edit" in the Header region
+    Then the following fields should be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
-    When I am not logged in
-    And I go to the "The Weeping's Stars" discussion
-    Then the following fields should be present "Your name, Email, Create comment"
-    And I should see the button "Post comment"
+    When I am logged in as "Filippos Demetriou"
+    And I go to the "Volkor X" collection
+    And I click the contextual link "Edit" in the Header region
+    Then the following fields should not be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
-    When I am logged in as "Karl Fields"
-    And I go to the "The Willing Consort" collection
-    And I click "Edit"
-    And I press "Request archival"
-    And I am logged in as a moderator
-    And I go to the "The Willing Consort" collection
-    And I click "Edit"
-    When I fill in "Motivation" with "As you wish."
-    And I press "Archive"
-    And I go to the "The Weeping's Stars" discussion
-    Then the following fields should not be present "Create comment"
-    And I should not see the button "Post comment"
-
-    When I am logged in as "Lee Reeves"
-    And I go to the "The Weeping's Stars" discussion
-    Then the following fields should not be present "Create comment"
-    And I should not see the button "Post comment"
-
-    When I am not logged in
-    And I go to the "The Weeping's Stars" discussion
-    Then the following fields should not be present "Your name, Email, Create comment"
-    And I should not see the button "Post comment"
-
-  Scenario: 'Add community content' menu items should not be visible in the archived connection.
-    When I am logged in as "Karl Fields"
-    And I go to the "The Willing Consort" collection
-    And I click "Edit"
-    And I press "Request archival"
-    And I am logged in as a moderator
-    And I go to the "The Willing Consort" collection
-    And I click "Edit"
-    When I fill in "Motivation" with "As you wish."
-    And I press "Archive"
-
-    # We only need to check that privileged users do not have access anymore.
-    And I am logged in as a facilitator of the "The Willing Consort" collection
-    And I go to the "The Willing Consort" collection
-    Then I should not see the plus button menu
+    When I am logged in as "Tatiana Andreas"
+    And I go to the "Volkor X" collection
+    And I click the contextual link "Edit" in the Header region
+    Then the following fields should not be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
