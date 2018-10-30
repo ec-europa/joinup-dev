@@ -55,15 +55,26 @@ class NewsletterWidget extends WidgetBase {
       '#type' => 'textfield',
       '#title' => $this->t('Universe acronym'),
       '#default_value' => $item->get('universe')->getValue(),
-      '#required' => $element['#required'],
+      '#validate' => [],
+      '#states' => [
+        'required' => [
+          ':input[name="' . $enabled_field_name . '"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     $element['settings']['service_id'] = [
       '#type' => 'number',
       '#title' => $this->t('Newsletter service ID'),
       '#default_value' => $item->get('service_id')->getValue(),
-      '#required' => $element['#required'],
+      '#states' => [
+        'required' => [
+          ':input[name="' . $enabled_field_name . '"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
+
+    $element['#element_validate'][] = [get_called_class(), 'validateElement'];
 
     return $element;
   }
@@ -79,6 +90,22 @@ class NewsletterWidget extends WidgetBase {
       unset($value['settings']);
     }
     return $values;
+  }
+
+  /**
+   * Form element validation handler.
+   *
+   * When the newsletter subscription is enabled, all fields should be filled
+   * in.
+   */
+  public static function validateElement(&$element, FormStateInterface $form_state, $form) {
+    if ($element['enabled']['#value'] == TRUE) {
+      foreach (['universe', 'service_id'] as $field_id) {
+        if (empty($element['settings'][$field_id]['#value'])) {
+          $form_state->setError($element['settings'][$field_id], t('@title field is required when newsletter subscriptions are enabled.', ['@title' => $element['settings'][$field_id]['#title']]));
+        }
+      }
+    }
   }
 
 }
