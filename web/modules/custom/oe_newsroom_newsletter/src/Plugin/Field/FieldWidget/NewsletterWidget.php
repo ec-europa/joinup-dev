@@ -43,7 +43,7 @@ class NewsletterWidget extends WidgetBase {
     $enabled_field_name = array_shift($parents) . '[' . implode('][', $parents) . ']';
     $element['settings'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Newsroom parameters'),
+      '#title' => $this->t('Newsletter information'),
       '#states' => [
         'visible' => [
           ':input[name="' . $enabled_field_name . '"]' => ['checked' => TRUE],
@@ -53,14 +53,14 @@ class NewsletterWidget extends WidgetBase {
 
     $element['settings']['universe'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('The universe acronym'),
+      '#title' => $this->t('Universe acronym'),
       '#default_value' => $item->get('universe')->getValue(),
       '#required' => $element['#required'],
     ];
 
     $element['settings']['service_id'] = [
       '#type' => 'number',
-      '#title' => $this->t('The newsletter service ID'),
+      '#title' => $this->t('Newsletter service ID'),
       '#default_value' => $item->get('service_id')->getValue(),
       '#required' => $element['#required'],
     ];
