@@ -18,6 +18,9 @@ Feature: Subscribing to collection newsletters
     And the following collections:
       | title    | description             | logo     | banner     | owner             | contact information   | state     | policy domain           |
       | Volkor X | We do not come in peace | logo.png | banner.jpg | Antonios Katsaros | Charalambos Demetriou | validated | Statistics and Analysis |
+    And "news" content:
+      | title      | collection | state     | author          |
+      | Hypersleep | Volkor X   | validated | Tatiana Andreas |
     And the following collection user memberships:
       | collection | user               | roles       |
       | Volkor X   | Filippos Demetriou | owner       |
@@ -42,3 +45,41 @@ Feature: Subscribing to collection newsletters
     And I go to the "Volkor X" collection
     And I click the contextual link "Edit" in the Header region
     Then the following fields should not be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
+
+  Scenario: Configure the newsletter subscription
+    # When the newsletter subscriptions are not enabled the subscription form
+    # should not be shown.
+    Given I am logged in as a moderator
+    And I go to the "Volkor X" collection
+
+    # If "Enable newsletter subscriptions" is not checked then it should be
+    # possible to submit the form without entering data in the two newsletter
+    # fields.
+    When I click the contextual link "Edit" in the Header region
+    And I uncheck "Enable newsletter subscriptions"
+    And I press "Publish"
+    Then I should see the heading "Volkor X"
+
+    # If "Enable newsletter subscriptions" is checked then the fields become
+    # required and an error message should be shown if they are not filled in.
+    When I click the contextual link "Edit" in the Header region
+    And I check "Enable newsletter subscriptions"
+    And I press "Publish"
+    Then I should see the following error messages:
+      | error messages                                                                     |
+      | Universe acronym field is required when newsletter subscriptions are enabled.      |
+      | Newsletter service ID field is required when newsletter subscriptions are enabled. |
+
+    # Fill in the information to connect with the Newsroom newsletter service.
+    # This should make it possible to submit the form without errors.
+    When I fill in "Universe acronym" with "volkor-x"
+    And I fill in "Newsletter service ID" with "123"
+    And I press "Publish"
+    Then I should see the heading "Volkor X"
+
+    # Disable the newsletter subscriptions again. This should make the form
+    # disappear.
+    When I click the contextual link "Edit" in the Header region
+    And I uncheck "Enable newsletter subscriptions"
+    And I press "Publish"
+    Then I should see the heading "Volkor X"
