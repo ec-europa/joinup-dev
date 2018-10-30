@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Joinup Newsletter module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Hides the form elements to configure the Newsroom newsletter parameters for
+ * all users except moderators.
+ */
+function joinup_newsletter_form_rdf_entity_collection_edit_form_alter(&$form, FormStateInterface $form_state, string $form_id): void {
+  $current_user = \Drupal::currentUser();
+  $form['field_newsletter']['#access'] = in_array('moderator', $current_user->getRoles());
+}
