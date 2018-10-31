@@ -31,6 +31,15 @@
     <div class="row">
       <div class="mdl-grid">
         {{ results }}
+        {% if newsletter_enabled %}
+          <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col mdl-cell--3-col-wide icon-card">
+            <h2 class="listing__title">{{ 'Newsletter'|t }}</h2>
+            <span class="icon-card__inner">
+              <span class="icon-card__text">{{ newsletter_motivation }}</span>
+              {{ newsletter_form }}
+            </span>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>

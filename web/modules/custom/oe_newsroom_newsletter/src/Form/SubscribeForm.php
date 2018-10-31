@@ -22,7 +22,7 @@ class SubscribeForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, string $universe, string $service_id) {
+  public function buildForm(array $form, FormStateInterface $form_state, string $universe = '', string $service_id = '') {
     $form['email'] = [
       '#type' => 'email',
       '#default_value' => $this->currentUser()->getEmail(),
