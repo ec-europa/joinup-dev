@@ -51,6 +51,7 @@ Feature: Subscribing to collection newsletters
     # should not be shown.
     Given I am logged in as a moderator
     And I go to the "Volkor X" collection
+    Then I should not see the newsletter subscription form in the last tile
 
     # If "Enable newsletter subscriptions" is not checked then it should be
     # possible to submit the form without entering data in the two newsletter
@@ -77,9 +78,13 @@ Feature: Subscribing to collection newsletters
     And I press "Publish"
     Then I should see the heading "Volkor X"
 
+    # Now the subscription form should show up.
+    And I should see the newsletter subscription form in the last tile
+
     # Disable the newsletter subscriptions again. This should make the form
     # disappear.
     When I click the contextual link "Edit" in the Header region
     And I uncheck "Enable newsletter subscriptions"
     And I press "Publish"
     Then I should see the heading "Volkor X"
+    But I should not see the newsletter subscription form in the last tile
