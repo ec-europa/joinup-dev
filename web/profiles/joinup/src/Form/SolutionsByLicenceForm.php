@@ -171,7 +171,7 @@ WHERE {
       }
     } .
     {
-      ?solution a <http://www.w3.org/ns/adms#Asset> .
+      ?solution a <http://www.w3.org/ns/dcat#Dataset> .
       ?solution <http://purl.org/dc/terms/title> ?solution_label .
       ?licence a <http://purl.org/dc/terms/LicenseDocument> .
       ?licence <http://www.w3.org/2000/01/rdf-schema#label> ?licence_label .
@@ -215,7 +215,7 @@ WHERE {
     }
   } .
   {
-    ?solution a <http://www.w3.org/ns/adms#Asset> .
+    ?solution a <http://www.w3.org/ns/dcat#Dataset> .
     ?solution <http://purl.org/dc/terms/title> ?solution_label .
     ?licence a <http://purl.org/dc/terms/LicenseDocument> .
     ?licence <http://www.w3.org/2000/01/rdf-schema#label> ?licence_label .
