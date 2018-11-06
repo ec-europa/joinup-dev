@@ -363,3 +363,10 @@ function joinup_core_post_update_install_piwik2matomo() {
   // the codebase. For this reason they will be removed from the codebase in a
   // follow-up.
 }
+
+/**
+ * Enable the joinup_sparql module.
+ */
+function joinup_core_post_update_install_joinup_sparql() {
+  \Drupal::service('module_installer')->install(['joinup_sparql']);
+}
