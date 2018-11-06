@@ -18,16 +18,17 @@ Feature: Validate an ADMS-AP file through the UI
     Then I should see the text "16 schema error(s) were found while validating."
     And I should see the text "The dcat:Dataset http://example.com/solution/1 does not have a dcat:contactPoint property." in the "dcat:contactPoint is a required property for dcat:Dataset." row
 
-      # Check file non-compliant to ADMS v2.
+    # Check file non-compliant to ADMS v2.
     When I attach the file "valid_adms.rdf" to "File"
     And I wait for the honeypot validation to pass
     And I press "Upload"
     Then I should see the text "No errors found during validation."
 
-      # Check incorrect file.
-    When I attach the file "empty.rdf" to "File"
-    And I wait for the honeypot validation to pass
-    And I press "Upload"
-    Then I should see the following error messages:
-      | error messages                             |
-      | The provided file is not a valid RDF file. |
+    # Fix this in https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4880
+    # # Check incorrect file.
+    # When I attach the file "empty.rdf" to "File"
+    # And I wait for the honeypot validation to pass
+    # And I press "Upload"
+    # Then I should see the following error messages:
+    # | error messages                             |
+    # | The provided file is not a valid RDF file. |
