@@ -365,8 +365,8 @@ function joinup_core_post_update_install_piwik2matomo() {
 }
 
 /**
- * Enable the joinup_sparql module.
+ * Enable the 'joinup_sparql' and 'joinup_federation' modules.
  */
-function joinup_core_post_update_install_joinup_sparql() {
-  \Drupal::service('module_installer')->install(['joinup_sparql']);
+function joinup_core_post_update_install_modules() {
+  \Drupal::service('module_installer')->install(['joinup_sparql', 'joinup_federation']);
 }

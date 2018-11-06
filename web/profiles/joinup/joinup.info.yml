@@ -39,6 +39,7 @@ dependencies:
   - joinup_discussion
   - joinup_document
   - joinup_event
+  - joinup_federation
   - joinup_invite
   - joinup_licence
   - joinup_news
