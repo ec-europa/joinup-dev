@@ -6,6 +6,6 @@ services:
     parent: tempstore.shared
     # Overriding the expiry time from 7 days to 30 minutes.
     arguments:
-      index_3: 1800
+      index_3: 18000
     tags:
       - { name: backend_overridable }
