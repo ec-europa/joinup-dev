@@ -9,7 +9,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\oe_newsroom_newsletter\Form\SubscribeForm;
+use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -94,7 +94,7 @@ class NewsletterSubscribeFormFormatter extends FormatterBase implements Containe
       return [];
     }
 
-    return $this->formBuilder->getForm(SubscribeForm::class, $item->getUniverse(), $item->getServiceId());
+    return $this->formBuilder->getForm(NewsletterSubscribeForm::class, $item->getUniverse(), $item->getServiceId());
   }
 
 }

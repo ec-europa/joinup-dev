@@ -20,7 +20,7 @@ use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
 use Drupal\node\NodeInterface;
-use Drupal\oe_newsroom_newsletter\Form\SubscribeForm;
+use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
 
 /**
  * Gives meta properties about forms based on routes.
@@ -1696,6 +1696,6 @@ function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_
     $variables['newsletter_motivation'] = t('Keep in touch with %collection', [
       '%collection' => $entity->label(),
     ]);
-    $variables['newsletter_form'] = \Drupal::formBuilder()->getForm(SubscribeForm::class, $newsletter_field_item->getUniverse(), $newsletter_field_item->getServiceId());
+    $variables['newsletter_form'] = \Drupal::formBuilder()->getForm(NewsletterSubscribeForm::class, $newsletter_field_item->getUniverse(), $newsletter_field_item->getServiceId());
   }
 }
