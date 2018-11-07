@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\oe_newsroom_newsletter;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\oe_newsroom_newsletter\NewsletterSubscriber\NewsletterSubscriber;
+use Drupal\oe_newsroom_newsletter\NewsletterSubscriber\NewsletterSubscriberInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -14,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * override the subscriber in settings.php:
  *
  * @code
- * $config['oe_newsroom_newsletter']['subscriber'] = 'Drupal\my_module\MySubscriber';
+ * $config['oe_newsroom_newsletter.subscriber']['class'] = 'Drupal\my_module\MySubscriber';
  * @endcode
  */
 class SubscriberFactory implements SubscriberFactoryInterface {
@@ -50,7 +52,7 @@ class SubscriberFactory implements SubscriberFactoryInterface {
    * {@inheritdoc}
    */
   public function get(): NewsletterSubscriberInterface {
-    $subscriber_class = $this->configFactory->get('oe_newsroom_newsletter')->get('subscriber') ?? NewsletterSubscriber::class;
+    $subscriber_class = $this->configFactory->get('oe_newsroom_newsletter.subscriber')->get('class') ?? NewsletterSubscriber::class;
     return $subscriber_class::create($this->container);
   }
 

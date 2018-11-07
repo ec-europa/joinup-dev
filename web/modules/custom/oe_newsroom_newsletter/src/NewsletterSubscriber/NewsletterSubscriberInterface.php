@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\oe_newsroom_newsletter;
+namespace Drupal\oe_newsroom_newsletter\NewsletterSubscriber;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 
