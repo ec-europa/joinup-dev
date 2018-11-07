@@ -112,3 +112,12 @@ function joinup_core_post_update_install_piwik2matomo() {
 function joinup_core_post_update_install_spain_ctt() {
   \Drupal::service('module_installer')->install(['spain_ctt']);
 }
+
+/**
+ * Remove tour buttons.
+ */
+function joinup_core_post_update_remove_tour_buttons() {
+  $config_factory = \Drupal::configFactory();
+  $config_factory->getEditable('block.block.tourbutton_2')->delete();
+  $config_factory->getEditable('block.block.tourbutton')->delete();
+}
