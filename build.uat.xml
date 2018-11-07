@@ -76,6 +76,9 @@ $settings['install_profile'] = '${website.profile.name}';
         <!-- Configure the Stage File Proxy module. -->
         <phingcall target="configure-stage-file-proxy" />
 
+        <!-- Set up a mocked version of the Newsroom newsletter subscription service. -->
+        <phingcall target="setup-mocked-newsroom-newsletter-subscriber" />
+
         <!-- Add proxy configuration. -->
         <append destFile="${website.settings.local.php}">
 if (php_sapi_name() !== 'cli') {
