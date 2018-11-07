@@ -42,7 +42,7 @@ function joinup_newsletter_entity_prepare_view(string $entity_type_id, array $en
     $newsletter_field_item = $entity->get('field_newsletter')->first();
 
     // Skip if the newsletter subscription is not enabled.
-    if (!$newsletter_field_item->isEnabled()) {
+    if (empty($newsletter_field_item) || !$newsletter_field_item->isEnabled()) {
       continue;
     }
 

@@ -1690,9 +1690,10 @@ function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_
   /** @var \Drupal\oe_newsroom_newsletter\Plugin\Field\FieldType\NewsletterItem $newsletter_field_item */
   $newsletter_field_item = $entity->get('field_newsletter')->first();
 
-  $variables['newsletter_enabled'] = $newsletter_field_item->isEnabled();
+  $newsletter_is_enabled = !empty($newsletter_field_item) && $newsletter_field_item->isEnabled();
+  $variables['newsletter_enabled'] = $newsletter_is_enabled;
 
-  if ($newsletter_field_item->isEnabled()) {
+  if ($newsletter_is_enabled) {
     $variables['newsletter_motivation'] = t('Keep in touch with %collection', [
       '%collection' => $entity->label(),
     ]);
