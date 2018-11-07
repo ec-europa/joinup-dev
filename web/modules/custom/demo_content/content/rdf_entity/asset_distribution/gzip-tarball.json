@@ -63,7 +63,7 @@
     ],
     "field_ad_description": [
         {
-            "value": "<p>Gzipped tarball.<\/p>\r\n",
+            "value": "<p>Gzipped tarball.<\/p>",
             "format": null,
             "summary": null
         }

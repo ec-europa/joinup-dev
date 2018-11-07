@@ -21,6 +21,6 @@ settings:
 visibility:
   request_route:
     id: request_route
-    routes: "user.login\r\nuser.pass\r\nuser.register"
+    routes: "user.login\nuser.pass\nuser.register"
     negate: false
     context_mapping: {  }
