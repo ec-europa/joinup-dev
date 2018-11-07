@@ -1,4 +1,4 @@
-@api @terms @newsroom
+@api @terms
 Feature: Subscribing to collection newsletters
   In order to promote my collection
   As a collection owner
@@ -6,9 +6,10 @@ Feature: Subscribing to collection newsletters
 
   Background:
     Given users:
-      | Username           |
-      | Filippos Demetriou |
-      | Tatiana Andreas    |
+      | Username           | E-mail                         | Roles     |
+      | Filippos Demetriou | filippos.demetriou@example.com |           |
+      | Tatiana Andreas    | tatiandri@example.com          |           |
+      | Magdalini Kokinos  | m.kokinos@example.com          | moderator |
     And the following contact:
       | email | charalambos.demetriou@example.com |
       | name  | Charalambos Demetriou             |
@@ -88,3 +89,36 @@ Feature: Subscribing to collection newsletters
     And I press "Publish"
     Then I should see the heading "Volkor X"
     But I should not see the newsletter subscription form in the last tile
+
+  @javascript @newsroom_newsletter
+  Scenario: Subscribe to a newsletter
+    Given I am logged in as "Magdalini Kokinos"
+    When I go to the "Volkor X" collection
+    And I click the contextual link "Edit" in the Header region
+    And I click the "Additional fields" tab
+    And I check "Enable newsletter subscriptions"
+    And I fill in "Universe acronym" with "volkor-x"
+    And I fill in "Newsletter service ID" with "123"
+    And I press "Publish"
+    Then I should see the heading "Volkor X"
+
+    # Now the subscription form should show up.
+    And I should see the newsletter subscription form in the last tile
+
+    # The email address of the logged in user should be prefilled.
+    And the "E-mail address" field should contain "m.kokinos@example.com"
+
+    # When the user subscribes a success message should be shown.
+    When I press "Subscribe"
+    And I wait for AJAX to finish
+    Then I should see the following success messages:
+      | Success messages                             |
+      | Thank you for subscribing to our newsletter. |
+
+    # When a user resubscribes it is polite to inform about this.
+    When I go to the "Volkor X" collection
+    And I press "Subscribe"
+    And I wait for AJAX to finish
+    Then I should see the following success messages:
+      | Success messages                              |
+      | You are already subscribed to our newsletter. |
