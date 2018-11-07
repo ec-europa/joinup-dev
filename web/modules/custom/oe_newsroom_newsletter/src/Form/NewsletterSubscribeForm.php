@@ -96,7 +96,7 @@ class NewsletterSubscribeForm extends FormBase {
     $service_id = $form_state->getValue('service_id');
     try {
       $this->subscriberFactory->get()->subscribe($email, $universe, $service_id);
-      $this->messenger()->addStatus(t('Thank you for subscribing to the newsletter.'));
+      $this->messenger()->addStatus(t('Thank you for subscribing to our newsletter.'));
       $this->getLogger('oe_newsroom_newsletter')->info('@email subscribed to the newsletter with service ID @service_id and universe @universe.', [
         '@email' => $email,
         '@universe' => $universe,
@@ -122,7 +122,7 @@ class NewsletterSubscribeForm extends FormBase {
       ]);
     }
     catch (EmailAddressAlreadySubscribedException $e) {
-      $this->messenger()->addStatus(t('You are already subscribed to the newsletter.'));
+      $this->messenger()->addStatus(t('You are already subscribed to our newsletter.'));
       $this->getLogger('oe_newsroom_newsletter')->notice('@email is already registered to the newsletter with service ID @service_id and universe @universe.', [
         '@email' => $email,
         '@universe' => $universe,
