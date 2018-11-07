@@ -213,7 +213,7 @@
             },
             "drupal/swiftmailer": {
                 "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
-                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2018-09-18/3000553-spool-drush-command-full_0.patch"
+                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2018-11-07/3000553-9_includes-3000546-4.patch"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
