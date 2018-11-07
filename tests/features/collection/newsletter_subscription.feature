@@ -112,7 +112,7 @@ Feature: Subscribing to collection newsletters
     When I press "Subscribe"
     And I wait for AJAX to finish
     Then I should see the following success messages:
-      | Success messages                             |
+      | success messages                             |
       | Thank you for subscribing to our newsletter. |
 
     # When a user resubscribes it is polite to inform about this.
@@ -120,5 +120,5 @@ Feature: Subscribing to collection newsletters
     And I press "Subscribe"
     And I wait for AJAX to finish
     Then I should see the following success messages:
-      | Success messages                              |
+      | success messages                              |
       | You are already subscribed to our newsletter. |
