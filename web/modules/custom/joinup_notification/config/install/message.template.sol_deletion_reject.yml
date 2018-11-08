@@ -9,7 +9,7 @@ text:
     value: 'Joinup: Your request to delete your solution has been rejected'
     format: full_html
   -
-    value: "<p>You recently requested that the interoperability solution @entity:title be deleted.</p>\r\n<p>Your request was rejected by @actor:full_name, due to @transition:motivation.</p>\r\n<p>You can review the content at the following link: <a href=\"@entity:url\">@entity:url</a></p>"
+    value: "<p>You recently requested that the interoperability solution @entity:title be deleted.</p>\n<p>Your request was rejected by @actor:full_name, due to @transition:motivation.</p>\n<p>You can review the content at the following link: <a href=\"@entity:url\">@entity:url</a></p>"
     format: full_html
 settings:
   'token options':
