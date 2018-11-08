@@ -5,7 +5,9 @@
  * Install, uninstall, schema and requirements hook for Joinup.
  */
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Site\Settings;
+use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\user\Entity\User;
 
 /**
@@ -165,4 +167,52 @@ WHERE {
 }
 QUERY;
   $connection->query($query);
+}
+
+/**
+ * Update the type of collections, solutions, releases and distributions.
+ */
+function joinup_core_update_8106() {
+  $entity_type_id = 'rdf_entity';
+  $connection = Database::getConnection('default', 'sparql_default');
+  $bundles = [
+    'collection' => [
+      'old_uri' => 'http://www.w3.org/ns/adms#AssetRepository',
+      'new_uri' => 'http://www.w3.org/ns/dcat#Catalog',
+    ],
+    'solution' => [
+      'old_uri' => 'http://www.w3.org/ns/adms#Asset',
+      'new_uri' => 'http://www.w3.org/ns/dcat#Dataset',
+    ],
+    'asset_release' => [
+      'old_uri' => 'http://www.w3.org/ns/adms#Asset',
+      'new_uri' => 'http://www.w3.org/ns/dcat#Dataset',
+    ],
+    'asset_distribution' => [
+      'old_uri' => 'http://www.w3.org/ns/adms#AssetDistribution',
+      'new_uri' => 'http://www.w3.org/ns/dcat#Distribution',
+    ],
+  ];
+
+  $bundle_predicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+  foreach ($bundles as $bundle => $properties) {
+    $rdf_entity_mapping = RdfEntityMapping::loadByName($entity_type_id, $bundle);
+
+    // Update the mappings.
+    $rdf_entity_mapping->setRdfType($properties['new_uri'])->save();
+
+    // Update the existing entities.
+    $graphs = $rdf_entity_mapping->getGraphs();
+    foreach ($graphs as $graph_uri) {
+      // In SPARQL, there is no UPDATE query. For updates, one has to first
+      // delete and then re insert.
+      $query_string = <<<QUERY
+WITH <{$graph_uri}>
+DELETE { ?entity <{$bundle_predicate}> <{$properties['old_uri']}> }
+INSERT { ?entity <{$bundle_predicate}> <{$properties['new_uri']}> }
+WHERE { ?entity <{$bundle_predicate}> <{$properties['old_uri']}> }
+QUERY;
+      $connection->query($query_string);
+    }
+  }
 }
