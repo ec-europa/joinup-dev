@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5cf14783b449fc3aca2c6192ffc3997",
+    "content-hash": "6b8c5bb379b531ddc4ee84c85efd9e16",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4687,7 +4687,7 @@
                 "patches_applied": {
                     "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
                     "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
-                    "Concurrent index updates lock drush. @see https://www.drupal.org/project/search_api/issues/3011340": "https://www.drupal.org/files/issues/2018-11-05/search_api_concurrent_index_updates-3011340-3-D8.patch"
+                    "Concurrent index updates lock drush. @see https://www.drupal.org/project/search_api/issues/3011340": "https://www.drupal.org/files/issues/2018-11-08/3011340-6.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
