@@ -2,10 +2,13 @@
 
 /**
  * @file
- * Contains joinup_federation.module.
+ * Contains the main functionality of Joinup Federation module.
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_federation\Plugin\DataType\RdfEntityReference;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupValidReferenceConstraint;
+use Drupal\joinup_federation\RdfEntityReferenceFieldItemList;
 
 /**
  * Implements hook_ENTITY_TYPE_load().
@@ -47,4 +50,25 @@ function joinup_federation_form_rdf_entity_form_alter(&$form, FormStateInterface
       $form[$field_name]['widget']['#description'] = ($form[$field_name]['widget']['#description'] ?? '') . $added_description;
     }
   }
+}
+
+/**
+ * Implements hook_validation_constraint_alter().
+ */
+function joinup_federation_validation_constraint_alter(array &$definitions) {
+  $definitions['ValidReference']['class'] = JoinupValidReferenceConstraint::class;
+}
+
+/**
+ * Implements hook_field_info_alter().
+ */
+function joinup_federation_field_info_alter(&$info) {
+  $info['entity_reference']['list_class'] = RdfEntityReferenceFieldItemList::class;
+}
+
+/**
+ * Implements hook_data_type_info_alter().
+ */
+function joinup_federation_data_type_info_alter(&$data_types) {
+  $data_types['entity_reference']['class'] = RdfEntityReference::class;
 }
