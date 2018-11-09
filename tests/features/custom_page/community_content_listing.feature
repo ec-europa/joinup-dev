@@ -267,3 +267,21 @@ Feature:
     When I click the Event content tab
     Then I should see the heading "20 year anniversary"
     Then I should not see the heading "Rare Nintendo64 disk drive discovered"
+
+  Scenario: Test newsletter listing.
+
+    Given newsletter content:
+      | title                  | content        | collection | state     |
+      | Nintendo64 in the News | Old stories... | Nintendo64 | validated |
+
+    Given I am logged in as a moderator
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+
+    When I fill in the following:
+      | Title         | Newsletters 2018                      |
+      | Body          | Shows all content for this collection |
+      | Query presets | entity_bundle\|newsletter             |
+    And I check the box "Display a community content listing"
+    And I press "Save"
+    Then I should see the "Nintendo64 in the News" tile
