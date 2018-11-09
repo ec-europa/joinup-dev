@@ -65,6 +65,7 @@ class Connection extends BaseConnection implements ConnectionInterface {
     Http::setDefaultHttpClient($client);
     return parent::open($connection_options);
   }
+
 }
 
 /**
