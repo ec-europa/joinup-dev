@@ -4,18 +4,22 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\Validation\Constraint;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
 use Drupal\Core\Entity\EntityReferenceSelection\SelectionWithAutocreateInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Plugin\Validation\Constraint\ValidReferenceConstraintValidator;
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\joinup_federation\StagingCandidateGraphsInterface;
-use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * Replaces the core ValidReferenceConstraintValidator validator.
+ *
+ * The method ::validate() is forked from the parent class with only two lines
+ * changed and commented as:
+ * - Change #1: Line changed.
+ * - Change #2: Line changed.
  */
 class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintValidator {
 
@@ -62,48 +66,6 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
       return;
     }
 
-    /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    $entity = !empty($value->getParent()) ? $value->getEntity() : NULL;
-
-    // When all of the following assertions are true:
-    // - The host entity exists;
-    // - The host entity is an 'rdf_entity' entity type;
-    // - The host entity is in the 'staging' graph;
-    // - The target entities are 'rdf_entity' entities,
-    // use a slightly changed validator.
-    // @see self::validateStagingGraph()
-    if ($entity && ($entity->getEntityTypeId() === 'rdf_entity') && ($entity->get('graph')->target_id === 'staging')) {
-      $target_entity_type_id = $value->getFieldDefinition()->getSetting('target_type');
-      if ($target_entity_type_id === 'rdf_entity') {
-        $this->validateStagingGraph($value, $constraint, $entity);
-      }
-    }
-
-    parent::validate($value, $constraint);
-  }
-
-  /**
-   * Validates an RDF entity reference for RDF host entities in staging graph.
-   *
-   * Most of this method's code was copied from the parent ::validate() method.
-   * This is a slightly adapted version that adds the 'staging' graph on top
-   * of the default graph IDs list to be used with the RDF entity loaders when
-   * all of the following assertions are true:
-   * - The host entity exists.
-   * - The host entity is an 'rdf_entity' entity type.
-   * - The host entity is in the 'staging' graph.
-   * - The target entities are 'rdf_entity' entities.
-   *
-   * @param \Drupal\Core\Field\FieldItemListInterface $value
-   *   The value to be validated.
-   * @param \Symfony\Component\Validator\Constraint $constraint
-   *   The constraint object.
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The RDF host entity.
-   *
-   * @see \Drupal\Core\Entity\Plugin\Validation\Constraint\ValidReferenceConstraintValidator::validate()
-   */
-  protected function validateStagingGraph(FieldItemListInterface $value, Constraint $constraint, RdfInterface $rdf_entity): void {
     // Collect new entities and IDs of existing entities across the field items.
     $new_entities = [];
     $target_ids = [];
@@ -133,8 +95,11 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
       return;
     }
 
-    /** @var \Drupal\joinup_federation\Plugin\EntityReferenceSelection\RdfEntitySelection $handler */
-    $handler = $this->selectionManager->getSelectionHandler($value->getFieldDefinition(), $rdf_entity);
+    $entity = !empty($value->getParent()) ? $value->getEntity() : NULL;
+
+    /** @var \Drupal\Core\Entity\EntityReferenceSelection\SelectionInterface $handler */
+    $handler = $this->selectionManager->getSelectionHandler($value->getFieldDefinition(), $entity);
+    $target_type_id = $value->getFieldDefinition()->getSetting('target_type');
 
     // Add violations on deltas with a new entity that is not valid.
     if ($new_entities) {
@@ -148,25 +113,23 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
         $invalid_new_entities = $new_entities;
       }
 
-      foreach ($invalid_new_entities as $delta => $rdf_entity) {
+      foreach ($invalid_new_entities as $delta => $entity) {
         $this->context->buildViolation($constraint->invalidAutocreateMessage)
-          ->setParameter('%type', 'rdf_entity')
-          ->setParameter('%label', $rdf_entity->label())
+          ->setParameter('%type', $target_type_id)
+          ->setParameter('%label', $entity->label())
           ->atPath((string) $delta . '.entity')
-          ->setInvalidValue($rdf_entity)
+          ->setInvalidValue($entity)
           ->addViolation();
       }
     }
 
     // Add violations on deltas with a target_id that is not valid.
     if ($target_ids) {
-      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $rdf_entity_storage */
-      $rdf_entity_storage = $this->entityTypeManager->getStorage('rdf_entity');
-
       // Get a list of pre-existing references.
       $previously_referenced_ids = [];
-      if ($value->getParent() && ($rdf_entity = $value->getEntity()) && !$rdf_entity->isNew()) {
-        $existing_entity = $rdf_entity_storage->loadUnchanged($rdf_entity->id(), $this->stagingCandidateGraphs->getCandidates());
+      if ($value->getParent() && ($entity = $value->getEntity()) && !$entity->isNew()) {
+        // Change #1: Line changed.
+        $existing_entity = $this->loadUnchanged($entity);
         foreach ($existing_entity->{$value->getFieldDefinition()->getName()}->getValue() as $item) {
           $previously_referenced_ids[$item['target_id']] = $item['target_id'];
         }
@@ -176,7 +139,8 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
       if ($invalid_target_ids = array_diff($target_ids, $valid_target_ids)) {
         // For accuracy of the error message, differentiate non-referenceable
         // and non-existent entities.
-        $existing_entities = $rdf_entity_storage->loadMultiple($invalid_target_ids, $this->stagingCandidateGraphs->getCandidates());
+        // Change #2: Line changed.
+        $existing_entities = $this->loadMultiple($target_type_id, $invalid_target_ids, $entity);
         foreach ($invalid_target_ids as $delta => $target_id) {
           // Check if any of the invalid existing references are simply not
           // accessible by the user, in which case they need to be excluded from
@@ -187,7 +151,7 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
 
           $message = isset($existing_entities[$target_id]) ? $constraint->message : $constraint->nonExistingMessage;
           $this->context->buildViolation($message)
-            ->setParameter('%type', 'rdf_entity')
+            ->setParameter('%type', $target_type_id)
             ->setParameter('%id', $target_id)
             ->atPath((string) $delta . '.target_id')
             ->setInvalidValue($target_id)
@@ -195,6 +159,56 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
         }
       }
     }
+  }
+
+  /**
+   * Loads the existing, unchanged host entity.
+   *
+   * This method checks if the host entity is an RDF entity. If so, it passes
+   * the host entity graph to RdfEntitySparqlStorageInterface::loadUnchanged().
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The host entity.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The unchanged entity.
+   */
+  protected function loadUnchanged(EntityInterface $entity): EntityInterface {
+    $storage = $this->entityTypeManager->getStorage($entity->getEntityTypeId());
+    if ($entity->getEntityTypeId() === 'rdf_entity') {
+      /** @var \Drupal\rdf_entity\RdfInterface $entity */
+      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
+      return $storage->loadUnchanged($entity->id(), [$entity->get('graph')->target_id]);
+    }
+    return $storage->loadUnchanged($entity->id());
+  }
+
+  /**
+   * Returns a list of referenced entities.
+   *
+   * Pass the list of graphs when all of the following assertions are true,
+   * otherwise, use the core loader:
+   * - The target entities are 'rdf_entity' entities,
+   * - The host entity is an 'rdf_entity' entity type;
+   * - The host entity is in the 'staging' graph,
+   *
+   * @param string $target_type_id
+   *   The entity type ID of the target entities.
+   * @param array $ids
+   *   A list of entity IDs to be retrieved.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The host entity.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   A list of referred entities.
+   */
+  protected function loadMultiple(string $target_type_id, array $ids, EntityInterface $entity): array {
+    $storage = $this->entityTypeManager->getStorage($target_type_id);
+    if ($target_type_id === 'rdf_entity' && $entity->getEntityTypeId() === 'rdf_entity' && $entity->get('graph')->target_id === 'staging') {
+      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
+      return $storage->loadMultiple($ids, $this->stagingCandidateGraphs->getCandidates());
+    }
+    return $storage->loadMultiple($ids);
   }
 
 }
