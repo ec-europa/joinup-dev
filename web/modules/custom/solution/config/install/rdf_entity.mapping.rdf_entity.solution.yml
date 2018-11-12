@@ -9,7 +9,7 @@ third_party_settings: {  }
 id: rdf_entity.solution
 entity_type_id: rdf_entity
 bundle: solution
-rdf_type: 'http://www.w3.org/ns/adms#Asset'
+rdf_type: 'http://www.w3.org/ns/dcat#Dataset'
 base_fields_mapping:
   rid:
     target_id:
