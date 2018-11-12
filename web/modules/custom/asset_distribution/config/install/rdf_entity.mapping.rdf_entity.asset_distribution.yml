@@ -8,7 +8,7 @@ third_party_settings: {  }
 id: rdf_entity.asset_distribution
 entity_type_id: rdf_entity
 bundle: asset_distribution
-rdf_type: 'http://www.w3.org/ns/adms#AssetDistribution'
+rdf_type: 'http://www.w3.org/ns/dcat#Distribution'
 base_fields_mapping:
   rid:
     target_id:

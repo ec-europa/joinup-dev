@@ -1074,7 +1074,8 @@ function joinup_core_views_query_alter(ViewExecutable $view, QueryPluginBase $qu
   // we have to decode just before the query is about to run.
   // @see \Drupal\views\Plugin\views\display\PathPluginBase
   // @see \Drupal\joinup_core\Plugin\views\argument_default\RdfEntity
-  if ($view->id() === 'group_content_management' && $view->current_display === 'manage') {
+  $displays = ['manage', 'csv_export'];
+  if ($view->id() === 'group_content_management' && in_array($view->current_display, $displays)) {
     foreach ($query->where as &$group) {
       foreach ($group['conditions'] as &$condition) {
         if ($condition['field'] === 'node__og_audience.og_audience_target_id') {

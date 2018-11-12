@@ -119,7 +119,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
       $mail_body = trim((string) $mail['body']);
-      $mail_body = preg_replace("/[\r\n\t]+/", ' ', $mail_body);
+      $mail_body = str_replace("\r\n", "\n", $mail_body);
+      $mail_body = preg_replace("/[\n\t]+/", ' ', $mail_body);
 
       // If the original mail body consists of renderable markup, we need to:
       // - undo the encoding done by Twig to quotes;
@@ -244,7 +245,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       // mail body line to a certain amount of characters (77 by default).
       // Spaces are also removed.
       // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = preg_replace("/[\r\n\s\t]+/", ' ', $mail['body']);
+      $mail_body = str_replace("\r\n", "\n", $mail['body']);
+      $mail_body = preg_replace("/[\n\s\t]+/", ' ', $mail_body);
       $mail_body = trim($mail_body);
 
       // If the original mail body is markup, we need to:

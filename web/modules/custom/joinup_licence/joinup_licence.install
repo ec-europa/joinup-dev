@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall, schema and requirements hook for joinup_licence module.
+ */
+
+/**
+ * Corrects the label predicate.
+ */
+function joinup_licence_update_8100() {
+  /** @var \Drupal\Core\Database\Connection $query */
+  $connection = \Drupal::service('sparql_endpoint');
+  $query = <<<QUERY
+WITH <http://joinup.eu/licence/published>
+DELETE { ?subject <http://purl.org/dc/terms/title> ?object }
+INSERT { ?subject <http://www.w3.org/2000/01/rdf-schema#label> ?object }
+WHERE { ?subject <http://purl.org/dc/terms/title> ?object }
+QUERY;
+  $connection->query($query);
+}
