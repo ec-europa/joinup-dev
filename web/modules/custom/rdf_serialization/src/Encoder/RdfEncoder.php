@@ -2,6 +2,7 @@
 
 namespace Drupal\rdf_serialization\Encoder;
 
+use EasyRdf\Format;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
@@ -11,17 +12,17 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
 class RdfEncoder implements EncoderInterface, DecoderInterface {
 
   /**
-   * The format that this encoder supports.
+   * The formats that this encoder supports.
    *
    * @var array
    */
-  protected static $formats = ['rdfxml'];
+  protected static $supported_formats = ['jsonld', 'rdfxml', 'ntriples', 'turtle', 'n3'];
 
   /**
    * {@inheritdoc}
    */
   public function supportsEncoding($format) {
-    return in_array($format, static::$formats);
+    return in_array($format, self::supportedFormats());
   }
 
   /**
@@ -51,7 +52,9 @@ class RdfEncoder implements EncoderInterface, DecoderInterface {
   }
 
   public static function supportedFormats() {
-    return self::$formats;
+    $formats = Format::getFormats();
+    /** @var \EasyRdf\Format[] $supported_formats */
+    return array_intersect($formats, self::$supported_formats);
   }
 
 }

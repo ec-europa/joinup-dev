@@ -33,7 +33,7 @@ class RdfEntityNormalizer extends NormalizerBase {
    * {@inheritdoc}
    */
   public function normalize($entity, $format = NULL, array $context = []) {
-    return ['_rdf_entity' => $this->rdfSerializer->serializeEntity($entity, 'jsonld')];
+    return ['_rdf_entity' => $this->rdfSerializer->serializeEntity($entity, $format)];
   }
 
   /**
