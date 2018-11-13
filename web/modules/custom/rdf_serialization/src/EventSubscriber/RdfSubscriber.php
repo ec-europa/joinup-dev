@@ -2,9 +2,9 @@
 
 namespace Drupal\rdf_serialization\EventSubscriber;
 
+use Drupal\rdf_serialization\Encoder\RdfEncoder;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,11 +19,16 @@ class RdfSubscriber implements EventSubscriberInterface {
    *   The Event to process.
    */
   public function onKernelRequest(GetResponseEvent $event) {
-    $event->getRequest()->setFormat('rdfxml', array('application/rdf+xml'));
+    /** @var \EasyRdf\Format $format */
+    foreach (RdfEncoder::supportedFormats() as $format) {
+      $mime = array_keys($format->getMimeTypes());
+      $event->getRequest()->setFormat($format->getName(), $mime);
+    }
   }
 
   /**
-   * Implements \Symfony\Component\EventDispatcher\EventSubscriberInterface::getSubscribedEvents().
+   * Implements
+   * \Symfony\Component\EventDispatcher\EventSubscriberInterface::getSubscribedEvents().
    */
   static function getSubscribedEvents() {
     $events[KernelEvents::REQUEST][] = array('onKernelRequest');
