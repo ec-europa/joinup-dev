@@ -107,6 +107,34 @@
       content: '*'
       color: $color-error
 
+.form__exposed-form
+  select, .form-item
+    width: 100%
+  .form__actions input
+    margin: 0
+
+.form__margin-top
+  margin-top: $form-margin
+
+// Styling for members overview
+.form__member-actions
+  .form-wrapper
+    .form-item,
+    .form-actions
+      display: inline-block
+      vertical-align: bottom
+      width: 100%
+    +breakpoint(lg-desktop)
+      .form-item
+        width: 60%
+      .form-actions
+        width: 35%
+        margin-left: $form-margin
+        margin-top: 0
+        input
+          margin: 0
+
+
 // Modifiers
 // --------------------------------------------------
 .form__description--checkbox
