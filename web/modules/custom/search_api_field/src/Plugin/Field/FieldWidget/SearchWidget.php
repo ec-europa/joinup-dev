@@ -492,7 +492,10 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['filters'] = [
       '#type' => 'table',
       '#header' => [
-        $this->t('Filter'),
+        [
+          'data' => $this->t('Filter'),
+          'colspan' => 2,
+        ],
         $this->t('Weight'),
         $this->t('Operations'),
       ],
@@ -514,6 +517,9 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       $subform_state = SubformState::createForSubform($subform, $form, $form_state);
 
       $element['filters'][$plugin_delta] = [
+        'drag_handle' => [
+          '#wrapper_attributes' => ['class' => ['tabledrag-handle-cell']],
+        ],
         'plugin' => $plugin->buildConfigurationForm($subform, $subform_state),
         'weight' => [
           '#type' => 'weight',
@@ -531,7 +537,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
           ],
           '#limit_validation_errors' => [],
         ],
-        '#attributes' => ['class' => 'draggable', 'tabledrag-leaf'],
+        '#attributes' => ['class' => ['draggable']],
       ];
     }
 
@@ -542,13 +548,17 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       }
     }
 
-    $element['field'] = [
+    $element['add_more'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['form__add-more-wrapper']],
+    ];
+    $element['add_more']['field'] = [
       '#type' => 'select',
       '#title' => $this->t('Available filters'),
       '#options' => $options,
       '#required' => FALSE,
     ];
-    $element['add'] = [
+    $element['add_more']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Add and configure filter'),
       '#name' => 'add_filter',
@@ -605,8 +615,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     list($field_id, $plugin_id) = explode(':', $form_state->getValue($wrapper['field']['#parents']), 2);
 
     // Extract element and widget elements.
-    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -3));
-    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
+    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -5));
 
     $field_name = $widget['#field_name'];
     $parents = $widget['#field_parents'];
