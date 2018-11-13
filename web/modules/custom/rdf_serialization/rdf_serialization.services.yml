@@ -7,3 +7,8 @@ services:
     class: Drupal\rdf_serialization\EventSubscriber\RdfSubscriber
     tags:
       - { name: event_subscriber }
+  serializer.normalizer.entity.rdf:
+    class: Drupal\rdf_serialization\Normalizer\RdfEntityNormalizer
+    arguments: ['@rdf_export.serializer']
+    tags:
+    - { name: normalizer, priority: 10 }

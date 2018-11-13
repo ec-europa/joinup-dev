@@ -4,9 +4,6 @@ namespace Drupal\rdf_serialization\Encoder;
 
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
-use SplTempFileObject;
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Serialization\Exception\InvalidDataTypeException;
 
 /**
  * Adds RDF encoder support for the Serialization API.
@@ -16,15 +13,15 @@ class RdfEncoder implements EncoderInterface, DecoderInterface {
   /**
    * The format that this encoder supports.
    *
-   * @var string
+   * @var array
    */
-  protected static $format = 'rdfxml';
+  protected static $formats = ['rdfxml'];
 
   /**
    * {@inheritdoc}
    */
   public function supportsEncoding($format) {
-    return $format == static::$format;
+    return in_array($format, static::$formats);
   }
 
   /**
@@ -40,7 +37,10 @@ class RdfEncoder implements EncoderInterface, DecoderInterface {
    * Uses HTML-safe strings, with several characters escaped.
    */
   public function encode($data, $format, array $context = array()) {
-    return var_export($data, TRUE);
+    if (isset($data['_rdf_entity'])) {
+      return $data['_rdf_entity'];
+    }
+    return NULL;
   }
 
   /**
@@ -48,6 +48,10 @@ class RdfEncoder implements EncoderInterface, DecoderInterface {
    */
   public function decode($data, $format, array $context = array()) {
 
+  }
+
+  public static function supportedFormats() {
+    return self::$formats;
   }
 
 }
