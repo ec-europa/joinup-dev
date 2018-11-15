@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "250fb1fdaed35e1c893bbc7937ec689b",
+    "content-hash": "dee820a01c8c141513994f0fee15b294",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4482,7 +4482,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch",
+                    "Regression introduced in #79 @see https://github.com/ec-europa/rdf_entity/pull/72": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/72.diff"
                 }
             },
             "autoload": {
