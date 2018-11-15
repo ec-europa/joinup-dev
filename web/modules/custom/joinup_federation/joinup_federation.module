@@ -7,6 +7,9 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_federation\Plugin\DataType\RdfEntityReference;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\FederationDistributionSingleParentConstraint;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupEntityChangedConstraint;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupReferenceAccessConstraint;
 use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupValidReferenceConstraint;
 use Drupal\joinup_federation\RdfEntityReferenceFieldItemList;
 
@@ -57,6 +60,9 @@ function joinup_federation_form_rdf_entity_form_alter(&$form, FormStateInterface
  */
 function joinup_federation_validation_constraint_alter(array &$definitions) {
   $definitions['ValidReference']['class'] = JoinupValidReferenceConstraint::class;
+  $definitions['ReferenceAccess']['class'] = JoinupReferenceAccessConstraint::class;
+  $definitions['EntityChanged']['class'] = JoinupEntityChangedConstraint::class;
+  $definitions['DistributionSingleParent']['class'] = FederationDistributionSingleParentConstraint::class;
 }
 
 /**
