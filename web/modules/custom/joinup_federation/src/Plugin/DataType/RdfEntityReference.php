@@ -64,7 +64,7 @@ class RdfEntityReference extends EntityReference {
     $root = $this->getRoot();
 
     // When the host entity is an RDF entity in 'staging' graph, use a custom
-    // target loader that give priority to the 'staging‘ graph when loads the
+    // target loader that gives priority to the 'staging‘ graph when loads the
     // target entity.
     if (
       // Has a non-empty root.
@@ -77,6 +77,8 @@ class RdfEntityReference extends EntityReference {
       && $host_entity->getEntityTypeId() === 'rdf_entity'
       // And the RDF entity is in 'staging' graph.
       && $host_entity->get('graph')->target_id === 'staging'
+      // And the target entity is an 'rdf_entity'.
+      && $this->getTargetDefinition()->getEntityTypeId() === 'rdf_entity'
     ) {
       return $this->getStagingTarget();
     }
