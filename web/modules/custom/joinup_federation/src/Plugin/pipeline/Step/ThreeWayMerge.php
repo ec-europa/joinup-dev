@@ -13,7 +13,6 @@ use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -235,9 +234,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       $incoming_field = $incoming_entity->get($field_name);
       $local_field = $local_entity->get($field_name);
 
-      // Always keep the local values for non schema defined field.
-      $incoming_field->setValue($local_field->getValue());
-      $changed = TRUE;
+      if (!$incoming_field->equals($local_field)) {
+        // Always keep the local values for non schema defined field.
+        $incoming_field->setValue($local_field->getValue());
+        $changed = TRUE;
+      }
     }
 
     return $changed;
