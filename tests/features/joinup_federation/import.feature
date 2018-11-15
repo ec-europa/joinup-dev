@@ -171,6 +171,10 @@ Feature: As a site moderator I am able to import RDF files.
     But the "Solution 1" solution should be affiliated with the "Spain" collection
     And the "Solution 2" solution should be affiliated with the "Spain" collection
 
+    # Ensure that the og relation is set between the distribution and the solution.
+    When I go to the "Windows" asset distribution
+    Then I should see the heading "Asset release 1"
+
     # Re-import.
     Given I visit "/admin/content/pipeline/spain/execute"
     And I attach the file "valid_adms.rdf" to "File"
