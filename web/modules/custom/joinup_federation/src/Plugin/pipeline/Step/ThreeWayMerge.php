@@ -39,7 +39,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *
    * @var int
    */
-  const BATCH_SIZE = 1;
+  const BATCH_SIZE = 10;
 
   /**
    * The entity field manager service.
