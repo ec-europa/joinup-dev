@@ -23,12 +23,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintValidator {
 
-  /**
-   * The staging candidate graphs service.
-   *
-   * @var \Drupal\joinup_federation\StagingCandidateGraphsInterface
-   */
-  protected $stagingCandidateGraphs;
+  use JoinupEntityReferenceConstraintTrait;
 
   /**
    * Builds a new validator instance.
@@ -159,28 +154,6 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
         }
       }
     }
-  }
-
-  /**
-   * Loads the existing, unchanged host entity.
-   *
-   * This method checks if the host entity is an RDF entity. If so, it passes
-   * the host entity graph to RdfEntitySparqlStorageInterface::loadUnchanged().
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The host entity.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   The unchanged entity.
-   */
-  protected function loadUnchanged(EntityInterface $entity): EntityInterface {
-    $storage = $this->entityTypeManager->getStorage($entity->getEntityTypeId());
-    if ($entity->getEntityTypeId() === 'rdf_entity') {
-      /** @var \Drupal\rdf_entity\RdfInterface $entity */
-      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
-      return $storage->loadUnchanged($entity->id(), [$entity->get('graph')->target_id]);
-    }
-    return $storage->loadUnchanged($entity->id());
   }
 
   /**
