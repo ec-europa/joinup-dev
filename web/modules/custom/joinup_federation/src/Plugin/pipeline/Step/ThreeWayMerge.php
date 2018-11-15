@@ -122,9 +122,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
     // Get the incoming entities that are stored also locally.
     $local_ids = $this->getSparqlQuery()
-      // @todo Remove call to ::graphs() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      ->graphs(['default', 'draft'])
       ->condition('id', array_values($whitelist), 'IN')
       ->execute();
 
@@ -155,13 +152,10 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
     /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
     $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
-    // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-    $local_entities = $local_ids ? Rdf::loadMultiple($local_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
+    $local_entities = $local_ids ? Rdf::loadMultiple($local_ids) : [];
 
     // Collect here entity IDs that are about to be saved.
     $entities = $this->hasPersistentDataValue('entities') ? $this->getPersistentDataValue('entities') : [];
-
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {
       $entity_exists = isset($local_entities[$id]);
