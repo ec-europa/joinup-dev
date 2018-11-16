@@ -1,0 +1,14 @@
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix ns0: <http://joinup.eu/> .
+@prefix ns1: <http://joinup.eu/language/> .
+
+<http://i-am-creative/>
+  a dc:LicenseDocument ;
+  dc:title "Creative commons" ;
+  ns0:language "en" ;
+  ns1:default "1" ;
+  ns1:translation_source "und" ;
+  ns1:translation_outdated "" ;
+  ns1:translation_author "0" ;
+  ns1:translation_status "1" ;
+  dc:description "This is so creative" .
