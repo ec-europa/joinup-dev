@@ -2553,4 +2553,21 @@ JS;
     $last->setValue($value);
   }
 
+  /**
+   * @Then the output should match the file contents of :arg1
+   */
+  public function theOutputShouldMatchTheFile($file_path) {
+    if ($this->getMinkParameter('files_path')) {
+      $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_path;
+      if (is_file($fullPath)) {
+        $file_path = $fullPath;
+      }
+    }
+    $expected_content = file_get_contents($file_path);
+    $browser_content = $this->getSession()->getPage()->getContent();
+    if ($expected_content !== $browser_content) {
+      throw new Exception(sprintf("The output didn't match the fixture. Expected %s, got %s.", $expected_content, $browser_content));
+    }
+  }
+
 }
