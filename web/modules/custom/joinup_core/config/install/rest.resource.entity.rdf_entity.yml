@@ -21,5 +21,4 @@ configuration:
     - n3
     - json
   authentication:
-    - basic_auth
     - cookie
