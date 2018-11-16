@@ -57,13 +57,13 @@ Feature:
     And I should see the link "Contact support"
 
     When I go to "/user"
-    Then I <user page expectation> the link "Take a tour"
+    Then I should <expectation> the link "Take a tour"
     And I should see the link "Contact support"
 
     Examples:
-      | role                                 | user page expectation |
-      | an anonymous user                    | should not see        |
-      | logged in as an "authenticated user" | should see            |
+      | role                                 | expectation |
+      | an anonymous user                    | not see     |
+      | logged in as an "authenticated user" | see         |
 
   Scenario: A moderator is able to administer the user support menu.
 
@@ -74,7 +74,7 @@ Feature:
 
     Given I click "Add link"
     When I fill in "Menu link title" with "Arbitrary support menu link"
-    And I fill in "Link" with "https://ec.europa.eu/isa2/"
+    And I fill in "Link" with "http://example.com"
     And I press "Save"
     Then I should see the link "Arbitrary support menu link"
 
