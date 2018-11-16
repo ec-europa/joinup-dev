@@ -43,8 +43,7 @@ joinup_core.support.tour:
   class: Drupal\joinup_core\Plugin\Menu\TourMenuLink
   options:
     attributes:
-      class:
-        - js-tour-start-button
+      data-drupal-tour-link: true
   weight: -200
 
 joinup_core.support.contact:

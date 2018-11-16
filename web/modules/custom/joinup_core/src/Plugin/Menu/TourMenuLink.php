@@ -74,6 +74,11 @@ class TourMenuLink extends MenuLinkDefault {
       return parent::isEnabled();
     }
 
+    // The menu link has been disabled by an administrator.
+    if (!parent::isEnabled()) {
+      return FALSE;
+    }
+
     $route_name = $this->currentRouteMatch->getRouteName();
     $route_parameters = $this->currentRouteMatch->getRawParameters()->all();
 
@@ -83,8 +88,7 @@ class TourMenuLink extends MenuLinkDefault {
     foreach ($tours as $tour_id => $tour) {
       // This tour is configured to show up on this route.
       if ($tour->hasMatchingRoute($route_name, $route_parameters)) {
-        // The link could be disabled from the admin interface.
-        return parent::isEnabled();
+        return TRUE;
       }
     }
 
