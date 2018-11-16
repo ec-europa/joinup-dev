@@ -173,7 +173,7 @@ Feature: As a site moderator I am able to import RDF files.
 
     # Ensure that the og relation is set between the distribution and the solution.
     When I go to the "Windows" asset distribution
-    Then I should see the heading "Asset release 1"
+    Then I should see the heading "Solution 1"
 
     # Re-import.
     Given I visit "/admin/content/pipeline/spain/execute"
