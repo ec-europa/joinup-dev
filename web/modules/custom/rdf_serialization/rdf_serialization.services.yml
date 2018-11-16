@@ -1,0 +1,9 @@
+services:
+  rdf_serialization.encoder.rdfxml:
+    class: Drupal\rdf_serialization\Encoder\RdfEncoder
+    tags:
+      - { name: encoder, format: rdfxml }
+  rdf_serialization.rdfsubscriber:
+    class: Drupal\rdf_serialization\EventSubscriber\RdfSubscriber
+    tags:
+      - { name: event_subscriber }

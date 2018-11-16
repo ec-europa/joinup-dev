@@ -47,6 +47,7 @@
         "drupal/rdf_entity": "1.0.0-alpha10",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.1",
+        "drupal/restui": "^1.16",
         "drupal/search_api": "^1.10",
         "drupal/search_api_solr": "^2.2",
         "drupal/simplenews": "^1.0-alpha3",
