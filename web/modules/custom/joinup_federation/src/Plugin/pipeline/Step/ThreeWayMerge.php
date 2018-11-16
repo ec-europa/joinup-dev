@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
-use Drupal\og\OgGroupAudienceHelper;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
@@ -352,13 +351,8 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
     if ($incoming_entity->bundle() !== 'asset_distribution' || $entity_exists) {
       return;
     }
-
-    $parent = $incoming_entity->get('parent')->entity;
-    if (empty($parent)) {
-      return;
-    }
-    $solution = ($parent->bundle() === 'asset_release') ? $parent->get('field_ar_is_version_of')->entity : $parent;
-    $incoming_entity->set(OgGroupAudienceHelper::DEFAULT_FIELD, $solution->id());
+    // Trigger the computation of the parent.
+    $incoming_entity->get('parent')->getValue();
   }
 
 }
