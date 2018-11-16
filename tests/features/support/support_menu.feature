@@ -6,7 +6,7 @@ Feature:
     are implementing tours.
   - As a moderator I can add custom menu items and disable default menu items.
 
-  Scenario Outline: Moderators are not to admin menus except the 'support' menu.
+  Scenario Outline: Moderators are not able to admin menus except support menu.
 
     Given I am an anonymous user
     When I go to "/admin/structure/menu/manage/<menu>"
