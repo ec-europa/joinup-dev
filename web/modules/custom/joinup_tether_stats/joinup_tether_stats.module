@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality for the Joinup tether stats module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_preprocess_rdf_entity().
+ *
+ * Sets up tracking details for download links of distributions.
+ * The attributes are placed in the link regardless of the view mode so that all
+ * cases are tracked.
+ *
+ * An important note is that we do not track the page hits of the distribution
+ * page itself and we also set the download clicks as page hits for the
+ * distribution instead. The reason behind this is that if a user replaces a
+ * file in a distribution, then the downloads will be lost and the counter will
+ * start from the beginning. However, an update of the file could be to fix
+ * something and not due to a new release.
+ */
+function joinup_tether_stats_preprocess_rdf_entity(&$variables) {
+  if (!isset($variables['content']['field_ad_access_url'][0])) {
+    return;
+  }
+
+  $current_user = \Drupal::currentUser();
+  if ($current_user->isAnonymous()) {
+    return;
+  }
+
+  $file_item = &$variables['content']['field_ad_access_url'][0];
+  if (($url = $file_item['#url']) && $file_item['#title'] === 'External') {
+    // Get the file id directly from the entity.
+    /** @var \Drupal\Core\Entity\EntityInterface $parent */
+    $parent = $variables['rdf_entity'];
+    $file_item['#attributes']['class'][] = 'tether_stats-track-link';
+    $file_item['#attributes']['data-entity_type'] = $parent->getEntityTypeId();
+    $file_item['#attributes']['data-entity_id'] = $parent->id();
+    $file_item['#attributes']['data-derivative'] = 'distribution_download';
+  }
+
+}

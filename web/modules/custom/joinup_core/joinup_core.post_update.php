@@ -112,3 +112,10 @@ function joinup_core_post_update_install_piwik2matomo() {
 function joinup_core_post_update_install_spain_ctt() {
   \Drupal::service('module_installer')->install(['spain_ctt']);
 }
+
+/**
+ * Enable 'tether_stats' and 'joinup_tether_stats' modules.
+ */
+function joinup_core_post_update_install_tether_stats_modules() {
+  \Drupal::service('module_installer')->install(['tether_stats', 'joinup_tether_stats']);
+}
