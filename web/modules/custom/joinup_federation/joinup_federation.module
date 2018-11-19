@@ -5,9 +5,9 @@
  * Contains the main functionality of Joinup Federation module.
  */
 
-use Drupal\asset_distribution\FederationDistributionParentFieldItemList;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_federation\FederationDistributionParentFieldItemList;
 use Drupal\joinup_federation\Plugin\DataType\RdfEntityReference;
 use Drupal\joinup_federation\Plugin\Validation\Constraint\FederationDistributionSingleParentConstraint;
 use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupEntityChangedConstraint;

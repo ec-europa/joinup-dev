@@ -2,8 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\asset_distribution;
+namespace Drupal\joinup_federation;
 
+use Drupal\asset_distribution\DistributionParentFieldItemList;
 use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\RdfInterface;
 
