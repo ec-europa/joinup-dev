@@ -2554,7 +2554,14 @@ JS;
   }
 
   /**
-   * @Then the output should match the file contents of :arg1
+   * Checks if the output is exactly the same as the contents of a given file.
+   *
+   * @param string $file_path
+   *   The path to the file.
+   *
+   * @throws \Exception
+   *
+   * @Then the output should match the file contents of :file
    */
   public function theOutputShouldMatchTheFile($file_path) {
     if ($this->getMinkParameter('files_path')) {

@@ -122,3 +122,10 @@ function joinup_core_post_update_remove_tour_buttons() {
   $config_factory->getEditable('block.block.tourbutton_2')->delete();
   $config_factory->getEditable('block.block.tourbutton')->delete();
 }
+
+/**
+ * Enable 'rdf_serialization' module.
+ */
+function joinup_core_post_update_install_rdf_serialization() {
+  \Drupal::service('module_installer')->install(['rdf_serialization']);
+}

@@ -18,6 +18,7 @@ dependencies:
   - og
   - rdf_draft
   - rdf_entity
+  - rdf_serialization
   - rdf_taxonomy
   - redirect
   - search_api
