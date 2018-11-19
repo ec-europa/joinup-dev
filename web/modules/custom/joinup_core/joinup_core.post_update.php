@@ -114,9 +114,10 @@ function joinup_core_post_update_install_spain_ctt() {
 }
 
 /**
- * Remove tour buttons.
+ * Add the user support menu.
  */
 function joinup_core_post_update_remove_tour_buttons() {
+  \Drupal::service('module_installer')->install(['menu_admin_per_menu']);
   $config_factory = \Drupal::configFactory();
   $config_factory->getEditable('block.block.tourbutton_2')->delete();
   $config_factory->getEditable('block.block.tourbutton')->delete();
