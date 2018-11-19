@@ -41,12 +41,13 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
     $this->visitPath($licence->url());
   }
 
-
   /**
    * Navigates to the canonical page display of a licence.
    *
    * @param string $licence
    *   The title of the licence.
+   * @param string $format
+   *   The RDF serialization format.
    *
    * @When (I )go to (the homepage of )the :licence licence in the :format serialisation.
    * @When (I )visit (the homepage of )the :licence licence in the :format serialisation.

@@ -27,11 +27,11 @@ class RdfSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Implements
-   * \Symfony\Component\EventDispatcher\EventSubscriberInterface::getSubscribedEvents().
+   * {@inheritdoc}
    */
-  static function getSubscribedEvents() {
-    $events[KernelEvents::REQUEST][] = array('onKernelRequest');
+  public static function getSubscribedEvents() {
+    $events[KernelEvents::REQUEST][] = ['onKernelRequest'];
     return $events;
   }
+
 }

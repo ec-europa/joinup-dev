@@ -112,3 +112,10 @@ function joinup_core_post_update_install_piwik2matomo() {
 function joinup_core_post_update_install_spain_ctt() {
   \Drupal::service('module_installer')->install(['spain_ctt']);
 }
+
+/**
+ * Enable 'rdf_serialization' module.
+ */
+function joinup_core_post_update_install_rdf_serialization() {
+  \Drupal::service('module_installer')->install(['rdf_serialization']);
+}
