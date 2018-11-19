@@ -16,10 +16,14 @@ class FederationDistributionParentFieldItemList extends DistributionParentFieldI
    * {@inheritdoc}
    */
   protected function getQuery(RdfInterface $distribution): SparqlQueryInterface {
-    /** @var \Drupal\joinup_federation\StagingCandidateGraphsInterface $staging_candidate_graphs */
-    $staging_candidate_graphs = \Drupal::service('joinup_federation.staging_candidate_graphs');
-    $graph_ids = $staging_candidate_graphs->getCandidates();
-    return parent::getQuery($distribution)->graphs($graph_ids);
+    $query = parent::getQuery($distribution);
+    if ($distribution->get('graph')->target_id === 'staging') {
+      /** @var \Drupal\joinup_federation\StagingCandidateGraphsInterface $staging_candidate_graphs */
+      $staging_candidate_graphs = \Drupal::service('joinup_federation.staging_candidate_graphs');
+      $graph_ids = $staging_candidate_graphs->getCandidates();
+      $query->graphs($graph_ids);
+    }
+    return $query;
   }
 
 }
