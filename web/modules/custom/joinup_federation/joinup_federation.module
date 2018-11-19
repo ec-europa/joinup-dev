@@ -85,7 +85,7 @@ function joinup_federation_data_type_info_alter(&$data_types) {
  * Implements hook_entity_bundle_field_info_alter().
  */
 function joinup_federation_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
-  if (isset($fields['parent'])) {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'asset_distribution' && isset($fields['parent'])) {
     $fields['parent']->setClass(FederationDistributionParentFieldItemList::class);
   }
 }
