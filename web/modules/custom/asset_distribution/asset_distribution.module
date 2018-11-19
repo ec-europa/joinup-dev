@@ -15,28 +15,36 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
+ * Implements hook_entity_bundle_field_info().
+ */
+function asset_distribution_entity_bundle_field_info(EntityTypeInterface $entity_type, string $bundle, array $base_field_definitions): array {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'asset_distribution') {
+    // Add reference to the parent entity (solution or asset_release).
+    return [
+      'parent' => BaseFieldDefinition::create('entity_reference')
+        ->setLabel(t('Parent'))
+        ->setName('parent')
+        ->setDescription(t('The distribution parent. Could be a solutions or a releases.'))
+        ->setTargetEntityTypeId('rdf_entity')
+        ->setTargetBundle('asset_distribution')
+        ->setSetting('target_type', 'rdf_entity')
+        ->setCardinality(1)
+        ->setComputed(TRUE)
+        ->setClass(DistributionParentFieldItemList::class),
+    ];
+  }
+  return [];
+}
+
+/**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function asset_distribution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'asset_distribution') {
-    return;
-  }
-
-  // Computed field that represents the parent of the distribution.
-  $fields['parent'] = BaseFieldDefinition::create('entity_reference')
-    ->setLabel(t('Parent'))
-    ->setName('parent')
-    ->setDescription(t('The distribution parent. Could be a solutions or a releases.'))
-    ->setTargetEntityTypeId('rdf_entity')
-    ->setTargetBundle('asset_distribution')
-    ->setSetting('target_type', 'rdf_entity')
-    ->setCardinality(1)
-    ->setComputed(TRUE)
-    ->setClass(DistributionParentFieldItemList::class);
-
-  // Make sure a distribution's title is unique in its release.
-  if (!empty($fields['label'])) {
-    $fields['label']->addConstraint('UniqueAssetDistributionTitle', []);
+function asset_distribution_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'asset_distribution') {
+    // Make sure a distribution's title is unique in its release.
+    if (!empty($fields['label'])) {
+      $fields['label']->addConstraint('UniqueAssetDistributionTitle', []);
+    }
   }
 }
 

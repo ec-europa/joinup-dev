@@ -5,6 +5,8 @@
  * Contains the main functionality of Joinup Federation module.
  */
 
+use Drupal\asset_distribution\FederationDistributionParentFieldItemList;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_federation\Plugin\DataType\RdfEntityReference;
 use Drupal\joinup_federation\Plugin\Validation\Constraint\FederationDistributionSingleParentConstraint;
@@ -77,4 +79,13 @@ function joinup_federation_field_info_alter(&$info) {
  */
 function joinup_federation_data_type_info_alter(&$data_types) {
   $data_types['entity_reference']['class'] = RdfEntityReference::class;
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function joinup_federation_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
+  if (isset($fields['parent'])) {
+    $fields['parent']->setClass(FederationDistributionParentFieldItemList::class);
+  }
 }
