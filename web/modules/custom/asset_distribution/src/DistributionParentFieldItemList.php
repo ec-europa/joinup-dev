@@ -34,7 +34,7 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
 
     $distribution = $this->getEntity();
     /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    if ($distribution->get('og_audience')->isEmpty() && $distribution->isNew() && isset($this->list[0]) && ($parent = $this->list[0]->entity)) {
+    if ($distribution->get('og_audience')->isEmpty() && isset($this->list[0]) && ($parent = $this->list[0]->entity)) {
       if ($parent->bundle() === 'solution') {
         $audience = $parent->id();
       }

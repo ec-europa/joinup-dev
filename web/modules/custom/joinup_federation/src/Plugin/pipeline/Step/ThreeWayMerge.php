@@ -182,6 +182,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
       if ($needs_save) {
         $this->handleAffiliation($incoming_entity, $entity_exists);
+        $this->handleDistributionParent($incoming_entity, $entity_exists);
         $incoming_entity->skip_notification = TRUE;
         $incoming_entity->save();
         $entities[$incoming_entity->id()] = $entity_exists;
@@ -291,7 +292,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    * solution to the configured collection.
    *
    * @param \Drupal\rdf_entity\RdfInterface $incoming_solution
-   *   The local solution.
+   *   The incoming solution.
    * @param bool $entity_exists
    *   If the incoming entity already exits on the system.
    *
@@ -328,6 +329,25 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
     }
     // For an existing solution we don't make any changes to its affiliation.
+  }
+
+  /**
+   * Handles the incoming distribution parent assignment.
+   *
+   * This is only valid for new distributions. Existing entities should already
+   * have the data attached.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $incoming_entity
+   *   The incoming entity.
+   * @param bool $entity_exists
+   *   If the incoming entity already exits on the system.
+   */
+  protected function handleDistributionParent(RdfInterface $incoming_entity, bool $entity_exists): void {
+    if ($incoming_entity->bundle() !== 'asset_distribution' || $entity_exists) {
+      return;
+    }
+    // Trigger the computation of the parent.
+    $incoming_entity->get('parent')->getValue();
   }
 
 }
