@@ -9,7 +9,7 @@ text:
     value: 'Joinup: Your solution has been accepted'
     format: full_html
   -
-    value: "<p>Your proposed interoperability solution: \"@entity:title\" has been validated as per your request.</p>\r\n"
+    value: "<p>Your proposed interoperability solution: \"@entity:title\" has been validated as per your request.</p>"
     format: full_html
 settings:
   'token options':

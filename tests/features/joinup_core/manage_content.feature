@@ -13,6 +13,7 @@ Feature:
     And document content:
       | title             | document type | collection  | state     |
       | The Panama Papers | Document      | Vintage Art | validated |
+      | The Area 51 File  | Document      | Vintage Art | draft     |
     And discussion content:
       | title               | collection  | state     |
       | The Ultimate Debate | Vintage Art | validated |
@@ -51,6 +52,29 @@ Feature:
     Then I should see the heading "Vintage Art"
 
     # Start the actual test scenario as a moderator.
+    When I go to the homepage of the "Vintage Art" collection
+    Then I should see the link "Manage content"
+    Given I click "Manage content"
+    Then I should see "Manage content" in the Header
+
+    # Download the list as CSV.
+    When I click "Subscribe to Manage content"
+    Then the response should contain "Type;Title;\"Created on\";\"Last update\";Published;URL"
+    And the response should contain "Document;\"The Panama Papers\";"
+    And the response should contain "/document/panama-papers"
+    And the response should contain "Document;\"The Area 51 File\";"
+    And the response should contain "/document/area-51-file"
+    And the response should contain "Discussion;\"The Ultimate Debate\";"
+    And the response should contain "/discussion/ultimate-debate"
+    And the response should contain "Event;\"Version 2.0 Launch Party\";"
+    And the response should contain "/event/version-20-launch-party"
+    And the response should contain "News;\"Exports Leap Despite Currency Gain\";"
+    And the response should contain "/news/exports-leap-despite-currency-gain"
+    And the response should contain "\"Custom page\";HOWTOs;"
+    And the response should contain "/collection/vintage-art/howtos"
+    And the response should contain "\"Custom page\";\"Looking for Support?\";"
+    And the response should contain "/collection/vintage-art/looking-support"
+
     When I go to the homepage of the "Vintage Art" collection
     Then I should see the link "Manage content"
     Given I click "Manage content"

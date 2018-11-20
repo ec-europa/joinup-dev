@@ -6,10 +6,10 @@ label: 'Collection archive/delete reject - Owner'
 description: 'Template id 10'
 text:
   -
-    value: "<p>Your request to @transition:request_action @entity:bundle @entity:title has been rejected</p>\r\n"
+    value: "<p>Your request to @transition:request_action @entity:bundle @entity:title has been rejected</p>"
     format: full_html
   -
-    value: "<p>@actor:field_user_first_name @actor:field_user_family_name has rejected your request to @transition:request_action the @entity:bundle \"@entity:title\".</p>\r\n\r\n<p>The reason for rejection is: @transition:motivation.</p>\r\n"
+    value: "<p>@actor:field_user_first_name @actor:field_user_family_name has rejected your request to @transition:request_action the @entity:bundle \"@entity:title\".</p>\n\n<p>The reason for rejection is: @transition:motivation.</p>"
     format: full_html
 settings:
   'token options':

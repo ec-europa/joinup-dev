@@ -9,7 +9,7 @@ field_name: field_ad_file_size
 entity_type: rdf_entity
 bundle: asset_distribution
 label: 'File size'
-description: "Size of the distribution payload file (in KB).\r\nIf the distribution is hosted in Joinup, you can omit this field."
+description: "Size of the distribution payload file (in KB).\nIf the distribution is hosted in Joinup, you can omit this field."
 required: false
 translatable: false
 default_value: {  }
