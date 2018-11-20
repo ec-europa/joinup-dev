@@ -9,3 +9,6 @@ services:
       index_3: 18000
     tags:
       - { name: backend_overridable }
+  joinup_federation.staging_candidate_graphs:
+    class: Drupal\joinup_federation\StagingCandidateGraphs
+    arguments: ['@sparql.graph_handler']

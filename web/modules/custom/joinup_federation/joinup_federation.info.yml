@@ -1,5 +1,5 @@
 type: module
-name: 'Joinup feration'
+name: 'Joinup Federation'
 description: 'Allow modules to implement pipelines for RDF data federation.'
 core: 8.x
 package: Joinup

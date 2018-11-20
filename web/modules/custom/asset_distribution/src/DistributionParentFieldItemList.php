@@ -6,6 +6,7 @@ namespace Drupal\asset_distribution;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\TypedData\ComputedItemListTrait;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -77,11 +78,25 @@ class DistributionParentFieldItemList extends EntityReferenceFieldItemList {
    *   When the distribution has more than one parent.
    */
   protected function getParentId(RdfInterface $distribution): ?string {
-    $ids = \Drupal::entityQuery('rdf_entity', 'OR')
-      ->condition('field_is_distribution', $distribution->id())
-      ->condition('field_isr_distribution', $distribution->id())
-      ->execute();
+    $ids = $this->getQuery($distribution)->execute();
     return reset($ids) ?: NULL;
+  }
+
+  /**
+   * Returns the query used to determine the parent ID.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $distribution
+   *   The distribution entity.
+   *
+   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   *   The query used to determine the parent ID.
+   */
+  protected function getQuery(RdfInterface $distribution): SparqlQueryInterface {
+    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface $query */
+    $query = \Drupal::entityQuery('rdf_entity', 'OR')
+      ->condition('field_is_distribution', $distribution->id())
+      ->condition('field_isr_distribution', $distribution->id());
+    return $query;
   }
 
 }

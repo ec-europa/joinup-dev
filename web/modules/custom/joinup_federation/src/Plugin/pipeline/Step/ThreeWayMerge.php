@@ -13,7 +13,6 @@ use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -39,7 +38,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *
    * @var int
    */
-  const BATCH_SIZE = 1;
+  const BATCH_SIZE = 10;
 
   /**
    * The entity field manager service.
@@ -122,9 +121,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
     // Get the incoming entities that are stored also locally.
     $local_ids = $this->getSparqlQuery()
-      // @todo Remove call to ::graphs() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      ->graphs(['default', 'draft'])
       ->condition('id', array_values($whitelist), 'IN')
       ->execute();
 
@@ -155,13 +151,10 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
 
     /** @var \Drupal\rdf_entity\RdfInterface[] $incoming_entities */
     $incoming_entities = $incoming_ids ? $this->getRdfStorage()->loadMultiple($incoming_ids, ['staging']) : [];
-    // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-    $local_entities = $local_ids ? Rdf::loadMultiple($local_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
+    $local_entities = $local_ids ? Rdf::loadMultiple($local_ids) : [];
 
     // Collect here entity IDs that are about to be saved.
     $entities = $this->hasPersistentDataValue('entities') ? $this->getPersistentDataValue('entities') : [];
-
     /** @var \Drupal\rdf_entity\RdfInterface $incoming_entity */
     foreach ($incoming_entities as $id => $incoming_entity) {
       $entity_exists = isset($local_entities[$id]);
@@ -242,9 +235,11 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       $incoming_field = $incoming_entity->get($field_name);
       $local_field = $local_entity->get($field_name);
 
-      // Always keep the local values for non schema defined field.
-      $incoming_field->setValue($local_field->getValue());
-      $changed = TRUE;
+      if (!$incoming_field->equals($local_field)) {
+        // Always keep the local values for non schema defined field.
+        $incoming_field->setValue($local_field->getValue());
+        $changed = TRUE;
+      }
     }
 
     return $changed;

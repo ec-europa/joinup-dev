@@ -87,7 +87,6 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the heading "Errors executing Spain - Center for Technology Transfer"
     And I should see the following lines of text:
       | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.   |
-      | The distribution Windows is linked also by the http://example.com/solution/2 solution. |
       | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist. |
       | This value should not be null.                                                         |
       | The distribution Windows is linked also by the Asset release 1 release.                |
