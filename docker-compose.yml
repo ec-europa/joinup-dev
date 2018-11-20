@@ -8,7 +8,7 @@ services:
     volumes:
       - .:/var/www/html
     environment:
-      XDEBUG_CONFIG: "remote_enable=1 xdebug.remote_connect_back=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=0"
+      XDEBUG_CONFIG: "remote_enable=1 remote_connect_back=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=0"
       DOCUMENT_ROOT: "/var/www/html/web"
       PHP_XDEBUG_ENABLED: "1"
       PHP_IDE_CONFIG: "serverName=Docker"
