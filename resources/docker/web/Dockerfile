@@ -1,8 +1,11 @@
-FROM fpfis/httpd-php-dev
+FROM fpfis/httpd-php
 MAINTAINER Joinup
 
-ARG DAEMON_UID="82"
-ARG DAEMON_GID="82"
+ARG DAEMON_UID
+ARG DAEMON_GID
+
+ENV DAEMON_UID "$DAEMON_UID"
+ENV DAEMON_GID "$DAEMON_GID"
 
 RUN apk --no-cache add shadow && \
     usermod -u ${DAEMON_UID} ${DAEMON_USER} && \

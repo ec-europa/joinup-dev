@@ -3,6 +3,9 @@ services:
   web:
     build:
       context: ./resources/docker/web
+      args:
+        DAEMON_UID: "82"
+        DAEMON_GID: "82"
     ports:
       - "8080:8080"
     volumes:
@@ -34,8 +37,7 @@ services:
       MYSQL_DATABASE: 'db_name'
 
   virtuoso:
-    build:
-      context: ./resources/docker/virtuoso
+    image: tenforce/virtuoso
     environment:
       - SPARQL_UPDATE=true
       - DBA_PASSWORD=dba
