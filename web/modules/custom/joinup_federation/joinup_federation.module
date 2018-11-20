@@ -2,10 +2,18 @@
 
 /**
  * @file
- * Contains joinup_federation.module.
+ * Contains the main functionality of Joinup Federation module.
  */
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_federation\FederationDistributionParentFieldItemList;
+use Drupal\joinup_federation\Plugin\DataType\RdfEntityReference;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\FederationDistributionSingleParentConstraint;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupEntityChangedConstraint;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupReferenceAccessConstraint;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupValidReferenceConstraint;
+use Drupal\joinup_federation\RdfEntityReferenceFieldItemList;
 
 /**
  * Implements hook_ENTITY_TYPE_load().
@@ -46,5 +54,38 @@ function joinup_federation_form_rdf_entity_form_alter(&$form, FormStateInterface
       $form[$field_name]['widget']['#disabled'] = TRUE;
       $form[$field_name]['widget']['#description'] = ($form[$field_name]['widget']['#description'] ?? '') . $added_description;
     }
+  }
+}
+
+/**
+ * Implements hook_validation_constraint_alter().
+ */
+function joinup_federation_validation_constraint_alter(array &$definitions) {
+  $definitions['ValidReference']['class'] = JoinupValidReferenceConstraint::class;
+  $definitions['ReferenceAccess']['class'] = JoinupReferenceAccessConstraint::class;
+  $definitions['EntityChanged']['class'] = JoinupEntityChangedConstraint::class;
+  $definitions['DistributionSingleParent']['class'] = FederationDistributionSingleParentConstraint::class;
+}
+
+/**
+ * Implements hook_field_info_alter().
+ */
+function joinup_federation_field_info_alter(&$info) {
+  $info['entity_reference']['list_class'] = RdfEntityReferenceFieldItemList::class;
+}
+
+/**
+ * Implements hook_data_type_info_alter().
+ */
+function joinup_federation_data_type_info_alter(&$data_types) {
+  $data_types['entity_reference']['class'] = RdfEntityReference::class;
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function joinup_federation_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'asset_distribution' && isset($fields['parent'])) {
+    $fields['parent']->setClass(FederationDistributionParentFieldItemList::class);
   }
 }

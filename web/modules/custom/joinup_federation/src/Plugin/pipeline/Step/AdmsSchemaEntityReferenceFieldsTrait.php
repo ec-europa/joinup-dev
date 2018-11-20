@@ -17,7 +17,7 @@ trait AdmsSchemaEntityReferenceFieldsTrait {
   protected $admsSchemaEntityReferenceFields = [];
 
   /**
-   * Returns all entity reference field belonging to ADMS-AP schema.
+   * Returns all entity reference fields belonging to ADMS-AP schema.
    *
    * @param string $bundle
    *   The bundle.

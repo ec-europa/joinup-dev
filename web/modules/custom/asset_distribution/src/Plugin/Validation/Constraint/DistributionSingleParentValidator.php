@@ -6,6 +6,8 @@ namespace Drupal\asset_distribution\Plugin\Validation\Constraint;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
+use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,6 +24,20 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
+  /**
+   * Static cache of RDF entity storage.
+   *
+   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   */
+  protected $rdfStorage;
+
+  /**
+   * Static cache of RDF entity query.
+   *
+   * @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   */
+  protected $query;
 
   /**
    * Creates a new validator.
@@ -49,31 +65,28 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
       return;
     }
 
-    $storage = $this->entityTypeManager->getStorage('rdf_entity');
+    /** @var \Drupal\rdf_entity\RdfInterface $entity */
     $entity = $field_item_list->getEntity();
 
     $distribution_ids = [];
     foreach ($field_item_list as $field_item) {
       $distribution_ids[] = $field_item->target_id;
     }
-
-    $query = ($storage->getQuery())
-      ->condition('rid', ['solution', 'asset_release'], 'IN');
+    $query = $this->getQuery();
     if ($entity->id()) {
       $query->condition('id', $entity->id(), '<>');
     }
 
     /** @var \Drupal\rdf_entity\RdfInterface $distribution */
-    foreach ($storage->loadMultiple($distribution_ids) as $distribution_id => $distribution) {
-      $ids = (clone $query)
-        ->condition($query->orConditionGroup()
-          ->condition('field_is_distribution', $distribution_id)
-          ->condition('field_isr_distribution', $distribution_id)
-        )->execute();
+    foreach ($this->loadMultiple($distribution_ids) as $distribution_id => $distribution) {
+      $ids = (clone $query)->condition($query->orConditionGroup()
+        ->condition('field_is_distribution', $distribution_id)
+        ->condition('field_isr_distribution', $distribution_id)
+      )->execute();
 
       if ($ids) {
         /** @var \Drupal\rdf_entity\RdfInterface $parent */
-        foreach ($storage->loadMultiple($ids) as $parent) {
+        foreach ($this->loadMultiple($ids) as $parent) {
           $this->context->addViolation($constraint->message, [
             '%label' => $this->buildLabel($distribution),
             '%parent' => $this->buildLabel($parent),
@@ -82,6 +95,46 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
         }
       }
     }
+  }
+
+  /**
+   * Caches and returns the RDF entity query.
+   *
+   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   *   The RDF entity query.
+   */
+  protected function getQuery(): SparqlQueryInterface {
+    if (!isset($this->query)) {
+      $this->query = $this->getRdfStorage()->getQuery()
+        ->condition('rid', ['solution', 'asset_release'], 'IN');
+    }
+    return $this->query;
+  }
+
+  /**
+   * Wraps the RDF entity storage ::loadMultiple().
+   *
+   * @param array $ids
+   *   Entity IDs.
+   *
+   * @return array
+   *   A list of RDF entities.
+   */
+  protected function loadMultiple(array $ids): array {
+    return $this->getRdfStorage()->loadMultiple($ids);
+  }
+
+  /**
+   * Returns the RDF entity storage.
+   *
+   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   *   The RDF entity storage.
+   */
+  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
+    if (!isset($this->rdfStorage)) {
+      $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
+    }
+    return $this->rdfStorage;
   }
 
   /**
