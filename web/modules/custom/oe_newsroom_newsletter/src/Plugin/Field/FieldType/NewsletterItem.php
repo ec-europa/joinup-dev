@@ -137,7 +137,7 @@ class NewsletterItem extends FieldItemBase implements NewsletterItemInterface {
    */
   public function isEnabled(): bool {
     try {
-      return !$this->isEmpty() && $this->get('enabled')->getValue();
+      return !$this->isEmpty() && (bool) $this->get('enabled')->getValue();
     }
     catch (MissingDataException $e) {
       return FALSE;
