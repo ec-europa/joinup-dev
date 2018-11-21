@@ -86,10 +86,6 @@ class OpenEuropaNewsroomNewsletterSubContext extends DrupalSubContextBase {
 
       self::restoreReadOnlyConfig();
     }
-
-    // Clear out any subscriptions that might be left behind from previous
-    // scenarios.
-    $this->clearNewsletterSubscriptions();
   }
 
   /**
@@ -109,6 +105,9 @@ class OpenEuropaNewsroomNewsletterSubContext extends DrupalSubContextBase {
 
       self::restoreReadOnlyConfig();
     }
+
+    // Clear out any subscriptions that might be left behind by the scenario.
+    $this->clearNewsletterSubscriptions();
   }
 
 }
