@@ -36,7 +36,7 @@ class SubscriberFactory implements SubscriberFactoryInterface {
   protected $configFactory;
 
   /**
-   * Constructs a CacheContextsManager object.
+   * Constructs a new SubscriberFactory object.
    *
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
    *   The current service container.
