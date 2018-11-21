@@ -40,6 +40,7 @@ permissions:
   - 'edit owner rdf entity'
   - 'feature entity'
   - 'filter membership overview'
+  - 'manage newsroom newsletter subscriptions'
   - 'moderate entity parents'
   - 'pin entity'
   - 'unfeature entity'

@@ -17,7 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function joinup_newsletter_form_rdf_entity_collection_edit_form_alter(&$form, FormStateInterface $form_state, string $form_id): void {
   $current_user = \Drupal::currentUser();
-  $form['field_newsletter']['#access'] = in_array('moderator', $current_user->getRoles());
+  $form['field_newsletter']['#access'] = $current_user->hasPermission('manage newsroom newsletter subscriptions');
 }
 
 /**
