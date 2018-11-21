@@ -103,7 +103,6 @@ class NewsletterItem extends FieldItemBase implements NewsletterItemInterface {
     return $universe === NULL || $service_id === NULL;
   }
 
-
   /**
    * {@inheritdoc}
    */
