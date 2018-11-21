@@ -27,10 +27,6 @@ Feature: Subscribing to collection newsletters
       | Volkor X   | Filippos Demetriou | owner       |
       | Volkor X   | Tatiana Andreas    | facilitator |
 
-  # This is a temporary measure. The newsletter subscription possibility is
-  # currently only available for moderators while it is being evaluated. If this
-  # works well it can be unlocked for all other collections in the future and it
-  # will be possible for owners and/or facilitators to edit this data.
   Scenario: Only moderators can enter the subscription information for a collection.
     Given I am logged in as a moderator
     And I go to the "Volkor X" collection
