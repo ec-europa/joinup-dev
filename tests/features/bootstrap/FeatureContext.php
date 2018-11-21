@@ -631,7 +631,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
-      throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
+      throw new \Exception(sprintf('Contextual link %s expected but not found in the region %s', $text, $region));
     }
   }
 
@@ -652,7 +652,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
-      throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
+      throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
     }
   }
 
@@ -1247,6 +1247,26 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if ($feature->hasTag('clearStaticCache')) {
       parent::clearStaticCaches();
     }
+  }
+
+  /**
+   * Forces the indexing of new or changed content after each step.
+   *
+   * When a Search API index is configured with the 'options.index_directly'
+   * setting set to TRUE, the entity is not indexed immediately after was saved,
+   * in hook_entity_update(), instead the indexing is postponed to the end of
+   * the request. This is OK when operating manually the site, but when this is
+   * wrapped in the test "page request", the index will occur only after all the
+   * steps were executed and, as an effect, entities created across the steps
+   * are not indexed yet when the next step is executed. For this reason, we
+   * force an indexing after each step.
+   *
+   * @see https://www.drupal.org/project/search_api/issues/2922525
+   *
+   * @AfterStep
+   */
+  public function indexEntities() {
+    \Drupal::service('search_api.post_request_indexing')->destruct();
   }
 
   /**

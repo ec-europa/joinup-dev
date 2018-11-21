@@ -74,6 +74,7 @@ Feature: Solution membership administration
     Then I select "Add the facilitator role to the selected members" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following email should have been sent:
       | recipient | Marcia Garcia                                                                             |
@@ -83,6 +84,7 @@ Feature: Solution membership administration
     Then I select "Remove the facilitator role from the selected members" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                                             |
       | Remove the facilitator role from the selected members was applied to 1 item. |
     And the following email should have been sent:
       | recipient | Marcia Garcia                                                       |

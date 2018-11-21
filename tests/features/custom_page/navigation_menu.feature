@@ -293,6 +293,18 @@ Feature: Navigation menu for custom pages
       | Frameless          | Types of backpacks |
       | External frame     |                    |
       | Internal frame     | External frame     |
+    # Nor cannot have child rows.
+    When I drag the "Bodypack" table row to the right
+    Then the draggable menu table should be:
+      | title              | parent             |
+      | Overview           |                    |
+      | Members            |                    |
+      | Bodypack           |                    |
+      | About              |                    |
+      | Types of backpacks |                    |
+      | Frameless          | Types of backpacks |
+      | External frame     |                    |
+      | Internal frame     | External frame     |
     # But they can still be re-ordered up and down.
     When I drag the "Overview" table row down
     When I drag the "About" table row up

@@ -69,6 +69,7 @@ Feature: Collection membership administration
     Then I select "Approve the pending membership(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
@@ -94,6 +95,7 @@ Feature: Collection membership administration
     Then I select "Delete the selected membership(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                         |
       | Delete the selected membership(s) was applied to 1 item. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
@@ -126,6 +128,7 @@ Feature: Collection membership administration
     Then I select "Add the facilitator role to the selected members" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following email should have been sent:
       | recipient | Gregory House                                                                                 |
