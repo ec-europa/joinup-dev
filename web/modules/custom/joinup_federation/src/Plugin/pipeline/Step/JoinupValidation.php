@@ -32,7 +32,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    *
    * @var int
    */
-  const BATCH_SIZE = 10;
+  const BATCH_SIZE = 5;
 
   /**
    * Non-critical violations map.
