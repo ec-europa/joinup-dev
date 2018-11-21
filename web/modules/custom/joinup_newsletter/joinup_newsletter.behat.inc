@@ -8,14 +8,13 @@
 declare(strict_types = 1);
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\TraversingTrait;
 use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing the newsletter integration.
  */
-class JoinupNewsletterSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupNewsletterSubContext extends DrupalSubContextBase {
 
   use TraversingTrait;
 
