@@ -388,7 +388,14 @@ class SearchItem extends FieldItemBase implements SearchItemInterface {
    * {@inheritdoc}
    */
   public function getLimit(): int {
-    return (int) $this->get('value')->getValue()['limit'];
+    $value = $this->get('value')->getValue();
+    // The 'value' properties have been defined as a simple array instead of as
+    // discrete properties that adhere to a schema. Until this is fixed we
+    // cannot rely on the value of the limit to be correct.
+    if (empty($value['limit']) || !is_numeric($value['limit'])) {
+      throw new \UnexpectedValueException('The search results limit is missing or is not a number.');
+    }
+    return (int) $value['limit'];
   }
 
   /**

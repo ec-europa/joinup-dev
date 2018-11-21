@@ -27,6 +27,10 @@ interface SearchItemInterface extends FieldItemInterface {
    *
    * @return \Drupal\search_api_field\Plugin\Field\FieldType\SearchItemInterface
    *   The field item, for chaining method calls.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the complex data structure that will contain the limit
+   *   property is not set and can unset and can not be created.
    */
   public function setLimit(int $limit): self;
 

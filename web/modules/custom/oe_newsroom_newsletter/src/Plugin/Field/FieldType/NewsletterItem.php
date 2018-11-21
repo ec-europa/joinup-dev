@@ -27,13 +27,6 @@ class NewsletterItem extends FieldItemBase implements NewsletterItemInterface {
   /**
    * {@inheritdoc}
    */
-  public function isEmpty() {
-    return $this->get('universe')->getValue() === NULL || $this->get('service_id')->getValue() === NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     return [
       'enabled' => DataDefinition::create('boolean')
@@ -88,6 +81,28 @@ class NewsletterItem extends FieldItemBase implements NewsletterItemInterface {
     ];
     return $values;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmpty() {
+    try {
+      $universe = $this->get('universe')->getValue();
+    }
+    catch (MissingDataException $e) {
+      return TRUE;
+    }
+
+    try {
+      $service_id = $this->get('service_id')->getValue();
+    }
+    catch (MissingDataException $e) {
+      return TRUE;
+    }
+
+    return $universe === NULL || $service_id === NULL;
+  }
+
 
   /**
    * {@inheritdoc}
