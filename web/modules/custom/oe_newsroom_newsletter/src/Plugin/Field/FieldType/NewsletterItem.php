@@ -34,7 +34,7 @@ class NewsletterItem extends FieldItemBase implements NewsletterItemInterface {
       'universe' => DataDefinition::create('string')
         ->setLabel(t('The Newsroom universe acronym')),
       'service_id' => DataDefinition::create('integer')
-        ->setLabel(t('The Newsroom newsletter service ID.')),
+        ->setLabel(t('The Newsroom newsletter service ID')),
     ];
   }
 
