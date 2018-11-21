@@ -812,6 +812,13 @@ function joinup_theme_preprocess_form(&$variables) {
   if (!in_array($variables['element']['#form_id'], $form_ids)) {
     $variables['attributes']['class'][] = 'form__with-asterisk';
   }
+
+  // Additional classes for members overview.
+  if (strpos($variables['element']['#form_id'], 'views_form_og_members_overview_default_rdf_entity') !== FALSE) {
+    $variables['attributes']['class'][] = 'form__content';
+    $variables['attributes']['class'][] = 'form__margin-top';
+    $variables['attributes']['class'][] = 'form__member-actions';
+  }
 }
 
 /**
