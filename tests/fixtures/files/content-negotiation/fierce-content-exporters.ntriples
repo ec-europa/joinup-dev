@@ -1,5 +1,5 @@
 <http://i-am-creative/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/LicenseDocument> .
-<http://i-am-creative/> <http://purl.org/dc/terms/title> "Creative commons" .
+<http://i-am-creative/> <http://www.w3.org/2000/01/rdf-schema#label> "Creative commons" .
 <http://i-am-creative/> <http://joinup.eu/language> "en" .
 <http://i-am-creative/> <http://joinup.eu/language/default> "1" .
 <http://i-am-creative/> <http://joinup.eu/language/translation_source> "und" .
