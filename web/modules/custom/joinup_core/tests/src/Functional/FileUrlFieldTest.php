@@ -27,6 +27,9 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
   protected static $modules = [
     'file_url_entity_test',
     'joinup_core',
+    'rest',
+    'rdf_serialization',
+    'serialization',
   ];
 
   /**
