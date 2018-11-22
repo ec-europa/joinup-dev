@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b8f42f0fe01c32e5183c04a47690c75",
+    "content-hash": "d2333d31d287782bca239e113ddc9d73",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4532,16 +4532,16 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha10",
+            "version": "dev-construct-queries",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "400c24da2191820b5a787d6adfd8e4a9b6f19b93"
+                "reference": "254908a215d532b45c3ec0e30c08526294baacb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/400c24da2191820b5a787d6adfd8e4a9b6f19b93",
-                "reference": "400c24da2191820b5a787d6adfd8e4a9b6f19b93",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/254908a215d532b45c3ec0e30c08526294baacb4",
+                "reference": "254908a215d532b45c3ec0e30c08526294baacb4",
                 "shasum": ""
             },
             "require": {
@@ -4568,7 +4568,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2018-09-06T09:08:46+00:00"
+            "time": "2018-11-22T10:45:59+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -13451,6 +13451,7 @@
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
+        "drupal/rdf_entity": 20,
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
