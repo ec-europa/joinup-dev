@@ -5,11 +5,11 @@
 
 <http://i-am-creative/>
   a dc:LicenseDocument ;
-  rdfs:label "Creative commons" ;
-  ns0:language "en" ;
+  rdfs:label "Creative commons"@en ;
+  ns0:language "en"@en ;
   ns1:default "1" ;
-  ns1:translation_source "und" ;
-  ns1:translation_outdated "" ;
-  ns1:translation_author "0" ;
-  ns1:translation_status "1" ;
+  ns1:translation_source "und"@en ;
+  ns1:translation_outdated ""@en ;
+  ns1:translation_author "0"@en ;
+  ns1:translation_status "1"@en ;
   dc:description "This is so creative" .
