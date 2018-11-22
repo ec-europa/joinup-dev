@@ -3,6 +3,8 @@
 namespace Drupal\contact_form\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,7 +47,25 @@ class ContactFormController extends ControllerBase {
     }
 
     $contact_message = $this->entityTypeManager()->getStorage('message')->create($values);
-    $form = $this->entityFormBuilder()->getForm($contact_message);
+
+    // @todo This is just a work around to avoid callimg the antity form
+    // builder in this PoC (ISAICP-4781). Change this when implementing, the
+    // final solution.
+    // $form = $this->entityFormBuilder()->getForm($contact_message);
+    $form_object = new ContentEntityForm(
+      \Drupal::service('entity.repository'),
+      \Drupal::service('entity_type.bundle.info'),
+      \Drupal::service('datetime.time')
+    );
+    $form_object
+      ->setStringTranslation(\Drupal::service('string_translation'))
+      ->setModuleHandler(\Drupal::moduleHandler())
+      ->setEntityTypeManager(\Drupal::entityTypeManager())
+      ->setOperation('default')
+      ->setEntityManager(\Drupal::entityManager())
+      ->setEntity($contact_message);
+    $form_state = (new FormState())->setFormState([]);
+    $form = \Drupal::service('form_builder')->buildForm($form_object, $form_state);
 
     return $form;
   }

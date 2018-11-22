@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd0d9633ae97d820e348a0e9a2e567cf",
+    "content-hash": "b8e7655a4fc1129eac405286bad17dcb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3843,6 +3843,194 @@
                 "issues": "https://drupal.org/project/issues/message_notify",
                 "irc": "irc://irc.freenode.org/drupal"
             }
+        },
+        {
+            "name": "drupal/message_private",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_private",
+                "reference": "d81d8a1d997406859fcc823a27afe6d967a6200c"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/message_notify": "*",
+                "drupal/message_ui": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha5+3-dev",
+                    "datestamp": "1538655484",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                },
+                "patches_applied": {
+                    "Support drupal/message_ui #45 @see https://www.drupal.org/project/message_private/issues/3004303": "https://www.drupal.org/files/issues/2018-10-05/3004303-3.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "New Zeal",
+                    "homepage": "https://www.drupal.org/user/93571"
+                },
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "mccrodp",
+                    "homepage": "https://www.drupal.org/user/678774"
+                },
+                {
+                    "name": "svendecabooter",
+                    "homepage": "https://www.drupal.org/user/35369"
+                }
+            ],
+            "description": "Message Private",
+            "homepage": "https://www.drupal.org/project/message_private",
+            "support": {
+                "source": "http://cgit.drupalcode.org/message_private"
+            },
+            "time": "2018-10-04T12:45:37+00:00"
+        },
+        {
+            "name": "drupal/message_thread",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_thread",
+                "reference": "b511ebbfa22a9c17f4c323697d3c87312fd09a2f"
+            },
+            "require": {
+                "drupal/core": "^8.6",
+                "drupal/message": "^1.0",
+                "drupal/message_notify": "^1.0",
+                "drupal/message_private": "^1.0",
+                "drupal/message_ui": "^1.0",
+                "php": "^5.5|^7.0"
+            },
+            "require-dev": {
+                "composer/installers": "^1.2",
+                "drupal-composer/drupal-scaffold": "^2.5",
+                "drupal/coder": "^8.2",
+                "webflo/drupal-core-require-dev": "~8.5"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta8+0-dev",
+                    "datestamp": "1539479884",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                },
+                "installer-paths": {
+                    "../build/core": [
+                        "type:drupal-core"
+                    ],
+                    "../build/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "../build/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ]
+                },
+                "patches_applied": {
+                    "Multiple problems with module configuration @see https://www.drupal.org/project/message_thread/issues/3002801": "https://www.drupal.org/files/issues/2018-09-30/3002801-4.patch",
+                    "Core version missed from .info.yml @see https://www.drupal.org/project/message_thread/issues/3002777": "https://www.drupal.org/files/issues/2018-09-27/3002777-2.patch",
+                    "Routing exception during install @see https://www.drupal.org/project/message_thread/issues/3003027": "https://www.drupal.org/files/issues/2018-09-28/3003027-2.patch",
+                    "Action on user/{user}/conversations page to add new conversation @see https://www.drupal.org/project/message_thread/issues/3003037": "https://www.drupal.org/files/issues/2018-09-28/3003037-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "New Zeal",
+                    "homepage": "https://www.drupal.org/user/93571"
+                }
+            ],
+            "description": "Adds Message threads to private messaging.",
+            "homepage": "https://www.drupal.org/project/message_private",
+            "support": {
+                "source": "http://cgit.drupalcode.org/message_thread"
+            },
+            "time": "2018-09-26T02:19:01+00:00"
+        },
+        {
+            "name": "drupal/message_ui",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_ui",
+                "reference": "cb8dbeccc6b9a2a56708decc24fa3ad8adc55b14"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/message": "*"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.2",
+                "drupal/message": "*",
+                "drupal/message_notify": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta2+1-dev",
+                    "datestamp": "1533852480",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Allow to restrict the message templates that are exposing UI @see https://github.com/RoySegall/message_ui/pull/45": "https://patch-diff.githubusercontent.com/raw/RoySegall/message_ui/pull/45.diff"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "New Zeal",
+                    "homepage": "https://www.drupal.org/user/93571"
+                },
+                {
+                    "name": "RoySegall",
+                    "homepage": "https://www.drupal.org/user/1812910"
+                },
+                {
+                    "name": "mccrodp",
+                    "homepage": "https://www.drupal.org/user/678774"
+                }
+            ],
+            "description": "Message UI",
+            "homepage": "https://www.drupal.org/project/message_ui",
+            "support": {
+                "source": "http://cgit.drupalcode.org/message_ui"
+            },
+            "time": "2018-07-16T15:15:07+00:00"
         },
         {
             "name": "drupal/migrate_drush",
@@ -11094,6 +11282,50 @@
             "time": "2018-04-17T17:48:19+00:00"
         },
         {
+            "name": "drupal/message_history",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_history",
+                "reference": "0593cdc6f022805e7799f1d2b6db66e1f9db6d71"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/message": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1498223043",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Borchert (stBorchert)",
+                    "homepage": "https://www.drupal.org/u/stborchert",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Records which user has read which message.",
+            "homepage": "https://drupal.org/project/message_history",
+            "support": {
+                "source": "https://cgit.drupalcode.org/message_history",
+                "issues": "https://drupal.org/project/issues/message_history"
+            }
+        },
+        {
             "name": "drupal/renderviz",
             "version": "1.0.0-alpha1",
             "source": {
@@ -13276,6 +13508,9 @@
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/inline_entity_form": 20,
+        "drupal/message_private": 20,
+        "drupal/message_thread": 20,
+        "drupal/message_ui": 20,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,

@@ -41,6 +41,7 @@ dependencies:
   - joinup_event
   - joinup_invite
   - joinup_licence
+  - joinup_private_message
   - joinup_news
   - joinup_newsletter
   - joinup_notification
