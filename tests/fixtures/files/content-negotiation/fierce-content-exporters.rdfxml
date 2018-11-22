@@ -6,13 +6,13 @@
          xmlns:ns1="http://joinup.eu/language/">
 
   <dc:LicenseDocument rdf:about="http://i-am-creative/">
-    <rdfs:label>Creative commons</rdfs:label>
-    <ns0:language>en</ns0:language>
+    <rdfs:label xml:lang="en">Creative commons</rdfs:label>
+    <ns0:language xml:lang="en">en</ns0:language>
     <ns1:default>1</ns1:default>
-    <ns1:translation_source>und</ns1:translation_source>
-    <ns1:translation_outdated></ns1:translation_outdated>
-    <ns1:translation_author>0</ns1:translation_author>
-    <ns1:translation_status>1</ns1:translation_status>
+    <ns1:translation_source xml:lang="en">und</ns1:translation_source>
+    <ns1:translation_outdated xml:lang="en"></ns1:translation_outdated>
+    <ns1:translation_author xml:lang="en">0</ns1:translation_author>
+    <ns1:translation_status xml:lang="en">1</ns1:translation_status>
     <dc:description>This is so creative</dc:description>
   </dc:LicenseDocument>
 
