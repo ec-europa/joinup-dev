@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99290b6d1666581110ac1ee51f012460",
+    "content-hash": "718629442198d177d58ceb8b6775d0f8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4447,36 +4447,24 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha10",
+            "version": "dev-construct-queries",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "8.x-1.0-alpha10"
+                "url": "https://github.com/ec-europa/rdf_entity.git",
+                "reference": "254908a215d532b45c3ec0e30c08526294baacb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha10.zip",
-                "reference": "8.x-1.0-alpha10",
-                "shasum": "551ee0dd17824a6a120503b91e8674062f16a990"
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/254908a215d532b45c3ec0e30c08526294baacb4",
+                "reference": "254908a215d532b45c3ec0e30c08526294baacb4",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "*",
                 "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
                 "php": ">=7.1"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-alpha10",
-                    "datestamp": "1536225484",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
                 }
@@ -4486,42 +4474,16 @@
                     "driver/sparql/Connection.php"
                 ]
             },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
-                },
-                {
-                    "name": "dublutz",
-                    "homepage": "https://www.drupal.org/user/980246"
-                },
-                {
-                    "name": "idimopoulos",
-                    "homepage": "https://www.drupal.org/user/2578708"
-                },
-                {
-                    "name": "pfrenssen",
-                    "homepage": "https://www.drupal.org/user/382067"
-                },
-                {
-                    "name": "sandervd",
-                    "homepage": "https://www.drupal.org/user/346775"
-                },
-                {
-                    "name": "sardara",
-                    "homepage": "https://www.drupal.org/user/2353864"
-                }
             ],
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
             "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
-                "source": "https://cgit.drupalcode.org/rdf_entity",
-                "issues": "https://drupal.org/project/issues/rdf_entity"
-            }
+                "issues": "https://drupal.org/project/issues/rdf_entity",
+                "source": "https://cgit.drupalcode.org/rdf_entity"
+            },
+            "time": "2018-11-22T10:45:59+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -13431,6 +13393,7 @@
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
+        "drupal/rdf_entity": 20,
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
