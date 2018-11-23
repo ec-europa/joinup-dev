@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\rdf_serialization\EventSubscriber;
 
 use Drupal\rdf_serialization\Encoder\RdfEncoder;

@@ -1,24 +1,4 @@
 services:
-  rdf_serialization.encoder.jsonld:
-    class: Drupal\rdf_serialization\Encoder\RdfEncoder
-    tags:
-    - { name: encoder, format: jsonld }
-  rdf_serialization.encoder.rdfxml:
-    class: Drupal\rdf_serialization\Encoder\RdfEncoder
-    tags:
-      - { name: encoder, format: rdfxml }
-  rdf_serialization.encoder.ntriples:
-    class: Drupal\rdf_serialization\Encoder\RdfEncoder
-    tags:
-    - { name: encoder, format: ntriples }
-  rdf_serialization.encoder.turtle:
-    class: Drupal\rdf_serialization\Encoder\RdfEncoder
-    tags:
-    - { name: encoder, format: turtle }
-  rdf_serialization.encoder.n3:
-    class: Drupal\rdf_serialization\Encoder\RdfEncoder
-    tags:
-    - { name: encoder, format: n3 }
   rdf_serialization.rdfsubscriber:
     class: Drupal\rdf_serialization\EventSubscriber\RdfSubscriber
     tags:
@@ -28,3 +8,7 @@ services:
     arguments: ['@rdf_export.serializer']
     tags:
     - { name: normalizer, priority: 10 }
+  http_middleware.accept_based_negotiation:
+    class: Drupal\rdf_serialization\AcceptHeaderMiddleware
+    tags:
+    - { name: http_middleware, priority: 390 }

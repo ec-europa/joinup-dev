@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\rdf_serialization\Normalizer;
 
 use Drupal\rdf_export\RdfSerializer;
@@ -19,6 +21,9 @@ class RdfEntityNormalizer extends NormalizerBase {
    */
   protected $supportedInterfaceOrClass = 'Drupal\rdf_entity\RdfInterface';
 
+  /** @var \Drupal\rdf_export\RdfSerializer */
+  protected $rdfSerializer;
+
   /**
    * RdfEntityNormalizer constructor.
    *
@@ -33,7 +38,7 @@ class RdfEntityNormalizer extends NormalizerBase {
    * {@inheritdoc}
    */
   public function normalize($entity, $format = NULL, array $context = []) {
-    return ['_rdf_entity' => $this->rdfSerializer->serializeEntity($entity, $format)];
+    return ['_rdf_entity' => $this->rdfSerializer->serializeEntity($entity, $format ?? 'rdfxml')];
   }
 
 }
