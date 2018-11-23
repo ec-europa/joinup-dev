@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\rdf_serialization;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Core\DependencyInjection\ServiceModifierInterface;
 use Drupal\Core\DependencyInjection\ServiceProviderInterface;
 use Drupal\rdf_serialization\Encoder\RdfEncoder;
 

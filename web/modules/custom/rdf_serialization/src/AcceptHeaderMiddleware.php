@@ -36,13 +36,13 @@ class AcceptHeaderMiddleware implements HttpKernelInterface {
   /**
    * Determines the output format (eg. html, json, rdfxml,..).
    *
-   * @param $request
+   * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
    *
    * @return null|string
    *   The format to use for this request.
    */
-  protected function determineFormat($request):? string {
+  protected function determineFormat(Request $request):? string {
     // Use Accept header to determine format.
     $accept = $request->headers->get('Accept') ?: 'text/html';
     return $this->formatFromRdfMimeType($accept);

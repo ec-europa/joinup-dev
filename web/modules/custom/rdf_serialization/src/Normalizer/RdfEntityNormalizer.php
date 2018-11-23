@@ -21,7 +21,11 @@ class RdfEntityNormalizer extends NormalizerBase {
    */
   protected $supportedInterfaceOrClass = 'Drupal\rdf_entity\RdfInterface';
 
-  /** @var \Drupal\rdf_export\RdfSerializer */
+  /**
+   * The serializer service.
+   *
+   * @var \Drupal\rdf_export\RdfSerializer
+   */
   protected $rdfSerializer;
 
   /**

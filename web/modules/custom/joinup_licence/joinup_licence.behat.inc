@@ -55,7 +55,8 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
   public function visitLicenceWithFormat($licence, $format) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $licence = $this->getLicenceByName($licence);
-    $this->visitPath($licence->url('canonical', ['query' => ['_format' => $format]]));
+    $this->getSession()->setRequestHeader('Accept', $format);
+    $this->visitPath($licence->url('canonical'));
   }
 
   /**
