@@ -53,7 +53,7 @@
         "drupal/simplenews": "^1.0-alpha3",
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
-        "drupal/state_machine": "^1.0-beta3",
+        "drupal/state_machine": "1.0-beta3",
         "drupal/subpathauto": "^1.0@beta",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/token": "~1.0",

@@ -199,17 +199,17 @@ Feature: Global search
       | title       | Bird outposts in the wild            |
       | description | Exotic wings and where to find them. |
       | state       | validated                            |
-    And collection:
-      | title       | Ornithology: the study of birds     |
-      | description | Ornithology is a branch of zoology. |
-      | state       | validated                           |
-      | affiliates  | Bird outposts in the wild           |
+    And collections:
+      | title                           | description                         | state     | affiliates                |
+      | Ornithology: the study of birds | Ornithology is a branch of zoology. | validated | Bird outposts in the wild |
+      | Husky Flying Xylophone          | A strange instrument.               | validated |                           |
     And custom_page content:
       | title           | body                                  | collection                      |
       | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |
     And news content:
-      | title                    | body                   | collection                      | state     |
-      | Chickens are small birds | Domesticated in India. | Ornithology: the study of birds | validated |
+      | title                               | body                            | collection                      | state     |
+      | Chickens are small birds            | Birds domesticated in India.    | Ornithology: the study of birds | validated |
+      | Found a xylophone from 1600 in Asia | Oldest instrument of this type. | Husky Flying Xylophone          | validated |
     And event content:
       | title         | body                   | collection                      | state     |
       | Bird spotting | Roosters crow at dawn. | Ornithology: the study of birds | validated |
