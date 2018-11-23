@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2d81c0c594199cd3ce69229eed714e0",
+    "content-hash": "c5398d92c0a7013561c1a277f8af511d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5031,17 +5031,17 @@
         },
         {
             "name": "drupal/state_machine",
-            "version": "1.0.0-beta3",
+            "version": "1.0.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/state_machine",
-                "reference": "8.x-1.0-beta3"
+                "reference": "8.x-1.0-rc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-beta3.zip",
-                "reference": "8.x-1.0-beta3",
-                "shasum": "9ca0101738db00673f2511707a76d6ea0c9ce4db"
+                "url": "https://ftp.drupal.org/files/projects/state_machine-8.x-1.0-rc1.zip",
+                "reference": "8.x-1.0-rc1",
+                "shasum": "bea94c4def643f60d3134f9c5d8495ddb56c93dd"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -5052,18 +5052,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "version": "8.x-1.0-rc1",
+                    "datestamp": "1542124077",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                    "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
-                    "Move static cache to the loading of the workflow. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/state_machine-fixing_the_issue_with_static_cache-2846986-10-D8.patch",
-                    "Allow access to the initialValue protected property. @see https://www.drupal.org/node/2896479": "https://www.drupal.org/files/issues/allow_access_to_initial_value-2896479-2-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10564,17 +10558,17 @@
         },
         {
             "name": "drupal/admin_toolbar",
-            "version": "1.24.0",
+            "version": "1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/admin_toolbar",
-                "reference": "8.x-1.24"
+                "reference": "8.x-1.25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.24.zip",
-                "reference": "8.x-1.24",
-                "shasum": "682ffa443a1e339583022eb6adbb00c1103ea6d4"
+                "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.25.zip",
+                "reference": "8.x-1.25",
+                "shasum": "bc24929d5e49932518797c1228e647e98b03542b"
             },
             "require": {
                 "drupal/core": "*"
@@ -10585,8 +10579,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.24",
-                    "datestamp": "1527522480",
+                    "version": "8.x-1.25",
+                    "datestamp": "1542915180",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
