@@ -15,14 +15,14 @@ third_party_settings:
     reverse_geocode_field: ''
     hidden: false
     disabled: false
-    plugins:
-      - openstreetmap
     dumper: wkt
     delta_handling: default
     failure:
       handling: preserve
       status_message: false
       log: true
+    providers:
+      - openstreetmap
 id: node.event.field_event_coordinates
 field_name: field_event_coordinates
 entity_type: node
