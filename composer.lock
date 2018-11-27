@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee87bbb76e4060ca012ffd078299bdb5",
+    "content-hash": "171b40c854c6a70713b1cee39f421cd7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2082,7 +2082,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2418,7 +2418,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2799,6 +2799,10 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -3374,7 +3378,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4154,7 +4158,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4418,7 +4422,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4679,7 +4683,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4752,7 +4756,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha10",
-                    "datestamp": "1539069780",
+                    "datestamp": "1536225484",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4995,28 +4999,27 @@
         },
         {
             "name": "drupal/search_api_solr",
-            "version": "2.3.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api_solr",
-                "reference": "8.x-2.3"
+                "reference": "8.x-2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-2.3.zip",
-                "reference": "8.x-2.3",
-                "shasum": "a34fde16cfdf16990f029ea8aa012dec0555a437"
+                "url": "https://ftp.drupal.org/files/projects/search_api_solr-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "c740d9983d6fb34b27ba0d680de2bb9ade3754eb"
             },
             "require": {
                 "drupal/core": "^8.5",
-                "drupal/search_api": "~1.11",
-                "ext-json": "*",
+                "drupal/search_api": "~1.9",
                 "maennchen/zipstream-php": "0.4.*",
                 "php": "^7.0",
-                "solarium/solarium": "~4.2.0"
+                "solarium/solarium": "~4.1.0"
             },
             "conflict": {
-                "drupal/core": "<8.6",
+                "drupal/core": "<8.5",
                 "drupal/search_api_solr_multilingual": "*"
             },
             "require-dev": {
@@ -5038,7 +5041,7 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.3",
+                    "version": "8.x-2.2",
                     "datestamp": "1543072380",
                     "security-coverage": {
                         "status": "covered",
@@ -5081,7 +5084,7 @@
             "support": {
                 "source": "http://git.drupal.org/project/search_api_solr.git",
                 "issues": "https://www.drupal.org/project/issues/search_api_solr",
-                "irc": "https://drupalchat.me/channel/search"
+                "irc": "irc://irc.freenode.org/drupal-search-api"
             }
         },
         {
@@ -5124,7 +5127,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5587,7 +5590,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1493246342",
+                    "datestamp": "1510132373",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5655,7 +5658,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -8685,16 +8688,16 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "4.2.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "20cf9e906a4e8e4a29c1ff48a2b145fa31d1064d"
+                "reference": "4dfd71fefb307cac1ec394b672f2f57256752e4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/20cf9e906a4e8e4a29c1ff48a2b145fa31d1064d",
-                "reference": "20cf9e906a4e8e4a29c1ff48a2b145fa31d1064d",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/4dfd71fefb307cac1ec394b672f2f57256752e4b",
+                "reference": "4dfd71fefb307cac1ec394b672f2f57256752e4b",
                 "shasum": ""
             },
             "require": {
@@ -8714,7 +8717,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1.x-dev"
+                    "dev-4.0.x": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -8739,7 +8742,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2018-11-24T09:20:30+00:00"
+            "time": "2018-08-09T13:01:25+00:00"
         },
         {
             "name": "stack/builder",
@@ -11688,10 +11691,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
@@ -12041,7 +12040,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
