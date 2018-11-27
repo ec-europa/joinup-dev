@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "708ca7a6b4381de18e2c48b4d34f1b88",
+    "content-hash": "666589d2fe851cd8324015a26be706d0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -11966,22 +11966,27 @@
             "time": "2018-04-17T17:48:19+00:00"
         },
         {
-            "name": "drupal/guzzle_cache",
-            "version": "1.0.0",
+            "name": "drupal/filecache",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/guzzle_cache",
-                "reference": "8.x-1.0"
+                "url": "https://git.drupal.org/project/filecache",
+                "reference": "8.x-1.0-alpha1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/guzzle_cache-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "45c0462ff4b5712d57f0192244842666a990bd19"
+                "url": "https://ftp.drupal.org/files/projects/filecache-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "f7e9250c3a9e37e4dcd0c5eb9db588ea868cefe9"
             },
             "require": {
-                "drupal/core": "~8.0",
-                "kevinrob/guzzle-cache-middleware": "^1.4"
+                "drupal/core": "~8.5"
+            },
+            "require-dev": {
+                "composer/installers": "^1.2",
+                "drupal-composer/drupal-scaffold": "^2.5",
+                "drupal/coder": "^8.3.1",
+                "webflo/drupal-core-require-dev": "~8.5"
             },
             "type": "drupal-module",
             "extra": {
@@ -11989,12 +11994,23 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1477948140",
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1538043485",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "installer-paths": {
+                    "../build/core": [
+                        "type:drupal-core"
+                    ],
+                    "../build/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "../build/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ]
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -12003,18 +12019,21 @@
             ],
             "authors": [
                 {
-                    "name": "Dave Reid",
-                    "homepage": "https://www.drupal.org/user/53892"
+                    "name": "Ognyan Kulev (@ogi)",
+                    "homepage": "https://www.drupal.org/u/ogi",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "deviantintegral",
-                    "homepage": "https://www.drupal.org/user/71291"
+                    "name": "Pieter Frenssen (@pfrenssen)",
+                    "homepage": "https://www.drupal.org/u/pfrenssen",
+                    "role": "Co-maintainer"
                 }
             ],
-            "description": "A guzzle cache backend integrated with Drupal.",
-            "homepage": "http://drupal.org/project/guzzle_cache",
+            "description": "A cache backend that uses the file system for storage.",
+            "homepage": "https://drupal.org/project/filecache",
             "support": {
-                "source": "http://cgit.drupalcode.org/guzzle_cache"
+                "source": "https://cgit.drupalcode.org/filecache",
+                "issues": "https://drupal.org/project/issues/filecache"
             }
         },
         {
@@ -12377,84 +12396,6 @@
                 "testing"
             ],
             "time": "2016-12-01T10:57:30+00:00"
-        },
-        {
-            "name": "kevinrob/guzzle-cache-middleware",
-            "version": "v1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Kevinrob/guzzle-cache-middleware.git",
-                "reference": "2893fff87ef9f7f2c669957f5e446beea48d7a1d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Kevinrob/guzzle-cache-middleware/zipball/2893fff87ef9f7f2c669957f5e446beea48d7a1d",
-                "reference": "2893fff87ef9f7f2c669957f5e446beea48d7a1d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "cache/array-adapter": "^0.4",
-                "doctrine/cache": "^1.0",
-                "guzzlehttp/guzzle": "^6.0",
-                "illuminate/cache": "^5.0",
-                "league/flysystem": "^1.0",
-                "phpunit/phpunit": "^4.0 || ^5.0",
-                "psr/cache": "^1.0"
-            },
-            "suggest": {
-                "doctrine/cache": "This library have a lot of ready-to-use cache storage (to be use with Kevinrob\\GuzzleCache\\Storage\\DoctrineCacheStorage)",
-                "guzzlehttp/guzzle": "For using this library. It was created for Guzzle6. (but you can use it with any PSR-7 HTTP Client)",
-                "laravel/framework": "To be use with Kevinrob\\GuzzleCache\\Storage\\LaravelCacheStorage",
-                "league/flysystem": "To be use with Kevinrob\\GuzzleCache\\Storage\\FlysystemStorage",
-                "psr/cache": "To be use with Kevinrob\\GuzzleCache\\Storage\\Psr6CacheStorage"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Kevinrob\\GuzzleCache\\": [
-                        "src/",
-                        "tests/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kevin Robatel",
-                    "email": "kevinrob2@gmail.com",
-                    "homepage": "https://github.com/Kevinrob"
-                }
-            ],
-            "description": "A HTTP/1.1 Cache for Guzzle 6. It's a simple Middleware to be added in the HandlerStack. (RFC 7234)",
-            "homepage": "https://github.com/Kevinrob/guzzle-cache-middleware",
-            "keywords": [
-                "Etag",
-                "Flysystem",
-                "Guzzle",
-                "cache",
-                "cache-control",
-                "doctrine",
-                "expiration",
-                "guzzle6",
-                "handler",
-                "http",
-                "http 1.1",
-                "middleware",
-                "performance",
-                "php",
-                "promise",
-                "psr6",
-                "psr7",
-                "rfc7234",
-                "validation"
-            ],
-            "time": "2017-01-16T07:02:13+00:00"
         },
         {
             "name": "lovers-of-behat/table-extension",
