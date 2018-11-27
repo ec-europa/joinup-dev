@@ -449,7 +449,7 @@
                 text="$config['stage_file_proxy.settings']['origin'] = '${stage_file_proxy.origin}';${line.separator}$config['stage_file_proxy.settings']['hotlink'] = ${stage_file_proxy.hotlink};${line.separator}" />
     </target>
 
-    <target name="enable-webtools-geocoding-cache">
+    <target name="disable-webtools-geocoding-cache">
         <reflexive>
             <fileset dir="${website.settings.dir}">
                 <include pattern="settings.local.php" />
@@ -466,9 +466,13 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
+    </target>
+
+    <target name="enable-webtools-geocoding-cache">
         <phingcall target="enable-module">
             <property name="module" value="filecache" />
         </phingcall>
+        <phingcall target="disable-webtools-geocoding-cache" />
         <append
             destFile="${website.settings.local.php}"
             text="${line.separator}$settings['cache']['bins']['geocoder'] = 'cache.backend.file_system';${line.separator}" />
@@ -485,7 +489,7 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass, enable-webtools-geocoding-cache" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
 
     <target
         name="setup-acceptance"
@@ -495,6 +499,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache" />
 
 </project>
