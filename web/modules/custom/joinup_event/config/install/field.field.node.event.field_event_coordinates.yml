@@ -7,23 +7,21 @@ dependencies:
   module:
     - geocoder_field
     - geofield
-    - oe_webtools_geocoding
 third_party_settings:
   geocoder_field:
     method: geocode
     weight: 0
     hidden: false
     disabled: false
+    providers:
+      - webtools_geocoding
     dumper: wkt
-    delta_handling: default
     failure:
       handling: preserve
       status_message: true
       log: true
     field: field_location
-    providers:
-      - openstreetmap
-    field: field_location
+    delta_handling: default
 id: node.event.field_event_coordinates
 field_name: field_event_coordinates
 entity_type: node

@@ -207,6 +207,7 @@ config_devel:
   - filter.format.restricted_html
   - filter.format.simple_html
   - filter.format.simple_text
+  - geocoder.geocoder_provider.webtools_geocoding
   - geocoder.settings
   - honeypot.settings
   - image.style.profile_icon
