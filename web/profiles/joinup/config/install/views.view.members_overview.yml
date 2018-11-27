@@ -330,13 +330,13 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: word
+          operator: allwords
           value: ''
           group: 1
           exposed: true
           expose:
             operator_id: combine_op
-            label: Filter
+            label: "Type something to filter the list"
             description: ''
             use_operator: false
             operator: combine_op
