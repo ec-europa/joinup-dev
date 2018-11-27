@@ -23,7 +23,7 @@
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
         "drupal/email_registration": "^1.0",
-        "drupal/facets": "^1.1",
+        "drupal/facets": "1.1",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
         "drupal/flag": "^4.0@alpha",
