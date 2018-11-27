@@ -25,3 +25,4 @@ backend_config:
   highlight_data: false
   skip_schema_check: false
   site_hash: true
+  domain: generic
