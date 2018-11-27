@@ -104,7 +104,7 @@ Feature: Solution membership overview
       | Fulvia Gabrielson  |
       | Gina Forney        |
 
-    When I fill in "Filter" with "buhr"
+    When I fill in "Type something to filter the list" with "buhr"
     And I press "Apply"
     Then I should see the following tiles in the correct order:
       | Aušra Buhr  |

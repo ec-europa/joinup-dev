@@ -1,5 +1,5 @@
 @api
-Feature: Filtering the member list
+Feature: Type something to filter the listing the member list
   In order to quickly find a particular member
   As a moderator
   I need to be able to filter the member list
@@ -31,7 +31,7 @@ Feature: Filtering the member list
     Given I am logged in as "<user>"
     When I go to the homepage of the "Coffee makers" collection
     And I click "Members" in the "Left sidebar"
-    Then the following fields should be present "Filter, Roles"
+    Then the following fields should be present "Type something to filter the list, Roles"
 
     Examples:
       | user       |
@@ -45,7 +45,7 @@ Feature: Filtering the member list
     When I am logged in as "séamusline"
     And I go to the homepage of the "Coffee makers" collection
     And I click "Members" in the "Left sidebar"
-    And I fill in "Filter" with "bro"
+    And I fill in "Type something to filter the list" with "bro"
     And I press "Apply"
 
     Then the "member administration" table should be:
@@ -95,7 +95,7 @@ Feature: Filtering the member list
       |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
-    When I fill in "Filter" with "King"
+    When I fill in "Type something to filter the list" with "King"
     And I press "Apply"
     Then I should see the link "King Seabrooke"
     And I should see the link "King Emerson"
@@ -104,7 +104,7 @@ Feature: Filtering the member list
     # Search is case insensitive.
     And I should see the link "Seamus Emerson"
 
-    When I clear the field "Filter"
+    When I clear the field "Type something to filter the list"
     And I press "Apply"
     And I select "Owner (1)" from "Roles"
     And I press "Apply"
@@ -122,8 +122,15 @@ Feature: Filtering the member list
     And I should not see the link "Brooke Kingsley"
     And I should not see the link "Nell Gibb"
     # "eme" also matches "King Seabrooke" due to the username "emeritous"
-    And I fill in "Filter" with "eme"
+    And I fill in "Type something to filter the list" with "eme"
     And I press "Apply"
     Then I should see the link "King Emerson"
     And I should see the link "King Seabrooke"
     And the option with text "Facilitator (2)" from select "Roles" is selected
+
+    # Ensure that filtering is based in all words.
+    When I fill in "Type something to filter the list" with "eme Sea"
+    And I press "Apply"
+    Then I should see the link "King Seabrooke"
+    But I should not see the link "King Emerson"
+    And the option with text "Facilitator (1)" from select "Roles" is selected

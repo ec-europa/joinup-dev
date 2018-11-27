@@ -108,7 +108,7 @@ Feature: Collection membership overview
       | Ruby Robert        |
       | Sukhrab Valenta    |
 
-    When I fill in "Filter" with "val"
+    When I fill in "Type something to filter the list" with "val"
     And I press "Apply"
     Then I should see the following tiles in the correct order:
       | Delicia Hart    |
