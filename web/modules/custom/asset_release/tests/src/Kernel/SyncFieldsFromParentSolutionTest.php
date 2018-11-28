@@ -14,6 +14,8 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 class SyncFieldsFromParentSolutionTest extends KernelTestBase {
 
+  use RdfDatabaseConnectionTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -40,15 +42,11 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'options',
     'owner',
     'matomo_reporting_api',
-    'rest',
     'rdf_draft',
     'rdf_entity',
-    'rdf_export',
-    'rdf_serialization',
     'rdf_taxonomy',
     'search_api',
     'search_api_field',
-    'serialization',
     'smart_trim',
     'solution',
     'state_machine',
@@ -58,8 +56,6 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'tour',
     'user',
   ];
-
-  use RdfDatabaseConnectionTrait;
 
   /**
    * {@inheritdoc}
@@ -76,7 +72,6 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'joinup_core',
       'rdf_draft',
       'rdf_entity',
-      'rdf_serialization',
       'solution',
       'contact_information',
       'owner',
