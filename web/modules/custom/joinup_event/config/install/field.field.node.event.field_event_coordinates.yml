@@ -9,20 +9,19 @@ dependencies:
     - geofield
 third_party_settings:
   geocoder_field:
-    method: source
+    method: geocode
     weight: 0
-    geocode_field: field_location
-    reverse_geocode_field: ''
     hidden: false
     disabled: false
-    plugins:
-      - openstreetmap
     dumper: wkt
     delta_handling: default
     failure:
       handling: preserve
       status_message: false
       log: true
+    providers:
+      - openstreetmap
+    field: field_location
 id: node.event.field_event_coordinates
 field_name: field_event_coordinates
 entity_type: node

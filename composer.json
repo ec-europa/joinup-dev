@@ -23,7 +23,7 @@
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
         "drupal/email_registration": "^1.0",
-        "drupal/facets": "^1.1",
+        "drupal/facets": "1.1",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "~1.0",
         "drupal/flag": "^4.0@alpha",
@@ -50,7 +50,7 @@
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.1",
         "drupal/search_api": "^1.10",
-        "drupal/search_api_solr": "^2.2",
+        "drupal/search_api_solr": "2.2",
         "drupal/simplenews": "^1.0-alpha3",
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
@@ -179,6 +179,9 @@
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+            },
+            "drupal/geocoder": {
+                "Convert providers from simple config to a config entity. @see https://www.drupal.org/project/geocoder/issues/3008528": "https://www.drupal.org/files/issues/2018-11-26/3008528-33.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
