@@ -27,7 +27,7 @@ class RdfEncoder implements EncoderInterface {
    * {@inheritdoc}
    */
   public function supportsEncoding($format) {
-    return in_array($format, self::supportedFormats());
+    return in_array($format, static::supportedFormats());
   }
 
   /**
@@ -48,10 +48,10 @@ class RdfEncoder implements EncoderInterface {
    * @return \EasyRdf\Format[]
    *   List of supported formats.
    */
-  public static function supportedFormats() {
+  public static function supportedFormats(): array {
     $formats = Format::getFormats();
     /** @var \EasyRdf\Format[] $supported_formats */
-    return array_intersect($formats, self::$supportedFormats);
+    return array_intersect($formats, static::$supportedFormats);
   }
 
 }
