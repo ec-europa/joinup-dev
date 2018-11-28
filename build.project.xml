@@ -460,7 +460,11 @@
                         pattern="(\n)?\$settings\['cache'\]\['bins'\]\['geocoder'\] = 'cache.backend.file_system';(\n)?"
                         replace="" />
                     <regexp
-                        pattern="(\n)?\$settings\['filecache_directory'\]\['bins'\]\['geocoder'\] = '.*/tests/fixtures/webtools_geocoding_cache';(\n)?"
+                        pattern="(\n)?\$settings\['filecache'\]\['directory'\]\['bins'\]\['geocoder'\] = '.*/tests/fixtures/webtools_geocoding_cache';(\n)?"
+                        replace=""
+                        modifiers="" />
+                    <regexp
+                        pattern="(\n)?\$settings\['filecache'\]\['strategy'\]\['bins'\]\['geocoder'\] = 'persist';(\n)?"
                         replace="${line.separator}"
                         modifiers="" />
                 </replaceregexp>
@@ -478,7 +482,10 @@
             text="${line.separator}$settings['cache']['bins']['geocoder'] = 'cache.backend.file_system';${line.separator}" />
         <append
             destFile="${website.settings.local.php}"
-            text="$settings['filecache_directory']['bins']['geocoder'] = '${behat.webtools_geocoding.cache.path}';${line.separator}" />
+            text="$settings['filecache']['directory']['bins']['geocoder'] = '${behat.webtools_geocoding.cache.path}';${line.separator}" />
+        <append
+            destFile="${website.settings.local.php}"
+            text="$settings['filecache']['strategy']['bins']['geocoder'] = 'persist';${line.separator}" />
     </target>
 
     <target

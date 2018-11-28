@@ -142,8 +142,8 @@ class EventSubContext extends DrupalSubContextBase {
    *   The location of the treasure.
    */
   protected static function getWebtoolsGeocodingCacheDirectory(): string {
-    $filecache_settings = Settings::get('filecache_directory');
-    return $filecache_settings['bins']['geocoder'] ?? '';
+    $filecache_settings = Settings::get('filecache');
+    return $filecache_settings['directory']['bins']['geocoder'] ?? '';
   }
 
 }
