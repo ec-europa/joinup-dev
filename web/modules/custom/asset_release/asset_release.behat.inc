@@ -5,12 +5,15 @@
  * Contains \AssetReleaseSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Behat step definitions for testing asset_releases.
@@ -37,7 +40,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @When (I )go to (the homepage of )the :asset_release release
    * @When (I )visit (the homepage of )the :asset_release release
    */
-  public function visitRelease($asset_release) {
+  public function visitRelease(string $asset_release): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
     $asset_release = $this->getAssetReleaseByName($asset_release);
     $this->visitPath($asset_release->url());
@@ -52,7 +55,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @When I go to the :release release edit form
    * @When I visit the :release release edit form
    */
-  public function visitEditAssetDistribution($release) {
+  public function visitEditAssetDistribution(string $release): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $release */
     $release = $this->getAssetReleaseByName($release);
     $path = $release->url('edit-form');
@@ -79,7 +82,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Given (the following )releases:
    */
-  public function givenAssetReleases(TableNode $asset_release_table) {
+  public function givenAssetReleases(TableNode $asset_release_table): void {
     $aliases = self::assetReleaseFieldAliases();
 
     foreach ($asset_release_table->getColumnsHash() as $asset_release) {
@@ -122,7 +125,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Given (the following )release:
    */
-  public function givenAssetRelease(TableNode $asset_release_table) {
+  public function givenAssetRelease(TableNode $asset_release_table): void {
     $aliases = self::assetReleaseFieldAliases();
 
     $values = [];
@@ -153,7 +156,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createAssetRelease(array $values) {
+  protected function createAssetRelease(array $values): RdfInterface {
     if (!empty($values['field_isr_documentation'])) {
       foreach ($values['field_isr_documentation'] as &$filename) {
         $filename = [$this->createFile($filename)->id()];
@@ -174,7 +177,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When (I )delete the :asset_release release
    */
-  public function deleteAssetRelease($asset_release) {
+  public function deleteAssetRelease(string $asset_release): void {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
     $asset_release = $this->getAssetReleaseByName($asset_release);
     $asset_release->skip_notification = TRUE;
@@ -193,7 +196,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @return \Drupal\rdf_entity\RdfInterface
    *   The asset release.
    */
-  protected function getAssetReleaseByName($title) {
+  protected function getAssetReleaseByName(string $title): RdfInterface {
     return $this->getRdfEntityByLabel($title, 'asset_release');
   }
 
@@ -209,7 +212,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then I should have :number release(s)
    */
-  public function assertReleaseCount($number) {
+  public function assertReleaseCount(int $number): void {
     // We cannot rely on $this->assertRdfEntityCount() because a release shares
     // the same bundle with a solution. We need to distinguish them by the
     // presence of the 'is_version_of' field - if this field is missing it is a
@@ -228,7 +231,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @AfterScenario
    */
-  public function cleanAssetReleases() {
+  public function cleanAssetReleases(): void {
     // Remove any asset_releases that were created.
     foreach ($this->assetReleases as $asset_release) {
       $asset_release->skip_notification = TRUE;
@@ -242,7 +245,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @return array
    *   Mapping.
    */
-  protected static function assetReleaseFieldAliases() {
+  protected static function assetReleaseFieldAliases(): array {
     // Mapping alias - field name.
     return [
       'uri' => 'id',
@@ -275,13 +278,13 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param array $fields
    *   An array of fields keyed by field name.
    *
-   * @return mixed
+   * @return array
    *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  protected function convertValueAliases(array $fields) {
+  protected function convertValueAliases(array $fields): array {
     // Convert the name of the is version of field to an id.
     // This is handled separately as it is not an entity reference but an
     // og_standard_reference.
@@ -310,7 +313,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Given I should see the (following )releases in the exact order:
    */
-  public function assertReleasesAndOrder(TableNode $asset_release_table) {
+  public function assertReleasesAndOrder(TableNode $asset_release_table): void {
     $releases = [];
     // Replace the column aliases with the actual field names.
     foreach ($asset_release_table->getColumnsHash() as $title) {
@@ -342,7 +345,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then the :release release should be marked as the latest release
    */
-  public function assertReleaseIsLatest($release) {
+  public function assertReleaseIsLatest(string $release): void {
     $release = $this->getAssetReleaseByName($release);
 
     $latest_releases = $this->getSession()->getPage()->findAll('css', '.is-latest');
