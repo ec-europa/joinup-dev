@@ -6,7 +6,9 @@
 
 ## Containers
 To run Joinup in containers, we are using the following images:
-* [fpfis/httpd-php-dev:7.1](https://github.com/fpfis/httpd-php-dev/)
+* [php:7.1.24-apache-jessie](https://hub.docker.com/_/php/) which is extended with configuration based on the [docker
+for drupal](https://github.com/docker-library/drupal) and the [fpfis/httpd-php](https://github.com/fpfis/httpd-php)
+images.
 * [pablofelix/sass](https://hub.docker.com/r/pablofelix/sass/)
 * [percona/percona-server:5.6](https://hub.docker.com/r/percona/percona-server/)
 * [tenforce/virtuoso](https://hub.docker.com/r/tenforce/virtuoso/)
