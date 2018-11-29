@@ -44,6 +44,22 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
+   * Navigates to the edit form of a release.
+   *
+   * @param string $release
+   *   The title of the release.
+   *
+   * @When I go to the :release release edit form
+   * @When I visit the :release release edit form
+   */
+  public function visitEditAssetDistribution($release) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $release */
+    $release = $this->getAssetReleaseByName($release);
+    $path = $release->url('edit-form');
+    $this->visitPath($path);
+  }
+
+  /**
    * Creates a number of asset_releases with data provided in a table.
    *
    * Table format:
