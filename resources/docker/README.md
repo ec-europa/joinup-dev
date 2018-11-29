@@ -21,7 +21,9 @@ files installed in /opt/docker-solr/configsets/drupal/conf.
 #### Prepare the environment
 From the project root, run `docker-compose up`. This command will download, build and run all necessary containers.
 Run the following command to install all packages in the vendor folder  
-`docker-compose exec --user www-data web ./vendor/bin/composer install`
+```bash
+docker-compose exec --user www-data web composer install
+```
 
 #### Install the website
 From the project root, run
