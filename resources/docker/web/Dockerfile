@@ -20,7 +20,8 @@ RUN set -ex; \
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
 	docker-php-ext-install -j "$(nproc)" gd opcache pdo_mysql pdo_pgsql zip
 
-RUN pecl install xdebug
+RUN pecl install xdebug; \
+    docker-php-ext-enable xdebug;
 
 RUN wget https://github.com/composer/composer/releases/download/${composer_version}/composer.phar -O /usr/bin/composer
 RUN wget https://github.com/drush-ops/drush/releases/download/${drush_version}/drush.phar -O /usr/bin/drush
