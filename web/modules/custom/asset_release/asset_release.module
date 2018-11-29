@@ -314,3 +314,33 @@ function asset_release_form_rdf_entity_asset_release_edit_form_alter(&$form, For
     $form['created']['#access'] = \Drupal::currentUser()->hasPermission('access release create field');
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function asset_release_form_rdf_entity_asset_release_delete_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#submit'][] = 'asset_release_delete_redirect';
+}
+
+/**
+ * Redirect users to the solution homepage after deleting a release.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function asset_release_delete_redirect(&$form, FormStateInterface $form_state) {
+  if (!empty($form_state->getRedirect())) {
+    return;
+  }
+
+  $release = $form_state->getFormObject()->getEntity();
+  /** @var \Drupal\asset_release\AssetReleaseRelations $relation_service */
+  $relation_service = \Drupal::service('asset_release.relations');
+  $solution = $relation_service->getReleaseSolution($release);
+  if (!empty($solution)) {
+    $url = $solution->toUrl();
+    $form_state->setRedirect($url->getRouteName(), $url->getRouteParameters(), $url->getOptions());
+  }
+}
