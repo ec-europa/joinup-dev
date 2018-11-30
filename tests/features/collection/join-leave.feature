@@ -96,3 +96,24 @@ Feature: Joining and leaving collections through the web interface
     And I should see the "Join this collection" button
     And the "Folk Dance and Song Society" collection should have 0 active members
     And the "Folk Dance and Song Society" collection should have 0 pending members
+
+  Scenario: A collection owner leaving the collection cannot administer users anymore.
+
+    Given users:
+      | Username          |
+      | insect researcher |
+    And the following collection:
+      | title  | Insectarium       |
+      | state  | validated         |
+      | author | insect researcher |
+    And the following collection user memberships:
+      | collection  | user              | roles |
+      | Insectarium | insect researcher | owner |
+
+    Given I am logged in as "insect researcher"
+    When I go to the homepage of the "Insectarium" collection
+    And I click "Leave this collection"
+
+    Given I press "Confirm"
+    When I click "Members"
+    Then I should not see the link "Add members"
