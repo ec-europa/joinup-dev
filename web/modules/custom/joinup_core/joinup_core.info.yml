@@ -17,7 +17,6 @@ dependencies:
   - og
   - rdf_draft
   - rdf_entity
-  - rdf_serialization
   - rdf_taxonomy
   - redirect
   - search_api
@@ -78,7 +77,6 @@ config_devel:
   - rdf_entity.mapping.taxonomy_term.status
   - rdf_entity.mapping.taxonomy_term.test_resource_type
   - rdf_entity.mapping.taxonomy_term.themes
-  - rest.resource.entity.rdf_entity
   - system.action.joinup_transfer_group_ownership
   - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira

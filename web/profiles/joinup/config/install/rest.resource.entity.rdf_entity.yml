@@ -3,7 +3,7 @@ status: true
 dependencies:
   module:
     - rdf_entity
-    - rdf_serialization
+    - rdf_export
     - serialization
     - user
 id: entity.rdf_entity
