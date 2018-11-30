@@ -285,3 +285,45 @@ Feature:
     And I check the box "Display a community content listing"
     And I press "Save"
     Then I should see the "Nintendo64 in the News" tile
+
+  Scenario: Test listing by keywords that contain the same word.
+
+    Given document content:
+      | title        | keywords            | content     | collection | state     |
+      | User's Guide | nintendo64 manuals  | User manual | Nintendo64 | validated |
+      | Licence      | nintendo64 licences | Licence     | Nintendo64 | validated |
+    And I am logged in as a moderator
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+
+    When I fill in the following:
+      | Title | Manuals        |
+      | Body  | Product guides |
+    And I check the box "Display a community content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|document
+        keywords|"nintendo64 manuals"
+        """
+    When I press "Save"
+
+    Then I should see the "User's Guide" tile
+    But I should not see the "Licence" tile
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+
+    When I fill in the following:
+      | Title | Licences          |
+      | Body  | Product licensing |
+    And I check the box "Display a community content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|document
+        keywords|"nintendo64 licences"
+        """
+    When I press "Save"
+
+    Then I should see the "Licence" tile
+    But I should not see the "User's Guide" tile
