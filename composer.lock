@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc1570eb2bf1fff60ca661fc41c4f746",
+    "content-hash": "8df06a3d82887057f1e64eb93b2069dd",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.77.0",
+            "version": "3.80.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a29f5d77910d04fe9045abc89d9f0411977c44d3"
+                "reference": "16819253927a18f96c9bbd85cb1b47419e5bc371"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a29f5d77910d04fe9045abc89d9f0411977c44d3",
-                "reference": "a29f5d77910d04fe9045abc89d9f0411977c44d3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/16819253927a18f96c9bbd85cb1b47419e5bc371",
+                "reference": "16819253927a18f96c9bbd85cb1b47419e5bc371",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-11-28T00:16:37+00:00"
+            "time": "2018-11-30T00:01:18+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -686,16 +686,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "b8e9745fb9b06ea6664d8872c4505fb16df4611c"
+                "reference": "dc523135366eb68f22268d069ea7749486458562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/b8e9745fb9b06ea6664d8872c4505fb16df4611c",
-                "reference": "b8e9745fb9b06ea6664d8872c4505fb16df4611c",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/dc523135366eb68f22268d069ea7749486458562",
+                "reference": "dc523135366eb68f22268d069ea7749486458562",
                 "shasum": ""
             },
             "require": {
@@ -726,7 +726,7 @@
                 "Xdebug",
                 "performance"
             ],
-            "time": "2018-08-31T19:07:57+00:00"
+            "time": "2018-11-29T10:59:02+00:00"
         },
         {
             "name": "consolidation/annotated-command",
@@ -2666,8 +2666,7 @@
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                     "Profile provided configuration entities can have unmeetable dependencies @see https://www.drupal.org/node/2922417": "resources/patch/2922417-38-no-conflict.patch",
-                    "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
-                    "https://www.drupal.org/project/drupal/issues/2943172": "https://www.drupal.org/files/issues/2018-07-05/2943172-kernel-test-base-3.patch"
+                    "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch"
                 }
             },
             "autoload": {
@@ -7244,36 +7243,33 @@
         },
         {
             "name": "openeuropa/oe_webtools_location",
-            "version": "0.1.0",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools_location.git",
-                "reference": "167d2997e0314581542a44401e7bc24e6d71f93d"
+                "reference": "4dd31c137c7cfd1d813d828c7b78f063589d7b77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/167d2997e0314581542a44401e7bc24e6d71f93d",
-                "reference": "167d2997e0314581542a44401e7bc24e6d71f93d",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/4dd31c137c7cfd1d813d828c7b78f063589d7b77",
+                "reference": "4dd31c137c7cfd1d813d828c7b78f063589d7b77",
                 "shasum": ""
             },
             "require": {
-                "drupal/core": "~8.5",
-                "drupal/geocoder": "dev-3.x",
-                "openeuropa/webtools-geocoding-provider": "dev-master",
+                "drupal/geocoder": "^3.0",
+                "openeuropa/webtools-geocoding-provider": "~0.1",
                 "php": "^7.1"
             },
             "require-dev": {
                 "composer/installers": "^1.2",
-                "cweagans/composer-patches": "~1.0",
                 "drupal-composer/drupal-scaffold": "^2.5",
                 "drush/drush": "^9.3",
-                "openeuropa/code-review": "^0.3",
-                "openeuropa/task-runner": "^0.7.0",
-                "webflo/drupal-core-require-dev": "8.5.x"
+                "openeuropa/code-review": "^1.0",
+                "openeuropa/drupal-core-require-dev": "^8.6",
+                "openeuropa/task-runner": "^0.7.0"
             },
             "type": "drupal-module",
             "extra": {
-                "composer-exit-on-patch-failure": true,
                 "installer-paths": {
                     "build/core": [
                         "type:drupal-core"
@@ -7284,31 +7280,18 @@
                     "build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
-                },
-                "patches": {
-                    "drupal/core": {
-                        "https://www.drupal.org/project/drupal/issues/2943172": "https://www.drupal.org/files/issues/2018-07-05/2943172-kernel-test-base-3.patch"
-                    }
                 }
             },
-            "scripts": {
-                "drupal-scaffold": [
-                    "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "EUPL-1.2"
             ],
             "description": "Adds support for Webtools location services in Drupal.",
-            "support": {
-                "source": "https://github.com/openeuropa/oe_webtools_location/tree/master",
-                "issues": "https://github.com/openeuropa/oe_webtools_location/issues"
-            },
-            "time": "2018-08-08T15:49:14+00:00"
+            "time": "2018-11-29T15:07:48+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/webtools-geocoding-provider.git",
@@ -7340,15 +7323,12 @@
                     "OpenEuropa\\Provider\\WebtoolsGeocoding\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "EUPL"
             ],
             "description": "Webtools Geocoding provider for Geocoder PHP.",
             "homepage": "https://github.com/openeuropa/webtools-geocoding-provider",
-            "support": {
-                "source": "https://github.com/openeuropa/webtools-geocoding-provider/tree/master",
-                "issues": "https://github.com/openeuropa/webtools-geocoding-provider/issues"
-            },
             "time": "2018-08-31T06:51:22+00:00"
         },
         {
@@ -12005,6 +11985,9 @@
                     "../build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
+                },
+                "patches_applied": {
+                    "Provide an option to persist the cache. @see https://github.com/pfrenssen/filecache/pull/2": "https://patch-diff.githubusercontent.com/raw/pfrenssen/filecache/pull/2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -12028,7 +12011,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
-            }
+            },
+            "time": "2018-11-28T06:44:23+00:00"
         },
         {
             "name": "drupal/renderviz",
