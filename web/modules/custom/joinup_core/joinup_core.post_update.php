@@ -112,4 +112,3 @@ function joinup_core_post_update_install_piwik2matomo() {
 function joinup_core_post_update_install_spain_ctt() {
   \Drupal::service('module_installer')->install(['spain_ctt']);
 }
-
