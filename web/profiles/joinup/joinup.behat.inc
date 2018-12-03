@@ -2279,12 +2279,7 @@ JS;
    * @Then a tour should be available
    */
   public function assertTourAvailable() {
-    // The tour element in the header.
-    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
-    // The tour button.
-    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
-
-    if (empty($element_help) && empty($element_button)) {
+    if (!$this->getSession()->getPage()->find('css', 'a.js-tour-start-button')) {
       throw new \Exception("No tour is available on the page.");
     }
   }
@@ -2295,13 +2290,9 @@ JS;
    * @Then a tour should not be available
    */
   public function assertTourNotAvailable() {
-    // The tour element in the header.
-    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
-    // The tour button.
-    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
-
-    PHPUnit_Framework_Assert::assertEmpty($element_help);
-    PHPUnit_Framework_Assert::assertEmpty($element_button);
+    if ($this->getSession()->getPage()->find('css', 'a.js-tour-start-button')) {
+      throw new \Exception("Tour is available on the page but should not.");
+    }
   }
 
   /**
