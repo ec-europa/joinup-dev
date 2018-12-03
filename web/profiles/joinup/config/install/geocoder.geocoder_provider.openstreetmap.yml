@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: openstreetmap
-label: OpenStreetMap
-plugin: openstreetmap
-configuration:
-  userAgent: Joinup
-  referer: 'https://joinup.ec.europa.eu/'

@@ -99,6 +99,7 @@ behat.formatter.name = progress
 
 # The location of the test files.
 behat.files.path = ${behat.dir}/fixtures/files
+behat.webtools_geocoding.cache.path = ${behat.dir}/fixtures/webtools_geocoding_cache
 
 
 # PHP CodeSniffer configuration

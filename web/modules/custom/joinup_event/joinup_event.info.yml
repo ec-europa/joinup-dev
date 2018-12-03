@@ -15,6 +15,7 @@ dependencies:
   - joinup_core
   - language
   - node
+  - oe_webtools_geocoding
   - smart_trim
 
 config_devel:
