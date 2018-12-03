@@ -454,6 +454,9 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
     // Show only content the user is author of.
     $query->addCondition('entity_author', $user->id());
   }
+
+  // Sort content by their creation date.
+  $query->sort('entity_created', QueryInterface::SORT_DESC);
 }
 
 /**
