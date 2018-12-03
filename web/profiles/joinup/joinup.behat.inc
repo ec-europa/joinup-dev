@@ -2570,8 +2570,8 @@ JS;
         $file_path = $fullPath;
       }
     }
-    $expected_content = file_get_contents($file_path);
-    $browser_content = $this->getSession()->getPage()->getContent();
+    $expected_content = trim(file_get_contents($file_path));
+    $browser_content = trim($this->getSession()->getPage()->getContent());
     if ($expected_content !== $browser_content) {
       throw new Exception(sprintf("The output didn't match the fixture. Expected %s, got %s.", $expected_content, $browser_content));
     }
