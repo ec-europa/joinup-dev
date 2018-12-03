@@ -60,6 +60,7 @@ dependencies:
   - moderation
   - node
   - oe_webtools_geocoding
+  - oe_webtools_maps
   - og
   - og_menu
   - options

@@ -3,3 +3,6 @@ type: module
 description: Specificities for the SEMIC community.
 core: 8.x
 package: Joinup communities
+
+dependencies:
+  - oe_webtools_maps
