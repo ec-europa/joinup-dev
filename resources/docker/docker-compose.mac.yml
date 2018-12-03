@@ -1,5 +1,6 @@
 # Entries here override the data from the original docker-compose.yml.
 # The volumes key in the services have its entries merged using the target path as a key.
+version: '3.4'
 services:
   web:
     volumes:
