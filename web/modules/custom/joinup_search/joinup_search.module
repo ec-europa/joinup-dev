@@ -165,11 +165,14 @@ function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index
  * Implements hook_search_api_solr_query_alter().
  */
 function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
-  if (
-    !$solarium_query instanceof Query
-  ) {
+  if (!$solarium_query instanceof Query) {
     return;
   }
+
+  // Keep the edismax parser to allow document boosting to work properly.
+  // @todo remove when document boosting is reimplemented by search_api_solr
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
+  $solarium_query->addParam('defType', 'edismax');
 
   /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItem $item */
   if (!$item = $query->getOption('search_api_field item')) {
