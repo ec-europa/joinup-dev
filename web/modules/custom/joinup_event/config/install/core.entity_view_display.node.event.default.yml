@@ -128,7 +128,7 @@ content:
     region: content
   field_event_coordinates:
     weight: 14
-    label: above
+    label: hidden
     settings:
       zoom_level: '16'
     third_party_settings:
