@@ -7253,12 +7253,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools_location.git",
-                "reference": "7e8e33c9aee56f44d0610187f3279928bbe3f8a7"
+                "reference": "7ecf76e0d49e2a1df0f483d39f90d0435e0778aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/7e8e33c9aee56f44d0610187f3279928bbe3f8a7",
-                "reference": "7e8e33c9aee56f44d0610187f3279928bbe3f8a7",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/7ecf76e0d49e2a1df0f483d39f90d0435e0778aa",
+                "reference": "7ecf76e0d49e2a1df0f483d39f90d0435e0778aa",
                 "shasum": ""
             },
             "require": {
@@ -7293,7 +7293,7 @@
                 "EUPL-1.2"
             ],
             "description": "Adds support for Webtools location services in Drupal.",
-            "time": "2018-12-04T08:51:29+00:00"
+            "time": "2018-12-04T11:00:24+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
@@ -12185,8 +12185,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",
