@@ -137,10 +137,10 @@ config_devel:
   - block.block.solutiontype
   - block.block.spatial_coverage_facet
   - block.block.statistics
+  - block.block.support
+  - block.block.support_homepage
   - block.block.table_of_contents
   - block.block.toc_outline
-  - block.block.tourbutton
-  - block.block.tourbutton_2
   - block.block.unpublished_content_of_group
   - block.block.unpublished_content_of_user
   - block.block.userheader
@@ -227,6 +227,7 @@ config_devel:
   - swiftmailer.message
   - swiftmailer.transport
   - system.date
+  - system.menu.support
   - system.theme
   - user.flood
   - user.mail
