@@ -130,7 +130,7 @@ content:
     weight: 14
     label: hidden
     settings:
-      zoom_level: '16'
+      zoom_level: 16
     third_party_settings:
       ds:
         ft:
