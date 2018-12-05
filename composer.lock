@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d919cc69b75e1c08a4adc7ece5ea088",
+    "content-hash": "c46fb1d7b92cca6ba63a3e2d78fb02c1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7301,16 +7301,16 @@
         },
         {
             "name": "openeuropa/oe_webtools_location",
-            "version": "dev-ISAICP-4688",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools_location.git",
-                "reference": "6aecc71d03428b0df9e8f17fd1678329a2571f2f"
+                "reference": "9e82181ff88e0803795bdf10f65b874b2c1b2ee1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/6aecc71d03428b0df9e8f17fd1678329a2571f2f",
-                "reference": "6aecc71d03428b0df9e8f17fd1678329a2571f2f",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/9e82181ff88e0803795bdf10f65b874b2c1b2ee1",
+                "reference": "9e82181ff88e0803795bdf10f65b874b2c1b2ee1",
                 "shasum": ""
             },
             "require": {
@@ -7345,7 +7345,7 @@
                 "EUPL-1.2"
             ],
             "description": "Adds support for Webtools location services in Drupal.",
-            "time": "2018-12-04T14:43:27+00:00"
+            "time": "2018-12-05T13:52:37+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
