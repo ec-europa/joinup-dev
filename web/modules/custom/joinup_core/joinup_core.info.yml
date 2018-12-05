@@ -12,6 +12,7 @@ dependencies:
   - image
   - link
   - matomo_reporting_api
+  - menu_admin_per_menu
   - message
   - message_notify
   - oe_newsroom_newsletter
