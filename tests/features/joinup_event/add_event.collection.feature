@@ -77,9 +77,7 @@ Feature: "Add event" visibility options.
     Then I should not see the text "Regional"
     And I should see the success message "Event An amazing event has been created."
     And I should see the text "29 to 30 August 2018"
-    # The coordinates are going to be replaced by a map in ISAICP-3174.
-    And I should see the text "50.842156"
-    And I should see the text "4.370375"
+    And I should see a map centered on latitude 4.370375 and longitude 50.842156
     And the "Stream of Dreams" collection has a event titled "An amazing event"
     And I should not see the text "France"
     # Check that the link to the event is visible on the collection page.

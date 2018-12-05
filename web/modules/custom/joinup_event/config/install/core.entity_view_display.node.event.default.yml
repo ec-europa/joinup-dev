@@ -33,10 +33,10 @@ dependencies:
     - comment
     - ds
     - file
-    - geofield
     - image
     - joinup_core
     - link
+    - oe_webtools_maps
     - text
     - user
 id: node.event.default
@@ -128,11 +128,20 @@ content:
     region: content
   field_event_coordinates:
     weight: 14
-    label: above
+    label: hidden
     settings:
-      output_format: wkt
-    third_party_settings: {  }
-    type: geofield_latlon
+      zoom_level: 16
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: oe_webtools_maps_map
     region: content
   field_event_date:
     weight: 12
