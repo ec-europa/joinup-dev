@@ -11,10 +11,11 @@ dependencies:
   - facets
   - image
   - link
+  - matomo_reporting_api
+  - menu_admin_per_menu
   - message
   - message_notify
   - og
-  - piwik_reporting_api
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
@@ -59,7 +60,7 @@ config_devel:
   - image.style.wysiwyg_full_width
   - image.style.wysiwyg_half_width
   - image.style.wysiwyg_one_third_width
-  - joinup_core.piwik_settings
+  - joinup_core.matomo_settings
   - rdf_entity.mapping.taxonomy_term.actor
   - rdf_entity.mapping.taxonomy_term.business_process
   - rdf_entity.mapping.taxonomy_term.eira

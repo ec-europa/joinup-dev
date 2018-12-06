@@ -3,9 +3,11 @@ type: module
 description: Specificities for the Tallinn community.
 core: 8.x
 package: Joinup communities
+configure: tallinn.settings
 dependencies:
   - collection
   - custom_page
+  - embed_block
   - field_group
   - joinup_core
   - node

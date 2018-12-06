@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_24
 field_name: field_tallinn_action_24
 entity_type: node
 bundle: tallinn_report
-label: 'Action 24'
+label: 'Resources for experimentation with emerging ICT/testbeds'
 description: "Devote resources for more and faster experimentation with emerging ICT within the public administration, including by the offering of 'testbeds' for researchers and businesses."
 required: false
 translatable: true

@@ -1,0 +1,15 @@
+joinup.group_administrators_report:
+  title: 'Collection administrators'
+  route_name: joinup.group_administrators_report
+  route_parameters:
+    entity_type_id: 'rdf_entity'
+    bundle_id: 'collection'
+  description: 'Table containing all collection owners and facilitators'
+  parent: joinup_core.admin_reporting
+  weight: 0
+
+joinup.solutions_by_licences_report:
+  title: 'Solutions by licences'
+  route_name: joinup.solutions_by_licences_report
+  parent: joinup_core.admin_reporting
+  weight: 2

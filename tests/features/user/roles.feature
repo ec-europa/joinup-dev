@@ -7,6 +7,7 @@ Feature: User role management
       | Username   | Roles     | E-mail                 |
       | Rick Rolls | Moderator | rick.roles@example.com |
       | Nibby Noob |           | nicky.noob@example.com |
+      | Ursus      |           |                        |
     # Search user
     And I am logged in as "Rick Rolls"
     When all e-mails have been sent
@@ -22,7 +23,20 @@ Feature: User role management
     And I press the "Apply to selected items" button
     Then I should see the success message "Add the Moderator role to the selected user(s) was applied to 1 item."
     And I should see the success message "An e-mail has been send to the user to notify him on the change to his account."
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | Nibby Noob                                                                                                |
       | subject   | The Joinup Support Team updated your account for you at Joinup                                            |
       | body      | A moderator has edited your user profile on Joinup. Please check your profile to verify the changes done. |
+
+    Given I am on the homepage
+    When all e-mails have been sent
+    And I click "People"
+
+    When I click "Edit" in the "Ursus" row
+    And I fill in "First name" with "Ur"
+    And I fill in "Family name" with "Sus"
+    And I press "Save"
+    Then I should see the success message "The changes have been saved."
+    But I should not see the success message "An e-mail has been send to the user to notify him on the change to his account."
+    And 0 e-mails should have been sent
+

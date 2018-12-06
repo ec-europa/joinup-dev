@@ -42,6 +42,7 @@ Feature: Asset release moderation
     # @see ISAICP-4068
     And I should not see the text "Authored on"
     Then I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     When I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
@@ -52,6 +53,7 @@ Feature: Asset release moderation
     And I press "Publish"
     Then I should see the heading "Release of the dark ship v1"
     And I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     When all e-mails have been sent
     And I click "Edit" in the "Entity actions" region
@@ -95,11 +97,12 @@ Feature: Asset release moderation
     # The published version does not change.
     Then I should see the heading "Release of the dark ship v1"
     And I should see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
-    And the following email should have been sent:
-      | recipient | Bonnie Holloway                                                                                                       |
-      | subject   | Joinup: Modification of a release of your solution has been requested                                                 |
-      | body      | the Joinup moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |
+    And the email sent to "Bonnie Holloway" with subject "Joinup: Modification of a release of your solution has been requested" contains the following lines of text:
+      | text                                                                                                                  |
+      | the Joinup moderation team requires editing the release Release, v1 of the solution Dark Ship due to I don't like it. |
+      | If you think this action is not clear or not due, please contact Joinup Support at                                    |
     And the following email should have been sent:
       | recipient | Felix Russell                                                                                                         |
       | subject   | Joinup: Modification of a release of your solution has been requested                                                 |
@@ -131,6 +134,7 @@ Feature: Asset release moderation
     # The published is updated.
     Then I should see the heading "Release fix v1"
     And I should not see the following warning messages:
+      | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     And the following email should have been sent:
       | recipient | Bonnie Holloway                                                                                    |

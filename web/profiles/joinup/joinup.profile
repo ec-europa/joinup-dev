@@ -47,9 +47,30 @@ function joinup_form_install_settings_form_alter(&$form, FormStateInterface $for
     '#max' => 65535,
     '#required' => TRUE,
   ];
+  $form['sparql']['namespace'] = [
+    '#type' => 'textfield',
+    '#title' => 'Namespace',
+    '#default_value' => 'Drupal\\Driver\\Database\\sparql',
+    '#required' => TRUE,
+  ];
 
   $form['actions']['save']['#limit_validation_errors'][] = ['sparql'];
+  $form['#validate'][] = 'joinup_form_install_settings_validate';
   $form['actions']['save']['#submit'][] = 'joinup_form_install_settings_form_save';
+}
+
+/**
+ * Validation callback for the installation form.
+ *
+ * Ensures that the connection class exists.
+ */
+function joinup_form_install_settings_validate($form, FormStateInterface $form_state) {
+  $namespace = $form_state->getValue(['sparql', 'namespace']);
+  $class = trim($namespace) . '\\Connection';
+  // Try to load the connection class.
+  if (!class_exists($class)) {
+    $form_state->setError($form['sparql']['namespace'], "Class {$class} could not be detected.");
+  }
 }
 
 /**
@@ -58,6 +79,7 @@ function joinup_form_install_settings_form_alter(&$form, FormStateInterface $for
 function joinup_form_install_settings_form_save($form, FormStateInterface $form_state) {
   $host = $form_state->getValue(['sparql', 'host']);
   $port = $form_state->getValue(['sparql', 'port']);
+  $namespace = $form_state->getValue(['sparql', 'namespace']);
   // @see rdf_entity.services.yml
   $key = 'sparql_default';
   $target = 'default';
@@ -65,7 +87,7 @@ function joinup_form_install_settings_form_save($form, FormStateInterface $form_
     'prefix' => '',
     'host' => $host,
     'port' => $port,
-    'namespace' => 'Drupal\\rdf_entity\\Database\\Driver\\sparql',
+    'namespace' => $namespace,
     'driver' => 'sparql',
   ];
   $settings['databases'][$key][$target] = (object) [
@@ -249,23 +271,23 @@ function joinup_form_views_exposed_form_alter(&$form, FormStateInterface $form_s
   }
 
   $current_user = \Drupal::currentUser();
-  if (\Drupal::currentUser()->hasPermission('filter membership overview')) {
+  $has_permission = $current_user->hasPermission('filter membership overview');
+  if ($has_permission) {
     return;
   }
 
-  // If the user doesn't have permission to filter the membership table, deny
-  // access to the filter fields, and also remove the filters from the view
-  // because otherwise Views will try to filter using empty values, and the
-  // result will be empty.
-  $form['#access'] = $current_user->hasPermission('filter membership overview');
-
   $display = $view->getDisplay();
   foreach ([
-    'name',
-    'field_user_first_name_value',
-    'field_user_family_name_value',
-  ] as $id) {
-    unset($display->handlers['filter'][$id]);
+    'name' => 'username',
+    'field_user_first_name_value' => 'first_name',
+    'field_user_family_name_value' => 'family_name',
+  ] as $display_id => $form_element_id) {
+    // If the user doesn't have permission to filter the membership table, deny
+    // access to the filter fields, and also remove the filters from the view
+    // because otherwise Views will try to filter using empty values, and the
+    // result will be empty.
+    $form[$form_element_id]['#access'] = $has_permission;
+    unset($display->handlers['filter'][$display_id]);
   }
 }
 

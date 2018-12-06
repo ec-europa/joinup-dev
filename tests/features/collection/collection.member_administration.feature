@@ -35,14 +35,15 @@ Feature: Collection membership administration
     And I go to the "Medical diagnosis" collection
     And I press the "Join this collection" button
     Then I should see the success message "Your membership to the Medical diagnosis collection is under approval."
+    And the email sent to "Lisa Cuddy" with subject "Joinup: A user has requested to join your collection" contains the following lines of text:
+      | text                                                                               |
+      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
+      | To approve or reject this request, click on                                        |
+      | If you think this action is not clear or not due, please contact Joinup Support at |
     And the following email should have been sent:
-      | recipient | Lisa Cuddy                                                                                                                     |
-      | subject   | Joinup: A user has requested to join your collection                                                                           |
-      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. To approve or reject this request, click on |
-    And the following email should have been sent:
-      | recipient | Turkey Ham                                                                                                                     |
-      | subject   | Joinup: A user has requested to join your collection                                                                           |
-      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. To approve or reject this request, click on |
+      | recipient | Turkey Ham                                                                         |
+      | subject   | Joinup: A user has requested to join your collection                               |
+      | body      | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
 
   Scenario: Approve a membership
     # Check that a member with pending state does not have access to add new content.
@@ -68,6 +69,7 @@ Feature: Collection membership administration
     Then I select "Approve the pending membership(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
@@ -93,6 +95,7 @@ Feature: Collection membership administration
     Then I select "Delete the selected membership(s)" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                         |
       | Delete the selected membership(s) was applied to 1 item. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
@@ -125,6 +128,7 @@ Feature: Collection membership administration
     Then I select "Add the facilitator role to the selected members" from "Action"
     And I press the "Apply to selected items" button
     Then I should see the following success messages:
+      | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following system email should have been sent:
       | recipient | Gregory House                                                                      |

@@ -1,0 +1,6 @@
+type: module
+name: 'Embed Block'
+description: 'Allows embedding blocks into content by using a text filter.'
+core: 8.x
+dependencies:
+  - filter

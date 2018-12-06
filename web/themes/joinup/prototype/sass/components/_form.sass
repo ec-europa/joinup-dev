@@ -107,6 +107,45 @@
       content: '*'
       color: $color-error
 
+.form__exposed-form
+  select, .form-item
+    width: 100%
+  .form__actions input
+    margin: 0
+
+.form__margin-top
+  margin-top: $form-margin
+
+// Styling for members overview
+.form__member-actions
+  .form-wrapper
+    .form-item,
+    .form-actions
+      display: inline-block
+      vertical-align: bottom
+      width: 100%
+    +breakpoint(lg-desktop)
+      .form-item
+        width: 60%
+      .form-actions
+        width: 35%
+        margin-left: $form-margin
+        margin-top: 0
+        input
+          margin: 0
+
+.form__add-more-wrapper
+  margin-top: $table-margin
+  .form-item,
+  .button
+    display: inline-block
+    vertical-align: bottom
+  .form-item
+    margin-right: 20px
+  select
+    min-width: 200px
+    height: 50px
+
 // Modifiers
 // --------------------------------------------------
 .form__description--checkbox
@@ -139,6 +178,20 @@
   .dropbutton-toggle
     .dropbutton-arrow
       color: #fff
+
+.form-wrapper
+  .form__label
+    &.mdl-checkbox__label
+      margin-bottom: 0
+
+// Elements with validation errors
+.form-item
+  input.error,
+  textarea.error,
+  select.error,
+  textarea.error + .cke
+    border-width: 1px
+    border-color: $color-error
 
 // States
 // --------------------------------------------------

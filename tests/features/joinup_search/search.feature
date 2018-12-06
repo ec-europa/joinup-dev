@@ -104,9 +104,9 @@ Feature: Global search
       | title      | headline            | body                      | keywords | collection       | state     |
       | News omega | News headline delta | The epsilon news content. | Alphabet | Collection alpha | validated |
     And event content:
-      | title             | short title       | body                                | agenda         | location       | additional info address | organisation        | scope         | keywords | collection       | solution       | state     |
-      | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | Event address           | European Commission | International | Alphabet |                  | Solution alpha | validated |
-      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Rue de events           | Event organisation  |               |          | Collection alpha |                | validated |
+      | title             | short title       | body                                | agenda         | location       | organisation        | scope         | keywords | collection       | solution       | state     |
+      | Event Omega       | Event short delta | The epsilon event content.          | Event agenda.  | Some place     | European Commission | International | Alphabet |                  | Solution alpha | validated |
+      | Alternative event | Alt event         | This event stays in the background. | To be planned. | Event location | Event organisation  |               |          | Collection alpha |                | validated |
     And document content:
       | title          | document type | short title          | body                                    | keywords | collection       | state     |
       | Document omega | Document      | Document short delta | A document consists of epsilon strings. | Alphabet | Collection alpha | validated |
@@ -169,7 +169,7 @@ Feature: Global search
     Then the page should show the tiles "Event Omega"
     When I enter "location" in the header search bar and hit enter
     Then the page should show the tiles "Alternative event"
-    When I enter "address" in the header search bar and hit enter
+    When I enter "place" in the header search bar and hit enter
     Then the page should show the tiles "Event Omega"
     When I enter "organisation" in the header search bar and hit enter
     Then the page should show the tiles "Alternative event"
@@ -199,17 +199,17 @@ Feature: Global search
       | title       | Bird outposts in the wild            |
       | description | Exotic wings and where to find them. |
       | state       | validated                            |
-    And collection:
-      | title       | Ornithology: the study of birds     |
-      | description | Ornithology is a branch of zoology. |
-      | state       | validated                           |
-      | affiliates  | Bird outposts in the wild           |
+    And collections:
+      | title                           | description                         | state     | affiliates                |
+      | Ornithology: the study of birds | Ornithology is a branch of zoology. | validated | Bird outposts in the wild |
+      | Husky Flying Xylophone          | A strange instrument.               | validated |                           |
     And custom_page content:
       | title           | body                                  | collection                      |
       | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |
     And news content:
-      | title                    | body                   | collection                      | state     |
-      | Chickens are small birds | Domesticated in India. | Ornithology: the study of birds | validated |
+      | title                               | body                            | collection                      | state     |
+      | Chickens are small birds            | Birds domesticated in India.    | Ornithology: the study of birds | validated |
+      | Found a xylophone from 1600 in Asia | Oldest instrument of this type. | Husky Flying Xylophone          | validated |
     And event content:
       | title         | body                   | collection                      | state     |
       | Bird spotting | Roosters crow at dawn. | Ornithology: the study of birds | validated |

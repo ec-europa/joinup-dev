@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_16
 field_name: field_tallinn_action_16
 entity_type: node
 bundle: tallinn_report
-label: 'Action 16'
+label: 'Long-term preservation of public information resources'
 description: 'Take steps to ensure long-term preservation of public information resources in a cost-effective way by taking it into consideration in design of public administration ICT solutions.'
 required: false
 translatable: true

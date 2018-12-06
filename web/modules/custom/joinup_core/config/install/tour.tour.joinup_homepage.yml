@@ -66,14 +66,6 @@ tips:
     location: right
     attributes:
       data-class: 'user-logged-in .header-menu .header-menu__link:nth-child(3)'
-  tour:
-    id: tour
-    plugin: text
-    body: 'Joinup pages that display this button offer a tour of their main features.'
-    weight: 8
-    location: left
-    attributes:
-      data-class: 'js-tour-start-button'
   anonymous_search:
     id: anonymous_search
     plugin: text

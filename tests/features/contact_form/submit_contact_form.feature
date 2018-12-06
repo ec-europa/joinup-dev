@@ -27,22 +27,32 @@ Feature: Submit the contact form
       | Category       | other                       |
       | Subject        | Screen reader accessibility |
       | Message        | Dear sir, madam, ...        |
-      | Attachment     | logo.jpg                    |
+    And I attach the file "logo.png" to "Attachment"
     # We need to wait 5 seconds for the honeypot validation to pass.
-    Then I wait for the honeypot validation to pass
+    And I wait for the honeypot validation to pass
     And I press "Submit"
 
     # Both moderators should have received the notification e-mail.
     Then the following email should have been sent:
       | template           | Contact form submission          |
       | from               | digit-joinup@ec.europa.eu        |
-      | recipient          | digit-joinup@ec.europa.eu        |
+      | recipient_mail     | digit-joinup@ec.europa.eu        |
       | subject            | Joinup - Contact form submission |
       | body               | Dear sir, madam, ...             |
       | signature_required | no                               |
     And I should see the following success messages:
       | success messages                                              |
       | Your message has been submitted. Thank you for your feedback. |
+    When I click the link for the "logo.png" attachment in the contact form confirmation email sent to "digit-joinup@ec.europa.eu"
+    # For anonymous users, the file should not be accessible.
+    # The redirection to the login page returns a 200 code instead of a 403 so check for the error message instead.
+    Then I should see the text "Access denied. You must sign in to view this page."
+    When I am logged in as a moderator
+    # Private files from contact forms are stored in
+    # "<base url>/<private system path>/contact_form/<year>_<month>/<file>"
+    And I click the link for the "logo.png" attachment in the contact form confirmation email sent to "digit-joinup@ec.europa.eu"
+    # The server responds with an image.
+    Then the content type of the response should be 'image/png'
 
   Scenario: Check required fields
     When I am on the contact form

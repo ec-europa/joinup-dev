@@ -34,7 +34,7 @@ class TallinnEntryFormatter extends FormatterBase {
     $value = $item->getValue();
     $element = [
       '#theme' => 'tallinn_entry_formatter',
-      '#title' => $this->fieldDefinition->getLabel() . ' - ' . $this->fieldDefinition->getDescription(),
+      '#title' => $this->fieldDefinition->getDescription(),
     ];
 
     $element['#status'] = [

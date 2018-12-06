@@ -23,9 +23,6 @@ backend_config:
     http_method: AUTO
   retrieve_data: false
   highlight_data: false
-  excerpt: false
   skip_schema_check: false
   site_hash: true
-  suggest_suffix: true
-  suggest_corrections: true
-  suggest_words: false
+  domain: generic

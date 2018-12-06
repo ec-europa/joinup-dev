@@ -2,12 +2,16 @@
 
 namespace Drupal\joinup_core\Plugin\facets\widget;
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\Result\ResultInterface;
 use Drupal\facets\Widget\WidgetPluginBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,7 +23,50 @@ use Symfony\Component\HttpFoundation\Request;
  *   description = @Translation("A widget that shows some of the results with prefix and suffix text"),
  * )
  */
-class LinksInlineWidget extends WidgetPluginBase {
+class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Default cache contexts.
+   *
+   * @var string[]
+   */
+  const DEFAULT_CACHE_CONTEXTS = ['url.path', 'url.query_args'];
+
+  /**
+   * The cache contexts manager service.
+   *
+   * @var \Drupal\Core\Cache\Context\CacheContextsManager
+   */
+  protected $cacheContextsManager;
+
+  /**
+   * Constructs a new plugin instance.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Cache\Context\CacheContextsManager $cache_contexts_manager
+   *   The cache contexts manager service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CacheContextsManager $cache_contexts_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->cacheContextsManager = $cache_contexts_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('cache_contexts_manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -29,6 +76,7 @@ class LinksInlineWidget extends WidgetPluginBase {
       'all_text' => 'All',
       'prefix_text' => '',
       'suffix_text' => '',
+      'cache_contexts' => [],
     ] + parent::defaultConfiguration();
   }
 
@@ -43,7 +91,7 @@ class LinksInlineWidget extends WidgetPluginBase {
       '#type' => 'textfield',
       '#title' => $this->t('All text'),
       '#description' => $this->t('Shown for the facet reset link.'),
-      '#default_value' => $config['all_text'] ?: 'All',
+      '#default_value' => $config['all_text'],
       '#required' => TRUE,
     ];
 
@@ -51,14 +99,23 @@ class LinksInlineWidget extends WidgetPluginBase {
       '#type' => 'textfield',
       '#title' => $this->t('Prefix text'),
       '#description' => $this->t('Shown at the left of the options widget.'),
-      '#default_value' => $config['prefix_text'] ?: '',
+      '#default_value' => $config['prefix_text'],
     ];
 
     $form['suffix_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Suffix text'),
       '#description' => $this->t('Shown at the right of the options widget.'),
-      '#default_value' => $config['suffix_text'] ?: '',
+      '#default_value' => $config['suffix_text'],
+    ];
+
+    $form['cache_contexts'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Additional cache contexts'),
+      '#description' => $this->t("The widget automatically adds the <code>url.path</code> and <code>url.query_args</code> cache contexts to the facet. You can select additional cache contexts to be added."),
+      '#options' => array_diff($this->cacheContextsManager->getAll(), static::DEFAULT_CACHE_CONTEXTS),
+      '#multiple' => TRUE,
+      '#default_value' => $config['cache_contexts'],
     ];
 
     return $form;
@@ -95,25 +152,22 @@ class LinksInlineWidget extends WidgetPluginBase {
       $inactive[] = $all_link;
     }
 
-    $build = [
+    $configuration = $this->getConfiguration();
+
+    return [
       '#theme' => 'facet_widget_links_inline',
       '#items' => $inactive,
       '#active' => $active,
-      '#prefix_text' => $this->getConfiguration()['prefix_text'],
-      '#suffix_text' => $this->getConfiguration()['suffix_text'],
+      '#prefix_text' => $configuration['prefix_text'],
+      '#suffix_text' => $configuration['suffix_text'],
       '#attributes' => [
         'data-drupal-facet-id' => $facet->id(),
         'data-drupal-facet-alias' => $facet->getUrlAlias(),
       ],
       '#cache' => [
-        'contexts' => [
-          'url.path',
-          'url.query_args',
-        ],
+        'contexts' => Cache::mergeContexts($configuration['cache_contexts'], static::DEFAULT_CACHE_CONTEXTS),
       ],
     ];
-
-    return $build;
   }
 
   /**

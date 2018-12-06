@@ -37,6 +37,8 @@ content:
       trim_options:
         text: false
       more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
       ds:
         ft:
@@ -93,6 +95,7 @@ hidden:
   field_site_pinned: true
   field_state: true
   field_visit_count: true
+  flag_subscribe_discussions: true
   invite_link: true
   langcode: true
   links: true

@@ -90,14 +90,14 @@ display:
               empty_column: false
               responsive: ''
             created:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             state:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -565,6 +565,61 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
+        roles_target_id:
+          id: roles_target_id
+          table: og_membership__roles
+          field: roles_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: roles_target_id_op
+            label: Roles
+            description: null
+            use_operator: false
+            operator: roles_target_id_op
+            identifier: roles_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: null
+          is_grouped: true
+          group_info:
+            label: Roles
+            description: ''
+            identifier: roles_target_id
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Owner
+                operator: '='
+                value: rdf_entity-collection-administrator
+              2:
+                title: Facilitator
+                operator: '='
+                value: rdf_entity-collection-facilitator
+              3:
+                title: Owner
+                operator: '='
+                value: rdf_entity-solution-administrator
+              4:
+                title: Facilitator
+                operator: '='
+                value: rdf_entity-solution-facilitator
+          entity_type: og_membership
+          entity_field: roles
           plugin_id: string
       sorts: {  }
       header: {  }

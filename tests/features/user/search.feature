@@ -7,11 +7,11 @@ Feature: User management
     # Newkid user created at 03/05/2016
     # Old guy user was created at 06/05/2012
     Given users:
-      | Username           | Roles         | Created    | Status |
-      | Jolly user manager | Moderator     |            | 1      |
-      | Trusty user        |               | 1388880000 | 0      |
-      | Newkid             |               | 1457136000 | 1      |
-      | Old guy            | Administrator | 1336262400 | 1      |
+      | Username           | Roles         | Created    | Status  |
+      | Jolly user manager | Moderator     |            | active  |
+      | Trusty user        |               | 1388880000 | blocked |
+      | Newkid             |               | 1457136000 | active  |
+      | Old guy            | Administrator | 1336262400 | active  |
     Given I am logged in as "Jolly user manager"
     When I am on the homepage
     Then I click "People"

@@ -97,3 +97,35 @@ function joinup_core_post_update_install_tallinn() {
 function joinup_core_post_update_install_message_digest() {
   \Drupal::service('module_installer')->install(['message_digest']);
 }
+
+/**
+ * Migrate from Piwik to Matomo.
+ */
+function joinup_core_post_update_install_piwik2matomo() {
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $installer */
+  $installer = \Drupal::service('module_installer');
+  // Install the new modules. This is also uninstalling 'piwik_reporting_api'.
+  $installer->install(['matomo_reporting_api']);
+  // Uninstall the Piwik module.
+  $installer->uninstall(['piwik']);
+  // Note that the module installer API requires the presence of the modules in
+  // the codebase. For this reason they will be removed from the codebase in a
+  // follow-up.
+}
+
+/**
+ * Enable 'spain_ctt' module.
+ */
+function joinup_core_post_update_install_spain_ctt() {
+  \Drupal::service('module_installer')->install(['spain_ctt']);
+}
+
+/**
+ * Add the user support menu.
+ */
+function joinup_core_post_update_remove_tour_buttons() {
+  \Drupal::service('module_installer')->install(['menu_admin_per_menu']);
+  $config_factory = \Drupal::configFactory();
+  $config_factory->getEditable('block.block.tourbutton_2')->delete();
+  $config_factory->getEditable('block.block.tourbutton')->delete();
+}

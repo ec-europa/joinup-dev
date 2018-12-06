@@ -1,0 +1,374 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/uid": [
+            {
+                "href": "http:\/\/default\/user\/702764?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/content_translation_uid": [
+            {
+                "href": "http:\/\/default\/user\/11738?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_affiliates": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fc05b984c_bfb9d_b46bb_b9375_b109523eb1ed1?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/solution\/right-digitally-interact-public-administration?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_faf2d7b70_b0df1_b4d11_ba70f_b43bf7aac4ad1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/banner_default_3_949.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "href": "http:\/\/default\/sites\/default\/files\/collection\/logo\/2018-04\/34073586213_6b26818c43_o.jpg"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fe0b3c00b_b7098_b4b86_b9f15_b1a00652ed679?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fjoinup_ceu_fontology_fpolicy_bdomain_hegovernment?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_spatial_coverage": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fpublications_ceuropa_ceu_fresource_fauthority_fcountry_fEUR?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "collection"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/702764?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "de2c0534-8a42-4195-9150-3ae69d1789b4"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/content_translation_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11738?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "83316c58-71e7-4f0a-841c-9ee1677cebdc"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_affiliates": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fc05b984c_bfb9d_b46bb_b9375_b109523eb1ed1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/c05b984c-fb9d-46bb-9375-109523eb1ed1"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/solution\/right-digitally-interact-public-administration?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/b9b9c7e3-1359-4746-abaf-8b81165a508b"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_faf2d7b70_b0df1_b4d11_ba70f_b43bf7aac4ad1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/af2d7b70-0df1-4d11-a70f-43bf7aac4ad1"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_banner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/banner_default_3_949.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "87b3b664-cb23-4b41-91a7-0a2a37f967e2"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_logo": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/sites\/default\/files\/collection\/logo\/2018-04\/34073586213_6b26818c43_o.jpg"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "72931b19-fc9c-4c5d-a3dd-7705864a5ca8"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fe0b3c00b_b7098_b4b86_b9f15_b1a00652ed679?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/e0b3c00b-7098-4b86-9f15-1a00652ed679"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_policy_domain": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fjoinup_ceu_fontology_fpolicy_bdomain_hegovernment?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/policy_domain"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/joinup.eu\/ontology\/policy-domain#egovernment"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_spatial_coverage": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fpublications_ceuropa_ceu_fresource_fauthority_fcountry_fEUR?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/spatial"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/publications.europa.eu\/resource\/authority\/country\/EUR"
+                    }
+                ]
+            }
+        ]
+    },
+    "label": [
+        {
+            "value": "Tallinn Ministerial Declaration",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-04-04T17:17:30+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-06-28T08:17:50+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/collection\/tallinn-ministerial-declaration",
+            "pid": 21388,
+            "langcode": "en",
+            "lang": "en"
+        }
+    ],
+    "content_translation_source": [
+        {
+            "value": "und",
+            "lang": "en"
+        }
+    ],
+    "content_translation_status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "target_id": "default"
+        }
+    ],
+    "last_update": [
+        {
+            "value": "2018-07-20T07:09:45+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "field_ar_abstract": [
+        {
+            "value": "<p>This collection offers an overview of the progress made in implementing the different \"policy action lines\" addressed to Member States by the Tallinn Ministerial Declaration on eGovernment, as well as a space for enhanced and deep learning.<\/p>",
+            "format": "content_editor",
+            "processed": "<p>This collection offers an overview of the progress made in implementing the different \"policy action lines\" addressed to Member States by the Tallinn Ministerial Declaration on eGovernment, as well as a space for enhanced and deep learning.<\/p>"
+        }
+    ],
+    "field_ar_access_url": [
+        {
+            "uri": "https:\/\/ec.europa.eu\/digital-single-market\/en\/news\/ministerial-declaration-egovernment-tallinn-declaration",
+            "title": null,
+            "options": []
+        }
+    ],
+    "field_ar_closed": [
+        {
+            "value": true
+        }
+    ],
+    "field_ar_description": [
+        {
+            "value": "<p>The Tallinn Declaration on eGovernment was signed, on 6 October by all EU MS+ European Free Trade Area (EFTA) countries (Iceland, Liechtenstein, Norway, Switzerland).<\/p>\n\n<p>In the Tallinn Declaration, Ministers reconfirm their commitment to the vision laid out in the <a href=\"https:\/\/ec.europa.eu\/digital-single-market\/en\/news\/communication-eu-egovernment-action-plan-2016-2020-accelerating-digital-transformation\">EU eGovernment Action Plan 2016-2020<\/a> and in the <a href=\"https:\/\/ec.europa.eu\/isa2\/eif_en\">European Interoperability Framework<\/a> on significant priorities towards ensuring high quality, open, efficient and inclusive, user-centric and seamless cross-border digital public services to all citizens and businesses in the EU and to a speedy roll-out of the <a href=\"https:\/\/en.wikipedia.org\/wiki\/EIDAS\">European Regulation on electronic identification and trust services<\/a> (eIDAS) and implementation of the once-only principle.<\/p>\n\n<p>Furthermore, the Tallinn Declaration lays the foundation for further digital evolution and joint actions beyond 2020, by spreading digitisation across all policy areas and putting the end-users truly at the centre of services.<\/p>\n\n<p>The Tallinn Declaration puts the user at the heart of public service design and delivery. Ministers agreed on common user-centricity principles to improve the digital experience and interaction of users when accessing public services. Such principles acknowledge and take into account the needs and expectations of citizens and business as they interact with public administration. With these principles the Ministers commit to:<\/p>\n\n<ul>\n\t<li>enabling users to digitally interact with public administrations;<\/li>\n\t<li>making these services easy to understand;<\/li>\n\t<li>requesting citizens and businesses only once the same information, respecting EU and national data protection and privacy regulation;<\/li>\n\t<li>engaging citizens in the creation of public services.<\/li>\n<\/ul>\n\n<p>Thus, the Tallinn Declaration provides an important impetus for Member States and the Commission, both collectively and individually, to continue to invest in accelerating the modernisation of the public sector.<\/p>",
+            "format": "content_editor",
+            "processed": "<p>The Tallinn Declaration on eGovernment was signed, on 6 October by all EU MS+ European Free Trade Area (EFTA) countries (Iceland, Liechtenstein, Norway, Switzerland).<\/p>\n\n<p>In the Tallinn Declaration, Ministers reconfirm their commitment to the vision laid out in the <a href=\"https:\/\/ec.europa.eu\/digital-single-market\/en\/news\/communication-eu-egovernment-action-plan-2016-2020-accelerating-digital-transformation\">EU eGovernment Action Plan 2016-2020<\/a> and in the <a href=\"https:\/\/ec.europa.eu\/isa2\/eif_en\">European Interoperability Framework<\/a> on significant priorities towards ensuring high quality, open, efficient and inclusive, user-centric and seamless cross-border digital public services to all citizens and businesses in the EU and to a speedy roll-out of the <a href=\"https:\/\/en.wikipedia.org\/wiki\/EIDAS\">European Regulation on electronic identification and trust services<\/a> (eIDAS) and implementation of the once-only principle.<\/p>\n\n<p>Furthermore, the Tallinn Declaration lays the foundation for further digital evolution and joint actions beyond 2020, by spreading digitisation across all policy areas and putting the end-users truly at the centre of services.<\/p>\n\n<p>The Tallinn Declaration puts the user at the heart of public service design and delivery. Ministers agreed on common user-centricity principles to improve the digital experience and interaction of users when accessing public services. Such principles acknowledge and take into account the needs and expectations of citizens and business as they interact with public administration. With these principles the Ministers commit to:<\/p>\n\n<ul>\n\t<li>enabling users to digitally interact with public administrations;<\/li>\n\t<li>making these services easy to understand;<\/li>\n\t<li>requesting citizens and businesses only once the same information, respecting EU and national data protection and privacy regulation;<\/li>\n\t<li>engaging citizens in the creation of public services.<\/li>\n<\/ul>\n\n<p>Thus, the Tallinn Declaration provides an important impetus for Member States and the Commission, both collectively and individually, to continue to invest in accelerating the modernisation of the public sector.<\/p>",
+            "lang": "en"
+        }
+    ],
+    "field_ar_elibrary_creation": [
+        {
+            "value": 1
+        }
+    ],
+    "field_ar_moderation": [
+        {
+            "value": false
+        }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
+    ],
+    "field_collection_content": [
+        {
+            "value": {
+                "fields": {
+                    "collection_event_type": {
+                        "weight": "0",
+                        "region": "inline_facets"
+                    },
+                    "collection_policy_domain": {
+                        "weight": "0",
+                        "region": "inline_facets"
+                    },
+                    "collection_type": {
+                        "weight": "0",
+                        "region": "top"
+                    }
+                },
+                "enabled": 1,
+                "query_presets": "",
+                "limit": "12"
+            }
+        }
+    ],
+    "field_site_featured": [
+        {
+            "value": false
+        }
+    ]
+}

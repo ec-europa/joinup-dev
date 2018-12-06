@@ -7,6 +7,7 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -26,11 +27,14 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
@@ -326,7 +330,7 @@ function joinup_core_entity_type_alter(array &$entity_types) {
  * get cached in the 'cache_entity' bin, avoiding performance issues.
  */
 function joinup_core_taxonomy_term_storage_load(array $terms) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
 
   $query = <<<QUERY
@@ -382,7 +386,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   if ($view_mode !== 'full') {
     return;
   }
-  $graph = $entity->get('graph')->first()->value;
+  $graph = $entity->get('graph')->target_id;
   if ($graph !== 'default' || !$entity->hasGraph('draft')) {
     return;
   }
@@ -500,7 +504,7 @@ function joinup_core_element_info_alter(array &$info) {
 /**
  * Implements hook_ENTITY_TYPE_insert() for RDF entities.
  */
-function joinup_core_rdf_entity_insert(EntityInterface $entity) {
+function joinup_core_rdf_entity_insert(RdfInterface $entity) {
   // When a collection or solution is created, create a new navigation menu and
   // associate it with the new collection or solution. This menu can be used to
   // link to custom pages, member overviews, an about page etc.
@@ -539,6 +543,9 @@ function joinup_core_rdf_entity_insert(EntityInterface $entity) {
     ]);
     $link->save();
   }
+
+  // Invalidate all caches tagged with rdf_entity_list:{$entity->bundle()}.
+  joinup_core_invalidate_rdf_entity_bundle_list_cache($entity);
 }
 
 /**
@@ -639,10 +646,10 @@ function joinup_core_entity_extra_field_info() {
 }
 
 /**
- * Returns an array of form ids that should have a motivation field.
+ * Returns an array of form IDs that should have a motivation field.
  *
  * @return array
- *   An array of form ids.
+ *   An array of form IDs.
  */
 function joinup_core_get_motivation_form_ids() {
   return [
@@ -727,11 +734,11 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
  * Returns whether the transition requires a motivation.
  *
  * @param string $entity_type_id
- *   The entity type id.
+ *   The entity type ID.
  * @param string $workflow_id
- *   The workflow id.
+ *   The workflow ID.
  * @param string $transition_id
- *   The transition id.
+ *   The transition ID.
  *
  * @return bool
  *   Whether the transition requires a motivation.
@@ -899,6 +906,29 @@ function joinup_core_user_predelete(EntityInterface $entity) {
 }
 
 /**
+ * Invalidate Joinup user membership cache tags after a user is updated.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $user
+ *   The user entity.
+ *
+ * @see joinup_core_og_membership_invalidate_group_tags()
+ */
+function joinup_core_user_update(EntityInterface $user) {
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  $memberships = $membership_manager->getMemberships($user);
+
+  $tags = [];
+  foreach ($memberships as $membership) {
+    $tag = $membership->getGroupEntityType() . ':' . $membership->getGroupId();
+    $tags_to_invalidate = Cache::buildTags('joinup-membership', [$tag]);
+    $tags = Cache::mergeTags($tags, $tags_to_invalidate);
+  }
+
+  Cache::invalidateTags($tags);
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Adds result counts to the role options on the membership overview for
@@ -907,7 +937,8 @@ function joinup_core_user_predelete(EntityInterface $entity) {
 function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $form_state->get('view');
-  if ($view->id() !== 'members_overview') {
+  $view_id = $view->id();
+  if (!in_array($view_id, ['members_overview', 'og_members_overview'])) {
     return;
   }
 
@@ -922,9 +953,9 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
 
   // Define a function that gets the result count for a given exposed filter
   // option.
-  $get_result_count = function ($display_id, $arguments, $exposed_option) {
+  $get_result_count = function ($view_id, $display_id, $arguments, $exposed_option, array $exposed_input) {
     /** @var \Drupal\views\ViewExecutable $view */
-    $view = Views::getView('members_overview');
+    $view = Views::getView($view_id);
     // Make sure we do not get into an endless loop when building the view,
     // since it will try to build the exposed form again.
     $view->do_not_recurse = TRUE;
@@ -932,7 +963,7 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
     // the request arguments. If we want to override them with "there is no
     // exposed input" then we need to pass a value that is not considered empty,
     // hence we use "[TRUE]" instead of "[]".
-    $exposed_input = $exposed_option ? ['roles_target_id' => $exposed_option] : [TRUE];
+    $exposed_input['roles_target_id'] = $exposed_option ?: TRUE;
     $view->setExposedInput($exposed_input);
     $view->executeDisplay($display_id, $arguments);
     // Apparently it is not guaranteed that the `total_rows` will be populated.
@@ -954,7 +985,7 @@ function joinup_core_form_views_exposed_form_alter(&$form, FormStateInterface $f
       unset($form['roles_target_id']['#options'][$exposed_option]);
     }
     else {
-      $count = $get_result_count($view->getDisplay()->getPluginId(), $view->args, $exposed_option);
+      $count = $get_result_count($view_id, $view->getDisplay()->getPluginId(), $view->args, $exposed_option, $view->getExposedInput());
       $key = $exposed_option ?: 'All';
       $option_text = (string) $form['roles_target_id']['#options'][$key];
       $form['roles_target_id']['#options'][$key] = "$option_text ($count)";
@@ -991,7 +1022,7 @@ function joinup_core_preprocess_page(&$variables) {
 /**
  * Implements hook_preprocess_node().
  *
- * Adds the group id and label as data attributes in tiles.
+ * Adds the group ID and label as data attributes in tiles.
  */
 function joinup_core_preprocess_node(&$variables) {
   if ($variables['view_mode'] !== 'view_mode_tile') {
@@ -1034,29 +1065,128 @@ function joinup_core_ckeditor_css_alter(array &$css) {
 
 /**
  * Implements hook_views_query_alter().
- *
- * RDF Entity ID is encoded when is used in the URL, thus we will receive an
- * encoded ID as contextual filter. We cannot decode it upstream because the
- * path display plugin, \Drupal\views\Plugin\views\display\PathPluginBase, is
- * using the arguments to build the page route and will fail. For this reason,
- * we have to decode just before the query is about to run.
- *
- * @see \Drupal\views\Plugin\views\display\PathPluginBase
- * @see \Drupal\joinup_core\Plugin\views\argument_default\RdfEntity
  */
 function joinup_core_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
-  if ($view->id() !== 'group_content_management' || $view->current_display !== 'manage') {
-    return;
-  }
-
-  foreach ($query->where as &$group) {
-    foreach ($group['conditions'] as &$condition) {
-      if ($condition['field'] === 'node__og_audience.og_audience_target_id') {
-        $condition['value'] = UriEncoder::decodeUrl($condition['value']);
-        break 2;
+  // RDF Entity ID is encoded when is used in the URL, thus we will receive an
+  // encoded ID as contextual filter. We cannot decode it upstream because the
+  // path display plugin, \Drupal\views\Plugin\views\display\PathPluginBase, is
+  // using the arguments to build the page route and will fail. For this reason,
+  // we have to decode just before the query is about to run.
+  // @see \Drupal\views\Plugin\views\display\PathPluginBase
+  // @see \Drupal\joinup_core\Plugin\views\argument_default\RdfEntity
+  $displays = ['manage', 'csv_export'];
+  if ($view->id() === 'group_content_management' && in_array($view->current_display, $displays)) {
+    foreach ($query->where as &$group) {
+      foreach ($group['conditions'] as &$condition) {
+        if ($condition['field'] === 'node__og_audience.og_audience_target_id') {
+          $condition['value'] = UriEncoder::decodeUrl($condition['value']);
+          break 2;
+        }
       }
     }
   }
+  // In the member administration bulk operation view we are formatting the
+  // username column as full names, but Views still sorts by username. Make sure
+  // we sort by first name + last name instead of by username.
+  elseif ($view->id() === 'og_members_overview' && $query instanceof Sql) {
+    // Skip if we're not ordering by username.
+    if (empty($query->orderby[0]['field'])) {
+      return;
+    }
+    $field = $query->orderby[0]['field'];
+    if ($field !== 'users_field_data_og_membership.name') {
+      return;
+    }
+
+    $display = $view->getDisplay();
+
+    // Keep track of the direction of the sort.
+    $order = $query->orderby[0]['direction'] ?: 'ASC';
+
+    // Get rid of the original sort handlers and order by clauses that may be
+    // present in the view.
+    $query->orderby = [];
+    foreach ($display->getHandlers('sort') as $sort_handler) {
+      $sort_handler->destroy();
+    }
+
+    // Inject freshly initialized sort handlers for the first name and last name
+    // into the display.
+    $display->handlers['sort'] = array_map(function ($info) use ($view, $display) {
+      $handler = Views::handlerManager('sort')->getHandler($info, NULL);
+      $handler->init($view, $display, $info);
+      return $handler;
+    }, joinup_core_get_og_members_overview_sort_handlers_info($order));
+
+    // Make sure the sort handlers are "built". This is making sure that the
+    // various references to objects and arrays are present at the places that
+    // Views expects them to be.
+    $view->_build('sort');
+  }
+}
+
+/**
+ * Returns info for Views sort handlers in the member administration form.
+ *
+ * We are overriding the username column in the member administration view so
+ * that the full name (first name + last name) is shown. This means that we need
+ * to override the sorting as well, since the usernames are not necessarily in
+ * the same alphabetical order as the full names. This function returns the info
+ * that can be used to create the Views sort handlers for the user's first and
+ * last name.
+ *
+ * @param string $order
+ *   The order in which to sort, either 'ASC' or 'DESC'.
+ *
+ * @return array
+ *   An associative array of Views sort handler configuration options, keyed by
+ *   field name.
+ *
+ * @see joinup_core_views_query_alter()
+ */
+function joinup_core_get_og_members_overview_sort_handlers_info(string $order): array {
+  return [
+    'field_user_first_name_value' => [
+      'id' => 'field_user_first_name_value',
+      'table' => 'user__field_user_first_name',
+      'field' => 'field_user_first_name_value',
+      'relationship' => 'uid',
+      'group_type' => 'group',
+      'admin_label' => '',
+      'order' => $order,
+      'exposed' => FALSE,
+      'expose' => ['label' => ''],
+      'plugin_id' => 'standard',
+    ],
+    'field_user_family_name_value' => [
+      'id' => 'field_user_family_name_value',
+      'table' => 'user__field_user_family_name',
+      'field' => 'field_user_family_name_value',
+      'relationship' => 'uid',
+      'group_type' => 'group',
+      'admin_label' => '',
+      'order' => $order,
+      'exposed' => FALSE,
+      'expose' => ['label' => ''],
+      'plugin_id' => 'standard',
+    ],
+    // Also sort by username so that the results are displayed in a consistent
+    // order if the user has empty values for the first name and family name.
+    // Our tests were exposing that having no ordering could cause bulk
+    // operation actions to be taken on the wrong users.
+    'name' => [
+      'id' => 'name',
+      'table' => 'users_field_data',
+      'field' => 'name',
+      'relationship' => 'uid',
+      'group_type' => 'group',
+      'admin_label' => '',
+      'order' => $order,
+      'exposed' => FALSE,
+      'expose' => ['label' => ''],
+      'plugin_id' => 'standard',
+    ],
+  ];
 }
 
 /**
@@ -1081,4 +1211,135 @@ function joinup_core_form_views_form_og_members_overview_default_alter(&$form, F
   // Alter the action label in order to reflect the bundle of the group.
   $args = ['@label' => $group->get('rid')->entity->getSingularLabel()];
   $form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership'] = t('Transfer the ownership of the @label to the selected member', $args);
+  $form['#validate'][] = 'joinup_core_form_views_form_og_members_overview_default_validate';
+}
+
+/**
+ * Validation callback for the og_members_overview form.
+ *
+ * Prevents the deletion of memberships from a group if no owners will remain
+ * after the deletion.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state object.
+ */
+function joinup_core_form_views_form_og_members_overview_default_validate(array &$form, FormStateInterface $form_state) {
+  if ($form_state->getValue('action') !== 'joinup_collection_og_membership_delete_action') {
+    return;
+  }
+
+  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $admin_role = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . 'administrator';
+  $storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+
+  // Calculate current owners.
+  $owner_memberships = $storage->loadByProperties([
+    'entity_type' => $group->getEntityTypeId(),
+    'entity_id' => $group->id(),
+    'roles' => $admin_role,
+  ]);
+  if (empty($owner_memberships)) {
+    return;
+  }
+  $owner_membership_ids = array_keys($owner_memberships);
+
+  // Calculate memberships to be deleted.
+  $options = $form_state->getValue('og_membership_bulk_form');
+  if (empty($options)) {
+    return;
+  }
+  $memberships_to_be_deleted = array_map('joinup_core_extract_bulk_form_entity_id', array_filter($options));
+  $left_owners = array_diff($owner_membership_ids, $memberships_to_be_deleted);
+  if (empty($left_owners)) {
+    $message = \Drupal::translation()->translate('You cannot delete the owner of a @type.', ['@type' => $group->bundle()]);
+    $form_state->setError($form, $message);
+  }
+}
+
+/**
+ * Loads an entity based on a bulk form key.
+ *
+ * This derives from bulk form's way of loading row entities. Currently, it
+ * exists in its simplified form as there is no need to deal with revisions or
+ * languages. In the future, if the need emerges, this function can be extended
+ * to match the original method.
+ *
+ * @param string $bulk_form_key
+ *   The bulk form key representing the entity's ID, language.
+ *
+ * @see \Drupal\views\Plugin\views\field\BulkForm::loadEntityFromBulkFormKey
+ *
+ * @return string
+ *   The entity's ID.
+ */
+function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string {
+  $key = base64_decode($bulk_form_key);
+  $key_parts = json_decode($key);
+
+  // The first two items will always be langcode and ID.
+  $id = array_pop($key_parts);
+  return $id;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function joinup_core_og_membership_presave(OgMembershipInterface $entity) {
+  joinup_core_og_membership_invalidate_group_tags($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function joinup_core_og_membership_predelete(OgMembershipInterface $entity) {
+  joinup_core_og_membership_invalidate_group_tags($entity);
+}
+
+/**
+ * Invalidates the Joinup tags related to a group of a membership.
+ *
+ * @param \Drupal\og\OgMembershipInterface $entity
+ *   The og membership entity.
+ */
+function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
+  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
+  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
+}
+
+/**
+ * Invalidates the cache tags of the list of entities having the same bundle.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
+ *   The RDF entity.
+ */
+function joinup_core_invalidate_rdf_entity_bundle_list_cache(RdfInterface $rdf_entity) {
+  Cache::invalidateTags(["rdf_entity_list:{$rdf_entity->bundle()}"]);
+}
+
+/**
+ * Implements hook_link_alter().
+ */
+function joinup_core_link_alter(&$variables) {
+  // Such links are used to trigger the tour.
+  if (isset($variables['options']['attributes']['data-drupal-tour-link'])) {
+    $route_path = ltrim(\Drupal::routeMatch()->getRouteObject()->getPath(), '/');
+    if (strpos($route_path, 'admin/structure/menu/') === FALSE) {
+      // Add the tour trigger but not on menu administrative pages.
+      $variables['options']['attributes']['class'][] = 'js-tour-start-button';
+    }
+  }
+}
+
+/**
+ * Implements hook_config_readonly_whitelist_patterns().
+ */
+function joinup_core_config_readonly_whitelist_patterns() {
+  return [
+    // The 'support' menu is editable by moderators. This includes the menu
+    // links static overrides config.
+    'system.menu.support',
+    'core.menu.static_menu_link_overrides',
+  ];
 }

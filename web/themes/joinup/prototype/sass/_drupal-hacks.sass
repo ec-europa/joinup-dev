@@ -141,6 +141,14 @@ ul.contextual-links
   outline: none
   outline-offset: 0
 
+// Fix contextual button on collection and solution pages.
+.canonical-entity-page--rdf-entity--solution,
+.canonical-entity-page--rdf-entity--collection
+  article.contextual-region
+    &>.contextual
+      top: -36px
+
+
 // Fixes dropdown button for main menu.
 // It is needed only for admin.
 #block-joinup-theme-main-menu
@@ -390,9 +398,9 @@ article
     color: $color-grey-medium
     font-size: $font-size-small
 
-// Style tour button
-.block-tour-button-block
-  .tour-button
+// Style the support menu.
+.support-menu
+  .support-button
     width: 40px
     height: 40px
     color: #fff
@@ -402,7 +410,7 @@ article
     .icon
       +centered
 
-.section--featured .block-tour-button-block
+.section--featured .support-menu
   position: absolute
   top: 5px
   right: 65px
@@ -425,5 +433,18 @@ details .details-title
   padding-bottom: 15px
   text-decoration: none
   @extend .form__label
+
+// Fixes on tallinn edit form.
+.node-tallinn-report-edit-form
+  .vertical-tabs__pane > .form__description
+    margin-bottom: $form-margin
+    font-size: $font-size-small
+  .vertical-tabs__pane > summary
+    display: block
+    font-size: $font-size-h2
+    pointer-events: none
+    &::-webkit-details-marker
+      display: none
+
 
 

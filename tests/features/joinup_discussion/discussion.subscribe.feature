@@ -77,13 +77,13 @@ Feature: Subscribing to discussions
     And I press "Post comment"
     # Check that notification emails are not sent yet since the comment is not approved.
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                    |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     And the following email should not have been sent:
-      | recipient | hans@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | hans@example.com                                                                                    |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Moderate the anonymous comment.
     Given I am logged in as a "moderator"
     And I go to "/admin/content/comment/approval"
@@ -92,9 +92,9 @@ Feature: Subscribing to discussions
     And I press "Apply to selected items"
     # Subscribers are receiving the notifications.
     And the following email should have been sent:
-      | recipient | dale@example.com                                                                                    |
-      | subject   | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body      | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                    |
+      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
+      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the daily digest for "Dr. Hans Zarkov" should contain the following message for the "Rare Butter" node:
       | mail_subject | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
@@ -115,9 +115,9 @@ Feature: Subscribing to discussions
     Then I press "Post comment"
     # Subscribers are receiving the notifications.
     And the following email should have been sent:
-      | recipient | dale@example.com                                                                              |
-      | subject   | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | body      | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                              |
+      | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # The user 'debater' is also a discussion subscriber but because he's the
     # author of the comment, he will not receive the notification.
     And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
@@ -143,9 +143,9 @@ Feature: Subscribing to discussions
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
     And the following email should have been sent:
-      | recipient | dale@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | dale@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the daily digest for "debater" should contain the following message for the "Rare Butter" node:
       | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
@@ -154,7 +154,7 @@ Feature: Subscribing to discussions
     # @todo Send the mail as HTML and provide a signature.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4254
     Then the following email should have been sent:
-      | recipient          | flash@example.com                                                            |
+      | recipient_mail     | flash@example.com                                                            |
       | subject            | Rare Butter message digest                                                   |
       | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection. |
       | html               | no                                                                           |
@@ -174,9 +174,9 @@ Feature: Subscribing to discussions
     And I fill in "Motivation" with "Reporting this content..."
     And I press "Report"
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                  |
-      | subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail | dale@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
       | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
@@ -188,9 +188,9 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should not have been sent:
-      | recipient | dale@example.com                                                                                     |
-      | subject   | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                     |
+      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
     And the daily digest for "debater" should not contain the following message:
       | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
       | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
@@ -214,9 +214,9 @@ Feature: Subscribing to discussions
     And I press "Delete"
 
     Then the following email should have been sent:
-      | recipient | dale@example.com                                                                                   |
-      | subject   | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body      | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+      | recipient_mail | dale@example.com                                                                                   |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the daily digest for "Dr. Hans Zarkov" should contain the following message:
       | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |

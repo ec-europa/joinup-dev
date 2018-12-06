@@ -30,12 +30,14 @@ Feature: Add comments
     And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should see the following success messages:
+      | success messages                                                                                     |
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And I should not see "I've heard this story..."
-    And the following email should have been sent:
-      | recipient | Comment moderator                                                                              |
-      | subject   | Joinup: A new comment has been created.                                                        |
-      | body      | an anonymous user posted a comment in collection "Gossip collection".To view the comment click |
+    And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | an anonymous user posted a comment in collection "Gossip collection".                   |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
 
     # Users with 'administer comments' permission can see the comment that is set for approval.
     Given I am logged in as a facilitator of the "Gossip collection" collection
@@ -75,15 +77,17 @@ Feature: Add comments
     And I wait for the honeypot validation to pass
     And I press "Post comment"
     Then I should not see the following success messages:
+      | success messages                                                                                     |
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And the page should contain the html text "Mr scandal was doing something weird the other day."
     # The author's full name should be shown, not the username.
     And I should see the link "Miss Tales"
     But I should not see the link "Miss tell tales"
-    And the following email should have been sent:
-      | recipient | Comment moderator                                                                       |
-      | subject   | Joinup: A new comment has been created.                                                 |
-      | body      | Miss Tales posted a comment in collection "Gossip collection".To view the comment click |
+    And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
+      | text                                                                                    |
+      | Miss Tales posted a comment in collection "Gossip collection".                          |
+      | To view the comment click                                                               |
+      | If you think this action is not clear or not due, please contact Joinup Support at http |
 
     Examples:
       | content type | title               | state     |
@@ -103,6 +107,7 @@ Feature: Add comments
     And I wait for the honeypot validation to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
+      | success messages                                                                                     |
       | Your comment has been queued for review by site administrators and will be published after approval. |
     And the page should contain the html text "<p>Mr scandal was doing something<br>weird the other day.</p>"
 

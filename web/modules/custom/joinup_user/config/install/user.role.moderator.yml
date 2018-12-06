@@ -6,18 +6,21 @@ label: Moderator
 weight: 3
 is_admin: false
 permissions:
+  - 'access contact form messages'
   - 'access dashboard'
   - 'access joinup reports'
   - 'access release create field'
+  - 'administer tallinn settings'
   - 'access toolbar'
   - 'access uri converter'
   - 'administer comments'
   - 'administer group'
   - 'administer nodes'
-  - 'administer piwik integration'
+  - 'administer matomo integration'
   - 'administer search fields'
   - 'administer collection ownership'
   - 'administer solution ownership'
+  - 'administer support menu items'
   - 'administer users'
   - 'create asset_distribution rdf entity'
   - 'create asset_release rdf entity'

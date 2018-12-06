@@ -1,0 +1,200 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration\/implementation-monitoring?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/node\/custom_page"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/node\/custom_page\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/700003?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/custom_page\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/custom_page\/og_audience": [
+            {
+                "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": 701254
+        }
+    ],
+    "uuid": [
+        {
+            "value": "9d7b6405-061a-4064-ae7e-b34c67f3afad"
+        }
+    ],
+    "vid": [
+        {
+            "value": 21853
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "custom_page"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2018-06-28T14:04:12+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/node\/custom_page\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/700003?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "56d579e8-e1e4-4989-8fcb-cecdc8338e3c"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/custom_page\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "9df52a68-2cc8-4403-833e-a18c3e3fa09f"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/node\/custom_page\/og_audience": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/collection\/tallinn-ministerial-declaration?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "title": [
+        {
+            "value": "Implementation monitoring",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-30T19:21:22+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-07-20T07:09:45+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "sticky": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "report": [
+        {
+            "uri": "internal:\/contact?category=report&uri=\/collection\/tallinn-ministerial-declaration\/implementation-monitoring",
+            "title": "Report abusive content",
+            "options": []
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/collection\/tallinn-ministerial-declaration\/implementation-monitoring",
+            "pid": 22052,
+            "langcode": "en",
+            "lang": "en"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>As highlighted in the Tallinn Declaration, EU&nbsp;countries agreed&nbsp;to present&nbsp;their progress on the implementation of&nbsp;the different&nbsp;policy actions on a yearly basis.<\/p>\n\n<p>In that regard, this page will host a dashboard that will provide an overview of the status of implementation for all policy actions carried out by European Union Member States and European Free Trade Area (EFTA) countries.<\/p>\n\n<p>This will allow visitors of this page to have an evolving picture of the implementation progress in a clear and data-rich way.<\/p>\n{block:tallinn_dashboard}",
+            "format": "content_editor",
+            "processed": "<p>As highlighted in the Tallinn Declaration, EU\u00a0countries agreed\u00a0to present\u00a0their progress on the implementation of\u00a0the different\u00a0policy actions on a yearly basis.<\/p>\n\n<p>In that regard, this page will host a dashboard that will provide an overview of the status of implementation for all policy actions carried out by European Union Member States and European Free Trade Area (EFTA) countries.<\/p>\n\n<p>This will allow visitors of this page to have an evolving picture of the implementation progress in a clear and data-rich way.<\/p>",
+            "summary": ""
+        }
+    ],
+    "field_cp_content_listing": [
+        {
+            "value": {
+                "fields": {
+                    "field_cp_content_listing_content_type": {
+                        "weight": 0,
+                        "region": "top"
+                    }
+                },
+                "enabled": 1,
+                "query_presets": "entity_bundle|tallinn_report",
+                "limit": "33"
+            }
+        }
+    ]
+}

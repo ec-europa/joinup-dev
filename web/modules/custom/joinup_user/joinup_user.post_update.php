@@ -5,6 +5,7 @@
  * Post update functions for the Joinup User module.
  */
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -44,4 +45,11 @@ function joinup_user_post_update_remove_obsolete_og_roles_changed_message_config
   // original config is no longer used and can be removed.
   $config = \Drupal::configFactory()->getEditable('joinup_user.mail');
   $config->clear('og_roles_changed')->save();
+}
+
+/**
+ * Grant the authenticated users the 'never autoplay videos' permission.
+ */
+function joinup_user_post_update_add_never_autoplay_permission() {
+  user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, ['never autoplay videos']);
 }

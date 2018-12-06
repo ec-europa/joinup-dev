@@ -8,7 +8,7 @@ id: node.tallinn_report.field_tallinn_action_14
 field_name: field_tallinn_action_14
 entity_type: node
 bundle: tallinn_report
-label: 'Action 14'
+label: 'Possibility to digitally manage personal data held by PAs'
 description: 'Make it possible for citizens and businesses to digitally manage their personal data held by the public administration (e.g. access, check and inquire about the use of, submit corrections to, authorise (re) use of), at least for base registries and/or similar databases.'
 required: false
 translatable: true

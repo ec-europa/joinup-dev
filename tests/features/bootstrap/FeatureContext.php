@@ -10,11 +10,14 @@ declare(strict_types = 1);
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\HtmlManipulator;
+use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -22,6 +25,8 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
+use WebDriver\Exception;
+use WebDriver\Key;
 
 /**
  * Defines generic step definitions.
@@ -34,12 +39,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
-
-  /**
-   * Define ASCII values for key presses.
-   */
-  const KEY_LEFT = 37;
-  const KEY_RIGHT = 39;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -68,7 +67,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when an expected field is not present.
    *
-   * @Then (the following )fields should be present :fields
+   * @Then (the following )field(s) should be present :fields
    */
   public function assertFieldsPresent($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
@@ -99,7 +98,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when a column name is incorrect.
    *
-   * @Then (the following )fields should not be present :fields
+   * @Then (the following )field(s) should not be present :fields
    */
   public function assertFieldsNotPresent($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
@@ -512,11 +511,28 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I should have a :username user
    */
-  public function assertUserExistence(string $username): void {
+  public function assertUserExists(string $username): void {
     $user = $this->getUserByName($username);
 
     if (empty($user)) {
       throw new \Exception("Unable to load expected user " . $username);
+    }
+  }
+
+  /**
+   * Checks that user doesn't exist.
+   *
+   * @param string $username
+   *   The username of the user.
+   *
+   * @throws \Exception
+   *   Thrown when the user is found.
+   *
+   * @Then I should not have a :username user
+   */
+  public function assertUserNotExists(string $username): void {
+    if (user_load_by_name($username)) {
+      throw new \Exception("The user '$username' exists but it should not exist.");
     }
   }
 
@@ -615,7 +631,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
-      throw new \Exception(t('Contextual link %link expected but not found in the region %region', ['%link' => $text, '%region' => $region]));
+      throw new \Exception(sprintf('Contextual link %s expected but not found in the region %s', $text, $region));
     }
   }
 
@@ -636,7 +652,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
-      throw new \Exception(t('Unexpected contextual link %link found in the region %region', ['%link' => $text, '%region' => $region]));
+      throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
     }
   }
 
@@ -660,7 +676,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!in_array($direction, ['left', 'right'])) {
       throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
     }
-    $key = $direction === 'left' ? static::KEY_LEFT : static::KEY_RIGHT;
+    $key = $direction === 'left' ? BrowserKey::LEFT_ARROW : BrowserKey::RIGHT_ARROW;
 
     // Locate the slider starting from the label:
     // - Find the label with the given label text.
@@ -1098,6 +1114,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks that the HTTP response is cached by Drupal dynamic cache.
+   *
+   * @Then the response should be cached
+   */
+  public function assertResponseCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'HIT');
+  }
+
+  /**
+   * Checks that the HTTP response is not cached by Drupal dynamic cache.
+   *
+   * @Then the response should not be cached
+   */
+  public function assertResponseNotCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'MISS');
+  }
+
+  /**
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
@@ -1109,7 +1143,38 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I select/check the :row_text row
    */
-  public function assertSelectRow($text) {
+  public function checkTableselectRow(string $text): void {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->check();
+  }
+
+  /**
+   * Attempts to uncheck a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @Given I deselect/uncheck the :row_text row
+   */
+  public function uncheckTableselectRow(string $text): void {
+    $checkbox = $this->getRowCheckboxByText($text);
+    $checkbox->uncheck();
+  }
+
+  /**
+   * Attempts to fetch a checkbox in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The checkbox element.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   */
+  protected function getRowCheckboxByText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1129,7 +1194,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
       throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
-    $checkbox->check();
+
+    return $checkbox;
   }
 
   /**
@@ -1184,6 +1250,26 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Forces the indexing of new or changed content after each step.
+   *
+   * When a Search API index is configured with the 'options.index_directly'
+   * setting set to TRUE, the entity is not indexed immediately after was saved,
+   * in hook_entity_update(), instead the indexing is postponed to the end of
+   * the request. This is OK when operating manually the site, but when this is
+   * wrapped in the test "page request", the index will occur only after all the
+   * steps were executed and, as an effect, entities created across the steps
+   * are not indexed yet when the next step is executed. For this reason, we
+   * force an indexing after each step.
+   *
+   * @see https://www.drupal.org/project/search_api/issues/2922525
+   *
+   * @AfterStep
+   */
+  public function indexEntities() {
+    \Drupal::service('search_api.post_request_indexing')->destruct();
+  }
+
+  /**
    * Waits until a text is dynamically added to the page.
    *
    * @Given I wait until the page contains the text :text
@@ -1203,6 +1289,47 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public static function stripScreenReaderElements(AfterTableFetchScope $scope) {
     $html_manipulator = new HtmlManipulator($scope->getHtml());
     $scope->setHtml($html_manipulator->removeElements('.visually-hidden')->html());
+  }
+
+  /**
+   * Fills in the autocomplete field with the given text.
+   *
+   * This differs from MinkContext::fillField() in that this will no remove the
+   * focus on the field after entering the text, so that the autocomplete
+   * results will not disappear. The final action taken on the field will be the
+   * "keyup" event for the last character.
+   *
+   * @param string $field
+   *   The ID, name, label or value of the autocomplete field to fill in.
+   * @param string $value
+   *   The text to type in the autocomplete field.
+   *
+   * @When I type :value in the :field autocomplete field
+   */
+  public function fillAutoCompleteField(string $field, string $value): void {
+    $this->assertJavaScriptEnabledBrowser();
+
+    $driver = $this->getSession()->getDriver();
+    if (!$driver instanceof Selenium2Driver) {
+      throw new \RuntimeException("Only Selenium is currently supported for typing in autocomplete fields.");
+    }
+
+    $xpath = $this->getSession()->getSelectorsHandler()->selectorToXpath('named', ['field', $field]);
+    try {
+      $element = $driver->getWebDriverSession()->element('xpath', $xpath);
+    }
+    catch (Exception $e) {
+      throw new \RuntimeException("Field with locator '$field' was not found in the page.");
+    }
+
+    // Clear any existing data in the field before typing the new data.
+    $value = str_repeat(Key::BACKSPACE . Key::DELETE, strlen($element->attribute('value'))) . $value;
+
+    // Fill in the field by directly using the postValue() method of the
+    // webdriver. This executes the keystrokes that make up the text but will
+    // not remove focus from the field so the autocomplete results remain
+    // visible and can be inspected.
+    $element->postValue(['value' => [$value]]);
   }
 
 }

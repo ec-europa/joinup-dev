@@ -7,6 +7,7 @@
 
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
@@ -25,11 +26,13 @@ use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TabledragTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -53,6 +56,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use TabledragTrait;
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
@@ -644,7 +648,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
-        'additional info address' => 'field_event_adtl_address_info',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
         'state' => 'field_state',
@@ -986,7 +989,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Checks that non of the given tiles are available on the page.
+   * Checks that none of the given tiles are available on the page.
    *
    * Table format:
    * | Tile title 1 |
@@ -2160,16 +2163,42 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    *
    * @param string $heading
    *   The heading of the tile.
+   * @param string $type
+   *   The tile bundle.
    *
    * @throws \Exception
-   *   Thrown when the tile is marked as featured.
+   *   If the $type is not solution nor community content or the tile is marked
+   *   as featured.
    *
-   * @Then the :tile tile should not be marked as featured
+   * @Then the :tile :type tile should not be marked as featured
+   *
+   * @todo Due to the bug described in ISAICP-4352, we have to temporary check
+   * if a tile is not featured via backend, rather than checking the DOM.
+   * Manually testing or running this Behat step definition Behat in test
+   * locally doesn't works with DOM check, but for some obscure reasons, that
+   * are very hard to be tracked, tests are failing in Continuous PHP bot.
+   * Revert back the check that a tile is not featured by checking the DOM, in
+   * ISAICP-4849.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4849
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4352
    */
-  public function assertTileNotMarkedAsFeatured($heading) {
-    $element = $this->getTileByHeading($heading);
+  public function assertTileNotMarkedAsFeatured($heading, $type) {
+    if (in_array($type, ['collection', 'solution'])) {
+      $entity_type_id = 'rdf_entity';
+    }
+    elseif (in_array($type, CommunityContentHelper::getBundles())) {
+      $entity_type_id = 'node';
+    }
+    else {
+      throw new \Exception("Invalid bundle '$type'.");
+    }
+    $entity = static::getEntityByLabel($entity_type_id, $heading);
 
-    if ($element->find('css', '.listing__card.is-featured')) {
+    /** @var \Drupal\joinup\PinServiceInterface $pin_service */
+    $pin_service = \Drupal::service('joinup.pin_service');
+
+    if ($pin_service->isEntityPinned($entity)) {
       throw new \Exception("The tile '$heading' is marked as featured, but it shouldn't be.");
     }
   }
@@ -2250,12 +2279,7 @@ JS;
    * @Then a tour should be available
    */
   public function assertTourAvailable() {
-    // The tour element in the header.
-    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
-    // The tour button.
-    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
-
-    if (empty($element_help) && empty($element_button)) {
+    if (!$this->getSession()->getPage()->find('css', 'a.js-tour-start-button')) {
       throw new \Exception("No tour is available on the page.");
     }
   }
@@ -2266,13 +2290,9 @@ JS;
    * @Then a tour should not be available
    */
   public function assertTourNotAvailable() {
-    // The tour element in the header.
-    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
-    // The tour button.
-    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
-
-    PHPUnit_Framework_Assert::assertEmpty($element_help);
-    PHPUnit_Framework_Assert::assertEmpty($element_button);
+    if ($this->getSession()->getPage()->find('css', 'a.js-tour-start-button')) {
+      throw new \Exception("Tour is available on the page but should not.");
+    }
   }
 
   /**
@@ -2300,7 +2320,18 @@ JS;
     }
 
     $element->keyDown("\r");
-    $element->keyUp("\r");
+    try {
+      $element->keyUp("\r");
+    }
+    catch (StaleElementReference $e) {
+      // Depending on the implementation of the user interaction we are trying
+      // to trigger by pressing the enter key, it is posssible the action is
+      // triggered on the keydown event or on the keyup event. If it is
+      // implemented on the keydown event then it might happen that the page
+      // refreshes immediately without waiting for the key to be released.
+      // Ignore the fact that the field might already be gone when performing
+      // the keyup event.
+    }
   }
 
   /**
@@ -2404,6 +2435,122 @@ JS;
    */
   public function clearField($field) {
     $this->getSession()->getPage()->fillField($field, '');
+  }
+
+  /**
+   * Asserts the order and nesting of rows of a draggable menu table.
+   *
+   * It requires a Javascript browser to run as many draggable classes are set
+   * by Javascript.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The menu data.
+   *
+   * @Then the draggable menu table should be:
+   */
+  public function assertDraggableMenuTable(TableNode $table) {
+    self::assertJavaScriptEnabledBrowser();
+
+    /** @var \Behat\Mink\Element\NodeElement[] $rows */
+    $rows = $this->getSession()->getPage()->findAll('css', '#menu-overview tbody tr.draggable');
+    $expected = $table->getColumnsHash();
+    Assert::assertSameSize($expected, $rows);
+
+    foreach ($expected as $delta => $data) {
+      $current_row = $rows[$delta];
+      $title_element = $current_row->find('css', 'td:first-of-type a:not(.tabledrag-handle)');
+      Assert::assertEquals($data['title'], trim($title_element->getText()));
+
+      $menu_link = $this->getMenuLinkByTitle($data['title']);
+      $parent_input = $current_row->find('css', 'input[name="links[menu_plugin_id:' . $menu_link->getPluginId() . '][parent]"]');
+
+      if (!$parent_input) {
+        throw new \Exception('Cannot find parent input field.');
+      }
+
+      // When a parent is available, the line should be indented. Find all
+      // indentation elements to assert later on based on the parent value.
+      $indentation = $current_row->findAll('css', 'div.indentation');
+
+      if ($data['parent'] === '') {
+        Assert::assertEmpty($parent_input->getValue());
+        Assert::assertCount(0, $indentation, "The menu link '{$data['title']}' should not be indented but it is.");
+      }
+      else {
+        $parent_link = $this->getMenuLinkByTitle($data['parent']);
+        Assert::assertEquals($parent_link->getPluginId(), $parent_input->getValue());
+        Assert::assertNotCount(0, $indentation, "The menu link '{$data['title']}' should be indented but it's not.");
+      }
+    }
+  }
+
+  /**
+   * Drags a table row, specified by title, one position towards a direction.
+   *
+   * Instead of using the mouse, it uses the keyboard keys so that precise
+   * control can be achieved.
+   *
+   * @param string $title
+   *   The title of the menu link that belongs to the row.
+   * @param string $direction
+   *   The direction to move the row to. One of "up", "down", "left", "right".
+   *
+   * @Then I drag the :title table row( to the) :direction
+   */
+  public function dragTitledTableRowTowardsDirection($title, $direction) {
+    self::assertJavaScriptEnabledBrowser();
+
+    $row = $this->findDraggableTableRowByTitle($title);
+    $this->dragTableRowTowardsDirection($row, $direction);
+  }
+
+  /**
+   * Drags a table row, specified by its position, towards a direction.
+   *
+   * Instead of using the mouse, it uses the keyboard keys so that precise
+   * control can be achieved.
+   *
+   * @param int $position
+   *   The position of the row in the table. First position starts at 1.
+   * @param string $direction
+   *   The direction to move the row to. One of "up", "down", "left", "right".
+   *
+   * @Then I drag the table row at position :position( to the) :direction
+   */
+  public function findTableRowByPositionAndDragTowardsDirection($position, $direction) {
+    self::assertJavaScriptEnabledBrowser();
+
+    $row = $this->findDraggableTableRowByPosition($position);
+    $this->dragTableRowTowardsDirection($row, $direction);
+  }
+
+  /**
+   * Fills the last form field matching the selector with a value.
+   *
+   * Useful for dynamic parts of a form where a field can be added multiple
+   * times, like multiple cardinality fields.
+   *
+   * @param string $field
+   *   The field selector.
+   * @param string $value
+   *   The field value.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when no field with the given selector are found.
+   *
+   * @Then I fill in the latest :field field with :value
+   */
+  public function fillLastFieldWithLabel($field, $value) {
+    $page = $this->getSession()->getPage();
+    $fields = $page->findAll('named', ['field', $field]);
+
+    if (empty($fields)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value|placeholder', $field);
+    }
+
+    /** @var \Behat\Mink\Element\NodeElement $last */
+    $last = array_pop($fields);
+    $last->setValue($value);
   }
 
 }

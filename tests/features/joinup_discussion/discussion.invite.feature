@@ -102,35 +102,35 @@ Feature: Invite members to subscribe to discussions
     Then I should see the error message "Please add at least one user."
 
     # Try to filter by first name.
-    When I fill in "E-mail" with "sha"
+    When I type "sha" in the "E-mail" autocomplete field
     Then I wait until the page contains the text "Shaquila Paternoster (paternoster)"
     And I should see the text "Shannon Hargrave (theacuteone)"
     But I should not see the text "Lynwood Crawford (Lynwood Crawford)"
     And I should not see the text "Glory Ruskin (Glory Ruskin)"
 
     ## Try to filter by last name.
-    When I fill in "E-mail" with "raw"
+    When I type "raw" in the "E-mail" autocomplete field
     Then I wait until the page contains the text "Lynwood Crawford (Lynwood Crawford)"
     But I should not see the text "Shaquila Paternoster (paternoster)"
     And I should not see the text "Shannon Hargrave (theacuteone)"
     And I should not see the text "Glory Ruskin (Glory Ruskin)"
 
     ## Try to filter by e-mail address.
-    When I fill in "E-mail" with "hr"
+    When I type "hr" in the "E-mail" autocomplete field
     Then I wait until the page contains the text "Glory Ruskin (Glory Ruskin)"
     And I should see the text "Shannon Hargrave (theacuteone)"
     But I should not see the text "Lynwood Crawford (Lynwood Crawford)"
     And I should not see the text "Shaquila Paternoster (paternoster)"
 
     ## Try fo filter by username.
-    When I fill in "E-mail" with "acute"
+    When I type "acute" in the "E-mail" autocomplete field
     Then I wait until the page contains the text "Shannon Hargrave (theacuteone)"
     But I should see the text "Glory Ruskin (Glory Ruskin)"
     And I should not see the text "Lynwood Crawford (Lynwood Crawford)"
     And I should not see the text "Shaquila Paternoster (paternoster)"
 
     ## Try to filter on a combination of first name and last name.
-    When I fill in "E-mail" with "or"
+    When I type "or" in the "E-mail" autocomplete field
     Then I wait until the page contains the text "Lynwood Crawford (Lynwood Crawford)"
     And I should see the text "Glory Ruskin (Glory Ruskin)"
     But I should not see the text "Shannon Hargrave (theacuteone)"

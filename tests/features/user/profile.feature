@@ -111,32 +111,32 @@ Feature: User profile
       | Jayson Granger    | jayson.granger@example.com    |            |             |
       | Clarette Fairburn | clarette.fairburn@example.com | Clarette   | Fairburn    |
     And the following solutions:
-      | title              | description                                     | logo     | banner     | state     |
-      | E.C.O. fertilizers | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated |
-      | SOUND project      | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated |
+      | title              | description                                     | logo     | banner     | state     | creation date    |
+      | E.C.O. fertilizers | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated | 2017-02-23 13:00 |
+      | SOUND project      | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated | 2017-02-23 14:01 |
     And the following collections:
-      | title                 | description                           | logo     | banner     | state     | affiliates         |
-      | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | E.C.O. fertilizers |
-      | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | SOUND project      |
+      | title                 | description                           | logo     | banner     | state     | affiliates         | creation date    |
+      | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | E.C.O. fertilizers | 2017-02-23 10:00 |
+      | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | SOUND project      | 2017-02-23 12:00 |
     And discussion content:
-      | title                          | author          | collection            | state     |
-      | Repopulating blue iris         | Corwin Robert   | Botanic E.D.E.N.      | validated |
-      | Best topsoil for plant comfort | Anise Edwardson | Ethic flower handling | validated |
+      | title                          | author          | collection            | state     | created          |
+      | Repopulating blue iris         | Corwin Robert   | Botanic E.D.E.N.      | validated | 2018-06-15 16:00 |
+      | Best topsoil for plant comfort | Anise Edwardson | Ethic flower handling | validated | 2018-09-01 19:30 |
     And document content:
-      | title                    | author        | collection       | state     |
-      | Cherry blossoms schedule | Corwin Robert | Botanic E.D.E.N. | validated |
+      | title                    | author        | collection       | state     | created          |
+      | Cherry blossoms schedule | Corwin Robert | Botanic E.D.E.N. | validated | 2017-05-13 16:00 |
     And event content:
-      | title                | author        | collection       | state     |
-      | Spring blossom party | Corwin Robert | Botanic E.D.E.N. | validated |
+      | title                | author        | collection       | state     | created          |
+      | Spring blossom party | Corwin Robert | Botanic E.D.E.N. | validated | 2018-06-27 18:00 |
     And news content:
-      | title                         | author        | collection       | state     |
-      | Discovered new flower species | Corwin Robert | Botanic E.D.E.N. | validated |
+      | title                         | author        | collection       | state     | created         |
+      | Discovered new flower species | Corwin Robert | Botanic E.D.E.N. | validated | 2018-11-15 9:01 |
     And newsletter content:
-      | title        | author        | collection       | state     |
-      | Latest seeds | Corwin Robert | Botanic E.D.E.N. | validated |
+      | title        | author        | collection       | state     | created          |
+      | Latest seeds | Corwin Robert | Botanic E.D.E.N. | validated | 2018-07-11 10:00 |
     And video content:
-      | title                 | author        | collection       | state     |
-      | Planting a tree howto | Corwin Robert | Botanic E.D.E.N. | validated |
+      | title                 | author        | collection       | state     | created         |
+      | Planting a tree howto | Corwin Robert | Botanic E.D.E.N. | validated | 2017-10-30 9:30 |
     # Contact information and owner tiles should never be shown.
     And the following contact:
       | name        | Wibo Verhoeven             |
@@ -157,7 +157,15 @@ Feature: User profile
     And I go to the public profile of "Corwin Robert"
     Then I should see the heading "Corwin Robert"
     # Tiles should be shown for the groups the user is member of or author of.
-    Then the page should show only the tiles "Botanic E.D.E.N., SOUND project, Repopulating blue iris, Cherry blossoms schedule, Spring blossom party, Discovered new flower species, Latest seeds, Planting a tree howto"
+    Then I should see the following tiles in the correct order:
+      | Discovered new flower species |
+      | Latest seeds                  |
+      | Spring blossom party          |
+      | Repopulating blue iris        |
+      | Planting a tree howto         |
+      | Cherry blossoms schedule      |
+      | SOUND project                 |
+      | Botanic E.D.E.N.              |
 
     # A message should be shown when visiting a profile of a user without
     # content.
@@ -246,3 +254,40 @@ Feature: User profile
     Then I should not see the link "Subscription Settings"
     And I should not see the link "Persistent Logins"
     And I should not see the link "Newsletters"
+
+  @email
+  Scenario: A user, changing its E-mail should receive a notification on his old
+    E-mail address and a verification link on its new address.
+
+    Given users:
+      | Username       | E-mail         | Password | First name | Family name |
+      | Caitlyn Jenner | he@example.com | secret   | Caitlyn    | Jenner      |
+    When I am logged in as "Caitlyn Jenner"
+    And I am on the homepage
+    And I click "My account"
+    When I click "Edit"
+    Then the "Email address" field should contain "he@example.com"
+
+    Given I fill in "Current password" with "secret"
+    And I fill in "Email address" with "she@example.com"
+    When I press "Save"
+    Then I should see the following warning messages:
+      | warning messages                                                                                                 |
+      | Your updated email address needs to be validated. Further instructions have been sent to your new email address. |
+    And the following email should have been sent:
+      | recipient_mail | he@example.com                                                                                                          |
+      | subject        | Joinup: Email change information for Caitlyn Jenner                                                                     |
+      | body           | In order to complete the change you will need to follow the instructions sent to your new email address within one day. |
+    And the following email should have been sent:
+      | recipient_mail | she@example.com                                                                                                                   |
+      | subject        | Joinup: Email change information for Caitlyn Jenner                                                                               |
+      | body           | A request to change your email address has been made in your Joinup profile. To confirm the request, please click the link below: |
+
+    But I click the mail change link from the email sent to "she@example.com"
+    Then I should see the following success messages:
+      | success messages                                        |
+      | Your email address has been changed to she@example.com. |
+    # Check that the E-mail has been successfully updated.
+    When I click "My account"
+    And I click "Edit"
+    Then the "Email address" field should contain "she@example.com"
