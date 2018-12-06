@@ -29,8 +29,8 @@
 {% macro menu_links(items, attributes, menu_level) %}
   {% if items %}
     <div class="support-menu">
-      <div id="support-menu__button" class="support-menu__button">
-        <button aria-pressed="false" type="button" class="support-button mdl-button mdl-js-button mdl-button--icon" title="User support">
+      <div id="support-menu__button" class="support-menu__button mdl-button mdl-js-button">
+        <button aria-pressed="false" type="button" class="support-button mdl-button mdl-js-button mdl-button--icon" title="User support" data-upgraded=",MaterialButton">
           <span class="icon icon--help"></span>
         </button>
       </div>
