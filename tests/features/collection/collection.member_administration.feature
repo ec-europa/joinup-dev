@@ -130,7 +130,7 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
-    And the following system email should have been sent:
+    And the following email should have been sent:
       | recipient | Gregory House                                                                      |
       | subject   | Your role has been changed to facilitator                                          |
       | body      | Lisa Cuddy has changed your role in collection "Medical diagnosis" to facilitator. |

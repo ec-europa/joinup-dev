@@ -64,9 +64,9 @@ Feature: User subscription settings
     And I fill in "Content" with "Contaminate it with Sarin"
     And I press "Update"
     Then the following email should have been sent:
-      | recipient | auric@example.com                                                                   |
-      | subject   | Joinup: The discussion "Water supply" was updated in the space of "Malicious plans" |
-      | body      | The discussion "Water supply" was updated in the "Malicious plans" collection.      |
+      | recipient_email | auric@example.com                                                                   |
+      | subject         | Joinup: The discussion "Water supply" was updated in the space of "Malicious plans" |
+      | body            | The discussion "Water supply" was updated in the "Malicious plans" collection.      |
 
   @wip
   Scenario: Temporarily disabled scenario, will be restored in ISAICP-4218.
