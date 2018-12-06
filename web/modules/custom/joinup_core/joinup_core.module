@@ -1321,3 +1321,29 @@ function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $
 function joinup_core_invalidate_rdf_entity_bundle_list_cache(RdfInterface $rdf_entity) {
   Cache::invalidateTags(["rdf_entity_list:{$rdf_entity->bundle()}"]);
 }
+
+/**
+ * Implements hook_link_alter().
+ */
+function joinup_core_link_alter(&$variables) {
+  // Such links are used to trigger the tour.
+  if (isset($variables['options']['attributes']['data-drupal-tour-link'])) {
+    $route_path = ltrim(\Drupal::routeMatch()->getRouteObject()->getPath(), '/');
+    if (strpos($route_path, 'admin/structure/menu/') === FALSE) {
+      // Add the tour trigger but not on menu administrative pages.
+      $variables['options']['attributes']['class'][] = 'js-tour-start-button';
+    }
+  }
+}
+
+/**
+ * Implements hook_config_readonly_whitelist_patterns().
+ */
+function joinup_core_config_readonly_whitelist_patterns() {
+  return [
+    // The 'support' menu is editable by moderators. This includes the menu
+    // links static overrides config.
+    'system.menu.support',
+    'core.menu.static_menu_link_overrides',
+  ];
+}
