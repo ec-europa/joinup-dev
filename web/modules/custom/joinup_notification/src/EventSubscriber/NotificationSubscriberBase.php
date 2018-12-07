@@ -15,7 +15,7 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -183,8 +183,10 @@ abstract class NotificationSubscriberBase {
       }
     }
 
+    $og_role_storage = $this->entityTypeManager->getStorage('og_role');
     foreach ($user_data['og_roles'] as $role_id => $messages) {
-      $recipients = $this->getRecipientIdsByOgRole($entity, $role_id);
+      $role = $og_role_storage->load($role_id);
+      $recipients = $this->getRecipientIdsByOgRole($entity, $role);
       $recipients = array_diff(array_values($recipients), $uids_to_skip);
       foreach ($recipients as $uid) {
         $message_data[$uid] = $messages;
@@ -219,17 +221,17 @@ abstract class NotificationSubscriberBase {
   }
 
   /**
-   * Returns the users with a given og role.
+   * Returns the users with a given OG role.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity object.
-   * @param string $role_id
-   *   The role id.
+   * @param \Drupal\og\OgRoleInterface $role
+   *   The role.
    *
    * @return array
    *   An array of user ids.
    */
-  protected function getRecipientIdsByOgRole(EntityInterface $entity, $role_id) {
+  protected function getRecipientIdsByOgRole(EntityInterface $entity, OgRoleInterface $role): array {
     if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
       $entity = $this->relationManager->getParent($entity);
     }
@@ -237,18 +239,7 @@ abstract class NotificationSubscriberBase {
       return [];
     }
 
-    $memberships = $this->entityTypeManager->getStorage('og_membership')->loadByProperties([
-      'state' => OgMembershipInterface::STATE_ACTIVE,
-      'entity_type' => $entity->getEntityTypeId(),
-      'entity_id' => $entity->id(),
-    ]);
-
-    $memberships = array_filter($memberships, function ($membership) use ($role_id) {
-      $role_ids = array_map(function ($og_role) {
-        return $og_role->id();
-      }, $membership->getRoles());
-      return in_array($role_id, $role_ids);
-    });
+    $memberships = $this->relationManager->getGroupMembershipsByRoles($entity, [$role->getName()]);
 
     // We need to handle possible broken relationships or memberships that
     // are not removed yet.

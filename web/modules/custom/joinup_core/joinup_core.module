@@ -1230,19 +1230,16 @@ function joinup_core_form_views_form_og_members_overview_default_validate(array 
     return;
   }
 
-  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
-  $admin_role = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . 'administrator';
-  $storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+  /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relations_manager */
+  $relations_manager = \Drupal::service('joinup_core.relations_manager');
 
-  // Calculate current owners.
-  $owner_memberships = $storage->loadByProperties([
-    'entity_type' => $group->getEntityTypeId(),
-    'entity_id' => $group->id(),
-    'roles' => $admin_role,
-  ]);
+  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $owner_memberships = $relations_manager->getGroupMembershipsByRoles($group, ['administrator']);
+
   if (empty($owner_memberships)) {
     return;
   }
+
   $owner_membership_ids = array_keys($owner_memberships);
 
   // Calculate memberships to be deleted.

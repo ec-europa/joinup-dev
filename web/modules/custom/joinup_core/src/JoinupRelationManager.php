@@ -156,14 +156,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * {@inheritdoc}
    */
   public function getGroupMemberships(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    /** @var \Drupal\og\OgMembershipInterface[] $memberships */
-    $memberships = $this->entityTypeManager->getStorage('og_membership')->loadByProperties([
-      'state' => $states,
-      'entity_type' => $entity->getEntityTypeId(),
-      'entity_id' => $entity->id(),
-    ]);
-
-    return $memberships;
+    return $this->getGroupMembershipsByRoles($entity, [], $states);
   }
 
   /**
@@ -206,23 +199,25 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    */
   public function getGroupMembershipsByRoles(EntityInterface $entity, array $role_names, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
     $entity_type_id = $entity->getEntityTypeId();
-    $bundle_id = $entity->bundle();
 
-    $role_ids = array_map(function (string $role_name) use ($entity_type_id, $bundle_id): string {
-      return implode('-', [$entity_type_id, $bundle_id, $role_name]);
-    }, $role_names);
+    $properties = [
+      'state' => $states,
+      'entity_type' => $entity_type_id,
+      'entity_id' => $entity->id(),
+    ];
 
-    $memberships = [];
-    foreach ($this->getGroupMemberships($entity, $states) as $membership) {
-      foreach ($role_ids as $role_id) {
-        if ($membership->hasRole($role_id)) {
-          $memberships[$membership->id()] = $membership;
-          continue;
-        }
-      }
+    // Optionally filter by role names.
+    if (!empty($role_names)) {
+      $bundle_id = $entity->bundle();
+
+      $role_ids = array_map(function (string $role_name) use ($entity_type_id, $bundle_id): string {
+        return implode('-', [$entity_type_id, $bundle_id, $role_name]);
+      }, $role_names);
+
+      $properties['roles'] = $role_ids;
     }
 
-    return $memberships;
+    return $this->entityTypeManager->getStorage('og_membership')->loadByProperties($properties);
   }
 
   /**
