@@ -67,4 +67,19 @@ class SubscriptionSettings extends ControllerBase {
     return AccessResult::forbidden();
   }
 
+  /**
+   * Redirects the currently logged in user to their subscription settings form.
+   *
+   * This controller assumes that it is only invoked for authenticated users.
+   * This is enforced for the 'joinup_subscription.subscription_settings_page'
+   * route with the '_user_is_logged_in' requirement.
+   *
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   Returns a redirect to the subscription settings form of the currently
+   *   logged in user.
+   */
+  public function subscriptionSettingsPage() {
+    return $this->redirect('joinup_subscription.subscription_settings', ['user' => $this->currentUser()->id()]);
+  }
+
 }
