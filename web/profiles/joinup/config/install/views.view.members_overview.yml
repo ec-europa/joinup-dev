@@ -368,7 +368,6 @@ display:
           fields:
             field_user_family_name: field_user_family_name
             field_user_first_name: field_user_first_name
-            name: name
           plugin_id: combine
         roles_target_id:
           id: roles_target_id
