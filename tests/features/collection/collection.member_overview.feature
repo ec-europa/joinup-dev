@@ -111,8 +111,6 @@ Feature: Collection membership overview
     When I fill in "Type something to filter the list" with "val"
     And I press "Apply"
     Then I should see the following tiles in the correct order:
-      | Delicia Hart    |
-      | Ruby Robert     |
       | Sukhrab Valenta |
 
     # Clicking the user name should lead to the user profile page.

@@ -108,9 +108,7 @@ Feature: Solution membership overview
     And I press "Apply"
     Then I should see the following tiles in the correct order:
       | Aušra Buhr  |
-      # "Gina Forney" matches due to the username "Gina Forney Buhr"
-      | Gina Forney |
 
     # Clicking the user name should lead to the user profile page.
-    When I click "Gina Forney"
-    Then I should see the heading "Gina Forney"
+    When I click "Aušra Buhr"
+    Then I should see the heading "Aušra Buhr"

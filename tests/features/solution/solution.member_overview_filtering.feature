@@ -50,9 +50,10 @@ Feature: Type something to filter the listing the member list
     And I click "Members" in the "Left sidebar"
     And I fill in "Type something to filter the list" with "right"
     And I press "Apply"
-    Then I should see the link "Wright Jackson"
-    And I should see the link "Lavonne Atkins"
     And I should see the link "Jack Cartwright"
+    And I should see the link "Wright Jackson"
+    # Matches by username should not be shown - regression check.
+    But I should not see the link "Lavonne Atkins"
 
     When I clear the content of the field "Type something to filter the list"
     And I press "Apply"
@@ -74,8 +75,7 @@ Feature: Type something to filter the listing the member list
     And I fill in "Type something to filter the list" with "edg"
     And I press "Apply"
     Then I should see the link "Jack Edgar"
-    And I should see the link "Jack Cartwright"
-    And the option with text "Facilitator (2)" from select "Roles" is selected
+    And the option with text "Facilitator (1)" from select "Roles" is selected
 
     # Ensure that combined filters change the numbers in the "Roles" selection box.
     When I fill in "Type something to filter the list" with "Cartwright"

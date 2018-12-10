@@ -6,14 +6,14 @@ Feature: Type something to filter the listing the member list
 
   Background:
     Given users:
-      | Username   | First name | Family name | Roles     |
-      | séamusline | Séamus     | Kingsbrooke | moderator |
-      | emeritous  | King       | Seabrooke   |           |
-      | user049230 | King       | Emerson     |           |
-      | kingseamus | Seamus     | Emerson     |           |
-      | brookebeau | Brooke     | Kingsley    |           |
-      | iambroke   | Nell       | Gibb        |           |
-      | queenson   | Queen      | Emerson     |           |
+      | Username   | First name | Family name | Roles     | E-mail                 |
+      | séamusline | Séamus     | Kingsbrooke | moderator | seamusline@example.com |
+      | emeritous  | King       | Seabrooke   |           | emeritous@example.com  |
+      | user049230 | King       | Emerson     |           | user049230@example.com |
+      | kingseamus | Seamus     | Emerson     |           | kingseamus@example.com |
+      | brookebeau | Brooke     | Kingsley    |           | brookebeau@example.com |
+      | iambroke   | Nell       | Gibb        |           | iambroke@example.com   |
+      | queenson   | Queen      | Emerson     |           | queenson@example.com   |
     And the following collection:
       | title         | Coffee makers                  |
       | description   | Coffee is needed for survival. |
@@ -54,12 +54,10 @@ Feature: Type something to filter the listing the member list
       |  | Name            | Member since            | State   | Roles                                    |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
       |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
-      |  | Nell Gibb       | Thu, 01/02/2018 - 00:00 | blocked |                                          |
     # Clicking "Name" will sort the table by descending name order.
     When I click "Name"
     Then the "member administration" table should be:
       |  | Name            | Member since            | State   | Roles                                    |
-      |  | Nell Gibb       | Thu, 01/02/2018 - 00:00 | blocked |                                          |
       |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
@@ -68,7 +66,6 @@ Feature: Type something to filter the listing the member list
     Then the "member administration" table should be:
       |  | Name            | Member since            | State   | Roles                                    |
       |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
-      |  | Nell Gibb       | Thu, 01/02/2018 - 00:00 | blocked |                                          |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     # Clicking "Member since" again will sort the table by descending created order.
@@ -76,7 +73,6 @@ Feature: Type something to filter the listing the member list
     Then the "member administration" table should be:
       |  | Name            | Member since            | State   | Roles                                    |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
-      |  | Nell Gibb       | Thu, 01/02/2018 - 00:00 | blocked |                                          |
       |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
 
     # Clicking "State" will sort the table by ascending state order.
@@ -85,13 +81,11 @@ Feature: Type something to filter the listing the member list
       |  | Name            | Member since            | State   | Roles                                    |
       |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
-      |  | Nell Gibb       | Thu, 01/02/2018 - 00:00 | blocked |                                          |
 
     # Clicking "State" again will sort the table by descending state order.
     When I click "State"
     Then the "member administration" table should be:
       |  | Name            | Member since            | State   | Roles                                    |
-      |  | Nell Gibb       | Thu, 01/02/2018 - 00:00 | blocked |                                          |
       |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
       |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
@@ -100,9 +94,6 @@ Feature: Type something to filter the listing the member list
     Then I should see the link "King Seabrooke"
     And I should see the link "King Emerson"
     And I should see the link "Brooke Kingsley"
-    # "King" also matches "Seamus Emerson" due to the username "kingseamus".
-    # Search is case insensitive.
-    And I should see the link "Seamus Emerson"
 
     When I clear the field "Type something to filter the list"
     And I press "Apply"
@@ -110,7 +101,6 @@ Feature: Type something to filter the listing the member list
     And I press "Apply"
     Then I should see the link "King Seabrooke"
     But I should not see the link "King Emerson"
-    And I should not see the link "Seamus Emerson"
     And I should not see the link "Brooke Kingsley"
     And I should not see the link "Nell Gibb"
 
@@ -118,19 +108,18 @@ Feature: Type something to filter the listing the member list
     And I press "Apply"
     Then I should see the link "King Emerson"
     And I should see the link "King Seabrooke"
-    But I should not see the link "Seamus Emerson"
     And I should not see the link "Brooke Kingsley"
     And I should not see the link "Nell Gibb"
     # "eme" also matches "King Seabrooke" due to the username "emeritous"
     And I fill in "Type something to filter the list" with "eme"
     And I press "Apply"
     Then I should see the link "King Emerson"
-    And I should see the link "King Seabrooke"
-    And the option with text "Facilitator (2)" from select "Roles" is selected
+    But I should not see the link "King Seabrooke"
+    And the option with text "Facilitator (1)" from select "Roles" is selected
 
     # Ensure that filtering is based in all words.
-    When I fill in "Type something to filter the list" with "eme Sea"
+    When I fill in "Type something to filter the list" with "King Emerson"
     And I press "Apply"
-    Then I should see the link "King Seabrooke"
-    But I should not see the link "King Emerson"
+    Then I should see the link "King Emerson"
+    But I should not see the link "King Seabrooke"
     And the option with text "Facilitator (1)" from select "Roles" is selected
