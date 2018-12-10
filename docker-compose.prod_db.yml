@@ -9,4 +9,3 @@ services:
       - "./tmp/dump-virtuoso:/data/backups"
     environment:
       - BACKUP_PREFIX=JOINUP_FULL_DUMP_
-
