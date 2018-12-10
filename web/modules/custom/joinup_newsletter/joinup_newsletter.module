@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Joinup Newsletter module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Hides the form elements to configure the Newsroom newsletter parameters for
+ * all users except moderators.
+ */
+function joinup_newsletter_form_rdf_entity_collection_edit_form_alter(&$form, FormStateInterface $form_state, string $form_id): void {
+  $current_user = \Drupal::currentUser();
+  $form['field_newsletter']['#access'] = $current_user->hasPermission('manage newsroom newsletter subscriptions');
+}
+
+/**
+ * Implements hook_entity_prepare_view().
+ *
+ * Collections should show a newsletter subscription form in the last tile. For
+ * this to work we need to reduce the number of tiles shown by 1 if the
+ * newsletter subscription is enabled.
+ */
+function joinup_newsletter_entity_prepare_view(string $entity_type_id, array $entities, array $displays, string $view_mode): void {
+  if ($entity_type_id !== 'rdf_entity') {
+    return;
+  }
+
+  foreach ($entities as $entity) {
+    // Skip everything but collections.
+    if ($entity->bundle() !== 'collection') {
+      continue;
+    }
+
+    /** @var \Drupal\Core\Field\FieldItemList $newsletter_field_item_list */
+    $newsletter_field_item = $entity->get('field_newsletter')->first();
+
+    // Skip if the newsletter subscription is not enabled.
+    if (empty($newsletter_field_item) || !$newsletter_field_item->isEnabled()) {
+      continue;
+    }
+
+    // The newsletter subscriptions are enabled for this collection. The
+    // subscription form will be shown in the last tile. This means that we
+    // should reduce the number of tiles retrieved from 12 to 11, so that there
+    // is room to show the form as the final tile.
+    /** @var \Drupal\search_api_field\Plugin\Field\FieldType\SearchItemInterface $collection_content */
+    $collection_content = $entity->get('field_collection_content')->first();
+    $collection_content->setLimit(11);
+  }
+
+}

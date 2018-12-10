@@ -15,6 +15,7 @@ dependencies:
   - menu_admin_per_menu
   - message
   - message_notify
+  - oe_newsroom_newsletter
   - og
   - rdf_draft
   - rdf_entity
@@ -47,6 +48,7 @@ config_devel:
   - field.storage.node.og_audience
   - field.storage.rdf_entity.field_download_count
   - field.storage.rdf_entity.field_keywords
+  - field.storage.rdf_entity.field_newsletter
   - field.storage.rdf_entity.field_policy_domain
   - field.storage.rdf_entity.field_site_featured
   - field.storage.rdf_entity.field_site_pinned
