@@ -20,6 +20,7 @@ use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
 use Drupal\node\NodeInterface;
+use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
 
 /**
  * Gives meta properties about forms based on routes.
@@ -1680,5 +1681,29 @@ function joinup_theme_preprocess_menu__og__navigation__region_content_bottom(arr
     if (isset($links_to_be_stripped[$route_name]) && $links_to_be_stripped[$route_name] == $menu_item['title']) {
       unset($variables['items'][$menu_link_id]);
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Collections might have a newsletter. Pass the necessary data that can be used
+ * to render the subscription form inside a tile.
+ */
+function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_content__collection(array &$variables): void {
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  $entity = $variables['entity'];
+
+  /** @var \Drupal\oe_newsroom_newsletter\Plugin\Field\FieldType\NewsletterItem $newsletter_field_item */
+  $newsletter_field_item = $entity->get('field_newsletter')->first();
+
+  $newsletter_is_enabled = !empty($newsletter_field_item) && $newsletter_field_item->isEnabled();
+  $variables['newsletter_enabled'] = $newsletter_is_enabled;
+
+  if ($newsletter_is_enabled) {
+    $variables['newsletter_motivation'] = t('Keep in touch with %collection', [
+      '%collection' => $entity->label(),
+    ]);
+    $variables['newsletter_form'] = \Drupal::formBuilder()->getForm(NewsletterSubscribeForm::class, $newsletter_field_item->getUniverse(), $newsletter_field_item->getServiceId());
   }
 }
