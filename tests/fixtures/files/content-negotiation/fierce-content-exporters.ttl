@@ -1,15 +1,15 @@
 @prefix dc: <http://purl.org/dc/terms/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ns0: <http://joinup.eu/> .
 @prefix ns1: <http://joinup.eu/language/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 <http://i-am-creative/>
   a dc:LicenseDocument ;
-  rdfs:label "Creative commons"@en ;
   ns0:language "en"@en ;
   ns1:default "1" ;
-  ns1:translation_source "und"@en ;
-  ns1:translation_outdated ""@en ;
   ns1:translation_author "0"@en ;
+  ns1:translation_outdated ""@en ;
+  ns1:translation_source "und"@en ;
   ns1:translation_status "1"@en ;
-  dc:description "This is so creative" .
+  dc:description "This is so creative" ;
+  rdfs:label "Creative commons"@en .
