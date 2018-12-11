@@ -118,6 +118,10 @@ To start the machines with the databases restored, run the following command:
 `docker-compose -f docker-compose.yml -f docker-compose.prod_db.yml up`  
 and the images will be started.
 
+**Note:** As you can see in `docker-compose.prod_db.yml`, the dumps need to be placed in a specific folder in the
+container. You can alter the configuration using your override to draw the dump from anywhere in the host, but the
+container target must remain the same.
+
 After the images have been built and the databases have been restored, run the following command to execute the
 updates  
 `docker-compose exec --user www-data web ./vendor/bin/phing execute-updates`.
