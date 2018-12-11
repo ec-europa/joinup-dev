@@ -1230,11 +1230,11 @@ function joinup_core_form_views_form_og_members_overview_default_validate(array 
     return;
   }
 
-  /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relations_manager */
-  $relations_manager = \Drupal::service('joinup_core.relations_manager');
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
 
   $group = \Drupal::routeMatch()->getParameter('rdf_entity');
-  $owner_memberships = $relations_manager->getGroupMembershipsByRoles($group, ['administrator']);
+  $owner_memberships = $membership_manager->getGroupMembershipsByRoleNames($group, ['administrator']);
 
   if (empty($owner_memberships)) {
     return;

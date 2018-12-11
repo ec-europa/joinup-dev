@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
+use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -126,7 +127,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * {@inheritdoc}
    */
   public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $memberships = $this->getGroupMembershipsByRoles($entity, ['administrator'], $states);
+    $memberships = $this->membershipManager->getGroupMembershipsByRoleNames($entity, ['administrator'], $states);
 
     $users = [];
     foreach ($memberships as $membership) {
@@ -156,7 +157,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * {@inheritdoc}
    */
   public function getGroupMemberships(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    return $this->getGroupMembershipsByRoles($entity, [], $states);
+    return $this->membershipManager->getGroupMembershipsByRoleNames($entity, [OgRoleInterface::AUTHENTICATED], $states);
   }
 
   /**
@@ -192,32 +193,6 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
     }
 
     return $collections;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupMembershipsByRoles(EntityInterface $entity, array $role_names, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $entity_type_id = $entity->getEntityTypeId();
-
-    $properties = [
-      'state' => $states,
-      'entity_type' => $entity_type_id,
-      'entity_id' => $entity->id(),
-    ];
-
-    // Optionally filter by role names.
-    if (!empty($role_names)) {
-      $bundle_id = $entity->bundle();
-
-      $role_ids = array_map(function (string $role_name) use ($entity_type_id, $bundle_id): string {
-        return implode('-', [$entity_type_id, $bundle_id, $role_name]);
-      }, $role_names);
-
-      $properties['roles'] = $role_ids;
-    }
-
-    return $this->entityTypeManager->getStorage('og_membership')->loadByProperties($properties);
   }
 
   /**

@@ -239,7 +239,7 @@ abstract class NotificationSubscriberBase {
       return [];
     }
 
-    $memberships = $this->relationManager->getGroupMembershipsByRoles($entity, [$role->getName()]);
+    $memberships = $this->membershipManager->getGroupMembershipsByRoleNames($entity, [$role->getName()]);
 
     // We need to handle possible broken relationships or memberships that
     // are not removed yet.
