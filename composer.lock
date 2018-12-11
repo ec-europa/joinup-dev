@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c97f652a8e74d6297d780fe614fc629",
+    "content-hash": "d7e4b93472cd2c7b93dc770751292e96",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4089,20 +4089,20 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-8.x-1.x",
+            "version": "dev-get-group-memberships-by-roles",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gizra/og.git",
-                "reference": "bb8dc168ba5d5c7ee99bc1349e42a8ce6a797258"
+                "reference": "ceb65b79f77d5812337aa8fee7c0ee1166c46c2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gizra/og/zipball/bb8dc168ba5d5c7ee99bc1349e42a8ce6a797258",
-                "reference": "bb8dc168ba5d5c7ee99bc1349e42a8ce6a797258",
+                "url": "https://api.github.com/repos/Gizra/og/zipball/ceb65b79f77d5812337aa8fee7c0ee1166c46c2d",
+                "reference": "ceb65b79f77d5812337aa8fee7c0ee1166c46c2d",
                 "shasum": ""
             },
             "require": {
-                "drupal/core": "~8.5"
+                "drupal/core": "~8.6"
             },
             "require-dev": {
                 "drupal/coder": "~8.2"
@@ -4118,7 +4118,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "source": "https://cgit.drupalcode.org/og"
             },
-            "time": "2018-08-07T06:45:24+00:00"
+            "time": "2018-12-11T23:01:00+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -13406,12 +13406,6 @@
         }
     ],
     "aliases": [
-        {
-            "alias": "1.0",
-            "alias_normalized": "1.0.0.0",
-            "version": "dev-8.x-1.x",
-            "package": "drupal/og"
-        },
         {
             "alias": "0.9.2",
             "alias_normalized": "0.9.2.0",
