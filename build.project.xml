@@ -444,6 +444,29 @@
                 text="$config['stage_file_proxy.settings']['origin'] = '${stage_file_proxy.origin}';${line.separator}$config['stage_file_proxy.settings']['hotlink'] = ${stage_file_proxy.hotlink};${line.separator}" />
     </target>
 
+    <!-- Mock the Newsroom newsletter subscription service. -->
+    <target name="setup-mocked-newsroom-newsletter-subscriber"
+            description="Sets up a mocked Newsroom newsletter subscription service."
+            depends="writable-settings-folder">
+
+        <!-- Avoid duplicates in settings.local.php, if the file already exists. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$config\['oe_newsroom_newsletter\.subscriber'\]\['class'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <append destFile="${website.settings.local.php}" text="$config['oe_newsroom_newsletter.subscriber']['class'] = 'Drupal\oe_newsroom_newsletter\NewsletterSubscriber\MockNewsletterSubscriber';${line.separator}" />
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
@@ -462,6 +485,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, setup-mocked-newsroom-newsletter-subscriber" />
 
 </project>
