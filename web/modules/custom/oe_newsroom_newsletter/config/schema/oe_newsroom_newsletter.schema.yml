@@ -1,0 +1,21 @@
+field.storage_settings.oe_newsroom_newsletter:
+  type: mapping
+  label: Newsletter storage settings
+
+field.field_settings.oe_newsroom_newsletter:
+  type: mapping
+  label: Newsletter field settings
+
+field.value.oe_newsroom_newsletter:
+  type: mapping
+  label: Default value
+  mapping:
+    enabled:
+      type: boolean
+      label: Whether or not newsletter subscriptions are enabled.
+    universe:
+      type: string
+      label: The Newsroom universe ID.
+    service_id:
+      type: integer
+      label: The Newsroom service ID.
