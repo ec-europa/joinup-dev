@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f06ef1b39402a3425f9b26075bfb875",
+    "content-hash": "1d75aae72f7949b6d357d7fd2eebc8cc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.81.0",
+            "version": "3.80.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "99e35b38e894425f7626880f6ba017189a1ec337"
+                "reference": "2f1509337ed63ab186ed6306eb5d6ea674a3fdab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/99e35b38e894425f7626880f6ba017189a1ec337",
-                "reference": "99e35b38e894425f7626880f6ba017189a1ec337",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2f1509337ed63ab186ed6306eb5d6ea674a3fdab",
+                "reference": "2f1509337ed63ab186ed6306eb5d6ea674a3fdab",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-12-05T21:13:40+00:00"
+            "time": "2018-12-03T23:05:45+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2614,7 +2614,8 @@
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
-                    "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch"
+                    "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
+                    "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch"
                 }
             },
             "autoload": {
@@ -4623,7 +4624,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12/files": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.patch"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
+                    "Ensure a predictable order of fields when serializing @see https://github.com/ec-europa/rdf_entity/pull/76": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/76.diff"
                 }
             },
             "autoload": {
@@ -5320,14 +5322,15 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1519655285",
+                    "datestamp": "1519655459",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch"
+                    "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
+                    "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2018-11-07/3000553-9_includes-3000546-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6298,16 +6301,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.5.2",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9f83dded91781a01c63574e387eaa769be769115"
+                "reference": "53662d6688033a5eccde987bdd5a4a98ebe2d952"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9f83dded91781a01c63574e387eaa769be769115",
-                "reference": "9f83dded91781a01c63574e387eaa769be769115",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/53662d6688033a5eccde987bdd5a4a98ebe2d952",
+                "reference": "53662d6688033a5eccde987bdd5a4a98ebe2d952",
                 "shasum": ""
             },
             "require": {
@@ -6361,7 +6364,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2018-12-04T20:46:45+00:00"
+            "time": "2018-12-03T05:07:51+00:00"
         },
         {
             "name": "html2text/html2text",
@@ -7359,20 +7362,20 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.7",
+            "version": "v1.10.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
-                "reference": "19a3e0fcd50492c4357372f623f55f1b144346da"
+                "reference": "052868b244d31f822796e7e9981f62557eb256d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/19a3e0fcd50492c4357372f623f55f1b144346da",
-                "reference": "19a3e0fcd50492c4357372f623f55f1b144346da",
+                "url": "https://api.github.com/repos/pear/pear-core-minimal/zipball/052868b244d31f822796e7e9981f62557eb256d4",
+                "reference": "052868b244d31f822796e7e9981f62557eb256d4",
                 "shasum": ""
             },
             "require": {
-                "pear/console_getopt": "~1.4",
+                "pear/console_getopt": "~1.3",
                 "pear/pear_exception": "~1.0"
             },
             "replace": {
@@ -7399,7 +7402,7 @@
                 }
             ],
             "description": "Minimal set of PEAR core files to be used as composer dependency",
-            "time": "2018-12-05T20:03:52+00:00"
+            "time": "2018-08-22T19:28:09+00:00"
         },
         {
             "name": "pear/pear_exception",
@@ -11405,6 +11408,65 @@
             "homepage": "https://www.drupal.org/project/renderviz",
             "support": {
                 "source": "http://cgit.drupalcode.org/renderviz"
+            }
+        },
+        {
+            "name": "drupal/restui",
+            "version": "1.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/restui",
+                "reference": "8.x-1.16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/restui-8.x-1.16.zip",
+                "reference": "8.x-1.16",
+                "shasum": "60d2c7ecf6bb439e528c367753df9c94684b8894"
+            },
+            "require": {
+                "drupal/core": "^8.2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.16",
+                    "datestamp": "1541330284",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "-enzo-",
+                    "homepage": "https://www.drupal.org/user/294937"
+                },
+                {
+                    "name": "clemens.tolboom",
+                    "homepage": "https://www.drupal.org/user/125814"
+                },
+                {
+                    "name": "juampynr",
+                    "homepage": "https://www.drupal.org/user/682736"
+                },
+                {
+                    "name": "klausi",
+                    "homepage": "https://www.drupal.org/user/262198"
+                }
+            ],
+            "description": "Provides a user interface to manage REST resources",
+            "homepage": "https://www.drupal.org/project/restui",
+            "support": {
+                "source": "http://cgit.drupalcode.org/restui"
             }
         },
         {
