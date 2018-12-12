@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e68e438c4032905095652313d92e780",
+    "content-hash": "ab11ceb70d1635c4c9e8a9f5fb1ab488",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2042,11 +2042,17 @@
         },
         {
             "name": "drupal/cached_computed_field",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/cached_computed_field",
-                "reference": "add7afa453a47a0b5cd739f0bd390b549da4ea1a"
+                "reference": "8.x-1.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "867e488d576fd9211ef6608ed1d6de545f43e444"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2057,8 +2063,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+4-dev",
-                    "datestamp": "1519823884",
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1544635080",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2083,8 +2089,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cached_computed_field",
                 "issues": "https://www.drupal.org/project/issues/cached_computed_field"
-            },
-            "time": "2018-03-15T14:01:24+00:00"
+            }
         },
         {
             "name": "drupal/changed_fields",
@@ -2257,11 +2262,17 @@
         },
         {
             "name": "drupal/config_sync",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_sync",
-                "reference": "c41d57838b45c84de0a5068e44572bc07779af6a"
+                "reference": "8.x-1.0-alpha7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_sync-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "fb0ac9d658ac0ccc93ad31630a843e50e4c49f4d"
             },
             "require": {
                 "drupal/config_provider": "*",
@@ -2286,6 +2297,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2326,8 +2340,7 @@
                 "source": "https://cgit.drupalcode.org/config_sync",
                 "issues": "https://drupal.org/project/issues/config_sync",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2018-05-14T12:57:23+00:00"
+            }
         },
         {
             "name": "drupal/config_update",
@@ -3429,11 +3442,17 @@
         },
         {
             "name": "drupal/inline_entity_form",
-            "version": "dev-1.x",
+            "version": "1.0.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/inline_entity_form",
-                "reference": "dbfc93fc961b3e6c84497390c62ec36d02c1c4d7"
+                "reference": "8.x-1.0-rc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/inline_entity_form-8.x-1.0-rc1.zip",
+                "reference": "8.x-1.0-rc1",
+                "shasum": "898789fb6a0662fc2572b87f8d0654a0241473f9"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3447,11 +3466,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+2-dev",
-                    "datestamp": "1479155639",
+                    "version": "8.x-1.0-rc1",
+                    "datestamp": "1527030784",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
@@ -3489,8 +3508,7 @@
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
                 "source": "http://cgit.drupalcode.org/inline_entity_form"
-            },
-            "time": "2016-11-14T20:32:26+00:00"
+            }
         },
         {
             "name": "drupal/linkit",
@@ -5100,7 +5118,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "datestamp": "1542122580",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5545,11 +5563,17 @@
         },
         {
             "name": "drupal/views_data_export",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/views_data_export",
-                "reference": "124b526d65c48661587cb19b37674cda6573c7bd"
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "f698c1072169017f28e58a4b026d3f3cff904c96"
             },
             "require": {
                 "drupal/core": "*",
@@ -5561,16 +5585,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4+1-dev",
-                    "datestamp": "1486397282",
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1525280285",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch",
-                    "Download link returns 406 with Drupal ^8.5.0 @see https://www.drupal.org/project/views_data_export/issues/2951185": "https://www.drupal.org/files/issues/2951185-2.patch"
+                    "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5607,8 +5630,7 @@
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
                 "source": "http://cgit.drupalcode.org/views_data_export"
-            },
-            "time": "2017-02-06T16:06:03+00:00"
+            }
         },
         {
             "name": "drush/drush",
@@ -13523,18 +13545,14 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
-        "drupal/cached_computed_field": 20,
-        "drupal/config_sync": 20,
         "drupal/diff": 5,
         "drupal/flag": 15,
-        "drupal/inline_entity_form": 20,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
         "drupal/subpathauto": 10,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
-        "drupal/views_data_export": 20,
         "ec-europa/infra": 20,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
