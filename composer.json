@@ -15,7 +15,7 @@
         "drupal/cached_computed_field": "^1.0-beta3",
         "drupal/changed_fields": "^2.0",
         "drupal/config_readonly": "~1.0",
-        "drupal/config_sync": "1.x-dev",
+        "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
         "drupal/core": "^8.6.3",
         "drupal/diff": "^1.0@RC",
@@ -155,6 +155,9 @@
         "patches": {
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
+            },
+            "drupal/config_sync": {
+                "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
             },
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-10-16/85494-261.patch",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a054993f7efaffc8993f7cb27037cd29",
+    "content-hash": "d04f319639132640ae8a40eed5f4ab21",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2046,11 +2046,17 @@
         },
         {
             "name": "drupal/cached_computed_field",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/cached_computed_field",
-                "reference": "add7afa453a47a0b5cd739f0bd390b549da4ea1a"
+                "reference": "8.x-1.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "867e488d576fd9211ef6608ed1d6de545f43e444"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2061,8 +2067,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2+4-dev",
-                    "datestamp": "1519823884",
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1544635080",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2087,8 +2093,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cached_computed_field",
                 "issues": "https://www.drupal.org/project/issues/cached_computed_field"
-            },
-            "time": "2018-03-15T14:01:24+00:00"
+            }
         },
         {
             "name": "drupal/changed_fields",
@@ -2261,11 +2266,17 @@
         },
         {
             "name": "drupal/config_sync",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_sync",
-                "reference": "c41d57838b45c84de0a5068e44572bc07779af6a"
+                "reference": "8.x-1.0-alpha7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_sync-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "fb0ac9d658ac0ccc93ad31630a843e50e4c49f4d"
             },
             "require": {
                 "drupal/config_provider": "*",
@@ -2290,6 +2301,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2330,8 +2344,7 @@
                 "source": "https://cgit.drupalcode.org/config_sync",
                 "issues": "https://drupal.org/project/issues/config_sync",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2018-05-14T12:57:23+00:00"
+            }
         },
         {
             "name": "drupal/config_update",
@@ -13525,7 +13538,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "semiceu/adms-ap_validator": 20,
-        "drupal/config_sync": 20,
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/inline_entity_form": 20,
