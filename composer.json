@@ -28,7 +28,7 @@
         "drupal/file_url": "~1.0",
         "drupal/flag": "^4.0@alpha",
         "drupal/honeypot": "^1.27",
-        "drupal/inline_entity_form": "dev-1.x#dbfc93fc961b3e6c84497390c62ec36d02c1c4d7",
+        "drupal/inline_entity_form": "^1.0-rc1",
         "drupal/linkit": "^5.0-beta6",
         "drupal/matomo": "^1.7",
         "drupal/matomo_reporting_api": "~2.0",
