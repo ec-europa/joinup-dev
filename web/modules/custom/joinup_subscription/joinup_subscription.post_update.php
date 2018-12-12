@@ -62,7 +62,13 @@ function joinup_subscription_post_update_remove_group_types_field() {
   // a per-membership subscription, so the original fields can be removed. There
   // is no migration planned since these field were present but unused.
   foreach (['field_user_group_types', 'field_user_subscription_events'] as $field_name) {
-    FieldConfig::loadByName('user', 'user', $field_name)->delete();
-    FieldStorageConfig::loadByName('user', $field_name)->delete();
+    $field_config = FieldConfig::loadByName('user', 'user', $field_name);
+    if (!empty($field_config)) {
+      $field_config->delete();
+    }
+    $field_storage_config = FieldStorageConfig::loadByName('user', $field_name);
+    if (!empty($field_storage_config)) {
+      $field_storage_config->delete();
+    }
   }
 }
