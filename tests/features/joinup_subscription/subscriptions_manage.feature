@@ -67,29 +67,3 @@ Feature: User subscription settings
       | recipient_email | auric@example.com                                                                   |
       | subject         | Joinup: The discussion "Water supply" was updated in the space of "Malicious plans" |
       | body            | The discussion "Water supply" was updated in the "Malicious plans" collection.      |
-
-  @wip
-  Scenario: Temporarily disabled scenario, will be restored in ISAICP-4218.
-    # Todo: rewrite these steps in proper domain specific language.
-    # Check "Receive notifications for": Solution.
-    Then I check "field_user_group_types[rdf_entity:solution]"
-    # Check "Receive notifications for": News.
-    Then I check "field_user_group_types[node:news]"
-    # Check "Notify me on updates".
-    And I check "field_user_subscription_events[value]"
-    And I press "Save"
-    Then I should see the success message "The changes have been saved"
-
-    # Check that the settings have been saved.
-    When I am on the homepage
-    And I click "My account"
-    And I click "Subscription Settings"
-    Then the radio button "Monthly" from field "Notification frequency" should be selected
-    And the "Solution" checkbox should be checked
-    And the "News" checkbox should be checked
-    And the "Notify me on updates" checkbox should be checked
-    But the "Release" checkbox should not be checked
-    And the "Distribution" checkbox should not be checked
-    And the "Document" checkbox should not be checked
-    And the "Event" checkbox should not be checked
-    And the "Custom page" checkbox should not be checked

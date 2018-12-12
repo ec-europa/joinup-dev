@@ -11,13 +11,11 @@ dependencies:
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
-    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
-    - field.field.user.user.field_user_subscription_events
   module:
     - user
 id: user.user.subscription_settings
@@ -29,19 +27,6 @@ content:
     type: options_buttons
     weight: 0
     settings: {  }
-    third_party_settings: {  }
-    region: content
-  field_user_group_types:
-    type: options_buttons
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  field_user_subscription_events:
-    type: boolean_checkbox
-    weight: 2
-    settings:
-      display_label: false
     third_party_settings: {  }
     region: content
 hidden:

@@ -66,10 +66,5 @@
         {
             "value": "weekly"
         }
-    ],
-    "field_user_subscription_events": [
-        {
-            "value": "1"
-        }
     ]
 }
