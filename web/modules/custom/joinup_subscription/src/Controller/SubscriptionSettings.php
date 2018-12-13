@@ -48,8 +48,8 @@ class SubscriptionSettings extends ControllerBase {
   /**
    * Access control for the subscription settings user page.
    *
-   * The user is checked for both global permissions and permissions to edit
-   * his own subscriptions.
+   * Users can edit their own subscription settings, and users with the
+   * 'administer users' permission can edit subscriptions for all users.
    *
    * @param \Drupal\Core\Entity\EntityInterface $user
    *   The user object from the route.
@@ -58,10 +58,12 @@ class SubscriptionSettings extends ControllerBase {
    *   An access result object carrying the result of the check.
    */
   public function access(EntityInterface $user) {
-    if ($this->currentUser->hasPermission('manage all subscriptions')) {
+    // Users that can administer all users have access.
+    if ($this->currentUser->hasPermission('administer users')) {
       return AccessResult::allowed();
     }
-    elseif (!$this->currentUser->isAnonymous() && $this->currentUser->id() == $user->id() && $this->currentUser->hasPermission('manage own subscriptions')) {
+    // The logged in user can manage their own subscriptions.
+    elseif (!$this->currentUser->isAnonymous() && $this->currentUser->id() == $user->id()) {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();
