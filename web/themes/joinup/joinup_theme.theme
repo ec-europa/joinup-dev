@@ -1102,7 +1102,7 @@ function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
   /** @var \Drupal\og\OgMembershipInterface $row */
   foreach ($variables['rows'] as &$row) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = $result_row = $row['content']['#row']->_entity;
+    $membership = $row['content']['#og_membership'];
     $row['content'] = $view_builder->view($membership->getOwner(), 'view_mode_tile');
   }
 }

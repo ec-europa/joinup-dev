@@ -1,13 +1,10 @@
 langcode: en
 status: true
 dependencies:
-  config:
-  - field.storage.user.field_user_family_name
-  - field.storage.user.field_user_first_name
   module:
-  - joinup_core
-  - og
-  - user
+    - joinup_core
+    - og
+    - user
 id: members_overview
 label: 'Members overview (public)'
 module: views
@@ -71,13 +68,7 @@ display:
       style:
         type: tiles
       row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline:
-            rendered_entity: rendered_entity
-          separator: ''
-          hide_empty: false
+        type: 'entity:og_membership'
       fields:
         rendered_entity:
           table: og_membership
@@ -131,299 +122,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           view_mode: default
-        field_user_family_name:
-          id: field_user_family_name
-          table: user__field_user_family_name
-          field: field_user_family_name
-          relationship: uid
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_user_first_name:
-          id: field_user_first_name
-          table: user__field_user_first_name
-          field: field_user_first_name
-          relationship: uid
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        name:
-          id: name
-          table: users_field_data
-          field: name
-          relationship: uid
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: user_name
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: user
-          entity_field: name
-          plugin_id: field
       filters:
-        combine:
-          id: combine
-          table: views
-          field: combine
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: allwords
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: combine_op
-            label: "Type something to filter the list"
-            description: ''
-            use_operator: false
-            operator: combine_op
-            identifier: combine
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              moderator: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: 'Combine fields filter'
-            description: null
-            identifier: combine
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1: {  }
-              2: {  }
-              3: {  }
-          fields:
-            field_user_family_name: field_user_family_name
-            field_user_first_name: field_user_first_name
-          plugin_id: combine
-        roles_target_id:
-          id: roles_target_id
-          table: og_membership__roles
-          field: roles_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: roles_target_id_op
-            label: Roles
-            description: null
-            use_operator: false
-            operator: roles_target_id_op
-            identifier: roles_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-          is_grouped: true
-          group_info:
-            label: Roles
-            description: ''
-            identifier: roles_target_id
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1:
-                title: Owner
-                operator: '='
-                value: rdf_entity-collection-administrator
-              2:
-                title: Facilitator
-                operator: '='
-                value: rdf_entity-collection-facilitator
-              3:
-                title: Owner
-                operator: '='
-                value: rdf_entity-solution-administrator
-              4:
-                title: Facilitator
-                operator: '='
-                value: rdf_entity-solution-facilitator
-          entity_type: og_membership
-          entity_field: roles
-          plugin_id: string
         state:
           id: state
           table: og_membership
@@ -500,6 +199,60 @@ display:
           entity_type: user
           entity_field: status
           plugin_id: boolean
+        roles_target_id:
+          id: roles_target_id
+          table: og_membership__roles
+          field: roles_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: roles_target_id_op
+            label: Roles
+            description: null
+            use_operator: false
+            operator: roles_target_id_op
+            identifier: roles_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: true
+          group_info:
+            label: Roles
+            description: ''
+            identifier: roles_target_id
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Owner
+                operator: '='
+                value: rdf_entity-collection-administrator
+              2:
+                title: Facilitator
+                operator: '='
+                value: rdf_entity-collection-facilitator
+              3:
+                title: Owner
+                operator: '='
+                value: rdf_entity-solution-administrator
+              4:
+                title: Facilitator
+                operator: '='
+                value: rdf_entity-solution-facilitator
+          entity_type: og_membership
+          entity_field: roles
+          plugin_id: string
       sorts:
         field_user_first_name_value:
           id: field_user_first_name_value
@@ -632,11 +385,8 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-      - 'languages:language_content'
-      - 'languages:language_interface'
-      - url
-      - url.query_args
+        - 'languages:language_interface'
+        - url
+        - url.query_args
       tags:
-      - 'config:core.entity_view_display.og_membership.default.default'
-      - 'config:field.storage.user.field_user_family_name'
-      - 'config:field.storage.user.field_user_first_name'
+        - 'config:core.entity_view_display.og_membership.default.default'
