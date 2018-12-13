@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
+use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityTrait;
@@ -21,6 +22,22 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use EntityTrait;
   use UserTrait;
+
+  /**
+   * Navigates to the subscription settings form of the given user.
+   *
+   * @param string $username
+   *   The name of the user.
+   *
+   * @When I go to the subscription settings form of :username
+   */
+  public function visitSubscriptionSettings(string $username): void {
+    $user = $this->getUserByName($username);
+    $url = Url::fromRoute('joinup_subscription.subscription_settings', [
+      'user' => $user->id(),
+    ]);
+    $this->visitPath($url->toString());
+  }
 
   /**
    * Subscribes the given users to the given entity.

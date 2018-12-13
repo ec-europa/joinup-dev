@@ -42,9 +42,8 @@ Feature: User authentication
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
       | admin/structure                                                |
       | admin/structure/views                                          |
-      | propose/collection                                             |
-      | propose/solution                                               |
       | dashboard                                                      |
+      | licence                                                        |
       | node                                                           |
       | node/add                                                       |
       | node/add/custom_page                                           |
@@ -52,6 +51,8 @@ Feature: User authentication
       | node/add/document                                              |
       | node/add/event                                                 |
       | node/add/news                                                  |
+      | propose/collection                                             |
+      | propose/solution                                               |
       | rdf_entity/add                                                 |
       | rdf_entity/add/asset_distribution                              |
       | rdf_entity/add/asset_release                                   |
@@ -60,7 +61,7 @@ Feature: User authentication
       | rdf_entity/add/licence                                         |
       | rdf_entity/add/owner                                           |
       | rdf_entity/add/solution                                        |
-      | licence                                                        |
+      | user/subscriptions                                             |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -72,6 +73,7 @@ Feature: User authentication
       | propose/collection  |
       | collections         |
       | user                |
+      | user/subscriptions  |
       | joinup/legal-notice |
 
   @api
