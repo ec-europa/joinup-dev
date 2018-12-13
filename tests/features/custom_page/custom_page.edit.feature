@@ -1,28 +1,25 @@
 @api
 Feature: "Custom page" editing.
   In order to manage custom pages
-  As a moderator or collection facilitator
+  As a moderator or group facilitator
   I need to be able to edit "Custom Page" content through UI.
 
-  Background:
+  Scenario Outline: Privileged users can edit custom pages.
     Given users:
       | Username     | E-mail                   |
       | Mickey Mouse | mickey.mouse@example.com |
       | Pluto        | pluto@example.com        |
-    And the following collection:
-      | title       | Dumbo Collective                                                            |
-      | description | Featuring a semi-anthropomorphic elephant who is cruelly nicknamed "Dumbo". |
-      | logo        | logo.png                                                                    |
-      | state       | validated                                                                   |
-    And the following collection user memberships:
-      | collection       | user         | roles       |
+    And the following "<group>":
+      | title | Dumbo Collective |
+      | state | validated        |
+    And the following <group> user memberships:
+      | <group>          | user         | roles       |
       | Dumbo Collective | Mickey Mouse | facilitator |
       | Dumbo Collective | Pluto        | member      |
     And "custom_page" content:
-      | title                            | collection       | body                                                                                                                      | logo     |
-      | Buena Vista Distribution Company | Dumbo Collective | Established in 1953, the unit handles distribution, marketing and promotion for films produced by the Walt Disney Studios | logo.png |
+      | title                            | <group>          | body | logo     |
+      | Buena Vista Distribution Company | Dumbo Collective | N/A  | logo.png |
 
-  Scenario: Check visibility of edit button.
     # Group owner should see the button.
     When I am logged in as "Mickey Mouse"
     And I go to the "Buena Vista Distribution Company" custom page
@@ -45,7 +42,7 @@ Feature: "Custom page" editing.
     And I go to the "Buena Vista Distribution Company" custom page
     Then I should not see the link "Edit"
 
-  Scenario: Edit custom page as a collection member.
+    # Edit the page as a facilitator.
     When I am logged in as "Mickey Mouse"
     And I go to the "Buena Vista Distribution Company" custom page
     And I click "Edit"
@@ -55,3 +52,8 @@ Feature: "Custom page" editing.
     When I fill in "Title" with "Walt Disney Studios Motion Pictures"
     And I press "Save"
     Then I should have a "Custom page" content page titled "Walt Disney Studios Motion Pictures"
+
+    Examples:
+      | group      |
+      | collection |
+      | solution   |

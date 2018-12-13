@@ -28,6 +28,7 @@ class GroupMenuBlock extends OgMenuBlock {
   public function build() {
     $menu_name = $this->getMenuName();
     $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters($menu_name);
+    $group = $this->getContext('og')->getContextData()->getValue();
 
     // Adjust the menu tree parameters based on the block's configuration.
     $level = $this->configuration['level'];
@@ -66,8 +67,9 @@ class GroupMenuBlock extends OgMenuBlock {
       $build['disabled'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('All the pages have been disabled for this collection. You can <a href=":edit_menu_url">edit the menu configuration</a> or <a href=":add_page_url">add a new page</a>.',
+        '#value' => $this->t('All the pages have been disabled for this :type. You can <a href=":edit_menu_url">edit the menu configuration</a> or <a href=":add_page_url">add a new page</a>.',
           [
+            ':type' => $group->bundle(),
             ':edit_menu_url' => $edit_navigation_menu_url->toString(),
             ':add_page_url' => $create_custom_page_url->toString(),
           ]),
@@ -91,7 +93,7 @@ class GroupMenuBlock extends OgMenuBlock {
       }
       $build['#contextual_links']['group_menu_block'] = [
         'route_parameters' => [
-          'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
+          'rdf_entity' => $group->id(),
         ],
       ];
     }
