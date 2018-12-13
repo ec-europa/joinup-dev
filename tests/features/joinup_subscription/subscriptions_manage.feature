@@ -43,10 +43,10 @@ Feature: User subscription settings
 
   Scenario: Manage my subscriptions
     Given collections:
-      | title          | state     |
-      | Alpha Centauri | validated |
-      | Barnard's Star | draft     |
-      | Wolf 359       | proposed  |
+      | title          | state     | abstract                                                       |
+      | Alpha Centauri | validated | A triple star system at a distance of 4.3 light years.         |
+      | Barnard's Star | draft     | A low mass red dwarf at around 6 light years distance.         |
+      | Wolf 359       | proposed  | Wolf 359 is a red dwarf star located in the constellation Leo. |
     And the following collection user memberships:
       | collection     | user             | roles       |
       | Alpha Centauri | Auric Goldfinger | member      |

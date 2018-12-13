@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_subscription\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -14,6 +15,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SubscriptionDashboardForm extends FormBase {
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * The Joinup relation manager service.
    *
    * @var \Drupal\joinup_core\JoinupRelationManagerInterface
@@ -23,10 +31,13 @@ class SubscriptionDashboardForm extends FormBase {
   /**
    * Constructs a new SubscriptionDashboardForm.
    *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
    *   The Joinup relation manager service.
    */
-  public function __construct(JoinupRelationManagerInterface $relationManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManagerInterface $relationManager) {
+    $this->entityTypeManager = $entityTypeManager;
     $this->relationManager = $relationManager;
   }
 
@@ -35,6 +46,7 @@ class SubscriptionDashboardForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
+      $container->get('entity_type.manager'),
       $container->get('joinup_core.relations_manager')
     );
   }
@@ -55,7 +67,13 @@ class SubscriptionDashboardForm extends FormBase {
       throw new \InvalidArgumentException('No user account supplied.');
     }
 
-    $collections = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+
+    $form['description'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
+    ];
 
     $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
     $form['empty_text'] = [
@@ -66,8 +84,16 @@ class SubscriptionDashboardForm extends FormBase {
         'error' => t('Error message'),
         'warning' => t('Warning message'),
       ],
-      '#access' => !(bool) count($collections),
+      '#access' => !(bool) count($memberships),
     ];
+
+    foreach ($memberships as $membership) {
+      $collection = $membership->getGroup();
+      if ($collection === NULL) {
+        continue;
+      }
+      $form['collections'][$collection->id()]['preview'] = $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'view_mode_featured');
+    }
 
     $form['actions']['submit'] = [
       '#type' => 'submit',
