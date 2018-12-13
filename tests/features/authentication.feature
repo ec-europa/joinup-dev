@@ -62,6 +62,7 @@ Feature: User authentication
       | rdf_entity/add/owner                                           |
       | rdf_entity/add/solution                                        |
       | user/subscriptions                                             |
+      | user/subscription-settings                                     |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -69,12 +70,13 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                |
-      | propose/collection  |
-      | collections         |
-      | user                |
-      | user/subscriptions  |
-      | joinup/legal-notice |
+      | path                       |
+      | propose/collection         |
+      | collections                |
+      | user                       |
+      | user/subscriptions         |
+      | user/subscription-settings |
+      | joinup/legal-notice        |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration

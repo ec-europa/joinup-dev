@@ -84,4 +84,18 @@ class SubscriptionSettings extends ControllerBase {
     return $this->redirect('joinup_subscription.subscription_settings', ['user' => $this->currentUser()->id()]);
   }
 
+  /**
+   * Displays the subscription dashboard for the currently logged in user.
+   *
+   * This controller assumes that it is only invoked for authenticated users.
+   * This is enforced for the 'joinup_subscription.subscriptions_page' route
+   * with the '_user_is_logged_in' requirement.
+   *
+   * @return array
+   *   The subscription dashboard form array.
+   */
+  public function subscriptionDashboardPage() {
+    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\SubscriptionDashboardForm', $this->currentUser());
+  }
+
 }

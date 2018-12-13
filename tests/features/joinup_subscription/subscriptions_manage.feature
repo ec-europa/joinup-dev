@@ -17,21 +17,54 @@ Feature: User subscription settings
     Given I am an anonymous user
     When I go to the subscription settings form of "Auric Goldfinger"
     Then I should see the error message "Access denied. You must sign in to view this page."
+    When I go to the subscription dashboard of "Auric Goldfinger"
+    Then I should see the error message "Access denied. You must sign in to view this page."
 
     # Authenticated users can manage their own subscriptions.
     Given I am logged in as "Auric Goldfinger"
     When I go to the subscription settings form of "Auric Goldfinger"
     Then I should see the heading "Subscription settings"
+    When I go to the subscription dashboard of "Auric Goldfinger"
+    Then I should see the heading "Collection subscriptions"
 
     # Moderators can manage subscriptions of any user.
     Given I am logged in as a moderator
     When I go to the subscription settings form of "Auric Goldfinger"
     Then I should see the heading "Subscription settings"
+    When I go to the subscription dashboard of "Auric Goldfinger"
+    Then I should see the heading "Collection subscriptions"
 
     # Users cannot access subscription settings of other users.
     Given I am logged in as "Chanelle Testa"
     When I go to the subscription settings form of "Auric Goldfinger"
     Then I should get an access denied error
+    When I go to the subscription dashboard of "Auric Goldfinger"
+    Then I should get an access denied error
+
+  Scenario: Manage my subscriptions
+    Given collections:
+      | title          | state     |
+      | Alpha Centauri | validated |
+      | Barnard's Star | draft     |
+      | Wolf 359       | proposed  |
+    And the following collection user memberships:
+      | collection     | user             | roles       |
+      | Alpha Centauri | Auric Goldfinger | member      |
+      | Barnard's Star | Auric Goldfinger | owner       |
+      | Wolf 359       | Auric Goldfinger | facilitator |
+
+    # Users that are not a member of any collections should see the empty text.
+    Given I am logged in as an "authenticated user"
+    When I go to my subscription dashboard
+    Then I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
+    But I should not see the text "Alpha Centauri"
+
+    # Log in as a user that is a member of 3 collections. The subscriptions for
+    # all 3 collections should be shown.
+    Given I am logged in as "Auric Goldfinger"
+    When I go to my subscription dashboard
+    # The empty text should not be shown now.
+    Then I should not see the text "No collection memberships yet."
 
   Scenario Outline: Change the notification frequency of my digests
     Given collection:

@@ -40,6 +40,28 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
+   * Navigates to the subscription dashboard of the given user.
+   *
+   * @param string $username
+   *   The name of the user.
+   *
+   * @When I go to the subscription dashboard of :username
+   * @When I go to my subscription dashboard
+   */
+  public function visitSubscriptionDashboard(string $username = NULL): void {
+    if (!empty($username)) {
+      $user = $this->getUserByName($username);
+      $url = Url::fromRoute('joinup_subscription.subscriptions', [
+        'user' => $user->id(),
+      ]);
+    }
+    else {
+      $url = Url::fromRoute('joinup_subscription.subscriptions_page');
+    }
+    $this->visitPath($url->toString());
+  }
+
+  /**
    * Subscribes the given users to the given entity.
    *
    * @param \Behat\Gherkin\Node\TableNode $table

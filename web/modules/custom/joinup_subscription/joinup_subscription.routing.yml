@@ -1,5 +1,5 @@
 joinup_subscription.subscription_settings:
-  path: '/user/{user}/subscriptions'
+  path: '/user/{user}/subscription-settings'
   defaults:
     _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::build'
     _title: 'Subscription settings'
@@ -11,9 +11,29 @@ joinup_subscription.subscription_settings:
         type: entity:user
 
 joinup_subscription.subscription_settings_page:
-  path: '/user/subscriptions'
+  path: '/user/subscription-settings'
   defaults:
     _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::subscriptionSettingsPage'
+    _title: 'Subscription settings'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+joinup_subscription.subscriptions:
+  path: '/user/{user}/subscriptions'
+  defaults:
+    _form: '\Drupal\joinup_subscription\Form\SubscriptionDashboardForm'
+    _title: 'Collection subscriptions'
+  requirements:
+    _custom_access: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::access'
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+joinup_subscription.subscriptions_page:
+  path: '/user/subscriptions'
+  defaults:
+    _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::subscriptionDashboardPage'
     _title: 'My subscriptions'
   requirements:
     _user_is_logged_in: 'TRUE'
