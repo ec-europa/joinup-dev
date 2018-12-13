@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\collection\Plugin\Block;
+namespace Drupal\joinup_core\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
@@ -8,19 +8,19 @@ use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\og_menu\Plugin\Block\OgMenuBlock;
 
 /**
- * Provides the block that displays the menu containing collection pages.
+ * Provides the block that displays the menu containing group pages.
  *
  * @Block(
- *   id = "collection_menu_block",
- *   admin_label = @Translation("Collection menu"),
- *   category = @Translation("Collection"),
+ *   id = "group_menu_block",
+ *   admin_label = @Translation("Group menu"),
+ *   category = @Translation("Group"),
  *   deriver = "Drupal\og_menu\Plugin\Derivative\OgMenuBlock",
  *   context = {
- *     "og" = @ContextDefinition("entity", label = @Translation("Collection"))
+ *     "og" = @ContextDefinition("entity", label = @Translation("Group"))
  *   }
  * )
  */
-class CollectionMenuBlock extends OgMenuBlock {
+class GroupMenuBlock extends OgMenuBlock {
 
   /**
    * {@inheritdoc}
@@ -50,7 +50,7 @@ class CollectionMenuBlock extends OgMenuBlock {
     $build = $this->menuTree->build($tree);
 
     // Define URLs that are used in help texts.
-    $create_custom_page_url = Url::fromRoute('custom_page.collection_custom_page.add', [
+    $create_custom_page_url = Url::fromRoute('custom_page.group_custom_page.add', [
       'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
     ]);
 
@@ -89,7 +89,7 @@ class CollectionMenuBlock extends OgMenuBlock {
           ],
         ];
       }
-      $build['#contextual_links']['collection_menu_block'] = [
+      $build['#contextual_links']['group_menu_block'] = [
         'route_parameters' => [
           'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
         ],
