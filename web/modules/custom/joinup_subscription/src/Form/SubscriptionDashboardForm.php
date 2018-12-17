@@ -2,11 +2,15 @@
 
 namespace Drupal\joinup_subscription\Form;
 
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
+use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,6 +26,13 @@ class SubscriptionDashboardForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * The entity type bundle info service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $entityTypeBundleInfo;
+
+  /**
    * The Joinup relation manager service.
    *
    * @var \Drupal\joinup_core\JoinupRelationManagerInterface
@@ -33,11 +44,14 @@ class SubscriptionDashboardForm extends FormBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
+   *   The entity type bundle info service.
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
    *   The Joinup relation manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManagerInterface $relationManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, JoinupRelationManagerInterface $relationManager) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->entityTypeBundleInfo = $entityTypeBundleInfo;
     $this->relationManager = $relationManager;
   }
 
@@ -47,6 +61,7 @@ class SubscriptionDashboardForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
+      $container->get('entity_type.bundle.info'),
       $container->get('joinup_core.relations_manager')
     );
   }
@@ -68,6 +83,7 @@ class SubscriptionDashboardForm extends FormBase {
     }
 
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     $form['description'] = [
       '#type' => 'html_tag',
@@ -87,12 +103,35 @@ class SubscriptionDashboardForm extends FormBase {
       '#access' => !(bool) count($memberships),
     ];
 
+    $form['collections']['#tree'] = TRUE;
+
     foreach ($memberships as $membership) {
       $collection = $membership->getGroup();
       if ($collection === NULL) {
         continue;
       }
-      $form['collections'][$collection->id()]['preview'] = $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'view_mode_featured');
+      $form['collections'][$collection->id()] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['collection-subscription']],
+        'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'view_mode_featured'),
+      ];
+
+      foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
+        $value = array_reduce($membership->get('subscription_bundles')->getIterator()->getArrayCopy(), function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
+          return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
+        }, FALSE);
+        $form['collections'][$collection->id()][$bundle_id] = [
+          '#type' => 'select',
+          '#title' => $bundle_info[$bundle_id]['label'],
+          '#options' => [
+            JoinupSubscriptionInterface::SUBSCRIBE_ALL => $this->t('All notifications'),
+            // @todo Add support for `::SUBSCRIBE_NEW` -> "Only new content".
+            // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4980
+            JoinupSubscriptionInterface::SUBSCRIBE_NONE => $this->t('No notifications'),
+          ],
+          '#default_value' => $value ? JoinupSubscriptionInterface::SUBSCRIBE_ALL : JoinupSubscriptionInterface::SUBSCRIBE_NONE,
+        ];
+      }
     }
 
     $form['actions']['submit'] = [
@@ -106,18 +145,30 @@ class SubscriptionDashboardForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    if (mb_strlen($form_state->getValue('message')) < 10) {
-      $form_state->setErrorByName('name', $this->t('Message should be at least 10 characters.'));
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->messenger()->addStatus($this->t('The message has been sent.'));
-    $form_state->setRedirect('<front>');
+    $user = $form_state->getBuildInfo()['args'][0];
+    $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    foreach ($memberships as $membership) {
+      // Check if the subscriptions have changed. This allows us to skip saving
+      // the membership entity if nothing changed.
+      $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()], function (string $subscription_type): bool {
+        return $subscription_type === JoinupSubscriptionInterface::SUBSCRIBE_ALL;
+      }));
+
+      $original_bundles = array_map(function (array $item): string {
+        return $item['bundle'];
+      }, $membership->get('subscription_bundles')->getValue());
+
+      sort($subscribed_bundles);
+      sort($original_bundles);
+      if ($subscribed_bundles !== $original_bundles) {
+        // Bundle subscriptions have changed, update the membership.
+        $membership->set('subscription_bundles', array_map(function (string $bundle): array {
+          return ['entity_type' => 'node', 'bundle' => $bundle];
+        }, $subscribed_bundles))->save();
+      }
+    }
+    $this->messenger()->addStatus($this->t('The subscriptions have been updated.'));
   }
 
 }

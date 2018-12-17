@@ -16,6 +16,23 @@ use Drupal\Core\Session\AccountInterface;
 interface JoinupSubscriptionInterface {
 
   /**
+   * Defines a subscription type where a user receives all updates.
+   */
+  const SUBSCRIBE_ALL = 'all';
+
+  /**
+   * Defines a subscription type where a user receives updates on new content.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4980
+   */
+  const SUBSCRIBE_NEW = 'new';
+
+  /**
+   * Defines a subscription type where a user does not receive any updates.
+   */
+  const SUBSCRIBE_NONE = 'none';
+
+  /**
    * Gets all the subscribers for a given content entity and a given flag.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
