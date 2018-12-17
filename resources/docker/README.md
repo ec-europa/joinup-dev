@@ -106,6 +106,22 @@ To run the containers by reading all overrides, use the following command: `dock
 -f docker-compose.local.yml up`. Please, note, that the last file in the command has bigger priority. More than one
 overrides can be provided.
 
+As an example of usage, if you want to have your personal git, composer and ssh settings persist over the web container,
+you would have to have something like the following override file:
+```yaml
+version: '3.4'
+services:
+  web:
+    volumes:
+      - .:/var/www/html
+      - ~/.gitconfig:/var/www/.gitconfig
+      - ~/.gitignore:/var/www/.gitignore
+      - ~/.composer:/var/www/.composer
+      - ~/.ssh:/var/www/.ssh
+```
+Note that in the above piece, the `- .:/var/www/html` is also part of the main `docker-composer.yml`. This is because
+the `volumes` entry here will completely override the parent entry and will not merge with it.
+
 ## Rebuild from existing databases
 By default, the phing target `download-databases` sends the downloaded databases to the `tmp` folder of the project
 root. The virtuoso dumps are stored in the sub directory `dump-virtuoso` and the mysql dump is located in the `tmp`
