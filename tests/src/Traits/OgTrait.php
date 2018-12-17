@@ -280,6 +280,9 @@ trait OgTrait {
    *   Thrown if a membership with the given criteria is not found.
    */
   protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]) {
+    // Make sure we don't get false positives on previously cached results.
+    self::resetCache();
+
     /** @var \Drupal\og\MembershipManager $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
     $membership = $membership_manager->getMembership($group, $user, $states);
@@ -288,6 +291,17 @@ trait OgTrait {
     }
 
     return $membership;
+  }
+
+  /**
+   * Clears the OG related caches.
+   */
+  protected static function resetCache(): void {
+    /** @var \Drupal\og\MembershipManager $membership_manager */
+    $membership_manager = \Drupal::service('og.membership_manager');
+    $membership_manager->reset();
+    \Drupal::entityTypeManager()->getStorage('og_membership')->resetCache();
+    Og::reset();
   }
 
 }

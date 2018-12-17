@@ -63,8 +63,46 @@ Feature: User subscription settings
     # all 3 collections should be shown.
     Given I am logged in as "Auric Goldfinger"
     When I go to my subscription dashboard
+
     # The empty text should not be shown now.
     Then I should not see the text "No collection memberships yet."
+
+    # Check that the 3 collections are shown alongside the abstracts.
+    But I should see the following headings:
+      | Alpha Centauri |
+      | Barnard's Star |
+      | Wolf 359       |
+    And I should see the following lines of text:
+      | A triple star system at a distance of 4.3 light years.         |
+      | A low mass red dwarf at around 6 light years distance.         |
+      | Wolf 359 is a red dwarf star located in the constellation Leo. |
+
+    # Check that the subscriptions can be managed through the UI.
+    Given I select the following subscription options for the "Alpha Centauri" collection:
+      | Discussion | all |
+      | Document   | all |
+      | Event      | all |
+      | News       | all |
+
+    And I select the following subscription options for the "Barnard's Star" collection:
+      | Discussion | none |
+      | Document   | none |
+      | Event      | none |
+      | News       | none |
+
+    And I select the following subscription options for the "Wolf 359" collection:
+      | Discussion | all  |
+      | Document   | none |
+      | Event      | all  |
+      | News       | none |
+
+    And I press "Submit"
+    Then I should see the success message "The subscriptions have been updated."
+    And I should have the following collection content subscriptions:
+      | Alpha Centauri | discussion, document, event, news |
+      | Barnard's Star |                                   |
+      | Wolf 359       | discussion, event                 |
+
 
   Scenario Outline: Change the notification frequency of my digests
     Given collection:
