@@ -9,7 +9,7 @@ Feature: "Custom page" editing.
       | Username     | E-mail                   |
       | Mickey Mouse | mickey.mouse@example.com |
       | Pluto        | pluto@example.com        |
-    And the following "<group>":
+    And the following <group>:
       | title | Dumbo Collective |
       | state | validated        |
     And the following <group> user memberships:
