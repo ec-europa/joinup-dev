@@ -140,7 +140,7 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, $role, array $states = array (
+        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, string $role, array $states = array (
           0 => 'active',
         )) : array
         {
@@ -168,7 +168,7 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getUserGroupMembershipsByBundle(\Drupal\Core\Session\AccountInterface $user, $entity_type_id, $bundle_id, array $states = array (
+        public function getUserGroupMembershipsByBundle(\Drupal\Core\Session\AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = array (
           0 => 'active',
         )) : array
         {
