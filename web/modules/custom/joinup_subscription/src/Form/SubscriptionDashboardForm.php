@@ -113,7 +113,7 @@ class SubscriptionDashboardForm extends FormBase {
       $form['collections'][$collection->id()] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['collection-subscription']],
-        'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'view_mode_featured'),
+        'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'list_view'),
       ];
 
       foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
