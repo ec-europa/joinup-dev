@@ -117,7 +117,8 @@ class SubscriptionDashboardForm extends FormBase {
       ];
 
       foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
-        $value = array_reduce($membership->get('subscription_bundles')->getIterator()->getArrayCopy(), function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
+        $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
+        $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
         }, FALSE);
         $form['collections'][$collection->id()][$bundle_id] = [
