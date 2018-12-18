@@ -1262,7 +1262,7 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   }
   // Remove margin for subscribe button in tile.
   // Add proper classes for subscribe button.
-  if (is_object($variables['element']['#value'])) {
+  if (isset($variables['element']['#value']) && is_object($variables['element']['#value'])) {
     $input_value = $variables['element']['#value'];
     if ($input_value->getUntranslatedString() == 'Subscribe') {
       $suggestions[] = 'input__submit__subscribe';
