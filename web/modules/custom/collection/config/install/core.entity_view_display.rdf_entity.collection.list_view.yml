@@ -26,7 +26,6 @@ dependencies:
   module:
     - ds
     - image
-    - joinup
     - smart_trim
     - user
 id: rdf_entity.collection.list_view
