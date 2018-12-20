@@ -127,7 +127,7 @@ function joinup_core_post_update_remove_tour_buttons() {
  * Fix data type of the access url field [ISAICP-4349].
  */
 function joinup_core_post_update_fix_access_url_datatype() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\Connection $sparql_endpoint */
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?predicate ?access_url
