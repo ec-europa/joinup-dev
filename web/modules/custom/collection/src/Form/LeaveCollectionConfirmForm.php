@@ -102,6 +102,12 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     $membership = Og::getMembership($this->collection, $user);
     $membership->delete();
 
+    // Also remove the user authorship, if case.
+    if ($this->collection->getOwnerId() === $user->id()) {
+      $this->collection->skip_notification = TRUE;
+      $this->collection->setOwnerId(0)->save();
+    }
+
     drupal_set_message($this->t('You are no longer a member of %collection.', [
       '%collection' => $this->collection->getName(),
     ]));

@@ -112,3 +112,64 @@ function joinup_core_post_update_install_piwik2matomo() {
 function joinup_core_post_update_install_spain_ctt() {
   \Drupal::service('module_installer')->install(['spain_ctt']);
 }
+
+/**
+ * Add the user support menu.
+ */
+function joinup_core_post_update_remove_tour_buttons() {
+  \Drupal::service('module_installer')->install(['menu_admin_per_menu']);
+  $config_factory = \Drupal::configFactory();
+  $config_factory->getEditable('block.block.tourbutton_2')->delete();
+  $config_factory->getEditable('block.block.tourbutton')->delete();
+}
+
+/**
+ * Fix data type of the access url field [ISAICP-4349].
+ */
+function joinup_core_post_update_fix_access_url_datatype() {
+  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  $sparql_endpoint = \Drupal::service('sparql_endpoint');
+  $retrieve_query = <<<QUERY
+SELECT ?graph ?entity_id ?predicate ?access_url
+WHERE {
+  GRAPH ?graph {
+    ?entity_id a ?type .
+    ?entity_id ?predicate ?access_url .
+    VALUES ?type { <http://www.w3.org/ns/dcat#Catalog> <http://www.w3.org/ns/dcat#Distribution> }
+    VALUES ?predicate { <http://www.w3.org/ns/dcat#accessURL> <http://xmlns.com/foaf/spec/#term_homepage> }
+    VALUES ?graph { <http://joinup.eu/collection/draft> <http://joinup.eu/collection/published> <http://joinup.eu/asset_distribution/published> }
+    FILTER (!datatype(?access_url) = xsd:anyURI) .
+  }
+}
+QUERY;
+  $results = $sparql_endpoint->query($retrieve_query);
+  $items_to_update = [];
+  foreach ($results as $result) {
+    // The above query should not have errors or duplicated values so lets keep
+    // a simple array structure.
+    $items_to_update[] = [
+      '@graph' => $result->graph->getUri(),
+      '@entity_id' => $result->entity_id->getUri(),
+      '@predicate' => $result->predicate->getUri(),
+      '@access_url' => $result->access_url->getValue(),
+    ];
+  }
+  $update_query = <<<QUERY
+  WITH <@graph>
+  DELETE {
+    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> .
+    <@entity_id> <@predicate> "@access_url" .
+  }
+  INSERT {
+    <@entity_id> <@predicate> "@access_url"^^<http://www.w3.org/2001/XMLSchema#anyURI>
+  }
+  WHERE {
+    <@entity_id> <@predicate> ?access_url .
+    VALUES ?access_url { "@access_url"^^<http://www.w3.org/2001/XMLSchema#string> "@access_url" }
+  }
+QUERY;
+  foreach ($items_to_update as $data_array) {
+    $query = str_replace(array_keys($data_array), array_values($data_array), $update_query);
+    $sparql_endpoint->query($query);
+  }
+}

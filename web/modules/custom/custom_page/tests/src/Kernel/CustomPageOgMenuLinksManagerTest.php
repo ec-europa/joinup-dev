@@ -85,7 +85,10 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
 
     // Create the corresponding mapping config entity.
     $mapping_values = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
-    RdfEntityMapping::create($mapping_values)->save();
+    RdfEntityMapping::create($mapping_values)
+      // Don't care about the 'draft' graph.
+      ->unsetGraphs(['draft'])
+      ->save();
 
     $mocked_custom_page_type = NodeType::create([
       'type' => 'custom_page',
