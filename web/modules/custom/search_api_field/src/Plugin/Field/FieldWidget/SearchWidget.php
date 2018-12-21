@@ -219,6 +219,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
         '%field' => 'field',
       ]),
       '#default_value' => isset($default_values['query_presets']) ? $default_values['query_presets'] : '',
+      '#element_validate' => [[$this, 'validateQueryPresets']],
     ];
 
     $element['wrapper']['limit'] = [
@@ -673,6 +674,46 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $index = $this->entityTypeManager->getStorage('search_api_index')->load($index_id);
 
     return $index;
+  }
+
+  /**
+   * Validates data entered in the query preset field.
+   *
+   * @param array $element
+   *   The query preset element.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public function validateQueryPresets(array &$element, FormStateInterface $form_state) {
+    $list = explode("\n", $element['#value']);
+    $list = array_map('trim', $list);
+    $list = array_filter($list, 'strlen');
+    $available_fields = $this->getSearchApiIndex()->getFields(TRUE);
+
+    foreach ($list as $line) {
+      $matches = [];
+      if (!preg_match('/([^\|]*)\|([^\|]*)(?:\|(.*))?/', $line, $matches)) {
+        $form_state->setError($element, $this->t('Invalid query preset line added: %line.', [
+          '%line' => $line,
+        ]));
+        continue;
+      }
+
+      $field = trim($matches[1]);
+      if (!isset($available_fields[$field])) {
+        $form_state->setError($element, $this->t('Invalid search field specified: %field.', [
+          '%field' => $field,
+        ]));
+      }
+
+      $operator = isset($matches[3]) ? trim($matches[3]) : '=';
+      if (!in_array($operator, ['=', '<>', 'IN', 'NOT IN'])) {
+        $form_state->setError($element, $this->t('Invalid operator specified: %operator. Allowed operators are @operators.', [
+          '%operator' => $operator,
+          '@operators' => "'=', '<>', 'IN', 'NOT IN'",
+        ]));
+      }
+    }
   }
 
   /**
