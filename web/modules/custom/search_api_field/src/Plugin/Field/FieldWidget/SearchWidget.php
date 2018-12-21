@@ -213,7 +213,11 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['wrapper']['query_presets'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Query presets'),
-      '#description' => $this->t('Presets to apply to the query when it is executed. Must be entered in LUCENE syntax.'),
+      '#description' => $this->t('Presets to apply to the query when it is executed. Syntax is %syntax1 or %syntax2, where %field is the field name as configured in the index.', [
+        '%syntax1' => 'field|value',
+        '%syntax2' => 'field|value|operator',
+        '%field' => 'field',
+      ]),
       '#default_value' => isset($default_values['query_presets']) ? $default_values['query_presets'] : '',
     ];
 
