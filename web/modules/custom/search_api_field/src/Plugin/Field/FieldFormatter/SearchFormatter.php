@@ -9,7 +9,10 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\ParseMode\ParseModePluginManager;
 use Drupal\search_api\Query\QueryInterface;
@@ -41,6 +44,20 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
   protected $entityTypeManager;
 
   /**
+   * The filter plugin manager.
+   *
+   * @var \Drupal\search_api_field\Plugin\FilterPluginManagerInterface
+   */
+  protected $filterPluginManager;
+
+  /**
+   * The search_api logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $logger;
+
+  /**
    * The query parse mode manager.
    *
    * @var \Drupal\search_api\ParseMode\ParseModePluginManager
@@ -53,13 +70,6 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    * @var \Symfony\Component\HttpFoundation\Request
    */
   protected $request;
-
-  /**
-   * The filter plugin manager.
-   *
-   * @var \Drupal\search_api_field\Plugin\FilterPluginManagerInterface
-   */
-  private $filterPluginManager;
 
   /**
    * Constructs a SearchFormatter object.
@@ -86,14 +96,17 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    *   The query parse mode manager.
    * @param \Drupal\search_api_field\Plugin\FilterPluginManagerInterface $filter_plugin_manager
    *   The filter plugin manager.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The search_api logger channel.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, Request $request, ParseModePluginManager $parse_mode_manager, FilterPluginManagerInterface $filter_plugin_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, Request $request, ParseModePluginManager $parse_mode_manager, FilterPluginManagerInterface $filter_plugin_manager, LoggerChannelInterface $logger) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
 
     $this->entityTypeManager = $entity_type_manager;
     $this->filterPluginManager = $filter_plugin_manager;
     $this->parseModeManager = $parse_mode_manager;
     $this->request = $request;
+    $this->logger = $logger;
   }
 
   /**
@@ -111,7 +124,8 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       $container->get('entity_type.manager'),
       $container->get('request_stack')->getCurrentRequest(),
       $container->get('plugin.manager.search_api.parse_mode'),
-      $container->get('plugin.manager.search_api_field.filter')
+      $container->get('plugin.manager.search_api_field.filter'),
+      $container->get('logger.channel.search_api')
     );
   }
 
@@ -135,11 +149,24 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       return [];
     }
 
-    $query = $this->getSearchQuery($settings, $item);
-    $result = $query->execute();
-    // Extract the limit value from the query as it might have been altered
-    // doing execution.
-    $render = $this->renderSearchResults($result, $query->getOption('limit'));
+    try {
+      $query = $this->getSearchQuery($settings, $item);
+      $result = $query->execute();
+      // Extract the limit value from the query as it might have been altered
+      // doing execution.
+      $render = $this->renderSearchResults($result, $query->getOption('limit'));
+    }
+    catch (SearchApiException $exception) {
+      $this->logger->log(RfcLogLevel::ERROR, 'Failed to execute query with error "@message".', Error::decodeException($exception));
+      return [
+        // Do not cache this page as the exception could be temporary. This
+        // is in line with the uncacheability of a request when an exception
+        // occurs and it is not cached.
+        '#cache' => [
+          'max-age' => 0,
+        ],
+      ];
+    }
 
     // Add some information about the field.
     // @see \Drupal\Core\Field\FormatterBase::view()
