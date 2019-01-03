@@ -23,6 +23,7 @@ Feature: Related solution
     When I visit the "Java" solution
     # Referenced through EIRA building block.
     Then I see the "PHP" tile
+    And I should see the "Javascript" tile
     # Direct reference.
     And I see the "C" tile
     # Not referenced.
