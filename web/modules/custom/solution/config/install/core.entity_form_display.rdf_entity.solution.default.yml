@@ -24,6 +24,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
+    - field.field.rdf_entity.solution.field_is_related_by_type
     - field.field.rdf_entity.solution.field_is_related_solutions
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
@@ -103,6 +104,7 @@ third_party_settings:
         - field_spatial_coverage
         - field_keywords
         - field_is_related_solutions
+        - field_is_related_by_type
         - field_status
         - field_is_language
         - field_is_landing_page
@@ -168,6 +170,7 @@ content:
       collapsible: false
       collapsed: false
       allow_existing: false
+      allow_duplicate: false
     third_party_settings: {  }
     region: content
   field_is_description:
@@ -196,7 +199,7 @@ content:
     type: options_buttons
     region: content
   field_is_landing_page:
-    weight: 12
+    weight: 13
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -205,7 +208,7 @@ content:
     region: content
   field_is_language:
     type: options_select
-    weight: 11
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -218,7 +221,7 @@ content:
     type: image_image
     region: content
   field_is_metrics_page:
-    weight: 13
+    weight: 14
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -245,6 +248,7 @@ content:
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     region: content
   field_is_product_type:
@@ -256,6 +260,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_is_related_by_type:
+    weight: 10
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_is_related_solutions:
     weight: 9
     settings:
@@ -315,7 +326,7 @@ content:
     region: content
   field_status:
     type: options_select
-    weight: 10
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     region: content
