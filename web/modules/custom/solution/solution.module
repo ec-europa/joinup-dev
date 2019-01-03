@@ -450,18 +450,20 @@ function solution_get_related_solutions_ids(EntityInterface $entity) {
   }
   $recurse = TRUE;
 
-  // Get all solutions that reference the same EIRA building block.
-  $eira = [];
-  foreach ($entity->get('field_is_solution_type')->getValue() as $field) {
-    $eira[] = $field['target_id'];
-  }
   $eira_ids = [];
-  if ($eira) {
-    $query = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->condition('field_is_solution_type', $eira, 'IN')
-      ->range(0, 5);
-    $eira_ids = $query->execute();
+  if ($entity->get('field_is_related_by_type')->getValue()[0]['value'] === '1') {
+    // Get all solutions that reference the same EIRA building block.
+    $eira = [];
+    foreach ($entity->get('field_is_solution_type')->getValue() as $field) {
+      $eira[] = $field['target_id'];
+    }
+    if ($eira) {
+      $query = \Drupal::entityQuery('rdf_entity')
+        ->condition('rid', 'solution')
+        ->condition('field_is_solution_type', $eira, 'IN')
+        ->range(0, 5);
+      $eira_ids = $query->execute();
+    }
   }
 
   // Get all solutions that are reference directly.
