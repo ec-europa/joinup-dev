@@ -11,12 +11,13 @@ Feature: Related solution
       | name         | type                         |
       | Kalikatoures | Company, Industry consortium |
     And solutions:
-      | title  | related solutions | description                      | documentation | moderation | logo     | banner     | policy domain | state     | solution type  | owner        | contact information |
-      | C      |                   | Blazing fast segmetation faults. | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated |                | Kalikatoures | Kalikatoura         |
-      | Java   | C                 | Because inheritance is cool.     | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
-      | PHP    |                   | Make a site.                     | text.pdf      | yes        | logo.png | banner.jpg | Demography    | validated | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
-      | Golang |                   | Concurrency for the masses       | text.pdf      | yes        | logo.png | banner.jpg | Demography    | proposed  | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
-      | Python |                   | Get stuff done.                  | text.pdf      | no         | logo.png | banner.jpg | Demography    | validated |                | Kalikatoures | Kalikatoura         |
+      | title      | related solutions | description                         | documentation | related by type | moderation | logo     | banner     | policy domain | state     | solution type  | owner        | contact information |
+      | C          |                   | Blazing fast segmetation faults.    | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated |                | Kalikatoures | Kalikatoura         |
+      | Java       | C                 | Because inheritance is cool.        | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
+      | PHP        |                   | Make a site.                        | text.pdf      | yes             | yes        | logo.png | banner.jpg | Demography    | validated | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
+      | Golang     |                   | Concurrency for the masses          | text.pdf      | yes             | yes        | logo.png | banner.jpg | Demography    | proposed  | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
+      | Python     |                   | Get stuff done.                     | text.pdf      | yes             | no         | logo.png | banner.jpg | Demography    | validated |                | Kalikatoures | Kalikatoura         |
+      | Javascript | Java              | Java is related to javascript. Huh? | text.pdf      | no              | no         | logo.png | banner.jpg | Demography    | validated | [ABB8] Citizen | Kalikatoures | Kalikatoura         |
 
     # Scenario A. A collection owner manages his own collection.
     When I visit the "Java" solution
@@ -46,3 +47,9 @@ Feature: Related solution
     And I press "Publish"
     And I visit the "Java" solution
     Then I should see the "Python" tile
+
+    # Solutions that have 'Solution related by type' off, should not show solutions related by type.
+    When I visit the "Javascript" solution
+    Then I should see the "Java" tile
+    But I should not see the "PHP" tile
+    And I should not see the "Goland" tile

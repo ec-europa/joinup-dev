@@ -480,6 +480,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'modification date' => 'changed',
       'owner' => 'field_is_owner',
       'policy domain' => 'field_policy_domain',
+      'related by type' => 'field_is_related_by_type',
       'related solutions' => 'field_is_related_solutions',
       'solution type' => 'field_is_solution_type',
       'source code repository' => 'field_is_source_code_repository',
@@ -529,6 +530,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       ],
       'field_site_featured' => ['no' => 0, 'yes' => 1],
       'field_site_pinned' => ['no' => 0, 'yes' => 1],
+      'field_is_related_by_type' => ['no' => 0, 'yes' => 1],
     ];
 
     foreach ($fields as $field => $value) {
