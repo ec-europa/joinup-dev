@@ -43,6 +43,7 @@ permissions:
   - 'execute spain pipeline'
   - 'feature entity'
   - 'filter membership overview'
+  - 'manage newsroom newsletter subscriptions'
   - 'moderate entity parents'
   - 'pin entity'
   - 'reset spain pipeline'
