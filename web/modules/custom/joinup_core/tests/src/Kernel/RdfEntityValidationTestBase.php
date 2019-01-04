@@ -21,6 +21,7 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'joinup_core',
     'link',
     'node',
+    'oe_newsroom_newsletter',
     'og',
     'matomo_reporting_api',
     'rdf_taxonomy',
