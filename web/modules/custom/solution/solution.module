@@ -451,7 +451,7 @@ function solution_get_related_solutions_ids(EntityInterface $entity) {
   $recurse = TRUE;
 
   $eira_ids = [];
-  if ($entity->get('field_is_related_by_type')->getValue()[0]['value'] === '1') {
+  if ($entity->get('field_is_show_eira_related')->getValue()[0]['value'] === '1') {
     // Get all solutions that reference the same EIRA building block.
     $eira = [];
     foreach ($entity->get('field_is_solution_type')->getValue() as $field) {

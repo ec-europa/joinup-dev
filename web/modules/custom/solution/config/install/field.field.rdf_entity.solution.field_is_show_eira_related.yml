@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.rdf_entity.field_is_related_by_type
+    - field.storage.rdf_entity.field_is_show_eira_related
     - rdf_entity.rdfentity.solution
-id: rdf_entity.solution.field_is_related_by_type
-field_name: field_is_related_by_type
+id: rdf_entity.solution.field_is_show_eira_related
+field_name: field_is_show_eira_related
 entity_type: rdf_entity
 bundle: solution
-label: 'Related solutions by type'
-description: 'If checked, solutions related by type will be displayed in the <em>Related solutions</em> section'
+label: 'Show solutions related by EIRA terms'
+description: 'If checked, solutions related by EIRA terms ("Solution type" field) will be displayed in the <em>Related solutions</em> section'
 required: false
 translatable: false
 default_value:
