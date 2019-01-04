@@ -48,7 +48,7 @@
         "drupal/rdf_entity": "^1.0.0-alpha12",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.1",
-        "drupal/search_api": "^1.10",
+        "drupal/search_api": "^1.11",
         "drupal/search_api_solr": "2.2",
         "drupal/simplenews": "^1.0-alpha3",
         "drupal/smart_trim": "^1.0",
@@ -119,7 +119,8 @@
         },
         "classmap": [
             "scripts/composer/ScriptHandler.php",
-            "scripts/composer/RemoveWrongPatchedObjects.php"
+            "scripts/composer/RemoveWrongPatchedObjects.php",
+            "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php"
         ]
     },
     "scripts": {

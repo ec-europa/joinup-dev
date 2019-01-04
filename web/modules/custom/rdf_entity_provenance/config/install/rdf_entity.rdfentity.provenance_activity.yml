@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Provenance activity'
+rid: provenance_activity
+description: ''
+label_singular: Activity
+label_plural: Activities
+label_count:
+  no_count_capitalize: "Activity\x03Activities"

@@ -287,18 +287,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution = $this->createRdfEntity('solution', $values);
     $this->solutions[$solution->id()] = $solution;
 
-    // If a collection is affiliated, update the collection. In ADMS-AP the
-    // reference between a solution and a collection is backwards.
-    if (!empty($values['field_ar_affiliates'])) {
-      foreach ($values['field_ar_affiliates'] as $collection_label) {
-        $collection = $this->getRdfEntityByLabel(trim($collection_label), 'collection');
-        solution_update_collection_affiliation($solution->id(), $collection->id());
-        // Reindex the solution, so that the value of the "collection" computed
-        // field will be populated and indexed correctly.
-        $this->forceSearchApiReindex($solution);
-      }
-    }
-
     return $solution;
   }
 
@@ -491,7 +479,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'webdav url' => 'field_is_webdav_url',
       'wiki' => 'field_is_wiki',
       'state' => 'field_is_state',
-      'collection' => 'field_ar_affiliates',
+      'collection' => 'collection',
+      'collections' => 'collection',
       'featured' => 'field_site_featured',
       'pinned site-wide' => 'field_site_pinned',
       'pinned in' => 'field_is_pinned_in',
@@ -539,6 +528,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
         $fields[$field] = $mapped_values[$field][$value];
       }
+    }
+
+    // The solution affiliation could be multi-value.
+    if (isset($fields['collection'])) {
+      $fields['collection'] = $this->explodeCommaSeparatedStepArgument($fields['collection']);
     }
 
     // Convert any entity reference field label value with the entity ID.
@@ -666,32 +660,26 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Checks that the given solution is affiliated with the given collection.
    *
-   * If there are multiple custom pages or collections with the same name, then
-   * only the first one is checked.
-   *
-   * @param string $collection
+   * @param string $collection_label
    *   The name of the collection to check.
-   * @param string $solution
+   * @param string $solution_label
    *   The name of the solution to check.
    *
    * @throws \Exception
    *   Thrown when the solution is not affiliated with the collection.
    *
-   * @Then the :solution solution should be affiliated with the :collection collection
+   * @Then the :solution_label solution should be affiliated with the :collection_label collection
    */
-  public function assertCollectionAffiliation($collection, $solution) {
-    $collection_entity = $this->getRdfEntityByLabel($collection, 'collection');
-    $solution_entity = $this->getRdfEntityByLabel($solution, 'solution');
-
-    $affiliated_solutions = $collection_entity->get('field_ar_affiliates')->referencedEntities();
-
-    foreach ($affiliated_solutions as $affiliated_solution) {
-      if ($affiliated_solution->id() === $solution_entity->id()) {
-        return;
-      }
+  public function assertCollectionAffiliation($collection_label, $solution_label) {
+    $solution = $this->getRdfEntityByLabel($solution_label, 'solution');
+    $ids = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'collection')
+      ->condition('label', $collection_label)
+      ->condition('field_ar_affiliates', $solution->id())
+      ->execute();
+    if (!$ids) {
+      throw new \Exception("The '$solution_label' solution is not affiliated with the '$collection_label' collection but it should be.");
     }
-
-    throw new \Exception("The '$solution' solution is not affiliated with the '$collection' collection.");
   }
 
 }

@@ -8,6 +8,10 @@ libraries:
   - joinup_theme/material-design-lite
   - joinup_theme/global-components
 
+libraries-extend:
+  core/drupal.tableselect:
+    - joinup_theme/tableselect
+
 stylesheets-remove:
   - core/themes/stable/css/core/vertical-tabs.css
 
