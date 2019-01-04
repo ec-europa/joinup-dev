@@ -2279,12 +2279,7 @@ JS;
    * @Then a tour should be available
    */
   public function assertTourAvailable() {
-    // The tour element in the header.
-    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
-    // The tour button.
-    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
-
-    if (empty($element_help) && empty($element_button)) {
+    if (!$this->getSession()->getPage()->find('css', 'a.js-tour-start-button')) {
       throw new \Exception("No tour is available on the page.");
     }
   }
@@ -2295,13 +2290,9 @@ JS;
    * @Then a tour should not be available
    */
   public function assertTourNotAvailable() {
-    // The tour element in the header.
-    $element_help = $this->getSession()->getPage()->find('css', 'button.toolbar-icon-help');
-    // The tour button.
-    $element_button = $this->getSession()->getPage()->find('css', 'button.tour-button');
-
-    PHPUnit_Framework_Assert::assertEmpty($element_help);
-    PHPUnit_Framework_Assert::assertEmpty($element_button);
+    if ($this->getSession()->getPage()->find('css', 'a.js-tour-start-button')) {
+      throw new \Exception("Tour is available on the page but should not.");
+    }
   }
 
   /**
@@ -2560,6 +2551,30 @@ JS;
     /** @var \Behat\Mink\Element\NodeElement $last */
     $last = array_pop($fields);
     $last->setValue($value);
+  }
+
+  /**
+   * Checks if the output is exactly the same as the contents of a given file.
+   *
+   * @param string $file_path
+   *   The path to the file.
+   *
+   * @throws \Exception
+   *
+   * @Then the output should match the file contents of :file
+   */
+  public function theOutputShouldMatchTheFile($file_path) {
+    if ($this->getMinkParameter('files_path')) {
+      $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_path;
+      if (is_file($fullPath)) {
+        $file_path = $fullPath;
+      }
+    }
+    $expected_content = trim(file_get_contents($file_path));
+    $browser_content = trim($this->getSession()->getPage()->getContent());
+    if ($expected_content !== $browser_content) {
+      throw new Exception(sprintf("The output didn't match the fixture. Expected %s, got %s.", $expected_content, $browser_content));
+    }
   }
 
 }

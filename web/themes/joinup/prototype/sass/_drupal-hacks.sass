@@ -398,9 +398,9 @@ article
     color: $color-grey-medium
     font-size: $font-size-small
 
-// Style tour button
-.block-tour-button-block
-  .tour-button
+// Style the support menu.
+.support-menu
+  .support-button
     width: 40px
     height: 40px
     color: #fff
@@ -409,8 +409,13 @@ article
     +z-index(navigation)
     .icon
       +centered
+  a.support-menu__link
+    color: $color-blue-default
+    text-decoration: none
+    white-space: nowrap
 
-.section--featured .block-tour-button-block
+
+.section--featured .support-menu
   position: absolute
   top: 5px
   right: 65px

@@ -14,6 +14,7 @@ dependencies:
   - inline_entity_form
   - joinup_core
   - link
+  - oe_newsroom_newsletter
   - og
   - og_menu
   - options
@@ -49,6 +50,7 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_owner
   - field.field.rdf_entity.collection.field_ar_state
   - field.field.rdf_entity.collection.field_collection_content
+  - field.field.rdf_entity.collection.field_newsletter
   - field.field.rdf_entity.collection.field_policy_domain
   - field.field.rdf_entity.collection.field_site_featured
   - field.field.rdf_entity.collection.field_site_pinned
