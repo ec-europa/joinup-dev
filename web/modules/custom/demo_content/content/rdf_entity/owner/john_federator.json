@@ -1,0 +1,82 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fd54423b3_beef2_b4022_bbab4_b741242ccc393?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/owner\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/d54423b3-eef2-4022-bab4-741242ccc393"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "owner"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/owner\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ff9394ac-cad2-41cd-a2b3-2e30ac861499"
+                    }
+                ]
+            }
+        ]
+    },
+    "label": [
+        {
+            "value": "John Federator",
+            "lang": "en"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/d54423b3-eef2-4022-bab4-741242ccc393"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_owner_name": [
+        {
+            "value": "John Federator"
+        }
+    ],
+    "field_owner_state": [
+        {
+            "value": "validated"
+        }
+    ]
+}
