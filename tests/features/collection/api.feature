@@ -30,8 +30,8 @@ Feature: Collection API
     When I go to the propose collection form
     Then I should see the heading "Propose collection"
     When I fill in the following:
-      | Title         | Collection API example                       |
-      | Description   | We do not care that much about descriptions. |
+      | Title       | Collection API example                       |
+      | Description | We do not care that much about descriptions. |
     When I select "Data gathering, data processing" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
