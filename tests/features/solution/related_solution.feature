@@ -32,22 +32,29 @@ Feature: Related solution
     And I should not see the "Golang" tile
 
     # Relate two solutions.
-    When I am logged in as a facilitator of the "Java" solution
+    And I am logged in as a facilitator of the "Java" solution
     And I visit the "Java" solution
     And I click "Edit" in the "Entity actions" region
     And I fill in "Related Solutions" with values "C, Python"
+    And I uncheck "Show solutions related by EIRA terms"
     And I press "Propose"
     Then I should see the heading "Java"
-    # The solution is not published yet.
-    But I should not see the "Python" tile
+    # The "Java" solution is not published yet.
+    And I should not see the "Python" tile
+    # "C" is still directly referenced.
+    And I should see the "C" tile
+    But I should see the "Javascript" tile
+    And I should see the "PHP" tile
 
-    # Publish the changes.
-    When I am logged in as a moderator
+    # Test that checking the eira related checkbox will make the tiles available again.
+    And I am logged in as a moderator
     And I visit the "Java" solution
-    And I click "Edit" in the "Entity actions" region
+    When I click "Edit" in the "Entity actions" region
+    And I check "Show solutions related by EIRA terms"
     And I press "Publish"
-    And I visit the "Java" solution
     Then I should see the "Python" tile
+    And I should see the "Javascript" tile
+    And I should see the "PHP" tile
 
     # Solutions that have 'Solution related by type' off, should not show solutions related by type.
     When I visit the "Javascript" solution
