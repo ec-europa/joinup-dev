@@ -32,7 +32,7 @@ Feature: Related solution
     And I should not see the "Golang" tile
 
     # Relate two solutions.
-    And I am logged in as a facilitator of the "Java" solution
+    When I am logged in as a facilitator of the "Java" solution
     And I visit the "Java" solution
     And I click "Edit" in the "Entity actions" region
     And I fill in "Related Solutions" with values "C, Python"
@@ -47,7 +47,7 @@ Feature: Related solution
     And I should see the "PHP" tile
 
     # Test that checking the eira related checkbox will make the tiles available again.
-    And I am logged in as a moderator
+    When I am logged in as a moderator
     And I visit the "Java" solution
     When I click "Edit" in the "Entity actions" region
     And I check "Show solutions related by EIRA terms"
