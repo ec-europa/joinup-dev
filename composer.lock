@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "791c05a179e4b9299c40bd4de8d1cc1b",
+    "content-hash": "9ac934082aad1e978e2a4b1f8ff90ae9",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2330,8 +2330,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4395,6 +4395,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Drush commands for bulk alias updates @see https://www.drupal.org/project/pathauto/issues/2717721": "https://www.drupal.org/files/issues/2019-01-04/2717721-15.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4677,7 +4680,9 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
-                    "Ensure a predictable order of fields when serializing @see https://github.com/ec-europa/rdf_entity/pull/76": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/76.diff"
+                    "Ensure a predictable order of fields when serializing @see https://github.com/ec-europa/rdf_entity/pull/76": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/76.diff",
+                    "Fix endless loop due to orphaned aliases @see https://github.com/ec-europa/rdf_entity/pull/78": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/78.diff",
+                    "Implement batch delete of aliases @see https://github.com/ec-europa/rdf_entity/pull/71": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/79.diff"
                 }
             },
             "autoload": {
