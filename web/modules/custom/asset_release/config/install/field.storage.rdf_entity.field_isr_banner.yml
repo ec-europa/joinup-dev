@@ -9,7 +9,7 @@ third_party_settings:
   rdf_entity:
     mapping:
       target_id:
-        predicate: 'http://xmlns.com/foaf/0.1/#term_Image'
+        predicate: 'http://xmlns.com/foaf/0.1/Image'
         format: 'xsd:integer'
       alt:
         predicate: ''

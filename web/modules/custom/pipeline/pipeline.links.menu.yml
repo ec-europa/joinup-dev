@@ -1,0 +1,5 @@
+pipeline.pipeline_select:
+  title: 'Pipeline'
+  description: 'Select a pipeline to be executed'
+  route_name: pipeline.pipeline_select
+  parent: system.admin_content

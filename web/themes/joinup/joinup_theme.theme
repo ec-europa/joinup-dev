@@ -652,6 +652,14 @@ function joinup_theme_preprocess_container(&$variables) {
   if (isset($variables['element']['#id']) && $variables['element']['#id'] == 'edit-actions' && $form_meta['has_tabs']) {
     $variables['has_vertical_tabs'] = TRUE;
   }
+
+  // Remove margin for subscribe button in tile.
+  if (isset($variables['element']['submit']) && is_object($variables['element']['submit']['#value'])) {
+    $input_value = $variables['element']['submit']['#value'];
+    if ($input_value->getUntranslatedString() == 'Subscribe') {
+      $variables['no_margin'] = TRUE;
+    }
+  }
 }
 
 /**
@@ -1252,6 +1260,14 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   if (isset($variables['element']['#id']) && strpos($variables['element']['#id'], 'edit-submit-search') !== FALSE) {
     $suggestions[] = 'input__submit__search_bar';
   }
+  // Remove margin for subscribe button in tile.
+  // Add proper classes for subscribe button.
+  if (isset($variables['element']['#value']) && is_object($variables['element']['#value'])) {
+    $input_value = $variables['element']['#value'];
+    if ($input_value->getUntranslatedString() == 'Subscribe') {
+      $suggestions[] = 'input__submit__subscribe';
+    }
+  }
 }
 
 /**
@@ -1701,8 +1717,10 @@ function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_
   $variables['newsletter_enabled'] = $newsletter_is_enabled;
 
   if ($newsletter_is_enabled) {
+    $entity_label = $entity->label();
+    $entity_label = Unicode::truncate($entity_label, 20, TRUE, TRUE);
     $variables['newsletter_motivation'] = t('Keep in touch with %collection', [
-      '%collection' => $entity->label(),
+      '%collection' => $entity_label,
     ]);
     $variables['newsletter_form'] = \Drupal::formBuilder()->getForm(NewsletterSubscribeForm::class, $newsletter_field_item->getUniverse(), $newsletter_field_item->getServiceId());
   }

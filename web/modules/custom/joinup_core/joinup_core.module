@@ -304,6 +304,10 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
  * Implements hook_entity_type_alter().
  */
 function joinup_core_entity_type_alter(array &$entity_types) {
+  if (!isset($entity_types['rdf_entity'])) {
+    return;
+  }
+
   // Provides a workaround for asset_release and solution RDF entity bundles.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
   // @todo Remove when ISAICP-3126 gets in.
@@ -1230,19 +1234,16 @@ function joinup_core_form_views_form_og_members_overview_default_validate(array 
     return;
   }
 
-  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
-  $admin_role = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . 'administrator';
-  $storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
 
-  // Calculate current owners.
-  $owner_memberships = $storage->loadByProperties([
-    'entity_type' => $group->getEntityTypeId(),
-    'entity_id' => $group->id(),
-    'roles' => $admin_role,
-  ]);
+  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $owner_memberships = $membership_manager->getGroupMembershipsByRoleNames($group, ['administrator']);
+
   if (empty($owner_memberships)) {
     return;
   }
+
   $owner_membership_ids = array_keys($owner_memberships);
 
   // Calculate memberships to be deleted.

@@ -1,0 +1,4 @@
+type: module
+name: Pipeline
+description: 'Allows defining and running pipelines'
+core: 8.x

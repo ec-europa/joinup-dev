@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+  - field.storage.rdf_entity.related
+  - rdf_entity.rdfentity.fruit
+id: rdf_entity.fruit.related
+field_name: related
+entity_type: rdf_entity
+bundle: fruit
+label: 'Related fruit'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      fruit: fruit
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

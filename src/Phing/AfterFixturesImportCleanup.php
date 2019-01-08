@@ -53,6 +53,14 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // Remove deprecated countries from the country list.
     // @See ISAICP-3442
     $this->query('DELETE FROM <http://countries-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://publications.europa.eu/ontology/authority/end.use> ?date . FILTER ( bound(?date) ) };');
+
+    // Languages are required to be of type <http://purl.org/dc/terms/Location>
+    // but are listed as <http://www.w3.org/2004/02/skos/core#Concept> which is
+    // also correct. Add the entry
+    // { ?subject a <http://purl.org/dc/terms/Location> } for each language in
+    // the <http://countries-skos> graph.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4566
+    $this->query('WITH <http://countries-skos> INSERT { ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/Location> } WHERE { ?entity a <http://www.w3.org/2004/02/skos/core#Concept> };');
   }
 
 }
