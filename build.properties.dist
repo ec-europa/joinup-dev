@@ -32,7 +32,7 @@ drupal.demo.users = administrator
 # The base URL. This is used for doing functional tests in Behat and PHPUnit.
 # 'web' is the hostname of the apache docker container. For local development, this should be
 # overridden.
-drupal.base_url = http://web:8080
+drupal.base_url = http://web
 
 # The namespace of the sparql connection class.
 sparql.namespace = Drupal\\Driver\\Database\\sparql
