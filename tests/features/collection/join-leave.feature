@@ -100,20 +100,36 @@ Feature: Joining and leaving collections through the web interface
   Scenario: A collection owner leaving the collection cannot administer users anymore.
 
     Given users:
-      | Username          |
-      | insect researcher |
+      | Username            |
+      | insect researcher   |
+      | newcomer researcher |
     And the following collection:
       | title  | Insectarium       |
       | state  | validated         |
       | author | insect researcher |
     And the following collection user memberships:
-      | collection  | user              | roles |
-      | Insectarium | insect researcher | owner |
+      | collection  | user                | roles |
+      | Insectarium | insect researcher   | owner |
+      | Insectarium | newcomer researcher |       |
 
     Given I am logged in as "insect researcher"
     When I go to the homepage of the "Insectarium" collection
     And I click "Leave this collection"
 
-    Given I press "Confirm"
+    # The collection owner cannot leave the collection before transferring the rights to another owner.
+    Then I should see the text "You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member."
+    And I should not see the button "Confirm"
+
+    When I go to the homepage of the "Insectarium" collection
+    And I click "Members"
+    And I select the "newcomer researcher" row
+    And I select "Transfer the ownership of the collection to the selected member" from "Action"
+    And I press "Apply to selected items"
+    And I press "Confirm"
+    Then I should see "Ownership of Insectarium collection transferred from user insect researcher to newcomer researcher."
+
+    When I go to the homepage of the "Insectarium" collection
+    And I click "Leave this collection"
+    And I press "Confirm"
     When I click "Members"
     Then I should not see the link "Add members"
