@@ -1,0 +1,7 @@
+access pipeline selector:
+  title: 'Access pipeline selector'
+  description: 'A user granted with this permission is able to select pipelines he/she whish to run.'
+  restrict access: true
+
+permission_callbacks:
+  - \Drupal\pipeline\PipelinePermissions::buildPermissions

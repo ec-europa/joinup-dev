@@ -1,0 +1,11 @@
+id: rdf_entity.is_solution
+field_name: is_solution
+entity_type: rdf_entity
+type: boolean
+settings: {  }
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://example.com/predicate/solution/is_solution'
+        format: 'xsd:boolean'

@@ -13,7 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\og\Og;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -31,31 +30,51 @@ function asset_release_entity_type_alter(array &$entity_types) {
  * Implements hook_entity_bundle_field_info_alter().
  */
 function asset_release_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  /** @var \Drupal\Core\Field\FieldConfigInterface[] $fields */
   // Make sure a release's title and version number is unique in its solution.
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'asset_release' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueAssetReleaseTitleVersion', []);
+  }
+
+  // A distribution can be referenced only by a single parent.
+  if (!empty($fields['field_isr_distribution'])) {
+    $fields['field_isr_distribution']->addConstraint('DistributionSingleParent');
   }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
  *
- * This takes care of the reverse reference.
- * When a release is created, it has its isVersionOf pre-filled
- * and is connected to its parent. But the parent needs to have the hasVersion
- * field filled as well.
+ * This takes care of the reverse reference. When a release is created, it has
+ * its isVersionOf pre-filled and is connected to its parent. But the parent
+ * needs to have the hasVersion field filled as well.
  */
-function asset_release_rdf_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle() == 'asset_release' && !empty($entity->get('field_isr_is_version_of')->getValue()[0]['target_id'])) {
-    /** @var \Drupal\rdf_entity\RdfInterface $parent */
-    $parent = Rdf::load($entity->get('field_isr_is_version_of')->getValue()[0]['target_id']);
+function asset_release_rdf_entity_insert(RdfInterface $release) {
+  if ($release->bundle() === 'asset_release') {
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $is_version_of */
+    $is_version_of = $release->get('field_isr_is_version_of');
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    if (!$is_version_of->isEmpty() && ($solution = $is_version_of->entity)) {
+      if ($solution->bundle() !== 'solution') {
+        throw new \Exception("Entity '{$solution->label()}' ({$solution->id()}) is a '{$solution->bundle()}' but it should be 'solution' to be set as parent of release '{$release->label()}' ({$release->id()}).");
+      }
 
-    $releases = $parent->get('field_is_has_version')->getValue();
-    $releases[] = ['target_id' => $entity->id()];
-    $parent->get('field_is_has_version')->setValue($releases);
-    // Avoid triggering notification e-mails during this programmatic update.
-    $parent->skip_notification = TRUE;
-    $parent->save();
+      $parent_is_set = FALSE;
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $has_version */
+      $has_version = $solution->get('field_is_has_version');
+      foreach ($has_version as $field_item) {
+        if ($field_item->target_id === $release->id()) {
+          $parent_is_set = TRUE;
+          break;
+        }
+      }
+      if (!$parent_is_set) {
+        $has_version->appendItem(['target_id' => $release->id()]);
+        // Avoid triggering notification e-mails during this update.
+        $solution->skip_notification = TRUE;
+        $solution->save();
+      }
+    }
   }
 }
 
@@ -205,6 +224,11 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
   }
 
   if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'asset_release', 'draft')) {
+    return;
+  }
+
+  // Set the graph only for new releases or those loaded from the main graphs.
+  if (!$entity->isNew() && !in_array($entity->rdfEntityOriginalGraph, ['default', 'draft'])) {
     return;
   }
 
