@@ -17,7 +17,7 @@ Feature: User profile
     Then I should see the heading "Leonardo Da Vinci"
     And I should see the avatar "user_icon.png"
     When I click "Edit"
-    Then the following fields should be present "Current password, Email address, Password, Confirm password, First name"
+    Then the following fields should be present "Current password, Email, Password, Confirm password, First name"
     And the following fields should be present "Family name, Photo, Country of origin, Professional profile, Professional domain, Business title"
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, Google+, SlideShare, Youtube, Vimeo"
     And the following fields should not be present "Time zone"
@@ -75,7 +75,7 @@ Feature: User profile
     And I press the "Filter" button
     Then I click "Leonardo Da Vinci"
     Then I click "Edit"
-    Then the following fields should be present "Email address, Username, Password, Confirm password"
+    Then the following fields should be present "Email, Username, Password, Confirm password"
     And the following fields should be present "First name, Family name, Photo, Professional domain, Business title"
     And the following fields should be present "Country of origin, Professional profile, Organisation"
     And the following fields should not be present "Time zone"
@@ -266,10 +266,10 @@ Feature: User profile
     And I am on the homepage
     And I click "My account"
     When I click "Edit"
-    Then the "Email address" field should contain "he@example.com"
+    Then the "Email" field should contain "he@example.com"
 
     Given I fill in "Current password" with "secret"
-    And I fill in "Email address" with "she@example.com"
+    And I fill in "Email" with "she@example.com"
     When I press "Save"
     Then I should see the following warning messages:
       | warning messages                                                                                                 |
@@ -290,4 +290,4 @@ Feature: User profile
     # Check that the E-mail has been successfully updated.
     When I click "My account"
     And I click "Edit"
-    Then the "Email address" field should contain "she@example.com"
+    Then the "Email" field should contain "she@example.com"

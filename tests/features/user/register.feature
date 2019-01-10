@@ -70,7 +70,7 @@ Feature: User registration
     When I click "Sign in"
     Then I click "Create new account"
 
-    Given I fill in "E-mail" with "spam@example.com"
+    Given I fill in "Email" with "spam@example.com"
     And I fill in "Username" with "spam"
     And I fill in "First name" with "Spam"
     And I fill in "Family name" with "Spam"
