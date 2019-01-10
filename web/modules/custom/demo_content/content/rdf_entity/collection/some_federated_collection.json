@@ -1,0 +1,256 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/collection\/federated-collection?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/collection"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/uid": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/content_translation_uid": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_affiliates": [
+            {
+                "href": "http:\/\/default\/solution\/federated-solution?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_ar_contact_information": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f98e366a6_b732b_b47d8_bb3fa_ba57a98469c64?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fd54423b3_beef2_b4022_bbab4_b741242ccc393?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/49dd8617-6118-4a33-b268-eb2cca528bde"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "collection"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "92b9cc04-d7bb-459a-9f6d-02b31b0b4949"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/content_translation_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "92b9cc04-d7bb-459a-9f6d-02b31b0b4949"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_affiliates": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/solution\/federated-solution?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/c2056c47-6c96-4a9a-8f70-a288739c7c86"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_ar_contact_information": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f98e366a6_b732b_b47d8_bb3fa_ba57a98469c64?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/98e366a6-732b-47d8-b3fa-a57a98469c64"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_ar_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fd54423b3_beef2_b4022_bbab4_b741242ccc393?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/d54423b3-eef2-4022-bab4-741242ccc393"
+                    }
+                ]
+            }
+        ]
+    },
+    "label": [
+        {
+            "value": "Some federated collection",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/49dd8617-6118-4a33-b268-eb2cca528bde"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/collection\/federated-collection",
+            "pid": 18,
+            "langcode": "en",
+            "lang": "en"
+        }
+    ],
+    "content_translation_source": [
+        {
+            "value": "und",
+            "lang": "en"
+        }
+    ],
+    "content_translation_outdated": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "content_translation_status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "last_update": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "field_ar_closed": [
+        {
+            "value": false
+        }
+    ],
+    "field_ar_elibrary_creation": [
+        {
+            "value": 0
+        }
+    ],
+    "field_ar_moderation": [
+        {
+            "value": true
+        }
+    ],
+    "field_ar_state": [
+        {
+            "value": "validated"
+        }
+    ],
+    "field_collection_content": [
+        {
+            "value": {
+                "fields": {
+                    "collection_type": {
+                        "weight": 0,
+                        "region": "top"
+                    },
+                    "collection_event_type": {
+                        "weight": -1,
+                        "region": "inline_facets"
+                    },
+                    "collection_policy_domain": {
+                        "weight": 0,
+                        "region": "inline_facets"
+                    }
+                },
+                "enabled": 1,
+                "query_presets": "",
+                "limit": 12
+            }
+        }
+    ],
+    "field_site_featured": [
+        {
+            "value": false
+        }
+    ]
+}

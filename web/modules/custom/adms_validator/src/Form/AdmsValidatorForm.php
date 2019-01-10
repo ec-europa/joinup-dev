@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\adms_validator\Form;
 
+use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
-use EasyRdf\Graph;
-use EasyRdf\GraphStore;
-use EasyRdf\Sparql\Result;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Form to validate the ADMS compliance of a RDF or TTL file.
@@ -17,31 +18,33 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AdmsValidatorForm extends FormBase {
 
   /**
-   * The name of the graph used for validation.
+   * The ADMS validator service.
+   *
+   * @var \Drupal\adms_validator\AdmsValidatorInterface
+   */
+  protected $admsValidator;
+
+  /**
+   * Current user session ID.
    *
    * @var string
    */
-  const VALIDATION_GRAPH = 'http://adms-validator/';
+  protected $sessionId;
 
   /**
-   * The path of the file that contains the validation rules.
-   *
-   * @var string
-   */
-  const SEMIC_VALIDATION_QUERY_PATH = "SEMICeu/adms-ap_validator/python-rule-generator/ADMS-AP Rules .txt";
-
-  /**
-   * The Sparql endpoint.
+   * The SPARQL endpoint.
    *
    * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
    */
-  protected $sparqlEndpoint;
+  protected $sparql;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
+      $container->get('adms_validator.validator'),
+      $container->get('session'),
       $container->get('sparql_endpoint')
     );
   }
@@ -49,11 +52,17 @@ class AdmsValidatorForm extends FormBase {
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint
+   * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The Sparql endpoint.
+   * @param \Symfony\Component\HttpFoundation\Session\Session $session
+   *   The current user session.
+   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   *   The SPARQL endpoint.
    */
-  public function __construct(ConnectionInterface $sparql_endpoint) {
-    $this->sparqlEndpoint = $sparql_endpoint;
+  public function __construct(AdmsValidatorInterface $adms_validator, Session $session, ConnectionInterface $sparql) {
+    $this->admsValidator = $adms_validator;
+    $this->sessionId = $session->getId();
+    $this->sparql = $sparql;
   }
 
   /**
@@ -66,7 +75,7 @@ class AdmsValidatorForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $form['adms_file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
@@ -83,11 +92,14 @@ class AdmsValidatorForm extends FormBase {
       '#value' => $this->t('Upload'),
       '#button_type' => 'primary',
     ];
+    /** @var \Drupal\adms_validator\AdmsValidationResult $validation_errors */
     $validation_errors = $form_state->get('validation_errors');
     if (!empty($validation_errors)) {
       // The form was submitted, and validation errors have been set.
-      $form['table'] = $this->buildErrorTable($validation_errors);
+      $form['table'] = $validation_errors->toTable();
     }
+
+    honeypot_add_form_protection($form, $form_state, ['honeypot', 'time_restriction']);
 
     return $form;
   }
@@ -107,117 +119,28 @@ class AdmsValidatorForm extends FormBase {
       $form_state->setError($form['adms_file'], 'Please upload a valid RDF file.');
       return;
     }
-    $count = FALSE;
+
     try {
-      $count = $this->storeInGraph($file);
+      $uri = AdmsValidatorInterface::DEFAULT_VALIDATION_GRAPH . "/{$this->sessionId}";
+      $schema_errors = $this->admsValidator->validateFile($file->getFileUri(), $uri);
     }
     catch (\Exception $e) {
       $form_state->setError($form['adms_file'], $e->getMessage());
+      return;
     }
 
     // Delete the uploaded file from disk.
     $file->delete();
-    if (!$count) {
-      $form_state->setError($form['adms_file'], 'The provided file is not a valid RDF file.');
-      return;
-    }
-    drupal_set_message($this->t('Checking %count triples for schema errors.', ['%count' => $count]));
-    $form_state->set('validation_errors', $this->getValidationErrors());
-  }
+    // Clear the graph.
+    $this->sparql->query("CLEAR GRAPH <$uri>");
 
-  /**
-   * Render the table with validation errors.
-   *
-   * @param \EasyRdf\Sparql\Result $errors
-   *   The validation errors.
-   *
-   * @return array
-   *   The error table as render array.
-   */
-  protected function buildErrorTable(Result $errors) {
-    $rows = [];
-    foreach ($errors as $error) {
-      $properties = [
-        'Class_Name',
-        'Message',
-        'Object',
-        'Predicate',
-        'Rule_Description',
-        'Rule_ID',
-        'Rule_Severity',
-        'Subject',
-      ];
-      $row = [];
-      foreach ($properties as $property) {
-        $row[$property] = '';
-        if (!empty($error->{$property})) {
-          $row[$property] = $error->{$property};
-        }
-      }
-      $row = array_map('strval', $row);
-      $rows[] = $row;
+    if ($schema_errors->isSuccessful()) {
+      drupal_set_message($this->t('No errors found during validation.'));
     }
-    return [
-      '#theme' => 'table',
-      '#header' => [
-        ['data' => t('Class name')],
-        ['data' => t('Message')],
-        ['data' => t('Object')],
-        ['data' => t('Predicate')],
-        ['data' => t('Rule description')],
-        ['data' => t('Rule ID')],
-        ['data' => t('Rule severity')],
-        ['data' => t('Subject')],
-      ],
-      '#rows' => $rows,
-    ];
-  }
-
-  /**
-   * Build the list of validation errors.
-   *
-   * @return \EasyRdf\Sparql\Result
-   *   The validation errors.
-   */
-  protected function getValidationErrors() {
-    $adms_ap_rules = DRUPAL_ROOT . "/../vendor/" . self::SEMIC_VALIDATION_QUERY_PATH;
-    $query = file_get_contents($adms_ap_rules);
-    // Fill in our validation graph in the query.
-    $query = str_replace('GRAPH <@@@TOKEN-GRAPH@@@> {
-
-UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
-    // @todo Workaround for bug in validations query.
-    // See https://github.com/SEMICeu/adms-ap_validator/issues/1
-    $query = str_replace('FILTER(!EXISTS {?o a }).', 'FILTER(!EXISTS {?o a spdx:checksumValue}).', $query);
-    return $this->sparqlEndpoint->query($query);
-  }
-
-  /**
-   * Store the triples in the temporary graph.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The file being processed.
-   *
-   * @return bool
-   *   True if the store operation was successful, false otherwise.
-   */
-  protected function storeInGraph(FileInterface $file) {
-    $connection_options = $this->sparqlEndpoint->getConnectionOptions();
-    $connect_string = 'http://' . $connection_options['host'] . ':' . $connection_options['port'] . '/sparql-graph-crud';
-    // Use a local SPARQL 1.1 Graph Store.
-    $gs = new GraphStore($connect_string);
-    $graph = new Graph();
-    try {
-      $graph->parseFile($file->getFileUri());
+    else {
+      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
     }
-    catch (\Exception $e) {
-      throw $e;
-    }
-    $out = $gs->replace($graph, self::VALIDATION_GRAPH);
-    if (!$out->isSuccessful()) {
-      return FALSE;
-    }
-    return $graph->countTriples();
+    $form_state->set('validation_errors', $schema_errors);
   }
 
   /**
@@ -226,7 +149,7 @@ UNION', "GRAPH <" . self::VALIDATION_GRAPH . "> { ", $query);
    * @return \Drupal\file\FileInterface|null
    *   File object, if one is uploaded.
    */
-  protected function uploadedFile() {
+  protected function uploadedFile(): ?FileInterface {
     $files = file_save_upload('adms_file', ['file_validate_extensions' => [0 => 'rdf ttl']], 'public://');
     /** @var \Drupal\file\FileInterface $file */
     $file = $files[0];

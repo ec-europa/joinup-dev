@@ -1,0 +1,7 @@
+type: module
+core: 8.x
+name: 'RDF Staging Graph Test'
+description: 'Testing module for RDF staging graph.'
+package: Testing
+dependencies:
+  - joinup_federation

@@ -1,0 +1,185 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f6067f404_bcaf3_b46bc_ba800_b9c0b25fd7e3c"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_distribution"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/content_translation_uid": [
+            {
+                "href": "http:\/\/default\/user\/1",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_licence": [
+            {
+                "href": "http:\/\/default\/licence\/federated-licence?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fpublications_ceuropa_ceu_fresource_fauthority_ffile_btype_fZIP"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
+            {
+                "href": "http:\/\/default\/solution\/federated-solution"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/6067f404-caf3-46bc-a800-9c0b25fd7e3c"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "asset_distribution"
+        }
+    ],
+    "label": [
+        {
+            "value": "The federated distribution",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/6067f404-caf3-46bc-a800-9c0b25fd7e3c"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "content_translation_source": [
+        {
+            "value": "und",
+            "lang": "en"
+        }
+    ],
+    "content_translation_outdated": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/content_translation_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "92b9cc04-d7bb-459a-9f6d-02b31b0b4949"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_format": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fpublications_ceuropa_ceu_fresource_fauthority_ffile_btype_fZIP"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/file_type"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/publications.europa.eu\/resource\/authority\/file-type\/ZIP"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/field_ad_licence": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/licence\/federated-licence?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/licence"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/2905a1f9-9472-4caf-9971-1a0327228229"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_distribution\/og_audience": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/solution\/federated-solution"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/c2056c47-6c96-4a9a-8f70-a288739c7c86"
+                    }
+                ]
+            }
+        ]
+    },
+    "content_translation_status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_ad_description": [
+        {
+            "value": "This is a federated distribution",
+            "format": "content_editor",
+            "processed": "This is a federated distribution",
+            "lang": "en"
+        }
+    ],
+    "field_ad_file_size": [
+        {
+            "value": 176
+        }
+    ]
+}

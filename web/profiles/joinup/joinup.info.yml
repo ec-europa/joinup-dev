@@ -39,12 +39,14 @@ dependencies:
   - joinup_discussion
   - joinup_document
   - joinup_event
+  - joinup_federation
   - joinup_invite
   - joinup_licence
   - joinup_news
   - joinup_newsletter
   - joinup_notification
   - joinup_search
+  - joinup_sparql
   - joinup_subscription
   - joinup_user
   - joinup_video
@@ -71,6 +73,7 @@ dependencies:
   - rdf_draft
   - rdf_entity
   - rdf_export
+  - rdf_schema_field_validation
   - rdf_taxonomy
   - search_api
   - search_api_arbitrary_facet
@@ -78,6 +81,7 @@ dependencies:
   - semic
   - social_media_links_field
   - solution
+  - spain_ctt
   - state_machine
   - state_machine_revisions
   - subpathauto

@@ -188,7 +188,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
     $arguments['@release:info:with_version'] = '';
 
     // Add arguments related to the parent collection or solution.
-    $parent = asset_distribution_get_distribution_parent($entity);
+    $parent = $entity->parent->entity;
     $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : $this->relationManager->getParent($entity);
     if (!empty($parent) && $parent->bundle() === 'asset_release') {
       // Some legacy releases exist without a version. Thus, a check for

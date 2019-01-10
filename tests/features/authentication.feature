@@ -8,7 +8,7 @@ Feature: User authentication
     When I visit "user"
     Then I should see the text "Sign in"
     And I should see the text "Reset your password"
-    And I should see the text "E-mail or username"
+    And I should see the text "Email or username"
     And I should see the text "Password"
     But I should not see the text "Sign out"
     And I should not see the text "My account"
