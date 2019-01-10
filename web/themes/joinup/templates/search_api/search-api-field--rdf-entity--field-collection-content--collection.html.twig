@@ -32,12 +32,20 @@
       <div class="mdl-grid">
         {{ results }}
         {% if newsletter_enabled %}
-          <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col mdl-cell--3-col-wide icon-card">
-            <h2 class="listing__title">{{ 'Newsletter'|t }}</h2>
-            <span class="icon-card__inner">
-              <span class="icon-card__text">{{ newsletter_motivation }}</span>
-              {{ newsletter_form }}
-            </span>
+          <div class="listing__item listing__item--tile listing__item--newsletter mdl-cell mdl-cell--4-col mdl-cell--3-col-wide">
+            <div class="listing__card mdl-card">
+              <div class="listing__wrapper">
+                <div class="listing__field">
+                  <h2 class="listing__title">{{ 'Newsletter'|t }}</h2>
+                </div>
+                <div class="listing__field">
+                  <p>{{ newsletter_motivation }}</p>
+                </div>
+                <div class="listing__fields--bottom-aligned">
+                  {{ newsletter_form }}
+                </div>
+              </div>
+            </div>
           </div>
         {% endif %}
       </div>

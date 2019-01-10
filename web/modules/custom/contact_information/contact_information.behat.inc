@@ -32,6 +32,8 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * @param string $label
    *   The label of the contact information entity.
    *
+   * @When (I )go to (the homepage of )the :label contact
+   * @When (I )visit (the homepage of )the :label contact
    * @When (I )go to the :label contact information page
    * @When (I )visit the :label contact information page
    */

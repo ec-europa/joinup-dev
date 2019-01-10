@@ -253,7 +253,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
       'contact information' => 'field_isr_contact_information',
       'creation date' => 'created',
       'description' => 'field_isr_description',
-      'distribution' => 'field_isr_distribution',
       'documentation' => 'field_isr_documentation',
       'included asset' => 'field_isr_included_asset',
       'is version of' => 'field_isr_is_version_of',

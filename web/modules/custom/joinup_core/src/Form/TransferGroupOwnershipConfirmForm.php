@@ -4,7 +4,6 @@ namespace Drupal\joinup_core\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionManager;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
@@ -13,6 +12,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -43,11 +43,11 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
   protected $actionPluginManager;
 
   /**
-   * The OG membership storage.
+   * The OG membership manager.
    *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\og\MembershipManagerInterface
    */
-  protected $membershipStorage;
+  protected $membershipManager;
 
   /**
    * The user private tempstore.
@@ -79,8 +79,8 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
    *   The renderer service.
    * @param \Drupal\Core\Action\ActionManager $action_plugin_manager
    *   The action plugin manager.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager interface.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The OG membership manager.
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
@@ -89,11 +89,11 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    *   If the entity storage of 'og_membership' is not found.
    */
-  public function __construct(AccountInterface $current_user, RendererInterface $renderer, ActionManager $action_plugin_manager, EntityTypeManagerInterface $entity_type_manager, PrivateTempStoreFactory $temp_store_factory, MessengerInterface $messenger) {
+  public function __construct(AccountInterface $current_user, RendererInterface $renderer, ActionManager $action_plugin_manager, MembershipManagerInterface $membership_manager, PrivateTempStoreFactory $temp_store_factory, MessengerInterface $messenger) {
     $this->currentUser = $current_user;
     $this->renderer = $renderer;
     $this->actionPluginManager = $action_plugin_manager;
-    $this->membershipStorage = $entity_type_manager->getStorage('og_membership');
+    $this->membershipManager = $membership_manager;
     $this->tempStore = $temp_store_factory->get('joinup_transfer_group_ownership');
     $this->messenger = $messenger;
 
@@ -112,7 +112,7 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
       $container->get('current_user'),
       $container->get('renderer'),
       $container->get('plugin.manager.action'),
-      $container->get('entity_type.manager'),
+      $container->get('og.membership_manager'),
       $container->get('tempstore.private'),
       $container->get('messenger')
     );
@@ -135,15 +135,20 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription() {
+    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    $group = $this->membership->getGroup();
+
+    $memberships = $this->membershipManager->getGroupMembershipsByRoleNames($this->membership->getGroup(), [
+      'administrator',
+    ]);
+
     $current_owners = array_map(function (OgMembershipInterface $membership) {
       if ($membership->getOwnerId() === $this->currentUser->id()) {
         return $this->t('@user (you)', ['@user' => $membership->getOwner()->getDisplayName()]);
       }
       return $membership->getOwner()->getDisplayName();
-    }, $this->getGroupOwnerMembeships());
+    }, $memberships);
 
-    /** @var \Drupal\rdf_entity\RdfInterface $group */
-    $group = $this->membership->getGroup();
     $args = [
       '%group' => $group->label(),
       '@label' => $group->get('rid')->entity->getSingularLabel(),
@@ -203,7 +208,9 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
 
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $this->membership->getGroup();
-    $memberships = $this->getGroupOwnerMembeships();
+    $memberships = $this->membershipManager->getGroupMembershipsByRoleNames($group, [
+      'administrator',
+    ]);
     // Revoke 'owner' role from existing group owners but grant them the
     // facilitator role, as a compensation, if missed.
     $facilitator = OgRole::loadByGroupAndName($group, 'facilitator');
@@ -269,24 +276,6 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
     /** @var \Drupal\joinup_core\Plugin\Action\TransferGroupOwnershipAction $action */
     $action = $this->actionPluginManager->createInstance('joinup_transfer_group_ownership');
     return $action->access($this->membership, $this->currentUser, TRUE);
-  }
-
-  /**
-   * Returns a list of memberships of the group owners.
-   *
-   * @return \Drupal\og\OgMembershipInterface[]
-   *   The memberships of the actual group.
-   */
-  protected function getGroupOwnerMembeships() {
-    $role_id = "rdf_entity-{$this->membership->getGroup()->bundle()}-administrator";
-    $ids = $this->membershipStorage->getQuery()
-      ->condition('type', OgMembership::TYPE_DEFAULT)
-      ->condition('entity_type', 'rdf_entity')
-      ->condition('entity_id', $this->membership->getGroupId())
-      ->condition('state', OgMembership::STATE_ACTIVE)
-      ->condition('roles', $role_id)
-      ->execute();
-    return OgMembership::loadMultiple($ids);
   }
 
 }

@@ -26,6 +26,7 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\solution\SolutionAffiliationFieldItemList;
 use Drupal\user\Entity\User;
 
 /**
@@ -54,28 +55,30 @@ function solution_entity_access(EntityInterface $entity, $operation, AccountInte
  * Implements hook_entity_bundle_field_info_alter().
  */
 function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+  /** @var \Drupal\Core\Field\FieldConfigInterface[] $fields */
   if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'solution') {
     return;
   }
 
-  // @todo Rename to "collections" since this contains multiple collections.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3686
-  // Add a computed field, that represents the collections a solution is part
-  // of.
-  // @see solution_rdf_entity_load().
+  // Computed field, that represents the collections a solution is part of.
   $fields['collection'] = BaseFieldDefinition::create('entity_reference')
-    ->setLabel(t('Collection'))
+    ->setLabel(t('Collections'))
     ->setName('collection')
     ->setDescription(t('The collections this solution belongs to.'))
-    ->setTranslatable(FALSE)
     ->setTargetEntityTypeId('rdf_entity')
+    ->setTargetBundle('solution')
     ->setSetting('target_type', 'rdf_entity')
     ->setComputed(TRUE)
-    ->setReadOnly(TRUE);
+    ->setClass(SolutionAffiliationFieldItemList::class);
 
   // Make sure a solution's title is unique among the collections it belongs to.
   if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueSolutionTitle', []);
+  }
+
+  // A distribution can be referenced only by a single parent.
+  if (!empty($fields['field_is_distribution'])) {
+    $fields['field_is_distribution']->addConstraint('DistributionSingleParent');
   }
 }
 
@@ -112,17 +115,6 @@ function solution_rdf_entity_insert(EntityInterface $entity) {
 
 /**
  * Implements hook_form_FORM_ID_alter().
- */
-function solution_form_rdf_entity_solution_form_alter(array &$form, FormStateInterface $form_state) {
-  $entity = $form_state->getFormObject()->getEntity();
-  if (!empty($form_state->getStorage()['collection']) && $entity->bundle() == 'solution' && $entity->isNew()) {
-    $form['actions']['submit']['#submit'][] = 'solution_add_form_parent_submit';
-    $form['#entity_builders'][] = 'solution_add_form_set_collection';
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
  *
  * When editing a solution, show a message to moderators informing them if a
  * solution with the same name already exists in a different collection. They
@@ -144,109 +136,6 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
   if (!solution_title_is_unique($form_state->getFormObject()->getEntity(), TRUE)) {
     drupal_set_message(t('A solution with the same name exists in a different collection.'), 'warning');
   }
-}
-
-/**
- * Keep a reference to the collection being saved.
- *
- * @param string $entity_type_id
- *   The entity type identifier.
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *   The entity updated with the submitted values.
- * @param array $form
- *   The complete form array.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The current state of the form.
- */
-function solution_add_form_set_collection($entity_type_id, EntityInterface $entity, array &$form, FormStateInterface $form_state) {
-  $collection_id = $form_state->getStorage()['collection'];
-  $entity->set('collection', [$collection_id]);
-}
-
-/**
- * Keep track of the collection the solution is related to.
- *
- * This works around a race condition in the indexing process to Solr.
- *
- * @param string|null $collection_id
- *   The collection the solution is being related to.
- *
- * @return string|null
- *   The collection the solution is being related to.
- */
-function solution_relate_collection_id($collection_id = NULL) {
-  static $id;
-  if ($collection_id) {
-    $id = $collection_id;
-  }
-  return $id;
-}
-
-/**
- * Submit handler for the add solution form.
- *
- * Links the solution to the collection to which it belongs.
- *
- * In order for a solution to be affiliated with a collection when it is
- * created, the collection should be passed to the form_state object.
- *
- * @see \Drupal\solution\Controller\SolutionController::add()
- */
-function solution_add_form_parent_submit(array &$form, FormStateInterface $form_state) {
-  $solution_id = $form_state->getFormObject()->getEntity()->id();
-  $collection_id = $form_state->getStorage()['collection'];
-  solution_update_collection_affiliation($solution_id, $collection_id);
-}
-
-/**
- * Links the solution to the collection to which it belongs.
- *
- * According to the ADMS model, the linked solutions of a collection are stored
- * as a property of the collection itself, called affiliates. The process of
- * linking a solution to a collection is:
- * - Request an affiliation. This request is registered by adding the collection
- *   to the affiliation_request field of the solution.
- * - Accept the affiliation. The collection is removed from the affiliation
- *   request of the solution and the solution is added to the affiliates field
- *   of the collection.
- *
- * @param string $solution_id
- *   The ID of the solution to affiliate.
- * @param string $collection_id
- *   The ID of the collection to affiliate.
- *
- * @throws \Exception
- *   Thrown when the collection ID does not belong to a collection.
- */
-function solution_update_collection_affiliation($solution_id, $collection_id) {
-  /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
-  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-
-  // Add the reference field both to the published and the draft collection.
-  foreach (['default', 'draft'] as $graph) {
-    $collection = $storage->load($collection_id, [$graph]);
-    if (empty($collection)) {
-      continue;
-    }
-    if ($collection->bundle() !== 'collection') {
-      throw new \Exception('Only collections can be referenced in affiliation requests.');
-    }
-
-    $values = $collection->get('field_ar_affiliates')->getValue();
-    $values[] = ['target_id' => $solution_id];
-    $collection->set('field_ar_affiliates', $values);
-    $collection->set('graph', $graph);
-    $collection->save();
-  }
-
-  // At this point the solution has already been indexed without the parent so
-  // The queries that are based on the affiliated collection will present false
-  // data. Reset the cache related to the solution and re index it so that the
-  // entity_groups property is properly set.
-  // @todo Avoid indexing twice the solution entity in ISAICP-4446.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4446
-  $storage->resetCache([$solution_id]);
-  search_api_entity_insert(Rdf::load($solution_id));
 }
 
 /**
@@ -314,34 +203,6 @@ function solution_entity_extra_field_info(): array {
   }
 
   return $fields;
-}
-
-/**
- * Implements hook_ENTITY_TYPE_storage_load().
- */
-function solution_rdf_entity_storage_load(array $entities) {
-  /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-  foreach ($entities as $entity) {
-    if ($entity->bundle() != 'solution') {
-      continue;
-    }
-    // In ADMS-AP collections point to solutions.
-    // The reverse relation would have been more logical,
-    // and this is quite inconvenient, especially for the search index.
-    // To work around this, we add a computed field here.
-    $ids = solution_get_collection_ids($entity);
-    // This will only be set when submitting a new solution form.
-    $pending_collection_id = solution_relate_collection_id();
-    if ($pending_collection_id) {
-      $ids[] = $pending_collection_id;
-    }
-    if ($ids) {
-      $ids = array_map(function ($id) {
-        return ['target_id' => $id];
-      }, $ids);
-      $entity->set('collection', $ids);
-    }
-  }
 }
 
 /**
@@ -529,8 +390,13 @@ function solution_build_related_solutions_list(array $ids) {
  *
  * Default graph is published. Draft graph is draft.
  */
-function solution_rdf_entity_presave(EntityInterface $entity) {
+function solution_rdf_entity_presave(RdfInterface $entity) {
   if ($entity->bundle() !== 'solution' || !\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'solution', 'draft')) {
+    return;
+  }
+
+  // Set the graph only for new solutions or those loaded from the main graphs.
+  if (!$entity->isNew() && !in_array($entity->rdfEntityOriginalGraph, ['default', 'draft'])) {
     return;
   }
 

@@ -20,6 +20,7 @@ dependencies:
   - options
   - owner
   - rdf_entity
+  - rdf_schema_field_validation
   - search_api_field
   - smart_trim
   - state_machine
