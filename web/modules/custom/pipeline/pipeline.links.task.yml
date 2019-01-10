@@ -1,0 +1,4 @@
+pipeline.pipeline_select:
+  title: Pipeline
+  route_name: pipeline.pipeline_select
+  base_route: system.admin_content

@@ -1935,6 +1935,17 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Wait until a running pipeline batch job has finished.
+   *
+   * @Given I wait for the pipeline batch job to finish
+   */
+  public function iWaitForThePipelineBatchJobToFinish() {
+    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+      $this->getSession()->reload();
+    }
+  }
+
+  /**
    * Simulates picking of an autosuggestion value from a field.
    *
    * @param string $value
@@ -2551,6 +2562,30 @@ JS;
     /** @var \Behat\Mink\Element\NodeElement $last */
     $last = array_pop($fields);
     $last->setValue($value);
+  }
+
+  /**
+   * Checks if the output is exactly the same as the contents of a given file.
+   *
+   * @param string $file_path
+   *   The path to the file.
+   *
+   * @throws \Exception
+   *
+   * @Then the output should match the file contents of :file
+   */
+  public function theOutputShouldMatchTheFile($file_path) {
+    if ($this->getMinkParameter('files_path')) {
+      $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_path;
+      if (is_file($fullPath)) {
+        $file_path = $fullPath;
+      }
+    }
+    $expected_content = trim(file_get_contents($file_path));
+    $browser_content = trim($this->getSession()->getPage()->getContent());
+    if ($expected_content !== $browser_content) {
+      throw new Exception(sprintf("The output didn't match the fixture. Expected %s, got %s.", $expected_content, $browser_content));
+    }
   }
 
 }

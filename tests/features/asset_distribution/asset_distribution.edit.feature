@@ -30,7 +30,6 @@ Feature: Asset distribution editing.
       | description | Sample description         |
       | licence     | LGPL                       |
       | access url  | test.zip                   |
-      | solution    | Solution A                 |
       | parent      | Asset release example      |
     And the following solution user membership:
       | solution   | user         | roles       |
