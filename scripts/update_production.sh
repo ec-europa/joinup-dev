@@ -39,11 +39,16 @@ echo "Disabling config_readonly."
 touch disable-config-readonly
 
 ./vendor/bin/drush updatedb --yes &&
-./vendor/bin/drush cs-update --discard-overrides --yes &&
+# Config cache might be out-of-sync with memory cache backends, such as Redis,
+# after a database restore. Running `drush config:import` in such circumstances
+# might give erroneous config change list. Clear the config cache.
+# @see https://github.com/drush-ops/drush/issues/3860
+./vendor/bin/drush cache:clear bin config --yes &&
+./vendor/bin/drush config:import --yes &&
 ./vendor/bin/drush search-api:reset-tracker --yes &&
-./vendor/bin/drush cache-rebuild --yes &&
+./vendor/bin/drush cache:rebuild --yes
 
-echo "Rebuilding node access records." &&
+echo "Rebuilding node access records."
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
 
 echo "Creating a manual checkpoint."

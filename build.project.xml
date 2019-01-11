@@ -54,6 +54,7 @@
             <option name="account-name" value="${drupal.admin.username}" />
             <option name="account-pass" value="${drupal.admin.password}" />
             <option name="account-mail" value="${drupal.admin.email}" />
+            <option name="existing-config" />
             <param>${website.profile.name}</param>
             <!-- Disable sending of e-mails during installation. -->
             <param>install_configure_form.enable_update_status_module=NULL</param>
@@ -107,13 +108,25 @@
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
         </drush>
+        <!-- Config cache might be out-of-sync with memory cache backends, such
+        as Redis, after a database restore. Running `drush config:import` in
+        such circumstances might give erroneous config change list. Clear the
+        config cache. See https://github.com/drush-ops/drush/issues/3860 -->
         <drush
-                command="cs-update"
+                command="cache:clear"
                 assume="yes"
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="discard-overrides" />
+            <param>bin</param>
+            <param>config</param>
+        </drush>
+        <drush
+                command="config:import"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
         </drush>
     </target>
 
