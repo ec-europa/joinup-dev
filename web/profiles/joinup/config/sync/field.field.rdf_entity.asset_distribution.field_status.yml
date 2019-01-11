@@ -1,0 +1,30 @@
+uuid: 25e01223-f810-4821-a270-664a95c31a29
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_status
+    - rdf_entity.rdfentity.asset_distribution
+    - taxonomy.vocabulary.status
+_core:
+  default_config_hash: Go3_kJvKxKuGxXr_W8cvG-Lb2AMZofCh9m1A07-9DQU
+id: rdf_entity.asset_distribution.field_status
+field_name: field_status
+entity_type: rdf_entity
+bundle: asset_distribution
+label: Status
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      status: status
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,27 @@
+uuid: b1f47ccf-7303-469c-9931-1f0ae59ed87d
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - state_machine
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/ar/workflow_status'
+        format: 'xsd:string'
+_core:
+  default_config_hash: cUFl7VCHJgI4k9JFPX3BJOc7skieoze_K2BABzE2dXk
+id: rdf_entity.field_ar_state
+field_name: field_ar_state
+entity_type: rdf_entity
+type: state
+settings: {  }
+module: state_machine
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

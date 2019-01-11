@@ -1,0 +1,20 @@
+uuid: 309cb523-ac31-4a06-a3c5-855384f7cc5d
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.asset_distribution
+_core:
+  default_config_hash: EqeXVJes6lBbR2Gus4aXuNcIQ2Mxd32EGBamcR9x2hw
+id: rdf_entity.asset_distribution.label
+field_name: label
+entity_type: rdf_entity
+bundle: asset_distribution
+label: Title
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

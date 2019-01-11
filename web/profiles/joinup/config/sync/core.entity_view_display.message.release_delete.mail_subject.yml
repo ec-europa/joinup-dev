@@ -1,0 +1,19 @@
+uuid: 34b4d750-76ab-4bce-8c37-2a5ef609ab9f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.release_delete
+id: message.release_delete.mail_subject
+targetEntityType: message
+bundle: release_delete
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

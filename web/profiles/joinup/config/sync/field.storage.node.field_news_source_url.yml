@@ -1,0 +1,21 @@
+uuid: def647f2-9a7f-4cdd-b18d-97327cfec084
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+_core:
+  default_config_hash: '-ChJGNK1zz8IdGS9wyxI21j04VU_8j43zP-bL9E_sT8'
+id: node.field_news_source_url
+field_name: field_news_source_url
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

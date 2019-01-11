@@ -1,0 +1,12 @@
+uuid: b26c5fb9-586b-42fd-a4ea-1320a8e42b4d
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: 1iP3pNkk0l34Q-2HNsii0wWuR2DkTJXnO93iD4fPz4M
+id: rdf_entity.about
+label: About
+targetEntityType: rdf_entity
+cache: true

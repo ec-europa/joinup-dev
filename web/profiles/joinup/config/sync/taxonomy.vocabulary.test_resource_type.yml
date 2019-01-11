@@ -1,0 +1,13 @@
+uuid: 1d29a746-9cdb-4e6d-8ebc-42166f3d77e9
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: PgnXBacV-V6sfIrDajylmdpYlyj6HQ8ajlvWMBfA-rc
+name: 'Test resource type'
+vid: test_resource_type
+description: ''
+hierarchy: 0
+weight: 0

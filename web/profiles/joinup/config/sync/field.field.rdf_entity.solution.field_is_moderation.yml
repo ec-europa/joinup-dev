@@ -1,0 +1,25 @@
+uuid: b74b6b20-6214-4b38-a528-22eb95c41402
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_moderation
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: 8txreRxuvAWBgZRLDSizdBdS15B7ci09a7qVsvTFC7c
+id: rdf_entity.solution.field_is_moderation
+field_name: field_is_moderation
+entity_type: rdf_entity
+bundle: solution
+label: Moderation
+description: 'If checked, eLibrary items (news, events, and documents) are pre-moderated: they have to be validated by the moderators of the collection before they will be published.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Moderated
+  off_label: 'Non moderated'
+field_type: boolean

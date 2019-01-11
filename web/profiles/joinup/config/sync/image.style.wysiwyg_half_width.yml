@@ -1,0 +1,17 @@
+uuid: 3142cd29-ccd2-4c21-b0d7-443919552d03
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Fbc1oZmgA2yRBwtI9bwjgKumN3fzvl_0rVPm_whwM1o
+name: wysiwyg_half_width
+label: 'Half width'
+effects:
+  a9cdd657-7589-42f7-a3c8-c218d25fe067:
+    uuid: a9cdd657-7589-42f7-a3c8-c218d25fe067
+    id: image_scale
+    weight: 1
+    data:
+      width: 460
+      height: null
+      upscale: false

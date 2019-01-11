@@ -1,0 +1,12 @@
+uuid: 9b017a2d-cecc-4d48-a5de-fb91b221bccc
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: 61A5bkgDsmCSq1cssIZn5gq7eaGxM0-F57FJ82UcAZ0
+id: user.group_header
+label: 'Group header'
+targetEntityType: user
+cache: true

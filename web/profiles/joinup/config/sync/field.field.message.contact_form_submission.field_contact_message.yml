@@ -1,0 +1,31 @@
+uuid: 192bfca7-8c28-42c6-8d9a-157985fec33d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_message
+    - message.template.contact_form_submission
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    content_editor: basic_html
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
+_core:
+  default_config_hash: jZ3D6MOXKmMUj9hS0x2XDafaI1jOgo2b_FVndhlwl48
+id: message.contact_form_submission.field_contact_message
+field_name: field_contact_message
+entity_type: message
+bundle: contact_form_submission
+label: Message
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

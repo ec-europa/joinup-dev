@@ -1,0 +1,51 @@
+transitions:
+  draft:
+    __new__:
+      - authenticated
+      - moderator
+    draft:
+      - moderator
+      - rdf_entity-collection-facilitator
+    proposed:
+      - moderator
+      - rdf_entity-collection-facilitator
+    validated:
+      - moderator
+      - rdf_entity-collection-facilitator
+  proposed:
+    __new__:
+      - authenticated
+      - moderator
+    draft:
+      - moderator
+      - rdf_entity-collection-facilitator
+    proposed:
+      - moderator
+      - rdf_entity-collection-facilitator
+    validated:
+      - moderator
+      - rdf_entity-collection-facilitator
+  validated:
+    __new__:
+      - moderator
+    draft:
+      - moderator
+    proposed:
+      - moderator
+    validated:
+      - moderator
+    archival_request:
+      - moderator
+    deletion_request:
+      - moderator
+  archival_request:
+    validated:
+      - rdf_entity-collection-administrator
+  deletion_request:
+    validated:
+      - rdf_entity-collection-administrator
+  archived:
+    archival_request:
+      - moderator
+_core:
+  default_config_hash: v1mBS7MDgxUW0g5iB4FJo9RWPILPSJq9Peni_bu8IY0

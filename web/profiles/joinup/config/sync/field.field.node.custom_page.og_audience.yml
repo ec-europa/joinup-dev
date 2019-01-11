@@ -1,0 +1,31 @@
+uuid: 46618959-37b3-4139-89cd-fa59682eebe1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.og_audience
+    - node.type.custom_page
+    - rdf_entity.rdfentity.collection
+  module:
+    - og
+_core:
+  default_config_hash: ux9UcXuJq3I9o5AtYnqy3ajuODWxHbEAuwD0z8t0Ugs
+id: node.custom_page.og_audience
+field_name: og_audience
+entity_type: node
+bundle: custom_page
+label: Collection
+description: 'The collection this custom page belongs to.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+    sort:
+      field: _none
+  access_override: false
+field_type: og_standard_reference

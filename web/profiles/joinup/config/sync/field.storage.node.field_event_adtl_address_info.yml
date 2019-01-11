@@ -1,0 +1,21 @@
+uuid: c11674a1-2fa9-4986-9646-7fff1cde7b37
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: bKhRAN0lgMXlLB4XQbmB4i6EVshWE3PGqGM4d6RJL6Y
+id: node.field_event_adtl_address_info
+field_name: field_event_adtl_address_info
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

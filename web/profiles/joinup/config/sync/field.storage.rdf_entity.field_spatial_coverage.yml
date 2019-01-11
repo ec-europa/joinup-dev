@@ -1,0 +1,28 @@
+uuid: e4f5a5d1-741e-424e-89ad-b1deef139080
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/spatial'
+        format: resource
+_core:
+  default_config_hash: QlPVr6fmntzff8hvlmFP1IHLHxyv5Ba5yvGD6sIO46c
+id: rdf_entity.field_spatial_coverage
+field_name: field_spatial_coverage
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

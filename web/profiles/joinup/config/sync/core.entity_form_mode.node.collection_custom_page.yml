@@ -1,0 +1,12 @@
+uuid: f0e031cf-f821-4413-9852-a98cedb49c18
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: pNaJsRLc3-YRwgw87mti0wB12Qlp02uHtsW2SC5DX8Q
+id: node.collection_custom_page
+label: 'Collection custom page'
+targetEntityType: node
+cache: true

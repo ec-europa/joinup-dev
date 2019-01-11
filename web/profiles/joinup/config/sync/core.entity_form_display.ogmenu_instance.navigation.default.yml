@@ -1,0 +1,22 @@
+uuid: becbc276-3c71-4ca4-b868-299ca9b4fc51
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.ogmenu_instance.navigation.og_audience
+    - og_menu.ogmenu.navigation
+_core:
+  default_config_hash: H3FHQstVklPv10Z_Td9J1sIMXFx7Mjg4wwao88MkfBc
+id: ogmenu_instance.navigation.default
+targetEntityType: ogmenu_instance
+bundle: navigation
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  og_audience: true

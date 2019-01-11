@@ -1,0 +1,27 @@
+uuid: 853cd228-dc40-4dc5-a425-2797b2ddd8cc
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/license'
+        format: resource
+_core:
+  default_config_hash: RdsS0ASmekrx_F07lRzrzmDb0wzNQGVhHYLqcjI0gbo
+id: rdf_entity.field_ad_licence
+field_name: field_ad_licence
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: dcd9781c-aa17-4c9f-a0d5-a31999f15276
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: OMnPmQqDJ4ZZ4Ss5vA5GUofUhq7RDo2lRZsojbKpJJ8
+id: rdf_entity-solution-non-member
+label: Non-member
+weight: 3
+is_admin: null
+group_type: rdf_entity
+group_bundle: solution
+group_id: null
+permissions:
+  - 'accept facilitator invitation'
+  - subscribe
+role_type: required

@@ -1,0 +1,13 @@
+uuid: db5c3e58-530f-4372-a725-96daa52892a7
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: s9Cs3GmX9KclcKa-duZTUhNyTk0AjVzmf9tFWf9R688
+name: 'File type'
+vid: file_type
+description: ''
+hierarchy: 0
+weight: 0

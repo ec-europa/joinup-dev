@@ -1,0 +1,31 @@
+uuid: a497ce6d-a8f9-4e80-8a2c-da772069e3b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.discussion_invite.field_invitation
+    - message.template.discussion_invite
+id: message.discussion_invite.default
+targetEntityType: message
+bundle: discussion_invite
+mode: default
+content:
+  field_invitation:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

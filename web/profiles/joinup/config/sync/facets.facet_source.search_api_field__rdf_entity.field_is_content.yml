@@ -1,0 +1,11 @@
+uuid: 9d33a879-19f9-468e-88e8-4deac6876c0d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: PSEfgG4giobhXlg9pPdHdxYx5n3-HeCwIyi0rPlwUmk
+id: search_api_field__rdf_entity.field_is_content
+name: 'search_api_field:rdf_entity.field_is_content'
+filter_key: ''
+url_processor: query_string
+breadcrumb: {  }

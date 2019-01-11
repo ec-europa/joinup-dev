@@ -1,0 +1,19 @@
+uuid: 8f33b8a1-065b-42a8-9c54-c79101e46269
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.col_req_arch_del
+id: message.col_req_arch_del.mail_body
+targetEntityType: message
+bundle: col_req_arch_del
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

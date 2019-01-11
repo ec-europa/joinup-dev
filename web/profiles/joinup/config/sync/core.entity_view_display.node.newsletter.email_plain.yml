@@ -1,0 +1,33 @@
+uuid: d28440d2-505c-40b9-8f70-9648d78e4249
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.email_plain
+    - field.field.node.newsletter.body
+    - field.field.node.newsletter.og_audience
+    - field.field.node.newsletter.simplenews_issue
+    - node.type.newsletter
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: iE5IjKwxGj2XKmQ2oPQwAvVSZKY6Zu17GtZ9CRIDFQc
+id: node.newsletter.email_plain
+targetEntityType: node
+bundle: newsletter
+mode: email_plain
+content:
+  body:
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    label: hidden
+    region: content
+hidden:
+  langcode: true
+  links: true
+  og_audience: true
+  report: true
+  simplenews_issue: true

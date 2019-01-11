@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: The discussion "@entity:title" was updated in the space of "@group:label"'
+    format: full_html
+  -
+    value: '<p>The discussion "@entity:title" was updated in the "@group:label" @group:bundle.</p><p>To view the discussion, click @entity:url.</p>'
+    format: full_html

@@ -1,0 +1,30 @@
+uuid: 44499cbf-4dc4-4fe8-ad1b-440b873431f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_documentation
+    - rdf_entity.rdfentity.solution
+  module:
+    - file_url
+_core:
+  default_config_hash: EHXLnJDjv3D2GlOE58HJU1G7YMish_nzTJzlYMKFWQk
+id: rdf_entity.solution.field_is_documentation
+field_name: field_is_documentation
+entity_type: rdf_entity
+bundle: solution
+label: Documentation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: 'solution/documentation/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'txt doc docx pdf'
+  max_filesize: ''
+  description_field: false
+  description_field_required: false
+  handler: 'file_url_default:file'
+  handler_settings: {  }
+field_type: file_url

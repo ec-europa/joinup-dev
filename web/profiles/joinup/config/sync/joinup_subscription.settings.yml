@@ -1,0 +1,8 @@
+default_group_types:
+  - 'node:custom_page'
+  - 'node:event'
+  - 'node:news'
+  - 'node:document'
+frequency: weekly
+_core:
+  default_config_hash: rPjSw9rQTSLNgRsAm8ueS2w3CgjUS2bS6_3tUArFOkI

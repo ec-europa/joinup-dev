@@ -1,0 +1,17 @@
+uuid: ffca4b36-91c5-4bb1-b644-f23abca69cca
+langcode: en
+status: true
+dependencies: {  }
+name: 'Account Expiration Warning‏'
+id: account_expiration_warning
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

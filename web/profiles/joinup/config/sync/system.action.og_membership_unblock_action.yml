@@ -1,0 +1,13 @@
+uuid: c84b5bf5-3e68-4f09-87f3-e620deb76bff
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+_core:
+  default_config_hash: 7xXRUuE_2Kf2QLJwERtaiweMJMGbaNymsszUd9tqN08
+id: og_membership_unblock_action
+label: 'Unblock the selected membership(s)'
+type: og_membership
+plugin: og_membership_unblock_action
+configuration: {  }

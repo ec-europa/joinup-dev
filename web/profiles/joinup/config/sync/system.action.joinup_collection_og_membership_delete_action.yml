@@ -1,0 +1,13 @@
+uuid: d9eca69a-7f18-4e29-8a23-1b160083e78e
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_collection
+_core:
+  default_config_hash: yfP4xoG4CcpjkpAjF7rx9tp1ucBu5rgoza113SBPfA8
+id: joinup_collection_og_membership_delete_action
+label: 'Delete the selected membership(s)'
+type: og_membership
+plugin: joinup_collection_og_membership_delete_action
+configuration: {  }

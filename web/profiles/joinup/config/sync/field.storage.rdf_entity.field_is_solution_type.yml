@@ -1,0 +1,28 @@
+uuid: d2ec71d8-3e73-4b0b-a397-ddb745c7f0d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/type'
+        format: resource
+_core:
+  default_config_hash: MswaRwszgSCAt38CTFeMI4TdfuT5YT-2VJRpQRTQvQE
+id: rdf_entity.field_is_solution_type
+field_name: field_is_solution_type
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

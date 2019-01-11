@@ -1,0 +1,33 @@
+uuid: 8b7aeecc-bfad-4a0d-8fdc-fd05cf786933
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri:
+        predicate: 'http://www.w3.org/2006/vcard/ns#hasURL'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: Asll1ajW6UmaUpOeK2ShixkZEVj9TJKzOr3mYKS6j7I
+id: rdf_entity.field_ci_webpage
+field_name: field_ci_webpage
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

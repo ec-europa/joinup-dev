@@ -1,0 +1,31 @@
+uuid: 1da70601-9a66-4756-9564-d4b2f3e5e81d
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.spatial_coverage
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: M2RmoCsVaifOmwYCo5ajei1bXNHAGtfB1WvylYub-ZM
+id: spatial_coverage_facet
+theme: joinup_theme
+region: filters
+weight: -13
+provider: null
+plugin: 'facet_block:spatial_coverage'
+settings:
+  id: 'facet_block:spatial_coverage'
+  label: 'Search page - Spatial coverage facet'
+  provider: facets
+  label_display: '0'
+  block_id: spatial_coverage_facet
+visibility:
+  request_route:
+    id: request_route
+    routes: view.search.page_1
+    negate: false
+    context_mapping: {  }

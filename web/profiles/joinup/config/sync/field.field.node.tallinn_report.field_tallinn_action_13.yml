@@ -1,0 +1,19 @@
+uuid: 19e672e2-fd0a-4cc0-99bd-c9f589090828
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_13
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_13
+field_name: field_tallinn_action_13
+entity_type: node
+bundle: tallinn_report
+label: 'Cybersecurity capacity / implementation of NIS directive'
+description: 'Co-ordinate, exchange and collaborate more with each other to increase our strategic, operational, research and development capacity in the area of cybersecurity, in particular via the implementation of the network and information security (NIS) directive11 to strengthen the security and resilience of our public administration and services.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

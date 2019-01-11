@@ -1,0 +1,19 @@
+uuid: 48d918db-1235-49b6-a3f0-c0e5de8e5d9c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.col_approve_new
+id: message.col_approve_new.mail_subject
+targetEntityType: message
+bundle: col_approve_new
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

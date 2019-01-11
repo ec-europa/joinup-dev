@@ -1,0 +1,141 @@
+uuid: 44f59772-4aa1-4344-ab77-62a798cd2d73
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.group_header
+    - field.field.rdf_entity.collection.field_ar_abstract
+    - field.field.rdf_entity.collection.field_ar_access_url
+    - field.field.rdf_entity.collection.field_ar_affiliates
+    - field.field.rdf_entity.collection.field_ar_banner
+    - field.field.rdf_entity.collection.field_ar_closed
+    - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_description
+    - field.field.rdf_entity.collection.field_ar_elibrary_creation
+    - field.field.rdf_entity.collection.field_ar_logo
+    - field.field.rdf_entity.collection.field_ar_moderation
+    - field.field.rdf_entity.collection.field_ar_owner
+    - field.field.rdf_entity.collection.field_ar_state
+    - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_newsletter
+    - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_site_featured
+    - field.field.rdf_entity.collection.field_site_pinned
+    - field.field.rdf_entity.collection.field_spatial_coverage
+    - image.style.banner
+    - image.style.image_style_collection_logo
+    - rdf_entity.rdfentity.collection
+  module:
+    - ds
+    - image
+    - joinup_core
+    - user
+id: rdf_entity.collection.group_header
+targetEntityType: rdf_entity
+bundle: collection
+mode: group_header
+content:
+  field_ar_banner:
+    type: image_url_formatter
+    weight: 0
+    label: hidden
+    settings:
+      image_style: banner
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
+  field_ar_logo:
+    type: image
+    weight: 1
+    label: hidden
+    settings:
+      image_style: image_style_collection_logo
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+  join_collection:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  label:
+    label: hidden
+    type: string
+    weight: 2
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+  last_update:
+    label: hidden
+    type: joinup_timestamp_timeago
+    weight: 4
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+      tooltip_format: long
+      tooltip_format_custom: ''
+      timeago_settings:
+        strings:
+          seconds: 'few seconds'
+    third_party_settings: {  }
+    region: content
+  members:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  solutions:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  field_ar_abstract: true
+  field_ar_access_url: true
+  field_ar_affiliates: true
+  field_ar_closed: true
+  field_ar_contact_information: true
+  field_ar_description: true
+  field_ar_elibrary_creation: true
+  field_ar_moderation: true
+  field_ar_owner: true
+  field_ar_state: true
+  field_collection_content: true
+  field_newsletter: true
+  field_policy_domain: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_spatial_coverage: true
+  langcode: true
+  og_group: true
+  rdf_entity_field_collection_content_inline_facets: true
+  rdf_entity_field_collection_content_top: true
+  read_more: true

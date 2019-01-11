@@ -1,0 +1,30 @@
+uuid: 284b57bb-c9f9-4d69-bedf-650d5a13f265
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_spatial_coverage
+    - rdf_entity.rdfentity.asset_release
+    - taxonomy.vocabulary.spatial
+_core:
+  default_config_hash: Y2YtNAkycG7hnza7HPz9gOR6jH9fcDUuZ0Cl4EFBw5o
+id: rdf_entity.asset_release.field_spatial_coverage
+field_name: field_spatial_coverage
+entity_type: rdf_entity
+bundle: asset_release
+label: 'Spatial coverage'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      spatial: spatial
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

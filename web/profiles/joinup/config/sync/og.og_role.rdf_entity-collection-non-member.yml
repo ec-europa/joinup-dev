@@ -1,0 +1,19 @@
+uuid: b405b8a2-79a3-4bce-b217-ce7143b8e6da
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.collection
+_core:
+  default_config_hash: QcPIPVKcIv59O5JgvzaFYmry7dfdDulCUnyOzH2t5lI
+id: rdf_entity-collection-non-member
+label: Non-member
+weight: 3
+is_admin: null
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - 'accept facilitator invitation'
+  - subscribe
+role_type: required

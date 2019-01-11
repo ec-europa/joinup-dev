@@ -1,0 +1,20 @@
+uuid: b7718e9b-e38e-4464-b0bb-6ddccbf360be
+langcode: en
+status: true
+dependencies:
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: wDEWxftRiY9k0JlCkobrBzK8bVmComPPnWRjhu7WmxY
+id: primaryadminactions
+theme: joinup_theme
+region: content
+weight: -10
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,12 @@
+uuid: 9944b9bc-cd13-4372-a96e-83a774aeb9f2
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: znH60RCRSMIJZF_6GbR6jymTmlSPHY-sfSAr_3THkBE
+id: user.view_mode_featured
+label: Featured
+targetEntityType: user
+cache: true

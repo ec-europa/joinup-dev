@@ -1,0 +1,19 @@
+uuid: edda7e91-6e92-4317-930e-6e8e7f388238
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.sol_blacklist
+id: message.sol_blacklist.mail_body
+targetEntityType: message
+bundle: sol_blacklist
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

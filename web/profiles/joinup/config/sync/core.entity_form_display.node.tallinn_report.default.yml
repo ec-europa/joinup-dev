@@ -1,0 +1,323 @@
+uuid: 8bfeb77f-e971-45b7-91ee-5091b1c983a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.tallinn_report.field_tallinn_action_1
+    - field.field.node.tallinn_report.field_tallinn_action_10
+    - field.field.node.tallinn_report.field_tallinn_action_11
+    - field.field.node.tallinn_report.field_tallinn_action_12
+    - field.field.node.tallinn_report.field_tallinn_action_13
+    - field.field.node.tallinn_report.field_tallinn_action_14
+    - field.field.node.tallinn_report.field_tallinn_action_15
+    - field.field.node.tallinn_report.field_tallinn_action_16
+    - field.field.node.tallinn_report.field_tallinn_action_17
+    - field.field.node.tallinn_report.field_tallinn_action_18
+    - field.field.node.tallinn_report.field_tallinn_action_19
+    - field.field.node.tallinn_report.field_tallinn_action_2
+    - field.field.node.tallinn_report.field_tallinn_action_20
+    - field.field.node.tallinn_report.field_tallinn_action_21
+    - field.field.node.tallinn_report.field_tallinn_action_22
+    - field.field.node.tallinn_report.field_tallinn_action_23
+    - field.field.node.tallinn_report.field_tallinn_action_24
+    - field.field.node.tallinn_report.field_tallinn_action_25
+    - field.field.node.tallinn_report.field_tallinn_action_3
+    - field.field.node.tallinn_report.field_tallinn_action_4
+    - field.field.node.tallinn_report.field_tallinn_action_5
+    - field.field.node.tallinn_report.field_tallinn_action_6
+    - field.field.node.tallinn_report.field_tallinn_action_7
+    - field.field.node.tallinn_report.field_tallinn_action_8
+    - field.field.node.tallinn_report.field_tallinn_action_9
+    - node.type.tallinn_report
+  module:
+    - field_group
+third_party_settings:
+  field_group:
+    group_tallinn_tabs_group:
+      children:
+        - group_tallinn_tab_1
+        - group_tallinn_tab_2
+        - group_tallinn_tab_3
+        - group_tallinn_tab_4
+        - group_tallinn_tab_5
+        - group_tallinn_tab_6
+      parent_name: ''
+      weight: 2
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: Categories
+    group_tallinn_tab_1:
+      children:
+        - field_tallinn_action_1
+        - field_tallinn_action_2
+        - field_tallinn_action_3
+        - field_tallinn_action_4
+        - field_tallinn_action_5
+      parent_name: group_tallinn_tabs_group
+      weight: 7
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: '▪ Option digitally interaction with PAs<br />▪ Reduced need to unnecessarily interact with PAs<br />▪ Readiness to interact digitally with PAs<br />▪ Digital accessibility of public services<br />▪ Linkages to information held in PA systems'
+        required_fields: true
+      label: 'Digital-by-default, inclusiveness and accessibility'
+    group_tallinn_tab_2:
+      children:
+        - field_tallinn_action_6
+        - field_tallinn_action_7
+        - field_tallinn_action_8
+        - field_tallinn_action_9
+      parent_name: group_tallinn_tabs_group
+      weight: 8
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Once-only options in digital public services<br />▪ Usability of PA data<br />▪ Culture of re-use of data within PAs<br />▪ Use of available funding for implementing once-only'
+        required_fields: true
+      label: 'Once Only'
+    group_tallinn_tab_3:
+      children:
+        - field_tallinn_action_10
+        - field_tallinn_action_11
+        - field_tallinn_action_12
+        - field_tallinn_action_13
+      parent_name: group_tallinn_tabs_group
+      weight: 9
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Use across sectors of eIDAS regulation<br />▪ Use eIDAS framework in digital public services<br />▪ Use of national eID and TS in private sector<br />▪ Cybersecurity capacity / implementation of NIS directive'
+        required_fields: true
+      label: 'Trustworthiness and Security'
+    group_tallinn_tab_4:
+      children:
+        - field_tallinn_action_14
+        - field_tallinn_action_15
+        - field_tallinn_action_16
+      parent_name: group_tallinn_tabs_group
+      weight: 10
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Possibility to digitally manage personal data held by PAs<br />▪ Data open by-default approach/ enable APIs<br />▪ Long-term preservation of public information resources'
+        required_fields: true
+      label: 'Openness and transparency'
+    group_tallinn_tab_5:
+      children:
+        - field_tallinn_action_17
+        - field_tallinn_action_18
+        - field_tallinn_action_19
+      parent_name: group_tallinn_tabs_group
+      weight: 11
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Reuse of CEF building blocks (eID, eSignature, ..)<br />▪ Use of open source solutions/open standards<br />▪ ICT solutions more readily available for reuse by 3rd parties'
+        required_fields: true
+      label: 'Interoperability by default'
+    group_tallinn_tab_6:
+      children:
+        - field_tallinn_action_20
+        - field_tallinn_action_21
+        - field_tallinn_action_22
+        - field_tallinn_action_23
+        - field_tallinn_action_24
+        - field_tallinn_action_25
+      parent_name: group_tallinn_tabs_group
+      weight: 12
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: '▪ Digital skills within the PAs<br />▪ Use of data and analytics (. big data)<br />▪ Sharing of good eGovernment practices<br />▪ Funding resources for the digital transformation in PAs<br />▪ Resources for experimentation with emerging ICT /testbeds<br />▪ Modern design of public services'
+        required_fields: true
+      label: 'Horizontal enabling policy steps'
+id: node.tallinn_report.default
+targetEntityType: node
+bundle: tallinn_report
+mode: default
+content:
+  field_tallinn_action_1:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_10:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_11:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_12:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_13:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_14:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_15:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_16:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_17:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_18:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_19:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_2:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_20:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_21:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_22:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_23:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_24:
+    type: tallinn_entry_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_25:
+    type: tallinn_entry_default
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_3:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_4:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_5:
+    type: tallinn_entry_default
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_6:
+    type: tallinn_entry_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_7:
+    type: tallinn_entry_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_8:
+    type: tallinn_entry_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tallinn_action_9:
+    type: tallinn_entry_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  created: true
+  current_workflow_state: true
+  langcode: true
+  og_audience: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  title: true
+  url_redirects: true

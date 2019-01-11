@@ -1,0 +1,21 @@
+uuid: de9ad5aa-e0ae-4451-a905-38fdea56a3e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_keywords
+    - node.type.event
+_core:
+  default_config_hash: P6YkHlmplpVoeds7XieVpHVx04mC56Sm3A1KldkemRk
+id: node.event.field_keywords
+field_name: field_keywords
+entity_type: node
+bundle: event
+label: Keywords
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

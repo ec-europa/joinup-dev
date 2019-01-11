@@ -1,0 +1,21 @@
+uuid: e347a679-5941-4402-ba98-fc1f9bfaffba
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.discussion_invite.field_invitation
+    - message.template.discussion_invite
+id: message.discussion_invite.mail_body
+targetEntityType: message
+bundle: discussion_invite
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_invitation: true
+  partial_0: true

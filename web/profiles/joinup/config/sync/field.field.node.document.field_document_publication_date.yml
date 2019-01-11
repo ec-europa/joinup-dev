@@ -1,0 +1,26 @@
+uuid: 45c9d99b-7b64-49ba-8662-c1d371f69ad9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_document_publication_date
+    - node.type.document
+  module:
+    - datetime
+_core:
+  default_config_hash: a-jb-P_h9cdgaci6YhmoqNWAcWXtG7V4twQNlSE-IiA
+id: node.document.field_document_publication_date
+field_name: field_document_publication_date
+entity_type: node
+bundle: document
+label: 'Publication date'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_date_type: now
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,31 @@
+uuid: de2f250a-6a83-423b-bc22-a3ba927e7593
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.og_audience
+    - node.type.video
+    - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
+  module:
+    - og
+_core:
+  default_config_hash: EeXVam-g-ErzbrmQI1ncn-199mXN2O8Qpfl8VsclXIg
+id: node.video.og_audience
+field_name: og_audience
+entity_type: node
+bundle: video
+label: 'Groups audience'
+description: 'OG group audience reference field.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+      solution: solution
+  access_override: false
+field_type: og_standard_reference

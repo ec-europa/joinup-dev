@@ -1,0 +1,20 @@
+uuid: eeddd760-4f03-4d19-b0c0-1b6d3b2a22fc
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.licence
+_core:
+  default_config_hash: TUE17QhDCmC9chFX67Lmkw9I1V2cdLpeXSc93vOztfU
+id: rdf_entity.licence.label
+field_name: label
+entity_type: rdf_entity
+bundle: licence
+label: Title
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

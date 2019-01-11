@@ -1,0 +1,19 @@
+uuid: caea9bc0-ffff-4b9e-a4a4-6102b4be5cb1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_14
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_14
+field_name: field_tallinn_action_14
+entity_type: node
+bundle: tallinn_report
+label: 'Possibility to digitally manage personal data held by PAs'
+description: 'Make it possible for citizens and businesses to digitally manage their personal data held by the public administration (e.g. access, check and inquire about the use of, submit corrections to, authorise (re) use of), at least for base registries and/or similar databases.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

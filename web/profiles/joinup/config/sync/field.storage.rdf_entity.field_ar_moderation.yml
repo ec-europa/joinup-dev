@@ -1,0 +1,26 @@
+uuid: 1aa13f6b-b01e-4713-b809-4e1e52f701bc
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/collection/moderation'
+        format: 'xsd:boolean'
+_core:
+  default_config_hash: 9kqG_DbW0HpNGahCHNJ0Mu6wclVmjtsS9OUvZhppjjE
+id: rdf_entity.field_ar_moderation
+field_name: field_ar_moderation
+entity_type: rdf_entity
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

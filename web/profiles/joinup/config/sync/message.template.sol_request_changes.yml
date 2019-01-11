@@ -1,0 +1,22 @@
+uuid: b209db3f-751d-4282-809c-5b9ca8e5eb93
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: ZP9jwpHcFiSdM-U56BKBSGzaC0oo4sK7seoY1iVjCpg
+template: sol_request_changes
+label: 'Solution request changes'
+description: 'Template 15: Moderator requests changes'
+text:
+  -
+    value: 'Joinup: You are requested to update your solution'
+    format: full_html
+  -
+    value: '<p>the moderator has requested you to modify the interoperability solution - @entity:title following the following advises: @transition:motivation.</p><p>Your content has been moved back in needs updates state and you can update it and request a new publication.</p><p>You can access your content at the following link: <a href="@entity:url">@entity:url</a></p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

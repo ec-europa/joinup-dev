@@ -1,0 +1,23 @@
+uuid: 2ec89b0d-cc08-49f7-865a-7a120fe3df05
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_solution_type
+    - rdf_entity.rdfentity.asset_release
+_core:
+  default_config_hash: AJNlxdKeQSWMoCLCknWWxoBaX5uISmmhWl1-dRCcg34
+id: rdf_entity.asset_release.field_isr_solution_type
+field_name: field_isr_solution_type
+entity_type: rdf_entity
+bundle: asset_release
+label: 'Solution type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

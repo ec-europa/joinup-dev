@@ -1,0 +1,7 @@
+text:
+  -
+    value: '<p>Joinup: Your request to join the @entity:bundle @entity:title was @membership:decision:state</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has @membership:decision:state your request to join the "@entity:title" @entity:bundle.</p>'
+    format: full_html

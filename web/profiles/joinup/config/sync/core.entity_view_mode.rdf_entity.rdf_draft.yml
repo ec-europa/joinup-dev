@@ -1,0 +1,12 @@
+uuid: 500a5a0b-4f42-41a9-8873-6af995ff6e5f
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: GaCdkA0fJOQmkBs2chcajFN-rG-dUpMUSYTHE3xl6uo
+id: rdf_entity.rdf_draft
+label: Draft
+targetEntityType: rdf_entity
+cache: true

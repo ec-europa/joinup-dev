@@ -1,0 +1,19 @@
+uuid: b854021e-453c-4e9a-93bf-d6010de657f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.discussion_updated
+id: message.discussion_updated.mail_body
+targetEntityType: message
+bundle: discussion_updated
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

@@ -1,0 +1,13 @@
+uuid: c2e7e4b0-ed11-4e3e-870f-6851dd2b2196
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: taJnGgyhe_WHm54kdNtR3Klyiuk3cwlTPx7RH1Hta6g
+name: Status
+vid: status
+description: ''
+hierarchy: 0
+weight: 0

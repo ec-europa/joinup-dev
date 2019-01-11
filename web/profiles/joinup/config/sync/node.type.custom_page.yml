@@ -1,0 +1,23 @@
+uuid: 7d85d229-2129-4d88-a69a-97032fea19eb
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+_core:
+  default_config_hash: gZNgrckSL7Si5W-QIE5aJsSzoe72LC_dvRfVi2gkQyY
+name: 'Custom page'
+type: custom_page
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false
+label_singular: 'custom page'
+label_plural: 'custom pages'
+label_count:
+  no_count_capitalize: !!binary Q3VzdG9tIHBhZ2UDQ3VzdG9tIHBhZ2Vz

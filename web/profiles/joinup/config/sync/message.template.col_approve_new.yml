@@ -1,0 +1,20 @@
+uuid: feefde71-1e71-44a3-8c99-cada84326d73
+langcode: en
+status: true
+dependencies: {  }
+template: col_approve_new
+label: 'Collection approve new'
+description: 'Template id 2'
+text:
+  -
+    value: '<p>Your proposal of @entity:bundle @entity:title has been approved</p>'
+    format: full_html
+  -
+    value: '<p>Your proposed @entity:bundle "@entity:title" has been validated as per your request.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

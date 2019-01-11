@@ -1,0 +1,21 @@
+uuid: 1b284c2d-0ede-438a-9728-4b2197c0e442
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_short_title
+    - node.type.event
+_core:
+  default_config_hash: DZghoo-AKVpET6TFiWjp4a3ATP5gHcVjO1yNculNm98
+id: node.event.field_short_title
+field_name: field_short_title
+entity_type: node
+bundle: event
+label: 'Short title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

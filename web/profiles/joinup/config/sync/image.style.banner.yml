@@ -1,0 +1,17 @@
+uuid: 191fcead-506f-4f70-97b8-f1ad49055f1d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: N0_tNFB3HaHbgvVOMhIDKLb8NIULSmeWa-LNcSHb7Es
+name: banner
+label: Banner
+effects:
+  53e0a74e-fef8-4129-9de6-e3696baf8b29:
+    uuid: 53e0a74e-fef8-4129-9de6-e3696baf8b29
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 2400
+      height: 744
+      anchor: center-center

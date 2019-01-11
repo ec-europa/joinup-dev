@@ -1,0 +1,55 @@
+uuid: 863328f4-1100-4fda-be49-605244e1aa36
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_featured
+    - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.og_audience
+    - node.type.custom_page
+  module:
+    - ds
+    - smart_trim
+    - user
+_core:
+  default_config_hash: DWb669UswawqVOlf5T9Ak9DOZ7EQRFXjnmhJMA9YpH4
+id: node.custom_page.view_mode_featured
+targetEntityType: node
+bundle: custom_page
+mode: view_mode_featured
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 0
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+hidden:
+  field_attachment: true
+  field_cp_content_listing: true
+  langcode: true
+  links: true
+  node_field_cp_content_listing_top: true
+  og_audience: true
+  report: true

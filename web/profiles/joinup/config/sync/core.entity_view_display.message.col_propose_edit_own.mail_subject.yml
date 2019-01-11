@@ -1,0 +1,19 @@
+uuid: 1c71c957-a04a-47fc-a9d7-0fb09cbd79e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.col_propose_edit_own
+id: message.col_propose_edit_own.mail_subject
+targetEntityType: message
+bundle: col_propose_edit_own
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

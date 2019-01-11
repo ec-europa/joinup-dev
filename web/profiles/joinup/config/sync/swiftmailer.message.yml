@@ -1,0 +1,7 @@
+format: text/html
+respect_format: true
+convert_mode: true
+character_set: UTF-8
+_core:
+  default_config_hash: 1ErUI34W400SFVtJGG8W1mfDZ6-Dw3L9l9ZST2PsTMs
+filter_format: plain_text

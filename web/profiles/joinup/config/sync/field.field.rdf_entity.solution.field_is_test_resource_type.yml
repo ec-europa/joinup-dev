@@ -1,0 +1,30 @@
+uuid: 662c6818-420b-4150-83b9-0d7bfc646baa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_test_resource_type
+    - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.test_resource_type
+_core:
+  default_config_hash: uV4AXfFWAboBRjtuyHI89JmS89VshLdrvu7cvMGvihw
+id: rdf_entity.solution.field_is_test_resource_type
+field_name: field_is_test_resource_type
+entity_type: rdf_entity
+bundle: solution
+label: 'Test resource type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      test_resource_type: test_resource_type
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

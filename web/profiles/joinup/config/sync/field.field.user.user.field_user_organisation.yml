@@ -1,0 +1,22 @@
+uuid: 7e941fd9-83ec-4c79-b2be-54b0461c35d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_organisation
+  module:
+    - user
+_core:
+  default_config_hash: rk4ofdYJPNIgzSrzXmuDiRfLr3g6RyA1sjpIwSqfYo4
+id: user.user.field_user_organisation
+field_name: field_user_organisation
+entity_type: user
+bundle: user
+label: Organisation
+description: 'Organisation where you work.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

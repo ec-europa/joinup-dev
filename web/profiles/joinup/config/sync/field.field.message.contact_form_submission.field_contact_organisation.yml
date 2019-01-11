@@ -1,0 +1,21 @@
+uuid: 62bc3347-6249-41ac-a09b-d92beb519635
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_organisation
+    - message.template.contact_form_submission
+_core:
+  default_config_hash: z6qbcW6Rglt0xEZq3LkR1pr20K7ai3sKwdPBLGdlPiY
+id: message.contact_form_submission.field_contact_organisation
+field_name: field_contact_organisation
+entity_type: message
+bundle: contact_form_submission
+label: Organisation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

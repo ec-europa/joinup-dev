@@ -1,0 +1,30 @@
+uuid: 649255f5-f8ec-4f37-b770-22a53cae15e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_language
+    - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.language
+_core:
+  default_config_hash: itlv7IqQmKDOpskZXbNSfFmqcoKaT08cc1NzlQYhPE4
+id: rdf_entity.solution.field_is_language
+field_name: field_is_language
+entity_type: rdf_entity
+bundle: solution
+label: Languages
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      language: language
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

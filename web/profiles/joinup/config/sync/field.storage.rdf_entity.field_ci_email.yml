@@ -1,0 +1,26 @@
+uuid: e60fe3be-606d-4b1e-b0a2-58f9c8b79faf
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://www.w3.org/2006/vcard/ns#hasEmail'
+        format: 'xsd:string'
+_core:
+  default_config_hash: qWZIOiu3_5uhnQk3VRquWjBg-_pb8hffGDjD5n-C-jI
+id: rdf_entity.field_ci_email
+field_name: field_ci_email
+entity_type: rdf_entity
+type: email
+settings: {  }
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

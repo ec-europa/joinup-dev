@@ -1,0 +1,35 @@
+uuid: 532eeb3c-3721-4d3c-a377-2985f7386046
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_replies
+    - node.type.discussion
+  module:
+    - comment
+_core:
+  default_config_hash: MEVh9OMkHQQm83l4-SLPGQOlafjqCfOLzzCwxgE72yg
+id: node.discussion.field_replies
+field_name: field_replies
+entity_type: node
+bundle: discussion
+label: Comments
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    status: 2
+    cid: 0
+    last_comment_timestamp: 0
+    last_comment_name: null
+    last_comment_uid: 0
+    comment_count: 0
+default_value_callback: ''
+settings:
+  default_mode: 0
+  per_page: 20
+  anonymous: 2
+  form_location: true
+  preview: 0
+field_type: comment

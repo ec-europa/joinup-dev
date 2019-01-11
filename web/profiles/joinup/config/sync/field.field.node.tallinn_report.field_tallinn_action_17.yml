@@ -1,0 +1,19 @@
+uuid: 25c0261e-2040-41b7-abae-f4e63e07745b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_17
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_17
+field_name: field_tallinn_action_17
+entity_type: node
+bundle: tallinn_report
+label: 'Reuse of CEF building blocks (eID, eSignature, ...)'
+description: 'Enhance the re-use of emerging joint solutions under the Connecting Europe Facility (CEF) programme or other common frameworks - in particular eID, eSignature, eDelivery, eProcurement and eInvoicing - and promote their implementation in more domains, while avoiding sectoral duplication of service infrastructures.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

@@ -1,0 +1,20 @@
+uuid: 5a3580ac-fd22-490e-a7b4-e7efdab59732
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.owner
+_core:
+  default_config_hash: q5kqtE_arjNYrL-z77HA00FkWaHVmTpHIfnIK3maJyw
+id: rdf_entity.owner.label
+field_name: label
+entity_type: rdf_entity
+bundle: owner
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

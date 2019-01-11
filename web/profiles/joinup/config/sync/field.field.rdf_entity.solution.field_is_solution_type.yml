@@ -1,0 +1,30 @@
+uuid: e9f1299f-bc3c-4eff-9418-aa88cc66939e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_solution_type
+    - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.eira
+_core:
+  default_config_hash: O7-ZnKBED7vrmG3RIkqIovXeskRJtkBB7-4dWlIIwUI
+id: rdf_entity.solution.field_is_solution_type
+field_name: field_is_solution_type
+entity_type: rdf_entity
+bundle: solution
+label: 'Solution type'
+description: 'EIRA Building block'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'grouped_rdf_taxonomy_term_selection:default'
+  handler_settings:
+    target_bundles:
+      eira: eira
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

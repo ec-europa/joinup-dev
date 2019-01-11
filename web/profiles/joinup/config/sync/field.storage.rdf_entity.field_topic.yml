@@ -1,0 +1,28 @@
+uuid: e35a7837-d193-4cb9-8469-f13d78910a3f
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://www.w3.org/ns/dcat#theme'
+        format: resource
+_core:
+  default_config_hash: rCRYkAB_H3ODpRnbcjq6aPEsf2A2iw21aGdJCYmb4rA
+id: rdf_entity.field_topic
+field_name: field_topic
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

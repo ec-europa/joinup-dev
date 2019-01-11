@@ -1,0 +1,5 @@
+export_types:
+  turtle: turtle
+  rdfxml: rdfxml
+_core:
+  default_config_hash: YLTP6TpllsO0UlKsY2w7nZCGqJgQMwlai28xDk-Q5kU

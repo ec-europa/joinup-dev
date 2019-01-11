@@ -1,0 +1,23 @@
+uuid: 7cd630bb-d209-43b0-84f2-d64bbbf7a51b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_category
+    - message.template.contact_form_submission
+  module:
+    - options
+_core:
+  default_config_hash: 8ASdQZPPWEfTlz0bMAdIpo5Mtddw820f19wOIuFLn5Q
+id: message.contact_form_submission.field_contact_category
+field_name: field_contact_category
+entity_type: message
+bundle: contact_form_submission
+label: Category
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

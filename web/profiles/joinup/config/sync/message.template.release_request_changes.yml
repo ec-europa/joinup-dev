@@ -1,0 +1,22 @@
+uuid: ec508bc9-578d-473b-b47f-9fe91f9d9036
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: JV8fKL9IsJAah3dSVNvM9GJ14F5y3qvuDDgW0SUuns8
+template: release_request_changes
+label: 'Solution release request changes'
+description: 'Template 23: Solution release request changes'
+text:
+  -
+    value: 'Joinup: Modification of a release of your solution has been requested'
+    format: full_html
+  -
+    value: '<p>the Joinup moderation team requires editing the release @entity:title, @entity:field_isr_release_number of the solution @group:title due to @transition:motivation.</p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

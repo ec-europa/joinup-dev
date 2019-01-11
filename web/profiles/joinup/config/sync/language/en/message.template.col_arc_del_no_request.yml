@@ -1,0 +1,4 @@
+text:
+  1:
+    value: '<p>Your @entity:bundle "@entity:title" has been @transition:request_action:past.</p>@transition:archive:extra:owner'
+    format: full_html

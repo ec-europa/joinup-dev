@@ -1,0 +1,21 @@
+uuid: d92d1d67-88e5-45b9-87f0-d411a5905e99
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_isr_release_number
+    - rdf_entity.rdfentity.asset_release
+_core:
+  default_config_hash: kfg9QbcdTrIaM9UuuldUotGZOo0oL_1Ng62dTydCbnc
+id: rdf_entity.asset_release.field_isr_release_number
+field_name: field_isr_release_number
+entity_type: rdf_entity
+bundle: asset_release
+label: 'Release number'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

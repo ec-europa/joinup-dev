@@ -1,0 +1,19 @@
+uuid: f33d9e23-ae49-4d34-b85f-05d8d27fa82a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.cc_transition_approve_proposed
+id: message.cc_transition_approve_proposed.mail_body
+targetEntityType: message
+bundle: cc_transition_approve_proposed
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

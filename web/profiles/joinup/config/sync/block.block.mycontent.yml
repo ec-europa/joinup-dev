@@ -1,0 +1,31 @@
+uuid: e57b838f-3618-4c47-9558-ca71a4e28367
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.content_my_content
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: '-AQZlw29gV0x0t8_q98V7WbwZXUJn_cCHp3lQCLtRQQ'
+id: mycontent
+theme: joinup_theme
+region: filters
+weight: -6
+provider: null
+plugin: 'facet_block:content_my_content'
+settings:
+  id: 'facet_block:content_my_content'
+  label: 'Content overview - My content'
+  provider: facets
+  label_display: '0'
+  block_id: mycontent
+visibility:
+  request_route:
+    id: request_route
+    routes: view.content_overview.page_1
+    negate: false
+    context_mapping: {  }

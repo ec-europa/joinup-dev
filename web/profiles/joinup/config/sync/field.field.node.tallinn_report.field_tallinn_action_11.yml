@@ -1,0 +1,19 @@
+uuid: 71fd4fff-fa10-446d-ae46-3e2ba8e34daa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_11
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_11
+field_name: field_tallinn_action_11
+entity_type: node
+bundle: tallinn_report
+label: 'Use eIDAS framework in digital public services'
+description: 'Work to make our digital public services secure and properly identifiable by using the eIDAS framework for qualified electronic trust services, including by advancing the take-up of qualified website authentication certificates and qualified electronic seals.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

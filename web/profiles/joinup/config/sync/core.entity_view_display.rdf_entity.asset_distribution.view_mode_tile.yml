@@ -1,0 +1,91 @@
+uuid: 64ab23a0-9282-41fa-99aa-0dbb1c8776f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.view_mode_tile
+    - field.field.rdf_entity.asset_distribution.field_ad_access_url
+    - field.field.rdf_entity.asset_distribution.field_ad_description
+    - field.field.rdf_entity.asset_distribution.field_ad_file_size
+    - field.field.rdf_entity.asset_distribution.field_ad_format
+    - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
+    - field.field.rdf_entity.asset_distribution.field_ad_licence
+    - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_download_count
+    - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - asset_distribution
+    - digital_size_formatter
+    - ds
+    - joinup
+    - user
+_core:
+  default_config_hash: uNZd1lhv6BqyS7aBYyVdca5-WbXmPpPiHfauWIDHBa0
+id: rdf_entity.asset_distribution.view_mode_tile
+targetEntityType: rdf_entity
+bundle: asset_distribution
+mode: view_mode_tile
+content:
+  field_ad_access_url:
+    type: tracked_hosted_file_download
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      hosted_files_title: Download
+      remote_files_title: External
+      show_remote_files: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+  field_ad_file_size:
+    type: digital_size
+    weight: 10
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_ad_licence:
+    weight: 5
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: true
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    region: content
+hidden:
+  changed: true
+  created: true
+  field_ad_description: true
+  field_ad_format: true
+  field_ad_gitb_compliant: true
+  field_ad_repr_technique: true
+  field_download: true
+  field_download_count: true
+  field_status: true
+  langcode: true
+  og_audience: true

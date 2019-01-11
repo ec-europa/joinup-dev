@@ -1,0 +1,24 @@
+uuid: 135cb549-e9bf-4c92-96d5-f752080612d3
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.support
+  module:
+    - system
+  theme:
+    - joinup_theme
+id: support
+theme: joinup_theme
+region: header
+weight: 0
+provider: null
+plugin: 'system_menu_block:support'
+settings:
+  id: 'system_menu_block:support'
+  label: Support
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 0
+visibility: {  }

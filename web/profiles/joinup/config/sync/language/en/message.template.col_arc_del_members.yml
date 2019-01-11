@@ -1,0 +1,7 @@
+text:
+  -
+    value: '<p>The @entity:bundle @entity:title was @transition:request_action:past.</p>'
+    format: full_html
+  -
+    value: "<p>The @entity:bundle \"@entity:title\", of which you are a member, has been @transition:request_action:past.</p>\n<p>@transition:archive:extra:members</p>"
+    format: full_html

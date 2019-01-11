@@ -1,0 +1,71 @@
+transitions:
+  draft:
+    __new__:
+      - authenticated
+      - moderator
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    proposed:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+    blacklisted:
+      - moderator
+      - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
+  proposed:
+    __new__:
+      - authenticated
+      - moderator
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    proposed:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+    blacklisted:
+      - moderator
+      - rdf_entity-solution-facilitator
+    deletion_request:
+      - moderator
+  validated:
+    __new__:
+      - moderator
+    draft:
+      - moderator
+    proposed:
+      - moderator
+    validated:
+      - moderator
+    blacklisted:
+      - moderator
+    needs_update:
+      - moderator
+    deletion_request:
+      - moderator
+  deletion_request:
+    validated:
+      - rdf_entity-solution-administrator
+  needs_update:
+    validated:
+      - moderator
+    proposed:
+      - moderator
+  blacklisted:
+    validated:
+      - moderator
+_core:
+  default_config_hash: o8cYw7zEvjq4uHIJ-a8j5z2gRIkXn3rHy_j9h_T-zew

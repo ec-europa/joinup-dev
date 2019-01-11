@@ -1,0 +1,19 @@
+uuid: 1b197425-32aa-4f7c-a039-5d45e4a23e2c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.col_propose_new
+id: message.col_propose_new.mail_body
+targetEntityType: message
+bundle: col_propose_new
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

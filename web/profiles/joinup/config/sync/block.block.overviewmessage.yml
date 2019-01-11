@@ -1,0 +1,26 @@
+uuid: 64b57779-9e05-4fc5-bb13-4eb0a4e5385f
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - system
+  theme:
+    - joinup_theme
+id: overviewmessage
+theme: joinup_theme
+region: filters
+weight: -16
+provider: null
+plugin: overview_message_block
+settings:
+  id: overview_message_block
+  label: 'Overview message'
+  provider: joinup_core
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: "/collections\n/solutions"
+    negate: false
+    context_mapping: {  }

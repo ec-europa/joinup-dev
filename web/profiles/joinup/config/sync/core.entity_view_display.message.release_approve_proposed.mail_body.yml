@@ -1,0 +1,19 @@
+uuid: baa4c4a0-47f5-4fa7-af4b-089c47e52212
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.release_approve_proposed
+id: message.release_approve_proposed.mail_body
+targetEntityType: message
+bundle: release_approve_proposed
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

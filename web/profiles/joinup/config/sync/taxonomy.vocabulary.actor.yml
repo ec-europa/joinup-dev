@@ -1,0 +1,13 @@
+uuid: 3e4b02f4-c507-4ad7-bc0d-d91c820903c9
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: smzyBMEKgn9UgLPpaQXqXY94PYIBB1kM8NZ8yUOFMfk
+name: Actor
+vid: actor
+description: ''
+hierarchy: 0
+weight: 0

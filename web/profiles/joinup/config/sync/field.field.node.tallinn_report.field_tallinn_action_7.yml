@@ -1,0 +1,19 @@
+uuid: ade05e18-0664-4220-a84d-3f7d35b5cef2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_7
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_7
+field_name: field_tallinn_action_7
+entity_type: node
+bundle: tallinn_report
+label: 'Usability of PA data'
+description: 'Take steps to increase the findability, quality and technical accessibility of data in key base registers and/or similar databases, to build up readiness for applying the once only principle for national or cross-border digital public services.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

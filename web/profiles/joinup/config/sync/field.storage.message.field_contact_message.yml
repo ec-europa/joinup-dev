@@ -1,0 +1,21 @@
+uuid: 06ea8c9c-21d7-4b2d-b7c2-e7d3bc26e93c
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+    - text
+_core:
+  default_config_hash: E_llnrhigNwh-QBImtnWFbBSwFtJdwF01SXsg8UAum8
+id: message.field_contact_message
+field_name: field_contact_message
+entity_type: message
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

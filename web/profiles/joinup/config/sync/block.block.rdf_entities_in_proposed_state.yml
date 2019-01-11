@@ -1,0 +1,35 @@
+uuid: 462543f8-d89f-42ba-9ad5-82791652cee6
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - user
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: 8hMLXJHLAZgYjCaC6thcOsOxgPnm0NHmB7G2l-W3UXk
+id: rdf_entities_in_proposed_state
+theme: joinup_theme
+region: content_bottom
+weight: 0
+provider: null
+plugin: proposed_entities
+settings:
+  id: proposed_entities
+  label: 'Rdf entities in proposed state'
+  provider: joinup_core
+  label_display: visible
+visibility:
+  request_route:
+    id: request_route
+    routes: dashboard.page
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      moderator: moderator
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

@@ -1,0 +1,58 @@
+uuid: 88fd7172-4482-409b-8762-711a1f049c36
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.owner.field_owner_name
+    - field.field.rdf_entity.owner.field_owner_state
+    - field.field.rdf_entity.owner.field_owner_type
+    - rdf_entity.rdfentity.owner
+  module:
+    - joinup_core
+_core:
+  default_config_hash: xEuxZ10EyYx5o_dpQptQrO7a9mxwH-TsjjBUxX5yaNs
+id: rdf_entity.owner.default
+targetEntityType: rdf_entity
+bundle: owner
+mode: default
+content:
+  current_workflow_state:
+    type: current_workflow_state_widget
+    weight: 2
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+    third_party_settings: {  }
+    region: content
+  field_owner_name:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_owner_state:
+    weight: 3
+    settings:
+      use_transition_label: 1
+    third_party_settings: {  }
+    type: state_machine_buttons
+    region: content
+  field_owner_type:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  id:
+    type: auto_uri
+    weight: -10
+    settings:
+      prefix: 'http://example.org/joinup/publisher'
+    third_party_settings: {  }
+    region: content
+hidden:
+  label: true
+  langcode: true
+  uid: true

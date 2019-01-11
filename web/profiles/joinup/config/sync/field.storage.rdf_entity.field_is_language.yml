@@ -1,0 +1,28 @@
+uuid: c06db89f-043b-4946-b3a9-9f99579d4463
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/language'
+        format: resource
+_core:
+  default_config_hash: 36G01rZqFF9-USl4VPCfQ2T3VFzN95iNxpaiP8wi4es
+id: rdf_entity.field_is_language
+field_name: field_is_language
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: f4d3fb5f-7720-4b20-ab0d-565d0500ef4b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_21
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_21
+field_name: field_tallinn_action_21
+entity_type: node
+bundle: tallinn_report
+label: 'Use of data and analytics (big data)'
+description: 'Prepare and implement initiatives to widen and deepen the use of data and analytics (including big data) in our countries to move to data-driven public services and make full use of data for better decision-making.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

@@ -1,0 +1,13 @@
+uuid: b478b90e-5e3f-4d5f-bd11-9b6cf2f9b3c5
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 4ehom1_59vpa7lGXAwm1j09Z8UTV6go7i8kSYgYvlsY
+name: Release
+rid: asset_release
+description: ''
+label_singular: release
+label_plural: releases
+label_count:
+  no_count_capitalize: !!binary UmVsZWFzZQNSZWxlYXNlcw==

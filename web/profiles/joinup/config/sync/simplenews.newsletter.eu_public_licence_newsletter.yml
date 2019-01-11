@@ -1,0 +1,17 @@
+uuid: c4bf7379-f356-4e42-80a6-7da69dd2d74f
+langcode: en
+status: true
+dependencies: {  }
+name: 'EU Public Licence Newsletter'
+id: eu_public_licence_newsletter
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

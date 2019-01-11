@@ -1,0 +1,20 @@
+uuid: 78953ff0-46ce-44d7-87f1-9c2a47356559
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: oplhRxJZ7GDEZ6ChAjysP7FxjzO0J5WF4-ramEw7Bqc
+id: user.field_user_subscription_events
+field_name: field_user_subscription_events
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

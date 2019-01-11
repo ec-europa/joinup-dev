@@ -1,0 +1,25 @@
+uuid: ddf46d5a-4239-4eff-9426-4acb2ce0363f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_site_pinned
+    - node.type.discussion
+_core:
+  default_config_hash: NjZzzPLc4IwDgev0MJVb1PWXuXxKjwerKLxNxXd1huY
+id: node.discussion.field_site_pinned
+field_name: field_site_pinned
+entity_type: node
+bundle: discussion
+label: 'Site pinned'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,24 @@
+uuid: 719c203e-cc2a-4259-ae9b-a3fda332bb72
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: h5CYj7Tnz0AfDbd7lm81Q1EBn7jA6-IcEpCbJt4ddsk
+id: groupheader
+theme: joinup_theme
+region: featured
+weight: -17
+provider: null
+plugin: group_header_block
+settings:
+  id: group_header_block
+  label: 'Group header'
+  provider: joinup
+  label_display: '0'
+  context_mapping:
+    og: '@og.context:og'
+visibility: {  }

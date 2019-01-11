@@ -1,0 +1,12 @@
+uuid: 1a0fc8fe-29da-481c-8628-4bba0df0273e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: 5k72FtJ9esgHSZHe3ZSolef7tJt0Bd4jpBkEhEN6UbM
+id: node.view_mode_featured
+label: Featured
+targetEntityType: node
+cache: true

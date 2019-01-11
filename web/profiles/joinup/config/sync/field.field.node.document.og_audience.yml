@@ -1,0 +1,31 @@
+uuid: 98b3810b-c188-4a6c-a349-f4258c48680e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.og_audience
+    - node.type.document
+    - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
+  module:
+    - og
+_core:
+  default_config_hash: V3Rn9ugh0VmEMGhb1EN-Egp0zcHeswv8Zdov0nmqUR0
+id: node.document.og_audience
+field_name: og_audience
+entity_type: node
+bundle: document
+label: 'Groups audience'
+description: 'OG group audience reference field.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+      solution: solution
+  access_override: false
+field_type: og_standard_reference

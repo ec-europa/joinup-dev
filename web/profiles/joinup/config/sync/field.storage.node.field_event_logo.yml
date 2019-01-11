@@ -1,0 +1,32 @@
+uuid: 0d113d45-0284-4edc-9428-46f156d096a1
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - image
+    - node
+_core:
+  default_config_hash: MkD4ZPozKB7iU5P_SHjYyDMkW9cTfrB4opDe4CSoSHY
+id: node.field_event_logo
+field_name: field_event_logo
+entity_type: node
+type: image
+settings:
+  uri_scheme: public
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
+  display_field: false
+  display_default: false
+module: image
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

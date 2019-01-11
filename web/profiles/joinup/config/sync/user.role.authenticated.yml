@@ -1,0 +1,42 @@
+uuid: 982c8b12-1041-4ea6-8e05-c7e4a0863b97
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access contextual links'
+  - 'access tour'
+  - 'access user profiles'
+  - 'cancel account'
+  - 'create contact_information rdf entity'
+  - 'create document content'
+  - 'create owner rdf entity'
+  - 'delete own comments'
+  - 'delete own document content'
+  - 'edit own comments'
+  - 'edit own contact_information rdf entity'
+  - 'edit own owner rdf entity'
+  - 'edit own tallinn_report content'
+  - 'export rdf metadata'
+  - 'flag subscribe_discussions'
+  - 'never autoplay videos'
+  - 'opt-in or out of matomo tracking'
+  - 'post comments'
+  - 'propose collection rdf entity'
+  - 'skip comment approval'
+  - 'subscribe to newsletters'
+  - 'unflag subscribe_discussions'
+  - 'update own document content'
+  - 'use text format basic_html'
+  - 'use text format content_editor'
+  - 'use text format simple_html'
+  - 'view own unpublished content'
+  - 'view published og menu instance entities'
+  - 'view rdf entity'

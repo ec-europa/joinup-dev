@@ -1,0 +1,19 @@
+uuid: ccb9c68b-bca1-40af-85cc-1369fd457221
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.cc_delete
+id: message.cc_delete.mail_subject
+targetEntityType: message
+bundle: cc_delete
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

@@ -1,0 +1,33 @@
+uuid: 593a4745-9dc2-46b2-8c92-178ae8b864b2
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup
+    - og
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: lNcx1eTcO-2duy3JjKHExr2AxeKuGkf60Vc6V35A_dI
+id: joinup_add_content
+theme: joinup_theme
+region: featured
+weight: -15
+provider: null
+plugin: add_content_block
+settings:
+  id: add_content_block
+  label: 'Add content'
+  provider: joinup
+  label_display: visible
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

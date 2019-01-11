@@ -1,0 +1,22 @@
+uuid: 8cca1b12-7487-4a3b-bb30-7c1c461ea289
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: RJxouTzO-idtb6kXWv9WNYzEOl9aBlQAn4vIJ1xniI0
+template: cc_transition_request_deletion
+label: 'Community content on Request deletion'
+description: 'Template id 7'
+text:
+  -
+    value: '<p>Joinup: Content has been updated</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has requested to delete the @entity:bundle - "@entity:title" in the @group:bundle: "@group:title", with the following motivation: "@transition:motivation".</p><p>You can access your content at the following link: <a href="@entity:url">@entity:url</a></p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

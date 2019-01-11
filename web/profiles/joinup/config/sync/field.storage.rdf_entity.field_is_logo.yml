@@ -1,0 +1,50 @@
+uuid: 93cdad83-0430-4e33-a062-062bc4238db5
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - image
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/dcmitype/StillImage'
+        format: 'xsd:string'
+      alt:
+        predicate: ''
+        format: ''
+      title:
+        predicate: ''
+        format: ''
+      width:
+        predicate: ''
+        format: ''
+      height:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: AgzL4IxGFFKxMHQbdHP0Trn3cIT_P0xmjgxcbaUNqYM
+id: rdf_entity.field_is_logo
+field_name: field_is_logo
+entity_type: rdf_entity
+type: image
+settings:
+  uri_scheme: public
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
+  display_field: false
+  display_default: false
+module: image
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,31 @@
+uuid: 1acdf554-1eca-47fe-b4b6-7a19923195a6
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri:
+        predicate: 'http://www.w3.org/ns/dcat#landingPage'
+        format: resource
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
+id: rdf_entity.field_is_landing_page
+field_name: field_is_landing_page
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

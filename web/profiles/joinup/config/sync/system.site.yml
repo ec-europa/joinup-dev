@@ -1,0 +1,14 @@
+name: Joinup
+mail: admin@example.com
+slogan: ''
+page:
+  403: ''
+  404: /not-found
+  front: /homepage
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: SKcRZ92wOLqxmvjxKFB1GRz1A33514Ew1EoCDsel4As
+uuid: 8cc66be5-4630-4d15-af31-269ecbfae7cd

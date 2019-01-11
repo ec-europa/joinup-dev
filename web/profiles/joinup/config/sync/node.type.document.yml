@@ -1,0 +1,23 @@
+uuid: 760d9685-0f7a-49ed-85ae-4714ea4af587
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+_core:
+  default_config_hash: DP6UxdvaCvuYejE_k_ZYkWxA8_rCs4tWJgFUGJdYVso
+name: Document
+type: document
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false
+label_singular: document
+label_plural: documents
+label_count:
+  no_count_capitalize: !!binary RG9jdW1lbnQDRG9jdW1lbnRz

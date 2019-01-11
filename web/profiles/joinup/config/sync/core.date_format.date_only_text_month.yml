@@ -1,0 +1,10 @@
+uuid: 112ec259-c67c-46fc-a0c4-890a1d6ea558
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: c4fhxKx2xoXT3hVk-TsSLgkXNxIhNPcH_gUOYzwqjjk
+id: date_only_text_month
+label: 'Date only with textual month'
+locked: false
+pattern: 'd F Y'

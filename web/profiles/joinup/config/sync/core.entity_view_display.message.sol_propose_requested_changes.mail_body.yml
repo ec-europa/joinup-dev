@@ -1,0 +1,19 @@
+uuid: dc41be64-f9a7-47ca-9329-73117450e7bd
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.sol_propose_requested_changes
+id: message.sol_propose_requested_changes.mail_body
+targetEntityType: message
+bundle: sol_propose_requested_changes
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

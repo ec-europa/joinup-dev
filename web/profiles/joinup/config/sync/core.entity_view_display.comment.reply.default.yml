@@ -1,0 +1,26 @@
+uuid: 612d66eb-e491-4cc6-9081-df8b90a7a331
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.reply
+    - field.field.comment.reply.field_attachment
+    - field.field.comment.reply.field_body
+_core:
+  default_config_hash: 8APsY4agDzWtGRFsi6z-0NK63NlxjvOgO4yi3MGURmA
+id: comment.reply.default
+targetEntityType: comment
+bundle: reply
+mode: default
+content:
+  field_body:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  field_attachment: true
+  langcode: true
+  links: true

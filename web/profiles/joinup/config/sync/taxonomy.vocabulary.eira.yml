@@ -1,0 +1,13 @@
+uuid: b5469399-8e28-465f-8377-5953643f461e
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: mEUCMUaY5OkSGEFzI41HGbP3_Thnomwf6kQ8gtaCu8k
+name: EIRA
+vid: eira
+description: ''
+hierarchy: 0
+weight: 0

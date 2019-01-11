@@ -1,0 +1,30 @@
+uuid: 28f74de1-c1f4-4c1d-8c2c-10b7087fe68f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_business_process
+    - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.business_process
+_core:
+  default_config_hash: IVxgxLjlj8zhJcCWPOZ0G4fsuHpMb3px8I9vwiZ6itE
+id: rdf_entity.solution.field_is_business_process
+field_name: field_is_business_process
+entity_type: rdf_entity
+bundle: solution
+label: 'Business process'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      business_process: business_process
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

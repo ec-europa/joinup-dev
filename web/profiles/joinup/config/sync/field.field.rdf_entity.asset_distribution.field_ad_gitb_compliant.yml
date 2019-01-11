@@ -1,0 +1,23 @@
+uuid: 14580f24-a575-4259-a24a-f15403a4b632
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ad_gitb_compliant
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - options
+_core:
+  default_config_hash: PR1M0kDxi4H3xHOH43X5Vp69n0Kdp7AenSdjSWq5FA8
+id: rdf_entity.asset_distribution.field_ad_gitb_compliant
+field_name: field_ad_gitb_compliant
+entity_type: rdf_entity
+bundle: asset_distribution
+label: 'GITB compliant'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

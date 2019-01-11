@@ -1,0 +1,13 @@
+uuid: c2ccd4ea-57b3-478b-8e5e-2a845829d1e0
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: JbBEI30UF33FIZZ3P4ehBtQBWn8-wneaC4sl_P0Al_M
+name: Language
+vid: language
+description: ''
+hierarchy: 0
+weight: 0

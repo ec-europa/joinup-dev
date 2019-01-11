@@ -1,0 +1,104 @@
+uuid: 45c041b5-47f9-4ebd-a1af-765f06cb93ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.og_audience
+    - node.type.custom_page
+  module:
+    - ds
+    - field_group
+    - file
+    - joinup
+    - link
+    - search_api_field
+    - text
+    - user
+third_party_settings:
+  field_group:
+    group_attachment:
+      children:
+        - field_attachment
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        label: Attachments
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: Attachments
+_core:
+  default_config_hash: ZZ0APhON-5FpA-vKXTwx_A1Bz6FHZzw2XG7t7MvvXO8
+id: node.custom_page.default
+targetEntityType: node
+bundle: custom_page
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_attachment:
+    weight: 51
+    label: hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: fieldset__show_more
+    type: file_default
+    region: content
+  field_cp_content_listing:
+    type: search_api_field
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  node_field_cp_content_listing_top:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  report:
+    label: hidden
+    weight: 5
+    region: content
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+hidden:
+  field_custom_page_logo: true
+  langcode: true
+  og_audience: true

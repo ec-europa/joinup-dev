@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: A release has been deleted'
+    format: full_html
+  -
+    value: '<p>release @entity:title, @entity:field_isr_release_number of @group:title solution was deleted.</p>'
+    format: full_html

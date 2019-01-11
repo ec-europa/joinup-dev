@@ -1,0 +1,19 @@
+uuid: 44d649e6-9031-4db4-b4ef-94fd0946d084
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.discussion_comment_new
+id: message.discussion_comment_new.mail_subject
+targetEntityType: message
+bundle: discussion_comment_new
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

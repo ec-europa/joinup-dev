@@ -1,0 +1,17 @@
+uuid: c457a6ee-a590-4c37-aafe-4e440f2339fd
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: rMXDb-3JapwK6PdlUI62tEmxt-B--o10pV_G9CMHGqI
+name: wysiwyg_one_third_width
+label: 'One third width'
+effects:
+  3818ceb3-6ce9-4868-8a43-227386d33af0:
+    uuid: 3818ceb3-6ce9-4868-8a43-227386d33af0
+    id: image_scale
+    weight: 1
+    data:
+      width: 306
+      height: null
+      upscale: false

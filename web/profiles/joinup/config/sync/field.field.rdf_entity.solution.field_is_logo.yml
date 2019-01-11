@@ -1,0 +1,40 @@
+uuid: d79f7b60-2616-422e-9ee0-d622ea9a501a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_logo
+    - rdf_entity.rdfentity.solution
+  module:
+    - image
+_core:
+  default_config_hash: qEEShIv8-tpUpaKNjrNcUN8NKzYGDj3q2OLuEmPu20k
+id: rdf_entity.solution.field_is_logo
+field_name: field_is_logo
+entity_type: rdf_entity
+bundle: solution
+label: Logo
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: 'solution/logo/[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg'
+  max_filesize: '5 MB'
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: false
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: image

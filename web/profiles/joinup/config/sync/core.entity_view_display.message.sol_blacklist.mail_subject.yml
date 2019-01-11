@@ -1,0 +1,19 @@
+uuid: 626c23d9-96e8-410f-86fa-2f4112565030
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.sol_blacklist
+id: message.sol_blacklist.mail_subject
+targetEntityType: message
+bundle: sol_blacklist
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

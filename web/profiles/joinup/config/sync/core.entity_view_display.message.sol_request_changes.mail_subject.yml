@@ -1,0 +1,19 @@
+uuid: 55eadb4e-3cc0-48b5-b5a6-7cadc7b3f236
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.sol_request_changes
+id: message.sol_request_changes.mail_subject
+targetEntityType: message
+bundle: sol_request_changes
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

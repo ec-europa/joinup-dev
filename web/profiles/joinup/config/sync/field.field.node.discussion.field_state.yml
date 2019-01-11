@@ -1,0 +1,27 @@
+uuid: 0b3c7dd1-40af-4a77-8863-2c826eae54f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_state
+    - node.type.discussion
+  module:
+    - state_machine
+_core:
+  default_config_hash: kxQtVrUmSkhQ-RZNa4cvS62tZanLGuYATZnFndqnDc8
+id: node.discussion.field_state
+field_name: field_state
+entity_type: node
+bundle: discussion
+label: State
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: draft
+default_value_callback: ''
+settings:
+  workflow: 'node:discussion:post_moderated'
+  workflow_callback: ''
+field_type: state

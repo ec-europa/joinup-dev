@@ -1,0 +1,13 @@
+uuid: b63f2c8c-fcef-49df-af1b-5fc4ad5ee52b
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: pQZ1r2ksuv6ZIYgyPDO7sn0fkutTK1GuacEEsL5RE9I
+name: 'Product type'
+vid: product_type
+description: ''
+hierarchy: 0
+weight: 0

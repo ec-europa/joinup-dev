@@ -1,0 +1,19 @@
+uuid: 5efca16f-6188-460e-be23-7cf946101bff
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.cc_transition_propose_reported
+id: message.cc_transition_propose_reported.mail_body
+targetEntityType: message
+bundle: cc_transition_propose_reported
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

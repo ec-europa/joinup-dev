@@ -1,0 +1,27 @@
+uuid: d9390797-f42f-4854-8141-2b5c040b6cf8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_state
+    - node.type.news
+  module:
+    - state_machine
+_core:
+  default_config_hash: _ytbnupR5P5AA6z-uHzdohD5g-kKrK7r4iiIxppEIh8
+id: node.news.field_state
+field_name: field_state
+entity_type: node
+bundle: news
+label: State
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: draft
+default_value_callback: ''
+settings:
+  workflow: ''
+  workflow_callback: joinup_community_content_workflow_selector
+field_type: state

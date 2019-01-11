@@ -1,0 +1,19 @@
+uuid: 315b2774-9f62-4b09-81c8-884c981bda36
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_15
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_15
+field_name: field_tallinn_action_15
+entity_type: node
+bundle: tallinn_report
+label: 'Data open by-default approach/ enable APIs'
+description: 'Increase the availability and quality of open government data that is of value to economy and society, including by adopting the open-by-default approach and enabling more the automatic linkages to databases (for example, by application programming interfaces).'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

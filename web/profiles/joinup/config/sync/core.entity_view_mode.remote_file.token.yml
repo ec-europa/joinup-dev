@@ -1,0 +1,10 @@
+uuid: b597a1c3-b567-43a3-baaa-aced64e5b7e6
+langcode: en
+status: true
+dependencies:
+  module:
+    - file_url
+id: remote_file.token
+label: Token
+targetEntityType: remote_file
+cache: true

@@ -1,0 +1,19 @@
+uuid: e5342513-f338-4e6e-9ac3-5739d21dcc01
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_2
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_2
+field_name: field_tallinn_action_2
+entity_type: node
+bundle: tallinn_report
+label: 'Reduced need to unnecessarily interact with PAs'
+description: 'Take steps to reduce the need for citizens and businesses to unnecessarily interact with public administrations, for example, by relying on (re)use of data.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

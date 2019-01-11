@@ -1,0 +1,30 @@
+uuid: a937e3ed-069d-4e44-880f-b204f04ee170
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_owner
+    - rdf_entity.rdfentity.owner
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: mZvsbYU_vY-mRoCND4tGyoSyWGv_aYIVMfY7dx4Y3CI
+id: rdf_entity.solution.field_is_owner
+field_name: field_is_owner
+entity_type: rdf_entity
+bundle: solution
+label: Owner
+description: 'The Owner is the organisation that owns this entity and is the only responsible for it.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      owner: owner
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

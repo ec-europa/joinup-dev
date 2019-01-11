@@ -1,0 +1,13 @@
+uuid: d7bd73ba-51a5-44d4-aad9-afcf734f9752
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 3L_FQXkdDRu30NaFEHmacUUhVPQcOZxOB_Q__2XACmo
+name: Owner
+rid: owner
+description: ''
+label_singular: owner
+label_plural: owners
+label_count:
+  no_count_capitalize: !!binary T3duZXIDT3duZXJz

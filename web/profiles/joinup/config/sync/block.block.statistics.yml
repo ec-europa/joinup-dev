@@ -1,0 +1,36 @@
+uuid: 0d0fb04e-34a7-425d-90b7-20d55fd3828b
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - system
+    - user
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: BAp2EWGxFvtlaSYXP8oa99T-gPKU4fwoFEUOIaaDxAA
+id: statistics
+theme: joinup_theme
+region: featured
+weight: -13
+provider: null
+plugin: statistics
+settings:
+  id: broken
+  label: 'Statistics block'
+  provider: joinup_core
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

@@ -1,0 +1,24 @@
+uuid: 11d142d0-0044-4e42-a85b-432d1733449b
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.custom_page
+_core:
+  default_config_hash: RNtv-d07WYJnQiX-902UivoowfRK5y2CtFbzupFlpX8
+id: node.custom_page.status
+field_name: status
+entity_type: node
+bundle: custom_page
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

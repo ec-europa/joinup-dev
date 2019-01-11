@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: A release has been updated'
+    format: full_html
+  -
+    value: '<p>The release @entity:title, @entity:field_isr_release_number of the solution @group:title was updated.</p>'
+    format: full_html

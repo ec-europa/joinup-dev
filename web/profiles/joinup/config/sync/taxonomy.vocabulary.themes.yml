@@ -1,0 +1,13 @@
+uuid: 7e20fe69-d28a-4046-9de3-da0325cdbaca
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: 0Q24AH3QkIqfiaztNbc8FYD7w62KyyN_FziN1w64P1U
+name: Themes
+vid: themes
+description: ''
+hierarchy: 0
+weight: 0

@@ -1,0 +1,23 @@
+uuid: 12cc62d1-1b0e-4fce-8090-c6a75a6296d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_type
+    - node.type.document
+  module:
+    - options
+_core:
+  default_config_hash: Y7GtfFPHyL3O-opALl1tDKI3_8C7EkOWVyDFKgWBWaQ
+id: node.document.field_type
+field_name: field_type
+entity_type: node
+bundle: document
+label: 'Type of document'
+description: 'The document type.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,10 @@
+uuid: 7b235c00-97c7-44c1-baa6-a629a3ddcb8a
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: EvsHHUGxce8xEU0_dfTBRnL3CFiWCmRZYDnPwOGyTsw
+id: long
+label: 'Default long date'
+locked: false
+pattern: 'l, j F, Y - H:i'

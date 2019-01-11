@@ -1,0 +1,28 @@
+uuid: 52ebd489-496c-45bc-a5f6-795890eb95bb
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.ec.europa.eu/trr#StandardizationLevel'
+        format: resource
+_core:
+  default_config_hash: qdHa6cdrMuYNQtXHzNZENRlgijgskUaJakrtuY3N2UE
+id: rdf_entity.field_is_standardization_level
+field_name: field_is_standardization_level
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

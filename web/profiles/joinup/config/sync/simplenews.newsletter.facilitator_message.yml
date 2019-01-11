@@ -1,0 +1,17 @@
+uuid: 2757a84d-d65d-4c94-ae08-683200d5b880
+langcode: en
+status: true
+dependencies: {  }
+name: 'Facilitator message'
+id: facilitator_message
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

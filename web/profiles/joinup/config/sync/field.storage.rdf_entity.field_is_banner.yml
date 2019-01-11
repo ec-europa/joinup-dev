@@ -1,0 +1,48 @@
+uuid: f48f3e30-acbd-4818-863a-8d08c9d0e7ab
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - image
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://xmlns.com/foaf/0.1/Image'
+        format: 'xsd:string'
+      alt:
+        predicate: ''
+        format: ''
+      title:
+        predicate: ''
+        format: ''
+      width:
+        predicate: ''
+        format: ''
+      height:
+        predicate: ''
+        format: ''
+id: rdf_entity.field_is_banner
+field_name: field_is_banner
+entity_type: rdf_entity
+type: image
+settings:
+  uri_scheme: public
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
+  display_field: false
+  display_default: false
+module: image
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

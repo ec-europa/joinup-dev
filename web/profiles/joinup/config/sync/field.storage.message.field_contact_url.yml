@@ -1,0 +1,21 @@
+uuid: a3fde8f8-61c7-4539-8ba4-1e2b48d6d444
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - message
+_core:
+  default_config_hash: X3Sa7aj1t-jyRM84ErvIzxhhF2AHejUSCpaMtNe8AfE
+id: message.field_contact_url
+field_name: field_contact_url
+entity_type: message
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

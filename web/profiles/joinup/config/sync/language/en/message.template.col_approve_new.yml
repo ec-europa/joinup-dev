@@ -1,0 +1,7 @@
+text:
+  -
+    value: '<p>Your proposal of @entity:bundle @entity:title has been approved</p>'
+    format: full_html
+  -
+    value: '<p>Your proposed @entity:bundle "@entity:title" has been validated as per your request.</p>'
+    format: full_html

@@ -1,0 +1,13 @@
+uuid: b53e6637-db51-48b3-a7e5-96e5ff0d8559
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: Envm0KGfPq3qdl_Mwuy3bBXqvl5ncmF__cv8gn9ScFg
+name: 'Standardization level'
+vid: standardization_level
+description: ''
+hierarchy: 0
+weight: 0

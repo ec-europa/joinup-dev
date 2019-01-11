@@ -1,0 +1,27 @@
+uuid: 1d131ef2-33fb-4556-ba2e-39a3672e6f2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_state
+    - node.type.event
+  module:
+    - state_machine
+_core:
+  default_config_hash: epz5_ZI9vE6RclXSc3XLxLP4tk1FsWDNRlAoNXVaLxs
+id: node.event.field_state
+field_name: field_state
+entity_type: node
+bundle: event
+label: State
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: draft
+default_value_callback: ''
+settings:
+  workflow: ''
+  workflow_callback: joinup_community_content_workflow_selector
+field_type: state

@@ -1,0 +1,22 @@
+uuid: d2c5e1a6-fc56-4015-842e-4a95ff35ed5a
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: udgZQ9eN2wZ1BORDe2UuBiyitZGKx7JTXB_-qPPXcc0
+id: joinup_theme_content
+theme: joinup_theme
+region: content
+weight: -8
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

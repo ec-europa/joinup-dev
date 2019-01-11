@@ -1,0 +1,25 @@
+uuid: 20734759-5a41-43ac-95cf-260ee5f2b546
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_landing_page
+    - rdf_entity.rdfentity.solution
+  module:
+    - link
+_core:
+  default_config_hash: 2qe6mw23gMGZm4S6miXlWPrXslNV7K0eI72DczM4Yik
+id: rdf_entity.solution.field_is_landing_page
+field_name: field_is_landing_page
+entity_type: rdf_entity
+bundle: solution
+label: 'Landing page'
+description: 'Homepage of the solution in an external platform'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

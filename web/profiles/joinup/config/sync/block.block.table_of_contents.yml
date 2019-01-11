@@ -1,0 +1,46 @@
+uuid: 8209390f-5227-4eb0-9700-972e45a22c68
+langcode: en
+status: true
+dependencies:
+  config:
+    - og_menu.ogmenu.navigation
+  module:
+    - collection
+    - node
+    - og
+id: table_of_contents
+theme: joinup_theme
+region: content_bottom
+weight: -17
+provider: null
+plugin: 'collection_menu_block:navigation'
+settings:
+  id: 'collection_menu_block:navigation'
+  label: 'Table of contents'
+  provider: collection
+  label_display: '1'
+  level: 1
+  depth: 0
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'
+  node_type:
+    id: node_type
+    bundles:
+      custom_page: custom_page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_route:
+    id: request_route
+    routes: entity.node.canonical
+    negate: false
+    context_mapping: {  }

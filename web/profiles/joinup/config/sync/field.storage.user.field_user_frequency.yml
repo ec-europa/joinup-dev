@@ -1,0 +1,35 @@
+uuid: d73534a5-18b1-4d7b-9207-d7d9fc0b09a2
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - user
+_core:
+  default_config_hash: 73S8ZRXM0nC8Q-oCqXbi-mx3BLYjKEFRoMz7G7-y88Y
+id: user.field_user_frequency
+field_name: field_user_frequency
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: next_cron
+      label: Immediately
+    -
+      value: daily
+      label: Daily
+    -
+      value: weekly
+      label: Weekly
+    -
+      value: monthly
+      label: Monthly
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,32 @@
+uuid: 3f4c513b-f3d9-4d37-919a-375b5f8d8cb6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.custom_page
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
+_core:
+  default_config_hash: MYE4qG23Xk8I6KYd15pk0PKdvWfDFQ0PNzZbw7m8UFk
+id: node.custom_page.body
+field_name: body
+entity_type: node
+bundle: custom_page
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

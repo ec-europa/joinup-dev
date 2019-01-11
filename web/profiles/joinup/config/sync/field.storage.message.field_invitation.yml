@@ -1,0 +1,20 @@
+uuid: 858a9e6e-e014-48d1-a5c4-d514c1fa2f4d
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_invite
+    - message
+id: message.field_invitation
+field_name: field_invitation
+entity_type: message
+type: entity_reference
+settings:
+  target_type: invitation
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

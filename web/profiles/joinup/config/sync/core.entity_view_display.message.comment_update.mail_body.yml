@@ -1,0 +1,19 @@
+uuid: 8231d41d-ab33-4a84-9ef5-6003afd9edc7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.comment_update
+id: message.comment_update.mail_body
+targetEntityType: message
+bundle: comment_update
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

@@ -1,0 +1,30 @@
+uuid: 7826a108-3622-4833-9041-55c34131c706
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - text
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://purl.org/dc/terms/description'
+        format: literal
+      format:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: dBKqQswDP8lhvejjFL9WW9U_2UDdWtNj6WYIhfj5rcQ
+id: rdf_entity.field_licence_description
+field_name: field_licence_description
+entity_type: rdf_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

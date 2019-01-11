@@ -1,0 +1,17 @@
+uuid: ca0f243a-9dbd-4bfa-bb1e-f022fc6bc154
+langcode: en
+status: true
+dependencies: {  }
+name: 'Joinup Open Source Newsletter'
+id: joinup_open_source_newsletter
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

@@ -1,0 +1,25 @@
+uuid: ce4e0ce8-f27d-4764-8c96-73de7a0fdc0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_site_pinned
+    - node.type.news
+_core:
+  default_config_hash: SON6LmfIf_HhltkenuJ4njAA_DCqxo0x1r1d5xS4dDI
+id: node.news.field_site_pinned
+field_name: field_site_pinned
+entity_type: node
+bundle: news
+label: 'Site pinned'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

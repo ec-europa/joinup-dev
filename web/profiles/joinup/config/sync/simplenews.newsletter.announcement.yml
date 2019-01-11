@@ -1,0 +1,17 @@
+uuid: 644dd00a-d620-4b4a-8332-e0c55ff7f91b
+langcode: en
+status: true
+dependencies: {  }
+name: Announcement
+id: announcement
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

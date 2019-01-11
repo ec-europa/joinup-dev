@@ -1,0 +1,31 @@
+uuid: 109b382b-83cf-4c5d-a2af-77d57a70c424
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.og_audience
+    - node.type.tallinn_report
+    - rdf_entity.rdfentity.collection
+  module:
+    - og
+_core:
+  default_config_hash: aEuquKSBTCfuYwPwQIajoZprkq3Vvn2Qo1sMuuzNOKE
+id: node.tallinn_report.og_audience
+field_name: og_audience
+entity_type: node
+bundle: tallinn_report
+label: 'Parent Entity'
+description: 'OG group audience reference field.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+    sort:
+      field: _none
+  access_override: false
+field_type: og_standard_reference

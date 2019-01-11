@@ -1,0 +1,10 @@
+uuid: 242eaff8-663a-4ad6-a3f4-714c5a374b0d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: GqO44Yp6dbDZrqjuAO_jpqWSMykhP_gOclxTUE-0FmM
+id: reply
+label: Reply
+target_entity_type_id: node
+description: 'A reply to a discussion topic.'
