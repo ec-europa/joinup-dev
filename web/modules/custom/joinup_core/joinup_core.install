@@ -57,6 +57,17 @@ function joinup_core_requirements($phase) {
 }
 
 /**
+ * Implements hook_install().
+ */
+function joinup_core_install() {
+  // Disable the warning about rebuilding node access. This is needlessly set
+  // in the install hook of the View Unpublished module.
+  // @todo Remove this once the bug is fixed.
+  // @see https://www.drupal.org/node/2837685
+  node_access_needs_rebuild(FALSE);
+}
+
+/**
  * Enable the Config Sync module.
  */
 function joinup_core_update_8100(&$sandbox) {
