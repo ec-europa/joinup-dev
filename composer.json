@@ -53,6 +53,7 @@
         "drupal/simplenews": "^1.0-alpha3",
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
+        "drupal/sparql_entity_storage": "dev-empty-module",
         "drupal/state_machine": "1.0-beta3",
         "drupal/subpathauto": "^1.0@beta",
         "drupal/swiftmailer": "^1.0@beta",
@@ -256,6 +257,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/rdf_entity.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/sparql_entity_storage.git"
         },
         {
             "type": "vcs",

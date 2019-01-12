@@ -113,6 +113,7 @@ module:
   social_media_links_field: 0
   solution: 0
   spain_ctt: 0
+  sparql_entity_storage: 0
   state_machine: 0
   state_machine_revisions: 0
   subpathauto: 0
