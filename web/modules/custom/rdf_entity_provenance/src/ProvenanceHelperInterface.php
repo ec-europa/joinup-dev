@@ -58,4 +58,15 @@ interface ProvenanceHelperInterface {
    */
   public function loadProvenanceActivities(array $ids): array;
 
+  /**
+   * Retrieves the associated entity of the activity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $activity
+   *   The provenance activity rdf entity.
+   *
+   * @return RdfInterface|null
+   *   The rdf entity the activity is associated with.
+   */
+  public function loadActivityAssociatedEntity(RdfInterface $activity): ?RdfInterface;
+
 }

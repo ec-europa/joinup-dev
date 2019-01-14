@@ -169,33 +169,70 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       '#markup' => $this->t("Check the solutions that you wish to import. Unselected solutions will be saved to 'Blacklisted Solutions' section on the next import attempt. You can always import a blacklisted solution by selecting it."),
     ];
 
-    $options = $default_value = [];
+    $valid_options = $invalid_options = $default_value = [];
     foreach ($entities_per_category as $category_id => $entities) {
       foreach ($entities as $id => $label) {
-        $options[$id] = [
+        $data = [
           'solution' => $label,
           'info' => $this->getInfo($id, $category_id),
           '#attributes' => ['data-drupal-federation-category' => $category_id],
         ];
-        $default_value[$id] = $category_id !== 'blacklisted' ? $id : NULL;
+
+        if ($category_id === 'invalid_collection') {
+          $invalid_options[$id] = $data;
+          unset($entities[$id]);
+        }
+        else {
+          $valid_options[$id] = $data;
+          $default_value[$id] = $category_id !== 'blacklisted' ? $id : NULL;
+        }
       }
-      $options += $entities;
+      $valid_options += $entities;
+    }
+
+    if (isset($entities_per_category['invalid_collection'])) {
+      $invalid_entities = $entities_per_category['invalid_collection'];
+      unset($entities_per_category['invalid_collection']);
     }
 
     $form['user_selection'] = [
       '#type' => 'tableselect',
-      '#options' => $options,
+      '#options' => $valid_options,
       '#header' => [
         'solution' => $this->t('Solution'),
         'info' => $this->t('Info'),
       ],
-      '#empty' => $this->t('This import contains no incoming entities. Nothing will be imported.'),
+      '#empty' => $this->t('This import contains no entities that can be federated. Nothing will be imported.'),
       '#default_value' => $default_value,
       '#after_build' => [
         // We'll append a new pre-render callback.
         [static::class, 'alterFormPreRender'],
       ],
     ];
+
+    if (!empty($invalid_entities)) {
+      $info = self::getCategoryMetadata('invalid_collection');
+      $form['invalid_collection'] = [
+        [
+          '#prefix' => '<h4>',
+          '#suffix' => '</h4>',
+          '#markup' => $info['label'],
+        ],
+        [
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+          '#markup' => $info['description'],
+        ],
+        [
+          '#type' => 'table',
+          '#rows' => $invalid_options,
+          '#header' => [
+            'solution' => $this->t('Solution'),
+            'info' => $this->t('Info'),
+          ],
+        ],
+      ];
+    }
 
     return $form;
   }
@@ -351,10 +388,17 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The category ID.
    */
   protected function getCategory(RdfInterface $activity): string {
+    $colleciton_id = $this->getConfiguration()['collection'];
+
     // If the provenance activity record is new, there was no previous attempt
     // to federate this solution.
     if ($activity->isNew()) {
       return 'not_federated';
+    }
+    // If the solution is already associated with another collection, set it in
+    // a different table.
+    elseif ($activity->get('provenance_associated_with')->value !== $colleciton_id) {
+      return 'invalid_collection';
     }
     // If there is an existing provenance activity enabled record, this incoming
     // entity has been previously federated.
@@ -381,6 +425,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    */
   protected function getInfo(string $id, string $category): MarkupInterface {
     $activity = $this->provenanceHelper->loadOrCreateEntityActivity($id);
+    $collection = $this->provenanceHelper->loadActivityAssociatedEntity($activity);
     $arguments = [
       '%last_user' => $activity->getOwner() ? $activity->getOwner()->getDisplayName() : $this->t('[unknown]'),
       '%last_date' => !$activity->get('provenance_started')->isEmpty() ? $this->dateFormatter->format($activity->get('provenance_started')->value, 'short') : $this->t('[unknown]'),
@@ -388,6 +433,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     switch ($category) {
       case 'not_federated':
         return $this->t('Not federated yet');
+
+      case 'invalid_collection':
+        $link = $collection->toLink()->toString()->getGeneratedLink();
+        return $this->t("Federation record exists with $link.");
 
       case 'federated':
         return $this->t('Federated on %last_date by %last_user', $arguments);
@@ -412,6 +461,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       'not_federated' => [
         'label' => t('Solutions never federated'),
         'description' => t("These are solutions on the first attempt to be federated. Unselecting them will prevent this import and will make them visible on the 'Blacklisted Section' below on a future import attempt."),
+      ],
+      'invalid_collection' => [
+        'label' => t('Federated in a different collection'),
+        'description' => t("These are solutions that were already federated and are part of the Joinup but the parent collection does not match to the one set to be assigned by the current pipeline."),
       ],
       'federated' => [
         'label' => t('Federated solutions'),
