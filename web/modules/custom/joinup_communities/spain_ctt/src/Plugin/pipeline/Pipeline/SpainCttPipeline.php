@@ -22,7 +22,9 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "broken_references",
  *     "joinup_validation",
  *     "import",
- *     "provenance_activity",
+ *     "provenance_activity" = {
+ *       "collection" = "http://administracionelectronica.gob.es/ctt",
+ *     },
  *   },
  * )
  */
