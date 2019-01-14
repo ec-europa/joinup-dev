@@ -5,7 +5,6 @@
  * Contains install, update, uninstall functionality for Joinup Migrate module.
  */
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Database\Database;
 
 /**
@@ -29,24 +28,6 @@ function joinup_migrate_install() {
   ksort($views);
   foreach ($views as $view) {
     $db->query(file_get_contents($view->uri))->execute();
-  }
-}
-
-/**
- * Implements hook_uninstall().
- */
-function joinup_migrate_uninstall() {
-  $db = Database::getConnection('default', 'migrate');
-  foreach (['d8_mapping', 'd8_prepare'] as $table) {
-    $db->schema()->dropTable($table);
-  }
-
-  // Remove MySQL helper views.
-  foreach (file_scan_directory(__DIR__ . '/fixture', '/\.sql$/') as $file) {
-    // Replace the priority prefix the 'd8_' prefix. Each file is prefixed with
-    // a single ASCII character representing the priority and a dot.
-    $view = 'd8_' . Unicode::substr($file->name, 2);
-    $db->query("DROP VIEW IF EXISTS $view")->execute();
   }
 }
 

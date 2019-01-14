@@ -52,7 +52,6 @@ module:
   joinup_federation: 0
   joinup_invite: 0
   joinup_licence: 0
-  joinup_migrate: 0
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
@@ -71,9 +70,6 @@ module:
   menu_ui: 0
   message: 0
   message_notify: 0
-  migrate: 0
-  migrate_run: 0
-  migrate_spreadsheet: 0
   moderation: 0
   node: 0
   oe_newsroom_newsletter: 0
