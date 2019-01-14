@@ -435,8 +435,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
         return $this->t('Not federated yet');
 
       case 'invalid_collection':
-        $link = $collection->toLink()->toString()->getGeneratedLink();
-        return $this->t("Federation record exists with $link.");
+        return $this->t('Federation record exists with <a href="@collection_url" target="_blank">@collection_label</a>.', [
+          '@collection_url' => $collection->toUrl()->toString(),
+          '@collection_label' => $collection->label(),
+        ]);
 
       case 'federated':
         return $this->t('Federated on %last_date by %last_user', $arguments);

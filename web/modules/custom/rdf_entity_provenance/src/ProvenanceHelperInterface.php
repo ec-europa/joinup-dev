@@ -64,7 +64,7 @@ interface ProvenanceHelperInterface {
    * @param \Drupal\rdf_entity\RdfInterface $activity
    *   The provenance activity rdf entity.
    *
-   * @return RdfInterface|null
+   * @return \Drupal\rdf_entity\RdfInterface|null
    *   The rdf entity the activity is associated with.
    */
   public function loadActivityAssociatedEntity(RdfInterface $activity): ?RdfInterface;
