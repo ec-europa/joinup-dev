@@ -18,6 +18,12 @@ function joinup_post_update_install_views_data_export(): void {
  * Enable modules related to geocoding.
  */
 function joinup_post_update_install_geocoder(): void {
-  $modules = ['geocoder', 'geocoder_geofield', 'geocoder_field', 'geofield'];
+  $modules = [
+    'geocoder',
+    'geocoder_geofield',
+    'geocoder_field',
+    'geofield',
+    'oe_webtools_maps',
+  ];
   \Drupal::service('module_installer')->install($modules);
 }
