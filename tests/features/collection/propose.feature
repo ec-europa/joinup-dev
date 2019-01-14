@@ -19,8 +19,8 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
-      | E-mail or username | Cecil Clapman |
-      | Password           | claps         |
+      | Email or username | Cecil Clapman |
+      | Password          | claps         |
     And I press "Sign in"
     Then I should see the heading "Propose collection"
 

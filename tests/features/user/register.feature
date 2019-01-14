@@ -14,7 +14,7 @@ Feature: User registration
   Scenario: User can register with minimal required fields
     Given all e-mails have been sent
     And the following user registration at "/user/register":
-      | E-mail      | Test-User@Example.com |
+      | Email       | Test-User@Example.com |
       | Username    | TeStUSer              |
       | First name  | Test                  |
       | Family name | User                  |
@@ -47,7 +47,7 @@ Feature: User registration
     Then I click "Add user"
     Then I am at "admin/people/create"
     Given the following user registration at "admin/people/create":
-      | E-mail                     | superuser@example.org |
+      | Email                      | superuser@example.org |
       | Username                   | SuperUser             |
       | First name                 | Super                 |
       | Family name                | User                  |
@@ -70,7 +70,7 @@ Feature: User registration
     When I click "Sign in"
     Then I click "Create new account"
 
-    Given I fill in "E-mail" with "spam@example.com"
+    Given I fill in "Email" with "spam@example.com"
     And I fill in "Username" with "spam"
     And I fill in "First name" with "Spam"
     And I fill in "Family name" with "Spam"
