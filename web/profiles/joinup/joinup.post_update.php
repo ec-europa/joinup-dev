@@ -23,6 +23,7 @@ function joinup_post_update_install_geocoder(): void {
     'geocoder_geofield',
     'geocoder_field',
     'geofield',
+    'oe_webtools_geocoding',
     'oe_webtools_maps',
   ];
   \Drupal::service('module_installer')->install($modules);
