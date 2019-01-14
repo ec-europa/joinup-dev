@@ -12,7 +12,6 @@ module:
   comment: 0
   config: 0
   config_readonly: 0
-  config_sync: 0
   config_update: 0
   contact_form: 0
   contact_information: 0
