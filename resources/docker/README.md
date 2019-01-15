@@ -84,8 +84,10 @@ The web container is set to use `10.254.254.254` as a remote host for xdebug and
 ### PhpStorm
 For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
 that the mappings have to be set.
-After you have created the server under `File | Settings | Languages & Frameworks | PHP | Servers`, enable the `Use path
-mappings` option and set the absolute path on the server for your project root. By default, this is `/var/www/html`.
+After you have created the server under `File | Settings | Languages & Frameworks | PHP | Servers`. Create a server for
+localhost and port 8080, or the port that you with the container to run from. By default, the web container will be
+reachable in port 8080. Enable the `Use path mappings` option and set the absolute path on the server for your project
+root. By default, this is `/var/www/html`.
 
 ## Useful commands
 * When a service is not based on an image, but is built through a Dockerfile, the image is cached in docker-compose
@@ -150,7 +152,9 @@ and the images will be started.
 
 **Note:** As you can see in `docker-compose.prod_db.yml`, the dumps need to be placed in a specific folder in the
 container. You can alter the configuration using your override to draw the dump from anywhere in the host, but the
-container target must remain the same.
+container target must remain the same. The download of the database is *not* automatic. You need to download and place
+them in the specific directories manually or by using the `download-databases` phing target. In any case, the dumps must
+be placed as described in the volumes entry in `docker-compose.prod_db.yml`.
 
 After the images have been built and the databases have been restored, run the following command to execute the
 updates  
