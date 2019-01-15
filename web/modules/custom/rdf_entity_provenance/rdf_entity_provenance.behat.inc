@@ -90,7 +90,9 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
       }
 
       if (array_key_exists('provenance_associated_with', $values)) {
-        $values['provenance_associated_with'] = $this->getEntityIdByLabel($values['provenance_associated_with'], 'rdf_entity');
+        if (!UrlHelper::isValid($values['provenance_associated_with'], TRUE)) {
+          $values['provenance_associated_with'] = $this->getEntityIdByLabel($values['provenance_associated_with'], 'rdf_entity');
+        }
       }
 
       // Convert any entity reference field label value with the entity ID.
