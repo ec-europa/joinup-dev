@@ -486,6 +486,27 @@
     </target>
 
     <target
+        name="setup-config-sync-dir"
+        description="Sets the config sync dir to profiles/joinup/config/sync"
+        depends="writable-settings-folder, writable-settings-php">
+
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\s*\$config_directories\s*\[\s*('sync'|\&quot;sync\&quot;|CONFIG_SYNC_DIRECTORY)\s*\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append destFile="${website.settings.php}" text="${line.separator}$config_directories[CONFIG_SYNC_DIRECTORY] = 'profiles/${website.profile.name}/config/sync';${line.separator}" />
+    </target>
+
+    <target
         name="build-dist"
         description="Build a distribution package."
         depends="install-composer-dependencies-dist, compile-sass" />
@@ -493,16 +514,16 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
+        depends="install-composer-dependencies, setup-config-sync-dir, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
 
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, setup-config-sync-dir, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, setup-mocked-newsroom-newsletter-subscriber" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, setup-mocked-newsroom-newsletter-subscriber" />
 
 </project>
