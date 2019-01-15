@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation;
 
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\rdf_entity\RdfGraphHandlerInterface;
 
 /**
  * Helper service to provide a list of graph candidates with 'staging' on top.
  */
 class StagingCandidateGraphs implements StagingCandidateGraphsInterface {
+
+  use DependencySerializationTrait;
 
   /**
    * The RDF entity graph handler service.
