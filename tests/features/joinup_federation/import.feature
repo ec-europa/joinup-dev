@@ -8,7 +8,11 @@ Feature: As a site moderator I am able to import RDF files.
     And I am logged in as "Antoine Batiste"
 
   Scenario: Test the pipeline functionality
-    Given users:
+    Given collection:
+      | uri        | http://administracionelectronica.gob.es/ctt |
+      | title      | Spain                                       |
+      | state      | validated                                   |
+    And users:
       | Username         | Roles     |
       | LaDonna          | moderator |
       | Janette Desautel |           |
@@ -109,9 +113,9 @@ Feature: As a site moderator I am able to import RDF files.
       | state      | validated                                   |
       | affiliates | Local version of Solution 2                 |
     And provenance activities:
-      | entity                        | enabled | author          | started          |
-      | Local version of Solution 2   | yes     | Antoine Batiste | 2012-07-07 23:01 |
-      | http://example.com/solution/3 | no      | Antoine Batiste | 2015-12-25 01:30 |
+      | entity                        | enabled | associated with | author          | started          |
+      | Local version of Solution 2   | yes     | Spain           | Antoine Batiste | 2012-07-07 23:01 |
+      | http://example.com/solution/3 | no      | Spain           | Antoine Batiste | 2015-12-25 01:30 |
     # The license contained in valid_adms.rdf is named "A federated license".
     # However, the goal is to not import or update any values in the license entity so
     # the following license has different details.
