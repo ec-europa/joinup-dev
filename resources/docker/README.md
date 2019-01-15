@@ -150,7 +150,9 @@ and the images will be started.
 
 **Note:** As you can see in `docker-compose.prod_db.yml`, the dumps need to be placed in a specific folder in the
 container. You can alter the configuration using your override to draw the dump from anywhere in the host, but the
-container target must remain the same.
+container target must remain the same. The download of the database is *not* automatic. You need to download and place
+them in the specific directories manually or by using the `download-databases` phing target. In any case, the dumps must
+be placed as described in the volumes entry in `docker-compose.prod_db.yml`.
 
 After the images have been built and the databases have been restored, run the following command to execute the
 updates  
