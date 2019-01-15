@@ -244,7 +244,7 @@
     <!-- Compile SASS to CSS. -->
     <target name="compile-sass"
             description="Compile the SASS to CSS.">
-                <!-- Make sure the CSS directory exists. -->
+        <!-- Make sure the CSS directory exists. -->
         <mkdir dir="${sass.output.dir}" />
         <sass
                 executable="${sass.bin}"
