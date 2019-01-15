@@ -25,20 +25,30 @@ See our [contributors guide](.github/CONTRIBUTING.md).
 
 ## Running your own instance of Joinup
 
-### Requirements
+There are two ways to run Joinup. With `docker` and `docker-compose` and building a local installation.
+
+### Docker
+
+To start with docker, please, check the separated [README file](resources/docker/README.md).
+
+### Local installation
+
+To run Joinup locally, below is a list of requirements and instructions.
+
+#### Requirements
 * A regular LAMP stack running PHP 7.1.0 or higher
 * Virtuoso 7 (Triplestore database)
 * SASS compiler
 * Apache Solr
 
-### Dependency management and builds
+#### Dependency management and builds
 
 We use Drupal composer as a template for the project.  For the most up-to-date
 information on how to use Composer, build the project using Phing, or on how to
 run the Behat test, please refer directly to the documention of
 [drupal-composer](https://github.com/drupal-composer/drupal-project).
 
-### Initial setup
+#### Initial setup
 
 * Clone the repository.
 
@@ -93,7 +103,7 @@ run the Behat test, please refer directly to the documention of
 
 * Point the document root of your webserver to the 'web/' directory.
 
-### Create a local build properties file
+#### Create a local build properties file
 Create a new file in the root of the project named `build.properties.local
 using your favourite text editor:
 
@@ -148,7 +158,7 @@ drush.verbose = yes
 ```
 
 
-### Build the project
+#### Build the project
 
 Execute the [Phing](https://www.phing.info/) target `build-dev` to build a
 development instance, then install the site with `install-dev`:
@@ -159,7 +169,7 @@ $ ./vendor/bin/phing install-dev
 ```
 
 
-### Run the tests
+#### Run the tests
 
 Run the Behat test suite to validate your installation.
 
@@ -204,8 +214,3 @@ there is information on how to handle notifications in Joinup.
 information on how to handle and create workflows.
 * In [Matomo analytics](docs/matomo.md) you find information about working with
 the web analytics platform used in Joinup.
-
-# Docker
-
-For information about getting started with Joinup on Docker, see the explicit
-[README file](resources/docker/README.md).

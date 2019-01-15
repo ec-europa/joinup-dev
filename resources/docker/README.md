@@ -18,21 +18,35 @@ files installed in /opt/docker-solr/configsets/drupal/conf.
 
 ## Getting started
 
-#### Prepare the environment
-From the project root, run `docker-compose up`. This command will download, build and run all necessary containers.
+### Starting the containers
+To start the containers, you can use the `docker-compose up -d` command from the same directory as `docker-compose.yml`.
+This will automatically read the `docker-compose.yml` file as a source. The `-d` command will start the containers on
+the background. If you need to debug your build, ommit the `-d` parameter and docker-compose will run on the foreground.
+You can specify more than one sources in a counter versa priority using the -f parameters. For example
+`docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d` will start the containers with the variables
+from the second source, overriding the first. More of that on
+'[Override default configuration](#override-default-configuration)'.
+
+### Stoping the containers
+To stop the containers, you can use the command `docker-compose down` from the same directory as the docker-compose.yml.
+Using this command however, will only stop the machine and will not destroy the volume that was created with it. To
+clean the volume as well, use the `-v` parameter as `docker-compose down -v`.
+
+### Prepare the environment
+From the project root, run `docker-compose up -d`. This command will download, build and run all necessary containers.
 Run the following command to install all packages in the vendor folder  
 ```bash
 docker-compose exec --user www-data web composer install
 ```
 
-#### Install the website
+### Install the website
 From the project root, run
 ```bash
 docker-compose exec --user www-data web ./vendor/bin/phing build-dev
 docker-compose exec --user www-data web ./vendor/bin/phing install-dev
 ```
 
-#### Accessing the containers
+## Accessing the containers
 All containers are accessible through the command
 ```bash
 docker-compose exec my_container_name "/bin/bash"
@@ -44,7 +58,7 @@ and `sh` are good substitutes.
 order to have a successful installation and to be able to run the tests properly. For a possible solution, please, refer
 to the section [Handling permissions](#handling-permissions)
 
-#### Accessing the volumes
+## Accessing the volumes
 Some containers, like solr, create volumes that sync data from and towards the container. These volumes are constructed
 using the top-level `volumes` entry in the docker-compose file and inherit all properties from the containers.
 
@@ -59,7 +73,7 @@ project lies within e.g. if you install the project on the `myproject` folder, t
 `myproject_mysql`.
 
 ## XDEBUG
-#### General configuration
+### General configuration
 In order to get XDEBUG working, run the following command depending on your environment:
 * Linux: `sudo ip addr add 10.254.254.254/32 dev lo label lo:1`
 * Mac: `sudo ifconfig en0 alias 10.254.254.254 255.255.255.0`
@@ -67,7 +81,7 @@ The above command needs to run every time you restart the computer.
 
 The web container is set to use `10.254.254.254` as a remote host for xdebug and the port 9000.
 
-#### PhpStorm
+### PhpStorm
 For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
 that the mappings have to be set.
 After you have created the server under `File | Settings | Languages & Frameworks | PHP | Servers`, enable the `Use path
@@ -86,7 +100,7 @@ In your local environment, on the project root, you can create a second docker-c
 own settings on the environment. Below is an example of the docker-compose.override.yml that allows the user that runs
 apache to have its UID and GID changed (the group's id changes) and sets up the server to run on port 80.
 ```yaml
-version: '2'
+version: '3.4'
 services:
   web:
     build:
@@ -130,8 +144,8 @@ In the project root, there is also the docker-compose.prod_db.yml which contains
 according to the image requirements. What it does, is that it maps the dump.sql (the mysql dump) within the startup
 directory of the mysql image, and the virtuoso dumps within the startup directory of the virtuoso image.
 
-To start the machines with the databases restored, run the following command:  
-`docker-compose -f docker-compose.yml -f docker-compose.prod_db.yml up`  
+To start the machines with the databases restored, while your docker containers are down without a volume, run the
+command `docker-compose -f docker-compose.yml -f docker-compose.prod_db.yml up -d`
 and the images will be started.
 
 **Note:** As you can see in `docker-compose.prod_db.yml`, the dumps need to be placed in a specific folder in the
@@ -145,9 +159,10 @@ updates
 Finally, in order to run a full re-index of the site, run the command  
 `docker-compose exec --user www-data web ./vendor/bin/phing reindex-apache-solr`.
 
-**IMPORTANT**: All images start normally and the web server is available almost immediately. However, mysql container will
-not start until the backup is restored so for the first few minutes, depending on the size of the database dump, the web
-server will receive connection denials. Please, wait until the mysql import is finishes before accessing the site.
+**IMPORTANT**: All images start normally and the web server is available almost immediately. However, mysql container
+will not start until the backup is restored so for the first few minutes, depending on the size of the database dump,
+the web server will receive connection denials. Please, wait until the mysql import is finishes before accessing the
+site.
 
 ## Handling permissions
 The web container is having the apache service configured to run as user www-data and group www-data. By default, both
@@ -165,5 +180,5 @@ default configuration](#override-default-configuration)'.
 Mac users have to define the volumes in a different way than linux. For the default docker-compose profile of Joinup,
 there is also a [docker-compose.mac.yml](./docker-compose.mac.yml) file provided in the `resources/docker` directory.
 Mac users should start the containers by running  
-`docker-compose -f docker-compose.yml -f resources/docker/docker-compose.mac.yml up`  
+`docker-compose -f docker-compose.yml -f resources/docker/docker-compose.mac.yml up -d`
 in order to have the volumes set up correctly.
