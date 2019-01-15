@@ -45,6 +45,8 @@ From the project root, run
 docker-compose exec --user www-data web ./vendor/bin/phing build-dev
 docker-compose exec --user www-data web ./vendor/bin/phing install-dev
 ```
+You can now access the website at `http://localhost:8080` or the corresponding endpoint if you have overridden the
+settings.
 
 ## Accessing the containers
 All containers are accessible through the command
@@ -79,7 +81,10 @@ In order to get XDEBUG working, run the following command depending on your envi
 * Mac: `sudo ifconfig en0 alias 10.254.254.254 255.255.255.0`
 The above command needs to run every time you restart the computer.
 
-The web container is set to use `10.254.254.254` as a remote host for xdebug and the port 9000.
+The web container is set to use `10.254.254.254` as a remote host for xdebug and the port 9000. The local adapter will
+allow the container to communicate with the host through that address as by default, the container does not have the
+host machine mapped to its dns. In general, the communication *from* the *to* the host is very restricted. This will
+allow the reverse connection to apply.
 
 ### PhpStorm
 For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
