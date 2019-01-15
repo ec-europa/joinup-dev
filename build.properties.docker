@@ -1,4 +1,7 @@
-# Drupal configuration
+# Configuration override for the docker container.
+#
+# This configuration will be copied as build.properties.local within the container.
+# See the web container's Dockerfile for details.
 # --------------------
 
 # The project name.
@@ -17,12 +20,13 @@ infra.type = joinup
 drupal.db.name = db_name
 drupal.db.user = db_user
 drupal.db.password = db_pass
+drupal.db.host = mysql
 drupal.db.dsn = ${drupal.db.type}:host=${drupal.db.host};dbname=${drupal.db.name}
 
 # SPARQL database settings.
-sparql.host = localhost
+sparql.host = virtuoso
 sparql.port = 8890
-sparql.dsn = localhost
+sparql.dsn = virtuoso
 sparql.user = dba
 sparql.password = dba
 sparql.namespace = Drupal\\Driver\\Database\\joinup_sparql
@@ -148,21 +152,19 @@ solr.dir = ${solr.vendor.dir}/solr-${solr.version}
 solr.config.dir = ${website.modules.dir}/contrib/search_api_solr/solr-conf/6.x
 
 # Solr connection.
-solr.server.scheme = http
-solr.server.host = localhost
-solr.server.port = 8983
-solr.server.path = /solr
-solr.server.url = ${solr.server.scheme}://${solr.server.host}:${solr.server.port}${solr.server.path}
+solr.published_core.scheme = http
+solr.published_core.host = solr_published
+solr.published_core.port = 8983
+solr.published_core.path = /solr
+solr.published_core.url = ${solr.published_core.scheme}://${solr.published_core.host}:${solr.published_core.port}${solr.published_core.path}
+solr.published_core.core_name = drupal_published
 
-# Comma-separates list of Solr cores to use.
-solr.cores = ${solr.core.published},${solr.core.unpublished}
-solr.core.published = drupal_published
-solr.core.unpublished = drupal_unpublished
-
-# The path to the data files of the Solr cores.
-solr.core.published.dir = ${solr.dir}/server/solr/${solr.core.published}
-solr.core.unpublished.dir = ${solr.dir}/server/solr/${solr.core.unpublished}
-
+solr.unpublished_core.scheme = http
+solr.unpublished_core.host = solr_unpublished
+solr.unpublished_core.port = 8983
+solr.unpublished_core.path = /solr
+solr.unpublished_core.url = ${solr.unpublished_core.scheme}://${solr.unpublished_core.host}:${solr.unpublished_core.port}${solr.unpublished_core.path}
+solr.unpublished_core.core_name = drupal_unpublished
 
 # Development options
 # -------------------

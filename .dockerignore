@@ -23,6 +23,7 @@ web/sites/simpletest/
 # Ignore environment specific settings
 build.common.xml
 build.local.xml
+build.properties
 build.properties.local
 phpcs.xml
 tests/behat.yml
