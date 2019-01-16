@@ -36,7 +36,6 @@ Feature:
       | title           | body   | solution      | state     |
       | Tile discussion | Meh... | Tile solution | validated |
 
-
     When I am logged in as a moderator
     And I go to the homepage of the "Tile solution" solution
     And I click "Add custom page"
