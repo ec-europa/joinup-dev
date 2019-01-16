@@ -10,6 +10,7 @@ dependencies:
   - ds
   - facets
   - image
+  - joinup_sparql
   - link
   - matomo_reporting_api
   - menu_admin_per_menu

@@ -6,6 +6,9 @@ core: 8.x
 distribution:
   name: Joinup
 
+dependencies:
+  - rdf_entity
+
 themes:
   - seven
   - joinup_theme
