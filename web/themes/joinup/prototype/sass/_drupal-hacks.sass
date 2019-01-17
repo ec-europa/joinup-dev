@@ -134,8 +134,10 @@ ul.contextual-links
   position: relative
   padding-left: 0
   margin: 0
-  li::before
-    display: none
+  li
+    text-indent: 0
+    &::before
+      display: none
 
 .contextual-region.focus
   outline: none
