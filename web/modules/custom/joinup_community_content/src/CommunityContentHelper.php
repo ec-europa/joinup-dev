@@ -22,6 +22,7 @@ class CommunityContentHelper {
    *   Use static::BUNDLES instead.
    */
   public static function getBundles() {
+    @trigger_error(__METHOD__ . ' is deprecated. Use CommunityContentHelper::BUNDLES instead.', E_USER_DEPRECATED);
     return static::BUNDLES;
   }
 
