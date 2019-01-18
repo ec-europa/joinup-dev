@@ -71,12 +71,12 @@ Feature: User authentication
 
     Examples:
       | path                       |
-      | propose/collection         |
       | collections                |
-      | user                       |
-      | user/subscriptions         |
-      | user/subscription-settings |
       | joinup/legal-notice        |
+      | propose/collection         |
+      | user                       |
+      | user/subscription-settings |
+      | user/subscriptions         |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
