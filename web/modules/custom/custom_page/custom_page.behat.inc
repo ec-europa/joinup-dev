@@ -56,7 +56,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     // We want to copy it from the fixtures into the file system and register it
-    // in the DocumentSubContext so it can be cleaned up after the scenario
+    // in the CustomPageSubContext so it can be cleaned up after the scenario
     // ends. Perform a small dance to get access to the context class from
     // inside this static callback.
     /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
