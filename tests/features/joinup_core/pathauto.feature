@@ -20,6 +20,10 @@ Feature:
       | description    | Pathauto release. |
       | is version of  | Pathauto solution |
       | state          | validated         |
+    And the following distribution:
+      | title       | Pathauto distribution  |
+      | description | Pathauto distribution. |
+      | parent      | Pathauto solution      |
     And the following licence:
       | title       | Pathauto licence |
       | description | Pathauto licence |
@@ -45,6 +49,8 @@ Feature:
     Then the url should match "solution/pathauto-solution"
     When I go to the "Pathauto release" release
     Then the url should match "release/pathauto-release/23"
+    When I go to the "Pathauto distribution" distribution
+    Then the url should match "solution/pathauto-solution/distribution/pathauto-distribution"
     When I visit the "Pathauto document" document
     Then the url should match "document/pathauto-document"
     When I visit the "Pathauto discussion" discussion
