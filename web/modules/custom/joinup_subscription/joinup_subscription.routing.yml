@@ -1,5 +1,5 @@
 joinup_subscription.subscription_settings:
-  path: '/user/{user}/subscription-settings'
+  path: '/user/{user}/edit/subscription-settings'
   defaults:
     _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::build'
     _title: 'Subscription settings'
