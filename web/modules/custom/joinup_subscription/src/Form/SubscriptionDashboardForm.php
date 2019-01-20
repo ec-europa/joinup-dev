@@ -97,9 +97,9 @@ class SubscriptionDashboardForm extends FormBase {
         '#theme' => 'status_messages',
         '#message_list' => ['status' => [$empty_message]],
         '#status_headings' => [
-          'status' => t('Status message'),
-          'error' => t('Error message'),
-          'warning' => t('Warning message'),
+          'status' => $this->t('Status message'),
+          'error' => $this->t('Error message'),
+          'warning' => $this->t('Warning message'),
         ],
       ];
       return $form;
