@@ -91,17 +91,19 @@ class SubscriptionDashboardForm extends FormBase {
       '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
     ];
 
-    $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
-    $form['empty_text'] = [
-      '#theme' => 'status_messages',
-      '#message_list' => ['status' => [$empty_message]],
-      '#status_headings' => [
-        'status' => t('Status message'),
-        'error' => t('Error message'),
-        'warning' => t('Warning message'),
-      ],
-      '#access' => !(bool) count($memberships),
-    ];
+    if (!(bool) count($memberships)) {
+      $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
+      $form['empty_text'] = [
+        '#theme' => 'status_messages',
+        '#message_list' => ['status' => [$empty_message]],
+        '#status_headings' => [
+          'status' => t('Status message'),
+          'error' => t('Error message'),
+          'warning' => t('Warning message'),
+        ],
+      ];
+      return $form;
+    }
 
     $form['collections']['#tree'] = TRUE;
 

@@ -60,6 +60,7 @@ Feature: User subscription settings
     Then I should see the heading "My subscriptions"
     And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
     But I should not see the text "Alpha Centauri"
+    And I should not see the "Submit" button
 
     # Log in as a user that is a member of 3 collections. The subscriptions for
     # all 3 collections should be shown.
@@ -68,6 +69,7 @@ Feature: User subscription settings
 
     # The empty text should not be shown now.
     Then I should not see the text "No collection memberships yet."
+    And I should not see the "Submit" button
 
     # Check that the 3 collections are shown alongside the abstracts.
     But I should see the following headings:
