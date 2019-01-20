@@ -56,7 +56,7 @@ function joinup_user_remove_subscription_permissions() {
   // own profiles.
   /** @var \Drupal\user\RoleInterface $role */
   foreach (Role::loadMultiple() as $role) {
-    foreach (['manage own permissions', 'manage all permissions'] as $permission) {
+    foreach (['manage own subscriptions', 'manage all subscriptions'] as $permission) {
       $role->revokePermission($permission);
     }
     $role->save();
