@@ -55,8 +55,10 @@ Feature: User subscription settings
 
     # Users that are not a member of any collections should see the empty text.
     Given I am logged in as an "authenticated user"
-    When I go to my subscription dashboard
-    Then I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
+    # The "My subscriptions" link is present in the user menu in the top right.
+    When I click "My subscriptions"
+    Then I should see the heading "My subscriptions"
+    And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
     But I should not see the text "Alpha Centauri"
 
     # Log in as a user that is a member of 3 collections. The subscriptions for
@@ -102,7 +104,6 @@ Feature: User subscription settings
       | Alpha Centauri | discussion, document, event, news |
       | Barnard's Star |                                   |
       | Wolf 359       | discussion, event                 |
-
 
   Scenario Outline: Change the notification frequency of my digests
     Given collection:
