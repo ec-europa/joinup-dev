@@ -50,3 +50,8 @@ field.field.node.custom_page.field_cp_content_listing:
 
 field.widget.settings.search_api_field_custom_page:
   type: field.widget.settings.search_api_field_default
+
+# Schema for the TOC menu block settings.
+block.settings.custom_page_toc:*:
+  type: group_menu_block_default
+  label: 'TOC menu block settings'
