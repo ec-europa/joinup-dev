@@ -22,7 +22,6 @@ settings:
   depth: 0
   context_mapping:
     og: '@og.context:og'
-    node: '@node.node_route_context:node'
 visibility:
   og_group_type:
     id: og_group_type
