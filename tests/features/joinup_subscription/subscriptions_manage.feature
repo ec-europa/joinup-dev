@@ -69,7 +69,6 @@ Feature: User subscription settings
 
     # The empty text should not be shown now.
     Then I should not see the text "No collection memberships yet."
-    And I should not see the "Submit" button
 
     # Check that the 3 collections are shown alongside the abstracts.
     But I should see the following headings:
