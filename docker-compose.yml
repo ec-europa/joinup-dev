@@ -1,6 +1,18 @@
 version: '3.4'
 services:
+  # This image allows XDebug to connect to the host machine. This can be removed
+  # when https://github.com/docker/for-linux/issues/264 is fixed.
+  dockerhost:
+    image: qoomon/docker-host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - PORTS=0:1024,9000
+
   web:
+    depends_on:
+      - dockerhost
     build:
       context: ./resources/docker/web
     ports:
@@ -9,7 +21,7 @@ services:
       - .:/var/www/html
       - ./build.docker.main.xml:/var/www/html/build.xml
     environment:
-      XDEBUG_CONFIG: "extension=xdebug.so remote_enable=1 remote_connect_back=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=0"
+      XDEBUG_CONFIG: "extension=xdebug.so remote_enable=1 remote_connect_back=1 remote_host=http://dockerhost remote_port=9000 idekey=PHPSTORM remote_autostart=0"
       DOCUMENT_ROOT: "/var/www/html/web"
       PHP_XDEBUG_ENABLED: "1"
       PHP_IDE_CONFIG: "serverName=Docker"

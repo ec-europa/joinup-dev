@@ -75,17 +75,6 @@ project lies within e.g. if you install the project on the `myproject` folder, t
 `myproject_mysql`.
 
 ## XDEBUG
-### General configuration
-In order to get XDEBUG working, run the following command depending on your environment:
-* Linux: `sudo ip addr add 10.254.254.254/32 dev lo label lo:1`
-* Mac: `sudo ifconfig en0 alias 10.254.254.254 255.255.255.0`
-The above command needs to run every time you restart the computer.
-
-The web container is set to use `10.254.254.254` as a remote host for xdebug and the port 9000. The local adapter will
-allow the container to communicate with the host through that address as by default, the container does not have the
-host machine mapped to its dns. In general, the communication *from* the *to* the host is very restricted. This will
-allow the reverse connection to apply.
-
 ### PhpStorm
 For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
 that the mappings have to be set.
