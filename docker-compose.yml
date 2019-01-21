@@ -7,7 +7,7 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www/html
-      - ./build.properties.docker:/var/www/html/build.properties
+      - ./build.docker.main.xml:/var/www/html/build.xml
     environment:
       XDEBUG_CONFIG: "extension=xdebug.so remote_enable=1 remote_connect_back=1 remote_host=10.254.254.254 remote_port=9000 idekey=PHPSTORM remote_autostart=0"
       DOCUMENT_ROOT: "/var/www/html/web"
