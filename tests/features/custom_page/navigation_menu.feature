@@ -463,14 +463,19 @@ Feature: Navigation menu for custom pages
     And I click "TOCO 1-1-1" in the "Table of contents outline"
     And I click "TOCO 1-1-2" in the "Table of contents outline"
     And I click "TOCO 1-2" in the "Table of contents outline"
-    And I click "TOCO 2" in the "Table of contents outline"
-    And I click "TOCO 2-1" in the "Table of contents outline"
+    And I should not see the link "TOCO 2" in the "Table of contents outline"
+
+    When I visit the "TOCO 2" custom page
+    Then I click "TOCO 2-1" in the "Table of contents outline"
+
     And I click "TOCO 2-1-1" in the "Table of contents outline"
     Then I should not see the link "TOCO 2-1-2" in the "Table of contents outline"
     # Navigate backwards.
     And I click "TOCO 2-1" in the "Table of contents outline"
     And I click "TOCO 2" in the "Table of contents outline"
-    And I click "TOCO 1-2" in the "Table of contents outline"
+    And I should not see the link "TOCO 1-2" in the "Table of contents outline"
+
+    When I visit the "TOCO 1-2" custom page
     And I click "TOCO 1-1-2" in the "Table of contents outline"
     And I click "TOCO 1-1-1" in the "Table of contents outline"
     And I click "TOCO 1-1" in the "Table of contents outline"
