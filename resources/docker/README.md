@@ -68,8 +68,9 @@ order to have a successful installation and to be able to run the tests properly
 to the section [Handling permissions](#handling-permissions)
 
 ## Accessing the volumes
-Some containers, like solr, create volumes that sync data from and towards the container. These volumes are constructed
-using the top-level `volumes` entry in the docker-compose file and inherit all properties from the containers.
+Some containers, like solr, define volumes that allow the container to directly access files and folders on the host
+machine. These volumes are constructed using the top-level `volumes` entry in the docker-compose file and inherit all
+properties from the containers.
 
 These volumes help retain the data between builds. The since no directory is defined, the local driver will set the
 default directory, which is `/var/lib/docker/volumes/[volume identifier]`.
