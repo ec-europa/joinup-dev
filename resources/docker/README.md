@@ -19,32 +19,39 @@ files installed in /opt/docker-solr/configsets/drupal/conf.
 ## Getting started
 
 ### Starting the containers
-To start the containers, you can use the `docker-compose up -d` command from the same directory as `docker-compose.yml`.
-This will automatically read the `docker-compose.yml` file as a source. The `-d` command will start the containers on
-the background. If you need to debug your build, ommit the `-d` parameter and docker-compose will run on the foreground.
+To start the containers, you can execute the following command from the project root directory:
+
+```bash
+$ docker-compose up -d
+```
+
+This will automatically read the `docker-compose.yml` file as a source. The `-d` command will start the containers in
+the background. If you need to debug your build, ommit the `-d` parameter and docker-compose will run in the foreground.
 You can specify more than one sources in a counter versa priority using the -f parameters. For example
 `docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d` will start the containers with the variables
 from the second source, overriding the first. More of that on
 '[Override default configuration](#override-default-configuration)'.
 
-### Stoping the containers
+### Stopping the containers
 To stop the containers, you can use the command `docker-compose down` from the same directory as the docker-compose.yml.
 Using this command however, will only stop the machine and will not destroy the volume that was created with it. To
 clean the volume as well, use the `-v` parameter as `docker-compose down -v`.
 
 ### Prepare the environment
-From the project root, run `docker-compose up -d`. This command will download, build and run all necessary containers.
-Run the following command to install all packages in the vendor folder  
+Run the following command to install all packages in the vendor folder:
+
 ```bash
 docker-compose exec --user www-data web composer install
 ```
 
 ### Install the website
-From the project root, run
+From the project root, run:
+
 ```bash
 docker-compose exec --user www-data web ./vendor/bin/phing build-dev
 docker-compose exec --user www-data web ./vendor/bin/phing install-dev
 ```
+
 You can now access the website at `http://localhost:8080` or the corresponding endpoint if you have overridden the
 settings.
 
