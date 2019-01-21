@@ -7,9 +7,11 @@ use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Confirmation form for users that want to revoke their collection membership.
@@ -22,6 +24,32 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * @var \Drupal\rdf_entity\RdfInterface
    */
   protected $collection;
+
+  /**
+   * The membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
+   * Constructs a LeaveCollectionConfirmForm.
+   *
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The membership manager service.
+   */
+  public function __construct(MembershipManagerInterface $membership_manager) {
+    $this->membershipManager = $membership_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('og.membership_manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -63,6 +91,18 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     $this->collection = $rdf_entity;
 
     $form = parent::buildForm($form, $form_state);
+    $user = User::load($this->currentUser()->id());
+
+    if ($membership = $this->membershipManager->getMembership($this->collection, $user)) {
+      $admin_role_id = $this->collection->getEntityTypeId() . '-' . $this->collection->bundle() . '-' . 'administrator';
+      if ($membership->hasRole($admin_role_id)) {
+        $administrators = $this->membershipManager->getGroupMembershipsByRoleNames($this->collection, ['administrator']);
+        if (count($administrators) === 1 && $user->id() === $membership->getOwnerId()) {
+          $form['description']['#markup'] = $this->t('You are owner of this collection. Before you leave this collection, you should transfer the ownership to another member.');
+          $form['actions']['submit']['#access'] = FALSE;
+        }
+      }
+    }
 
     // Hide the Cancel link when the form is displayed in a modal. The close
     // button should be used instead.
@@ -87,8 +127,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       ]));
     }
 
-    // Check if the user is a member of the collection.
-    if (!Og::isMember($this->collection, $user)) {
+    if (!$this->membershipManager->isMember($this->collection, $user)) {
       $form_state->setErrorByName('collection', $this->t('You are not a member of this collection. You cannot leave it.'));
     }
   }
