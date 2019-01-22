@@ -32,7 +32,6 @@ dependencies:
     - comment
     - datetime_range
     - file
-    - geofield
     - image
     - joinup_core
     - link
@@ -91,13 +90,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: email_default
-    region: content
-  field_event_coordinates:
-    weight: 26
-    settings:
-      html5_geolocation: false
-    third_party_settings: {  }
-    type: geofield_latlon
     region: content
   field_event_date:
     weight: 5
@@ -216,6 +208,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_event_coordinates: true
   field_shared_in: true
   field_site_featured: true
   field_site_pinned: true
