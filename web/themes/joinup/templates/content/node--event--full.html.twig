@@ -30,10 +30,13 @@
     </div>
     {{ content.field_shared_in }}
     <div id="event-location--{{ node.id }}" class="fieldset--separated">
-        <img src="/themes/joinup/images/location-image.jpg">
+        {% if content.field_event_coordinates|render %}
+            <div class="custom-map-wrapper">
+              {{ content.field_event_coordinates }}
+            </div>
+        {% endif %}
         <div class="page__content">
             {{ content.field_location }}
-            {{ content.field_event_coordinates }}
         </div>
     </div>
     {% if content.field_attachment|render %}

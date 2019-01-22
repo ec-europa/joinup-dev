@@ -230,6 +230,7 @@ config_devel:
   - password_policy.password_policy.generic_policy
   - pathauto.pattern.community_content
   - pathauto.pattern.custom_page
+  - pathauto.pattern.rdf_entities_distributions
   - pathauto.pattern.rdf_entities_generic
   - pathauto.pattern.rdf_entities_releases
   - r4032login.settings
