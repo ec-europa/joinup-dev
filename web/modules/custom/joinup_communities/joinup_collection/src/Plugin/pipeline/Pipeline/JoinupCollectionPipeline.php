@@ -9,7 +9,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *
  * @PipelinePipeline(
  *   id = "joinup_collection",
- *   label = @Translation("Joinup collection - ADMSv1 > ADMSv2"),
+ *   label = @Translation("Joinup collection"),
  *   steps = {
  *     "manual_upload",
  *     "remove_unsupported_data",
