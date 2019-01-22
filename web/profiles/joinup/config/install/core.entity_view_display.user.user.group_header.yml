@@ -11,13 +11,11 @@ dependencies:
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
-    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
     - field.field.user.user.field_user_professional_profile
-    - field.field.user.user.field_user_subscription_events
     - image.style.image_style_collection_logo
   module:
     - ds
@@ -156,9 +154,7 @@ hidden:
   field_password_expiration: true
   field_user_content: true
   field_user_frequency: true
-  field_user_group_types: true
   field_user_professional_profile: true
-  field_user_subscription_events: true
   langcode: true
   simplenews: true
   user_field_user_content_top: true

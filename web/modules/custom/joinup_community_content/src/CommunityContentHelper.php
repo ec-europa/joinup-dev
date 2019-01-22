@@ -8,13 +8,22 @@ namespace Drupal\joinup_community_content;
 class CommunityContentHelper {
 
   /**
+   * An array of node bundles that are considered community content.
+   */
+  const BUNDLES = ['discussion', 'document', 'event', 'news'];
+
+  /**
    * Returns an array of node bundles that are considered community content.
    *
    * @return array
    *   An array of node bundle IDs.
+   *
+   * @deprecated
+   *   Use static::BUNDLES instead.
    */
   public static function getBundles() {
-    return ['discussion', 'document', 'event', 'news'];
+    @trigger_error(__METHOD__ . ' is deprecated. Use CommunityContentHelper::BUNDLES instead.', E_USER_DEPRECATED);
+    return static::BUNDLES;
   }
 
   /**

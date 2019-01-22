@@ -30,7 +30,6 @@ function joinup_user_install() {
     'edit own tallinn_report content',
     'export rdf metadata',
     'flag subscribe_discussions',
-    'manage own subscriptions',
     'never autoplay videos',
     'post comments',
     'propose collection rdf entity',

@@ -32,9 +32,11 @@ config_devel:
   - core.entity_view_display.rdf_entity.collection.compact
   - core.entity_view_display.rdf_entity.collection.default
   - core.entity_view_display.rdf_entity.collection.group_header
+  - core.entity_view_display.rdf_entity.collection.list_view
   - core.entity_view_display.rdf_entity.collection.rdf_draft
   - core.entity_view_display.rdf_entity.collection.view_mode_featured
   - core.entity_view_display.rdf_entity.collection.view_mode_tile
+  - core.entity_view_mode.rdf_entity.list_view
   - facets.facet.collection_policy_domain
   - facets.facet.collection_type
   - facets.facet_source.search_api_field__rdf_entity.field_collection_content

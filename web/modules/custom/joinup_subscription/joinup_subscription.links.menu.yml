@@ -1,0 +1,6 @@
+joinup_subscription.subscriptions_page:
+  title: 'My subscriptions'
+  route_name: joinup_subscription.subscriptions_page
+  menu_name: account
+  description: 'The subscription dashboard.'
+  weight: 0

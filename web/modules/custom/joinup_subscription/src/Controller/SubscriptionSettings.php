@@ -48,8 +48,8 @@ class SubscriptionSettings extends ControllerBase {
   /**
    * Access control for the subscription settings user page.
    *
-   * The user is checked for both global permissions and permissions to edit
-   * his own subscriptions.
+   * Users can edit their own subscription settings, and users with the
+   * 'administer users' permission can edit subscriptions for all users.
    *
    * @param \Drupal\Core\Entity\EntityInterface $user
    *   The user object from the route.
@@ -58,13 +58,44 @@ class SubscriptionSettings extends ControllerBase {
    *   An access result object carrying the result of the check.
    */
   public function access(EntityInterface $user) {
-    if ($this->currentUser->hasPermission('manage all subscriptions')) {
+    // Users that can administer all users have access.
+    if ($this->currentUser->hasPermission('administer users')) {
       return AccessResult::allowed();
     }
-    elseif (!$this->currentUser->isAnonymous() && $this->currentUser->id() == $user->id() && $this->currentUser->hasPermission('manage own subscriptions')) {
+    // The logged in user can manage their own subscriptions.
+    elseif (!$this->currentUser->isAnonymous() && $this->currentUser->id() == $user->id()) {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();
+  }
+
+  /**
+   * Redirects the currently logged in user to their subscription settings form.
+   *
+   * This controller assumes that it is only invoked for authenticated users.
+   * This is enforced for the 'joinup_subscription.subscription_settings_page'
+   * route with the '_user_is_logged_in' requirement.
+   *
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   Returns a redirect to the subscription settings form of the currently
+   *   logged in user.
+   */
+  public function subscriptionSettingsPage() {
+    return $this->redirect('joinup_subscription.subscription_settings', ['user' => $this->currentUser()->id()]);
+  }
+
+  /**
+   * Displays the subscription dashboard for the currently logged in user.
+   *
+   * This controller assumes that it is only invoked for authenticated users.
+   * This is enforced for the 'joinup_subscription.subscriptions_page' route
+   * with the '_user_is_logged_in' requirement.
+   *
+   * @return array
+   *   The subscription dashboard form array.
+   */
+  public function subscriptionDashboardPage() {
+    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\SubscriptionDashboardForm', $this->currentUser());
   }
 
 }

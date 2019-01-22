@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Session\AccountInterface;
+use Drupal\user\Entity\Role;
 use Drupal\user\UserInterface;
 
 /**
@@ -28,15 +29,6 @@ function joinup_user_post_update_joinup_reports() {
 }
 
 /**
- * Allow authenticated users to manage their subscriptions.
- */
-function joinup_user_post_update_access_dashboard() {
-  user_role_grant_permissions(UserInterface::AUTHENTICATED_ROLE, [
-    'manage own subscriptions',
-  ]);
-}
-
-/**
  * Remove configuration for an e-mail that has been replaced by a Message.
  */
 function joinup_user_post_update_remove_obsolete_og_roles_changed_message_config() {
@@ -52,4 +44,21 @@ function joinup_user_post_update_remove_obsolete_og_roles_changed_message_config
  */
 function joinup_user_post_update_add_never_autoplay_permission() {
   user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, ['never autoplay videos']);
+}
+
+/**
+ * Remove the permissions to manage subscriptions.
+ */
+function joinup_user_remove_subscription_permissions() {
+  // Separate permissions are not needed for this since the subscription
+  // settings are part of the user profile. It is fully covered by the
+  // 'administer users' permission, and users are always allowed to edit their
+  // own profiles.
+  /** @var \Drupal\user\RoleInterface $role */
+  foreach (Role::loadMultiple() as $role) {
+    foreach (['manage own subscriptions', 'manage all subscriptions'] as $permission) {
+      $role->revokePermission($permission);
+    }
+    $role->save();
+  }
 }
