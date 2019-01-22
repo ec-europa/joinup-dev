@@ -106,13 +106,14 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
     $current_user_id = $this->currentUser->id();
     $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity(array_keys($ids));
+    $collection_id = $this->getPipeline()->getCollection();
     // Create or update provenance activity records for all entities.
     foreach ($activities as $id => $activity) {
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($current_user_id)
         ->set('provenance_enabled', $ids[$id])
-        ->set('provenance_associated_with', $this->getConfiguration()['collection'])
+        ->set('provenance_associated_with', $collection_id)
         ->save();
     }
   }

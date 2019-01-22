@@ -30,4 +30,13 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   },
  * )
  */
-class JoinupCollectionPipeline extends JoinupFederationPipelinePluginBase {}
+class JoinupCollectionPipeline extends JoinupFederationPipelinePluginBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCollection(): ?string {
+    return 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1';
+  }
+
+}

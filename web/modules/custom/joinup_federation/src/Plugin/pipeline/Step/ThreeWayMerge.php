@@ -108,13 +108,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
-    return ['collection' => NULL] + parent::defaultConfiguration();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function initBatchProcess() {
     $whitelist = $this->getPersistentDataValue('whitelist');
     $this->unsetPersistentDataValue('whitelist');
@@ -307,7 +300,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
     }
 
     // If this plugin was not configured to assign a collection, exit early.
-    if (!$collection_id = $this->getConfiguration()['collection']) {
+    if (!$collection_id = $this->getPipeline()->getCollection()) {
       return;
     }
 

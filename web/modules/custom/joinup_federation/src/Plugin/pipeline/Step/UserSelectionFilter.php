@@ -352,7 +352,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The category ID.
    */
   protected function getCategory(RdfInterface $activity): string {
-    $collection_id = $this->getConfiguration()['collection'];
+    $collection_id = $this->getPipeline()->getCollection();
 
     // If the provenance activity record is new, there was no previous attempt
     // to federate this solution.

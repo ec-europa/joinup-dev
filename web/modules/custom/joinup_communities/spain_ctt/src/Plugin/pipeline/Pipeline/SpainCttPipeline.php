@@ -30,4 +30,13 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   },
  * )
  */
-class SpainCttPipeline extends JoinupFederationPipelinePluginBase {}
+class SpainCttPipeline extends JoinupFederationPipelinePluginBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCollection(): ?string {
+    return 'http://administracionelectronica.gob.es/ctt';
+  }
+
+}
