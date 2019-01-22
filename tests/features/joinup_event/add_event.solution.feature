@@ -60,7 +60,6 @@ Feature: "Add event" visibility options.
       | Title field is required.            |
       | Description field is required.      |
       | File description field is required. |
-      | Location field is required.         |
 
     When I fill in the following:
       | Title            | An amazing event                      |
