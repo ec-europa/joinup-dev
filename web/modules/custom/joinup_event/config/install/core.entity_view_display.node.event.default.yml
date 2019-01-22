@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.event.field_event_coordinates
     - field.field.node.event.field_event_date
     - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_online_location
     - field.field.node.event.field_event_spatial_coverage
     - field.field.node.event.field_event_web_url
     - field.field.node.event.field_keywords
@@ -156,6 +157,18 @@ content:
       image_link: content
     third_party_settings: {  }
     type: image
+    region: content
+  field_event_online_location:
+    weight: 15
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_event_web_url:
     weight: 6

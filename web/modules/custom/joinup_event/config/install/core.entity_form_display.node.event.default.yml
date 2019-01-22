@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.event.field_event_coordinates
     - field.field.node.event.field_event_date
     - field.field.node.event.field_event_logo
+    - field.field.node.event.field_event_online_location
     - field.field.node.event.field_event_spatial_coverage
     - field.field.node.event.field_event_web_url
     - field.field.node.event.field_keywords
@@ -104,6 +105,14 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
+  field_event_online_location:
+    weight: 7
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_event_spatial_coverage:
     weight: 16

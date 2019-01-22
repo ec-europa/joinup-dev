@@ -31,6 +31,7 @@ config_devel:
   - field.field.node.event.field_event_coordinates
   - field.field.node.event.field_event_date
   - field.field.node.event.field_event_logo
+  - field.field.node.event.field_event_online_location
   - field.field.node.event.field_event_spatial_coverage
   - field.field.node.event.field_event_web_url
   - field.field.node.event.field_keywords
@@ -51,6 +52,7 @@ config_devel:
   - field.storage.node.field_event_coordinates
   - field.storage.node.field_event_date
   - field.storage.node.field_event_logo
+  - field.storage.node.field_event_online_location
   - field.storage.node.field_event_spatial_coverage
   - field.storage.node.field_event_web_url
   - field.storage.node.field_location
