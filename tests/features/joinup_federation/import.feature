@@ -286,7 +286,7 @@ Feature: As a site moderator I am able to import RDF files.
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
-    Then I should see "Joinup collection - ADMSv1 > ADMSv2: User selection"
+    Then I should see "Joinup collection: User selection"
     And I should see the text "Federation record exists with Spain."
 
     # The federation was incomplete. Reset the pipeline to conclude the test.
