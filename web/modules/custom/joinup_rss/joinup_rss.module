@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality for the Joinup RSS module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Url;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\UriEncoder;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * Decodes RDF entity ID before running the query.
+ *
+ * @see joinup_core_views_query_alter()
+ */
+function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'collection_feed') {
+    return;
+  }
+
+  foreach ($query->getWhere() as &$group) {
+    foreach ($group['conditions'] as &$condition) {
+      if ($condition[0] === 'entity_groups') {
+        $condition[1] = UriEncoder::decodeUrl($condition[1]);
+        return;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_rss__collection_feed__rss_feed().
+ *
+ * Adds dynamic title and description to the rss.
+ */
+function joinup_rss_preprocess_views_view_rss__collection_feed__rss_feed(&$variables) {
+  // Load the entity from the first view argument. The argument has been already
+  // validated early so we can expect a collection to be loaded successfully.
+  $encoded_collection_id = $variables['view']->args[0];
+  $collection = Rdf::load(UriEncoder::decodeUrl($encoded_collection_id));
+
+  $variables['title'] = t('Latest updates from the @collection collection', [
+    '@collection' => $collection->label(),
+  ]);
+  $variables['description'] = t('This feed contains the latest published content from the @collection collection, including the newest solutions.', [
+    '@collection' => $collection->label(),
+  ]);
+}

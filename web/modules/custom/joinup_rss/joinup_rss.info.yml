@@ -1,0 +1,12 @@
+name: Joinup RSS
+type: module
+description: Exposes RSS feeds in Joinup.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - joinup_search:joinup_search
+  - smart_trim
+
+config_devel:
+  - views.view.collection_feed
