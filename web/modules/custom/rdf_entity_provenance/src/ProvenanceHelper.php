@@ -86,13 +86,14 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function loadActivityAssociatedEntity(RdfInterface $entity): ?RdfInterface {
+  public function loadActivityAssociatedWith(RdfInterface $entity): ?string {
     $associated_id = $entity->get('provenance_associated_with')->value;
     if (empty($associated_id)) {
       return NULL;
     }
 
-    return $this->getRdfStorage()->load($associated_id);
+    $entity = $this->getRdfStorage()->load($associated_id);
+    return $entity ? $entity->toUrl('canonical', ['absolute' => TRUE])->toString() : NULL;
   }
 
   /**
