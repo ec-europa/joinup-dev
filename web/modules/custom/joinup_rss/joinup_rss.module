@@ -53,3 +53,32 @@ function joinup_rss_preprocess_views_view_rss__collection_feed__rss_feed(&$varia
     '@collection' => $collection->label(),
   ]);
 }
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * Attach the rss feed link in the header on collection homepages.
+ */
+function joinup_rss_page_attachments(array &$attachments) {
+  $route = \Drupal::routeMatch();
+  if ($route->getRouteName() !== 'entity.rdf_entity.canonical') {
+    return;
+  }
+
+  /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+  $entity = $route->getParameter('rdf_entity');
+  if ($entity->bundle() !== 'collection') {
+    return;
+  }
+
+  $url = Url::fromRoute('view.collection_feed.rss_feed', [
+    'rdf_entity' => UriEncoder::encodeUrl($entity->id()),
+  ])->setAbsolute()->toString();
+
+  $attachments['#attached']['feed'][] = [
+    $url,
+    t('Latest updates from the @collection collection', [
+      '@collection' => $entity->label(),
+    ]),
+  ];
+}
