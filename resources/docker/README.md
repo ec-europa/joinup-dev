@@ -141,29 +141,64 @@ Note that in the above piece, the `- .:/var/www/html` is also part of the main `
 the `volumes` entry here will completely override the parent entry and will not merge with it.
 
 ## Rebuild from existing databases
-By default, the phing target `download-databases` sends the downloaded databases to the `tmp` folder of the project
-root. The virtuoso dumps are stored in the sub directory `dump-virtuoso` and the mysql dump is located in the `tmp`
-folder itself.
-In the project root, there is also the docker-compose.prod_db.yml which contains overrides for restoring the databases
-according to the image requirements. What it does, is that it maps the dump.sql (the mysql dump) within the startup
-directory of the mysql image, and the virtuoso dumps within the startup directory of the virtuoso image.
+### Obtain credentials
+The production databases are stored on a private server. In order to get access, ask your friendly project manager for
+the paths and credentials. Store them in the `build.properties.local` file in the following properties:
 
-To start the machines with the databases restored, while your docker containers are down without a volume, run the
-command `docker-compose -f docker-compose.yml -f docker-compose.prod_db.yml up -d`
-and the images will be started.
+- `exports.s3.key`
+- `exports.s3.secret`
+- `exports.virtuoso.source`
+- `exports.sql.source`
+- `asda.username`
+- `asda.password`
 
-**Note:** As you can see in `docker-compose.prod_db.yml`, the dumps need to be placed in a specific folder in the
-container. You can alter the configuration using your override to draw the dump from anywhere in the host, but the
-container target must remain the same. The download of the database is *not* automatic. You need to download and place
-them in the specific directories manually or by using the `download-databases` phing target. In any case, the dumps must
-be placed as described in the volumes entry in `docker-compose.prod_db.yml`.
+### Download databases
+Download both the SPARQL and SQL database dumps using the following command:
+
+```
+$ docker-compose exec --user www-data web php -d memory_limit=-1 ./vendor/bin/phing download-databases
+```
+
+By default the downloaded databases are stored in the `tmp` folder which is located in the project root. The virtuoso
+dumps are stored in the sub directory `dump-virtuoso` and the mysql dump is located in the `tmp` folder itself.
+
+Note that the PHP memory limit is being disabled. Phing uses a large amount of memory during the download.
+
+### Launch containers using production databases
+To start the machines with the databases restored, first make sure your docker containers are down:
+
+```
+$ docker-compose down
+```
+
+Then start them using the alternative docker-compose file with support for database dumps:
+
+```
+$ docker-compose -f docker-compose.yml -f docker-compose.db.yml up -d
+```
+
+The `docker-compose.database.yml` file contains overrides for restoring the databases according to the image
+requirements. What it does, is that it maps the dump.sql (the mysql dump) within the startup directory of the mysql
+image, and the virtuoso dumps within the startup directory of the virtuoso image.
+
+**Note:** As you can see in `docker-compose.db.yml`, the dumps need to be placed in a specific folder in the container.
+You can alter the configuration using your override to draw the dump from anywhere in the host, but the container target
+must remain the same. The download of the database is *not* automatic. You need to download and place them in the
+specific directories manually or by using the `download-databases` phing target. In any case, the dumps must be placed
+as described in the volumes entry in `docker-compose.prod_db.yml`.
 
 After the images have been built and the databases have been restored, run the following command to execute the
-updates  
-`docker-compose exec --user www-data web ./vendor/bin/phing execute-updates`.
+updates:
 
-Finally, in order to run a full re-index of the site, run the command  
-`docker-compose exec --user www-data web ./vendor/bin/phing reindex-apache-solr`.
+```
+$ docker-compose exec --user www-data web ./vendor/bin/phing execute-updates
+```
+
+Finally, in order to run a full re-index of the site, run the command:
+
+```
+$ docker-compose exec --user www-data web ./vendor/bin/phing reindex-apache-solr
+```
 
 **IMPORTANT**: All images start normally and the web server is available almost immediately. However, mysql container
 will not start until the backup is restored so for the first few minutes, depending on the size of the database dump,
