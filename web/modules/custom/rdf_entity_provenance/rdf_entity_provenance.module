@@ -34,6 +34,7 @@ function rdf_entity_provenance_entity_bundle_field_info(EntityTypeInterface $ent
   // @see: https://www.w3.org/TR/2013/REC-prov-o-20130430/#wasAssociatedWith
   $fields['provenance_associated_with'] = BaseFieldDefinition::create('string')
     ->setLabel(t('Provenance - Source'))
+    ->addConstraint('UniqueFieldGroupInBundle', ['bundles' => ['provenance_activity'], 'fields' => ['provenance_entity' => 'value']])
     ->setDescription(t('The source that this entity was derived from.'));
 
   // A link towards the entity that the provenance record stores metadata about.
