@@ -1,0 +1,5 @@
+services:
+  joinup_rss.route_subscriber:
+    class: Drupal\joinup_rss\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

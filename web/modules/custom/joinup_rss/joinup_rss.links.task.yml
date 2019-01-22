@@ -1,0 +1,5 @@
+joinup_rss.feed:
+  route_name: view.collection_feed.rss_feed
+  title: 'RSS feed'
+  base_route: entity.rdf_entity.canonical
+  weight: 200
