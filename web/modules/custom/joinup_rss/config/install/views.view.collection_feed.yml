@@ -1666,6 +1666,18 @@ display:
           expose:
             label: ''
           plugin_id: search_api
+        entity_changed:
+          id: entity_changed
+          table: search_api_index_published
+          field: entity_changed
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
       header: {  }
       footer: {  }
       empty: {  }
