@@ -74,18 +74,18 @@ class AddContentBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $group_type = $group->bundle();
     $route_parameters = ['rdf_entity' => $group->id()];
 
-    if ($group_type === 'collection') {
-      // Add a link to add a custom page.
-      $page_url = Url::fromRoute('custom_page.collection_custom_page.add', $route_parameters);
-      if ($page_url->access()) {
-        $links['custom_page'] = [
-          '#type' => 'link',
-          '#title' => $this->t('Add custom page'),
-          '#url' => $page_url,
-          '#attributes' => ['class' => ['circle-menu__link']],
-        ];
-      }
+    // Add a link to add a custom page.
+    $page_url = Url::fromRoute('custom_page.group_custom_page.add', $route_parameters);
+    if ($page_url->access()) {
+      $links['custom_page'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Add custom page'),
+        '#url' => $page_url,
+        '#attributes' => ['class' => ['circle-menu__link']],
+      ];
+    }
 
+    if ($group_type === 'collection') {
       $solution_url = Url::fromRoute('solution.collection_solution.add', $route_parameters);
       if ($solution_url->access()) {
         $links['solution'] = [

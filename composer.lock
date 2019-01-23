@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.86.2",
+            "version": "3.86.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "50224232ac7a4e2a6fa4ebbe0281e5b7503acf76"
+                "reference": "0f38d6b5625c4e6ea8891abd6a75e3d35e3ef465"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/50224232ac7a4e2a6fa4ebbe0281e5b7503acf76",
-                "reference": "50224232ac7a4e2a6fa4ebbe0281e5b7503acf76",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0f38d6b5625c4e6ea8891abd6a75e3d35e3ef465",
+                "reference": "0f38d6b5625c4e6ea8891abd6a75e3d35e3ef465",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-01-18T21:10:44+00:00"
+            "time": "2019-01-21T22:52:28+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -5012,7 +5012,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1543072380",
+                    "datestamp": "1537284180",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
