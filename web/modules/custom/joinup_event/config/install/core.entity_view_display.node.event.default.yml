@@ -56,7 +56,8 @@ content:
     weight: 13
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      use_description_as_link_text: true
     third_party_settings:
       ds:
         ds_limit: ''
@@ -160,7 +161,7 @@ content:
     region: content
   field_event_online_location:
     weight: 15
-    label: above
+    label: hidden
     settings:
       trim_length: 80
       url_only: false

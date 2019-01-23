@@ -39,6 +39,16 @@
             {{ content.field_location }}
         </div>
     </div>
+    {% if content.field_event_online_location|render %}
+        <div id="event-online-location--{{ node.id }}" class="fieldset--separated">
+            <div class="page__content">
+                <h3 class="fieldset__title">
+                    {{ 'Online event'|t }}
+                </h3>
+                {{ content.field_event_online_location }}
+            </div>
+        </div>
+    {% endif %}
     {% if content.field_attachment|render %}
         <div class="fieldset--separated">
             <div class="page__content">
