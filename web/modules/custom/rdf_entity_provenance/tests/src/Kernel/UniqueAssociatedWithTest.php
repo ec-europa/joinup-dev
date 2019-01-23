@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\rdf_entity\Kernel;
 
-use Drupal\joinup_sparql\Plugin\Validation\Constraint\UniqueFieldInBundleConstraint;
+use Drupal\Core\Validation\Plugin\Validation\Constraint\UniqueFieldConstraint;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**
@@ -16,7 +16,6 @@ class UniqueAssociatedWithTest extends RdfKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'joinup_sparql',
     'rdf_entity_provenance',
   ];
 
@@ -75,7 +74,7 @@ class UniqueAssociatedWithTest extends RdfKernelTestBase {
     $violations = $entity_that_fails->validate();
 
     $this->assertCount(1, $violations);
-    $this->assertInstanceOf(UniqueFieldInBundleConstraint::class, $violations[0]->getConstraint());
+    $this->assertInstanceOf(UniqueFieldConstraint::class, $violations[0]->getConstraint());
   }
 
 }
