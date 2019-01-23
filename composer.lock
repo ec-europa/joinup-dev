@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d63c57235a88d9ea58ab231343a4d7a",
+    "content-hash": "e7584ee98883cdcaad9ffe3124b477d3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2711,7 +2711,8 @@
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
                     "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch",
-                    "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch"
+                    "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
+                    "UniqueFieldConstraint doesn't work for string IDs @see https://www.drupal.org/project/drupal/issues/3027745": "https://www.drupal.org/files/issues/2019-01-23/uniquefieldconstraint_string_ids-3027745-D8-3.patch"
                 }
             },
             "autoload": {
@@ -10616,6 +10617,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.4-dev"
+                },
+                "patches_applied": {
+                    "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
                 }
             },
             "autoload": {
