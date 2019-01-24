@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7584ee98883cdcaad9ffe3124b477d3",
+    "content-hash": "5a5c2c1bcea37a82ad024763b8696c44",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2106,7 +2106,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2712,7 +2716,7 @@
                     "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch",
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
-                    "UniqueFieldConstraint doesn't work for string IDs @see https://www.drupal.org/project/drupal/issues/3027745": "https://www.drupal.org/files/issues/2019-01-23/uniquefieldconstraint_string_ids-3027745-D8-3.patch"
+                    "UniqueFieldConstraint doesn't work for string IDs @see https://www.drupal.org/project/drupal/issues/3027745": "https://www.drupal.org/files/issues/2019-01-24/3027745-9.patch"
                 }
             },
             "autoload": {
@@ -2846,6 +2850,10 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -5010,7 +5018,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1537284180",
+                    "datestamp": "1543072380",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5273,7 +5281,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -11125,12 +11133,6 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
-                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
-                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
