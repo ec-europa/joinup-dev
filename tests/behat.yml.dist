@@ -16,6 +16,7 @@ default:
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
         - LoversOfBehat\TableExtension\Context\TableContext
+        - Drupal\joinup\Context\RssContext
       filters:
         tags: '~@wip'
   extensions:
