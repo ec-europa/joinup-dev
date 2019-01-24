@@ -15,18 +15,12 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "remove_unsupported_data",
  *     "add_joinup_vocabularies",
  *     "adms_validation",
- *     "user_selection_filter" = {
- *       "collection" = "http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1",
- *     },
- *     "3_way_merge" = {
- *       "collection" = "http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1",
- *     },
+ *     "user_selection_filter",
+ *     "3_way_merge",
  *     "broken_references",
  *     "joinup_validation",
  *     "import",
- *     "provenance_activity" = {
- *       "collection" = "http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1",
- *     },
+ *     "provenance_activity",
  *   },
  * )
  */
