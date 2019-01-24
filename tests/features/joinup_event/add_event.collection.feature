@@ -63,6 +63,7 @@ Feature: "Add event" visibility options.
       | Location         | Rue Belliard 28, Brussels, Belgium    |
       | File description | Taxi discount voucher.                |
       | Spatial coverage | France                                |
+    And I press "Add another item" at the "Online location" field
     And I enter the following for the "Online location" link field:
       | URL                          | Title           |
       | https://joinup.ec.europa.eu/ | Joinup homepage |
