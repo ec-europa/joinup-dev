@@ -11,7 +11,7 @@ backend_config:
   connector: standard
   connector_config:
     scheme: http
-    host: localhost
+    host: solr_published
     port: '8983'
     path: /solr
     core: drupal_published
