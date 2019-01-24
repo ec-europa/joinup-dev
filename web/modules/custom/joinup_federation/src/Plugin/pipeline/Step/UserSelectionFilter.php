@@ -358,8 +358,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     if ($activity->isNew()) {
       return 'not_federated';
     }
-    // If the solution is already associated with another collection, set it in
-    // a different table.
+    // If the solution is already associated with another collection, we can't
+    // federate it in the scope of this pipeline's collection.
     elseif ($activity->get('provenance_associated_with')->value !== $collection_id) {
       return 'invalid_collection';
     }
