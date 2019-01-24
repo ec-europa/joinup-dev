@@ -172,14 +172,13 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $options = $default_value = [];
     foreach ($entities_per_category as $category_id => $entities) {
       foreach ($entities as $id => $label) {
-        $data = [
+        $options[$id] = [
           'solution' => $label,
           'info' => $this->getInfo($id, $category_id),
           '#attributes' => ['data-drupal-federation-category' => $category_id],
+          '#disabled' => $category_id === 'invalid_collection',
         ];
-        $options[$id] = $data;
         $default_value[$id] = in_array($category_id, ['blacklisted', 'invalid_collection']) ? NULL : $id;
-        $options[$id]['#disabled'] = $category_id === 'invalid_collection';
       }
     }
 
