@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
  * Customized form controller for OG Menu instance edit forms.
  *
  * This simplifies the standard menu edit form from OG Menu for the navigation
- * menus of collections. The standard form is intended for webmasters, but the
+ * menus of groups. The standard form is intended for webmasters, but the
  * navigation menu is managed by non-technical collection facilitators in the
  * frontend.
  *

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c642fc3f83fc3681d2dc572c400dae5",
+    "content-hash": "2186025c6ed9dd516b62cddba86f1756",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.86.0",
+            "version": "3.86.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "971494dfc1ef63aaffc7e909936d19140bef9ad6"
+                "reference": "0f38d6b5625c4e6ea8891abd6a75e3d35e3ef465"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/971494dfc1ef63aaffc7e909936d19140bef9ad6",
-                "reference": "971494dfc1ef63aaffc7e909936d19140bef9ad6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0f38d6b5625c4e6ea8891abd6a75e3d35e3ef465",
+                "reference": "0f38d6b5625c4e6ea8891abd6a75e3d35e3ef465",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-01-16T18:53:53+00:00"
+            "time": "2019-01-21T22:52:28+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -13832,7 +13832,8 @@
         "php": ">=7.1.0"
     },
     "platform-dev": {
-        "ext-dom": "20031129"
+        "ext-dom": "*",
+        "ext-libxml": "*"
     },
     "platform-overrides": {
         "php": "7.1.9"

@@ -16,7 +16,7 @@ collection.settings:
             label: 'Role'
 
 # Schema for the og menu.
-block.settings.collection_menu_block:*:
+block.settings.group_menu_block:*:
   type: block_settings
   label: 'Og menu block settings'
   mapping:

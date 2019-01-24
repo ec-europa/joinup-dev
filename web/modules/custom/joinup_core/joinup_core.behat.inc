@@ -10,7 +10,10 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\NodeTrait;
+use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -22,7 +25,9 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
   use TraversingTrait;
 
   use EntityTrait;
+  use NodeTrait;
   use UserTrait;
+  use RdfEntityTrait;
 
   /**
    * Asserts that only the expected chips are shown in the page.
@@ -147,6 +152,49 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    */
   public function assertResponseContentType($content_type) {
     $this->assertSession()->responseHeaderEquals('Content-Type', $content_type);
+  }
+
+  /**
+   * Checks if the given node belongs to the given group.
+   *
+   * If there are multiple nodes or groups with the same name, then only
+   * the first one is checked.
+   *
+   * @param string $group_label
+   *   The name of the collection or solution to check.
+   * @param string $group_type
+   *   The type of the group.
+   * @param string $content_title
+   *   The title of the node to check.
+   *
+   * @throws \Exception
+   *   Thrown when a node with the given title doesn't exist.
+   *
+   * @Then the :group_label :group_type should have a custom page titled :group_title
+   * @Then the :group_label :group_type should have a community content titled :group_title
+   */
+  public function assertNodeOgMembership($group_label, $group_type, $content_title) {
+    $group = $this->getRdfEntityByLabel($group_label, $group_type);
+    $node = $this->getNodeByTitle($content_title);
+    if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $group->id()) {
+      throw new \Exception("The node '$content_title' is not associated with collection '{$group->label()}'.");
+    }
+  }
+
+  /**
+   * Asserts the order of elements.
+   *
+   * @Then I should see the following group menu items in the specified order:
+   */
+  public function assertRepeatedElementContainsText(TableNode $table) {
+    $parent = $this->getSession()->getPage()->findAll('css', '.block-group-menu-blocknavigation li.sidebar-menu__item');
+    $i = 0;
+    foreach ($table->getHash() as $repeatedElement) {
+      $child = $parent[$i];
+      $actual_text = $child->find('css', 'a.sidebar-menu__link')->getText();
+      Assert::assertEquals($repeatedElement['text'], $actual_text);
+      $i++;
+    }
   }
 
 }
