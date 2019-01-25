@@ -1,0 +1,18 @@
+error_page_test.exception:
+  path: '/error_page_test/exception'
+  defaults:
+    _controller: 'Drupal\error_page_test\Controller\ErrorPageTestController::exception'
+  requirements:
+    _access: 'TRUE'
+error_page_test.fatal_error:
+  path: '/error_page_test/fatal_error'
+  defaults:
+    _controller: 'Drupal\error_page_test\Controller\ErrorPageTestController::fatalError'
+  requirements:
+    _access: 'TRUE'
+error_page_test.user_error:
+  path: '/error_page_test/user_error'
+  defaults:
+    _controller: 'Drupal\error_page_test\Controller\ErrorPageTestController::userError'
+  requirements:
+    _access: 'TRUE'

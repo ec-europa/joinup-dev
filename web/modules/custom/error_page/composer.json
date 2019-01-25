@@ -1,0 +1,19 @@
+{
+  "name": "drupal/error_page",
+  "description": "Show a user-friendly page when a fatal error or an exception occurs.",
+  "type": "drupal-module",
+  "keywords": ["Drupal", "error", "exception"],
+  "homepage": "http://drupal.org/project/error_page",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Claudiu Cristea",
+      "homepage": "https://www.drupal.org/u/claudiu.cristea"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "src/ErrorPageErrorHandler.php"
+    ]
+  }
+}

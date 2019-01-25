@@ -1,0 +1,5 @@
+services:
+  error_page.exception_subscriber:
+    class: 'Drupal\error_page\EventSubscriber\ErrorPageFinalExceptionSubscriber'
+    tags:
+      - name: event_subscriber
