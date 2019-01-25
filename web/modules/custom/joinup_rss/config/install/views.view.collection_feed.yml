@@ -38,7 +38,7 @@ display:
           output_lifespan: 0
           output_lifespan_custom: 43200
       query:
-        type: views_query
+        type: search_api_query
         options:
           bypass_access: false
           skip_access: false
@@ -1011,11 +1011,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           text: view
-          bypass_access_check: 0
-          output_url_as_text: 1
-          absolute: 0
-          link_to_item: 0
-          use_highlighting: 0
+          bypass_access_check: false
+          output_url_as_text: true
+          absolute: false
+          link_to_item: false
+          use_highlighting: false
           entity_type: node
           plugin_id: search_api_entity_link
         view_rdf_entity:
@@ -1067,11 +1067,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           text: view
-          bypass_access_check: 0
-          output_url_as_text: 1
-          absolute: 0
-          link_to_item: 0
-          use_highlighting: 0
+          bypass_access_check: false
+          output_url_as_text: true
+          absolute: false
+          link_to_item: false
+          use_highlighting: false
           entity_type: rdf_entity
           plugin_id: search_api_entity_link
         nothing_4:
