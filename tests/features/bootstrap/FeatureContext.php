@@ -15,10 +15,12 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -34,6 +36,7 @@ use WebDriver\Key;
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   use BrowserCapabilityDetectionTrait;
+  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use TraversingTrait;
@@ -1372,6 +1375,38 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // not remove focus from the field so the autocomplete results remain
     // visible and can be inspected.
     $element->postValue(['value' => [$value]]);
+  }
+
+  /**
+   * Installs the testing module for scenarios tagged with @errorPage.
+   *
+   * @BeforeScenario @errorPage
+   */
+  public function installErrorPageTestingModule() {
+    $this->toggleErrorPageTestingModule('install');
+  }
+
+  /**
+   * Uninstalls the testing module for scenarios tagged with @errorPage.
+   *
+   * @AfterScenario @errorPage
+   */
+  public function uninstallErrorPageTestingModule(): void {
+    $this->toggleErrorPageTestingModule('uninstall');
+  }
+
+  /**
+   * Installs/uninstalls the testing module.
+   *
+   * @param string $method
+   *   Either 'install' or 'uninstall'.
+   */
+  protected function toggleErrorPageTestingModule(string $method): void {
+    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
+    new Settings($settings);
+    static::bypassReadOnlyConfig(10);
+    \Drupal::service('module_installer')->$method(['error_page_test']);
+    static::restoreReadOnlyConfig();
   }
 
 }
