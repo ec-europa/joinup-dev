@@ -29,3 +29,9 @@ $databases['sparql_default']['default']['namespace'] = "Drupal\\Driver\\Database
 // Configure swiftmailer spooling.
 $config['swiftmailer.transport']['transport'] = 'spool';
 $config['swiftmailer.transport']['spool_directory'] = '/tmp/spool/';
+
+$settings['error_page']['uuid']['enabled'] = TRUE; // CUSTOM ERROR HANDLER.
+$settings['error_page']['uuid']['add_to_message'] = TRUE; // CUSTOM ERROR HANDLER.
+$settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_page'; // CUSTOM ERROR HANDLER.
+set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']); // CUSTOM ERROR HANDLER.
+set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']); // CUSTOM ERROR HANDLER.
