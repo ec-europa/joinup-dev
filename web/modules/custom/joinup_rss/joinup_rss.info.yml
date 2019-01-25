@@ -5,8 +5,9 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - drupal:views
   - joinup_search:joinup_search
-  - smart_trim
+  - smart_trim:smart_trim
 
 config_devel:
   - views.view.collection_feed
