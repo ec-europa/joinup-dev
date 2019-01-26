@@ -23,7 +23,7 @@ trait NodeTrait {
    * @throws \InvalidArgumentException
    *   Thrown when a node with the given name does not exist.
    */
-  public static function getNodeByTitle($title, $bundle = NULL) {
+  public function getNodeByTitle($title, $bundle = NULL) {
     $query = \Drupal::entityQuery('node')
       ->condition('title', $title)
       ->range(0, 1);
