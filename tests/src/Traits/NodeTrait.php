@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Traits;
 
+use Drupal\node\NodeInterface;
+
 /**
  * Helper methods when dealing with Nodes.
  */
@@ -47,6 +49,47 @@ trait NodeTrait {
     // Reload from database to avoid caching issues and get latest version.
     $id = reset($result);
     return \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($id);
+  }
+
+  /**
+   * Returns the last version of the node entity.
+   *
+   * @param string $title
+   *   The title of the node.
+   * @param string $bundle
+   *   The type of the node.
+   * @param bool $published
+   *   Whether to request the last published or last unpublished verion.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   The node revision.
+   */
+  public function getLastNodeVersion(string $title, string $bundle, bool $published = TRUE): ?NodeInterface {
+    $published = (int) $published;
+    $current_revision = $this->getNodeByTitle($title, $bundle);
+    $revision_id = $current_revision->getRevisionId();
+    // We gather all revisions and then filter out the one we want as filtering
+    // by vid will lead in false results.
+    // @see: https://www.drupal.org/project/drupal/issues/2766135
+    $revisions = \Drupal::entityQuery('node')
+      ->allRevisions()
+      ->condition('type', $bundle)
+      ->condition('status', $published)
+      ->condition('nid', $current_revision->id())
+      ->sort('vid', 'DESC')
+      ->execute();
+
+    if (isset($revisions[$revision_id])) {
+      unset($revisions[$revision_id]);
+    }
+
+    if (empty($revisions)) {
+      return NULL;
+    }
+
+    $revision_ids = array_keys($revisions);
+    $latest_id = reset($revision_ids);
+    return \Drupal::entityTypeManager()->getStorage('node')->loadRevision($latest_id);
   }
 
 }

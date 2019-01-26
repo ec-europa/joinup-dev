@@ -90,8 +90,17 @@ Feature: Add community content
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
+    And the created date of the "Sample <content type>" <content type> should be different than its unpublished version
     # The created date has been updated.
     And I should not see the text "01/01/2010"
+
+    # Obtain a new request time.
+    When I reload the page
+    When I click "Edit" in the "Entity actions" region
+    And I press "Save new draft"
+    When I click "Edit" in the "Entity actions" region
+    And I press "Publish"
+    Then the created date of the "Sample <content type>" <content type> should be the same as the last published version
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
     # date is the one shown and this field is exposed to the user.
