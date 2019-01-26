@@ -79,17 +79,32 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    *   The title of the content.
    * @param string $type
    *   The type of the content.
+   * @param string published
+   *   Whether to request the published or unpublished version. Allowed values
+   *   are 'published' and 'unpublished'.
    *
-   * @Given the created date of the :title :type should be different than its unpublished version
+   * @Given the latest version of the :title :type should have a different created date as the last :published version
    */
-  public function assertDifferentCreatedTimeWithUnpublishedVersion($title, $type) {
-    $node = $this->getNodeByTitle($title, $type);
-    $last_revision = $this->getLastNodeVersion($title, $type, FALSE);
-    if (empty($last_revision)) {
-      throw new Exception("Could not locate a previously unpublished version for the '{$title}' {$type} content.");
+  public function assertDifferentCreatedTimeWithUnpublishedVersion($title, $type, $published) {
+    if (!in_array($published, ['published', 'unpublished'])) {
+      throw new Exception('Only "published" and "unpublished" values are allowed for variable $published.');
     }
+    $published = $published === 'published';
+    $revision_list = $this->getNodeRevisionIdsList($title, $type);
+    $revision_id = reset($revision_list);
+    $latest_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
 
-    Assert::assertNotEquals($last_revision->getCreatedTime(), $node->getCreatedTime());
+    $previous_revision_list = $this->getNodeRevisionIdsList($title, $type, $published);
+    // If both requested versions are of the same status, the pre-last revision
+    // is the correct one.
+    $index = array_search($revision_id, $previous_revision_list);
+    if ($index !== FALSE) {
+      unset($previous_revision_list[$index]);
+    }
+    $previous_id = reset($previous_revision_list);
+    $previous_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($previous_id);
+
+    Assert::assertNotEquals($latest_revision->getCreatedTime(), $previous_revision->getCreatedTime());
   }
 
   /**
@@ -99,17 +114,32 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    *   The title of the content.
    * @param string $type
    *   The type of the content.
+   * @param string published
+   *   Whether to request the published or unpublished version. Allowed values
+   *   are 'published' and 'unpublished'.
    *
-   * @Given the created date of the :title :type should be the same as the last published version
+   * @Given the latest version of the :title :type should have the same created date as the last :published version
    */
-  public function assertSameCreatedTimeWithLastVersion($title, $type) {
-    $node = $this->getNodeByTitle($title, $type);
-    $last_revision = $this->getLastNodeVersion($title, $type, TRUE);
-    if (empty($last_revision)) {
-      throw new Exception("Could not locate a previously published version for the '{$title}' {$type} content.");
+  public function assertSameCreatedTimeWithLastVersion($title, $type, $published) {
+    if (!in_array($published, ['published', 'unpublished'])) {
+      throw new Exception('Only "published" and "unpublished" values are allowed for variable $published.');
     }
+    $published = $published === 'published';
+    $revision_list = $this->getNodeRevisionIdsList($title, $type);
+    $revision_id = reset($revision_list);
+    $latest_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
 
-    Assert::assertEquals($last_revision->getCreatedTime(), $node->getCreatedTime());
+    $previous_revision_list = $this->getNodeRevisionIdsList($title, $type, $published);
+    // If both requested versions are of the same status, the pre-last revision
+    // is the correct one.
+    $index = array_search($revision_id, $previous_revision_list);
+    if ($index !== FALSE) {
+      unset($previous_revision_list[$index]);
+    }
+    $previous_id = reset($previous_revision_list);
+    $previous_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($previous_id);
+
+    Assert::assertEquals($latest_revision->getCreatedTime(), $previous_revision->getCreatedTime());
   }
 
 }

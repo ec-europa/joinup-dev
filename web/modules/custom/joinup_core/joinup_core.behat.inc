@@ -197,4 +197,18 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
     }
   }
 
+  /**
+   * Clicks on the last named link in the page.
+   *
+   * @param $link
+   *   The link locator.
+   *
+   * @Given I click the last :link link
+   */
+  public function assertClickLastLink($link) {
+    $links = $this->getSession()->getPage()->findAll('named', array('link', $link));
+    $link = end($links);
+    $link->click();
+  }
+
 }

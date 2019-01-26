@@ -52,7 +52,7 @@ trait NodeTrait {
   }
 
   /**
-   * Returns the last version of the node entity.
+   * Returns a list of revision IDs.
    *
    * @param string $title
    *   The title of the node.
@@ -61,35 +61,31 @@ trait NodeTrait {
    * @param bool $published
    *   Whether to request the last published or last unpublished verion.
    *
-   * @return \Drupal\node\NodeInterface|null
-   *   The node revision.
+   * @return array|null
+   *   A list of revision IDs.
    */
-  public function getLastNodeVersion(string $title, string $bundle, bool $published = TRUE): ?NodeInterface {
-    $published = (int) $published;
+  public function getNodeRevisionIdsList(string $title, string $bundle, bool $published = NULL): ?array {
     $current_revision = $this->getNodeByTitle($title, $bundle);
-    $revision_id = $current_revision->getRevisionId();
     // We gather all revisions and then filter out the one we want as filtering
     // by vid will lead in false results.
     // @see: https://www.drupal.org/project/drupal/issues/2766135
-    $revisions = \Drupal::entityQuery('node')
+    $query = \Drupal::entityQuery('node')
       ->allRevisions()
-      ->condition('type', $bundle)
-      ->condition('status', $published)
-      ->condition('nid', $current_revision->id())
+      ->condition('type', $bundle);
+    if ($published !== NULL) {
+      $published = (int) $published;
+      $query->condition('status', $published);
+    }
+
+    $revisions = $query->condition('nid', $current_revision->id())
       ->sort('vid', 'DESC')
       ->execute();
-
-    if (isset($revisions[$revision_id])) {
-      unset($revisions[$revision_id]);
-    }
 
     if (empty($revisions)) {
       return NULL;
     }
 
-    $revision_ids = array_keys($revisions);
-    $latest_id = reset($revision_ids);
-    return \Drupal::entityTypeManager()->getStorage('node')->loadRevision($latest_id);
+    return array_keys($revisions);
   }
 
 }
