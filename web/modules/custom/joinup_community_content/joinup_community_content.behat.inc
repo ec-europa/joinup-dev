@@ -2,8 +2,10 @@
 
 /**
  * @file
- * Contains \SolutionSubContext.
+ * Contains \JoinupCommunityContentSubContext.
  */
+
+declare(strict_types = 1);
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -30,7 +32,7 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    *
    * @Then the :heading tile should not be marked as shared
    */
-  public function assertTileNotMarkedAsShared($heading) {
+  public function assertTileNotMarkedAsShared(string $heading): void {
     $element = $this->getTileByHeading($heading);
 
     if ($element->find('css', '.icon--shared')) {
@@ -52,7 +54,7 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    *
    * @Then the :heading tile should be marked as shared from :collection
    */
-  public function assertTileMarkedAsShared($heading, $collection) {
+  public function assertTileMarkedAsShared(string $heading, string $collection): void {
     $element = $this->getTileByHeading($heading);
 
     $share = $element->find('css', '.icon--shared');
@@ -79,13 +81,18 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    *   The title of the content.
    * @param string $type
    *   The type of the content.
-   * @param string published
+   * @param string $published
    *   Whether to request the published or unpublished version. Allowed values
    *   are 'published' and 'unpublished'.
    *
+   * @throws \InvalidArgumentException
+   *   Thrown if $published has an invalid value.
+   * @throws \Exception
+   *   Thrown if the expected and the actual values match.
+   *
    * @Given the latest version of the :title :type should have a different created date as the last :published version
    */
-  public function assertDifferentCreatedTimeWithUnpublishedVersion($title, $type, $published) {
+  public function assertDifferentCreatedTimeWithUnpublishedVersion(string $title, string $type, string $published): void {
     if (!in_array($published, ['published', 'unpublished'])) {
       throw new Exception('Only "published" and "unpublished" values are allowed for variable $published.');
     }
@@ -114,15 +121,20 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    *   The title of the content.
    * @param string $type
    *   The type of the content.
-   * @param string published
+   * @param string $published
    *   Whether to request the published or unpublished version. Allowed values
    *   are 'published' and 'unpublished'.
    *
+   * @throws \InvalidArgumentException
+   *   Thrown if $published has an invalid value.
+   * @throws \Exception
+   *   Thrown if the expected and the actual values do not match.
+   *
    * @Given the latest version of the :title :type should have the same created date as the last :published version
    */
-  public function assertSameCreatedTimeWithLastVersion($title, $type, $published) {
+  public function assertSameCreatedTimeWithLastVersion(string $title, string $type, string $published): void {
     if (!in_array($published, ['published', 'unpublished'])) {
-      throw new Exception('Only "published" and "unpublished" values are allowed for variable $published.');
+      throw new InvalidArgumentException('Only "published" and "unpublished" values are allowed for variable $published.');
     }
     $published = $published === 'published';
     $revision_list = $this->getNodeRevisionIdsList($title, $type);
