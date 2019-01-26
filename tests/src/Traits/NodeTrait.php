@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 /**
@@ -17,13 +19,13 @@ trait NodeTrait {
    * @param string $bundle
    *   Optional content entity bundle.
    *
-   * @return \Drupal\node\Entity\Node
+   * @return \Drupal\node\NodeInterface
    *   The node.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a node with the given name does not exist.
    */
-  public function getNodeByTitle($title, $bundle = NULL) {
+  public function getNodeByTitle(string $title, string $bundle = NULL): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('title', $title)
       ->range(0, 1);
