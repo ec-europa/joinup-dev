@@ -2523,17 +2523,21 @@ JS;
    * Instead of using the mouse, it uses the keyboard keys so that precise
    * control can be achieved.
    *
-   * @param int $position
+   * @param string $position
    *   The position of the row in the table. First position starts at 1.
    * @param string $direction
    *   The direction to move the row to. One of "up", "down", "left", "right".
    *
+   * @throws \Exception
+   *   Thrown when the table row with the given position cannot be found in the
+   *   page.
+   *
    * @Then I drag the table row at position :position( to the) :direction
    */
-  public function findTableRowByPositionAndDragTowardsDirection($position, $direction) {
+  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction): void {
     self::assertJavaScriptEnabledBrowser();
 
-    $row = $this->findDraggableTableRowByPosition($position);
+    $row = $this->findDraggableTableRowByPosition((int) $position);
     $this->dragTableRowTowardsDirection($row, $direction);
   }
 
