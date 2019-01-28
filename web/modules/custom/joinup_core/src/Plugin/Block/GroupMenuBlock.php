@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Block;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
-use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\og_menu\Plugin\Block\OgMenuBlock;
 
 /**
@@ -16,24 +18,87 @@ use Drupal\og_menu\Plugin\Block\OgMenuBlock;
  *   category = @Translation("Group"),
  *   deriver = "Drupal\og_menu\Plugin\Derivative\OgMenuBlock",
  *   context = {
- *     "og" = @ContextDefinition("entity", label = @Translation("Group"))
- *   }
+ *     "og" = @ContextDefinition("entity", label = @Translation("Group")),
+ *   },
  * )
  */
 class GroupMenuBlock extends OgMenuBlock {
 
   /**
+   * The OG menu instance.
+   *
+   * @var \Drupal\og_menu\OgMenuInstanceInterface
+   */
+  protected $ogMenuInstance;
+
+  /**
+   * The OG menu tree.
+   *
+   * @var \Drupal\Core\Menu\MenuLinkTreeElement[]
+   */
+  protected $tree;
+
+  /**
    * {@inheritdoc}
    */
-  public function build() {
-    $menu_name = $this->getMenuName();
-    $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters($menu_name);
-    $group = $this->getContext('og')->getContextData()->getValue();
+  public function build(): array {
+    $parameters = $this->getCurrentRouteMenuTreeParameters();
+    $tree = $this->menuTree->load($this->getMenuName(), $parameters);
+    $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
+
+    $menu_instance = $this->getOgMenuInstance();
+    $this->tree = $this->menuTree->transform($tree, $manipulators);
+    $build = $this->menuTree->build($this->tree);
+
+    if (!empty($build['#items'])) {
+      // Improve the template suggestion.
+      if ($menu_instance) {
+        $menu_name = $menu_instance->getType();
+        $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
+      }
+    }
+    else {
+      $build = $this->getEmptyResultsBuild();
+    }
+
+    $this->addContextualLinks($build);
+
+    if ($menu_instance) {
+      // Make sure the cache tag from the OG menu are associated with this
+      // block, so that it will always be invalidated whenever the menu changes.
+      // @see \Drupal\Core\Menu\MenuTreeStorage::save()
+      $build['#cache']['tags'][] = 'config:system.menu.ogmenu-' . $menu_instance->id();
+    }
+
+    return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts(): array {
+    // Since we are showing a help text to facilitators and owners, this block
+    // varies by OG role.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
+  }
+
+  /**
+   * Prepares and returns the menu tree parameters object.
+   *
+   * @return \Drupal\Core\Menu\MenuTreeParameters
+   *   The menu tree parameters object.
+   */
+  protected function getCurrentRouteMenuTreeParameters(): MenuTreeParameters {
+    $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters($this->getMenuName());
 
     // Adjust the menu tree parameters based on the block's configuration.
     $level = $this->configuration['level'];
     $depth = $this->configuration['depth'];
     $parameters->setMinDepth($level);
+
     // When the depth is configured to zero, there is no depth limit. When depth
     // is non-zero, it indicates the number of levels that must be displayed.
     // Hence this is a relative depth that we must convert to an actual
@@ -42,77 +107,75 @@ class GroupMenuBlock extends OgMenuBlock {
       $parameters->setMaxDepth(min($level + $depth - 1, $this->menuTree->maxDepth()));
     }
 
-    $tree = $this->menuTree->load($menu_name, $parameters);
-    $manipulators = [
-      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
-      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
-    ];
-    $tree = $this->menuTree->transform($tree, $manipulators);
-    $build = $this->menuTree->build($tree);
+    return $parameters;
+  }
 
+  /**
+   * Returns the markup to be rendered when there are no menu items to show.
+   *
+   * @return array
+   *   A render array for empty menu items.
+   */
+  protected function getEmptyResultsBuild(): array {
+    /** @var \Drupal\rdf_entity\RdfInterface $group */
+    $group = $this->getContext('og')->getContextData()->getValue();
     // Define URLs that are used in help texts.
     $create_custom_page_url = Url::fromRoute('custom_page.group_custom_page.add', [
-      'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
+      'rdf_entity' => $group->id(),
     ]);
-
-    $menu_instance = $this->getOgMenuInstance();
     $edit_navigation_menu_url = Url::fromRoute('entity.ogmenu_instance.edit_form', [
-      'ogmenu_instance' => $menu_instance->id(),
+      'ogmenu_instance' => $this->getOgMenuInstance()->id(),
     ]);
 
-    // If there are entries in the tree but none of those is in the build
-    // array, it means that all the available pages have been disabled inside
-    // the menu configuration.
-    if (empty($build['menu']['#items'])) {
-      $build['disabled'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('All the pages have been disabled for this :type. You can <a href=":edit_menu_url">edit the menu configuration</a> or <a href=":add_page_url">add a new page</a>.',
-          [
-            ':type' => $group->bundle(),
-            ':edit_menu_url' => $edit_navigation_menu_url->toString(),
-            ':add_page_url' => $create_custom_page_url->toString(),
-          ]),
-        '#access' => $create_custom_page_url->access(),
-      ];
-    }
+    // If there are entries in the tree but none of those is in the build array,
+    // it means that all the available pages have been disabled inside the menu
+    // configuration.
+    $build['disabled'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('All the pages have been disabled for this :type. You can <a href=":edit_menu_url">edit the menu configuration</a> or <a href=":add_page_url">add a new page</a>.',
+        [
+          ':type' => $group->get('rid')->entity->getSingularLabel(),
+          ':edit_menu_url' => $edit_navigation_menu_url->toString(),
+          ':add_page_url' => $create_custom_page_url->toString(),
+        ]),
+      '#access' => $create_custom_page_url->access(),
+    ];
 
-    if ($menu_instance instanceof OgMenuInstanceInterface) {
-      // Make sure the cache tag from the OG menu are associated with this
-      // block, so that it will always be invalidated whenever the menu changes.
-      // @see \Drupal\Core\Menu\MenuTreeStorage::save()
-      $build['#cache']['tags'][] = 'config:system.menu.ogmenu-' . $menu_instance->id();
+    return $build;
+  }
 
-      // Show the "Edit menu" link only when at least one element is available.
-      if ($tree) {
-        $build['#contextual_links']['ogmenu'] = [
-          'route_parameters' => [
-            'ogmenu_instance' => $menu_instance->id(),
-          ],
-        ];
-      }
-      $build['#contextual_links']['group_menu_block'] = [
+  /**
+   * Adds contextual links to the block render array.
+   *
+   * @param array $build
+   *   The block render array.
+   */
+  protected function addContextualLinks(array &$build): void {
+    // Show the "Edit menu" link only when at least one element is available.
+    if ($this->tree) {
+      $build['#contextual_links']['ogmenu'] = [
         'route_parameters' => [
-          'rdf_entity' => $group->id(),
+          'ogmenu_instance' => $this->getOgMenuInstance()->id(),
         ],
       ];
     }
-
-    // Improve the template suggestion.
-    if (!empty($build['#items']) && $menu_instance) {
-      $menu_name = $menu_instance->getType();
-      $build['#theme'] = 'menu__og__' . strtr($menu_name, '-', '_');
-    }
-    return $build;
+    $build['#contextual_links']['group_menu_block'] = [
+      'route_parameters' => [
+        'rdf_entity' => $this->getContext('og')->getContextData()->getValue()->id(),
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
-    // Since we are showing a help text to facilitators and owners, this block
-    // varies by OG role.
-    return Cache::mergeContexts(parent::getCacheContexts(), ['og_role']);
+  public function getOgMenuInstance() {
+    // Wraps the parent method only for caching reasons.
+    if (!isset($this->ogMenuInstance)) {
+      $this->ogMenuInstance = parent::getOgMenuInstance();
+    }
+    return $this->ogMenuInstance;
   }
 
 }
