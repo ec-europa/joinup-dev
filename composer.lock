@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c3aefb2cf8865e8c7b97b431bcbf1dc",
+    "content-hash": "d5a3769cc7a454961a2d60c210294479",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4194,11 +4194,17 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/og",
-                "reference": "b54a74ed61ced8d07121452d490d0527efec1c2f"
+                "reference": "8.x-1.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/og-8.x-1.0-alpha2.zip",
+                "reference": "8.x-1.0-alpha2",
+                "shasum": "36ba82631d3b4818eb7a02a9cd5fe31b32107fd2"
             },
             "require": {
                 "drupal/core": "~8.6"
@@ -4212,15 +4218,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1+16-dev",
-                    "datestamp": "1544609580",
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1545216480",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Provide a better way to load group memberships by role @see https://github.com/Gizra/og/pull/451": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/451.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4279,8 +4282,7 @@
                 "source": "https://cgit.drupalcode.org/og",
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og"
-            },
-            "time": "2018-12-13T13:07:39+00:00"
+            }
         },
         {
             "name": "drupal/og_menu",
@@ -4623,11 +4625,17 @@
         },
         {
             "name": "drupal/r4032login",
-            "version": "dev-1.x",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/r4032login",
-                "reference": "391f10d69b9b8c466a2fddac2a6b99f1289e7781"
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/r4032login-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "dd9dc2daf8e4b960d2be1fe58e19a8ec4fbf30f1"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4638,22 +4646,26 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1486527783",
+                    "version": "8.x-1.1",
+                    "datestamp": "1533913684",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
                     "name": "Bevan",
                     "homepage": "https://www.drupal.org/user/49989"
+                },
+                {
+                    "name": "Nixou",
+                    "homepage": "https://www.drupal.org/user/2304734"
                 },
                 {
                     "name": "RobLoach",
@@ -4692,8 +4704,7 @@
             "homepage": "https://www.drupal.org/project/r4032login",
             "support": {
                 "source": "http://cgit.drupalcode.org/r4032login"
-            },
-            "time": "2017-02-08T04:20:19+00:00"
+            }
         },
         {
             "name": "drupal/rdf_entity",
@@ -11770,8 +11781,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",
@@ -13815,10 +13825,9 @@
         "semiceu/adms-ap_validator": 20,
         "drupal/diff": 5,
         "drupal/flag": 15,
-        "drupal/og": 20,
+        "drupal/migrate_run": 10,
         "drupal/phingdrushtask": 20,
-        "drupal/r4032login": 20,
-        "drupal/subpathauto": 10,
+        "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
@@ -13827,8 +13836,7 @@
         "jacklmoore/autosize": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
-        "drupal/devel": 15,
-        "drupal/drupal-extension": 15,
+        "drupal/drupal-extension": 10,
         "drupal/stage_file_proxy": 20,
         "jcalderonzumba/gastonjs": 20
     },
