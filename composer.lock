@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c3aefb2cf8865e8c7b97b431bcbf1dc",
+    "content-hash": "f32804553a3facd286f36fb2dfa52608",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2106,16 +2106,12 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2375,8 +2371,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3427,7 +3423,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4063,7 +4059,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4384,7 +4380,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4648,7 +4644,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4733,7 +4729,8 @@
                     "Ensure a predictable order of fields when serializing @see https://github.com/ec-europa/rdf_entity/pull/76": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/76.diff",
                     "Fix endless loop due to orphaned aliases @see https://github.com/ec-europa/rdf_entity/pull/78": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/78.diff",
                     "Implement batch delete of aliases @see https://github.com/ec-europa/rdf_entity/pull/71": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/79.diff",
-                    "Improve batch alias update @see https://github.com/ec-europa/rdf_entity/pull/81": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/81.diff"
+                    "Improve batch alias update @see https://github.com/ec-europa/rdf_entity/pull/81": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/81.diff",
+                    "Iterate through fetched entries in the Serializer @see https://github.com/ec-europa/rdf_entity/pull/82": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/82.diff"
                 }
             },
             "autoload": {
@@ -5012,7 +5009,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1537284180",
+                    "datestamp": "1543072380",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5097,7 +5094,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5275,7 +5272,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5561,7 +5558,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1493246342",
+                    "datestamp": "1510132373",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5629,7 +5626,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6084,7 +6081,8 @@
             "extra": {
                 "patches_applied": {
                     "Add a target to setup the SPARQL update permission @see https://github.com/ec-europa/virtuoso/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/3.diff",
-                    "Complete virtuoso task base @see https://github.com/ec-europa/virtuoso/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/4.diff"
+                    "Complete virtuoso task base @see https://github.com/ec-europa/virtuoso/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/4.diff",
+                    "Fix backend cleanup @see https://github.com/ec-europa/virtuoso/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/5.diff"
                 }
             },
             "autoload": {
@@ -11134,6 +11132,12 @@
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "shasum": ""
+            },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=5.4.0",
@@ -11358,10 +11362,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
