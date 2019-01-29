@@ -7,7 +7,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
- * Provides the collection entity for the 'Add custom page' local action.
+ * Provides the group entity for the 'Add custom page' local action.
  */
 class CustomPageAdd extends LocalActionDefault {
 

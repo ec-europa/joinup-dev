@@ -87,7 +87,7 @@ Feature: June 2016 demo
     And I should not see the text "Phoenix is down"
 
     # See menu items.
-    Then I should see the following collection menu items in the specified order:
+    Then I should see the following group menu items in the specified order:
       | text               |
       | Overview           |
       | Members            |
@@ -114,7 +114,7 @@ Feature: June 2016 demo
     And I press "Save"
     Then I should see the heading "How to apply"
     And I should see the text "You want to become a S.H.I.E.L.D. agent?"
-    And  I should see the following collection menu items in the specified order:
+    And  I should see the following group menu items in the specified order:
       | text               |
       | Overview           |
       | Members            |
@@ -190,7 +190,7 @@ Feature: June 2016 demo
     And I should not see the text "Phoenix is down"
 
     # See menu items.
-    Then I should see the following collection menu items in the specified order:
+    Then I should see the following group menu items in the specified order:
       | text               |
       | Overview           |
       | Members            |

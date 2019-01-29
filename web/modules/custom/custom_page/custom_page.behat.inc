@@ -153,8 +153,8 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
 
     // Compile a list of routes to which the user should not have access.
     // Note that this excludes the 'entity.ogmenu_instance.edit_form' route to
-    // which the collection facilitator should have access; this is used to
-    // reorder the pages in the menu.
+    // which the facilitator should have access; this is used to reorder the
+    // pages in the menu.
     $routes = [
       'entity.ogmenu_instance.canonical' => [
         'ogmenu_instance' => $instance->id(),
@@ -171,6 +171,7 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
         'og_group' => $group->id(),
       ],
       'entity.ogmenu.collection' => [],
+      'entity.ogmenu.solution' => [],
       'entity.ogmenu.add_form' => [],
       'entity.ogmenu.overview_form' => ['ogmenu' => $menu],
       'entity.ogmenu.edit_form' => ['ogmenu' => $menu],
