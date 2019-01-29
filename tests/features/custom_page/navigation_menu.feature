@@ -188,35 +188,75 @@ Feature: Navigation menu for custom pages
       | collection |
       | solution   |
 
-  Scenario Outline: Only active links of the table of content is expanded.
+  Scenario Outline: Only the links below the topmost page are rendered in TOC.
     Given the following <group>s:
       | title                   | state     |
       | Table of contents group | validated |
     And custom_page content:
-      | title           | <group>                 |
-      | Custom page 1   | Table of contents group |
-      | Custom page 2   | Table of contents group |
-      | Custom page 1-1 | Table of contents group |
-      | Custom page 1-2 | Table of contents group |
-      | Custom page 2-1 | Table of contents group |
+      | title         | <group>                 |
+      | Page 1        | Table of contents group |
+      | Page 2        | Table of contents group |
+      | Page 3        | Table of contents group |
+      | Subpage 1-1   | Table of contents group |
+      | Subpage 1-1-1 | Table of contents group |
+      | Subpage 1-2   | Table of contents group |
+      | Subpage 1-2-1 | Table of contents group |
+      | Subpage 1-2-2 | Table of contents group |
+      | Subpage 2-1   | Table of contents group |
     And the following custom page menu structure:
-      | title           | parent        | weight |
-      | Custom page 1   |               | 1      |
-      | Custom page 2   |               | 2      |
-      | Custom page 1-1 | Custom page 1 | 1      |
-      | Custom page 1-2 | Custom page 1 | 2      |
-      | Custom page 2-1 | Custom page 2 | 1      |
+      | title         | parent      | weight |
+      | Page 1        |             | 1      |
+      | Page 2        |             | 2      |
+      | Page 3        |             | 3      |
+      | Subpage 1-1   | Page 1      | 1      |
+      | Subpage 1-1-1 | Subpage 1-1 | 1      |
+      | Subpage 1-2   | Page 1      | 2      |
+      | Subpage 1-2-1 | Subpage 1-2 | 1      |
+      | Subpage 1-2-2 | Subpage 1-2 | 2      |
+      | Subpage 2-1   | Page 2      | 1      |
 
     When I am logged in as a member of the "Table of contents group" <group>
     And I go to the homepage of the "Table of contents group" <group>
     Then I should not see the "Table of contents" region
 
-    When I visit the "Custom page 1" custom page
-    Then I should see the link "Custom page 1" in the "Table of contents"
-    And I should see the link "Custom page 2" in the "Table of contents"
-    And I should see the link "Custom page 1-1" in the "Table of contents"
-    And I should see the link "Custom page 1-2" in the "Table of contents"
-    But I should not see the link "Custom page 2-1" in the "Table of contents"
+    # Only the sub-page links of "Page 1" are rendered.
+    When I visit the "Page 1" custom page
+    Then I should see the link "Subpage 1-1" in the "Table of contents"
+    And I should see the link "Subpage 1-2" in the "Table of contents"
+    But I should not see the link "Page 1" in the "Table of contents"
+    And I should not see the link "Page 2" in the "Table of contents"
+    And I should not see the link "Subpage 2-1" in the "Table of contents"
+    And I should not see the link "Page 3" in the "Table of contents"
+    # These links are under "Page 1" but are not expanded.
+    And I should not see the link "Subpage 1-1-1" in the "Table of contents"
+    And I should not see the link "Subpage 1-2-1" in the "Table of contents"
+    And I should not see the link "Subpage 1-2-2" in the "Table of contents"
+
+    # Visit "Subpage 1-1" to verify that appropriate children are expanded.
+    When I visit the "Subpage 1-1" custom page
+    Then I should see the link "Subpage 1-1" in the "Table of contents"
+    And I should see the link "Subpage 1-1-1" in the "Table of contents"
+    And I should see the link "Subpage 1-2" in the "Table of contents"
+    But I should not see the link "Page 1" in the "Table of contents"
+    And I should not see the link "Page 2" in the "Table of contents"
+    And I should not see the link "Subpage 2-1" in the "Table of contents"
+    And I should not see the link "Page 3" in the "Table of contents"
+    # These links are under "Page 1" but are not expanded.
+    And I should not see the link "Subpage 1-2-1" in the "Table of contents"
+    And I should not see the link "Subpage 1-2-2" in the "Table of contents"
+
+    # Visit "Subpage 1-2" to verify that appropriate children are expanded.
+    When I visit the "Subpage 1-2" custom page
+    Then I should see the link "Subpage 1-1" in the "Table of contents"
+    And I should see the link "Subpage 1-2" in the "Table of contents"
+    And I should see the link "Subpage 1-2-1" in the "Table of contents"
+    And I should see the link "Subpage 1-2-2" in the "Table of contents"
+    But I should not see the link "Page 1" in the "Table of contents"
+    And I should not see the link "Page 2" in the "Table of contents"
+    And I should not see the link "Subpage 2-1" in the "Table of contents"
+    And I should not see the link "Page 3" in the "Table of contents"
+    # These link is under "Page 1" but is not expanded.
+    And I should not see the link "Subpage 1-1-1" in the "Table of contents"
 
     # Ensure that the default links are not shown.
     And I should not see the link "Overview" in the "Table of contents"
@@ -226,17 +266,21 @@ Feature: Navigation menu for custom pages
     And I should see the link "Members" in the "Navigation menu block"
     And I should see the link "About" in the "Navigation menu block"
 
-    # Change a page to verify that appropriate children are expanded.
-    When I visit the "Custom page 2" custom page
-    Then I should see the link "Custom page 1" in the "Table of contents"
-    And I should see the link "Custom page 2" in the "Table of contents"
-    And I should see the link "Custom page 2-1" in the "Table of contents"
-    But I should not see the link "Custom page 1-1" in the "Table of contents"
-    And I should not see the link "Custom page 1-2" in the "Table of contents"
+    # Only the sub-page links of "Page 2" are rendered.
+    When I visit the "Page 2" custom page
+    Then I should see the link "Subpage 2-1" in the "Table of contents"
+    But I should not see the link "Page 2" in the "Table of contents"
+    And I should not see the link "Page 1" in the "Table of contents"
+    And I should not see the link "Subpage 1-1" in the "Table of contents"
+    And I should not see the link "Subpage 1-2" in the "Table of contents"
+
+    # On a custom page without sub-pages there's no table of contents.
+    When I visit the "Page 3" custom page
+    Then I should not see the "Table of contents" region
 
     # Verify that the menu only shows on the canonical route.
     When I am logged in as a moderator
-    And I visit the "Custom page 1" custom page
+    And I visit the "Page 1" custom page
     And I click "Edit" in the "Entity actions" region
     Then I should not see the "Table of contents" region
 
@@ -419,14 +463,19 @@ Feature: Navigation menu for custom pages
     And I click "TOCO 1-1-1" in the "Table of contents outline"
     And I click "TOCO 1-1-2" in the "Table of contents outline"
     And I click "TOCO 1-2" in the "Table of contents outline"
-    And I click "TOCO 2" in the "Table of contents outline"
-    And I click "TOCO 2-1" in the "Table of contents outline"
+    And I should not see the link "TOCO 2" in the "Table of contents outline"
+
+    When I visit the "TOCO 2" custom page
+    Then I click "TOCO 2-1" in the "Table of contents outline"
+
     And I click "TOCO 2-1-1" in the "Table of contents outline"
     Then I should not see the link "TOCO 2-1-2" in the "Table of contents outline"
     # Navigate backwards.
     And I click "TOCO 2-1" in the "Table of contents outline"
     And I click "TOCO 2" in the "Table of contents outline"
-    And I click "TOCO 1-2" in the "Table of contents outline"
+    And I should not see the link "TOCO 1-2" in the "Table of contents outline"
+
+    When I visit the "TOCO 1-2" custom page
     And I click "TOCO 1-1-2" in the "Table of contents outline"
     And I click "TOCO 1-1-1" in the "Table of contents outline"
     And I click "TOCO 1-1" in the "Table of contents outline"
