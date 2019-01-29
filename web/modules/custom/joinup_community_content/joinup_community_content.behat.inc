@@ -90,7 +90,7 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    * @throws \Exception
    *   Thrown if the expected and the actual values match.
    *
-   * @Given the latest version of the :title :type should have a different created date as the last :published version
+   * @Given the latest version of the :title :type should have a different created date than the last :published version
    */
   public function assertDifferentCreatedTimeWithUnpublishedVersion(string $title, string $type, string $published): void {
     if (!in_array($published, ['published', 'unpublished'])) {

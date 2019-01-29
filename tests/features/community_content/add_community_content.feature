@@ -87,7 +87,7 @@ Feature: Add community content
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    And the latest version of the "Sample <content type>" <content type> should have a different created date as the last unpublished version
+    And the latest version of the "Sample <content type>" <content type> should have a different created date than the last unpublished version
 
     When I click "Revisions" in the "Entity actions" region
     And I click the last "Revert" link
