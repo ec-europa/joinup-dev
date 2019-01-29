@@ -200,7 +200,10 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Clicks on the last named link in the page.
+   * Searches for links matching the criteria and clicks on the last of them.
+   *
+   * Since the results are sequential, the last link in the results is also the
+   * last instance of the link in the page matching the given criteria.
    *
    * @param string $link
    *   The link locator.
