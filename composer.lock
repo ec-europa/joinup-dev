@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2ded673a15bbde57dc0e2706ecf7984",
+    "content-hash": "19bc2bb5b5ff7709fb1604fd6c8d67b7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6106,25 +6106,19 @@
         },
         {
             "name": "ec-europa/virtuoso",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/virtuoso.git",
-                "reference": "bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f"
+                "reference": "5991818b3a5c5a5bb74d3c18f1826d3d0e24321d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f",
-                "reference": "bde45e8f509a50fa1bb35cbbea6d0426bc2e8e9f",
+                "url": "https://api.github.com/repos/ec-europa/virtuoso/zipball/5991818b3a5c5a5bb74d3c18f1826d3d0e24321d",
+                "reference": "5991818b3a5c5a5bb74d3c18f1826d3d0e24321d",
                 "shasum": ""
             },
             "type": "library",
-            "extra": {
-                "patches_applied": {
-                    "Add a target to setup the SPARQL update permission @see https://github.com/ec-europa/virtuoso/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/3.diff",
-                    "Complete virtuoso task base @see https://github.com/ec-europa/virtuoso/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/virtuoso/pull/4.diff"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Virtuoso\\": "src"
@@ -6140,10 +6134,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.2",
+                "source": "https://github.com/ec-europa/virtuoso/tree/2.1.3",
                 "issues": "https://github.com/ec-europa/virtuoso/issues"
             },
-            "time": "2018-09-08T13:33:44+00:00"
+            "time": "2019-01-29T12:41:51+00:00"
         },
         {
             "name": "egulias/email-validator",
