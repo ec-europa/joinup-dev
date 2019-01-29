@@ -1,0 +1,29 @@
+uuid: 855d53d8-3c33-43db-99ef-cacf3894aea8
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://www.w3.org/2002/07/owl#versionInfo'
+        format: 'xsd:string'
+_core:
+  default_config_hash: QTr3QBj_Io7G3lnT30Syl_j4qwAkEZ68e86O2QIqRDo
+id: rdf_entity.field_is_version
+field_name: field_is_version
+entity_type: rdf_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

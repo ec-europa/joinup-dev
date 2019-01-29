@@ -1,0 +1,27 @@
+uuid: 4cfde65f-b77f-4e2a-b9d0-72ce9fbf6b06
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/publisher'
+        format: resource
+_core:
+  default_config_hash: c3goohCNJ19uQQ7xyUyC6WFGOTYRi3O4_V-955c1uGs
+id: rdf_entity.field_isr_owner
+field_name: field_isr_owner
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,33 @@
+uuid: 1e6bdba3-44f5-4e78-baab-20b3265657ba
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri:
+        predicate: 'http://joinup.eu/solution/issue_tracker'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: KWQQFjxxanKvsfmsrLlYpL9NaFNGLKsIQUNwc22lmGY
+id: rdf_entity.field_is_issue_tracker
+field_name: field_is_issue_tracker
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

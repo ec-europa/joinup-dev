@@ -1,0 +1,28 @@
+uuid: 92a07533-cc01-4383-a488-516d1eb87b76
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://www.w3.org/ns/adms#representationTechnique'
+        format: resource
+_core:
+  default_config_hash: CGe8nuNLjAcmnk1jgFoNd-BR-GmIW3kUojScdt09L_U
+id: rdf_entity.field_ad_repr_technique
+field_name: field_ad_repr_technique
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

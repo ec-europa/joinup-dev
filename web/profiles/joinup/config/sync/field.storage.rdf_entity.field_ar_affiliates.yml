@@ -1,0 +1,27 @@
+uuid: 013aff06-730b-4e93-a449-d2c7c2641bd1
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://www.w3.org/ns/dcat#dataset'
+        format: resource
+_core:
+  default_config_hash: Q31wgTv4Q_4qjQDhYFAeBuy5OW3X0EEidfvK1QvsLKw
+id: rdf_entity.field_ar_affiliates
+field_name: field_ar_affiliates
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

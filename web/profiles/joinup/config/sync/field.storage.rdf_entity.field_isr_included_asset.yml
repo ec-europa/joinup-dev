@@ -1,0 +1,27 @@
+uuid: 6b439dd2-9442-4935-b942-ae1d4c636314
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://www.w3.org/ns/adms#includedAsset'
+        format: resource
+_core:
+  default_config_hash: Gy4f-9v0El4kIMIZpagnOV1_7YBb6oJcFJABnnVU-Ss
+id: rdf_entity.field_isr_included_asset
+field_name: field_isr_included_asset
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

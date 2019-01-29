@@ -1,0 +1,70 @@
+uuid: c8b612e0-ccd2-48f0-ace4-27add1a2ee9c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.view_mode_tile
+    - field.field.rdf_entity.licence.field_licence_description
+    - field.field.rdf_entity.licence.field_licence_type
+    - rdf_entity.rdfentity.licence
+  module:
+    - ds
+    - smart_trim
+    - user
+_core:
+  default_config_hash: dUUds8JuHKNe_Ty02jUEcyT-VjmQGe9ddodFFQ2wp0Q
+id: rdf_entity.licence.view_mode_tile
+targetEntityType: rdf_entity
+bundle: licence
+mode: view_mode_tile
+content:
+  field_licence_description:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+      summary_handler: full
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: smart_trim
+    region: content
+  label:
+    label: hidden
+    type: string
+    weight: 0
+    settings:
+      link_to_entity: true
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+hidden:
+  changed: true
+  created: true
+  field_licence_type: true
+  langcode: true

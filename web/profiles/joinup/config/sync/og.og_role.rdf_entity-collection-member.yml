@@ -1,0 +1,39 @@
+uuid: 679fa2b2-13a6-44e2-bee2-534c7434ae1f
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.collection
+_core:
+  default_config_hash: 5bNpmiwjsA1W82MkwABAv2Qzkbx8r1R3e29Ncr67nc0
+id: rdf_entity-collection-member
+label: Member
+weight: 1
+is_admin: null
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - 'accept facilitator invitation'
+  - 'access comments'
+  - 'create discussion content'
+  - 'create document content'
+  - 'create event content'
+  - 'create news content'
+  - 'create solution rdf_entity'
+  - 'delete own comments'
+  - 'delete own custom_page content'
+  - 'delete own discussion content'
+  - 'delete own document content'
+  - 'delete own event content'
+  - 'delete own news content'
+  - 'delete own news content'
+  - 'edit own custom_page content'
+  - 'edit own discussion content'
+  - 'edit own document content'
+  - 'edit own event content'
+  - 'edit own news content'
+  - 'post comments'
+  - unsubscribe
+  - 'view own unpublished content'
+role_type: required

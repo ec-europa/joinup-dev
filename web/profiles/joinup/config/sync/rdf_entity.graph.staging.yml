@@ -1,0 +1,12 @@
+uuid: 3c42e30b-6926-4020-a867-fa327d1af65e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: xbpyPg2j5G14rxtGBjVvplpSbaL8CI9LcIFhsoWMygo
+id: staging
+weight: 1000
+name: Staging
+description: 'Used to temporary store imported RDF data.'
+entity_types:
+  - rdf_entity

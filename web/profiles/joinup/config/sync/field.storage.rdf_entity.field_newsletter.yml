@@ -1,0 +1,31 @@
+uuid: f4917283-b5cd-431d-839a-d495d9b092e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - oe_newsroom_newsletter
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      enabled:
+        predicate: 'http://joinup.eu/collection/field_newsletter/enabled'
+        format: 'xsd:boolean'
+      universe:
+        predicate: 'http://joinup.eu/collection/field_newsletter/universe'
+        format: literal
+      service_id:
+        predicate: 'http://joinup.eu/collection/field_newsletter/service_id'
+        format: 'xsd:integer'
+id: rdf_entity.field_newsletter
+field_name: field_newsletter
+entity_type: rdf_entity
+type: oe_newsroom_newsletter
+settings: {  }
+module: oe_newsroom_newsletter
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,28 @@
+uuid: 29fc5acd-bcfc-44c4-bf3e-5f01a330909a
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.eu/test_resource_type'
+        format: resource
+_core:
+  default_config_hash: uJ3v13pbAdcsO9Itu37o3ApECBVN_hv9w0ykHI7NPMk
+id: rdf_entity.field_is_test_resource_type
+field_name: field_is_test_resource_type
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

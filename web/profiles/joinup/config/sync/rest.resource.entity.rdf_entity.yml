@@ -1,0 +1,24 @@
+uuid: d19d5e01-25c7-46ec-848e-e18e8968aef8
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - rdf_export
+    - serialization
+    - user
+id: entity.rdf_entity
+plugin_id: 'entity:rdf_entity'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - jsonld
+    - rdfxml
+    - ntriples
+    - turtle
+    - n3
+    - json
+  authentication:
+    - cookie

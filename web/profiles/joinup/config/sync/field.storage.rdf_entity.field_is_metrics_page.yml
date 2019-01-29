@@ -1,0 +1,33 @@
+uuid: 23759cd4-8444-43e3-8d4f-142f71e429d1
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri:
+        predicate: 'http://joinup.eu/solution/metrics_page'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: 9KfwxE9eST6M7HxMNc9jMm7tTiZL6FYTWyAJEdlkfFk
+id: rdf_entity.field_is_metrics_page
+field_name: field_is_metrics_page
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

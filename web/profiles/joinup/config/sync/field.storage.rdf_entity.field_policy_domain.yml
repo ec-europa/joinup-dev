@@ -1,0 +1,28 @@
+uuid: 9b75fa64-cc16-4e07-ba72-33601cdacdc2
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.eu/voc/policy-domain'
+        format: resource
+_core:
+  default_config_hash: qQUMr4K8r1dLw6mdIYIHetJG9AOCQ1RvUlzMykKJveg
+id: rdf_entity.field_policy_domain
+field_name: field_policy_domain
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,13 @@
+uuid: d95c6aba-62bc-41d1-be33-44296654314a
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: PvceGPsDDAw9Uoa9hEr8DxsLfofzcREiPTf_fa4mlS8
+name: 'Solution category'
+vid: solution_category
+description: ''
+hierarchy: 0
+weight: 0

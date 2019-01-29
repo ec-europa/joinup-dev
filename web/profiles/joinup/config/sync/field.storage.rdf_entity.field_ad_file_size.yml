@@ -1,0 +1,28 @@
+uuid: 1ec9da24-d28b-4f4e-951b-3900ae6af5bd
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'https://schema.org/fileSize'
+        format: 'xsd:decimal'
+_core:
+  default_config_hash: d6PLSffUO5aw749P1qVcYlQOIIeIfeVND4GqyBGeN94
+id: rdf_entity.field_ad_file_size
+field_name: field_ad_file_size
+entity_type: rdf_entity
+type: integer
+settings:
+  unsigned: false
+  size: big
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

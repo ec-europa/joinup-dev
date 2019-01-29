@@ -1,0 +1,108 @@
+uuid: 1fcd22f1-9e34-4445-9de3-56c081a02cb8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
+    - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
+    - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
+    - field.field.node.discussion.field_site_pinned
+    - field.field.node.discussion.field_state
+    - field.field.node.discussion.field_visit_count
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - ds
+    - smart_trim
+    - user
+_core:
+  default_config_hash: SmfpRbn-HQzP1J11ggSWaNej9LobsgmxhSWXz2MODxU
+id: node.discussion.view_mode_tile
+targetEntityType: node
+bundle: discussion
+mode: view_mode_tile
+content:
+  body:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    type: smart_trim
+    region: content
+  field_keywords:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
+  field_policy_domain:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
+hidden:
+  field_attachment: true
+  field_replies: true
+  field_shared_in: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_state: true
+  field_visit_count: true
+  flag_subscribe_discussions: true
+  invite_link: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true

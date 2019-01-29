@@ -1,0 +1,28 @@
+uuid: 4059de39-5730-461e-a2ce-cb45f4011cc9
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.ec.europa.eu/trr#actor'
+        format: resource
+_core:
+  default_config_hash: 6KOHrBE4GbPSytIkMZMjqFwa5RCux1o1EfmsZCMOUtk
+id: rdf_entity.field_is_actor
+field_name: field_is_actor
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

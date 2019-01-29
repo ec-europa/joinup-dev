@@ -1,0 +1,149 @@
+uuid: d43596cc-247b-4d81-a450-1a5b6cd0594a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.rdf_entity.asset_release.field_isr_banner
+    - field.field.rdf_entity.asset_release.field_isr_contact_information
+    - field.field.rdf_entity.asset_release.field_isr_description
+    - field.field.rdf_entity.asset_release.field_isr_distribution
+    - field.field.rdf_entity.asset_release.field_isr_documentation
+    - field.field.rdf_entity.asset_release.field_isr_included_asset
+    - field.field.rdf_entity.asset_release.field_isr_is_version_of
+    - field.field.rdf_entity.asset_release.field_isr_language
+    - field.field.rdf_entity.asset_release.field_isr_logo
+    - field.field.rdf_entity.asset_release.field_isr_owner
+    - field.field.rdf_entity.asset_release.field_isr_related_solutions
+    - field.field.rdf_entity.asset_release.field_isr_release_notes
+    - field.field.rdf_entity.asset_release.field_isr_release_number
+    - field.field.rdf_entity.asset_release.field_isr_solution_type
+    - field.field.rdf_entity.asset_release.field_isr_state
+    - field.field.rdf_entity.asset_release.field_isr_translation
+    - field.field.rdf_entity.asset_release.field_keywords
+    - field.field.rdf_entity.asset_release.field_policy_domain
+    - field.field.rdf_entity.asset_release.field_spatial_coverage
+    - field.field.rdf_entity.asset_release.field_status
+    - rdf_entity.rdfentity.asset_release
+  module:
+    - allowed_formats
+    - file_url
+    - joinup_core
+    - text
+_core:
+  default_config_hash: j3zJkO0YsCH3XnkqczuklgeC1AUuwfhBu7y5wSezqbQ
+id: rdf_entity.asset_release.default
+targetEntityType: rdf_entity
+bundle: asset_release
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  current_workflow_state:
+    type: current_workflow_state_widget
+    weight: 9
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+      show_for_new_entities: false
+    third_party_settings: {  }
+  field_isr_documentation:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+      add_new_label: 'Upload a new file or enter a URL'
+    third_party_settings: {  }
+    type: file_url_generic
+    region: content
+  field_isr_language:
+    type: entity_reference_autocomplete
+    weight: 7
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_isr_release_notes:
+    type: text_textarea
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
+    region: content
+  field_isr_release_number:
+    type: string_textfield
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_isr_state:
+    type: state_machine_buttons
+    weight: 11
+    settings:
+      use_transition_label: 1
+    third_party_settings: {  }
+    region: content
+  field_keywords:
+    type: string_textfield
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_spatial_coverage:
+    type: entity_reference_autocomplete
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_status:
+    type: options_select
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  label:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  transition_motivation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  changed: true
+  field_isr_banner: true
+  field_isr_contact_information: true
+  field_isr_description: true
+  field_isr_distribution: true
+  field_isr_included_asset: true
+  field_isr_is_version_of: true
+  field_isr_logo: true
+  field_isr_owner: true
+  field_isr_related_solutions: true
+  field_isr_solution_type: true
+  field_isr_translation: true
+  field_policy_domain: true
+  langcode: true
+  translation: true
+  uid: true

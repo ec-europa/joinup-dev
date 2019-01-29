@@ -1,0 +1,31 @@
+uuid: acb4f7a8-3b5a-4c0b-8b0a-3050748e4a15
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_professional_domain
+    - taxonomy.vocabulary.policy_domain
+  module:
+    - user
+_core:
+  default_config_hash: i5s8XbGGWYYPzFc2RaieTzaEj8RCkBjADbUwSla9Xx8
+id: user.user.field_user_professional_domain
+field_name: field_user_professional_domain
+entity_type: user
+bundle: user
+label: 'Professional domain'
+description: 'Expertise domains you are interested in'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'grouped_rdf_taxonomy_term_selection:default'
+  handler_settings:
+    target_bundles:
+      policy_domain: policy_domain
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

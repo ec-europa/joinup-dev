@@ -1,0 +1,169 @@
+uuid: 42f88a95-ab97-470f-93c8-567a1c23ed3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.document.body
+    - field.field.node.document.field_comments
+    - field.field.node.document.field_document_publication_date
+    - field.field.node.document.field_document_spatial_coverage
+    - field.field.node.document.field_file
+    - field.field.node.document.field_keywords
+    - field.field.node.document.field_licence
+    - field.field.node.document.field_policy_domain
+    - field.field.node.document.field_shared_in
+    - field.field.node.document.field_short_title
+    - field.field.node.document.field_site_featured
+    - field.field.node.document.field_site_pinned
+    - field.field.node.document.field_state
+    - field.field.node.document.field_type
+    - field.field.node.document.field_visit_count
+    - field.field.node.document.og_audience
+    - node.type.document
+  module:
+    - allowed_formats
+    - comment
+    - datetime
+    - file_url
+    - joinup_core
+    - text
+_core:
+  default_config_hash: 3u1Yx8QLBprHDZU1i4idGlbGqhWx4lO9zt2Z2HLyQ3c
+id: node.document.default
+targetEntityType: node
+bundle: document
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 4
+    settings:
+      rows: 9
+      placeholder: ''
+      summary_rows: 3
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '1'
+    region: content
+  current_workflow_state:
+    type: current_workflow_state_widget
+    weight: 13
+    region: content
+    settings:
+      title: 'Current workflow state'
+      title_display: before
+      show_for_new_entities: false
+    third_party_settings: {  }
+  field_comments:
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
+    type: comment_default
+    region: content
+  field_document_publication_date:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_document_spatial_coverage:
+    weight: 8
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_file:
+    weight: 5
+    settings:
+      progress_indicator: throbber
+      add_new_label: 'Upload a new file or enter a URL'
+    third_party_settings: {  }
+    type: file_url_generic
+    region: content
+  field_keywords:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_licence:
+    weight: 9
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_policy_domain:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_short_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_state:
+    type: state_machine_buttons
+    weight: 14
+    settings:
+      use_transition_label: 1
+    third_party_settings: {  }
+    region: content
+  field_type:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  transition_motivation:
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 10
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_shared_in: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_visit_count: true
+  langcode: true
+  og_audience: true
+  path: true
+  promote: true
+  status: true
+  sticky: true

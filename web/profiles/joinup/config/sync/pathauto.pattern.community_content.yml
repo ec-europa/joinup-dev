@@ -1,0 +1,27 @@
+uuid: f6f8e32c-1d1e-4020-8825-d90e2cc31e5b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: WYP9YKCK4giNkdidPHGAAkqB9IqbAYvtYGzupSo51q4
+id: community_content
+label: 'Community content'
+type: 'canonical_entities:node'
+pattern: '[node:content-type]/[node:title]'
+selection_criteria:
+  68832b83-2ccd-45eb-ac1e-fce770ca3185:
+    id: node_type
+    bundles:
+      discussion: discussion
+      document: document
+      event: event
+      news: news
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 68832b83-2ccd-45eb-ac1e-fce770ca3185
+selection_logic: and
+weight: -5
+relationships: {  }

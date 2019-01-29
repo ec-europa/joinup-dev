@@ -1,0 +1,22 @@
+uuid: cdfa68c9-b0a0-48af-87b9-622f2dfbb2de
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: GYuVa7rEBY6Hf0-AZvKJXLPg3dFaF5xaVxvTWPQ8Izc
+id: joinup_theme_help
+theme: joinup_theme
+region: content
+weight: -9
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,7 @@
+text:
+  -
+    value: '<p>Joinup: A user has requested to join your collection</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has requested to join your @entity:bundle "@entity:title" as a member.</p><p>To approve or reject this request, click on <a href="@group:members_page:url">@group:members_page:url</a>.</p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html

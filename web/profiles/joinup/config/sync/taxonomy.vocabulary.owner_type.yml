@@ -1,0 +1,13 @@
+uuid: f77cd55e-4ea4-4ff5-b8e6-e0c01a0f0286
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: U6oNQvUPHBpdDusMd-QjjNnPw-p3b7pbkyv_uu4c9B8
+name: 'Owner type'
+vid: owner_type
+description: ''
+hierarchy: 0
+weight: 0

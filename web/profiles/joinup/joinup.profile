@@ -16,7 +16,6 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\joinup\JoinupHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
@@ -313,15 +312,6 @@ function joinup_theme_suggestions_field_alter(array &$suggestions, array &$varia
       }
     }
   }
-}
-
-/**
- * Implements hook_install_tasks_alter().
- */
-function joinup_install_tasks_alter(&$tasks, $install_state) {
-  $tasks['joinup_remove_simplenews_defaults'] = [
-    'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
-  ];
 }
 
 /**

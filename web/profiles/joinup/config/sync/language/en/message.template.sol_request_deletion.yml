@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: A solution deletion has been requested'
+    format: full_html
+  -
+    value: '<p>@actor:full_name requested that the @entity:title interoperability solution, part of @solution:parents:title be deleted.</p><p>You can review this request at the following link: <a href="@entity:url">@entity:url</a></p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html

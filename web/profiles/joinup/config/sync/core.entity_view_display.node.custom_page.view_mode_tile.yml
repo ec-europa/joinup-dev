@@ -1,0 +1,51 @@
+uuid: 0daf7604-4189-4835-a6dd-60c4a34edc5f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.og_audience
+    - image.style.horizontal_medium_image
+    - node.type.custom_page
+  module:
+    - ds
+    - image
+    - user
+_core:
+  default_config_hash: _Vw11aaOEj7vJ8tSnoPiAKedYBGvmJzN6-2cyXGZdGA
+id: node.custom_page.view_mode_tile
+targetEntityType: node
+bundle: custom_page
+mode: view_mode_tile
+content:
+  field_custom_page_logo:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: horizontal_medium_image
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+hidden:
+  body: true
+  field_attachment: true
+  field_cp_content_listing: true
+  langcode: true
+  links: true
+  node_field_cp_content_listing_top: true
+  og_audience: true
+  report: true

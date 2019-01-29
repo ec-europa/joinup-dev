@@ -1,0 +1,48 @@
+uuid: d6230c65-28c6-47bd-8dcc-a2457fc7e989
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - image
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://xmlns.com/foaf/0.1/Image'
+        format: 'xsd:integer'
+      alt:
+        predicate: ''
+        format: ''
+      title:
+        predicate: ''
+        format: ''
+      width:
+        predicate: ''
+        format: ''
+      height:
+        predicate: ''
+        format: ''
+id: rdf_entity.field_isr_banner
+field_name: field_isr_banner
+entity_type: rdf_entity
+type: image
+settings:
+  uri_scheme: public
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
+  display_field: false
+  display_default: false
+module: image
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,23 @@
+uuid: b684b80c-b2ca-48f6-bab5-5e13c11abf13
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_translation
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: XU9poKSanCDLtTJxQFleQ9L4FO0JnWLmJog8F5GlyvI
+id: rdf_entity.solution.field_is_translation
+field_name: field_is_translation
+entity_type: rdf_entity
+bundle: solution
+label: Translation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

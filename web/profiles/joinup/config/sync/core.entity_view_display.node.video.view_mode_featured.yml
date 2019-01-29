@@ -1,0 +1,58 @@
+uuid: 2b7567e7-fb18-4f7f-9346-a89bc15f9b42
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_featured
+    - field.field.node.video.body
+    - field.field.node.video.field_comments
+    - field.field.node.video.field_keywords
+    - field.field.node.video.field_video
+    - field.field.node.video.field_video_spatial_coverage
+    - field.field.node.video.og_audience
+    - node.type.video
+  module:
+    - ds
+    - smart_trim
+    - user
+_core:
+  default_config_hash: CA7roHv88IUAYbCOINyuCQEgKUBafJQCsFXxEQ7JqCM
+id: node.video.view_mode_featured
+targetEntityType: node
+bundle: video
+mode: view_mode_featured
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 0
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      more_link: false
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: false
+      more_class: more-link
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+hidden:
+  field_comments: true
+  field_keywords: true
+  field_video: true
+  field_video_spatial_coverage: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true

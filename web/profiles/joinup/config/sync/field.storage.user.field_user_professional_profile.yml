@@ -1,0 +1,21 @@
+uuid: e9bddef3-f3cc-4ce9-b2bb-86625330e317
+langcode: en
+status: true
+dependencies:
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: d4R2oTQ56U4eq5cdsoGOE1nFRz2FCUj_9uj6lyGBv_E
+id: user.field_user_professional_profile
+field_name: field_user_professional_profile
+entity_type: user
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

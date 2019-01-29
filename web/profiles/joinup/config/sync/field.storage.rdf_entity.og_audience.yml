@@ -1,0 +1,28 @@
+uuid: 9897ee64-fdcc-4caf-bb77-71eb0d5eead0
+langcode: en
+status: true
+dependencies:
+  module:
+    - og
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.eu/rdf_entity/group'
+        format: resource
+_core:
+  default_config_hash: 9iUWU1ZU1StjTlYvlpA3_oyrxh6wekLRwwKgZo-Rgt8
+id: rdf_entity.og_audience
+field_name: og_audience
+entity_type: rdf_entity
+type: og_standard_reference
+settings:
+  target_type: rdf_entity
+module: og
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

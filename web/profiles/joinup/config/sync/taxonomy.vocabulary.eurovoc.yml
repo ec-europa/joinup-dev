@@ -1,0 +1,13 @@
+uuid: b7476277-126a-466a-9b59-c8d7c1941f17
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: 1PeT17mrid6m9v6yjItso02y6qEeqOH1HqRC66hElHg
+name: EuroVoc
+vid: eurovoc
+description: ''
+hierarchy: 0
+weight: 0

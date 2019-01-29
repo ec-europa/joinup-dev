@@ -1,0 +1,33 @@
+uuid: dad3e255-80b9-458f-ad76-2a44bcfc0aaa
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri:
+        predicate: 'http://joinup.eu/solution/webdav_url'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: mxafDzDn4oU57EfHWBCOI9hH052BqR3XfgtYYxPY39M
+id: rdf_entity.field_is_webdav_url
+field_name: field_is_webdav_url
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

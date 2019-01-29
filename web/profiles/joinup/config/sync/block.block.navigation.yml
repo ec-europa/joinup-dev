@@ -1,0 +1,37 @@
+uuid: f42ce6f7-1a89-4be3-af30-300b6f68a3a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - og_menu.ogmenu.navigation
+  module:
+    - collection
+    - og
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: bst08PWRahENO_7WM_QDzRA4vuQJtw9NA7qsYuDan_g
+id: navigation
+theme: joinup_theme
+region: sidebar_left
+weight: -17
+provider: null
+plugin: 'collection_menu_block:navigation'
+settings:
+  id: 'collection_menu_block:navigation'
+  label: 'Collection | Solution menu'
+  provider: collection
+  label_display: '0'
+  level: 1
+  depth: 1
+  context_mapping:
+    og: '@og.context:og'
+visibility:
+  og_group_type:
+    id: og_group_type
+    group_types:
+      rdf_entity-collection: rdf_entity-collection
+      rdf_entity-solution: rdf_entity-solution
+    negate: false
+    context_mapping:
+      og: '@og.context:og'

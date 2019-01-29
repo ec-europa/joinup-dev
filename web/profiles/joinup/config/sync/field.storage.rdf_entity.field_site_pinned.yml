@@ -1,0 +1,26 @@
+uuid: cb5862c2-aa99-4ca6-a768-8264e39a9f13
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/site-pinned'
+        format: 'xsd:boolean'
+_core:
+  default_config_hash: FFnpo4H8qWPFU-lzYujLm58dJ34gprnn2xD1Z0iWVK8
+id: rdf_entity.field_site_pinned
+field_name: field_site_pinned
+entity_type: rdf_entity
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

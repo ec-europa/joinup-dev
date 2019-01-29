@@ -1,0 +1,12 @@
+uuid: 6e707252-20a9-499e-81d5-52e21df77cf8
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: 4YW2QTY8Vq02jYiWQhELAd7udKHkIkWN649D4woKboI
+id: user.subscription_settings
+label: 'Subscription settings'
+targetEntityType: user
+cache: true

@@ -1,0 +1,13 @@
+uuid: 45a28818-fd4f-47aa-91c6-5fae192ee970
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: gJxGOQLZ5SdzmXOXbMP-A0S0AQ3XGYBZNljeopTEaZw
+name: Spatial
+vid: spatial
+description: ''
+hierarchy: 0
+weight: 0

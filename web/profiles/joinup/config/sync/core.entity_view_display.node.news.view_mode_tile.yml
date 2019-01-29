@@ -1,0 +1,97 @@
+uuid: f2477a8e-203e-4a73-9b8f-bc5b21afdc22
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.news.body
+    - field.field.node.news.field_attachment
+    - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
+    - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_referenced_solution
+    - field.field.node.news.field_news_source_url
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_policy_domain
+    - field.field.node.news.field_shared_in
+    - field.field.node.news.field_site_featured
+    - field.field.node.news.field_site_pinned
+    - field.field.node.news.field_state
+    - field.field.node.news.field_visit_count
+    - field.field.node.news.og_audience
+    - node.type.news
+  module:
+    - ds
+    - smart_trim
+    - user
+_core:
+  default_config_hash: 8qrEbHURiApTyCne1ph1TbUEbKhR2u8GIG8rhZ2hKf0
+id: node.news.view_mode_tile
+targetEntityType: node
+bundle: news
+mode: view_mode_tile
+content:
+  body:
+    type: smart_trim
+    weight: 0
+    label: hidden
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: …
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
+    region: content
+  field_keywords:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: comma_separated
+hidden:
+  field_attachment: true
+  field_comments: true
+  field_news_headline: true
+  field_news_referenced_solution: true
+  field_news_source_url: true
+  field_news_spatial_coverage: true
+  field_policy_domain: true
+  field_shared_in: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_state: true
+  field_visit_count: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true
+  share_link: true

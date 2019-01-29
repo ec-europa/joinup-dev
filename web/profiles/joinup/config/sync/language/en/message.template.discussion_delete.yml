@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: The discussion "@entity:title" was deleted in the space of "@group:label"'
+    format: full_html
+  -
+    value: 'for your information, the discussion "@entity:title" was deleted from the "@group:label" @group:bundle.'
+    format: full_html

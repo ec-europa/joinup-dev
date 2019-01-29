@@ -1,0 +1,23 @@
+uuid: e91e5975-9090-45a4-9f81-42aa979db073
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - og
+    - rdf_entity
+_core:
+  default_config_hash: 053iYewEMrHKyBTsR8AXsB_Tky0Uyz2oJV09wYfp1pA
+id: node.og_audience
+field_name: og_audience
+entity_type: node
+type: og_standard_reference
+settings:
+  target_type: rdf_entity
+module: og
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,26 @@
+uuid: e6b6c91c-7e32-4842-9b92-ee1f89c37a7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: YbwsPoFoqCMnBXGAo4u6Z_SMksbwJx1qVtFKpfv4U34
+id: joinup_theme_main_menu
+theme: joinup_theme
+region: header_central_menu
+weight: -9
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+visibility: {  }

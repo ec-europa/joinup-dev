@@ -1,0 +1,29 @@
+uuid: f057d1e8-d057-4628-8e87-d53908b5f158
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://www.w3.org/ns/dcat#keyword'
+        format: literal
+_core:
+  default_config_hash: BsjVgHDMFW6DfFAcYAFKsMlFsDE76rKaHSUJVfTTS6E
+id: rdf_entity.field_keywords
+field_name: field_keywords
+entity_type: rdf_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,31 @@
+uuid: 6e1c785d-b65e-4dbb-8cb4-430e0ca96573
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri:
+        predicate: 'http://xmlns.com/foaf/spec/#term_homepage'
+        format: 'xsd:anyUri'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
+id: rdf_entity.field_ar_access_url
+field_name: field_ar_access_url
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,26 @@
+uuid: 11bae8d0-d2a1-42db-9fdd-21913339dcca
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.account
+  module:
+    - system
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: lxJVRvbhOgBVEtScW90v2nLxj8qbvvkD2WMnhgqFHFs
+id: joinup_theme_account_menu
+theme: joinup_theme
+region: header_profile_menu
+weight: -9
+provider: null
+plugin: 'system_menu_block:account'
+settings:
+  id: 'system_menu_block:account'
+  label: 'User account menu'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+visibility: {  }

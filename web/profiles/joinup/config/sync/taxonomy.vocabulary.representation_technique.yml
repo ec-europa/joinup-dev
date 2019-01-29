@@ -1,0 +1,13 @@
+uuid: 1da722ce-2266-4e0b-8242-d118aee0dc6f
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: eAoRkzoUJJqeXZZewXmI-Yk4WcGs3dlP6NJBGn9Edj0
+name: 'Representation Technique'
+vid: representation_technique
+description: ''
+hierarchy: 0
+weight: 0

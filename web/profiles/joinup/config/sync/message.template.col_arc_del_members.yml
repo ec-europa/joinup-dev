@@ -1,0 +1,20 @@
+uuid: 8f8c7f90-9e0b-45a6-8b39-3ebc934d6813
+langcode: en
+status: true
+dependencies: {  }
+template: col_arc_del_members
+label: 'Collection archive/delete members'
+description: 'Template id 14 - Sent to all members when a collection is archived/deleted'
+text:
+  -
+    value: '<p>The @entity:bundle @entity:title was @transition:request_action:past.</p>'
+    format: full_html
+  -
+    value: "<p>The @entity:bundle \"@entity:title\", of which you are a member, has been @transition:request_action:past.</p>\n<p>@transition:archive:extra:members</p>"
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

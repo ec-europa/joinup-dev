@@ -1,0 +1,13 @@
+uuid: 4ccaf9fb-5a2e-40ff-8ddd-f347f666920a
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: baHNAkkgxY1gz5w1kDmHW02r5c_ZMb4FBXKRBQxQS5M
+name: 'Licence type'
+vid: licence_type
+description: ''
+hierarchy: 0
+weight: 0

@@ -1,0 +1,35 @@
+uuid: f78db05b-1f4e-4d61-a46c-fa4e9c8539e1
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/asset_distribution/gitb_compliant'
+        format: 'xsd:string'
+_core:
+  default_config_hash: wuFiGMS40DRSxu2gwMOHjqHDJ0hrNI_O4bS5zitlRzo
+id: rdf_entity.field_ad_gitb_compliant
+field_name: field_ad_gitb_compliant
+entity_type: rdf_entity
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 0
+      label: 'Not GITB compliant'
+    -
+      value: 1
+      label: 'GITB compliant'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,30 @@
+uuid: 1eb95ba2-2839-4e43-a64a-54dc58b8234b
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - text
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://purl.org/dc/terms/description'
+        format: t_literal
+      format:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: v-BaGxC1PiKfX9fdNJDyEJZdymOI7t7Ag1AEa89qYIU
+id: rdf_entity.field_isr_description
+field_name: field_isr_description
+entity_type: rdf_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

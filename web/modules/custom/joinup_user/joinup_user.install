@@ -59,30 +59,14 @@ function joinup_user_install() {
   ];
   user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, $anonymous_permissions);
 
-  joinup_user_setup_default_avatar();
-}
-
-/**
- * Set a default image for the users avatar.
- */
-function joinup_user_setup_default_avatar() {
-  $directory = \Drupal::service('file_system')
-    ->realpath(drupal_get_path('module', 'joinup_user') . '/includes');
-  $file_name = 'user_icon.png';
-  $file_path = $directory . '/' . $file_name;
+  // Create the user avatar default image.
+  $file_path = \Drupal::service('file_system')->realpath(__DIR__ . '/includes/user_icon.png');
   $internal_path = "public://default_images";
   if (is_file($file_path) && file_prepare_directory($internal_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
     $file_path = file_unmanaged_copy($file_path, $internal_path, FILE_EXISTS_REPLACE);
   }
-  $file = File::create(['uri' => $file_path]);
-  $file->save();
-  $config_factory = \Drupal::configFactory();
-  $field_user_photo = $config_factory->getEditable('field.field.user.user.field_user_photo');
-  $default_image = $field_user_photo->get('settings.default_image');
-
-  $default_image['uuid'] = $file->uuid();
-  $default_image['height'] = 615;
-  $default_image['width'] = 640;
-
-  $field_user_photo->set('settings.default_image', $default_image)->save(TRUE);
+  File::create([
+    'uuid' => 'f46acbba-6128-4e35-9404-cf51b0849c84',
+    'uri' => $file_path,
+  ])->save();
 }

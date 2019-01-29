@@ -1,0 +1,30 @@
+uuid: e6e00a82-e6a0-4417-aa9b-0a9bfbe1c0bb
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - text
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://purl.org/dc/terms/abstract'
+        format: literal
+      format:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: PsIt37204WZh7VnYRIxJo0R31ebJ6Bo_cGh9UnR3INs
+id: rdf_entity.field_ar_abstract
+field_name: field_ar_abstract
+entity_type: rdf_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

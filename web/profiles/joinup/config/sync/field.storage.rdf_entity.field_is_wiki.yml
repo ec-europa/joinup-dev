@@ -1,0 +1,33 @@
+uuid: ff07fb87-41f7-4a96-8c0c-980719ac3dea
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      uri:
+        predicate: 'http://joinup.eu/solution/wiki'
+        format: 'xsd:string'
+      title:
+        predicate: ''
+        format: ''
+      options:
+        predicate: ''
+        format: ''
+_core:
+  default_config_hash: UD5CdAhfkhP3-19v3ucW6EfkA_z3R2tXokOpdUNo1Xc
+id: rdf_entity.field_is_wiki
+field_name: field_is_wiki
+entity_type: rdf_entity
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

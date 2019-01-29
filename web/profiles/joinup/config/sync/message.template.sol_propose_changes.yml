@@ -1,0 +1,22 @@
+uuid: ea6f91db-a4a1-4971-9746-624c4700079c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: gZ9X7u2qIrXLGafBmlnIjlUpmvY-fS5iJUCm4xd1B54
+template: sol_propose_changes
+label: 'Solution propose changes'
+description: 'Template 7: A moderator proposed changes to a solution'
+text:
+  -
+    value: 'Joinup: Changes have been proposed for your solution'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has requested you to modify the interoperability solution "@entity:title", with the following motivation: @transition:motivation.</p><p>Your content has been moved back in proposed state and you can update it and request a new publication.</p><p>You can access your content at the following link: <a href="@entity:url">@entity:url</a></p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
