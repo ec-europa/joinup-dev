@@ -61,10 +61,10 @@ trait NodeTrait {
    * @param bool $published
    *   Whether to request the last published or last unpublished verion.
    *
-   * @return array|null
+   * @return array
    *   A list of revision IDs.
    */
-  public function getNodeRevisionIdsList(string $title, string $bundle, bool $published = NULL): ?array {
+  public function getNodeRevisionIdsList(string $title, string $bundle, bool $published = NULL): array {
     $current_revision = $this->getNodeByTitle($title, $bundle);
     // We gather all revisions and then filter out the one we want as filtering
     // by vid will lead in false results.
@@ -81,11 +81,7 @@ trait NodeTrait {
       ->sort('vid', 'DESC')
       ->execute();
 
-    if (empty($revisions)) {
-      return NULL;
-    }
-
-    return array_keys($revisions);
+    return empty($revisions) ? [] : array_keys($revisions);
   }
 
 }
