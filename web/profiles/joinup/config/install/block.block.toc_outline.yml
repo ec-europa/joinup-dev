@@ -18,6 +18,7 @@ settings:
   label_display: '0'
   context_mapping:
     og: '@og.context:og'
+    node: '@node.node_route_context:node'
 visibility:
   node_type:
     id: node_type
