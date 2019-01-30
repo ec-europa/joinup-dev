@@ -1,8 +1,9 @@
-name: Joinup SPARQL
+name: 'Joinup SPARQL'
 type: module
-description: 'Contains joinup specific overrides related to the rdf entity and the SPARQL endpoint.'
+description: 'Contains Joinup specific overrides related to the RDF entity and the SPARQL endpoint.'
 core: 8.x
 package: Joinup
 
 dependencies:
 - rdf_draft
+- sparql_entity_storage
