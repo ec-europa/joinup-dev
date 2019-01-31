@@ -845,16 +845,30 @@ function joinup_core_node_presave(EntityInterface $entity) {
   // Set the update time as the created time only if this is the first time this
   // entity is published.
   $published_revisions = \Drupal::entityQuery('node')
+    ->allRevisions()
     ->condition('type', $entity->bundle())
     ->condition('status', 1)
     ->condition('nid', $entity->id())
-    ->count()
+    ->sort('vid', 'ASC')
+    ->range(0, 1)
     ->execute();
-  if ($published_revisions != 0) {
-    return;
+
+  if (count($published_revisions) === 0) {
+    $entity->set('created', \Drupal::time()->getRequestTime());
+  }
+  else {
+    // If the node is reverted into a previously created draft version, the
+    // created time is a date different than the first publication date. For
+    // that case, always set the created time from the first published revision
+    // every time a community content is saved.
+    $revision_ids = array_keys($published_revisions);
+    $revision_id = reset($revision_ids);
+    $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+    if (!empty($revision)) {
+      $entity->set('created', $revision->getCreatedTime());
+    }
   }
 
-  $entity->set('created', \Drupal::time()->getRequestTime());
 }
 
 /**
