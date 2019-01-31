@@ -25,6 +25,9 @@
                 <append destFile="${website.settings.php}" text="$settings['container_yamls'][] = DRUPAL_ROOT . '/modules/contrib/redis/example.services.yml'; // REDIS SETTING${line.separator}" />
                 <phingcall target="clear-cache" />
             </then>
+            <else>
+                <echo message="Skipping setup of Redis. The 'redis.host' property is not defined." />
+            </else>
         </if>
     </target>
 </project>
