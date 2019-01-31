@@ -2,8 +2,10 @@
 
 /**
  * @file
- * Contains \JoinupSubContext.
+ * Contains \JoinupCoreSubContext.
  */
+
+declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -37,7 +39,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *
    * @Then the page should show( only) the chips:
    */
-  public function assertChipElements(TableNode $table) {
+  public function assertChipElements(TableNode $table): void {
     $chips = $this->getSession()->getPage()->findAll('css', '.mdl-chip__text');
     $found = array_map(function ($element) {
       /** @var \Behat\Mink\Element\NodeElement $element */
@@ -59,7 +61,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *
    * @Then I press the remove button on the chip :text
    */
-  public function clickRemoveChipButton($text) {
+  public function clickRemoveChipButton(string $text): void {
     // Find the element that contains the user name.
     $xpath = "//span[contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__text ')][contains(text(), '$text')]";
     $chip = $this->getSession()->getPage()->find('xpath', $xpath);
@@ -85,7 +87,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *
    * @Given I go to the :name (taxonomy )term( page)
    */
-  public function visitTaxonomyTermPage(string $name) {
+  public function visitTaxonomyTermPage(string $name): void {
     $term = static::getEntityByLabel('taxonomy_term', $name);
     $this->visitPath($term->toUrl()->toString());
   }
@@ -150,7 +152,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *
    * @Then the content type of the response should be :content_type
    */
-  public function assertResponseContentType($content_type) {
+  public function assertResponseContentType(string $content_type): void {
     $this->assertSession()->responseHeaderEquals('Content-Type', $content_type);
   }
 
@@ -173,7 +175,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @Then the :group_label :group_type should have a custom page titled :group_title
    * @Then the :group_label :group_type should have a community content titled :group_title
    */
-  public function assertNodeOgMembership($group_label, $group_type, $content_title) {
+  public function assertNodeOgMembership(string $group_label, string $group_type, string $content_title): void {
     $group = $this->getRdfEntityByLabel($group_label, $group_type);
     $node = $this->getNodeByTitle($content_title);
     if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $group->id()) {
@@ -186,7 +188,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *
    * @Then I should see the following group menu items in the specified order:
    */
-  public function assertRepeatedElementContainsText(TableNode $table) {
+  public function assertRepeatedElementContainsText(TableNode $table): void {
     $parent = $this->getSession()->getPage()->findAll('css', '.block-group-menu-blocknavigation li.sidebar-menu__item');
     $i = 0;
     foreach ($table->getHash() as $repeatedElement) {
@@ -195,6 +197,24 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
       Assert::assertEquals($repeatedElement['text'], $actual_text);
       $i++;
     }
+  }
+
+  /**
+   * Searches for links matching the criteria and clicks on the last of them.
+   *
+   * Since the results are sequential, the last link in the results is also the
+   * last instance of the link in the page matching the given criteria.
+   *
+   * @param string $link
+   *   The link locator.
+   *
+   * @Given I click the last :link link
+   */
+  public function assertClickLastLink(string $link): void {
+    $locator = ['link', $link];
+    $links = $this->getSession()->getPage()->findAll('named', $locator);
+    $link = end($links);
+    $link->click();
   }
 
 }
