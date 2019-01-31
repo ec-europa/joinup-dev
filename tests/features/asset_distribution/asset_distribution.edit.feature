@@ -9,14 +9,13 @@ Feature: Asset distribution editing.
       | Username     | E-mail                   | First name | Family name | Roles |
       | Gregg Hill   | Gregg.Hill@example.com   | Gregg      | Hill        |       |
       | Pedro Torres | Pedro.Torres@example.com | Pedro      | Torres      |       |
-    And the following solutions:
-      | title      | description        | state     |
-      | Solution A | Sample description | validated |
-      | Solution B | Sample description | validated |
     And the following collection:
       | title      | Collection example     |
-      | affiliates | Solution A, Solution B |
       | state      | validated              |
+    And the following solutions:
+      | title      | collection         | description        | state     |
+      | Solution A | Collection example | Sample description | validated |
+      | Solution B | Collection example | Sample description | validated |
     And the following licence:
       | title       | LGPL                                |
       | description | The LGPL more permisssive than GPL. |

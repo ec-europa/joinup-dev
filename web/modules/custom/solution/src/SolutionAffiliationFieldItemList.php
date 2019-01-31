@@ -5,11 +5,13 @@ declare(strict_types = 1);
 namespace Drupal\solution;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
+use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntityGraphInterface;
+use Drupal\rdf_entity\RdfGraphHandlerInterface;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Defines a field item list class for the solution 'collections' field.
@@ -21,6 +23,34 @@ use Drupal\rdf_entity\RdfEntityGraphInterface;
 class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
 
   use ComputedItemListTrait;
+
+  /**
+   * The SPARQL endpoint.
+   *
+   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   */
+  protected $sparqlEndpoint;
+
+  /**
+   * The graph handler service.
+   *
+   * @var \Drupal\rdf_entity\RdfGraphHandlerInterface
+   */
+  protected $graphHandler;
+
+  /**
+   * A list og graph URIs keyed by graph ID.
+   *
+   * @var string[]
+   */
+  protected $graphUris = [];
+
+  /**
+   * The 'field_ar_affiliates' predicate.
+   *
+   * @var string
+   */
+  protected $affiliatesPredicate;
 
   /**
    * {@inheritdoc}
@@ -58,31 +88,25 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     // Update collections where this solution is no more affiliate.
     if ($removed_collection_ids = array_diff($existing_collection_ids, $collection_ids)) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
       foreach (Rdf::loadMultiple($removed_collection_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) as $collection) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $affiliates */
-        $affiliates = $collection->get('field_ar_affiliates');
-        $this->removeFieldItemByTargetId($affiliates, $this->getEntity()->id());
-        $collection->skip_notification = TRUE;
-        $collection->save();
+        $this->removeAffiliate($collection, $solution_id);
       }
     }
 
     // Update collections where this solution is newly affiliated.
     if ($new_collection_ids = array_diff($collection_ids, $existing_collection_ids)) {
-      $field_value = ['target_id' => $solution_id];
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($new_collection_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) as $id => $collection) {
+      foreach (Rdf::loadMultiple($new_collection_ids) as $id => $collection) {
         if ($collection->bundle() !== 'collection') {
           throw new \Exception('Only collections can be referenced in affiliation requests.');
         }
-        $collection->get('field_ar_affiliates')->appendItem($field_value);
-        $collection->skip_notification = TRUE;
-        $collection->save();
+        $this->addAffiliate($collection, $solution_id);
       }
+    }
+
+    // Clear the cache if at least one collection has been changed.
+    if ($changed_collection_ids = array_merge($removed_collection_ids, $new_collection_ids)) {
+      \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache($changed_collection_ids);
     }
 
     return parent::postSave($update);
@@ -102,20 +126,98 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   }
 
   /**
-   * Removes a field item given a target ID.
+   * Removes an affiliated solution from a collection.
    *
-   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field_item_list
-   *   An entity reference field item list.
-   * @param string $target_id
-   *   The target ID for which the field item should be removed.
+   * Cannot use the Drupal entity API here as this would update the value of the
+   * 'changed' collection field. Preserving the 'changed' value while saving to
+   * be fixed in core in https://www.drupal.org/project/drupal/issues/2329253.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $collection
+   *   The collection.
+   * @param string $solution_id
+   *   The affiliated solution ID.
+   *
+   * @see https://www.drupal.org/project/drupal/issues/2329253
    */
-  protected function removeFieldItemByTargetId(EntityReferenceFieldItemListInterface $field_item_list, string $target_id): void {
-    foreach ($field_item_list as $delta => $field_item) {
-      if ($field_item->target_id === $target_id) {
-        $field_item_list->removeItem($delta);
-        return;
-      }
+  protected function removeAffiliate(RdfInterface $collection, string $solution_id): void {
+    $graph_uri = $this->getGraphUri($collection->graph->target_id);
+    $affiliates_uri = $this->getAffiliatesPredicate();
+    $this->getSparqlEndpoint()->query("DELETE FROM <$graph_uri> {<{$collection->id()}> <$affiliates_uri> <$solution_id>};");
+  }
+
+  /**
+   * Adds an affiliated solution to a collection.
+   *
+   * Cannot use the Drupal entity API here as this would update the value of the
+   * 'changed' collection field. Preserving the 'changed' value while saving to
+   * be fixed in core in https://www.drupal.org/project/drupal/issues/2329253.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $collection
+   *   The collection.
+   * @param string $solution_id
+   *   The affiliated solution ID.
+   *
+   * @see https://www.drupal.org/project/drupal/issues/2329253
+   */
+  protected function addAffiliate(RdfInterface $collection, string $solution_id): void {
+    $graph_uri = $this->getGraphUri($collection->graph->target_id);
+    $affiliates_uri = $this->getAffiliatesPredicate();
+    $this->getSparqlEndpoint()->query("INSERT INTO <$graph_uri> {<{$collection->id()}> <$affiliates_uri> <$solution_id>};");
+  }
+
+  /**
+   * Returns the SPARQL endpoint service.
+   *
+   * @return \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   *   The SPARQL connection.
+   */
+  protected function getSparqlEndpoint(): ConnectionInterface {
+    if (!isset($this->sparqlEndpoint)) {
+      $this->sparqlEndpoint = \Drupal::service('sparql_endpoint');
     }
+    return $this->sparqlEndpoint;
+  }
+
+  /**
+   * Returns the SPARQL graph handler service.
+   *
+   * @return \Drupal\rdf_entity\RdfGraphHandlerInterface
+   *   The SPARQL graph handler service.
+   */
+  protected function getGraphHandler(): RdfGraphHandlerInterface {
+    if (!isset($this->graphHandler)) {
+      $this->graphHandler = \Drupal::service('sparql.graph_handler');
+    }
+    return $this->graphHandler;
+  }
+
+  /**
+   * Returns a graph URI, given its ID for collections.
+   *
+   * @param string $graph_id
+   *   The graph ID.
+   *
+   * @return string
+   *   The graph URI.
+   */
+  protected function getGraphUri(string $graph_id): string {
+    if (!isset($this->graphUris[$graph_id])) {
+      $this->graphUris[$graph_id] = $this->getGraphHandler()->getBundleGraphUri('rdf_entity', 'collection', $graph_id);
+    }
+    return $this->graphUris[$graph_id];
+  }
+
+  /**
+   * Caches and returns the 'field_ar_affiliates' predicate.
+   *
+   * @return string
+   *   The 'field_ar_affiliates' predicate.
+   */
+  protected function getAffiliatesPredicate(): string {
+    if (!isset($this->affiliatesPredicate)) {
+      $this->affiliatesPredicate = \Drupal::service('sparql.field_handler')->getFieldPredicates('rdf_entity', 'field_ar_affiliates')['collection'];
+    }
+    return $this->affiliatesPredicate;
   }
 
 }

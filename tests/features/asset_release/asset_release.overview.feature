@@ -5,9 +5,12 @@ Feature: Asset distribution overview on solution.
   I need to be able to view the releases of a solution.
 
   Scenario: Releases should be available in the overview page.
-    Given the following solutions:
-      | title            | description        | state     |
-      | Lovely Butterfly | Sample description | validated |
+    Given the following collection:
+      | title      | End of Past      |
+      | state      | validated        |
+    And the following solutions:
+      | title            | collection  | description        | state     |
+      | Lovely Butterfly | End of Past | Sample description | validated |
     # The release numbers do not follow the creation date to ensure proper
     # ordering. "The Child of the Past" should be shown first as it is the
     # latest release created, even though it is not the latest in the version
@@ -23,10 +26,6 @@ Feature: Asset distribution overview on solution.
       | Windows     | http://www.example.org/download.php | 28-01-1995 12:06 | The Child of the Past |
       | User manual | test.zip                            | 28-01-1995 11:07 | Lovely Butterfly      |
       | Solaris     | test.zip                            | 28-01-1995 12:08 | Hidden spies          |
-    And the following collection:
-      | title      | End of Past      |
-      | affiliates | Lovely Butterfly |
-      | state      | validated        |
 
     When I go to the homepage of the "Lovely Butterfly" solution
     And I click "Download releases"

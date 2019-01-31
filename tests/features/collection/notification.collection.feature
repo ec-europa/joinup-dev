@@ -17,29 +17,19 @@ Feature: Notification test for the collection transitions.
       | NC member1     |           | nc_member1@test.com     | NC         | Member1     |
       | NC member2     |           | nc_member2@test.com     | NC         | Member2     |
       | NCS owner      |           | ncs_owner@test.com      | NC         | Owner       |
-    And the following solutions:
-      | title        | logo     | banner     | state     |
-      # Has only one affiliate.
-      | NC Solution1 | logo.png | banner.jpg | validated |
-      # Has more than one affiliate.
-      | NC Solution2 | logo.png | banner.jpg | validated |
-    And the following solution user memberships:
-      | solution     | user      | roles |
-      | NC Solution1 | NCS owner | owner |
-      | NC Solution2 | NCS owner | owner |
     And collections:
-      | title                  | state            | abstract     | description   | policy domain     | owner      | affiliates                     |
-      | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | title                  | state            | abstract     | description   | policy domain     | owner      |
+      | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all |
       # The following will also cover the validate edited notification.
-      | NC to propose edit     | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to validate edit    | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to request archival | validated        | No one cares | No one cares. | Supplier exchange | NC for all | "NC Solution2"                 |
-      | NC to request deletion | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to reject deletion  | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all | "NC Solution1", "NC Solution2" |
-      | NC to delete           | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
+      | NC to propose edit     | validated        | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to validate edit    | validated        | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to request archival | validated        | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to request deletion | validated        | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to reject deletion  | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all |
+      | NC to delete           | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |
     And the following collection user memberships:
       | collection             | user           | roles              |
       | NC to propose          | NC owner       | owner, facilitator |
@@ -58,6 +48,16 @@ Feature: Notification test for the collection transitions.
       | NC to delete           | NC owner       | owner, facilitator |
       | NC to delete           | NC member1     |                    |
       | NC to delete           | NC member2     |                    |
+    And the following solutions:
+      | title        | collection                            | logo     | banner     | state     |
+      # Has only one affiliate.
+      | NC Solution1 | NC to archive                         | logo.png | banner.jpg | validated |
+      # Has more than one affiliate.
+      | NC Solution2 | NC to request archival, NC to archive | logo.png | banner.jpg | validated |
+    And the following solution user memberships:
+      | solution     | user      | roles |
+      | NC Solution1 | NCS owner | owner |
+      | NC Solution2 | NCS owner | owner |
 
     # Test 'create' operation.
     When all e-mails have been sent

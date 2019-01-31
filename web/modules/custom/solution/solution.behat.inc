@@ -603,10 +603,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a simple multilingual solution.
    *
-   * @Given the multilingual :title solution
+   * @Given the multilingual :title solution affiliated to :collection_label
    */
-  public function theMultilingualSolution($title) {
+  public function theMultilingualSolution($title, $collection_label) {
+    $collection = static::getEntityByLabel('rdf_entity', $collection_label, 'collection');
     $values = [
+      'collection' => $collection->id(),
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",

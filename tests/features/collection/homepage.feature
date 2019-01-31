@@ -11,15 +11,9 @@ Feature: Collection homepage
       | Boromir  | active |
       | Legoloas | active |
       | Gimli    | active |
-    Given the following owner:
+    And the following owner:
       | name          |
       | Bilbo Baggins |
-    Given the following solution:
-      | title             | Bilbo's book          |
-      | description       | Bilbo's autobiography |
-      | elibrary creation | members               |
-      | creation date     | 2014-10-17 8:32am     |
-      | state             | validated             |
     And the following collection:
       | title             | Middle earth daily               |
       | description       | Middle earth daily               |
@@ -29,12 +23,18 @@ Feature: Collection homepage
       | elibrary creation | members                          |
       | state             | validated                        |
       | policy domain     | Employment and Support Allowance |
-      | affiliates        | Bilbo's book                     |
     And the following collection user memberships:
       | collection         | user     | roles       |
       | Middle earth daily | Frodo    | facilitator |
       | Middle earth daily | Boromir  |             |
       | Middle earth daily | Legoloas |             |
+    And the following solution:
+      | title             | Bilbo's book          |
+      | collection        | Middle earth daily    |
+      | description       | Bilbo's autobiography |
+      | elibrary creation | members               |
+      | creation date     | 2014-10-17 8:32am     |
+      | state             | validated             |
     And news content:
       | title                                             | body                | policy domain     | collection         | state     | created           | changed  |
       | Rohirrim make extraordinary deal                  | Horse prices drops  | Finance in EU     | Middle earth daily | validated | 2014-10-17 8:34am | 2017-7-5 |

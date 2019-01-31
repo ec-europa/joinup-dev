@@ -92,21 +92,21 @@ Feature: As a group (collection or solution) owner or site moderator
       | solution   | Learn German in 1 Month     |
 
   Scenario: Collection owner cannot transfer ownership of a child solution, neither viceversa.
-    Given the following solution:
-      | title | Rivers Of Babylon |
-      | state | validated         |
-    And solution user membership:
-      | solution          | user  | roles       |
-      | Rivers Of Babylon | loner | owner       |
-      | Rivers Of Babylon | shy   | facilitator |
     Given the following collection:
-      | title      | Babylon           |
-      | state      | validated         |
-      | affiliates | Rivers Of Babylon |
+      | title | Babylon   |
+      | state | validated |
     And collection user membership:
       | collection | user  | roles       |
       | Babylon    | shy   | owner       |
       | Babylon    | loner | facilitator |
+    Given the following solution:
+      | title      | Rivers Of Babylon |
+      | collection | Babylon           |
+      | state      | validated         |
+    And solution user membership:
+      | solution          | user  | roles       |
+      | Rivers Of Babylon | loner | owner       |
+      | Rivers Of Babylon | shy   | facilitator |
 
     Given I am logged in as "shy"
     And I go to the homepage of the "Rivers Of Babylon" solution

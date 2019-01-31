@@ -110,14 +110,14 @@ Feature: User profile
       | Anise Edwardson   | anise.edwardson@example.com   |            |             |
       | Jayson Granger    | jayson.granger@example.com    |            |             |
       | Clarette Fairburn | clarette.fairburn@example.com | Clarette   | Fairburn    |
-    And the following solutions:
-      | title              | description                                     | logo     | banner     | state     | creation date    |
-      | E.C.O. fertilizers | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated | 2017-02-23 13:00 |
-      | SOUND project      | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated | 2017-02-23 14:01 |
     And the following collections:
-      | title                 | description                           | logo     | banner     | state     | affiliates         | creation date    |
-      | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | E.C.O. fertilizers | 2017-02-23 10:00 |
-      | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | SOUND project      | 2017-02-23 12:00 |
+      | title                 | description                           | logo     | banner     | state     | creation date    |
+      | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | 2017-02-23 10:00 |
+      | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | 2017-02-23 12:00 |
+    And the following solutions:
+      | title              | collection            | description                                     | logo     | banner     | state     | creation date    |
+      | E.C.O. fertilizers | Botanic E.D.E.N.      | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated | 2017-02-23 13:00 |
+      | SOUND project      | Ethic flower handling | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated | 2017-02-23 14:01 |
     And discussion content:
       | title                          | author          | collection            | state     | created          |
       | Repopulating blue iris         | Corwin Robert   | Botanic E.D.E.N.      | validated | 2018-06-15 16:00 |

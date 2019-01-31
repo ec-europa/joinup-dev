@@ -225,16 +225,6 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     return;
   }
 
-  // Provide default values for date/time fields if were missed.
-  foreach (['created', 'changed'] as $field_name) {
-    if ($entity->get($field_name)->isEmpty()) {
-      if (!isset($request_time)) {
-        $request_time = gmdate('Y-m-d\TH:i:s', \Drupal::time()->getRequestTime());
-      }
-      $entity->set($field_name, $request_time);
-    }
-  }
-
   if (!\Drupal::service('sparql.graph_handler')->bundleHasGraph('rdf_entity', 'collection', 'draft')) {
     return;
   }

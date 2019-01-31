@@ -62,14 +62,14 @@ Feature: Solution homepage
     And I should not see the "Maintenance page" tile
 
   Scenario: A link to the first collection a solution is affiliated to should be shown in the solution header.
-    Given the following solutions:
-      | title       | state     |
-      | Robotic arm | validated |
-      | ARM9        | validated |
-    And collections:
-      | title              | affiliates        | state     |
-      | Disappointed Steel | Robotic arm, ARM9 | validated |
-      | Random Arm         | ARM9              | validated |
+    Given collections:
+      | title              | state     |
+      | Disappointed Steel | validated |
+      | Random Arm         | validated |
+    And the following solutions:
+      | title       | collection                    | state     |
+      | Robotic arm | Disappointed Steel            | validated |
+      | ARM9        | Disappointed Steel,Random Arm | validated |
 
     When I go to the homepage of the "Robotic arm" solution
     Then I should see the link "Disappointed Steel"
