@@ -30,16 +30,25 @@
     </div>
     {{ content.field_shared_in }}
     <div id="event-location--{{ node.id }}" class="fieldset--separated">
-        <img src="/themes/joinup/images/location-image.jpg">
+        {% if content.field_event_coordinates|render %}
+            <div class="custom-map-wrapper">
+              {{ content.field_event_coordinates }}
+            </div>
+        {% endif %}
         <div class="page__content">
             {{ content.field_location }}
-            {#
-                @todo This field will be removed in ISAICP-4722.
-                @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4722
-            #}
-            {{ content.field_event_adtl_address_info }}
         </div>
     </div>
+    {% if content.field_event_online_location|render %}
+        <div id="event-online-location--{{ node.id }}" class="fieldset--separated">
+            <div class="page__content">
+                <h3 class="fieldset__title">
+                    {{ 'Online event'|t }}
+                </h3>
+                {{ content.field_event_online_location }}
+            </div>
+        </div>
+    {% endif %}
     {% if content.field_attachment|render %}
         <div class="fieldset--separated">
             <div class="page__content">

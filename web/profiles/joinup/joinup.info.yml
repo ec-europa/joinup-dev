@@ -30,6 +30,10 @@ dependencies:
   - field_group
   - file
   - flag
+  - geocoder
+  - geocoder_field
+  - geocoder_geofield
+  - geofield
   - help
   - honeypot
   - image
@@ -57,6 +61,8 @@ dependencies:
   - menu_ui
   - moderation
   - node
+  - oe_webtools_geocoding
+  - oe_webtools_maps
   - og
   - og_menu
   - options
@@ -92,10 +98,10 @@ dependencies:
   - tour
   - trr
   - user
+  - view_unpublished
   - views
   - views_bulk_operations
   - views_data_export
-  - view_unpublished
 
 themes:
   - seven
@@ -104,10 +110,10 @@ themes:
 config_devel:
   - block.block.authoredon
   - block.block.changed
+  - block.block.contentbundle
   - block.block.entity_bundle_facet
   - block.block.eventdate
   - block.block.exposed_form_search_page
-  - block.block.contentbundle
   - block.block.footer_menu
   - block.block.group_facet
   - block.block.groupheader
@@ -206,6 +212,8 @@ config_devel:
   - filter.format.restricted_html
   - filter.format.simple_html
   - filter.format.simple_text
+  - geocoder.geocoder_provider.webtools_geocoding
+  - geocoder.settings
   - honeypot.settings
   - image.style.profile_icon
   - image.style.profile_icon_big

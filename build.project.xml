@@ -466,6 +466,45 @@
         <append destFile="${website.settings.local.php}" text="$config['oe_newsroom_newsletter.subscriber']['class'] = 'Drupal\oe_newsroom_newsletter\NewsletterSubscriber\MockNewsletterSubscriber';${line.separator}" />
     </target>
 
+    <target name="disable-webtools-geocoding-cache">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        pattern="(\n)?\$settings\['cache'\]\['bins'\]\['geocoder'\] = 'cache.backend.file_system';(\n)?"
+                        replace="" />
+                    <regexp
+                        pattern="(\n)?\$settings\['filecache'\]\['directory'\]\['bins'\]\['geocoder'\] = '.*/tests/fixtures/webtools_geocoding_cache';(\n)?"
+                        replace=""
+                        modifiers="" />
+                    <regexp
+                        pattern="(\n)?\$settings\['filecache'\]\['strategy'\]\['bins'\]\['geocoder'\] = 'persist';(\n)?"
+                        replace="${line.separator}"
+                        modifiers="" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <target name="enable-webtools-geocoding-cache">
+        <phingcall target="enable-module">
+            <property name="module" value="filecache" />
+        </phingcall>
+        <phingcall target="disable-webtools-geocoding-cache" />
+        <append
+            destFile="${website.settings.local.php}"
+            text="${line.separator}$settings['cache']['bins']['geocoder'] = 'cache.backend.file_system';${line.separator}" />
+        <append
+            destFile="${website.settings.local.php}"
+            text="$settings['filecache']['directory']['bins']['geocoder'] = '${behat.webtools_geocoding.cache.path}';${line.separator}" />
+        <append
+            destFile="${website.settings.local.php}"
+            text="$settings['filecache']['strategy']['bins']['geocoder'] = 'persist';${line.separator}" />
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
@@ -484,6 +523,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, setup-mocked-newsroom-newsletter-subscriber" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber" />
 
 </project>

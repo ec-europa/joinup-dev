@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - oe_webtools_geocoding
+id: webtools_geocoding
+label: 'Webtools Geocoding'
+plugin: webtools_geocoding
+configuration: {  }
