@@ -94,6 +94,21 @@
 
     <!-- Execute Drupal updates. -->
     <target name="execute-updates">
+        <!-- Cache might be stale with memory cache backends, such as Redis,
+        after a database restore. Running `drush updatedb` may give unexpected
+        results, for example when trying to enable modules that were enabled
+        prior to database restore. That's because they will be falsely reported
+        as "already installed". Clear the config cache bin so that updates will
+        run on with non-cached configuration values. -->
+        <drush
+                command="cache:clear"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>bin</param>
+            <param>config</param>
+        </drush>
         <drush
                 command="updatedb"
                 assume="yes"
