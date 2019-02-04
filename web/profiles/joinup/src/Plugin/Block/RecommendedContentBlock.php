@@ -164,6 +164,11 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *   Thrown if an error occurred during the search.
    */
   protected function getPinnedEntities(int $limit): array {
+    // Early exit if we do not need to retrieve any data.
+    if ($limit === 0) {
+      return [];
+    }
+
     $query = $this->getPublishedIndex()->query();
     $query->addCondition('site_pinned', TRUE);
     $query->sort('entity_created', 'DESC');
@@ -188,6 +193,11 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *   Thrown if an error occurred during the search for group content.
    */
   protected function getContentFromMemberships(array $groups, int $limit): array {
+    // Early exit if we do not need to retrieve any data.
+    if ($limit === 0) {
+      return [];
+    }
+
     $rdf_entities = $groups['rdf_entity'] ?? [];
 
     // Only show content from the first 100 groups to avoid hitting the query
@@ -226,6 +236,11 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *   Thrown if an error occurred during the search.
    */
   protected function getPopularContent(int $limit): array {
+    // Early exit if we do not need to retrieve any data.
+    if ($limit === 0) {
+      return [];
+    }
+
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $this->getPublishedIndex()->query();
     $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
