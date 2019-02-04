@@ -23,13 +23,11 @@
                 <append destFile="${website.settings.php}" text="$settings['redis.connection']['host']      = '${redis.host}'; // REDIS SETTING${line.separator}" />
                 <append destFile="${website.settings.php}" text="$settings['cache']['default'] = 'cache.backend.redis'; // REDIS SETTING${line.separator}" />
                 <append destFile="${website.settings.php}" text="$settings['container_yamls'][] = DRUPAL_ROOT . '/modules/contrib/redis/example.services.yml'; // REDIS SETTING${line.separator}" />
+                <phingcall target="clear-cache" />
             </then>
+            <else>
+                <echo message="Skipping setup of Redis. The 'redis.host' property is not defined." />
+            </else>
         </if>
-        <drush
-                command="cache-rebuild"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-        </drush>
     </target>
 </project>

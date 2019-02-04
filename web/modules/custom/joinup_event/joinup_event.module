@@ -2,13 +2,12 @@
 
 /**
  * @file
- * Contains joinup_event.module.
+ * Hook implementations for the Joinup Event module.
  */
 
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -22,17 +21,4 @@ function joinup_event_entity_bundle_field_info_alter(array &$fields, EntityTypeI
       $fields['title']->addConstraint('UniqueFieldInBundle', ['bundles' => ['event']]);
     }
   }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- *
- * @todo This is a temporary solution and will be removed in ISAICP-4722.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4722
- */
-function joinup_event_form_node_event_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  $current_user = \Drupal::currentUser();
-  $is_moderator = in_array('moderator', $current_user->getRoles(TRUE));
-  $form['field_event_adtl_address_info']['#access'] = $current_user->id() == 1 || $is_moderator;
 }

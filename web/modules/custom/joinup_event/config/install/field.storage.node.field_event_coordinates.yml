@@ -2,17 +2,18 @@ langcode: en
 status: true
 dependencies:
   module:
+    - geofield
     - node
-id: node.field_event_adtl_address_info
-field_name: field_event_adtl_address_info
+id: node.field_event_coordinates
+field_name: field_event_coordinates
 entity_type: node
-type: string_long
+type: geofield
 settings:
-  case_sensitive: false
-module: core
+  backend: geofield_backend_default
+module: geofield
 locked: false
 cardinality: 1
-translatable: false
+translatable: true
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

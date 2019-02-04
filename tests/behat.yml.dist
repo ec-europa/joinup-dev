@@ -20,7 +20,7 @@ default:
         tags: '~@wip'
   extensions:
     Drupal\MinkExtension:
-      base-url: '${behat.base_url}'
+      base_url: '${behat.base_url}'
       ajax_timeout: 10
       files_path: '${behat.files.path}'
       goutte: ~
