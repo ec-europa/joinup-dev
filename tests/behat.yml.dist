@@ -47,6 +47,8 @@ default:
         Left sidebar: '.section--sidebar-left'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
+        Members admin form header: '#edit-header'
+        Members admin form actions: '#edit-action'
         Modal buttons: '.ui-dialog-buttonpane'
         Modal content: '#drupal-modal'
         Modal title: '.ui-dialog-title'
