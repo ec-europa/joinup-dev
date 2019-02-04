@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Template to render the buttons separated form.
+ * The form content and action buttons are separated.
+ *
+ * Available variables:
+ * - form: the form build array.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="form__content form__margin-top form__exposed-form">
+  <div class="listing listing--grid">
+    <div class="row">
+      <div class="mdl-grid">
+        <div class="listing__item listing__item--tile mdl-cell mdl-cell--12-col">
+          {{ form.combine }}
+        </div>
+        <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+          {{ form.roles_target_id }}
+        </div>
+        <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
+          {{ form.actions }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ form|without('roles_target_id', 'combine', 'actions') }}
+</div>
+

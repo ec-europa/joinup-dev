@@ -76,30 +76,39 @@
         <phingcall target="disable-persistent-session-cookies" />
     </target>
 
-    <target name="setup-virtuoso-permissions">
-        <virtuoso-set-update-permission
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}" />
-    </target>
-
     <target name="import-rdf-fixtures">
         <rdf-import-fixtures
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
-            Password="${sparql.password}" />
+            Password="${sparql.password}"
+            Port="${sparql.port}" />
 
         <afterrdffixturesimport
             IsqlPath="${isql.bin}"
             DataSourceName="${sparql.dsn}"
             Username="${sparql.user}"
-            Password="${sparql.password}" />
+            Password="${sparql.password}"
+            Port="${sparql.port}" />
     </target>
 
     <!-- Execute Drupal updates. -->
     <target name="execute-updates">
+        <!-- Cache might be stale with memory cache backends, such as Redis,
+        after a database restore. Running `drush updatedb` may give unexpected
+        results, for example when trying to enable modules that were enabled
+        prior to database restore. That's because they will be falsely reported
+        as "already installed". Clear the config cache bin so that updates will
+        run on with non-cached configuration values. -->
+        <drush
+                command="cache:clear"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>bin</param>
+            <param>config</param>
+        </drush>
         <drush
                 command="updatedb"
                 assume="yes"
@@ -472,6 +481,45 @@
         <append destFile="${website.settings.local.php}" text="$config['oe_newsroom_newsletter.subscriber']['class'] = 'Drupal\oe_newsroom_newsletter\NewsletterSubscriber\MockNewsletterSubscriber';${line.separator}" />
     </target>
 
+    <target name="disable-webtools-geocoding-cache">
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.local.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                        pattern="(\n)?\$settings\['cache'\]\['bins'\]\['geocoder'\] = 'cache.backend.file_system';(\n)?"
+                        replace="" />
+                    <regexp
+                        pattern="(\n)?\$settings\['filecache'\]\['directory'\]\['bins'\]\['geocoder'\] = '.*/tests/fixtures/webtools_geocoding_cache';(\n)?"
+                        replace=""
+                        modifiers="" />
+                    <regexp
+                        pattern="(\n)?\$settings\['filecache'\]\['strategy'\]\['bins'\]\['geocoder'\] = 'persist';(\n)?"
+                        replace="${line.separator}"
+                        modifiers="" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <target name="enable-webtools-geocoding-cache">
+        <phingcall target="enable-module">
+            <property name="module" value="filecache" />
+        </phingcall>
+        <phingcall target="disable-webtools-geocoding-cache" />
+        <append
+            destFile="${website.settings.local.php}"
+            text="${line.separator}$settings['cache']['bins']['geocoder'] = 'cache.backend.file_system';${line.separator}" />
+        <append
+            destFile="${website.settings.local.php}"
+            text="$settings['filecache']['directory']['bins']['geocoder'] = '${behat.webtools_geocoding.cache.path}';${line.separator}" />
+        <append
+            destFile="${website.settings.local.php}"
+            text="$settings['filecache']['strategy']['bins']['geocoder'] = 'persist';${line.separator}" />
+    </target>
+
     <target
         name="build-dist"
         description="Build a distribution package."
@@ -490,6 +538,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, setup-mocked-newsroom-newsletter-subscriber" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber" />
 
 </project>

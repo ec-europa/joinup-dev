@@ -1,0 +1,99 @@
+version: '3.4'
+services:
+  # This image allows XDebug to connect to the host machine. This can be removed
+  # when https://github.com/docker/for-linux/issues/264 is fixed.
+  dockerhost:
+    image: qoomon/docker-host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - PORTS=0:1024,9000
+
+  web:
+    depends_on:
+      - dockerhost
+    build:
+      context: ./resources/docker/web
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./build.docker.main.xml:/var/www/html/build.xml
+    environment:
+      XDEBUG_CONFIG: "extension=xdebug.so remote_enable=1 remote_connect_back=1 remote_host=http://dockerhost remote_port=9000 idekey=PHPSTORM remote_autostart=0"
+      DOCUMENT_ROOT: "/var/www/html/web"
+      PHP_XDEBUG_ENABLED: "1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+      PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
+
+  # This will compile the CSS once when docker-compose is started.
+  sass:
+    image: pablofelix/sass
+    volumes:
+      - $PWD:/app/
+    entrypoint:
+      - watch
+      - -t compressed
+      - /app/web/themes/joinup/prototype/sass/app.sass
+      - /app/web/themes/joinup/css/style.min.css
+
+  mysql:
+    image: mysql:5.6
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_USER: 'db_user'
+      MYSQL_PASSWORD: 'db_pass'
+      MYSQL_DATABASE: 'db_name'
+
+  virtuoso:
+    image: tenforce/virtuoso
+    environment:
+      - SPARQL_UPDATE=true
+      - DBA_PASSWORD=dba
+    volumes:
+      - "virtuoso:/data"
+    ports:
+      - "8890:8890"
+
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  selenium:
+    image: selenium/standalone-chrome-debug:3.11
+    ports:
+      - "5900:5900"
+    expose:
+      - "4440"
+    volumes:
+      # Needed due to chrome having issues with memory usage. Firefox does not face this issue.
+      # @see: https://github.com/elgalu/docker-selenium/issues/20
+      - "/dev/shm:/dev/shm"
+
+  solr_published:
+    build:
+      context: ./resources/docker/solr
+    ports:
+     - "8982:8983"
+    entrypoint:
+     - docker-entrypoint.sh
+     - solr-precreate
+     - drupal_published
+     - "/opt/docker-solr/configsets/drupal"
+
+  solr_unpublished:
+    build:
+      context: ./resources/docker/solr
+    ports:
+     - "8983:8983"
+    entrypoint:
+     - docker-entrypoint.sh
+     - solr-precreate
+     - drupal_unpublished
+     - "/opt/docker-solr/configsets/drupal"
+
+volumes:
+  virtuoso:

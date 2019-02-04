@@ -5,6 +5,8 @@
  * Contains \JoinupSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
@@ -2521,17 +2523,21 @@ JS;
    * Instead of using the mouse, it uses the keyboard keys so that precise
    * control can be achieved.
    *
-   * @param int $position
+   * @param string $position
    *   The position of the row in the table. First position starts at 1.
    * @param string $direction
    *   The direction to move the row to. One of "up", "down", "left", "right".
    *
+   * @throws \Exception
+   *   Thrown when the table row with the given position cannot be found in the
+   *   page.
+   *
    * @Then I drag the table row at position :position( to the) :direction
    */
-  public function findTableRowByPositionAndDragTowardsDirection($position, $direction) {
+  public function findTableRowByPositionAndDragTowardsDirection(string $position, string $direction): void {
     self::assertJavaScriptEnabledBrowser();
 
-    $row = $this->findDraggableTableRowByPosition($position);
+    $row = $this->findDraggableTableRowByPosition((int) $position);
     $this->dragTableRowTowardsDirection($row, $direction);
   }
 
@@ -2585,6 +2591,69 @@ JS;
     $browser_content = trim($this->getSession()->getPage()->getContent());
     if ($expected_content !== $browser_content) {
       throw new Exception(sprintf("The output didn't match the fixture. Expected %s, got %s.", $expected_content, $browser_content));
+    }
+  }
+
+  /**
+   * Fills in a link field in the UI.
+   *
+   * This supports multivalue fields and both the URL and Title fields. The
+   * Title field is optional.
+   *
+   * Table format:
+   * | URL                          | Title  |
+   * | https://joinup.ec.europa.eu/ | Joinup |
+   * | https://www.drupal.org/      | Drupal |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A table containing the data to enter in the fields.
+   * @param string $label
+   *   The label of the link field to fill in.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the table format is invalid.
+   * @throws \Exception
+   *   Thrown when one of the input fields is not found.
+   *
+   * @Then I enter the following for the :label link field:
+   */
+  public function fillLinkField(TableNode $table, string $label): void {
+    $rows = array_map(function (array $row): array {
+      return array_change_key_case($row);
+    }, $table->getColumnsHash());
+
+    $i = 0;
+    foreach ($rows as $row) {
+      // XPath counts elements starting with 1.
+      $i++;
+
+      if (!isset($row['url'])) {
+        throw new \InvalidArgumentException('Missing URL column in link table.');
+      }
+      $xpath = "//input[@id=(//label[text()='$label'])[$i]/@for]";
+      $url_input_element = $this->getSession()->getPage()->find('xpath', $xpath);
+      if (!$url_input_element) {
+        throw new \Exception("URL input field $i not found for link field with label '$label'.'");
+      }
+      $url_input_element->setValue($row['url']);
+
+      // Title field is optional.
+      if (!isset($row['title'])) {
+        continue;
+      }
+
+      // Retrieve the ID of the title field by taking the ID of the URL field
+      // and replacing the `-uri` suffix with `-title`.
+      $title_input_id = preg_replace('/uri$/', 'title', $url_input_element->getAttribute('id'), -1, $count);
+      if ($count !== 1) {
+        throw new \Exception("Malformed HTML ID for URL input field $i for link field with label '$label'.");
+      }
+
+      $title_input_element = $this->getSession()->getPage()->findById($title_input_id);
+      if (!$title_input_element) {
+        throw new \Exception("Title input field $i not found for link field with label '$label'.'");
+      }
+      $title_input_element->setValue($row['title']);
     }
   }
 

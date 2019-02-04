@@ -9,15 +9,13 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Menu\InaccessibleMenuLink;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Menu\MenuLinkInterface;
-use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\custom_page\CustomPageOgMenuLinksManagerInterface;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Render\Markup;
 
 /**
  * Provides a block with the outline of a table of content in a custom page.
@@ -25,9 +23,11 @@ use Drupal\Core\Render\Markup;
  * @Block(
  *  id = "toc_outline",
  *  admin_label = @Translation("Table of contents outline"),
+ *  category = @Translation("Custom page"),
  *  context = {
- *    "og" = @ContextDefinition("entity", label = @Translation("Group"))
- *  }
+ *    "og" = @ContextDefinition("entity", label = @Translation("Group")),
+ *    "node" = @ContextDefinition("entity", label = @Translation("Custom page")),
+ *  },
  * )
  */
 class TableOfContentsOutline extends BlockBase implements ContainerFactoryPluginInterface {
@@ -38,13 +38,6 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    * @var \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface
    */
   protected $ogMenuManager;
-
-  /**
-   * The custom page.
-   *
-   * @var \Drupal\node\NodeInterface
-   */
-  protected $node;
 
   /**
    * The menu tree manager service.
@@ -63,23 +56,16 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
   /**
    * The active link.
    *
-   * @var \Drupal\Core\Menu\MenuLinkInterface
+   * @var \Drupal\Core\Menu\MenuLinkInterface|null
    */
   protected $activeLink;
 
   /**
-   * The og menu flattened.
+   * The flattened OG menu .
    *
    * @var \Drupal\Core\Menu\MenuLinkInterface[]
    */
-  protected $flattenedMenu;
-
-  /**
-   * The og menu tree.
-   *
-   * @var \Drupal\Core\Menu\MenuLinkTreeElement[]
-   */
-  protected $menuTree;
+  protected $flattenedMenu = [];
 
   /**
    * The og menu instance.
@@ -99,20 +85,16 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    *   The plugin implementation definition.
    * @param \Drupal\custom_page\CustomPageOgMenuLinksManagerInterface $og_menu_manager
    *   The og menu manager for custom pages.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route provider.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree
    *   The menu tree manager service.
    * @param \Drupal\Core\Menu\MenuActiveTrailInterface $active_trail
    *   The active trail service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CustomPageOgMenuLinksManagerInterface $og_menu_manager, RouteMatchInterface $route_match, MenuLinkTreeInterface $menu_link_tree, MenuActiveTrailInterface $active_trail) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CustomPageOgMenuLinksManagerInterface $og_menu_manager, MenuLinkTreeInterface $menu_link_tree, MenuActiveTrailInterface $active_trail) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->ogMenuManager = $og_menu_manager;
-    $this->node = $route_match->getParameter('node');
     $this->menuLinkTree = $menu_link_tree;
     $this->activeTrail = $active_trail;
-    $this->flattenedMenu = [];
   }
 
   /**
@@ -124,9 +106,9 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       $plugin_id,
       $plugin_definition,
       $container->get('custom_page.og_menu_links_manager'),
-      $container->get('current_route_match'),
       $container->get('menu.link_tree'),
-      $container->get('menu.active_trail')
+      $container->get('menu.active_trail'),
+      $container->get('menu.tree_storage')
     );
   }
 
@@ -140,24 +122,20 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       return [];
     }
 
-    $prev = $this->getPrevElement();
-    $up = $this->getParentElement($this->getMenuTree(), $this->getActiveLink()->getPluginId());
-    $next = $this->getNextElement();
-
     $links = [];
-    if ($prev) {
+    if ($prev = $this->getPrevElement()) {
       $links['prev'] = [
         'url' => $prev->getUrlObject(),
         'title' => Markup::create('<span class="icon icon--previous"></span>' . $prev->getTitle()),
       ];
     }
-    if ($up) {
+    if ($up = $this->getParentElement()) {
       $links['up'] = [
-        'url' => $up->link->getUrlObject(),
+        'url' => $up->getUrlObject(),
         'title' => $this->t('Up'),
       ];
     }
-    if ($next) {
+    if ($next = $this->getNextElement()) {
       $links['next'] = [
         'url' => $next->getUrlObject(),
         'title' => Markup::create($next->getTitle() . '<span class="icon icon--next"></span>'),
@@ -180,112 +158,86 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
   /**
    * Returns the previous element related to the active link.
    *
-   * To get the correct element we will get the previous element from the
-   * flattened list which is naturally the next element in the list.
-   *
    * @return \Drupal\Core\Menu\MenuLinkInterface|null
    *   The previous menu link element or null if no element is found.
    */
   protected function getPrevElement(): ?MenuLinkInterface {
-    $flattened_menu = $this->getFlattenedMenu();
-    $active_link_id = $this->getActiveLink()->getPluginId();
-
-    reset($flattened_menu);
-    $curr = NULL;
-    do {
-      $prev = $curr;
-      $curr = current($flattened_menu);
-      next($flattened_menu);
-    } while ($curr && $curr->getPluginId() !== $active_link_id);
-
-    return $prev ? $prev : NULL;
+    return $this->getSibling(-1);
   }
 
   /**
    * Returns the next element related to the active link.
    *
-   * To get the correct element we will use the flattened list in which holds
-   * the natural prev/next list.
-   *
    * @return \Drupal\Core\Menu\MenuLinkInterface|null
    *   The next menu link.
    */
   protected function getNextElement(): ?MenuLinkInterface {
+    return $this->getSibling(1);
+  }
+
+  /**
+   * Returns a sibling element related to the active link.
+   *
+   * To get the correct element we will use the flattened list in which holds
+   * the natural prev/next list.
+   *
+   * @param int $increment
+   *   The variation.
+   *
+   * @return \Drupal\Core\Menu\MenuLinkInterface|null
+   *   The sibling menu link.
+   */
+  protected function getSibling(int $increment): ?MenuLinkInterface {
     $flattened_menu = $this->getFlattenedMenu();
     $active_link_id = $this->getActiveLink()->getPluginId();
-
-    reset($flattened_menu);
-    do {
-      $curr = current($flattened_menu);
-      $next = next($flattened_menu);
-    } while ($curr && $curr->getPluginId() !== $active_link_id);
-
-    return $next ? $next : NULL;
+    $index = array_keys($flattened_menu);
+    $active_link_delta = array_search($active_link_id, $index);
+    return isset($index[$active_link_delta + $increment]) ? $flattened_menu[$index[$active_link_delta + $increment]] : NULL;
   }
 
   /**
    * Returns the parent element related to the active link.
    *
-   * Recursively check the structured menu tree in order to obtain the parent
-   * link.
-   *
-   * @param \Drupal\Core\Menu\MenuLinkTreeElement[] $tree
-   *   The menu tree or subtree to check for the parent.
-   * @param string $active_link_id
-   *   The active link id.
-   * @param \Drupal\Core\Menu\MenuLinkTreeElement $parent
-   *   The current parent found.
-   *
-   * @return \Drupal\Core\Menu\MenuLinkTreeElement|null
-   *   The menu link tree.
+   * @return \Drupal\Core\Menu\MenuLinkInterface|null
+   *   The parent link tree.
    */
-  protected function getParentElement(array $tree, string $active_link_id, MenuLinkTreeElement $parent = NULL): ?MenuLinkTreeElement {
-    if (empty($tree)) {
-      return NULL;
-    }
+  protected function getParentElement(): ?MenuLinkInterface {
+    $trail = $this->activeTrail->getActiveTrailIds($this->getOgMenuName());
 
-    foreach ($tree as $menu_element) {
-      if ($menu_element->link->getPluginId() === $active_link_id) {
-        return $parent;
-      }
-    }
+    // Remove the current element.
+    array_shift($trail);
+    // Pickup the parent plugin ID.
+    $parent_plugin_id = key($trail);
 
-    foreach ($tree as $menu_link_id => $menu_item) {
-      if ($parent = $this->getParentElement($tree[$menu_link_id]->subtree, $active_link_id, $menu_item)) {
-        return $parent;
-      }
-    }
-
-    // If none of the above have found the parent, then the link was not found.
-    return $parent;
+    return $parent_plugin_id ? $this->getFlattenedMenu()[$parent_plugin_id] : NULL;
   }
 
   /**
-   * Loads and returns the og menu instance.
+   * Loads and returns the OG menu instance.
    *
-   * @return \Drupal\og_menu\OgMenuInstanceInterface
-   *   The og menu instance.
+   * @return \Drupal\og_menu\OgMenuInstanceInterface|null
+   *   The OG menu instance.
    */
-  protected function getOgMenuInstance(): OgMenuInstanceInterface {
+  protected function getOgMenuInstance(): ?OgMenuInstanceInterface {
     if (empty($this->ogMenuInstance)) {
-      $this->ogMenuInstance = $this->ogMenuManager->getOgMenuInstanceByCustomPage($this->node);
+      /** @var \Drupal\node\NodeInterface $custom_page */
+      $custom_page = $this->getContext('node')->getContextData()->getValue();
+      $this->ogMenuInstance = $this->ogMenuManager->getOgMenuInstanceByCustomPage($custom_page);
     }
-
     return $this->ogMenuInstance;
   }
 
   /**
    * Returns the active link.
    *
-   * @return \Drupal\Core\Menu\MenuLinkInterface
+   * @return \Drupal\Core\Menu\MenuLinkInterface|null
    *   The active link.
    */
-  protected function getActiveLink(): MenuLinkInterface {
+  protected function getActiveLink(): ?MenuLinkInterface {
     if (empty($this->activeLink)) {
       $og_menu_id = $this->getOgMenuName();
       $this->activeLink = $this->activeTrail->getActiveLink($og_menu_id);
     }
-
     return $this->activeLink;
   }
 
@@ -296,19 +248,24 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    *   The og menu tree.
    */
   protected function getMenuTree(): array {
-    if (empty($this->menuTree)) {
-      $og_menu_id = $this->getOgMenuName();
-      $menu_tree_parameters = new MenuTreeParameters();
-      $menu_tree_parameters->onlyEnabledLinks();
-      $this->menuTree = $this->menuLinkTree->load($og_menu_id, $menu_tree_parameters);
-      $manipulators = [
-        ['callable' => 'menu.default_tree_manipulators:checkAccess'],
-        ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
-      ];
-      $this->menuTree = $this->menuLinkTree->transform($this->menuTree, $manipulators);
-    }
+    // Get the topmost custom page link plugin ID.
+    $trail = $this->activeTrail->getActiveTrailIds($this->getOgMenuName());
+    // Remove the empty root element.
+    array_pop($trail);
+    // Grab the root page menu link.
+    $root_link = array_pop($trail);
 
-    return $this->menuTree;
+    $menu_tree_parameters = (new MenuTreeParameters())
+      ->setRoot($root_link)
+      ->onlyEnabledLinks();
+
+    $tree = $this->menuLinkTree->load($this->getOgMenuName(), $menu_tree_parameters);
+    $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
+
+    return $this->menuLinkTree->transform($tree, $manipulators);
   }
 
   /**
@@ -322,26 +279,12 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
       $tree = $this->getMenuTree();
       $this->flatOutlineTree($tree);
 
-      $links_to_be_stripped = [
-        'entity.rdf_entity.canonical' => 'Overview',
-        'entity.rdf_entity.member_overview' => 'Members',
-        'entity.rdf_entity.about_page' => 'About',
-      ];
-
-      foreach ($this->flattenedMenu as $menu_link_id => $menu_item) {
-        $route_name = $menu_item->getRouteName();
-        if (isset($links_to_be_stripped[$route_name]) && $links_to_be_stripped[$route_name] == $menu_item->getTitle()) {
-          unset($this->flattenedMenu[$menu_link_id]);
-        }
-      }
+      // Inaccessible links are still returned but as instance of
+      // Drupal\Core\Menu\InaccessibleMenuLink. Strip off these links from here.
+      $this->flattenedMenu = array_filter($this->flattenedMenu, function (MenuLinkInterface $menu_link): bool {
+        return !($menu_link instanceof InaccessibleMenuLink);
+      });
     }
-
-    // Inaccessible links are still returned but as an instance of
-    // Drupal\Core\Menu\InaccessibleMenuLink. Strip off these links from here.
-    $this->flattenedMenu = array_filter($this->flattenedMenu, function (MenuLinkInterface $menu_link) {
-      return !($menu_link instanceof InaccessibleMenuLink);
-    });
-
     return $this->flattenedMenu;
   }
 
@@ -360,7 +303,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
   protected function flatOutlineTree(array $tree): void {
     /** @var \Drupal\Core\Menu\MenuLinkTreeElement[] $tree */
     foreach ($tree as $menu_link_id => $data) {
-      $this->flattenedMenu[$menu_link_id] = $data->link;
+      $this->flattenedMenu[$data->link->getPluginId()] = $data->link;
       if ($data->subtree) {
         $this->flatOutlineTree($data->subtree);
       }
@@ -368,10 +311,10 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
   }
 
   /**
-   * Returns the og menu name.
+   * Returns the OG menu name.
    *
    * @return string
-   *   The og menu name.
+   *   The OG menu name.
    */
   protected function getOgMenuName(): string {
     $og_menu_instance = $this->getOgMenuInstance();
@@ -382,8 +325,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    $contexts = parent::getCacheContexts();
-    return Cache::mergeContexts($contexts, ['url.path']);
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }
