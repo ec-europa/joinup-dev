@@ -1014,36 +1014,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Assert that the text is visible in a given region.
-   *
-   * @Then I see the text :text in the :region region
-   */
-  public function assertTextVisible($text, $region) {
-    $actual = $this->getRegion($region)->getText();
-    $actual = preg_replace('/\s+/u', ' ', $actual);
-    $regex = '/' . preg_quote($text, '/') . '/ui';
-    $message = sprintf('The text "%s" was not found anywhere in the text of the region "%s".', $text, $region);
-
-    if (!(bool) preg_match($regex, $actual)) {
-      throw new \Exception($message);
-    }
-  }
-
-  /**
-   * Assert that the input element is visible in a given region.
-   *
-   * @Then I (should )see the button :text in the :region region
-   */
-  public function assertInputElementVisible($text, $region) {
-    $region_element = $this->getRegion($region);
-    $actual = $region_element->findButton($text);
-    $message = sprintf('The button "%s" was not found anywhere in the region "%s".', $text, $region);
-    if (empty($actual)) {
-      throw new \Exception($message);
-    }
-  }
-
-  /**
    * Checks that the given tiles are found in the correct order.
    *
    * Table format:
