@@ -129,7 +129,10 @@ Feature: Collection homepage
     And I click "Supplier exchange" in the "collection policy domain" inline facet
     And I click "Advanced search"
     Then I should be on the search page
-    Then the News content tab should be selected
+    And the News content tab should be selected
+    # Check that only one search field is available. In an earlier version of
+    # Joinup there were two search fields, but this was confusing users.
+    And there should be exactly 1 "search field" on the page
     And "Middle earth daily (1)" should be selected in the "from" inline facet
     And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
     Then I should see the following tiles in the correct order:
