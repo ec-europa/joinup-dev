@@ -253,3 +253,22 @@ WHERE {
 QUERY;
   $connection->query($query);
 }
+
+/**
+ * Set community content and custom pages as trasnlatable.
+ */
+function joinup_core_update_8109() {
+  $bundles = ['custom_page', 'discussion', 'document', 'event', 'news'];
+  /** @var \Drupal\content_translation\ContentTranslationManagerInterface $translation_service */
+  $translation_service = \Drupal::service('content_translation.manager');
+  foreach ($bundles as $bundle) {
+    if (!$translation_service->isEnabled('node', $bundle)) {
+      $translation_service->setEnabled('node', $bundle, TRUE);
+    }
+  }
+
+  // Cache need to be handled manually as the content_translation module does.
+  // @see: content_translation_language_configuration_element_submit().
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+  \Drupal::service('router.builder')->setRebuildNeeded();
+}
