@@ -19,10 +19,10 @@
       <div class="listing__link"><a href="{{ url }}"></a></div>
       {{ title_prefix }}<h2 class="listing__title">{{ label }}</h2>{{ title_suffix }}
     </div>
-
+    {% if content.field_ar_abstract|render|striptags|raw %}
       <div class="listing__field">
         <p class="listing__teaser">{{ content.field_ar_abstract|render|striptags|raw }}</p>
       </div>
-
+    {% endif %}
   </div>
 </div>

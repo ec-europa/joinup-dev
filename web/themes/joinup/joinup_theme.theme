@@ -520,6 +520,7 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.content_overview.page_1':
       case 'entity.rdf_entity.member_overview':
       case 'entity.user.canonical':
+      case 'joinup_subscription.subscriptions_page':
         $is_listing = TRUE;
         break;
     }

@@ -118,7 +118,7 @@ class SubscriptionDashboardForm extends FormBase {
         'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'list_view'),
         'bundles' => [
           '#type' => 'container',
-          '#attributes' => ['class' => ['collection-content-types']],
+          '#extra_suggestion' => 'container__subscribe_form',
         ],
       ];
 
