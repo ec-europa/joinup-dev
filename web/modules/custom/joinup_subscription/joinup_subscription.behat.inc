@@ -122,7 +122,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
     $collection = self::getRdfEntityByLabel($collection_label, 'collection');
     foreach ($subscription_options->getRowsHash() as $bundle_id => $subscription_option) {
       $bundle_id = strtolower($bundle_id);
-      $locator = 'collections[' . $collection->id() . '][' . $bundle_id . ']';
+      $locator = 'collections[' . $collection->id() . '][bundles][' . $bundle_id . ']';
       $this->getSession()->getPage()->selectFieldOption($locator, $subscription_option);
     }
   }
