@@ -48,46 +48,44 @@ Feature: Type something to filter the listing the member list
     And I fill in "Type something to filter the list" with "bro"
     And I press "Apply"
 
-    Then the "member administration" table should be:
-      # The first column is empty as it contains the bulk operations checkbox.
-      # @todo: Fix this after ISAICP-4836 is implemented.
-      |  | Name            | Member since            | State   | Roles                                    |
-      |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
-      |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+    Then the "member administration" table should contain the following columns:
+      | Name            | Member since            | State   | Roles                                    |
+      | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
     # Clicking "Name" will sort the table by descending name order.
     When I click "Name"
-    Then the "member administration" table should be:
-      |  | Name            | Member since            | State   | Roles                                    |
-      |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
-      |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
+    Then the "member administration" table should contain the following columns:
+      | Name            | Member since            | State   | Roles                                    |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     # Clicking "Member since" will sort the table by ascending created order.
     When I click "Member since"
-    Then the "member administration" table should be:
-      |  | Name            | Member since            | State   | Roles                                    |
-      |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
-      |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
+    Then the "member administration" table should contain the following columns:
+      | Name            | Member since            | State   | Roles                                    |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     # Clicking "Member since" again will sort the table by descending created order.
     When I click "Member since"
-    Then the "member administration" table should be:
-      |  | Name            | Member since            | State   | Roles                                    |
-      |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
-      |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+    Then the "member administration" table should contain the following columns:
+      | Name            | Member since            | State   | Roles                                    |
+      | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
 
     # Clicking "State" will sort the table by ascending state order.
     When I click "State"
-    Then the "member administration" table should be:
-      |  | Name            | Member since            | State   | Roles                                    |
-      |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
-      |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
+    Then the "member administration" table should contain the following columns:
+      | Name            | Member since            | State   | Roles                                    |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     # Clicking "State" again will sort the table by descending state order.
     When I click "State"
-    Then the "member administration" table should be:
-      |  | Name            | Member since            | State   | Roles                                    |
-      |  | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
-      |  | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
+    Then the "member administration" table should contain the following columns:
+      | Name            | Member since            | State   | Roles                                    |
+      | King Seabrooke  | Mon, 01/01/2018 - 00:00 | active  | Collection owner, Collection facilitator |
+      | Brooke Kingsley | Thu, 01/03/2018 - 00:00 | active  |                                          |
 
     When I fill in "Type something to filter the list" with "King"
     And I press "Apply"
