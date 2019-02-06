@@ -43,7 +43,7 @@ class ErrorPageExceptionLoggingSubscriber extends ExceptionLoggingSubscriber {
     $is_critical = !$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500;
     if ($is_critical) {
       if ($uuid_add_to_message) {
-        $message = 'Uncaught PHP Exception %s: "%s" at %s line %s [@uuid]';
+        $message = 'Uncaught PHP Exception %s: "%s" at %s line %s [%s]';
       }
       else {
         $message = 'Uncaught PHP Exception %s: "%s" at %s line %s';
