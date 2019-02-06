@@ -1387,9 +1387,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     // The test writes to the PHP error log because it's in its scope to test
     // fatal errors. But the testing bots might reject tests that are not ending
-    // with a clear log. We mark in PHP error log the beginning and the end of
-    // this expected log entry so that we can clear it later.
-    error_log('BEFORE@errorPage');
+    // with an empty log. We create a copy of the error log just before running
+    // this scenario to be restored in @AfterScenario phase. In this way the log
+    // will not be affected by errors logged by this scenario.
+    $error_log = ini_get('error_log');
+    if (file_exists($error_log)) {
+      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
+    }
   }
 
   /**
@@ -1400,21 +1404,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function uninstallErrorPageTestingModule(): void {
     $this->toggleErrorPageTestingModule('uninstall');
 
-    // The test writes to the PHP error log because it's in its scope to test
-    // fatal errors. But the testing bots might reject tests that are not ending
-    // with a clear log. We mark in PHP error log the beginning and the end of
-    // this expected log entry so that we can clear it later.
-    error_log('AFTER@errorPage');
-
-    // Clear the log for fatal error produced by this test.
+    // Restore the log saved in @BeforeScenario.
     $error_log = ini_get('error_log');
-    if (file_exists($error_log)) {
-      $log = file_get_contents($error_log);
-      $log = preg_replace('/\[([^\]].*)\] BEFORE\@errorPage\n((.*)\n)*\[([^\]].*)\] AFTER\@errorPage\n/i', '', $log);
-      file_put_contents($error_log, $log);
+    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
+      file_unmanaged_move('temporary://php.log', $error_log, 1);
     }
 
-    // Restore the original system logging error.
+    // Restore the original system logging error level.
     $this->setSiteErrorLevel();
   }
 
