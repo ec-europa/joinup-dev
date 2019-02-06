@@ -72,7 +72,7 @@ class ErrorPageRenderer {
       // @todo Use preg_replace() to catch also the spacing fuzziness.
       return str_replace(['{{ uuid }}', '{{ base_path }}'], [
         $uuid,
-        \base_path(),
+        base_path(),
       ], $markup);
     }
     catch (\Throwable $exception) {
