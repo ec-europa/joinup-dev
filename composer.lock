@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45010330db73ef560ad1a1442afdbae3",
+    "content-hash": "3039a069631ea66f2ba799526dcace1c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -12724,8 +12724,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",
@@ -14766,7 +14765,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "semiceu/adms-ap_validator": 20,
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/geofield": 10,
@@ -14782,6 +14780,7 @@
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "openeuropa/oe_webtools_location": 20,
+        "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/drupal-extension": 10,
