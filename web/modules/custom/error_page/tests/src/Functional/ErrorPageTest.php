@@ -81,8 +81,8 @@ class ErrorPageTest extends BrowserTestBase {
     $variables = unserialize($log->variables);
     $this->assertEquals($found[1], $variables['@uuid']);
 
-    // Disable appending the UUID to the message.
-    $this->setSetting(['error_page', 'uuid', 'enabled'], 'FALSE');
+    // Disable UUID.
+    $this->setSetting(['error_page', 'uuid'], 'FALSE');
 
     $this->getSession()->reload();
     preg_match(static::UUID_PATTERN, $this->getSession()->getPage()->getContent(), $found);

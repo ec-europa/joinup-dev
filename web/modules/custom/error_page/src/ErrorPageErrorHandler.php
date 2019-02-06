@@ -126,7 +126,7 @@ class ErrorPageErrorHandler {
    */
   protected static function logError(array $error, $fatal = FALSE, $original_exception = NULL) {
     $settings = Settings::get('error_page');
-    $uuid_enabled = isset($settings['uuid']['enabled']) ? $settings['uuid']['enabled'] : TRUE;
+    $uuid_enabled = isset($settings['uuid']) ? $settings['uuid'] : TRUE;
     $uuid = $uuid_enabled ? (new Php())->generate() : NULL;
     $error['@uuid'] = $uuid;
 

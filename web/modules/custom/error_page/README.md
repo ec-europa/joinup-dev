@@ -87,7 +87,7 @@ In `settings.php`:
 
 ```php
 // Defaults to TRUE.
-$settings['error_page']['uuid']['enabled'] = TRUE;
+$settings['error_page']['uuid'] = TRUE;
 // Point to the path where the customizable HTML markup files are placed. It's
 // recommended that the custom template location is placed outside the webtree
 // or is protected from the public access with a file, such as markup/.htaccess.
@@ -107,7 +107,7 @@ set_exception_handler([
   'handleException',
 ]);
 // Log the UUID in the Drupal logs.
-$settings['error_page']['uuid']['enabled'] = TRUE;
+$settings['error_page']['uuid'] = TRUE;
 // Your templates are located in path/to/templates, one level above the webroot.
 $settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../path/to/templates';
 ```

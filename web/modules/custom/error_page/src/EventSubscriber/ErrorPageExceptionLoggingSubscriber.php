@@ -19,7 +19,7 @@ class ErrorPageExceptionLoggingSubscriber extends ExceptionLoggingSubscriber {
    */
   public function onError(GetResponseForExceptionEvent $event) {
     $settings = Settings::get('error_page');
-    $uuid_enabled = isset($settings['uuid']['enabled']) ? $settings['uuid']['enabled'] : TRUE;
+    $uuid_enabled = isset($settings['uuid']) ? $settings['uuid'] : TRUE;
 
     // Attach the UUID to the the event. Don't call the generator as service.
     $event->uuid = $uuid_enabled ? (new Php())->generate() : NULL;
