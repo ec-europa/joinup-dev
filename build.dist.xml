@@ -191,6 +191,8 @@
         <phingcall target="include-local-settings" />
         <!-- Copy settings file containing development values, but preserve any existing local settings. -->
         <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}" overwrite="false" />
+        <!-- Let the site config decide the verbosity or error messages -->
+        <replaceregexp file="${website.settings.local.php}" pattern="(\$config\['system.logging'\]\['error_level'\].*)" replace="// $1" />
     </target>
 
     <!-- Create an empty local settings file, if it doesn't exist yet. -->
