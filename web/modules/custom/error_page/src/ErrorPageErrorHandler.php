@@ -16,20 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 class ErrorPageErrorHandler {
 
   /**
-   * The exception/error UUID, if any.
-   *
-   * @var string|null
-   */
-  protected static $uuid;
-
-  /**
-   * If the UUID is injected in the error message.
-   *
-   * @var bool
-   */
-  protected static $uuidAddToMessage;
-
-  /**
    * Handles errors.
    *
    * Code copied and adapted from _drupal_error_handler_real().
@@ -141,12 +127,8 @@ class ErrorPageErrorHandler {
   protected static function logError(array $error, $fatal = FALSE, $original_exception = NULL) {
     $settings = Settings::get('error_page');
     $uuid_enabled = isset($settings['uuid']['enabled']) ? $settings['uuid']['enabled'] : TRUE;
-    static::$uuidAddToMessage = $uuid_enabled && (isset($settings['uuid']['add_to_message']) ? $settings['uuid']['add_to_message'] : TRUE);
-    static::$uuid = $uuid_enabled ? (new Php())->generate() : NULL;
-
-    if (static::$uuid) {
-      $error += ['@uuid' => static::$uuid];
-    }
+    $uuid = $uuid_enabled ? (new Php())->generate() : NULL;
+    $error['@uuid'] = $uuid;
 
     $is_installer = drupal_installation_attempted();
 
@@ -168,25 +150,30 @@ class ErrorPageErrorHandler {
     if (\Drupal::hasService('logger.factory')) {
       try {
         // Provide the PHP backtrace to logger implementations.
-        \Drupal::logger('php')->log($error['severity_level'], static::getMessage('standard_with_backtrace'), $error + ['backtrace' => $backtrace]);
+        \Drupal::logger('php')->log($error['severity_level'], '%type: @message in %function (line %line of %file) [@uuid] @backtrace_string', $error + ['backtrace' => $backtrace]);
       }
       catch (\Exception $e) {
         // We can't log, for example because the database connection is not
         // available. At least try to log to PHP error log.
-        error_log(strtr(static::getMessage('failed_to_log'), $error));
+        error_log(strtr('Failed to log error: %type: @message in %function (line %line of %file) [@uuid]. @backtrace_string', $error));
       }
     }
 
     // Log fatal errors, so developers can find and debug them.
     if ($fatal) {
-      error_log(sprintf(static::getMessage('fatal'), $error['%type'], $error['@message'], $error['%file'], $error['%line'], $error['@backtrace_string']));
+      if ($uuid) {
+        error_log(sprintf('%s: %s in %s on line %d [%s] %s', $error['%type'], $error['@message'], $error['%file'], $error['%line'], $error['@uuid'], $error['@backtrace_string']));
+      }
+      else {
+        error_log(sprintf('%s: %s in %s on line %d %s', $error['%type'], $error['@message'], $error['%file'], $error['%line'], $error['@backtrace_string']));
+      }
     }
 
     if (PHP_SAPI === 'cli') {
       if ($fatal) {
         // When called from CLI, simply output a plain text message. Should not
         // translate the string to avoid errors producing more errors.
-        $response->setContent(html_entity_decode(strip_tags(new FormattableMarkup(static::getMessage('standard'), $error))) . "\n");
+        $response->setContent(html_entity_decode(strip_tags(new FormattableMarkup('%type: @message in %function (line %line of %file) [@uuid].', $error))) . "\n");
         $response->send();
         exit;
       }
@@ -198,7 +185,7 @@ class ErrorPageErrorHandler {
           // When called from JavaScript, simply output the error message.
           // Should not translate the string to avoid errors producing more
           // errors.
-          $response->setContent(new FormattableMarkup(static::getMessage('standard'), $error));
+          $response->setContent(new FormattableMarkup('%type: @message in %function (line %line of %file) [@uuid].', $error));
           $response->send();
         }
         exit;
@@ -233,7 +220,7 @@ class ErrorPageErrorHandler {
         // available yet and, as a consequence, the auto-loading might not work
         // for extensions such as modules.
         require_once __DIR__ . '/ErrorPageRenderer.php';
-        $markup = ErrorPageRenderer::render('message', static::$uuid, $original_exception);
+        $markup = ErrorPageRenderer::render('message', $uuid, $original_exception);
         $message = new FormattableMarkup($markup, $error);
       }
 
@@ -259,7 +246,7 @@ class ErrorPageErrorHandler {
         // available yet and, as a consequence, the auto-loading might not work
         // for extensions such as modules.
         require_once __DIR__ . '/ErrorPageRenderer.php';
-        $markup = ErrorPageRenderer::render('page', static::$uuid, $original_exception);
+        $markup = ErrorPageRenderer::render('page', $uuid, $original_exception);
 
         $response->setContent($markup);
         $response->setStatusCode(500, '500 Service unavailable (with message)');
@@ -279,33 +266,6 @@ class ErrorPageErrorHandler {
         }
       }
     }
-  }
-
-  /**
-   * Returns an error message of a given type.
-   *
-   * @param string $type
-   *   The message type.
-   *
-   * @return string
-   *   The message text.
-   */
-  protected static function getMessage($type) {
-    $messages = [
-      FALSE => [
-        'standard' => '%type: @message in %function (line %line of %file).',
-        'standard_with_backtrace' => '%type: @message in %function (line %line of %file) @backtrace_string',
-        'failed_to_log' => 'Failed to log error: %type: @message in %function (line %line of %file). @backtrace_string',
-        'fatal' => '%s: %s in %s on line %d %s',
-      ],
-      TRUE => [
-        'standard' => '%type: @message in %function (line %line of %file) [' . static::$uuid . '].',
-        'standard_with_backtrace' => '%type: @message in %function (line %line of %file) [' . static::$uuid . '] @backtrace_string',
-        'failed_to_log' => 'Failed to log error: %type: @message in %function (line %line of %file) [' . static::$uuid . ']. @backtrace_string',
-        'fatal' => '%s: %s in %s on line %d [' . static::$uuid . '] %s',
-      ],
-    ];
-    return $messages[static::$uuidAddToMessage][$type];
   }
 
 }

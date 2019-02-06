@@ -13,7 +13,7 @@ logged in the Drupal log and, optionally, injected in the log entry message.
 Uncaught exceptions indicates that something really wrong has happened on a
 site. There is a great chance that some, or all, of Drupal services are not
 available. For this reason, in the module we are avoiding to use or refer Drupal
-services as much as is possible. For the same reason, the module cannot be
+services as much as possible. For the same reason, the module cannot be
 configured using the configuration management offered by Drupal. Instead, the
 module will use the settings stored in the `settings.php` file to configure its
 behavior.
@@ -51,7 +51,7 @@ Install the module as any other module. There are no other dependencies.
 
 ## Configure
 
-As explained earlier, the entire configuration is done via `settings/php`:
+As explained earlier, the entire configuration is done via `settings.php`:
 
 ### ErrorPageErrorHandler autoload
 
@@ -88,8 +88,6 @@ In `settings.php`:
 ```php
 // Defaults to TRUE.
 $settings['error_page']['uuid']['enabled'] = TRUE;
-// Defaults to TRUE.
-$settings['error_page']['uuid']['add_to_message'] = TRUE;
 // Point to the path where the customizable HTML markup files are placed. It's
 // recommended that the custom template location is placed outside the webtree
 // or is protected from the public access with a file, such as markup/.htaccess.
@@ -110,8 +108,6 @@ set_exception_handler([
 ]);
 // Log the UUID in the Drupal logs.
 $settings['error_page']['uuid']['enabled'] = TRUE;
-// Don't inject the UUID into the logged message. Just keep it in variables.
-$settings['error_page']['uuid']['add_to_message'] = FALSE;
 // Your templates are located in path/to/templates, one level above the webroot.
 $settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../path/to/templates';
 ```

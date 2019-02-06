@@ -82,18 +82,6 @@ class ErrorPageTest extends BrowserTestBase {
     $this->assertEquals($found[1], $variables['@uuid']);
 
     // Disable appending the UUID to the message.
-    $this->setSetting(['error_page', 'uuid', 'add_to_message'], 'FALSE');
-
-    $this->getSession()->reload();
-    preg_match(static::UUID_PATTERN, $this->getSession()->getPage()->getContent(), $found);
-    $assert->pageTextContains('There was an unexpected problem serving your request');
-    $assert->pageTextContains("Please try again and contact us if the problem persist including {$found[1]} in your message.");
-    $log = $this->getLastLog();
-    $this->assertEquals('%type: @message in %function (line %line of %file).', $log->message);
-    $variables = unserialize($log->variables);
-    $this->assertEquals($found[1], $variables['@uuid']);
-
-    // Disable appending the UUID to the message.
     $this->setSetting(['error_page', 'uuid', 'enabled'], 'FALSE');
 
     $this->getSession()->reload();
@@ -104,7 +92,7 @@ class ErrorPageTest extends BrowserTestBase {
     // default template which assumes an UUID variable.
     $assert->pageTextContains("Please try again and contact us if the problem persist including in your message.");
     $log = $this->getLastLog();
-    $this->assertEquals('%type: @message in %function (line %line of %file).', $log->message);
+    $this->assertEquals('%type: @message in %function (line %line of %file) [@uuid].', $log->message);
     $variables = unserialize($log->variables);
     $this->assertArrayNotHasKey('@uuid', $variables);
 
@@ -121,7 +109,7 @@ class ErrorPageTest extends BrowserTestBase {
     $assert->pageTextContains('There was an unexpected problem serving your request');
     $assert->pageTextContains("Please try again and contact us if the problem persist.");
     $log = $this->getLastLog();
-    $this->assertEquals('%type: @message in %function (line %line of %file).', $log->message);
+    $this->assertEquals('%type: @message in %function (line %line of %file) [@uuid].', $log->message);
     $variables = unserialize($log->variables);
     $this->assertArrayNotHasKey('@uuid', $variables);
   }

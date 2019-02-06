@@ -484,7 +484,7 @@
     <target name="set-custom-error-handlers"
             depends="writable-settings-php">
         <replaceregexp file="${website.settings.php}" pattern="(.*) // Used by 'error_page' module.${line.separator}" replace="" />
-        <append destFile="${website.settings.php}" text="$settings['error_page']['uuid']['enabled'] = TRUE; // Used by 'error_page' module.${line.separator}$settings['error_page']['uuid']['add_to_message'] = TRUE; // Used by 'error_page' module.${line.separator}$settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_page'; // Used by 'error_page' module.${line.separator}set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']); // Used by 'error_page' module.${line.separator}set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']); // Used by 'error_page' module.${line.separator}" />
+        <append destFile="${website.settings.php}" text="$settings['error_page']['uuid']['enabled'] = TRUE; // Used by 'error_page' module.${line.separator}$settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_page'; // Used by 'error_page' module.${line.separator}set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']); // Used by 'error_page' module.${line.separator}set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']); // Used by 'error_page' module.${line.separator}" />
     </target>
 
     <target name="disable-webtools-geocoding-cache">
