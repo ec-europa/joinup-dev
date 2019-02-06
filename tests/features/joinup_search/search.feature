@@ -36,7 +36,7 @@ Feature: Global search
     And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1), Luxembourg (1)"
 
     # Test the policy domain facet.
-    When I click "Demography" in the "policy domain" inline facet
+    When I click "Demography" in the "policy domain" inline facet in the "Left sidebar" region
     Then "Demography (2)" should be selected in the "policy domain" inline facet
     And the "policy domain" inline facet should allow selecting the following values "Statistics and Analysis (1), all policy domains"
     And "everywhere" should be selected in the "spatial coverage" inline facet
@@ -47,7 +47,7 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I click "Belgium" in the "spatial coverage" inline facet
+    When I click "Belgium" in the "spatial coverage" inline facet in the "Left sidebar" region
     Then "Belgium (1)" should be selected in the "spatial coverage" inline facet
     And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), everywhere"
     And "Demography (1)" should be selected in the "policy domain" inline facet

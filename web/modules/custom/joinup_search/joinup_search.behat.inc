@@ -170,6 +170,23 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Clicks a facet item in an inline facet found in a designated region.
+   *
+   * @param string $link
+   *   The link text of the link to click.
+   * @param string $facet
+   *   The facet alias.
+   * @param string $region
+   *   The region alias.
+   *
+   * @When I click :link in the :facet inline facet in the :region region
+   */
+  public function iClickAnInlineFacetItemLinkInRegion(string $link, string $facet, string $region): void {
+    $region = $this->getRegion($region);
+    $this->findFacetByAlias($facet, $region)->clickLink($link);
+  }
+
+  /**
    * Asserts that an inline facet has a certain text (value) set as active.
    *
    * @param string $text
