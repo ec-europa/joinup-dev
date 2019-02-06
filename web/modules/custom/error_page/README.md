@@ -1,10 +1,10 @@
 # Description
 
 Shows a friendly page to the users when an exception or an error are thrown,
-instead of the white page with the error backtrace. The module is able to attach
+instead of the plain page provided by Drupal core. The module is able to attach
 an Universally Unique Identifier (UUID) to each error/exception, so that the
-user is able to refer the error to the site's contact support team. The UUID is
-logged in the Drupal log and, optionally, injected in the log entry message.
+user is able to refer the error to the site's contact support team or help desk.
+The UUID is logged also in the Drupal log.
 
 # Technical aspects
 
@@ -30,17 +30,17 @@ pages with some raw replacement tokens.
 The module swaps the core `ExceptionLoggingSubscriber`, which is responsible
 for logging the uncaught exceptions to the Drupal logger, with its own
 `ErrorPageExceptionLoggingSubscriber`. Actually the module class replaces the
-`::onError()` method and, if case, logs also the UUID. Then, the module adds a
-new subscriber, `ErrorPageFinalExceptionSubscriber`, which acts just before the
-core `FinalExceptionSubscriber` by showing the output in its own way and
-stopping the propagation of the `KernelEvents::EXCEPTION` event.
+`::onError()` method and logs also the UUID if it has been configured so. Then,
+the module adds a new subscriber, `ErrorPageFinalExceptionSubscriber`, which
+acts just before the core `FinalExceptionSubscriber` by showing the output in
+its own way and stopping the propagation of the `KernelEvents::EXCEPTION` event.
 
 ## Fatal and user errors
 
 The module uses its own error/exception handlers, instead of
 `_drupal_error_handler()` and `_drupal_exception_handler()`. Because those
 procedural functions are hard to be extended or overwritten, the core code is
-90% copied in module's handlers. These are slightly changed to allow using a
+95% copied in module's handlers. These are slightly changed to allow using a
 custom outputted HTML rendered markup.  
 
 # Getting started
@@ -86,11 +86,12 @@ set_exception_handler([
 In `settings.php`:
 
 ```php
-// Defaults to TRUE.
+// If to create a UUID for each exception/error. Defaults to TRUE.
 $settings['error_page']['uuid'] = TRUE;
 // Point to the path where the customizable HTML markup files are placed. It's
 // recommended that the custom template location is placed outside the webtree
 // or is protected from the public access with a file, such as markup/.htaccess.
+// Defaults to the templates provided by module, in the `markup/` sub-directory.
 $settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../path/to/templates';
 ```
 
@@ -119,10 +120,14 @@ exception, are very simple but they can be can be customized. Probably the word
 "themed" would be too much. In order to customize the output, the files
 `markup/error_page.html` and `markup/error_message.html` should be copied and
 edited in the location specified in `$settings['error_page']['template_dir']`.
-Two variables can be used:
+Three variables can be used:
 
 - `{{ uuid }}`: The error/exception UUID, if any.
 - `{{ base_path }}`: The Drupal base path, as is returned by `base_path()`. This
   helps to build paths to images or other assets.
+- `{{ error_report }}`: The standard error and the error/exception backtrace.
+  Note that the content of this variable is empty if the system error logging
+  verbosity doesn't allow to show verbose error details such as the backtrace.
 
-Don't forget to protect the templates location from public access.
+Don't forget to protect the templates location from public access or, even
+better, place them outside the web-tree.
