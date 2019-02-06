@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
@@ -21,6 +22,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
 
   use TraversingTrait;
   use UtilityTrait;
+  use BrowserCapabilityDetectionTrait;
 
   /**
    * Checks that the user is on the search page.
@@ -94,6 +96,46 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertContentTypeFacetSelected(string $type): void {
     $xpath = "//a[contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ') and contains(concat(' ', normalize-space(@class), ' '), ' is-active ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' tab__text--lower ')][normalize-space(string(.)) = '$type']";
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Checks that the given content facet checkbox item is selected.
+   *
+   * @param string $bundle
+   *   The text of the checkbox that should be selected.
+   *
+   * @throws \Exception
+   *   Thrown when the facet checkbox is not selected or not present in the
+   *   page.
+   *
+   * @Then the :bundle content checkbox item should be selected
+   */
+  public function assertContentFacetCheckboxSelected(string $bundle): void {
+    if ($this->browserSupportsJavascript()) {
+      // The following xpath searches for
+      // * Any div
+      // ** that contains a class named facets-widget-checkbox
+      // ** and contains a li element
+      // *** that contains an input element
+      // **** that contains a property named 'type' with value 'checkbox'
+      // **** and contains a property named 'checked' with value 'checked'
+      // *** and contains a span element
+      // **** that the text has the value $type.
+      $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//li[.//input[@type='checkbox'][@checked='checked']][.//span[text()='$bundle']]]";
+    }
+    else {
+      // The following xpath searches for
+      // * Any div
+      // ** that contains a class named facets-widget-checkbox
+      // ** and contains an a element
+      // *** that contains a class named 'is-active'
+      // *** and contains a span element
+      // **** that contains a class named 'facet-item__value'
+      // **** and the text has the value $type.
+      $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//a[contains(concat(' ', normalize-space(@class), ' '), ' is-active ')][.//span[text()='$bundle']]]";
+    }
     $element = $this->getSession()->getPage()->find('xpath', $xpath);
     Assert::assertNotEmpty($element);
   }

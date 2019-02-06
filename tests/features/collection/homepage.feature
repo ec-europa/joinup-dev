@@ -129,7 +129,7 @@ Feature: Collection homepage
     And I click "Supplier exchange" in the "collection policy domain" inline facet
     And I click "Advanced search"
     Then I should be on the search page
-    Then the News content tab should be selected
+    Then the News content checkbox item should be selected
     And "Middle earth daily (1)" should be selected in the "from" inline facet
     And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
     Then I should see the following tiles in the correct order:
@@ -140,7 +140,7 @@ Feature: Collection homepage
     When I click the News content tab
     And I click "Advanced search"
     Then I should be on the search page
-    Then the News content tab should be selected
+    Then the News content checkbox item should be selected
     Then I should see the following tiles in the correct order:
       | Rohirrim make extraordinary deal                  |
       | Breaking: Gandalf supposedly plans his retirement |

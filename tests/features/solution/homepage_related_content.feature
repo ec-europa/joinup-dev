@@ -92,7 +92,7 @@ Feature: Solution homepage
     And I click "European Union" in the "solution spatial coverage" inline facet
     And I click "Advanced search"
     Then I should be on the search page
-    And the Document content tab should be selected
+    And the Document content checkbox item should be selected
     And "Information sharing protocol (1)" should be selected in the "from" inline facet
     And "E-inclusion (1)" should be selected in the "policy domain" inline facet
     And "European Union (1)" should be selected in the "spatial coverage" inline facet
