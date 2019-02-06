@@ -16,3 +16,5 @@ error_page_test.user_error:
     _controller: 'Drupal\error_page_test\Controller\ErrorPageTestController::userError'
   requirements:
     _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'

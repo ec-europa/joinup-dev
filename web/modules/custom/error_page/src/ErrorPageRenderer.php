@@ -34,6 +34,10 @@ class ErrorPageRenderer {
    *   - {{ uuid }}: The error/exception UUID, if any.
    *   - {{ base_path }}: The Drupal base path, as is returned by base_path().
    *     It helps to build paths to images or other assets.
+   *   - {{ error_report }}: A technical error report consisting from an error
+   *     message and the backtrace. Note that the content of this variable is
+   *     empty if the system error logging verbosity doesn't allow to show
+   *     verbose error details such as the backtrace.
    * - It's recommended that the custom template location is placed outside the
    *   web-tree or is protected from the web-server public access with a file,
    *   similar to markup/.htaccess.
@@ -49,14 +53,17 @@ class ErrorPageRenderer {
    * @param mixed $original_exception
    *   The original exception. Is used if an additional exception occurs during
    *   handling the current error.
+   * @param string $error_report
+   *   The technical error report, including the backtrace, if the site's
+   *   configuration allows it.
    *
    * @return string
    *   The rendered HTML markup.
    *
-   * @see \base_path()
+   * @see base_path()
    * @see markup/error_page.html
    */
-  public static function render($type, $uuid, $original_exception) {
+  public static function render($type, $uuid, $original_exception, $error_report) {
     try {
       $settings = Settings::get('error_page');
       $module_dir = __DIR__ . '/../markup';
@@ -69,11 +76,13 @@ class ErrorPageRenderer {
       }
       $markup = trim(file_get_contents($file_path));
 
-      // @todo Use preg_replace() to catch also the spacing fuzziness.
-      return str_replace(['{{ uuid }}', '{{ base_path }}'], [
-        $uuid,
-        base_path(),
-      ], $markup);
+      $replacements = [
+        '{{ uuid }}' => $uuid,
+        '{{ base_path }}' => base_path(),
+        '{{ error_report }}' => $error_report,
+      ];
+
+      return strtr($markup, $replacements);
     }
     catch (\Throwable $exception) {
       _drupal_exception_handler_additional($original_exception, $exception);

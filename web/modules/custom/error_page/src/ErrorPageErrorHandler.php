@@ -192,35 +192,45 @@ class ErrorPageErrorHandler {
       }
     }
     else {
-      // Display the message if the current error reporting level allows this
-      // type of message to be displayed, and unconditionally in update.php.
-      $message = '';
-      $class = NULL;
+      $class = 'error';
+      // If error type is 'User notice' then treat it as debug information
+      // instead of an error message.
+      // @see debug()
+      if ($error['%type'] == 'User notice') {
+        $error['%type'] = 'Debug';
+        $class = 'status';
+      }
+
+      $message = $error_report = '';
+
+      // Generate an error report if the error reporting level allows it.
       if (error_displayable($error)) {
-        $class = 'error';
-
-        // If error type is 'User notice' then treat it as debug information
-        // instead of an error message.
-        // @see debug()
-        if ($error['%type'] == 'User notice') {
-          $error['%type'] = 'Debug';
-          $class = 'status';
-        }
-
-        // Attempt to reduce verbosity by removing DRUPAL_ROOT from the file
-        // path in the message. This does not happen for (false) security.
-        if (\Drupal::hasService('app.root')) {
-          $root_length = strlen(\Drupal::root());
-          if (substr($error['%file'], 0, $root_length) == \Drupal::root()) {
-            $error['%file'] = substr($error['%file'], $root_length + 1);
+        if (_drupal_get_error_level() === ERROR_REPORTING_DISPLAY_VERBOSE) {
+          // Attempt to reduce verbosity by removing DRUPAL_ROOT from the file
+          // path in the message. This does not happen for (false) security.
+          if (\Drupal::hasService('app.root')) {
+            $root_length = strlen(\Drupal::root());
+            if (substr($error['%file'], 0, $root_length) == \Drupal::root()) {
+              $error['%file'] = substr($error['%file'], $root_length + 1);
+            }
           }
+
+          // First trace is the error itself, already contained in the message.
+          // While the second trace is the error source and also contained in
+          // the message, the message doesn't contain argument values, so we
+          // output it once more in the backtrace.
+          array_shift($backtrace);
+          // Generate a backtrace containing only scalar argument values.
+          $error['@backtrace'] = Error::formatBacktrace($backtrace);
+          $error_report = new FormattableMarkup('%type: @message in %function (line %line of %file). <pre class="backtrace">@backtrace</pre>', $error);
         }
 
         // Require explicitly the renderer class, as the container might not be
         // available yet and, as a consequence, the auto-loading might not work
         // for extensions such as modules.
         require_once __DIR__ . '/ErrorPageRenderer.php';
-        $markup = ErrorPageRenderer::render('message', $uuid, $original_exception);
+
+        $markup = ErrorPageRenderer::render('message', $uuid, $original_exception, $error_report);
         $message = new FormattableMarkup($markup, $error);
       }
 
@@ -246,8 +256,8 @@ class ErrorPageErrorHandler {
         // available yet and, as a consequence, the auto-loading might not work
         // for extensions such as modules.
         require_once __DIR__ . '/ErrorPageRenderer.php';
-        $markup = ErrorPageRenderer::render('page', $uuid, $original_exception);
 
+        $markup = ErrorPageRenderer::render('page', $uuid, $original_exception, $error_report);
         $response->setContent($markup);
         $response->setStatusCode(500, '500 Service unavailable (with message)');
 

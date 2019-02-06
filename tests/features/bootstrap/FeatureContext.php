@@ -1413,6 +1413,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       $log = preg_replace('/\[([^\]].*)\] BEFORE\@errorPage\n((.*)\n)*\[([^\]].*)\] AFTER\@errorPage\n/i', '', $log);
       file_put_contents($error_log, $log);
     }
+
+    // Restore the original system logging error.
+    $this->setSiteErrorLevel();
   }
 
   /**
@@ -1427,6 +1430,33 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     static::bypassReadOnlyConfig(10);
     \Drupal::service('module_installer')->$method(['error_page_test']);
     static::restoreReadOnlyConfig();
+  }
+
+  /**
+   * Sets the site's error logging verbosity.
+   *
+   * @param string|null $error_level
+   *   (optional) The error level. If not passed, the original error level is
+   *   restored.
+   *
+   * @Given the site error reporting verbosity is( set to) :error_level
+   */
+  public function setSiteErrorLevel(string $error_level = NULL) {
+    static $original_error_level;
+
+    $config = \Drupal::configFactory()->getEditable('system.logging');
+
+    $current_error_level = $config->get('error_level');
+    if (!isset($original_error_level)) {
+      $original_error_level = $current_error_level;
+    }
+
+    $error_level = $error_level ?: $original_error_level;
+    if ($current_error_level !== $error_level) {
+      static::bypassReadOnlyConfig(5);
+      $config->set('error_level', $error_level)->save();
+      static::restoreReadOnlyConfig();
+    }
   }
 
 }

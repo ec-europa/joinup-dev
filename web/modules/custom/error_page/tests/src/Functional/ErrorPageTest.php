@@ -48,6 +48,7 @@ class ErrorPageTest extends BrowserTestBase {
     $settings_php = file_get_contents($settings_php_file);
     $settings_php .= "\nset_error_handler(['Drupal\\error_page\\ErrorPageErrorHandler', 'handleError']);\n";
     $settings_php .= "set_exception_handler(['Drupal\\error_page\\ErrorPageErrorHandler', 'handleException']);\n";
+    $settings_php .= "\$config['system.logging']['error_level'] = 'verbose';\n";
     chmod($settings_php_file, 0666);
     file_put_contents($settings_php_file, $settings_php);
     $this->settingsPhp = $settings_php;
@@ -112,6 +113,16 @@ class ErrorPageTest extends BrowserTestBase {
     $this->assertEquals('%type: @message in %function (line %line of %file) [@uuid].', $log->message);
     $variables = unserialize($log->variables);
     $this->assertArrayNotHasKey('@uuid', $variables);
+
+    // Check that the technical error report is showed on the page.
+    $assert->pageTextContains('Exception: donuts in Drupal\error_page_test\Controller\ErrorPageTestController->exception()');
+
+    // Don't show verbose reports on the page.
+    $this->setSetting(['system.logging', 'error_level'], 'FALSE', 'config');
+
+    // Check that the technical error report is hidden.
+    $this->getSession()->reload();
+    $assert->pageTextNotContains('Exception: donuts in Drupal\error_page_test\Controller\ErrorPageTestController->exception()');
   }
 
   /**
@@ -159,10 +170,12 @@ class ErrorPageTest extends BrowserTestBase {
    *   The array path.
    * @param string $value
    *   The value as is represented in code.
+   * @param string $variable
+   *   (optional) The variable to be set. Defaults to 'settings'.
    */
-  protected function setSetting(array $trail, $value) {
+  protected function setSetting(array $trail, $value, $variable = 'settings') {
     $settings_file = $this->siteDirectory . '/settings.php';
-    $line = "\n\$settings['" . implode("']['", $trail) . "'] = $value;\n";
+    $line = "\n\${$variable}['" . implode("']['", $trail) . "'] = $value;\n";
     chmod($settings_file, 0666);
     file_put_contents($settings_file, $line, FILE_APPEND);
   }
