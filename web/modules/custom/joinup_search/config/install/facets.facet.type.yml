@@ -15,10 +15,14 @@ show_only_one_result: true
 field_identifier: entity_bundle
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: type
+  type: checkbox
   config:
     show_numbers: true
-    tabs: 3
+    soft_limit: 0
+    soft_limit_settings:
+      show_less_label: 'Show less'
+      show_more_label: 'Show more'
+    arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -68,4 +72,4 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-show_title: null
+show_title: false
