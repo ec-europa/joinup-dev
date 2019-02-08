@@ -2698,7 +2698,7 @@ JS;
         ],
         'selectors' => [
           // The site-wide search field in the top right corner.
-          ['css', '.search-bar input'],
+          ['css', 'input#search-bar__input'],
           // The search field on the search result pages.
           ['css', '#block-exposed-form-search-page input.form-text'],
         ],
