@@ -55,7 +55,11 @@ class CollectionFeedController extends ControllerBase {
   public function access(string $rdf_entity): AccessResultInterface {
     $loaded_entity = $this->sparqlStorage->load(UriEncoder::decodeUrl($rdf_entity));
 
-    return AccessResult::allowedIf($loaded_entity instanceof RdfInterface && $loaded_entity->bundle() === 'collection')
+    return AccessResult::allowedIf(
+      $loaded_entity instanceof RdfInterface &&
+      $loaded_entity->bundle() === 'collection' &&
+      $loaded_entity->isPublished()
+    )
       ->addCacheableDependency($loaded_entity);
   }
 

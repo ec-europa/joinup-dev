@@ -11,9 +11,10 @@ Feature: Collection RSS feed.
       | forest   | Forest     | Robinson    |
       | otto     | Otto       | Drake       |
     And collections:
-      | title            | state     |
-      | Indigo Monkey    | validated |
-      | Dreaded Scissors | validated |
+      | title             | state     |
+      | Indigo Monkey     | validated |
+      | Dreaded Scissors  | validated |
+      | Remote Electrical | draft     |
     And collection user memberships:
       | collection       | user    | role        |
       | Indigo Monkey    | alejake | facilitator |
@@ -40,8 +41,9 @@ Feature: Collection RSS feed.
       | title                                          | body                                                                                   | state     | author  | created          | collection    |
       | Is the indigo coloration caused by their food? | I was reading the technical paper and it seems their main food is the indigo cherries. | validated | alejake | 2019-01-21 13:00 | Indigo Monkey |
     And custom_page content:
-      | title             | body                                            | state     | author | created          | collection    |
-      | Indigo variations | The four major tones of indigo are listed here. | validated | forest | 2017-10-15 18:30 | Indigo Monkey |
+      | title             | body                                            | state     | author | created          | collection        |
+      | Indigo variations | The four major tones of indigo are listed here. | validated | forest | 2017-10-15 18:30 | Indigo Monkey     |
+      | List of devices   | Available remote electrical devices.            | validated |        | 2019-02-08 09:00 | Remote Electrical |
 
     When I am an anonymous user
     And I go to the homepage of the "Indigo Monkey" collection
@@ -74,6 +76,9 @@ Feature: Collection RSS feed.
       | Solution: Shiny Ray                     | /solution/shiny-ray                     |                                                                                                                                                                                                                                                                                                       | Tue, 14 Aug 2018 17:36:00 +0200 | Otto Drake |
       | News: New metal alloy improves scissors | /news/new-metal-alloy-improves-scissors | <p>It improves sharpness but they are more subject to rust.</p>                                                                                                                                                                                                                                       | Wed, 11 Apr 2018 09:00:00 +0200 | Otto Drake |
       | Event: Scissor sharpening party         | /event/scissor-sharpening-party         | <p>The place where to be if you want to keep <strong>cutting</strong> the paper at the best of your scissors <a href="http://www.example.com/">possibilities</a>.</p> <table><tr><td>Lorem ipsum dolor sit amet consectetur adipiscing elit. Etiam sed consectetur turpis. In porta</td></tr></table> | Sun, 26 Nov 2017 14:18:00 +0100 | Otto Drake |
+
+    When I go to the homepage of the "Remote Electrical" collection
+    Then I should not see the link "RSS feed" in the "Entity actions" region
 
     When I go to the homepage of the "Lantern Global" solution
     Then I should not see the link "RSS feed" in the "Entity actions" region
