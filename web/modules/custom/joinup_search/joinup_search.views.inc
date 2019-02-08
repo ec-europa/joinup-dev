@@ -20,6 +20,9 @@ function joinup_search_views_data_alter(array &$data) {
   // search_api_views_data().
   $alias_tracker = [];
 
+  /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
+  $entity_type_manager = \Drupal::service('entity_type.manager');
+
   foreach (Index::loadMultiple() as $index) {
     /** @var \Drupal\search_api\IndexInterface $index */
     $datasource_tables_prefix = 'search_api_datasource_' . $index->id() . '_';
@@ -33,8 +36,7 @@ function joinup_search_views_data_alter(array &$data) {
         continue;
       }
 
-      /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
-      $entity_type = \Drupal::service('entity_type.manager')->getDefinition($entity_type_id);
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
       if (!$entity_type->hasLinkTemplate('canonical')) {
         continue;
       }
