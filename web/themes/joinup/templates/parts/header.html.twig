@@ -16,6 +16,11 @@
         <span class="search-bar__icon icon icon--search"></span>
       </label>
 
+      {#
+        There are two variants of the search bar. Show the exposed field on the
+        search page, and on all other pages show a simple GET form that starts
+        a search.
+      #}
       {% if page.header.exposed_form_search_page %}
         {{ page.header.exposed_form_search_page }}
       {% else %}
