@@ -29,7 +29,8 @@
         </form>
       {% endif %}
     </div>
-{{ page.header }}
+{# Make sure to not render the search form twice. #}
+{{ page.header|without('exposed_form_search_page') }}
 {{ page.header_profile_menu }}
 
 </div>
