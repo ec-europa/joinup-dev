@@ -12,6 +12,7 @@ third_party_settings:
     scheme: public
     directory: inline-files
     extensions: 'txt pdf doc docx xls xlsx ods odt ppt pptx vsd zip tar gz png jpg jpeg mp4 avi'
+    max_size: ''
 format: content_editor
 editor: ckeditor
 settings:
@@ -44,6 +45,7 @@ settings:
           name: Media
           items:
             - Blockquote
+            - file_browser
             - DrupalImage
             - DrupalFile
             - Table
@@ -65,13 +67,13 @@ settings:
           items:
             - Source
   plugins:
+    stylescombo:
+      styles: ''
+    language:
+      language_list: un
     drupallink:
       linkit_enabled: true
       linkit_profile: default
-    language:
-      language_list: un
-    stylescombo:
-      styles: ''
     video_embed:
       defaults:
         children:

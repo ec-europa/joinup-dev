@@ -1,13 +1,10 @@
 langcode: en
 status: true
 dependencies:
-  config:
-    - image.style.wysiwyg_full_width
-    - image.style.wysiwyg_half_width
-    - image.style.wysiwyg_one_third_width
   module:
     - editor
     - embed_block
+    - entity_embed
     - image
     - joinup_video
     - linkit
@@ -26,9 +23,9 @@ filters:
     id: filter_html
     provider: filter
     status: true
-    weight: -49
+    weight: -50
     settings:
-      allowed_html: '<em> <br> <strong> <cite> <blockquote cite> <code> <q> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-image-style width height> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src frameborder width height allowfullscreen mozallowfullscreen webkitallowfullscreen>'
+      allowed_html: '<em> <br> <strong> <cite> <blockquote cite> <code> <q> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-image-style width height> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src allowfullscreen mozallowfullscreen webkitallowfullscreen width height frameborder> <drupal-entity data-entity-* data-entity-type data-entity-uuid data-entity-embed-display data-entity-embed-display-settings data-align data-caption data-embed-button>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -47,7 +44,7 @@ filters:
   filter_html_image_secure:
     id: filter_html_image_secure
     provider: filter
-    status: true
+    status: false
     weight: -44
     settings: {  }
   joinup_video:
@@ -57,11 +54,11 @@ filters:
     weight: -49
     settings:
       allowed_providers:
-        joinup_ec_video: joinup_ec_video
-        internal_path: internal_path
-        google_docs: google_docs
         prezi: prezi
         slideshare: slideshare
+        google_docs: google_docs
+        joinup_ec_video: joinup_ec_video
+        internal_path: internal_path
         vimeo: vimeo
         youtube: youtube
         youtube_playlist: 0
@@ -119,4 +116,10 @@ filters:
     provider: embed_block
     status: true
     weight: -39
+    settings: {  }
+  entity_embed:
+    id: entity_embed
+    provider: entity_embed
+    status: true
+    weight: -47
     settings: {  }
