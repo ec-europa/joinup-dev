@@ -42,6 +42,8 @@ function joinup_user_install() {
     'view own unpublished content',
     'view published og menu instance entities',
     'view rdf entity',
+    'dropzone upload files',
+    'access browse_files entity browser pages',
   ];
   user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, $authenticated_permissions);
 
@@ -56,6 +58,8 @@ function joinup_user_install() {
     'export rdf metadata',
     'post comments',
     'access comments',
+    'dropzone upload files',
+    'access browse_files entity browser pages',
   ];
   user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, $anonymous_permissions);
 
@@ -85,4 +89,21 @@ function joinup_user_setup_default_avatar() {
   $default_image['width'] = 640;
 
   $field_user_photo->set('settings.default_image', $default_image)->save(TRUE);
+}
+
+/**
+ * Grand permissions for the ckeditor file upload.
+ */
+function joinup_user_update_8100() {
+  $authenticated_permissions = [
+    'dropzone upload files',
+    'access browse_files entity browser pages',
+  ];
+  user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, $authenticated_permissions);
+
+  $anonymous_permissions = [
+    'dropzone upload files',
+    'access browse_files entity browser pages',
+  ];
+  user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, $anonymous_permissions);
 }

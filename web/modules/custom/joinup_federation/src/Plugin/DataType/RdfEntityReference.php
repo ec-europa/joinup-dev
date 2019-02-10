@@ -39,7 +39,7 @@ class RdfEntityReference extends EntityReference {
    *   (optional) The parent object of the data property, or NULL if it is the
    *   root of a typed data tree. Defaults to NULL.
    */
-  public function __construct(DataDefinitionInterface $definition, StagingCandidateGraphsInterface $staging_candidate_graphs, ?string $name = NULL, TypedDataInterface $parent = NULL) {
+  public function __construct(DataDefinitionInterface $definition, StagingCandidateGraphsInterface $staging_candidate_graphs, string $name = NULL, TypedDataInterface $parent = NULL) {
     parent::__construct($definition, $name, $parent);
     $this->stagingCandidateGraphs = $staging_candidate_graphs;
   }
