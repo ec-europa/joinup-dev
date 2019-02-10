@@ -32,7 +32,7 @@ class RdfEntityReference extends EntityReference {
    *   The data definition.
    * @param \Drupal\joinup_federation\StagingCandidateGraphsInterface $staging_candidate_graphs
    *   The staging candidate graphs service.
-   * @param string|null $name
+   * @param string $name
    *   (optional) The name of the created property, or NULL if it is the root
    *   of a typed data tree. Defaults to NULL.
    * @param \Drupal\Core\TypedData\TypedDataInterface $parent
@@ -67,8 +67,10 @@ class RdfEntityReference extends EntityReference {
     // target loader that gives priority to the 'staging‘ graph when loads the
     // target entity.
     if (
+      // If the field belongs to a parent that can be empty.
+      !($root instanceof EntityReference)
       // Has a non-empty root.
-      !$root->isEmpty()
+      && !$root->isEmpty()
       // And the root object is an entity adapter.
       && $root->getPluginDefinition()['id'] === 'entity'
       // And points to a non-empty entity.
