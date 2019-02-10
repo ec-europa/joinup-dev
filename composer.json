@@ -9,6 +9,8 @@
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "^1.6.4",
+        "desandro/imagesloaded": "^4.1",
+        "desandro/masonry": "^4.2",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta3",
@@ -22,8 +24,11 @@
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
         "drupal/email_registration": "^1.0-rc6",
+        "drupal/embed": "1.x-dev",
+        "drupal/entity_embed": "1.x-dev",
         "drupal/facets": "^1.2",
         "drupal/field_group": "~1.0-rc6",
+        "drupal/file_browser": "1.x-dev",
         "drupal/file_url": "~1.0",
         "drupal/flag": "^4.0@alpha",
         "drupal/geocoder": "^3.0",
@@ -69,6 +74,7 @@
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
+        "enyo/dropzone": "^5.5",
         "jacklmoore/autosize": "dev-master",
         "ml/json-ld": "^1.0",
         "openeuropa/oe_webtools_location": "dev-master",
@@ -350,6 +356,43 @@
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/virtuoso.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "desandro/masonry",
+                "version": "3.3.1",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/desandro/masonry/archive/v3.3.1.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "desandro/imagesloaded",
+                "version": "3.1.8",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/desandro/imagesloaded/archive/v3.1.8.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "enyo/dropzone",
+                "version": "4.2.0",
+                "type": "drupal-library",
+                "source": {
+                    "url": "https://github.com/enyo/dropzone",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
         }
     ]
 }
