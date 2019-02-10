@@ -102,6 +102,14 @@ dependencies:
   - views
   - views_bulk_operations
   - views_data_export
+  - entity_embed
+  - file_browser
+  - media_library
+  - embed
+  - entity_browser
+  - dropzonejs
+  - dropzoejs_eb_widget
+  - media
 
 themes:
   - seven

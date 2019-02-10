@@ -380,3 +380,10 @@ function joinup_core_post_update_remove_tour_buttons() {
   $config_factory->getEditable('block.block.tourbutton_2')->delete();
   $config_factory->getEditable('block.block.tourbutton')->delete();
 }
+
+/**
+ * Enable modules related to ckeditor.
+ */
+function joinup_core_post_update_enable_ckeditor_modules() {
+  \Drupal::service('module_installer')->install(['entity_embed', 'file_browser', 'media_library', 'embed', 'entity_browser', 'dropzonejs', 'dropzonejs_eb_widget', 'media']);
+}
