@@ -368,7 +368,10 @@ function joinup_core_post_update_install_piwik2matomo() {
  * Enable the 'joinup_sparql' and 'joinup_federation' modules.
  */
 function joinup_core_post_update_install_modules() {
-  \Drupal::service('module_installer')->install(['joinup_sparql', 'joinup_federation']);
+  \Drupal::service('module_installer')->install([
+    'joinup_sparql',
+    'joinup_federation',
+  ]);
 }
 
 /**
@@ -385,5 +388,12 @@ function joinup_core_post_update_remove_tour_buttons() {
  * Enable modules related to ckeditor.
  */
 function joinup_core_post_update_enable_ckeditor_modules() {
-  \Drupal::service('module_installer')->install(['entity_embed', 'file_browser', 'media_library', 'embed', 'entity_browser', 'dropzonejs', 'dropzonejs_eb_widget', 'media']);
+  \Drupal::service('module_installer')->install([
+    'entity_embed',
+    'file_browser',
+    'embed',
+    'entity_browser',
+    'dropzonejs',
+    'dropzonejs_eb_widget',
+  ]);
 }
