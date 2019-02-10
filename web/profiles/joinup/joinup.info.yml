@@ -107,7 +107,7 @@ dependencies:
   - embed
   - entity_browser
   - dropzonejs
-  - dropzoejs_eb_widget
+  - dropzonejs_eb_widget
 
 themes:
   - seven
