@@ -73,12 +73,14 @@ function joinup_rss_page_attachments(array &$attachments) {
 
   $url = Url::fromRoute('view.collection_feed.rss_feed', [
     'rdf_entity' => UriEncoder::encodeUrl($entity->id()),
-  ])->setAbsolute()->toString();
+  ])->setAbsolute();
 
-  $attachments['#attached']['feed'][] = [
-    $url,
-    t('Latest updates from the @collection collection', [
-      '@collection' => $entity->label(),
-    ]),
-  ];
+  if ($url->access()) {
+    $attachments['#attached']['feed'][] = [
+      $url->toString(),
+      t('Latest updates from the @collection collection', [
+        '@collection' => $entity->label(),
+      ]),
+    ];
+  }
 }
