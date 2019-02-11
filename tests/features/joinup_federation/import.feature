@@ -92,9 +92,13 @@ Feature: As a site moderator I am able to import RDF files.
       | The distribution Windows is linked also by the Asset release 1 release.                |
 
   Scenario: Test a successful import.
-    Given solutions:
-      | uri                           | title                       | description         | state     | modification date |
-      | http://example.com/solution/2 | Local version of Solution 2 | Initial description | validated | 15-07-2018        |
+    Given collection:
+      | uri   | http://administracionelectronica.gob.es/ctt |
+      | title | Spain                                       |
+      | state | validated                                   |
+    And solutions:
+      | uri                           | title                       | collection | description         | state     | modification date |
+      | http://example.com/solution/2 | Local version of Solution 2 | Spain      | Initial description | validated | 15-07-2018        |
     And the following distribution:
       | uri               | http://example.com/distribution/3          |
       | title             | Local version of a standalone distribution |
@@ -103,11 +107,6 @@ Feature: As a site moderator I am able to import RDF files.
       | parent            | Local version of Solution 2                |
       | creation date     | 15-07-2018                                 |
       | modification date | 15-07-2018                                 |
-    And collection:
-      | uri        | http://administracionelectronica.gob.es/ctt |
-      | title      | Spain                                       |
-      | state      | validated                                   |
-      | affiliates | Local version of Solution 2                 |
     And provenance activities:
       | entity                        | enabled | author          | started          |
       | Local version of Solution 2   | yes     | Antoine Batiste | 2012-07-07 23:01 |

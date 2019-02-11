@@ -5,16 +5,15 @@ Feature: "Add document" visibility options.
   I need to be able to add "Document" content through UI.
 
   Scenario: "Add document" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following solutions:
-      | title               | logo     | banner     | state     |
-      | Seventh Name        | logo.png | banner.jpg | validated |
-      | The Obsessed Stream | logo.png | banner.jpg | validated |
-    And the following collection:
-      | title      | Collective Seventh Name           |
-      | logo       | logo.png                          |
-      | banner     | banner.jpg                        |
-      | affiliates | Seventh Name, The Obsessed Stream |
-      | state      | validated                         |
+    Given the following collection:
+      | title  | Collective Seventh Name |
+      | logo   | logo.png                |
+      | banner | banner.jpg              |
+      | state  | validated               |
+    And the following solutions:
+      | title               | collection              | logo     | banner     | state     |
+      | Seventh Name        | Collective Seventh Name | logo.png | banner.jpg | validated |
+      | The Obsessed Stream | Collective Seventh Name | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Seventh Name" solution
@@ -36,15 +35,14 @@ Feature: "Add document" visibility options.
     Then I should see the link "Add document"
 
   Scenario: Add document as a facilitator.
-    Given solutions:
-      | title               | logo     | banner     | state     |
-      | Winter of Beginning | logo.png | banner.jpg | validated |
-    And the following collection:
-      | title      | Collective Winter of Beginning |
-      | logo       | logo.png                       |
-      | banner     | banner.jpg                     |
-      | affiliates | Winter of Beginning            |
-      | state      | validated                      |
+    Given the following collection:
+      | title  | Collective Winter of Beginning |
+      | logo   | logo.png                       |
+      | banner | banner.jpg                     |
+      | state  | validated                      |
+    And solutions:
+      | title               | collection                     | logo     | banner     | state     |
+      | Winter of Beginning | Collective Winter of Beginning | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Winter of Beginning" solution
 
     When I go to the homepage of the "Winter of Beginning" solution

@@ -5,15 +5,15 @@ Feature: Add distribution through the UI
   I need to be able to add "Distribution" RDF entities through the UI.
 
   Background:
-    Given the following solution:
-      | title       | Solution random x name           |
-      | description | Some reusable random description |
-      | state       | validated                        |
-    And the following collection:
+    Given the following collection:
       | title      | Asset Distribution Test |
       | logo       | logo.png                |
-      | affiliates | Solution random x name  |
       | state      | validated               |
+    And the following solution:
+      | title       | Solution random x name           |
+      | collection  | Asset Distribution Test          |
+      | description | Some reusable random description |
+      | state       | validated                        |
     And the following release:
       | title         | 1.0.0 Authoritarian Alpaca |
       | description   | First public release.      |

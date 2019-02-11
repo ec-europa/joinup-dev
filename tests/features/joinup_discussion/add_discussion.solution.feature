@@ -5,16 +5,15 @@ Feature: "Add discussion" visibility options.
   I need to be able to add "Discussion" content through UI.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following solutions:
-      | title              | logo     | banner     | state     |
-      | Eager Sliver       | logo.png | banner.jpg | validated |
-      | The Silent Bridges | logo.png | banner.jpg | validated |
-    And the following collection:
-      | title      | Collective Eager Sliver          |
-      | logo       | logo.png                         |
-      | banner     | banner.jpg                       |
-      | affiliates | Eager Sliver, The Silent Bridges |
-      | state      | validated                        |
+    Given the following collection:
+      | title  | Collective Eager Sliver |
+      | logo   | logo.png                |
+      | banner | banner.jpg              |
+      | state  | validated               |
+    And the following solutions:
+      | title              | collection              | logo     | banner     | state     |
+      | Eager Sliver       | Collective Eager Sliver | logo.png | banner.jpg | validated |
+      | The Silent Bridges | Collective Eager Sliver | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Eager Sliver" solution
@@ -36,15 +35,15 @@ Feature: "Add discussion" visibility options.
     Then I should see the link "Add discussion"
 
   Scenario: Add discussion as a facilitator.
-    Given solutions:
-      | title               | logo     | banner     | state     |
-      | Emerald in the Luck | logo.png | banner.jpg | validated |
-    And the following collection:
-      | title      | Collective Emerald in the Luck |
-      | logo       | logo.png                       |
-      | banner     | banner.jpg                     |
-      | affiliates | Emerald in the Luck            |
-      | state      | validated                      |
+    Given the following collection:
+      | title  | Collective Emerald in the Luck |
+      | logo   | logo.png                       |
+      | banner | banner.jpg                     |
+      | state  | validated                      |
+    And solutions:
+      | title               | collection                     | logo     | banner     | state     |
+      | Emerald in the Luck | Collective Emerald in the Luck | logo.png | banner.jpg | validated |
+
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 
     When I go to the homepage of the "Emerald in the Luck" solution

@@ -5,13 +5,13 @@ Feature: Site menus
   I want to have access to site-wide menus
 
   Scenario: Main menu items should be active based on the current page.
-    Given solution:
-      | title | Rich Sound |
-      | state | validated  |
-    And collection:
-      | title      | Hungry Firecracker |
+    Given collection:
+      | title | Hungry Firecracker |
+      | state | validated          |
+    And solution:
+      | title      | Rich Sound         |
       | state      | validated          |
-      | affiliates | Rich Sound         |
+      | collection | Hungry Firecracker |
     And releases:
       | title               | release number | release notes | is version of | state     |
       | Alphorn sheet music | 1              | First notes.  | Rich Sound    | validated |

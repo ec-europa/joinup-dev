@@ -176,7 +176,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'title' => 'label',
       'abstract' => 'field_ar_abstract',
       'access url' => 'field_ar_access_url',
-      'affiliates' => 'field_ar_affiliates',
       'banner' => 'field_ar_banner',
       'closed' => 'field_ar_closed',
       'contact information' => 'field_ar_contact_information',
@@ -273,7 +272,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   A new collection entity.
    *
    * @throws \Exception
@@ -293,17 +292,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     $collection = $this->createRdfEntity('collection', $values);
     $this->collections[$collection->id()] = $collection;
 
-    // We have to force reindex of affiliated solutions so the relationship
-    // with this collection will be indexed in Solr.
-    if (!$collection->get('field_ar_affiliates')->isEmpty()) {
-      foreach ($collection->get('field_ar_affiliates')->referencedEntities() as $solution) {
-        // Reindex the solution, so that the value of the "collection" computed
-        // field will be populated and indexed correctly.
-        $this->forceSearchApiReindex($solution);
-      }
-    }
-
-    return $collection;
+    return $this->collections[$collection->id()] = $collection;;
   }
 
   /**
