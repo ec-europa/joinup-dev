@@ -20,7 +20,7 @@ use Drupal\views\ViewExecutable;
  *
  * @see joinup_core_views_query_alter()
  */
-function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void {
   if ($view->id() !== 'collection_feed') {
     return;
   }
@@ -40,7 +40,7 @@ function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $que
  *
  * Adds dynamic title and description to the rss.
  */
-function joinup_rss_preprocess_views_view_rss__collection_feed__rss_feed(&$variables) {
+function joinup_rss_preprocess_views_view_rss__collection_feed__rss_feed(&$variables): void {
   // Load the entity from the first view argument. The argument has been already
   // validated early so we can expect a collection to be loaded successfully.
   $encoded_collection_id = $variables['view']->args[0];
@@ -59,7 +59,7 @@ function joinup_rss_preprocess_views_view_rss__collection_feed__rss_feed(&$varia
  *
  * Attach the rss feed link in the header on collection homepages.
  */
-function joinup_rss_page_attachments(array &$attachments) {
+function joinup_rss_page_attachments(array &$attachments): void {
   $route = \Drupal::routeMatch();
   if ($route->getRouteName() !== 'entity.rdf_entity.canonical') {
     return;
