@@ -269,7 +269,6 @@ Feature:
     Then I should not see the heading "Rare Nintendo64 disk drive discovered"
 
   Scenario: Test newsletter listing.
-
     Given newsletter content:
       | title                  | content        | collection | state     |
       | Nintendo64 in the News | Old stories... | Nintendo64 | validated |
@@ -285,3 +284,69 @@ Feature:
     And I check the box "Display a community content listing"
     And I press "Save"
     Then I should see the "Nintendo64 in the News" tile
+
+  Scenario: Test listing by keywords that contain the same word.
+    Given document content:
+      | title        | keywords            | content     | collection | state     |
+      | User's Guide | nintendo64 manuals  | User manual | Nintendo64 | validated |
+      | Licence      | nintendo64 licences | Licence     | Nintendo64 | validated |
+    And I am logged in as a moderator
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+
+    When I fill in the following:
+      | Title | Manuals        |
+      | Body  | Product guides |
+    And I check the box "Display a community content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|document
+        keywords|"nintendo64 manuals"
+        """
+    When I press "Save"
+
+    Then I should see the "User's Guide" tile
+    But I should not see the "Licence" tile
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+
+    When I fill in the following:
+      | Title | Licences          |
+      | Body  | Product licensing |
+    And I check the box "Display a community content listing"
+    And I fill in "Query presets" with:
+        """
+        entity_bundle|document
+        keywords|"nintendo64 licences"
+        """
+    When I press "Save"
+
+    Then I should see the "Licence" tile
+    But I should not see the "User's Guide" tile
+
+  Scenario: Invalid entries in the query presets field show a validation error.
+    Given I am logged in as a moderator
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+    Then I should see the heading "Add custom page"
+    When I fill in "Title" with "Query presets validation"
+    And I check "Display a community content listing"
+    And I fill in "Query presets" with "wrongvalue"
+    And I press "Save"
+    Then I should see the error message "Invalid query preset line added: wrongvalue."
+    When I fill in "Query presets" with "unknown_field|news"
+    And I press "Save"
+    Then I should see the error message "Invalid search field specified: unknown_field."
+    When I fill in "Query presets" with "entity_bundle|news|equal"
+    And I press "Save"
+    Then I should see the error message "Invalid operator specified: equal. Allowed operators are '=', '<>', 'IN', 'NOT IN'."
+    # Verify that errors are reported when multiline values are added.
+    When I fill in "Query presets" with:
+        """
+        entity_bundle|news
+        unknown_field|test
+        """
+    And I press "Save"
+    Then I should see the error message "Invalid search field specified: unknown_field."

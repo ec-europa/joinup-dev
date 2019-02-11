@@ -10,7 +10,7 @@ third_party_settings:
     mapping:
       target_id:
         predicate: 'http://www.w3.org/ns/dcat#accessURL'
-        format: literal
+        format: 'xsd:anyURI'
       display:
         predicate: ''
         format: ''

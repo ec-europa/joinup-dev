@@ -4,7 +4,7 @@ Feature: Creating a test (solution) in the TRR collection.
   As a collection facilitator
   I need to be able to add 'test'-enabled solutions.
 
-  @terms
+  @terms @javascript
   Scenario: Create a TRR solution
     Given users:
       | Username | Roles |
@@ -20,40 +20,57 @@ Feature: Creating a test (solution) in the TRR collection.
       | W3C  | Company, Industry consortium |
     When I am logged in as "Wobbe"
     Given I go to the homepage of the "Friends of the test repository" collection
+    And I open the plus button menu
     And I click "Add solution"
-    And I should see the text "TRR"
+    And I should see the text "Add solution"
 
     # Fill in basic solution data.
+    When I fill in "Title" with "Linked Open Data"
+    And I enter "Re-usable government data" in the "Description" wysiwyg editor
     When I fill in the following:
-      | Title            | Linked Open Data                                              |
-      | Description      | Re-usable government data                                     |
-      | Spatial coverage | Belgium                                                       |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS |
-      | Name             | Lucky Luke                                                    |
-      | E-mail address   | ernsy1999@gmail.com                                           |
+      | Name           | Lucky Luke          |
+      | E-mail address | ernsy1999@gmail.com |
+    And I select "Supplier exchange" from "Policy domain"
+    # Click the button to select an existing owner.
+    And I press "Add existing" at the "Owner" field
+    And I wait for AJAX to finish
+    And I fill in "Owner" with "W3C"
+    And I press "Add owner"
+    And I wait for AJAX to finish
+
+    # TRR fields should be hidden by default.
+    Given the following fields should not be visible "Test resource type, Actor, Business process, Product type, Standardization level"
     # A "TRR" solution is unlocked by choosing one of the following solution types:
     # - [ABB128] Test Service
     # - [ABB129] Test Component
     # = [ABB130] Test Scenario
-    Then I select "http://data.europa.eu/dr8/TestService" from "Solution type"
-    And I select "Supplier exchange" from "Policy domain"
-    # Attach a PDF to the documentation.
-    And I upload the file "text.pdf" to "Upload a new file or enter a URL"
-    # Click the button to select an existing owner.
-    And I press "Add existing" at the "Owner" field
-    And I fill in "Owner" with "W3C"
-    And I press "Add owner"
-    And I select "Completed" from "Status"
+    When I select "[ABB128] Test Service" from "Solution type"
+    Then the following fields should be visible "Test resource type, Actor, Business process, Product type, Standardization level"
+    # TRR solutions have additional required fields.
+    When I press "Propose"
+    Then I should see the following error messages:
+      | error messages                                                                                  |
+      | The field Test resource type is required when Solution type is set to [ABB128] Test Service.    |
+      | The field Actor is required when Solution type is set to [ABB128] Test Service.                 |
+      | The field Business process is required when Solution type is set to [ABB128] Test Service.      |
+      | The field Product type is required when Solution type is set to [ABB128] Test Service.          |
+      | The field Standardization level is required when Solution type is set to [ABB128] Test Service. |
 
     # Fill in TRR specific data.
-    And I select "Test Suite" from "Test resource type"
-    And I select "Agent" from "Actor"
+    When I select "Agent" from "Actor"
     And I fill in "Business process" with "Notification Of Failure"
     And I fill in "Product type" with "Soya beans"
     And I select "Level 1" from "Standardization level"
+
+    # "Test resource type" allowed values vary based on the solution type field.
+    When I select "Test Suite" from "Test resource type"
     And I press "Propose"
-    Then I should see the error message "Test resource type should be either 'Test Bed', 'Messaging Adapter' or 'Document Validator' for the given solution type."
-    When I select "http://data.europa.eu/dr8/TestScenario" from "Solution type"
+    Then I should see the error message 'Test resource type should be either "Test Bed", "Messaging Adapter" or "Document Validator" when solution type is set to "Test service" or "Test component".'
+    When I select "[ABB130] Test Scenario" from "Solution type"
+    And I select "Messaging Adapter" from "Test resource type"
+    And I press "Propose"
+    Then I should see the error message 'Test resource type should be either "Test Suite", "Test Case", "Test Assertion" or "Document Assertion Set" when solution type is set to "Test scenario".'
+    When I select "Test Suite" from "Test resource type"
     And I press "Propose"
     Then I should see the heading "Linked Open Data"
 
@@ -67,23 +84,12 @@ Feature: Creating a test (solution) in the TRR collection.
       | title       | TRR solution bar    |
       | description | The test repository |
       | state       | validated           |
-    And the following distribution:
-      | title       | TRR Distribution foo                  |
-      | description | Asset distribution sample description |
-      | access url  | test.zip                              |
-      | solution    | TRR solution foo                      |
-    And the following distribution:
-      | title       | TRR Distribution bar                  |
-      | description | Asset distribution sample description |
-      | access url  | test.zip                              |
-      | solution    | TRR solution bar                      |
     And the following release:
       | title          | TRR release foo         |
       | description    | TRR release description |
       | documentation  | text.pdf                |
       | release number | 1                       |
       | release notes  | Changed release         |
-      | distribution   | TRR Distribution foo    |
       | is version of  | TRR solution foo        |
     And the following release:
       | title          | TRR release bar         |
@@ -91,8 +97,17 @@ Feature: Creating a test (solution) in the TRR collection.
       | documentation  | text.pdf                |
       | release number | 1                       |
       | release notes  | Changed release         |
-      | distribution   | TRR Distribution bar    |
       | is version of  | TRR solution bar        |
+    And the following distribution:
+      | title       | TRR Distribution foo                  |
+      | description | Asset distribution sample description |
+      | access url  | test.zip                              |
+      | parent      | TRR release foo                       |
+    And the following distribution:
+      | title       | TRR Distribution bar                  |
+      | description | Asset distribution sample description |
+      | access url  | test.zip                              |
+      | parent      | TRR release bar                       |
 
     # The GITB compliant field is only shown when the solution has a certain solution type.
     When I am logged in as a "facilitator" of the "TRR solution foo" solution

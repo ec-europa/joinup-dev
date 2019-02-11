@@ -20,14 +20,14 @@ Feature: Solution homepage
       | IS protocol paper | 1              | 2018-10-04 8:01am | First stable version.                       | Information sharing protocol | validated | Belgium          |
       | Fireproof         | 0.1            | 2018-10-04 8:06am | First release for the firewall bypass tool. | Security audit tools         | validated |                  |
     And the following distributions:
-      | title           | description                                        | creation date     | access url       | solution                     | parent                       | downloads |
-      | PDF version     | Pdf version of the paper.                          | 2018-10-04 8:07am | text.pdf         | Information sharing protocol | IS protocol paper            | 589       |
-      | ZIP version     | Zip version of the paper.                          | 2018-10-04 8:04am | test.zip         | Information sharing protocol | IS protocol paper            | 514       |
+      | title           | description                                        | creation date     | access url       | parent                       | downloads |
+      | PDF version     | Pdf version of the paper.                          | 2018-10-04 8:07am | text.pdf         | IS protocol paper            | 589       |
+      | ZIP version     | Zip version of the paper.                          | 2018-10-04 8:04am | test.zip         | IS protocol paper            | 514       |
       # One distribution directly attached to the "Information sharing protocol" solution.
-      | Protocol draft  | Initial draft of the protocol.                     | 2018-10-04 7:59am | http://a.b.c.pdf | Information sharing protocol | Information sharing protocol | 564       |
-      | Source code     | Source code for the Fireproof tool.                | 2018-10-04 8:03am | test.zip         | Security audit tools         | Fireproof                    | 432       |
+      | Protocol draft  | Initial draft of the protocol.                     | 2018-10-04 7:59am | http://a.b.c.pdf | Information sharing protocol | 564       |
+      | Source code     | Source code for the Fireproof tool.                | 2018-10-04 8:03am | test.zip         | Fireproof                    | 432       |
       # One distribution directly attached to the "Security audit tools" solution.
-      | Code of conduct | Code of conduct for contributing to this software. | 2018-10-04 8:14am | http://a.b/c.zip | Security audit tools         | Security audit tools         | 740       |
+      | Code of conduct | Code of conduct for contributing to this software. | 2018-10-04 8:14am | http://a.b/c.zip | Security audit tools         | 740       |
     And news content:
       | title               | body                                | created           | policy domain           | spatial coverage | solution                     | state     |
       | IS protocol meet-up | Discussion about the next standard. | 2018-10-04 8:02am | Statistics and Analysis | European Union   | Information sharing protocol | validated |

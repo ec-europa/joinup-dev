@@ -3,3 +3,5 @@ type: module
 description: 'Specificities for the Spain CTT community.'
 core: 8.x
 package: 'Joinup communities'
+dependencies:
+  - joinup_federation

@@ -44,3 +44,7 @@
 
 # Ignore temporary files
 /tmp
+
+# Ignore local docker-compose file.
+docker-compose.local.yml
+docker-compose.*.local.yml

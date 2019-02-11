@@ -7,7 +7,6 @@ use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgAccessInterface;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -122,29 +121,7 @@ class AssetReleaseController extends ControllerBase {
     $releases = array_filter($releases, function ($release) {
       return $release->access('view');
     });
-
-    // Retrieve all standalone distributions for this solution. These are
-    // downloads that are not associated with a release.
-    // The standalone distributions are not flagged in any way, and the relation
-    // between releases and distributions is backwards (the relation is present
-    // on the parent entity). We work around this by retrieving all
-    // distributions excluding the ones that are associated with a release.
-    $release_distribution_ids = [];
-    foreach ($releases as $release) {
-      foreach ($release->get('field_isr_distribution')->getValue() as $distribution_reference) {
-        $release_distribution_ids[] = $distribution_reference['target_id'];
-      }
-    }
-
-    $query = $this->queryFactory->get('rdf_entity');
-    $query
-      ->condition('rid', 'asset_distribution')
-      ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $rdf_entity->id());
-    if (!empty($release_distribution_ids)) {
-      $query->condition('id', $release_distribution_ids, 'NOT IN');
-    }
-    $standalone_distribution_ids = $query->execute();
-    $standalone_distributions = Rdf::loadMultiple($standalone_distribution_ids);
+    $standalone_distributions = $rdf_entity->get('field_is_distribution')->referencedEntities();
 
     // Put a flag on the standalone distributions so they can be identified for
     // theming purposes.

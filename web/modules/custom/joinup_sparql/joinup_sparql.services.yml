@@ -1,0 +1,5 @@
+services:
+  joinup_sparql.default_graphs.subscriber:
+    class: Drupal\joinup_sparql\EventSubscriber\JoinupSparqlDefaultGraphsSubscriber
+    tags:
+    - name: event_subscriber

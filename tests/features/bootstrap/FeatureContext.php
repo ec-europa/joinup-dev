@@ -1132,6 +1132,46 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks if a checkbox in a row with a given text is checked.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is unchecked.
+   *
+   * @Then the row :text is selected/checked
+   */
+  public function assertRowIsChecked($text) {
+    if (!$this->getRowCheckboxByText($text)->isChecked()) {
+      throw new ExpectationException("Check box in '$text' row is unchecked but it should be checked.", $this->getSession()->getDriver());
+    }
+  }
+
+  /**
+   * Checks if a checkbox in a row with a given text is not checked.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is checked.
+   *
+   * @Then the row :text is not selected/checked
+   */
+  public function assertRowIsNotChecked($text) {
+    if ($this->getRowCheckboxByText($text)->isChecked()) {
+      throw new ExpectationException("Check box in '$text' row is checked but it should be unchecked.", $this->getSession()->getDriver());
+    }
+  }
+
+  /**
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
@@ -1141,11 +1181,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
    *
-   * @Given I select/check the :row_text row
+   * @Given I select/check the :text row
    */
   public function checkTableselectRow(string $text): void {
-    $checkbox = $this->getRowCheckboxByText($text);
-    $checkbox->check();
+    $this->getRowCheckboxByText($text)->check();
   }
 
   /**
@@ -1154,11 +1193,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string $text
    *   Text in the row.
    *
-   * @Given I deselect/uncheck the :row_text row
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   *
+   * @Given I deselect/uncheck the :text row
    */
   public function uncheckTableselectRow(string $text): void {
-    $checkbox = $this->getRowCheckboxByText($text);
-    $checkbox->uncheck();
+    $this->getRowCheckboxByText($text)->uncheck();
   }
 
   /**

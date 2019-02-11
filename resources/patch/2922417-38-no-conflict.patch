@@ -1,0 +1,110 @@
+diff --git a/core/lib/Drupal/Core/Config/ConfigInstaller.php b/core/lib/Drupal/Core/Config/ConfigInstaller.php
+index 4a198a7252..c0abae5609 100644
+--- a/core/lib/Drupal/Core/Config/ConfigInstaller.php
++++ b/core/lib/Drupal/Core/Config/ConfigInstaller.php
+@@ -122,10 +122,14 @@ public function installDefaultConfig($type, $name) {
+       $collection_info = $this->configManager->getConfigCollectionInfo();
+       foreach ($collection_info->getCollectionNames() as $collection) {
+         $config_to_create = $this->getConfigToCreate($storage, $collection, $prefix, $profile_storages);
+-        // If we're installing a profile ensure configuration that is overriding
+-        // is excluded.
+         if ($name == $this->drupalGetProfile()) {
+-          $existing_configuration = $this->getActiveStorages($collection)->listAll();
++          // If we're installing a profile ensure simple configuration that
++          // already exists is excluded as it will have already been written.
++          // This means that if the configuration is changed by something else
++          // during the install it will not be overwritten again.
++          $existing_configuration = array_filter($this->getActiveStorages($collection)->listAll(), function ($config_name) {
++            return !$this->configManager->getEntityTypeIdByName($config_name);
++          });
+           $config_to_create = array_diff_key($config_to_create, array_flip($existing_configuration));
+         }
+         if (!empty($config_to_create)) {
+@@ -270,7 +274,24 @@ protected function getConfigToCreate(StorageInterface $storage, $collection, $pr
+       if ($profile_storage->getCollectionName() != $collection) {
+         $profile_storage = $profile_storage->createCollection($collection);
+       }
+-      $data = $profile_storage->readMultiple(array_keys($data)) + $data;
++      $profile_overrides = $profile_storage->readMultiple(array_keys($data));
++      if ($this->drupalInstallationAttempted()) {
++        // Install profiles can provide configuration overrides that have
++        // dependencies that can not possibly be installed. Therefore, only
++        // override simple configuration. As this method is called before
++        // modules are installed the only way to determine if they are
++        // configuration entities is the presence of a dependencies key.
++        foreach ($profile_overrides as $name => $override_data) {
++          if (!isset($override_data['dependencies'])) {
++            $data[$name] = $override_data;
++          }
++        }
++      }
++      else {
++        // Allow install profiles to override configuration when installing
++        // extension after Drupal installation.
++        $data = $profile_overrides + $data;
++      }
+     }
+     return $data;
+   }
+diff --git a/core/modules/config/tests/src/Functional/ConfigInstallProfileUnmetDependenciesTest.php b/core/modules/config/tests/src/Functional/ConfigInstallProfileUnmetDependenciesTest.php
+index ab71faa3a2..59f9f706ee 100644
+--- a/core/modules/config/tests/src/Functional/ConfigInstallProfileUnmetDependenciesTest.php
++++ b/core/modules/config/tests/src/Functional/ConfigInstallProfileUnmetDependenciesTest.php
+@@ -69,11 +69,10 @@ protected function copyTestingOverrides() {
+       }
+     }
+ 
+-    // Add a dependency that can not be met because User is installed before
+-    // Action.
++    // Add a dependency that can not be met.
+     $config_file = $dest . DIRECTORY_SEPARATOR . InstallStorage::CONFIG_INSTALL_DIRECTORY . DIRECTORY_SEPARATOR . 'system.action.user_block_user_action.yml';
+     $action = Yaml::decode(file_get_contents($config_file));
+-    $action['dependencies']['module'][] = 'action';
++    $action['dependencies']['module'][] = 'does_not_exist';
+     file_put_contents($config_file, Yaml::encode($action));
+   }
+ 
+@@ -82,7 +81,7 @@ protected function copyTestingOverrides() {
+    */
+   public function testInstalled() {
+     if ($this->expectedException) {
+-      $this->assertContains('Configuration objects provided by <em class="placeholder">user</em> have unmet dependencies: <em class="placeholder">system.action.user_block_user_action (action)</em>', $this->expectedException->getMessage());
++      $this->assertContains('Configuration objects provided by <em class="placeholder">testing_config_overrides</em> have unmet dependencies: <em class="placeholder">system.action.user_block_user_action (does_not_exist)</em>', $this->expectedException->getMessage());
+       $this->assertContains('Drupal\Core\Config\UnmetDependenciesException', $this->expectedException->getMessage());
+     }
+     else {
+diff --git a/core/profiles/testing_config_overrides/config/install/system.site.yml b/core/profiles/testing_config_overrides/config/install/system.site.yml
+new file mode 100644
+index 0000000000..56104f4bff
+--- /dev/null
++++ b/core/profiles/testing_config_overrides/config/install/system.site.yml
+@@ -0,0 +1,12 @@
++uuid: ''
++name: 'Test - this is overridden by the installer site configure form'
++mail: ''
++slogan: ''
++page:
++  403: ''
++  404: ''
++  front: /user/login
++admin_compact_mode: false
++weight_select_max: 91
++langcode: en
++default_langcode: en
+diff --git a/core/profiles/testing_config_overrides/config/install/user.role.authenticated.yml b/core/profiles/testing_config_overrides/config/install/user.role.authenticated.yml
+new file mode 100644
+index 0000000000..1b210736be
+--- /dev/null
++++ b/core/profiles/testing_config_overrides/config/install/user.role.authenticated.yml
+@@ -0,0 +1,11 @@
++langcode: en
++status: true
++dependencies:
++  module:
++    - tour
++id: authenticated
++label: 'Authenticated user'
++weight: 1
++is_admin: false
++permissions:
++  - 'access tour'

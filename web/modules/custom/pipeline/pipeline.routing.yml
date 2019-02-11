@@ -1,0 +1,32 @@
+pipeline.pipeline_select:
+  path: '/admin/content/pipeline'
+  defaults:
+    _form: 'Drupal\pipeline\Form\PipelineSelectForm'
+    _title: 'Select pipeline'
+  requirements:
+    _permission: 'access pipeline selector'
+
+pipeline.execute_pipeline.html:
+  path: '/admin/content/pipeline/{pipeline}/execute'
+  defaults:
+    _controller: 'Drupal\pipeline\Controller\PipelineExecutionController::execution'
+    _title: 'Select pipeline'
+  requirements:
+    _format: 'html'
+    _custom_access: 'Drupal\pipeline\Controller\PipelineExecutionController::allowExecute'
+
+pipeline.execute_pipeline.json:
+  path: '/admin/content/pipeline/{pipeline}/execute'
+  defaults:
+    _controller: 'Drupal\pipeline\Controller\PipelineExecutionController::execution'
+  requirements:
+    _format: 'json'
+    _custom_access: 'Drupal\pipeline\Controller\PipelineExecutionController::allowExecute'
+
+pipeline.reset_pipeline:
+  path: '/admin/content/pipeline/{pipeline}/reset'
+  defaults:
+    _controller: '\Drupal\pipeline\Controller\PipelineExecutionController::reset'
+    _title: 'Reset the current pipeline'
+  requirements:
+    _custom_access: 'Drupal\pipeline\Controller\PipelineExecutionController::allowReset'

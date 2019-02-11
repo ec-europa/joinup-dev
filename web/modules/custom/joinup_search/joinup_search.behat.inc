@@ -46,7 +46,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I click the :type content tab
    */
   public function clickContentTypeFacet(string $type): void {
-    $this->assertContentTabDisplayed($type)->click();
+    $this->findContentTab($type)->click();
   }
 
   /**
@@ -55,23 +55,30 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $type
    *   The text of the content tab.
    *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The link as node element.
-   *
    * @throws \Exception
    *   Thrown when the tab is not found in the page.
    *
    * @Given the :type content tab is displayed
    */
-  public function assertContentTabDisplayed(string $type): NodeElement {
+  public function assertContentTabDisplayed(string $type) {
+    if (!$this->findContentTab($type)) {
+      throw new \Exception("The tab '$type' was not found in the page but it should be displayed.");
+    }
+  }
+
+  /**
+   * Provides a helper that checks if content tab exist and returns it.
+   *
+   * @param string $type
+   *   The text of the content tab.
+   *
+   * @return \Behat\Mink\Element\NodeElement|null
+   *   The link as node element or NULL.
+   */
+  protected function findContentTab(string $type): ?NodeElement {
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' tab__container ')]//span[@class='tab__text--lower'][normalize-space(string(.)) = '$type']" .
       "/ancestor-or-self::a[@class and contains(concat(' ', normalize-space(@class), ' '), ' tab--content-type ')]";;
-
-    if (!$link = $this->getSession()->getPage()->find('xpath', $xpath)) {
-      throw new \Exception("The tab $type was not found in the page.");
-    }
-
-    return $link;
+    return $this->getSession()->getPage()->find('xpath', $xpath);
   }
 
   /**

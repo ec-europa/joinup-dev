@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains the pipeline.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function pipeline_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the pipeline module.
+    case 'help.page.pipeline':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The <em>Pipeline</em> module allows splitting processes in steps and then running them via an orchestrator service.') . '</p>';
+      $output .= '<p>' . t('Pipelines are defined as plugins of type <code>pipeline_pipeline</code>. A pipeline consists in a number of pipeline steps. Each step is a plugin of type <code>pipeline_step</code>.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

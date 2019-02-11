@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_field\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -20,7 +22,7 @@ use Drupal\search_api\Entity\Index as SearchApiIndex;
  *   default_formatter = "search_api_field",
  * )
  */
-class SearchItem extends FieldItemBase {
+class SearchItem extends FieldItemBase implements SearchItemInterface {
 
   /**
    * {@inheritdoc}
@@ -37,6 +39,10 @@ class SearchItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+    // @todo: We should define the individual properties 'fields', 'enabled',
+    // 'query_presets', 'limit' and 'query_builder' instead of wrapping them all
+    // in a 'value' array.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4872
     $properties['value'] = DataDefinition::create('any')
       ->setLabel(t('Data'));
     return $properties;
@@ -376,6 +382,31 @@ class SearchItem extends FieldItemBase {
     }
 
     return $settings;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLimit(): int {
+    $value = $this->get('value')->getValue();
+    // The 'value' properties have been defined as a simple array instead of as
+    // discrete properties that adhere to a schema. Until this is fixed we
+    // cannot rely on the value of the limit to be correct.
+    if (empty($value['limit']) || !is_numeric($value['limit'])) {
+      throw new \UnexpectedValueException('The search results limit is missing or is not a number.');
+    }
+    return (int) $value['limit'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setLimit(int $limit): SearchItemInterface {
+    $value = $this->get('value')->getValue();
+    $value['limit'] = $limit;
+    $this->set('value', $value);
+
+    return $this;
   }
 
 }

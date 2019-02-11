@@ -1,0 +1,11 @@
+batch:
+  version: VERSION
+  js:
+    js/batch.js: { cache: false }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/drupal.ajax
+    - core/drupal.progress
+    - core/jquery.once

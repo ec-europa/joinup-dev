@@ -26,6 +26,11 @@ Feature: Solutions by licence report
       | title                 | state     |
       | Solution by licence 1 | validated |
       | Solution by licence 2 | validated |
+    And the following release:
+      | title          | Solution by licence 2 release |
+      | release number | 1                             |
+      | is version of  | Solution by licence 2         |
+      | state          | validated                     |
     # Distribution linked to the solution directly.
     And the following distributions:
       | title                     | licence      | parent                |
@@ -33,14 +38,9 @@ Feature: Solutions by licence report
       | Solution_by_licence_1.exe | Free for all | Solution by licence 1 |
     # Distribution that belongs to the release of a solution.
     And the following distribution:
-      | title   | Solution_by_licence_2.tar |
-      | licence | Commercial                |
-    And the following release:
-      | title          | Solution by licence 2 release |
-      | release number | 1                             |
-      | distribution   | Solution_by_licence_2.tar     |
-      | is version of  | Solution by licence 2         |
-      | state          | validated                     |
+      | title   | Solution_by_licence_2.tar     |
+      | licence | Commercial                    |
+      | parent  | Solution by licence 2 release |
 
     When I am logged in as a moderator
     And I click "Reporting" in the "Administration toolbar" region

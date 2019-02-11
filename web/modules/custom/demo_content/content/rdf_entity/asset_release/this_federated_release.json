@@ -1,0 +1,184 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/release\/federated-release\/1?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_release"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/content_translation_uid": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_distribution": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f6067f404_bcaf3_b46bc_ba800_b9c0b25fd7e3c?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_is_version_of": [
+            {
+                "href": "http:\/\/default\/solution\/federated-solution?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/5bbce9d7-56aa-4c72-b373-e606c27815ae"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "asset_release"
+        }
+    ],
+    "label": [
+        {
+            "value": "This federated release",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/5bbce9d7-56aa-4c72-b373-e606c27815ae"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/release\/federated-release\/1",
+            "pid": 19,
+            "langcode": "en",
+            "lang": "en"
+        }
+    ],
+    "content_translation_source": [
+        {
+            "value": "und",
+            "lang": "en"
+        }
+    ],
+    "content_translation_outdated": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/content_translation_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "92b9cc04-d7bb-459a-9f6d-02b31b0b4949"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_distribution": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f6067f404_bcaf3_b46bc_ba800_b9c0b25fd7e3c?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_distribution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/6067f404-caf3-46bc-a800-9c0b25fd7e3c"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/asset_release\/field_isr_is_version_of": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/solution\/federated-solution?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/c2056c47-6c96-4a9a-8f70-a288739c7c86"
+                    }
+                ]
+            }
+        ]
+    },
+    "content_translation_status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_isr_description": [
+        {
+            "value": "This is a federated release",
+            "format": "content_editor",
+            "processed": "This is a federated release",
+            "lang": "en"
+        }
+    ],
+    "field_isr_release_notes": [
+        {
+            "value": "Changed release",
+            "format": "content_editor",
+            "processed": "Changed release",
+            "lang": "en"
+        }
+    ],
+    "field_isr_release_number": [
+        {
+            "value": "1"
+        }
+    ],
+    "field_isr_state": [
+        {
+            "value": "validated"
+        }
+    ]
+}

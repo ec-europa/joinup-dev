@@ -41,7 +41,6 @@ abstract class JoinupKernelTestBase extends RdfKernelTestBase {
   protected function setUp() {
     parent::setUp();
     $this->installEntitySchema('user');
-    $this->installConfig(['rdf_entity_test']);
   }
 
   /**

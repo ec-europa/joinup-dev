@@ -12,8 +12,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\og\OgGroupAudienceHelperInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\file_url\FileUrlHandler;
 
 /**
@@ -40,6 +38,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @When (I )go to (the homepage of )the :asset_distribution distribution
    * @When (I )visit (the homepage of )the :asset_distribution distribution
+   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
+   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
    */
   public function visitDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
@@ -155,7 +155,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *   'parent' is present, a relation with a parent solution or release with
    *   a label matching this value will be created.
    *
-   * @throws \Exception
+   * @throws \InvalidArgumentException
    *   Thrown when an unknown key alias is present in the list of values.
    */
   protected function createAssetDistributionFromAliasedTableValues(array $aliased_values) {
@@ -167,37 +167,17 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       if (array_key_exists($key, $aliases)) {
         $values[$aliases[$key]] = $value;
       }
-      // If the 'parent' key is present we will have to create a relation to the
-      // parent entity, which is either a release or a solution.
-      elseif ($key === 'parent') {
-        $parent_entity = self::getRdfEntityByLabel($value);
-
-        // If we know the parent then we can transparently populate the group
-        // reference to the solution.
-        if (!array_key_exists('solution', $aliased_values)) {
-          $solution_label = NULL;
-          if ($parent_entity->bundle() === 'solution') {
-            $solution_label = $parent_entity->label();
-          }
-          elseif ($solution_entity_id = $parent_entity->field_isr_is_version_of->value) {
-            $solution_label = Rdf::load($solution_entity_id)->label();
-          }
-          $values[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution_label;
-        }
-      }
       else {
-        throw new \Exception("Unknown key '$key' in asset distribution table.");
+        throw new \InvalidArgumentException("Unknown key '$key' in asset distribution table.");
       }
     };
 
-    $values = $this->convertValueAliases($values);
-    $values = $this->convertEntityReferencesValues('rdf_entity', 'asset_distribution', $this->parseRdfEntityFields($values));
-    $asset_distribution_entity = $this->createAssetDistribution($values);
-
-    // Create the relation with the parent entity if requested.
-    if (!empty($parent_entity)) {
-      asset_distribution_add_parent_relation($asset_distribution_entity, $parent_entity);
+    if (isset($values['parent'])) {
+      $values['parent'] = [$values['parent']];
     }
+
+    $values = $this->convertEntityReferencesValues('rdf_entity', 'asset_distribution', $this->parseRdfEntityFields($values));
+    $this->createAssetDistribution($values);
   }
 
   /**
@@ -265,20 +245,6 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Navigates to the canonical page display of an asset distribution.
-   *
-   * @param string $title
-   *   The title of the asset distribution.
-   *
-   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
-   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
-   */
-  public function visitAssetDistribution($title) {
-    $distribution = $this->getAssetDistributionByName($title);
-    $this->visitPath($distribution->url());
-  }
-
-  /**
    * Remove any created asset distributions.
    *
    * @AfterScenario
@@ -309,29 +275,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'licence' => 'field_ad_licence',
       'modification date' => 'changed',
       'representation technique' => 'field_ad_repr_technique',
-      'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
+      'parent' => 'parent',
       'status' => 'field_status',
       'title' => 'label',
       'uri' => 'id',
     ];
-  }
-
-  /**
-   * Converts values from user friendly to normal machine values.
-   *
-   * @param array $fields
-   *   An array of fields keyed by field name.
-   *
-   * @return array
-   *   The array with the values converted.
-   */
-  protected function convertValueAliases(array $fields) {
-    if (!empty($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD])) {
-      $solution = $this->getRdfEntityByLabel($fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD], 'solution');
-      $fields[OgGroupAudienceHelperInterface::DEFAULT_FIELD] = $solution->id();
-    }
-
-    return $fields;
   }
 
   /**

@@ -1,0 +1,14 @@
+id: rdf_entity.solution.solution_to_distro
+entity_type: rdf_entity
+bundle: solution
+field_name: solution_to_distro
+field_type: entity_reference
+settings:
+  handler: default:rdf_entity
+  handler_settings:
+    target_bundles:
+      distro: distro
+dependencies:
+  config:
+    - field.storage.rdf_entity.solution_to_distro
+    - rdf_entity.rdfentity.solution

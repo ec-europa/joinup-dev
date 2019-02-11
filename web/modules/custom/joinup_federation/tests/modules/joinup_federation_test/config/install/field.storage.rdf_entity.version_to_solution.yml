@@ -1,0 +1,15 @@
+id: rdf_entity.version_to_solution
+field_name: version_to_solution
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  rdf_entity:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/isVersionOf'
+        format: resource

@@ -7,18 +7,32 @@ Feature: Tours
   Scenario Outline: Anonymous user can access tours
     Given I am not logged in
     When I visit "<path>"
-    Then a tour should be available
+    Then a tour <expectation> available
 
     Examples:
-      | path                |
-      | /                   |
+      | path             | expectation   |
+      | /                | should be     |
+      | /keep-up-to-date | should be     |
+      | /collections     | should not be |
+      | /solutions       | should not be |
+      # Recheck some URLs to ensure that cache contexts are working.
+      | /                | should be     |
+      | /solutions       | should not be |
+      | /keep-up-to-date | should be     |
 
   Scenario Outline: Various user roles can access tours
-    Given I am logged in as a user with the "<role>" role
+    Given I am logged in as an "authenticated user"
     When I visit "<path>"
-    Then a tour should be available
+
+    Then a tour <expectation> available
 
     Examples:
-      | path                | role          |
-      | /                   | authenticated |
-      | user                | authenticated |
+      | path             | expectation   |
+      | /                | should be     |
+      | /keep-up-to-date | should be     |
+      | /collections     | should not be |
+      | /solutions       | should not be |
+      # Recheck some URLs to ensure that cache contexts are working.
+      | /                | should be     |
+      | /solutions       | should not be |
+      | /keep-up-to-date | should be     |

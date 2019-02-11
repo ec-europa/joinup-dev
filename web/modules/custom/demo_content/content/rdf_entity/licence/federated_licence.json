@@ -1,0 +1,129 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/licence\/federated-licence?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/licence"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/content_translation_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/field_licence_type": [
+            {
+                "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fpurl_corg_fadms_flicencetype_fPublicDomain?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/2905a1f9-9472-4caf-9971-1a0327228229"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "licence"
+        }
+    ],
+    "label": [
+        {
+            "value": "A federated licence",
+            "lang": "en"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/2905a1f9-9472-4caf-9971-1a0327228229"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/licence\/federated-licence",
+            "pid": 1,
+            "langcode": "en",
+            "lang": "en"
+        }
+    ],
+    "content_translation_source": [
+        {
+            "value": "und",
+            "lang": "en"
+        }
+    ],
+    "content_translation_outdated": [
+        {
+            "value": false,
+            "lang": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/content_translation_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "c124a84f-9d34-4010-9760-a90bf5a628c2"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/licence\/field_licence_type": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/taxonomy\/term\/http_e_f_fpurl_corg_fadms_flicencetype_fPublicDomain?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/taxonomy_term\/licence_type"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/purl.org\/adms\/licencetype\/PublicDomain"
+                    }
+                ]
+            }
+        ]
+    },
+    "content_translation_status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_licence_description": [
+        {
+            "value": "Licence agreement details",
+            "format": "content_editor",
+            "processed": "Licence agreement details"
+        }
+    ]
+}

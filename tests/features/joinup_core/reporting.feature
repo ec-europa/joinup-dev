@@ -34,6 +34,15 @@ Feature:
     And I should see the link "Worthy Puppet"
     And I should see the link "Long Artificial"
     And I should see the link "Beta Frozen"
+    # Verify that the dates are shown in a human readable format.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4924
+    And I should see the following lines of text:
+      | Fri, 31/01/2003 - 23:00 |
+      | Mon, 07/12/2015 - 13:57 |
+      | Fri, 14/09/2012 - 00:00 |
+      | Tue, 04/12/2012 - 16:19 |
+      | Sun, 15/10/2017 - 14:54 |
+      | Fri, 24/11/2017 - 12:43 |
     # Verify that the "Authored on" facet is in place.
     And I should see the link "January 2003"
     And I should see the link "September 2012"

@@ -1,5 +1,5 @@
 @api
-Feature: Filtering the member list
+Feature: Type something to filter the listing the member list
   In order to quickly find a particular member
   As a moderator
   I need to be able to filter the member list
@@ -34,11 +34,11 @@ Feature: Filtering the member list
     Given I am logged in as "<user>"
     When I go to the homepage of the "Coffee grinders" solution
     And I click "Members" in the "Left sidebar"
-    Then the following fields should not be present "Username, First name, Family name"
-    But the following fields should be present "Roles"
+    But the following fields should be present "Type something to filter the list, Roles"
 
     Examples:
       | user         |
+      | sludge       |
       | ledge        |
       | user13343    |
       | jackolantern |
@@ -48,36 +48,14 @@ Feature: Filtering the member list
     Given I am logged in as "sludge"
     When I go to the homepage of the "Coffee grinders" solution
     And I click "Members" in the "Left sidebar"
-    Then the following fields should be present "Username, First name, Family name"
-
-    When I fill in "Username" with "right"
+    And I fill in "Type something to filter the list" with "right"
     And I press "Apply"
-    Then I should see the link "Wright Jackson"
-    And I should see the link "Lavonne Atkins"
-    But I should not see the link "Jack Cartwright"
+    And I should see the link "Jack Cartwright"
+    And I should see the link "Wright Jackson"
+    # Matches by username should not be shown - regression check.
+    But I should not see the link "Lavonne Atkins"
 
-    When I clear the content of the field "Username"
-    When I fill in "First name" with "Jack"
-    And I press "Apply"
-    Then I should see the link "Jack Cartwright"
-    And I should see the link "Jack Edgar"
-    But I should not see the link "Wright Jackson"
-    And I should not see the link "Carter Edgar"
-
-    When I clear the field "First name"
-    And I fill in "Family name" with "Edg"
-    And I press "Apply"
-    Then I should see the link "Jack Edgar"
-    And I should see the link "Carter Edgar"
-    But I should not see the link "Jack Cartwright"
-
-    When I fill in "Username" with "use"
-    And I press "Apply"
-    Then I should see the link "Jack Edgar"
-    But I should not see the link "Carter Edgar"
-
-    When I clear the content of the field "Username"
-    And I clear the content of the field "Family name"
+    When I clear the content of the field "Type something to filter the list"
     And I press "Apply"
     And I select "Owner (1)" from "Roles"
     And I press "Apply"
@@ -94,8 +72,22 @@ Feature: Filtering the member list
     But I should not see the link "Carter Edgar"
     And I should not see the link "Wright Jackson"
     And I should not see the link "Lavonne Atkins"
-    And I fill in "Family name" with "edg"
+    And I fill in "Type something to filter the list" with "edg"
+    And I press "Apply"
+    Then I should see the link "Jack Edgar"
+    And the option with text "Facilitator (1)" from select "Roles" is selected
+
+    # Ensure that combined filters change the numbers in the "Roles" selection box.
+    When I fill in "Type something to filter the list" with "Cartwright"
+    And I press "Apply"
+    Then I should see the link "Jack Cartwright"
+    But I should not see the link "Jack Edgar"
+    And the option with text "Facilitator (1)" from select "Roles" is selected
+
+    # Ensure that filtering is based in all words.
+    When I fill in "Type something to filter the list" with "Jack Edgar"
     And I press "Apply"
     Then I should see the link "Jack Edgar"
     But I should not see the link "Jack Cartwright"
+    And I should not see the link "Carter Edgar"
     And the option with text "Facilitator (1)" from select "Roles" is selected

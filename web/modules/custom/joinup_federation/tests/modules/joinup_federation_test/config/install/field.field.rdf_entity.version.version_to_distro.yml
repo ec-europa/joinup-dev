@@ -1,0 +1,14 @@
+id: rdf_entity.version.version_to_distro
+entity_type: rdf_entity
+bundle: version
+field_name: version_to_distro
+field_type: entity_reference
+settings:
+  handler: default:rdf_entity
+  handler_settings:
+    target_bundles:
+      distro: distro
+dependencies:
+  config:
+    - field.storage.rdf_entity.version_to_distro
+    - rdf_entity.rdfentity.version

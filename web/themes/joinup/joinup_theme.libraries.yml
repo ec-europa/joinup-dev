@@ -36,3 +36,8 @@ fieldset-show-more:
     - core/jquery.once
     - core/drupal
     - core/jquery.ui.accordion
+
+tableselect:
+  version: VERSION
+  js:
+    js/tableselect.js: {}

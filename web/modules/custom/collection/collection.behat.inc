@@ -18,13 +18,11 @@ use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
 use Drupal\rdf_entity\UriEncoder;
 use Drupal\user\Entity\User;
-use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing collections.
@@ -72,22 +70,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $collection = $this->getCollectionByName($collection);
     $this->visitPath($collection->url());
-  }
-
-  /**
-   * Asserts the order of elements.
-   *
-   * @Then I should see the following collection menu items in the specified order:
-   */
-  public function assertRepeatedElementContainsText(TableNode $table) {
-    $parent = $this->getSession()->getPage()->findAll('css', '.block-collection-menu-blocknavigation li.sidebar-menu__item');
-    $i = 0;
-    foreach ($table->getHash() as $repeatedElement) {
-      $child = $parent[$i];
-      $actual_text = $child->find('css', 'a.sidebar-menu__link')->getText();
-      Assert::assertEquals($repeatedElement['text'], $actual_text);
-      $i++;
-    }
   }
 
   /**
@@ -743,31 +725,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       'label' => 'Joinup',
       'field_ar_state' => 'validated',
     ]);
-  }
-
-  /**
-   * Checks if the given node belongs to the given collection.
-   *
-   * If there are multiple nodes or collections with the same name, then only
-   * the first one is checked.
-   *
-   * @param string $title
-   *   The title of the node to check.
-   * @param string $collection
-   *   The name of the collection to check.
-   *
-   * @throws \Exception
-   *   Thrown when a node with the given title doesn't exist.
-   *
-   * @Then the :collection collection should have a custom page titled :title
-   * @Then the :collection collection should have a community content titled :title
-   */
-  public function assertNodeOgMembership($title, $collection) {
-    $collection = $this->getRdfEntityByLabel($collection, 'collection');
-    $node = $this->getNodeByTitle($title);
-    if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $collection->id()) {
-      throw new \Exception("The node '$title' is not associated with collection '{$collection->label()}'.");
-    }
   }
 
 }

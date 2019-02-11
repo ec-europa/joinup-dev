@@ -19,8 +19,8 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
-      | E-mail or username | Cecil Clapman |
-      | Password           | claps         |
+      | Email or username | Cecil Clapman |
+      | Password          | claps         |
     And I press "Sign in"
     Then I should see the heading "Propose collection"
 
@@ -66,7 +66,7 @@ Feature: Proposing a collection
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 active member
     # The overview and about links should be added automatically in the menu.
-    And I should see the following collection menu items in the specified order:
+    And I should see the following group menu items in the specified order:
       | text     |
       | Overview |
       | Members  |

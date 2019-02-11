@@ -304,6 +304,10 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
  * Implements hook_entity_type_alter().
  */
 function joinup_core_entity_type_alter(array &$entity_types) {
+  if (!isset($entity_types['rdf_entity'])) {
+    return;
+  }
+
   // Provides a workaround for asset_release and solution RDF entity bundles.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3126
   // @todo Remove when ISAICP-3126 gets in.
@@ -841,16 +845,30 @@ function joinup_core_node_presave(EntityInterface $entity) {
   // Set the update time as the created time only if this is the first time this
   // entity is published.
   $published_revisions = \Drupal::entityQuery('node')
+    ->allRevisions()
     ->condition('type', $entity->bundle())
     ->condition('status', 1)
     ->condition('nid', $entity->id())
-    ->count()
+    ->sort('vid', 'ASC')
+    ->range(0, 1)
     ->execute();
-  if ($published_revisions != 0) {
-    return;
+
+  if (count($published_revisions) === 0) {
+    $entity->set('created', \Drupal::time()->getRequestTime());
+  }
+  else {
+    // If the node is reverted into a previously created draft version, the
+    // created time is a date different than the first publication date. For
+    // that case, always set the created time from the first published revision
+    // every time a community content is saved.
+    $revision_ids = array_keys($published_revisions);
+    $revision_id = reset($revision_ids);
+    $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+    if (!empty($revision)) {
+      $entity->set('created', $revision->getCreatedTime());
+    }
   }
 
-  $entity->set('created', \Drupal::time()->getRequestTime());
 }
 
 /**
@@ -1230,19 +1248,16 @@ function joinup_core_form_views_form_og_members_overview_default_validate(array 
     return;
   }
 
-  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
-  $admin_role = $group->getEntityTypeId() . '-' . $group->bundle() . '-' . 'administrator';
-  $storage = \Drupal::entityTypeManager()->getStorage('og_membership');
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
 
-  // Calculate current owners.
-  $owner_memberships = $storage->loadByProperties([
-    'entity_type' => $group->getEntityTypeId(),
-    'entity_id' => $group->id(),
-    'roles' => $admin_role,
-  ]);
+  $group = \Drupal::routeMatch()->getParameter('rdf_entity');
+  $owner_memberships = $membership_manager->getGroupMembershipsByRoleNames($group, ['administrator']);
+
   if (empty($owner_memberships)) {
     return;
   }
+
   $owner_membership_ids = array_keys($owner_memberships);
 
   // Calculate memberships to be deleted.
@@ -1316,4 +1331,30 @@ function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $
  */
 function joinup_core_invalidate_rdf_entity_bundle_list_cache(RdfInterface $rdf_entity) {
   Cache::invalidateTags(["rdf_entity_list:{$rdf_entity->bundle()}"]);
+}
+
+/**
+ * Implements hook_link_alter().
+ */
+function joinup_core_link_alter(&$variables) {
+  // Such links are used to trigger the tour.
+  if (isset($variables['options']['attributes']['data-drupal-tour-link'])) {
+    $route_path = ltrim(\Drupal::routeMatch()->getRouteObject()->getPath(), '/');
+    if (strpos($route_path, 'admin/structure/menu/') === FALSE) {
+      // Add the tour trigger but not on menu administrative pages.
+      $variables['options']['attributes']['class'][] = 'js-tour-start-button';
+    }
+  }
+}
+
+/**
+ * Implements hook_config_readonly_whitelist_patterns().
+ */
+function joinup_core_config_readonly_whitelist_patterns() {
+  return [
+    // The 'support' menu is editable by moderators. This includes the menu
+    // links static overrides config.
+    'system.menu.support',
+    'core.menu.static_menu_link_overrides',
+  ];
 }
