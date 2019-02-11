@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dc="http://purl.org/dc/terms/"
-         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:ns0="http://joinup.eu/"
-         xmlns:ns1="http://joinup.eu/language/">
+         xmlns:ns1="http://joinup.eu/language/"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 
   <dc:LicenseDocument rdf:about="http://i-am-creative/">
-    <rdfs:label xml:lang="en">Creative commons</rdfs:label>
     <ns0:language xml:lang="en">en</ns0:language>
     <ns1:default>1</ns1:default>
-    <ns1:translation_source xml:lang="en">und</ns1:translation_source>
-    <ns1:translation_outdated xml:lang="en"></ns1:translation_outdated>
     <ns1:translation_author xml:lang="en">0</ns1:translation_author>
+    <ns1:translation_outdated xml:lang="en"></ns1:translation_outdated>
+    <ns1:translation_source xml:lang="en">und</ns1:translation_source>
     <ns1:translation_status xml:lang="en">1</ns1:translation_status>
     <dc:description>This is so creative</dc:description>
+    <rdfs:label xml:lang="en">Creative commons</rdfs:label>
   </dc:LicenseDocument>
 
 </rdf:RDF>
