@@ -30,6 +30,7 @@ default:
         wd_host: '${behat.webdriver_url}'
     LoversOfBehat\TableExtension:
       table_map:
+        'group menu edit table': '#menu-overview'
         'member administration': '.og-members-overview table'
         'collection administrator report': 'table.collection-administrator-report'
     Drupal\DrupalExtension:
