@@ -6,6 +6,7 @@ namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Drupal\Component\Utility\Html;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -173,6 +174,41 @@ class RssContext extends RawMinkContext {
     }
 
     return $item;
+  }
+
+  /**
+   * Asserts that an RSS autodiscovery link is present in the page header.
+   *
+   * @param string $stitle
+   *   The title of the RSS feed link.
+   * @param string $href
+   *   The relative or absolute url where the RSS feed link points.
+   *
+   * @Then the page( should) contain(s) an RSS( autodiscovery) link with title :title pointing to :href
+   */
+  public function assertRssAutodiscoveryLinkPresent(string $stitle, string $href): void {
+    $xpath = sprintf(
+      '//head/link[@rel="alternate"][@type="application/rss+xml"][@title="%s"][@href="%s" or @href="%s"]',
+      Html::escape($stitle),
+      $href,
+      $this->locatePath($href)
+    );
+
+    $nodes = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    Assert::assertCount(1, $nodes);
+  }
+
+  /**
+   * Asserts the number of RSS autodiscovery links present in the page.
+   *
+   * @param int $count
+   *   The number of RSS autodiscovery links.
+   *
+   * @Then the page should contain :count RSS autodiscovery link(s)
+   */
+  public function assertRssAutodiscoveryLinkCount(int $count): void {
+    $xpath = '//head/link[@rel="alternate"][@type="application/rss+xml"]';
+    Assert::assertCount($count, $this->getSession()->getPage()->findAll('xpath', $xpath));
   }
 
 }

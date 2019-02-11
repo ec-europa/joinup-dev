@@ -47,7 +47,9 @@ Feature: Collection RSS feed.
 
     When I am an anonymous user
     And I go to the homepage of the "Indigo Monkey" collection
-    And I click "RSS feed" in the "Entity actions" region
+    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Indigo Monkey collection" pointing to "/collection/indigo-monkey/feed.xml"
+    And the page should contain 1 RSS autodiscovery link
+    When I click "RSS feed" in the "Entity actions" region
     Then I should see a valid RSS feed
     And the RSS feed channel elements should be:
       | title       | Latest updates from the Indigo Monkey collection                                                                   |
@@ -65,7 +67,9 @@ Feature: Collection RSS feed.
       | Document: Indigo technical paper                           | /document/indigo-technical-paper                | <p>All technical information about the rare indigo monkeys.</p>                               | Mon, 30 May 2016 12:21:00 +0200 | Aleta Jakeman   |
 
     When I go to the homepage of the "Dreaded Scissors" collection
-    And I click "RSS feed" in the "Entity actions" region
+    Then the page should contain an RSS autodiscovery link with title "Latest updates from the Dreaded Scissors collection" pointing to "/collection/dreaded-scissors/feed.xml"
+    And the page should contain 1 RSS autodiscovery link
+    When I click "RSS feed" in the "Entity actions" region
     Then I should see a valid RSS feed
     And the RSS feed channel elements should be:
       | title       | Latest updates from the Dreaded Scissors collection                                                                   |
@@ -77,8 +81,11 @@ Feature: Collection RSS feed.
       | News: New metal alloy improves scissors | /news/new-metal-alloy-improves-scissors | <p>It improves sharpness but they are more subject to rust.</p>                                                                                                                                                                                                                                       | Wed, 11 Apr 2018 09:00:00 +0200 | Otto Drake |
       | Event: Scissor sharpening party         | /event/scissor-sharpening-party         | <p>The place where to be if you want to keep <strong>cutting</strong> the paper at the best of your scissors <a href="http://www.example.com/">possibilities</a>.</p> <table><tr><td>Lorem ipsum dolor sit amet consectetur adipiscing elit. Etiam sed consectetur turpis. In porta</td></tr></table> | Sun, 26 Nov 2017 14:18:00 +0100 | Otto Drake |
 
-    When I go to the homepage of the "Remote Electrical" collection
-    Then I should not see the link "RSS feed" in the "Entity actions" region
-
     When I go to the homepage of the "Lantern Global" solution
     Then I should not see the link "RSS feed" in the "Entity actions" region
+    And the page should contain 0 RSS autodiscovery links
+
+    When I am logged in as a facilitator of the "Remote Electrical" collection
+    And I go to the homepage of the "Remote Electrical" collection
+    Then I should not see the link "RSS feed" in the "Entity actions" region
+    And the page should contain 0 RSS autodiscovery links
