@@ -12,11 +12,11 @@ theme: joinup_theme
 region: content_bottom
 weight: -17
 provider: null
-plugin: 'group_menu_block:navigation'
+plugin: 'custom_page_toc:navigation'
 settings:
-  id: 'group_menu_block:navigation'
+  id: 'custom_page_toc:navigation'
   label: 'Table of contents'
-  provider: collection
+  provider: custom_page
   label_display: '1'
   level: 1
   depth: 0

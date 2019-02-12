@@ -7,9 +7,15 @@ package: Joinup
 dependencies:
   - cached_computed_field
   - datetime_range
+  - geocoder
+  - geocoder_field
+  - geocoder_geofield
+  - geofield
   - joinup_community_content
   - joinup_core
   - language
+  - node
+  - oe_webtools_geocoding
   - smart_trim
 
 config_devel:
@@ -20,11 +26,13 @@ config_devel:
   - core.entity_view_display.node.event.view_mode_tile
   - field.field.node.event.body
   - field.field.node.event.field_attachment
-  - field.field.node.event.field_event_adtl_address_info
   - field.field.node.event.field_event_agenda
   - field.field.node.event.field_event_contact_email
+  - field.field.node.event.field_event_coordinates
   - field.field.node.event.field_event_date
   - field.field.node.event.field_event_logo
+  - field.field.node.event.field_event_online_location
+  - field.field.node.event.field_event_spatial_coverage
   - field.field.node.event.field_event_web_url
   - field.field.node.event.field_keywords
   - field.field.node.event.field_location
@@ -34,17 +42,17 @@ config_devel:
   - field.field.node.event.field_scope
   - field.field.node.event.field_shared_in
   - field.field.node.event.field_short_title
-  - field.field.node.event.field_event_spatial_coverage
   - field.field.node.event.field_site_featured
   - field.field.node.event.field_site_pinned
   - field.field.node.event.field_state
   - field.field.node.event.field_visit_count
   - field.field.node.event.og_audience
-  - field.storage.node.field_event_adtl_address_info
   - field.storage.node.field_event_agenda
   - field.storage.node.field_event_contact_email
+  - field.storage.node.field_event_coordinates
   - field.storage.node.field_event_date
   - field.storage.node.field_event_logo
+  - field.storage.node.field_event_online_location
   - field.storage.node.field_event_spatial_coverage
   - field.storage.node.field_event_web_url
   - field.storage.node.field_location

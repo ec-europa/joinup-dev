@@ -14,14 +14,8 @@
   <div class="listing listing--grid">
     <div class="row">
       <div class="mdl-grid">
-        <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-          {{ form.username }}
-        </div>
-        <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-          {{ form.first_name }}
-        </div>
-        <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
-          {{ form.family_name }}
+        <div class="listing__item listing__item--tile mdl-cell mdl-cell--12-col">
+          {{ form.combine }}
         </div>
         <div class="listing__item listing__item--tile mdl-cell mdl-cell--4-col">
           {{ form.roles_target_id }}
@@ -32,5 +26,5 @@
       </div>
     </div>
   </div>
-  {{ form|without('username', 'first_name', 'family_name', 'roles_target_id', 'actions') }}
+  {{ form|without('roles_target_id', 'combine', 'actions') }}
 </div>
