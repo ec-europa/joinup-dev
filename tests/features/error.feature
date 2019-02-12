@@ -2,9 +2,10 @@
 Feature: On errors I want to see a friendly page and be able to report an
   incident number/code.
 
-  Scenario: Test exception, fatal error, user error. We're not using a scenario
-    outline as that would be too expensive because it would run the before/after
-    hooks on each example.
+  Scenario: Test exception, fatal error, user error.
+
+    # We're not using a scenario outline as that would be too expensive because
+    # it would run the before/after hooks on each example.
 
     # Error level: hide.
     Given the site error reporting verbosity is "hide"
