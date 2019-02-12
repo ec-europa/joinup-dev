@@ -9,9 +9,9 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group error_page
  *
- * @todo Figure out how to test fatal and user errors. It seems impossible with
- * a functional test, as the exception handler detects the testing environment
- * and always throws the standard error.
+ * @todo Figure out how to test fatal errors, user errors and notices. It seems
+ * impossible with a functional test, as the exception handler detects the
+ * testing environment and always throws the standard error.
  */
 class ErrorPageTest extends BrowserTestBase {
 
@@ -69,6 +69,9 @@ class ErrorPageTest extends BrowserTestBase {
    * Test one case.
    */
   protected function doTest($path, $code) {
+    // Run with ERROR_REPORTING_DISPLAY_VERBOSE error level.
+    $this->setSetting(['system.logging', 'error_level'], "'verbose'", 'config');
+
     $this->drupalGet($path);
     $assert = $this->assertSession();
 
@@ -114,15 +117,23 @@ class ErrorPageTest extends BrowserTestBase {
     $variables = unserialize($log->variables);
     $this->assertArrayNotHasKey('@uuid', $variables);
 
-    // Check that the technical error report is showed on the page.
+    // Check that the error messge and tge backtrace are displayed.
     $assert->pageTextContains('Exception: donuts in Drupal\error_page_test\Controller\ErrorPageTestController->exception()');
+    $assert->responseContains('<pre class="backtrace">');
 
-    // Don't show verbose reports on the page.
-    $this->setSetting(['system.logging', 'error_level'], 'FALSE', 'config');
+    // Run with ERROR_REPORTING_DISPLAY_ALL error level.
+    $this->setSetting(['system.logging', 'error_level'], "'all'", 'config');
+    // Check that the error message is shown but the backtrace is hidden.
+    $this->getSession()->reload();
+    $assert->pageTextContains('Exception: donuts in Drupal\error_page_test\Controller\ErrorPageTestController->exception()');
+    $assert->responseNotContains('<pre class="backtrace">');
 
-    // Check that the technical error report is hidden.
+    // Run with ERROR_REPORTING_HIDE error level.
+    $this->setSetting(['system.logging', 'error_level'], "'hide'", 'config');
+    // Check that the both, error message and backtrace are hidden.
     $this->getSession()->reload();
     $assert->pageTextNotContains('Exception: donuts in Drupal\error_page_test\Controller\ErrorPageTestController->exception()');
+    $assert->responseNotContains('<pre class="backtrace">');
   }
 
   /**
@@ -137,9 +148,10 @@ class ErrorPageTest extends BrowserTestBase {
   protected function getTestCases() {
     return [
       '/error_page_test/exception' => ['code' => 500],
-      // @todo Figure out how to test fatal and user errors.
+      // @todo Figure out how to test fatal errors, user errors and notices.
       // '/error_page_test/fatal_error' => ['code' => 500],
       // '/error_page_test/user_error' => ['code' => 200],
+      // '/error_page_test/php_notice' => ['code' => 200],
     ];
   }
 

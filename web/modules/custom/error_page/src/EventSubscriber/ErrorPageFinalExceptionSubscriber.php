@@ -38,7 +38,7 @@ class ErrorPageFinalExceptionSubscriber extends FinalExceptionSubscriber {
     // Generate an error report if the current error reporting level allows this
     // type of report to be displayed and unconditionally in update.php.
     $error_report = '';
-    if ($this->isErrorDisplayable($error) && $this->isErrorLevelVerbose()) {
+    if ($this->isErrorDisplayable($error)) {
       // If error type is 'User notice' then treat it as debug information
       // instead of an error message.
       // @see debug()
@@ -50,20 +50,29 @@ class ErrorPageFinalExceptionSubscriber extends FinalExceptionSubscriber {
 
       unset($error['backtrace']);
 
-      $backtrace_exception = $exception;
-      while ($backtrace_exception->getPrevious()) {
-        $backtrace_exception = $backtrace_exception->getPrevious();
+      if (!$this->isErrorLevelVerbose()) {
+        // Without verbose logging, use a simple message. Use FormattableMarkup
+        // directly here, rather than use t() since we are in the middle of
+        // error handling, and we don't want t() to cause further errors.
+        $error_report = new FormattableMarkup('%type: @message in %function (line %line of %file).', $error);
       }
-      $backtrace = $backtrace_exception->getTrace();
-      // First trace is the error itself, already contained in the message.
-      // While the second trace is the error source and also contained in the
-      // message, the message doesn't contain argument values, so we output it
-      // once more in the backtrace.
-      array_shift($backtrace);
+      else {
+        // With verbose logging, we will also include a backtrace.
+        $backtrace_exception = $exception;
+        while ($backtrace_exception->getPrevious()) {
+          $backtrace_exception = $backtrace_exception->getPrevious();
+        }
+        $backtrace = $backtrace_exception->getTrace();
+        // First trace is the error itself, already contained in the message.
+        // While the second trace is the error source and also contained in the
+        // message, the message doesn't contain argument values, so we output it
+        // once more in the backtrace.
+        array_shift($backtrace);
 
-      // Generate a backtrace containing only scalar argument values.
-      $error['@backtrace'] = Error::formatBacktrace($backtrace);
-      $error_report = new FormattableMarkup('%type: @message in %function (line %line of %file). <pre class="backtrace">@backtrace</pre>', $error);
+        // Generate a backtrace containing only scalar argument values.
+        $error['@backtrace'] = Error::formatBacktrace($backtrace);
+        $error_report = new FormattableMarkup('%type: @message in %function (line %line of %file). <pre class="backtrace">@backtrace</pre>', $error);
+      }
     }
 
     // Require explicitly the renderer class, as the container might not be

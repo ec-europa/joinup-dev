@@ -18,3 +18,11 @@ error_page_test.user_error:
     _access: 'TRUE'
   options:
     no_cache: 'TRUE'
+error_page_test.php_notice:
+  path: '/error_page_test/php_notice'
+  defaults:
+    _controller: 'Drupal\error_page_test\Controller\ErrorPageTestController::notice'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'

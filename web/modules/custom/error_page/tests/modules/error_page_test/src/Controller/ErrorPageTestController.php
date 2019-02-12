@@ -31,4 +31,11 @@ class ErrorPageTestController extends ControllerBase {
     return ['#markup' => 'whatever'];
   }
 
+  /**
+   * Simulates a PHP notice error.
+   */
+  public function notice() {
+    return ['#markup' => $not_initialised_variable];
+  }
+
 }
