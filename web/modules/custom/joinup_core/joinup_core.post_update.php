@@ -380,11 +380,3 @@ function joinup_core_post_update_remove_tour_buttons() {
   $config_factory->getEditable('block.block.tourbutton_2')->delete();
   $config_factory->getEditable('block.block.tourbutton')->delete();
 }
-
-/**
- * Swap the dblog with the syslog module.
- */
-function joinup_core_post_update_swap_dblog_with_syslog() {
-  \Drupal::service('module_installer')->install(['syslog']);
-  \Drupal::service('module_installer')->uninstall(['dblog']);
-}
