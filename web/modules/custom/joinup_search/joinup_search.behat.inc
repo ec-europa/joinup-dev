@@ -122,7 +122,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // **** that contains a property named 'type' with value 'checkbox'
       // **** and contains a property named 'checked' with value 'checked'
       // *** and contains a span element
-      // **** that the text has the value $type.
+      // **** that the text has the value $bundle.
       $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//li[.//input[@type='checkbox'][@checked='checked']][.//span[text()='$bundle']]]";
     }
     else {
@@ -133,7 +133,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
       // *** that contains a class named 'is-active'
       // *** and contains a span element
       // **** that contains a class named 'facet-item__value'
-      // **** and the text has the value $type.
+      // **** and the text has the value $bundle.
       $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//a[contains(concat(' ', normalize-space(@class), ' '), ' is-active ')][.//span[text()='$bundle']]]";
     }
     $element = $this->getSession()->getPage()->find('xpath', $xpath);
