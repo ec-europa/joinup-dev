@@ -34,6 +34,9 @@ Feature: Global search
     And the "policy domain" inline facet should allow selecting the following values "Demography (2), Statistics and Analysis (1)"
     And "everywhere" should be selected in the "spatial coverage" inline facet
     And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1), Luxembourg (1)"
+    # Check that only one search field is available. In an earlier version of
+    # Joinup there were two search fields, but this was confusing users.
+    And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
     When I click "Demography" in the "policy domain" inline facet in the "Left sidebar" region
