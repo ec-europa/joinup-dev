@@ -16,7 +16,7 @@ provider: null
 plugin: 'facet_block:type'
 settings:
   id: 'facet_block:type'
-  label: 'Types'
+  label: 'Content types'
   provider: facets
   label_display: '1'
 visibility:
