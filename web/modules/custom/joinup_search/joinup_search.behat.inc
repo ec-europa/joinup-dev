@@ -268,7 +268,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when the facet is not found in the page.
    *
-   * @Then the :facet inline facet should allow selecting the following values :value
+   * @Then the :facet inline facet should allow selecting the following values :values
    */
   public function assertInlineFacetInactiveItems(string $facet, string $values): void {
     $element = $this->findFacetByAlias($facet);
@@ -276,6 +276,35 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
       /** @var \Behat\Mink\Element\NodeElement $item */
       return $item->getText();
     }, $element->findAll('css', 'ul.mdl-menu li.facet-item'));
+
+    $values = $this->explodeCommaSeparatedStepArgument($values);
+    Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
+  }
+
+  /**
+   * Asserts the items in a checkbox widget facet.
+   *
+   * This function asserts also the order of the items.
+   *
+   * @param string $facet
+   *   The facet alias.
+   * @param string $values
+   *   A comma-separated list of items to be present.
+   *
+   * @throws \Exception
+   *   Thrown when the facet is not found in the page.
+   *
+   * @Then the :facet checkbox facet should allow selecting the following values :values
+   */
+  public function assertCheckboxFacetItems(string $facet, string $values): void {
+    $element = $this->findFacetByAlias($facet);
+    $found = array_map(function ($item) {
+      /** @var \Behat\Mink\Element\NodeElement $item */
+      $text = $item->getText();
+      // If a value is selected, it is prefixed with a '(-) ' in the text. Clean
+      // that out so that it is more readable.
+      return preg_replace('/^\(-\) /', '', $text);
+    }, $element->findAll('css', 'li.facet-item'));
 
     $values = $this->explodeCommaSeparatedStepArgument($values);
     Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
