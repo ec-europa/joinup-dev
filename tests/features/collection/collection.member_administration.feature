@@ -29,6 +29,13 @@ Feature: Collection membership administration
       | Medical diagnosis | Gregory House     |                            | active  |
       | Medical diagnosis | Kathie Cumbershot |                            | pending |
 
+  Scenario: Only one instance of the "Apply to selected items" should exist.
+    When I am logged in as a moderator
+    And I go to the "Medical diagnosis" collection
+    And I click "Members" in the "Left sidebar"
+    Then I should see the button "Apply to selected items" in the "Members admin form header" region
+    But I should not see the button "Apply to selected items" in the "Members admin form actions" region
+
   Scenario: Request a membership
     When I am logged in as "Donald Duck"
     And all e-mails have been sent
