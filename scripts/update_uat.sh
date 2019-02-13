@@ -22,6 +22,9 @@ touch disable-config-readonly
 ./vendor/bin/drush search-api:reset-tracker --yes &&
 ./vendor/bin/drush cache-rebuild --yes &&
 
+echo "Disabling root user access." &&
+./vendor/bin/drush ublk joinup-admin --yes &&
+
 echo "Rebuilding node access records." &&
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
 
