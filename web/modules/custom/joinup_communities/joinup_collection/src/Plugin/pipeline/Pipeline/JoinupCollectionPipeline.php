@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\spain_ctt\Plugin\pipeline\Pipeline;
+namespace Drupal\joinup_collection\Plugin\pipeline\Pipeline;
 
 use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
 
 /**
- * The data pipeline of Spanish repository.
+ * The data pipeline for the Joinup collection.
  *
  * @PipelinePipeline(
- *   id = "spain",
- *   label = @Translation("Spain - Center for Technology Transfer"),
+ *   id = "joinup_collection",
+ *   label = @Translation("Joinup collection"),
  *   steps = {
  *     "manual_upload",
  *     "remove_unsupported_data",
@@ -24,13 +24,13 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   },
  * )
  */
-class SpainCttPipeline extends JoinupFederationPipelinePluginBase {
+class JoinupCollectionPipeline extends JoinupFederationPipelinePluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getCollection(): ?string {
-    return 'http://administracionelectronica.gob.es/ctt';
+    return 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1';
   }
 
 }
