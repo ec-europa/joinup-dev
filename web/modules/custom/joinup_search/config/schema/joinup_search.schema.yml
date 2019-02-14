@@ -12,3 +12,13 @@ joinup_search_filter_plugin_entity_autocomplete:
     target_id:
       type: string
       label: 'Target id'
+
+views.field.search_api_entity_link:
+  type: views.field.entity_link
+  mapping:
+    use_highlighting:
+      type: boolean
+      label: 'Use highlighted field data'
+    link_to_item:
+      type: boolean
+      label: 'Link to item'

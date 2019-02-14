@@ -49,6 +49,7 @@ dependencies:
   - joinup_news
   - joinup_newsletter
   - joinup_notification
+  - joinup_rss
   - joinup_search
   - joinup_sparql
   - joinup_subscription
