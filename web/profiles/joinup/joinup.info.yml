@@ -27,6 +27,7 @@ dependencies:
   - editor
   - editor_file
   - email_registration
+  - error_page
   - field_group
   - file
   - flag
