@@ -132,12 +132,13 @@ services:
   web:
     volumes:
       - .:/var/www/html
+      - ./build.docker.main.xml:/var/www/html/build.xml
       - ~/.gitconfig:/var/www/.gitconfig
       - ~/.gitignore:/var/www/.gitignore
       - ~/.composer:/var/www/.composer
       - ~/.ssh:/var/www/.ssh
 ```
-Note that in the above piece, the `- .:/var/www/html` is also part of the main `docker-composer.yml`. This is because
+Note that in the above piece, the first two lines are also part of the main `docker-composer.yml`. This is because
 the `volumes` entry here will completely override the parent entry and will not merge with it.
 
 ## Rebuild from existing databases
