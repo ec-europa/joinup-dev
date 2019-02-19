@@ -411,7 +411,7 @@ display:
             more_class: more-link
             summary_handler: trim
             trim_options:
-              text: false
+              text: true
               trim_zero: false
           group_column: value
           group_columns: {  }
@@ -492,7 +492,7 @@ display:
             more_text: More
             more_class: more-link
             trim_options:
-              text: false
+              text: true
               trim_zero: false
           group_column: value
           group_columns: {  }
