@@ -8,7 +8,11 @@ Feature: As a site moderator I am able to import RDF files.
     And I am logged in as "Antoine Batiste"
 
   Scenario: Test the pipeline functionality
-    Given users:
+    Given collection:
+      | uri        | http://administracionelectronica.gob.es/ctt |
+      | title      | Spain                                       |
+      | state      | validated                                   |
+    And users:
       | Username         | Roles     |
       | LaDonna          | moderator |
       | Janette Desautel |           |
@@ -109,9 +113,9 @@ Feature: As a site moderator I am able to import RDF files.
       | state      | validated                                   |
       | affiliates | Local version of Solution 2                 |
     And provenance activities:
-      | entity                        | enabled | author          | started          |
-      | Local version of Solution 2   | yes     | Antoine Batiste | 2012-07-07 23:01 |
-      | http://example.com/solution/3 | no      | Antoine Batiste | 2015-12-25 01:30 |
+      | entity                        | enabled | associated with | author          | started          |
+      | Local version of Solution 2   | yes     | Spain           | Antoine Batiste | 2012-07-07 23:01 |
+      | http://example.com/solution/3 | no      | Spain           | Antoine Batiste | 2015-12-25 01:30 |
     # The license contained in valid_adms.rdf is named "A federated license".
     # However, the goal is to not import or update any values in the license entity so
     # the following license has different details.
@@ -248,3 +252,52 @@ Feature: As a site moderator I am able to import RDF files.
     And I delete the "Solution 1" solution
     # Solution 2 is deleted automatically by Behat.
     And I delete the "Solution 3" solution
+
+  @joinup_collection
+  Scenario: Test that solutions cannot be re-federated in a different collection.
+    And collection:
+      | uri        | http://administracionelectronica.gob.es/ctt |
+      | title      | Spain                                       |
+      | state      | validated                                   |
+
+    Given I go to "/admin/content/pipeline/spain/execute"
+    When I attach the file "single_solution_valid_adms.rdf" to "File"
+    And I press "Upload"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
+
+    Then I should see "Spain - Center for Technology Transfer: User selection"
+    And the row "Single solution [http://example.com/solution/single]" is checked
+
+    Given I press "Next"
+    And I wait for the pipeline batch job to finish
+
+    Then I should see the following success messages:
+      | success messages                                                                |
+      | The Spain - Center for Technology Transfer execution has finished with success. |
+    And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
+
+    # Try to federate in a different collection.
+    Given I visit "/admin/content/pipeline/joinup_collection/execute"
+    And I attach the file "single_solution_valid_adms.rdf" to "File"
+    And I press "Upload"
+
+    When I press "Next"
+    And I wait for the pipeline batch job to finish
+
+    Then I should see "Joinup collection: User selection"
+    # The url of the entity is not included as the alias with the base url is included.
+    And I should see the text "Federation record exists with "
+
+    # The federation was incomplete. Reset the pipeline to conclude the test.
+    Then I visit "/admin/content/pipeline/joinup_collection/reset"
+    # We manually delete the imported entities as they are not tracked by Behat
+    # and, as a consequence, will not be automatically deleted after test. Also
+    # this is a good test to check that the entities were imported and exist.
+    And I delete the provenance activity of "http://example.com/solution/single" entity
+    And I delete the provenance activity of "http://example.com/owner/single" entity
+    And I delete the provenance activity of "http://example.com/contact/single" entity
+    And I delete the "Contact" contact information
+    And I delete the "The Publisher" owner
+    And I delete the "Single solution" solution
