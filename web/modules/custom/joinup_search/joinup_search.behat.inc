@@ -116,23 +116,23 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     if ($this->browserSupportsJavascript()) {
       // The following xpath searches for
       // * Any div
-      // ** that contains a class named facets-widget-checkbox
+      // ** that has a class named facets-widget-checkbox
       // ** and contains a li element
       // *** that contains an input element
-      // **** that contains a property named 'type' with value 'checkbox'
-      // **** and contains a property named 'checked' with value 'checked'
+      // **** that has an attribute named 'type' with value 'checkbox'
+      // **** and has an attribute named 'checked' with value 'checked'
       // *** and contains a span element
-      // **** that the text has the value $bundle.
+      // **** with the text has the value $bundle.
       $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//li[.//input[@type='checkbox'][@checked='checked']][.//span[text()='$bundle']]]";
     }
     else {
       // The following xpath searches for
       // * Any div
-      // ** that contains a class named facets-widget-checkbox
+      // ** that has a class named facets-widget-checkbox
       // ** and contains an a element
-      // *** that contains a class named 'is-active'
+      // *** that has a class named 'is-active'
       // *** and contains a span element
-      // **** that contains a class named 'facet-item__value'
+      // **** that has a class named 'facet-item__value'
       // **** and the text has the value $bundle.
       $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//a[contains(concat(' ', normalize-space(@class), ' '), ' is-active ')][.//span[text()='$bundle']]]";
     }
@@ -298,8 +298,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    */
   public function assertCheckboxFacetItems(string $facet, string $values): void {
     $element = $this->findFacetByAlias($facet);
-    $found = array_map(function ($item) {
-      /** @var \Behat\Mink\Element\NodeElement $item */
+    $found = array_map(function (NodeElement $item) {
       $text = $item->getText();
       // If a value is selected, it is prefixed with a '(-) ' in the text. Clean
       // that out so that it is more readable.

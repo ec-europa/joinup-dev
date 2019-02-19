@@ -187,8 +187,8 @@ trait TraversingTrait {
    * @param string $alias
    *   The facet alias.
    * @param \Behat\Mink\Element\NodeElement $region
-   *   Optionally limit the search to a specific region. If empty, the whole
-   *   page will be used.
+   *   (optional) Limit the search to a specific region. If empty, the whole
+   *   page will be used. Defaults to NULL.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The facet node element.
