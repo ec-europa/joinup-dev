@@ -1,0 +1,7 @@
+type: module
+core: 8.x
+name: 'Error custom pages test'
+description: 'Module used to test error_page.module.'
+package: Testing
+dependencies:
+  - error_page
