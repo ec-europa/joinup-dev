@@ -380,3 +380,10 @@ function joinup_core_post_update_remove_tour_buttons() {
   $config_factory->getEditable('block.block.tourbutton_2')->delete();
   $config_factory->getEditable('block.block.tourbutton')->delete();
 }
+
+/**
+ * Enable the 'error_page' module.
+ */
+function joinup_core_post_update_install_error_page() {
+  \Drupal::service('module_installer')->install(['error_page']);
+}

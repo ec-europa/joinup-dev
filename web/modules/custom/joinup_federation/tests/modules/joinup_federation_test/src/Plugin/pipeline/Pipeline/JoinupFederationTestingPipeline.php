@@ -26,4 +26,11 @@ class JoinupFederationTestingPipeline extends JoinupFederationPipelinePluginBase
     $this->pluginDefinition['steps'] = $steps;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getCollection(): ?string {
+    return 'http://catalog';
+  }
+
 }

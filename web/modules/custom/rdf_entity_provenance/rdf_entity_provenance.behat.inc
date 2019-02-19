@@ -89,6 +89,12 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
         $values['provenance_enabled'] = $values['provenance_enabled'] === 'yes';
       }
 
+      if (array_key_exists('provenance_associated_with', $values)) {
+        if (!UrlHelper::isValid($values['provenance_associated_with'], TRUE)) {
+          $values['provenance_associated_with'] = $this->getEntityIdByLabel($values['provenance_associated_with'], 'rdf_entity');
+        }
+      }
+
       // Convert any entity reference field label value with the entity ID.
       $values = $this->convertEntityReferencesValues('rdf_entity', 'provenance_activity', $this->parseRdfEntityFields($values));
 

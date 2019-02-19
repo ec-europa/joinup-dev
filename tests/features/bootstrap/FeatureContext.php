@@ -15,10 +15,12 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -34,6 +36,7 @@ use WebDriver\Key;
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   use BrowserCapabilityDetectionTrait;
+  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use TraversingTrait;
@@ -1372,6 +1375,84 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // not remove focus from the field so the autocomplete results remain
     // visible and can be inspected.
     $element->postValue(['value' => [$value]]);
+  }
+
+  /**
+   * Installs the testing module for scenarios tagged with @errorPage.
+   *
+   * @BeforeScenario @errorPage
+   */
+  public function installErrorPageTestingModule() {
+    $this->toggleErrorPageTestingModule('install');
+
+    // The test writes to the PHP error log because it's in its scope to test
+    // fatal errors. But the testing bots might reject tests that are not ending
+    // with an empty log. We create a copy of the error log just before running
+    // this scenario to be restored in @AfterScenario phase. In this way the log
+    // will not be affected by errors logged by this scenario.
+    $error_log = ini_get('error_log');
+    if (file_exists($error_log)) {
+      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
+    }
+  }
+
+  /**
+   * Uninstalls the testing module for scenarios tagged with @errorPage.
+   *
+   * @AfterScenario @errorPage
+   */
+  public function uninstallErrorPageTestingModule(): void {
+    $this->toggleErrorPageTestingModule('uninstall');
+
+    // Restore the log saved in @BeforeScenario.
+    $error_log = ini_get('error_log');
+    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
+      file_unmanaged_move('temporary://php.log', $error_log, 1);
+    }
+
+    // Restore the original system logging error level.
+    $this->setSiteErrorLevel();
+  }
+
+  /**
+   * Installs/uninstalls the testing module.
+   *
+   * @param string $method
+   *   Either 'install' or 'uninstall'.
+   */
+  protected function toggleErrorPageTestingModule(string $method): void {
+    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
+    new Settings($settings);
+    static::bypassReadOnlyConfig(10);
+    \Drupal::service('module_installer')->$method(['error_page_test']);
+    static::restoreReadOnlyConfig();
+  }
+
+  /**
+   * Sets the site's error logging verbosity.
+   *
+   * @param string|null $error_level
+   *   (optional) The error level. If not passed, the original error level is
+   *   restored.
+   *
+   * @Given the site error reporting verbosity is( set to) :error_level
+   */
+  public function setSiteErrorLevel(string $error_level = NULL) {
+    static $original_error_level;
+
+    $config = \Drupal::configFactory()->getEditable('system.logging');
+
+    $current_error_level = $config->get('error_level');
+    if (!isset($original_error_level)) {
+      $original_error_level = $current_error_level;
+    }
+
+    $error_level = $error_level ?: $original_error_level;
+    if ($current_error_level !== $error_level) {
+      static::bypassReadOnlyConfig(5);
+      $config->set('error_level', $error_level)->save();
+      static::restoreReadOnlyConfig();
+    }
   }
 
 }

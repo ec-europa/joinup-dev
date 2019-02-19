@@ -110,6 +110,13 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * {@inheritdoc}
    */
+  public function getCollection(): ?string {
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getGraphUri(string $graph_type): string {
     return $this->getConfiguration()['graph'][$graph_type];
   }
