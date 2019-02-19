@@ -13,7 +13,7 @@ bundle: asset_distribution
 label: 'Download count'
 description: 'The number of times the file attached to this distribution has been downloaded. This data is retrieved from the Matomo analytics platform and is updated on regular intervals, causing any manually entered data to be overwritten.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

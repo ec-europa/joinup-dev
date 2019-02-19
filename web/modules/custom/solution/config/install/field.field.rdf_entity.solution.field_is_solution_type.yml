@@ -12,7 +12,7 @@ bundle: solution
 label: 'Solution type'
 description: 'EIRA Building block'
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

@@ -13,7 +13,7 @@ bundle: user
 label: 'Notification frequency'
 description: 'How often do you prefer to receive status updates on new and/or updated content on Joinup?'
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

@@ -13,7 +13,7 @@ bundle: document
 label: 'Type of document'
 description: 'The document type.'
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

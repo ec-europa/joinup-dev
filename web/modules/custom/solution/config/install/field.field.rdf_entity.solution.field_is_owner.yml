@@ -12,7 +12,7 @@ bundle: solution
 label: Owner
 description: 'The Owner is the organisation that owns this entity and is the only responsible for it.'
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

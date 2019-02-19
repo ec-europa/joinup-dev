@@ -15,7 +15,7 @@ bundle: custom_page
 label: Group
 description: 'The collection this custom page belongs to.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

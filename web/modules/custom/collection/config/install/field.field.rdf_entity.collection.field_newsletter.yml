@@ -13,7 +13,7 @@ bundle: collection
 label: Newsletter
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value:
   -
     enabled: false

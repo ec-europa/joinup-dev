@@ -13,7 +13,7 @@ bundle: solution
 label: Wiki
 description: 'The documentation page regarding the solution'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

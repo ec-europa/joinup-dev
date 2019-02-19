@@ -13,7 +13,7 @@ bundle: user
 label: 'User content'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value:
   -
     value:

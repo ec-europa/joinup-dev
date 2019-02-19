@@ -14,7 +14,7 @@ bundle: tallinn_report
 label: 'Parent Entity'
 description: 'OG group audience reference field.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

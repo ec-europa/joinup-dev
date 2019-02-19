@@ -13,7 +13,7 @@ bundle: user
 label: 'Professional domain'
 description: 'Expertise domains you are interested in'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

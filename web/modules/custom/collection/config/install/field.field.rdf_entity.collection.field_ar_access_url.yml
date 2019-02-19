@@ -13,7 +13,7 @@ bundle: collection
 label: 'Access URL'
 description: 'Web page for the external Repository.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

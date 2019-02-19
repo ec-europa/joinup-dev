@@ -11,7 +11,7 @@ bundle: asset_distribution
 label: 'File size'
 description: "Size of the distribution payload file (in KB).\nIf the distribution is hosted in Joinup, you can omit this field."
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

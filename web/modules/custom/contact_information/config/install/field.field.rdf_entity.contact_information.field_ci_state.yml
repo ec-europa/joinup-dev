@@ -13,7 +13,7 @@ bundle: contact_information
 label: State
 description: ''
 required: true
-translatable: false
+translatable: true
 default_value:
   -
     value: __new__

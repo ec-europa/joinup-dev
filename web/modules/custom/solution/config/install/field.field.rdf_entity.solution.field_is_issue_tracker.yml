@@ -13,7 +13,7 @@ bundle: solution
 label: 'Issue tracker'
 description: 'The page where users can raise tickets about bugs or requests regarding the solution'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

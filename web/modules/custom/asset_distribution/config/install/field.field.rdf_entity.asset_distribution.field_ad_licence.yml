@@ -11,7 +11,7 @@ bundle: asset_distribution
 label: License
 description: 'If you cannot find the desired license in the list above, please request a new one by <a href="/contact?category=legal">contacting us</a>.'
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

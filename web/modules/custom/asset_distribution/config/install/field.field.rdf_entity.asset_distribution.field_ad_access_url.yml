@@ -13,7 +13,7 @@ bundle: asset_distribution
 label: 'Access URL'
 description: 'If the file(s) exist in an external server, you can provide the URL here directly. You can alternatively host your distribution in Joinup by using the Distribution file field above.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

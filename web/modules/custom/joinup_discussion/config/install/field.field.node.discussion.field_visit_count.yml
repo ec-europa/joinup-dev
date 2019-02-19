@@ -13,7 +13,7 @@ bundle: discussion
 label: 'Visit count'
 description: 'The number of visits this page has had. This is updated periodically with data from the Matomo web analytics platform.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

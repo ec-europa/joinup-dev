@@ -12,7 +12,7 @@ bundle: user
 label: Updates
 description: 'When selected you will receive notification for all content changes. If not you will only be notified about new created content.'
 required: false
-translatable: false
+translatable: true
 default_value:
   -
     value: 1
