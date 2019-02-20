@@ -170,7 +170,7 @@
         <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />
     </target>
 
-    <target name="restore-mysql-dump" depends="empty-mysql-database">
+    <target name="restore-mysql-dump" depends="disable-webtools-geocoding-cache, empty-mysql-database">
         <drush
                 command="sql-query"
                 assume="yes"
