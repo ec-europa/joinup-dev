@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22000630d181407a65e5b7530160119f",
+    "content-hash": "28bb1e969a359f908d7a30e74a228ee6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2532,16 +2532,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.6.9",
+            "version": "8.6.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "cac12e0ec19d5c6fa53778522b3ff4c542f86c8d"
+                "reference": "59568ac02948cf075ee8543e6c6d4386ad8daec1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/cac12e0ec19d5c6fa53778522b3ff4c542f86c8d",
-                "reference": "cac12e0ec19d5c6fa53778522b3ff4c542f86c8d",
+                "url": "https://api.github.com/repos/drupal/core/zipball/59568ac02948cf075ee8543e6c6d4386ad8daec1",
+                "reference": "59568ac02948cf075ee8543e6c6d4386ad8daec1",
                 "shasum": ""
             },
             "require": {
@@ -2786,7 +2786,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-02-08T12:21:40+00:00"
+            "time": "2019-02-20T18:35:01+00:00"
         },
         {
             "name": "drupal/csv_serialization",
