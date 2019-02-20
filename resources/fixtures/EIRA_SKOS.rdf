@@ -5165,5 +5165,14 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
         </skos:definition>
         <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
     </skos:Concept>
+
+    <skos:Concept rdf:about="http://data.europa.eu/dr8/OperationalEnabler">
+        <skos:notation>OperationalEnabler</skos:notation>
+        <skos:prefLabel xml:lang="en">[ABB166] Operational Enabler</skos:prefLabel>
+        <skos:definition xml:lang="en">An Operational Enabler is an organisation, person, object or event that makes it possible to implement the policy. [Oxford Dictionary]
+
+            Source: http://www.oxforddictionaries.com/definition/english/enabler</skos:definition>
+        <skos:narrower rdf:resource="http://data.europa.eu/dr8/PublicPolicyFormulationAndImplementationInstrument"/>
+    </skos:Concept>
     <!-- END OF DEPRECATED TERMS -->
 </rdf:RDF>
