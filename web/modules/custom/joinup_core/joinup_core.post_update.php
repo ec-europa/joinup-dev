@@ -5,6 +5,7 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -386,4 +387,25 @@ function joinup_core_post_update_remove_tour_buttons() {
  */
 function joinup_core_post_update_install_error_page() {
   \Drupal::service('module_installer')->install(['error_page']);
+}
+
+/**
+ * Update the EIRA terms.
+ */
+function joinup_core_post_update_update_update_eira_terms() {
+  $graph_uri = 'http://eira_skos';
+  /** @var \Drupal\Driver\Database\joinup_sparql\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $connection->query('CLEAR GRAPH <http://eira_skos>;');
+
+  $graph = new Graph('http://eira_skos');
+  $filename = DRUPAL_ROOT . '/../resources/fixtures/EIRA_SKOS.rdf';
+  $graph->parseFile($filename);
+
+  // Copied over from \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage::insert.
+  $graph_uri = SparqlArg::uri($graph_uri);
+  $query = "INSERT DATA INTO $graph_uri {\n";
+  $query .= $graph->serialise('ntriples') . "\n";
+  $query .= '}';
+  $connection->update($query);
 }
