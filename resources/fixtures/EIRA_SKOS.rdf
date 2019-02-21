@@ -137,21 +137,9 @@
         <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/InteroperabilityAspect"/>
         <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/InteroperabilityRequirement"/>
         <!-- START OF DEPRECATED TERMS -->
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/TestComponent"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/TestService"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/TestReport"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/ConfigurationAndCartographyServiceComponent"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/ConfigurationAndCartographyService"/>
         <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/RecordManagementService"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/OrganisationalInteroperabilitySpecification"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/ApplicationService"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/TestScenario"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/AuditAndLoggingComponent"/>
+        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/OrganisationalInteroperabilityEnabler"/>
         <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/PublicServiceCatalogue"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/InteroperabilityAgreement"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/BusinessInformationExchange"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/BusinessProcessManagementComponent"/>
-        <skos:hasTopConcept rdf:resource="http://data.europa.eu/dr8/HostingAndNetworkingInfrastructureService"/>
         <!-- END OF DEPRECATED TERMS -->
     </skos:ConceptScheme>
 
@@ -4952,15 +4940,6 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
 
 
     <!-- START OF DEPRECATED TERMS -->
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/ConfigurationAndCartographyService">
-        <skos:notation>ConfigurationAndCartographyService</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB210] Configuration and Cartography Service</skos:prefLabel>
-        <skos:definition xml:lang="en">A Configuration and Cartography Service allows the documentation of solution,
-            including its configuration and architecture.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
     <skos:Concept rdf:about="http://data.europa.eu/dr8/RecordManagementService">
         <skos:notation>RecordManagementService</skos:notation>
         <skos:prefLabel xml:lang="en">[ABB50] Record Management Service</skos:prefLabel>
@@ -4989,161 +4968,11 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
         <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
     </skos:Concept>
 
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/TestReport">
-        <skos:notation>TestReport</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB131] Test Report</skos:prefLabel>
-        <skos:definition xml:lang="en">A Test Report documents the results of verifying the behaviour of one or more
-            test item(s) or system(s) under test. It is making a conformance or interoperability assessment.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/TestService">
-        <skos:notation>TestService</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB128] Test Service</skos:prefLabel>
-        <skos:definition xml:lang="en">A Test Service enables the execution of interoperability and conformance testing.
-            A Test Service is realised by one or more Test Components.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/ConfigurationAndCartographyServiceComponent">
-        <skos:notation>ConfigurationAndCartographyServiceComponent</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB213] Configuration and Cartography Service Component</skos:prefLabel>
-        <skos:definition xml:lang="en">A Configuration and Cartography Service Component encapsulates the
-            functionalities for documenting the configuration and architecture of solutions.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/TestComponent">
-        <skos:notation>TestComponent</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB129] Test Component</skos:prefLabel>
-        <skos:definition xml:lang="en">A Test Component encapsulates the functionalities for conformance and
-            interoperability testing.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/ApplicationService">
-        <skos:notation>ApplicationService</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB187] Application Service</skos:prefLabel>
-        <skos:definition xml:lang="en">An Application Service is an externally visible unit of functionality, provided
-            by one or more application components. It is exposed through well-defined interfaces and is meaningful to
-            the environment. A Application Service exposes the functionality of components to their environment. This
-            functionality is accessed through one or more application interfaces.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/TestScenario">
-        <skos:notation>TestScenario</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB130] Test Scenario</skos:prefLabel>
-        <skos:definition xml:lang="en">A Test Scenario defines the different test cases which needs to be performed by
-            the Test Service. Each scenario (actual) outcome is validated against the pre-defined expected outcome.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/PublicPolicyDevelopmentMandate">
-        <skos:notation>PublicPolicyDevelopmentMandate</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB112] Public Policy Development Mandate</skos:prefLabel>
-        <skos:definition xml:lang="en">A Public Policy Development Mandate is the capacity and authority to carry out
-            tasks within a specific policy domain. [European Interoperability Strategy]
-        </skos:definition>
-        <skos:narrower rdf:resource="http://data.europa.eu/dr8/PublicPolicyDevelopmentEnabler"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/Data-levelMapping">
-        <skos:notation>Data-levelMapping</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB180] Data-level Mapping</skos:prefLabel>
-        <skos:definition xml:lang="en">A Data-level Mapping is a mapping between specific data elements (or data values)
-            [source: ISO/DIS 25964-2].
-        </skos:definition>
-        <skos:narrower rdf:resource="http://data.europa.eu/dr8/DataStandard"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/Schema-levelMapping">
-        <skos:notation>Schema-levelMapping</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB212] Schema-level Mapping</skos:prefLabel>
-        <skos:definition xml:lang="en">A Schema-level Mapping is a mapping between related classes and properties
-            [source: ISO/DIS 25964-2].
-        </skos:definition>
-        <skos:narrower rdf:resource="http://data.europa.eu/dr8/DataStandard"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/AuditAndLoggingComponent">
-        <skos:notation>AuditAndLoggingComponent</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB71] Audit and Logging Component</skos:prefLabel>
-        <skos:definition xml:lang="en">An Audit and Logging Component encapsulates the functionalities for auditing and
-            logging of events.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/LegalRequirementOrConstraint">
-        <skos:notation>LegalRequirementOrConstraint</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB164] Legal Requirement or Constraint</skos:prefLabel>
-        <skos:definition xml:lang="en">A Legal Requirement or Constraint is a legal text that mandates and/or guides the
-            creation of an Interoperable European Solution.
-        </skos:definition>
-        <skos:narrower rdf:resource="http://data.europa.eu/dr8/PublicPolicyFormulationAndImplementationInstrument"/>
-    </skos:Concept>
-
     <skos:Concept rdf:about="http://data.europa.eu/dr8/PublicServiceCatalogue">
         <skos:notation>PublicServiceCatalogue</skos:notation>
         <skos:prefLabel xml:lang="en">[ABB124] Public Service Catalogue</skos:prefLabel>
         <skos:definition xml:lang="en">A Public Service Catalogue is a repository, with information on all public
             services. It represents the collection of the offered public services. [ITIL v3]
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/InteroperabilityAgreement">
-        <skos:notation>InteroperabilityAgreement</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB119] Interoperability Agreement</skos:prefLabel>
-        <skos:definition xml:lang="en">An Interoperability Agreement is the means through which organisations (public
-            administrations, or businesses) formalises the cooperation with one another. These agreements aim at the
-            development of interoperability solutions, which meets the functional / technical requirements and needs of
-            one another. [European Interoperability Framework]
-
-            The agreement should include purposes and goals, terms and conditions, governance, and the description of
-            the channel(s).
-
-            The EIRA differentiates the following Interoperability Agreements:
-            - Interoperability Service Agreement (between Public Service Consumers and Public Service Providers;
-            - Interoperability Collaboration Agreement (between Organisations); or
-            - Interoperability Provider Agreement (between Public Service Providers).
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/BusinessInformationExchange">
-        <skos:notation>BusinessInformationExchange</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB170] Business Information Exchange</skos:prefLabel>
-        <skos:definition xml:lang="en">A Business Information Exchange is an interaction between two or more public
-            administrations, businesses or citizens.
-
-            Source: Based on UN/CEFACT Modelling Methodology (UMM)
-            http://www.unece.org/cefact/umm/umm_index.html
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/FinancialResource">
-        <skos:notation>FinancialResource</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB116] Financial Resource</skos:prefLabel>
-        <skos:definition xml:lang="en">A Financial Resource is money in the form of cash, securities, creditors, loan
-            facilities, etc.
-        </skos:definition>
-        <skos:narrower rdf:resource="http://data.europa.eu/dr8/OperationalEnabler"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/BusinessProcessManagementComponent">
-        <skos:notation>BusinessProcessManagementComponent</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB186] Business Process Management Component</skos:prefLabel>
-        <skos:definition xml:lang="en">A Business Process Management Component encapsulates the functionalities for the
-            orchestration/choreography of business processes.
         </skos:definition>
         <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
     </skos:Concept>
@@ -5155,24 +4984,6 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
             policy (centralised vs. decentralised). [European Interoperability Strategy]
         </skos:definition>
         <skos:narrower rdf:resource="http://data.europa.eu/dr8/PublicPolicyDevelopmentEnabler"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/HostingAndNetworkingInfrastructureService">
-        <skos:notation>HostingAndNetworkingInfrastructureService</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB190] Hosting and Networking Infrastructure Service</skos:prefLabel>
-        <skos:definition xml:lang="en">A Hosting and Networking Infrastructure Service is a collection of services for
-            hosting Interoperable European Solutions and provides the necessary networks for operating these solutions.
-        </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
-    </skos:Concept>
-
-    <skos:Concept rdf:about="http://data.europa.eu/dr8/OperationalEnabler">
-        <skos:notation>OperationalEnabler</skos:notation>
-        <skos:prefLabel xml:lang="en">[ABB166] Operational Enabler</skos:prefLabel>
-        <skos:definition xml:lang="en">An Operational Enabler is an organisation, person, object or event that makes it possible to implement the policy. [Oxford Dictionary]
-
-            Source: http://www.oxforddictionaries.com/definition/english/enabler</skos:definition>
-        <skos:narrower rdf:resource="http://data.europa.eu/dr8/PublicPolicyFormulationAndImplementationInstrument"/>
     </skos:Concept>
     <!-- END OF DEPRECATED TERMS -->
 </rdf:RDF>
