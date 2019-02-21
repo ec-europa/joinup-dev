@@ -166,7 +166,7 @@ Feature: "Add solution" visibility options.
       | Title       | PHP comments parser                             |
       | Description | A simple parser that goes through PHP comments. |
     And I select "Data gathering, data processing" from "Policy domain"
-    And I select "[ABB117] Implementing Guideline" from "Solution type"
+    And I select "Implementing Guideline" from "Solution type"
 
     # Submit the incomplete form, so error messages about missing fields will
     # be shown.
@@ -224,7 +224,7 @@ Feature: "Add solution" visibility options.
       | Name             | Angela Crespi                               |
       | E-mail address   | angela_crespi@glacmon.basel-uni.ch          |
     And I select "Data gathering, data processing" from "Policy domain"
-    And I select "[ABB59] Logging Service" from "Solution type"
+    And I select "Logging Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "University of Basel"
     And I press "Add owner"
