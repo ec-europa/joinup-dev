@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fd63d46c008ea41bafcf9312a062ab1",
+    "content-hash": "f4a9d25e3f7fd8b0b154eeebdf5fc49c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2318,17 +2318,17 @@
         },
         {
             "name": "drupal/config_provider",
-            "version": "2.0.0-rc1",
+            "version": "1.0.0-beta7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_provider",
-                "reference": "8.x-2.0-rc1"
+                "reference": "8.x-1.0-beta7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_provider-8.x-2.0-rc1.zip",
-                "reference": "8.x-2.0-rc1",
-                "shasum": "59405d2d56c9c450d03fc7c615008c694b12bccf"
+                "url": "https://ftp.drupal.org/files/projects/config_provider-8.x-1.0-beta7.zip",
+                "reference": "8.x-1.0-beta7",
+                "shasum": "4befa826df28d948225d1c2b2f21a096667d9435"
             },
             "require": {
                 "drupal/core": "*"
@@ -2336,11 +2336,11 @@
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-rc1",
-                    "datestamp": "1550290687",
+                    "version": "8.x-1.0-beta7",
+                    "datestamp": "1521601087",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
