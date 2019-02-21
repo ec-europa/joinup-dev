@@ -9,6 +9,7 @@
         "composer/installers": "^1.2",
         "continuousphp/aws-sdk-phing": "~0.1",
         "cweagans/composer-patches": "^1.6.4",
+        "dkarv/mdl-chip-input": "dev-master",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta3",
@@ -326,6 +327,19 @@
                     "url": "git@github.com:ec-europa/material-design-lite.git",
                     "type": "git",
                     "reference": "joinup"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "dkarv/mdl-chip-input",
+                "version": "dev-master",
+                "type": "drupal-theme-library",
+                "source": {
+                    "url": "git@github.com:dkarv/mdl-chip-input.git",
+                    "type": "git",
+                    "reference": "master"
                 }
             }
         },
