@@ -408,4 +408,40 @@ function joinup_core_post_update_update_update_eira_terms() {
   $query .= $graph->serialise('ntriples') . "\n";
   $query .= '}';
   $connection->update($query);
+
+  $graphs = [
+    'http://joinup.eu/solution/published',
+    'http://joinup.eu/solution/draft',
+  ];
+  $map = [
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyService' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyService',
+    'http://data.europa.eu/dr8/TestReport' => 'http://data.europa.eu/dr8/ConformanceTestReport',
+    'http://data.europa.eu/dr8/TestService' => 'http://data.europa.eu/dr8/ConformanceTestingService',
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyServiceComponent' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyServiceComponent',
+    'http://data.europa.eu/dr8/TestComponent' => 'http://data.europa.eu/dr8/ConformanceTestingComponent',
+    'http://data.europa.eu/dr8/ApplicationService' => 'http://data.europa.eu/dr8/InteroperableEuropeanSolutionService',
+    'http://data.europa.eu/dr8/TestScenario' => 'http://data.europa.eu/dr8/ConformanceTestScenario',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentMandate' => 'http://data.europa.eu/dr8/PublicPolicyImplementationMandate',
+    'http://data.europa.eu/dr8/Data-levelMapping' => 'http://data.europa.eu/dr8/DataLevelMapping',
+    'http://data.europa.eu/dr8/Schema-levelMapping' => 'http://data.europa.eu/dr8/SchemaLevelMapping',
+    'http://data.europa.eu/dr8/AuditAndLoggingComponent' => 'http://data.europa.eu/dr8/AuditComponent',
+    'http://data.europa.eu/dr8/LegalRequirementOrConstraint' => 'http://data.europa.eu/dr8/LegalAct',
+    'http://data.europa.eu/dr8/BusinessInformationExchange' => 'http://data.europa.eu/dr8/ExchangeOfBusinessInformation',
+    'http://data.europa.eu/dr8/InteroperabilityAgreement' => 'http://data.europa.eu/dr8/OrganisationalInteroperabilityAgreement',
+    'http://data.europa.eu/dr8/BusinessProcessManagementComponent' => 'http://data.europa.eu/dr8/OrchestrationComponent',
+    'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructureService' => 'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructure',
+    'http://data.europa.eu/dr8/OperationalEnabler' => 'http://data.europa.eu/dr8/PublicPolicyImplementationApproach',
+  ];
+
+  foreach ($graphs as $graph) {
+    foreach ($map as $old_uri => $new_uri) {
+      $query = <<<QUERY
+WITH <$graph>
+DELETE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+INSERT { ?solution_id <http://purl.org/dc/terms/type> <$new_uri> }
+WHERE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+QUERY;
+      $connection->query($query);
+    }
+  }
 }
