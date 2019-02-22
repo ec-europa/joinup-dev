@@ -18,6 +18,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
@@ -1357,4 +1358,25 @@ function joinup_core_config_readonly_whitelist_patterns() {
     'system.menu.support',
     'core.menu.static_menu_link_overrides',
   ];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_core_module_implements_alter(array &$implementations, $hook) {
+  if ($hook === 'cron') {
+    // Use the custom hook_cron() implementation, provided by 'joinup_core'
+    // module, to trigger the Cached Computed Field cron tasks.
+    // @see joinup_core_cron()
+    unset($implementations['cached_computed_field']);
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function joinup_core_cron() {
+  if (Settings::get('joinup.parse_cached_computed_field', TRUE)) {
+    cached_computed_field_cron();
+  }
 }
