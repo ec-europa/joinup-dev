@@ -17,20 +17,14 @@
       </label>
 
       {#
-        There are two variants of the search bar. Show the exposed field on the
-        search page, and on all other pages show a simple GET form that starts
-        a search.
+        There are two variants of the search bar. Their visibility is controlled
+        in the block configuration.
       #}
-      {% if page.header.exposed_form_search_page %}
-        {{ page.header.exposed_form_search_page }}
-      {% else %}
-        <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
-          <input class="search-bar__input mdl-textfield__input" type="text" name="keys" id="search-bar__input">
-        </form>
-      {% endif %}
+      {{ page.header.global_search }}
+      {{ page.header.exposed_form_search_page }}
     </div>
 {# Make sure to not render the search form twice. #}
-{{ page.header|without('exposed_form_search_page') }}
+{{ page.header|without('exposed_form_search_page', 'global_search') }}
 {{ page.header_profile_menu }}
 
 </div>
