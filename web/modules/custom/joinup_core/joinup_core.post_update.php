@@ -444,4 +444,18 @@ QUERY;
       $connection->query($query);
     }
   }
+
+  /*
+   * Finally, repeat the process that initially fixed the eira skos vocabulary.
+   * @see ISAICP-3216.
+   * @see \DrupalProject\Phing\AfterFixturesImportCleanup::main.
+   */
+  // Add the "Concept" type to all collection elements so that they are listed
+  // as Parent terms.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  // Add the link to all "Concept" type elements so that they are all considered
+  // as children of the EIRA vocabulary regardless of the depth.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
+  // Create a backwards connection from the children to the parent.
+  $connection->query('INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
 }

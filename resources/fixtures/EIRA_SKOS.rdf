@@ -4955,7 +4955,7 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
             Source: Based on the archival policy of the European Commission
             http://ec.europa.eu/archival-policy/moreq/doc/moreq_en.pdf
         </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
+        <skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
     </skos:Concept>
 
     <skos:Concept rdf:about="http://data.europa.eu/dr8/OrganisationalInteroperabilityEnabler">
@@ -4965,7 +4965,7 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
             the functions, principles, rules, and policies in an organisation. These enablers act as sources for the
             business rules of an organisation.
         </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
+        <skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
     </skos:Concept>
 
     <skos:Concept rdf:about="http://data.europa.eu/dr8/PublicServiceCatalogue">
@@ -4974,7 +4974,7 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
         <skos:definition xml:lang="en">A Public Service Catalogue is a repository, with information on all public
             services. It represents the collection of the offered public services. [ITIL v3]
         </skos:definition>
-        <skos:topConceptOf rdf:resource="http://data.europa.eu/eira"/>
+        <skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
     </skos:Concept>
 
     <skos:Concept rdf:about="http://data.europa.eu/dr8/PublicPolicyDevelopmentApproach">
@@ -4984,6 +4984,7 @@ http://ephx.sourceforge.net/summary.html]]></skos:definition>
             policy (centralised vs. decentralised). [European Interoperability Strategy]
         </skos:definition>
         <skos:narrower rdf:resource="http://data.europa.eu/dr8/PublicPolicyDevelopmentEnabler"/>
+        <skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
     </skos:Concept>
     <!-- END OF DEPRECATED TERMS -->
 </rdf:RDF>
