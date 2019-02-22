@@ -1386,6 +1386,11 @@ function joinup_core_cron() {
  * Implements hook_ENTITY_TYPE_update().
  */
 function joinup_core_node_update(NodeInterface $node) {
+  // Allow devops to disable the logging.
+  if (!Settings::get('joinup.ISAICP-5118', TRUE)) {
+    return;
+  }
+
   /** @var \Drupal\node\NodeInterface $original */
   $original = $node->original;
   if ($node->getLoadedRevisionId() < $original->getLoadedRevisionId()) {
