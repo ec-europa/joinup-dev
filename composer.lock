@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e56ede674dfe23547fb75d45fa580ec5",
+    "content-hash": "837049587e463d3cf3cf02bb3a8e7a68",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,23 +71,22 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.87.2",
+            "version": "3.87.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7c00779a343c9b813628bf6a27b94945272ced93"
+                "reference": "77bbcf213972b7e9ddf4fd101ef5f521adac9f7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7c00779a343c9b813628bf6a27b94945272ced93",
-                "reference": "7c00779a343c9b813628bf6a27b94945272ced93",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/77bbcf213972b7e9ddf4fd101ef5f521adac9f7f",
+                "reference": "77bbcf213972b7e9ddf4fd101ef5f521adac9f7f",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-pcre": "*",
                 "ext-simplexml": "*",
-                "ext-spl": "*",
                 "guzzlehttp/guzzle": "^5.3.3|^6.2.1",
                 "guzzlehttp/promises": "~1.0",
                 "guzzlehttp/psr7": "^1.4.1",
@@ -150,7 +149,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-01-25T22:29:49+00:00"
+            "time": "2019-02-06T23:17:08+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2158,16 +2157,12 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2427,8 +2422,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2536,16 +2531,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.6.7",
+            "version": "8.6.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "e0a09bda1da7552204464894811a59387608c9f9"
+                "reference": "59568ac02948cf075ee8543e6c6d4386ad8daec1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/e0a09bda1da7552204464894811a59387608c9f9",
-                "reference": "e0a09bda1da7552204464894811a59387608c9f9",
+                "url": "https://api.github.com/repos/drupal/core/zipball/59568ac02948cf075ee8543e6c6d4386ad8daec1",
+                "reference": "59568ac02948cf075ee8543e6c6d4386ad8daec1",
                 "shasum": ""
             },
             "require": {
@@ -2759,14 +2754,15 @@
                     "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
                     "Menu link plugins should provide a way for the link to be conditionally hidden @see https://www.drupal.org/project/drupal/issues/2719609": "https://www.drupal.org/files/issues/2719609-2.patch",
                     "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
-                    "[regression] Table Drag handles no longer respond to up/down arrow keys @see https://www.drupal.org/project/drupal/issues/2725259": "https://www.drupal.org/files/issues/2018-08-30/2725259-92.patch",
-                    "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch",
                     "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
                     "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
                     "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
                     "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                     "Profile provided configuration entities can have unmeetable dependencies @see https://www.drupal.org/node/2922417": "resources/patch/2922417-38-no-conflict.patch",
                     "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
+                    "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch",
+                    "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
+                    "UniqueFieldConstraint doesn't work for string IDs @see https://www.drupal.org/project/drupal/issues/3027745": "https://www.drupal.org/files/issues/2019-01-24/3027745-9.patch",
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch"
                 }
             },
@@ -2791,7 +2787,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-01-16T23:30:03+00:00"
+            "time": "2019-02-20T18:35:01+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3480,7 +3476,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -3537,7 +3533,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/geocoder",
-                "reference": "c4d5073d8fe80a7d2732a6996e9e7b2b4a24eb1e"
+                "reference": "6cdd75846caada28f857535c3aceafa12eb67d08"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -3579,7 +3575,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.x-dev",
-                    "datestamp": "1547609284",
+                    "datestamp": "1549431784",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3645,7 +3641,7 @@
                 "issues": "https://drupal.org/project/issues/geocoder",
                 "irc": "irc://irc.freenode.org/drupal-geo"
             },
-            "time": "2019-02-03T23:19:58+00:00"
+            "time": "2019-02-06T05:40:41+00:00"
         },
         {
             "name": "drupal/geofield",
@@ -4001,7 +3997,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.8",
-                    "datestamp": "1548968880",
+                    "datestamp": "1549615080",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4372,7 +4368,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4695,7 +4691,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4959,7 +4955,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5409,7 +5405,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5621,7 +5617,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5907,7 +5903,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1493246342",
+                    "datestamp": "1510132373",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5975,7 +5971,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -7986,16 +7982,16 @@
         },
         {
             "name": "pear/console_getopt",
-            "version": "v1.4.1",
+            "version": "v1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Console_Getopt.git",
-                "reference": "82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f"
+                "reference": "6c77aeb625b32bd752e89ee17972d103588b90c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f",
-                "reference": "82f05cd1aa3edf34e19aa7c8ca312ce13a6a577f",
+                "url": "https://api.github.com/repos/pear/Console_Getopt/zipball/6c77aeb625b32bd752e89ee17972d103588b90c0",
+                "reference": "6c77aeb625b32bd752e89ee17972d103588b90c0",
                 "shasum": ""
             },
             "type": "library",
@@ -8029,7 +8025,7 @@
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Console_Getopt",
-            "time": "2015-07-20T20:28:12+00:00"
+            "time": "2019-02-06T16:52:33+00:00"
         },
         {
             "name": "pear/console_table",
@@ -12013,7 +12009,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549218480",
+                    "datestamp": "1549559402",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12077,6 +12073,12 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
@@ -12302,10 +12304,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
@@ -12489,6 +12487,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.0.x-dev"
+                },
+                "patches_applied": {
+                    "Add missing negative step @see https://github.com/jhedstrom/drupalextension/pull/527": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/527.diff"
                 }
             },
             "autoload": {
@@ -12783,7 +12784,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -13994,6 +13996,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
@@ -14824,7 +14827,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "semiceu/adms-ap_validator": 20,
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/geofield": 10,
@@ -14841,6 +14843,7 @@
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "openeuropa/oe_webtools_location": 20,
+        "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/drupal-extension": 10,
@@ -14853,7 +14856,10 @@
     "platform": {
         "php": ">=7.1.0"
     },
-    "platform-dev": [],
+    "platform-dev": {
+        "ext-dom": "*",
+        "ext-libxml": "*"
+    },
     "platform-overrides": {
         "php": "7.1.9"
     }

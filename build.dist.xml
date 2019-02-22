@@ -189,8 +189,18 @@
     <!-- Set up development configuration, including on-screen error logging and debugging options. -->
     <target name="enable-dev-settings">
         <phingcall target="include-local-settings" />
-        <!-- Copy settings file containing development values, but preserve any existing local settings. -->
-        <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}" overwrite="false" />
+
+        <if>
+            <not>
+                <available file="${website.settings.local.php}"/>
+            </not>
+            <then>
+                <!-- Copy settings file containing development values, but preserve any existing local settings. -->
+                <copy file="${website.settings.local.php.example}" tofile="${website.settings.local.php}"/>
+                <!-- Let the site config decide the verbosity or error messages -->
+                <replaceregexp file="${website.settings.local.php}" pattern="(\$config\['system.logging'\]\['error_level'\].*)" replace="# $1"/>
+            </then>
+        </if>
     </target>
 
     <!-- Create an empty local settings file, if it doesn't exist yet. -->

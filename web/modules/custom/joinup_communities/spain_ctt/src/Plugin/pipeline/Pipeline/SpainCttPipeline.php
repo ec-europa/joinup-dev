@@ -16,9 +16,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "add_joinup_vocabularies",
  *     "adms_validation",
  *     "user_selection_filter",
- *     "3_way_merge" = {
- *       "collection" = "http://administracionelectronica.gob.es/ctt",
- *     },
+ *     "3_way_merge",
  *     "broken_references",
  *     "joinup_validation",
  *     "import",
@@ -26,4 +24,13 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   },
  * )
  */
-class SpainCttPipeline extends JoinupFederationPipelinePluginBase {}
+class SpainCttPipeline extends JoinupFederationPipelinePluginBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCollection(): ?string {
+    return 'http://administracionelectronica.gob.es/ctt';
+  }
+
+}

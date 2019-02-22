@@ -540,3 +540,25 @@ Feature: Navigation menu for custom pages
       | group      |
       | collection |
       | solution   |
+
+  Scenario Outline: Test that the edit link appears next to the "About" page.
+    Given the following <group>s:
+      | title           | state     |
+      | About edit link | validated |
+
+    When I am logged in as a moderator
+    And I go to the "About edit link" <group>
+    And I click the contextual link "Edit menu" in the "Left sidebar" region
+
+    Then the "group menu edit table" table should contain the following columns:
+      | Page     | Enabled | Operations |
+      | Overview |         | Edit       |
+      | Members  |         |            |
+      | About    |         | Edit       |
+    When I click "Edit" in the "Content" region
+    Then I should see the heading "Edit <label> About edit link"
+
+    Examples:
+      | group      | label      |
+      | collection | Collection |
+      | solution   | Solution   |
