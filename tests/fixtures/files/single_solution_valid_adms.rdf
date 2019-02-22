@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Demo file including entities to be imported.
+     This file represents a remote repository file so no Drupal/Joinup properties are included.
+     After import, the following properties need to be taken care of:
+     Solution:
+       - Title. This is a federated property but there have been cases that it is missing.
+       - eLibrary creation
+       - Logo
+       - Banner
+       - Moderation
+       - hasVersion (for releases that refer to the solution through isVersionOf)
+       - Collection (Computed field)
+       - Policy domain
+       - Workflow status
+     Owner:
+       - Workflow status
+     Contact information:
+       - Workflow status
+-->
+<rdf:RDF xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:v="http://www.w3.org/2006/vcard/ns#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:dcat="http://www.w3.org/ns/dcat#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+    <!-- #### Solutions #### -->
+
+    <!-- A solution with 2 releases. -->
+    <rdf:Description rdf:about="http://example.com/solution/single">
+        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+        <dct:title>Single solution</dct:title>
+        <dct:description>This is a solution that includes 2 releases.</dct:description>
+        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-05-07T11:35:24+03:00</dc:issued>
+        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-12-05T16:02:24+02:00</dc:modified>
+        <dct:publisher rdf:resource="http://example.com/owner/single"/>
+        <dcat:contactPoint rdf:resource="http://example.com/contact/single"/>
+        <dcat:landingPage rdf:resource="http://example.com"/>
+        <dct:type rdf:resource="http://vocabulary/term/single"/>
+        <dct:language rdf:resource="http://publications.europa.eu/resource/authority/language/RON"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://example.com/owner/single">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+        <dct:type rdf:resource="http://purl.org/adms/publishertype/Company"/>
+        <foaf:name>The Publisher</foaf:name>
+    </rdf:Description>
+
+    <!-- #### Contact information  #### -->
+
+    <rdf:Description rdf:about="http://example.com/contact/single">
+        <rdf:type rdf:resource="http://www.w3.org/2006/vcard/ns#Kind"/>
+        <v:fn>Contact</v:fn>
+        <v:hasEmail rdf:datatype="v:Email">contact@example.com</v:hasEmail>
+    </rdf:Description>
+
+    <!-- Custom term of a custom vocabulary to fill in the solution type. -->
+    <rdf:Description rdf:about="http://vocabulary/term/single">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <skos:label>Term</skos:label>
+        <skos:inScheme rdf:resource="http://vocabulary"/>
+    </rdf:Description>
+
+</rdf:RDF>

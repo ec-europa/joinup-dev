@@ -27,16 +27,14 @@ services:
       PHP_IDE_CONFIG: "serverName=Docker"
       PHP_SENDMAIL_PATH: "/usr/sbin/sendmail -t -i -S mail:1025"
 
-  # This will compile the CSS once when docker-compose is started.
-  sass:
-    image: pablofelix/sass
+  gulp:
+    image: huli/gulp
     volumes:
-      - $PWD:/app/
+      - $PWD/web/themes/joinup:/srv
+    working_dir: /srv/prototype
     entrypoint:
-      - watch
-      - -t compressed
-      - /app/web/themes/joinup/prototype/sass/app.sass
-      - /app/web/themes/joinup/css/style.min.css
+      - /entrypoint.sh
+      - default
 
   mysql:
     image: mysql:5.6

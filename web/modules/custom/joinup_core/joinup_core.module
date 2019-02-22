@@ -1230,6 +1230,10 @@ function joinup_core_form_views_form_og_members_overview_default_alter(&$form, F
   $args = ['@label' => $group->get('rid')->entity->getSingularLabel()];
   $form['header']['og_membership_bulk_form']['action']['#options']['joinup_transfer_group_ownership'] = t('Transfer the ownership of the @label to the selected member', $args);
   $form['#validate'][] = 'joinup_core_form_views_form_og_members_overview_default_validate';
+
+  // Hide the second 'Apply to selected items' button so that only the one from
+  // the bulk form header remains.
+  unset($form['actions']['submit']);
 }
 
 /**

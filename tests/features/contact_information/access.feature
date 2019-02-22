@@ -37,4 +37,4 @@ Feature: Contact information access
       | Ausy software solutions | Michiel Lucas | facilitator |
     When I am logged in as "Michiel Lucas"
     When I go to the "Ausy software solutions" collection edit form
-    Then I see the button "Edit" in the "Contact information inline form" region
+    Then I should see the button "Edit" in the "Contact information inline form" region
