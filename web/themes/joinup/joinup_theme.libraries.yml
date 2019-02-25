@@ -6,7 +6,7 @@ material-design-lite:
     vendor/material-design-lite/material.min.js: {}
 
 global-components:
-  Version: 1.x
+  version: 1.x
   css:
     theme:
       css/style.min.css: {}
@@ -16,7 +16,7 @@ global-components:
     - core/jquery
 
 form-components:
-  Version: 1.x
+  version: 1.x
   js:
     js/form.js: {}
     vendor/autosize/dist/autosize.js: {}
@@ -28,7 +28,7 @@ form-components:
     - core/drupalSettings
 
 fieldset-show-more:
-  Version: 1.x
+  version: 1.x
   js:
     js/fieldset-show-more.js: {}
   dependencies:
