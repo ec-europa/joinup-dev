@@ -1386,19 +1386,23 @@ function joinup_core_cron() {
  * Implements hook_ENTITY_TYPE_update().
  */
 function joinup_core_node_update(NodeInterface $node) {
-  // Allow devops to disable the logging.
-  if (!Settings::get('joinup.ISAICP-5118', TRUE)) {
-    return;
-  }
-
   /** @var \Drupal\node\NodeInterface $original */
   $original = $node->original;
 
   $log = function () use ($node, $original): bool {
-    if (!Settings::get('joinup.ISAICP-5118.only_when_new_revision_id_is_lower', TRUE)) {
+    $setting = Settings::get('joinup.ISAICP-5118', 'on_lower_new_revision_id');
+    if ($setting === 'on_lower_new_revision_id') {
+      return $node->getLoadedRevisionId() < $original->getLoadedRevisionId();
+    }
+    elseif ($setting === 'always') {
       return TRUE;
     }
-    return $node->getLoadedRevisionId() < $original->getLoadedRevisionId();
+    elseif ($setting === 'disabled') {
+      return FALSE;
+    }
+    else {
+      throw new \Exception("Invalid value '$setting' for joinup.ISAICP-5118. Should be 'on_lower_new_revision_id', 'always' or 'disabled'.");
+    }
   };
 
   if ($log) {
