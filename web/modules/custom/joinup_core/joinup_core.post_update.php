@@ -430,7 +430,7 @@ function joinup_core_post_update_update_update_eira_terms() {
     'http://data.europa.eu/dr8/InteroperabilityAgreement' => 'http://data.europa.eu/dr8/OrganisationalInteroperabilityAgreement',
     'http://data.europa.eu/dr8/BusinessProcessManagementComponent' => 'http://data.europa.eu/dr8/OrchestrationComponent',
     'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructureService' => 'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructure',
-    'http://data.europa.eu/dr8/OperationalEnabler' => 'http://data.europa.eu/dr8/PublicPolicyImplementationApproach',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentApproach' => 'http://data.europa.eu/dr8/PublicPolicyImplementationApproach',
   ];
 
   foreach ($graphs as $graph) {
