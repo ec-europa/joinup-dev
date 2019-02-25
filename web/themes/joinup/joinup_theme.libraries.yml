@@ -15,6 +15,14 @@ global-components:
   dependencies:
     - core/jquery
 
+mdl-chip-input:
+  version: dev-master
+  js:
+    vendor/mdl-chip-input/dist/mdl-chips-input.js: {}
+  css:
+    theme:
+      vendor/mdl-chip-input/dist/mdl-chips-input.css: {}
+
 form-components:
   version: 1.x
   js:
