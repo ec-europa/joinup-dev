@@ -1393,7 +1393,15 @@ function joinup_core_node_update(NodeInterface $node) {
 
   /** @var \Drupal\node\NodeInterface $original */
   $original = $node->original;
-  if ($node->getLoadedRevisionId() < $original->getLoadedRevisionId()) {
+
+  $log = function () use ($node, $original): bool {
+    if (!Settings::get('joinup.ISAICP-5118.only_when_new_revision_id_is_lower', TRUE)) {
+      return TRUE;
+    }
+    return $node->getLoadedRevisionId() < $original->getLoadedRevisionId();
+  };
+
+  if ($log) {
     $backtrace = debug_backtrace();
     array_shift($backtrace);
     $context = [
