@@ -18,8 +18,10 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Utility\Error;
 use Drupal\file\Entity\File;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
@@ -1357,4 +1359,63 @@ function joinup_core_config_readonly_whitelist_patterns() {
     'system.menu.support',
     'core.menu.static_menu_link_overrides',
   ];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_core_module_implements_alter(array &$implementations, $hook) {
+  if ($hook === 'cron') {
+    // Use the custom hook_cron() implementation, provided by 'joinup_core'
+    // module, to trigger the Cached Computed Field cron tasks.
+    // @see joinup_core_cron()
+    unset($implementations['cached_computed_field']);
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function joinup_core_cron() {
+  if (Settings::get('joinup.parse_cached_computed_field', TRUE)) {
+    cached_computed_field_cron();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_core_node_update(NodeInterface $node) {
+  /** @var \Drupal\node\NodeInterface $original */
+  $original = $node->original;
+
+  $log = function () use ($node, $original): bool {
+    $setting = Settings::get('joinup.ISAICP-5118', 'on_lower_new_revision_id');
+    if ($setting === 'on_lower_new_revision_id') {
+      return $node->getLoadedRevisionId() < $original->getLoadedRevisionId();
+    }
+    elseif ($setting === 'always') {
+      return TRUE;
+    }
+    elseif ($setting === 'disabled') {
+      return FALSE;
+    }
+    else {
+      throw new \Exception("Invalid value '$setting' for joinup.ISAICP-5118. Should be 'on_lower_new_revision_id', 'always' or 'disabled'.");
+    }
+  };
+
+  if ($log) {
+    $backtrace = debug_backtrace();
+    array_shift($backtrace);
+    $context = [
+      '@nid' => $node->id(),
+      '@node' => $node->toArray(),
+      '@original' => $original->toArray(),
+      '@backtrace' => Error::formatBacktrace($backtrace),
+      '@env' => $_ENV,
+      '@server' => $_SERVER,
+    ];
+    \Drupal::logger('ISAICP-5118')->info("Node @nid switched to a lower revision", $context);
+  }
 }
