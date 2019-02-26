@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "group_header_block",
  *   admin_label = @Translation("Group header"),
  *   context = {
- *     "og" = @ContextDefinition("og", label = @Translation("Organic group"))
+ *     "og" = @ContextDefinition("entity:rdf_entity", label = @Translation("Organic group"))
  *   }
  * )
  */
