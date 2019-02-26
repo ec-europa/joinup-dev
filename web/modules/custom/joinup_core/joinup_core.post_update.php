@@ -398,7 +398,7 @@ function joinup_core_post_update_update_update_eira_terms() {
   $connection = \Drupal::service('sparql_endpoint');
   $connection->query('CLEAR GRAPH <http://eira_skos>;');
 
-  $graph = new Graph('http://eira_skos');
+  $graph = new Graph($graph_uri);
   $filename = DRUPAL_ROOT . '/../resources/fixtures/EIRA_SKOS.rdf';
   $graph->parseFile($filename);
 
@@ -445,11 +445,10 @@ QUERY;
     }
   }
 
-  /*
-   * Finally, repeat the process that initially fixed the eira skos vocabulary.
-   * @see ISAICP-3216.
-   * @see \DrupalProject\Phing\AfterFixturesImportCleanup::main.
-   */
+  // Finally, repeat the process that initially fixed the eira skos vocabulary.
+  // @see ISAICP-3216.
+  // @see \DrupalProject\Phing\AfterFixturesImportCleanup::main()
+  //
   // Add the "Concept" type to all collection elements so that they are listed
   // as Parent terms.
   $connection->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
