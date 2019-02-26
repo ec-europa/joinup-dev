@@ -15,6 +15,13 @@ global-components:
   dependencies:
     - core/jquery
 
+global-search:
+  version: 1.x
+  js:
+    js/global-search.js: {}
+  dependencies:
+    - joinup_theme/mdl-chip-input
+
 mdl-chip-input:
   version: dev-master
   js:
