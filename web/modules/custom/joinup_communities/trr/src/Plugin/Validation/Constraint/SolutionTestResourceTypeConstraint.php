@@ -28,13 +28,13 @@ class SolutionTestResourceTypeConstraint extends Constraint {
    *
    * @var string
    */
-  public $invalidTestScenarioMessage = 'Test resource type should be either "Test Suite", "Test Case", "Test Assertion" or "Document Assertion Set" when solution type is set to "Test scenario".';
+  public $invalidTestScenarioMessage = 'Test resource type should be either "Test Suite", "Test Case", "Test Assertion" or "Document Assertion Set" when solution type is set to "Conformance Test Scenario".';
 
   /**
    * The violation message shown on wrong types for test services or components.
    *
    * @var string
    */
-  public $invalidTestServiceOrComponentMessage = 'Test resource type should be either "Test Bed", "Messaging Adapter" or "Document Validator" when solution type is set to "Test service" or "Test component".';
+  public $invalidTestServiceOrComponentMessage = 'Test resource type should be either "Test Bed", "Messaging Adapter" or "Document Validator" when solution type is set to "Test service" or "Conformance Testing Component".';
 
 }

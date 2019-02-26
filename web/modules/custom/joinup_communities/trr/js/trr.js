@@ -58,9 +58,9 @@
      */
     function toggle_trr_element(solution_type, $element) {
         var trr_solution_terms = [
-            'http://data.europa.eu/dr8/TestComponent',
-            'http://data.europa.eu/dr8/TestService',
-            'http://data.europa.eu/dr8/TestScenario'
+            'http://data.europa.eu/dr8/ConformanceTestingComponent',
+            'http://data.europa.eu/dr8/ConformanceTestingService',
+            'http://data.europa.eu/dr8/ConformanceTestScenario'
         ];
         var selected_trr_terms = array_intersect([solution_type, trr_solution_terms]);
         if (selected_trr_terms.length) {
