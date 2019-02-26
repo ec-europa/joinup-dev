@@ -25,7 +25,8 @@ global-search:
 mdl-chip-input:
   version: dev-master
   js:
-    vendor/mdl-chip-input/dist/mdl-chips-input.js: {}
+    # Hacked version of vendor/mdl-chip-input/dist/mdl-chips-input.js
+    js/mdl-chips-input.js: {}
   css:
     theme:
       vendor/mdl-chip-input/dist/mdl-chips-input.css: {}
