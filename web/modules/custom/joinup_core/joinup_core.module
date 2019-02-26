@@ -1392,7 +1392,9 @@ function joinup_core_node_update(NodeInterface $node) {
   $log = function () use ($node, $original): bool {
     $setting = Settings::get('joinup.ISAICP-5118', 'on_lower_new_revision_id');
     if ($setting === 'on_lower_new_revision_id') {
-      return $node->getLoadedRevisionId() < $original->getLoadedRevisionId();
+      $node_revision_id = $node->getLoadedRevisionId();
+      $original_revision_id = $original->getLoadedRevisionId();
+      return $node_revision_id && $original_revision_id && ($node_revision_id < $original_revision_id);
     }
     elseif ($setting === 'always') {
       return TRUE;
@@ -1405,7 +1407,7 @@ function joinup_core_node_update(NodeInterface $node) {
     }
   };
 
-  if ($log) {
+  if ($log()) {
     $backtrace = debug_backtrace();
     array_shift($backtrace);
     $context = [
