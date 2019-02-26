@@ -152,23 +152,19 @@
 // States
 // --------------------------------------------------
 .search-bar--header
-  &.is-focused,
-  &.is-dirty
-    width: calc(100% - 130px)
-    background-color: $color-blue-default
-    +z-index(navigation)
-    +breakpoint(tablet)
-      width: calc(100% - 200px)
-    .search-bar__input-container
-      width: calc(100% - 50px)
-      max-width: 100%
+  width: calc(100% - 130px)
+  background-color: $color-blue-default
+  +z-index(navigation)
+  +breakpoint(tablet)
+    width: calc(100% - 200px)
+  .search-bar__input-container
+    width: calc(100% - 50px)
+    max-width: 100%
 
 .search-bar--header-shifted
-  &.is-focused,
-  &.is-dirty
-    width: calc(100% - 175px)
-    +breakpoint(tablet)
-      width: calc(100% - 245px)
-    .search-bar__input-container
-      width: calc(100% - 50px)
+  width: calc(100% - 175px)
+  +breakpoint(tablet)
+    width: calc(100% - 245px)
+  .search-bar__input-container
+    width: calc(100% - 50px)
 
