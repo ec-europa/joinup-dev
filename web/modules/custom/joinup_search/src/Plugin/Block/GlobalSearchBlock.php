@@ -64,7 +64,7 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     $group = $this->ogContext->getGroup();
     $build['content'] = [
       '#theme' => 'joinup_search_global_search',
-      '#filters' => [$group ? $group->label() : 'No group'],
+      '#filters' => [$group ? $group->label() : ''],
     ];
     return $build;
   }
