@@ -186,16 +186,22 @@ trait TraversingTrait {
    *
    * @param string $alias
    *   The facet alias.
+   * @param \Behat\Mink\Element\NodeElement $region
+   *   (optional) Limit the search to a specific region. If empty, the whole
+   *   page will be used. Defaults to NULL.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The facet node element.
    *
    * @throws \Exception
-   *   Thrown when the facet is not found in the page.
+   *   Thrown when the facet is not found in the designated area.
    */
-  protected function findFacetByAlias($alias) {
+  protected function findFacetByAlias($alias, NodeElement $region = NULL) {
+    if ($region === NULL) {
+      $region = $this->getSession()->getPage();
+    }
     $facet_id = self::getFacetIdFromAlias($alias);
-    $element = $this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
+    $element = $region->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
 
     if (!$element) {
       throw new \Exception("The facet '$alias' was not found in the page.");
@@ -232,6 +238,7 @@ trait TraversingTrait {
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
       'Collection event date' => 'collection_event_type',
+      'Content types' => 'type',
     ];
 
     if (!isset($mappings[$alias])) {
