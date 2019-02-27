@@ -390,9 +390,11 @@ function joinup_core_post_update_install_error_page() {
 }
 
 /**
- * Update the EIRA terms.
+ * Update the EIRA terms and perform other related tasks.
  */
-function joinup_core_post_update_update_update_eira_terms() {
+function joinup_core_post_update_eira() {
+  \Drupal::service('module_installer')->install(['eira']);
+
   $graph_uri = 'http://eira_skos';
   /** @var \Drupal\Driver\Database\joinup_sparql\Connection $connection */
   $connection = \Drupal::service('sparql_endpoint');
