@@ -409,6 +409,47 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function joinup_core_taxonomy_term_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  $current_route = \Drupal::service('current_route_match');
+  $route_name = $current_route->getRouteName();
+  if ($route_name !== 'entity.taxonomy_term.canonical') {
+    return;
+  }
+
+  $term = $current_route->getParameter('taxonomy_term');
+  if (empty($term) || $term->bundle() !== 'eira') {
+    return $build;
+  }
+
+  $deprecated = (bool) $term->get('field_taxonomy_deprecated')->value;
+  if (!$deprecated) {
+    return $build;
+  }
+
+  $taxonomy_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $query = $taxonomy_storage->getQuery();
+  $results = $query->condition('field_taxonomy_replaces', $term->id())
+    ->condition('bundle', 'eira')
+    ->execute();
+
+  if (empty($results)) {
+    $message = t('This building block is deprecated, and should not be used in new development.');
+  }
+  else {
+    $replacement_id = reset($results);
+    $replacement = $taxonomy_storage->load($replacement_id);
+    $message = t('This building block is deprecated, and should not be used in new development. Consider using @title (@uri) instead.', [
+      '@uri' => $replacement->id(),
+      '@title' => $replacement->label(),
+    ]);
+  }
+
+  \Drupal::messenger()->addWarning($message);
+}
+
+/**
  * Implements hook_query_TAG_alter().
  *
  * In Joinup, solutions and releases share the same bundle uri. The distinction
