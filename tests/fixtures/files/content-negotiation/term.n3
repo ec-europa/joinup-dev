@@ -1,0 +1,6 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://joinup.eu/product-type#44611100-7>
+  a skos:Concept ;
+  skos:inScheme <http://joinup.eu/product-type#> ;
+  skos:prefLabel "Air cylinders"@en .
