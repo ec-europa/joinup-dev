@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   module:
-    - rdf_entity
+    - rdf_taxonomy
     - serialization
     - user
-id: entity.rdf_entity
-plugin_id: 'entity:rdf_entity'
+id: entity.taxonomy_term
+plugin_id: 'entity:taxonomy_term'
 granularity: resource
 configuration:
   methods:
