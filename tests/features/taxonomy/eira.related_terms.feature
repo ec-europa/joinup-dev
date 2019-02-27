@@ -5,13 +5,8 @@ Feature:
   I want to be able to view information on the term.
 
   Scenario: Show related terms on the overview page.
-    When I am logged in as a moderator
-    And I am on the homepage
-    And I click "RDF ID converter"
-    Then I should see the heading "Convert an RDF entity ID"
-
-    When I fill in "RDF entity ID or a URL" with "http://data.europa.eu/dr8/PublicServiceProvider"
-    And I press "Go!"
+    Given I am an anonymous user
+    When I go to the "Public Service Provider" term page
     Then I should see the heading "Public Service Provider"
     And I should see the following links:
       | Citizen                                   |
