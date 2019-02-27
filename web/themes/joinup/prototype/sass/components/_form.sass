@@ -200,5 +200,25 @@
     border-width: 1px
     border-color: $color-error
 
+.form__subscribe-types
+  @extend .white-box
+  .form-item
+    flex: 1 100%
+    padding: 10px
+    select
+      width: 100%
+  +breakpoint(tablet)
+    .form-item
+      flex: 1 50%
+  +breakpoint(desktop)
+    .form-item
+      flex: 1 25%
+      max-width: 25%
+
+.form__subscribe-types-inner
+  margin: -10px
+  display: flex
+  flex-flow: row wrap
+
 // States
 // --------------------------------------------------

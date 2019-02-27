@@ -520,6 +520,7 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.content_overview.page_1':
       case 'entity.rdf_entity.member_overview':
       case 'entity.user.canonical':
+      case 'joinup_subscription.subscriptions_page':
         $is_listing = TRUE;
         break;
     }
@@ -1600,6 +1601,17 @@ function joinup_theme_preprocess_node__tallinn_report__listing_item(&$variables)
   if (!$node->get('created')->equals($node->get('changed'))) {
     $date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
     $variables['last_update'] = $date;
+  }
+}
+
+/**
+ * Implements hook_preprocess_links().
+ *
+ * Add class for a list with buttons.
+ */
+function joinup_theme_preprocess_links(&$variables) {
+  if (isset($variables['links']['subscription_settings'])) {
+    $variables['attributes']['class'][] = 'links--buttons';
   }
 }
 

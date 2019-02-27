@@ -116,6 +116,10 @@ class SubscriptionDashboardForm extends FormBase {
         '#type' => 'container',
         '#attributes' => ['class' => ['collection-subscription']],
         'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'list_view'),
+        'bundles' => [
+          '#type' => 'container',
+          '#extra_suggestion' => 'container__subscribe_form',
+        ],
       ];
 
       foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
@@ -123,7 +127,7 @@ class SubscriptionDashboardForm extends FormBase {
         $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
         }, FALSE);
-        $form['collections'][$collection->id()][$bundle_id] = [
+        $form['collections'][$collection->id()]['bundles'][$bundle_id] = [
           '#type' => 'select',
           '#title' => $bundle_info[$bundle_id]['label'],
           '#options' => [
@@ -154,7 +158,7 @@ class SubscriptionDashboardForm extends FormBase {
     foreach ($memberships as $membership) {
       // Check if the subscriptions have changed. This allows us to skip saving
       // the membership entity if nothing changed.
-      $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()], function (string $subscription_type): bool {
+      $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()]['bundles'], function (string $subscription_type): bool {
         return $subscription_type === JoinupSubscriptionInterface::SUBSCRIBE_ALL;
       }));
 
