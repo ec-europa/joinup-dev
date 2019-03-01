@@ -106,3 +106,8 @@
     display: block
     overflow-x: auto
     margin-top: $form-margin
+
+// Fix margin if there is more than one text field in a table cell.
+.form-table__cell
+  .mdl-textfield + .mdl-textfield
+    margin-top: $table-margin
