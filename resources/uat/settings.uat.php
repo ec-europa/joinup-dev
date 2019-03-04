@@ -30,6 +30,9 @@ $databases['sparql_default']['default']['namespace'] = "Drupal\\Driver\\Database
 $config['swiftmailer.transport']['transport'] = 'spool';
 $config['swiftmailer.transport']['spool_directory'] = '/tmp/spool/';
 
+// Private file directory.
+$settings['file_private_path'] = DRUPAL_ROOT . '/../private';
+
 $settings['error_page']['uuid'] = TRUE;
 $settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_page';
 set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']);
