@@ -44,6 +44,9 @@ RUN echo "xdebug.remote_autostart=0" >> /usr/local/etc/php/conf.d/95-xdebug.ini
 RUN echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/95-xdebug.ini
 RUN echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/95-xdebug.ini
 RUN echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/95-xdebug.ini
-RUN echo "xdebug.remote_host=`ip -4 route show default | awk '/^default/ { print $3 }'`" >> /usr/local/etc/php/conf.d/95-xdebug.ini
 
 WORKDIR /var/www/html
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
