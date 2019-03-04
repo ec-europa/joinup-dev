@@ -1,12 +1,13 @@
 
 {% if items or active %}
   <div{{ attributes.addClass('filter') }}>
+    <div{{ button_attributes }}></div>
     {% if prefix_text -%}
       <div class="filter__label">{{ prefix_text }}</div>
     {% endif -%}
     <div class="filter__term">{{ active|safe_join(', ') }}</div>
     {{ suffix_text }}
-    <div{{ button_attributes }}></div>
+
 
     {%- if items -%}
       <ul class="filter__menu mdl-menu mdl-menu--bottom-left mdl-js-menu" for="{{ button_attributes.id }}">
