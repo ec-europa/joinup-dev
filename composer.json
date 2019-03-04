@@ -11,7 +11,7 @@
         "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
-        "drupal/cached_computed_field": "^1.0-beta3",
+        "drupal/cached_computed_field": "dev-1.x",
         "drupal/changed_fields": "^2.0",
         "drupal/config_provider": "~1.0",
         "drupal/config_readonly": "~1.0",
@@ -168,9 +168,6 @@
             },
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
-            },
-            "drupal/cached_computed_field": {
-                "Error on cron @see https://www.drupal.org/project/cached_computed_field/issues/3037393": "https://www.drupal.org/files/issues/2019-03-04/3037393-2.patch"
             },
             "drupal/config_sync": {
                 "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
