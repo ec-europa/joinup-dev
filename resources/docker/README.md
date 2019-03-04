@@ -82,15 +82,6 @@ Please, note that the volume names, as with the docker services, will be prefixe
 project lies within e.g. if you install the project on the `myproject` folder, the `mysql` volume, will be named
 `myproject_mysql`.
 
-## XDEBUG
-### PhpStorm
-For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
-that the mappings have to be set.
-After you have created the server under `File | Settings | Languages & Frameworks | PHP | Servers`. Create a server for
-localhost and port 8080, or the port that you with the container to run from. By default, the web container will be
-reachable in port 8080. Enable the `Use path mappings` option and set the absolute path on the server for your project
-root. By default, this is `/var/www/html`.
-
 ## Useful commands
 * When a service is not based on an image, but is built through a Dockerfile, the image is cached in docker-compose
 after first build. If changes are made, it can be rebuild using `docker-compose build <container> --no-cache`.
@@ -140,6 +131,47 @@ services:
 ```
 Note that in the above snippet the first two lines are also part of the main `docker-composer.yml`. This is because
 the `volumes` entry here will completely override the parent entry and will not merge with it.
+
+For extra configuration, the folder `resources/docker/local` is excluded in git and can be used to host local settings.
+You can use the volumes section above to add your own preferences to the containers. A good example is provided in the
+XDEBUG section below.
+
+## XDEBUG
+### PhpStorm
+For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
+that the mappings have to be set.
+After you have created the server under `File | Settings | Languages & Frameworks | PHP | Servers`. Create a server for
+localhost and port 8080, or the port that you with the container to run from. By default, the web container will be
+reachable in port 8080. Enable the `Use path mappings` option and set the absolute path on the server for your project
+root. By default, this is `/var/www/html`.
+
+### Overriding default xdebug configuration
+Taking a look at the web container's Dockerfile you will see some default settings for the xdebug. These settings are
+overridable in the following ways:
+* Using the `XDEBUG_CONFIG=` environment variable: This needs to be used every time a php command is run and all
+overrides must be passed in. e.g.
+```bash
+XDEBUG_CONFIG="remote_autostart=1" php myscript.php
+```
+* Using a local override: The php configuration files are in the `/usr/local/etc/php` directory within the web container
+and can be overridden on demand. The xdebug settings are placed in the `usr/local/etc/php/conf.d/95-xdebug.ini` file.
+Please, note that the `95` in the beginning of the file declares the priority within the `conf.d` directory. In order to
+provide overrides for xdebug, you will need to provide a file starting with a number higher than `95`. For example, to
+override the `remote_autostart` setting as we did above, you can do by:
+  * Create a file named e.g. `xdebug.local.ini` in the `resources/docker/local` directory.
+  * Add `remote_autostart=1` as contents of the file.
+  * Use the following configuration in your docker-compose.local.yml file:
+```yaml
+version: '3.4'
+services:
+  web:
+    volumes:
+      - .:/var/www/html
+      - ./build.docker.main.xml:/var/www/html/build.xml
+      - ./resources/docker/local/xdebug.local.ini:/usr/local/etc/php/conf.d/97-xdebug.ini
+```
+Our file has a priority of `97` which means that it will be loaded after the `95-xdebug.ini` and thus our settings will
+persist over the default file.
 
 ## Rebuild from existing databases
 ### Obtain credentials
