@@ -173,6 +173,16 @@ services:
 Our file has a priority of `97` which means that it will be loaded after the `95-xdebug.ini` and thus our settings will
 persist over the default file.
 
+### Debugging tests
+After setting up XDEBUG according to your needs, you need to be able to use it when debugging tests. To run the debugger
+you need to provide the `XDEBUG_CONFIG=` environment variable when running a script. For example, to run a behat test,
+run the following command from within the container from the doc root:
+```bash
+XDEBUG_CONFIG= ./vendor/bin/behat -c ./tests/behat.yml
+```
+By default, there is no need to pass any settings to the XDEBUG_CONFIG environment variable as all settings are drawn
+from the xdebug ini files.
+
 ## Rebuild from existing databases
 ### Obtain credentials
 The production databases are stored on a private server. In order to get access, ask your friendly project manager for
