@@ -5,7 +5,7 @@
  * Post update functions for the Joinup core module.
  */
 
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\Core\Database\Database;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -402,12 +402,11 @@ function joinup_core_post_update_update_update_eira_terms() {
   $filename = DRUPAL_ROOT . '/../resources/fixtures/EIRA_SKOS.rdf';
   $graph->parseFile($filename);
 
-  // Copied over from \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage::insert.
-  $graph_uri = SparqlArg::uri($graph_uri);
-  $query = "INSERT DATA INTO $graph_uri {\n";
-  $query .= $graph->serialise('ntriples') . "\n";
-  $query .= '}';
-  $connection->update($query);
+  $sparql_connection = Database::getConnection('default', 'sparql_default');
+  $connection_options = $sparql_connection->getConnectionOptions();
+  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+  $graph_store = new GraphStore($connect_string);
+  $graph_store->insert($graph);
 
   $graphs = [
     'http://joinup.eu/solution/published',

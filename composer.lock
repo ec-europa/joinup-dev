@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9fe86f53ca412ba881423dca693968fd",
+    "content-hash": "a6317990652327d1052258b1cd5972ca",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2184,7 +2184,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2205,17 +2209,11 @@
         },
         {
             "name": "drupal/cached_computed_field",
-            "version": "1.0.0-beta3",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/cached_computed_field",
-                "reference": "8.x-1.0-beta3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cached_computed_field-8.x-1.0-beta3.zip",
-                "reference": "8.x-1.0-beta3",
-                "shasum": "867e488d576fd9211ef6608ed1d6de545f43e444"
+                "reference": "6d55e7c61cc94b5f86a805bbc29db09391971a8f"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2226,8 +2224,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta3",
-                    "datestamp": "1544635080",
+                    "version": "8.x-1.0-beta3+2-dev",
+                    "datestamp": "1551741182",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2252,7 +2250,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cached_computed_field",
                 "issues": "https://www.drupal.org/project/issues/cached_computed_field"
-            }
+            },
+            "time": "2019-03-04T23:44:50+00:00"
         },
         {
             "name": "drupal/changed_fields",
@@ -2337,14 +2336,6 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
-                {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
-                },
-                {
-                    "name": "gnuget",
-                    "homepage": "https://www.drupal.org/user/992990"
-                },
                 {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
@@ -3296,17 +3287,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/facets",
-                "reference": "8.x-1.2"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "bf0f9249d90025dcd16c0af7b7cd59e515fb9d9e"
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "2ca517094a34112e8168746123d337a25da6a227"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3320,8 +3311,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1543065481",
+                    "version": "8.x-1.3",
+                    "datestamp": "1551291083",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -11984,7 +11975,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549559402",
+                    "datestamp": "1549218480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12048,12 +12039,6 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
-                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
-                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
