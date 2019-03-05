@@ -72,3 +72,17 @@ function spain_ctt_post_update_clean_ctt_duplicates() {
 function spain_ctt_post_update_enable_pipeline_modules() {
   \Drupal::service('module_installer')->install(['joinup_federation']);
 }
+
+/**
+ * Fixes the associatedWith provenance property for federated entities.
+ */
+function spain_ctt_post_update_fix_associated_with() {
+  $query = <<<QUERY
+    WITH <http://joinup.eu/provenance_activity>
+    INSERT { ?s <http://www.w3.org/ns/prov#wasAssociatedWith> <http://administracionelectronica.gob.es/ctt> }
+    WHERE { ?s a <http://www.w3.org/ns/prov#Activity> FILTER NOT EXISTS { ?s <http://www.w3.org/ns/prov#wasAssociatedWith> ?object } }
+QUERY;
+
+  $connection = \Drupal::service('sparql_endpoint');
+  $connection->query($query);
+}
