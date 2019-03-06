@@ -14,4 +14,5 @@ RUN mkdir -p /opt/docker-solr/configsets/drupal
 RUN SOLR_MAJOR_VERSION=`echo "${SOLR_VERSION}" | sed -e "{ s/^\(.\).*/\1/ ; q }"` && \
     mv "/opt/docker-solr/scripts/search_api_solr/solr-conf/${SOLR_MAJOR_VERSION}.x" "/opt/docker-solr/configsets/drupal/conf" && \
     chown -R $SOLR_USER:$SOLR_GROUP /opt/docker-solr/configsets && \
-    rm -rf /opt/docker-solr/scripts/search_api_solr
+    rm -rf /opt/docker-solr/scripts/search_api_solr && \
+    sed -i '/solr.install.dir=/c\solr.install.dir=/opt/solr' /opt/docker-solr/configsets/drupal/conf/solrcore.properties
