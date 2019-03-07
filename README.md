@@ -85,6 +85,13 @@ run the Behat test, please refer directly to the documention of
     DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
     ```
 
+  Then set up the Virtuoso configuration in Drupal and start the server:
+
+    ```
+    $ ./vendor/bin/phing virtuoso-setup
+    $ ./vendor/bin/phing virtuoso-start
+    ```
+
 * Install the official [SASS compiler](https://github.com/sass/sass). This
   depends on Ruby being installed on your system.
 
@@ -131,8 +138,9 @@ composer.bin = /usr/bin/composer
 
 # The location of the Virtuoso console (Debian / Ubuntu).
 isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Arch Linux).
+# The location of the Virtuoso binaries (Arch Linux).
 isql.bin = /usr/bin/virtuoso-isql
+virtuoso.binary = /usr/bin/virtuosod
 # The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
 isql.bin = /usr/local/bin/isql
 
