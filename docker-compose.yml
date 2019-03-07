@@ -9,7 +9,6 @@ services:
       - .:/var/www/html
       - ./build.docker.main.xml:/var/www/html/build.xml
     environment:
-      # XDEBUG_CONFIG: "extension=xdebug.so remote_enable=1 remote_connect_back=1 remote_autostart=1"
       DOCUMENT_ROOT: "/var/www/html/web"
       PHP_XDEBUG_ENABLED: "1"
       PHP_IDE_CONFIG: "serverName=Docker"
