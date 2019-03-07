@@ -72,11 +72,11 @@ Feature: Global search
     When I click "Solutions" in the "Left sidebar"
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
-    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (3), Collection (6)"
+    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
     And the "policy domain" inline facet should allow selecting the following values "Demography (1), Statistics and Analysis (1)"
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
+    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), Luxembourg (1)"
     And I should not see the "Molecular cooking collection" tile
-    And I should not see the "El Celler de Can Roca" tile
+    And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
     And I should see the "Foam" tile
 
