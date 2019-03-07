@@ -222,7 +222,8 @@
                 "Drush commands for bulk alias updates @see https://www.drupal.org/project/pathauto/issues/2717721": "https://www.drupal.org/files/issues/2019-01-10/2717721-21.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
+                "Fix the RDF encoder on error @see https://github.com/ec-europa/rdf_entity/pull/85": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/85.diff"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
