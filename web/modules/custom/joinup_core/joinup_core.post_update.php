@@ -5,6 +5,7 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -386,4 +387,32 @@ function joinup_core_post_update_remove_tour_buttons() {
  */
 function joinup_core_post_update_install_error_page() {
   \Drupal::service('module_installer')->install(['error_page']);
+}
+
+/**
+ * Remove temporary 'file' entities that lack the file on file system.
+ */
+function joinup_core_post_update_fix_files(array &$sandbox) {
+  if (!isset($sandbox['fids'])) {
+    $sandbox['fids'] = array_values(\Drupal::entityQuery('file')
+      ->condition('status', FILE_STATUS_PERMANENT, '<>')
+      ->sort('fid')
+      ->execute());
+    $sandbox['processed'] = 0;
+  }
+
+  $fids = array_splice($sandbox['fids'], 0, 50);
+  foreach (File::loadMultiple($fids) as $file) {
+    /** @var \Drupal\file\FileInterface $file */
+    if (!file_exists($file->getFileUri())) {
+      $file->delete();
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = (int) !$sandbox['fids'];
+
+  if ($sandbox['#finished'] === 1) {
+    return $sandbox['processed'] ? "{$sandbox['processed']} file entities deleted." : "No file entities were deleted.";
+  }
 }
