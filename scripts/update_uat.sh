@@ -34,5 +34,8 @@ if [ ${STATUS} -ne 0 ]; then
   exit ${STATUS}
 fi
 
+echo "Reporting requirements."
+./vendor/bin/drush status-report --severity=1 | grep -v "Update notifications"
+
 echo "Update successfully completed."
 exit 0
