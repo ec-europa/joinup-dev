@@ -73,32 +73,60 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
  *
  * Sets a default search ordering for the content displayed in the collections'
  * and solutions' overview page as well as the custom pages.
+ *
+ * @throws \Drupal\search_api\SearchApiException
+ *   Thrown when the Search API server instance could not be loaded.
  */
-function joinup_search_search_api_query_alter(QueryInterface &$query) {
-  if ($query->getSearchId() === 'rdf_entity.field_collection_content') {
-    // In case the user has filtered by event, first sort by the event date.
-    // @todo: This will be generic when event calendar will be implemented for
-    // the rdf_entity.field_is_content and the node.field_cp_content_listing
-    // instances of the search api field listing.
-    if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
-      // If the upcoming events are selected, set the order to 'ASC'.
-      // @see \Drupal\joinup\Plugin\ArbitraryFacet\EventsArbitraryFacet::getFacetDefinition
-      $value = \Drupal::service('facets.utility.date_handler')->isoDate((new DrupalDateTime('today'))->getTimestamp());
-      $order = _joinup_search_search_api_has_condition($query->getConditionGroup(), 'field_event_date', $value, '>=') ? QueryInterface::SORT_ASC : QueryInterface::SORT_DESC;
-      $query->sort('field_event_date', $order);
-    }
+function joinup_search_search_api_query_alter(QueryInterface $query) {
+  switch ($query->getSearchId()) {
+    case 'views_page:search__page_1':
+      // If the user is searching in the context of a collection or solution the
+      // group name will be shown as a 'chip' in the search field and passed as
+      // a query argument to the search results page. Check if this query
+      // argument is present and add it as a facet to the search.
+      $request = \Drupal::request();
+      /** @var \Drupal\joinup_core\GroupHelperInterface $group_helper */
+      $group_helper = \Drupal::service('joinup_core.group_helper');
+      if ($request->query->has('filters')) {
+        // @todo Support group names that contain commas.
+        $filters = explode(',', $request->query->get('filters'));
+        foreach ($filters as $group_label) {
+          try {
+            $group = $group_helper->getGroupByLabel($group_label);
+          }
+          catch (\InvalidArgumentException $e) {
+            // No group has been found with the passed in label. Possibly the
+            // user has tampered with the query arguments. Ignore silently.
+          }
+        }
+      }
+      break;
+
+    case 'rdf_entity.field_collection_content':
+      // In case the user has filtered by event, first sort by the event date.
+      // @todo: This will be generic when event calendar will be implemented for
+      // the rdf_entity.field_is_content and the node.field_cp_content_listing
+      // instances of the search api field listing.
+      if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+        // If the upcoming events are selected, set the order to 'ASC'.
+        // @see \Drupal\joinup\Plugin\ArbitraryFacet\EventsArbitraryFacet::getFacetDefinition
+        $value = \Drupal::service('facets.utility.date_handler')->isoDate((new DrupalDateTime('today'))->getTimestamp());
+        $order = _joinup_search_search_api_has_condition($query->getConditionGroup(), 'field_event_date', $value, '>=') ? QueryInterface::SORT_ASC : QueryInterface::SORT_DESC;
+        $query->sort('field_event_date', $order);
+      }
+      break;
   }
 
+  // Sort collection content by creation date, newest first.
   $search_ids = [
     'rdf_entity.field_collection_content',
     'rdf_entity.field_is_content',
     'node.field_cp_content_listing',
   ];
 
-  if (!in_array($query->getSearchId(), $search_ids)) {
-    return;
+  if (in_array($query->getSearchId(), $search_ids)) {
+    $query->sort('entity_created', 'DESC');
   }
-  $query->sort('entity_created', 'DESC');
 }
 
 /**
