@@ -1,14 +1,14 @@
 @api
 Feature: Edit licence through UI
   In order to manage licences
-  As a moderator
+  As a moderator or a licence_manager
   I need to be able to edit licences through the UI.
 
-  Scenario: Moderators must be able to view created licences and edit them.
+  Scenario Outline: Moderators and Licence Managers must be able to view created licences and edit them.
     Given the following licence:
       | title       | Licence 1              |
       | description | Some dummy description |
-    When I am logged in as a "moderator"
+    When I am logged in as a "<role>"
     And I am on the homepage
     When I click "Dashboard"
     When I click "Licences overview"
@@ -16,7 +16,7 @@ Feature: Edit licence through UI
     Then I should see the heading "Licences"
     And I should see the text "Licence 1"
 
-    # Check that the moderator can edit the licence.
+    # Check that the given role can edit the licence.
     When I click "Licence 1"
     Then I should see the link "Edit"
     When I click "Edit"
@@ -25,3 +25,8 @@ Feature: Edit licence through UI
     And I select "Attribution" from "Type"
     And I press "Save"
     Then I should see the heading "Licence 1.1"
+
+    Examples:
+      | role |
+      | moderator |
+      | licence_manager |
