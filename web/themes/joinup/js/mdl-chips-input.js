@@ -1,6 +1,11 @@
 (function() {
     'use strict';
 
+    /**
+     * Support for chips in input fields.
+     *
+     * Based on https://github.com/dkarv/mdl-chip-input
+     */
     var MaterialChipInput = function MaterialChipInput(element) {
         this.element_ = element;
 
