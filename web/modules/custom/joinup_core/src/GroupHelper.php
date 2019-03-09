@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
@@ -72,12 +74,12 @@ class GroupHelper implements GroupHelperInterface {
     try {
       return $this->entityTypeManager->getStorage('rdf_entity');
     }
-    catch (\Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+    catch (PluginNotFoundException $e) {
       // Shouldn't happen because we depend on the RDF Entity module which
       // defines the RDF storage.
       throw new \RuntimeException('RDF Entity storage is not defined.', 0, $e);
     }
-    catch (\Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
+    catch (InvalidPluginDefinitionException $e) {
       // Shouldn't happen because we depend on the RDF Entity module which
       // defines the RDF storage.
       throw new \RuntimeException('RDF Entity storage is not valid.', 0, $e);
