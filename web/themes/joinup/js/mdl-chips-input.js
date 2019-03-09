@@ -16,26 +16,26 @@
 
     };
 
-    MaterialChipInput.prototype.addChip_ = function(text) {
+    MaterialChipInput.prototype.addChip_ = function(id, text) {
         var currentChips = this.getChips();
-        if(currentChips.indexOf(text) > -1) {
+        if(currentChips.indexOf(id) > -1) {
             // ignore duplicates
             return;
         }
         var chip = document.createElement('span');
         chip.classList = 'mdl-chip mdl-chip--deletable';
         chip.innerHTML =
-            '<span class="mdl-chip__text">' + text + '</span>' +
+            '<span class="mdl-chip__text" data-id="' + id + '">' + text + '</span>' +
             '<button type="button" class="mdl-chip__action">' +
             '<i class="material-icons">close</i></button>';
-        var update = this.updateTarget_.bind(this);
+        var update = this.updateTargets_.bind(this);
         chip.getElementsByClassName('mdl-chip__action')[0].onclick = function() {
             console.log('removing', text);
             chip.remove();
             update();
         };
         this.element_.insertBefore(chip, this.inputs_);
-        this.updateTarget_();
+        // this.updateTargets_();
     };
 
     MaterialChipInput.prototype.getChips = function() {
@@ -43,17 +43,22 @@
         var children = this.element_.children;
         for(var i = children.length; i--;) {
             if(children[i].classList.contains('mdl-chip')) {
-                currentChips.unshift(
-                    children[i].children[0].textContent ||
-                    children[i].children[0].innerText);
+                currentChips.unshift(children[i].children[0].getAttribute('data-id'))
             }
         }
         return currentChips;
     };
 
-    MaterialChipInput.prototype.updateTarget_ = function() {
+    MaterialChipInput.prototype.updateTargets_ = function() {
         var currentChips = this.getChips();
-        this.target_.value = currentChips.join(this.options_.separator);
+        var numTargets = this.targets_.length;
+        var target;
+        for (var i = numTargets - 1; i >= 0; i--) {
+            target = this.targets_[i];
+            if (!(currentChips.indexOf(target.value) > -1)) {
+                target.remove();
+            }
+        };
         if(currentChips.length >= this.options_.maximum) {
             this.input_.style.display = 'none';
         } else {
@@ -108,6 +113,7 @@
             // remove last tag if input is empty
             if(this.element_.children.length > 1) {
                 this.element_.children[this.element_.children.length - 2].remove();
+                this.updateTargets_();
             }
         }
         // @todo Hacked by backend developer so that the form still submits.
@@ -120,54 +126,54 @@
         }
     };
 
-    MaterialChipInput.prototype.keyUp_ = function(event) {
-        var code = event.which || event.keyCode;
-        // TODO use more reasonable logic here
-        if([13, 32, 188].indexOf(code) > -1) {
-            var content, selected = -1;
-            if(this.results_ && code === 13) {
-                selected = this.getSelectedResult_();
-            }
+//    MaterialChipInput.prototype.keyUp_ = function(event) {
+//        var code = event.which || event.keyCode;
+//        // TODO use more reasonable logic here
+//        if([13, 32, 188].indexOf(code) > -1) {
+//            var content, selected = -1;
+//            if(this.results_ && code === 13) {
+//                selected = this.getSelectedResult_();
+//            }
+//
+//            if(selected > -1) {
+//                content = this.results_.children[selected].getAttribute('data-value');
+//            } else {
+//                content = this.input_.value.replace(/[^0-9a-zäüö]/gi, '');
+//            }
+//            if(content) {
+//                this.addChip_(content);
+//
+//                // delete search results
+//                this.clearResults_();
+//            }
+//            this.input_.value = '';
+//            this.element_.classList.remove('is-dirty');
+//        } else if(this.results_ && (code === 38 || code === 40)) {
+//            var children = this.results_.children;
+//            var index = this.getSelectedResult_();
+//            index = index + (code === 40 ? 1 : -1);
+//            index = Math.min(Math.max(0, index), children.length - 1);
+//            children[index].classList.add('is-selected');
+//        } else {
+//            this.startSearch_();
+//        }
+//        event.preventDefault();
+//    };
 
-            if(selected > -1) {
-                content = this.results_.children[selected].getAttribute('data-value');
-            } else {
-                content = this.input_.value.replace(/[^0-9a-zäüö]/gi, '');
-            }
-            if(content) {
-                this.addChip_(content);
-
-                // delete search results
-                this.clearResults_();
-            }
-            this.input_.value = '';
-            this.element_.classList.remove('is-dirty');
-        } else if(this.results_ && (code === 38 || code === 40)) {
-            var children = this.results_.children;
-            var index = this.getSelectedResult_();
-            index = index + (code === 40 ? 1 : -1);
-            index = Math.min(Math.max(0, index), children.length - 1);
-            children[index].classList.add('is-selected');
-        } else {
-            this.startSearch_();
-        }
-        event.preventDefault();
-    };
-
-    MaterialChipInput.prototype.clickedResult_ = function(event) {
-        this.addChip_(event.target.closest('li').getAttribute('data-value'));
-        this.clearResults_();
-        this.input_.value = '';
-    };
-
-    MaterialChipInput.prototype.addSearch = function(search) {
-        this.results_ = document.createElement('ul');
-        this.results_.classList = 'results mdl-shadow--4dp';
-        this.inputs_.insertBefore(this.results_, this.input_.nextSibling);
-        this.options_.search = search;
-
-        this.results_.addEventListener('click', this.clickedResult_.bind(this));
-    };
+//    MaterialChipInput.prototype.clickedResult_ = function(event) {
+//        this.addChip_(event.target.closest('li').getAttribute('data-value'));
+//        this.clearResults_();
+//        this.input_.value = '';
+//    };
+//
+//    MaterialChipInput.prototype.addSearch = function(search) {
+//        this.results_ = document.createElement('ul');
+//        this.results_.classList = 'results mdl-shadow--4dp';
+//        this.inputs_.insertBefore(this.results_, this.input_.nextSibling);
+//        this.options_.search = search;
+//
+//        this.results_.addEventListener('click', this.clickedResult_.bind(this));
+//    };
 
     MaterialChipInput.prototype.init = function() {
         if(this.element_) {
@@ -179,7 +185,7 @@
             this.input_.addEventListener('keydown', this.keyDown_.bind(this));
             // @todo Hacked by backend developer so that search input is not converted into chips.
             // this.input_.addEventListener('keyup', this.keyUp_.bind(this));
-            this.target_ = this.element_.getElementsByClassName('mdl-chipfield__input')[0];
+            this.targets_ = this.element_.getElementsByClassName('mdl-chipfield__input');
 
             // let the whole element look like a input field
             this.element_.addEventListener('click', this.mouseDown_.bind(this));
@@ -191,10 +197,12 @@
             };
 
             // initialize the chips
-            if(this.target_.value) {
-                // initialize the chips
-                this.target_.value.split(this.options_.separator).forEach(this.addChip_.bind(this));
-            }
+            var length = this.targets_.length;
+            var target;
+            for (var i = 0; i < length; i++) {
+                target = this.targets_[i];
+                this.addChip_(target.value, target.getAttribute('data-description'));
+            };
         }
     }
 })();

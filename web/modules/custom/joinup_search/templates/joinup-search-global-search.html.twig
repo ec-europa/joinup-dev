@@ -17,7 +17,9 @@
     </label>
 
     <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
-        <input type="hidden" class="mdl-chipfield__input" name="filters" value="{{ filters|join(',') }}">
+        {% for id, filter in filters %}
+            <input type="hidden" class="mdl-chipfield__input" name="f[]" value="{{ id }}" data-description="{{ filter }}">
+        {% endfor %}
         <input class="search-bar__input mdl-textfield__input" type="text" name="keys" id="search-bar__input">
     </form>
 </div>

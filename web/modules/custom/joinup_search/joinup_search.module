@@ -79,29 +79,6 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
  */
 function joinup_search_search_api_query_alter(QueryInterface $query) {
   switch ($query->getSearchId()) {
-    case 'views_page:search__page_1':
-      // If the user is searching in the context of a collection or solution the
-      // group name will be shown as a 'chip' in the search field and passed as
-      // a query argument to the search results page. Check if this query
-      // argument is present and add it as a facet to the search.
-      $request = \Drupal::request();
-      /** @var \Drupal\joinup_core\GroupHelperInterface $group_helper */
-      $group_helper = \Drupal::service('joinup_core.group_helper');
-      if ($request->query->has('filters')) {
-        // @todo Support group names that contain commas.
-        $filters = explode(',', $request->query->get('filters'));
-        foreach ($filters as $group_label) {
-          try {
-            $group = $group_helper->getGroupByLabel($group_label);
-          }
-          catch (\InvalidArgumentException $e) {
-            // No group has been found with the passed in label. Possibly the
-            // user has tampered with the query arguments. Ignore silently.
-          }
-        }
-      }
-      break;
-
     case 'rdf_entity.field_collection_content':
       // In case the user has filtered by event, first sort by the event date.
       // @todo: This will be generic when event calendar will be implemented for
