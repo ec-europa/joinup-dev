@@ -17,7 +17,7 @@ services:
     class: Drupal\joinup_core\EventSubscriber\RefreshCachedFieldsEventSubscriber
     arguments: ['@entity_type.manager', '@datetime.time', '@matomo.query_factory', '@config.factory', '@logger.factory']
     tags:
-      - { name: 'event_subscriber' }
+      - { name: event_subscriber }
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager', '@entity_type.manager']
@@ -29,7 +29,7 @@ services:
     class: Drupal\joinup_core\EventSubscriber\TransferGroupOwnershipSubscriber
     arguments: ['@current_user', '@tempstore.private']
     tags:
-      - name: event_subscriber
+      - { name: event_subscriber }
   logger.channel.joinup_core:
     parent: logger.channel_base
     arguments: ['joinup_core']
