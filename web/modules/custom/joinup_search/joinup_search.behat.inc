@@ -23,6 +23,16 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use UtilityTrait;
 
   /**
+   * Navigates to the search page.
+   *
+   * @Given I am on the search( results)( page)
+   * @When (I )visit the search( results)( page)
+   */
+  public function visitSearchPage() {
+    $this->visitPath('/search');
+  }
+
+  /**
    * Checks that the user is on the search page.
    *
    * The search page currently doesn't have a title so our common practice of

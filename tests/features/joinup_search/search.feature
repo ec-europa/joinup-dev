@@ -23,7 +23,7 @@ Feature: Global search
     # @todo The search page cache should be cleared when new content is added.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     And the cache has been cleared
-    When I am at "/search"
+    When I visit the search page
     # All content is visible.
     Then I should see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
@@ -61,7 +61,7 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Reset the search by visiting again the search page.
-    Given I am at "/search"
+    Given I am on the search page
 
     # Select link in the 'type' facet.
     When I click the Solutions content tab
