@@ -39,7 +39,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @Then the page should show( only) the( following) chip(s):
    */
   public function assertChipElements(TableNode $table): void {
-    $chips = $this->getSession()->getPage()->findAll('css', '.mdl-chip__text');
+    $chips = $this->getChips();
     $found = array_map(function ($element) {
       /** @var \Behat\Mink\Element\NodeElement $element */
       return $element->getText();
@@ -47,6 +47,17 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
 
     $expected = $table->getColumn(0);
     Assert::assertEquals($expected, $found, "The expected chip elements don't match the ones found in the page", 0.0, 10, TRUE);
+  }
+
+  /**
+   * Asserts that the expected number of chips are shown.
+   *
+   * @Then the page should contain :number chip(s)
+   * @Then the page should not contain any chips
+   */
+  public function assertChipCount(string $number = NULL): void {
+    $number = (int) $number;
+    Assert::assertEquals($number, $this->countChips());
   }
 
   /**
@@ -76,6 +87,26 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
     }
 
     $button->press();
+  }
+
+  /**
+   * Counts the number of chips on the page.
+   *
+   * @return int
+   *   The number of chips on the page.
+   */
+  protected function countChips(): int {
+    return count($this->getChips());
+  }
+
+  /**
+   * Returns the chips that are present on the page.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements representing the chips.
+   */
+  protected function getChips(): array {
+    return $this->getSession()->getPage()->findAll('css', '.mdl-chip__text');
   }
 
   /**
