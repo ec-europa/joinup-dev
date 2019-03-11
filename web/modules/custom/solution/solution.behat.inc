@@ -97,6 +97,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
+   * Navigates to the solution overview page.
+   *
+   * @When (I )visit the solution overview( page)
+   */
+  public function visitSolutionOverviewPage() {
+    $this->visitPath('/solutions');
+  }
+
+  /**
    * Creates a number of solutions with data provided in a table.
    *
    * Table format:
