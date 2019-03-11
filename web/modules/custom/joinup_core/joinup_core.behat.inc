@@ -23,13 +23,12 @@ use PHPUnit\Framework\Assert;
  */
 class JoinupCoreSubContext extends DrupalSubContextBase {
 
-  use UtilityTrait;
-  use TraversingTrait;
-
   use EntityTrait;
   use NodeTrait;
-  use UserTrait;
   use RdfEntityTrait;
+  use TraversingTrait;
+  use UserTrait;
+  use UtilityTrait;
 
   /**
    * Asserts that only the expected chips are shown in the page.
