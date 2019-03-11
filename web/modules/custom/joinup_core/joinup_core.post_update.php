@@ -416,3 +416,28 @@ function joinup_core_post_update_fix_files(array &$sandbox) {
     return $sandbox['processed'] ? "{$sandbox['processed']} file entities deleted." : "No file entities were deleted.";
   }
 }
+
+/**
+ * Force-update all distribution aliases.
+ */
+function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
+  if (!isset($sandbox['entity_ids'])) {
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_distribution')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $limit = 50;
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], $limit);
+  foreach ($result as $entity_id) {
+    $entity = $entity_storage->load($entity_id);
+    \Drupal::service('pathauto.generator')->updateEntityAlias($entity, 'update', ['force' => TRUE]);
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}

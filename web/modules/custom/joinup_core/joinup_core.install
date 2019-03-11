@@ -9,6 +9,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Site\Settings;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\user\Entity\User;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Implements hook_requirements().
@@ -255,26 +256,13 @@ QUERY;
 }
 
 /**
- * Force-update all distribution aliases.
+ * Import the pathauto pattern into storage.
  */
-function joinup_core_update_8113(&$sandbox) {
-  if (!isset($sandbox['entity_ids'])) {
-    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_distribution')
-      ->execute();
-    $sandbox['current'] = 0;
-    $sandbox['max'] = count($sandbox['entity_ids']);
-  }
-
-  $limit = 50;
-  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], $limit);
-  foreach ($result as $entity_id) {
-    $entity = $entity_storage->load($entity_id);
-    \Drupal::service('pathauto.generator')->updateEntityAlias($entity, 'update', ['force' => TRUE]);
-    $sandbox['current']++;
-  }
-
-  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
-  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+function joinup_core_update_8113() {
+  // In order to force-update all distribution aliases in a post_update function
+  // the pattern config file is imported manually, as normally, the config sync
+  // runs after the drush update.
+  $pathauto_settings = Yaml::parseFile(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_distributions.yml');
+  $factory = \Drupal::configFactory();
+  $factory->getEditable('pathauto.pattern.rdf_entities_distributions')->setData($pathauto_settings)->save();
 }
