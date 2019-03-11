@@ -11,6 +11,8 @@ use PHPUnit\Framework\Assert;
  */
 trait UtilityTrait {
 
+  use BrowserCapabilityDetectionTrait;
+
   /**
    * Explodes and sanitizes a comma separated step argument.
    *
@@ -26,23 +28,6 @@ trait UtilityTrait {
     $argument = array_filter($argument);
 
     return $argument;
-  }
-
-  /**
-   * Checks that we are running on a JavaScript-enabled browser.
-   *
-   * @throws \RuntimeException
-   *   Thrown when not running on a JS-enabled browser.
-   */
-  protected function assertJavaScriptEnabledBrowser() {
-    $driver = $this->getMink()->getSession()->getDriver();
-    try {
-      $driver->isVisible('//body');
-    }
-    catch (UnsupportedDriverActionException $e) {
-      // Show a helpful error message.
-      throw new \RuntimeException('This test needs to run on a real browser using Selenium or similar. Please add the "@javascript" tag to the scenario.', $driver);
-    }
   }
 
   /**
