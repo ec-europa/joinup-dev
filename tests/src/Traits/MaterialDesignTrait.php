@@ -9,8 +9,6 @@ use Behat\Mink\Element\TraversableElement;
  */
 trait MaterialDesignTrait {
 
-  use BrowserCapabilityDetectionTrait;
-
   /**
    * Checks the materially designed checkbox with the given label.
    *

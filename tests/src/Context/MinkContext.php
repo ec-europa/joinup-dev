@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\MinkContext as DrupalExtensionMinkContext;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -11,6 +12,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 class MinkContext extends DrupalExtensionMinkContext {
 
+  use BrowserCapabilityDetectionTrait;
   use MaterialDesignTrait;
 
   /**
