@@ -257,6 +257,37 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Press a key in the search field.
+   *
+   * Works only in Javascript-enabled browsers.
+   *
+   * @param string $key
+   *   The human readable name of the key to press.
+   *
+   * @throws \Exception
+   *   Thrown when the browser doesn't support Javascript or when the search
+   *   field is not found.
+   *
+   * @When I press :key in the search field
+   */
+  public function pressKeyInSearchField(string $key): void {
+    if (!$this->browserSupportsJavascript()) {
+      throw new \Exception('This step requires Javascript to run.');
+    }
+
+    $elements = $this->getElementsMatchingElementAlias('search bar');
+    if (!$elements) {
+      throw new \Exception('Could not find the search field in the page.');
+    }
+    if (count($elements) > 1) {
+      throw new \Exception('There are multiple search fields on the page.');
+    }
+    $element = reset($elements);
+
+    $this->pressKeyInElement($key, $element);
+  }
+
+  /**
    * Asserts that a link has the "rel" attribute set to "nofollow".
    *
    * @param string $link
