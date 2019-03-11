@@ -18,7 +18,7 @@ trait BrowserCapabilityDetectionTrait {
    *   Returns TRUE when the browser environment supports executing JavaScript
    *   code, for example because the test is running in Selenium or PhantomJS.
    */
-  public function browserSupportsJavascript() {
+  protected function browserSupportsJavascript(): bool {
     $driver = $this->getSession()->getDriver();
     try {
       $driver->executeScript('return;');
