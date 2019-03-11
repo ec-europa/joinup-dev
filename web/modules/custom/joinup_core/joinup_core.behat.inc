@@ -37,7 +37,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The table containing the expected chip labels.
    *
-   * @Then the page should show( only) the chips:
+   * @Then the page should show( only) the( following) chip(s):
    */
   public function assertChipElements(TableNode $table): void {
     $chips = $this->getSession()->getPage()->findAll('css', '.mdl-chip__text');
@@ -59,10 +59,10 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when either the chip or its remove button are not found.
    *
-   * @Then I press the remove button on the chip :text
+   * @When I press the remove button on the chip :text
    */
   public function clickRemoveChipButton(string $text): void {
-    // Find the element that contains the user name.
+    // Find the element that contains the given text.
     $xpath = "//span[contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__text ')][contains(text(), '$text')]";
     $chip = $this->getSession()->getPage()->find('xpath', $xpath);
     if (!$chip) {

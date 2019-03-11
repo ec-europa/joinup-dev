@@ -175,6 +175,9 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $facet
    *   The facet alias.
    *
+   * @throws \Exception
+   *   Thrown when the facet or the link inside the facet is not found.
+   *
    * @When I click :link in the :facet inline facet
    */
   public function iClickAnInlineFacetItemLink(string $link, string $facet): void {
