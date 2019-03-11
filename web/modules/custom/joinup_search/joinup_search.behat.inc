@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\KeyboardInteractionTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use KeyboardInteractionTrait;
   use TraversingTrait;
   use UtilityTrait;
 
