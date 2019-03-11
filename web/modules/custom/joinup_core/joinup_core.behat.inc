@@ -80,7 +80,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
     }
 
     // Find the related button.
-    $xpath = "/following-sibling::button[@type='submit'][contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__action ')]";
+    $xpath = "/following-sibling::button[contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__action ')]";
     $button = $chip->find('xpath', $xpath);
     if (!$button) {
       throw new \Exception("Couldn't find the button to remove the chip '$text'.");
