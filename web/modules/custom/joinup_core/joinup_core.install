@@ -9,7 +9,6 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Site\Settings;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\user\Entity\User;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Implements hook_requirements().
@@ -253,16 +252,4 @@ WHERE {
 }
 QUERY;
   $connection->query($query);
-}
-
-/**
- * Import the pathauto pattern into storage.
- */
-function joinup_core_update_8113() {
-  // In order to force-update all distribution aliases in a post_update function
-  // the pattern config file is imported manually, as normally, the config sync
-  // runs after the drush update.
-  $pathauto_settings = Yaml::parseFile(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_distributions.yml');
-  $factory = \Drupal::configFactory();
-  $factory->getEditable('pathauto.pattern.rdf_entities_distributions')->setData($pathauto_settings)->save();
 }

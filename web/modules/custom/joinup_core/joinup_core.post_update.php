@@ -5,6 +5,7 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
@@ -422,6 +423,15 @@ function joinup_core_post_update_fix_files(array &$sandbox) {
  */
 function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
   if (!isset($sandbox['entity_ids'])) {
+    // In order to force-update all distribution aliases in a post_update
+    // function the pattern config file is imported manually, as normally, the
+    // config sync runs after the database updatess.
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_distributions.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_distributions')
+      ->setData($pathauto_settings)
+      ->save();
+
     $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
       ->condition('rid', 'asset_distribution')
       ->execute();
@@ -429,12 +439,13 @@ function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
     $sandbox['max'] = count($sandbox['entity_ids']);
   }
 
-  $limit = 50;
   $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], $limit);
-  foreach ($result as $entity_id) {
-    $entity = $entity_storage->load($entity_id);
-    \Drupal::service('pathauto.generator')->updateEntityAlias($entity, 'update', ['force' => TRUE]);
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $pathauto_generator->updateEntityAlias($entity, 'update', ['force' => TRUE]);
     $sandbox['current']++;
   }
 
