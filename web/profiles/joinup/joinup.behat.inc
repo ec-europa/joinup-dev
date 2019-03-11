@@ -2649,4 +2649,5 @@ JS;
   public function assertElementCount(string $count, string $element_name): void {
     Assert::assertEquals((int) $count, count($this->getElementsMatchingElementAlias($element_name)));
   }
+
 }
