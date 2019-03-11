@@ -61,6 +61,12 @@
                 <!-- Comment out references to the external network 'lb_web'. -->
                 <replaceregexp>
                     <regexp
+                        pattern="^(.*)- VIRTUAL_HOST.*$"
+                        replace="\1VIRTUAL_HOST: &quot;localhost:${matomo.port}&quot;"
+                        modifiers="m" />
+                </replaceregexp>
+                <replaceregexp>
+                    <regexp
                         pattern="^(.*lb_web.*)$"
                         replace="#\1"
                         modifiers="m" />
