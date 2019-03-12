@@ -39,7 +39,7 @@ Feature: Global search
     And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
-    When I click "Demography" in the "policy domain" inline facet
+    When I click "Demography" in the "policy domain" inline facet in the "Left sidebar" region
     Then "Demography (2)" should be selected in the "policy domain" inline facet
     And the "policy domain" inline facet should allow selecting the following values "Statistics and Analysis (1), all policy domains"
     And "everywhere" should be selected in the "spatial coverage" inline facet
@@ -50,7 +50,7 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I click "Belgium" in the "spatial coverage" inline facet
+    When I click "Belgium" in the "spatial coverage" inline facet in the "Left sidebar" region
     Then "Belgium (1)" should be selected in the "spatial coverage" inline facet
     And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), everywhere"
     And "Demography (1)" should be selected in the "policy domain" inline facet
@@ -62,10 +62,17 @@ Feature: Global search
 
     # Reset the search by visiting again the search page.
     Given I am on the search page
+    Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I click the Solutions content tab
-    Then the "policy domain" inline facet should allow selecting the following values "Demography (1)"
+    When I click "News" in the "Left sidebar"
+    Then the "News" content checkbox item should be selected
+    And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+
+    When I click "Solutions" in the "Left sidebar"
+    Then the "Solutions" content checkbox item should be selected
+    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+    And the "policy domain" inline facet should allow selecting the following values "Demography (1)"
     And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
     And I should not see the "Molecular cooking collection" tile
     And I should not see the "El Celler de Can Roca" tile

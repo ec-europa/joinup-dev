@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\KeyboardInteractionTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use BrowserCapabilityDetectionTrait;
   use KeyboardInteractionTrait;
   use TraversingTrait;
   use UtilityTrait;
@@ -111,6 +113,46 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Checks that the given content facet checkbox item is selected.
+   *
+   * @param string $bundle
+   *   The text of the checkbox that should be selected.
+   *
+   * @throws \Exception
+   *   Thrown when the facet checkbox is not selected or not present in the
+   *   page.
+   *
+   * @Then the :bundle content checkbox item should be selected
+   */
+  public function assertContentFacetCheckboxSelected(string $bundle): void {
+    if ($this->browserSupportsJavascript()) {
+      // The following xpath searches for
+      // * Any div
+      // ** that has a class named facets-widget-checkbox
+      // ** and contains a li element
+      // *** that contains an input element
+      // **** that has an attribute named 'type' with value 'checkbox'
+      // **** and has an attribute named 'checked' with value 'checked'
+      // *** and contains a span element
+      // **** with the text has the value $bundle.
+      $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//li[.//input[@type='checkbox'][@checked='checked']][.//span[text()='$bundle']]]";
+    }
+    else {
+      // The following xpath searches for
+      // * Any div
+      // ** that has a class named facets-widget-checkbox
+      // ** and contains an a element
+      // *** that has a class named 'is-active'
+      // *** and contains a span element
+      // **** that has a class named 'facet-item__value'
+      // **** and the text has the value $bundle.
+      $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' facets-widget-checkbox ')][.//a[contains(concat(' ', normalize-space(@class), ' '), ' is-active ')][.//span[text()='$bundle']]]";
+    }
+    $element = $this->getSession()->getPage()->find('xpath', $xpath);
+    Assert::assertNotEmpty($element);
+  }
+
+  /**
    * Asserts that certain content type facet items are shown on the page.
    *
    * @param string $labels
@@ -185,6 +227,23 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Clicks a facet item in an inline facet found in a designated region.
+   *
+   * @param string $link
+   *   The link text of the link to click.
+   * @param string $facet
+   *   The facet alias.
+   * @param string $region
+   *   The region alias.
+   *
+   * @When I click :link in the :facet inline facet in the :region region
+   */
+  public function iClickAnInlineFacetItemLinkInRegion(string $link, string $facet, string $region): void {
+    $region = $this->getRegion($region);
+    $this->findFacetByAlias($facet, $region)->clickLink($link);
+  }
+
+  /**
    * Asserts that an inline facet has a certain text (value) set as active.
    *
    * @param string $text
@@ -224,7 +283,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @throws \Exception
    *   Thrown when the facet is not found in the page.
    *
-   * @Then the :facet inline facet should allow selecting the following values :value
+   * @Then the :facet inline facet should allow selecting the following values :values
    */
   public function assertInlineFacetInactiveItems(string $facet, string $values): void {
     $element = $this->findFacetByAlias($facet);
@@ -232,6 +291,34 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
       /** @var \Behat\Mink\Element\NodeElement $item */
       return $item->getText();
     }, $element->findAll('css', 'ul.mdl-menu li.facet-item'));
+
+    $values = $this->explodeCommaSeparatedStepArgument($values);
+    Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");
+  }
+
+  /**
+   * Asserts the items in a checkbox widget facet.
+   *
+   * This function asserts also the order of the items.
+   *
+   * @param string $facet
+   *   The facet alias.
+   * @param string $values
+   *   A comma-separated list of items to be present.
+   *
+   * @throws \Exception
+   *   Thrown when the facet is not found in the page.
+   *
+   * @Then the :facet checkbox facet should allow selecting the following values :values
+   */
+  public function assertCheckboxFacetItems(string $facet, string $values): void {
+    $element = $this->findFacetByAlias($facet);
+    $found = array_map(function (NodeElement $item) {
+      $text = $item->getText();
+      // If a value is selected, it is prefixed with a '(-) ' in the text. Clean
+      // that out so that it is more readable.
+      return preg_replace('/^\(-\) /', '', $text);
+    }, $element->findAll('css', 'li.facet-item'));
 
     $values = $this->explodeCommaSeparatedStepArgument($values);
     Assert::assertEquals($values, $found, "The '{$facet}' values mismatch the expected ones.");

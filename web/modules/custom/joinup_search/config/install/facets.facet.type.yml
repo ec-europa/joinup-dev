@@ -15,10 +15,13 @@ show_only_one_result: true
 field_identifier: entity_bundle
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: type
+  type: checkbox
   config:
     show_numbers: true
-    tabs: 3
+    soft_limit: 0
+    soft_limit_settings:
+      show_less_label: 'Show less'
+      show_more_label: 'Show more'
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -27,12 +30,6 @@ hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
-  active_widget_order:
-    processor_id: active_widget_order
-    weights:
-      sort: -2
-    settings:
-      sort: ASC
   aggregated_entity_bundle_label:
     processor_id: aggregated_entity_bundle_label
     weights:
@@ -68,4 +65,4 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-show_title: null
+show_title: false
