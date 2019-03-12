@@ -912,7 +912,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $session = $this->getSession();
     $page_title = $session->getPage()->find('xpath', '//head/title');
     if (!$page_title) {
-      throw new \Exception(sprintf('Page title tag not found on the page ', $session, $session->getCurrentUrl()));
+      throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
     list($title, $site_name) = explode(' | ', $page_title->getText());
@@ -1237,7 +1237,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
-      throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
 
     return $checkbox;
