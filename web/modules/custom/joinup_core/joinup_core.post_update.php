@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -458,4 +459,32 @@ QUERY;
   $connection->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
   // Create a backwards connection from the children to the parent.
   $connection->query('INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
+ * Remove temporary 'file' entities that lack the file on file system.
+ */
+function joinup_core_post_update_fix_files(array &$sandbox) {
+  if (!isset($sandbox['fids'])) {
+    $sandbox['fids'] = array_values(\Drupal::entityQuery('file')
+      ->condition('status', FILE_STATUS_PERMANENT, '<>')
+      ->sort('fid')
+      ->execute());
+    $sandbox['processed'] = 0;
+  }
+
+  $fids = array_splice($sandbox['fids'], 0, 50);
+  foreach (File::loadMultiple($fids) as $file) {
+    /** @var \Drupal\file\FileInterface $file */
+    if (!file_exists($file->getFileUri())) {
+      $file->delete();
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = (int) !$sandbox['fids'];
+
+  if ($sandbox['#finished'] === 1) {
+    return $sandbox['processed'] ? "{$sandbox['processed']} file entities deleted." : "No file entities were deleted.";
+  }
 }
