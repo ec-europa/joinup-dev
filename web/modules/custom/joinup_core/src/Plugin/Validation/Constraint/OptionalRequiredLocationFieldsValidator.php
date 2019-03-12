@@ -4,6 +4,7 @@ namespace Drupal\joinup_core\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use \Drupal\node\NodeInterface as Node;
 
 /**
  * Validates the Location fields.
@@ -15,7 +16,7 @@ class OptionalRequiredLocationFieldsValidator extends ConstraintValidator {
    */
   public function validate($entity, Constraint $constraint) {
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
-    if (!$entity instanceof \Drupal\node\NodeInterface) {
+    if (!$entity instanceof Node) {
       // We only want to work with nodes.
       return;
     }
@@ -26,8 +27,8 @@ class OptionalRequiredLocationFieldsValidator extends ConstraintValidator {
     }
 
     // Retrieve field values from the Constraint.
-    $field_name_1 = $constraint->field_name_1;
-    $field_name_2 = $constraint->field_name_2;
+    $field_name_1 = $constraint->fieldName1;
+    $field_name_2 = $constraint->fieldName2;
 
     // Just to make sure the fields exist.
     if ($entity->hasField($field_name_1) && $entity->hasField($field_name_2)) {

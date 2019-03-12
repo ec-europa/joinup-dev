@@ -28,13 +28,13 @@ class OptionalRequiredLocationFieldsConstraint extends Constraint {
    *
    * @var string
    */
-  public $field_name_1;
+  public $fieldName1;
 
   /**
    * The second field which needs to be checked.
    *
    * @var string
    */
-  public $field_name_2;
+  public $fieldName2;
 
 }
