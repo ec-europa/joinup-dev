@@ -17,7 +17,6 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
@@ -50,7 +49,7 @@ use WebDriver\Exception\StaleElementReference;
 /**
  * Behat step definitions that are generally useful for the Joinup project.
  */
-class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSubContext extends DrupalSubContextBase {
 
   use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
