@@ -17,10 +17,10 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -50,8 +50,9 @@ use WebDriver\Exception\StaleElementReference;
 /**
  * Behat step definitions that are generally useful for the Joinup project.
  */
-class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSubContext extends DrupalSubContextBase {
 
+  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
@@ -1318,7 +1319,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When the plus button menu should be empty
    */
   public function assertEmptyPlusButtonMenu() {
-    if ($this->browserSupportsJavascript()) {
+    if ($this->browserSupportsJavaScript()) {
       if ($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]')) {
         throw new \Exception("The plus button menu is not empty.");
       }
@@ -1342,7 +1343,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // If we are running in a JavaScript enabled browser, first click the
     // 'Source' button so we can enter the text as HTML and get the same result
     // as in a non-JS browser.
-    if ($this->browserSupportsJavascript()) {
+    if ($this->browserSupportsJavaScript()) {
       $this->pressWysiwygButton($label, 'Source');
       $this->setWysiwygText($label, $text);
     }
@@ -1703,7 +1704,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then a modal should/will open
    */
   public function waitForDrupalModalToOpen() {
-    // A modal can be opened only in a Javascript-enabled browser.
+    // A modal can be opened only in a JavaScript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
 
     $result = $this->getSession()->getPage()->waitFor(5, function () {
@@ -1727,7 +1728,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the modal should be closed
    */
   public function waitForDrupalModalToClose() {
-    // A modal can be opened only in a Javascript-enabled browser.
+    // A modal can be opened only in a JavaScript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
 
     $result = $this->getSession()->getPage()->waitFor(5, function () {
@@ -2255,7 +2256,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
    */
   public function assertNotFormatInCkeditorExists($field, $format_tags) {
-    if (!$this->browserSupportsJavascript()) {
+    if (!$this->browserSupportsJavaScript()) {
       throw new \Exception('This step requires javascript to run.');
     }
     $element = $this->getSession()->getPage()->findField($field);
@@ -2299,7 +2300,7 @@ JS;
   /**
    * Press a key in a field.
    *
-   * Works only in Javascript-enabled browsers.
+   * Works only in JavaScript-enabled browsers.
    *
    * @param string $key
    *   The human readable name of the key to press.
@@ -2307,15 +2308,15 @@ JS;
    *   The field in which to press the key.
    *
    * @throws \Exception
-   *   Thrown when the browser doesn't support Javascript or when the field is
+   *   Thrown when the browser doesn't support JavaScript or when the field is
    *   not found.
    *
    * @When I hit :key( in the keyboard) on the field :field
    * @When I hit|press the :key key in the :field field
    */
   public function pressKeyInField(string $key, string $field): void {
-    if (!$this->browserSupportsJavascript()) {
-      throw new \Exception('This step requires Javascript to run.');
+    if (!$this->browserSupportsJavaScript()) {
+      throw new \Exception('This step requires JavaScript to run.');
     }
 
     $element = $this->getSession()->getPage()->findField($field);
@@ -2432,8 +2433,8 @@ JS;
   /**
    * Asserts the order and nesting of rows of a draggable menu table.
    *
-   * It requires a Javascript browser to run as many draggable classes are set
-   * by Javascript.
+   * It requires a JavaScript browser to run as many draggable classes are set
+   * by JavaScript.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The menu data.

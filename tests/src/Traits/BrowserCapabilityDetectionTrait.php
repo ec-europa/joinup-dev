@@ -18,7 +18,7 @@ trait BrowserCapabilityDetectionTrait {
    *   Returns TRUE when the browser environment supports executing JavaScript
    *   code, for example because the test is running in Selenium or PhantomJS.
    */
-  protected function browserSupportsJavascript(): bool {
+  protected function browserSupportsJavaScript(): bool {
     $driver = $this->getSession()->getDriver();
     try {
       $driver->executeScript('return;');
@@ -36,9 +36,9 @@ trait BrowserCapabilityDetectionTrait {
    *   Thrown when not running on a JS-enabled browser.
    */
   protected function assertJavaScriptEnabledBrowser(): void {
-    if (!$this->browserSupportsJavascript()) {
+    if (!$this->browserSupportsJavaScript()) {
       // Show a helpful error message.
-      throw new \LogicException('This test needs to run on a real browser using Selenium or similar. Please add the "@javascript" tag to the scenario.', $driver);
+      throw new \LogicException('This test needs to run on a real browser using Selenium or similar. Please add the "@javascript" tag to the scenario.');
     }
   }
 
