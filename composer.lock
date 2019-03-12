@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d76ef9a6b9c2af2ebe0c03771acc018",
+    "content-hash": "4cb34b313e8149b8ba07790463cdd0ae",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2375,11 +2375,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5179,25 +5175,31 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-fix-encoder",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "5f4cddc67062250adc9eb636053bad15d4987f6c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/5f4cddc67062250adc9eb636053bad15d4987f6c",
-                "reference": "5f4cddc67062250adc9eb636053bad15d4987f6c",
-                "shasum": ""
+                "url": "https://git.drupal.org/project/rdf_entity",
+                "reference": "fa2cbd3f3193346b183c0e79f14d2eca4f5483db"
             },
             "require": {
+                "drupal/core": "*",
                 "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
                 "ml/json-ld": "^1.0",
                 "php": ">=7.1"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha13+4-dev",
+                    "datestamp": "1551430984",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff"
                 }
@@ -5207,16 +5209,43 @@
                     "driver/sparql/Connection.php"
                 ]
             },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
+                },
+                {
+                    "name": "dublutz",
+                    "homepage": "https://www.drupal.org/user/980246"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                },
+                {
+                    "name": "sandervd",
+                    "homepage": "https://www.drupal.org/user/346775"
+                },
+                {
+                    "name": "sardara",
+                    "homepage": "https://www.drupal.org/user/2353864"
+                }
             ],
             "description": "This module allows you to leverage the semantic web by storing and retrieving content directly from an RDF data store using the SPARQL RDF query language.",
             "homepage": "https://drupal.org/project/rdf_entity",
             "support": {
-                "issues": "https://drupal.org/project/issues/rdf_entity",
-                "source": "https://cgit.drupalcode.org/rdf_entity"
+                "source": "https://cgit.drupalcode.org/rdf_entity",
+                "issues": "https://drupal.org/project/issues/rdf_entity"
             },
-            "time": "2019-03-07T19:43:40+00:00"
+            "time": "2019-03-01T08:45:59+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5452,7 +5481,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1537284180",
+                    "datestamp": "1543072380",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5749,7 +5778,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -12155,7 +12184,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549218480",
+                    "datestamp": "1549559402",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12219,6 +12248,12 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
@@ -12922,7 +12957,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            }
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -15032,7 +15068,6 @@
         "drupal/migrate_run": 10,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
-        "drupal/rdf_entity": 20,
         "drupal/sparql_entity_storage": 20,
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
