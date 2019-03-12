@@ -22,3 +22,13 @@ function joinup_event_entity_bundle_field_info_alter(array &$fields, EntityTypeI
     }
   }
 }
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_event_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface */
+  if (isset($entity_types['node'])) {
+    $entity_types['node']->addConstraint('OptionalRequiredLocationFields', ['field_name_1' => 'field_location', 'field_name_2' => 'field_event_online_location']);
+  }
+}
