@@ -80,6 +80,7 @@ trait UtilityTrait {
    *   element.
    */
   protected function isVisuallyVisible(NodeElement $element) {
+    \assert(method_exists($this, 'assertJavaScriptEnabledBrowser'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
     // This only works on JS-enabled browsers.
     $this->assertJavaScriptEnabledBrowser();
 
