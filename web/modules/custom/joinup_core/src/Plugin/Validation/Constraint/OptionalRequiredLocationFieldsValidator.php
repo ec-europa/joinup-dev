@@ -4,7 +4,7 @@ namespace Drupal\joinup_core\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use \Drupal\node\NodeInterface as Node;
+use Drupal\node\NodeInterface as Node;
 
 /**
  * Validates the Location fields.
