@@ -35,3 +35,10 @@ function joinup_post_update_install_geocoder(): void {
 function joinup_post_update_install_joinup_rss() {
   \Drupal::service('module_installer')->install(['joinup_rss']);
 }
+
+/**
+ * Enable the "ISA2 Analytics" module.
+ */
+function joinup_post_update_install_isa2_analytics() {
+  \Drupal::service('module_installer')->install(['isa2_analytics']);
+}

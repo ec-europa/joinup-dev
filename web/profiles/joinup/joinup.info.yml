@@ -40,6 +40,7 @@ dependencies:
   - honeypot
   - image
   - inline_entity_form
+  - isa2_analytics
   - joinup_collection
   - joinup_core
   - joinup_discussion
