@@ -38,7 +38,7 @@ trait BrowserCapabilityDetectionTrait {
   protected function assertJavaScriptEnabledBrowser(): void {
     if (!$this->browserSupportsJavaScript()) {
       // Show a helpful error message.
-      throw new \LogicException('This test needs to run on a real browser using Selenium or similar. Please add the "@javascript" tag to the scenario.', $driver);
+      throw new \LogicException('This test needs to run on a real browser using Selenium or similar. Please add the "@javascript" tag to the scenario.');
     }
   }
 
