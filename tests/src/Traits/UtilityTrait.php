@@ -10,8 +10,6 @@ use PHPUnit\Framework\Assert;
  */
 trait UtilityTrait {
 
-  use BrowserCapabilityDetectionTrait;
-
   /**
    * Explodes and sanitizes a comma separated step argument.
    *
