@@ -69,6 +69,7 @@
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
+        "ec-europa/spdx": "dev-ISAICP-5130",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
         "ml/json-ld": "^1.0",
@@ -265,6 +266,10 @@
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/redirect.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/spdx.git"
         },
         {
             "type": "vcs",

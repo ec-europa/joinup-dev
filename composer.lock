@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b612d4ad4a1cf0d7ce5dab08ac9fc79e",
+    "content-hash": "6d5b920fd3274242a061c1aa0b431cb2",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2375,11 +2375,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2532,6 +2528,14 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
+                {
+                    "name": "bircher",
+                    "homepage": "https://www.drupal.org/user/1344166"
+                },
+                {
+                    "name": "gnuget",
+                    "homepage": "https://www.drupal.org/user/992990"
+                },
                 {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
@@ -6585,6 +6589,32 @@
             "time": "2018-03-29T12:58:02+00:00"
         },
         {
+            "name": "ec-europa/spdx",
+            "version": "dev-ISAICP-5130",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/spdx.git",
+                "reference": "5e0c55f2561bcf6513e78ce2431511903fecf472"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/5e0c55f2561bcf6513e78ce2431511903fecf472",
+                "reference": "5e0c55f2561bcf6513e78ce2431511903fecf472",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/rdf_entity": ">=1.0.0-alpha12",
+                "spdx/license-list-data": "master"
+            },
+            "type": "drupal-module",
+            "description": "Allows to federate and manage the SPDX licences.",
+            "support": {
+                "source": "https://github.com/ec-europa/spdx/tree/ISAICP-5130",
+                "issues": "https://github.com/ec-europa/spdx/issues"
+            },
+            "time": "2019-03-13T10:12:24+00:00"
+        },
+        {
             "name": "ec-europa/virtuoso",
             "version": "2.1.3",
             "source": {
@@ -9530,6 +9560,17 @@
             "time": "2018-08-09T13:01:25+00:00"
         },
         {
+            "name": "spdx/license-list-data",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spdx/license-list-data",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2019-03-11T22:40:32+00:00"
+        },
+        {
             "name": "stack/builder",
             "version": "v1.0.5",
             "source": {
@@ -12190,7 +12231,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549218480",
+                    "datestamp": "1549559402",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12254,6 +12295,12 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
@@ -12564,7 +12611,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-03-12T00:46:53+00:00"
         },
         {
             "name": "drupal/drupal-driver",
@@ -15074,6 +15122,7 @@
         "ec-europa/infra": 20,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
+        "ec-europa/spdx": 20,
         "jacklmoore/autosize": 20,
         "openeuropa/oe_webtools_location": 20,
         "semiceu/adms-ap_validator": 20,
