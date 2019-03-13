@@ -26,7 +26,7 @@
          xmlns:cc="http://creativecommons.org/ns#">
     <owl:Ontology rdf:about="http://data.europa.eu/dr8">
         <rdfs:label xml:lang="en">Controlled vocabulary for the European Interoperability Reference Architecture (EIRA)</rdfs:label>
-        <dcterms:modified rdf:datatype="&xsd;date">2019-02-23</dcterms:modified>
+        <dcterms:modified rdf:datatype="&xsd;date">2019-03-12</dcterms:modified>
         <dcterms:rights xml:lang="en">Copyright (c) 2016 European Union.</dcterms:rights>
         <cc:attributionName xml:lang="en">European Commission</cc:attributionName>
         <rdfs:comment xml:lang="en">This file specifies the controlled vocabulary defined by the EIRA as SKOS concept schemes and SKOS concepts.</rdfs:comment>
@@ -188,11 +188,10 @@ Attributes:
         		<skos:notation>PublicPolicyImplementationApproach</skos:notation>
         		<skos:prefLabel xml:lang="en">Public Policy Implementation Approach</skos:prefLabel>
         		<skos:definition xml:lang="en"><![CDATA[DESCRIPTION:
-The specific rules and processes finalised at implementing a policy through organisations, persons, objects or events. 
+The specific rules and processes finalised at implementing a policy through organisations, persons, objects or events. Based on Hill, M. and Hupe, P, Implementing Public Policy: Governance in Theory and in Practice, SAGE  Publications Ltd 2002   
 
-Based on Hill, M. and Hupe, P, Implementing Public Policy: Governance in Theory and in Practice, SAGE  Publications Ltd 2002   
-
-A [Public Policy Implementation Approach] is influenced by a Regulatory State and a Delegation of Powers, which determine the role of the organisation, person, object or event involved in the implementation of the policy. This ABB is a key interoperability enabler for assessing compatibility cross public policy implementation approaches ensuring legal/juridical certainty.
+A [Public Policy Implementation Approach] is influenced by a Regulatory State and a Delegation of Powers which determine the role of the organisation, person, object or event.
+This role is determined by the following quadrant:
 
 This role is determined by the following quadrant:
 
@@ -209,21 +208,19 @@ ___________________| ___________________________________|______________________|
 
 Option A - The Controlled Scenario: 
 This approach is characteristic of a public policy centralisation of powers and a strongly regulatory state. The recommended interoperability focus is on semantic interoperability (i.e. data architecture, base registries)  
-
-Option B - The Subsidiary Scenario: 
-This approach is characteristic of a public policy delegation of powers and a softly regulatory state. The recommended interoperability focus is on legal interoperability (i.e. interoperability frameworks, interoperability reference architecture)
-
+Option B - The Normative Scenario:
+This approach is characteristic of a public policy delegation of powers and a strongly regulatory state. The recommended interoperability focus is on technology  interoperability (i.e. interoperability specifications)
+	
 Option C - The Federated Scenario:
 This approach is characteristic of a public policy centralisation of powers and a softly regulatory state.  The recommended interoperability focus is on organizational  interoperability (i.e. interoperability agreements)
-
-Option D - The Normative Scenario:
-This approach is characteristic of a public policy delegation of powers and a strongly regulatory state. The recommended interoperability focus is on technology  interoperability (i.e. interoperability specifications)
+Option D - The Subsidiarity Scenario: 
+This approach is characteristic of a public policy delegation of powers and a softly regulatory state. The recommended interoperability focus is on legal interoperability (i.e. interoperability frameworks, interoperability reference architecture)
 
 INTEROPERABILITY SALIENCY:
-The Public Policy Implementation Approach ABB is a key interoperability enabler because it influences the way legislation is created to implement a public policy, and sets its focus.
+The Public Policy Implementation Approach ABB is a key interoperability enabler salient for legal interoperability because it influences the way legislation is created to implement a public policy, and sets its focus.
 
-EXAMPLES:
 The following implementation is an example on how this specific Architecture Building Block (ABB) can be instantiated as a Solution Building Block (SBB):
+
 The Customs 2020 Programme
 Customs 2020 is an EU cooperation programme providing national customs administrations with the possibility to create and exchange information and expertise. It allows developing and operating major trans-European IT systems in partnership and establishing various human networks by bringing together national officials from across Europe. The programme has a budget of € 547.3 million and will run for 7 years from January 1 2014.
 https://ec.europa.eu/taxation_customs/business/customs-cooperation-programmes/customs-2020-programme_en
@@ -295,7 +292,7 @@ Source:
 https://ox.libguides.com/c.php?g=422926&amp;p=2888217
 
 INTEROPERABILITY SALIENCY:
-The Binding Instrument ABB is an interoperability enabler as a specialisation of the Legal Act.
+The Binding Instrument ABB is relevant for interoperability as, by being a specialisation of Legal Act, it makes mandatory the implementation of the policy (and therefore the underlying interoperability implications).  
 
 EXAMPLES:
 The following implementation is an example on how this specific Architecture Building Block (ABB) can be instantiated as a Solution Building Block (SBB):
@@ -363,7 +360,7 @@ Attributes:
         		<skos:notation>LegalAct</skos:notation>
         		<skos:prefLabel xml:lang="en">Legal Act</skos:prefLabel>
         		<skos:definition xml:lang="en"><![CDATA[DESCRIPTION:
-Legislative acts According to Article 289 of the Treaty on the Functioning of the European Union (TFEU), legislative acts are decisions adopted under the ordinary or a special legislative procedure
+EU legal acts are legislative or non-legislative acts adopted by the European institutions (Article 288 TFEU). With the entry into force of the Treaty of Lisbon on 1 December 2009. The names &quot;European Union&quot; or &quot;EU&quot; have replaced &quot;European Community&quot;, &quot;Community&quot; or &quot;EC&quot;.
 
 Source: https://eur-lex.europa.eu/summary/glossary/legislative_acts.html
 
@@ -446,14 +443,14 @@ Attributes:
         		<skos:notation>LegalInteroperabilityAgreement</skos:notation>
         		<skos:prefLabel xml:lang="en">Legal Interoperability Agreement</skos:prefLabel>
         		<skos:definition xml:lang="en"><![CDATA[DESCRIPTION:
-Legal interoperability Agreement is the means through which Legal Authorities mandate specific Legal Interoperability Specifications, ensuring organisations (operating under different legal frameworks,
+Legal interoperability Agreement is the means through which Legal Authorities mandate specific Legal Interoperability Specifications, ensuring organisations (operating under different legal frameworks, 
 policies and strategies) are able to work together. 
 
 Based on EIF:
 https://ec.europa.eu/isa2/sites/isa/files/eif_brochure_final.pdf#page=27
 
 INTEROPERABILITY SALIENCY
-The Legal Interoperability Agreement ABB  is a key interoperability enabler because it supports legal interoperability by providing cooperation agreements needed to allow the seamless exchange of information between different organisations, regions and countries.
+The Legal Interoperability Agreement ABB  is a key interoperability enabler because it supports legal interoperability by providing cooperation agreements needed to allow the seamless exchange of information between different organisations, regions and countries.
 
 EXAMPLES:
 The following implementation is an example on how this specific Architecture Building Block (ABB) can be instantiated as a Solution Building Block (SBB): 
@@ -1246,7 +1243,7 @@ http://pubs.opengroup.org/architecture/togaf9-doc/arch/
 Syn. Exchange of Business Facts, Exchange of Business Data, Exchange of Business Opinions
 
 INTEROPERABILITY SALIENCY:
-The Exchange of business Information ABB  is salient for interoperability because it helps achieve organisational interoperability by ensuring compatible interaction between organisations, as stated in the EIF: &quot;For the purpose of the EIF, interoperability is the ability of organisations to interact towards mutually beneficial goals, involving the sharing of information and knowledge between these organisations, through the business processes they support, by means of the exchange of data between their ICT systems&quot;.
+The Exchange of business Information ABB  is salient for interoperability because it helps achieve organisational interoperability by ensuring compatible interaction between organisations, as stated in the EIF: &quot;For the purpose of the EIF, interoperability is the ability of organisations to interact towards mutually beneficial goals, involving the sharing of information and knowledge between these organisations, through the business processes they support, by means of the exchange of data between their ICT systems&quot;.
 
 EXAMPLES:
 The following implementation is an example on how this specific Architecture Building Block (ABB) can be instantiated as a Solution Building Block (SBB): 
@@ -1273,7 +1270,7 @@ Attributes:
         		<skos:notation>BusinessInformation</skos:notation>
         		<skos:prefLabel xml:lang="en">Business Information</skos:prefLabel>
         		<skos:definition xml:lang="en"><![CDATA[DESCRIPTION:
-Business assets to be interpreted in the context of a public service, which the business capability exchanges with other business capabilities to support a public service delivery/consumption. Examples include information about public service consumers.
+Organizationally constructed meaning describing business facts, assets, or opinions that are exchanged in the context of a public service to support its delivery. Examples include an invoice, a medical prescription, a driving license.
 
 Based on TOGAF guide about business capabilities and TOGAF definition of information.
 https://www2.opengroup.org/ogsys/catalog/g161 
@@ -1407,7 +1404,7 @@ Attributes:
         		<skos:notation>Representation</skos:notation>
         		<skos:prefLabel xml:lang="en">Representation</skos:prefLabel>
         		<skos:definition xml:lang="en"><![CDATA[DESCRIPTION:
-The perceptible form of the information carried by a business object. If relevant, representations can be classified in various ways; for example, in terms of medium (electronic, paper, audio, etc.) or format (HTML, ASCII, PDF, RTF, etc.).
+The description of the perceptible configuration of business information or a Legal act. Representations can be classified in various ways; for example, in terms of medium (e.g. electronic or paper documents, audio, etc.) or format (HTML, ASCII, PDF, RTF, etc.).
 
 Source: ArchiMate® v3
 http://pubs.opengroup.org/architecture/archimate3-doc/chap08.html  
@@ -1508,8 +1505,7 @@ Attributes:
         		<skos:notation>Data</skos:notation>
         		<skos:prefLabel xml:lang="en">Data</skos:prefLabel>
         		<skos:definition xml:lang="en"><![CDATA[DESCRIPTION:
-Data is a reinterpretable representation of information in a formalized manner suitable for communication, interpretation, or processing 
-This ABB enables (*) the sharing/PROVISIONING and reusing/CONSUMING Data.
+Data are symbols obtained through an encoding process of business information or a legal act.
 
 Source: ISO-IEC-2382-1 * 1993 * 
 https://www.iso.org/obp/ui/#iso:std:iso-iec:2382:ed-1:v1:en
@@ -1604,6 +1600,8 @@ The following implementation is an example on how this specific Architecture Bui
 EMVO: EMVS Master Data Guide
 The EMVS (European Medicines Verification System) requires that OBP’s (OnBoarding Partners) upload both product master data and product batch/pack data.
 The aim of this guide is to clarify what data is expected to be used for the EMVS master data noting that the long-term goal is to source directly from the IDMP/SPOR system.
+
+https://emvo-medicines.eu/new/wp-content/uploads/EMVO_0122_EMVS-Master-Data-Guide-1.pdf
 
 Attributes: 
 - ID: Internal key used to identify an architecture building block
@@ -2031,7 +2029,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_score
+- eira:reusability_level
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used
 - dct:references: The specific building block type this refers to]]></skos:definition>
         		<dcterms:identifier>ABB187</dcterms:identifier> 
@@ -2067,7 +2066,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used
 - dct:references: The specific building block type this refers to]]></skos:definition>
         		<dcterms:identifier>ABB233</dcterms:identifier> 
@@ -2121,7 +2125,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB57</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2153,7 +2158,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB70</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2194,7 +2204,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB58</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2227,7 +2238,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB71</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2251,6 +2267,7 @@ eDelivery is a network of nodes for digital communications. It is based on a dis
 https://ec.europa.eu/cefdigital/wiki/display/CEFDIGITAL/eDelivery
 
 Attributes: 
+- ID: Internal key used to identify an architecture building block
 - dct:description: A short description providing an overview of this building block
 - dct:modified: The date that the information documented for this building block was last modified
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
@@ -2258,33 +2275,23 @@ Attributes:
 - eira:actual_policy_coverage: The current policy domain coverage of this solution
 - eira:actual_reuse: Specifies if the solution is currently being reused
 - eira:confidentiality_level: The confidentiality level of this solution and its processed data
+- eira:data_quality_level
 - eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
+- eira:operational_date: The date this solution entered into operation
 - eira:GovIS_ID: The identifier assigned to this solution in GovIS (if applicable)
 - eira:IES_category: 
 - eira:importance_for_the_functioning_of_the_EU: The level of importance of this solution for the functioning of the European Union
 - eira:integrity_and_availability_level: The integrity and availability level of this solution
-- eira:iop_score_governance: Interoperability score for the Governance Area, which assesses the overall Interoperability governance of a solution
-- eira:iop_score_h2m: Interoperability score for the Human-2-Machine Interface Area, which assesses the interaction between the solution and (human) users. If the solution doesn&apos;t have Human-2-Machine interfaces, this IOP Area does not contribute to the overall IOP Score
-- eira:iop_score_m2m: Interoperability score for the Machine-2-Machine Interface Area, which assesses the interaction between the solution and other ICT systems. If the solution doesn&apos;t have Machine-2-Machine interfaces, this IOP Area does not contribute to the overall IOP Score.
-- eira:iop_score_overall: Interoperability score for the solution, which is calculated as the weighted sum of the IOP Areas scores. The maturity level of the solution is provided based on a four stage model to indicate the Interoperability maturity of a specific solution. The stages are:
-
-   - Excellent potential Interoperability (90% to 100%): this stage includes solutions that, on average, performed excellently in the relevant criteria and are thus considered as having excellent potential interoperability.
-
-   - Very Good potential Interoperability (75% to 89,9%): this stage includes solutions that, on average, performed very well in the relevant criteria. These solutions have small room for further improvement to become excellent.
-
-   - Fair potential Interoperability (50% to 74,9%): this stage includes solutions that, on average, performed fairly in the relevant criteria. These solutions have significant room for further improvement.
-
-   - Poor potential Interoperability (0% to 49,9%): this stage includes solutions that, on average, performed poor in the relevant criteria. The potential interoperability of these solutions is considered as having substantial room for improvement.
-- eira:iop_score_sw_architecture: Interoperability score for the Software Architecture Area, which assesses the internal software architecture and the coordination of solution&apos;s interactions
-- eira:operational_date: The date this solution entered into operation
 - eira:policy_area_extension: Whether or not this solution is foreseen to be extended to other policy domains
 - eira:published_in_catalogue_or_software_forge: Is the solution published in a catalogue and/or made available in a software forge?
 - eira:rationalisation_domain: The European Commission rationalisation domain(s) to which the solution belongs to
-- eira:reusability: Whether or not this building block could be reused as part of another solution
 - eira:scalability: The solution&apos;s scalability level
 - eira:security_requirements: The level of measures taken by the solution to address security
-- eira:state: The development status of this solution
-- ID: Internal key used to identify an architecture building block]]></skos:definition>
+- eira:state: The development status of this solution]]></skos:definition>
         		<dcterms:identifier>ABB60</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
 	        			<skos:related rdf:resource="http://data.europa.eu/dr8/OrchestrationService"/>
@@ -2326,7 +2333,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB40</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2359,7 +2367,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB61</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2396,7 +2409,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB42</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2437,7 +2451,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB63</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2487,7 +2506,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB159</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2524,7 +2544,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB221</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2555,7 +2580,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB45</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2588,7 +2614,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB186</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2605,7 +2636,7 @@ A document that prescribes technical requirements to be fulfilled by a product, 
 Source: https://www.iso.org/obp/ui/#iso:std:iso-iec:20944:-1:ed-1:v1:en:term:3.1.3.8]
 
 INTEROPERABILITY SALIENCY:
-
+The Technical Specification ABB is salient for technical interoperability because it assesses the characteristics required of a product to support technical solutions.
 
 
 EXAMPLES:
@@ -2679,7 +2710,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB128</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2713,7 +2745,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB129</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2910,7 +2947,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB52</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2940,7 +2978,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB74</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -2975,7 +3018,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB156</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3012,7 +3056,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB157</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3047,7 +3096,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB49</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3081,7 +3131,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB77</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3133,7 +3188,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB215</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3181,7 +3237,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB209</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3210,7 +3271,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB235</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3238,7 +3300,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB236</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3270,7 +3337,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB210</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3301,7 +3369,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB213</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3342,7 +3415,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB48</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3379,7 +3453,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB68</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3415,7 +3494,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB189</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3450,7 +3530,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB133</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3483,7 +3568,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB41</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3514,7 +3600,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB62</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -3560,7 +3651,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB55</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3606,7 +3698,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB144</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3646,7 +3739,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB197</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3691,7 +3785,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB198</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3736,7 +3831,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB199</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3783,7 +3879,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB200</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3832,7 +3929,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB201</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3867,7 +3965,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB202</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3898,7 +3997,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB203</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -3935,7 +4035,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB69</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -4003,7 +4108,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB204</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -4044,7 +4150,11 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB158</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -4078,7 +4188,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB145</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -4117,7 +4228,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB146</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -4148,7 +4264,8 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:reusability_level
+- eira:reusability_score
 - eira:actual_use: Specifies if the solution is currently used, planned to be used or not yet used]]></skos:definition>
         		<dcterms:identifier>ABB43</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperableEuropeanSolutionService"/>
@@ -4179,7 +4296,12 @@ Attributes:
 - dct:publisher: The name of the individual or organisation that is documenting the current building block
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:status: The development or realisation status of this building block
-- eira:reusability: Whether or not this building block could be reused as part of another solution
+- eira:data_quality_level
+- eira:data_quality_score: Overall data quality score
+- eira:reusability_level
+- eira:reusability_score
+- eira:iop_level
+- eira:iop_score
 - eira:actual_reuse: Specifies if the solution is currently being reused]]></skos:definition>
         		<dcterms:identifier>ABB64</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
@@ -4531,7 +4653,7 @@ Source: How does the EIRA© support interoperability?
 https://joinup.ec.europa.eu/sites/default/files/how_does_eira_support_interoperability_v1_0_0.pdf 
 
 INTEROPERABILITY SALIENCY
-The Legal Interoperability Specification ABB  is an interoperability enabler because it helps achieve legal interoperability by  addressing the core legal interoperability background for solutions.
+The Legal Interoperability Specification ABB  is relevant for interoperability  a key interoperability enabler because it helps achieve legal interoperability by  addressing the core legal interoperability background for solutions. 
 
 EXAMPLES:
 The following implementation is an example on how this specific Architecture Building Block (ABB) can be instantiated as a Solution Building Block (SBB):
@@ -4943,7 +5065,12 @@ Attributes:
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:url: The URL at which the specification can be referenced online 
 - eira:identifier: The identifier is unique. It identifies univocally the specification in the Cartography
-- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability]]></skos:definition>
+- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability
+- eira:status: The development or realisation status of this building block
+- eira:size
+- eira:implementation
+- eira:priority
+- eira:dependencies]]></skos:definition>
         		<dcterms:identifier>ABB346</dcterms:identifier> 
         			<skos:topConceptOf rdf:resource="http://data.europa.eu/dr8"/>
 	        			<skos:related rdf:resource="http://data.europa.eu/dr8/PublicServiceAgent"/>
@@ -4962,7 +5089,12 @@ Attributes:
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:url: The URL at which the specification can be referenced online 
 - eira:identifier: The identifier is unique. It identifies univocally the specification in the Cartography
-- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability]]></skos:definition>
+- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability
+- eira:status: The development or realisation status of this building block
+- eira:size
+- eira:implementation
+- eira:priority
+- eira:dependencies]]></skos:definition>
         		<dcterms:identifier>ABB347</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperabilityRequirement"/>
 	    	</skos:Concept>
@@ -4978,7 +5110,12 @@ Attributes:
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:url: The URL at which the specification can be referenced online 
 - eira:identifier: The identifier is unique. It identifies univocally the specification in the Cartography
-- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability]]></skos:definition>
+- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability
+- eira:status: The development or realisation status of this building block
+- eira:size
+- eira:implementation
+- eira:priority
+- eira:dependencies]]></skos:definition>
         		<dcterms:identifier>ABB348</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperabilityRequirement"/>
 	    	</skos:Concept>
@@ -4994,7 +5131,12 @@ Attributes:
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:url: The URL at which the specification can be referenced online 
 - eira:identifier: The identifier is unique. It identifies univocally the specification in the Cartography
-- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability]]></skos:definition>
+- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability
+- eira:status: The development or realisation status of this building block
+- eira:size
+- eira:implementation
+- eira:priority
+- eira:dependencies]]></skos:definition>
         		<dcterms:identifier>ABB349</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperabilityRequirement"/>
 	    	</skos:Concept>
@@ -5010,7 +5152,12 @@ Attributes:
 - dct:modified: The date that the information documented for this building block was last modified
 - eira:url: The URL at which the specification can be referenced online 
 - eira:identifier: The identifier is unique. It identifies univocally the specification in the Cartography
-- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability]]></skos:definition>
+- eira:body: The body contains statements on one or several Building Blocks. It informs either (i.e. proposed mode) on the proposed specification at the ABB level to achieve interoperability for its SBBs or (i.e. in solution descriptive mode) on a specification to which an SBB is actually compliant to achieve interoperability
+- eira:status: The development or realisation status of this building block
+- eira:size
+- eira:implementation
+- eira:priority
+- eira:dependencies]]></skos:definition>
         		<dcterms:identifier>ABB350</dcterms:identifier> 
         			<skos:broader rdf:resource="http://data.europa.eu/dr8/InteroperabilityRequirement"/>
 	    	</skos:Concept>
