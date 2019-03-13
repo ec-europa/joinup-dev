@@ -50,6 +50,17 @@ function joinup_core_requirements($phase) {
         'value' => t('Config is writable'),
       ];
 
+      // Check that database logging is disabled on production. Writing log
+      // entries to the database on every request puts unnecessary load on the
+      // database server.
+      if ($module_handler->moduleExists('dblog')) {
+        $requirements['joinup_core_dblog'] = [
+          'title' => t('Database logging'),
+          'description' => t('On production environments logs should be written to a file, not to the database.'),
+          'severity' => REQUIREMENT_ERROR,
+          'value' => t('Database logging is enabled'),
+        ];
+      }
     }
   }
 
