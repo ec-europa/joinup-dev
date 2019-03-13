@@ -15,10 +15,12 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -34,6 +36,7 @@ use WebDriver\Key;
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
   use BrowserCapabilityDetectionTrait;
+  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use TraversingTrait;
@@ -909,7 +912,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $session = $this->getSession();
     $page_title = $session->getPage()->find('xpath', '//head/title');
     if (!$page_title) {
-      throw new \Exception(sprintf('Page title tag not found on the page ', $session, $session->getCurrentUrl()));
+      throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
     list($title, $site_name) = explode(' | ', $page_title->getText());
@@ -1132,6 +1135,46 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks if a checkbox in a row with a given text is checked.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is unchecked.
+   *
+   * @Then the row :text is selected/checked
+   */
+  public function assertRowIsChecked($text) {
+    if (!$this->getRowCheckboxByText($text)->isChecked()) {
+      throw new ExpectationException("Check box in '$text' row is unchecked but it should be checked.", $this->getSession()->getDriver());
+    }
+  }
+
+  /**
+   * Checks if a checkbox in a row with a given text is not checked.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   If the checkbox is checked.
+   *
+   * @Then the row :text is not selected/checked
+   */
+  public function assertRowIsNotChecked($text) {
+    if ($this->getRowCheckboxByText($text)->isChecked()) {
+      throw new ExpectationException("Check box in '$text' row is checked but it should be unchecked.", $this->getSession()->getDriver());
+    }
+  }
+
+  /**
    * Attempts to check a checkbox in a table row containing a given text.
    *
    * @param string $text
@@ -1141,11 +1184,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox.
    *
-   * @Given I select/check the :row_text row
+   * @Given I select/check the :text row
    */
   public function checkTableselectRow(string $text): void {
-    $checkbox = $this->getRowCheckboxByText($text);
-    $checkbox->check();
+    $this->getRowCheckboxByText($text)->check();
   }
 
   /**
@@ -1154,11 +1196,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @param string $text
    *   Text in the row.
    *
-   * @Given I deselect/uncheck the :row_text row
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox.
+   *
+   * @Given I deselect/uncheck the :text row
    */
   public function uncheckTableselectRow(string $text): void {
-    $checkbox = $this->getRowCheckboxByText($text);
-    $checkbox->uncheck();
+    $this->getRowCheckboxByText($text)->uncheck();
   }
 
   /**
@@ -1192,7 +1237,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
-      throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
 
     return $checkbox;
@@ -1330,6 +1375,84 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // not remove focus from the field so the autocomplete results remain
     // visible and can be inspected.
     $element->postValue(['value' => [$value]]);
+  }
+
+  /**
+   * Installs the testing module for scenarios tagged with @errorPage.
+   *
+   * @BeforeScenario @errorPage
+   */
+  public function installErrorPageTestingModule() {
+    $this->toggleErrorPageTestingModule('install');
+
+    // The test writes to the PHP error log because it's in its scope to test
+    // fatal errors. But the testing bots might reject tests that are not ending
+    // with an empty log. We create a copy of the error log just before running
+    // this scenario to be restored in @AfterScenario phase. In this way the log
+    // will not be affected by errors logged by this scenario.
+    $error_log = ini_get('error_log');
+    if (file_exists($error_log)) {
+      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
+    }
+  }
+
+  /**
+   * Uninstalls the testing module for scenarios tagged with @errorPage.
+   *
+   * @AfterScenario @errorPage
+   */
+  public function uninstallErrorPageTestingModule(): void {
+    $this->toggleErrorPageTestingModule('uninstall');
+
+    // Restore the log saved in @BeforeScenario.
+    $error_log = ini_get('error_log');
+    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
+      file_unmanaged_move('temporary://php.log', $error_log, 1);
+    }
+
+    // Restore the original system logging error level.
+    $this->setSiteErrorLevel();
+  }
+
+  /**
+   * Installs/uninstalls the testing module.
+   *
+   * @param string $method
+   *   Either 'install' or 'uninstall'.
+   */
+  protected function toggleErrorPageTestingModule(string $method): void {
+    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
+    new Settings($settings);
+    static::bypassReadOnlyConfig(10);
+    \Drupal::service('module_installer')->$method(['error_page_test']);
+    static::restoreReadOnlyConfig();
+  }
+
+  /**
+   * Sets the site's error logging verbosity.
+   *
+   * @param string|null $error_level
+   *   (optional) The error level. If not passed, the original error level is
+   *   restored.
+   *
+   * @Given the site error reporting verbosity is( set to) :error_level
+   */
+  public function setSiteErrorLevel(string $error_level = NULL) {
+    static $original_error_level;
+
+    $config = \Drupal::configFactory()->getEditable('system.logging');
+
+    $current_error_level = $config->get('error_level');
+    if (!isset($original_error_level)) {
+      $original_error_level = $current_error_level;
+    }
+
+    $error_level = $error_level ?: $original_error_level;
+    if ($current_error_level !== $error_level) {
+      static::bypassReadOnlyConfig(5);
+      $config->set('error_level', $error_level)->save();
+      static::restoreReadOnlyConfig();
+    }
   }
 
 }

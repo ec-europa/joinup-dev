@@ -1,0 +1,87 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f98e366a6_b732b_b47d8_bb3fa_ba57a98469c64?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/contact_information\/uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/98e366a6-732b-47d8-b3fa-a57a98469c64"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "contact_information"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/contact_information\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ff9394ac-cad2-41cd-a2b3-2e30ac861499"
+                    }
+                ]
+            }
+        ]
+    },
+    "label": [
+        {
+            "value": "John Federator's contact",
+            "lang": "en"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/98e366a6-732b-47d8-b3fa-a57a98469c64"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_ci_email": [
+        {
+            "value": "JohnFederator@example.com"
+        }
+    ],
+    "field_ci_name": [
+        {
+            "value": "John Federator's contact"
+        }
+    ],
+    "field_ci_state": [
+        {
+            "value": "validated"
+        }
+    ]
+}

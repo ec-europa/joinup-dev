@@ -59,15 +59,21 @@ class DashboardAccess implements DashboardAccessInterface {
    */
   public function access(AccountInterface $account): AccessResultInterface {
     $access_policy = $this->state->get('tallinn.access_policy', 'restricted');
+    $tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID);
+    // Deny access if the Tallinn collection does not exist.
+    if (empty($tallinn_collection)) {
+      return AccessResult::forbidden();
+    }
+
     return AccessResult::allowedIf(
       // Either the access is public.
-      ($access_policy === 'public') ||
+      $access_policy === 'public' ||
       // Or the access is limited to the collection members.
-      (($access_policy === 'collection') && $this->ogMembershipManager->isMember(Rdf::load(TALLINN_COMMUNITY_ID), $account)) ||
+      ($access_policy === 'collection' && $this->ogMembershipManager->isMember($tallinn_collection, $account)) ||
       // Or the user has site-wide access permission.
       $account->hasPermission('administer tallinn settings') ||
       // Or the user has group access permission.
-      $this->ogAccess->userAccess(Rdf::load(TALLINN_COMMUNITY_ID), 'administer tallinn settings')->isAllowed()
+      $this->ogAccess->userAccess($tallinn_collection, 'administer tallinn settings')->isAllowed()
     );
   }
 

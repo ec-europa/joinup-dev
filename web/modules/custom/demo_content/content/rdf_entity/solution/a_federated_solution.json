@@ -1,0 +1,278 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/solution\/federated-solution?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/solution"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/uid": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/content_translation_uid": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_has_version": [
+            {
+                "href": "http:\/\/default\/release\/federated-release\/1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f98e366a6_b732b_b47d8_bb3fa_ba57a98469c64?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/collection\/field_ar_owner": [
+            {
+                "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fd54423b3_beef2_b4022_bbab4_b741242ccc393?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/c2056c47-6c96-4a9a-8f70-a288739c7c86"
+        }
+    ],
+    "rid": [
+        {
+            "target_id": "solution"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "92b9cc04-d7bb-459a-9f6d-02b31b0b4949"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/content_translation_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "92b9cc04-d7bb-459a-9f6d-02b31b0b4949"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_has_version": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/release\/federated-release\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/asset_release"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/5bbce9d7-56aa-4c72-b373-e606c27815ae"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_contact_information": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_f98e366a6_b732b_b47d8_bb3fa_ba57a98469c64?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/contact_information"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/98e366a6-732b-47d8-b3fa-a57a98469c64"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/rdf_entity\/solution\/field_is_owner": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/rdf_entity\/http_e_f_fdata_ceuropa_ceu_fw21_fd54423b3_beef2_b4022_bbab4_b741242ccc393?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/rdf_entity\/owner"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "http:\/\/data.europa.eu\/w21\/d54423b3-eef2-4022-bab4-741242ccc393"
+                    }
+                ]
+            }
+        ]
+    },
+    "label": [
+        {
+            "value": "A federated solution",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2018-05-27T15:53:57+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "http:\/\/data.europa.eu\/w21\/c2056c47-6c96-4a9a-8f70-a288739c7c86"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/solution\/federated-solution",
+            "pid": 17,
+            "langcode": "en",
+            "lang": "en"
+        }
+    ],
+    "content_translation_source": [
+        {
+            "value": "und",
+            "lang": "en"
+        }
+    ],
+    "content_translation_status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "graph": [
+        {
+            "value": "default"
+        }
+    ],
+    "field_is_content": [
+        {
+            "value": {
+                "fields": {
+                    "solution_content_bundle": {
+                        "weight": 0,
+                        "region": "top"
+                    },
+                    "solution_policy_domain": {
+                        "weight": 1,
+                        "region": "inline_facets"
+                    },
+                    "solution_spatial_coverage": {
+                        "weight": 2,
+                        "region": "inline_facets"
+                    }
+                },
+                "enabled": 1,
+                "query_presets": "",
+                "limit": 12
+            }
+        }
+    ],
+    "field_is_description": [
+        {
+            "value": "This is a federated solution",
+            "format": "content_editor",
+            "processed": "This is a federated solution",
+            "lang": "en"
+        }
+    ],
+    "field_is_elibrary_creation": [
+        {
+            "value": 2
+        }
+    ],
+    "field_is_landing_page": [
+        {
+            "uri": "http:\/\/foo-example.com\/landing",
+            "title": null,
+            "options": []
+        }
+    ],
+    "field_is_moderation": [
+        {
+            "value": false
+        }
+    ],
+    "field_is_state": [
+        {
+            "value": "validated"
+        }
+    ],
+    "field_is_webdav_creation": [
+        {
+            "value": false
+        }
+    ],
+    "field_is_webdav_url": [
+        {
+            "uri": "http:\/\/joinup.eu\/solution\/foo\/webdav",
+            "title": null,
+            "options": []
+        }
+    ],
+    "field_is_wiki": [
+        {
+            "uri": "http:\/\/example.wiki\/foobar\/wiki",
+            "title": null,
+            "options": []
+        }
+    ],
+    "field_site_featured": [
+        {
+            "value": false
+        }
+    ],
+    "field_site_pinned": [
+        {
+            "value": false
+        }
+    ]
+}

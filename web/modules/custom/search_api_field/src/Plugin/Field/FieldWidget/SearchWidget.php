@@ -213,8 +213,13 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['wrapper']['query_presets'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Query presets'),
-      '#description' => $this->t('Presets to apply to the query when it is executed. Must be entered in LUCENE syntax.'),
+      '#description' => $this->t('Presets to apply to the query when it is executed. Syntax is %syntax1 or %syntax2, where %field is the field name as configured in the index.', [
+        '%syntax1' => 'field|value',
+        '%syntax2' => 'field|value|operator',
+        '%field' => 'field',
+      ]),
       '#default_value' => isset($default_values['query_presets']) ? $default_values['query_presets'] : '',
+      '#element_validate' => [[$this, 'validateQueryPresets']],
     ];
 
     $element['wrapper']['limit'] = [
@@ -492,7 +497,10 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['filters'] = [
       '#type' => 'table',
       '#header' => [
-        $this->t('Filter'),
+        [
+          'data' => $this->t('Filter'),
+          'colspan' => 2,
+        ],
         $this->t('Weight'),
         $this->t('Operations'),
       ],
@@ -514,6 +522,9 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       $subform_state = SubformState::createForSubform($subform, $form, $form_state);
 
       $element['filters'][$plugin_delta] = [
+        'drag_handle' => [
+          '#wrapper_attributes' => ['class' => ['tabledrag-handle-cell']],
+        ],
         'plugin' => $plugin->buildConfigurationForm($subform, $subform_state),
         'weight' => [
           '#type' => 'weight',
@@ -531,7 +542,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
           ],
           '#limit_validation_errors' => [],
         ],
-        '#attributes' => ['class' => 'draggable', 'tabledrag-leaf'],
+        '#attributes' => ['class' => ['draggable']],
       ];
     }
 
@@ -542,13 +553,17 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
       }
     }
 
-    $element['field'] = [
+    $element['add_more'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['form__add-more-wrapper']],
+    ];
+    $element['add_more']['field'] = [
       '#type' => 'select',
       '#title' => $this->t('Available filters'),
       '#options' => $options,
       '#required' => FALSE,
     ];
-    $element['add'] = [
+    $element['add_more']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Add and configure filter'),
       '#name' => 'add_filter',
@@ -605,8 +620,8 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     list($field_id, $plugin_id) = explode(':', $form_state->getValue($wrapper['field']['#parents']), 2);
 
     // Extract element and widget elements.
-    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -3));
-    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
+    $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -4));
+    $widget = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -5));
 
     $field_name = $widget['#field_name'];
     $parents = $widget['#field_parents'];
@@ -659,6 +674,46 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $index = $this->entityTypeManager->getStorage('search_api_index')->load($index_id);
 
     return $index;
+  }
+
+  /**
+   * Validates data entered in the query preset field.
+   *
+   * @param array $element
+   *   The query preset element.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public function validateQueryPresets(array &$element, FormStateInterface $form_state) {
+    $list = explode("\n", $element['#value']);
+    $list = array_map('trim', $list);
+    $list = array_filter($list, 'strlen');
+    $available_fields = $this->getSearchApiIndex()->getFields(TRUE);
+
+    foreach ($list as $line) {
+      $matches = [];
+      if (!preg_match('/([^\|]*)\|([^\|]*)(?:\|(.*))?/', $line, $matches)) {
+        $form_state->setError($element, $this->t('Invalid query preset line added: %line.', [
+          '%line' => $line,
+        ]));
+        continue;
+      }
+
+      $field = trim($matches[1]);
+      if (!isset($available_fields[$field])) {
+        $form_state->setError($element, $this->t('Invalid search field specified: %field.', [
+          '%field' => $field,
+        ]));
+      }
+
+      $operator = isset($matches[3]) ? trim($matches[3]) : '=';
+      if (!in_array($operator, ['=', '<>', 'IN', 'NOT IN'])) {
+        $form_state->setError($element, $this->t('Invalid operator specified: %operator. Allowed operators are @operators.', [
+          '%operator' => $operator,
+          '@operators' => "'=', '<>', 'IN', 'NOT IN'",
+        ]));
+      }
+    }
   }
 
   /**

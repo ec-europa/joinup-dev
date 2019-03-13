@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_newsletter
+    - rdf_entity.rdfentity.collection
+  module:
+    - oe_newsroom_newsletter
+id: rdf_entity.collection.field_newsletter
+field_name: field_newsletter
+entity_type: rdf_entity
+bundle: collection
+label: Newsletter
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    enabled: false
+    universe: ''
+    service_id: 0
+default_value_callback: ''
+settings: {  }
+field_type: oe_newsroom_newsletter

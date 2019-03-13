@@ -48,6 +48,16 @@ joinup.group_administrators_report:
   options:
     _admin_route: TRUE
 
+joinup.solutions_by_licences_report:
+  path: '/admin/reporting/solutions-by-licences'
+  defaults:
+    _form: '\Drupal\joinup\Form\SolutionsByLicenceForm'
+    _title: 'Solutions by licences'
+  requirements:
+    _permission: 'access joinup reports'
+  options:
+    _admin_route: TRUE
+
 joinup.legal_notice:
   path: '/joinup/legal-notice'
   defaults:

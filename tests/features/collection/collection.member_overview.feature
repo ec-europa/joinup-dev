@@ -15,11 +15,11 @@ Feature: Collection membership overview
       # We're adding many users so we can test the different roles and states,
       #  as well as the pager. 12 users are shown per page.
       | Username              | First name | Family name | Photo        | Business title                  |
-      | Ruby Robert           | Ruby       | Robert      | leonardo.jpg | Chairman                        |
+      | Ruby Valenta          | Ruby       | Robert      | leonardo.jpg | Chairman                        |
       | Bohumil Unterbrink    | Bohumil    | Unterbrink  | ada.png      | Senior Executive Vice President |
       | Isabell Zahariev      | Isabell    | Zahariev    | charles.jpg  | Chief Executive Officer         |
       | Gemma Hackett         | Gemma      | Hackett     | tim.jpg      | President                       |
-      | Delicia Hart          | Delicia    | Hart        | alan.jpg     | Executive Director              |
+      | Delicia Hart Val      | Delicia    | Hart        | alan.jpg     | Executive Director              |
       | Sukhrab Valenta       | Sukhrab    | Valenta     | linus.jpeg   | Managing Director               |
       | Jun Schrader          | Jun        | Schrader    | blaise.jpg   | General Manager                 |
       | Ingibjörg De Snaaijer | Ingibjörg  | De Snaaijer | richard.jpg  | Department Head                 |
@@ -36,11 +36,11 @@ Feature: Collection membership overview
       | Jubilant Robots | Fresh oil harvest! | logo.png | banner.jpg | Ayodele Sommer | Nita Yang           | validated |
     And the following collection user memberships:
       | collection      | user                  | roles       | state   |
-      | Jubilant Robots | Ruby Robert           | owner       |         |
+      | Jubilant Robots | Ruby Valenta          | owner       |         |
       | Jubilant Robots | Bohumil Unterbrink    | facilitator |         |
       | Jubilant Robots | Isabell Zahariev      |             | blocked |
       | Jubilant Robots | Gemma Hackett         |             | pending |
-      | Jubilant Robots | Delicia Hart          | facilitator |         |
+      | Jubilant Robots | Delicia Hart Val      | facilitator |         |
       | Jubilant Robots | Sukhrab Valenta       | facilitator |         |
       | Jubilant Robots | Jun Schrader          |             |         |
       | Jubilant Robots | Ingibjörg De Snaaijer |             |         |
@@ -107,6 +107,11 @@ Feature: Collection membership overview
       | Delicia Hart       |
       | Ruby Robert        |
       | Sukhrab Valenta    |
+
+    When I fill in "Type something to filter the list" with "val"
+    And I press "Apply"
+    Then I should see the following tiles in the correct order:
+      | Sukhrab Valenta |
 
     # Clicking the user name should lead to the user profile page.
     When I click "Sukhrab Valenta"

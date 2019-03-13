@@ -20,6 +20,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/collections\r\n/solutions"
+    pages: "/collections\n/solutions"
     negate: false
     context_mapping: {  }

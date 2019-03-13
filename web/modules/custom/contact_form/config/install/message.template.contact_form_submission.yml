@@ -6,7 +6,7 @@ label: 'Contact form submission'
 description: 'Message to the moderators when the contact form is submitted.'
 text:
   -
-    value: "<p>Joinup - Contact form submission</p>\r\n"
+    value: "<p>Joinup - Contact form submission</p>"
     format: content_editor
 settings:
   'token options':

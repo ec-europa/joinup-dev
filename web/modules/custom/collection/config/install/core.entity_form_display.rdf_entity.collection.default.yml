@@ -16,6 +16,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
@@ -29,6 +30,7 @@ dependencies:
     - inline_entity_form
     - joinup_core
     - link
+    - oe_newsroom_newsletter
     - search_api_field
     - text
 third_party_settings:
@@ -76,6 +78,7 @@ third_party_settings:
         - field_ar_closed
         - field_ar_elibrary_creation
         - field_ar_moderation
+        - field_newsletter
       parent_name: group_general
       weight: 7
       format_type: tab
@@ -129,7 +132,7 @@ content:
     type: image_image
     region: content
   field_ar_closed:
-    weight: 17
+    weight: 16
     settings:
       display_label: false
     third_party_settings: {  }
@@ -162,7 +165,7 @@ content:
     type: text_textarea
     region: content
   field_ar_elibrary_creation:
-    weight: 18
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -176,7 +179,7 @@ content:
     type: image_image
     region: content
   field_ar_moderation:
-    weight: 19
+    weight: 18
     settings:
       display_label: false
     third_party_settings: {  }
@@ -211,6 +214,12 @@ content:
     third_party_settings: {  }
     type: search_api_field_default
     region: content
+  field_newsletter:
+    weight: 19
+    settings: {  }
+    third_party_settings: {  }
+    type: oe_newsroom_newsletter_default
+    region: content
   field_policy_domain:
     weight: 3
     settings: {  }
@@ -218,7 +227,7 @@ content:
     type: options_select
     region: content
   field_spatial_coverage:
-    weight: 16
+    weight: 15
     settings:
       match_operator: CONTAINS
       size: 60

@@ -9,11 +9,8 @@
       $(this).siblings('.mdl-menu__container').toggleClass('is-hidden');
     });
 
-    // Add classes to tour button.
-    $('.block-tour-button-block .tour-button').each(function () {
-      $(this).addClass('mdl-button mdl-js-button mdl-button--icon');
-      $(this).html('<span class="icon icon--help"></span>');
-      $(this).attr('title', 'Tour');
+    // Add classes to support menu button.
+    $('.support-menu .support-button').each(function () {
       if (!$(this).closest('div').hasClass('hidden')) {
         $('.search-bar--header').addClass('search-bar--header-shifted');
       }

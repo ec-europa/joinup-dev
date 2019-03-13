@@ -5,12 +5,19 @@
  * Install, update and uninstall functions for the Spain CTT module.
  */
 
+use Drupal\rdf_entity\Entity\Rdf;
+
 /**
  * Implements hook_install().
  *
  * Handle the duplicated solutions in the CTT repository.
  */
 function spain_ctt_install() {
+  $id = 'http://administracionelectronica.gob.es/ctt';
+  if (empty(Rdf::load($id))) {
+    return;
+  }
+
   require __DIR__ . '/includes/remove_duplicates.inc';
 
   // Create the original duplicates in case they do not exist.

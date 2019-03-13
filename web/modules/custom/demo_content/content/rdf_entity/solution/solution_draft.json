@@ -219,7 +219,7 @@
     },
     "field_is_description": [
         {
-            "value": "<p>This is a sample solution for testing purposes.<\/p>\r\n",
+            "value": "<p>This is a sample solution for testing purposes.<\/p>",
             "format": "content_editor"
         }
     ],

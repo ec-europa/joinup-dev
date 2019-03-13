@@ -16,8 +16,8 @@ Feature: Site menus
       | title               | release number | release notes | is version of | state     |
       | Alphorn sheet music | 1              | First notes.  | Rich Sound    | validated |
     And the following distributions:
-      | title          | description              | access url | solution   | parent              |
-      | First movement | First alphorn moveement. | text.pdf   | Rich Sound | Alphorn sheet music |
+      | title          | description              | access url | parent              |
+      | First movement | First alphorn moveement. | text.pdf   | Alphorn sheet music |
     And news content:
       | title                                | body                            | collection         | solution   | state     |
       | Purple firecraker powder price raise | Summer festivals are the cause. | Hungry Firecracker |            | validated |

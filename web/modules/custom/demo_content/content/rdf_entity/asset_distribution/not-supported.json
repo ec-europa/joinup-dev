@@ -68,7 +68,7 @@
     ],
     "field_ad_description": [
         {
-            "value": "<p>This not supported anymore.<\/p>\r\n",
+            "value": "<p>This not supported anymore.<\/p>",
             "format": null,
             "summary": null
         }

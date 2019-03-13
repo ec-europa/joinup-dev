@@ -1,0 +1,11 @@
+name: RDF - Provenance
+type: module
+description: Provides basic properties to track provenance data related to the entity.
+core: 8.x
+package: Custom
+dependencies:
+  - rdf_entity
+
+config_devel:
+  - rdf_entity.mapping.rdf_entity.provenance_activity
+  - rdf_entity.rdfentity.provenance_activity

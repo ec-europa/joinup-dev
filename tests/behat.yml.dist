@@ -16,11 +16,12 @@ default:
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
         - LoversOfBehat\TableExtension\Context\TableContext
+        - Drupal\joinup\Context\RssContext
       filters:
         tags: '~@wip'
   extensions:
     Drupal\MinkExtension:
-      base-url: '${behat.base_url}'
+      base_url: '${behat.base_url}'
       ajax_timeout: 10
       files_path: '${behat.files.path}'
       goutte: ~
@@ -30,6 +31,7 @@ default:
         wd_host: '${behat.webdriver_url}'
     LoversOfBehat\TableExtension:
       table_map:
+        'group menu edit table': '#menu-overview'
         'member administration': '.og-members-overview table'
         'collection administrator report': 'table.collection-administrator-report'
     Drupal\DrupalExtension:
@@ -47,6 +49,8 @@ default:
         Left sidebar: '.section--sidebar-left'
         Main solution vertical tab: '#edit-group-main'
         Management solution vertical tab: '#edit-group-management'
+        Members admin form header: '#edit-header'
+        Members admin form actions: '#edit-action'
         Modal buttons: '.ui-dialog-buttonpane'
         Modal content: '#drupal-modal'
         Modal title: '.ui-dialog-title'
@@ -74,6 +78,6 @@ default:
       text:
         log_in: 'Sign in'
         log_out: 'Sign out'
-        username_field: 'E-mail or username'
+        username_field: 'Email or username'
   formatters:
     ${behat.formatter.name}: ~

@@ -1,0 +1,7 @@
+type: module
+name: 'Joinup federation test'
+description: 'Module used for testing in Joinup federation.'
+package: Testing
+core: 8.x
+dependencies:
+  - joinup_federation

@@ -31,11 +31,8 @@ class JoinupRdfListBuilder extends RdfListBuilder {
       $definitions = $rdf_storage->getGraphDefinitions();
       if (isset($definitions[$graph])) {
         // Use the graph to build the list.
-        $query->setGraphType([$graph]);
+        $query->graphs([$graph]);
       }
-    }
-    else {
-      $query->setGraphType($rdf_storage->getGraphHandler()->getEntityTypeGraphIds($rdf_storage->getEntityTypeId()));
     }
 
     if ($rid = $request->get('rid')) {

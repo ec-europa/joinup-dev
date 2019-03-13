@@ -66,14 +66,11 @@ Feature: Add community content
 
   Scenario Outline: Publishing a content for the first time updates the creation time
     Given users:
-      | Username  | E-mail                     | First name | Family name    |
-      | Publisher | publisher-example@test.com | Publihser  | Georgakopoulos |
+      | Username  | E-mail                     | First name | Family name    | Roles     |
+      | Publisher | publisher-example@test.com | Publihser  | Georgakopoulos | moderator |
     And the following collection:
       | title | The afternoon shift |
       | state | validated           |
-    And the following collection user membership:
-      | collection          | user      | role        |
-      | The afternoon shift | Publisher | facilitator |
     And discussion content:
       | title             | content         | author    | state | collection          | created    |
       | Sample discussion | Sample content. | Publisher | draft | The afternoon shift | 01-01-2010 |
@@ -90,8 +87,17 @@ Feature: Add community content
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    # The created date has been updated.
-    And I should not see the text "01/01/2010"
+    And the latest version of the "Sample <content type>" <content type> should have a different created date than the last unpublished version
+
+    When I click "Revisions" in the "Entity actions" region
+    And I click the last "Revert" link
+    And I press "Revert"
+    And I go to the "Sample <content type>" <content type>
+
+    When I click "Edit" in the "Entity actions" region
+    And I press "Publish"
+    Then I should see the heading "Sample <content type>"
+    Then the latest version of the "Sample <content type>" <content type> should have the same created date as the last published version
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
     # date is the one shown and this field is exposed to the user.

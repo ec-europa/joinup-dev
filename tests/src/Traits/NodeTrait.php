@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
+
+use Drupal\node\NodeInterface;
 
 /**
  * Helper methods when dealing with Nodes.
@@ -17,13 +21,13 @@ trait NodeTrait {
    * @param string $bundle
    *   Optional content entity bundle.
    *
-   * @return \Drupal\node\Entity\Node
+   * @return \Drupal\node\NodeInterface
    *   The node.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a node with the given name does not exist.
    */
-  public static function getNodeByTitle($title, $bundle = NULL) {
+  public function getNodeByTitle(string $title, string $bundle = NULL): ?NodeInterface {
     $query = \Drupal::entityQuery('node')
       ->condition('title', $title)
       ->range(0, 1);
@@ -45,6 +49,39 @@ trait NodeTrait {
     // Reload from database to avoid caching issues and get latest version.
     $id = reset($result);
     return \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($id);
+  }
+
+  /**
+   * Returns a list of revision IDs.
+   *
+   * @param string $title
+   *   The title of the node.
+   * @param string $bundle
+   *   The type of the node.
+   * @param bool $published
+   *   Whether to request the last published or last unpublished verion.
+   *
+   * @return array
+   *   A list of revision IDs.
+   */
+  public function getNodeRevisionIdsList(string $title, string $bundle, bool $published = NULL): array {
+    $current_revision = $this->getNodeByTitle($title, $bundle);
+    // We gather all revisions and then filter out the one we want as filtering
+    // by vid will lead in false results.
+    // @see: https://www.drupal.org/project/drupal/issues/2766135
+    $query = \Drupal::entityQuery('node')
+      ->allRevisions()
+      ->condition('type', $bundle);
+    if ($published !== NULL) {
+      $published = (int) $published;
+      $query->condition('status', $published);
+    }
+
+    $revisions = $query->condition('nid', $current_revision->id())
+      ->sort('vid', 'DESC')
+      ->execute();
+
+    return empty($revisions) ? [] : array_keys($revisions);
   }
 
 }

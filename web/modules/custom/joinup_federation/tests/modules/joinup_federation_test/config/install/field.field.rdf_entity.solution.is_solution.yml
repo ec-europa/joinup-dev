@@ -1,0 +1,13 @@
+id: rdf_entity.solution.is_solution
+entity_type: rdf_entity
+bundle: solution
+field_name: is_solution
+field_type: boolean
+default_value:
+  -
+    value: 0
+settings: {  }
+dependencies:
+  config:
+    - field.storage.rdf_entity.is_solution
+    - rdf_entity.rdfentity.solution

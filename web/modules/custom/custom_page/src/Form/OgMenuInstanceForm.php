@@ -17,6 +17,7 @@ use Drupal\Core\Utility\LinkGeneratorInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgAccessInterface;
 use Drupal\og_menu\Form\OgMenuInstanceForm as OriginalOgMenuInstanceForm;
+use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
@@ -24,7 +25,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
  * Customized form controller for OG Menu instance edit forms.
  *
  * This simplifies the standard menu edit form from OG Menu for the navigation
- * menus of collections. The standard form is intended for webmasters, but the
+ * menus of groups. The standard form is intended for webmasters, but the
  * navigation menu is managed by non-technical collection facilitators in the
  * frontend.
  *
@@ -301,17 +302,21 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
         // have access to edit menu links, so instead we are showing links to
         // edit the custom pages directly.
         $operations = [];
+        $group_edit_routes = [
+          'entity.rdf_entity.canonical',
+          'entity.rdf_entity.about_page',
+        ];
 
         // Skip this if this link is not pointing to the canonical view of a
         // custom page, since this means the link has been added manually
         // somehow, probably by an administrator.
         if (
-          // The link should be to a canonical path of a node.
+          // The link is a canonical path of a node.
           $route_info['_route'] === 'entity.node.canonical'
-          // The node should be resolved.
+          // The node is resolved.
           && !empty($route_info['node'])
           && ($node = $route_info['node'])
-          // It should be a node too, one can never be too careful.
+          // It _is_ a node too, one can never be too careful.
           && $node instanceof NodeInterface
           // It should be a custom page.
           && $node->bundle() === 'custom_page'
@@ -325,6 +330,19 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
           $operations['delete'] = [
             'title' => $this->t('Delete'),
             'url' => $node->toUrl('delete-form'),
+            'query' => $this->getDestinationArray(),
+          ];
+        }
+        // Also add an edit link to the group in the 'Overview' and the 'About'
+        // page entries.
+        elseif (in_array($route_info['_route'], $group_edit_routes)
+          && ($rdf_entity = $route_info['rdf_entity'])
+          && $rdf_entity instanceof RdfInterface
+        ) {
+          $operations['edit'] = [
+            'title' => $this->t('Edit'),
+            'url' => $rdf_entity->toUrl('edit-form'),
+            // Bring the user back to the menu overview.
             'query' => $this->getDestinationArray(),
           ];
         }

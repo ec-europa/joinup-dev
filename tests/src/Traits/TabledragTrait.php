@@ -44,6 +44,9 @@ trait TabledragTrait {
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The row element.
+   *
+   * @throws \Exception
+   *   Thrown when the given table row cannot be found in the page.
    */
   protected function findDraggableTableRowByPosition(int $position): NodeElement {
     $xpath = '//tr[@class and contains(concat(" ", normalize-space(@class), " "), " draggable ")][' . $position . ']';

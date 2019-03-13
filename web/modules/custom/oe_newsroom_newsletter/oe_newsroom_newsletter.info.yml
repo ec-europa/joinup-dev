@@ -1,0 +1,6 @@
+name: OpenEuropa Newsroom Newsletter
+description: Allows to subscribe to Newsroom newsletters
+package: OpenEuropa
+
+core: 8.x
+type: module

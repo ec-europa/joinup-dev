@@ -4,7 +4,7 @@ url_https: 'https://joinup.acc.ne-dev.eu/'
 domain_mode: 0
 visibility:
   request_path_mode: 0
-  request_path_pages: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/rdf_entity/add/*\r\n/user/*/*"
+  request_path_pages: "/admin\n/admin/*\n/batch\n/node/add*\n/node/*/*\n/rdf_entity/add/*\n/user/*/*"
   user_role_mode: 0
   user_role_roles: {  }
   user_account_mode: 0

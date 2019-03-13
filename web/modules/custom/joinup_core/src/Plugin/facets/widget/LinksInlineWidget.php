@@ -221,6 +221,7 @@ class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPlug
       '#is_active' => FALSE,
       '#value' => $this->getConfiguration()['all_text'],
       '#show_count' => FALSE,
+      '#facet' => $facet,
     ];
     $link = new Link($text, $url);
 
@@ -237,6 +238,7 @@ class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPlug
       // Never render the activated indicator, as active facets are moved in the
       // related area.
       '#is_active' => FALSE,
+      '#facet' => $result->getFacet(),
       '#value' => $result->getDisplayValue(),
       '#show_count' => $this->getConfiguration()['show_numbers'] && ($count !== NULL),
       '#count' => $count,

@@ -5,11 +5,16 @@ dependencies:
     - rdf_entity.graph.default
     - rdf_entity.graph.draft
     - rdf_entity.rdfentity.solution
-third_party_settings: {  }
+third_party_settings:
+  rdf_schema_field_validation:
+    graph: 'http://adms-definition'
+    class: 'http://www.w3.org/2000/01/rdf-schema#Class'
+    property_predicates:
+      - 'http://www.w3.org/2000/01/rdf-schema#domain'
 id: rdf_entity.solution
 entity_type_id: rdf_entity
 bundle: solution
-rdf_type: 'http://www.w3.org/ns/adms#Asset'
+rdf_type: 'http://www.w3.org/ns/dcat#Dataset'
 base_fields_mapping:
   rid:
     target_id:

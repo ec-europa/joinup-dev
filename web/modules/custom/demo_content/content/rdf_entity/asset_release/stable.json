@@ -176,7 +176,7 @@
     ],
     "field_isr_release_notes": [
         {
-            "value": "<p>To be used on production.<\/p>\r\n",
+            "value": "<p>To be used on production.<\/p>",
             "format": "content_editor"
         }
     ],

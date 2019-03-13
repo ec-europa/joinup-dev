@@ -27,7 +27,7 @@ Feature:
       | title       | Persistent distribution                                        |
       | description | Persistent distribution                                        |
       | access url  | test.zip                                                       |
-      | solution    | Persistent solution                                            |
+      | parent      | Persistent solution                                            |
       | uri         | http://data.europa.eu/w21/643a2a52-da3b-4594-92bb-295d8134e1fb |
     And the following licence:
       | title       | Persistent licence                                             |

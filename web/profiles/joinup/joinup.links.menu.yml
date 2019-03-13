@@ -7,3 +7,9 @@ joinup.group_administrators_report:
   description: 'Table containing all collection owners and facilitators'
   parent: joinup_core.admin_reporting
   weight: 0
+
+joinup.solutions_by_licences_report:
+  title: 'Solutions by licences'
+  route_name: joinup.solutions_by_licences_report
+  parent: joinup_core.admin_reporting
+  weight: 2

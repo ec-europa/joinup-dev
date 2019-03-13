@@ -2,8 +2,13 @@
 
 namespace Drupal\Tests\asset_release\Kernel;
 
+use Drupal\Core\Serialization\Yaml;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
 
@@ -37,11 +42,13 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'inline_entity_form',
     'joinup_core',
     'link',
+    'matomo_reporting_api',
     'node',
+    'oe_newsroom_newsletter',
     'og',
     'options',
     'owner',
-    'matomo_reporting_api',
+    'rdf_schema_field_validation',
     'rdf_draft',
     'rdf_entity',
     'rdf_taxonomy',
@@ -77,6 +84,14 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'owner',
       'asset_release',
     ]);
+
+    RdfEntityType::create(['rid' => 'collection'])->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
+    RdfEntityMapping::create($mapping)->save();
+    $field_storage = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.storage.rdf_entity.field_ar_affiliates.yml'));
+    FieldStorageConfig::create($field_storage)->save();
+    $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));
+    FieldConfig::create($field_config)->save();
 
     // Create two solution type terms.
     Term::create([

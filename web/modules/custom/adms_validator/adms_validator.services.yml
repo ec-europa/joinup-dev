@@ -1,0 +1,4 @@
+services:
+  adms_validator.validator:
+    class: Drupal\adms_validator\AdmsValidator
+    arguments: ['@sparql_endpoint']

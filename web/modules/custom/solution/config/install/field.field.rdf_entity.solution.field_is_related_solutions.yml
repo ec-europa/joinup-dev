@@ -9,7 +9,7 @@ field_name: field_is_related_solutions
 entity_type: rdf_entity
 bundle: solution
 label: 'Related Solutions'
-description: "Related solutions (similar, same context, same application, etc.)\r\n"
+description: "Related solutions (similar, same context, same application, etc.)"
 required: false
 translatable: false
 default_value: {  }

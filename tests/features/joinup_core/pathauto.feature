@@ -20,6 +20,10 @@ Feature:
       | description    | Pathauto release. |
       | is version of  | Pathauto solution |
       | state          | validated         |
+    And the following distribution:
+      | title       | Pathauto distribution  |
+      | description | Pathauto distribution. |
+      | parent      | Pathauto solution      |
     And the following licence:
       | title       | Pathauto licence |
       | description | Pathauto licence |
@@ -36,8 +40,11 @@ Feature:
       | title         | body          | collection          | state     |
       | Pathauto news | Pathauto news | Pathauto collection | validated |
     And custom_page content:
-      | title         | body          | collection          | state     |
-      | Pathauto page | Pathauto page | Pathauto collection | validated |
+      | title                    | body          | collection          | state     |
+      | Pathauto collection page | Pathauto page | Pathauto collection | validated |
+    And custom_page content:
+      | title                  | body          | solution          | state     |
+      | Pathauto solution page | Pathauto page | Pathauto solution | validated |
 
     When I go to the "Pathauto collection" collection
     Then the url should match "collection/pathauto-collection"
@@ -45,6 +52,8 @@ Feature:
     Then the url should match "solution/pathauto-solution"
     When I go to the "Pathauto release" release
     Then the url should match "release/pathauto-release/23"
+    When I go to the "Pathauto distribution" distribution
+    Then the url should match "solution/pathauto-solution/distribution/pathauto-distribution"
     When I visit the "Pathauto document" document
     Then the url should match "document/pathauto-document"
     When I visit the "Pathauto discussion" discussion
@@ -53,5 +62,7 @@ Feature:
     Then the url should match "event/pathauto-event"
     When I visit the "Pathauto news" news
     Then the url should match "news/pathauto-news"
-    When I visit the "Pathauto page" custom page
-    Then the url should match "collection/pathauto-collection/pathauto-page"
+    When I visit the "Pathauto collection page" custom page
+    Then the url should match "collection/pathauto-collection/pathauto-collection-page"
+    When I visit the "Pathauto solution page" custom page
+    Then the url should match "solution/pathauto-solution/pathauto-solution-page"

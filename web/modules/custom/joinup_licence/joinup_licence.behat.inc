@@ -42,6 +42,23 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
   }
 
   /**
+   * Navigates to the canonical page display of a licence.
+   *
+   * @param string $licence
+   *   The title of the licence.
+   * @param string $format
+   *   The RDF serialization format.
+   *
+   * @When (I )go to (the homepage of )the :licence licence in the :format serialisation.
+   * @When (I )visit (the homepage of )the :licence licence in the :format serialisation.
+   */
+  public function visitLicenceWithFormat($licence, $format) {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
+    $licence = $this->getLicenceByName($licence);
+    $this->visitPath($licence->url('canonical', ['query' => ['_format' => $format]]));
+  }
+
+  /**
    * Creates a number of licences with data provided in a table.
    *
    * @param \Behat\Gherkin\Node\TableNode $licence_table
