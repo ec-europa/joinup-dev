@@ -2375,7 +2375,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2528,14 +2532,6 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
-                {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
-                },
-                {
-                    "name": "gnuget",
-                    "homepage": "https://www.drupal.org/user/992990"
-                },
                 {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
@@ -5175,11 +5171,17 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha15",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/rdf_entity",
-                "reference": "fa2cbd3f3193346b183c0e79f14d2eca4f5483db"
+                "reference": "8.x-1.0-alpha15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha15.zip",
+                "reference": "8.x-1.0-alpha15",
+                "shasum": "6a809d268eefc76b61e1fa46a719f8bf7c3be122"
             },
             "require": {
                 "drupal/core": "*",
@@ -5193,8 +5195,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha13+4-dev",
-                    "datestamp": "1551430984",
+                    "version": "8.x-1.0-alpha15",
+                    "datestamp": "1552465986",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5244,8 +5246,7 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/rdf_entity",
                 "issues": "https://drupal.org/project/issues/rdf_entity"
-            },
-            "time": "2019-03-01T08:45:59+00:00"
+            }
         },
         {
             "name": "drupal/redirect",
@@ -12184,7 +12185,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549559402",
+                    "datestamp": "1549218480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12248,12 +12249,6 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
-                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
-                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
