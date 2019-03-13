@@ -5,6 +5,8 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\Core\Serialization\Yaml;
+use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -379,6 +381,76 @@ function joinup_core_post_update_remove_tour_buttons() {
   $config_factory = \Drupal::configFactory();
   $config_factory->getEditable('block.block.tourbutton_2')->delete();
   $config_factory->getEditable('block.block.tourbutton')->delete();
+}
+
+/**
+ * Enable the 'error_page' module.
+ */
+function joinup_core_post_update_install_error_page() {
+  \Drupal::service('module_installer')->install(['error_page']);
+}
+
+/**
+ * Remove temporary 'file' entities that lack the file on file system.
+ */
+function joinup_core_post_update_fix_files(array &$sandbox) {
+  if (!isset($sandbox['fids'])) {
+    $sandbox['fids'] = array_values(\Drupal::entityQuery('file')
+      ->condition('status', FILE_STATUS_PERMANENT, '<>')
+      ->sort('fid')
+      ->execute());
+    $sandbox['processed'] = 0;
+  }
+
+  $fids = array_splice($sandbox['fids'], 0, 50);
+  foreach (File::loadMultiple($fids) as $file) {
+    /** @var \Drupal\file\FileInterface $file */
+    if (!file_exists($file->getFileUri())) {
+      $file->delete();
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = (int) !$sandbox['fids'];
+
+  if ($sandbox['#finished'] === 1) {
+    return $sandbox['processed'] ? "{$sandbox['processed']} file entities deleted." : "No file entities were deleted.";
+  }
+}
+
+/**
+ * Force-update all distribution aliases.
+ */
+function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
+  if (!isset($sandbox['entity_ids'])) {
+    // In order to force-update all distribution aliases in a post_update
+    // function the pattern config file is imported manually, as normally, the
+    // config sync runs after the database updatess.
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_distributions.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_distributions')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_distribution')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $pathauto_generator->updateEntityAlias($entity, 'update', ['force' => TRUE]);
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
 }
 
 /**

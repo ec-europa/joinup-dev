@@ -28,3 +28,10 @@ function joinup_post_update_install_geocoder(): void {
   ];
   \Drupal::service('module_installer')->install($modules);
 }
+
+/**
+ * Enable the "Joinup RSS" module.
+ */
+function joinup_post_update_install_joinup_rss() {
+  \Drupal::service('module_installer')->install(['joinup_rss']);
+}
