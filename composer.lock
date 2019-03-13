@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b612d4ad4a1cf0d7ce5dab08ac9fc79e",
+    "content-hash": "decaa1d4be4d463fff9bcbde33b76e64",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5402,8 +5402,8 @@
                     "version": "8.x-1.12",
                     "datestamp": "1552334285",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "drush": {
@@ -5441,8 +5441,7 @@
                 "source": "http://git.drupal.org/project/search_api.git",
                 "issues": "https://www.drupal.org/project/issues/search_api",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
-            },
-            "time": "2018-10-17T13:51:13+00:00"
+            }
         },
         {
             "name": "drupal/search_api_solr",
@@ -12566,7 +12565,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-03-12T00:46:53+00:00"
         },
         {
             "name": "drupal/drupal-driver",

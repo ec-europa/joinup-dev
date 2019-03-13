@@ -24,7 +24,7 @@ index 23926bfa..66496ed5 100644
 +/**
 + * Adds an fixed-length hashed ID column and a primary key to boost performance.
 + */
-+function search_api_update_8105() {
++function search_api_update_8106() {
 +  $schema = Database::getConnection()->schema();
 +  $schema->addField('search_api_item', 'hashed_id', [
 +    'description' => 'An hashed, unique identifier for this item.',
