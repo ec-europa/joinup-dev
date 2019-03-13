@@ -90,6 +90,7 @@ dependencies:
   - social_media_links_field
   - solution
   - spain_ctt
+  - spdx
   - state_machine
   - state_machine_revisions
   - subpathauto
