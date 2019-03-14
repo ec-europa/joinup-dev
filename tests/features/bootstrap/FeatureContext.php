@@ -778,7 +778,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function clickVerticalTabLink($tab) {
     // When this is running in a browser without JavaScript the vertical tabs
     // are rendered as a details element.
-    if (!$this->browserSupportsJavascript()) {
+    if (!$this->browserSupportsJavaScript()) {
       return;
     }
 
