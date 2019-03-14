@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Exception\UnsupportedDriverActionException;
@@ -16,7 +18,7 @@ trait BrowserCapabilityDetectionTrait {
    *   Returns TRUE when the browser environment supports executing JavaScript
    *   code, for example because the test is running in Selenium or PhantomJS.
    */
-  public function browserSupportsJavascript() {
+  protected function browserSupportsJavaScript() {
     $driver = $this->getSession()->getDriver();
     try {
       $driver->executeScript('return;');
@@ -24,6 +26,19 @@ trait BrowserCapabilityDetectionTrait {
     }
     catch (UnsupportedDriverActionException $e) {
       return FALSE;
+    }
+  }
+
+  /**
+   * Checks that we are running on a JavaScript-enabled browser.
+   *
+   * @throws \LogicException
+   *   Thrown when not running on a JS-enabled browser.
+   */
+  protected function assertJavaScriptEnabledBrowser(): void {
+    if (!$this->browserSupportsJavaScript()) {
+      // Show a helpful error message.
+      throw new \LogicException('This test needs to run on a real browser using Selenium or similar. Please add the "@javascript" tag to the scenario.');
     }
   }
 

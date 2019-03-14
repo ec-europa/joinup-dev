@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
@@ -20,6 +21,7 @@ use Drupal\taxonomy\TermInterface;
  */
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use BrowserCapabilityDetectionTrait;
   use MaterialDesignTrait;
   use RdfEntityTrait;
   use UserTrait;
