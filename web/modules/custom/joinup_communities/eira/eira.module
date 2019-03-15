@@ -16,7 +16,7 @@ function eira_taxonomy_term_view(array &$build, EntityInterface $entity, EntityV
     return;
   }
 
-  if (empty($build['description'][0]['#value'])) {
+  if (empty($build['description'][0]['#text']) || $view_mode !== 'full') {
     return;
   }
   $build['description'][0]['#format'] = 'eira_format';
