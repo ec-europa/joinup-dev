@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup_video
+    - filter
 name: 'EIRA format'
 format: eira_format
 weight: 0
@@ -35,20 +35,3 @@ filters:
     status: true
     weight: 10
     settings: {  }
-  joinup_video:
-    id: joinup_video
-    provider: joinup_video
-    status: false
-    weight: 0
-    settings:
-      allowed_providers:
-        prezi: 0
-        slideshare: 0
-        google_docs: 0
-        joinup_ec_video: 0
-        internal_path: 0
-        vimeo: 0
-        youtube: 0
-        youtube_playlist: 0
-      autoplay: false
-      responsive: true
