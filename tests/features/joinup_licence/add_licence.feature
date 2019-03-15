@@ -1,11 +1,11 @@
 @api
 Feature: Add licence through UI
   In order to manage licences
-  As a moderator
+  As a moderator or a license manager
   I need to be able to add licences through the UI.
 
-  Scenario: "Add licence" button should be shown only to the moderators.
-    When I am logged in as a "moderator"
+  Scenario Outline: "Add licence" button should be shown only to the below roles.
+    When I am logged in as a "<role>"
     # The dashboard link is visible by clicking the user icon.
     And I am on the homepage
     Then I should see the link "Dashboard"
@@ -14,8 +14,13 @@ Feature: Add licence through UI
     When I click "Licences overview"
     Then I should see the link "Add licence"
 
-  Scenario: Add licence as a moderator.
-    Given I am logged in as a moderator
+    Examples:
+      | role |
+      | moderator |
+      | licence_manager |
+
+  Scenario Outline: Add licence as a Moderator or a Licence Manager.
+    Given I am logged in as a "<role>"
     And I am on the homepage
     When I click "Dashboard"
     When I click "Licences overview"
@@ -33,3 +38,8 @@ Feature: Add licence through UI
     And I should see the link "Public domain"
     # Clean up the licence that was created through the UI.
     Then I delete the "This is a random licence" licence
+
+    Examples:
+      | role |
+      | moderator |
+      | licence_manager |

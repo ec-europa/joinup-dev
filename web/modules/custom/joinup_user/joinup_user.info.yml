@@ -36,3 +36,4 @@ config_devel:
   - joinup_user.mail
   - og.og_membership_type.og_membership_type
   - user.role.administrator
+  - user.role.licence_manager
