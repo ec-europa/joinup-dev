@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the eira module.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function eira_taxonomy_term_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() !== 'eira') {
+    return;
+  }
+
+  if (empty($build['description'][0]['#value'])) {
+    return;
+  }
+  $build['description'][0]['#format'] = 'eira_format';
+}
