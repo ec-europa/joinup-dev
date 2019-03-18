@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9903d3717bdd73e6e76d4781c391b236",
+    "content-hash": "008680f8354a9314ba943ef3ff3d9a0f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5763,16 +5763,16 @@
         },
         {
             "name": "drupal/spdx",
-            "version": "dev-ISAICP-5130",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "25a77ee9662b776895d14e7b5a2a776f624b4545"
+                "reference": "24b9f02244eaef887d96b291a8c889cbacece9cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/25a77ee9662b776895d14e7b5a2a776f624b4545",
-                "reference": "25a77ee9662b776895d14e7b5a2a776f624b4545",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/24b9f02244eaef887d96b291a8c889cbacece9cc",
+                "reference": "24b9f02244eaef887d96b291a8c889cbacece9cc",
                 "shasum": ""
             },
             "require": {
@@ -5793,10 +5793,10 @@
             },
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/ISAICP-5130",
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha1",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-03-15T17:06:37+00:00"
+            "time": "2019-03-18T09:08:37+00:00"
         },
         {
             "name": "drupal/state_machine",
@@ -15118,7 +15118,6 @@
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
         "drupal/sparql_entity_storage": 20,
-        "drupal/spdx": 20,
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,

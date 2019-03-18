@@ -56,7 +56,7 @@
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
         "drupal/sparql_entity_storage": "dev-empty-module",
-        "drupal/spdx": "dev-ISAICP-5130",
+        "drupal/spdx": "^1.0",
         "drupal/state_machine": "1.0-beta3",
         "drupal/subpathauto": "^1.0@rc",
         "drupal/swiftmailer": "^1.0@beta",
