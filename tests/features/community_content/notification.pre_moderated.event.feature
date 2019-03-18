@@ -20,7 +20,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
       | CC pre collection | CC facilitator | facilitator |
       | CC pre collection | CC member      |             |
     And event content:
-      | title                               | author         | body | Physical location                            | collection        | field_state      |
+      | title                               | author         | body | location                            | collection        | field_state      |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
       | CC notify pre publish               | CC facilitator | body | CC notify pre publish               | CC pre collection | draft            |

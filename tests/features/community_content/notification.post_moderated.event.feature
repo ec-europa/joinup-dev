@@ -20,7 +20,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
       | CC post collection | CC facilitator | facilitator |
       | CC post collection | CC member      |             |
     And event content:
-      | title                                | author    | body | Physical location                             | collection         | field_state  |
+      | title                                | author    | body | location                             | collection         | field_state  |
       | CC notify post publish               | CC member | body | CC notify post publish               | CC post collection | draft        |
       | CC notify post request changes       | CC member | body | CC notify post request changes       | CC post collection | validated    |
       | CC notify post report                | CC member | body | CC notify post report                | CC post collection | validated    |
