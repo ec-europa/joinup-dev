@@ -6,6 +6,7 @@ namespace Drupal\joinup_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -60,14 +61,17 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
    * {@inheritdoc}
    */
   public function build() {
-    /** @var \Drupal\Core\Entity\EntityInterface $group */
-    $group = $this->ogContext->getGroup();
+    $group = $this->getGroup();
 
     $filters = $group ? ['group:' . $group->id() => $group->label()] : [];
 
     $build['content'] = [
       '#theme' => 'joinup_search_global_search',
       '#filters' => $filters,
+      '#cache' => [
+        'contexts' => $this->getCacheContexts(),
+        'tags' => $this->getCacheTags(),
+      ],
     ];
     return $build;
   }
@@ -79,6 +83,26 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     // This varies by group context since on group pages the search field is
     // prepopulated with a filter on the current group.
     return Cache::mergeContexts(parent::getCacheContexts(), ['og_group_context']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    $group = $this->getGroup();
+
+    $cache_tags = $group ? $group->getCacheTags() : [];
+    return Cache::mergeTags(parent::getCacheTags(), $cache_tags);
+  }
+
+  /**
+   * Returns the group that is active in the current context.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The group, or NULL if no group is currently active.
+   */
+  protected function getGroup(): ?EntityInterface {
+    return $this->ogContext->getGroup();
   }
 
 }

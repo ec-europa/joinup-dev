@@ -8,13 +8,16 @@
 declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\joinup\Traits\TraversingTrait;
-use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup\Chip;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use PHPUnit\Framework\Assert;
 
@@ -23,6 +26,7 @@ use PHPUnit\Framework\Assert;
  */
 class JoinupCoreSubContext extends DrupalSubContextBase {
 
+  use BrowserCapabilityDetectionTrait;
   use EntityTrait;
   use NodeTrait;
   use RdfEntityTrait;
@@ -40,8 +44,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    */
   public function assertChipElements(TableNode $table): void {
     $chips = $this->getChips();
-    $found = array_map(function ($element) {
-      /** @var \Behat\Mink\Element\NodeElement $element */
+    $found = array_map(function (Chip $element) {
       return $element->getText();
     }, $chips);
 
@@ -51,6 +54,10 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
 
   /**
    * Asserts that the expected number of chips are shown.
+   *
+   * @param string $number
+   *   The expected number of chips. This is a string rather than an integer
+   *   because step definitions are represented in text.
    *
    * @Then the page should contain :number chip(s)
    * @Then the page should not contain any chips
@@ -72,16 +79,17 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @When I press the remove button on the chip :text
    */
   public function clickRemoveChipButton(string $text): void {
+    // This can only be done when the browser supports JavaScript.
+    $this->assertJavaScriptEnabledBrowser();
+
     // Find the element that contains the given text.
-    $xpath = "//span[contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__text ')][contains(text(), '$text')]";
-    $chip = $this->getSession()->getPage()->find('xpath', $xpath);
+    $chip = $this->getChipByText($text);
     if (!$chip) {
       throw new Exception("The chip containing the label '$text' was not found on the page.");
     }
 
     // Find the related button.
-    $xpath = "/following-sibling::button[contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__action ')]";
-    $button = $chip->find('xpath', $xpath);
+    $button = $chip->getRemoveButton();
     if (!$button) {
       throw new \Exception("Couldn't find the button to remove the chip '$text'.");
     }
@@ -102,11 +110,42 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
   /**
    * Returns the chips that are present on the page.
    *
-   * @return \Behat\Mink\Element\NodeElement[]
+   * @return \Drupal\joinup\Chip[]
    *   The elements representing the chips.
    */
   protected function getChips(): array {
-    return $this->getSession()->getPage()->findAll('css', '.mdl-chip__text');
+    // If the browser supports JavaScript then the chips will be visible as text
+    // elements. If no JavaScript is enabled then the chips are still present,
+    // but undercover, as hidden form input fields.
+    $is_visible = $this->browserSupportsJavaScript();
+    $locator = $is_visible ? '.mdl-chip__text' : '.mdl-chipfield__input';
+
+    $elements = $this->getSession()->getPage()->findAll('css', $locator);
+
+    return array_map(function (NodeElement $element) use ($is_visible) {
+      return new Chip($element, $is_visible);
+    }, $elements);
+  }
+
+  /**
+   * Returns the chip with the given text.
+   *
+   * If multiple chips are present with the same text, then the first one will
+   * be returned.
+   *
+   * @param string $text
+   *   The text that should be present in the chip.
+   *
+   * @return \Drupal\joinup\Chip|null
+   *   The chip, or NULL if no chip with the given text is present in the page.
+   */
+  protected function getChipByText(string $text): ?Chip {
+    foreach ($this->getChips() as $chip) {
+      if ($chip->getText() === $text) {
+        return $chip;
+      }
+    }
+    return NULL;
   }
 
   /**

@@ -713,6 +713,24 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Updates the name of a collection.
+   *
+   * @param string $collection
+   *   The name of the collection to update.
+   * @param string $name
+   *   The new anem for the collection.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the updated collection cannot be saved.
+   *
+   * @When I change the name of the :collection collection to :name
+   */
+  public function updateCollectionName(string $collection, string $name): void {
+    $entity = $this->getCollectionByName($collection);
+    $entity->setName($name)->save();
+  }
+
+  /**
    * Creates the standard 'Joinup' collection.
    *
    * @beforeScenario @joinup_collection

@@ -142,3 +142,27 @@ Feature: Search inside groups
     When I go to the "Zip archive" distribution
     Then the page should show the following chip:
       | Inclined foundations |
+
+  @clearStaticCache
+  Scenario: Group search caching
+    # Initially the cache is cold.
+    When I go to the homepage of the "Chalet construction" collection
+    Then the page should show the following chip:
+      | Chalet construction |
+    And the page should not be cached
+    # A subsequent request should be served from cache.
+    When I reload the page
+    Then the page should show the following chip:
+      | Chalet construction |
+    And the page should be cached
+    # Check that changing the name of the collection correctly invalidates the
+    # cache.
+    When I change the name of the "Chalet construction" collection to "Chalet destruction"
+    And I go to the homepage of the "Chalet destruction" collection
+    Then the page should show the following chip:
+      | Chalet destruction |
+    And the page should not be cached
+    When I reload the page
+    Then the page should show the following chip:
+      | Chalet destruction |
+    And the page should be cached
