@@ -6,7 +6,6 @@ namespace Drupal\joinup_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -80,17 +79,6 @@ class GlobalSearchBlock extends BlockBase implements ContainerFactoryPluginInter
     // This varies by group context since on group pages the search field is
     // prepopulated with a filter on the current group.
     return Cache::mergeContexts(parent::getCacheContexts(), ['og_group_context']);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getFilters(ContentEntityInterface $group): array {
-    $build['content'] = [
-      '#theme' => 'joinup_search_global_search',
-      '#filters' => $group ? [$group->id() => $group->label()] : ['' => ''],
-    ];
-    return $build;
   }
 
 }
