@@ -36,7 +36,8 @@ Feature: Embed of videos into the page.
     Given I press "Publish"
     # All allowed videos have now the autoplay set to FALSE.
     Then the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I072651&amp;lg=EN&amp;starttime=0&amp;autoplay=false"
-    And the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5171
+    # And the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
     And the response should contain "https://www.youtube.com/embed/xlnYVHRp128?autoplay=0&amp;start=0&amp;rel=0"
 
     But the response should not contain "https://player.vimeo.com/video/225133231"
@@ -66,7 +67,8 @@ Feature: Embed of videos into the page.
     Examples:
       | url                                                                      | embed url                                                                                   |
       | https://www.youtube.com/watch?v=YTaLmMsaLOg                              | https://www.youtube.com/embed/YTaLmMsaLOg?autoplay=0&amp;start=0&amp;rel=0                  |
-      | http://europa.eu/!dV74uw                                                 | //ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false |
+      # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5171
+      # | http://europa.eu/!dV74uw                                                 | //ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false |
       | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836 | //ec.europa.eu/avservices/play.cfm?ref=I156836&amp;lg=en&amp;starttime=0&amp;autoplay=false |
 
   Scenario: Forcing auto-play into the content of an entity will not trigger the auto-play.
