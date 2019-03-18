@@ -32,11 +32,28 @@ dependencies:
     - allowed_formats
     - comment
     - datetime_range
+    - field_group
     - file
     - image
     - joinup_core
     - link
     - text
+third_party_settings:
+  field_group:
+    group_event_location:
+      children:
+        - field_location
+        - field_event_online_location
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      format_settings:
+        label: 'Event Location'
+        description: 'Please insert the venue’s physical address in the field "Physical location" and/or a link in the field "Virtual location" in case of an online event.'
+        required_fields: true
+        id: ''
+        classes: ''
+      label: 'Event Location'
 id: node.event.default
 targetEntityType: node
 bundle: event

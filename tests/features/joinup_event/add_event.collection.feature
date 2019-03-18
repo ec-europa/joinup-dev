@@ -42,7 +42,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "Stream of Dreams" collection
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Spatial coverage"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Physical location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Spatial coverage"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
     And the following fields should not be present "Shared in"
@@ -60,11 +60,11 @@ Feature: "Add event" visibility options.
       | Title            | An amazing event                      |
       | Short title      | Amazing event                         |
       | Description      | This is going to be an amazing event. |
-      | Location         | Rue Belliard 28, Brussels, Belgium    |
+      | Physical location         | Rue Belliard 28, Brussels, Belgium    |
       | File description | Taxi discount voucher.                |
       | Spatial coverage | France                                |
-    And I press "Add another item" at the "Online location" field
-    And I enter the following for the "Online location" link field:
+    And I press "Add another item" at the "Virtual location" field
+    And I enter the following for the "Virtual location" link field:
       | URL                          | Title           |
       | https://joinup.ec.europa.eu/ | Joinup homepage |
       | https://drupal.org/          |                 |

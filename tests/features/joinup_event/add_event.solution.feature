@@ -3,7 +3,6 @@ Feature: "Add event" visibility options.
   In order to manage events
   As a solution member
   I need to be able to add "Event" content through UI.
-
   Scenario: "Add event" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
       | title           | logo     | banner     | state     |
@@ -65,7 +64,7 @@ Feature: "Add event" visibility options.
       | Title            | An amazing event                      |
       | Short title      | Amazing event                         |
       | Description      | This is going to be an amazing event. |
-      | Location         | Rue Belliard, 28                      |
+      | Physical location         | Rue Belliard, 28                      |
       | File description | Your free ticket                      |
     And I fill the start date of the "Date" widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:00"
@@ -75,6 +74,12 @@ Feature: "Add event" visibility options.
     And I clear the end time of the "Date" widget
     And I press "Save as draft"
     Then I should see the error message "The date and time should both be entered in the End date field"
+
+    # Test Location fields constraint (one of them should be filled in).
+    Then I clear the field "field_location[0][value]"
+    And I press "Save as draft"
+    Then I should see the error message "At least one location field should be filled in."
+    Then I fill in "Physical location" with "Rue Belliard, 28"
 
     When I fill the end time of the Date widget with "23:59:00"
     And I press "Save as draft"

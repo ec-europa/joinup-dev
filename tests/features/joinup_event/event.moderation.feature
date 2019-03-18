@@ -86,7 +86,7 @@ Feature: Event moderation
       | Title       | Rainbow of Worlds                     |
       | Short title | Rainbow of Worlds                     |
       | Description | This is going to be an amazing event. |
-      | Location    | Worlds crossroad                      |
+      | Physical location    | Worlds crossroad                      |
     And I fill the start date of the Date widget with "2018-08-30"
     And I fill the start time of the Date widget with "23:59:00"
     And I fill the end date of the Date widget with "2018-09-01"
