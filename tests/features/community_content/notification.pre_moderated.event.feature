@@ -20,7 +20,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
       | CC pre collection | CC facilitator | facilitator |
       | CC pre collection | CC member      |             |
     And event content:
-      | title                               | author         | body | location                            | collection        | field_state      |
+      | title                               | author         | body | Physical location                            | collection        | field_state      |
       # The next one belongs to a facilitator because there is no published version for that and thus,
       # the facilitator would not have access to the entity.
       | CC notify pre publish               | CC facilitator | body | CC notify pre publish               | CC pre collection | draft            |
@@ -41,7 +41,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
     And I click "Add event" in the plus button menu
     And I fill in "Title" with "CC notify create propose"
     And I fill in "Description" with "CC notify create propose"
-    And I fill in "Location" with "CC notify create propose"
+    And I fill in "Physical location" with "CC notify create propose"
     And I press "Propose"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                 |
@@ -54,7 +54,7 @@ Feature: Notification test for the event transitions on a pre moderated parent.
     And I click "Add event" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"
-    And I fill in "Location" with "CC notify create propose"
+    And I fill in "Physical location" with "CC notify create propose"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                                  |

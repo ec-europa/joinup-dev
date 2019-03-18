@@ -20,7 +20,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
       | CC post collection | CC facilitator | facilitator |
       | CC post collection | CC member      |             |
     And event content:
-      | title                                | author    | body | location                             | collection         | field_state  |
+      | title                                | author    | body | Physical location                             | collection         | field_state  |
       | CC notify post publish               | CC member | body | CC notify post publish               | CC post collection | draft        |
       | CC notify post request changes       | CC member | body | CC notify post request changes       | CC post collection | validated    |
       | CC notify post report                | CC member | body | CC notify post report                | CC post collection | validated    |
@@ -35,7 +35,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     And I click "Add event" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"
-    And I fill in "Location" with "CC notify create publish"
+    And I fill in "Physical location" with "CC notify create publish"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                               |
