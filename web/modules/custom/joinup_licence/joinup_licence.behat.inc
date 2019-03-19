@@ -32,8 +32,8 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @param string $licence
    *   The title of the licence.
    *
-   * @When (I )go to (the homepage of )the :licence licence
-   * @When (I )visit (the homepage of )the :licence licence
+   * @When I go to (the homepage of )the :licence licence
+   * @When I visit (the homepage of )the :licence licence
    */
   public function visitLicence($licence) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $licence */
@@ -49,8 +49,8 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @param string $format
    *   The RDF serialization format.
    *
-   * @When (I )go to (the homepage of )the :licence licence in the :format serialisation.
-   * @When (I )visit (the homepage of )the :licence licence in the :format serialisation.
+   * @When I go to (the homepage of )the :licence licence in the :format serialisation.
+   * @When I visit (the homepage of )the :licence licence in the :format serialisation.
    */
   public function visitLicenceWithFormat($licence, $format) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
@@ -159,7 +159,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @param string $licence
    *   The title of the licence.
    *
-   * @When (I )delete the :licence licence
+   * @When I delete the :licence licence
    */
   public function deleteLicence($licence) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $licence */

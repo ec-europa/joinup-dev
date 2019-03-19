@@ -53,8 +53,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $collection
    *   The parent collection.
    *
-   * @When (I )go to the add solution form of the :collection collection
-   * @When (I )visit the add solution form of the :collection collection
+   * @When I go to the add solution form of the :collection collection
+   * @When I visit the add solution form of the :collection collection
    */
   public function visitAddSolutionForm($collection) {
     $collection = $this->getRdfEntityByLabel($collection);
@@ -71,8 +71,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $solution
    *   The name of the solution.
    *
-   * @When (I )go to (the homepage of )the :solution solution
-   * @When (I )visit (the homepage of )the :solution solution
+   * @When I go to (the homepage of )the :solution solution
+   * @When I visit (the homepage of )the :solution solution
    */
   public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
@@ -86,8 +86,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $solution
    *   The name of the solution.
    *
-   * @When (I )go to the :solution solution edit form
-   * @When (I )visit the :solution solution edit form
+   * @When I go to the :solution solution edit form
+   * @When I visit the :solution solution edit form
    */
   public function visitEditSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
@@ -296,7 +296,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $solution
    *   The name of the solution.
    *
-   * @When (I )delete the :solution solution
+   * @When I delete the :solution solution
    */
   public function deleteSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
