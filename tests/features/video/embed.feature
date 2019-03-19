@@ -22,7 +22,9 @@ Feature: Embed of videos into the page.
       """
       <h2>All below videos have 'autoplay' set to TRUE</h2>
       European Commission videos are allowed.
-      <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I072651&videolang=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
+      <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I072651&lg=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
+      European Commission videos are allowed.
+      <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I-087075&lg=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
       European Commission videos (with short URL that will be resolved) are allowed.
       <iframe src="http://europa.eu/!dV74uw" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
       YouTube videos are allowed.
@@ -35,8 +37,9 @@ Feature: Embed of videos into the page.
 
     Given I press "Publish"
     # All allowed videos have now the autoplay set to FALSE.
-    Then the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I072651&amp;lg=EN&amp;starttime=0&amp;autoplay=false"
-    And the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
+    Then the response should contain "//audiovisual.ec.europa.eu/embed/index.html?ref=I072651&amp;lg=EN&amp;starttime=0&amp;autoplay=false"
+    And the response should contain "//audiovisual.ec.europa.eu/embed/index.html?ref=I-087075&amp;lg=en&amp;starttime=0&amp;autoplay=false"
+    And the response should contain "//audiovisual.ec.europa.eu/embed/index.html?ref=I-136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
     And the response should contain "https://www.youtube.com/embed/xlnYVHRp128?autoplay=0&amp;start=0&amp;rel=0"
 
     But the response should not contain "https://player.vimeo.com/video/225133231"
@@ -64,10 +67,11 @@ Feature: Embed of videos into the page.
     Then the response should contain "<embed url>"
 
     Examples:
-      | url                                                                      | embed url                                                                                   |
-      | https://www.youtube.com/watch?v=YTaLmMsaLOg                              | https://www.youtube.com/embed/YTaLmMsaLOg?autoplay=0&amp;start=0&amp;rel=0                  |
-      | http://europa.eu/!dV74uw                                                 | //ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false |
-      | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836 | //ec.europa.eu/avservices/play.cfm?ref=I156836&amp;lg=en&amp;starttime=0&amp;autoplay=false |
+      | url                                                                        | embed url                                                                                            |
+      | https://www.youtube.com/watch?v=YTaLmMsaLOg                                | https://www.youtube.com/embed/YTaLmMsaLOg?autoplay=0&amp;start=0&amp;rel=0                           |
+      | http://europa.eu/!dV74uw                                                   | //audiovisual.ec.europa.eu/embed/index.html?ref=I-136289&amp;lg=en&amp;starttime=0&amp;autoplay=false |
+      | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836   | //audiovisual.ec.europa.eu/embed/index.html?ref=I156836&amp;lg=en&amp;starttime=0&amp;autoplay=false |
+      | https://audiovisual.ec.europa.eu/embed/index.html?sitelang=en&ref=I-087075 | //audiovisual.ec.europa.eu/embed/index.html?ref=I-087075&amp;lg=en&amp;starttime=0&amp;autoplay=false |
 
   Scenario: Forcing auto-play into the content of an entity will not trigger the auto-play.
     Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
