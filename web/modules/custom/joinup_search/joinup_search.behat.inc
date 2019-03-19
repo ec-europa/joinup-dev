@@ -30,7 +30,7 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * Navigates to the search page.
    *
    * @Given I am on the search( results)( page)
-   * @When (I )visit the search( results)( page)
+   * @When I visit the search( results)( page)
    */
   public function visitSearchPage() {
     $this->visitPath('/search');

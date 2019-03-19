@@ -105,7 +105,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
    *
-   * @When (I )visit the solution overview( page)
+   * @When I visit the solution overview( page)
    */
   public function visitSolutionOverviewPage() {
     $this->visitPath('/solutions');
