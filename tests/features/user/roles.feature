@@ -77,4 +77,3 @@ Feature: User role management
     And I fill in "Title" with "Closed licence"
     And I press "Save"
     Then I should see the heading "Closed licence"
-
