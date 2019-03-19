@@ -78,7 +78,7 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    */
   public function assertChipCount(string $number = NULL, string $region = NULL): void {
     $number = (int) $number;
-    Assert::assertEquals($number, $this->countChips($region));
+    Assert::assertCount($number, $this->getChips($region));
   }
 
   /**
@@ -106,23 +106,6 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
     }
 
     $button->press();
-  }
-
-  /**
-   * Counts the number of chips in the given region.
-   *
-   * @param string $region
-   *   Optional region in which to locate the chips to count. If omitted all
-   *   chips found in the entire page will be counted.
-   *
-   * @throws \Exception
-   *    Thrown when the region is not found.
-   *
-   * @return int
-   *   The number of chips on the page.
-   */
-  protected function countChips($region = NULL): int {
-    return count($this->getChips($region));
   }
 
   /**
