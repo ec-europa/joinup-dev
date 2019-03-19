@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\MinkContext as DrupalExtensionMinkContext;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -11,6 +12,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 class MinkContext extends DrupalExtensionMinkContext {
 
+  use BrowserCapabilityDetectionTrait;
   use MaterialDesignTrait;
 
   /**
@@ -51,7 +53,7 @@ class MinkContext extends DrupalExtensionMinkContext {
   public function assertPageNotContainsText($text) {
     // When running in a JS enabled browser, check that the text is not visually
     // visible.
-    if ($this->browserSupportsJavascript()) {
+    if ($this->browserSupportsJavaScript()) {
       $xpath = '//*[text()[contains(.,"' . $text . '")]]';
       foreach ($this->getSession()->getPage()->findAll('xpath', $xpath) as $element) {
         if ($element->isVisible()) {

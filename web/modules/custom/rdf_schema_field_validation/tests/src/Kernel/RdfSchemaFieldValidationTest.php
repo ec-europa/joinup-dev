@@ -8,6 +8,8 @@ use EasyRdf\Graph;
 
 /**
  * Suite that tests the rdf field schema validation service.
+ *
+ * @group rdf_schema_field_validation
  */
 class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
 
