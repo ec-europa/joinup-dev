@@ -7,8 +7,6 @@ namespace DrupalProject\Phing;
 use Drupal\Component\Serialization\Json;
 use GuzzleHttp\Client;
 
-require_once 'phing/Task.php';
-
 /**
  * Provides status check for Solr replication backup or restore.
  *
@@ -17,7 +15,7 @@ require_once 'phing/Task.php';
 class SolrBackup extends \Task {
 
   /**
-   * Maximum status execution time om seconds.
+   * Maximum status execution time in seconds.
    *
    * @var int
    */
@@ -143,13 +141,13 @@ class SolrBackup extends \Task {
    *   operation is invalid.
    */
   protected function getStatus(): string {
+    $this->log(sprintf('Get %s status in progress. Attempt: #%d', $this->operation, ++$this->attempt));
     $response = $this->httpClient->get($this->getUrl(TRUE));
 
     if (($content = Json::decode($response->getBody()->getContents())) === NULL) {
       throw new \BuildException("Invalid response from Solr server, trying to get the {$this->operation} status of Solr '{$this->core}'core.");
     }
 
-    $this->log(sprintf('Get %s status in progress. Attempt: #%d', $this->operation, ++$this->attempt));
     $status = strtolower($this->operation === 'backup' ? $content['details']['backup']['status'] : $content['restorestatus']['status']);
 
     // Operation failed.
