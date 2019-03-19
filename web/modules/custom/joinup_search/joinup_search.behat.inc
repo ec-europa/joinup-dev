@@ -236,6 +236,10 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $region
    *   The region alias.
    *
+   * @throws \Exception
+   *   Thrown when the region, the facet or the link inside the facet is not
+   *   found.
+   *
    * @When I click :link in the :facet inline facet in the :region region
    */
   public function iClickAnInlineFacetItemLinkInRegion(string $link, string $facet, string $region): void {
