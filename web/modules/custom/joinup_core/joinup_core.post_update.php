@@ -524,3 +524,16 @@ function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
   $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
   return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
 }
+
+/**
+ * Disable database logging, use the syslog instead.
+ */
+function joinup_core_post_update_swap_dblog_with_syslog() {
+  // Writing log entries in the database during anonymous requests is causing
+  // load on the database. Another problem is that there is a cap on the number
+  // of log entries that are retained in the the database. On some occasions
+  // during heavy logging activity they rotated before we had the chance to read
+  // them. Write the log entries to the syslog instead.
+  \Drupal::service('module_installer')->install(['syslog']);
+  \Drupal::service('module_installer')->uninstall(['dblog']);
+}
