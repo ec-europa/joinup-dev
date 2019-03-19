@@ -79,9 +79,6 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @When I press the remove button on the chip :text
    */
   public function clickRemoveChipButton(string $text): void {
-    // This can only be done when the browser supports JavaScript.
-    $this->assertJavaScriptEnabledBrowser();
-
     // Find the element that contains the given text.
     $chip = $this->getChipByText($text);
     if (!$chip) {
@@ -114,17 +111,27 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *   The elements representing the chips.
    */
   protected function getChips(): array {
-    // If the browser supports JavaScript then the chips will be visible as text
-    // elements. If no JavaScript is enabled then the chips are still present,
-    // but undercover, as hidden form input fields.
-    $is_visible = $this->browserSupportsJavaScript();
-    $locator = $is_visible ? '.mdl-chip__text' : '.mdl-chipfield__input';
+    $chips = [];
 
-    $elements = $this->getSession()->getPage()->findAll('css', $locator);
+    // If the chips are being displayed using the `mdl-chip-input` JavaScript
+    // library then they will only be visible if the browser supports JS. If the
+    // browser doesn't support JavaScript then the chips are still present in
+    // the DOM as invisible form input fields. We can still add them with the
+    // `is_visible` flag disabled to indicate they only can be interacted with
+    // in a limited way.
+    $locator_visibility_mapping = [
+      '.mdl-chip__text' => TRUE,
+    ];
+    if (!$this->browserSupportsJavaScript()) {
+      $locator_visibility_mapping['.mdl-chipfield__input'] = FALSE;
+    }
+    foreach ($locator_visibility_mapping as $locator => $is_visible) {
+      foreach ($this->getSession()->getPage()->findAll('css', $locator) as $element) {
+        $chips[] = new Chip($element, $is_visible);
+      }
+    }
 
-    return array_map(function (NodeElement $element) use ($is_visible) {
-      return new Chip($element, $is_visible);
-    }, $elements);
+    return $chips;
   }
 
   /**

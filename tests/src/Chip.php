@@ -75,8 +75,6 @@ class Chip {
    *   is present on the chip.
    */
   public function getRemoveButton(): ?NodeElement {
-    \assert($this->isVisible(), __METHOD__ . ' can only be used if the chip can be visually interacted with. Make sure to add the `@javascript` tag to your feature.');
-
     $xpath = "/following-sibling::button[contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__action ')]";
     return $this->element->find('xpath', $xpath);
   }
