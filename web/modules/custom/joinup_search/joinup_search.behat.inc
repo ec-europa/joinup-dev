@@ -365,17 +365,13 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When I press :key in the search field
    */
   public function pressKeyInSearchField(string $key): void {
-    if (!$this->browserSupportsJavascript()) {
-      throw new \Exception('This step requires Javascript to run.');
-    }
+    $this->assertJavaScriptEnabledBrowser();
 
     $elements = $this->getElementsMatchingElementAlias('search bar');
-    if (!$elements) {
-      throw new \Exception('Could not find the search field in the page.');
-    }
-    if (count($elements) > 1) {
-      throw new \Exception('There are multiple search fields on the page.');
-    }
+
+    Assert::assertNotEmpty($elements, 'Could not find the search field in the page.');
+    Assert::assertCount(1, $elements, 'There are multiple search fields on the page.');
+
     $element = reset($elements);
 
     $this->pressKeyInElement($key, $element);
