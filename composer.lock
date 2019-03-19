@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b612d4ad4a1cf0d7ce5dab08ac9fc79e",
+    "content-hash": "008680f8354a9314ba943ef3ff3d9a0f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5208,7 +5208,8 @@
                     "Fix endless loop due to orphaned aliases @see https://github.com/ec-europa/rdf_entity/pull/78": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/78.diff",
                     "Implement batch delete of aliases @see https://github.com/ec-europa/rdf_entity/pull/71": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/79.diff",
                     "Improve batch alias update @see https://github.com/ec-europa/rdf_entity/pull/81": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/81.diff",
-                    "Iterate through fetched entries in the Serializer @see https://github.com/ec-europa/rdf_entity/pull/82": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/82.diff"
+                    "Iterate through fetched entries in the Serializer @see https://github.com/ec-europa/rdf_entity/pull/82": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/82.diff",
+                    "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
                 }
             },
             "autoload": {
@@ -5759,6 +5760,43 @@
                 "source": "https://cgit.drupalcode.org/sparql_entity_storage"
             },
             "time": "2019-01-10T17:53:49+00:00"
+        },
+        {
+            "name": "drupal/spdx",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/spdx.git",
+                "reference": "24b9f02244eaef887d96b291a8c889cbacece9cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/24b9f02244eaef887d96b291a8c889cbacece9cc",
+                "reference": "24b9f02244eaef887d96b291a8c889cbacece9cc",
+                "shasum": ""
+            },
+            "require": {
+                "cweagans/composer-patches": "^1.6.4",
+                "drupal/rdf_entity": "^1.0.0-alpha12",
+                "php": ">=7.1",
+                "spdx/license-list-data": "master"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "enable-patching": true,
+                "composer-exit-on-patch-failure": 1,
+                "patches": {
+                    "drupal/rdf_entity": {
+                        "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
+                    }
+                }
+            },
+            "description": "Allows to federate and manage the SPDX licences.",
+            "support": {
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha1",
+                "issues": "https://github.com/ec-europa/spdx/issues"
+            },
+            "time": "2019-03-18T09:08:37+00:00"
         },
         {
             "name": "drupal/state_machine",
@@ -9530,6 +9568,17 @@
             "time": "2018-08-09T13:01:25+00:00"
         },
         {
+            "name": "spdx/license-list-data",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spdx/license-list-data",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2019-03-13T23:53:42+00:00"
+        },
+        {
             "name": "stack/builder",
             "version": "v1.0.5",
             "source": {
@@ -12564,7 +12613,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-03-12T00:46:53+00:00"
         },
         {
             "name": "drupal/drupal-driver",
