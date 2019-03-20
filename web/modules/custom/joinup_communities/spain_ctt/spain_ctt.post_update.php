@@ -136,17 +136,38 @@ function spain_ctt_post_update_delete_ctt_entities() {
     'http://administracionelectronica.gob.es/ctt/canoa',
     'http://administracionelectronica.gob.es/ctt/tramitador',
   ];
-  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
 
-  foreach ($solution_ids as $solution_id) {
-    $solution = $storage->load($solution_id);
-    // Solutions in CTT have maximum one direct reference to distributions
-    // and no reference to a release.
-    // These solutions also do not have any community content.
-    if ($distribution_id = $solution->field_is_distribution->target_id) {
-      $distribution = $storage->load($distribution_id);
-      $distribution->delete();
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $rdf_entity_storage = $entity_type_manager->getStorage('rdf_entity');
+  $node_storage = $entity_type_manager->getStorage('node');
+
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+
+  $rdf_entities_to_delete = $nodes_to_delete = [];
+
+  /** @var \Drupal\rdf_entity\RdfInterface[] $solutions */
+  $solutions = $rdf_entity_storage->loadMultiple($solution_ids);
+  foreach ($solutions as $solution) {
+    $releases = $solution->field_is_has_version->referencedEntities();
+    foreach ($releases as $release) {
+      // Collect distributions of child releases.
+      $rdf_entities_to_delete = array_merge($rdf_entities_to_delete, $release->field_isr_distribution->referencedEntities());
     }
-    $solution->delete();
+    // Collect child releases.
+    $rdf_entities_to_delete = array_merge($rdf_entities_to_delete, $releases);
+    // Collect child distributions.
+    $rdf_entities_to_delete = array_merge($rdf_entities_to_delete, $solution->field_is_distribution->referencedEntities());
+
+    // Delete community content and custom pages.
+    if ($community_content = $membership_manager->getGroupContentIds($solution, ['node'])) {
+      $nodes_to_delete = array_merge($nodes_to_delete, $community_content['node']);
+    }
   }
+  // Collect the solutions themselves.
+  $rdf_entities_to_delete = array_merge($rdf_entities_to_delete, $solutions);
+
+  // Delete entities all together.
+  $rdf_entity_storage->delete($rdf_entities_to_delete);
+  $node_storage->delete($nodes_to_delete);
 }
