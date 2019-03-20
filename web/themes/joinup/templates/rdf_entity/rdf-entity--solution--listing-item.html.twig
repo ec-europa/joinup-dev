@@ -25,10 +25,12 @@
       </div>
     {% endif %}
     <div class="listing__field listing__stats mdl-card__actions">
-      <div class="listing__stat">
-        <span class="listing__text">{{ content.downloads.0 }}</span>
-        <span class="listing__icon icon icon--download"></span>
-      </div>
+      {% if content.downloads.0['#markup'] >= 1  %}
+        <div class="listing__stat">
+          <span class="listing__text">{{ content.downloads.0 }}</span>
+          <span class="listing__icon icon icon--download"></span>
+        </div>
+      {% endif %}
       <div class="listing__stat">
         <span class="listing__text">{{ rdf_entity.bundle }}</span>
         <span class="listing__icon icon icon--{{ rdf_entity.bundle }}"></span>

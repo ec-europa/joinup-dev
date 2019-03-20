@@ -18,10 +18,12 @@
  */
 #}
 {% if children is not empty %}
-  <div class="stats__column">
-    <div class="stats__wrapper">
-      <span class="stats__text">{{ topic }}:</span>
-      <span class="stats__text bold">{{ children }}</span>
+  {% if children.__toString() >= 1 %}
+    <div class="stats__column">
+      <div class="stats__wrapper">
+        <span class="stats__text">{{ topic }}:</span>
+        <span class="stats__text bold">{{ children }}</span>
+      </div>
     </div>
-  </div>
+  {% endif %}
 {% endif %}
