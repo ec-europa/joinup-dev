@@ -36,10 +36,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $asset_distribution
    *   The title of the asset distribution.
    *
-   * @When (I )go to (the homepage of )the :asset_distribution distribution
-   * @When (I )visit (the homepage of )the :asset_distribution distribution
-   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
-   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
+   * @When I go to (the homepage of )the :asset_distribution distribution
+   * @When I visit (the homepage of )the :asset_distribution distribution
+   * @When I go to (the homepage of )the :asset_distribution asset distribution
+   * @When I visit (the homepage of )the :asset_distribution asset distribution
    */
   public function visitDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
@@ -53,8 +53,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $asset_distribution
    *   The title of the $asset_distribution.
    *
-   * @When (I )go to the :asset_distribution asset distribution edit form
-   * @When (I )visit the :asset_distribution asset distribution edit form
+   * @When I go to the :asset_distribution asset distribution edit form
+   * @When I visit the :asset_distribution asset distribution edit form
    */
   public function visitEditAssetDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
@@ -186,7 +186,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $asset_distribution
    *   The title of the asset distribution.
    *
-   * @When (I )delete the :asset_distribution asset distribution
+   * @When I delete the :asset_distribution asset distribution
    */
   public function deleteAssetDistribution($asset_distribution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
