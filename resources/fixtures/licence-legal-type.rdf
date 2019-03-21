@@ -6,17 +6,17 @@
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Use-Reproduce"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Distribute"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Modify-Merge"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Sublicense"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Commercialuse"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#CanSublicence"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#CommercialUse"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#UsePatents"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Placewarranty"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#PlaceWarranty"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#IncludeCopyright"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#RoyaltyFree"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Statechanges"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#DiscloseSource"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Copyleft-Share"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#LesserCopyleft"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#SassNetwork"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#SaaSNetwork"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#IncludeLicence"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#RenameModifications"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#HoldLiable"/>
@@ -24,9 +24,9 @@
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Commerce"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Modify"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#EthicalClauses"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#PubSectorOnly"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Sublicence"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#None-NotAvailable"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#PublicSectorOnly"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#CannotSublicence"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#NotAvailable"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Permissive"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#GPL"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#OtherCopyleft"/>
@@ -34,7 +34,7 @@
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Multilingual"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#ForData"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#ForSoftware"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#EU-MS-Law"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#EU-MSLaw"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#USLaw"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#LicensorsLaw"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#OtherLaw"/>
@@ -43,7 +43,7 @@
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#StrongCommunity"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#Goverments-EU"/>
     <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#OSIApproved"/>
-    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#FSFFree"/>
+    <skos:hasTopConcept rdf:resource="http://joinup.eu/legal-type#FSFFREE-Libre"/>
   </skos:ConceptScheme>
 
   <skos:Collection rdf:about="http://joinup.eu/legal-type#Can">
@@ -51,10 +51,10 @@
     <skos:member rdf:resource="http://joinup.eu/legal-type#Use-Reproduce"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#Distribute"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#Modify-Merge"/>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#Sublicense"/>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#Commercialuse"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#CanSublicence"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#CommercialUse"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#UsePatents"/>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#Placewarranty"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#PlaceWarranty"/>
   </skos:Collection>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#Use-Reproduce">
@@ -78,14 +78,14 @@
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Can"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#Sublicense">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#CanSublicence">
     <skos:prefLabel xml:lang="en">Sublicense</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to license the work, including possible modifications (without changing the licence if it is copyleft or share alike) </skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Can"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#Commercialuse">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#CommercialUse">
     <skos:prefLabel xml:lang="en">Commercial use</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to make use of the work for commercial purpose or to license it for a fee</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
@@ -99,7 +99,7 @@
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Can"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#Placewarranty">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#PlaceWarranty">
     <skos:prefLabel xml:lang="en">Place warranty</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to place additional warranty, services or rights on the software licensed (without holding the software owner and other contributors liable for it)</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
@@ -114,7 +114,7 @@
     <skos:member rdf:resource="http://joinup.eu/legal-type#DiscloseSource"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#Copyleft-Share"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#LesserCopyleft"/>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#SassNetwork"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#SaaSNetwork"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#IncludeLicence"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#RenameModifications"/>
   </skos:Collection>
@@ -161,7 +161,7 @@
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Must"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#SassNetwork">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#SaaSNetwork">
     <skos:prefLabel xml:lang="en">SaaS/network </skos:prefLabel>
     <skos:definition xml:lang="en">Distribution includes providing access to the work (to its functionalities) throug a network, online, from the cloud, as a service</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
@@ -189,8 +189,8 @@
     <skos:member rdf:resource="http://joinup.eu/legal-type#Commerce"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#Modify"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#EthicalClauses"/>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#PubSectorOnly"/>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#Sublicence"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#PublicSectorOnly"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#CannotSublicence"/>
   </skos:Collection>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#HoldLiable">
@@ -228,14 +228,14 @@
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Cannot"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#PubSectorOnly">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#PublicSectorOnly">
     <skos:prefLabel xml:lang="en">Pub sector only</skos:prefLabel>
     <skos:definition xml:lang="en">The use of the work is restricted to a specific category of users, i.e. public sector. This makes the licence &quot;non open source&quot;.</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Cannot"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#Sublicence">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#CannotSublicence">
     <skos:prefLabel xml:lang="en">Sublicence</skos:prefLabel>
     <skos:definition xml:lang="en">Recipient re-distributing the work are not &quot;licensors&quot;, even when users that receives the software automatically has the right to copy, modify and distribute the work.</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
@@ -244,7 +244,7 @@
 
   <skos:Collection rdf:about="http://joinup.eu/legal-type#Compatible">
     <skos:prefLabel xml:lang="en">Compatible</skos:prefLabel>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#None-NotAvailable"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#NotAvailable"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#Permissive"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#GPL"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#OtherCopyleft"/>
@@ -254,7 +254,7 @@
     <skos:member rdf:resource="http://joinup.eu/legal-type#ForSoftware"/>
   </skos:Collection>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#None-NotAvailable">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#NotAvailable">
     <skos:prefLabel xml:lang="en">None N/A</skos:prefLabel>
     <skos:definition xml:lang="en">The license does not authorise reusing or marging the covered work in another work</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
@@ -312,7 +312,7 @@
 
   <skos:Collection rdf:about="http://joinup.eu/legal-type#Law">
     <skos:prefLabel xml:lang="en">Law</skos:prefLabel>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#EU-MS-Law"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#EU-MSLaw"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#USLaw"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#LicensorsLaw"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#OtherLaw"/>
@@ -320,7 +320,7 @@
     <skos:member rdf:resource="http://joinup.eu/legal-type#VenueFixed"/>
   </skos:Collection>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#EU-MS-Law">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#EU-MSLaw">
     <skos:prefLabel xml:lang="en">EU/MS law</skos:prefLabel>
     <skos:definition xml:lang="en">The licence states explicitly that the law of EU/or of a Member State is applicable (i.e. the Member State of the Licensor)</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
@@ -367,7 +367,7 @@
     <skos:member rdf:resource="http://joinup.eu/legal-type#StrongCommunity"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#Goverments-EU"/>
     <skos:member rdf:resource="http://joinup.eu/legal-type#OSIApproved"/>
-    <skos:member rdf:resource="http://joinup.eu/legal-type#FSFFree"/>
+    <skos:member rdf:resource="http://joinup.eu/legal-type#FSFFREE-Libre"/>
   </skos:Collection>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#StrongCommunity">
@@ -391,7 +391,7 @@
     <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Support"/>
   </skos:Concept>
 
-  <skos:Concept rdf:about="http://joinup.eu/legal-type#FSFFree">
+  <skos:Concept rdf:about="http://joinup.eu/legal-type#FSFFREE-Libre">
     <skos:prefLabel xml:lang="en">FSF Free/Libre</skos:prefLabel>
     <skos:definition xml:lang="en">The licence is considered as Free/Libre by the Free Software Foundation</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
