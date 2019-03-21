@@ -149,7 +149,7 @@ function joinup_user_mail_tokens(array &$replacements, array $data, array $optio
     }
 
     $replacements['[group:label]'] = $membership->getGroup()->label();
-    $replacements['[group:bundle]'] = $membership->getGroup()->bundle();
+    $replacements['[group:bundle]'] = $membership->getGroupBundle();
     $replacements['[group:roles]'] = implode(', ', $roles);
   }
 }

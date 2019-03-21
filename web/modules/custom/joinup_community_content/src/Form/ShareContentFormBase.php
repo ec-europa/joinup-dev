@@ -152,7 +152,7 @@ abstract class ShareContentFormBase extends FormBase {
     $role_id = 'rdf_entity-collection-facilitator';
     $collections = [];
     foreach ($memberships as $membership) {
-      if ($membership->hasRole($role_id) && $membership->getGroup()->bundle() === 'collection') {
+      if ($membership->hasRole($role_id) && $membership->getGroupBundle() === 'collection') {
         $collection = $membership->getGroup();
         $collections[$collection->id()] = $collection;
       }
