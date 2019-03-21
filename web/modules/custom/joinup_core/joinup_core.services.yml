@@ -27,8 +27,3 @@ services:
     arguments: ['@current_user', '@tempstore.private']
     tags:
       - name: event_subscriber
-  joinup_core.oe_webtools_analytics_subscriber:
-    class: Drupal\joinup_core\EventSubscriber\CollectionAnalyticsSubscriber
-    arguments: ['@config.factory', '@request_stack', '@logger.factory', '@entity_type.manager', '@context.repository']
-    tags:
-      - { name: event_subscriber }

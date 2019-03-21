@@ -7,7 +7,7 @@ declare(strict_types = 1);
  * Listening to the AnalyticsEvent.
  */
 
-namespace Drupal\joinup_core\EventSubscriber;
+namespace Drupal\isa2_analytics\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
@@ -21,7 +21,7 @@ use Drupal\oe_webtools_analytics\Event\AnalyticsEvent;
 /**
  * Event Subscriber AnalyticsEventSubscriber.
  */
-class CollectionAnalyticsSubscriber implements EventSubscriberInterface {
+class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
   /**
    * The Configuration overrides instance.
    *
