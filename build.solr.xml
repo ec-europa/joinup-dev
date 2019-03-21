@@ -2,6 +2,8 @@
 
 <project name="Solr" default="help">
 
+    <taskdef name="solr-backup" classname="\DrupalProject\Phing\SolrBackup" />
+
     <target name="download-apache-solr">
         <if>
             <available file="${solr.dir}" type="dir" property="solr.dir.available" />
@@ -199,6 +201,20 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
               passthru="true"/>
         <exec command="curl --verbose '${solr.core.unpublished.url}/${solr.core.unpublished.name}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
               passthru="true"/>
+    </target>
+
+    <target name="backup-apache-solr">
+        <echo message="Backing-up the Solr server."/>
+        <delete dir="${tmp.dir}/snapshot.published"/>
+        <delete dir="${tmp.dir}/snapshot.unpublished"/>
+        <solr-backup core="published" operation="backup"/>
+        <solr-backup core="unpublished" operation="backup"/>
+    </target>
+
+    <target name="restore-apache-solr" depends="purge-solr-backend">
+        <echo message="Restoring Solr server from backup."/>
+        <solr-backup core="published" operation="restore"/>
+        <solr-backup core="unpublished" operation="restore"/>
     </target>
 
 </project>

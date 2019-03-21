@@ -34,7 +34,7 @@ Feature: Document moderation
     # create content, authenticated users that are not members can create
     # documents.
     When I am logged in as "Crab y Patties"
-    And go to the homepage of the "The Naked Ashes" collection
+    And I go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
     # Post moderated collections allow publishing content directly.
     And I should see the button "Publish"
