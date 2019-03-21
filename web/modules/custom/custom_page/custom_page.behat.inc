@@ -84,8 +84,8 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $title
    *   The name of the custom page.
    *
-   * @When (I )go to the :title custom page
-   * @When (I )visit the :title custom page
+   * @When I go to the :title custom page
+   * @When I visit the :title custom page
    */
   public function visitCustomPage(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */

@@ -50,8 +50,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Navigates to the propose collection form.
    *
-   * @When (I )go to the propose collection form
-   * @When (I )visit the propose collection form
+   * @When I go to the propose collection form
+   * @When I visit the propose collection form
    */
   public function visitProposeCollectionForm() {
     $this->visitPath('propose/collection');
@@ -63,8 +63,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $collection
    *   The title of the collection.
    *
-   * @When (I )go to (the homepage of )the :collection collection
-   * @When (I )visit (the homepage of )the :collection collection
+   * @When I go to (the homepage of )the :collection collection
+   * @When I visit (the homepage of )the :collection collection
    */
   public function visitCollection($collection) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
@@ -98,8 +98,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $collection
    *   The title of the collection.
    *
-   * @When (I )go to the :collection collection edit form
-   * @When (I )visit the :collection collection edit form
+   * @When I go to the :collection collection edit form
+   * @When I visit the :collection collection edit form
    */
   public function visitEditCollection($collection) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
@@ -367,7 +367,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $collection
    *   The title of the collection.
    *
-   * @When (I )delete the :collection collection
+   * @When I delete the :collection collection
    */
   public function deleteCollection($collection) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
