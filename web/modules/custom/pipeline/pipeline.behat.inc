@@ -15,8 +15,8 @@ class PipelineSubContext extends DrupalSubContextBase {
   /**
    * Navigates to the pipeline orchestrator.
    *
-   * @When (I )go to the pipeline orchestrator
-   * @When (I )visit the pipeline orchestrator
+   * @When I go to the pipeline orchestrator
+   * @When I visit the pipeline orchestrator
    * @When I am on the pipeline orchestrator
    */
   public function visitPipelineOrchestrator() {

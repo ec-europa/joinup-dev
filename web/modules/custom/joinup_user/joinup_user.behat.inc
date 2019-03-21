@@ -25,8 +25,8 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $user
    *   The user name.
    *
-   * @When (I )go to the (public )profile of :user
-   * @When (I )visit the (public )profile of :user
+   * @When I go to the (public )profile of :user
+   * @When I visit the (public )profile of :user
    */
   public function visitUserPublicProfile($user) {
     $this->visitPath($this->getUserByName($user)->url());
