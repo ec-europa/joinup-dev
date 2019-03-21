@@ -37,8 +37,8 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $asset_release
    *   The name of the asset_release.
    *
-   * @When (I )go to (the homepage of )the :asset_release release
-   * @When (I )visit (the homepage of )the :asset_release release
+   * @When I go to (the homepage of )the :asset_release release
+   * @When I visit (the homepage of )the :asset_release release
    */
   public function visitRelease(string $asset_release): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
@@ -175,7 +175,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $asset_release
    *   The name of the asset release.
    *
-   * @When (I )delete the :asset_release release
+   * @When I delete the :asset_release release
    */
   public function deleteAssetRelease(string $asset_release): void {
     /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
