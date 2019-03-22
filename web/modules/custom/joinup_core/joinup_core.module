@@ -491,6 +491,27 @@ function joinup_core_entity_create(EntityInterface $entity) {
 }
 
 /**
+ * Implements hook_entity_insert().
+ */
+function joinup_core_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  // List the related entity bundles.
+  $related_bundles = [
+    'collection',
+    'solution',
+  ];
+
+  // Check to the current bundle is in our list.
+  if (in_array($entity->bundle(), $related_bundles)) {
+    /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
+    $messenger = \Drupal::service('messenger');
+
+    // Add a status message when it was saved.
+    $messenger->addStatus(t('Thank you for proposing a @entity_type. 
+    Your request is currently pending approval by the site administrator.', ['@entity_type' => $entity->bundle()]));
+  }
+}
+
+/**
  * Implements hook_element_info_alter().
  *
  * Override the validate handler for the datetime widget.

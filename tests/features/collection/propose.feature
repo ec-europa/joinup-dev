@@ -62,6 +62,7 @@ Feature: Proposing a collection
     And I should see the heading "Ancient and Classical Mythology"
     And I should see a logo on the header
     And I should see a banner on the header
+    And I should see "Thank you for proposing a collection. Your request is currently pending approval by the site administrator."
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 active member

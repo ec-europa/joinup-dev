@@ -137,6 +137,7 @@ Feature: "Add solution" visibility options.
     And I press "Add owner"
     And I press "Propose"
     Then I should see the heading "V60 filter coffee solution"
+    And I should see "Thank you for proposing a solution. Your request is currently pending approval by the site administrator."
     # The name of the solution should exist in the block of the relative content in a collection.
     When I go to the homepage of the "Belgian barista's" collection
     Then I should see the heading "Belgian barista's"
