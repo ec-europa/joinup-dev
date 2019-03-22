@@ -229,6 +229,7 @@ config_devel:
   - linkit.linkit_profile.default
   - mailsystem.settings
   - matomo.settings
+  - oe_webtools_analytics.settings
   - og.settings
   - og_menu.ogmenu.navigation
   - password_policy.password_policy.generic_policy
