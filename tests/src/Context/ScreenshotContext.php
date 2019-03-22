@@ -102,7 +102,7 @@ class ScreenshotContext extends RawMinkContext {
    * @param string $name
    *   The file name.
    *
-   * @Then (I )take a screenshot :name
+   * @Then I take a screenshot :name
    */
   public function takeScreenshot(string $name = NULL) : void {
     $message = "Screenshot created in @file_name";
@@ -112,7 +112,7 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Saves a screenshot under a predefined name.
    *
-   * @Then (I )take a screenshot
+   * @Then I take a screenshot
    */
   public function takeScreenshotUnnamed() : void {
     $file_name = 'behat-screenshot-' . user_password();

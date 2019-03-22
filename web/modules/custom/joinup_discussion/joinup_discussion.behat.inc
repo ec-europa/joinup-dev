@@ -24,8 +24,8 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $title
    *   The name of the discussion.
    *
-   * @When (I )go to the :title discussion
-   * @When (I )visit the :title discussion
+   * @When I go to the :title discussion
+   * @When I visit the :title discussion
    */
   public function visitDiscussion($title) {
     /** @var \Drupal\node\Entity\Node $node */

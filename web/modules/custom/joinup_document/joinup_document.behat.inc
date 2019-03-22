@@ -28,8 +28,8 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $title
    *   The name of the document.
    *
-   * @When (I )go to the :title document
-   * @When (I )visit the :title document
+   * @When I go to the :title document
+   * @When I visit the :title document
    */
   public function visitDocument($title) {
     /** @var \Drupal\node\Entity\Node $node */
