@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53a2c23f0d5a643f0b8e2cc33f18ae9e",
+    "content-hash": "0dc0f89018e864e08dfaef9877f156e5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2375,11 +2375,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2532,6 +2528,14 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
+                {
+                    "name": "bircher",
+                    "homepage": "https://www.drupal.org/user/1344166"
+                },
+                {
+                    "name": "gnuget",
+                    "homepage": "https://www.drupal.org/user/992990"
+                },
                 {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
@@ -5783,6 +5787,9 @@
                     "drupal/rdf_entity": {
                         "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
                     }
+                },
+                "patches_applied": {
+                    "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff"
                 }
             },
             "description": "Allows to federate and manage the SPDX licences.",
@@ -9570,7 +9577,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-03-11T22:40:32+00:00"
         },
         {
             "name": "stack/builder",
@@ -12233,7 +12240,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549218480",
+                    "datestamp": "1549559402",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12297,6 +12304,12 @@
                 "type": "git",
                 "url": "https://git.drupal.org/project/coder.git",
                 "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/klausi/coder/zipball/29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "reference": "29a25627e7148b3119c84f18e087fc3b8c85b959",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",

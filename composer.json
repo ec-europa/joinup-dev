@@ -234,6 +234,9 @@
             "drupal/smart_trim": {
                 "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
             },
+            "drupal/spdx": {
+                "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff"
+            },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
