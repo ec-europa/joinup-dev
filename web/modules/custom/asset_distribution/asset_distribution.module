@@ -241,9 +241,9 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
 
   $solution_types = $solution->get('field_is_solution_type')->getValue();
   $gitb_solution_types = [
-    'http://data.europa.eu/dr8/TestComponent',
-    'http://data.europa.eu/dr8/TestService',
-    'http://data.europa.eu/dr8/TestScenario',
+    'http://data.europa.eu/dr8/ConformanceTestingComponent',
+    'http://data.europa.eu/dr8/ConformanceTestingService',
+    'http://data.europa.eu/dr8/ConformanceTestScenario',
   ];
   foreach ($solution_types as $solution_type) {
     if (in_array($solution_type['target_id'], $gitb_solution_types)) {
