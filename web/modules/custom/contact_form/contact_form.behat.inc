@@ -15,8 +15,8 @@ class ContactFormSubContext extends DrupalSubContextBase {
   /**
    * Navigates to the contact form.
    *
-   * @When (I )go to the contact form
-   * @When (I )visit the contact form
+   * @When I go to the contact form
+   * @When I visit the contact form
    * @When I am on the contact form
    */
   public function visitContactForm() {

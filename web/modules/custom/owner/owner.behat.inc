@@ -136,7 +136,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @throws \Exception
    *   Thrown when the owner field appears empty in the page.
    *
-   * @When (I )set the Owner type(s) to :option
+   * @When I set the Owner type(s) to :option
    */
   public function setOwnerType($options) {
     // Explode into an array.
@@ -169,8 +169,8 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @param string $owner
    *   The label of the owner.
    *
-   * @When (I )go to (the homepage of )the :owner owner
-   * @When (I )visit (the homepage of )the :owner owner
+   * @When I go to (the homepage of )the :owner owner
+   * @When I visit (the homepage of )the :owner owner
    */
   public function visitOwner($owner) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $owner */
