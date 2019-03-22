@@ -493,7 +493,7 @@ function joinup_core_entity_create(EntityInterface $entity) {
 /**
  * Implements hook_entity_insert().
  */
-function joinup_core_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+function joinup_core_entity_insert(EntityInterface $entity) {
   // List the related entity bundles.
   $related_bundles = [
     'collection',
