@@ -17,6 +17,5 @@ configuration:
     - ntriples
     - turtle
     - n3
-    - json
   authentication:
     - cookie

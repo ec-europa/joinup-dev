@@ -88,7 +88,7 @@ Feature: Solution homepage
       | email | geronimo@example.com |
     And the following solutions:
       | title             | description     | logo     | banner     | state     | owner                 | contact information | solution type     | policy domain |
-      | Chiricahua Server | Serving the web | logo.png | banner.jpg | validated | Chiricahua Foundation | Geronimo            | [ABB169] Business | E-inclusion   |
+      | Chiricahua Server | Serving the web | logo.png | banner.jpg | validated | Chiricahua Foundation | Geronimo            | Business | E-inclusion   |
     # There should not be a pager when the solution is empty.
     When I go to the homepage of the "Chiricahua Server" solution
     Then I should not see the "Pager" region

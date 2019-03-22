@@ -52,7 +52,7 @@ Feature: Collection content
       | Name             | Costas Papazoglou                                                   |
       | E-mail address   | CostasPapazoglou@example.com                                        |
     And I select "Data gathering, data processing" from "Policy domain"
-    And I select "[ABB59] Logging Service" from "Solution type"
+    And I select "Logging Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Particle sweeper"
     And I press "Add owner"
