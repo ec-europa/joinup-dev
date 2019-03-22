@@ -31,14 +31,14 @@ privacy:
 custom:
   variable:
     1:
-      name: 'Group context'
-      value: '[joinup-current-page:group-context]'
-      scope: page
+      name: ''
+      value: ''
+      scope: visit
       slot: 1
     2:
-      name: 'Page type'
-      value: '[joinup-current-page:page-type]'
-      scope: page
+      name: ''
+      value: ''
+      scope: visit
       slot: 2
     3:
       name: ''
