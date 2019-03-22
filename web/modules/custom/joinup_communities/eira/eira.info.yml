@@ -3,3 +3,5 @@ type: module
 description: 'Customizations for the EIRA community.'
 core: 8.x
 package: Joinup communities
+dependencies:
+  - filter:filter
