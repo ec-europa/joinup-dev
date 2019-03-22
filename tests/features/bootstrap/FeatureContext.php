@@ -1455,4 +1455,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Navigates to the canonical page of a taxonomy term with a given format.
+   *
+   * @param string $vocabulary_name
+   *   The name of the vocabulary.
+   * @param string $terme_name
+   *   The term name.
+   * @param string $format
+   *   The RDF serialization format.
+   *
+   * @Given I visit the :vocabulary_name term :term_name page in the :format serialisation
+   */
+  public function visitTermWithFormat(string $vocabulary_name, string $term_name, string $format): void {
+    /** @var \Drupal\taxonomy\Entity\Vocabulary $vocabulary */
+    $vocabulary = $this->getEntityByLabel('taxonomy_vocabulary', $vocabulary_name);
+    $term = $this->getEntityByLabel('taxonomy_term', $term_name, $vocabulary->id());
+    $this->visitPath($term->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
+  }
+
 }
