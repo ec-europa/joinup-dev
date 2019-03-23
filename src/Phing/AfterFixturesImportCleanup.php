@@ -48,15 +48,15 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // @see ISAICP-3216
     // Add the "Concept" type to all collection elements so that they are listed
     // as Parent terms.
-    $this->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+    $this->query('WITH <http://eira_skos> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
     // Add the link to all "Concept" type elements so that they are all considered
     // as children of the EIRA vocabulary regardless of the depth.
-    $this->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
+    $this->query('WITH <http://eira_skos> INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { ?subject a skos:Concept .};');
     // Create a backwards connection from the children to the parent.
-    $this->query('INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+    $this->query('WITH <http://eira_skos> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
     // Remove deprecated countries from the country list.
     // @See ISAICP-3442
-    $this->query('DELETE FROM <http://countries-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://publications.europa.eu/ontology/authority/end.use> ?date . FILTER ( bound(?date) ) };');
+    $this->query('WITH <http://countries-skos> DELETE { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://publications.europa.eu/ontology/authority/end.use> ?date . FILTER ( bound(?date) ) };');
 
     // Languages are required to be of type <http://purl.org/dc/terms/Location>
     // but are listed as <http://www.w3.org/2004/02/skos/core#Concept> which is
