@@ -65,6 +65,14 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     // the <http://countries-skos> graph.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4566
     $this->query('WITH <http://countries-skos> INSERT { ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/Location> } WHERE { ?entity a <http://www.w3.org/2004/02/skos/core#Concept> };');
+
+    // As with the EIRA vocabulary, for elements of type skos:Collection, add
+    // the skos:Concept as a type to the list so that the parent elements are
+    // properly mapped to a bundle, and add the skos:broader for the backwards
+    // connection from the child to the parent.
+    $this->query('WITH <http://licence-legal-type> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+    $this->query('WITH <http://licence-legal-type> INSERT { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } WHERE { ?subject a skos:Concept . FILTER NOT EXISTS { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } };');
+    $this->query('WITH <http://licence-legal-type> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
   }
 
 }
