@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53a2c23f0d5a643f0b8e2cc33f18ae9e",
+    "content-hash": "f2f4958911f60e8b86d2f03d3191a421",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5783,6 +5783,9 @@
                     "drupal/rdf_entity": {
                         "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
                     }
+                },
+                "patches_applied": {
+                    "Create an SPDX licence rdf entity bundle. @see https://github.com/ec-europa/spdx/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/3.diff"
                 }
             },
             "description": "Allows to federate and manage the SPDX licences.",
