@@ -235,6 +235,7 @@
                 "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
             },
             "drupal/spdx": {
+                "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff",
                 "Create an SPDX licence rdf entity bundle. @see https://github.com/ec-europa/spdx/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/3.diff",
                 "Provide basic behat steps. @see https://github.com/ec-europa/spdx/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/4.diff"
             },
