@@ -48,7 +48,7 @@ class JoinupHelper {
    *   True if the entity is a community content node, false otherwise.
    */
   public static function isCommunityContent(EntityInterface $entity) {
-    return $entity instanceof NodeInterface && in_array($entity->bundle(), CommunityContentHelper::getBundles());
+    return $entity instanceof NodeInterface && CommunityContentHelper::isCommunityContentBundle($entity->bundle());
   }
 
   /**

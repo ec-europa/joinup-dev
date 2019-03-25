@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_community_content;
 
 /**
@@ -13,8 +15,21 @@ class CommunityContentHelper {
    * @return array
    *   An array of node bundle IDs.
    */
-  public static function getBundles() {
+  public static function getBundles(): array {
     return ['discussion', 'document', 'event', 'news'];
+  }
+
+  /**
+   * Returns whether the passed in bundle is a community content bundle.
+   *
+   * @param string $bundle
+   *   The bundle name to check.
+   *
+   * @return bool
+   *   TRUE if the passed in bundle is a community content bundle.
+   */
+  public static function isCommunityContentBundle(string $bundle): bool {
+    return \in_array($bundle, self::getBundles(), TRUE);
   }
 
   /**
@@ -27,7 +42,7 @@ class CommunityContentHelper {
    * @return string[]
    *   An array of workflow state IDs.
    */
-  public static function getModeratorAttentionNeededStates($bundle = NULL) {
+  public static function getModeratorAttentionNeededStates($bundle = NULL): array {
     $states = [
       'discussion' => [
         'proposed',
