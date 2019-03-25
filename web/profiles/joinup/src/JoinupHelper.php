@@ -46,8 +46,12 @@ class JoinupHelper {
    *
    * @return bool
    *   True if the entity is a community content node, false otherwise.
+   *
+   * @deprecated
+   *   Use CommunityContentHelper::isCommunityContent() instead.
    */
   public static function isCommunityContent(EntityInterface $entity) {
+    trigger_error(__METHOD__ . ' is deprecated. Use CommunityContentHelper::isCommunityContent() instead.', E_USER_DEPRECATED);
     return $entity instanceof NodeInterface && CommunityContentHelper::isCommunityContentBundle($entity->bundle());
   }
 
