@@ -13,6 +13,7 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/cached_computed_field": "^1.0-beta4",
         "drupal/changed_fields": "^2.0",
+        "drupal/ckeditor_accordion": "^1.2",
         "drupal/config_provider": "~1.0",
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",

@@ -35,3 +35,10 @@ function joinup_post_update_install_geocoder(): void {
 function joinup_post_update_install_joinup_rss() {
   \Drupal::service('module_installer')->install(['joinup_rss']);
 }
+
+/**
+ * Enable the CKEditor Accordion module.
+ */
+function joinup_post_update_install_ckeditor_accordion() {
+  \Drupal::service('module_installer')->install(['ckeditor_accordion']);
+}

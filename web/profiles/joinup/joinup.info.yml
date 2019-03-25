@@ -13,6 +13,7 @@ dependencies:
   - block
   - changed_fields
   - ckeditor
+  - ckeditor_accordion
   - collection
   - config_readonly
   - config_sync

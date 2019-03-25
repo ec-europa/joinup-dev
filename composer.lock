@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a615843531a5a8e73bb43e0367989670",
+    "content-hash": "f02293e4a6567440c8e051455a801974",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2432,7 +2432,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2542,6 +2542,57 @@
             "homepage": "https://www.drupal.org/project/changed_fields",
             "support": {
                 "source": "http://cgit.drupalcode.org/changed_fields"
+            }
+        },
+        {
+            "name": "drupal/ckeditor_accordion",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/ckeditor_accordion",
+                "reference": "8.x-1.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ckeditor_accordion-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "4b431372426a5b3ceb66518f38e766e4980922a4"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.2",
+                    "datestamp": "1551184385",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "j-vee",
+                    "homepage": "https://www.drupal.org/user/2843273"
+                },
+                {
+                    "name": "rreiss",
+                    "homepage": "https://www.drupal.org/user/2609534"
+                }
+            ],
+            "description": "Allows users to create & display content in an accordion using CKEditor.",
+            "homepage": "https://www.drupal.org/project/ckeditor_accordion",
+            "support": {
+                "source": "http://cgit.drupalcode.org/ckeditor_accordion"
             }
         },
         {
@@ -2700,8 +2751,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha7",
-                    "datestamp": "1521314235",
+                    "version": "8.x-1.0-alpha6+2-dev",
+                    "datestamp": "1513615684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3757,7 +3808,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598850",
+                    "datestamp": "1521598685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -3856,7 +3907,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.x-dev",
-                    "datestamp": "1549431784",
+                    "datestamp": "1549949280",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4590,7 +4641,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -4913,7 +4964,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5177,7 +5228,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5537,7 +5588,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1537284180",
+                    "datestamp": "1543072380",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5622,7 +5673,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -6120,7 +6171,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1510132373",
+                    "datestamp": "1493246342",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6188,7 +6239,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -10346,7 +10397,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -12531,6 +12582,10 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "matslats",
+                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
