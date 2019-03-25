@@ -25,7 +25,20 @@ class TableOfContents extends GroupMenuBlock {
    * {@inheritdoc}
    */
   protected function getCurrentRouteMenuTreeParameters(): MenuTreeParameters {
-    $parameters = parent::getCurrentRouteMenuTreeParameters();
+    $parameters = new MenuTreeParameters();
+
+    // Adjust the menu tree parameters based on the block's configuration.
+    $level = $this->configuration['level'];
+    $depth = $this->configuration['depth'];
+    $parameters->setMinDepth($level);
+
+    // When the depth is configured to zero, there is no depth limit. When depth
+    // is non-zero, it indicates the number of levels that must be displayed.
+    // Hence this is a relative depth that we must convert to an actual
+    // (absolute) depth, that may never exceed the maximum depth.
+    if ($depth > 0) {
+      $parameters->setMaxDepth(min($level + $depth - 1, $this->menuTree->maxDepth()));
+    }
 
     // Get the topmost/root custom page in this hierarchy.
     $trail = $this->menuActiveTrail->getActiveTrailIds($this->getMenuName());
