@@ -14,5 +14,6 @@ function joinup_licence_entity_bundle_field_info_alter(&$fields, EntityTypeInter
   // Make sure the licence label is unique.
   if ($entity_type->id() == 'rdf_entity' && $bundle == 'licence' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
+    $fields['field_licence_spdx_licence']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
   }
 }
