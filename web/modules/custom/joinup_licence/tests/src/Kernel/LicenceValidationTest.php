@@ -39,8 +39,6 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
 
     $this->installConfig('joinup_licence');
     $this->installConfig('spdx');
-
-
   }
 
   /**
@@ -71,15 +69,14 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
       'rid' => 'spdx_licence',
     ]);
     $this->entities['spdx']->save();
+    $spdx_id = $this->entities['spdx']->id();
 
     $this->entities['licence1'] = Rdf::create([
       'label' => 'Licence 1',
       'rid' => 'licence',
       'field_licence_description' => ['value' => 'Some description'],
       'field_licence_type' => ['target_id' => $licence_type_id],
-      'field_licence_spdx_licence' => [
-        'target_id' => $this->entities['spdx']->id()
-      ],
+      'field_licence_spdx_licence' => ['target_id' => $spdx_id],
     ]);
     $this->entities['licence1']->save();
 
@@ -88,16 +85,15 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
       'rid' => 'licence',
       'field_licence_description' => ['value' => 'Some description'],
       'field_licence_type' => ['target_id' => $licence_type_id],
-      'field_licence_spdx_licence' => [
-        'target_id' => $this->entities['spdx']->id()
-      ],
+      'field_licence_spdx_licence' => ['target_id' => $spdx_id],
     ]);
 
     /** @var \Drupal\Core\Entity\EntityConstraintViolationList $violations */
     $violations = $licence->validate();
     $this->assertCount(1, $violations);
     $violation = $violations[0];
-    $this->assertEquals($violation->getMessage(), "Content with corresponding spdx licence <em class=\"placeholder\">{$this->entities['spdx']->id()}</em> already exists. Please choose a different corresponding spdx licence.");
+    $this->assertEquals(UniqueFieldInBundleConstraint::class, get_class($violation->getConstraint()));
+    $this->assertEquals('field_licence_spdx_licence', $violation->getPropertyPath());
   }
 
   /**
@@ -112,6 +108,5 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
       }
     }
   }
-
 
 }
