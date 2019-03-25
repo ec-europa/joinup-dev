@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dc0f89018e864e08dfaef9877f156e5",
+    "content-hash": "f2f4958911f60e8b86d2f03d3191a421",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5789,6 +5789,7 @@
                     }
                 },
                 "patches_applied": {
+                    "Create an SPDX licence rdf entity bundle. @see https://github.com/ec-europa/spdx/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/3.diff",
                     "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff"
                 }
             },
