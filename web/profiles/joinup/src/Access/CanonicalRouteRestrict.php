@@ -30,7 +30,10 @@ class CanonicalRouteRestrict implements AccessInterface {
   public function access(RouteMatchInterface $route_match, AccountInterface $account): AccessResultInterface {
     $rdf_entity = $route_match->getParameter('rdf_entity');
     if (!($rdf_entity instanceof RdfInterface) || $rdf_entity->bundle() !== 'spdx_licence') {
-      return AccessResult::neutral()->addCacheContexts(['user']);
+      // In case the route the canonical route of the spdx_licence, return a
+      // positive access result as a neutral would deny the access to the route.
+      // @see \Drupal\Core\Access\AccessResult::andIf().
+      return AccessResult::allowed()->addCacheContexts(['user']);
     }
 
     if ($account->id() === 1) {
