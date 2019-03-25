@@ -11,9 +11,15 @@ use Drupal\Core\Entity\EntityTypeInterface;
  * Implements hook_entity_bundle_field_info_alter().
  */
 function joinup_licence_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  // Make sure the licence label is unique.
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'licence' && !empty($fields['label'])) {
+  if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'licence') {
+    return;
+  }
+
+  // Licence labels and references to SPDX licences are unique.
+  if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
+  }
+  if (!empty($fields['field_licence_spdx_licence'])) {
     $fields['field_licence_spdx_licence']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
   }
 }
