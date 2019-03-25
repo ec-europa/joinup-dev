@@ -157,12 +157,6 @@ class NodeWorkflowAccessControlHandler {
       return $access;
     }
 
-    // For entities that do not have a published version and are in draft state,
-    // only the owner has access.
-    if (!$this->hasPublishedVersion($entity) && $this->getEntityState($entity) === 'draft' && $entity->getOwnerId() !== $account->id()) {
-      return AccessResult::forbidden();
-    }
-
     switch ($operation) {
       case 'view':
         return $this->entityViewAccess($entity, $account);
