@@ -39,6 +39,11 @@ class RouteSubscriber extends RouteSubscriberBase {
       }
     }
 
+    // Deny access to spdx licence canonical route.
+    if ($route = $collection->get('entity.rdf_entity.canonical')) {
+      $route->addRequirements(['_canonical_route_restrict' => 'TRUE']);
+    }
+
     // Override the confirmation form to delete multiple users with our version
     // that prevents deletion of users that are sole owners of collections.
     if ($route = $collection->get('user.multiple_cancel_confirm')) {
