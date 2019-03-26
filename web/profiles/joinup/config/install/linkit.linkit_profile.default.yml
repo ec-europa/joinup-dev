@@ -17,6 +17,7 @@ matchers:
       group_by_bundle: false
       include_unpublished: false
       substitution_type: canonical
+      limit: 100
   cdd26670-8b46-4fa8-a644-ea3a0c9ae8fd:
     uuid: cdd26670-8b46-4fa8-a644-ea3a0c9ae8fd
     id: 'entity:rdf_entity'
@@ -26,3 +27,4 @@ matchers:
       bundles: {  }
       group_by_bundle: false
       substitution_type: canonical
+      limit: 100
