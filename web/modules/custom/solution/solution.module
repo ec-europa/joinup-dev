@@ -28,6 +28,7 @@ use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
 use Drupal\user\Entity\User;
+use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * Implements hook_entity_access().
@@ -231,6 +232,8 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     $build['related_solutions'] = solution_build_related_solutions_list($ids);
   }
 
+  $cacheable_metedata = new CacheableMetadata();
+
   // Attach the download total of all distributions in this solution.
   if ($display->getComponent('download_total')) {
     $total = 0;
@@ -248,6 +251,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
           // @see https://www.drupal.org/node/2892361
           if (!empty($item['value'])) {
             $total += (int) $item['value'];
+            $cacheable_metedata->addCacheableDependency($distribution);
           }
         }
       }
@@ -260,8 +264,13 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     $build['downloads'] = [
       '#type' => 'container',
       '#stats_topic' => t('Downloads'),
-      0 => ['#markup' => (string) $total],
     ];
+    // Only add #markup if we want to show it.
+    if ($total >= 1) {
+      $build['downloads'][0]['#markup'] = (string) $total;
+    }
+
+    $cacheable_metedata->applyTo($build['downloads']);
   }
 
   // Show the collection the solution belongs to. A solution can be affiliated
