@@ -268,10 +268,20 @@ Feature: "Add solution" visibility options.
     # Check the same thing on the homepage of the solutions.
     Then I should see the text "Downloads: 10"
     When I delete the "Sample distribution" asset distribution
-    Given the cache has been cleared
     And I reload the page
     # Check it again after the first distribution is deleted and cache has been cleared.
     Then I should not see the text "Downloads: 10"
     # Go back to the solution tiles page and check downloads are disappeared.
     Then I visit "/solutions"
     Then I should not see a "icon--download" element
+    Given the following solution:
+      | title       | Test solution    |
+      | description | test description |
+      | collection  | Ocean studies    |
+      | state       | validated        |
+    Given the following distribution:
+      | title       | Sample distribution 3 |
+      | description | Sample description 3  |
+      | parent      | Test solution         |
+      | downloads   | 20                    |
+    Then I should see the text "20" in the "Test solution" tile
