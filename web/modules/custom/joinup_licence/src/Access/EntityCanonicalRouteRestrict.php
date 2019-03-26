@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup\Access;
+namespace Drupal\joinup_licence\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
@@ -12,12 +12,12 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Restricts canonical routes to UID 1 only.
+ * Restricts entity canonical routes to UID 1 only.
  */
-class CanonicalRouteRestrict implements AccessInterface {
+class EntityCanonicalRouteRestrict implements AccessInterface {
 
   /**
-   * Constructs a CanonicalRouteRestrict object.
+   * Constructs a EntityCanonicalRouteRestrict object.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match object to be checked.
@@ -33,13 +33,10 @@ class CanonicalRouteRestrict implements AccessInterface {
       // In case the route the canonical route of the spdx_licence, return a
       // positive access result as a neutral would deny the access to the route.
       // @see \Drupal\Core\Access\AccessResult::andIf().
-      return AccessResult::allowed()->addCacheContexts(['user']);
+      return AccessResult::allowed();
     }
 
-    if ($account->id() === 1) {
-      return AccessResult::allowed()->addCacheContexts(['user']);
-    }
-    return AccessResult::forbidden()->addCacheContexts(['user']);
+    return AccessResult::forbidden();
   }
 
 }
