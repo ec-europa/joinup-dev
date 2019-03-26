@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - smart_trim
+  - spdx
 
 config_devel:
   - core.base_field_override.rdf_entity.licence.label

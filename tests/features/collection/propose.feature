@@ -104,9 +104,9 @@ Feature: Proposing a collection
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I click the "Additional fields" tab
-    And I attach the file "banner.jpg" to "Banner"
+    And I attach the file "banner1.jpg" to "Banner"
     And I wait for AJAX to finish
-    Then I should see the link "banner.jpg"
+    Then I should see the link "banner1.jpg"
     And I should see the text "Only members can create new content."
     And I should see the text "Any registered user can create new content."
 

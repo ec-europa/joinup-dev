@@ -5,6 +5,7 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
@@ -391,6 +392,77 @@ function joinup_core_post_update_install_error_page() {
 }
 
 /**
+ * Update the EIRA terms and perform other related tasks.
+ */
+function joinup_core_post_update_eira() {
+  \Drupal::service('module_installer')->install(['eira']);
+
+  $graph_uri = 'http://eira_skos';
+  /** @var \Drupal\Driver\Database\joinup_sparql\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $connection->query('CLEAR GRAPH <http://eira_skos>;');
+
+  $graph = new Graph($graph_uri);
+  $filename = DRUPAL_ROOT . '/../resources/fixtures/EIRA_SKOS.rdf';
+  $graph->parseFile($filename);
+
+  $sparql_connection = Database::getConnection('default', 'sparql_default');
+  $connection_options = $sparql_connection->getConnectionOptions();
+  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+  $graph_store = new GraphStore($connect_string);
+  $graph_store->insert($graph);
+
+  $graphs = [
+    'http://joinup.eu/solution/published',
+    'http://joinup.eu/solution/draft',
+  ];
+  $map = [
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyService' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyService',
+    'http://data.europa.eu/dr8/TestReport' => 'http://data.europa.eu/dr8/ConformanceTestReport',
+    'http://data.europa.eu/dr8/TestService' => 'http://data.europa.eu/dr8/ConformanceTestingService',
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyServiceComponent' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyServiceComponent',
+    'http://data.europa.eu/dr8/TestComponent' => 'http://data.europa.eu/dr8/ConformanceTestingComponent',
+    'http://data.europa.eu/dr8/ApplicationService' => 'http://data.europa.eu/dr8/InteroperableEuropeanSolutionService',
+    'http://data.europa.eu/dr8/TestScenario' => 'http://data.europa.eu/dr8/ConformanceTestScenario',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentMandate' => 'http://data.europa.eu/dr8/PublicPolicyImplementationMandate',
+    'http://data.europa.eu/dr8/Data-levelMapping' => 'http://data.europa.eu/dr8/DataLevelMapping',
+    'http://data.europa.eu/dr8/Schema-levelMapping' => 'http://data.europa.eu/dr8/SchemaLevelMapping',
+    'http://data.europa.eu/dr8/AuditAndLoggingComponent' => 'http://data.europa.eu/dr8/AuditComponent',
+    'http://data.europa.eu/dr8/LegalRequirementOrConstraint' => 'http://data.europa.eu/dr8/LegalAct',
+    'http://data.europa.eu/dr8/BusinessInformationExchange' => 'http://data.europa.eu/dr8/ExchangeOfBusinessInformation',
+    'http://data.europa.eu/dr8/InteroperabilityAgreement' => 'http://data.europa.eu/dr8/OrganisationalInteroperabilityAgreement',
+    'http://data.europa.eu/dr8/BusinessProcessManagementComponent' => 'http://data.europa.eu/dr8/OrchestrationComponent',
+    'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructureService' => 'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructure',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentApproach' => 'http://data.europa.eu/dr8/PublicPolicyImplementationApproach',
+  ];
+
+  foreach ($graphs as $graph) {
+    foreach ($map as $old_uri => $new_uri) {
+      $query = <<<QUERY
+WITH <$graph>
+DELETE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+INSERT { ?solution_id <http://purl.org/dc/terms/type> <$new_uri> }
+WHERE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+QUERY;
+      $connection->query($query);
+    }
+  }
+
+  // Finally, repeat the process that initially fixed the eira skos vocabulary.
+  // @see ISAICP-3216.
+  // @see \DrupalProject\Phing\AfterFixturesImportCleanup::main()
+  //
+  // Add the "Concept" type to all collection elements so that they are listed
+  // as Parent terms.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  // Add the link to all "Concept" type elements so that they are all considered
+  // as children of the EIRA vocabulary regardless of the depth.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
+  // Create a backwards connection from the children to the parent.
+  $connection->query('INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
  * Remove temporary 'file' entities that lack the file on file system.
  */
 function joinup_core_post_update_fix_files(array &$sandbox) {
@@ -464,4 +536,11 @@ function joinup_core_post_update_swap_dblog_with_syslog() {
   // them. Write the log entries to the syslog instead.
   \Drupal::service('module_installer')->install(['syslog']);
   \Drupal::service('module_installer')->uninstall(['dblog']);
+}
+
+/**
+ * Enable the spdx module.
+ */
+function joinup_core_post_update_enable_spdx() {
+  \Drupal::service('module_installer')->install(['spdx']);
 }
