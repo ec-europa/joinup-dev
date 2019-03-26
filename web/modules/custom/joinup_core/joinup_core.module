@@ -139,6 +139,17 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
   /** @var \Drupal\rdf_entity\RdfInterface $rdf */
   $rdf = $form_object->getEntity();
 
+  // List the related entity bundles.
+  $related_bundles = [
+    'collection',
+    'solution',
+  ];
+
+  // Add submit callback when the current bundle is in the list.
+  if (in_array($rdf->bundle(), $related_bundles)) {
+    $form['actions']['submit']['#submit'][] = '_joinup_core_message_handler';
+  }
+
   /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
   $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($rdf->getEntityTypeId(), $rdf->bundle());
   // Keep only fields that are on the form.
@@ -150,6 +161,23 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
     }
   }
 
+}
+
+/**
+ * Displays status message after the user saved the related RDF content.
+ */
+function _joinup_core_message_handler(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf */
+  $rdf = $form_object->getEntity();
+
+  /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
+  $messenger = \Drupal::service('messenger');
+
+  // Add a status message when it was saved.
+  $messenger->addStatus(t('Thank you for proposing a @entity_label. 
+    Your request is currently pending approval by the site administrator.', ['@entity_label' => $rdf->get('rid')->entity->getSingularLabel()]));
 }
 
 /**
@@ -487,27 +515,6 @@ function joinup_core_entity_create(EntityInterface $entity) {
         $entity->setUnpublished();
       }
     }
-  }
-}
-
-/**
- * Implements hook_entity_insert().
- */
-function joinup_core_entity_insert(EntityInterface $entity) {
-  // List the related entity bundles.
-  $related_bundles = [
-    'collection',
-    'solution',
-  ];
-
-  // Check to the current bundle is in our list.
-  if (in_array($entity->bundle(), $related_bundles)) {
-    /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
-    $messenger = \Drupal::service('messenger');
-
-    // Add a status message when it was saved.
-    $messenger->addStatus(t('Thank you for proposing a @entity_type. 
-    Your request is currently pending approval by the site administrator.', ['@entity_type' => $entity->bundle()]));
   }
 }
 
