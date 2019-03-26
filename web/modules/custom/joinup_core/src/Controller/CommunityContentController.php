@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Controller;
 
 use Drupal\Core\Access\AccessResult;
@@ -66,7 +68,7 @@ abstract class CommunityContentController extends ControllerBase {
    * @return array
    *   Return the form array to be rendered.
    */
-  public function add(RdfInterface $rdf_entity) {
+  public function add(RdfInterface $rdf_entity): array {
     $node = $this->createContentEntity($rdf_entity);
     return $this->entityFormBuilder()->getForm($node);
   }
@@ -82,7 +84,7 @@ abstract class CommunityContentController extends ControllerBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResult {
     if (empty($account)) {
       $account = $this->currentUser();
     }
@@ -121,6 +123,6 @@ abstract class CommunityContentController extends ControllerBase {
    * @return string
    *   The bundle machine name.
    */
-  abstract protected function getBundle();
+  abstract protected function getBundle(): string;
 
 }
