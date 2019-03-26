@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2f4958911f60e8b86d2f03d3191a421",
+    "content-hash": "b07f607b6f0a16ef5b3f786f5ff96bea",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5836,8 +5836,9 @@
                     }
                 },
                 "patches_applied": {
+                    "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff",
                     "Create an SPDX licence rdf entity bundle. @see https://github.com/ec-europa/spdx/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/3.diff",
-                    "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff"
+                    "Provide basic behat steps. @see https://github.com/ec-europa/spdx/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/4.diff"
                 }
             },
             "description": "Allows to federate and manage the SPDX licences.",
