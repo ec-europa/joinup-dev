@@ -261,12 +261,14 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           $allowed_roles = $ownership_data['any'];
           $non_allowed_roles = array_diff($test_roles, $allowed_roles);
           foreach ($allowed_roles as $user_var) {
+            $message = "Parent bundle: {$parent_bundle}, Moderation: {$moderation}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $this->assertEquals(TRUE, $access);
+            $this->assertEquals(TRUE, $access, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
+            $message = "Parent bundle: {$parent_bundle}, Moderation: {$moderation}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $this->assertEquals(FALSE, $access);
+            $this->assertEquals(FALSE, $access, $message);
           }
         }
       }
@@ -500,7 +502,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
       'collection' => [
         'draft' => [
           'own' => TRUE,
-          'any' => [],
+          'any' => [
+            'userModerator',
+          ],
         ],
         'validated' => [
           'own' => TRUE,
@@ -538,7 +542,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
       'solution' => [
         'draft' => [
           'own' => TRUE,
-          'any' => [],
+          'any' => [
+            'userModerator',
+          ],
         ],
         'validated' => [
           'own' => TRUE,
@@ -614,7 +620,13 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
             'save_as_draft',
             'propose',
           ],
-          'any' => [],
+          'any' => [
+            'userModerator' => [
+              'save_as_draft',
+              'propose',
+              'publish',
+            ],
+          ],
         ],
         'proposed' => [
           'own' => [
@@ -781,7 +793,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
-            'any' => [],
+            'any' => [
+              'userModerator',
+            ],
           ],
           'proposed' => [
             'any' => [
@@ -811,7 +825,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
-            'any' => [],
+            'any' => [
+              'userModerator',
+            ],
           ],
           'proposed' => [
             'own' => TRUE,
@@ -840,7 +856,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
-            'any' => [],
+            'any' => [
+              'userModerator',
+            ],
           ],
           'proposed' => [
             'any' => [
@@ -870,7 +888,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
-            'any' => [],
+            'any' => [
+              'userModerator',
+            ],
           ],
           'proposed' => [
             'own' => TRUE,
