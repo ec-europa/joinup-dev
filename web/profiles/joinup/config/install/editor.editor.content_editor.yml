@@ -12,6 +12,7 @@ third_party_settings:
     scheme: public
     directory: inline-files
     extensions: 'txt pdf doc docx xls xlsx ods odt ppt pptx vsd zip tar gz png jpg jpeg mp4 avi'
+    max_size: ''
 format: content_editor
 editor: ckeditor
 settings:
@@ -48,6 +49,7 @@ settings:
             - DrupalFile
             - Table
             - video_embed
+            - Accordion
         -
           name: Tools
           items:
