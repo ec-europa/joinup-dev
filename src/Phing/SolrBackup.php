@@ -99,7 +99,7 @@ class SolrBackup extends \Task {
       throw new \BuildException($exception->getMessage(), $exception);
     }
     if ($response->getStatusCode() != 200) {
-      throw new \BuildException("Solr server returned HTTP code {$response->getStatusCode()}, trying to {$this->operation} Solr '{$this->core}' core.");
+      throw new \BuildException("Solr server returned HTTP code {$response->getStatusCode()}, while trying to {$this->operation} Solr '{$this->core}' core.");
     }
   }
 
@@ -120,7 +120,7 @@ class SolrBackup extends \Task {
 
       // Getting status has timed-out.
       if (time() - $start > static::MAX_EXECUTION_TIME) {
-        throw new \BuildTimeoutException("Timed-out while getting the {$this->operation} status of {$this->core} core.");
+        throw new \BuildTimeoutException("Timed-out while getting the {$this->operation} status for the Solr '{$this->core}' core.");
       }
 
       if ($status === 'in progress') {
@@ -145,7 +145,7 @@ class SolrBackup extends \Task {
     $response = $this->httpClient->get($this->getUrl(TRUE));
 
     if (($content = Json::decode($response->getBody()->getContents())) === NULL) {
-      throw new \BuildException("Invalid response from Solr server, trying to get the {$this->operation} status of Solr '{$this->core}'core.");
+      throw new \BuildException("Invalid response from Solr server, while trying to get the {$this->operation} status of Solr '{$this->core}'core.");
     }
 
     $status = strtolower($this->operation === 'backup' ? $content['details']['backup']['status'] : $content['restorestatus']['status']);
