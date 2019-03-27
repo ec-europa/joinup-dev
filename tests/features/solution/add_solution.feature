@@ -279,5 +279,4 @@ Feature: "Add solution" visibility options.
       | description | Sample description 3   |
       | parent      | Climate change tracker |
       | downloads   | 20                     |
-    Then I visit "/solutions"
     Then I should see the text "20" in the "Test solution" tile
