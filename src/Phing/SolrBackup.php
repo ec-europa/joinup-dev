@@ -81,7 +81,7 @@ class SolrBackup extends \Task {
     // Solr core backup and restore are asynchronous processes. In order to
     // consider the backup/restore done, we need to check the status of the last
     // process.
-    $this->executeStatusCommand();
+    $this->waitToComplete();
     $this->log("Successfully executed {$this->operation} on Solr '{$this->core}' core.");
   }
 
@@ -104,14 +104,14 @@ class SolrBackup extends \Task {
   }
 
   /**
-   * Executes a status command.
+   * Checks the status until receives the success signal.
    *
    * @throws \BuildException
    *   When the operation failed.
    * @throws \BuildTimeoutException
    *   When the status execution has timed-out.
    */
-  protected function executeStatusCommand(): void {
+  protected function waitToComplete(): void {
     $start = time();
     $this->attempt = 0;
 
