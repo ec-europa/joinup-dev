@@ -205,8 +205,8 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
 
     <target name="backup-apache-solr">
         <echo message="Backing-up the Solr server."/>
-        <delete dir="${tmp.dir}/snapshot.published"/>
-        <delete dir="${tmp.dir}/snapshot.unpublished"/>
+        <delete dir="${exports.solr.destination.folder}/snapshot.published"/>
+        <delete dir="${exports.solr.destination.folder}/snapshot.unpublished"/>
         <solr-backup core="published" operation="backup"/>
         <solr-backup core="unpublished" operation="backup"/>
     </target>

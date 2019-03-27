@@ -174,7 +174,7 @@ class SolrBackup extends \Task {
     $properties = $this->getProject()->getProperties();
     $core_url = $properties["solr.core.{$this->core}.url"];
     $core_name = $properties["solr.core.{$this->core}.name"];
-    return "{$core_url}/{$core_name}/replication?command={$this->getCommand($check_status)}&name={$this->core}&location={$properties['tmp.dir']}&wt=json&json.nl=map";
+    return "{$core_url}/{$core_name}/replication?command={$this->getCommand($check_status)}&name={$this->core}&location={$properties['exports.solr.destination.folder']}&wt=json&json.nl=map";
   }
 
   /**
