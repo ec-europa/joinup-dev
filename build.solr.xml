@@ -217,4 +217,20 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
         <solr-backup core="unpublished" operation="restore"/>
     </target>
 
+    <target name="download-apache-solr-snapshot">
+        <delete dir="${exports.solr.destination.folder}" includeemptydirs="true" failonerror="false" />
+        <mkdir dir="${exports.solr.destination.folder}"/>
+        <httpget
+                url="${exports.solr.source}"
+                authUser="${asda.username}"
+                authPassword="${asda.password}"
+                authScheme="basic"
+                dir="${exports.solr.destination.folder}"
+        />
+        <untar file="${exports.solr.destination.folder}/${exports.solr.filename}" todir="${exports.solr.destination.folder}" />
+        <delete file="${exports.solr.destination.folder}/${exports.solr.filename}" />
+        <move file="${exports.solr.destination.folder}/snapshot.joinup" tofile="${exports.solr.destination.folder}/snapshot.published" />
+        <move file="${exports.solr.destination.folder}/snapshot.joinup-unpublished" tofile="${exports.solr.destination.folder}/snapshot.unpublished" />
+    </target>
+
 </project>
