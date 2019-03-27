@@ -77,7 +77,7 @@ class SolrBackup extends \Task {
    */
   public function main():void {
     $this->log("Executing {$this->operation} on Solr '{$this->core}' core.");
-    $this->executeMainCommand();
+    $this->executeCommand();
     // Solr core backup and restore are asynchronous processes. In order to
     // consider the backup/restore done, we need to check the status of the last
     // process.
@@ -86,12 +86,12 @@ class SolrBackup extends \Task {
   }
 
   /**
-   * Executes a main command, backup or restore.
+   * Executes a command: backup or restore.
    *
    * @throws \BuildException
    *   When the server response is invalid.
    */
-  protected function executeMainCommand(): void {
+  protected function executeCommand(): void {
     try {
       $response = $this->httpClient->get($this->getUrl());
     }
