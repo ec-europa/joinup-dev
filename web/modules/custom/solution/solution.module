@@ -233,6 +233,8 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   }
 
   $cacheable_metadata = new CacheableMetadata();
+  $tags = Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate());
+  $cacheable_metadata->addCacheTags($tags);
 
   // Attach the download total of all distributions in this solution.
   if ($display->getComponent('download_total')) {
@@ -267,10 +269,10 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     ];
     // Only add #markup if we want to show it.
     if ($total >= 1) {
-      $build['downloads'][0]['#markup'] = (string) $total;
+      $build['downloads'][] = ['#markup' => $total];
     }
 
-    $cacheable_metedata->applyTo($build['downloads']);
+    $cacheable_metadata->applyTo($build['downloads']);
   }
 
   // Show the collection the solution belongs to. A solution can be affiliated
