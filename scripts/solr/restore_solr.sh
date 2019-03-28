@@ -1,22 +1,21 @@
 #!/bin/bash
 
-cr=$'\r'
 SOLR_SERVER_URL="http://localhost:8983/solr"
 TIMEOUT=300
-re='^[0-9]+$'
+TIMEOUT_PATTERN='^[0-9]+$'
 
 # Function to display help options.
 function show_help {
- echo -e "Usage:      restore_solr.sh [OPTIONS]"
- echo -e "Example:    restore_solr --core core0 --snapshot-dir /tmp --snapshot-name core0bak"
+ echo -e "Usage:   restore_solr.sh [OPTIONS]"
+ echo -e "Example: restore_solr --core core0 --snapshot-dir /tmp --snapshot-name core0bak"
  echo -e "Restores a Solr core from a named snapshot located in a directory"
- echo -e "-h    --help          Show this help text"
- echo -e "-c    --core          Solr core to be restored"
- echo -e "-d    --snapshot-dir  The directory containing the snapshot"
- echo -e "-n    --snapshot-name The snapshot name"
- echo -e "-u    --solr-url      Solr server URL. Defaults to http://localhost:8983/solr"
- echo -e "-t    --timeout       Restore time timeout"
- echo -e "-v    --verbose       If set, verbose logging is on"
+ echo -e "-h, --help          Show this help text"
+ echo -e "-c, --core          Solr core to be restored"
+ echo -e "-d, --snapshot-dir  The directory containing the snapshot"
+ echo -e "-n, --snapshot-name The snapshot name"
+ echo -e "-e, --solr-url      Solr server URL. Default: http://localhost:8983/solr"
+ echo -e "-t, --timeout       Restore time timeout"
+ echo -e "-v, --verbose       If set, verbose logging is on"
 }
 
 # Check command line arguments.
@@ -34,7 +33,7 @@ while [[ "$1" == -* ]]; do
  esac
 done
 
-if ! [[ $TIMEOUT =~ $re ]] ; then
+if ! [[ $TIMEOUT =~ ${TIMEOUT_PATTERN} ]] ; then
   echo "$(tput setaf 1)Timeout needs to be numeric !$(tput sgr0)";
   exit 1
 fi
@@ -62,6 +61,19 @@ fi
 if [ ! -d "${SNAPSHOT_DIR}/snapshot.${SNAPSHOT_NAME}" ]; then
   echo "$(tput setaf 1)The snapshot ${SNAPSHOT_DIR}/snapshot.${SNAPSHOT_NAME} does't exist$(tput sgr0)";
   exit 1;
+fi
+
+# Wipe out the existing index.
+if [ "${VERBOSE_LOG}" == "yes"  ]; then
+  echo "$(tput setaf 3)Wiping out the exiting index of Solr '${CORE}' core.$(tput sgr0)"
+  echo " "
+  echo " "
+fi
+WIPE_INDEX=`/usr/bin/curl -sS "${SOLR_SERVER_URL}/${CORE}/update?stream.body=<delete><query>*:*</query></delete>&commit=true"`
+if [ "${VERBOSE_LOG}" == "yes"  ]; then
+  echo "$(tput setaf 3)${WIPE_INDEX}$(tput sgr0)"
+  echo " "
+  echo " "
 fi
 
 # Restore de index.
