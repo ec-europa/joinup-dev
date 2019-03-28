@@ -3,6 +3,7 @@ Feature: "Add event" visibility options.
   In order to manage events
   As a solution member
   I need to be able to add "Event" content through UI.
+
   Scenario: "Add event" button should not be shown to normal members, authenticated users and anonymous users.
     Given the following solutions:
       | title           | logo     | banner     | state     |
@@ -61,11 +62,11 @@ Feature: "Add event" visibility options.
       | File description field is required. |
 
     When I fill in the following:
-      | Title            | An amazing event                      |
-      | Short title      | Amazing event                         |
-      | Description      | This is going to be an amazing event. |
-      | Physical location         | Rue Belliard, 28                      |
-      | File description | Your free ticket                      |
+      | Title             | An amazing event                      |
+      | Short title       | Amazing event                         |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Rue Belliard, 28                      |
+      | File description  | Your free ticket                      |
     And I fill the start date of the "Date" widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:00"
 

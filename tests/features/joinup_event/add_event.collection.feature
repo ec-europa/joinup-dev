@@ -57,12 +57,12 @@ Feature: "Add event" visibility options.
       | File description field is required. |
 
     When I fill in the following:
-      | Title            | An amazing event                      |
-      | Short title      | Amazing event                         |
-      | Description      | This is going to be an amazing event. |
-      | Physical location         | Rue Belliard 28, Brussels, Belgium    |
-      | File description | Taxi discount voucher.                |
-      | Spatial coverage | France                                |
+      | Title             | An amazing event                      |
+      | Short title       | Amazing event                         |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Rue Belliard 28, Brussels, Belgium    |
+      | File description  | Taxi discount voucher.                |
+      | Spatial coverage  | France                                |
     And I press "Add another item" at the "Virtual location" field
     And I enter the following for the "Virtual location" link field:
       | URL                          | Title           |
