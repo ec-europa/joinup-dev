@@ -227,10 +227,9 @@ Feature: Navigation menu for custom pages
     And I should not see the link "Page 2" in the "Table of contents"
     And I should not see the link "Subpage 2-1" in the "Table of contents"
     And I should not see the link "Page 3" in the "Table of contents"
-    # These links are under "Page 1" but are not expanded.
-    And I should not see the link "Subpage 1-1-1" in the "Table of contents"
-    And I should not see the link "Subpage 1-2-1" in the "Table of contents"
-    And I should not see the link "Subpage 1-2-2" in the "Table of contents"
+    And I should see the link "Subpage 1-1-1" in the "Table of contents"
+    And I should see the link "Subpage 1-2-1" in the "Table of contents"
+    And I should see the link "Subpage 1-2-2" in the "Table of contents"
 
     # Visit "Subpage 1-1" to verify that appropriate children are expanded.
     When I visit the "Subpage 1-1" custom page
@@ -241,9 +240,8 @@ Feature: Navigation menu for custom pages
     And I should not see the link "Page 2" in the "Table of contents"
     And I should not see the link "Subpage 2-1" in the "Table of contents"
     And I should not see the link "Page 3" in the "Table of contents"
-    # These links are under "Page 1" but are not expanded.
-    And I should not see the link "Subpage 1-2-1" in the "Table of contents"
-    And I should not see the link "Subpage 1-2-2" in the "Table of contents"
+    And I should see the link "Subpage 1-2-1" in the "Table of contents"
+    And I should see the link "Subpage 1-2-2" in the "Table of contents"
 
     # Visit "Subpage 1-2" to verify that appropriate children are expanded.
     When I visit the "Subpage 1-2" custom page
@@ -255,8 +253,7 @@ Feature: Navigation menu for custom pages
     And I should not see the link "Page 2" in the "Table of contents"
     And I should not see the link "Subpage 2-1" in the "Table of contents"
     And I should not see the link "Page 3" in the "Table of contents"
-    # These link is under "Page 1" but is not expanded.
-    And I should not see the link "Subpage 1-1-1" in the "Table of contents"
+    And I should see the link "Subpage 1-1-1" in the "Table of contents"
 
     # Ensure that the default links are not shown.
     And I should not see the link "Overview" in the "Table of contents"

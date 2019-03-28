@@ -1,0 +1,3 @@
+<http://joinup.eu/product-type#44611100-7> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<http://joinup.eu/product-type#44611100-7> <http://www.w3.org/2004/02/skos/core#inScheme> <http://joinup.eu/product-type#> .
+<http://joinup.eu/product-type#44611100-7> <http://www.w3.org/2004/02/skos/core#prefLabel> "Air cylinders"@en .

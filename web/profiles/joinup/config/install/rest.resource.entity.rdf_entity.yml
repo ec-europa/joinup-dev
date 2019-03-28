@@ -3,7 +3,6 @@ status: true
 dependencies:
   module:
     - rdf_entity
-    - rdf_export
     - serialization
     - user
 id: entity.rdf_entity
@@ -18,6 +17,5 @@ configuration:
     - ntriples
     - turtle
     - n3
-    - json
   authentication:
     - cookie

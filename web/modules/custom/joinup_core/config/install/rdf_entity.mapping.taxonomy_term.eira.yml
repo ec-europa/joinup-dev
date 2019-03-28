@@ -7,7 +7,7 @@ dependencies:
 id: taxonomy_term.eira
 entity_type_id: taxonomy_term
 bundle: eira
-rdf_type: 'http://data.europa.eu/eira'
+rdf_type: 'http://data.europa.eu/dr8'
 graph:
   default: 'http://eira_skos'
 base_fields_mapping:

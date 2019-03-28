@@ -34,7 +34,7 @@ Feature: Event moderation
     # create content, authenticated users that are not members can create
     # events.
     When I am logged in as "Salvador Thomas"
-    And go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" collection
     And I click "Add event" in the plus button menu
     # Post moderated collections allow publishing content directly.
     And I should see the button "Publish"

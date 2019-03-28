@@ -46,10 +46,14 @@ class AfterFixturesImportCleanup extends VirtuosoTaskBase {
     $this->query('DELETE { GRAPH ?g { ?entity ?field ?value } } WHERE { GRAPH ?g { ?entity ?field ?value . FILTER (LANG(?value) != "" && LANG(?value) != "en") } };');
 
     // @see ISAICP-3216
-    $this->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept . ?subject skos:topConceptOf <http://data.europa.eu/eira> } WHERE { ?subject a skos:Collection . };');
-    $this->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/eira> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
+    // Add the "Concept" type to all collection elements so that they are listed
+    // as Parent terms.
+    $this->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+    // Add the link to all "Concept" type elements so that they are all considered
+    // as children of the EIRA vocabulary regardless of the depth.
+    $this->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
+    // Create a backwards connection from the children to the parent.
     $this->query('INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
-
     // Remove deprecated countries from the country list.
     // @See ISAICP-3442
     $this->query('DELETE FROM <http://countries-skos> { ?entity ?field ?value. } WHERE { ?entity ?field ?value . ?entity <http://publications.europa.eu/ontology/authority/end.use> ?date . FILTER ( bound(?date) ) };');

@@ -381,7 +381,9 @@ class JoinupSubContext extends DrupalSubContextBase {
     $available_optgroups = array_values($this->getSelectOptgroups($field));
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
-    Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
+    foreach ($options as $option) {
+      Assert::assertContains($option, $available_optgroups, TRUE, "The '{$select}' select doesn't contain the option '{$option}''.");
+    }
   }
 
   /**
@@ -415,8 +417,8 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $title
    *   The title of the node.
    *
-   * @When (I )go to the :bundle (content ) :title edit screen
-   * @When (I )visit the :bundle (content ) :title edit screen
+   * @When I go to the :bundle (content ) :title edit screen
+   * @When I visit the :bundle (content ) :title edit screen
    */
   public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
@@ -435,8 +437,8 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $title
    *   The name of the news page.
    *
-   * @When (I )go to the content page of the type :type with the title :title
-   * @When (I )visit the content page of the type :type with the title :title
+   * @When I go to the content page of the type :type with the title :title
+   * @When I visit the content page of the type :type with the title :title
    */
   public function visitNodePage($type, $title) {
     /** @var \Drupal\node\Entity\Node $node */
