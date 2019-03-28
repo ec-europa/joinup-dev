@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7942f4d70a897f5545cdd233788f29d",
+    "content-hash": "dad89761c7873e415efea9a7bfaf1ac7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.90.9",
+            "version": "3.90.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b9d93ad14a504a0833bdafa2e80c9bd90d6cf47a"
+                "reference": "6304e127004f783283d3d13fa07ca13980e43ccd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b9d93ad14a504a0833bdafa2e80c9bd90d6cf47a",
-                "reference": "b9d93ad14a504a0833bdafa2e80c9bd90d6cf47a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6304e127004f783283d3d13fa07ca13980e43ccd",
+                "reference": "6304e127004f783283d3d13fa07ca13980e43ccd",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +149,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-25T18:17:43+00:00"
+            "time": "2019-03-27T18:17:43+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -245,23 +245,23 @@
         },
         {
             "name": "chi-teck/drupal-code-generator",
-            "version": "dev-master",
+            "version": "1.28.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Chi-teck/drupal-code-generator.git",
-                "reference": "2e093f5f958b2daf28c9159002f3945d84fb30a9"
+                "reference": "e7ca5d7d2ecb5374988ff636e7546638e91c2201"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/2e093f5f958b2daf28c9159002f3945d84fb30a9",
-                "reference": "2e093f5f958b2daf28c9159002f3945d84fb30a9",
+                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/e7ca5d7d2ecb5374988ff636e7546638e91c2201",
+                "reference": "e7ca5d7d2ecb5374988ff636e7546638e91c2201",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": ">=5.5.9",
                 "symfony/console": "^3.4 || ^4.0",
-                "symfony/filesystem": "^3.4 || ^4.0",
+                "symfony/filesystem": "^2.7 || ^3.4 || ^4.0",
                 "twig/twig": "^1.35"
             },
             "bin": [
@@ -286,7 +286,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal code generator",
-            "time": "2019-02-28T18:46:26+00:00"
+            "time": "2019-03-07T06:10:55+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -5840,8 +5840,9 @@
                     }
                 },
                 "patches_applied": {
+                    "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff",
                     "Create an SPDX licence rdf entity bundle. @see https://github.com/ec-europa/spdx/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/3.diff",
-                    "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff"
+                    "Provide basic behat steps. @see https://github.com/ec-europa/spdx/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/4.diff"
                 }
             },
             "description": "Allows to federate and manage the SPDX licences.",
@@ -12601,7 +12602,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/devel",
-                "reference": "94223642c8d90d0fac84dd4f6b559d5dbe71e22b"
+                "reference": "00fa2de6f9f70ee4b4c32ee0c8021a0596dd565e"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -12613,8 +12614,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0+6-dev",
-                    "datestamp": "1553550185",
+                    "version": "8.x-2.0+7-dev",
+                    "datestamp": "1553588286",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -12672,7 +12673,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-03-26T17:35:41+00:00"
         },
         {
             "name": "drupal/drupal-driver",
@@ -13064,8 +13066,7 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+            }
         },
         {
             "name": "fabpot/goutte",

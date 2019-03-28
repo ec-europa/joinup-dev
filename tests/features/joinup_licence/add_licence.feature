@@ -15,8 +15,8 @@ Feature: Add licence through UI
     Then I should see the link "Add licence"
 
     Examples:
-      | role |
-      | moderator |
+      | role            |
+      | moderator       |
       | licence_manager |
 
   Scenario Outline: Add licence as a Moderator or a Licence Manager.
@@ -40,6 +40,6 @@ Feature: Add licence through UI
     Then I delete the "This is a random licence" licence
 
     Examples:
-      | role |
-      | moderator |
+      | role            |
+      | moderator       |
       | licence_manager |
