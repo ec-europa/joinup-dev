@@ -145,7 +145,7 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
     'solution',
   ];
 
-  // Add submit callback when the current bundle is in the list.
+  // Add submit callback when the current bundle is in the list and when we are on the content add form.
   if (in_array($rdf->bundle(), $related_bundles) && $form_object->getOperation() == 'add') {
     $form['actions']['submit']['#submit'][] = 'joinup_core_propose_message_submit';
   }
