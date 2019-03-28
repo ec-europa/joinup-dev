@@ -25,7 +25,9 @@ class TableOfContents extends GroupMenuBlock {
    * {@inheritdoc}
    */
   protected function getCurrentRouteMenuTreeParameters(): MenuTreeParameters {
-    $parameters = parent::getCurrentRouteMenuTreeParameters();
+    $parameters = new MenuTreeParameters();
+
+    $this->setMinDepth($parameters)->setMaxDepth($parameters);
 
     // Get the topmost/root custom page in this hierarchy.
     $trail = $this->menuActiveTrail->getActiveTrailIds($this->getMenuName());

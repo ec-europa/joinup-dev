@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core\Plugin\Block;
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
@@ -93,21 +94,40 @@ class GroupMenuBlock extends OgMenuBlock {
    */
   protected function getCurrentRouteMenuTreeParameters(): MenuTreeParameters {
     $parameters = $this->menuTree->getCurrentRouteMenuTreeParameters($this->getMenuName());
+    $this->setMinDepth($parameters)->setMaxDepth($parameters);
+    return $parameters;
+  }
 
-    // Adjust the menu tree parameters based on the block's configuration.
-    $level = $this->configuration['level'];
-    $depth = $this->configuration['depth'];
-    $parameters->setMinDepth($level);
+  /**
+   * Sets the min depth for the menu.
+   *
+   * @param \Drupal\Core\Menu\MenuTreeParameters $parameters
+   *   The menu tree parameters object.
+   *
+   * @return $this
+   */
+  protected function setMinDepth(MenuTreeParameters $parameters): BlockPluginInterface {
+    $parameters->setMinDepth($this->configuration['level']);
+    return $this;
+  }
 
+  /**
+   * Sets the max depth for the menu.
+   *
+   * @param \Drupal\Core\Menu\MenuTreeParameters $parameters
+   *   The menu tree parameters object.
+   *
+   * @return $this
+   */
+  protected function setMaxDepth(MenuTreeParameters $parameters): BlockPluginInterface {
     // When the depth is configured to zero, there is no depth limit. When depth
     // is non-zero, it indicates the number of levels that must be displayed.
     // Hence this is a relative depth that we must convert to an actual
     // (absolute) depth, that may never exceed the maximum depth.
-    if ($depth > 0) {
-      $parameters->setMaxDepth(min($level + $depth - 1, $this->menuTree->maxDepth()));
+    if ($this->configuration['depth'] > 0) {
+      $parameters->setMaxDepth(min($this->configuration['level'] + $this->configuration['depth'] - 1, $this->menuTree->maxDepth()));
     }
-
-    return $parameters;
+    return $this;
   }
 
   /**
