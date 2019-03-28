@@ -77,21 +77,20 @@ class SolrBackup extends \Task {
    */
   public function main():void {
     $this->log("Executing {$this->operation} on Solr '{$this->core}' core.");
-    $this->executeCommand();
-    // Solr core backup and restore are asynchronous processes. In order to
-    // consider the backup/restore done, we need to check the status of the last
-    // process.
-    $this->waitToComplete();
+    $this->executeCommand()->waitToComplete();
     $this->log("Successfully executed {$this->operation} on Solr '{$this->core}' core.");
   }
 
   /**
    * Executes a command: backup or restore.
    *
+   * @return $this
+   *
    * @throws \BuildException
    *   When the server response is invalid.
+   *
    */
-  protected function executeCommand(): void {
+  protected function executeCommand(): self {
     try {
       $response = $this->httpClient->get($this->getUrl());
     }
@@ -101,17 +100,24 @@ class SolrBackup extends \Task {
     if ($response->getStatusCode() != 200) {
       throw new \BuildException("Solr server returned HTTP code {$response->getStatusCode()}, while trying to {$this->operation} Solr '{$this->core}' core.");
     }
+    return $this;
   }
 
   /**
    * Checks the status until receives the success signal.
+   *
+   * Solr core backup and restore are asynchronous processes. In order to
+   * consider the backup/restore done, we need to check the status of the last
+   * process.
+   *
+   * @return $this
    *
    * @throws \BuildException
    *   When the operation failed.
    * @throws \BuildTimeoutException
    *   When the status execution has timed-out.
    */
-  protected function waitToComplete(): void {
+  protected function waitToComplete(): self {
     $start = time();
     $this->attempt = 0;
 
@@ -124,10 +130,12 @@ class SolrBackup extends \Task {
       }
 
       if ($status === 'in progress') {
-        // Wait 3 seconds before trying again.
-        sleep(3);
+        // Wait 2 seconds before trying again.
+        sleep(2);
       }
     } while ($status !== 'success');
+
+    return $this;
   }
 
   /**
