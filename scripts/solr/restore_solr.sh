@@ -62,7 +62,7 @@ if [ "${CORE}" == '' ] || [ "${SNAPSHOT_DIR}" == '' ] || [ "${SNAPSHOT_NAME}" ==
   exit 1;
 fi
 
-CORE_EXISTS=`curl -sS "${SOLR_SERVER_URL}/admin/cores?action=STATUS&core=${CORE}" |grep -o '<long name="uptime">'`
+CORE_EXISTS=`curl -sS "${SOLR_SERVER_URL}/admin/cores?action=STATUS&core=${CORE}&wt=xml" |grep -o '<long name="uptime">'`
 
 if [ "${CORE_EXISTS}" == '' ]; then
   error "Solr '${CORE}' core does not exists on this server!";
@@ -81,11 +81,11 @@ fi
 
 # Wipe out the existing index.
 log "Wiping out the exiting index of Solr '${CORE}' core."
-WIPE_INDEX=`/usr/bin/curl -sS "${SOLR_SERVER_URL}/${CORE}/update?stream.body=<delete><query>*:*</query></delete>&commit=true"`
+WIPE_INDEX=`/usr/bin/curl -sS "${SOLR_SERVER_URL}/${CORE}/update?stream.body=<delete><query>*:*</query></delete>&commit=true&wt=xml"`
 log "${WIPE_INDEX}"
 
-# Restore de index.
-line="${SOLR_SERVER_URL}/${CORE}/replication?command=restore&name=${SNAPSHOT_NAME}&location=${SNAPSHOT_DIR}"
+# Restore the index.
+line="${SOLR_SERVER_URL}/${CORE}/replication?command=restore&name=${SNAPSHOT_NAME}&location=${SNAPSHOT_DIR}&wt=xml"
 RESTORE_START=`/usr/bin/curl -sS ${line}`
 log "${RESTORE_START}$(tput sgr0)"
 
@@ -103,7 +103,7 @@ while [[ "${SUCCESS}" != '<str name="status">success</str>' ]] && [[ ${COUNTER} 
 do
   sleep 1
 
-  CHECK_SUCCESS=`/usr/bin/curl -sS "${SOLR_SERVER_URL}/${CORE}/replication?command=restorestatus&name=${SNAPSHOT_NAME}&location=${SNAPSHOT_DIR}"`
+  CHECK_SUCCESS=`/usr/bin/curl -sS "${SOLR_SERVER_URL}/${CORE}/replication?command=restorestatus&name=${SNAPSHOT_NAME}&location=${SNAPSHOT_DIR}&wt=xml"`
   SUCCESS=`echo ${CHECK_SUCCESS} | grep -o '<str name="status">success</str>'`
   log "${CHECK_SUCCESS}"
 
