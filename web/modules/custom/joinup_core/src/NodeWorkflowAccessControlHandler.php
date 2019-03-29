@@ -174,7 +174,7 @@ class NodeWorkflowAccessControlHandler {
     // only the owner has access. This access restriction does not apply to
     // moderators.
     if (
-      !$account->hasPermission('bypass workflow restrictions')
+      !$account->hasPermission('access draft community content')
       && !$this->hasPublishedVersion($entity)
       && $this->getEntityState($entity) === 'draft'
       && $entity->getOwnerId() !== $account->id()
