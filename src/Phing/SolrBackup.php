@@ -88,7 +88,6 @@ class SolrBackup extends \Task {
    *
    * @throws \BuildException
    *   When the server response is invalid.
-   *
    */
   protected function executeCommand(): self {
     try {
