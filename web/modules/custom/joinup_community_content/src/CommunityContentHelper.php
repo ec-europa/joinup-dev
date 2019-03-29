@@ -23,19 +23,6 @@ class CommunityContentHelper {
   }
 
   /**
-   * Returns whether the passed in bundle is a community content bundle.
-   *
-   * @param string $bundle
-   *   The bundle name to check.
-   *
-   * @return bool
-   *   TRUE if the passed in bundle is a community content bundle.
-   */
-  public static function isCommunityContentBundle(string $bundle): bool {
-    return \in_array($bundle, self::getBundles(), TRUE);
-  }
-
-  /**
    * Returns whether the entity is a community content node.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -45,7 +32,7 @@ class CommunityContentHelper {
    *   True if the entity is a community content node, false otherwise.
    */
   public static function isCommunityContent(EntityInterface $entity): bool {
-    return $entity instanceof NodeInterface && self::isCommunityContentBundle($entity->bundle());
+    return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::getBundles());
   }
 
   /**
