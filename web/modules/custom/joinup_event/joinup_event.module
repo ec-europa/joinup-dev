@@ -34,12 +34,11 @@ function joinup_event_entity_type_alter(array &$entity_types): void {
 }
 
 /**
- * Implements template_preprocess_form_element_label().
+ * Implements template_preprocess_fieldset().
  */
-function joinup_event_preprocess_form_element_label(array &$variables): void {
-  if (isset($variables['element']['#id'])) {
-    if ($variables['element']['#id'] == 'edit-field-location-0-value') {
-      $variables['attributes']['class'][] = 'js-form-required form-required';
-    }
+function joinup_event_preprocess_fieldset(array &$variables): void {
+  // Add an "asterisk" to the Event Location Field Group.
+  if ($variables['element']['#id'] == 'group-event-location') {
+    $variables['legend_span']['attributes']->addClass('js-form-required form-required');
   }
 }

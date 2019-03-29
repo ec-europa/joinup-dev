@@ -45,7 +45,7 @@ third_party_settings:
         - field_location
         - field_event_online_location
       parent_name: ''
-      weight: 0
+      weight: 6
       format_type: fieldset
       format_settings:
         label: 'Event Location'
