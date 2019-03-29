@@ -25,6 +25,20 @@
 
 // Modifiers
 // --------------------------------------------------
+.tabs--horizontal
+  margin: 0
+  padding: 0
+  border-bottom: 1px solid $color-grey-light
+  +justify-content(center)
+  +flex
+  +flex-direction(column)
+  +flex-wrap(nowrap)
+  +breakpoint(sm)
+    border-bottom: none
+    +flex-direction(row)
+    +align-items(center)
+
+
 .tab--horizontal
   border-bottom: 1px solid $color-grey-light
   background-color: $color-grey-light
