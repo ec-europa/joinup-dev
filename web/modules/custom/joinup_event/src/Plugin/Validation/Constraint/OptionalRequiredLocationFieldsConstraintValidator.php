@@ -23,8 +23,8 @@ class OptionalRequiredLocationFieldsConstraintValidator extends ConstraintValida
 
     // Add Violation when both of them are empty.
     if ($entity->get('field_location')
-        ->isEmpty() && $entity->get('field_event_online_location')
-        ->isEmpty()) {
+      ->isEmpty() && $entity->get('field_event_online_location')
+      ->isEmpty()) {
       $this->context->addViolation($constraint->message);
     }
   }
