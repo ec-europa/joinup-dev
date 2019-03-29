@@ -1,0 +1,116 @@
+// License
+//
+
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.license-filter__header
+  height: 45px
+  color: #fff
+  text-align: center
+  span
+    font-weight: bold
+    vertical-align: middle
+    line-height: 45px
+
+.licence__card
+  min-height: 337px
+
+
+.license-filter__content
+  padding: 15px
+
+.license-filter__list
+  padding: 0
+  margin: 0
+  list-style: none
+  .license-filter__item
+    margin-bottom: 10px
+    font-size: $font-size-xsmall
+    &:last-child
+      margin-bottom: 0
+    a
+      text-decoration: none
+      &:hover,
+      &.is-active
+        text-decoration: underline
+        font-weight: bold
+
+.license-tile__title
+  margin-left: -21px
+  .icon
+    margin-left: 0
+    margin-right: 5px
+
+.license-tile__line
+  font-size: $font-size-xsmall
+  display: flex
+
+.license-tile__label
+  color: #fff
+  padding: 5px 10px
+  margin-right: 10px
+
+.license-tile__label-wrapper
+  min-width: 100px
+  text-align: right
+
+// Modifiers
+// --------------------------------------------------
+.license-filter--green
+  .license-filter__header
+    background-color: $color-green-warm
+  .license-filter__item
+    a
+      color: $color-green-warm
+
+.license-filter--beige
+  .license-filter__header
+    background-color: $color-beige-warm
+  .license-filter__item
+    a
+      color: $color-beige-warm
+
+.license-tile__line--can
+  .license-tile__label
+    background-color: $color-green-warm
+  .license-tile__value
+    color: $color-green-warm
+
+.license-tile__line--must
+  .license-tile__label
+    background-color: $color-beige-warm
+  .license-tile__value
+    color: $color-beige-warm
+
+.license-tile__line--cannot
+  .license-tile__label
+    background-color: $color-red-warm
+  .license-tile__value
+    color: $color-red-warm
+
+.license-tile__line--compatible
+  .license-tile__label
+    background-color: $color-blue-warm
+  .license-tile__value
+    color: $color-blue-warm
+
+.license-tile__line--law
+  .license-tile__label
+    background-color: $color-grey-warm
+  .license-tile__value
+    color: $color-grey-warm
+
+.license-tile__line--support
+  .license-tile__label
+    background-color: $color-orange-warm
+  .license-tile__value
+    color: $color-orange-warm
+
+// Dependiencies
+// --------------------------------------------------
+.license-tile
+  .listing__card
+    min-height: 0
