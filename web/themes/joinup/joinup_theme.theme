@@ -160,18 +160,6 @@ function _joinup_non_blue_header_routes() {
 }
 
 /**
- * Get a list of routes which should have navy blue header.
- *
- * @return array
- *   The routes.
- */
-function _joinup_navy_blue_header_routes() {
-  return [
-    'view.search.page_1',
-  ];
-}
-
-/**
  * Get a list of routes which should have blue header, but they are not forms.
  *
  * @return array
@@ -310,7 +298,6 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Get routes which should have modifications.
   $blue_header_routes = _joinup_blue_header_routes();
-  $navy_header_routes = _joinup_navy_blue_header_routes();
   $other_forms = _joinup_non_blue_header_routes();
   $not_forms = _joinup_not_forms_routes();
 
@@ -322,10 +309,6 @@ function joinup_theme_preprocess_page(&$variables) {
     if (in_array($route_name, $blue_header_routes)) {
       $variables['is_blue_header'] = TRUE;
       $is_form_container = TRUE;
-    }
-
-    if (in_array($route_name, $navy_header_routes)) {
-      $variables['is_navy_header'] = TRUE;
     }
   }
 
@@ -548,6 +531,11 @@ function joinup_theme_preprocess_block(&$variables) {
     case 'toc_outline':
       $variables['content']['#attributes']['class'][] = 'navigation-bottom__links';
       break;
+
+    case 'global_search':
+      $variables['attributes']['class'][] = 'search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right';
+      break;
+
   }
 
   // Set default title tag.
