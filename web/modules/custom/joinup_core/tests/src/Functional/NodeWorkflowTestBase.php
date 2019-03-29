@@ -137,7 +137,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           foreach ($non_allowed_roles as $user_var) {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $this->assertEquals(FALSE, $access, $message);
+            $this->assertFalse($access, $message);
           }
         }
       }
@@ -175,12 +175,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         foreach ($allowed_roles as $user_var) {
           $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
           $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-          $this->assertEquals(TRUE, $access, $message);
+          $this->assertTrue($access, $message);
         }
         foreach ($non_allowed_roles as $user_var) {
           $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
           $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-          $this->assertEquals(FALSE, $access, $message);
+          $this->assertFalse($access, $message);
         }
       }
     }
@@ -216,7 +216,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           else {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->userOwner);
-            $this->assertEquals(FALSE, $access, $message);
+            $this->assertFalse($access, $message);
           }
 
           $allowed_roles = array_keys($ownership_data['any']);
@@ -228,7 +228,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           }
           foreach ($non_allowed_roles as $user_var) {
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $this->assertEquals(FALSE, $access);
+            $this->assertFalse($access);
           }
         }
       }
@@ -263,12 +263,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           foreach ($allowed_roles as $user_var) {
             $message = "Parent bundle: {$parent_bundle}, Moderation: {$moderation}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $this->assertEquals(TRUE, $access, $message);
+            $this->assertTrue($access, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
             $message = "Parent bundle: {$parent_bundle}, Moderation: {$moderation}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
-            $this->assertEquals(FALSE, $access, $message);
+            $this->assertFalse($access, $message);
           }
         }
       }
