@@ -77,7 +77,7 @@ Feature: "Add event" visibility options.
     Then I should see the error message "The date and time should both be entered in the End date field"
 
     # Test Location fields constraint (one of them should be filled in).
-    Then I clear the field "field_location[0][value]"
+    Then I clear the field "Physical location"
     And I press "Save as draft"
     Then I should see the error message "At least one location field should be filled in."
     Then I fill in "Physical location" with "Rue Belliard, 28"
