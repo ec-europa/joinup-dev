@@ -73,3 +73,53 @@ var loadMore = loadMore || {};
   });
 
 })(jQuery);
+
+(function ($) {
+  $('.license-filter__item a').each(function () {
+    $(this).on('click', function (event) {
+      event.preventDefault();
+
+      var currentClass = $(this).attr('class');
+      if (typeof currentClass !== 'undefined') {
+        var classes = currentClass.split(' ');
+        $('.license-tile').each(function () {
+          if ($(this).find('.' + classes[0]).length === 0) {
+            if (classes.length > 1) {
+              $(this).removeClass('is-hidden');
+            }
+            else if (!$(this).hasClass('is-hidden')) {
+              $(this).addClass('is-hidden');
+            }
+          }
+        });
+      }
+
+      $('.license-filter__item a.is-active').each(function () {
+        var currentClass = $(this).attr('class');
+        if (typeof currentClass !== 'undefined') {
+          var classes = currentClass.split(' ');
+
+          $('.license-tile').each(function () {
+            if ($(this).find('.' + classes[0]).length === 0) {
+              if (classes.length <= 1 && !$(this).hasClass('is-hidden')) {
+                $(this).addClass('is-hidden');
+              }
+            }
+          });
+        }
+      });
+
+      $(this).toggleClass('is-active');
+      var licenseTiles = 0;
+      $('.license-tile').each(function () {
+        if (!$(this).hasClass('is-hidden')) {
+          licenseTiles++;
+        }
+      });
+
+      $('.license-counter__number').text(licenseTiles);
+
+    });
+  });
+
+})(jQuery);

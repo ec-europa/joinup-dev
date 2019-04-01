@@ -33,9 +33,9 @@
       margin-bottom: 0
     a
       text-decoration: none
-      &:hover,
-      &.is-active
+      &:hover
         text-decoration: underline
+      &.is-active
         font-weight: bold
 
 .license-tile__title
@@ -57,21 +57,79 @@
   min-width: 100px
   text-align: right
 
+.license-tile__button
+  text-decoration: none
+  padding: 10px 30px
+  color: $color-base
+  border: 2px solid $color-blue-warm
+  font-size: $font-size-small
+  border-radius: 5px
+  position: absolute
+  left: 41px
+  bottom: 20px
+  &:hover
+    color: #fff
+    background: $color-blue-warm
+
+.license-counter
+  font-weight: bold
+  margin: 10px 0
+
+.license-search__label
+  color: $color-blue-dark
+  font-weight: bold
+  display: inline-block
+  vertical-align: middle
+
+.license-search__input
+  display: inline-block
+  vertical-align: middle
+  +breakpoint(mobile)
+    margin: 0 10px 5px 10px
+
 // Modifiers
 // --------------------------------------------------
-.license-filter--green
+.license-filter--can
   .license-filter__header
     background-color: $color-green-warm
   .license-filter__item
     a
       color: $color-green-warm
 
-.license-filter--beige
+.license-filter--must
   .license-filter__header
     background-color: $color-beige-warm
   .license-filter__item
     a
       color: $color-beige-warm
+
+.license-filter--cannot
+  .license-filter__header
+    background-color: $color-red-warm
+  .license-filter__item
+    a
+      color: $color-red-warm
+
+.license-filter--compatible
+  .license-filter__header
+    background-color: $color-blue-warm
+  .license-filter__item
+    a
+      color: $color-blue-warm
+
+.license-filter--law
+  .license-filter__header
+    background-color: $color-grey-warm
+  .license-filter__item
+    a
+      color: $color-grey-warm
+
+.license-filter--support
+  .license-filter__header
+    background-color: $color-orange-warm
+  .license-filter__item
+    a
+      color: $color-orange-warm
 
 .license-tile__line--can
   .license-tile__label
@@ -114,3 +172,9 @@
 .license-tile
   .listing__card
     min-height: 0
+
+// States
+// --------------------------------------------------
+.license-tile
+  &.is-hidden
+    display: none

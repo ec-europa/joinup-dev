@@ -7,7 +7,7 @@
     <!-- Section featured start -->
     <div class="section section--featured">
 
-      {{> partials/featured--collection }}
+      {{> partials/featured--license }}
 
     </div>
     <!-- Section featured end -->
@@ -16,33 +16,34 @@
       <div class="main-container">
         <div class="row">
           <div class="mdl-grid">
-            <div class="section section--sidebar-left mdl-cell mdl-cell--2-col">
+            <div class="section section--main mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
 
-              {{> partials/sidebar-menu--collections }}
-
-            </div>
-            <div class="section section--main mdl-cell mdl-cell--8-col">
+              {{> partials/license-search }}
 
               <div class="listing listing--grid">
                 <div class="row">
                   <div class="mdl-grid">
 
-                    {{> partials/license-filter--green }}
-                    {{> partials/license-filter--beige }}
-                    {{> partials/license-filter--green }}
-                    {{> partials/license-filter--green }}
-                    {{> partials/license-filter--green }}
-                    {{> partials/license-filter--green }}
+                    {{> partials/license-filter--can }}
+                    {{> partials/license-filter--must }}
+                    {{> partials/license-filter--cannot }}
+                    {{> partials/license-filter--compatible }}
+                    {{> partials/license-filter--law }}
+                    {{> partials/license-filter--support }}
 
                   </div>
                 </div>
               </div>
+
+              {{> partials/license-counter }}
 
               <div class="listing listing--grid">
                 <div class="row">
                   <div class="mdl-grid">
 
                     {{> partials/license-tile-1 }}
+                    {{> partials/license-tile-2 }}
+                    {{> partials/license-tile-3 }}
 
                   </div>
                 </div>
