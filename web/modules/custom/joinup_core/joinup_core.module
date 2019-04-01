@@ -172,9 +172,13 @@ function joinup_core_propose_message_submit(&$form, FormStateInterface $form_sta
   $form_object = $form_state->getFormObject();
   /** @var \Drupal\rdf_entity\RdfInterface $rdf */
   $rdf = $form_object->getEntity();
+  $state = $rdf->get('field_is_state')->value;
 
-  // Add a status message when it was saved.
-  \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $rdf->get('rid')->entity->getSingularLabel()]));
+  // Do not show this message when the content is being "published".
+  if ($state !== 'published') {
+    // Add a status message when it was saved.
+    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $rdf->get('rid')->entity->getSingularLabel()]));
+  }
 }
 
 /**
