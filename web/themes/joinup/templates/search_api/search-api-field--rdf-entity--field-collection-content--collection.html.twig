@@ -39,7 +39,7 @@
                   <h2 class="listing__title">{{ 'Newsletter'|t }}</h2>
                 </div>
                 <div class="listing__field">
-                  <p>{{ newsletter_motivation }}</p>
+                  <p>{{ newsletter_motivation|render|striptags }}</p>
                 </div>
                 <div class="listing__fields--bottom-aligned">
                   {{ newsletter_form }}

@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_taxonomy_related_term
+    - taxonomy.vocabulary.eira
+id: taxonomy_term.eira.field_taxonomy_related_term
+field_name: field_taxonomy_related_term
+entity_type: taxonomy_term
+bundle: eira
+label: 'Related terms'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      eira: eira
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
