@@ -174,8 +174,7 @@ function joinup_core_propose_message_submit(&$form, FormStateInterface $form_sta
   $rdf = $form_object->getEntity();
   $state = $rdf->get('field_is_state')->value;
 
-  // Do not show this message when the content is being "published".
-  if ($state !== 'published') {
+  if ($state === 'proposed') {
     // Add a status message when it was saved.
     \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $rdf->get('rid')->entity->getSingularLabel()]));
   }
