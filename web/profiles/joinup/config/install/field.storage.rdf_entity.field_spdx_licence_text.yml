@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - text
+third_party_settings:
+  rdf_entity:
+    mapping:
+      value:
+        predicate: 'http://spdx.org/rdf/terms#licenseText'
+        format: t_literal
+      format:
+        predicate: ''
+        format: no_format
+id: rdf_entity.field_spdx_licence_text
+field_name: field_spdx_licence_text
+entity_type: rdf_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

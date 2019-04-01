@@ -5,17 +5,22 @@
  * Main functions and hook implementations of the Licence module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function joinup_licence_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+function joinup_licence_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
   // Make sure the licence label is unique.
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'licence' && !empty($fields['label'])) {
+  if ($entity_type->id() === 'rdf_entity' && $bundle === 'licence' && !empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
   }
 }
@@ -23,7 +28,7 @@ function joinup_licence_entity_bundle_field_info_alter(&$fields, EntityTypeInter
 /**
  * Implements hook_ENTITY_TYPE_access().
  */
-function joinup_licence_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+function joinup_licence_rdf_entity_access(EntityInterface $entity, string $operation, AccountInterface $account): AccessResult {
   if ($entity->bundle() !== 'spdx_licence' || $operation !== 'view') {
     return AccessResult::neutral();
   }
@@ -31,4 +36,62 @@ function joinup_licence_rdf_entity_access(EntityInterface $entity, $operation, A
   // Only deny access to the canonical route.
   $route_match = \Drupal::routeMatch();
   return AccessResult::forbiddenIf($route_match->getRouteName() === 'entity.rdf_entity.canonical' && $route_match->getParameter('rdf_entity')->bundle() === 'spdx_licence');
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ *
+ * - Append additional fields to the licence entity display containing data
+ *   from the SPDX licence.
+ *
+ * @see joinup_licence_rdf_entity_view()
+ */
+function joinup_licence_entity_extra_field_info(): array {
+  $fields = [];
+
+  $licence_type = RdfEntityType::load('licence');
+  if ($licence_type) {
+    $display = &$fields['rdf_entity'][$licence_type->id()]['display'];
+    $display['spdx_licence_id'] = [
+      'label' => t('SPDX licence ID'),
+      'description' => t('The ID of the licence in the SPDX licence list.'),
+      'visible' => FALSE,
+    ];
+    $display['spdx_licence_text'] = [
+      'label' => t('Licence text'),
+      'visible' => FALSE,
+    ];
+    $display['spdx_see_also'] = [
+      'label' => t('See also'),
+      'description' => t('Links to related licences according to SPDX.'),
+      'visible' => FALSE,
+    ];
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * - Exposes a number of fields from the SPDX Licence entity on the Licence
+ *   entity.
+ */
+function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, EntityViewDisplayInterface $display, string $view_mode): void {
+  if ($entity->bundle() != 'licence') {
+    return;
+  }
+
+  $spdx_licence = $entity->get('field_licence_spdx_licence')->referencedEntities()[0] ?? NULL;
+  if ($spdx_licence) {
+    foreach (['spdx_licence_id', 'spdx_licence_text', 'spdx_see_also'] as $pseudo_field) {
+      if ($display->getComponent($pseudo_field)) {
+        /** @var \Drupal\Core\Field\FieldItemListInterface $field_item_list */
+        $field_item_list = $spdx_licence->get("field_$pseudo_field");
+        if (!$field_item_list->isEmpty()) {
+          $build[$pseudo_field] = $field_item_list->view();
+        }
+      }
+    }
+  }
 }
