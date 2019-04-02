@@ -94,6 +94,8 @@ var loadMore = loadMore || {};
         });
       }
 
+      $(this).toggleClass('is-active');
+
       $('.license-filter__item a.is-active').each(function () {
         var currentClass = $(this).attr('class');
         if (typeof currentClass !== 'undefined') {
@@ -101,7 +103,7 @@ var loadMore = loadMore || {};
 
           $('.license-tile').each(function () {
             if ($(this).find('.' + classes[0]).length === 0) {
-              if (classes.length <= 1 && !$(this).hasClass('is-hidden')) {
+              if (classes.length > 1 && !$(this).hasClass('is-hidden')) {
                 $(this).addClass('is-hidden');
               }
             }
@@ -109,7 +111,6 @@ var loadMore = loadMore || {};
         }
       });
 
-      $(this).toggleClass('is-active');
       var licenseTiles = 0;
       $('.license-tile').each(function () {
         if (!$(this).hasClass('is-hidden')) {
