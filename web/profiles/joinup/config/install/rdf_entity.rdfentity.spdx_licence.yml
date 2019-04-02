@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'SPDX Licence'
+rid: spdx_licence
+description: ''
+label_singular: null
+label_plural: null
+label_count: null
