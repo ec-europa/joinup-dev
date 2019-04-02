@@ -101,4 +101,15 @@ function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, Ent
       }
     }
   }
+
+  // Workaround for a limitation in RDF Entity. Currently the module only
+  // supports a single property in fields that have multiple properties. This
+  // means that the filter format for text_long fields is not stored, and it
+  // falls back to the default filter format. We're setting the right format
+  // here.
+  // @todo Remove once bug #2892361 is fixed.
+  // @see https://www.drupal.org/project/rdf_entity/issues/2892361
+  if (!empty($build['spdx_licence_text'])) {
+    $build['spdx_licence_text'][0]['#format'] = 'licence';
+  }
 }
