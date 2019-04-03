@@ -110,7 +110,8 @@
         "symfony/css-selector": "~2.8"
     },
     "conflict": {
-        "drupal/drupal": "*"
+        "drupal/drupal": "*",
+        "symfony/http-foundation": "3.4.24"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
