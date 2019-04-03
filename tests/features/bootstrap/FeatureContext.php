@@ -778,7 +778,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function clickVerticalTabLink($tab) {
     // When this is running in a browser without JavaScript the vertical tabs
     // are rendered as a details element.
-    if (!$this->browserSupportsJavascript()) {
+    if (!$this->browserSupportsJavaScript()) {
       return;
     }
 
@@ -912,7 +912,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $session = $this->getSession();
     $page_title = $session->getPage()->find('xpath', '//head/title');
     if (!$page_title) {
-      throw new \Exception(sprintf('Page title tag not found on the page ', $session, $session->getCurrentUrl()));
+      throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
     list($title, $site_name) = explode(' | ', $page_title->getText());
@@ -1237,7 +1237,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
     if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
-      throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
     }
 
     return $checkbox;
@@ -1453,6 +1453,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       $config->set('error_level', $error_level)->save();
       static::restoreReadOnlyConfig();
     }
+  }
+
+  /**
+   * Navigates to the canonical page of a taxonomy term with a given format.
+   *
+   * @param string $vocabulary_name
+   *   The name of the vocabulary.
+   * @param string $terme_name
+   *   The term name.
+   * @param string $format
+   *   The RDF serialization format.
+   *
+   * @Given I visit the :vocabulary_name term :term_name page in the :format serialisation
+   */
+  public function visitTermWithFormat(string $vocabulary_name, string $term_name, string $format): void {
+    /** @var \Drupal\taxonomy\Entity\Vocabulary $vocabulary */
+    $vocabulary = $this->getEntityByLabel('taxonomy_vocabulary', $vocabulary_name);
+    $term = $this->getEntityByLabel('taxonomy_term', $term_name, $vocabulary->id());
+    $this->visitPath($term->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
   }
 
 }

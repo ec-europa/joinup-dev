@@ -2,6 +2,8 @@
 
 <project name="Solr" default="help">
 
+    <taskdef name="solr-backup" classname="\DrupalProject\Phing\SolrBackup" />
+
     <target name="download-apache-solr">
         <if>
             <available file="${solr.dir}" type="dir" property="solr.dir.available" />
@@ -108,7 +110,7 @@
             <else>
                 <!-- Create the Solr core. -->
                 <exec dir="${solr.dir}"
-                      command="./bin/solr create_core -c ${solr.core.published}"
+                      command="./bin/solr create_core -c ${solr.core.published.name}"
                       checkreturn="true"
                       passthru="true"/>
                 <!-- Copy the configuration. -->
@@ -125,7 +127,7 @@
             <else>
                 <!-- Create the Solr core. -->
                 <exec dir="${solr.dir}"
-                      command="./bin/solr create_core -c ${solr.core.unpublished}"
+                      command="./bin/solr create_core -c ${solr.core.unpublished.name}"
                       checkreturn="true"
                       passthru="true"/>
                 <!-- Copy the configuration. -->
@@ -157,16 +159,16 @@
         </reflexive>
         <append
                 destFile="${website.settings.local.php}"
-                text="${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['scheme'] = '${solr.published_core.scheme}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['host'] = '${solr.published_core.host}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['port'] = '${solr.published_core.port}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['path'] = '${solr.published_core.path}';
-${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['core'] = '${solr.published_core.core_name}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['scheme'] = '${solr.unpublished_core.scheme}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['host'] = '${solr.unpublished_core.host}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['port'] = '${solr.unpublished_core.port}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['path'] = '${solr.unpublished_core.path}';
-${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['core'] = '${solr.unpublished_core.core_name}';${line.separator}"/>
+                text="${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['scheme'] = '${solr.core.published.scheme}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['host'] = '${solr.core.published.host}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['port'] = '${solr.core.published.port}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['path'] = '${solr.core.published.path}';
+${line.separator}$config['search_api.server.solr_published']['backend_config']['connector_config']['core'] = '${solr.core.published.name}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['scheme'] = '${solr.core.unpublished.scheme}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['host'] = '${solr.core.unpublished.host}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['port'] = '${solr.core.unpublished.port}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['path'] = '${solr.core.unpublished.path}';
+${line.separator}$config['search_api.server.solr_unpublished']['backend_config']['connector_config']['core'] = '${solr.core.unpublished.name}';${line.separator}"/>
     </target>
 
     <target
@@ -195,10 +197,40 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
     </target>
 
     <target name="purge-solr-backend" description="Empty Solr cores">
-        <exec command="curl --verbose '${solr.published_core.url}/${solr.published_core.core_name}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
+        <exec command="curl --verbose '${solr.core.published.url}/${solr.core.published.name}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
               passthru="true"/>
-        <exec command="curl --verbose '${solr.unpublished_core.url}/${solr.unpublished_core.core_name}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
+        <exec command="curl --verbose '${solr.core.unpublished.url}/${solr.core.unpublished.name}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
               passthru="true"/>
+    </target>
+
+    <target name="backup-apache-solr">
+        <echo message="Backing-up the Solr server."/>
+        <delete dir="${exports.solr.destination.folder}/snapshot.published"/>
+        <delete dir="${exports.solr.destination.folder}/snapshot.unpublished"/>
+        <solr-backup core="published" operation="backup"/>
+        <solr-backup core="unpublished" operation="backup"/>
+    </target>
+
+    <target name="restore-apache-solr" depends="purge-solr-backend">
+        <echo message="Restoring Solr server from backup."/>
+        <solr-backup core="published" operation="restore"/>
+        <solr-backup core="unpublished" operation="restore"/>
+    </target>
+
+    <target name="download-apache-solr-snapshot">
+        <delete dir="${exports.solr.destination.folder}" includeemptydirs="true" failonerror="false" />
+        <mkdir dir="${exports.solr.destination.folder}"/>
+        <httpget
+                url="${exports.solr.source}"
+                authUser="${asda.username}"
+                authPassword="${asda.password}"
+                authScheme="basic"
+                dir="${exports.solr.destination.folder}"
+        />
+        <untar file="${exports.solr.destination.folder}/${exports.solr.filename}" todir="${exports.solr.destination.folder}" />
+        <delete file="${exports.solr.destination.folder}/${exports.solr.filename}" />
+        <move file="${exports.solr.destination.folder}/snapshot.joinup" tofile="${exports.solr.destination.folder}/snapshot.published" />
+        <move file="${exports.solr.destination.folder}/snapshot.joinup-unpublished" tofile="${exports.solr.destination.folder}/snapshot.unpublished" />
     </target>
 
 </project>

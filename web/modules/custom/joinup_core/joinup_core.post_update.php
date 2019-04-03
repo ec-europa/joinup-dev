@@ -5,6 +5,9 @@
  * Post update functions for the Joinup core module.
  */
 
+use Drupal\Core\Database\Database;
+use Drupal\Core\Serialization\Yaml;
+use Drupal\file\Entity\File;
 use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -393,4 +396,151 @@ function joinup_core_post_update_remove_tour_buttons() {
  */
 function joinup_core_post_update_install_error_page() {
   \Drupal::service('module_installer')->install(['error_page']);
+}
+
+/**
+ * Update the EIRA terms and perform other related tasks.
+ */
+function joinup_core_post_update_eira() {
+  \Drupal::service('module_installer')->install(['eira']);
+
+  $graph_uri = 'http://eira_skos';
+  /** @var \Drupal\Driver\Database\joinup_sparql\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $connection->query('CLEAR GRAPH <http://eira_skos>;');
+
+  $graph = new Graph($graph_uri);
+  $filename = DRUPAL_ROOT . '/../resources/fixtures/EIRA_SKOS.rdf';
+  $graph->parseFile($filename);
+
+  $sparql_connection = Database::getConnection('default', 'sparql_default');
+  $connection_options = $sparql_connection->getConnectionOptions();
+  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+  $graph_store = new GraphStore($connect_string);
+  $graph_store->insert($graph);
+
+  $graphs = [
+    'http://joinup.eu/solution/published',
+    'http://joinup.eu/solution/draft',
+  ];
+  $map = [
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyService' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyService',
+    'http://data.europa.eu/dr8/TestReport' => 'http://data.europa.eu/dr8/ConformanceTestReport',
+    'http://data.europa.eu/dr8/TestService' => 'http://data.europa.eu/dr8/ConformanceTestingService',
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyServiceComponent' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyServiceComponent',
+    'http://data.europa.eu/dr8/TestComponent' => 'http://data.europa.eu/dr8/ConformanceTestingComponent',
+    'http://data.europa.eu/dr8/ApplicationService' => 'http://data.europa.eu/dr8/InteroperableEuropeanSolutionService',
+    'http://data.europa.eu/dr8/TestScenario' => 'http://data.europa.eu/dr8/ConformanceTestScenario',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentMandate' => 'http://data.europa.eu/dr8/PublicPolicyImplementationMandate',
+    'http://data.europa.eu/dr8/Data-levelMapping' => 'http://data.europa.eu/dr8/DataLevelMapping',
+    'http://data.europa.eu/dr8/Schema-levelMapping' => 'http://data.europa.eu/dr8/SchemaLevelMapping',
+    'http://data.europa.eu/dr8/AuditAndLoggingComponent' => 'http://data.europa.eu/dr8/AuditComponent',
+    'http://data.europa.eu/dr8/LegalRequirementOrConstraint' => 'http://data.europa.eu/dr8/LegalAct',
+    'http://data.europa.eu/dr8/BusinessInformationExchange' => 'http://data.europa.eu/dr8/ExchangeOfBusinessInformation',
+    'http://data.europa.eu/dr8/InteroperabilityAgreement' => 'http://data.europa.eu/dr8/OrganisationalInteroperabilityAgreement',
+    'http://data.europa.eu/dr8/BusinessProcessManagementComponent' => 'http://data.europa.eu/dr8/OrchestrationComponent',
+    'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructureService' => 'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructure',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentApproach' => 'http://data.europa.eu/dr8/PublicPolicyImplementationApproach',
+  ];
+
+  foreach ($graphs as $graph) {
+    foreach ($map as $old_uri => $new_uri) {
+      $query = <<<QUERY
+WITH <$graph>
+DELETE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+INSERT { ?solution_id <http://purl.org/dc/terms/type> <$new_uri> }
+WHERE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+QUERY;
+      $connection->query($query);
+    }
+  }
+
+  // Finally, repeat the process that initially fixed the eira skos vocabulary.
+  // @see ISAICP-3216.
+  // @see \DrupalProject\Phing\AfterFixturesImportCleanup::main()
+  //
+  // Add the "Concept" type to all collection elements so that they are listed
+  // as Parent terms.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  // Add the link to all "Concept" type elements so that they are all considered
+  // as children of the EIRA vocabulary regardless of the depth.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
+  // Create a backwards connection from the children to the parent.
+  $connection->query('INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
+ * Remove temporary 'file' entities that lack the file on file system.
+ */
+function joinup_core_post_update_fix_files(array &$sandbox) {
+  if (!isset($sandbox['fids'])) {
+    $sandbox['fids'] = array_values(\Drupal::entityQuery('file')
+      ->condition('status', FILE_STATUS_PERMANENT, '<>')
+      ->sort('fid')
+      ->execute());
+    $sandbox['processed'] = 0;
+  }
+
+  $fids = array_splice($sandbox['fids'], 0, 50);
+  foreach (File::loadMultiple($fids) as $file) {
+    /** @var \Drupal\file\FileInterface $file */
+    if (!file_exists($file->getFileUri())) {
+      $file->delete();
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = (int) !$sandbox['fids'];
+
+  if ($sandbox['#finished'] === 1) {
+    return $sandbox['processed'] ? "{$sandbox['processed']} file entities deleted." : "No file entities were deleted.";
+  }
+}
+
+/**
+ * Force-update all distribution aliases.
+ */
+function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
+  if (!isset($sandbox['entity_ids'])) {
+    // In order to force-update all distribution aliases in a post_update
+    // function the pattern config file is imported manually, as normally, the
+    // config sync runs after the database updatess.
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_distributions.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_distributions')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_distribution')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $pathauto_generator->updateEntityAlias($entity, 'update', ['force' => TRUE]);
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Disable database logging, use the syslog instead.
+ */
+function joinup_core_post_update_swap_dblog_with_syslog() {
+  // Writing log entries in the database during anonymous requests is causing
+  // load on the database. Another problem is that there is a cap on the number
+  // of log entries that are retained in the the database. On some occasions
+  // during heavy logging activity they rotated before we had the chance to read
+  // them. Write the log entries to the syslog instead.
+  \Drupal::service('module_installer')->install(['syslog']);
+  \Drupal::service('module_installer')->uninstall(['dblog']);
 }

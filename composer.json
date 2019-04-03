@@ -11,12 +11,13 @@
         "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
-        "drupal/cached_computed_field": "^1.0-beta3",
+        "drupal/cached_computed_field": "^1.0-beta4",
         "drupal/changed_fields": "^2.0",
+        "drupal/config_provider": "~1.0",
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
-        "drupal/core": "^8.6.10",
+        "drupal/core": "^8.6.13",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
@@ -27,7 +28,7 @@
         "drupal/file_url": "~1.0",
         "drupal/flag": "^4.0@alpha",
         "drupal/geocoder": "^3.0",
-        "drupal/geofield": "^1.0@beta",
+        "drupal/geofield": "~1.0",
         "drupal/honeypot": "^1.27",
         "drupal/inline_entity_form": "^1.0-rc1",
         "drupal/linkit": "^5.0-beta6",
@@ -47,7 +48,7 @@
         "drupal/persistent_login": "~1.0",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
         "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "^1.0.0-alpha12",
+        "drupal/rdf_entity": "^1.0-alpha15",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.1",
         "drupal/search_api": "^1.11",
@@ -64,7 +65,7 @@
         "drupal/view_unpublished": "~1.0@alpha",
         "drupal/views_bulk_operations": "^1.0",
         "drupal/views_data_export": "^1.0-beta1",
-        "drush/drush": "^9.5.1",
+        "drush/drush": "^9.6.0-rc4",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
@@ -92,7 +93,7 @@
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
         "drupal/default_content": "^1.0-alpha7",
-        "drupal/devel": "~1.0",
+        "drupal/devel": "~2.0",
         "drupal/drupal-extension": "^4.0@beta",
         "drupal/filecache": "dev-1.x",
         "drupal/renderviz": "^1.0",
@@ -190,7 +191,6 @@
                 "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
                 "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch",
                 "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
-                "UniqueFieldConstraint doesn't work for string IDs @see https://www.drupal.org/project/drupal/issues/3027745": "https://www.drupal.org/files/issues/2019-01-24/3027745-9.patch",
                 "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch"
             },
             "drupal/email_registration": {
@@ -222,12 +222,7 @@
                 "Drush commands for bulk alias updates @see https://www.drupal.org/project/pathauto/issues/2717721": "https://www.drupal.org/files/issues/2019-01-10/2717721-21.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
-                "Ensure a predictable order of fields when serializing @see https://github.com/ec-europa/rdf_entity/pull/76": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/76.diff",
-                "Fix endless loop due to orphaned aliases @see https://github.com/ec-europa/rdf_entity/pull/78": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/78.diff",
-                "Implement batch delete of aliases @see https://github.com/ec-europa/rdf_entity/pull/71": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/79.diff",
-                "Improve batch alias update @see https://github.com/ec-europa/rdf_entity/pull/81": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/81.diff",
-                "Iterate through fetched entries in the Serializer @see https://github.com/ec-europa/rdf_entity/pull/82": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/82.diff"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
