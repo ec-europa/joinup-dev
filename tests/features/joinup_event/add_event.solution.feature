@@ -57,9 +57,10 @@ Feature: "Add event" visibility options.
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
-      | Title field is required.            |
-      | Description field is required.      |
-      | File description field is required. |
+      | Title field is required.                         |
+      | Description field is required.                   |
+      | File description field is required.              |
+      | At least one location field should be filled in. |
 
     When I fill in the following:
       | Title             | An amazing event                      |
@@ -75,12 +76,6 @@ Feature: "Add event" visibility options.
     And I clear the end time of the "Date" widget
     And I press "Save as draft"
     Then I should see the error message "The date and time should both be entered in the End date field"
-
-    # Test Location fields constraint (one of them should be filled in).
-    Then I clear the field "Physical location"
-    And I press "Save as draft"
-    Then I should see the error message "At least one location field should be filled in."
-    Then I fill in "Physical location" with "Rue Belliard, 28"
 
     When I fill the end time of the Date widget with "23:59:00"
     And I press "Save as draft"
