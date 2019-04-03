@@ -32,9 +32,8 @@ Feature: Add licence through UI
     # Ensure that the Type field is a dropdown.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3342
     And I select "Public domain" from "Type"
-    # The leading dash declares that the option isa child element.
-    And I select "-Strong Community" from "Licence legal type"
-    And I additionally select "-Venue fixed" from "Licence legal type"
+    And I select "Strong Community" from "Licence legal type"
+    And I additionally select "Venue fixed" from "Licence legal type"
 
     And I press "Save"
     Then I should see the link "Strong Community"
