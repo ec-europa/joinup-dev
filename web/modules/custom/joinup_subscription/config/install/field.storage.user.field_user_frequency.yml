@@ -11,9 +11,6 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: immediately
-      label: Immediately
-    -
       value: daily
       label: Daily
     -
