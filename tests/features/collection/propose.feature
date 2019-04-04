@@ -52,7 +52,7 @@ Feature: Proposing a collection
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
-    And I press "Save as draft"
+    And I press "Propose"
     # Regression test for setting the Logo and Banner fields as optional.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
     Then I should not see the following error messages:
