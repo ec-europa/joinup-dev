@@ -237,7 +237,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
           'entity_type' => $discussion->getEntityTypeId(),
           'entity_id' => $discussion->id(),
         ];
-        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, $this->getArguments($discussion), $subscriber, $notifier_options, TRUE) && $success;
+        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, $this->getArguments($discussion), $subscriber, $notifier_options) && $success;
       }
       return $success;
     }

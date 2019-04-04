@@ -215,7 +215,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
         'entity_type' => $this->discussion->getEntityTypeId(),
         'entity_id' => $this->discussion->id(),
       ];
-      $success = $this->messageDelivery->sendMessageTemplateToUser('discussion_comment_new', $this->getArguments(), $recipient, $notifier_options, TRUE) && $success;
+      $success = $this->messageDelivery->sendMessageTemplateToUser('discussion_comment_new', $this->getArguments(), $recipient, $notifier_options) && $success;
     }
     return $success;
   }

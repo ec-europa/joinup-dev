@@ -107,7 +107,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], bool $digest = TRUE): bool {
+  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = []): bool {
     if ($account->isAnonymous()) {
       throw new \LogicException('Cannot send mail to an anonymous user.');
     }
@@ -117,7 +117,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     $recipients_metadata = [
       [
         'options' => $notifier_options,
-        'notifier' => $digest ? $this->getNotifierId($account) : 'email',
+        'notifier' => 'email',
       ],
     ];
     return $this->sendMessage($message, $recipients_metadata);
