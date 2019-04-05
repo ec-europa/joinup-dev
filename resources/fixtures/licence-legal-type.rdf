@@ -68,42 +68,42 @@
     <skos:prefLabel xml:lang="en">Distribute</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to distribute the work to third parties freely,  in unlimited quantities </skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
-    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#Modify-Merge">
     <skos:prefLabel xml:lang="en">Modify/merge</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to modify / combine the work with others and create derivatives</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
-    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#CanSublicence">
     <skos:prefLabel xml:lang="en">Sublicense</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to license the work, including possible modifications (without changing the licence if it is copyleft or share alike) </skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
-    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#CommercialUse">
     <skos:prefLabel xml:lang="en">Commercial use</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to make use of the work for commercial purpose or to license it for a fee</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
-    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#UsePatents">
     <skos:prefLabel xml:lang="en">Use patents</skos:prefLabel>
     <skos:definition xml:lang="en">Rights to practice patent claims of the software owner and of the contributors to the code, in so far these rights are necessary to make full use of the software</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
-    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#"/>
   </skos:Concept>
 
   <skos:Concept rdf:about="http://joinup.eu/legal-type#PlaceWarranty">
     <skos:prefLabel xml:lang="en">Place warranty</skos:prefLabel>
     <skos:definition xml:lang="en">Ability to place additional warranty, services or rights on the software licensed (without holding the software owner and other contributors liable for it)</skos:definition>
     <skos:inScheme rdf:resource="http://joinup.eu/legal-type#"/>
-    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#Can"/>
+    <skos:topConceptOf rdf:resource="http://joinup.eu/legal-type#"/>
   </skos:Concept>
 
   <skos:Collection rdf:about="http://joinup.eu/legal-type#Must">
