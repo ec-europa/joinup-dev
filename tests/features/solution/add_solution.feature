@@ -248,6 +248,7 @@ Feature: "Add solution" visibility options.
     And I delete the "Climate change tracker" solution
     And I delete the "Angela Crespi" contact information
 
+  @clearStaticCache
   Scenario: Check solution downloads counter
     # Create the dummy data to work with.
     Given the following collection:
@@ -279,4 +280,5 @@ Feature: "Add solution" visibility options.
       | description | Sample description 3   |
       | parent      | Climate change tracker |
       | downloads   | 20                     |
-    Then I should see the text "20" in the "Test solution" tile
+    When I reload the page
+    Then I should see the text "20" in the "Climate change tracker" tile
