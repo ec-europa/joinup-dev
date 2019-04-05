@@ -266,11 +266,10 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     $build['downloads'] = [
       '#type' => 'container',
       '#stats_topic' => t('Downloads'),
+      0 => ['#markup' => (string) $total],
+      // Hide the download stats when there are no downloads.
+      '#access' => $total > 0,
     ];
-    // Only add #markup if we want to show it.
-    if ($total >= 1) {
-      $build['downloads'][] = ['#markup' => $total];
-    }
 
     $cacheable_metadata->applyTo($build['downloads']);
   }
