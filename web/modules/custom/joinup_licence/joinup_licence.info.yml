@@ -18,4 +18,6 @@ config_devel:
   - field.storage.rdf_entity.field_licence_description
   - field.storage.rdf_entity.field_licence_type
   - rdf_entity.mapping.rdf_entity.licence
+  - rdf_entity.mapping.taxonomy_term.licence_type
   - rdf_entity.rdfentity.licence
+  - taxonomy.vocabulary.licence_type
