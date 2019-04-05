@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "890e6a157493e16514f10937cf17df05",
+    "content-hash": "e2c8cb17011ef7f7f3a9001a059f14e8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5837,7 +5837,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Extend Behat support. @see https://github.com/ec-europa/spdx/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/5.diff"
+                    "Extend Behat support. @see https://github.com/ec-europa/spdx/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/5.diff",
+                    "Disable the option to enter link text for the \"See also\" field. @see https://github.com/ec-europa/spdx/pull/6": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/6.diff"
                 }
             },
             "description": "Allows to federate and manage the SPDX licences.",
