@@ -127,7 +127,7 @@
     </target>
 
     <!-- Download database backups from the ASDA server. -->
-    <target name="download-databases" depends="download-virtuoso-database, download-sql-database" />
+    <target name="download-databases" depends="download-virtuoso-database, download-sql-database, download-apache-solr-snapshot" />
 
     <!-- Downloads a backup of the Virtuoso database from the ASDA server. -->
     <target name="download-virtuoso-database">
@@ -201,7 +201,7 @@
                 password="${drupal.db.password}" />
     </target>
 
-    <target name="restore-databases" depends="restore-mysql-dump, virtuoso-restore-backup" />
+    <target name="restore-databases" depends="restore-apache-solr, restore-mysql-dump, virtuoso-restore-backup" />
 
     <target name="rebuild-environment" depends="restore-databases, execute-updates" />
 
