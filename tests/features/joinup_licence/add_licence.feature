@@ -4,6 +4,10 @@ Feature: Add licence through UI
   As a moderator or a licence manager
   I need to be able to add licences through the UI.
 
+  Background:
+    Given SPDX licences:
+      | title       | ID  | see also                                                                                         | text                                                                                               |
+      | MIT License | MIT | opensource.org - https://opensource.org/licenses/MIT, mit-license.org - https://mit-license.org/ | "MIT License\n\nCopyright ©2019\n\nPermission is hereby granted, free of charge, to any person..." |
 
   Scenario Outline: Add licence as a Moderator or a Licence Manager.
     Given I am logged in as a "<role>"
