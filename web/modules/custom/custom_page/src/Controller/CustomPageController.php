@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\custom_page\Controller;
 
 use Drupal\Component\Utility\Xss;
@@ -23,7 +25,7 @@ class CustomPageController extends CommunityContentController {
    * The custom pages are only allowed to be created for collections and
    * solutions.
    */
-  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResult {
     if (empty($account)) {
       $account = $this->currentUser();
     }
@@ -45,7 +47,7 @@ class CustomPageController extends CommunityContentController {
   /**
    * {@inheritdoc}
    */
-  protected function getBundle() {
+  protected function getBundle(): string {
     return 'custom_page';
   }
 

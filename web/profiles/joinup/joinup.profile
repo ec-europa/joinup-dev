@@ -18,6 +18,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\JoinupCustomInstallTasks;
 use Drupal\joinup\JoinupHelper;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
 
@@ -380,7 +381,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
 
   // Add the "collection_context" contextual links group on community content
   // and solutions.
-  if (JoinupHelper::isSolution($entity) || JoinupHelper::isCommunityContent($entity)) {
+  if (JoinupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
     // The rendered entity needs to vary by og group context.
     $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
     $build['#contextual_links']['collection_context'] = [

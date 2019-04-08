@@ -583,6 +583,9 @@ delete:
       own:
         roles:
           - authenticated
+      any:
+        roles:
+          - moderator
     proposed:
       any:
         roles:

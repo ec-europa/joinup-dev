@@ -22,6 +22,7 @@ use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -237,9 +238,8 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
 /**
  * Implements hook_node_access().
  */
-function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // @todo: when all bundles are in, remove the first check.
-  if (!in_array($entity->bundle(), ['document', 'discussion', 'news', 'event'])) {
+function joinup_core_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
     return AccessResult::neutral();
   }
   return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
