@@ -28,4 +28,17 @@ function joinup_licence_post_update_import_legal_type_vocabulary() {
   $graph_store = new GraphStore($connect_string);
 
   $graph_store->insert($graph);
+
+  // Repeat the cleanup steps so that it mimics the rdf fixtures import class.
+  // @see \DrupalProject\Phing\AfterFixturesImportCleanup::main
+  $connection->query('WITH <http://licence-legal-type> INSERT { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  $connection->query('WITH <http://licence-legal-type> INSERT { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } WHERE { ?subject a skos:Concept . FILTER NOT EXISTS { ?subject skos:topConceptOf <http://joinup.eu/legal-type#> } };');
+  $connection->query('WITH <http://licence-legal-type> INSERT { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
+ * Install the EUPL module.
+ */
+function joinup_licence_post_update_eupl() {
+  \Drupal::service('module_installer')->install(['eupl']);
 }
