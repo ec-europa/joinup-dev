@@ -136,10 +136,8 @@ var loadMore = loadMore || {};
   });
 
   // Trigger if enter key is pressed in license search
-  $('#license-search').on('keypress', function (event) {
-    if (event.which === 13) {
-      checkLicenseCategories();
-    }
+  $('#license-search').on('keyup', function (event) {
+    checkLicenseCategories();
   });
 
   // Filter on window load
