@@ -28,6 +28,7 @@ use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
 use Drupal\user\Entity\User;
+use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * Implements hook_entity_access().
@@ -232,9 +233,6 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   }
 
   // Attach the download total of all distributions in this solution.
-  // @todo Add the `og-group-content` cache tag because the downloads are
-  //   contained in the distribution entities which is group content.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
   if ($display->getComponent('download_total')) {
     $total = 0;
     if (!$entity->isNew()) {
@@ -267,6 +265,14 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       // Hide the download stats when there are no downloads.
       '#access' => $total > 0,
     ];
+
+    // Add the cache tag of the solution's group content, so that this gets
+    // invalidated whenever a distribution's download counter changes.
+    // Note that this might cause a significant performance impact since the
+    // solutions overview will be invalidated whenever _any_ of the displayed
+    // solutions' distributions is downloaded.
+    $tags = Cache::buildTags('og-group-content', $entity->getCacheTagsToInvalidate());
+    CacheableMetadata::createFromRenderArray($build)->addCacheTags($tags)->applyTo($build);
   }
 
   // Show the collection the solution belongs to. A solution can be affiliated
