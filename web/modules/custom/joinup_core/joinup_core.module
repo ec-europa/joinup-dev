@@ -179,7 +179,8 @@ function joinup_core_propose_message_submit(&$form, FormStateInterface $form_sta
   /** @var \Drupal\rdf_entity\RdfInterface $rdf */
   $rdf = $form_object->getEntity();
 
-  // Collection and Solution entities have different state fields so we need to check it.
+  // Collection and Solution entities have different state fields
+  // so we need to check it.
   $state = $rdf->hasField('field_is_state') ? $rdf->get('field_is_state')->value : NULL;
   $ar_state = $rdf->hasField('field_ar_state') ? $rdf->get('field_ar_state')->value : NULL;
 
