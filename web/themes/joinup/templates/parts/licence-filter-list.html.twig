@@ -17,15 +17,15 @@
   <div class="row">
     <div class="mdl-grid">
       {% for parent_item in items %}
-        <div class="license-filter {{ parent_item.class }} mdl-cell mdl-cell--4-col mdl-cell--2-col-wide">
+        <div class="licence-filter {{ parent_item.class }} mdl-cell mdl-cell--4-col mdl-cell--2-col-wide">
           <div class="licence__card mdl-card">
-            <div class="license-filter__header">
+            <div class="licence-filter__header">
               <span>{{ parent_item.title }}</span>
             </div>
-            <div class="license-filter__content">
-              <ul class="license-filter__list">
+            <div class="licence-filter__content">
+              <ul class="licence-filter__list">
                 {% for child in parent_item.items %}
-                  <li class="license-filter__item"><a data-license-category="{{ child.licence_category }}" href="#" title="{{ child.description }}">{{ child.title }}</a></li>
+                  <li class="licence-filter__item"><a data-licence-category="{{ child.licence_category }}" href="#" title="{{ child.description }}">{{ child.title }}</a></li>
                 {% endfor %}
               </ul>
             </div>

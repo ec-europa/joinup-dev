@@ -1594,7 +1594,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
     $spdx_licence = reset($spdx_licences);
     $variables['spdx_licence'] = $spdx_licence;
     $variables['spdx_title'] = $spdx_licence->label();
-    $variables['spdx_url'] = $spdx_licence->id() . '#licenseText';
+    $variables['spdx_url'] = $spdx_licence->id() . '#licenceText';
     $variables['licence_code'] = $spdx_licence->field_spdx_licence_id->value;
   }
 
@@ -1610,7 +1610,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       if (!isset($category_lists[$parent->id()])) {
         $category_lists[$parent->id()] = [
           'title' => $parent->label(),
-          'class' => 'license-tile__line--' . $parent_normalized_title,
+          'class' => 'licence-tile__line--' . $parent_normalized_title,
         ];
       }
       $category_lists[$parent->id()]['items'][] = [

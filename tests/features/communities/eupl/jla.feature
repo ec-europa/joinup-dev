@@ -17,20 +17,19 @@ Feature:
     When I am not logged in
     And I visit the "JLA" custom page
     Then I should see the heading "JLA"
-    # @todo: licenses to licences
-    And I should see the text "2 licenses found"
+    And I should see the text "2 licences found"
     And I should see the text "Foo Licence"
     And I should see the text "Bar Licence"
     # Assert concatenated categories.
     And I should see the text "Governments/EU, Strong Community"
 
     When I click "Distribute" in the "Content" region
-    Then I should see the text "1 licenses found"
+    Then I should see the text "1 licences found"
     And I should see the text "Bar Licence"
     But I should not see the text "Foo Licence"
 
     # Clicking again, deselects the item.
     When I click "Distribute" in the "Content" region
-    Then I should see the text "2 licenses found"
+    Then I should see the text "2 licences found"
     And I should see the text "Foo Licence"
     And I should see the text "Bar Licence"

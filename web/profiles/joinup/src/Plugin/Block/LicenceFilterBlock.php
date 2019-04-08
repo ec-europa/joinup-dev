@@ -67,7 +67,7 @@ class LicenceFilterBlock extends BlockBase implements ContainerFactoryPluginInte
       $parent = reset($term->parents);
       if (empty($parent)) {
         $tree[$term->tid]['title'] = $term->name;
-        $tree[$term->tid]['class'] = 'license-filter--' . strtolower($term->name);
+        $tree[$term->tid]['class'] = 'licence-filter--' . strtolower($term->name);
       }
       else {
         $child = $storage->load($term->tid);

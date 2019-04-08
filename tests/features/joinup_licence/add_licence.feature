@@ -1,7 +1,7 @@
 @api
 Feature: Add licence through UI
   In order to manage licences
-  As a moderator or a license manager
+  As a moderator or a licence manager
   I need to be able to add licences through the UI.
 
   Scenario Outline: "Add licence" button should be shown only to the below roles.

@@ -196,7 +196,7 @@ display:
           group_type: group
           admin_label: ''
           empty: false
-          content: "<div class=\"license-counter\">\r\n  <span class=\"license-counter__number\">\r\n    @total\r\n  </span>\r\n  <span class=\"license-counter__text\">\r\n    licenses found\r\n  </span>\r\n</div>"
+          content: "<div class=\"licence-counter\">\r\n  <span class=\"licence-counter__number\">\r\n    @total\r\n  </span>\r\n  <span class=\"licence-counter__text\">\r\n    licences found\r\n  </span>\r\n</div>"
           plugin_id: result
       footer: {  }
       empty: {  }

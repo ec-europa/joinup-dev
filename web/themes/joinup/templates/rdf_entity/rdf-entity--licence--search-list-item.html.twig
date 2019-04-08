@@ -22,38 +22,38 @@
   set classes = [
     'listing__item ',
     'listing__item--tile',
-    'license-tile mdl-cell',
+    'licence-tile mdl-cell',
     'mdl-cell--12-col',
     'mdl-cell--12-col-wide',
   ]
 %}
 
-<div {{ attributes.addClass(classes) }} data-spdx="{{ licence_code }}" data-license-category="{{ legal_categories }}">
+<div {{ attributes.addClass(classes) }} data-spdx="{{ licence_code }}" data-licence-category="{{ legal_categories }}">
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--shifted">
       {% if licence_code %}
         <div class="listing__field">
-          <h2 class="listing__title license-tile__title"><span class="icon icon--licence"></span>{{ licence_code }}</h2>
+          <h2 class="listing__title licence-tile__title"><span class="icon icon--licence"></span>{{ licence_code }}</h2>
         </div>
       {% endif %}
       <div class="listing__field">
         <p class="listing__teaser">{{ licence_title }}</p>
       </div>
       {% if spdx_url %}
-        <a href="{{ spdx_url }}" class="license-tile__button" target="_blank">{{ "Licence text"|t }}</a>
+        <a href="{{ spdx_url }}" class="licence-tile__button" target="_blank">{{ "Licence text"|t }}</a>
       {% endif %}
     </div>
   </div>
   <div class="listing__inner-tile listing__inner-tile--wider">
     {% for category_list in category_lists  %}
       <div class="listing__field">
-        <div class="license-tile__line {{ category_list.class }}">
-          <div class="license-tile__label-wrapper">
-            <span class="license-tile__label">
+        <div class="licence-tile__line {{ category_list.class }}">
+          <div class="licence-tile__label-wrapper">
+            <span class="licence-tile__label">
               {{ category_list.title }}
             </span>
           </div>
-          <div class="license-tile__value">
+          <div class="licence-tile__value">
             {% for item in category_list.items %}
               <span title="{{ item.description }}">{{ item.title }}</span>{% if loop.last == false %}, {% endif %}
             {% endfor %}
