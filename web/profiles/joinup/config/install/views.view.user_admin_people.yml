@@ -191,9 +191,11 @@ display:
           include_exclude: include
           selected_actions:
             - pathauto_update_alias_user
+            - user_add_role_action.licence_manager
             - user_add_role_action.moderator
             - user_block_user_action
             - user_cancel_user_action
+            - user_remove_role_action.licence_manager
             - user_remove_role_action.moderator
             - user_unblock_user_action
           plugin_id: user_bulk_form
