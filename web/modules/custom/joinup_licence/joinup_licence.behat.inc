@@ -10,6 +10,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Behat step definitions for testing licences.
@@ -18,6 +19,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
 
   use EntityReferenceTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
    * Test licences.
@@ -93,6 +95,12 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
         }
       };
 
+      if (isset($values['field_licence_legal_type'])) {
+        $values['field_licence_legal_type'] = $this->explodeCommaSeparatedStepArgument($values['field_licence_legal_type']);
+      }
+      if (isset($values['field_licence_spdx_licence'])) {
+        $values['field_licence_spdx_licence'] = [$values['field_licence_spdx_licence']];
+      }
       $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $values);
 
       $this->createLicence($values);
@@ -225,6 +233,8 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
       'title' => 'label',
       'description' => 'field_licence_description',
       'type' => 'field_licence_type',
+      'spdx licence' => 'field_licence_spdx_licence',
+      'legal type' => 'field_licence_legal_type',
     ];
   }
 
