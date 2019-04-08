@@ -76,24 +76,24 @@ var loadMore = loadMore || {};
 
 (function ($) {
   "use strict";
-  function checkLicenseCategories() {
-    var $licenseTile = $('.license-tile');
+  function checkLicenceCategories() {
+    var $licenceTile = $('.licence-tile');
 
     // Remove hidden class before further processing.
-    $licenseTile.each(function () {
+    $licenceTile.each(function () {
       $(this).removeClass('is-hidden');
     });
 
     // Check every active filter item
-    // and hide tiles which don't contain proper data-license-category
-    $('.license-filter__item a.is-active').each(function () {
-      var currentlicenseCategory = $(this).attr('data-license-category');
-      if (typeof currentlicenseCategory !== 'undefined') {
-        $licenseTile.each(function () {
-          var licenseCategory = $(this).attr('data-license-category');
-          if (typeof licenseCategory !== 'undefined') {
-            var licenseCategoryArray = licenseCategory.split(' ');
-            if ($.inArray(currentlicenseCategory, licenseCategoryArray) < 0 && !$(this).hasClass('is-hidden')) {
+    // and hide tiles which don't contain proper data-licence-category
+    $('.licence-filter__item a.is-active').each(function () {
+      var currentlicenceCategory = $(this).attr('data-licence-category');
+      if (typeof currentlicenceCategory !== 'undefined') {
+        $licenceTile.each(function () {
+          var licenceCategory = $(this).attr('data-licence-category');
+          if (typeof licenceCategory !== 'undefined') {
+            var licenceCategoryArray = licenceCategory.split(' ');
+            if ($.inArray(currentlicenceCategory, licenceCategoryArray) < 0 && !$(this).hasClass('is-hidden')) {
               $(this).addClass('is-hidden');
             }
           }
@@ -101,11 +101,11 @@ var loadMore = loadMore || {};
       }
     });
 
-    // Check license search field value
+    // Check licence search field value
     // and hide tiles which don't contain proper data-spdx
-    var licenseTiles = 0;
-    var currentSpdxId = $('#license-search').val();
-    $licenseTile.each(function () {
+    var licenceTiles = 0;
+    var currentSpdxId = $('#licence-search').val();
+    $licenceTile.each(function () {
       if (currentSpdxId.length > 0) {
         var spdxId = $(this).attr('data-spdx');
         if (!spdxId.includes(currentSpdxId) && !$(this).hasClass('is-hidden')) {
@@ -115,37 +115,35 @@ var loadMore = loadMore || {};
 
       // Count not hidden tiles.
       if (!$(this).hasClass('is-hidden')) {
-        licenseTiles++;
+        licenceTiles++;
       }
     });
 
     // Show calculated number of tiles
-    $('.license-counter__number').text(licenseTiles);
+    $('.licence-counter__number').text(licenceTiles);
   }
 
-  // Trigger if license filter is clicked.
-  $('.license-filter__item a').each(function () {
+  // Trigger if licence filter is clicked.
+  $('.licence-filter__item a').each(function () {
     $(this).on('click', function (event) {
       event.preventDefault();
 
       $(this).toggleClass('is-active');
 
-      checkLicenseCategories();
+      checkLicenceCategories();
 
     });
   });
 
-  // Trigger if enter key is pressed in license search
-  $('#license-search').on('keypress', function (event) {
-    if (event.which === 13) {
-      checkLicenseCategories();
-    }
+  // Trigger if enter key is pressed in licence search
+  $('#licence-search').on('keyup', function (event) {
+    checkLicenceCategories();
   });
 
   // Filter on window load
-  // Needed for license search filter.
+  // Needed for licence search filter.
   $(window).load(function() {
-    checkLicenseCategories();
+    checkLicenceCategories();
   });
 
 })(jQuery);
