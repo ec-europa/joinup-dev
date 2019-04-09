@@ -43,28 +43,29 @@
         <a href="{{ spdx_url }}" class="licence-tile__button" target="_blank">{{ "Licence text"|t }}</a>
       {% endif %}
     </div>
-  </div>
-  <div class="listing__inner-tile listing__inner-tile--wider">
-    {% for category_list in category_lists  %}
-      <div class="listing__field">
-        <div class="licence-tile__line {{ category_list.class }}">
-          <div class="licence-tile__label-wrapper">
-            <span class="licence-tile__label">
-              {{ category_list.title }}
-            </span>
-          </div>
-          <div class="licence-tile__value">
-            {% for item in category_list.items %}
-              <span title="{{ item.description }}">{{ item.title }}</span>{% if loop.last == false %}, {% endif %}
-            {% endfor %}
+
+    <div class="listing__inner-tile listing__inner-tile--wider">
+      {% for category_list in category_lists  %}
+        <div class="listing__field">
+          <div class="licence-tile__line {{ category_list.class }}">
+            <div class="licence-tile__label-wrapper">
+              <span class="licence-tile__label">
+                {{ category_list.title }}
+              </span>
+            </div>
+            <div class="licence-tile__value">
+              {% for item in category_list.items %}
+                <span title="{{ item.description }}">{{ item.title }}</span>{% if loop.last == false %}, {% endif %}
+              {% endfor %}
+            </div>
           </div>
         </div>
+      {% endfor %}
+    </div>
+    <div class="listing__metadata">
+      <div class="listing__field">
+        <p class="listing__teaser">{{ licence_description|striptags|nl2br }}</p>
       </div>
-    {% endfor %}
-  </div>
-  <div class="listing__metadata">
-    <div class="listing__field">
-      <p class="listing__teaser">{{ licence_description|striptags|nl2br }}</p>
     </div>
   </div>
 </div>

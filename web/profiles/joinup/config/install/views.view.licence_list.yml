@@ -48,7 +48,7 @@ display:
       style:
         type: default
         options:
-          row_class: 'mdl-cell--12-col mdl-cell--12-col-wide'
+          row_class: ''
           default_row_class: false
           uses_fields: false
       row:
