@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\JoinupHelper;
 use Drupal\joinup\PinServiceInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -184,7 +185,7 @@ class PinEntityController extends ControllerBase {
     if (JoinupHelper::isSolution($entity)) {
       $collections = $entity->get('collection')->referencedEntities();
     }
-    elseif (JoinupHelper::isCommunityContent($entity)) {
+    elseif (CommunityContentHelper::isCommunityContent($entity)) {
       $collections = [$this->relationManager->getParent($entity)];
     }
 
@@ -208,7 +209,7 @@ class PinEntityController extends ControllerBase {
    *   True if the entities are of the expected types, false otherwise.
    */
   protected function validEntityParameters(ContentEntityInterface $entity, RdfInterface $collection) {
-    return (JoinupHelper::isSolution($entity) || JoinupHelper::isCommunityContent($entity)) && JoinupHelper::isCollection($collection);
+    return (JoinupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) && JoinupHelper::isCollection($collection);
   }
 
   /**
