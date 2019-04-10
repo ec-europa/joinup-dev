@@ -1,14 +1,10 @@
-#!/bin/bash
+#!/bin/bash -ex
 
-# This script will perform updates on the production environment.
+# This script will perform updates on the uat environment.
 
 # Define paths.
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT=$(realpath ${SCRIPT_PATH}/..)
-
-# Keep track of any errors that occur during the update.
-STATUS=0
-trap 'STATUS=$?' ERR
 
 # Perform the necessary steps for the update
 cd ${PROJECT_ROOT}
@@ -29,12 +25,6 @@ echo "Rebuilding node access records." &&
 
 echo "Enabling config_readonly."
 rm disable-config-readonly
-
-# Check if any of the steps returned an error.
-if [ ${STATUS} -ne 0 ]; then
-  echo "An error occurred during the update."
-  exit ${STATUS}
-fi
 
 echo "Reporting requirements."
 ./vendor/bin/drush status-report --severity=1 | grep -v "Update notifications"
