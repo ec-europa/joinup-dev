@@ -2646,4 +2646,17 @@ JS;
     }
   }
 
+  /**
+   * Asserts that a paragraph containing the given text is present in the page.
+   *
+   * @param string $text
+   *   The text that should be present in a paragraph.
+   *
+   * @Then I should see a paragraph containing the text :text
+   */
+  public function assertParagraphText(string $text): void {
+    $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
+    Assert::assertNotEmpty($element);
+  }
+
 }
