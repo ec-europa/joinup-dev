@@ -30,7 +30,7 @@ class EuplSubContext extends DrupalSubContextBase {
    *
    * @beforeScenario @eupl
    */
-  public function setupTallinnData() {
+  public function setupEuplData() {
     // Create an owner.
     Rdf::create([
       'rid' => 'owner',
@@ -65,7 +65,7 @@ class EuplSubContext extends DrupalSubContextBase {
    *
    * @afterScenario @eupl
    */
-  public function cleanTallinnData() {
+  public function cleanEuplData() {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
     $entity_repository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41')->delete();
