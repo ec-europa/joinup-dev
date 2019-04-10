@@ -12668,7 +12668,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-04-03T23:57:21+00:00"
         },
         {
             "name": "drupal/drupal-driver",
@@ -12994,7 +12995,7 @@
             "version": "dev-1.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/stage_file_proxy",
+                "url": "https://git.drupalcode.org/project/stage_file_proxy.git",
                 "reference": "4c3fa8d12703d8665032719ac002529d6d3a1c70"
             },
             "require": {
@@ -13006,8 +13007,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+3-dev",
-                    "datestamp": "1533222480",
+                    "version": "8.x-1.0-alpha3+4-dev",
+                    "datestamp": "1533223380",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -13055,9 +13056,8 @@
             "description": "Provides stage_file_proxy module.",
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
-                "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+                "source": "https://git.drupalcode.org/project/stage_file_proxy"
+            }
         },
         {
             "name": "fabpot/goutte",
