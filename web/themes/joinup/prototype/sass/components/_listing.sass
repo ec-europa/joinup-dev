@@ -174,10 +174,16 @@
         margin-bottom: 0
   .listing__inner-tile--wider
     +breakpoint(mobile)
-      flex: 0 0 320px
+      flex: 0 0 40%
   .listing__inner-tile--shifted
-    margin-left: 21px
-    padding-bottom: 70px
+    +breakpoint(mobile)
+      padding-left: 41px
+      flex: 0 0 30%
+      padding-bottom: 70px
+  .listing__metadata--licence
+    word-wrap: break-word
+    +breakpoint(mobile)
+      flex: 0 0 30%
 
 .listing__card--stats-container
   .listing__metadata
