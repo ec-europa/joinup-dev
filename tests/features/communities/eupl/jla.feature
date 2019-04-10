@@ -6,9 +6,9 @@ Feature:
 
   Scenario: Present and search the licences.
     Given SPDX licences:
-      | title            | licence id |
-      | SPDX licence foo | SPDX_FOO   |
-      | SPDX licence bar | SPDX_BAR   |
+      | title            | ID       |
+      | SPDX licence foo | SPDX_FOO |
+      | SPDX licence bar | SPDX_BAR |
     And licences:
       | uri                          | title       | description                          | type | spdx licence     | legal type                                      |
       | http://joinup.eu/licence/foo | Foo Licence | Licence details for the foo licence. |      | SPDX licence foo | Strong Community, Governments/EU, Use/reproduce |
