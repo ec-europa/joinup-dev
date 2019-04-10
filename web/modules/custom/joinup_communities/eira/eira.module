@@ -16,6 +16,13 @@ function eira_taxonomy_term_view(array &$build, EntityInterface $entity, EntityV
     return;
   }
 
+  // Workaround for a limitation in RDF Entity. Currently the module only
+  // supports a single property in fields that have multiple properties. This
+  // means that the filter format for text_long fields is not stored, and it
+  // falls back to the default filter format. We're setting the right format
+  // here.
+  // @todo Remove once bug #2892361 is fixed.
+  // @see https://www.drupal.org/project/rdf_entity/issues/2892361
   if (empty($build['description'][0]['#text']) || $view_mode !== 'full') {
     return;
   }

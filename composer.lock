@@ -5808,16 +5808,16 @@
         },
         {
             "name": "drupal/spdx",
-            "version": "1.0.0-alpha1",
+            "version": "1.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "24b9f02244eaef887d96b291a8c889cbacece9cc"
+                "reference": "bc34509918f8fca0d4657ea7a8b97ec60e550961"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/24b9f02244eaef887d96b291a8c889cbacece9cc",
-                "reference": "24b9f02244eaef887d96b291a8c889cbacece9cc",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/bc34509918f8fca0d4657ea7a8b97ec60e550961",
+                "reference": "bc34509918f8fca0d4657ea7a8b97ec60e550961",
                 "shasum": ""
             },
             "require": {
@@ -5836,17 +5836,16 @@
                     }
                 },
                 "patches_applied": {
-                    "Create an SPDX licence type vocabulary. @see https://github.com/ec-europa/spdx/pull/2": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/2.diff",
-                    "Create an SPDX licence rdf entity bundle. @see https://github.com/ec-europa/spdx/pull/3": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/3.diff",
-                    "Provide basic behat steps. @see https://github.com/ec-europa/spdx/pull/4": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/4.diff"
+                    "Extend Behat support. @see https://github.com/ec-europa/spdx/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/5.diff",
+                    "Disable the option to enter link text for the \"See also\" field. @see https://github.com/ec-europa/spdx/pull/6": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/6.diff"
                 }
             },
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha1",
+                "source": "https://github.com/ec-europa/spdx/tree/8.x-1.x",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-03-18T09:08:37+00:00"
+            "time": "2019-03-26T15:07:43+00:00"
         },
         {
             "name": "drupal/state_machine",
@@ -13057,7 +13056,8 @@
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
                 "source": "https://git.drupalcode.org/project/stage_file_proxy"
-            }
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
