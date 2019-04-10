@@ -29,7 +29,7 @@ function joinup_event_entity_bundle_field_info_alter(array &$fields, EntityTypeI
 function joinup_event_entity_type_alter(array &$entity_types): void {
   /* @var $entity_types \Drupal\Core\Entity\EntityTypeInterface */
   if (isset($entity_types['node'])) {
-    $entity_types['node']->addConstraint('OptionalRequiredLocationFields');
+    $entity_types['node']->addConstraint('EventLocationConstraint');
   }
 }
 

@@ -60,14 +60,9 @@ Feature: "Add event" visibility options.
       | Title             | An amazing event                      |
       | Short title       | Amazing event                         |
       | Description       | This is going to be an amazing event. |
-      | Physical location | Rue Belliard 28, Brussels, Belgium    |
       | File description  | Taxi discount voucher.                |
       | Spatial coverage  | France                                |
     And I press "Add another item" at the "Virtual location" field
-    And I enter the following for the "Virtual location" link field:
-      | URL                          | Title           |
-      | https://joinup.ec.europa.eu/ | Joinup homepage |
-      | https://drupal.org/          |                 |
     And I fill the start date of the Date widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:59"
     And I fill the end date of the Date widget with "2018-08-30"
@@ -75,6 +70,13 @@ Feature: "Add event" visibility options.
     # And I fill in "Scope" with values "pan_european, national"
     And I select "National" from "Scope"
     And  I additionally select "Regional" from "Scope"
+    And I press "Save as draft"
+    Then I should see the error message "At least one location fields should be filled in."
+    When I fill in "Physical location" with "Rue Belliard 28, Brussels, Belgium"
+    And I enter the following for the "Virtual location" link field:
+      | URL                          | Title           |
+      | https://joinup.ec.europa.eu/ | Joinup homepage |
+      | https://drupal.org/          |                 |
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     But I should not see the text "National"
