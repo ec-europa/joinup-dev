@@ -19,8 +19,9 @@ touch disable-config-readonly
 ./vendor/bin/drush cache:clear bin config --yes &&
 ./vendor/bin/drush updatedb --yes &&
 ./vendor/bin/drush cs-update --discard-overrides --yes &&
+# Clear the cache to make the spdx namespace available if not.
+./vendor/bin/drush cache-rebuild --yes &&
 ./vendor/bin/drush spdx:import --clean --yes "http://joinup.eu/spdx_licence/published" &&
-./vendor/bin/drush search-api:reset-tracker --yes &&
 ./vendor/bin/drush cache-rebuild --yes &&
 
 echo "Rebuilding node access records." &&
