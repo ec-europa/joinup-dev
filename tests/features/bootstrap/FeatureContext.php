@@ -17,6 +17,7 @@ use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -42,6 +43,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ContextualLinksTrait;
   use EntityTrait;
   use PageCacheTrait;
+  use TagTrait;
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
@@ -1291,8 +1293,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @AfterStep
    */
   public function clearCacheTagsStaticCache(AfterStepScope $event) {
-    $feature = $event->getFeature();
-    if ($feature->hasTag('clearStaticCache')) {
+    if ($this->hasTag('clearStaticCache')) {
       parent::clearStaticCaches();
     }
   }
