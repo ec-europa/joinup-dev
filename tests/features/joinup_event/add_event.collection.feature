@@ -71,7 +71,7 @@ Feature: "Add event" visibility options.
     And I select "National" from "Scope"
     And  I additionally select "Regional" from "Scope"
     And I press "Save as draft"
-    Then I should see the error message "At least one location fields should be filled in."
+    Then I should see the error message "At least one location field should be filled in."
     When I fill in "Physical location" with "Rue Belliard 28, Brussels, Belgium"
     And I enter the following for the "Virtual location" link field:
       | URL                          | Title           |
