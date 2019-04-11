@@ -24,6 +24,8 @@ use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use PHPUnit\Framework\Assert;
+use Drupal\joinup\Traits\TraversingTrait;
 
 /**
  * Behat step definitions for testing solutions.
@@ -36,6 +38,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use FileTrait;
   use NodeTrait;
   use OgTrait;
+  use TraversingTrait;
   use RdfEntityTrait;
   use UtilityTrait;
   use WorkflowTrait;
@@ -682,6 +685,45 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     if (!$ids) {
       throw new \Exception("The '$solution_label' solution is not affiliated with the '$collection_label' collection but it should be.");
     }
+  }
+
+  /**
+   * Navigates to the solutions overview page.
+   *
+   * @When I visit the solution overview( page)
+   */
+  public function visitSolutionOverviewPage() {
+    $this->visitPath('/solutions');
+  }
+
+  /**
+   * Checks to the given Tile contains download counter.
+   *
+   * @param string $heading
+   *   Heading of the tile.
+   * @param int $count
+   *   Number of the downloads.
+   *
+   * @Then the :heading tile should show :count downloads
+   */
+  public function assertTileContainsDownloadCount(string $heading, int $count): void {
+    $tile = $this->getTileByHeading($heading);
+    $elements = $tile->findAll('xpath', '//span[contains(@class, "stats__text") and text() = "' . $count . '"]');
+    Assert::assertCount(1, $elements);
+  }
+
+  /**
+   * Checks to the given tile contains download icon.
+   *
+   * @param string $heading
+   *   Heading of the tile.
+   *
+   * @Then the download icon should not be shown in the :heading tile
+   */
+  public function assertTileNotContainsDownloadIcon(string $heading): void {
+    $tile = $this->getTileByHeading($heading);
+    $elements = $tile->findAll('xpath', '//span[contains(@class, "icon--download")]');
+    Assert::assertEmpty($elements);
   }
 
 }
