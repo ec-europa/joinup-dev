@@ -1617,7 +1617,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
         'title' => $type->label(),
         'description' => $type->getDescription(),
       ];
-      $normalized_title = str_replace([' ', '/'], ['-', '-'], strtolower($type->label()));
+      $normalized_title = htmlentities(str_replace([' ', '/'], ['-', '-'], strtolower($type->label())));
       $data_property_categories[$type->id()] = $normalized_title;
     }
 
