@@ -10,9 +10,10 @@ Feature:
       | SPDX licence foo | SPDX_FOO |
       | SPDX licence bar | SPDX_BAR |
     And licences:
-      | uri                          | title       | description                          | type | spdx licence     | legal type                                      |
-      | http://joinup.eu/licence/foo | Foo Licence | Licence details for the foo licence. |      | SPDX licence foo | Strong Community, Governments/EU, Use/reproduce |
-      | http://joinup.eu/licence/bar | Bar Licence | Licence details for the bar licence. |      | SPDX licence bar | Distribute                                      |
+      | uri                             | title          | description                             | type | spdx licence     | legal type                                      |
+      | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    |      | SPDX licence foo | Strong Community, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/bar    | Bar Licence    | Licence details for the bar licence.    |      | SPDX licence bar | Distribute                                      |
+      | http://joinup.eu/licence/random | Random Licence | A licence that should not be available. |      |                  | Distribute                                      |
 
     When I am not logged in
     And I visit the "JLA" custom page
@@ -20,6 +21,7 @@ Feature:
     And I should see the text "2 licences found"
     And I should see the text "Foo Licence"
     And I should see the text "Bar Licence"
+    But I should not see the text "Random Licence"
     # Assert concatenated categories.
     And I should see the text "Governments/EU, Strong Community"
 
