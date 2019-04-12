@@ -1592,10 +1592,11 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
   if (!empty($entity->field_licence_spdx_licence->getValue())) {
     $spdx_licences = $entity->field_licence_spdx_licence->referencedEntities();
     $spdx_licence = reset($spdx_licences);
+
     $variables['spdx_licence'] = $spdx_licence;
-    $variables['spdx_title'] = $spdx_licence->label();
+    $variables['spdx_title'] = $variables['content']['spdx_licence_label'];
     $variables['spdx_url'] = $spdx_licence->id() . '#licenceText';
-    $variables['licence_code'] = $spdx_licence->field_spdx_licence_id->value;
+    $variables['spdx_licence_id'] = $spdx_licence->field_spdx_licence_id->value;
   }
 
   // Calculate variables related to the legal type.

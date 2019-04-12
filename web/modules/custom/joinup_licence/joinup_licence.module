@@ -59,6 +59,11 @@ function joinup_licence_entity_extra_field_info(): array {
   $licence_type = RdfEntityType::load('licence');
   if ($licence_type) {
     $display = &$fields['rdf_entity'][$licence_type->id()]['display'];
+    $display['spdx_licence_label'] = [
+      'label' => t('SPDX licence label'),
+      'description' => t('The label of the licence in the SPDX licence list.'),
+      'visible' => FALSE,
+    ];
     $display['spdx_licence_id'] = [
       'label' => t('SPDX licence ID'),
       'description' => t('The ID of the licence in the SPDX licence list.'),
@@ -91,6 +96,10 @@ function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, Ent
 
   $spdx_licence = $entity->get('field_licence_spdx_licence')->referencedEntities()[0] ?? NULL;
   if ($spdx_licence) {
+    if ($display->getComponent('spdx_licence_label')) {
+      $field_item_list = $spdx_licence->get('label');
+      $build['spdx_licence_label'] = $field_item_list->view();
+    }
     foreach (['spdx_licence_id', 'spdx_licence_text', 'spdx_see_also'] as $pseudo_field) {
       if ($display->getComponent($pseudo_field)) {
         /** @var \Drupal\Core\Field\FieldItemListInterface $field_item_list */

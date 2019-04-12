@@ -7,7 +7,7 @@
  * - licence_title: The licence title.
  * - spdx_title: The spdx licence title.
  * - spdx_url: The spdx licence url.
- * - licence_code: The spdx licence code.
+ * - spdx_licence_id: The spdx licence code.
  * - legal_categories: a concatenated string of lowercase characters of the legal type categories related to the
  * licence.
  * - category_lists: An array of variables with details on the category lists. Contains variables:
@@ -28,12 +28,12 @@
   ]
 %}
 
-<div {{ attributes.addClass(classes) }} data-spdx="{{ licence_code }}" data-licence-category="{{ legal_categories }}">
+<div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id }}" data-licence-category="{{ legal_categories }}">
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--shifted">
-      {% if licence_code %}
+      {% if spdx_licence_id %}
         <div class="listing__field">
-          <h2 class="listing__title licence-tile__title"><span class="icon icon--licence"></span>{{ licence_code }}</h2>
+          <h2 class="listing__title licence-tile__title"><span class="icon icon--licence"></span>{{ spdx_licence_id }}</h2>
         </div>
       {% endif %}
       <div class="listing__field">

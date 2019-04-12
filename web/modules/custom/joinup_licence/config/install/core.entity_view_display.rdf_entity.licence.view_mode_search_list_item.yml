@@ -66,6 +66,26 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  spdx_licence_id:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_licence_label:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_licence_text:
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_see_also:
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   changed: true
   created: true
