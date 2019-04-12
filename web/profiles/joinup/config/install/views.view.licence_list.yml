@@ -172,6 +172,48 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
+        field_licence_spdx_licence:
+          id: field_licence_spdx_licence
+          table: search_api_index_published
+          field: field_licence_spdx_licence
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: 'not empty'
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
       sorts:
         label:
           id: label
@@ -206,6 +248,7 @@ display:
       max-age: -1
       contexts:
         - 'languages:language_interface'
+        - user
       tags: {  }
   licence_list_block:
     display_plugin: block
@@ -218,4 +261,5 @@ display:
       max-age: -1
       contexts:
         - 'languages:language_interface'
+        - user
       tags: {  }
