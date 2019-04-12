@@ -95,10 +95,10 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
         }
       };
 
-      if (isset($values['field_licence_legal_type'])) {
+      if (!empty($values['field_licence_legal_type'])) {
         $values['field_licence_legal_type'] = $this->explodeCommaSeparatedStepArgument($values['field_licence_legal_type']);
       }
-      if (isset($values['field_licence_spdx_licence'])) {
+      if (!empty($values['field_licence_spdx_licence'])) {
         $values['field_licence_spdx_licence'] = [$values['field_licence_spdx_licence']];
       }
       $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $values);
