@@ -239,26 +239,25 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-    protected function convertValueAliases(array $fields) {
-      $mapped_values = [
-        'field_licence_deprecated' => ['no' => 0, 'yes' => 1],
-      ];
+  protected function convertValueAliases(array $fields) {
+    $mapped_values = [
+      'field_licence_deprecated' => ['no' => 0, 'yes' => 1],
+    ];
 
-      foreach ($fields as $field => $value) {
-        if (isset($mapped_values[$field])) {
-          if (!isset($mapped_values[$field][$value])) {
-            throw new \Exception("Value $value is not an acceptable value for field $field.");
-          }
-
-          $fields[$field] = $mapped_values[$field][$value];
+    foreach ($fields as $field => $value) {
+      if (isset($mapped_values[$field])) {
+        if (!isset($mapped_values[$field][$value])) {
+          throw new \Exception("Value $value is not an acceptable value for field $field.");
         }
+
+        $fields[$field] = $mapped_values[$field][$value];
       }
-
-      // Convert any entity reference field label value with the entity id.
-      $fields = $this->convertEntityReferencesValues('rdf_entity', 'licence', $this->parseRdfEntityFields($fields));
-
-      return $fields;
     }
 
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'licence', $this->parseRdfEntityFields($fields));
+
+    return $fields;
+  }
 
 }
