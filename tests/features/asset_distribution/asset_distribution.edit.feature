@@ -20,6 +20,7 @@ Feature: Asset distribution editing.
     And the following licence:
       | title       | LGPL                                |
       | description | The LGPL more permisssive than GPL. |
+      | deprecated  | yes                                 |
     And the following release:
       | title          | Asset release example |
       | release number | C3PO                  |
@@ -62,6 +63,9 @@ Feature: Asset distribution editing.
     Then I should see the heading "Edit Distribution Asset distribution example"
     And the following fields should not be present "Langcode, Translation"
     But the following fields should be present "Description, Access URL, License, Format, Status, Representation technique"
+    # Ensure that the current licence is available even if it is deprecated but a warning is shown.
+    And the "License" field should contain the "LGPL" option
+    And I should see the warning message "The referenced licence LGPL is deprecated. You are advised to chose a different licence."
     When I fill in "Title" with "Asset distribution example revised"
     # Set a non-HTTP protocol remote URL.
     And I press the "Remove" button
