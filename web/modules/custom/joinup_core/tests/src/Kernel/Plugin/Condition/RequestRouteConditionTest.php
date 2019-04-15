@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\joinup_core\Kernel;
+namespace Drupal\Tests\joinup_core\Kernel\Plugin\Condition;
 
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\KernelTests\KernelTestBase;

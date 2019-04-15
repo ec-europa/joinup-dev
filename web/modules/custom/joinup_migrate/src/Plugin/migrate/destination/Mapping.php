@@ -7,7 +7,6 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Plugin\migrate\destination\DestinationBase;
-use Drupal\migrate\Plugin\MigrateDestinationFastRollbackInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "mapping"
  * )
  */
-class Mapping extends DestinationBase implements MigrateDestinationFastRollbackInterface, ContainerFactoryPluginInterface {
+class Mapping extends DestinationBase implements ContainerFactoryPluginInterface {
 
   /**
    * The database service.
