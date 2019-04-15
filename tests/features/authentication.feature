@@ -38,6 +38,7 @@ Feature: User authentication
       | admin/content                                                  |
       | admin/content/rdf                                              |
       | admin/people                                                   |
+      | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
       | admin/structure                                                |
@@ -87,6 +88,7 @@ Feature: User authentication
       | admin/content                                                  |
       | admin/content/rdf                                              |
       | admin/people                                                   |
+      | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
       | admin/structure                                                |
@@ -120,6 +122,7 @@ Feature: User authentication
       | path                                                           |
       | admin/people                                                   |
       | admin/content/rdf                                              |
+      | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
       | dashboard                                                      |
