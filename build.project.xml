@@ -546,4 +546,8 @@
         description="Install the website and set up the development environment."
         depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers" />
 
+    <target name="deprecated-code">
+        <exec command="./vendor/bin/phpstan analyse web/modules/custom web/profiles web/themes src"/>
+    </target>
+
 </project>
