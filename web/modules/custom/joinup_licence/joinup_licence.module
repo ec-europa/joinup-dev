@@ -131,8 +131,8 @@ function joinup_licence_options_list_alter(array &$options, array $context) {
     $deprecated = (bool) $licence->get('field_licence_deprecated')->value;
     if ($deprecated) {
       if ($licence_id === $default_value) {
-        \Drupal::messenger()->addWarning(t('The referenced licence @licence_label is deprecated. You are advised to chose a different licence.', [
-          '@licence_label' => $licence->label(),
+        \Drupal::messenger()->addWarning(t('The referenced licence %licence_label is deprecated. You are advised to chose a different licence.', [
+          '%licence_label' => $licence->label(),
         ]));
       }
       else {
