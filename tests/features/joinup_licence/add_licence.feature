@@ -10,7 +10,7 @@ Feature: Add a licence through the UI
     # a US based institution, and Joinup is European.
     Given SPDX licences:
       | title       | ID  | see also                                                                                         | text                                                                                               |
-      | MIT Licence | MIT | opensource.org - https://opensource.org/licenses/MIT, mit-license.org - https://mit-license.org/ | "MIT License\n\nCopyright ©2019\n\nPermission is hereby granted, free of charge, to any person..." |
+      | MIT License | MIT | opensource.org - https://opensource.org/licenses/MIT, mit-license.org - https://mit-license.org/ | "MIT License\n\nCopyright ©2019\n\nPermission is hereby granted, free of charge, to any person..." |
 
   Scenario Outline: Add licence as a Moderator or a Licence Manager.
     Given I am logged in as a "<role>"
