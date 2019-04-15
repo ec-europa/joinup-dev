@@ -10,6 +10,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Behat step definitions for testing licences.
@@ -18,6 +19,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
 
   use EntityReferenceTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
    * Test licences.
@@ -224,6 +226,8 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
       'description' => 'field_licence_description',
       'type' => 'field_licence_type',
       'deprecated' => 'field_licence_deprecated',
+      'spdx licence' => 'field_licence_spdx_licence',
+      'legal type' => 'field_licence_legal_type',
     ];
   }
 
