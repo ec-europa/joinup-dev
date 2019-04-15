@@ -5,7 +5,7 @@ Feature: Add a licence through the UI
   I need to be able to add licences through the UI.
 
   Background:
-    # Note that the SPDX licence uses the US spelling "License" while the Joinup
+    # Note that the SPDX licence uses the US spelling "Licence" while the Joinup
     # licence uses the UK spelling "Licence". This is intentional since SPDX is
     # a US based institution, and Joinup is European.
     Given SPDX licences:
@@ -35,12 +35,12 @@ Feature: Add a licence through the UI
     And I should see the text "Description"
     And I should see the text "The classic open source licence without copyleft."
     And I should see the text "Type"
-    And I should see the link "Public domain"
+    And I should see the text "Public domain"
     And I should see the text "Corresponding SPDX licence"
     And I should see the text "MIT License"
     And I should see the text "Licence legal type"
-    And I should see the link "Strong Community"
-    And I should see the link "Venue fixed"
+    And I should see the text "Strong Community"
+    And I should see the text "Venue fixed"
     And I should see the text "Licence ID"
     And I should see the text "MIT"
     And I should see the text "See also"

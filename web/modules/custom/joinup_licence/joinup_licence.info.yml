@@ -5,6 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
+  - field_group
   - smart_trim
   - spdx
 

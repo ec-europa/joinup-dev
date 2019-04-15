@@ -20,6 +20,7 @@ class LicenceValidationTest extends RdfEntityValidationTestBase {
    */
   public static $modules = [
     'joinup_licence',
+    'field_group',
     'smart_trim',
     'spdx',
   ];

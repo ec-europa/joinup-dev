@@ -122,3 +122,31 @@ function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, Ent
     $build['spdx_licence_text'][0]['#format'] = 'licence';
   }
 }
+
+/**
+ * Implements hook_options_list_alter().
+ */
+function joinup_licence_options_list_alter(array &$options, array $context) {
+  /** @var \Drupal\field\FieldConfigInterface $field_definition */
+  $field_definition = $context['fieldDefinition'];
+  if (empty($options) || $field_definition->getName() !== 'field_ad_licence') {
+    return;
+  }
+
+  $default_value = $context['entity']->field_ad_licence->target_id;
+  $licence_ids = array_keys($options);
+  $licences = \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadMultiple($licence_ids);
+  foreach ($licences as $licence_id => $licence) {
+    $deprecated = (bool) $licence->get('field_licence_deprecated')->value;
+    if ($deprecated) {
+      if ($licence_id === $default_value) {
+        \Drupal::messenger()->addWarning(t('The referenced licence %licence_label is deprecated. You are advised to chose a different licence.', [
+          '%licence_label' => $licence->label(),
+        ]));
+      }
+      else {
+        unset($options[$licence_id]);
+      }
+    }
+  }
+}
