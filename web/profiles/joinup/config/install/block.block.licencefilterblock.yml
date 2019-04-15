@@ -4,7 +4,7 @@ dependencies: { }
 id: licencefilterblock
 theme: joinup_theme
 region: content
-weight: -1
+weight: -16
 provider: null
 plugin: licence_filter_block
 settings:

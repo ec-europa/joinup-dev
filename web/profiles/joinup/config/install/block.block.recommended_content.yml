@@ -9,7 +9,7 @@ dependencies:
 id: recommended_content
 theme: joinup_theme
 region: content
-weight: -7
+weight: -13
 provider: null
 plugin: recommended_content
 settings:
