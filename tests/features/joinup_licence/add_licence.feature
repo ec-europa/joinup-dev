@@ -5,7 +5,7 @@ Feature: Add a licence through the UI
   I need to be able to add licences through the UI.
 
   Background:
-    # Note that the SPDX licence uses the US spelling "License" while the Joinup
+    # Note that the SPDX licence uses the US spelling "Licence" while the Joinup
     # licence uses the UK spelling "Licence". This is intentional since SPDX is
     # a US based institution, and Joinup is European.
     Given SPDX licences:

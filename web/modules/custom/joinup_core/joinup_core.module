@@ -140,6 +140,24 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
   /** @var \Drupal\rdf_entity\RdfInterface $rdf */
   $rdf = $form_object->getEntity();
 
+  // List the related entity bundles.
+  $related_bundles = [
+    'collection',
+    'solution',
+  ];
+  // List related operation types.
+  $operation_types = [
+    'add',
+    'default',
+    'propose',
+  ];
+
+  // Add submit callback when the current bundle is in the list
+  // and when we are in an affected operation type.
+  if (in_array($rdf->bundle(), $related_bundles) && (in_array($form_object->getOperation(), $operation_types))) {
+    $form['actions']['submit']['#submit'][] = 'joinup_core_propose_message_submit';
+  }
+
   /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
   $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($rdf->getEntityTypeId(), $rdf->bundle());
   // Keep only fields that are on the form.
@@ -151,6 +169,21 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
     }
   }
 
+}
+
+/**
+ * Displays status message after the user saved the related RDF content.
+ */
+function joinup_core_propose_message_submit(&$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  $fields = ['collection' => 'field_ar_state', 'solution' => 'field_is_state'];
+  $entity = $form_object->getEntity();
+
+  $state = $entity->get($fields[$entity->bundle()])->value;
+
+  if ($state === 'proposed') {
+    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+  }
 }
 
 /**
