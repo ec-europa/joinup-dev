@@ -18,6 +18,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
@@ -25,7 +26,6 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use PHPUnit\Framework\Assert;
-use Drupal\joinup\Traits\TraversingTrait;
 
 /**
  * Behat step definitions for testing solutions.
