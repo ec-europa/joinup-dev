@@ -38,4 +38,4 @@ Feature:
       | parent      | Climate change tracker |
       | downloads   | 20                     |
     When I reload the page
-    Then I should see the text "20" in the "Climate change tracker" tile
+    Then the "Climate change tracker" tile should show 20 downloads
