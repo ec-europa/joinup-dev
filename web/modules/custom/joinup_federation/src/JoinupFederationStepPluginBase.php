@@ -71,7 +71,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
     // Try to refresh the lock on each step. Potentially, the current user can
     // time-out a step with form by postponing the submit until the pipeline
     // lock expires. This makes possible for a different user to start a new
-    // import process that creates a new lock in his behalf. In this case we
+    // import process that creates a new lock in their behalf. In this case we
     // have to abandon this pipeline.
     if (!$this->pipeline->lock()) {
       throw (new PipelineStepPrepareLogicException())->setError([
