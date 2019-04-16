@@ -6,7 +6,7 @@ Feature:
 
   Scenario Outline: Show a deprecation warning depending on the deprecation flag.
     Given the following licence:
-      | title       |   |
+      | title       | Maybe deprecated licence  |
       | description | Licence agreement details |
       | type        | Public domain             |
       | deprecated  | <deprecation>             |
