@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bef51fc438fc7e67bc059638e99d6722",
+    "content-hash": "c3c015362497c0e0879790fe15247654",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5254,6 +5254,7 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
+                    "Drop support for Drupal 8.5.x. Support PHP 7.3, Drupal 8.7.x, 8.8.x @see https://github.com/ec-europa/rdf_entity/pull/91": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/91.diff",
                     "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
                 }
             },
