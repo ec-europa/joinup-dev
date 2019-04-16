@@ -64,6 +64,10 @@ class ExportUserListForm extends FormBase {
       'input' => ['getIsAuthor', []],
       'output' => ['formatBoolean'],
     ],
+    'Profile' => [
+      'input' => ['getFieldValues', ['uid']],
+      'output' => ['getFirstValue', 'formatProfileLink'],
+    ],
   ];
 
   /**
@@ -286,6 +290,10 @@ class ExportUserListForm extends FormBase {
    * @return bool
    *   TRUE if the user has created any published community content or RDF
    *   content.
+   *
+   * @throws \Drupal\search_api\SearchApiException
+   *   Thrown if an error occurred during the retrieval of the authorship
+   *   information from Search API.
    */
   protected function getIsAuthor(UserInterface $user): bool {
     return !empty($this->entityAuthorshipHelper->getEntityIdsAuthoredByUser($user->id(), ['published']));
@@ -375,6 +383,19 @@ class ExportUserListForm extends FormBase {
    */
   protected function formatBoolean(bool $value): string {
     return $value ? 'Yes' : 'No';
+  }
+
+  /**
+   * Output processor; returns a link to the user profile.
+   *
+   * @param bool $value
+   *   The user ID.
+   *
+   * @return string
+   *   An absolute URL to the user profile.
+   */
+  protected function formatProfileLink($value): string {
+    return Url::fromRoute('entity.user.canonical', ['user' => (int) $value])->setAbsolute()->toString();
   }
 
   /**
