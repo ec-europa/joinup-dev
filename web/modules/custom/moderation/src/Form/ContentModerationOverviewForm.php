@@ -298,7 +298,7 @@ class ContentModerationOverviewForm extends FormBase {
     $entities = $this->nodeStorage->getQuery()
       ->condition('og_audience.target_id', $rdf_entity->id())
       ->condition('field_state', CommunityContentHelper::getModeratorAttentionNeededStates(), 'IN')
-      ->condition('type', CommunityContentHelper::getBundles(), 'IN')
+      ->condition('type', CommunityContentHelper::BUNDLES, 'IN')
       ->allRevisions()
       ->execute();
     $return = [];
