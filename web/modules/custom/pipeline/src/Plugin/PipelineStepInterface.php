@@ -14,7 +14,7 @@ interface PipelineStepInterface extends PluginInspectionInterface {
    *
    * @throws \Drupal\pipeline\Exception\PipelineStepExecutionLogicException
    *   By throwing this exception, the step notifies the pipeline orchestrator
-   *   that he should exit the pipeline with an error, in this step. Method
+   *   that they should exit the pipeline with an error, in this step. Method
    *   implementations should use PipelineStepLogicalException::setError() in
    *   order to pass the error markup that will be displayed to the user when
    *   the pipeline is exited.
@@ -28,7 +28,7 @@ interface PipelineStepInterface extends PluginInspectionInterface {
    *
    * @throws \Drupal\pipeline\Exception\PipelineStepPrepareLogicException
    *   By throwing this exception, the step prepare method notifies the pipeline
-   *   orchestrator that he should exit the pipeline with an error, in this
+   *   orchestrator that they should exit the pipeline with an error, in this
    *   step. Method implementations should pass the error markup to be displayed
    *   to the user via PipelineStepPrepareLogicalException::setError().
    *

@@ -118,7 +118,7 @@ class JoinCollectionForm extends FormBase {
         '#value' => $this->t('Join this collection'),
       ];
     }
-    // If the user has an active membership, he can cancel it as well.
+    // If the user has an active membership, they can cancel it as well.
     elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
       $parameters = ['rdf_entity' => $collection->id()];
       if ($this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters)) {
