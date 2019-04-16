@@ -214,7 +214,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   /**
    * Checks that the logged in user has the given OG roles in the given group.
    *
-   * If the user has more than the required roles, he might have permissions
+   * If the user has more than the required roles, they might have permissions
    * from the rest of the roles that will lead the test to a false positive.
    * For this reason, we request check for the specific roles passed.
    *

@@ -214,8 +214,8 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
         // We landed here after all batches were processed in the last request.
         if ($state->hasBatchProcessErrors()) {
           // The last batch from this step has just finished and there are
-          // errors. Show the errors and instruct the caller that he should not
-          // save a new/empty state.
+          // errors. Show the errors and instruct the caller that they should
+          // not save a new/empty state.
           $this->onError($step, $step->buildBatchProcessErrorMessage());
           return FALSE;
         }
@@ -416,7 +416,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   }
 
   /**
-   * Executes the and instructs the caller that he should render the form.
+   * Builds the form and instructs the caller that they should render the form.
    *
    * @param \Drupal\pipeline\Plugin\PipelineStepWithFormInterface $step
    *   The active pipeline step.
