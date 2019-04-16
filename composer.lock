@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4f4cb7c9db782b5fc43ea06564110b4",
+    "content-hash": "bef51fc438fc7e67bc059638e99d6722",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3686,6 +3686,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Add an 'owner' key to the remote_file entity type. @see https://www.drupal.org/project/file_url/issues/3048502": "https://www.drupal.org/files/issues/2019-04-16/3048502-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
