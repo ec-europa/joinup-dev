@@ -18,7 +18,12 @@
                     </then>
                     <else>
                         <mkdir dir="${tmp.dir}" />
+                        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
+                        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
+                        <php expression="ini_set('memory_limit', '1G');" />
                         <httpget url="${solr.download.url}" dir="${tmp.dir}" />
+                        <!-- Restore the original memory limit. -->
+                        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
                     </else>
                 </if>
                 <!-- Use the faster native untar on UNIX systems. -->
@@ -220,6 +225,9 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
     <target name="download-apache-solr-snapshot">
         <delete dir="${exports.solr.destination.folder}" includeemptydirs="true" failonerror="false" />
         <mkdir dir="${exports.solr.destination.folder}"/>
+        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
+        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
+        <php expression="ini_set('memory_limit', '1G');" />
         <httpget
                 url="${exports.solr.source}"
                 authUser="${asda.username}"
@@ -227,6 +235,8 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
                 authScheme="basic"
                 dir="${exports.solr.destination.folder}"
         />
+        <!-- Restore the original memory limit. -->
+        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
         <untar file="${exports.solr.destination.folder}/${exports.solr.filename}" todir="${exports.solr.destination.folder}" />
         <delete file="${exports.solr.destination.folder}/${exports.solr.filename}" />
         <move file="${exports.solr.destination.folder}/snapshot.joinup" tofile="${exports.solr.destination.folder}/snapshot.published" />
