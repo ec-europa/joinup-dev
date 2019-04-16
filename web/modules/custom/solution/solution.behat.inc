@@ -697,12 +697,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks to the given Tile contains download counter.
+   * Checks that the given tile contains the given number of downloads.
    *
    * @param string $heading
    *   Heading of the tile.
    * @param int $count
    *   Number of the downloads.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the tile is not found in the page.
    *
    * @Then the :heading tile should show :count downloads
    */
@@ -713,10 +716,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Checks to the given tile contains download icon.
+   * Checks that the given tile contains a download icon.
    *
    * @param string $heading
    *   Heading of the tile.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the tile is not found in the page.
    *
    * @Then the download icon should not be shown in the :heading tile
    */
