@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41218901e5897a4d6b985bafd959e112",
+    "content-hash": "e13a6ad801e30caa289727f708c58ef0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2431,7 +2431,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2580,14 +2580,6 @@
             ],
             "authors": [
                 {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
-                },
-                {
-                    "name": "gnuget",
-                    "homepage": "https://www.drupal.org/user/992990"
-                },
-                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2699,8 +2691,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2803,7 +2795,7 @@
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_update"
+                "source": "https://git.drupalcode.org/project/config_update"
             }
         },
         {
@@ -3756,7 +3748,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -3855,7 +3847,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.x-dev",
-                    "datestamp": "1549949280",
+                    "datestamp": "1554291181",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4127,7 +4119,7 @@
             "description": "Provides a widget for inline management (creation, modification, removal) of referenced entities.",
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
-                "source": "http://cgit.drupalcode.org/inline_entity_form"
+                "source": "https://git.drupalcode.org/project/inline_entity_form"
             }
         },
         {
@@ -4425,7 +4417,7 @@
             "description": "Allows to give roles per menu admin permissions without giving them full administer menu permission.",
             "homepage": "https://www.drupal.org/project/menu_admin_per_menu",
             "support": {
-                "source": "http://cgit.drupalcode.org/menu_admin_per_menu"
+                "source": "https://git.drupalcode.org/project/menu_admin_per_menu"
             }
         },
         {
@@ -4589,7 +4581,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4794,6 +4786,10 @@
                     "homepage": "https://www.drupal.org/user/23"
                 },
                 {
+                    "name": "mpp",
+                    "homepage": "https://www.drupal.org/user/359881"
+                },
+                {
                     "name": "pfrenssen",
                     "homepage": "https://www.drupal.org/user/382067"
                 },
@@ -4912,7 +4908,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5173,7 +5169,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5254,7 +5250,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
+                    "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
                 }
             },
             "autoload": {
@@ -5410,7 +5407,7 @@
             "description": "Provide a module placeholder, for using as dependency for module that needs Redis.",
             "homepage": "https://www.drupal.org/project/redis",
             "support": {
-                "source": "http://cgit.drupalcode.org/redis"
+                "source": "https://git.drupalcode.org/project/redis"
             }
         },
         {
@@ -5533,7 +5530,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1543072380",
+                    "datestamp": "1537284180",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5618,7 +5615,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5807,6 +5804,47 @@
             "time": "2019-01-10T17:53:49+00:00"
         },
         {
+            "name": "drupal/spdx",
+            "version": "1.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/spdx.git",
+                "reference": "bc34509918f8fca0d4657ea7a8b97ec60e550961"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/bc34509918f8fca0d4657ea7a8b97ec60e550961",
+                "reference": "bc34509918f8fca0d4657ea7a8b97ec60e550961",
+                "shasum": ""
+            },
+            "require": {
+                "cweagans/composer-patches": "^1.6.4",
+                "drupal/rdf_entity": "^1.0.0-alpha12",
+                "php": ">=7.1",
+                "spdx/license-list-data": "master"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "enable-patching": true,
+                "composer-exit-on-patch-failure": 1,
+                "patches": {
+                    "drupal/rdf_entity": {
+                        "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
+                    }
+                },
+                "patches_applied": {
+                    "Extend Behat support. @see https://github.com/ec-europa/spdx/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/5.diff",
+                    "Disable the option to enter link text for the \"See also\" field. @see https://github.com/ec-europa/spdx/pull/6": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/6.diff"
+                }
+            },
+            "description": "Allows to federate and manage the SPDX licences.",
+            "support": {
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha2",
+                "issues": "https://github.com/ec-europa/spdx/issues"
+            },
+            "time": "2019-03-26T15:07:43+00:00"
+        },
+        {
             "name": "drupal/state_machine",
             "version": "1.0.0-beta3",
             "source": {
@@ -5830,7 +5868,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6017,7 +6055,7 @@
             "description": "Swiftmailer",
             "homepage": "https://www.drupal.org/project/swiftmailer",
             "support": {
-                "source": "http://cgit.drupalcode.org/swiftmailer"
+                "source": "https://git.drupalcode.org/project/swiftmailer"
             }
         },
         {
@@ -6116,7 +6154,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1493246342",
+                    "datestamp": "1510132373",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6184,7 +6222,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6341,7 +6379,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
+                "source": "https://git.drupalcode.org/project/views_data_export"
             }
         },
         {
@@ -7150,7 +7188,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9576,6 +9614,17 @@
             "time": "2018-08-09T13:01:25+00:00"
         },
         {
+            "name": "spdx/license-list-data",
+            "version": "master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spdx/license-list-data",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2019-04-02T18:33:21+00:00"
+        },
+        {
             "name": "stack/builder",
             "version": "v1.0.5",
             "source": {
@@ -11452,7 +11501,7 @@
             ],
             "authors": [
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -11793,9 +11842,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.4-dev"
-                },
-                "patches_applied": {
-                    "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
                 }
             },
             "autoload": {
@@ -12239,7 +12285,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549218480",
+                    "datestamp": "1549559402",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12338,7 +12384,7 @@
             "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/config_devel.git",
+                "url": "https://git.drupal.org/project/config_devel",
                 "reference": "8.x-1.2"
             },
             "dist": {
@@ -12409,7 +12455,7 @@
             "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/config_inspector.git",
+                "url": "https://git.drupal.org/project/config_inspector",
                 "reference": "8.x-1.0-beta2"
             },
             "dist": {
@@ -12470,7 +12516,7 @@
             "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/default_content.git",
+                "url": "https://git.drupal.org/project/default_content",
                 "reference": "8.x-1.0-alpha7"
             },
             "dist": {
@@ -12528,10 +12574,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
@@ -12617,8 +12659,7 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2019-04-14T22:55:15+00:00"
+            }
         },
         {
             "name": "drupal/drupal-driver",
@@ -12713,9 +12754,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.0.x-dev"
-                },
-                "patches_applied": {
-                    "Add missing negative step @see https://github.com/jhedstrom/drupalextension/pull/527": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/527.diff"
                 }
             },
             "autoload": {
@@ -12816,15 +12854,14 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
-            },
-            "time": "2018-12-03T07:38:12+00:00"
+            }
         },
         {
             "name": "drupal/renderviz",
             "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/renderviz.git",
+                "url": "https://git.drupal.org/project/renderviz",
                 "reference": "8.x-1.0-alpha1"
             },
             "dist": {
@@ -12937,7 +12974,7 @@
             "description": "Provides a user interface to manage REST resources",
             "homepage": "https://www.drupal.org/project/restui",
             "support": {
-                "source": "http://cgit.drupalcode.org/restui"
+                "source": "https://git.drupalcode.org/project/restui"
             }
         },
         {
@@ -12945,7 +12982,7 @@
             "version": "dev-1.x",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/stage_file_proxy.git",
+                "url": "https://git.drupal.org/project/stage_file_proxy",
                 "reference": "4c3fa8d12703d8665032719ac002529d6d3a1c70"
             },
             "require": {
@@ -12957,8 +12994,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+4-dev",
-                    "datestamp": "1533223380",
+                    "version": "8.x-1.0-alpha3+3-dev",
+                    "datestamp": "1533222480",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -13006,8 +13043,9 @@
             "description": "Provides stage_file_proxy module.",
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
-                "source": "https://git.drupalcode.org/project/stage_file_proxy"
-            }
+                "source": "http://cgit.drupalcode.org/stage_file_proxy"
+            },
+            "time": "2018-08-02T15:21:36+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -14218,7 +14256,6 @@
                 "mock",
                 "xunit"
             ],
-            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {

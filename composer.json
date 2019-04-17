@@ -56,6 +56,7 @@
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
         "drupal/sparql_entity_storage": "dev-empty-module",
+        "drupal/spdx": "^1.0-alpha2",
         "drupal/state_machine": "1.0-beta3",
         "drupal/subpathauto": "^1.0@rc",
         "drupal/swiftmailer": "^1.0@beta",
@@ -228,6 +229,10 @@
             "drupal/smart_trim": {
                 "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
             },
+            "drupal/spdx": {
+                "Extend Behat support. @see https://github.com/ec-europa/spdx/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/5.diff",
+                "Disable the option to enter link text for the \"See also\" field. @see https://github.com/ec-europa/spdx/pull/6": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/6.diff"
+            },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
@@ -254,6 +259,10 @@
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/redirect.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/spdx.git"
         },
         {
             "type": "vcs",

@@ -1,0 +1,183 @@
+// Licence
+//
+
+// Component
+// --------------------------------------------------
+
+// Elements
+// --------------------------------------------------
+.licence-filter__header
+  height: 45px
+  color: #fff
+  text-align: center
+  span
+    font-weight: bold
+    vertical-align: middle
+    line-height: 45px
+
+.licence__card
+  min-height: 337px
+  height: 100%
+
+.licence-filter__content
+  padding: 15px
+
+.licence-filter__list
+  padding: 0
+  margin: 0
+  list-style: none
+  .licence-filter__item
+    margin-bottom: 10px
+    font-size: $font-size-xsmall
+    &:last-child
+      margin-bottom: 0
+    a
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+      &.is-active
+        font-weight: bold
+
+.licence-tile__title
+  .icon
+    margin-left: 0
+    margin-right: 5px
+  +breakpoint(mobile)
+    margin-left: -21px
+
+.licence-tile__line
+  font-size: $font-size-xsmall
+  display: flex
+
+.licence-tile__label
+  color: #fff
+  padding: 5px 10px
+  margin-right: 10px
+
+.licence-tile__label-wrapper
+  min-width: 100px
+  text-align: right
+
+.licence-tile__button
+  display: inline-block
+  text-decoration: none
+  padding: 10px 30px
+  color: $color-base
+  border: 2px solid $color-blue-warm
+  font-size: $font-size-small
+  border-radius: 5px
+  &:hover
+    color: #fff
+    background: $color-blue-warm
+  +breakpoint(mobile)
+    position: absolute
+    left: 41px
+    bottom: 20px
+
+.licence-counter
+  font-weight: bold
+  margin: 10px 0
+
+.licence-search__label
+  color: $color-blue-dark
+  font-weight: bold
+  display: inline-block
+  vertical-align: middle
+
+.licence-search__input
+  display: inline-block
+  vertical-align: middle
+  +breakpoint(mobile)
+    margin: 0 10px 5px 10px
+
+// Modifiers
+// --------------------------------------------------
+.licence-filter--can
+  .licence-filter__header
+    background-color: $color-green-warm
+  .licence-filter__item
+    a
+      color: $color-green-warm
+
+.licence-filter--must
+  .licence-filter__header
+    background-color: $color-beige-warm
+  .licence-filter__item
+    a
+      color: $color-beige-warm
+
+.licence-filter--cannot
+  .licence-filter__header
+    background-color: $color-red-warm
+  .licence-filter__item
+    a
+      color: $color-red-warm
+
+.licence-filter--compatible
+  .licence-filter__header
+    background-color: $color-blue-warm
+  .licence-filter__item
+    a
+      color: $color-blue-warm
+
+.licence-filter--law
+  .licence-filter__header
+    background-color: $color-grey-warm
+  .licence-filter__item
+    a
+      color: $color-grey-warm
+
+.licence-filter--support
+  .licence-filter__header
+    background-color: $color-orange-warm
+  .licence-filter__item
+    a
+      color: $color-orange-warm
+
+.licence-tile__line--can
+  .licence-tile__label
+    background-color: $color-green-warm
+  .licence-tile__value
+    color: $color-green-warm
+
+.licence-tile__line--must
+  .licence-tile__label
+    background-color: $color-beige-warm
+  .licence-tile__value
+    color: $color-beige-warm
+
+.licence-tile__line--cannot
+  .licence-tile__label
+    background-color: $color-red-warm
+  .licence-tile__value
+    color: $color-red-warm
+
+.licence-tile__line--compatible
+  .licence-tile__label
+    background-color: $color-blue-warm
+  .licence-tile__value
+    color: $color-blue-warm
+
+.licence-tile__line--law
+  .licence-tile__label
+    background-color: $color-grey-warm
+  .licence-tile__value
+    color: $color-grey-warm
+
+.licence-tile__line--support
+  .licence-tile__label
+    background-color: $color-orange-warm
+  .licence-tile__value
+    color: $color-orange-warm
+
+// Dependiencies
+// --------------------------------------------------
+.licence-tile
+  .listing__card
+    min-height: 0
+
+// States
+// --------------------------------------------------
+.licence-tile
+  &.is-hidden
+    display: none
