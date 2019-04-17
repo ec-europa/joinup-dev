@@ -169,7 +169,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
       ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
 
       // The non-anonymous author of the comment should not be notified, if
-      // eventually he/she is in the subscribers list.
+      // eventually they are in the subscribers list.
       if (!$this->comment->getOwner()->isAnonymous()) {
         unset($this->recipients[$this->comment->getOwnerId()]);
       }

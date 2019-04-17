@@ -232,6 +232,9 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   }
 
   // Attach the download total of all distributions in this solution.
+  // @todo Add the `og-group-content` cache tag because the downloads are
+  //   contained in the distribution entities which is group content.
+  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
   if ($display->getComponent('download_total')) {
     $total = 0;
     if (!$entity->isNew()) {
@@ -261,6 +264,8 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       '#type' => 'container',
       '#stats_topic' => t('Downloads'),
       0 => ['#markup' => (string) $total],
+      // Hide the download stats when there are no downloads.
+      '#access' => $total > 0,
     ];
   }
 
