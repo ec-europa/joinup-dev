@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
@@ -23,8 +24,17 @@ function joinup_comment_comment_view_alter(array &$build, EntityInterface $entit
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * Change the submit button label for the comment form.
+ * Disallow commenting for anonymous visitors and
+ * change the submit button label for the comment form.
  */
 function joinup_comment_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (Drupal::currentUser()->isAnonymous()) {
+    $form['#access'] = FALSE;
+    $login_url =  Link::createFromRoute('Login', 'user.login')->toString();
+    $reg_url =  Link::createFromRoute('create an account', 'user.register')->toString();
+    $link_text = sprintf('%s or %s to comment.', $login_url, $reg_url);
+    $form['#markup'] = '<div class="center">' . t($link_text) . '</div>';
+  }
+
   $form['actions']['submit']['#value'] = t('Post comment');
 }
