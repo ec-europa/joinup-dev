@@ -42,7 +42,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
-  use TagTrait;
   use PageCacheTrait;
   use TagTrait;
   use TraversingTrait;
