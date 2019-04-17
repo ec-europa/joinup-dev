@@ -22,9 +22,9 @@ class Uid1OnlyAccess implements AccessInterface {
    */
   public function access(AccountInterface $account) {
     if ($account->id() == 1) {
-      return AccessResult::allowed()->addCacheContexts(['user.is_super_user']);
+      return AccessResult::allowed()->addCacheContexts(['user']);
     }
-    return AccessResult::forbidden()->addCacheContexts(['user.is_super_user']);
+    return AccessResult::forbidden()->addCacheContexts(['user']);
   }
 
 }

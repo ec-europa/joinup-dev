@@ -5,6 +5,7 @@
  * Functions to support theming in the Joinup theme.
  */
 
+use Drupal\block\Entity\Block;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
@@ -14,14 +15,12 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-use Drupal\block\Entity\Block;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
-use Drupal\user\Entity\User;
 
 /**
  * Gives meta properties about forms based on routes.
@@ -468,7 +467,7 @@ function joinup_theme_preprocess_menu(&$variables) {
   }
   // Set the account logo.
   $account = \Drupal::currentUser()->getAccount();
-  $user = User::load($account->id(), TRUE);
+  $user = user_load($account->id(), TRUE);
   /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
   $photo = $user->get('field_user_photo')->first();
   $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
@@ -480,7 +479,7 @@ function joinup_theme_preprocess_menu(&$variables) {
     $url = ImageStyle::load('profile_icon')->buildUrl($uri);
     $variables['profile_icon'] = $url;
   }
-  $variables['#cache']['contexts'][] = 'user.photo';
+  $variables['#cache']['contexts'][] = 'user';
 }
 
 /**
