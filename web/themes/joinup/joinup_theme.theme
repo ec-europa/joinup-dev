@@ -1549,7 +1549,7 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ * Implements hook_preprocess_HOOK() for rdf-entity--collection--listing-item.html.twig.
  *
  * Get raw number of members.
  */
@@ -1557,6 +1557,18 @@ function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variable
   if (isset($variables['elements']['members']['#markup'])) {
     $arguments = $variables['elements']['members']['#markup']->getArguments();
     $variables['member_count'] = $arguments['@member_count'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for rdf-entity--solution--listing-item.html.twig.
+ *
+ * - Add a flag that indicates whether to show the download counter.
+ */
+function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables) {
+  // Add a flag to indicate if the download counter is visible.
+  if (isset($variables['elements']['downloads']['#access'])) {
+    $variables['show_download_counter'] = $variables['elements']['downloads']['#access'];
   }
 }
 
