@@ -30,10 +30,10 @@ function joinup_comment_comment_view_alter(array &$build, EntityInterface $entit
 function joinup_comment_form_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (Drupal::currentUser()->isAnonymous()) {
     $form['#access'] = FALSE;
-    $login_url =  Link::createFromRoute('Login', 'user.login')->toString();
-    $reg_url =  Link::createFromRoute('create an account', 'user.register')->toString();
+    $login_url = Link::createFromRoute('Login', 'user.login')->toString();
+    $reg_url = Link::createFromRoute('create an account', 'user.register')->toString();
     $link_text = sprintf('%s or %s to comment.', $login_url, $reg_url);
-    $form['#markup'] = '<div class="center">' . t($link_text) . '</div>';
+    $form['#markup'] = '<div class="center">' . $link_text . '</div>';
   }
 
   $form['actions']['submit']['#value'] = t('Post comment');
