@@ -68,10 +68,6 @@ if [ "${CORE_EXISTS}" == '' ]; then
   error "Solr '${CORE}' core does not exists on this server!";
 fi
 
-if [ ! -d "${SNAPSHOT_DIR}" ]; then
-  error "The snapshot directory ${SNAPSHOT_DIR} does't exist$";
-fi
-
 # Get the real path.
 SNAPSHOT_DIR=$(realpath "${SNAPSHOT_DIR}")
 
