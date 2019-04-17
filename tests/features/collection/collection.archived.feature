@@ -34,8 +34,8 @@ Feature: Creating content and commenting on archived collection
 
     When I am not logged in
     And I go to the "The Weeping's Stars" discussion
-    Then the following fields should be present "Your name, Email, Create comment"
-    And I should see the button "Post comment"
+    Then the following fields should not be present "Your name, Email, Create comment"
+    And I should not see the button "Post comment"
 
     When I am logged in as "Karl Fields"
     And I go to the "The Willing Consort" collection
