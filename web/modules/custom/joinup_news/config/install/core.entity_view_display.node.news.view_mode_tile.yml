@@ -28,6 +28,11 @@ targetEntityType: node
 bundle: news
 mode: view_mode_tile
 content:
+  blahblah:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   body:
     type: smart_trim
     weight: 0
@@ -58,7 +63,7 @@ content:
     region: content
   field_keywords:
     type: string
-    weight: 1
+    weight: 2
     region: content
     label: hidden
     settings:

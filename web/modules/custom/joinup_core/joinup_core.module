@@ -1357,8 +1357,9 @@ function joinup_core_og_membership_predelete(OgMembershipInterface $entity) {
  *   The og membership entity.
  */
 function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
-  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
+  $tags = [$entity->getGroupEntityType() . ':' . md5($entity->getGroupId())];
   Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
+  Cache::invalidateTags(Cache::buildTags('blah', ['blah-blah']));
 }
 
 /**

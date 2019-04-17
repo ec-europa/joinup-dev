@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\node\Entity\NodeType;
 use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
@@ -295,6 +296,15 @@ function collection_module_implements_alter(&$implementations, $hook) {
  */
 function collection_entity_extra_field_info() {
   $fields = [];
+  $test = NodeType::load('news');
+  if (!empty($test)) {
+    $fields['node']['news']['display']['blahblah'] = [
+      'label' => t('blah blah blah'),
+      'description' => t('blah'),
+      'visible' => FALSE,
+    ];
+  }
+
   $collection = RdfEntityType::load('collection');
 
   // This hook can fire before the collection bundle config is defined, in that
@@ -331,6 +341,27 @@ function collection_entity_extra_field_info() {
   ];
 
   return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function collection_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() !== 'news') {
+    return;
+  }
+
+  if ($display->getComponent('blahblah')) {
+    $member_count = 33;
+    // @see joinup_core_og_membership_invalidate_group_tags()
+    $tags = Cache::buildTags('blah', ['blah-blah']);
+    $build['blahblah'] = [
+      '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
+      '#cache' => [
+        'tags' => $tags,
+      ],
+    ];
+  }
 }
 
 /**

@@ -33,7 +33,7 @@ third_party_settings:
       children:
         - field_news_source_url
       parent_name: ''
-      weight: 2
+      weight: 3
       format_type: html_element
       format_settings:
         id: ''
@@ -50,6 +50,11 @@ targetEntityType: node
 bundle: news
 mode: default
 content:
+  blahblah:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   body:
     label: hidden
     type: text_default
@@ -59,10 +64,11 @@ content:
     region: content
   field_attachment:
     type: file_table
-    weight: 5
+    weight: 6
     region: content
     label: above
-    settings: {  }
+    settings:
+      use_description_as_link_text: true
     third_party_settings:
       ds:
         ds_limit: ''
@@ -76,7 +82,7 @@ content:
         template_suggestion: with_label
   field_comments:
     type: comment_default
-    weight: 6
+    weight: 7
     region: content
     label: above
     settings:
@@ -84,7 +90,7 @@ content:
       pager_id: 0
     third_party_settings: {  }
   field_news_headline:
-    weight: 1
+    weight: 2
     label: hidden
     settings:
       link_to_entity: false
@@ -101,7 +107,7 @@ content:
     type: string
     region: content
   field_news_referenced_solution:
-    weight: 7
+    weight: 8
     label: above
     settings:
       view_mode: view_mode_tile
@@ -143,7 +149,7 @@ content:
     region: content
   field_shared_in:
     type: entity_reference_entity_view
-    weight: 8
+    weight: 9
     region: content
     label: above
     settings:
@@ -162,7 +168,7 @@ content:
         template_suggestion: entity_reference__listing_tile
   report:
     label: hidden
-    weight: 4
+    weight: 5
     region: content
     settings:
       trim_length: 80
@@ -182,7 +188,7 @@ content:
         template_suggestion: no_wrappers
     type: link
   share_link:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
