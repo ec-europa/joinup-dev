@@ -24,12 +24,10 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
-use Drupal\joinup\Traits\PageCacheTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
-use PHPUnit\Framework\Assert;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -42,7 +40,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
-  use PageCacheTrait;
   use TagTrait;
   use TraversingTrait;
   use UserTrait;
@@ -1104,30 +1101,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks that the page is cacheable.
-   *
-   * @Then the page should be cacheable
-   */
-  public function assertPageCacheable() {
-    Assert::assertTrue($this->isPageCacheable());
-  }
-
-  /**
-   * Checks that the page is not cacheable.
-   *
-   * @Then the page should not be cacheable
-   */
-  public function assertPageNotCacheable() {
-    Assert::assertFalse($this->isPageCacheable());
-  }
-
-  /**
    * Checks that the page is cached.
    *
    * @Then the page should be cached
    */
   public function assertPageCached() {
-    Assert::assertTrue($this->isPageCached());
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'HIT');
   }
 
   /**
@@ -1136,7 +1115,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the page should not be cached
    */
   public function assertPageNotCached() {
-    Assert::assertFalse($this->isPageCached());
+    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
+  }
+
+  /**
+   * Checks that the HTTP response is cached by Drupal dynamic cache.
+   *
+   * @Then the response should be cached
+   */
+  public function assertResponseCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'HIT');
+  }
+
+  /**
+   * Checks that the HTTP response is not cached by Drupal dynamic cache.
+   *
+   * @Then the response should not be cached
+   */
+  public function assertResponseNotCached() {
+    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'MISS');
   }
 
   /**
@@ -1292,7 +1289,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @AfterStep
    */
-  public function clearCacheTagsStaticCache(AfterStepScope $event) {
+  public function clearCacheTagsStaticCache(AfterStepScope $event): void {
     if ($this->hasTag('clearStaticCache')) {
       parent::clearStaticCaches();
     }
