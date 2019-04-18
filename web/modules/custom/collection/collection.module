@@ -31,6 +31,33 @@ use Drupal\search_api\Query\QueryInterface;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
+ * Implements hook_theme().
+ */
+function collection_theme($existing, $type, $theme, $path) {
+  return [
+    'collection_member_count' => [
+      'variables' => [
+        'count' => 0,
+        'view_mode' => '',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ *
+ * Allows the collection member count to be themed differently per view mode.
+ */
+function collection_theme_suggestions_collection_member_count(array $variables): array {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['view_mode'], '.', '_');
+  $suggestions[] = 'collection_member_count__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function collection_form_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -363,10 +390,10 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
     // @see joinup_core_og_membership_invalidate_group_tags()
     $tags = Cache::buildTags('joinup-membership', [$tag]);
     $build['members'] = [
-      '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
-      '#cache' => [
-        'tags' => $tags,
-      ],
+      '#theme' => 'collection_member_count',
+      '#count' => $member_count,
+      '#view_mode' => $view_mode,
+      '#cache' => ['tags' => $tags],
     ];
   }
   // Solution count.
