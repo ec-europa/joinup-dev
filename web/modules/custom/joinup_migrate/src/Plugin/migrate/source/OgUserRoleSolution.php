@@ -86,7 +86,7 @@ class OgUserRoleSolution extends SourcePluginBase {
       }
 
       // It's possible that a membership has been already created for this user,
-      // as an effect of his solution authorship. In this case we add also the
+      // as an effect of their solution authorship. In this case we add also the
       // membership ID to the row, so the membership will be updated instead of
       // being created.
       $key = "$nid:$uid";

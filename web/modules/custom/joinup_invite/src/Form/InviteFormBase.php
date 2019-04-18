@@ -270,7 +270,7 @@ abstract class InviteFormBase extends FormBase {
   }
 
   /**
-   * Returns a full name of the user with his email as suffix in parenthesis.
+   * Returns a full name of the user with their email as suffix in parenthesis.
    *
    * @param \Drupal\user\UserInterface $user
    *   The user object.

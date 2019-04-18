@@ -548,6 +548,7 @@ function joinup_theme_preprocess_block(&$variables) {
     case 'toc_outline':
       $variables['content']['#attributes']['class'][] = 'navigation-bottom__links';
       break;
+
   }
 
   // Set default title tag.
@@ -1450,6 +1451,13 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     }
   }
 
+  // For the search_list_item view mode of licences, add an explicit suggestion.
+  if ($hook === 'rdf_entity' && !empty($variables['elements']['#view_mode']) && $variables['elements']['#view_mode'] === 'view_mode_search_list_item' && !empty($variables['elements']['#rdf_entity']) && $variables['elements']['#rdf_entity']->bundle() === 'licence') {
+    $entity_type = $variables['elements']['#entity_type'];
+    $bundle = $variables['elements']['#' . $entity_type]->bundle();
+    $suggestions[] = $entity_type . '__' . str_replace('-', '_', $bundle) . '__search_list_item';
+  }
+
   return $suggestions;
 }
 
@@ -1495,43 +1503,6 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
- * Implements hook_preprocess_node().
- *
- * Adds extension and file size to the available variables when rendering a
- * document node.
- */
-function joinup_theme_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-
-  // Add bundle class in listing templates.
-  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
-    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
-    $variables['attributes']['class'][] = $bundle_class;
-  }
-
-  // Getting the node creation from the node object.
-  if ($node->bundle() == 'news') {
-    $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
-  }
-
-  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
-    return;
-  }
-
-  /** @var \Drupal\file\FileInterface $file */
-  $file = $node->get('field_file')->first()->entity;
-  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
-
-  if (!$is_remote) {
-    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-  }
-  else {
-    $variables['extension'] = t('External');
-  }
-}
-
-/**
  * Implements hook_preprocess_rdf_entity().
  *
  * Hide label for certain displays.
@@ -1549,7 +1520,7 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ * Implements hook_preprocess_HOOK() for rdf-entity--collection--listing-item.html.twig.
  *
  * Get raw number of members.
  */
@@ -1557,6 +1528,70 @@ function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variable
   if (isset($variables['elements']['members']['#markup'])) {
     $arguments = $variables['elements']['members']['#markup']->getArguments();
     $variables['member_count'] = $arguments['@member_count'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Provides variables needed for the search_list_item view mode of licences.
+ */
+function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
+  $entity = $variables['elements']['#rdf_entity'];
+  $variables['licence_title'] = $entity->label();
+  $variables['licence_description'] = $entity->field_licence_description->value;
+
+  // Calculate variables related to the spdx licence.
+  if (!empty($entity->field_licence_spdx_licence->getValue())) {
+    $spdx_licences = $entity->field_licence_spdx_licence->referencedEntities();
+    $spdx_licence = reset($spdx_licences);
+
+    $variables['spdx_licence'] = $spdx_licence;
+    $variables['spdx_title'] = $variables['content']['spdx_licence_label'];
+    $spdx_url = Url::fromUri($spdx_licence->id(), ['fragment' => 'licenceText']);
+    $variables['spdx_url'] = $spdx_url->toUriString();
+    $variables['spdx_licence_id'] = $spdx_licence->field_spdx_licence_id->value;
+  }
+
+  // Calculate variables related to the legal type.
+  if (!empty($entity->field_licence_legal_type->getValue())) {
+    $types = $entity->field_licence_legal_type->referencedEntities();
+    $data_property_categories = [];
+    $category_lists = [];
+    foreach ($types as $type) {
+      $parents = $type->parent->referencedEntities();
+      $parent = reset($parents);
+      $parent_normalized_title = strtolower($parent->label());
+      if (!isset($category_lists[$parent->id()])) {
+        $category_lists[$parent->id()] = [
+          'title' => $parent->label(),
+          'class' => 'licence-tile__line--' . $parent_normalized_title,
+        ];
+      }
+      $category_lists[$parent->id()]['items'][] = [
+        'title' => $type->label(),
+        'description' => $type->getDescription(),
+      ];
+      $normalized_title = htmlentities(str_replace([' ', '/'], ['-', '-'], strtolower($type->label())));
+      $data_property_categories[$type->id()] = $normalized_title;
+    }
+
+    if (!empty($data_property_categories)) {
+      $variables['legal_categories'] = implode(' ', $data_property_categories);
+      $variables['category_lists'] = $category_lists;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for rdf-entity--solution--listing-item.html.twig.
+ *
+ * - Add a flag that indicates whether to show the download counter.
+ */
+function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables) {
+  // Add a flag to indicate if the download counter is visible.
+  if (isset($variables['elements']['downloads']['#access'])) {
+    $variables['show_download_counter'] = $variables['elements']['downloads']['#access'];
   }
 }
 
@@ -1676,6 +1711,31 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
     $suggestions[] = $variables['theme_hook_original'] . '__region_' . $region;
     unset($variables['attributes']['_block_id']);
   }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+  // A list of view names in which to exclude the not needed wrapper.
+  $without_wrappers = [
+    'licence_list',
+  ];
+
+  if (in_array($variables['view']->id(), $without_wrappers)) {
+    $hook = 'no_wrappers';
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  // Add suggestions for individual view displays.
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['view']->id();
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['view']->current_display;
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['view']->id() . '__' . $variables['view']->current_display;
 }
 
 /**

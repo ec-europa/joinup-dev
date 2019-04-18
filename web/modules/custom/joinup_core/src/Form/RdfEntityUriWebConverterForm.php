@@ -62,7 +62,7 @@ class RdfEntityUriWebConverterForm extends FormBase {
     }
 
     // Build a Drupal internal URI.
-    $uri = 'internal:/' . $path;
+    $uri = 'internal:/' . trim($path, " /");
     $url = Url::fromUri($uri);
     // The path was build from a route.
     if ($url->isRouted()) {

@@ -8,7 +8,7 @@ id: node.event.field_location
 field_name: field_location
 entity_type: node
 bundle: event
-label: Location
+label: 'Physical location'
 description: 'If the event takes place in a physical location, provide the street address so a map can be shown.'
 required: false
 translatable: false

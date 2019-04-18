@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.view_mode_search_list_item
+label: Search list item
+targetEntityType: rdf_entity
+cache: true

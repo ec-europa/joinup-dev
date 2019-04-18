@@ -4,6 +4,7 @@ namespace Drupal\joinup;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -61,7 +62,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
         }
       }
     }
-    elseif (JoinupHelper::isCommunityContent($entity)) {
+    elseif (CommunityContentHelper::isCommunityContent($entity)) {
       // Nodes have only one possible parent, so the sticky boolean field
       // reflects the pinned status.
       /** @var \Drupal\node\NodeInterface $entity */
@@ -87,7 +88,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
         });
       }
     }
-    elseif (JoinupHelper::isCommunityContent($entity)) {
+    elseif (CommunityContentHelper::isCommunityContent($entity)) {
       // Nodes have only one possible parent, so the sticky boolean field
       // reflects the pinned status.
       /** @var \Drupal\node\NodeInterface $entity */
@@ -104,7 +105,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
     if (JoinupHelper::isSolution($entity)) {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
-    elseif (JoinupHelper::isCommunityContent($entity) && $entity->isSticky()) {
+    elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {
       return [$this->relationManager->getParent($entity)];
     }
 
