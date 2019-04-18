@@ -418,6 +418,9 @@ function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity
  *   Amount of members.
  */
 function collection_member_count(RdfInterface $entity) {
+  // We're doing a direct database query rather than using methods in OG's
+  // MembershipManager service since we just need a count, and we need to filter
+  // out blocked user accounts.
   $query = \Drupal::database()->select('og_membership', 'om');
   $query->innerJoin('users_field_data', 'ufd', 'om.uid = ufd.uid');
   $query->condition('ufd.status', 1)
