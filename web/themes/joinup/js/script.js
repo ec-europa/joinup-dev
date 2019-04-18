@@ -100,7 +100,7 @@
 
   // Filter on window load
   // Needed for licence search filter.
-  $(window).load(function() {
+  $(window).on('load', function() {
     checkLicenseCategories();
   });
 
