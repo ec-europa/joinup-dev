@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup\Plugin\Block;
+namespace Drupal\joinup_licence\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -92,6 +92,7 @@ class LicenceFilterBlock extends BlockBase implements ContainerFactoryPluginInte
       '#items' => $tree,
     ];
     $build['#cache']['max-age'] = 0;
+    $build['#attached']['library'][] = 'joinup_licence/licence-filter';
 
     return $build;
   }
