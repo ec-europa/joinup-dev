@@ -29,6 +29,7 @@ dependencies:
   - eira
   - email_registration
   - error_page
+  - eupl
   - field_group
   - file
   - flag
@@ -128,6 +129,7 @@ config_devel:
   - block.block.joinup_theme_main_menu
   - block.block.joinup_theme_messages
   - block.block.joinup_user_local_tasks
+  - block.block.licencefilterblock
   - block.block.mycontent
   - block.block.mycontentcollection
   - block.block.mycontentsolution
@@ -157,6 +159,7 @@ config_devel:
   - block.block.unpublished_content_of_group
   - block.block.unpublished_content_of_user
   - block.block.userheader
+  - block.block.views_block__licence_list_licence_lict_block
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
@@ -242,6 +245,12 @@ config_devel:
   - subpathauto.settings
   - swiftmailer.message
   - swiftmailer.transport
+  - system.action.user_add_role_action.administrator
+  - system.action.user_add_role_action.licence_manager
+  - system.action.user_add_role_action.moderator
+  - system.action.user_remove_role_action.administrator
+  - system.action.user_remove_role_action.licence_manager
+  - system.action.user_remove_role_action.moderator
   - system.date
   - system.menu.support
   - system.theme
@@ -252,6 +261,7 @@ config_devel:
   - views.view.collections
   - views.view.content_overview
   - views.view.group_content_management
+  - views.view.licence_list
   - views.view.members_overview
   - views.view.moderator_solutions_by_type
   - views.view.og_members_overview

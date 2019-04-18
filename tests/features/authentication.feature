@@ -45,6 +45,8 @@ Feature: User authentication
       | propose/collection                                             |
       | propose/solution                                               |
       | dashboard                                                      |
+      | licence                                                        |
+      | licence/add                                                    |
       | node                                                           |
       | node/add                                                       |
       | node/add/custom_page                                           |
@@ -60,7 +62,6 @@ Feature: User authentication
       | rdf_entity/add/licence                                         |
       | rdf_entity/add/owner                                           |
       | rdf_entity/add/solution                                        |
-      | licence                                                        |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
