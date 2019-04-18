@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e13a6ad801e30caa289727f708c58ef0",
+    "content-hash": "50b80812b1d8785cc79e93c0350f00ac",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2795,21 +2795,21 @@
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
-                "source": "https://git.drupalcode.org/project/config_update"
+                "source": "http://cgit.drupalcode.org/config_update"
             }
         },
         {
             "name": "drupal/core",
-            "version": "8.6.14",
+            "version": "8.6.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "7f5f0369ffe08478aa0f26bd48dc95bcc9cde4b5"
+                "reference": "936456cdeac25c6bbd2f55b0d587239c6a81ba86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/7f5f0369ffe08478aa0f26bd48dc95bcc9cde4b5",
-                "reference": "7f5f0369ffe08478aa0f26bd48dc95bcc9cde4b5",
+                "url": "https://api.github.com/repos/drupal/core/zipball/936456cdeac25c6bbd2f55b0d587239c6a81ba86",
+                "reference": "936456cdeac25c6bbd2f55b0d587239c6a81ba86",
                 "shasum": ""
             },
             "require": {
@@ -2840,9 +2840,9 @@
                 "symfony-cmf/routing": "^1.4",
                 "symfony/class-loader": "~3.4.0",
                 "symfony/console": "~3.4.0",
-                "symfony/dependency-injection": "~3.4.0",
+                "symfony/dependency-injection": "~3.4.26",
                 "symfony/event-dispatcher": "~3.4.0",
-                "symfony/http-foundation": "~3.4.14",
+                "symfony/http-foundation": "~3.4.26",
                 "symfony/http-kernel": "~3.4.14",
                 "symfony/polyfill-iconv": "^1.0",
                 "symfony/process": "~3.4.0",
@@ -3055,7 +3055,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-04-08T01:37:34+00:00"
+            "time": "2019-04-17T20:00:11+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3847,7 +3847,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.x-dev",
-                    "datestamp": "1554291181",
+                    "datestamp": "1549949280",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4119,7 +4119,7 @@
             "description": "Provides a widget for inline management (creation, modification, removal) of referenced entities.",
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
-                "source": "https://git.drupalcode.org/project/inline_entity_form"
+                "source": "http://cgit.drupalcode.org/inline_entity_form"
             }
         },
         {
@@ -4417,7 +4417,7 @@
             "description": "Allows to give roles per menu admin permissions without giving them full administer menu permission.",
             "homepage": "https://www.drupal.org/project/menu_admin_per_menu",
             "support": {
-                "source": "https://git.drupalcode.org/project/menu_admin_per_menu"
+                "source": "http://cgit.drupalcode.org/menu_admin_per_menu"
             }
         },
         {
@@ -4784,10 +4784,6 @@
                 {
                     "name": "moshe weitzman",
                     "homepage": "https://www.drupal.org/user/23"
-                },
-                {
-                    "name": "mpp",
-                    "homepage": "https://www.drupal.org/user/359881"
                 },
                 {
                     "name": "pfrenssen",
@@ -5348,7 +5344,7 @@
             "description": "Allows users to redirect from old URLs to new URLs.",
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
-                "source": "http://cgit.drupalcode.org/redirect"
+                "source": "https://git.drupalcode.org/project/redirect"
             }
         },
         {
@@ -5407,7 +5403,7 @@
             "description": "Provide a module placeholder, for using as dependency for module that needs Redis.",
             "homepage": "https://www.drupal.org/project/redis",
             "support": {
-                "source": "https://git.drupalcode.org/project/redis"
+                "source": "http://cgit.drupalcode.org/redis"
             }
         },
         {
@@ -5530,7 +5526,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1537284180",
+                    "datestamp": "1543072380",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6055,7 +6051,7 @@
             "description": "Swiftmailer",
             "homepage": "https://www.drupal.org/project/swiftmailer",
             "support": {
-                "source": "https://git.drupalcode.org/project/swiftmailer"
+                "source": "http://cgit.drupalcode.org/swiftmailer"
             }
         },
         {
@@ -6379,7 +6375,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "https://git.drupalcode.org/project/views_data_export"
+                "source": "http://cgit.drupalcode.org/views_data_export"
             }
         },
         {
@@ -9622,7 +9618,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -9972,16 +9968,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v3.4.25",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "a076234bdf3e087d09e7fd698589337bf6f1bae3"
+                "reference": "dee85a9148399cdb2731603802842bcfd8afe5ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/a076234bdf3e087d09e7fd698589337bf6f1bae3",
-                "reference": "a076234bdf3e087d09e7fd698589337bf6f1bae3",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/dee85a9148399cdb2731603802842bcfd8afe5ab",
+                "reference": "dee85a9148399cdb2731603802842bcfd8afe5ab",
                 "shasum": ""
             },
             "require": {
@@ -10039,7 +10035,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-12T14:33:47+00:00"
+            "time": "2019-04-16T11:13:42+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -10205,16 +10201,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v3.4.25",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "61094ca72e8934c6502af5259ef6296eb09aa424"
+                "reference": "90454ad44c95d75faf3507d56388056001b74baf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/61094ca72e8934c6502af5259ef6296eb09aa424",
-                "reference": "61094ca72e8934c6502af5259ef6296eb09aa424",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/90454ad44c95d75faf3507d56388056001b74baf",
+                "reference": "90454ad44c95d75faf3507d56388056001b74baf",
                 "shasum": ""
             },
             "require": {
@@ -10255,7 +10251,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2019-03-25T07:48:46+00:00"
+            "time": "2019-04-17T14:51:18+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -10391,7 +10387,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -11501,7 +11497,7 @@
             ],
             "authors": [
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -11842,6 +11838,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.4-dev"
+                },
+                "patches_applied": {
+                    "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
                 }
             },
             "autoload": {
@@ -12285,7 +12284,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549559402",
+                    "datestamp": "1549218480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12384,7 +12383,7 @@
             "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/config_devel",
+                "url": "https://git.drupalcode.org/project/config_devel.git",
                 "reference": "8.x-1.2"
             },
             "dist": {
@@ -12455,7 +12454,7 @@
             "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/config_inspector",
+                "url": "https://git.drupalcode.org/project/config_inspector.git",
                 "reference": "8.x-1.0-beta2"
             },
             "dist": {
@@ -12516,7 +12515,7 @@
             "version": "1.0.0-alpha7",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/default_content",
+                "url": "https://git.drupalcode.org/project/default_content.git",
                 "reference": "8.x-1.0-alpha7"
             },
             "dist": {
@@ -12659,7 +12658,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-04-14T22:55:15+00:00"
         },
         {
             "name": "drupal/drupal-driver",
@@ -12754,6 +12754,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.0.x-dev"
+                },
+                "patches_applied": {
+                    "Add missing negative step @see https://github.com/jhedstrom/drupalextension/pull/527": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/527.diff"
                 }
             },
             "autoload": {
@@ -12854,14 +12857,15 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
-            }
+            },
+            "time": "2018-12-03T07:38:12+00:00"
         },
         {
             "name": "drupal/renderviz",
             "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/renderviz",
+                "url": "https://git.drupalcode.org/project/renderviz.git",
                 "reference": "8.x-1.0-alpha1"
             },
             "dist": {
@@ -12974,16 +12978,22 @@
             "description": "Provides a user interface to manage REST resources",
             "homepage": "https://www.drupal.org/project/restui",
             "support": {
-                "source": "https://git.drupalcode.org/project/restui"
+                "source": "http://cgit.drupalcode.org/restui"
             }
         },
         {
             "name": "drupal/stage_file_proxy",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/stage_file_proxy",
-                "reference": "4c3fa8d12703d8665032719ac002529d6d3a1c70"
+                "url": "https://git.drupalcode.org/project/stage_file_proxy.git",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/stage_file_proxy-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "6609a2166509fd7cc2e593ff2efd7c44daeb0e5b"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -12994,11 +13004,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+3-dev",
-                    "datestamp": "1533222480",
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1555515785",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -13043,9 +13053,8 @@
             "description": "Provides stage_file_proxy module.",
             "homepage": "https://www.drupal.org/project/stage_file_proxy",
             "support": {
-                "source": "http://cgit.drupalcode.org/stage_file_proxy"
-            },
-            "time": "2018-08-02T15:21:36+00:00"
+                "source": "https://git.drupalcode.org/project/stage_file_proxy"
+            }
         },
         {
             "name": "fabpot/goutte",
@@ -14256,6 +14265,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
@@ -15167,7 +15177,6 @@
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/drupal-extension": 10,
-        "drupal/stage_file_proxy": 20,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,
