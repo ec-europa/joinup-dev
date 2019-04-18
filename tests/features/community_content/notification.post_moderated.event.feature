@@ -35,11 +35,11 @@ Feature: Notification test for the event transitions on a post moderated parent.
     And I click "Add event" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"
-    And I fill in "Location" with "CC notify create publish"
+    And I fill in "Physical location" with "CC notify create publish"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                               |
-      | subject   | Joinup: Content has been published                                                                                                                                     |
+      | recipient | CC owner                                                                                                                                                              |
+      | subject   | Joinup: Content has been published                                                                                                                                    |
       | body      | CC Member has published the new event - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -85,8 +85,8 @@ Feature: Notification test for the event transitions on a post moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                   |
-      | subject   | Joinup: Content has been updated                                                                                                                            |
+      | recipient | CC member                                                                                                                                                          |
+      | subject   | Joinup: Content has been updated                                                                                                                                   |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the event - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.

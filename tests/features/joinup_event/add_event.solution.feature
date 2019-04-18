@@ -57,16 +57,17 @@ Feature: "Add event" visibility options.
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
-      | Title field is required.            |
-      | Description field is required.      |
-      | File description field is required. |
+      | Title field is required.                         |
+      | Description field is required.                   |
+      | File description field is required.              |
+      | At least one location field should be filled in. |
 
     When I fill in the following:
-      | Title            | An amazing event                      |
-      | Short title      | Amazing event                         |
-      | Description      | This is going to be an amazing event. |
-      | Location         | Rue Belliard, 28                      |
-      | File description | Your free ticket                      |
+      | Title             | An amazing event                      |
+      | Short title       | Amazing event                         |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Rue Belliard, 28                      |
+      | File description  | Your free ticket                      |
     And I fill the start date of the "Date" widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:00"
 
