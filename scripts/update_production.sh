@@ -41,6 +41,7 @@ touch disable-config-readonly
 ./vendor/bin/drush cache:clear bin config --yes &&
 ./vendor/bin/drush updatedb --yes &&
 ./vendor/bin/drush cs-update --discard-overrides --yes &&
+./vendor/bin/drush cache:clear bin config --yes &&
 ./vendor/bin/drush spdx:import --clean --yes "http://joinup.eu/spdx_licence/published" &&
 ./vendor/bin/drush search-api:reset-tracker --yes &&
 ./vendor/bin/drush cache-rebuild --yes &&
