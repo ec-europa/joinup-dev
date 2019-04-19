@@ -42,3 +42,10 @@ function joinup_licence_post_update_import_legal_type_vocabulary() {
 function joinup_licence_post_update_eupl() {
   \Drupal::service('module_installer')->install(['eupl']);
 }
+
+/**
+ * Re import the legal type vocabulary so that the weight is imported.
+ */
+function joinup_licence_post_update_re_import_legal_type_vocabulary() {
+  joinup_licence_post_update_import_legal_type_vocabulary();
+}
