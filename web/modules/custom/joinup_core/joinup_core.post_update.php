@@ -537,3 +537,10 @@ function joinup_core_post_update_swap_dblog_with_syslog() {
   \Drupal::service('module_installer')->install(['syslog']);
   \Drupal::service('module_installer')->uninstall(['dblog']);
 }
+
+/**
+ * Enable the spdx module.
+ */
+function joinup_core_post_update_enable_spdx() {
+  \Drupal::service('module_installer')->install(['spdx']);
+}

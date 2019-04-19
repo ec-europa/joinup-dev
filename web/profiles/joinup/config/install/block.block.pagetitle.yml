@@ -8,7 +8,7 @@ dependencies:
 id: pagetitle
 theme: joinup_theme
 region: content
-weight: -12
+weight: -20
 provider: null
 plugin: page_title_block
 settings:

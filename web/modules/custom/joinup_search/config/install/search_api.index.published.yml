@@ -13,14 +13,15 @@ dependencies:
     - field.storage.node.field_short_title
     - field.storage.node.field_visit_count
     - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_ar_description
-    - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_licence_spdx_licence
     - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_owner
@@ -195,6 +196,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_licence_description
+  field_licence_spdx_licence:
+    label: 'Corresponding SPDX licence'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_licence_spdx_licence
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_licence_spdx_licence
   field_location:
     label: Location
     datasource_id: 'entity:node'
