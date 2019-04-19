@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff4071402a014162b05f836fb8b1eda2",
+    "content-hash": "50b80812b1d8785cc79e93c0350f00ac",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2804,16 +2804,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.6.14",
+            "version": "8.6.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "7f5f0369ffe08478aa0f26bd48dc95bcc9cde4b5"
+                "reference": "936456cdeac25c6bbd2f55b0d587239c6a81ba86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/7f5f0369ffe08478aa0f26bd48dc95bcc9cde4b5",
-                "reference": "7f5f0369ffe08478aa0f26bd48dc95bcc9cde4b5",
+                "url": "https://api.github.com/repos/drupal/core/zipball/936456cdeac25c6bbd2f55b0d587239c6a81ba86",
+                "reference": "936456cdeac25c6bbd2f55b0d587239c6a81ba86",
                 "shasum": ""
             },
             "require": {
@@ -2844,9 +2844,9 @@
                 "symfony-cmf/routing": "^1.4",
                 "symfony/class-loader": "~3.4.0",
                 "symfony/console": "~3.4.0",
-                "symfony/dependency-injection": "~3.4.0",
+                "symfony/dependency-injection": "~3.4.26",
                 "symfony/event-dispatcher": "~3.4.0",
-                "symfony/http-foundation": "~3.4.14",
+                "symfony/http-foundation": "~3.4.26",
                 "symfony/http-kernel": "~3.4.14",
                 "symfony/polyfill-iconv": "^1.0",
                 "symfony/process": "~3.4.0",
@@ -3059,7 +3059,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-04-08T01:37:34+00:00"
+            "time": "2019-04-17T20:00:11+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -5348,7 +5348,7 @@
             "description": "Allows users to redirect from old URLs to new URLs.",
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
-                "source": "http://cgit.drupalcode.org/redirect"
+                "source": "https://git.drupalcode.org/project/redirect"
             }
         },
         {
@@ -9623,7 +9623,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -9973,16 +9973,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v3.4.25",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "a076234bdf3e087d09e7fd698589337bf6f1bae3"
+                "reference": "dee85a9148399cdb2731603802842bcfd8afe5ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/a076234bdf3e087d09e7fd698589337bf6f1bae3",
-                "reference": "a076234bdf3e087d09e7fd698589337bf6f1bae3",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/dee85a9148399cdb2731603802842bcfd8afe5ab",
+                "reference": "dee85a9148399cdb2731603802842bcfd8afe5ab",
                 "shasum": ""
             },
             "require": {
@@ -10040,7 +10040,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-12T14:33:47+00:00"
+            "time": "2019-04-16T11:13:42+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -10206,16 +10206,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v3.4.25",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "61094ca72e8934c6502af5259ef6296eb09aa424"
+                "reference": "90454ad44c95d75faf3507d56388056001b74baf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/61094ca72e8934c6502af5259ef6296eb09aa424",
-                "reference": "61094ca72e8934c6502af5259ef6296eb09aa424",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/90454ad44c95d75faf3507d56388056001b74baf",
+                "reference": "90454ad44c95d75faf3507d56388056001b74baf",
                 "shasum": ""
             },
             "require": {
@@ -10256,7 +10256,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2019-03-25T07:48:46+00:00"
+            "time": "2019-04-17T14:51:18+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -12289,7 +12289,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549559402",
+                    "datestamp": "1549218480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12988,11 +12988,17 @@
         },
         {
             "name": "drupal/stage_file_proxy",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/stage_file_proxy.git",
-                "reference": "9e9220689c6b9c7a7a203397854b84f64512051a"
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/stage_file_proxy-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "6609a2166509fd7cc2e593ff2efd7c44daeb0e5b"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -13003,11 +13009,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1+0-dev",
-                    "datestamp": "1555515485",
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1555515785",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -15176,7 +15182,6 @@
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
         "drupal/drupal-extension": 10,
-        "drupal/stage_file_proxy": 20,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,

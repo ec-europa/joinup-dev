@@ -22,3 +22,23 @@ function joinup_event_entity_bundle_field_info_alter(array &$fields, EntityTypeI
     }
   }
 }
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_event_entity_type_alter(array &$entity_types): void {
+  /* @var $entity_types \Drupal\Core\Entity\EntityTypeInterface */
+  if (isset($entity_types['node'])) {
+    $entity_types['node']->addConstraint('EventLocationConstraint');
+  }
+}
+
+/**
+ * Implements template_preprocess_fieldset().
+ */
+function joinup_event_preprocess_fieldset(array &$variables): void {
+  // Add an "asterisk" to the Event Location Field Group.
+  if ($variables['element']['#id'] == 'group-event-location') {
+    $variables['legend_span']['attributes']->addClass('js-form-required form-required');
+  }
+}
