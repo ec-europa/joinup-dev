@@ -83,6 +83,8 @@
         "webmozart/path-util": "~2.3"
     },
     "require-dev": {
+        "ext-dom": "*",
+        "ext-libxml": "*",
         "behat/behat": "~3.4",
         "behat/gherkin": "^4.5.1",
         "behat/mink": "~1.7",
@@ -99,8 +101,6 @@
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.16",
         "drupal/stage_file_proxy": "^1.0",
-        "ext-dom": "*",
-        "ext-libxml": "*",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "lovers-of-behat/table-extension": "^1.2.0",
@@ -108,7 +108,8 @@
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~6.0",
-        "symfony/css-selector": "~2.8"
+        "symfony/css-selector": "~2.8",
+        "symfony/phpunit-bridge": "^4.2"
     },
     "conflict": {
         "drupal/drupal": "*",
