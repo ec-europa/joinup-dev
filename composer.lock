@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50b80812b1d8785cc79e93c0350f00ac",
+    "content-hash": "2649dc232eb0c9a4f6235b5b37bcb092",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5247,6 +5247,7 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
+                    "Support weights for RDF taxonomy terms @see https://github.com/ec-europa/rdf_entity/pull/93": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/93.diff",
                     "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
                 }
             },
