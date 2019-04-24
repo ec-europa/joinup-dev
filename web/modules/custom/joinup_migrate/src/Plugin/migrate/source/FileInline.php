@@ -150,7 +150,6 @@ class FileInline extends SourcePluginBase implements RedirectImportInterface {
     'd8_newsletter' => ['body'],
     'd8_release' => ['body', 'version_notes'],
     'd8_solution' => ['body'],
-    'd8_user' => ['professional_profile'],
     'd8_video' => ['body'],
   ];
 

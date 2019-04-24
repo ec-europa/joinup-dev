@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50b80812b1d8785cc79e93c0350f00ac",
+    "content-hash": "fcc370b579d35cc8a7df482f50ab0e8d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5214,17 +5214,17 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha15",
+            "version": "1.0.0-alpha16",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rdf_entity.git",
-                "reference": "8.x-1.0-alpha15"
+                "reference": "8.x-1.0-alpha16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha15.zip",
-                "reference": "8.x-1.0-alpha15",
-                "shasum": "6a809d268eefc76b61e1fa46a719f8bf7c3be122"
+                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha16.zip",
+                "reference": "8.x-1.0-alpha16",
+                "shasum": "00ac644d9e3104421f812673e1b2a6413b528461"
             },
             "require": {
                 "drupal/core": "*",
@@ -5238,8 +5238,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha15",
-                    "datestamp": "1552465986",
+                    "version": "8.x-1.0-alpha16",
+                    "datestamp": "1556002086",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5247,7 +5247,7 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
-                    "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
+                    "Support weights for RDF taxonomy terms @see https://github.com/ec-europa/rdf_entity/pull/93": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/93.diff"
                 }
             },
             "autoload": {
@@ -5801,44 +5801,30 @@
         },
         {
             "name": "drupal/spdx",
-            "version": "1.0.0-alpha2",
+            "version": "1.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "bc34509918f8fca0d4657ea7a8b97ec60e550961"
+                "reference": "860c6ae770222758ff3548dbdb69f87b257a6b10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/bc34509918f8fca0d4657ea7a8b97ec60e550961",
-                "reference": "bc34509918f8fca0d4657ea7a8b97ec60e550961",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/860c6ae770222758ff3548dbdb69f87b257a6b10",
+                "reference": "860c6ae770222758ff3548dbdb69f87b257a6b10",
                 "shasum": ""
             },
             "require": {
-                "cweagans/composer-patches": "^1.6.4",
-                "drupal/rdf_entity": "^1.0.0-alpha12",
+                "drupal/rdf_entity": "^1.0.0-alpha16",
                 "php": ">=7.1",
                 "spdx/license-list-data": "master"
             },
             "type": "drupal-module",
-            "extra": {
-                "enable-patching": true,
-                "composer-exit-on-patch-failure": 1,
-                "patches": {
-                    "drupal/rdf_entity": {
-                        "Allow access to the instantiated client object @see https://github.com/ec-europa/rdf_entity/pull/87": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/87.diff"
-                    }
-                },
-                "patches_applied": {
-                    "Extend Behat support. @see https://github.com/ec-europa/spdx/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/5.diff",
-                    "Disable the option to enter link text for the \"See also\" field. @see https://github.com/ec-europa/spdx/pull/6": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/6.diff"
-                }
-            },
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha2",
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha3",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-03-26T15:07:43+00:00"
+            "time": "2019-04-23T06:48:52+00:00"
         },
         {
             "name": "drupal/state_machine",
