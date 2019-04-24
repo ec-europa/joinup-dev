@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_community_content\Form;
 
 use Drupal\Core\Entity\EntityViewBuilderInterface;
@@ -107,7 +109,7 @@ abstract class ShareContentFormBase extends FormBase {
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collection ids where the current node is already shared in.
    */
-  protected function getAlreadySharedCollectionIds() {
+  protected function getAlreadySharedCollectionIds(): void {
     if (!$this->node->hasField('field_shared_in')) {
       return [];
     }
@@ -121,7 +123,7 @@ abstract class ShareContentFormBase extends FormBase {
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collections the current user is member of, keyed by id.
    */
-  protected function getUserCollections() {
+  protected function getUserCollections(): array {
     $groups = $this->membershipManager->getUserGroups($this->currentUser);
 
     if (empty($groups['rdf_entity'])) {
@@ -137,12 +139,12 @@ abstract class ShareContentFormBase extends FormBase {
   }
 
   /**
-   * Retrieves the collections a user is member of.
+   * Retrieves the collections a user is facilitator of.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collections the current user is member of, keyed by id.
    */
-  protected function getUserCollectionsWhereFacilitator() {
+  protected function getUserCollectionsWhereFacilitator(): array {
     $memberships = $this->membershipManager->getMemberships($this->currentUser);
 
     if (empty($memberships)) {
@@ -152,7 +154,7 @@ abstract class ShareContentFormBase extends FormBase {
     $role_id = 'rdf_entity-collection-facilitator';
     $collections = [];
     foreach ($memberships as $membership) {
-      if ($membership->hasRole($role_id) && $membership->getGroup()->bundle() === 'collection') {
+      if ($membership->getGroup()->bundle() === 'collection' && $membership->hasRole($role_id)) {
         $collection = $membership->getGroup();
         $collections[$collection->id()] = $collection;
       }
