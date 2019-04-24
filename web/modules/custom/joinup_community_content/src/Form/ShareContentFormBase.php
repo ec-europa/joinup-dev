@@ -109,7 +109,7 @@ abstract class ShareContentFormBase extends FormBase {
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collection ids where the current node is already shared in.
    */
-  protected function getAlreadySharedCollectionIds(): void {
+  protected function getAlreadySharedCollectionIds(): array {
     if (!$this->node->hasField('field_shared_in')) {
       return [];
     }
