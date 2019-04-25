@@ -11,6 +11,7 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgRoleManagerInterface;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -32,6 +33,13 @@ abstract class ShareContentFormBase extends FormBase {
    * @var \Drupal\og\MembershipManagerInterface
    */
   protected $membershipManager;
+
+  /**
+   * The OG role manager service.
+   *
+   * @var \Drupal\og\OgRoleManagerInterface
+   */
+  protected $roleManager;
 
   /**
    * The node being shared.
@@ -70,13 +78,18 @@ abstract class ShareContentFormBase extends FormBase {
    *   The RDF view builder.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The OG membership manager.
+   * @param \Drupal\og\OgRoleManagerInterface $role_manager
+   *   The OG role manager service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user account.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, MessengerInterface $messenger) {
+  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger) {
     $this->rdfStorage = $rdf_storage;
     $this->rdfBuilder = $rdf_builder;
     $this->membershipManager = $membership_manager;
+    $this->roleManager = $role_manager;
     $this->currentUser = $current_user;
     $this->messenger = $messenger;
   }
@@ -89,6 +102,7 @@ abstract class ShareContentFormBase extends FormBase {
       $container->get('entity_type.manager')->getStorage('rdf_entity'),
       $container->get('entity_type.manager')->getViewBuilder('rdf_entity'),
       $container->get('og.membership_manager'),
+      $container->get('og.role_manager'),
       $container->get('current_user'),
       $container->get('messenger')
     );
@@ -128,49 +142,22 @@ abstract class ShareContentFormBase extends FormBase {
   }
 
   /**
-   * Retrieves the collections a user is member of.
+   * Retrieves a list of groups of a user filtered by specific a permission.
+   *
+   * @param string $permission
+   *   A permission to filter the roles of the user by.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections the current user is member of, keyed by id.
+   *   An array of groups.
    */
-  protected function getUserCollections(): array {
-    $groups = $this->membershipManager->getUserGroups($this->currentUser);
-
-    if (empty($groups['rdf_entity'])) {
+  protected function getUserGroupsByPermission($permission) {
+    $roles = $this->roleManager->getRolesByPermissions([$permission], 'rdf_entity', 'collection');
+    if (empty($roles)) {
       return [];
     }
 
-    $collections = array_filter($groups['rdf_entity'], function ($entity) {
-      /** @var \Drupal\rdf_entity\RdfInterface $entity */
-      return $entity->bundle() === 'collection';
-    });
-
-    return $collections;
-  }
-
-  /**
-   * Retrieves the collections a user is facilitator of.
-   *
-   * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections the current user is member of, keyed by id.
-   */
-  protected function getUserCollectionsWhereFacilitator(): array {
-    $memberships = $this->membershipManager->getMemberships($this->currentUser);
-
-    if (empty($memberships)) {
-      return [];
-    }
-
-    $role_id = 'rdf_entity-collection-facilitator';
-    $collections = [];
-    foreach ($memberships as $membership) {
-      if ($membership->getGroup()->bundle() === 'collection' && $membership->hasRole($role_id)) {
-        $collection = $membership->getGroup();
-        $collections[$collection->id()] = $collection;
-      }
-    }
-
-    return $collections;
+    $groups = $this->membershipManager->getUserGroupsByRoles($this->currentUser, $roles);
+    return empty($groups) ? [] : $groups['rdf_entity'];
   }
 
 }
