@@ -62,7 +62,7 @@ class UnshareContentForm extends ShareContentFormBase {
     }
 
     if (!empty($collections)) {
-      drupal_set_message('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
+      $this->messenger->addStatus('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
     }
     $form_state->setRedirectUrl($this->node->toUrl());
   }

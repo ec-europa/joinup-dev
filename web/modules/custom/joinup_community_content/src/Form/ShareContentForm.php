@@ -144,7 +144,7 @@ class ShareContentForm extends ShareContentFormBase {
 
     // Show a message if the content was shared in at least one collection.
     if (!empty($collections)) {
-      drupal_set_message('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
+      $this->messenger->addStatus('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
     }
 
     $form_state->setRedirectUrl($this->node->toUrl());

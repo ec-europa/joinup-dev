@@ -7,6 +7,7 @@ namespace Drupal\joinup_community_content\Form;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -54,6 +55,13 @@ abstract class ShareContentFormBase extends FormBase {
   protected $rdfStorage;
 
   /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Constructs a new ShareContentFormBase object.
    *
    * @param \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage
@@ -65,11 +73,12 @@ abstract class ShareContentFormBase extends FormBase {
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user account.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user) {
+  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, MessengerInterface $messenger) {
     $this->rdfStorage = $rdf_storage;
     $this->rdfBuilder = $rdf_builder;
     $this->membershipManager = $membership_manager;
     $this->currentUser = $current_user;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -80,7 +89,8 @@ abstract class ShareContentFormBase extends FormBase {
       $container->get('entity_type.manager')->getStorage('rdf_entity'),
       $container->get('entity_type.manager')->getViewBuilder('rdf_entity'),
       $container->get('og.membership_manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('messenger')
     );
   }
 
