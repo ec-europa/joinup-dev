@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db9b4e2ffb9edd4d812833e80eeb6a34",
+    "content-hash": "45f2477b4b81ccec49a5dedcc125b507",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6300,17 +6300,11 @@
         },
         {
             "name": "drupal/views_data_export",
-            "version": "1.0.0-beta1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_data_export.git",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "f698c1072169017f28e58a4b026d3f3cff904c96"
+                "reference": "05bd75f39d15f214728e40600aed6fbdffc8295e"
             },
             "require": {
                 "drupal/core": "*",
@@ -6322,15 +6316,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1525280285",
+                    "version": "8.x-1.0-beta1+15-dev",
+                    "datestamp": "1552327381",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
+                    "Support for batch operations @see https://www.drupal.org/project/views_data_export/issues/2789531": "https://www.drupal.org/files/issues/2019-04-25/2789531-254.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6366,8 +6360,9 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
-            }
+                "source": "https://git.drupalcode.org/project/views_data_export"
+            },
+            "time": "2019-03-11T17:58:52+00:00"
         },
         {
             "name": "drush/drush",
@@ -15159,6 +15154,7 @@
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
+        "drupal/views_data_export": 20,
         "ec-europa/infra": 20,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
