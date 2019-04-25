@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcc370b579d35cc8a7df482f50ab0e8d",
+    "content-hash": "db9b4e2ffb9edd4d812833e80eeb6a34",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5819,6 +5819,11 @@
                 "spdx/license-list-data": "master"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Map the weight property. @see https://github.com/ec-europa/spdx/pull/7": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/7.diff"
+                }
+            },
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
                 "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha3",
