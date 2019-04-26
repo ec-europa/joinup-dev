@@ -5,12 +5,15 @@
  * Contains \EuplSubContext.
  */
 
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions and related methods provided by the eupl module.
@@ -55,6 +58,24 @@ class EuplSubContext extends DrupalSubContextBase {
       'title' => 'JLA',
       'og_audience' => EUPL_COMMUNITY_ID,
     ])->save();
+  }
+
+  /**
+   * Asserts that filter categories in the JLA page are present and ordered.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The table of categories.
+   *
+   * @Then I should see the (following )filter categories in the correct order:
+   */
+  public function assertFilterCategoriesAndOrder(TableNode $table) {
+    $expected = $table->getColumn(0);
+    $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter ')]//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter__header ')]";
+    $category_nodes = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    $actual = array_map(function (NodeElement $element) {
+      return $element->getText();
+    }, $category_nodes);
+    Assert::assertEquals($expected, $actual);
   }
 
   /**
