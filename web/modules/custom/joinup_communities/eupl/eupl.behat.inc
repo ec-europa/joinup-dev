@@ -5,12 +5,15 @@
  * Contains \EuplSubContext.
  */
 
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions and related methods provided by the eupl module.
@@ -55,6 +58,26 @@ class EuplSubContext extends DrupalSubContextBase {
       'title' => 'JLA',
       'og_audience' => EUPL_COMMUNITY_ID,
     ])->save();
+  }
+
+  /**
+   * Asserts the legal type categories order in the JLA licence listing item.
+   *
+   * @param string $spdx
+   *   The SPDX title ID.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The table of categories.
+   *
+   * @Then the licence item with the :spdx SPDX tag should include the following legal type categories:
+   */
+  public function assertLegalTypeTagsCategoriesAndOrder(string $spdx, TableNode $table) {
+    $expected = $table->getColumn(0);
+    $xpath = "//div[@data-spdx='{$spdx}']//div[contains(concat(' ', normalize-space(@class), ' '), ' listing__inner-tile--wider ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' licence-tile__label ')]";
+    $category_nodes = $this->getSession()->getPage()->findAll('xpath', $xpath);
+    $actual = array_map(function (NodeElement $element) {
+      return $element->getText();
+    }, $category_nodes);
+    Assert::assertEquals($expected, $actual);
   }
 
   /**
