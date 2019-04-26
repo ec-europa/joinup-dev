@@ -45,3 +45,10 @@ function joinup_user_post_update_remove_professional_profile(): void {
   // deleted.
   FieldStorageConfig::loadByName('user', 'field_user_professional_profile')->delete();
 }
+
+/**
+ * Remove the 'post comments' permission.
+ */
+function joinup_user_post_update_remove_anonymous_post_comments(): void {
+  user_role_revoke_permissions(AccountInterface::ANONYMOUS_ROLE, ['post comments']);
+}
