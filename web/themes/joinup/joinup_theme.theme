@@ -1548,7 +1548,8 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
 
     $variables['spdx_licence'] = $spdx_licence;
     $variables['spdx_title'] = $variables['content']['spdx_licence_label'];
-    $spdx_url = Url::fromUri($spdx_licence->id(), ['fragment' => 'licenceText']);
+    $url = preg_replace('/(.*)\.html$/', '\1', $spdx_licence->id()) . '.html';
+    $spdx_url = Url::fromUri($url, ['fragment' => 'licenseText']);
     $variables['spdx_url'] = $spdx_url->toUriString();
     $variables['spdx_licence_id'] = $spdx_licence->field_spdx_licence_id->value;
   }
