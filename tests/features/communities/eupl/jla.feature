@@ -24,6 +24,9 @@ Feature:
     But I should not see the text "Random Licence"
     # Assert concatenated categories.
     And I should see the text "Governments/EU, Strong Community"
+    And I should see the following links:
+      | http://joinup.eu/licence/foo.html#licenseText |
+      | http://joinup.eu/licence/bar.html#licenseText |
 
     When I click "Distribute" in the "Content" region
     Then I should see the text "1 licences found"
