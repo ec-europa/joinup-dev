@@ -1579,7 +1579,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
     }
 
     if (!empty($data_property_categories)) {
-      $sort_function = function($a, $b) {
+      $sort_function = function ($a, $b) {
         return $a['weight'] <=> $b['weight'];
       };
 
