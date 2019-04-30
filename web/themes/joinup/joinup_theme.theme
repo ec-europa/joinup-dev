@@ -770,12 +770,12 @@ function joinup_theme_preprocess_field__comment(&$variables) {
   /** @var \Drupal\rdf_entity\RdfInterface $parent */
   $user = \Drupal::currentUser();
   if ($user->isAnonymous()) {
-    $comments_status = 'closed_collection';
+    $comments_status = 'authentication_required';
   }
 
   switch ($comments_status) {
-    case 'closed_collection':
-      $variables['comments_status'] = 'closed_collection';
+    case 'authentication_required':
+      $variables['comments_status'] = 'authentication_required';
       break;
 
     case CommentItemInterface::OPEN:
