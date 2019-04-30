@@ -25,7 +25,7 @@
         "drupal/email_registration": "^1.0-rc6",
         "drupal/facets": "^1.2",
         "drupal/field_group": "~1.0-rc6",
-        "drupal/file_url": "~1.0",
+        "drupal/file_url": "^1.0-alpha7",
         "drupal/flag": "^4.0@alpha",
         "drupal/geocoder": "^3.0",
         "drupal/geofield": "~1.0",
@@ -199,9 +199,6 @@
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
-            },
-            "drupal/file_url": {
-                "Add an 'owner' key to the remote_file entity type. @see https://www.drupal.org/project/file_url/issues/3048502": "https://www.drupal.org/files/issues/2019-04-16/3048502-2.patch"
             },
             "drupal/inline_entity_form": {
                 "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
