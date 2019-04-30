@@ -544,3 +544,10 @@ function joinup_core_post_update_swap_dblog_with_syslog() {
 function joinup_core_post_update_enable_spdx() {
   \Drupal::service('module_installer')->install(['spdx']);
 }
+
+/**
+ * Re import the legal type vocabulary so that the weight is imported.
+ */
+function joinup_core_post_update_re_import_legal_type_vocabulary() {
+  \Drupal::service('joinup_core.vocabulary_fixtures.helper')->importFixtures('licence-legal-type');
+}
