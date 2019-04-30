@@ -35,3 +35,10 @@ function joinup_post_update_install_geocoder(): void {
 function joinup_post_update_install_joinup_rss() {
   \Drupal::service('module_installer')->install(['joinup_rss']);
 }
+
+/**
+ * Enable the "config_readonly" module.
+ */
+function joinup_post_update_install_config_readonly() {
+  \Drupal::service('module_installer')->install(['config_readonly']);
+}
