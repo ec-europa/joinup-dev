@@ -74,8 +74,8 @@ Feature: Add comments
 
   Scenario Outline: Comments are disallowed for anonymous users.
     Given <content type> content:
-      | title   | body                                                | collection     | state   |
-      | <title> | How could this ever happen? Moral panic on its way! | Shy collection | <state> |
+      | title   | body                                                | collection   | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | <collection> | <state> |
 
     # Anonymous users should not be able to comment.
     Given I am an anonymous user
@@ -93,8 +93,12 @@ Feature: Add comments
     And I should see the button "Post comment"
 
     Examples:
-      | content type | title               | state     |
-      | news         | Scandalous news     | validated |
-      | event        | Celebrity gathering | validated |
-      | discussion   | Is gossip bad?      | validated |
-      | document     | Wikileaks           | validated |
+      | collection        | content type | title                     | state     |
+      | Shy collection    | news         | Scandalous news           | validated |
+      | Shy collection    | event        | Celebrity gathering       | validated |
+      | Shy collection    | discussion   | Is gossip bad?            | validated |
+      | Shy collection    | document     | Wikileaks                 | validated |
+      | Gossip collection | news         | Rihanna wears pope outfit | validated |
+      | Gossip collection | event        | Taylor Swift wedding      | validated |
+      | Gossip collection | discussion   | Is gossip good?           | validated |
+      | Gossip collection | document     | Celebrity scandals 2019   | validated |
