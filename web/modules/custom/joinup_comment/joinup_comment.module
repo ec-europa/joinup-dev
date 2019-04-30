@@ -5,6 +5,8 @@
  * Hook implementations for the Joinup Comment module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,7 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * Adds contextual links to comment view displays.
  */
-function joinup_comment_comment_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+function joinup_comment_comment_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
   // Add contextual links to comments.
   $build['#contextual_links']['comment'] = [
     'route_parameters' => ['comment' => $entity->id()],
@@ -28,6 +30,6 @@ function joinup_comment_comment_view_alter(array &$build, EntityInterface $entit
  * Updates the submit button text of the comment form to be clearer to
  * understand.
  */
-function joinup_comment_form_comment_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
+function joinup_comment_form_comment_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   $form['actions']['submit']['#value'] = t('Post comment');
 }
