@@ -356,12 +356,13 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       '#cache' => ['contexts' => ['og_role']],
     ];
   }
+
   // Member count.
   if ($display->getComponent('members')) {
     $member_count = collection_member_count($entity);
-    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    // @see joinup_core_og_membership_invalidate_group_tags()
-    $tags = Cache::buildTags('joinup-membership', [$tag]);
+    // Invalidate the member count every time the group membership list changes.
+    // @see \Drupal\og\Plugin\Block\MemberCountBlock::getCacheTags()
+    $tags = Cache::buildTags(OgMembershipInterface::GROUP_MEMBERSHIP_LIST_CACHE_TAG_PREFIX, $entity->getCacheTagsToInvalidate());
     $build['members'] = [
       '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
       '#cache' => [
@@ -369,6 +370,7 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       ],
     ];
   }
+
   // Solution count.
   if ($display->getComponent('solutions')) {
     $solution_count = collection_solution_count($entity);
