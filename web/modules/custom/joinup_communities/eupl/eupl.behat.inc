@@ -72,7 +72,7 @@ class EuplSubContext extends DrupalSubContextBase {
    *
    * @Then the licence item with the :spdx SPDX tag should include the following legal type categories:
    */
-  public function assertLegalTypeTagsCategoriesAndOrder(string $spdx, TableNode $table) {
+  public function assertLegalTypeTagsCategoriesAndOrder(string $spdx, TableNode $table): void {
     $expected = $table->getColumn(0);
     $xpath = "//div[@data-spdx='{$spdx}']//div[contains(concat(' ', normalize-space(@class), ' '), ' listing__inner-tile--wider ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' licence-tile__label ')]";
     $this->assertCategoriesAndOrder($xpath, $expected);
