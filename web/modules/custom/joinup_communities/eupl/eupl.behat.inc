@@ -73,6 +73,18 @@ class EuplSubContext extends DrupalSubContextBase {
   public function assertLegalTypeTagsCategoriesAndOrder(string $spdx, TableNode $table) {
     $expected = $table->getColumn(0);
     $xpath = "//div[@data-spdx='{$spdx}']//div[contains(concat(' ', normalize-space(@class), ' '), ' listing__inner-tile--wider ')]//span[contains(concat(' ', normalize-space(@class), ' '), ' licence-tile__label ')]";
+    $this->assertCategoriesAndOrder($xpath, $expected);
+  }
+
+  /**
+   * Asserts that the given categories are present and in the expected order.
+   *
+   * @param string $xpath
+   *   The XPath query identifying the categories in the page.
+   * @param array $expected
+   *   The categories that are expected to be present in the page.
+   */
+  protected function assertCategoriesAndOrder(string $xpath, array $expected): void {
     $category_nodes = $this->getSession()->getPage()->findAll('xpath', $xpath);
     $actual = array_map(function (NodeElement $element) {
       return $element->getText();
