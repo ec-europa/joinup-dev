@@ -5,6 +5,8 @@
  * Contains \EuplSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -33,7 +35,7 @@ class EuplSubContext extends DrupalSubContextBase {
    *
    * @beforeScenario @eupl
    */
-  public function setupEuplData() {
+  public function setupEuplData(): void {
     // Create an owner.
     Rdf::create([
       'rid' => 'owner',
@@ -68,7 +70,7 @@ class EuplSubContext extends DrupalSubContextBase {
    *
    * @Then I should see the (following )filter categories in the correct order:
    */
-  public function assertFilterCategoriesAndOrder(TableNode $table) {
+  public function assertFilterCategoriesAndOrder(TableNode $table): void {
     $expected = $table->getColumn(0);
     $xpath = "//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter ')]//div[contains(concat(' ', normalize-space(@class), ' '), ' licence-filter__header ')]";
     $category_nodes = $this->getSession()->getPage()->findAll('xpath', $xpath);
@@ -86,7 +88,7 @@ class EuplSubContext extends DrupalSubContextBase {
    *
    * @afterScenario @eupl
    */
-  public function cleanEuplData() {
+  public function cleanEuplData(): void {
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
     $entity_repository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41')->delete();
