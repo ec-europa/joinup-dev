@@ -1538,6 +1538,8 @@ function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variable
  */
 function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
   $entity = $variables['elements']['#rdf_entity'];
+  $variables['label']['#attributes']['class'][] = 'listing__teaser';
+
   $variables['licence_title'] = $entity->label();
   $variables['licence_description'] = $entity->field_licence_description->value;
 

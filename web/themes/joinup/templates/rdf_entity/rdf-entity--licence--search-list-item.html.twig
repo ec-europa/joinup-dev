@@ -27,7 +27,6 @@
     'mdl-cell--12-col-wide',
   ]
 %}
-
 <div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id }}" data-licence-category="{{ legal_categories }}">
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--shifted">
@@ -37,7 +36,9 @@
         </div>
       {% endif %}
       <div class="listing__field">
-        <p class="listing__teaser">{{ licence_title }}</p>
+        {{ title_prefix }}
+          {{ label }}
+        {{ title_suffix }}
       </div>
       {% if spdx_url %}
         <a href="{{ spdx_url }}" class="licence-tile__button" target="_blank">{{ "Licence text"|t }}</a>
