@@ -1542,6 +1542,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
   $variables['content']['field_licence_description']['#attributes']['class'][] = 'listing__teaser';
 
   $variables['content']['spdx_licence_id']['#label_display'] = 'hidden';
+  $variables['content']['spdx_licence_id']['#prefix'] = '<span class="icon icon--licence"></span>';
   $variables['content']['spdx_licence_external_url']['#attributes']['class'][] = 'licence-tile__button';
   $variables['content']['spdx_licence_external_url']['#attributes']['target'] = '_blank';
 
