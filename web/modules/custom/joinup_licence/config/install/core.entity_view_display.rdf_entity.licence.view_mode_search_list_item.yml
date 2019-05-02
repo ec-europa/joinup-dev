@@ -98,6 +98,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  spdx_licence_external_url:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   changed: true
   created: true

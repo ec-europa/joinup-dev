@@ -30,9 +30,9 @@
 <div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id }}" data-licence-category="{{ legal_categories }}">
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--shifted">
-      {% if spdx_licence_id %}
+      {% if content.spdx_licence_id %}
         <div class="listing__field">
-          <h2 class="listing__title licence-tile__title"><span class="icon icon--licence"></span>{{ spdx_licence_id }}</h2>
+          <h2 class="listing__title licence-tile__title"><span class="icon icon--licence"></span>{{ content.spdx_licence_id }}</h2>
         </div>
       {% endif %}
       <div class="listing__field">
@@ -40,8 +40,8 @@
           {{ label }}
         {{ title_suffix }}
       </div>
-      {% if spdx_url %}
-        <a href="{{ spdx_url }}" class="licence-tile__button" target="_blank">{{ "Licence text"|t }}</a>
+      {% if content.spdx_licence_external_url %}
+        {{ content.spdx_licence_external_url }}
       {% endif %}
     </div>
 

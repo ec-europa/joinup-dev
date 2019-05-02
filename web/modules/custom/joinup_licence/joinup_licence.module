@@ -11,7 +11,9 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -73,6 +75,10 @@ function joinup_licence_entity_extra_field_info(): array {
       'label' => t('Licence text'),
       'visible' => FALSE,
     ];
+    $display['spdx_licence_external_url'] = [
+      'label' => t('Licence external URL'),
+      'visible' => FALSE,
+    ];
     $display['spdx_see_also'] = [
       'label' => t('See also'),
       'description' => t('Links to related licences according to SPDX.'),
@@ -99,6 +105,12 @@ function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, Ent
     if ($display->getComponent('spdx_licence_label')) {
       $field_item_list = $spdx_licence->get('label');
       $build['spdx_licence_label'] = $field_item_list->view();
+    }
+    if ($display->getComponent('spdx_licence_external_url')) {
+      $url = preg_replace('/(.*)\.html$/', '\1', $spdx_licence->id()) . '.html';
+      $spdx_url = Url::fromUri($url, ['fragment' => 'licenseText']);
+      $spdx_link = Link::fromTextAndUrl('Licence Text', $spdx_url);
+      $build['spdx_licence_external_url'] = $spdx_link->toRenderable();
     }
     foreach (['spdx_licence_id', 'spdx_licence_text', 'spdx_see_also'] as $pseudo_field) {
       if ($display->getComponent($pseudo_field)) {
