@@ -17,7 +17,7 @@
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
-        "drupal/core": "^8.6.15",
+        "drupal/core": "^8.7.0",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
@@ -25,7 +25,7 @@
         "drupal/email_registration": "^1.0-rc6",
         "drupal/facets": "^1.2",
         "drupal/field_group": "~1.0-rc6",
-        "drupal/file_url": "~1.0",
+        "drupal/file_url": "^1.0-alpha7",
         "drupal/flag": "^4.0@alpha",
         "drupal/geocoder": "^3.0",
         "drupal/geofield": "~1.0",
@@ -63,7 +63,7 @@
         "drupal/token": "~1.0",
         "drupal/video_embed_field": "~1.5",
         "drupal/view_unpublished": "~1.0@alpha",
-        "drupal/views_bulk_operations": "^1.0",
+        "drupal/views_bulk_operations": "^2.0",
         "drupal/views_data_export": "^1.0-beta1",
         "drush/drush": "^9.6.0-rc4",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
@@ -83,6 +83,8 @@
         "webmozart/path-util": "~2.3"
     },
     "require-dev": {
+        "ext-dom": "*",
+        "ext-libxml": "*",
         "behat/behat": "~3.4",
         "behat/gherkin": "^4.5.1",
         "behat/mink": "~1.7",
@@ -99,8 +101,6 @@
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.16",
         "drupal/stage_file_proxy": "^1.0",
-        "ext-dom": "*",
-        "ext-libxml": "*",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "lovers-of-behat/table-extension": "^1.2.0",
@@ -108,7 +108,8 @@
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~6.0",
-        "symfony/css-selector": "~2.8"
+        "symfony/css-selector": "~2.8",
+        "symfony/phpunit-bridge": "^4.2"
     },
     "conflict": {
         "drupal/drupal": "*",
@@ -177,20 +178,19 @@
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-10-16/85494-261.patch",
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
-                "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2018-09-05/2061377-309.patch",
+                "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2019-04-16/2061377-334-8.7.x.patch",
                 "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2018-08-31/2320877-28.patch",
-                "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2018-09-01/2497909-86.patch",
                 "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2018-08-31/2556069-46.patch",
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
                 "Menu link plugins should provide a way for the link to be conditionally hidden @see https://www.drupal.org/project/drupal/issues/2719609": "https://www.drupal.org/files/issues/2719609-2.patch",
                 "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
                 "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
-                "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
-                "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
+                "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2018-11-15/2863986-77-8.7.x.patch",
+                "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2019-04-16/2890012-29-8.7.x.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
                 "Profile provided configuration entities can have unmeetable dependencies @see https://www.drupal.org/node/2922417": "resources/patch/2922417-38-no-conflict.patch",
                 "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
-                "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch",
+                "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                 "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
                 "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch"
             },
@@ -218,7 +218,8 @@
             },
             "drupal/rdf_entity": {
                 "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
-                "Support weights for RDF taxonomy terms @see https://github.com/ec-europa/rdf_entity/pull/93": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/93.diff"
+                "Support weights for RDF taxonomy terms @see https://github.com/ec-europa/rdf_entity/pull/93": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/93.diff",
+                "Drop support for Drupal 8.5.x. Support PHP 7.3, Drupal 8.7.x, 8.8.x @see https://github.com/ec-europa/rdf_entity/pull/91": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/91.diff"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
