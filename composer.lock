@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db9b4e2ffb9edd4d812833e80eeb6a34",
+    "content-hash": "af4c7a113b0b3b689143137bb0940feb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2422,11 +2422,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2579,6 +2575,14 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
+                {
+                    "name": "bircher",
+                    "homepage": "https://www.drupal.org/user/1344166"
+                },
+                {
+                    "name": "gnuget",
+                    "homepage": "https://www.drupal.org/user/992990"
+                },
                 {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
@@ -5344,7 +5348,7 @@
             "description": "Allows users to redirect from old URLs to new URLs.",
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
-                "source": "https://git.drupalcode.org/project/redirect"
+                "source": "http://cgit.drupalcode.org/redirect"
             }
         },
         {
@@ -5821,7 +5825,8 @@
             "type": "drupal-module",
             "extra": {
                 "patches_applied": {
-                    "Map the weight property. @see https://github.com/ec-europa/spdx/pull/7": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/7.diff"
+                    "Map the weight property. @see https://github.com/ec-europa/spdx/pull/7": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/7.diff",
+                    "Support SPDX uris @see https://github.com/ec-europa/spdx/pull/8": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/8.diff"
                 }
             },
             "description": "Allows to federate and manage the SPDX licences.",
@@ -5855,7 +5860,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "datestamp": "1542122580",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5929,7 +5934,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "http://cgit.drupalcode.org/state_machine"
+                "source": "https://git.drupalcode.org/project/state_machine"
             }
         },
         {
@@ -9609,7 +9614,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
@@ -12275,7 +12280,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.26",
-                    "datestamp": "1549218480",
+                    "datestamp": "1549559402",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
