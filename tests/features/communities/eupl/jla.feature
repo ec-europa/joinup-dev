@@ -18,6 +18,13 @@ Feature:
     When I am not logged in
     And I visit the "JLA" custom page
     Then I should see the heading "JLA"
+    And I should see the following filter categories in the correct order:
+      | Can        |
+      | Must       |
+      | Cannot     |
+      | Compatible |
+      | Law        |
+      | Support    |
     And I should see the text "2 licences found"
     And I should see the text "Foo Licence"
     And I should see the text "Bar Licence"
