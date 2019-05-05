@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa1aed8a5276543f2ef9ead7a16c1412",
+    "content-hash": "cc73365ca827888c53abc449cb1f4750",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4721,20 +4721,14 @@
         },
         {
             "name": "drupal/og",
-            "version": "1.0.0-alpha2",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "8.x-1.0-alpha2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og-8.x-1.0-alpha2.zip",
-                "reference": "8.x-1.0-alpha2",
-                "shasum": "36ba82631d3b4818eb7a02a9cd5fe31b32107fd2"
+                "reference": "a68f578dc22373a67136a23555615e279d43e7f7"
             },
             "require": {
-                "drupal/core": "~8.6"
+                "drupal/core": "~8.7"
             },
             "require-dev": {
                 "drupal/coder": "~8.2"
@@ -4745,15 +4739,16 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2",
-                    "datestamp": "1545216480",
+                    "version": "8.x-1.0-alpha2+13-dev",
+                    "datestamp": "1555401485",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Groups and roles by permissions @see https://github.com/Gizra/og/pull/482": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/482.diff"
+                    "Groups and roles by permissions @see https://github.com/Gizra/og/pull/482": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/482.diff",
+                    "Add a cache tag to invalidate a group's user membership listings @see https://github.com/Gizra/og/pull/483": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/483.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4816,7 +4811,8 @@
                 "source": "https://cgit.drupalcode.org/og",
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og"
-            }
+            },
+            "time": "2019-04-25T19:29:03+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -12679,7 +12675,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-04-30T23:14:45+00:00"
         },
         {
             "name": "drupal/drupal-driver",
@@ -15247,6 +15244,7 @@
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/migrate_run": 10,
+        "drupal/og": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
         "drupal/sparql_entity_storage": 20,
