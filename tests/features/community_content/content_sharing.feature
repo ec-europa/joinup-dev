@@ -186,6 +186,9 @@ Feature: Sharing content between collections
     And I should not see the contextual link "Unshare" in the "Iron throne" tile
 
     When I am logged in as "John Snow"
+    # Normally we would share directly from the Keep up to date page. However, a styling issue is preventing the
+    # checkbox to be located.
+    # @see: ISAICP-5245.
     # And I click "Keep up to date"
     # Then I should see the contextual link "Share" in the "Iron throne" tile
     # And I click the contextual link "Share" in the "Iron throne" tile
