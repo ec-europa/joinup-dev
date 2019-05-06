@@ -569,7 +569,6 @@ function joinup_core_post_update_create_new_release_aliases(array &$sandbox): st
 
 /**
  * Create news aliases for news, event, discussion and document content types.
- * Create a redirect from the existing ones.
  */
 function joinup_core_post_update_create_new_node_aliases(array &$sandbox): string {
   if (!isset($sandbox['entity_ids'])) {
