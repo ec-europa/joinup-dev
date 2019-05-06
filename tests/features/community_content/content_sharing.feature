@@ -167,9 +167,10 @@ Feature: Sharing content between collections
       | title       | collection | state     |
       | Iron throne | Westeros   | validated |
     Given users:
-      | Username   | E-mail                 |
-      | John Snow  | john.snow@example.com  |
-      | Arya Stark | arya.stark@example.com |
+      | Username       | E-mail                     | Roles     |
+      | Jamie Lanister | jamie.lanister@example.com | moderator |
+      | John Snow      | john.snow@example.com      |           |
+      | Arya Stark     | arya.stark@example.com     |           |
     And the following collection user memberships:
       | collection | user       | roles       |
       | Westeros   | John snow  | facilitator |
@@ -213,8 +214,16 @@ Feature: Sharing content between collections
     # Link vary by user og role since the 2 users up to now have the same permissions outside og.
     And I should see the contextual link "Unshare" in the "Iron throne" tile
     When I click the contextual link "Unshare" in the "Iron throne" tile
-    And I wait for AJAX to finish
     Then a modal should open
+    And the following fields should be present "Essos city"
+
+    When I am logged in as "Jamie Lanister"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    And I should see the contextual link "Unshare" in the "Iron throne" tile
+    When I click the contextual link "Unshare" in the "Iron throne" tile
+    Then a modal should open
+    And the following fields should be present "Essos city"
 
     When I am logged in as "John Snow"
     And I click "Keep up to date"
