@@ -81,7 +81,7 @@ content:
     type: image
     weight: 0
     region: content
-    label: above
+    label: hidden
     settings:
       image_style: horizontal_medium_image
       image_link: content
