@@ -158,7 +158,7 @@ Feature: Sharing content between collections
       | news         |
 
   @javascript
-  Scenario Outline: Share/Unshare contextual link should vary per user roles in a group.
+  Scenario Outline: Share/Unshare contextual link should only be visible to facilitators
     Given collections:
       | title      | state     |
       | Westeros   | validated |
