@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_logo
     - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
@@ -18,9 +19,11 @@ dependencies:
     - field.field.node.news.field_state
     - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
+    - image.style.horizontal_medium_image
     - node.type.news
   module:
     - ds
+    - image
     - smart_trim
     - user
 id: node.news.view_mode_tile
@@ -30,7 +33,7 @@ mode: view_mode_tile
 content:
   body:
     type: smart_trim
-    weight: 0
+    weight: 1
     label: hidden
     settings:
       trim_length: 200
@@ -58,7 +61,7 @@ content:
     region: content
   field_keywords:
     type: string
-    weight: 1
+    weight: 2
     region: content
     label: hidden
     settings:
@@ -74,6 +77,24 @@ content:
             classes: {  }
       joinup:
         template_suggestion: comma_separated
+  field_news_logo:
+    type: image
+    weight: 0
+    region: content
+    label: above
+    settings:
+      image_style: horizontal_medium_image
+      image_link: content
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
 hidden:
   field_attachment: true
   field_comments: true
