@@ -176,10 +176,6 @@ Feature: Sharing content between collections
       | Westeros   | John snow  | facilitator |
       | Essos city | John snow  | member      |
       | Essos city | Arya Stark | facilitator |
-    When I am logged in as "John Snow"
-    And I click "Keep up to date"
-    Then I should see the contextual link "Share" in the "Iron throne" tile
-    But I should not see the contextual link "Unshare" in the "Iron throne" tile
 
     When I am logged in as "Arya Stark"
     And I click "Keep up to date"
@@ -187,6 +183,10 @@ Feature: Sharing content between collections
     And I should not see the contextual link "Unshare" in the "Iron throne" tile
 
     When I am logged in as "John Snow"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    But I should not see the contextual link "Unshare" in the "Iron throne" tile
+
     # Normally we would share directly from the Keep up to date page. However, a styling issue is preventing the
     # checkbox to be located.
     # @see: ISAICP-5245.
@@ -220,15 +220,11 @@ Feature: Sharing content between collections
     When I am logged in as "Jamie Lanister"
     And I click "Keep up to date"
     Then I should see the contextual link "Share" in the "Iron throne" tile
+    # Moderators should be able to unshare from every group the content is shared in.
     And I should see the contextual link "Unshare" in the "Iron throne" tile
     When I click the contextual link "Unshare" in the "Iron throne" tile
     Then a modal should open
     And the following fields should be present "Essos city"
-
-    When I am logged in as "John Snow"
-    And I click "Keep up to date"
-    Then I should see the contextual link "Share" in the "Iron throne" tile
-    And I should not see the contextual link "Unshare" in the "Iron throne" tile
 
     Examples:
       | content type |
