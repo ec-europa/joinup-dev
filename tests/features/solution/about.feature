@@ -7,9 +7,9 @@ Feature: About this solution
   @terms
   Scenario: About page
     Given the following contacts:
-      | name                      | email                        | Website URL                     |
-      | Ariel Lucile              | ariel@nova.dk                | http://nova.dk, http://nova.com |
-      | Maiken Bine, Peer Milla   | maiken@nova.dk, peer@nova.dk | https://innovation.nova.org     |
+      | name                    | email                        | Website URL                     |
+      | Ariel Lucile            | ariel@nova.dk                | http://nova.dk, http://nova.com |
+      | Maiken Bine, Peer Milla | maiken@nova.dk, peer@nova.dk | https://innovation.nova.org     |
     And owners:
       | name                 | type                         |
       | Nova Pharmaceuticals | Company, Industry consortium |
@@ -23,21 +23,21 @@ Feature: About this solution
       | Polymer | validated |
       | Protein | proposed  |
     And solution:
-      | title               | Size exclusion chromatography                                       |
-      | description         | Separating molecules by size.                                       |
-      | logo                | logo.png                                                            |
-      | banner              | banner.jpg                                                          |
-      | contact information | Ariel Lucile, "Maiken Bine, Peer Milla"                             |
-      | owner               | Nova Pharmaceuticals, Senatier                                      |
-      | state               | validated                                                           |
-      | documentation       | text.pdf                                                            |
-      | language            | Italian, Kallawaya                                                  |
-      | policy domain       | Demography, E-inclusion                                             |
-      | related solutions   | Gel, Polymer, Protein                                               |
-      | solution type       | [ABB113] Non-binding Instrument, [ABB159] Service Discovery Service |
-      | spatial coverage    | Italy, Egypt                                                        |
-      | status              | Under development                                                   |
-      | collection          | Monoclonal Antibody Development                                     |
+      | title               | Size exclusion chromatography                     |
+      | description         | Separating molecules by size.                     |
+      | logo                | logo.png                                          |
+      | banner              | banner.jpg                                        |
+      | contact information | Ariel Lucile, "Maiken Bine, Peer Milla"           |
+      | owner               | Nova Pharmaceuticals, Senatier                    |
+      | state               | validated                                         |
+      | documentation       | text.pdf                                          |
+      | language            | Italian, Kallawaya                                |
+      | policy domain       | Demography, E-inclusion                           |
+      | related solutions   | Gel, Polymer, Protein                             |
+      | solution type       | Non-binding Instrument, Service Discovery Service |
+      | spatial coverage    | Italy, Egypt                                      |
+      | status              | Under development                                 |
+      | collection          | Monoclonal Antibody Development                   |
 
     # The link to the about page should be visible on the solution homepage.
     When I am not logged in
@@ -83,8 +83,8 @@ Feature: About this solution
     # Categorisation grey area.
     And I should see the text "Categorisation"
     And I should see the following lines of text:
-      | [ABB113] Non-binding instrument    |
-      | [ABB159] Service Discovery Service |
+      | Non-binding instrument    |
+      | Service Discovery Service |
 
     And I should see the text "Status"
     And I should see the text "Under development"
@@ -100,18 +100,18 @@ Feature: About this solution
     # The rest of the fields should not be seen at the moment.
     # Multiple spatial coverage entries.
     And I should not see the following lines of text:
-    | Egypt |
-    | Italy |
+      | Egypt |
+      | Italy |
 
     # Multiple policy domains.
     And I should not see the following lines of text:
-    | Demography  |
-    | E-inclusion |
+      | Demography  |
+      | E-inclusion |
 
     # Multiple related solutions.
     And I should not see the following lines of text:
-    | Gel     |
-    | Polymer |
+      | Gel     |
+      | Polymer |
 
     # A related solution which is not yet approved should not be visible.
     And I should not see the text "Protein"

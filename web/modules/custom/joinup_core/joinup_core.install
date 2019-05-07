@@ -264,3 +264,11 @@ WHERE {
 QUERY;
   $connection->query($query);
 }
+
+/**
+ * Install the 'solr_field_type' entity type definition.
+ */
+function joinup_core_update_8109() {
+  $entity_type = \Drupal::entityTypeManager()->getDefinition('solr_field_type');
+  \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+}

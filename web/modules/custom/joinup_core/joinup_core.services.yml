@@ -30,6 +30,9 @@ services:
     arguments: ['@current_user', '@tempstore.private']
     tags:
       - { name: event_subscriber }
+  joinup_core.vocabulary_fixtures.helper:
+    class: Drupal\joinup_core\VocabularyFixturesHelper
+    arguments: ['@sparql_endpoint']
   logger.channel.joinup_core:
     parent: logger.channel_base
     arguments: ['joinup_core']

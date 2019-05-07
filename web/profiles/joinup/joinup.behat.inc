@@ -216,7 +216,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   /**
    * Checks that the logged in user has the given OG roles in the given group.
    *
-   * If the user has more than the required roles, he might have permissions
+   * If the user has more than the required roles, they might have permissions
    * from the rest of the roles that will lead the test to a false positive.
    * For this reason, we request check for the specific roles passed.
    *
@@ -383,7 +383,9 @@ class JoinupSubContext extends DrupalSubContextBase {
     $available_optgroups = array_values($this->getSelectOptgroups($field));
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
-    Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
+    foreach ($options as $option) {
+      Assert::assertContains($option, $available_optgroups, TRUE, "The '{$select}' select doesn't contain the option '{$option}''.");
+    }
   }
 
   /**
@@ -2649,6 +2651,19 @@ JS;
    */
   public function assertElementCount(string $count, string $element_name): void {
     Assert::assertEquals((int) $count, count($this->getElementsMatchingElementAlias($element_name)));
+  }
+
+  /**
+   * Asserts that a paragraph containing the given text is present in the page.
+   *
+   * @param string $text
+   *   The text that should be present in a paragraph.
+   *
+   * @Then I should see a paragraph containing the text :text
+   */
+  public function assertParagraphText(string $text): void {
+    $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
+    Assert::assertNotEmpty($element);
   }
 
 }

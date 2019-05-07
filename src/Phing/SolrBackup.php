@@ -77,21 +77,19 @@ class SolrBackup extends \Task {
    */
   public function main():void {
     $this->log("Executing {$this->operation} on Solr '{$this->core}' core.");
-    $this->executeMainCommand();
-    // Solr core backup and restore are asynchronous processes. In order to
-    // consider the backup/restore done, we need to check the status of the last
-    // process.
-    $this->executeStatusCommand();
+    $this->executeCommand()->waitToComplete();
     $this->log("Successfully executed {$this->operation} on Solr '{$this->core}' core.");
   }
 
   /**
-   * Executes a main command, backup or restore.
+   * Executes a command: backup or restore.
+   *
+   * @return $this
    *
    * @throws \BuildException
    *   When the server response is invalid.
    */
-  protected function executeMainCommand(): void {
+  protected function executeCommand(): self {
     try {
       $response = $this->httpClient->get($this->getUrl());
     }
@@ -99,19 +97,26 @@ class SolrBackup extends \Task {
       throw new \BuildException($exception->getMessage(), $exception);
     }
     if ($response->getStatusCode() != 200) {
-      throw new \BuildException("Solr server returned HTTP code {$response->getStatusCode()}, trying to {$this->operation} Solr '{$this->core}' core.");
+      throw new \BuildException("Solr server returned HTTP code {$response->getStatusCode()}, while trying to {$this->operation} Solr '{$this->core}' core.");
     }
+    return $this;
   }
 
   /**
-   * Executes a status command.
+   * Checks the status until receives the success signal.
+   *
+   * Solr core backup and restore are asynchronous processes. In order to
+   * consider the backup/restore done, we need to check the status of the last
+   * process.
+   *
+   * @return $this
    *
    * @throws \BuildException
    *   When the operation failed.
    * @throws \BuildTimeoutException
    *   When the status execution has timed-out.
    */
-  protected function executeStatusCommand(): void {
+  protected function waitToComplete(): self {
     $start = time();
     $this->attempt = 0;
 
@@ -120,14 +125,16 @@ class SolrBackup extends \Task {
 
       // Getting status has timed-out.
       if (time() - $start > static::MAX_EXECUTION_TIME) {
-        throw new \BuildTimeoutException("Timed-out while getting the {$this->operation} status of {$this->core} core.");
+        throw new \BuildTimeoutException("Timed-out while getting the {$this->operation} status for the Solr '{$this->core}' core.");
       }
 
       if ($status === 'in progress') {
-        // Wait 3 seconds before trying again.
-        sleep(3);
+        // Wait 2 seconds before trying again.
+        sleep(2);
       }
     } while ($status !== 'success');
+
+    return $this;
   }
 
   /**
@@ -145,7 +152,7 @@ class SolrBackup extends \Task {
     $response = $this->httpClient->get($this->getUrl(TRUE));
 
     if (($content = Json::decode($response->getBody()->getContents())) === NULL) {
-      throw new \BuildException("Invalid response from Solr server, trying to get the {$this->operation} status of Solr '{$this->core}'core.");
+      throw new \BuildException("Invalid response from Solr server, while trying to get the {$this->operation} status of Solr '{$this->core}'core.");
     }
 
     $status = strtolower($this->operation === 'backup' ? $content['details']['backup']['status'] : $content['restorestatus']['status']);
@@ -174,7 +181,7 @@ class SolrBackup extends \Task {
     $properties = $this->getProject()->getProperties();
     $core_url = $properties["solr.core.{$this->core}.url"];
     $core_name = $properties["solr.core.{$this->core}.name"];
-    return "{$core_url}/{$core_name}/replication?command={$this->getCommand($check_status)}&name={$this->core}&location={$properties['tmp.dir']}&wt=json&json.nl=map";
+    return "{$core_url}/{$core_name}/replication?command={$this->getCommand($check_status)}&name={$this->core}&location={$properties['exports.solr.destination.folder']}&wt=json&json.nl=map";
   }
 
   /**

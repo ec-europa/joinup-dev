@@ -31,9 +31,10 @@ class UniqueFieldValueInBundleValidator extends ConstraintValidator {
     $bundle_key = $entity->getEntityType()->getKey('bundle');
     $entity_type_id = $entity->getEntityTypeId();
     $id_key = $entity->getEntityType()->getKey('id');
+    $main_property = $items->getFieldDefinition()->getFieldStorageDefinition()->getMainPropertyName();
 
     $query = \Drupal::entityQuery($entity_type_id)
-      ->condition($field_name, $item->value)
+      ->condition($field_name, $item->{$main_property})
       ->condition($bundle_key, $bundles, 'IN');
     if (!empty($entity->id())) {
       $query->condition($id_key, $items->getEntity()->id(), '<>');
@@ -45,7 +46,7 @@ class UniqueFieldValueInBundleValidator extends ConstraintValidator {
 
     if ($value_taken) {
       $this->context->addViolation($constraint->message, [
-        '%value' => $item->value,
+        '%value' => $item->{$main_property},
         '@entity_type' => $entity->getEntityType()->getLowercaseLabel(),
         '@field_name' => Unicode::strtolower($items->getFieldDefinition()->getLabel()),
       ]);

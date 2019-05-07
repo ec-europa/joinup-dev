@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_taxonomy
+    - serialization
+    - user
+id: entity.taxonomy_term
+plugin_id: 'entity:taxonomy_term'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - jsonld
+    - rdfxml
+    - ntriples
+    - turtle
+    - n3
+  authentication:
+    - cookie
