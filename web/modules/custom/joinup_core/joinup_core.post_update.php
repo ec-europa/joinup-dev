@@ -555,7 +555,7 @@ function joinup_core_post_update_create_new_release_aliases(array &$sandbox): st
     // Creates redirect to the new alias.
     Redirect::create([
       'redirect_source' => $source_url,
-      'redirect_redirect' => 'internal:' . $new_alias,
+      'redirect_redirect' => $new_alias['alias'],
       'language' => 'und',
       'status_code' => '301',
     ])->save();
@@ -603,7 +603,7 @@ function joinup_core_post_update_create_new_node_aliases(array &$sandbox): strin
     // Create redirect to the new alias.
     Redirect::create([
       'redirect_source' => $source_url,
-      'redirect_redirect' => 'internal:' . $new_alias,
+      'redirect_redirect' => $new_alias['alias'],
       'language' => 'und',
       'status_code' => '301',
     ])->save();
