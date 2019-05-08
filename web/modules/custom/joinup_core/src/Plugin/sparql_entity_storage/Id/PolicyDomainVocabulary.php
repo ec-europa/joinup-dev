@@ -1,21 +1,21 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\rdf_entity\Id;
+namespace Drupal\joinup_core\Plugin\sparql_entity_storage\Id;
 
 use Drupal\Component\Transliteration\TransliterationInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\rdf_entity\RdfEntityIdPluginBase;
+use Drupal\sparql_entity_storage\SparqlEntityStorageEntityIdPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Generates the entity ID for 'policy_domain' taxonomy terms.
  *
- * @RdfEntityId(
+ * @SparqlEntityIdGenerator(
  *   id = "policy_domain",
  *   name = @Translation("Policy domain terms"),
  * )
  */
-class PolicyDomainVocabulary extends RdfEntityIdPluginBase {
+class PolicyDomainVocabulary extends SparqlEntityStorageEntityIdPluginBase {
 
   /**
    * The transliteration service.

@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.owner_type
-id: taxonomy_term.owner_type
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.file_type
+id: taxonomy_term.file_type
 entity_type_id: taxonomy_term
-bundle: owner_type
-rdf_type: 'http://purl.org/adms/publishertype/1.0'
+bundle: file_type
+rdf_type: 'http://publications.europa.eu/resource/authority/file-type'
 graph:
-  default: 'http://adms_skos_v1.00'
+  default: 'http://filetypes-skos'
 base_fields_mapping:
   uuid:
     value:
@@ -29,7 +29,7 @@ base_fields_mapping:
       format: t_literal
   description:
     value:
-      predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+      predicate: 'http://www.w3.org/2004/02/skos/core#altLabel'
       format: t_literal
   format:
     value:
@@ -41,8 +41,8 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
-      format: resource
+      predicate: ''
+      format: ''
   changed:
     value:
       predicate: ''

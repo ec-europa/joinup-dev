@@ -2,14 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.status
-id: taxonomy_term.status
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.policy_domain
+id: taxonomy_term.policy_domain
 entity_type_id: taxonomy_term
-bundle: status
-rdf_type: 'http://purl.org/adms/status/1.0'
+bundle: policy_domain
+rdf_type: 'http://joinup.eu/policy-domain'
 graph:
-  default: 'http://adms_skos_v1.00'
+  default: 'http://policy_domain'
+entity_id_plugin: policy_domain
 base_fields_mapping:
   uuid:
     value:
@@ -29,8 +30,8 @@ base_fields_mapping:
       format: t_literal
   description:
     value:
-      predicate: ''
-      format: ''
+      predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+      format: t_literal
   format:
     value:
       predicate: ''
@@ -41,7 +42,7 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+      predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
       format: resource
   changed:
     value:

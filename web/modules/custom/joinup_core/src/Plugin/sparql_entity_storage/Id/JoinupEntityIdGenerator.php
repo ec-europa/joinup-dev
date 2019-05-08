@@ -1,21 +1,21 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\rdf_entity\Id;
+namespace Drupal\joinup_core\Plugin\sparql_entity_storage\Id;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\rdf_entity\RdfEntityIdPluginBase;
+use Drupal\sparql_entity_storage\SparqlEntityStorageEntityIdPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Generates entity ids within the namespace assigned by the publication office.
  *
- * @RdfEntityId(
+ * @SparqlEntityIdGenerator(
  *   id = "joinup_po_namespace",
  *   name = @Translation("Joinup PO namespace (data.europa.eu/w21)"),
  * )
  */
-class JoinupRdfEntityIdGenerator extends RdfEntityIdPluginBase {
+class JoinupEntityIdGenerator extends SparqlEntityStorageEntityIdPluginBase {
 
   /**
    * The UUID service.

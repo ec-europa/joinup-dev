@@ -2,21 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.business_process
-id: taxonomy_term.business_process
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.product_type
+id: taxonomy_term.product_type
 entity_type_id: taxonomy_term
-bundle: business_process
-rdf_type: 'http://joinup.eu/business-process'
-entity_id_plugin: default
+bundle: product_type
+rdf_type: 'http://joinup.eu/product-type#'
 graph:
-  default: 'http://business-process'
+  default: 'http://product_type'
 base_fields_mapping:
   uuid:
-    value:
-      predicate: ''
-      format: ''
-  langcode:
     value:
       predicate: ''
       format: ''
@@ -24,17 +19,22 @@ base_fields_mapping:
     target_id:
       predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
       format: resource
+  langcode:
+    value:
+      predicate: ''
+      format: ''
   name:
     value:
       predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
       format: t_literal
   description:
     value:
-      predicate: null
-      format: null
-    format:
       predicate: 'http://www.w3.org/2004/02/skos/core#definition'
       format: t_literal
+  format:
+    value:
+      predicate: ''
+      format: ''
   weight:
     value:
       predicate: ''
@@ -51,7 +51,4 @@ base_fields_mapping:
     value:
       predicate: ''
       format: ''
-  graph:
-    value:
-      predicate: ''
-      format: ''
+  path: {  }

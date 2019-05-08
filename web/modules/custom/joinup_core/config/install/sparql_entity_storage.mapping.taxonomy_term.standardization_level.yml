@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.product_type
-id: taxonomy_term.product_type
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.standardization_level
+id: taxonomy_term.standardization_level
 entity_type_id: taxonomy_term
-bundle: product_type
-rdf_type: 'http://joinup.eu/product-type#'
+bundle: standardization_level
+rdf_type: 'http://joinup.eu/taxonomy/standardizationLevel#'
 graph:
-  default: 'http://product_type'
+  default: 'http://standardization_level'
 base_fields_mapping:
   uuid:
     value:

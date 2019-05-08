@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.spatial
-id: taxonomy_term.spatial
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.solution_category
+id: taxonomy_term.solution_category
 entity_type_id: taxonomy_term
-bundle: spatial
-rdf_type: 'http://publications.europa.eu/resource/authority/country'
+bundle: solution_category
+rdf_type: 'http://joinup.eu/taxonomy/solutionCategory#'
 graph:
-  default: 'http://countries-skos'
+  default: 'http://solution_category'
 base_fields_mapping:
   uuid:
     value:
@@ -41,8 +41,8 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
-      format: resource
+      predicate: ''
+      format: ''
   changed:
     value:
       predicate: ''

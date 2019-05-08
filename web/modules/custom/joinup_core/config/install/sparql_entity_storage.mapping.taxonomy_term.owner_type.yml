@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.standardization_level
-id: taxonomy_term.standardization_level
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.owner_type
+id: taxonomy_term.owner_type
 entity_type_id: taxonomy_term
-bundle: standardization_level
-rdf_type: 'http://joinup.eu/taxonomy/standardizationLevel#'
+bundle: owner_type
+rdf_type: 'http://purl.org/adms/publishertype/1.0'
 graph:
-  default: 'http://standardization_level'
+  default: 'http://adms_skos_v1.00'
 base_fields_mapping:
   uuid:
     value:
@@ -41,8 +41,8 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: ''
-      format: ''
+      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+      format: resource
   changed:
     value:
       predicate: ''

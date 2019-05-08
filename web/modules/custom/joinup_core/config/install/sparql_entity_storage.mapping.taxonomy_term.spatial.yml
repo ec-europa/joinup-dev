@@ -2,15 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.policy_domain
-id: taxonomy_term.policy_domain
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.spatial
+id: taxonomy_term.spatial
 entity_type_id: taxonomy_term
-bundle: policy_domain
-rdf_type: 'http://joinup.eu/policy-domain'
+bundle: spatial
+rdf_type: 'http://publications.europa.eu/resource/authority/country'
 graph:
-  default: 'http://policy_domain'
-entity_id_plugin: policy_domain
+  default: 'http://countries-skos'
 base_fields_mapping:
   uuid:
     value:
@@ -42,7 +41,7 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
+      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
       format: resource
   changed:
     value:

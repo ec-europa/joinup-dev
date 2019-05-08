@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.representation_technique
-id: taxonomy_term.representation_technique
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.language
+id: taxonomy_term.language
 entity_type_id: taxonomy_term
-bundle: representation_technique
-rdf_type: 'http://purl.org/adms/representationtechnique/1.0'
+bundle: language
+rdf_type: 'http://publications.europa.eu/resource/authority/language'
 graph:
-  default: 'http://adms_skos_v1.00'
+  default: 'http://languages-skos'
 base_fields_mapping:
   uuid:
     value:

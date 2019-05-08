@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.language
-id: taxonomy_term.language
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.eira
+id: taxonomy_term.eira
 entity_type_id: taxonomy_term
-bundle: language
-rdf_type: 'http://publications.europa.eu/resource/authority/language'
+bundle: eira
+rdf_type: 'http://data.europa.eu/dr8'
 graph:
-  default: 'http://languages-skos'
+  default: 'http://eira_skos'
 base_fields_mapping:
   uuid:
     value:
@@ -41,7 +41,7 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+      predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
       format: resource
   changed:
     value:

@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.eira
-id: taxonomy_term.eira
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.status
+id: taxonomy_term.status
 entity_type_id: taxonomy_term
-bundle: eira
-rdf_type: 'http://data.europa.eu/dr8'
+bundle: status
+rdf_type: 'http://purl.org/adms/status/1.0'
 graph:
-  default: 'http://eira_skos'
+  default: 'http://adms_skos_v1.00'
 base_fields_mapping:
   uuid:
     value:
@@ -29,8 +29,8 @@ base_fields_mapping:
       format: t_literal
   description:
     value:
-      predicate: 'http://www.w3.org/2004/02/skos/core#definition'
-      format: t_literal
+      predicate: ''
+      format: ''
   format:
     value:
       predicate: ''
@@ -41,7 +41,7 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broaderTransitive'
+      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
       format: resource
   changed:
     value:

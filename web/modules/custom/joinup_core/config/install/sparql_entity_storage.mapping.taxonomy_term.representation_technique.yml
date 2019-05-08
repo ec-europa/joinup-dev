@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.test_resource_type
-id: taxonomy_term.test_resource_type
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.representation_technique
+id: taxonomy_term.representation_technique
 entity_type_id: taxonomy_term
-bundle: test_resource_type
-rdf_type: 'http://joinup.eu/test-resource-type#'
+bundle: representation_technique
+rdf_type: 'http://purl.org/adms/representationtechnique/1.0'
 graph:
-  default: 'http://test_resource_type'
+  default: 'http://adms_skos_v1.00'
 base_fields_mapping:
   uuid:
     value:
@@ -41,8 +41,8 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: ''
-      format: ''
+      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+      format: resource
   changed:
     value:
       predicate: ''

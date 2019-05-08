@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - taxonomy.vocabulary.actor
-id: taxonomy_term.actor
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.test_resource_type
+id: taxonomy_term.test_resource_type
 entity_type_id: taxonomy_term
-bundle: actor
-rdf_type: 'http://joinup.eu/taxonomy/actor'
+bundle: test_resource_type
+rdf_type: 'http://joinup.eu/test-resource-type#'
 graph:
-  default: 'http://actor'
+  default: 'http://test_resource_type'
 base_fields_mapping:
   uuid:
     value:
@@ -41,8 +41,8 @@ base_fields_mapping:
       format: ''
   parent:
     target_id:
-      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
-      format: resource
+      predicate: ''
+      format: ''
   changed:
     value:
       predicate: ''
