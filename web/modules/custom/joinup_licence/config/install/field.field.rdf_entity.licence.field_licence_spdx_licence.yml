@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - rdf_entity.rdfentity.licence
+    - rdf_entity.rdfentity.spdx_licence
+id: rdf_entity.licence.field_licence_spdx_licence
+field_name: field_licence_spdx_licence
+entity_type: rdf_entity
+bundle: licence
+label: 'Corresponding SPDX licence'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      spdx_licence: spdx_licence
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

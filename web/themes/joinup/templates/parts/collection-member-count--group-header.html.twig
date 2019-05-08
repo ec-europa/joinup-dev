@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation of a collection's member count.
+ *
+ * Available variables:
+ * - count: the number of members in the collection.
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+    set classes = ['collection-member-count']
+%}
+<div{{ attributes.addClass(classes) }}>
+    {% trans %}
+        1 Member
+    {% plural count %}
+        {{ count }} Members
+    {% endtrans %}
+</div>
