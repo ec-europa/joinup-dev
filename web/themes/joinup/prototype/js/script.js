@@ -104,10 +104,10 @@ var loadMore = loadMore || {};
     // Check licence search field value
     // and hide tiles which don't contain proper data-spdx
     var licenceTiles = 0;
-    var currentSpdxId = $('#licence-search').val();
+    var currentSpdxId = $('#licence-search').val().toLowerCase();
     $licenceTile.each(function () {
       if (currentSpdxId.length > 0) {
-        var spdxId = $(this).attr('data-spdx');
+        var spdxId = $(this).attr('data-spdx').toLowerCase();
         if (!spdxId.includes(currentSpdxId) && !$(this).hasClass('is-hidden')) {
           $(this).addClass('is-hidden');
         }
@@ -137,6 +137,14 @@ var loadMore = loadMore || {};
 
   // Trigger if enter key is pressed in licence search
   $('#licence-search').on('keyup', function (event) {
+    checkLicenceCategories();
+  });
+
+  // Reset licence listing
+  $('#licence-reset').on('click', function (event) {
+    $('.licence-filter__item a.is-active').removeClass('is-active');
+    $('.licence-search__input input').val('');
+    $('.licence-search__input .mdl-js-textfield')[0].MaterialTextfield.checkDirty();
     checkLicenceCategories();
   });
 
