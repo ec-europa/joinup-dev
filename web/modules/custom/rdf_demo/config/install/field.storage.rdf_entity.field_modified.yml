@@ -5,7 +5,7 @@ dependencies:
     - datetime
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     rdf_mapping: 'dct:modified'
     mapping:
       value: 'http://purl.org/dc/terms/modified'
