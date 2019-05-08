@@ -54,8 +54,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *   will be done. This is needed for system mails (like the ones sent by the
    *   user module).
    * - The recipient and recipient_mail are not both mandatory. If a
-   *   recipient_mail is not used, the user will be loaded and his email will be
-   *   used.
+   *   recipient_mail is not used, the user will be loaded and their email will
+   *   be used.
    * - The 'body' is a partial text based match.
    * - The 'html' and 'signature_required' columns can be either 'yes' or 'no'.
    *   When not present, 'yes' is assumed.
@@ -394,7 +394,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *   If no mail was found linked to the given email or if the link to the file
    *   attachment was not found.
    *
-   * @When I click the link for the :filename attachment in the contact form confirmation email sent to :mail
+   * @When I click the link for the :filename attachment in the contact form email sent to :mail
    */
   public function clickAttachmentInContactFormConfirmationMail(string $filename, string $mail): void {
     $this->assertEmailTagPresent();

@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_community_content;
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Contains helper methods for dealing with community content.
@@ -13,8 +18,21 @@ class CommunityContentHelper {
    * @return array
    *   An array of node bundle IDs.
    */
-  public static function getBundles() {
+  public static function getBundles(): array {
     return ['discussion', 'document', 'event', 'news'];
+  }
+
+  /**
+   * Returns whether the entity is a community content node.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to check.
+   *
+   * @return bool
+   *   True if the entity is a community content node, false otherwise.
+   */
+  public static function isCommunityContent(EntityInterface $entity): bool {
+    return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::getBundles());
   }
 
   /**
@@ -27,7 +45,7 @@ class CommunityContentHelper {
    * @return string[]
    *   An array of workflow state IDs.
    */
-  public static function getModeratorAttentionNeededStates($bundle = NULL) {
+  public static function getModeratorAttentionNeededStates($bundle = NULL): array {
     $states = [
       'discussion' => [
         'proposed',

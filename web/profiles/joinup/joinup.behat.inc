@@ -216,7 +216,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   /**
    * Checks that the logged in user has the given OG roles in the given group.
    *
-   * If the user has more than the required roles, he might have permissions
+   * If the user has more than the required roles, they might have permissions
    * from the rest of the roles that will lead the test to a false positive.
    * For this reason, we request check for the specific roles passed.
    *
@@ -383,7 +383,9 @@ class JoinupSubContext extends DrupalSubContextBase {
     $available_optgroups = array_values($this->getSelectOptgroups($field));
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
-    Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
+    foreach ($options as $option) {
+      Assert::assertContains($option, $available_optgroups, TRUE, "The '{$select}' select doesn't contain the option '{$option}''.");
+    }
   }
 
   /**
@@ -2649,6 +2651,85 @@ JS;
    */
   public function assertElementCount(string $count, string $element_name): void {
     Assert::assertEquals((int) $count, count($this->getElementsMatchingElementAlias($element_name)));
+  }
+
+  /**
+   * Returns selectors used to find elements with a human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return array[]
+   *   An indexed array of selectors intended to be used with Mink's `find()`
+   *   methods. Each value is a tuple containing two strings:
+   *   - 0: the selector, e.g. 'css' or 'xpath'.
+   *   - 1: the locator.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getSelectorsMatchingElementAlias(string $alias): array {
+    $elements = [
+      // The various search input fields.
+      [
+        'names' => [
+          'search bar',
+          'search bars',
+          'search field',
+          'search fields',
+        ],
+        'selectors' => [
+          // The site-wide search field in the top right corner.
+          ['css', 'input#search-bar__input'],
+          // The search field on the search result pages.
+          ['css', '#block-exposed-form-search-page input.form-text'],
+        ],
+      ],
+    ];
+
+    foreach ($elements as $element) {
+      if (in_array($alias, $element['names'])) {
+        return $element['selectors'];
+      }
+    }
+
+    throw new \InvalidArgumentException("No selectors are defined for the element named '$alias'.");
+  }
+
+  /**
+   * Returns elements that match the given human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements matching the identifier.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getElementsMatchingElementAlias(string $alias): array {
+    $elements = [];
+
+    foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
+      list ($selector, $locator) = $selector_tuple;
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
+    }
+
+    return $elements;
+  }
+
+  /**
+   * Asserts that a paragraph containing the given text is present in the page.
+   *
+   * @param string $text
+   *   The text that should be present in a paragraph.
+   *
+   * @Then I should see a paragraph containing the text :text
+   */
+  public function assertParagraphText(string $text): void {
+    $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
+    Assert::assertNotEmpty($element);
   }
 
 }

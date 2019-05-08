@@ -19,9 +19,10 @@ Feature: Add distribution through the UI
       | description   | First public release.      |
       | is version of | Solution random x name     |
       | state         | validated                  |
-    And the following licence:
-      | title       | WTFPL                                    |
-      | description | The WTFPL is a rather permissive licence |
+    And the following licences:
+      | title              | description                                              | deprecated |
+      | WTFPL              | The WTFPL is a rather permissive licence                 | no         |
+      | Deprecated licence | The deprecated licence should not be available to select | yes        |
 
   Scenario: Add a distribution to a solution as a facilitator.
     When I am logged in as a "facilitator" of the "Solution random x name" solution
@@ -31,7 +32,10 @@ Feature: Add distribution through the UI
     When I click "Add distribution"
     Then I should see the heading "Add Distribution"
     And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique"
-    And the following fields should not be present "Langcode, Translation"
+    But the following fields should not be present "Langcode, Translation"
+    And the "License" field should contain the "WTFPL" options
+    But the "License" field should not contain the "Deprecated licence" options
+
     # @todo: The link has to be changed to the legal contact form.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"

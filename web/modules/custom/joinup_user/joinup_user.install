@@ -54,7 +54,6 @@ function joinup_user_install() {
     'use text format simple_text',
     'view rdf entity',
     'export rdf metadata',
-    'post comments',
     'access comments',
   ];
   user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, $anonymous_permissions);

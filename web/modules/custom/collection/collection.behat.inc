@@ -41,6 +41,33 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use WorkflowTrait;
 
   /**
+   * Mapping of human readable field labels to machine names.
+   */
+  protected const FIELD_ALIASES = [
+    'author' => 'uid',
+    'uri' => 'id',
+    'title' => 'label',
+    'abstract' => 'field_ar_abstract',
+    'access url' => 'field_ar_access_url',
+    'affiliates' => 'field_ar_affiliates',
+    'banner' => 'field_ar_banner',
+    'closed' => 'field_ar_closed',
+    'contact information' => 'field_ar_contact_information',
+    'creation date' => 'created',
+    'description' => 'field_ar_description',
+    'elibrary creation' => 'field_ar_elibrary_creation',
+    'logo' => 'field_ar_logo',
+    'moderation' => 'field_ar_moderation',
+    'modification date' => 'changed',
+    'owner' => 'field_ar_owner',
+    'policy domain' => 'field_policy_domain',
+    'spatial coverage' => 'field_spatial_coverage',
+    'state' => 'field_ar_state',
+    'featured' => 'field_site_featured',
+    'pinned site-wide' => 'field_site_pinned',
+  ];
+
+  /**
    * Test collections.
    *
    * @var \Drupal\rdf_entity\Entity\Rdf[]
@@ -144,7 +171,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Given (the following )collections:
    */
   public function givenCollections(TableNode $collection_table) {
-    $aliases = self::collectionFieldAliases();
+    $aliases = self::FIELD_ALIASES;
 
     foreach ($collection_table->getColumnsHash() as $collection) {
       $values = [];
@@ -166,39 +193,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
 
       $this->createCollection($values);
     }
-  }
-
-  /**
-   * Returns the field alias mapping.
-   *
-   * @return array
-   *   The field alias mapping.
-   */
-  protected static function collectionFieldAliases() {
-    // Mapping alias - field name.
-    return [
-      'author' => 'uid',
-      'uri' => 'id',
-      'title' => 'label',
-      'abstract' => 'field_ar_abstract',
-      'access url' => 'field_ar_access_url',
-      'affiliates' => 'field_ar_affiliates',
-      'banner' => 'field_ar_banner',
-      'closed' => 'field_ar_closed',
-      'contact information' => 'field_ar_contact_information',
-      'creation date' => 'created',
-      'description' => 'field_ar_description',
-      'elibrary creation' => 'field_ar_elibrary_creation',
-      'logo' => 'field_ar_logo',
-      'moderation' => 'field_ar_moderation',
-      'modification date' => 'changed',
-      'owner' => 'field_ar_owner',
-      'policy domain' => 'field_policy_domain',
-      'spatial coverage' => 'field_spatial_coverage',
-      'state' => 'field_ar_state',
-      'featured' => 'field_site_featured',
-      'pinned site-wide' => 'field_site_pinned',
-    ];
   }
 
   /**
@@ -339,7 +333,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Given (the following )collection:
    */
   public function givenCollection(TableNode $collection_table) {
-    $aliases = self::collectionFieldAliases();
+    $aliases = self::FIELD_ALIASES;
 
     $values = [];
     // Replace the column aliases with the actual field names.
