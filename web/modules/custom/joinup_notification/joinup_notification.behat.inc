@@ -394,7 +394,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *   If no mail was found linked to the given email or if the link to the file
    *   attachment was not found.
    *
-   * @When I click the link for the :filename attachment in the contact form confirmation email sent to :mail
+   * @When I click the link for the :filename attachment in the contact form email sent to :mail
    */
   public function clickAttachmentInContactFormConfirmationMail(string $filename, string $mail): void {
     $this->assertEmailTagPresent();
