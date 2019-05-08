@@ -66,46 +66,6 @@ Feature: Subscribing to discussions
       | username | title       |
       | follower | Rare Butter |
 
-    # Notifications are only sent for anonymous users when the comment is
-    # approved.
-    Given I am an anonymous user
-    And I go to the "Rare Butter" discussion
-    Then I fill in "Create comment" with "Is Dale in love with Flash?"
-    And I fill in "Your name" with "Gerhardt von Troll"
-    And I fill in "Email" with "trollingismylife@example.com"
-    And I wait for the honeypot validation to pass
-    And I press "Post comment"
-    # Check that notification emails are not sent yet since the comment is not approved.
-    Then the following email should not have been sent:
-      | recipient_mail | dale@example.com                                                                                    |
-      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
-    And the following email should not have been sent:
-      | recipient_mail | hans@example.com                                                                                    |
-      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
-    # Moderate the anonymous comment.
-    Given I am logged in as a "moderator"
-    And I go to "/admin/content/comment/approval"
-    Given I select the "Rare Butter" row
-    Then I select "Publish comment" from "Action"
-    And I press "Apply to selected items"
-    # Subscribers are receiving the notifications.
-    And the following email should have been sent:
-      | recipient_mail | dale@example.com                                                                                    |
-      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
-    # Discussion author is receiving the notifications too.
-    And the following email should have been sent:
-      | recipient_mail | hans@example.com                                                                                    |
-      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
-    # Flash Gordon is not subscribed yet. He should not retrieve the message.
-    But the following email should not have been sent:
-      | recipient_mail | flash@example.com                                                                                   |
-      | subject        | Joinup: User Gerhardt von Troll posted a comment in discussion "Rare Butter"                        |
-      | body           | Gerhardt von Troll has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
-
     # Authenticated users comments are sent on comment creation.
     Given I am logged in as debater
     And I go to the "Rare Butter" discussion
