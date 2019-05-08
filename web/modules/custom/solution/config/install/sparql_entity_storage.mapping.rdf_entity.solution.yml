@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - rdf_entity.graph.draft
+    - sparql_entity_storage.graph.default
+    - sparql_entity_storage.graph.draft
     - rdf_entity.rdfentity.solution
 third_party_settings:
   rdf_schema_field_validation:
@@ -36,10 +36,6 @@ base_fields_mapping:
     value:
       predicate: 'http://purl.org/dc/terms/modified'
       format: 'xsd:dateTime'
-  uuid:
-    value:
-      predicate: ''
-      format: ''
   langcode:
     value:
       predicate: 'http://joinup.eu/language'

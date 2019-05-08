@@ -23,7 +23,7 @@ use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
@@ -403,7 +403,7 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
   }
 
   // Set the graph only for new solutions or those loaded from the main graphs.
-  if (!$entity->isNew() && !in_array($entity->rdfEntityOriginalGraph, ['default', 'draft'])) {
+  if (!$entity->isNew() && !in_array($entity->sparqlEntityOriginalGraph, ['default', 'draft'])) {
     return;
   }
 
@@ -412,7 +412,7 @@ function solution_rdf_entity_presave(RdfInterface $entity) {
     $entity->set('graph', 'draft');
   }
   elseif (in_array($state, ['validated', 'deletion_request'])) {
-    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
+    $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -507,7 +507,7 @@ function solution_rdf_entity_update(EntityInterface $entity) {
     \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'draft');
   }
   if ($state == 'blacklisted') {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $storage */
     \Drupal::entityManager()->getStorage('rdf_entity')->deleteFromGraph([$entity], 'default');
   }
   solution_invalidate_collection($entity);
