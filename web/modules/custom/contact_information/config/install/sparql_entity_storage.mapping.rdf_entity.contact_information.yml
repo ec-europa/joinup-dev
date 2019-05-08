@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
+    - sparql_entity_storage.graph.default
     - rdf_entity.rdfentity.contact_information
 third_party_settings:
   rdf_schema_field_validation:
