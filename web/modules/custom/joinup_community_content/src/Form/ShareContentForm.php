@@ -12,7 +12,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\sparql_entity_storage\SparqlEntityStorage;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,7 +31,7 @@ class ShareContentForm extends ShareContentFormBase {
   /**
    * Constructs a new ShareContentFormBase object.
    *
-   * @param \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage
    *   The RDF entity storage.
    * @param \Drupal\Core\Entity\EntityViewBuilderInterface $rdf_builder
    *   The RDF view builder.
@@ -42,8 +42,8 @@ class ShareContentForm extends ShareContentFormBase {
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, JoinupRelationManagerInterface $relation_manager) {
-    parent::__construct($rdf_storage, $rdf_builder, $membership_manager, $current_user);
+  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, JoinupRelationManagerInterface $relation_manager) {
+    parent::__construct($sparql_storage, $rdf_builder, $membership_manager, $current_user);
 
     $this->relationManager = $relation_manager;
   }
@@ -137,7 +137,7 @@ class ShareContentForm extends ShareContentFormBase {
     // We can safely loop through these ids, as unvalid options are handled
     // already by Drupal.
     foreach ($collections as $id => $value) {
-      $collection = $this->rdfStorage->load($id);
+      $collection = $this->sparqlStorage->load($id);
       $this->shareInCollection($collection);
       $collection_labels[] = $collection->label();
     }

@@ -55,7 +55,7 @@ class UnshareContentForm extends ShareContentFormBase {
     // already by Drupal.
     foreach ($form_state->getValue('collections') as $id => $checked) {
       if ($checked) {
-        $collection = $this->rdfStorage->load($id);
+        $collection = $this->sparqlStorage->load($id);
         $this->removeFromCollection($collection);
         $collections[] = $collection->label();
       }

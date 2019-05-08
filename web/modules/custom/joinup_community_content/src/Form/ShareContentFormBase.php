@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\sparql_entity_storage\SparqlEntityStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -47,14 +47,14 @@ abstract class ShareContentFormBase extends FormBase {
   /**
    * The RDF entity storage.
    *
-   * @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorage
    */
-  protected $rdfStorage;
+  protected $sparqlStorage;
 
   /**
    * Constructs a new ShareContentFormBase object.
    *
-   * @param \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage
    *   The RDF entity storage.
    * @param \Drupal\Core\Entity\EntityViewBuilderInterface $rdf_builder
    *   The RDF view builder.
@@ -63,8 +63,8 @@ abstract class ShareContentFormBase extends FormBase {
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user account.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user) {
-    $this->rdfStorage = $rdf_storage;
+  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user) {
+    $this->sparqlStorage = $sparql_storage;
     $this->rdfBuilder = $rdf_builder;
     $this->membershipManager = $membership_manager;
     $this->currentUser = $current_user;
