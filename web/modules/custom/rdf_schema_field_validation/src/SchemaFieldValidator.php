@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Drupal\rdf_schema_field_validation;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
-use Drupal\rdf_entity\Exception\UnmappedFieldException;
-use Drupal\rdf_entity\RdfEntityMappingInterface;
-use Drupal\rdf_entity\RdfFieldHandlerInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
+use Drupal\sparql_entity_storage\Exception\UnmappedFieldException;
+use Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface;
+use Drupal\sparql_entity_storage\SparqlMappingInterface;
 
 /**
  * A service that validates that fields are defined in a schema.
@@ -19,7 +19,7 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   /**
    * The database connection.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparqlEndpoint;
 
@@ -33,21 +33,21 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   /**
    * The rdf field handler service.
    *
-   * @var \Drupal\rdf_entity\RdfFieldHandlerInterface
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface
    */
   protected $fieldHanlder;
 
   /**
    * Constructs a new SchemaFieldValidator object.
    *
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint
    *   The database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\rdf_entity\RdfFieldHandlerInterface $field_hanlder
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface $field_hanlder
    *   The rdf field handler service.
    */
-  public function __construct(ConnectionInterface $sparql_endpoint, EntityTypeManagerInterface $entity_type_manager, RdfFieldHandlerInterface $field_hanlder) {
+  public function __construct(ConnectionInterface $sparql_endpoint, EntityTypeManagerInterface $entity_type_manager, SparqlEntityStorageFieldHandlerInterface $field_hanlder) {
     $this->sparqlEndpoint = $sparql_endpoint;
     $this->entityTypeManager = $entity_type_manager;
     $this->fieldHanlder = $field_hanlder;
@@ -82,20 +82,20 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   }
 
   /**
-   * Retrieves an RdfEntityMapping entity.
+   * Retrieves an SparqlMapping entity.
    *
    * @param string $entity_type_id
    *   The entity type id.
    * @param string $bundle
    *   The entity type id.
    *
-   * @return \Drupal\rdf_entity\RdfEntityMappingInterface|null
+   * @return \Drupal\sparql_entity_storage\Entity\SparqlMapping|null
    *   The rdf entity mapping or null, if none is found.
    */
-  protected function getEntityMapping(string $entity_type_id, string $bundle): ?RdfEntityMappingInterface {
+  protected function getEntityMapping(string $entity_type_id, string $bundle): ?SparqlMappingInterface {
     $id = "{$entity_type_id}.{$bundle}";
-    /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
-    $mapping = $this->entityTypeManager->getStorage('rdf_entity_mapping')->load($id);
+    /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $mapping */
+    $mapping = $this->entityTypeManager->getStorage('sparql_mapping')->load($id);
     return $mapping;
   }
 
