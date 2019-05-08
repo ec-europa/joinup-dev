@@ -1545,11 +1545,13 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       if (!isset($category_lists[$parent->id()])) {
         $category_lists[$parent->id()] = [
           'title' => $parent->label(),
+          'weight' => $parent->getWeight(),
           'class' => 'licence-tile__line--' . $parent_normalized_title,
         ];
       }
       $category_lists[$parent->id()]['items'][] = [
         'title' => $type->label(),
+        'weight' => $type->getWeight(),
         'description' => $type->getDescription(),
       ];
       $normalized_title = htmlentities(str_replace([' ', '/'], ['-', '-'], strtolower($type->label())));
@@ -1557,6 +1559,15 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
     }
 
     if (!empty($data_property_categories)) {
+      $sort_function = function ($a, $b) {
+        return $a['weight'] <=> $b['weight'];
+      };
+
+      usort($category_lists, $sort_function);
+      foreach ($category_lists as &$category_data) {
+        usort($category_data['items'], $sort_function);
+      }
+
       $variables['legal_categories'] = implode(' ', $data_property_categories);
       $variables['category_lists'] = $category_lists;
     }
