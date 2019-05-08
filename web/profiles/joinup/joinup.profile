@@ -130,14 +130,14 @@ function joinup_form_field_config_edit_form_alter(&$form) {
 }
 
 /**
- * Implements hook_rdf_apply_default_fields_alter().
+ * Implements hook_sparql_apply_default_fields_alter().
  *
  * This profile includes 'content_editor' filter format as a text editor and
  * access to 'full_html' and the rest of the filter formats are restricted.
  * With this hook, we make sure that the default fields with type 'text_long'
  * have the 'content_editor' filter format as default.
  */
-function joinup_rdf_apply_default_fields_alter($type, &$values) {
+function joinup_sparql_apply_default_fields_alter($type, &$values) {
   // Since the profile includes a filter format, we provide this as default.
   if ($type == 'text_long') {
     foreach ($values as &$value) {
