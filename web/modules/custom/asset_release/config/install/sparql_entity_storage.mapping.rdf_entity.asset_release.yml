@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
-    - rdf_entity.graph.draft
+    - sparql_entity_storage.graph.default
+    - sparql_entity_storage.graph.draft
     - rdf_entity.rdfentity.asset_release
 third_party_settings:
   rdf_schema_field_validation:
