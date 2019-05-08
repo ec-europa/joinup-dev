@@ -45,12 +45,12 @@ class DownloadTrackingController extends ControllerBase {
    *
    * @var \Drupal\Core\Entity\ContentEntityStorageInterface
    */
-  protected $rdfStorage;
+  protected $sparqlStorage;
 
   /**
    * Instantiates a new DownloadTrackingController object.
    *
-   * @param \Drupal\Core\Entity\ContentEntityStorageInterface $rdf_storage
+   * @param \Drupal\Core\Entity\ContentEntityStorageInterface $sparql_storage
    *   The RDF entity storage.
    * @param \Drupal\Core\Entity\ContentEntityStorageInterface $event_storage
    *   The download event entity storage.
@@ -61,8 +61,8 @@ class DownloadTrackingController extends ControllerBase {
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
    */
-  public function __construct(ContentEntityStorageInterface $rdf_storage, ContentEntityStorageInterface $event_storage, FileUrlHandler $file_url_handler, FormBuilderInterface $form_builder, AccountInterface $current_user) {
-    $this->rdfStorage = $rdf_storage;
+  public function __construct(ContentEntityStorageInterface $sparql_storage, ContentEntityStorageInterface $event_storage, FileUrlHandler $file_url_handler, FormBuilderInterface $form_builder, AccountInterface $current_user) {
+    $this->sparqlStorage = $sparql_storage;
     $this->eventStorage = $event_storage;
     $this->fileUrlHandler = $file_url_handler;
     $this->formBuilder = $form_builder;
@@ -146,11 +146,11 @@ class DownloadTrackingController extends ControllerBase {
    *   Allowed when the file exists, neutral otherwise.
    */
   public function isDistributionFile(FileInterface $file, AccountInterface $account) {
-    $query = $this->rdfStorage->getQuery();
+    $query = $this->sparqlStorage->getQuery();
     $file_url_handler = $this->fileUrlHandler;
 
     // Verify that the file exists and it's attached to a solution.
-    $query->condition($this->rdfStorage->getEntityType()->getKey('bundle'), 'asset_distribution')
+    $query->condition($this->sparqlStorage->getEntityType()->getKey('bundle'), 'asset_distribution')
       ->condition('field_ad_access_url', $file_url_handler::fileToUrl($file));
     $results = $query->execute();
 
@@ -158,7 +158,7 @@ class DownloadTrackingController extends ControllerBase {
       return AccessResult::forbidden();
     }
 
-    $entity = $this->rdfStorage->load(array_pop($results));
+    $entity = $this->sparqlStorage->load(array_pop($results));
 
     return $entity->access('view', $account, TRUE);
   }
