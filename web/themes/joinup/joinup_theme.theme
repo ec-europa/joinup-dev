@@ -1519,20 +1519,13 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
  */
 function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
   $entity = $variables['elements']['#rdf_entity'];
-  $variables['licence_title'] = $entity->label();
-  $variables['licence_description'] = $entity->field_licence_description->value;
+  $variables['label']['#attributes']['class'][] = 'listing__teaser';
+  $variables['content']['field_licence_description']['#attributes']['class'][] = 'listing__teaser';
 
-  // Calculate variables related to the spdx licence.
-  if (!empty($entity->field_licence_spdx_licence->getValue())) {
-    $spdx_licences = $entity->field_licence_spdx_licence->referencedEntities();
-    $spdx_licence = reset($spdx_licences);
-
-    $variables['spdx_licence'] = $spdx_licence;
-    $variables['spdx_title'] = $variables['content']['spdx_licence_label'];
-    $spdx_url = Url::fromUri($spdx_licence->id(), ['fragment' => 'licenceText']);
-    $variables['spdx_url'] = $spdx_url->toUriString();
-    $variables['spdx_licence_id'] = $spdx_licence->field_spdx_licence_id->value;
-  }
+  $variables['content']['spdx_licence_id']['#label_display'] = 'hidden';
+  $variables['content']['spdx_licence_id']['#prefix'] = '<span class="icon icon--licence"></span>';
+  $variables['content']['spdx_licence_external_url']['#attributes']['class'][] = 'licence-tile__button';
+  $variables['content']['spdx_licence_external_url']['#attributes']['target'] = '_blank';
 
   // Calculate variables related to the legal type.
   if (!empty($entity->field_licence_legal_type->getValue())) {

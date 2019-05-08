@@ -6,9 +6,9 @@ Feature:
 
   Scenario: Present and search the licences.
     Given SPDX licences:
-      | title            | ID       |
-      | SPDX licence foo | SPDX_FOO |
-      | SPDX licence bar | SPDX_BAR |
+      | uri                       | title            | ID       |
+      | http://joinup.eu/spdx/foo | SPDX licence foo | SPDX_FOO |
+      | http://joinup.eu/spdx/bar | SPDX licence bar | SPDX_BAR |
     And licences:
       | uri                             | title          | description                             | type | spdx licence     | legal type                                                            |
       | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    |      | SPDX licence foo | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
@@ -37,6 +37,8 @@ Feature:
       | Must    |
       | Cannot  |
       | Support |
+    And the response should contain "http://joinup.eu/spdx/foo.html#licenseText"
+    And the response should contain "http://joinup.eu/spdx/bar.html#licenseText"
 
     When I click "Distribute" in the "Content" region
     Then I should see the text "1 licences found"
