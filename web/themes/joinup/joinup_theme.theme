@@ -766,24 +766,16 @@ function joinup_theme_preprocess_field__comment(&$variables) {
   // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;
 
-  // On closed collections community content, anonymous users are not allowed to
-  // comment. Show a message instead.
+  // Anonymous users are not allowed to post comments.
   /** @var \Drupal\rdf_entity\RdfInterface $parent */
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
   $user = \Drupal::currentUser();
-  if (
-    $user->isAnonymous() &&
-    $parent &&
-    $parent->getEntityTypeId() === 'rdf_entity' &&
-    $parent->bundle() === 'collection' &&
-    $parent->get('field_ar_closed')->value
-  ) {
-    $comments_status = 'closed_collection';
+  if ($user->isAnonymous()) {
+    $comments_status = 'authentication_required';
   }
 
   switch ($comments_status) {
-    case 'closed_collection':
-      $variables['comments_status'] = 'closed_collection';
+    case 'authentication_required':
+      $variables['comments_status'] = 'authentication_required';
       break;
 
     case CommentItemInterface::OPEN:
@@ -1520,18 +1512,6 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for rdf-entity--collection--listing-item.html.twig.
- *
- * Get raw number of members.
- */
-function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variables) {
-  if (isset($variables['elements']['members']['#markup'])) {
-    $arguments = $variables['elements']['members']['#markup']->getArguments();
-    $variables['member_count'] = $arguments['@member_count'];
-  }
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  *
  * Provides variables needed for the search_list_item view mode of licences.
@@ -1558,11 +1538,13 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       if (!isset($category_lists[$parent->id()])) {
         $category_lists[$parent->id()] = [
           'title' => $parent->label(),
+          'weight' => $parent->getWeight(),
           'class' => 'licence-tile__line--' . $parent_normalized_title,
         ];
       }
       $category_lists[$parent->id()]['items'][] = [
         'title' => $type->label(),
+        'weight' => $type->getWeight(),
         'description' => $type->getDescription(),
       ];
       $normalized_title = htmlentities(str_replace([' ', '/'], ['-', '-'], strtolower($type->label())));
@@ -1570,6 +1552,15 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
     }
 
     if (!empty($data_property_categories)) {
+      $sort_function = function ($a, $b) {
+        return $a['weight'] <=> $b['weight'];
+      };
+
+      usort($category_lists, $sort_function);
+      foreach ($category_lists as &$category_data) {
+        usort($category_data['items'], $sort_function);
+      }
+
       $variables['legal_categories'] = implode(' ', $data_property_categories);
       $variables['category_lists'] = $category_lists;
     }
@@ -1776,5 +1767,32 @@ function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_
       '%collection' => $entity_label,
     ]);
     $variables['newsletter_form'] = \Drupal::formBuilder()->getForm(NewsletterSubscribeForm::class, $newsletter_field_item->getUniverse(), $newsletter_field_item->getServiceId());
+  }
+}
+
+/**
+ * Implements hook_preprocess_filter_caption().
+ *
+ * Apply styling for caption wrapper,
+ * based on image styling.
+ */
+function joinup_theme_preprocess_filter_caption(&$variables) {
+  $width_array = [
+    'wysiwyg_one_third_width',
+    'wysiwyg_half_width',
+    'wysiwyg_full_width',
+  ];
+
+  if (!empty($variables['classes'])) {
+    $variables['classes'] .= ' image-caption';
+  }
+  else {
+    $variables['classes'] = 'image-caption';
+  }
+
+  foreach ($width_array as $width) {
+    if (strpos($variables['node'], $width) !== FALSE) {
+      $variables['classes'] .= ' ' . str_replace('_', '-', $width);
+    }
   }
 }
