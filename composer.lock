@@ -5743,12 +5743,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "bff8620a24a3730f29d5e8e67bcfa5955884e9ce"
+                "reference": "d47ae305723a93705fd00557f3a324615be0dddd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/bff8620a24a3730f29d5e8e67bcfa5955884e9ce",
-                "reference": "bff8620a24a3730f29d5e8e67bcfa5955884e9ce",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/d47ae305723a93705fd00557f3a324615be0dddd",
+                "reference": "d47ae305723a93705fd00557f3a324615be0dddd",
                 "shasum": ""
             },
             "require": {
@@ -5762,7 +5762,7 @@
                 "source": "https://github.com/ec-europa/spdx/tree/ISAICP-2704",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-05-13T07:55:54+00:00"
+            "time": "2019-05-08T16:35:27+00:00"
         },
         {
             "name": "drupal/state_machine",
