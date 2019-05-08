@@ -56,7 +56,7 @@
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
         "drupal/sparql_entity_storage": "dev-empty-module",
-        "drupal/spdx": "^1.0.0",
+        "drupal/spdx": "^1.0.0-alpha4",
         "drupal/state_machine": "1.0-beta3",
         "drupal/subpathauto": "^1.0@rc",
         "drupal/swiftmailer": "^1.0@beta",
@@ -230,10 +230,6 @@
             },
             "drupal/smart_trim": {
                 "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
-            },
-            "drupal/spdx": {
-                "Map the weight property. @see https://github.com/ec-europa/spdx/pull/7": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/7.diff",
-                "Support SPDX uris @see https://github.com/ec-europa/spdx/pull/8": "https://patch-diff.githubusercontent.com/raw/ec-europa/spdx/pull/8.diff"
             },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
