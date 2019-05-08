@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - rdf_entity.graph.default
+    - sparql_entity_storage.graph.default
     - rdf_entity.rdfentity.fruit
 third_party_settings: {  }
 id: rdf_entity.fruit

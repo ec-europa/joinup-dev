@@ -4,7 +4,7 @@ entity_type: rdf_entity
 type: boolean
 settings: {  }
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     mapping:
       value:
         predicate: 'http://example.com/predicate/solution/is_solution'
