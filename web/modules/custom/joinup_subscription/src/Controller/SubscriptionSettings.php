@@ -49,7 +49,7 @@ class SubscriptionSettings extends ControllerBase {
    * Access control for the subscription settings user page.
    *
    * The user is checked for both global permissions and permissions to edit
-   * his own subscriptions.
+   * their own subscriptions.
    *
    * @param \Drupal\Core\Entity\EntityInterface $user
    *   The user object from the route.

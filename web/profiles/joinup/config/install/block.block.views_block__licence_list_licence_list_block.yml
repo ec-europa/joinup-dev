@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: { }
+id: views_block__licence_list_licence_list_block
+theme: joinup_theme
+region: content
+weight: -15
+provider: null
+plugin: 'views_block:licence_list-licence_list_block'
+settings:
+  id: 'views_block:licence_list-licence_list_block'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/701805
+    negate: false
+    context_mapping: {  }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_event\Controller;
 
 use Drupal\joinup_core\Controller\CommunityContentController;
@@ -14,7 +16,7 @@ class EventController extends CommunityContentController {
   /**
    * {@inheritdoc}
    */
-  protected function getBundle() {
+  protected function getBundle(): string {
     return 'event';
   }
 

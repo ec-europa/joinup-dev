@@ -5,7 +5,6 @@
  * Functions to support theming in the Joinup theme.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
@@ -15,12 +14,14 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
+use Drupal\user\Entity\User;
 
 /**
  * Gives meta properties about forms based on routes.
@@ -467,7 +468,7 @@ function joinup_theme_preprocess_menu(&$variables) {
   }
   // Set the account logo.
   $account = \Drupal::currentUser()->getAccount();
-  $user = user_load($account->id(), TRUE);
+  $user = User::load($account->id(), TRUE);
   /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
   $photo = $user->get('field_user_photo')->first();
   $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
@@ -479,7 +480,7 @@ function joinup_theme_preprocess_menu(&$variables) {
     $url = ImageStyle::load('profile_icon')->buildUrl($uri);
     $variables['profile_icon'] = $url;
   }
-  $variables['#cache']['contexts'][] = 'user';
+  $variables['#cache']['contexts'][] = 'user.photo';
 }
 
 /**
@@ -548,6 +549,7 @@ function joinup_theme_preprocess_block(&$variables) {
     case 'toc_outline':
       $variables['content']['#attributes']['class'][] = 'navigation-bottom__links';
       break;
+
   }
 
   // Set default title tag.
@@ -753,24 +755,16 @@ function joinup_theme_preprocess_field__comment(&$variables) {
   // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;
 
-  // On closed collections community content, anonymous users are not allowed to
-  // comment. Show a message instead.
+  // Anonymous users are not allowed to post comments.
   /** @var \Drupal\rdf_entity\RdfInterface $parent */
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
   $user = \Drupal::currentUser();
-  if (
-    $user->isAnonymous() &&
-    $parent &&
-    $parent->getEntityTypeId() === 'rdf_entity' &&
-    $parent->bundle() === 'collection' &&
-    $parent->get('field_ar_closed')->value
-  ) {
-    $comments_status = 'closed_collection';
+  if ($user->isAnonymous()) {
+    $comments_status = 'authentication_required';
   }
 
   switch ($comments_status) {
-    case 'closed_collection':
-      $variables['comments_status'] = 'closed_collection';
+    case 'authentication_required':
+      $variables['comments_status'] = 'authentication_required';
       break;
 
     case CommentItemInterface::OPEN:
@@ -1438,6 +1432,13 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
     }
   }
 
+  // For the search_list_item view mode of licences, add an explicit suggestion.
+  if ($hook === 'rdf_entity' && !empty($variables['elements']['#view_mode']) && $variables['elements']['#view_mode'] === 'view_mode_search_list_item' && !empty($variables['elements']['#rdf_entity']) && $variables['elements']['#rdf_entity']->bundle() === 'licence') {
+    $entity_type = $variables['elements']['#entity_type'];
+    $bundle = $variables['elements']['#' . $entity_type]->bundle();
+    $suggestions[] = $entity_type . '__' . str_replace('-', '_', $bundle) . '__search_list_item';
+  }
+
   return $suggestions;
 }
 
@@ -1483,43 +1484,6 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
- * Implements hook_preprocess_node().
- *
- * Adds extension and file size to the available variables when rendering a
- * document node.
- */
-function joinup_theme_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-
-  // Add bundle class in listing templates.
-  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
-    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
-    $variables['attributes']['class'][] = $bundle_class;
-  }
-
-  // Getting the node creation from the node object.
-  if ($node->bundle() == 'news') {
-    $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
-  }
-
-  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
-    return;
-  }
-
-  /** @var \Drupal\file\FileInterface $file */
-  $file = $node->get('field_file')->first()->entity;
-  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
-
-  if (!$is_remote) {
-    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-  }
-  else {
-    $variables['extension'] = t('External');
-  }
-}
-
-/**
  * Implements hook_preprocess_rdf_entity().
  *
  * Hide label for certain displays.
@@ -1537,14 +1501,70 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for node--event--listing-item.html.twig.
+ * Implements hook_preprocess_HOOK().
  *
- * Get raw number of members.
+ * Provides variables needed for the search_list_item view mode of licences.
  */
-function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variables) {
-  if (isset($variables['elements']['members']['#markup'])) {
-    $arguments = $variables['elements']['members']['#markup']->getArguments();
-    $variables['member_count'] = $arguments['@member_count'];
+function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
+  $entity = $variables['elements']['#rdf_entity'];
+  $variables['label']['#attributes']['class'][] = 'listing__teaser';
+  $variables['content']['field_licence_description']['#attributes']['class'][] = 'listing__teaser';
+
+  $variables['content']['spdx_licence_id']['#label_display'] = 'hidden';
+  $variables['content']['spdx_licence_id']['#prefix'] = '<span class="icon icon--licence"></span>';
+  $variables['content']['spdx_licence_external_url']['#attributes']['class'][] = 'licence-tile__button';
+  $variables['content']['spdx_licence_external_url']['#attributes']['target'] = '_blank';
+
+  // Calculate variables related to the legal type.
+  if (!empty($entity->field_licence_legal_type->getValue())) {
+    $types = $entity->field_licence_legal_type->referencedEntities();
+    $data_property_categories = [];
+    $category_lists = [];
+    foreach ($types as $type) {
+      $parents = $type->parent->referencedEntities();
+      $parent = reset($parents);
+      $parent_normalized_title = strtolower($parent->label());
+      if (!isset($category_lists[$parent->id()])) {
+        $category_lists[$parent->id()] = [
+          'title' => $parent->label(),
+          'weight' => $parent->getWeight(),
+          'class' => 'licence-tile__line--' . $parent_normalized_title,
+        ];
+      }
+      $category_lists[$parent->id()]['items'][] = [
+        'title' => $type->label(),
+        'weight' => $type->getWeight(),
+        'description' => $type->getDescription(),
+      ];
+      $normalized_title = htmlentities(str_replace([' ', '/'], ['-', '-'], strtolower($type->label())));
+      $data_property_categories[$type->id()] = $normalized_title;
+    }
+
+    if (!empty($data_property_categories)) {
+      $sort_function = function ($a, $b) {
+        return $a['weight'] <=> $b['weight'];
+      };
+
+      usort($category_lists, $sort_function);
+      foreach ($category_lists as &$category_data) {
+        usort($category_data['items'], $sort_function);
+      }
+
+      $variables['legal_categories'] = implode(' ', $data_property_categories);
+      $variables['category_lists'] = $category_lists;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for rdf-entity--solution--listing-item.html.twig.
+ *
+ * - Add a flag that indicates whether to show the download counter.
+ */
+function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables) {
+  // Add a flag to indicate if the download counter is visible.
+  if (isset($variables['elements']['downloads']['#access'])) {
+    $variables['show_download_counter'] = $variables['elements']['downloads']['#access'];
   }
 }
 
@@ -1667,6 +1687,31 @@ function joinup_theme_theme_suggestions_menu_alter(array &$suggestions, array $v
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+  // A list of view names in which to exclude the not needed wrapper.
+  $without_wrappers = [
+    'licence_list',
+  ];
+
+  if (in_array($variables['view']->id(), $without_wrappers)) {
+    $hook = 'no_wrappers';
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $hook;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  // Add suggestions for individual view displays.
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['view']->id();
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['view']->current_display;
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['view']->id() . '__' . $variables['view']->current_display;
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  *
  * Remove the default links from the table of contents.
@@ -1711,5 +1756,32 @@ function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_
       '%collection' => $entity_label,
     ]);
     $variables['newsletter_form'] = \Drupal::formBuilder()->getForm(NewsletterSubscribeForm::class, $newsletter_field_item->getUniverse(), $newsletter_field_item->getServiceId());
+  }
+}
+
+/**
+ * Implements hook_preprocess_filter_caption().
+ *
+ * Apply styling for caption wrapper,
+ * based on image styling.
+ */
+function joinup_theme_preprocess_filter_caption(&$variables) {
+  $width_array = [
+    'wysiwyg_one_third_width',
+    'wysiwyg_half_width',
+    'wysiwyg_full_width',
+  ];
+
+  if (!empty($variables['classes'])) {
+    $variables['classes'] .= ' image-caption';
+  }
+  else {
+    $variables['classes'] = 'image-caption';
+  }
+
+  foreach ($width_array as $width) {
+    if (strpos($variables['node'], $width) !== FALSE) {
+      $variables['classes'] .= ' ' . str_replace('_', '-', $width);
+    }
   }
 }

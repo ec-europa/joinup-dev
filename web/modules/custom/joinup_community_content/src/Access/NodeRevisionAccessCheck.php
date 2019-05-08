@@ -4,7 +4,7 @@ namespace Drupal\joinup_community_content\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Access\NodeRevisionAccessCheck as CoreNodeRevisionAccessCheck;
 use Drupal\node\NodeInterface;
@@ -48,7 +48,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
   /**
    * Constructs a new NodeRevisionAccessCheck.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
    * @param \Drupal\og\GroupTypeManager $group_type_manager
    *   The OG group manager.
@@ -57,8 +57,8 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, GroupTypeManager $group_type_manager, OgAccessInterface $og_access, ConfigFactoryInterface $config_factory) {
-    parent::__construct($entity_manager);
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, GroupTypeManager $group_type_manager, OgAccessInterface $og_access, ConfigFactoryInterface $config_factory) {
+    parent::__construct($entity_type_manager);
 
     $this->groupTypeManager = $group_type_manager;
     $this->ogAccess = $og_access;

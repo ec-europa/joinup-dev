@@ -5,14 +5,213 @@
  * Main functions and hook implementations of the Licence module.
  */
 
+declare(strict_types = 1);
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function joinup_licence_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-  // Make sure the licence label is unique.
-  if ($entity_type->id() == 'rdf_entity' && $bundle == 'licence' && !empty($fields['label'])) {
+function joinup_licence_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
+  if ($entity_type->id() !== 'rdf_entity' || $bundle !== 'licence') {
+    return;
+  }
+
+  // Licence labels and references to SPDX licences are unique.
+  if (!empty($fields['label'])) {
     $fields['label']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
+  }
+  if (!empty($fields['field_licence_spdx_licence'])) {
+    $fields['field_licence_spdx_licence']->addConstraint('UniqueFieldInBundle', ['bundles' => ['licence']]);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function joinup_licence_rdf_entity_access(EntityInterface $entity, string $operation, AccountInterface $account): AccessResult {
+  if ($entity->bundle() !== 'spdx_licence' || $operation !== 'view') {
+    return AccessResult::neutral();
+  }
+
+  // Only deny access to the canonical route.
+  $route_match = \Drupal::routeMatch();
+  return AccessResult::forbiddenIf($route_match->getRouteName() === 'entity.rdf_entity.canonical' && $route_match->getParameter('rdf_entity')->bundle() === 'spdx_licence');
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ *
+ * - Append additional fields to the licence entity display containing data
+ *   from the SPDX licence.
+ *
+ * @see joinup_licence_rdf_entity_view()
+ */
+function joinup_licence_entity_extra_field_info(): array {
+  $fields = [];
+
+  $licence_type = RdfEntityType::load('licence');
+  if ($licence_type) {
+    $display = &$fields['rdf_entity'][$licence_type->id()]['display'];
+    $display['spdx_licence_label'] = [
+      'label' => t('SPDX licence label'),
+      'description' => t('The label of the licence in the SPDX licence list.'),
+      'visible' => FALSE,
+    ];
+    $display['spdx_licence_id'] = [
+      'label' => t('SPDX licence ID'),
+      'description' => t('The ID of the licence in the SPDX licence list.'),
+      'visible' => FALSE,
+    ];
+    $display['spdx_licence_text'] = [
+      'label' => t('Licence text'),
+      'visible' => FALSE,
+    ];
+    $display['spdx_licence_external_url'] = [
+      'label' => t('Licence external URL'),
+      'visible' => FALSE,
+    ];
+    $display['spdx_see_also'] = [
+      'label' => t('See also'),
+      'description' => t('Links to related licences according to SPDX.'),
+      'visible' => FALSE,
+    ];
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * - Exposes a number of fields from the SPDX Licence entity on the Licence
+ *   entity.
+ */
+function joinup_licence_rdf_entity_view(array &$build, RdfInterface $entity, EntityViewDisplayInterface $display, string $view_mode): void {
+  if ($entity->bundle() != 'licence') {
+    return;
+  }
+
+  $spdx_licence = $entity->get('field_licence_spdx_licence')->referencedEntities()[0] ?? NULL;
+  if ($spdx_licence) {
+    if ($display->getComponent('spdx_licence_label')) {
+      $field_item_list = $spdx_licence->get('label');
+      $build['spdx_licence_label'] = $field_item_list->view();
+    }
+    if ($display->getComponent('spdx_licence_external_url')) {
+      $url = preg_replace('/(.*)\.html$/', '\1', $spdx_licence->id()) . '.html';
+      $spdx_url = Url::fromUri($url, ['fragment' => 'licenseText']);
+      $spdx_link = Link::fromTextAndUrl('Licence Text', $spdx_url);
+      $build['spdx_licence_external_url'] = $spdx_link->toRenderable();
+    }
+    foreach (['spdx_licence_id', 'spdx_licence_text', 'spdx_see_also'] as $pseudo_field) {
+      if ($display->getComponent($pseudo_field)) {
+        /** @var \Drupal\Core\Field\FieldItemListInterface $field_item_list */
+        $field_item_list = $spdx_licence->get("field_$pseudo_field");
+        if (!$field_item_list->isEmpty()) {
+          $build[$pseudo_field] = $field_item_list->view();
+        }
+      }
+    }
+  }
+
+  // Workaround for a limitation in RDF Entity. Currently the module only
+  // supports a single property in fields that have multiple properties. This
+  // means that the filter format for text_long fields is not stored, and it
+  // falls back to the default filter format. We're setting the right format
+  // here.
+  // @todo Remove once bug #2892361 is fixed.
+  // @see https://www.drupal.org/project/rdf_entity/issues/2892361
+  if (!empty($build['spdx_licence_text'])) {
+    $build['spdx_licence_text'][0]['#format'] = 'licence';
+  }
+}
+
+/**
+ * Implements hook_options_list_alter().
+ */
+function joinup_licence_options_list_alter(array &$options, array $context) {
+  /** @var \Drupal\field\FieldConfigInterface $field_definition */
+  $field_definition = $context['fieldDefinition'];
+  if (empty($options) || $field_definition->getName() !== 'field_ad_licence') {
+    return;
+  }
+
+  $default_value = $context['entity']->field_ad_licence->target_id;
+  $licence_ids = array_keys($options);
+  $licences = \Drupal::entityTypeManager()->getStorage('rdf_entity')->loadMultiple($licence_ids);
+  foreach ($licences as $licence_id => $licence) {
+    $deprecated = (bool) $licence->get('field_licence_deprecated')->value;
+    if ($deprecated) {
+      if ($licence_id === $default_value) {
+        \Drupal::messenger()->addWarning(t('The referenced licence %licence_label is deprecated. You are advised to chose a different licence.', [
+          '%licence_label' => $licence->label(),
+        ]));
+      }
+      else {
+        unset($options[$licence_id]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_licence_theme($existing, $type, $theme, $path) {
+  return [
+    'licence_filter_list' => [
+      'variables' => ['items' => NULL],
+      'path' => $path . '/templates/parts',
+    ],
+    'licence_filter_search_input' => [
+      'variables' => [],
+      'path' => $path . '/templates/parts',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds extension and file size to the available variables when rendering a
+ * document node.
+ */
+function joinup_licence_preprocess_node(&$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+
+  // Add bundle class in listing templates.
+  if ($variables['view_mode'] == 'view_mode_tile' || $variables['view_mode'] == 'view_mode_featured') {
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
+    $variables['attributes']['class'][] = $bundle_class;
+  }
+
+  // Getting the node creation from the node object.
+  if ($node->bundle() == 'news') {
+    $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  }
+
+  if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
+    return;
+  }
+
+  /** @var \Drupal\file\FileInterface $file */
+  $file = $node->get('field_file')->first()->entity;
+  $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
+
+  if (!$is_remote) {
+    $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+  }
+  else {
+    $variables['extension'] = t('External');
   }
 }

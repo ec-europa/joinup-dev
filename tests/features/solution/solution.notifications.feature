@@ -23,16 +23,16 @@ Feature: Solution notifications
       | Ramiro Myers |           | Ramiro     | Myers       |
       | Edith Poole  |           | Edith      | Poole       |
     And the following solutions:
-      | title                                                 | author       | description | logo     | banner     | owner              | contact information | state            | policy domain | solution type     | collection                     |
-      | Solution notification to propose changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to request deletion             | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to approve deletion             | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | deletion request | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to reject deletion              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | deletion request | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to blacklist                    | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to publish from blacklisted     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | blacklisted      | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to request changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to propose from request changes | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | needs update     | E-inclusion   | [ABB169] Business | Collection of random solutions |
-      | Solution notification to delete                       | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | [ABB169] Business | Collection of random solutions |
+      | title                                                 | author       | description | logo     | banner     | owner              | contact information | state            | policy domain | solution type | collection                     |
+      | Solution notification to propose changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to request deletion             | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to approve deletion             | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | deletion request | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to reject deletion              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | deletion request | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to blacklist                    | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to publish from blacklisted     | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | blacklisted      | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to request changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to propose from request changes | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | needs update     | E-inclusion   | Business      | Collection of random solutions |
+      | Solution notification to delete                       | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
 
     When I am logged in as "Pat Harper"
 

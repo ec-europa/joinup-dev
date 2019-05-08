@@ -23,8 +23,6 @@ default_value:
         value: ''
       github:
         value: ''
-      googleplus:
-        value: ''
       linkedin:
         value: ''
       slideshare:
@@ -67,10 +65,6 @@ settings:
       enabled: true
       description: ''
       weight: -4
-    googleplus:
-      enabled: true
-      description: ''
-      weight: -3
     instagram:
       description: ''
       weight: -2

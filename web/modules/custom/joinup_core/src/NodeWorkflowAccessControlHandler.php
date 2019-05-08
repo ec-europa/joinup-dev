@@ -1,14 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
+use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
@@ -90,6 +96,13 @@ class NodeWorkflowAccessControlHandler {
   protected $currentUser;
 
   /**
+   * The configuration factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * The workflow helper class.
    *
    * @var \Drupal\joinup_core\WorkflowHelperInterface
@@ -125,11 +138,11 @@ class NodeWorkflowAccessControlHandler {
     $this->relationManager = $relation_manager;
     $this->currentUser = $current_user;
     $this->workflowHelper = $workflow_helper;
-    $this->permissionScheme = $config_factory->get('joinup_community_content.permission_scheme');
+    $this->configFactory = $config_factory;
   }
 
   /**
-   * Main handler for access checks for group content in joinup.
+   * Main handler for access checks for group content in Joinup.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The group content entity object.
@@ -141,12 +154,12 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *   The result of the access check.
    */
-  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL) {
+  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL): AccessResult {
     if ($account === NULL) {
       $account = $this->currentUser;
     }
 
-    if ($entity->getEntityTypeId() !== 'node') {
+    if (!$entity instanceof NodeInterface) {
       return AccessResult::neutral();
     }
 
@@ -158,8 +171,14 @@ class NodeWorkflowAccessControlHandler {
     }
 
     // For entities that do not have a published version and are in draft state,
-    // only the owner has access.
-    if (!$this->hasPublishedVersion($entity) && $this->getEntityState($entity) === 'draft' && $entity->getOwnerId() !== $account->id()) {
+    // only the owner has access. This access restriction does not apply to
+    // moderators.
+    if (
+      !$account->hasPermission('access draft community content')
+      && !$this->hasPublishedVersion($entity)
+      && $this->getEntityState($entity) === 'draft'
+      && $entity->getOwnerId() !== $account->id()
+    ) {
       return AccessResult::forbidden();
     }
 
@@ -183,12 +202,10 @@ class NodeWorkflowAccessControlHandler {
         if ($parent_state === 'archived' || $entity_state === 'archived') {
           return AccessResult::forbidden();
         }
-        else {
-          $parent = $this->relationManager->getParent($entity);
-          $membership = $this->membershipManager->getMembership($parent, $account);
-          if ($membership instanceof OgMembership) {
-            AccessResult::allowedIf($membership->hasPermission($operation));
-          }
+        $parent = $this->relationManager->getParent($entity);
+        $membership = $this->membershipManager->getMembership($parent, $account);
+        if ($membership instanceof OgMembership) {
+          return AccessResult::allowedIf($membership->hasPermission($operation));
         }
     }
 
@@ -198,7 +215,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Returns whether the user has view permissions to the parent of the entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user that the permission access is checked.
@@ -206,7 +223,7 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult|\Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  protected function hasParentViewAccess(EntityInterface $entity, AccountInterface $account) {
+  protected function hasParentViewAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
     $parent = $this->getEntityParent($entity);
     // Let parent-less nodes (e.g. newsletters) be handled by the core access.
     if (empty($parent)) {
@@ -221,7 +238,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Access check for the 'view' operation.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
@@ -229,8 +246,8 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result check.
    */
-  protected function entityViewAccess(EntityInterface $entity, AccountInterface $account) {
-    $view_scheme = $this->permissionScheme->get('view');
+  protected function entityViewAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
+    $view_scheme = $this->getPermissionScheme('view');
     $workflow_id = $this->getEntityWorkflowId($entity);
     $state = $this->getEntityState($entity);
     return $this->userHasOwnAnyRoles($entity, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
@@ -239,7 +256,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Access check for the 'create' operation.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
@@ -247,8 +264,8 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result check.
    */
-  protected function entityCreateAccess(EntityInterface $entity, AccountInterface $account) {
-    $create_scheme = $this->permissionScheme->get('create');
+  protected function entityCreateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
+    $create_scheme = $this->getPermissionScheme('create');
     $workflow_id = $this->getEntityWorkflowId($entity);
     $e_library = $this->getEntityElibrary($entity);
 
@@ -265,7 +282,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Access check for the 'update' operation.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
@@ -273,8 +290,8 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result check.
    */
-  protected function entityUpdateAccess(EntityInterface $entity, AccountInterface $account) {
-    $update_scheme = $this->permissionScheme->get('update');
+  protected function entityUpdateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
+    $update_scheme = $this->getPermissionScheme('update');
     $workflow_id = $this->getEntityWorkflowId($entity);
     $allowed_transitions = $this->workflowHelper->getAvailableTransitions($entity, $account);
     $transition_ids = array_map(function (WorkflowTransition $transition) {
@@ -292,7 +309,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Access check for 'delete' operation.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The entity object.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
@@ -300,8 +317,8 @@ class NodeWorkflowAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  protected function entityDeleteAccess(EntityInterface $entity, AccountInterface $account) {
-    $delete_scheme = $this->permissionScheme->get('delete');
+  protected function entityDeleteAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
+    $delete_scheme = $this->getPermissionScheme('delete');
     $workflow_id = $this->getEntityWorkflowId($entity);
     $state = $this->getEntityState($entity);
 
@@ -315,7 +332,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Checks whether the user has at least one of the provided roles.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
@@ -327,7 +344,7 @@ class NodeWorkflowAccessControlHandler {
    * @return bool
    *   True if the user has at least one of the roles provided.
    */
-  protected function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
+  protected function userHasOwnAnyRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
     $own = $entity->getOwnerId() === $account->id();
     if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {
       return TRUE;
@@ -342,7 +359,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Checks whether the user has at least one of the provided roles.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
@@ -353,7 +370,7 @@ class NodeWorkflowAccessControlHandler {
    * @return bool
    *   True if the user has at least one of the roles provided.
    */
-  protected function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
+  protected function userHasRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
     $parent = $this->getEntityParent($entity);
     $membership = $this->membershipManager->getMembership($parent, $account);
 
@@ -375,13 +392,13 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Helper method to retrieve the parent of the entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface|null
    *   The rdf entity the entity belongs to, or NULL when no group is found.
    */
-  protected function getEntityParent(EntityInterface $entity) {
+  protected function getEntityParent(NodeInterface $entity): ?RdfInterface {
     $groups = $this->membershipManager->getGroups($entity);
 
     if (empty($groups['rdf_entity'])) {
@@ -394,13 +411,13 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Returns the appropriate workflow to use for the passed entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    *
    * @return string
    *   The id of the workflow to use.
    */
-  protected function getEntityWorkflowId(EntityInterface $entity) {
+  protected function getEntityWorkflowId(NodeInterface $entity): string {
     $workflow = $entity->{self::STATE_FIELD}->first()->getWorkflow();
     return $workflow->getId();
   }
@@ -408,26 +425,26 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Returns the appropriate workflow to use for the passed entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    *
    * @return string
    *   The id of the workflow to use.
    */
-  protected function getEntityState(EntityInterface $entity) {
+  protected function getEntityState(NodeInterface $entity): string {
     return $entity->{self::STATE_FIELD}->first()->value;
   }
 
   /**
    * Returns the value of the eLibrary settings of the parent of an entity.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    *
    * @return array
-   *   An array of roles that are allowed.
+   *   The eLibrary value.
    */
-  protected function getEntityElibrary(EntityInterface $entity) {
+  protected function getEntityElibrary(NodeInterface $entity): string {
     $parent = $this->relationManager->getParent($entity);
     $e_library_name = $this->getParentElibraryName($parent);
     return $parent->{$e_library_name}->value;
@@ -442,7 +459,7 @@ class NodeWorkflowAccessControlHandler {
    * @return string
    *   The machine name of the eLibrary creation field.
    */
-  protected function getParentElibraryName(EntityInterface $entity) {
+  protected function getParentElibraryName(EntityInterface $entity): string {
     $field_array = [
       'collection' => 'field_ar_elibrary_creation',
       'solution' => 'field_is_elibrary_creation',
@@ -454,21 +471,49 @@ class NodeWorkflowAccessControlHandler {
   /**
    * Checks whether the entity has a published version.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\node\NodeInterface $entity
    *   The entity object.
    *
    * @return bool
    *   Whether the entity has a published version.
    */
-  protected function hasPublishedVersion(EntityInterface $entity) {
+  protected function hasPublishedVersion(NodeInterface $entity): bool {
     if ($entity->isNew()) {
       return FALSE;
     }
     if ($entity->isPublished()) {
       return TRUE;
     }
-    $published = $this->entityTypeManager->getStorage('node')->load($entity->id());
-    return $published->isPublished();
+    $published = $this->getNodeStorage()->load($entity->id());
+    if (!empty($published) && $published instanceof EntityPublishedInterface) {
+      return $published->isPublished();
+    }
+    return FALSE;
+  }
+
+  /**
+   * Returns the configured permission scheme for the given operation.
+   *
+   * @param string $operation
+   *   The operation for which to return the permission scheme. Can be one of
+   *   'create', 'view', 'update', 'delete'.
+   *
+   * @return array
+   *   The permission scheme.
+   */
+  protected function getPermissionScheme(string $operation): array {
+    \assert(\in_array($operation, ['create', 'view', 'update', 'delete']), 'A valid operation should be passed');
+    return $this->configFactory->get('joinup_community_content.permission_scheme')->get($operation);
+  }
+
+  /**
+   * Returns the storage handler for nodes.
+   *
+   * @return \Drupal\node\NodeStorageInterface
+   *   The storage handler.
+   */
+  protected function getNodeStorage(): NodeStorageInterface {
+    return $this->entityTypeManager->getStorage('node');
   }
 
 }
