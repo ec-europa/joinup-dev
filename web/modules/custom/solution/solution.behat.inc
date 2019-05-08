@@ -703,15 +703,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   }
 
   /**
-   * Navigates to the solutions overview page.
-   *
-   * @When I visit the solution overview( page)
-   */
-  public function visitSolutionOverviewPage() {
-    $this->visitPath('/solutions');
-  }
-
-  /**
    * Checks that the given tile contains the given number of downloads.
    *
    * @param string $heading
