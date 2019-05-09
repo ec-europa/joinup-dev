@@ -551,3 +551,46 @@ function joinup_core_post_update_enable_spdx() {
 function joinup_core_post_update_re_import_legal_type_vocabulary() {
   \Drupal::service('joinup_core.vocabulary_fixtures.helper')->importFixtures('licence-legal-type');
 }
+
+/**
+ * Corrects the versions of faulty news items.
+ */
+function joinup_core_post_update_set_news_default_version() {
+  $query = <<<QUERY
+SELECT
+  n.nid AS nid,
+  (
+    SELECT max(vid)
+    FROM node_revision
+    LEFT JOIN node_revision__field_state ON node_revision.vid = node_revision__field_state.revision_id
+    WHERE nid = n.nid AND field_state_value = 'validated'
+    AND revision_default = 1
+  ) as latest_vid
+FROM node as n
+LEFT JOIN node_revision AS nr
+ON n.nid = nr.nid
+# Published revision is behind latest default revision
+AND n.vid < (
+  SELECT max(vid)
+  FROM node_revision
+  LEFT JOIN node_revision__field_state ON node_revision.vid = node_revision__field_state.revision_id
+  WHERE nid = n.nid AND field_state_value = 'validated'
+  AND revision_default = 1
+)
+LEFT JOIN node_field_data AS nfd
+ON n.nid = nfd.nid
+WHERE nr.vid > n.vid
+GROUP BY nid, latest_vid
+QUERY;
+
+  $results = Database::getConnection()->query($query)->fetchAllAssoc('nid');
+  $nids = array_keys($results);
+  /** @var \Drupal\node\NodeStorage $node_storage */
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\node\NodeInterface $node */
+  foreach ($node_storage->loadMultiple($nids) as $node) {
+    $latest_revision = $node_storage->loadRevision($results[$node->id()]->latest_vid);
+    $latest_revision->isDefaultRevision(TRUE);
+    $latest_revision->save();
+  }
+}
