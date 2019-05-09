@@ -18,6 +18,7 @@ touch disable-config-readonly
 # Clear the cache to make the spdx namespace available if not.
 ./vendor/bin/drush cache-rebuild --yes
 ./vendor/bin/drush spdx:import --clean --yes "http://joinup.eu/spdx_licence/published"
+./vendor/bin/drush pm:enable stage_file_proxy --yes
 ./vendor/bin/drush cache-rebuild --yes
 
 echo "Rebuilding node access records."
