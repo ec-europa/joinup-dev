@@ -28,35 +28,25 @@ Feature:
       | title       | Pathauto licence |
       | description | Pathauto licence |
     And discussion content:
-      | title               | body                | collection          | state     |
-      | Pathauto discussion | Pathauto discussion | Pathauto collection | validated |
-    And discussion content:
-      | title                 | body                  | solution          | state     |
-      | Pathauto discussion 2 | Pathauto discussion 2 | Pathauto solution | validated |
+      | title                 | body                  | collection          | solution          | state     |
+      | Pathauto discussion   | Pathauto discussion   | Pathauto collection |                   | validated |
+      | Pathauto discussion 2 | Pathauto discussion 2 |                     | Pathauto solution | validated |
     And document content:
-      | title             | body              | collection          | state     |
-      | Pathauto document | Pathauto document | Pathauto collection | validated |
-    And document content:
-      | title               | body                | solution          | state     |
-      | Pathauto document 2 | Pathauto document 2 | Pathauto solution | validated |
+      | title               | body                | collection          | solution          | state     |
+      | Pathauto document   | Pathauto document   | Pathauto collection |                   | validated |
+      | Pathauto document 2 | Pathauto document 2 |                     | Pathauto solution | validated |
     And event content:
-      | title          | body           | collection          | state     |
-      | Pathauto event | Pathauto event | Pathauto collection | validated |
-    And event content:
-      | title            | body             | solution          | state     |
-      | Pathauto event 2 | Pathauto event 2 | Pathauto solution | validated |
+      | title            | body             | collection          | solution          | state     |
+      | Pathauto event   | Pathauto event   | Pathauto collection |                   | validated |
+      | Pathauto event 2 | Pathauto event 2 |                     | Pathauto solution | validated |
     And news content:
-      | title         | body          | collection          | state     |
-      | Pathauto news | Pathauto news | Pathauto collection | validated |
-    And news content:
-      | title           | body            | solution          | state     |
-      | Pathauto news 2 | Pathauto news 2 | Pathauto solution | validated |
+      | title           | body            | collection          | solution          | state     |
+      | Pathauto news   | Pathauto news   | Pathauto collection |                   | validated |
+      | Pathauto news 2 | Pathauto news 2 |                     | Pathauto solution | validated |
     And custom_page content:
-      | title                    | body          | collection          | state     |
-      | Pathauto collection page | Pathauto page | Pathauto collection | validated |
-    And custom_page content:
-      | title                  | body          | solution          | state     |
-      | Pathauto solution page | Pathauto page | Pathauto solution | validated |
+      | title                    | body          | collection          | solution          | state     |
+      | Pathauto collection page | Pathauto page | Pathauto collection |                   | validated |
+      | Pathauto solution page   | Pathauto page |                     | Pathauto solution | validated |
 
     When I go to the "Pathauto collection" collection
     Then the url should match "collection/pathauto-collection"
