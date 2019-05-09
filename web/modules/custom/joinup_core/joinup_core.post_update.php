@@ -552,7 +552,6 @@ function joinup_core_post_update_create_new_release_aliases(array &$sandbox): st
   foreach ($entity_storage->loadMultiple($result) as $entity) {
     $source_url = $entity->toUrl()->getInternalPath();
     $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
-    // Creates redirect to the new alias.
     Redirect::create([
       'redirect_source' => $source_url,
       'redirect_redirect' => 'internal:' . $new_alias['alias'],
@@ -563,7 +562,6 @@ function joinup_core_post_update_create_new_release_aliases(array &$sandbox): st
   }
 
   $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
-
   return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
 }
 
@@ -578,13 +576,7 @@ function joinup_core_post_update_create_new_node_aliases(array &$sandbox): strin
       ->setData($pathauto_settings)
       ->save();
 
-    // List related bundles.
-    $bundles = [
-      'news',
-      'event',
-      'discussion',
-      'document',
-    ];
+    $bundles = ['news', 'event', 'discussion', 'document'];
     $sandbox['entity_ids'] = \Drupal::entityQuery('node')
       ->condition('type', $bundles, 'IN')
       ->execute();
@@ -600,7 +592,7 @@ function joinup_core_post_update_create_new_node_aliases(array &$sandbox): strin
   foreach ($entity_storage->loadMultiple($result) as $entity) {
     $source_url = $entity->toUrl()->getInternalPath();
     $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
-    // Create redirect to the new alias.
+
     Redirect::create([
       'redirect_source' => $source_url,
       'redirect_redirect' => 'internal:' . $new_alias['alias'],
@@ -611,7 +603,6 @@ function joinup_core_post_update_create_new_node_aliases(array &$sandbox): strin
   }
 
   $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
-
   return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
 }
 
