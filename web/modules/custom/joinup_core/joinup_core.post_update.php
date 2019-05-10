@@ -550,7 +550,7 @@ function joinup_core_post_update_create_new_release_aliases(array &$sandbox): st
 
   $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
   foreach ($entity_storage->loadMultiple($result) as $entity) {
-    $source_url = $entity->toUrl()->getInternalPath();
+    $source_url = $entity->toUrl()->toString();
     $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
     Redirect::create([
       'redirect_source' => $source_url,
@@ -590,7 +590,7 @@ function joinup_core_post_update_create_new_node_aliases(array &$sandbox): strin
 
   $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
   foreach ($entity_storage->loadMultiple($result) as $entity) {
-    $source_url = $entity->toUrl()->getInternalPath();
+    $source_url = $entity->toUrl()->toString();
     $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
 
     Redirect::create([
