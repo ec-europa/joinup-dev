@@ -72,29 +72,12 @@ function joinup_core_requirements($phase) {
       'title' => t('Forward published revisions'),
       'description' => t('In all content, the last published revision should be the latest of the published revisions.'),
     ];
-    $forward_revisions_query = <<<QUERY
-SELECT
-  n.nid AS nid
-FROM node as n
-LEFT JOIN node_revision AS nr
-ON n.nid = nr.nid
-# Published revision is behind latest default revision
-AND n.vid < (
-  SELECT max(vid)
-  FROM node_revision
-  LEFT JOIN node_revision__field_state ON node_revision.vid = node_revision__field_state.revision_id
-  WHERE nid = n.nid AND field_state_value = 'validated'
-  AND revision_default = 1
-)
-LEFT JOIN node_field_data AS nfd
-ON n.nid = nfd.nid
-WHERE nr.vid > n.vid
-GROUP BY nid
-QUERY;
-    $results = Database::getConnection()->query($forward_revisions_query)->fetchCol();
+
+    $results = \Drupal::service('joinup_core.requirements_helper')->getNodesWithProblematicRevisions();
     if (!empty($results)) {
+      $nids = array_keys($results);
       $error = t('Issues with the latest revision have been found in the following nid(s): :nids', [
-        ':nids' => implode(', ', $results),
+        ':nids' => implode(', ', $nids),
       ]);
       $requirements['joinup_core_forward_revisions'] += [
         'severity' => REQUIREMENT_ERROR,
