@@ -20,7 +20,7 @@ use Drupal\user\Entity\User;
 function joinup_core_requirements($phase) {
   $requirements = [];
 
-  if ($phase == 'runtime') {
+  if ($phase === 'runtime') {
     // Check if UID 1 is blocked. Not allowing to log in as the root user
     // greatly decreases the chances of a privilege escalation bug to do real
     // damage on production.
@@ -61,6 +61,45 @@ function joinup_core_requirements($phase) {
           'value' => t('Database logging is enabled'),
         ];
       }
+    }
+
+    // If there are forward published revisions in any entity, this will come up
+    // with this query. This is to ensure that the issue with the forward
+    // published revisions not being the latest published revision, is caught
+    // early if it happens again.
+    // @see: ISAICP-5191
+    $requirements['joinup_core_forward_revisions'] = [
+      'title' => t('Forward published revisions'),
+      'description' => t('In all content, the last published revision should be the latest of the published revisions.'),
+    ];
+    $forward_revisions_query = <<<QUERY
+SELECT
+  n.nid AS nid
+FROM node as n
+LEFT JOIN node_revision AS nr
+ON n.nid = nr.nid
+# Published revision is behind latest default revision
+AND n.vid < (
+  SELECT max(vid)
+  FROM node_revision
+  LEFT JOIN node_revision__field_state ON node_revision.vid = node_revision__field_state.revision_id
+  WHERE nid = n.nid AND field_state_value = 'validated'
+  AND revision_default = 1
+)
+LEFT JOIN node_field_data AS nfd
+ON n.nid = nfd.nid
+WHERE nr.vid > n.vid
+GROUP BY nid
+QUERY;
+    $results = Database::getConnection()->query($forward_revisions_query)->fetchCol();
+    if (!empty($results)) {
+      $error = t('Issues with the latest revision have been found in the following nid(s): :nids', [
+        ':nids' => implode(', ', $results),
+      ]);
+      $requirements['joinup_core_forward_revisions'] += [
+        'severity' => REQUIREMENT_ERROR,
+        'value' => $error,
+      ];
     }
   }
 
