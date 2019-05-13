@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba9ec1b837ba290ef3e4bedce6183b89",
+    "content-hash": "4815fb543e3a2dd79a3b340a9558a9ba",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5227,15 +5227,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/rdf_entity.git",
-                "reference": "1829a4a2b3067c6123b4246ff67f908ec2d2b544"
+                "reference": "e1c9e495bdba8b228f65dd5ba603571324791836"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/1829a4a2b3067c6123b4246ff67f908ec2d2b544",
-                "reference": "1829a4a2b3067c6123b4246ff67f908ec2d2b544",
+                "url": "https://api.github.com/repos/ec-europa/rdf_entity/zipball/e1c9e495bdba8b228f65dd5ba603571324791836",
+                "reference": "e1c9e495bdba8b228f65dd5ba603571324791836",
                 "shasum": ""
             },
             "require": {
+                "drupal/sparql_entity_storage": "dev-8.x-1.x",
                 "php": ">=7.1"
             },
             "require-dev": {
@@ -5247,11 +5248,6 @@
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "resources/patch/bundle-plurals-adapted-to-split.patch"
                 }
             },
-            "autoload": {
-                "classmap": [
-                    "sparql_entity_storage/driver/sparql/Connection.php"
-                ]
-            },
             "license": [
                 "GPL-2.0+"
             ],
@@ -5261,7 +5257,7 @@
                 "issues": "https://drupal.org/project/issues/rdf_entity",
                 "source": "https://cgit.drupalcode.org/rdf_entity"
             },
-            "time": "2019-05-07T14:50:23+00:00"
+            "time": "2019-05-17T08:09:41+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -5738,17 +5734,56 @@
             }
         },
         {
+            "name": "drupal/sparql_entity_storage",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ec-europa/sparql_entity_storage.git",
+                "reference": "8b66978f7d994e7a4fcd0878e193733acb7b32d1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ec-europa/sparql_entity_storage/zipball/8b66978f7d994e7a4fcd0878e193733acb7b32d1",
+                "reference": "8b66978f7d994e7a4fcd0878e193733acb7b32d1",
+                "shasum": ""
+            },
+            "require": {
+                "easyrdf/easyrdf": "0.10.0-alpha.1 as 0.9.2",
+                "ml/json-ld": "^1.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "minimaxir/big-list-of-naughty-strings": "dev-master"
+            },
+            "type": "drupal-module",
+            "autoload": {
+                "classmap": [
+                    "driver/sparql/Connection.php"
+                ]
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Provides SPARQL entity storage and query for Drupal entities.",
+            "homepage": "https://drupal.org/project/sparql_entity_storage",
+            "support": {
+                "issues": "https://drupal.org/project/issues/sparql_entity_storage",
+                "source": "https://cgit.drupalcode.org/sparql_entity_storage"
+            },
+            "time": "2019-05-15T06:46:22+00:00"
+        },
+        {
             "name": "drupal/spdx",
             "version": "dev-ISAICP-2704",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "d47ae305723a93705fd00557f3a324615be0dddd"
+                "reference": "bff8620a24a3730f29d5e8e67bcfa5955884e9ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/d47ae305723a93705fd00557f3a324615be0dddd",
-                "reference": "d47ae305723a93705fd00557f3a324615be0dddd",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/bff8620a24a3730f29d5e8e67bcfa5955884e9ce",
+                "reference": "bff8620a24a3730f29d5e8e67bcfa5955884e9ce",
                 "shasum": ""
             },
             "require": {
@@ -5762,7 +5797,7 @@
                 "source": "https://github.com/ec-europa/spdx/tree/ISAICP-2704",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-05-08T16:35:27+00:00"
+            "time": "2019-05-13T07:55:54+00:00"
         },
         {
             "name": "drupal/state_machine",

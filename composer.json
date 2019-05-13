@@ -265,6 +265,10 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/ec-europa/sparql_entity_storage.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
         },
         {
