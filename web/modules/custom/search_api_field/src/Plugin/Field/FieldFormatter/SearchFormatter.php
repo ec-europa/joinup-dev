@@ -403,7 +403,6 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       'tags' => $tags,
       'contexts' => [
         'url.path',
-        'user',
       ],
     ];
 

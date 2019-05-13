@@ -6,14 +6,14 @@ Feature:
 
   Scenario: Present and search the licences.
     Given SPDX licences:
-      | title            | ID       |
-      | SPDX licence foo | SPDX_FOO |
-      | SPDX licence bar | SPDX_BAR |
+      | uri                       | title            | ID       |
+      | http://joinup.eu/spdx/foo | SPDX licence foo | SPDX_FOO |
+      | http://joinup.eu/spdx/bar | SPDX licence bar | SPDX_BAR |
     And licences:
-      | uri                             | title          | description                             | type | spdx licence     | legal type                                      |
-      | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    |      | SPDX licence foo | Strong Community, Governments/EU, Use/reproduce |
-      | http://joinup.eu/licence/bar    | Bar Licence    | Licence details for the bar licence.    |      | SPDX licence bar | Distribute                                      |
-      | http://joinup.eu/licence/random | Random Licence | A licence that should not be available. |      |                  | Distribute                                      |
+      | uri                             | title          | description                             | type | spdx licence     | legal type                                                            |
+      | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    |      | SPDX licence foo | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/bar    | Bar Licence    | Licence details for the bar licence.    |      | SPDX licence bar | Distribute                                                            |
+      | http://joinup.eu/licence/random | Random Licence | A licence that should not be available. |      |                  | Distribute                                                            |
 
     When I am not logged in
     And I visit the "JLA" custom page
@@ -30,7 +30,15 @@ Feature:
     And I should see the text "Bar Licence"
     But I should not see the text "Random Licence"
     # Assert concatenated categories.
-    And I should see the text "Governments/EU, Strong Community"
+    And I should see the text "Strong Community, Governments/EU"
+
+    And the licence item with the "SPDX_FOO" SPDX tag should include the following legal type categories:
+      | Can     |
+      | Must    |
+      | Cannot  |
+      | Support |
+    And the response should contain "http://joinup.eu/spdx/foo.html#licenseText"
+    And the response should contain "http://joinup.eu/spdx/bar.html#licenseText"
 
     When I click "Distribute" in the "Content" region
     Then I should see the text "1 licences found"

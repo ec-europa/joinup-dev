@@ -314,7 +314,6 @@ Feature: Sharing content between collections
     And I should see the following lines of text:
       | Facebook |
       | Twitter  |
-      | Google + |
       | Linkedin |
 
     # Check that the collection the content is shared in is immediately shown in the "Shared in" tiles.
@@ -326,7 +325,6 @@ Feature: Sharing content between collections
       | Share in                    |
       | Facebook                    |
       | Twitter                     |
-      | Google +                    |
       | Linkedin                    |
       | Other collections in Joinup |
     When I check "Gossip"

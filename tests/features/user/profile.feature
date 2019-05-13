@@ -19,7 +19,7 @@ Feature: User profile
     When I click "Edit"
     Then the following fields should be present "Current password, Email, Password, Confirm password, First name"
     And the following fields should be present "Family name, Photo, Country of origin, Professional domain, Business title"
-    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, Google+, SlideShare, Youtube, Vimeo"
+    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
     And the following fields should not be present "Time zone"
     # Username label and user name are on separate lines to be more MDL-like after ISAICP-3770
     And I should see the text "Username"
@@ -49,7 +49,6 @@ Feature: User profile
     And the link "Twitter" in the "Header" region should point to "https://www.twitter.com/therealdavinci"
     And the link "LinkedIn" in the "Header" region should point to "https://www.linkedin.com/leonardo.davinci"
     And the link "GitHub" in the "Header" region should point to "https://github.com/davinci"
-    And I should not see the link "Google+" in the "Header" region
     And I should not see the link "SlideShare" in the "Header" region
     And I should not see the link "Youtube" in the "Header" region
     And I should not see the link "Vimeo" in the "Header" region

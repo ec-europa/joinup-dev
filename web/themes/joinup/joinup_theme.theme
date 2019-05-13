@@ -5,7 +5,6 @@
  * Functions to support theming in the Joinup theme.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
@@ -15,12 +14,14 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
+use Drupal\user\Entity\User;
 
 /**
  * Gives meta properties about forms based on routes.
@@ -467,7 +468,7 @@ function joinup_theme_preprocess_menu(&$variables) {
   }
   // Set the account logo.
   $account = \Drupal::currentUser()->getAccount();
-  $user = user_load($account->id(), TRUE);
+  $user = User::load($account->id(), TRUE);
   /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
   $photo = $user->get('field_user_photo')->first();
   $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
@@ -479,7 +480,7 @@ function joinup_theme_preprocess_menu(&$variables) {
     $url = ImageStyle::load('profile_icon')->buildUrl($uri);
     $variables['profile_icon'] = $url;
   }
-  $variables['#cache']['contexts'][] = 'user';
+  $variables['#cache']['contexts'][] = 'user.photo';
 }
 
 /**
@@ -766,24 +767,16 @@ function joinup_theme_preprocess_field__comment(&$variables) {
   // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;
 
-  // On closed collections community content, anonymous users are not allowed to
-  // comment. Show a message instead.
+  // Anonymous users are not allowed to post comments.
   /** @var \Drupal\rdf_entity\RdfInterface $parent */
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($entity);
   $user = \Drupal::currentUser();
-  if (
-    $user->isAnonymous() &&
-    $parent &&
-    $parent->getEntityTypeId() === 'rdf_entity' &&
-    $parent->bundle() === 'collection' &&
-    $parent->get('field_ar_closed')->value
-  ) {
-    $comments_status = 'closed_collection';
+  if ($user->isAnonymous()) {
+    $comments_status = 'authentication_required';
   }
 
   switch ($comments_status) {
-    case 'closed_collection':
-      $variables['comments_status'] = 'closed_collection';
+    case 'authentication_required':
+      $variables['comments_status'] = 'authentication_required';
       break;
 
     case CommentItemInterface::OPEN:
@@ -1520,38 +1513,19 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for rdf-entity--collection--listing-item.html.twig.
- *
- * Get raw number of members.
- */
-function joinup_theme_preprocess_rdf_entity__collection__listing_item(&$variables) {
-  if (isset($variables['elements']['members']['#markup'])) {
-    $arguments = $variables['elements']['members']['#markup']->getArguments();
-    $variables['member_count'] = $arguments['@member_count'];
-  }
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  *
  * Provides variables needed for the search_list_item view mode of licences.
  */
 function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
   $entity = $variables['elements']['#rdf_entity'];
-  $variables['licence_title'] = $entity->label();
-  $variables['licence_description'] = $entity->field_licence_description->value;
+  $variables['label']['#attributes']['class'][] = 'listing__teaser';
+  $variables['content']['field_licence_description']['#attributes']['class'][] = 'listing__teaser';
 
-  // Calculate variables related to the spdx licence.
-  if (!empty($entity->field_licence_spdx_licence->getValue())) {
-    $spdx_licences = $entity->field_licence_spdx_licence->referencedEntities();
-    $spdx_licence = reset($spdx_licences);
-
-    $variables['spdx_licence'] = $spdx_licence;
-    $variables['spdx_title'] = $variables['content']['spdx_licence_label'];
-    $spdx_url = Url::fromUri($spdx_licence->id(), ['fragment' => 'licenceText']);
-    $variables['spdx_url'] = $spdx_url->toUriString();
-    $variables['spdx_licence_id'] = $spdx_licence->field_spdx_licence_id->value;
-  }
+  $variables['content']['spdx_licence_id']['#label_display'] = 'hidden';
+  $variables['content']['spdx_licence_id']['#prefix'] = '<span class="icon icon--licence"></span>';
+  $variables['content']['spdx_licence_external_url']['#attributes']['class'][] = 'licence-tile__button';
+  $variables['content']['spdx_licence_external_url']['#attributes']['target'] = '_blank';
 
   // Calculate variables related to the legal type.
   if (!empty($entity->field_licence_legal_type->getValue())) {
@@ -1565,11 +1539,13 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       if (!isset($category_lists[$parent->id()])) {
         $category_lists[$parent->id()] = [
           'title' => $parent->label(),
+          'weight' => $parent->getWeight(),
           'class' => 'licence-tile__line--' . $parent_normalized_title,
         ];
       }
       $category_lists[$parent->id()]['items'][] = [
         'title' => $type->label(),
+        'weight' => $type->getWeight(),
         'description' => $type->getDescription(),
       ];
       $normalized_title = htmlentities(str_replace([' ', '/'], ['-', '-'], strtolower($type->label())));
@@ -1577,6 +1553,15 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
     }
 
     if (!empty($data_property_categories)) {
+      $sort_function = function ($a, $b) {
+        return $a['weight'] <=> $b['weight'];
+      };
+
+      usort($category_lists, $sort_function);
+      foreach ($category_lists as &$category_data) {
+        usort($category_data['items'], $sort_function);
+      }
+
       $variables['legal_categories'] = implode(' ', $data_property_categories);
       $variables['category_lists'] = $category_lists;
     }
@@ -1783,5 +1768,32 @@ function joinup_theme_preprocess_search_api_field__rdf_entity__field_collection_
       '%collection' => $entity_label,
     ]);
     $variables['newsletter_form'] = \Drupal::formBuilder()->getForm(NewsletterSubscribeForm::class, $newsletter_field_item->getUniverse(), $newsletter_field_item->getServiceId());
+  }
+}
+
+/**
+ * Implements hook_preprocess_filter_caption().
+ *
+ * Apply styling for caption wrapper,
+ * based on image styling.
+ */
+function joinup_theme_preprocess_filter_caption(&$variables) {
+  $width_array = [
+    'wysiwyg_one_third_width',
+    'wysiwyg_half_width',
+    'wysiwyg_full_width',
+  ];
+
+  if (!empty($variables['classes'])) {
+    $variables['classes'] .= ' image-caption';
+  }
+  else {
+    $variables['classes'] = 'image-caption';
+  }
+
+  foreach ($width_array as $width) {
+    if (strpos($variables['node'], $width) !== FALSE) {
+      $variables['classes'] .= ' ' . str_replace('_', '-', $width);
+    }
   }
 }
