@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "652b87334cebce5d97f8ea1a43ee96db",
+    "content-hash": "5b53eac1e6d8d7c6ab2f1d0c9e13c048",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.93.5",
+            "version": "3.93.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e9cfeb39ad6bc7c9ead2a40ce4fc23029ff1e17a"
+                "reference": "8b51e85e954ef232ea9c905f26454195ac72ba9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e9cfeb39ad6bc7c9ead2a40ce4fc23029ff1e17a",
-                "reference": "e9cfeb39ad6bc7c9ead2a40ce4fc23029ff1e17a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8b51e85e954ef232ea9c905f26454195ac72ba9b",
+                "reference": "8b51e85e954ef232ea9c905f26454195ac72ba9b",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-05-07T18:29:58+00:00"
+            "time": "2019-05-13T18:08:02+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2432,7 +2432,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2581,6 +2581,14 @@
             ],
             "authors": [
                 {
+                    "name": "bircher",
+                    "homepage": "https://www.drupal.org/user/1344166"
+                },
+                {
+                    "name": "gnuget",
+                    "homepage": "https://www.drupal.org/user/992990"
+                },
+                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2692,8 +2700,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha7",
-                    "datestamp": "1521314235",
+                    "version": "8.x-1.0-alpha6+2-dev",
+                    "datestamp": "1513615684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3467,17 +3475,17 @@
         },
         {
             "name": "drupal/email_registration",
-            "version": "1.0.0-rc6",
+            "version": "1.0.0-rc7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/email_registration.git",
-                "reference": "8.x-1.0-rc6"
+                "reference": "8.x-1.0-rc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/email_registration-8.x-1.0-rc6.zip",
-                "reference": "8.x-1.0-rc6",
-                "shasum": "b004bc24b79faaa9e8b2fe59a04eaab02f44c363"
+                "url": "https://ftp.drupal.org/files/projects/email_registration-8.x-1.0-rc7.zip",
+                "reference": "8.x-1.0-rc7",
+                "shasum": "a3ebc1e38539e7916f48e827d5bd7b1abeef0011"
             },
             "require": {
                 "drupal/core": "*"
@@ -3488,15 +3496,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6",
-                    "datestamp": "1545350880",
+                    "version": "8.x-1.0-rc7",
+                    "datestamp": "1557344281",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-01-10/2927109-10.patch"
+                    "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-05-13/2927109-11.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3753,7 +3761,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598850",
+                    "datestamp": "1521598685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4586,7 +4594,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -4721,10 +4729,11 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "a68f578dc22373a67136a23555615e279d43e7f7"
+                "reference": "c68f8b6c56d33c4486728d698402203f56f039cc"
             },
             "require": {
-                "drupal/core": "~8.7"
+                "drupal/core": "~8.7",
+                "php": ">=7.1.0"
             },
             "require-dev": {
                 "drupal/coder": "~8.2"
@@ -4735,15 +4744,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+13-dev",
-                    "datestamp": "1555401485",
+                    "version": "8.x-1.0-alpha2+95-dev",
+                    "datestamp": "1557582484",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Add a cache tag to invalidate a group's user membership listings @see https://github.com/Gizra/og/pull/483": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/483.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4803,11 +4809,12 @@
             "description": "API to allow associating content with groups.",
             "homepage": "https://drupal.org/project/og",
             "support": {
-                "source": "https://cgit.drupalcode.org/og",
+                "source": "https://git.drupalcode.org/project/og",
                 "issues": "https://drupal.org/project/issues/og",
-                "irc": "irc://irc.freenode.org/drupal-og"
+                "irc": "irc://irc.freenode.org/drupal-og",
+                "slack": "https://drupal.slack.com/messages/CELR48EA0"
             },
-            "time": "2019-04-25T19:29:03+00:00"
+            "time": "2019-05-11T18:44:28+00:00"
         },
         {
             "name": "drupal/og_menu",
@@ -4911,7 +4918,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5172,7 +5179,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5352,7 +5359,7 @@
             "description": "Allows users to redirect from old URLs to new URLs.",
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
-                "source": "https://git.drupalcode.org/project/redirect"
+                "source": "http://cgit.drupalcode.org/redirect"
             }
         },
         {
@@ -5859,7 +5866,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "datestamp": "1542122580",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6118,17 +6125,17 @@
         },
         {
             "name": "drupal/video_embed_field",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/video_embed_field.git",
-                "reference": "8.x-1.5"
+                "reference": "8.x-1.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "f54d470ef7f863604e51e6ae98cd40ef25de5f79"
+                "url": "https://ftp.drupal.org/files/projects/video_embed_field-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "e5e6dc6baa538b54da1413f7c6a2f4c040c5fa05"
             },
             "require": {
                 "drupal/core": "*"
@@ -6145,7 +6152,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1510132373",
+                    "datestamp": "1557724385",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6177,7 +6184,7 @@
             "description": "A pluggable field type for storing videos from external video hosts such as Vimeo and YouTube.",
             "homepage": "https://www.drupal.org/project/video_embed_field",
             "support": {
-                "source": "http://cgit.drupalcode.org/video_embed_field"
+                "source": "https://git.drupalcode.org/project/video_embed_field"
             }
         },
         {
@@ -6213,7 +6220,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -7191,7 +7198,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9625,7 +9632,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
@@ -10394,7 +10401,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
