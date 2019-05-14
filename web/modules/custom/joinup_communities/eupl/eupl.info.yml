@@ -1,0 +1,10 @@
+name: EUPL
+type: module
+description: 'Customizations for the EUPL community.'
+core: 8.x
+package: Joinup communities
+dependencies: {  }
+
+config_devel:
+  - block.block.licencefilterblock
+  - block.block.views_block__licence_list_licence_list_block

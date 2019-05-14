@@ -2,8 +2,8 @@
 
 # Restores a backup of the Solr data.
 # This script is intended to be run in the Jenkins pipelines of the acceptance
-# and UAT environments.
-# For local development it is easier to run the Phing target:
+# and UAT environments. For local development it is easier to run the Phing
+# target:
 # $ ./vendor/bin/phing restore-databases
 
 SOLR_SERVER_URL="http://localhost:8983/solr"
@@ -66,17 +66,6 @@ CORE_EXISTS=`curl -sS "${SOLR_SERVER_URL}/admin/cores?action=STATUS&core=${CORE}
 
 if [ "${CORE_EXISTS}" == '' ]; then
   error "Solr '${CORE}' core does not exists on this server!";
-fi
-
-if [ ! -d "${SNAPSHOT_DIR}" ]; then
-  error "The snapshot directory ${SNAPSHOT_DIR} does't exist$";
-fi
-
-# Get the real path.
-SNAPSHOT_DIR=$(realpath "${SNAPSHOT_DIR}")
-
-if [ ! -d "${SNAPSHOT_DIR}/snapshot.${SNAPSHOT_NAME}" ]; then
-  error "The snapshot ${SNAPSHOT_DIR}/snapshot.${SNAPSHOT_NAME} does't exist.";
 fi
 
 # Wipe out the existing index.

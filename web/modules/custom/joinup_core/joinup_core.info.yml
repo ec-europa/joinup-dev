@@ -69,7 +69,6 @@ config_devel:
   - rdf_entity.mapping.taxonomy_term.eurovoc
   - rdf_entity.mapping.taxonomy_term.file_type
   - rdf_entity.mapping.taxonomy_term.language
-  - rdf_entity.mapping.taxonomy_term.licence_type
   - rdf_entity.mapping.taxonomy_term.owner_type
   - rdf_entity.mapping.taxonomy_term.policy_domain
   - rdf_entity.mapping.taxonomy_term.product_type
@@ -86,7 +85,6 @@ config_devel:
   - taxonomy.vocabulary.eurovoc
   - taxonomy.vocabulary.file_type
   - taxonomy.vocabulary.language
-  - taxonomy.vocabulary.licence_type
   - taxonomy.vocabulary.owner_type
   - taxonomy.vocabulary.policy_domain
   - taxonomy.vocabulary.representation_technique

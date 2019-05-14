@@ -31,6 +31,33 @@ use Drupal\search_api\Query\QueryInterface;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
+ * Implements hook_theme().
+ */
+function collection_theme($existing, $type, $theme, $path) {
+  return [
+    'collection_member_count' => [
+      'variables' => [
+        'count' => 0,
+        'view_mode' => '',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ *
+ * Allows the collection member count to be themed differently per view mode.
+ */
+function collection_theme_suggestions_collection_member_count(array $variables): array {
+  $suggestions = [];
+  $sanitized_view_mode = strtr($variables['view_mode'], '.', '_');
+  $suggestions[] = 'collection_member_count__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function collection_form_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -356,19 +383,21 @@ function collection_rdf_entity_view(array &$build, EntityInterface $entity, Enti
       '#cache' => ['contexts' => ['og_role']],
     ];
   }
+
   // Member count.
   if ($display->getComponent('members')) {
     $member_count = collection_member_count($entity);
-    $tag = $entity->getEntityTypeId() . ':' . $entity->id();
-    // @see joinup_core_og_membership_invalidate_group_tags()
-    $tags = Cache::buildTags('joinup-membership', [$tag]);
+    // Invalidate the member count every time the group membership list changes.
+    // @see \Drupal\og\Plugin\Block\MemberCountBlock::getCacheTags()
+    $tags = Cache::buildTags(OgMembershipInterface::GROUP_MEMBERSHIP_LIST_CACHE_TAG_PREFIX, $entity->getCacheTagsToInvalidate());
     $build['members'] = [
-      '#markup' => \Drupal::translation()->formatPlural($member_count, '@member_count Member', '@member_count Members', ['@member_count' => $member_count]),
-      '#cache' => [
-        'tags' => $tags,
-      ],
+      '#theme' => 'collection_member_count',
+      '#count' => $member_count,
+      '#view_mode' => $view_mode,
+      '#cache' => ['tags' => $tags],
     ];
   }
+
   // Solution count.
   if ($display->getComponent('solutions')) {
     $solution_count = collection_solution_count($entity);
@@ -418,6 +447,9 @@ function collection_rdf_entity_view_alter(array &$build, EntityInterface $entity
  *   Amount of members.
  */
 function collection_member_count(RdfInterface $entity) {
+  // We're doing a direct database query rather than using methods in OG's
+  // MembershipManager service since we just need a count, and we need to filter
+  // out blocked user accounts.
   $query = \Drupal::database()->select('og_membership', 'om');
   $query->innerJoin('users_field_data', 'ufd', 'om.uid = ufd.uid');
   $query->condition('ufd.status', 1)
@@ -442,19 +474,15 @@ function collection_solution_count(RdfInterface $entity) {
   foreach ($solutions as $solution) {
     $solution_ids[] = $solution->getValue()['target_id'];
   }
-  $results = 0;
-  if ($solution_ids) {
-    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $solution_count */
-    $solution_count = \Drupal::entityQuery('rdf_entity');
-    // @todo Chain the query methods.
-    // @see https://github.com/ec-europa/rdf_entity/issues/26
-    $solution_count->setGraphType(['default']);
-    $results = $solution_count->condition('rid', 'solution')
-      ->condition('id', $solution_ids, 'IN')
-      ->count()
-      ->execute();
+  if (!$solution_ids) {
+    return 0;
   }
-  return $results;
+  return \Drupal::entityQuery('rdf_entity')
+    ->graphs(['default'])
+    ->condition('rid', 'solution')
+    ->condition('id', $solution_ids, 'IN')
+    ->count()
+    ->execute();
 }
 
 /**

@@ -12,52 +12,6 @@ Feature: Add comments
       | Miss tell tales   | tell.tales@example.com        |           | Miss       | Tales       |
       | Comment moderator | comment.moderator@example.com | moderator | Comment    | Moderator   |
 
-  @javascript
-  Scenario Outline: Make an anonymous comment, needs moderation.
-    Given <content type> content:
-      | title   | body                                                | collection        | state   |
-      | <title> | How could this ever happen? Moral panic on its way! | Gossip collection | <state> |
-    Given I am an anonymous user
-    And all e-mails have been sent
-    When I go to the content page of the type "<content type>" with the title "<title>"
-    # Anonymous users do not have a rich text editor.
-    Then the "Create comment" field should not have a wysiwyg editor
-    # The honeypot field that needs to be empty on submission.
-    And the following fields should be present "user_homepage"
-    When I fill in "Your name" with "Mr Scandal"
-    And I fill in "Email" with "mrscandal@example.com"
-    And I fill in "Create comment" with "I've heard this story..."
-    And I wait for the honeypot validation to pass
-    Then I press "Post comment"
-    Then I should see the following success messages:
-      | success messages                                                                                     |
-      | Your comment has been queued for review by site administrators and will be published after approval. |
-    And I should not see "I've heard this story..."
-    And the email sent to "Comment moderator" with subject "Joinup: A new comment has been created." contains the following lines of text:
-      | text                                                                                    |
-      | an anonymous user posted a comment in collection "Gossip collection".                   |
-      | To view the comment click                                                               |
-      | If you think this action is not clear or not due, please contact Joinup Support at http |
-
-    # Users with 'administer comments' permission can see the comment that is set for approval.
-    Given I am logged in as a facilitator of the "Gossip collection" collection
-    When I go to the content page of the type "<content type>" with the title "<title>"
-    Then I should see "I've heard this story..."
-
-    # The configuration options for comments should not be shown to
-    # facilitators. Whether or not comments are available is managed on
-    # collection level.
-    When I open the header local tasks menu
-    And I click "Edit" in the "Entity actions" region
-    Then I should not see the text "Comment settings"
-
-    Examples:
-      | content type | title               | state     |
-      | news         | Scandalous news     | validated |
-      | event        | Celebrity gathering | validated |
-      | discussion   | Is gossip bad?      | validated |
-      | document     | Wikileaks           | validated |
-
   # This scenario uses javascript to work as regression test for a bug that
   # makes CKEditor unusable upon a page load.
   # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3612
@@ -118,10 +72,10 @@ Feature: Add comments
       | discussion   | Is gossip bad?      | validated |
       | document     | Wikileaks           | validated |
 
-  Scenario Outline: Comments are disallowed for anonymous users in closed collections.
+  Scenario Outline: Comments are disallowed for anonymous users.
     Given <content type> content:
-      | title   | body                                                | collection     | state   |
-      | <title> | How could this ever happen? Moral panic on its way! | Shy collection | <state> |
+      | title   | body                                                | collection   | state   |
+      | <title> | How could this ever happen? Moral panic on its way! | <collection> | <state> |
 
     # Anonymous users should not be able to comment.
     Given I am an anonymous user
@@ -139,8 +93,12 @@ Feature: Add comments
     And I should see the button "Post comment"
 
     Examples:
-      | content type | title               | state     |
-      | news         | Scandalous news     | validated |
-      | event        | Celebrity gathering | validated |
-      | discussion   | Is gossip bad?      | validated |
-      | document     | Wikileaks           | validated |
+      | collection        | content type | title                     | state     |
+      | Shy collection    | news         | Scandalous news           | validated |
+      | Shy collection    | event        | Celebrity gathering       | validated |
+      | Shy collection    | discussion   | Is gossip bad?            | validated |
+      | Shy collection    | document     | Wikileaks                 | validated |
+      | Gossip collection | news         | Rihanna wears pope outfit | validated |
+      | Gossip collection | event        | Taylor Swift wedding      | validated |
+      | Gossip collection | discussion   | Is gossip good?           | validated |
+      | Gossip collection | document     | Celebrity scandals 2019   | validated |

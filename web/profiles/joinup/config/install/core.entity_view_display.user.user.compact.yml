@@ -15,7 +15,6 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
     - image.style.thumbnail
   module:
     - ds
@@ -57,7 +56,6 @@ hidden:
   field_user_nationality: true
   field_user_organisation: true
   field_user_professional_domain: true
-  field_user_professional_profile: true
   langcode: true
   member_for: true
   simplenews: true

@@ -15,7 +15,6 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
   module:
     - user
 id: user.user.subscription_settings
@@ -42,7 +41,6 @@ hidden:
   field_user_organisation: true
   field_user_photo: true
   field_user_professional_domain: true
-  field_user_professional_profile: true
   langcode: true
   language: true
   path: true

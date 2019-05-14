@@ -17,7 +17,6 @@ $this->assertEquals('Europe/Rome', $account->getTimeZone());
 $this->assertEquals('init7217@example.com', $account->getInitialEmail());
 $this->assertEquals('LastName7217', $account->get('field_user_family_name')->value);
 $this->assertEquals('FirstName7217', $account->get('field_user_first_name')->value);
-$this->assertEquals('Professional Profile for Pietro.', $account->get('field_user_professional_profile')->value);
 $this->assertEquals('my.fb.account', $account->get('field_social_media')->platform_values['facebook']['value']);
 $this->assertEquals('tw_user_acc', $account->get('field_social_media')->platform_values['twitter']['value']);
 $this->assertEquals('in/myacc', $account->get('field_social_media')->platform_values['linkedin']['value']);

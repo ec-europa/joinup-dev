@@ -416,7 +416,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
   }
 
   /**
-   * Builds the form and instructs the caller that they should render the form.
+   * Builds the form and instructs the caller that it should render the form.
    *
    * @param \Drupal\pipeline\Plugin\PipelineStepWithFormInterface $step
    *   The active pipeline step.
