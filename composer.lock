@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b53eac1e6d8d7c6ab2f1d0c9e13c048",
+    "content-hash": "dfe2a2e6979568c1c284761ec7958aa7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4750,6 +4750,9 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Do not invalidate group content list cache tags when the group itself changes @see https://github.com/Gizra/og/pull/509": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/509.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -11207,16 +11210,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.40.1",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "35889516bbd6bbe46a600c2c33b03515df4a076e"
+                "reference": "575cd5028362da591facde1ef5d7b94553c375c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/35889516bbd6bbe46a600c2c33b03515df4a076e",
-                "reference": "35889516bbd6bbe46a600c2c33b03515df4a076e",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/575cd5028362da591facde1ef5d7b94553c375c9",
+                "reference": "575cd5028362da591facde1ef5d7b94553c375c9",
                 "shasum": ""
             },
             "require": {
@@ -11231,7 +11234,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.40-dev"
+                    "dev-master": "1.41-dev"
                 }
             },
             "autoload": {
@@ -11269,7 +11272,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-04-29T14:12:28+00:00"
+            "time": "2019-05-14T11:59:08+00:00"
         },
         {
             "name": "typhonius/behattask",
@@ -11291,27 +11294,29 @@
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "e438b0c78652b33407983eb29d215a1a3f68f6f3"
+                "reference": "057622f5a3b92a5ffbea0fbaadce573500a62870"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/e438b0c78652b33407983eb29d215a1a3f68f6f3",
-                "reference": "e438b0c78652b33407983eb29d215a1a3f68f6f3",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/057622f5a3b92a5ffbea0fbaadce573500a62870",
+                "reference": "057622f5a3b92a5ffbea0fbaadce573500a62870",
                 "shasum": ""
             },
             "require": {
                 "brumann/polyfill-unserialize": "^1.0",
-                "ext-fileinfo": "*",
                 "ext-json": "*",
                 "php": "^5.3.3|^7.0"
             },
             "require-dev": {
                 "ext-xdebug": "*",
                 "phpunit/phpunit": "^4.8.36"
+            },
+            "suggest": {
+                "ext-fileinfo": "For PHP builtin file type guessing, otherwise uses internal processing"
             },
             "type": "library",
             "autoload": {
@@ -11331,7 +11336,7 @@
                 "security",
                 "stream-wrapper"
             ],
-            "time": "2019-05-05T17:30:51+00:00"
+            "time": "2019-05-14T13:14:31+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -12949,17 +12954,17 @@
         },
         {
             "name": "drupal/restui",
-            "version": "1.16.0",
+            "version": "1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/restui.git",
-                "reference": "8.x-1.16"
+                "reference": "8.x-1.17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/restui-8.x-1.16.zip",
-                "reference": "8.x-1.16",
-                "shasum": "60d2c7ecf6bb439e528c367753df9c94684b8894"
+                "url": "https://ftp.drupal.org/files/projects/restui-8.x-1.17.zip",
+                "reference": "8.x-1.17",
+                "shasum": "2fff1b74759d5e490884d002330ad04d1bf241ba"
             },
             "require": {
                 "drupal/core": "^8.2.0"
@@ -12970,8 +12975,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.16",
-                    "datestamp": "1541330284",
+                    "version": "8.x-1.17",
+                    "datestamp": "1557845581",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13000,10 +13005,10 @@
                     "homepage": "https://www.drupal.org/user/262198"
                 }
             ],
-            "description": "Provides a user interface to manage REST resources",
+            "description": "Provides a user interface to manage REST resources.",
             "homepage": "https://www.drupal.org/project/restui",
             "support": {
-                "source": "http://cgit.drupalcode.org/restui"
+                "source": "https://git.drupalcode.org/project/restui"
             }
         },
         {
