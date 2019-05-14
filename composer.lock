@@ -4729,7 +4729,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "c68f8b6c56d33c4486728d698402203f56f039cc"
+                "reference": "f004716810cf96441570c71541dede1d5459b5db"
             },
             "require": {
                 "drupal/core": "~8.7",
@@ -4744,8 +4744,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+95-dev",
-                    "datestamp": "1557582484",
+                    "version": "8.x-1.0-alpha2+102-dev",
+                    "datestamp": "1557738181",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4814,7 +4814,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "slack": "https://drupal.slack.com/messages/CELR48EA0"
             },
-            "time": "2019-05-11T18:44:28+00:00"
+            "time": "2019-05-13T17:57:37+00:00"
         },
         {
             "name": "drupal/og_menu",
