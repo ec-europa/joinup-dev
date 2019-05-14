@@ -6,11 +6,12 @@ Feature: Collection homepage
 
   Background:
     Given users:
-      | Username | Status |
-      | Frodo    | active |
-      | Boromir  | active |
-      | Legoloas | active |
-      | Gimli    | active |
+      | Username | Status | Roles     |
+      | Frodo    | active |           |
+      | Boromir  | active |           |
+      | Legoloas | active |           |
+      | Gimli    | active |           |
+      | Samwise  | active | moderator |
     Given the following owner:
       | name          |
       | Bilbo Baggins |
@@ -43,26 +44,43 @@ Feature: Collection homepage
       | title                                    | short title      | body                                      | collection         | created           | start date          | end date            | state     | policy domain     | changed  |
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2014-10-17 8:33am | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange | 2017-7-5 |
 
+  @clearStaticCache
   Scenario: The collection homepage shows the collection metrics.
     When I go to the homepage of the "Middle earth daily" collection
-    Then a tour should be available
     Then I see the text "3 Members" in the "Header" region
-    Then I see the text "1 Solution" in the "Header" region
+    And I see the text "1 Solution" in the "Header" region
 
-    # @see ISAICP-3599
     # Test caching of the metrics: Solutions.
-#    Then I delete the "Bilbo's book" solution
-#    When I am logged in as Gimli
-#    And I go to the homepage of the "Middle earth daily" collection
-#    Then I see the text "0 Solutions" in the "Header" region
+    When I delete the "Bilbo's book" solution
+    And I reload the page
+    Then I see the text "3 Members" in the "Header" region
+    And I see the text "0 Solutions" in the "Header" region
 
-    # Test last updated
-#    Then I am logged in as "Frodo"
-#    And I go to the homepage of the "Middle earth daily" collection
-#    Then I click "Rohirrim make extraordinary deal"
-#    And I click "Edit" in the "Entity actions" region
-#    Then I press "Update"
-#    And I go to the homepage of the "Middle earth daily" collection
+    When I delete the "Frodo" user
+    And I reload the page
+    Then I see the text "2 Members" in the "Header" region
+    And I see the text "0 Solutions" in the "Header" region
+
+  Scenario: The collection homepage is cached for anonymous users
+    Given I am an anonymous user
+    And I go to the homepage of the "Middle earth daily" collection
+    Then the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+
+  Scenario Outline: The collection homepage is cached for authenticated users
+    Given I am logged in as <user>
+    And I go to the homepage of the "Middle earth daily" collection
+    Then the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+
+    Examples:
+      | user    |
+      | Frodo   |
+      | Boromir |
+      | Gimli   |
+      | Samwise |
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection

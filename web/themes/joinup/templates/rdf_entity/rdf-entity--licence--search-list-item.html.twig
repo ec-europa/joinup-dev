@@ -27,20 +27,22 @@
     'mdl-cell--12-col-wide',
   ]
 %}
-
-<div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id }}" data-licence-category="{{ legal_categories }}">
+{% set spdx_licence_id = render_var(content.spdx_licence_id) %}
+<div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id|striptags|trim }}" data-licence-category="{{ legal_categories }}">
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--shifted">
       {% if spdx_licence_id %}
         <div class="listing__field">
-          <h2 class="listing__title licence-tile__title"><span class="icon icon--licence"></span>{{ spdx_licence_id }}</h2>
+          <h2 class="listing__title licence-tile__title">{{ spdx_licence_id }}</h2>
         </div>
       {% endif %}
       <div class="listing__field">
-        <p class="listing__teaser">{{ licence_title }}</p>
+        {{ title_prefix }}
+          {{ label }}
+        {{ title_suffix }}
       </div>
-      {% if spdx_url %}
-        <a href="{{ spdx_url }}" class="licence-tile__button" target="_blank">{{ "Licence text"|t }}</a>
+      {% if content.spdx_licence_external_url %}
+        {{ content.spdx_licence_external_url }}
       {% endif %}
     </div>
 
@@ -64,7 +66,7 @@
     </div>
     <div class="listing__metadata listing__metadata--licence">
       <div class="listing__field">
-        <p class="listing__teaser">{{ licence_description|striptags|nl2br }}</p>
+        {{ content.field_licence_description }}
       </div>
     </div>
   </div>
