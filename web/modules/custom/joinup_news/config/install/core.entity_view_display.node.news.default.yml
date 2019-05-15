@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_logo
     - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
@@ -18,12 +19,14 @@ dependencies:
     - field.field.node.news.field_state
     - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
+    - image.style.image_style_news_logo
     - node.type.news
   module:
     - comment
     - ds
     - field_group
     - file
+    - image
     - link
     - text
     - user
@@ -33,7 +36,7 @@ third_party_settings:
       children:
         - field_news_source_url
       parent_name: ''
-      weight: 2
+      weight: 3
       format_type: html_element
       format_settings:
         id: ''
@@ -59,10 +62,11 @@ content:
     region: content
   field_attachment:
     type: file_table
-    weight: 5
+    weight: 6
     region: content
     label: above
-    settings: {  }
+    settings:
+      use_description_as_link_text: true
     third_party_settings:
       ds:
         ds_limit: ''
@@ -76,7 +80,7 @@ content:
         template_suggestion: with_label
   field_comments:
     type: comment_default
-    weight: 6
+    weight: 7
     region: content
     label: above
     settings:
@@ -100,8 +104,26 @@ content:
         template_suggestion: no_wrappers
     type: string
     region: content
+  field_news_logo:
+    type: image
+    weight: 2
+    region: content
+    label: above
+    settings:
+      image_style: image_style_news_logo
+      image_link: content
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   field_news_referenced_solution:
-    weight: 7
+    weight: 8
     label: above
     settings:
       view_mode: view_mode_tile
@@ -143,7 +165,7 @@ content:
     region: content
   field_shared_in:
     type: entity_reference_entity_view
-    weight: 8
+    weight: 9
     region: content
     label: above
     settings:
@@ -162,7 +184,7 @@ content:
         template_suggestion: entity_reference__listing_tile
   report:
     label: hidden
-    weight: 4
+    weight: 5
     region: content
     settings:
       trim_length: 80
@@ -182,7 +204,7 @@ content:
         template_suggestion: no_wrappers
     type: link
   share_link:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
