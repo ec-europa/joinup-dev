@@ -307,13 +307,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the image :filename
    */
   public function assertImagePresent($filename) {
-    // Drupal appends an underscore and a number to the filename when duplicate
-    // files are uploaded, for example when a test is run more than once.
-    // We split up the filename and extension and match for both.
-    $parts = pathinfo($filename);
-    $extension = $parts['extension'];
-    $filename = $parts['filename'];
-    $this->assertSession()->elementExists('css', "img[src$='.$extension'][src*='$filename']");
+    Assert::assertTrue($this->findImageInRegion($filename));
   }
 
   /**
@@ -322,13 +316,27 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I should not see the image :filename
    */
   public function assertImageNotPresent($filename) {
-    // Drupal appends an underscore and a number to the filename when duplicate
-    // files are uploaded, for example when a test is run more than once.
-    // We split up the filename and extension and match for both.
-    $parts = pathinfo($filename);
-    $extension = $parts['extension'];
-    $filename = $parts['filename'];
-    $this->assertSession()->elementNotExists('css', "img[src$='.$extension'][src*='$filename']");
+    Assert::assertFalse($this->findImageInRegion($filename));
+  }
+
+  /**
+   * Checks that a given image is present in a given tile.
+   *
+   * @Then I (should )see the image ":filename" in the :tile tile
+   */
+  public function assertImagePresentInRegion($filename, $tile) {
+    $tile = $this->getTileByHeading($tile);
+    Assert::assertTrue($this->findImageInRegion($filename, $tile));
+  }
+
+  /**
+   * Checks that a given image is not present in a given tile.
+   *
+   * @Then I should not see the image :filename in the :tile tile
+   */
+  public function assertImageNotPresentInRegion($filename, $tile) {
+    $tile = $this->getTileByHeading($tile);
+    Assert::assertFalse($this->findImageInRegion($filename, $tile));
   }
 
   /**
