@@ -379,4 +379,40 @@ trait TraversingTrait {
     return $element;
   }
 
+  /**
+   * Finds an image element in a region given the file name.
+   *
+   * @param string $filename
+   *   The file name.
+   * @param \Behat\Mink\Element\NodeElement $region
+   *   (optional) The region to check in.
+   *
+   * @return bool
+   *   Whether the element exists or not in the given region.
+   */
+  protected function findImageInRegion($filename, NodeElement $region = NULL) {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
+
+    // Drupal appends an underscore and a number to the filename when duplicate
+    // files are uploaded, for example when a test is run more than once.
+    // The XPath and selector version that we are using does not support regular
+    // expressions and we cannot easily search for the file name otherwise.
+    // The elements are loaded instead and the regular expression is being run
+    // in php.
+    $parts = pathinfo($filename);
+    $extension = $parts['extension'];
+    $filename = $parts['filename'];
+    $expression = '/src="[^"]*' . $filename . '(_\d+)?\.' . $extension . '[^"]*"/';
+    $elements = $region->findAll('xpath', "//img");
+    foreach ($elements as $element) {
+      $html = $element->getOuterHtml();
+      if (preg_match($expression, $html)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
 }

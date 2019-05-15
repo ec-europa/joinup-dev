@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96d68ae60f7574abd5d6455c09a62aa9",
+    "content-hash": "652b87334cebce5d97f8ea1a43ee96db",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2432,7 +2432,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2581,14 +2581,6 @@
             ],
             "authors": [
                 {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
-                },
-                {
-                    "name": "gnuget",
-                    "homepage": "https://www.drupal.org/user/992990"
-                },
-                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2700,8 +2692,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2809,16 +2801,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.7.0",
+            "version": "8.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "5da135abcf5dbc0204e9a75c87381c7553a74d5e"
+                "reference": "969f24810fb31eac71dd624de593f551bd6dc2a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/5da135abcf5dbc0204e9a75c87381c7553a74d5e",
-                "reference": "5da135abcf5dbc0204e9a75c87381c7553a74d5e",
+                "url": "https://api.github.com/repos/drupal/core/zipball/969f24810fb31eac71dd624de593f551bd6dc2a3",
+                "reference": "969f24810fb31eac71dd624de593f551bd6dc2a3",
                 "shasum": ""
             },
             "require": {
@@ -2863,7 +2855,7 @@
                 "symfony/validator": "~3.4.0",
                 "symfony/yaml": "~3.4.5",
                 "twig/twig": "^1.38.2",
-                "typo3/phar-stream-wrapper": "^2.0.1",
+                "typo3/phar-stream-wrapper": "^2.1.1",
                 "zendframework/zend-diactoros": "^1.1",
                 "zendframework/zend-feed": "^2.4"
             },
@@ -3068,7 +3060,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-05-01T18:39:15+00:00"
+            "time": "2019-05-08T16:00:55+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3542,17 +3534,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.4.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/facets.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "ee2d584b8a225ab981e313f6050e13bc9c98e40b"
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "2ca517094a34112e8168746123d337a25da6a227"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3566,7 +3558,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.4",
+                    "version": "8.x-1.3",
                     "datestamp": "1556645881",
                     "security-coverage": {
                         "status": "covered",
@@ -3761,7 +3753,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4594,7 +4586,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4919,7 +4911,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5180,7 +5172,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5360,7 +5352,7 @@
             "description": "Allows users to redirect from old URLs to new URLs.",
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
-                "source": "http://cgit.drupalcode.org/redirect"
+                "source": "https://git.drupalcode.org/project/redirect"
             }
         },
         {
@@ -5867,7 +5859,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6153,7 +6145,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1493246342",
+                    "datestamp": "1510132373",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6221,7 +6213,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -7199,7 +7191,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9633,7 +9625,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -10402,7 +10394,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
