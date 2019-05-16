@@ -401,4 +401,21 @@ class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextI
     }
   }
 
+  /**
+   * Opens the search bar.
+   *
+   * @When I open the search bar by clicking on the search icon
+   */
+  public function openSearchBar() {
+    // One can only open the search bar if JavaScript is enabled.
+    $this->assertJavaScriptEnabledBrowser();
+    $elements = $this->getElementsMatchingElementAlias('search bar');
+
+    Assert::assertNotEmpty($elements, 'Could not find the search field in the page.');
+    Assert::assertCount(1, $elements, 'There are multiple search fields on the page.');
+
+    $element = reset($elements);
+    $element->focus();
+  }
+
 }

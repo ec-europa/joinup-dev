@@ -60,8 +60,10 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     # Check that the name of the collection is shown as a chip in the search
-    # field on the collection homepage.
+    # field on the collection homepage. The chips are initially hidden but will
+    # appear after clicking on the search icon to open the search bar.
     When I go to the homepage of the "Chalet construction" collection
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
 
@@ -74,6 +76,7 @@ Feature: Search inside groups
     # Check that other types of pages in the collection also show the collection
     # as a chip.
     When I go to the "Room sizes" discussion
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
     # It should be possible to remove the chip by clicking the delete button.
@@ -81,6 +84,7 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     When I go to the "Ground plan" document
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
     # It should be possible to remove the chip by typing a backspace in the
@@ -89,18 +93,22 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     When I go to the "Opening of the winter season" event
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
     When I go to the "Natural materials" news
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
     When I go to the "Resources" custom page
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Chalet construction |
 
     # Check that the name of the solution is shown as a chip in the search field
     # on the solution homepage.
     When I go to the homepage of the "Inclined foundations" solution
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
 
@@ -113,6 +121,7 @@ Feature: Search inside groups
     # Check that other types of pages in the solution also show the collection
     # as a chip.
     When I go to the "Terrace?" discussion
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
     # It should be possible to remove the chip by clicking the delete button.
@@ -120,6 +129,7 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     When I go to the "Rock types" document
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
     # It should be possible to remove the chip by typing a backspace in the
@@ -128,18 +138,23 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     When I go to the "Presenting DrillMaster X88" event
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
     When I go to the "Still frozen" news
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
     When I go to the "Geography" custom page
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
     When I go to the "Pre-alpha" release
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
     When I go to the "Zip archive" distribution
+    And I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
 
