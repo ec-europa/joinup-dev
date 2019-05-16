@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
@@ -84,6 +85,15 @@ class SubscriptionDashboardForm extends FormBase {
 
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
+
+    $form['usubscribe_all'] = [
+      '#type' => 'link',
+      '#title' => t('Unsubscribe from all'),
+      '#url' => Url::fromRoute('joinup_user.unsubscribe_all', [
+        'user' => $user->id(),
+      ]),
+      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
+    ];
 
     $form['description'] = [
       '#type' => 'html_tag',
