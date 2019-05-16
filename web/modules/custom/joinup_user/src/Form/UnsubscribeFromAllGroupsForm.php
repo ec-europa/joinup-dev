@@ -99,8 +99,8 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return Url::fromRoute('entity.user.canonical', [
-      'user' => $this->user->id(),
+    return Url::fromRoute('joinup_subscription.subscription_settings', [
+      'user' => $this->user->id()
     ]);
   }
 
