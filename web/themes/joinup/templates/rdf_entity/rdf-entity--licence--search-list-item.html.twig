@@ -38,14 +38,13 @@
       {% endif %}
       <div class="listing__field">
         {{ title_prefix }}
-          {{ label }}
+        {{ label }}
         {{ title_suffix }}
       </div>
-      {% if content.spdx_licence_external_url %}
-        {{ content.spdx_licence_external_url }}
-      {% endif %}
     </div>
+  </div>
 
+  <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--wider">
       {% for category_list in category_lists  %}
         <div class="listing__field">
@@ -65,9 +64,13 @@
       {% endfor %}
     </div>
     <div class="listing__metadata listing__metadata--licence">
+      <p>{{ 'Licence comment'|t }}:</p>
       <div class="listing__field">
         {{ content.field_licence_description }}
       </div>
+      {% if content.spdx_licence_external_url %}
+        {{ content.spdx_licence_external_url }}
+      {% endif %}
     </div>
   </div>
 </div>
