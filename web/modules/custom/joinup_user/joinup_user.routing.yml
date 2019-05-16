@@ -1,10 +1,10 @@
 joinup_user.unsubscribe_all:
   path: '/user/{user}/unsubscribe-all'
   defaults:
-    _form: '\Drupal\joinup_user\Form\UnsubscribeFromAllGroupsForm'
+    _form: '\Drupal\joinup_user\Form\UnsubscribeFromAllCollectionsForm'
     _title: 'Unsubscribe from all groups'
   requirements:
-    _custom_access: '\Drupal\joinup_user\Form\UnsubscribeFromAllGroupsForm::access'
+    _custom_access: '\Drupal\joinup_user\Form\UnsubscribeFromAllCollectionsForm::access'
   options:
     parameters:
       user:

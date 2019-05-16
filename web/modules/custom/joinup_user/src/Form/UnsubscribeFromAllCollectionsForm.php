@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Form that allows the user to unsubscribe from all groups.
  */
-class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
+class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
 
   /**
    * The entity type manager service.
@@ -49,7 +49,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
   protected $user;
 
   /**
-   * Constructs a UnsubscribeFromAllGroupsForm.
+   * Constructs a UnsubscribeFromAllCollectionsForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -83,21 +83,21 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'unsubscribe_from_all_groups_form';
+    return 'unsubscribe_from_all_collections_form';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Unsubscribe from all groups');
+    return $this->t('Unsubscribe from all collections');
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t('Are you sure you want to unsubscribe from all groups?<br />You will stop receiving news and updates from all groups, including those you are a facilitator in.');
+    return $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections, including those you are a facilitator in.');
   }
 
   /**
@@ -114,13 +114,13 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
     if ($memberships = $this->getUserMembershipIds()) {
       $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships);
       $labels = array_map(function (OgMembershipInterface $membership) {
-        return '[' . $membership->getGroupBundle() . '] ' . $membership->getGroup()->label();
+        return $membership->getGroup()->label();
       }, $memberships);
       asort($labels);
       $form = parent::buildForm($form, $form_state);
       $form['information'] = [
         '#type' => 'item',
-        '#markup' => t('You are currently registered to be notified for the following groups:'),
+        '#markup' => t('You are currently registered to be notified for the following collections:'),
         '#tree' => TRUE,
         'items' => [
           '#theme' => 'item_list',
@@ -131,7 +131,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
     else {
       $form['help'] = [
         '#type' => 'item',
-        '#markup' => t('You do not have any groups to unsubscribe from.'),
+        '#markup' => t('You do not have any collections to unsubscribe from.'),
       ];
 
       $form['return'] = [
@@ -169,13 +169,13 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
     $operations = [];
     foreach ($membership_ids as $membership_id) {
       $operations[] = [
-        '\Drupal\joinup_user\Form\UnsubscribeFromAllGroupsForm::membershipUnsubscribe',
+        '\Drupal\joinup_user\Form\UnsubscribeFromAllCollectionsForm::membershipUnsubscribe',
         [$membership_id],
       ];
     }
 
     $batch = [
-      'title' => t('Unsubscribe from groups'),
+      'title' => t('Unsubscribe from collections'),
       'operations' => $operations,
       'finished' => [$this, 'membershipUnsubscribeFinish'],
       'init_message' => t('Initiating...'),
@@ -186,7 +186,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
   }
 
   /**
-   * Unsubscribes from a group.
+   * Unsubscribes from a collection.
    *
    * @param int $membership_id
    *   The membership ID.
@@ -198,8 +198,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
     $membership = \Drupal::entityTypeManager()->getStorage('og_membership')->load($membership_id);
     $membership->set('subscription_bundles', []);
     $membership->save();
-    $context['results'][] = t('[:bundle] %title', [
-      ':bundle' => $membership->getGroupBundle(),
+    $context['results'][] = t('%title', [
       '%title' => $membership->getGroup()->label(),
     ]);
   }
@@ -228,7 +227,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
         '@count' => count($results),
         '@items' => $this->renderer->render($list),
       ];
-      $message = $this->t('You will not receive notification for the following @count items groups.<br />@items', $arguments);
+      $message = $this->t('You will not receive notification for the following @count items collections.<br />@items', $arguments);
       $this->messenger()->addStatus($message);
     }
     else {
@@ -246,7 +245,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
   }
 
   /**
-   * Access check for the UnsubscribeFromAllGroupsForm.
+   * Access check for the UnsubscribeFromAllCollectionsForm.
    *
    * @param \Drupal\Core\Session\AccountInterface $account_proxy
    *   The user from the route.
@@ -274,6 +273,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
       ->getStorage('og_membership')
       ->getQuery()
       ->condition('uid', $this->user->id())
+      ->condition('entity_bundle', 'collection')
       ->exists('subscription_bundles');
     return $query->execute();
   }

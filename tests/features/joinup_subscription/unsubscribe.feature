@@ -1,10 +1,10 @@
 @api
-Feature: Unsubscribe from groups
+Feature: Unsubscribe from collections
   In order to reduce spam messages
   As a user of the website
-  I need to be able to easily unsubscribe from groups.
+  I need to be able to easily unsubscribe from collections.
 
-  Scenario: Unsubscribe from all groups
+  Scenario: Unsubscribe from all collections
     Given user:
       | Username | Eric Cartman             |
       | E-mail   | eric.cartman@example.com |
@@ -37,23 +37,23 @@ Feature: Unsubscribe from groups
     And the option with text "All notifications" from select "News" is selected in the "Koon's hideout" card
 
     When I click "Unsubscribe from all"
-    Then I should see the heading "Unsubscribe from all groups"
+    Then I should see the heading "Unsubscribe from all collections"
     And I should see the following lines of text:
-      | Are you sure you want to unsubscribe from all groups? |
-      | [collection] Southpark elementary                     |
-      | [collection] Kenny's house                            |
-      | [collection] Koon's hideout                           |
+      | Are you sure you want to unsubscribe from all collections? |
+      | Southpark elementary                                       |
+      | Kenny's house                                              |
+      | Koon's hideout                                             |
 
     When I press "Confirm"
     And I wait for the batch process to finish
 
     # Checks partially the success messages so it can work like the step that asserts 'lines of text' above.
     Then I should see the following success messages:
-      | Success messages                                                    |
-      | You will not receive notification for the following 3 items groups. |
-      | [collection] Southpark elementary                                   |
-      | [collection] Kenny's house                                          |
-      | [collection] Koon's hideout                                         |
+      | Success messages                                                         |
+      | You will not receive notification for the following 3 items collections. |
+      | Southpark elementary                                                     |
+      | Kenny's house                                                            |
+      | Koon's hideout                                                           |
 
     And I should be on "/user/subscriptions"
     And I should see the link "Unsubscribe from all"
@@ -71,9 +71,9 @@ Feature: Unsubscribe from groups
     And the option with text "No notifications" from select "News" is selected in the "Koon's hideout" card
 
     When I click "Unsubscribe from all"
-    Then I should see the text " You do not have any groups to unsubscribe from."
+    Then I should see the text " You do not have any collections to unsubscribe from."
     And I should not see the following lines of text:
-      | Are you sure you want to unsubscribe from all groups? |
-      | [collection] Southpark elementary                     |
-      | [collection] Kenny's house                            |
-      | [collection] Koon's hideout                           |
+      | Are you sure you want to unsubscribe from all collections? |
+      | Southpark elementary                                       |
+      | Kenny's house                                              |
+      | Koon's hideout                                             |
