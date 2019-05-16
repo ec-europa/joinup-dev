@@ -193,7 +193,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
    * @param array $context
    *   The batch context array.
    */
-  public static function membershipUnsubscribe(int $membership_id, &$context): void {
+  public static function membershipUnsubscribe(int $membership_id, array &$context): void {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = \Drupal::entityTypeManager()->getStorage('og_membership')->load($membership_id);
     $membership->set('subscription_bundles', []);

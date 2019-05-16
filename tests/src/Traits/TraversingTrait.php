@@ -26,7 +26,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when no select field is found.
    */
-  protected function findSelect($select, TraversableElement $region = null) {
+  protected function findSelect($select, TraversableElement $region = NULL) {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
