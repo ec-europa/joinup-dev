@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Renderer;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\og\MembershipManagerInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Form that allowes the user to unsubscribe from all groups.
+ * Form that allows the user to unsubscribe from all groups.
  */
 class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
 
@@ -56,11 +57,14 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
    *   The membership manager service.
    * @param \Drupal\Core\Render\Renderer $renderer
    *   The renderer service.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The current route match.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, Renderer $renderer) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, Renderer $renderer, RouteMatchInterface $route_match) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $membership_manager;
     $this->renderer = $renderer;
+    $this->user = $route_match->getParameter('user');
   }
 
   /**
@@ -70,7 +74,8 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('og.membership_manager'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('current_route_match')
     );
   }
 
@@ -105,8 +110,7 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, AccountInterface $user = NULL) {
-    $this->user = $user;
+  public function buildForm(array $form, FormStateInterface $form_state) {
     if ($memberships = $this->getUserMembershipIds()) {
       $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships);
       $labels = array_map(function (OgMembershipInterface $membership) {
@@ -244,21 +248,19 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
   /**
    * Access check for the UnsubscribeFromAllGroupsForm.
    *
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface $account_proxy
    *   The user from the route.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function access(AccountInterface $account) {
-    /** @var \Drupal\Core\Session\AccountProxyInterface $account_proxy */
-    $account_proxy = \Drupal::service('current_user');
+  public function access(AccountInterface $account_proxy) {
     // Deny access if the user is not logged in.
     if ($account_proxy->isAnonymous()) {
       return AccessResult::forbidden();
     }
 
-    return AccessResult::allowedIf($account->id() === $account_proxy->id());
+    return AccessResult::allowedIf($this->user->id() === $account_proxy->id());
   }
 
   /**
