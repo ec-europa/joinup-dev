@@ -218,20 +218,21 @@ class UnsubscribeFromAllGroupsForm extends ConfirmFormBase {
   public function membershipUnsubscribeFinish(bool $success, array $results, array $operations): RedirectResponse {
     // @see \callback_batch_finished.
     if ($success) {
-      $message = t("You will not receive notification for the following @count items groups.<br />", [
-        '@count' => count($results),
-      ]);
       $list = [
         '#theme' => 'item_list',
         '#items' => $results,
       ];
-      $message .= $this->renderer->render($list);
+      $arguments = [
+        '@count' => count($results),
+        '@items' => $this->renderer->render($list),
+      ];
+      $message = $this->t('You will not receive notification for the following @count items groups.<br />@items', $arguments);
       $this->messenger()->addStatus($message);
     }
     else {
       // $operations contains the operations that remained unprocessed.
       $error_operation = reset($operations);
-      $message = t('An error occurred while processing %error_operation with arguments: @arguments', [
+      $message = $this->t('An error occurred while processing %error_operation with arguments: @arguments', [
         '%error_operation' => $error_operation[0],
         '@arguments' => print_r($error_operation[1], TRUE),
       ]);
