@@ -211,6 +211,9 @@
             "drupal/matomo_reporting_api": {
                 "Migrate from 'piwik_reporting_api' @see https://www.drupal.org/project/matomo_reporting_api/issues/2993831": "https://www.drupal.org/files/issues/2018-08-20/2993831-2.patch"
             },
+            "drupal/message_digest": {
+                "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_digest/issues/3055362": "https://www.drupal.org/files/issues/2019-05-17/3055362-2.patch"
+            },
             "drupal/message_notify": {
                 "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
             },
