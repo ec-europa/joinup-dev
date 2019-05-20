@@ -242,6 +242,8 @@ config_devel:
   - matomo.settings
   - og.settings
   - og_menu.ogmenu.navigation
+  - page_manager.page.legal_notice
+  - page_manager.page_variant.legal_notice-block_display-0
   - password_policy.password_policy.generic_policy
   - pathauto.pattern.community_content
   - pathauto.pattern.custom_page
