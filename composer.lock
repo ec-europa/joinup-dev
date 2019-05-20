@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1d3ce339554b7be5eec1e1ce6a84e34",
+    "content-hash": "1f58ece403c4387813333582ad92c1d4",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.93.11",
+            "version": "3.93.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c9f4cfeb46ce9842d6e7d3692425b7cb1449d573"
+                "reference": "60f5c4bd261e19844d4263c3a8f370e88e038282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c9f4cfeb46ce9842d6e7d3692425b7cb1449d573",
-                "reference": "c9f4cfeb46ce9842d6e7d3692425b7cb1449d573",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/60f5c4bd261e19844d4263c3a8f370e88e038282",
+                "reference": "60f5c4bd261e19844d4263c3a8f370e88e038282",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-05-16T18:45:30+00:00"
+            "time": "2019-05-17T18:26:46+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -4502,11 +4502,17 @@
         },
         {
             "name": "drupal/message_digest",
-            "version": "dev-1.x",
+            "version": "1.0.0-rc3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/message_digest.git",
-                "reference": "022e5b255bba2cce8a0f81889886853ad8f88c6f"
+                "reference": "8.x-1.0-rc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message_digest-8.x-1.0-rc3.zip",
+                "reference": "8.x-1.0-rc3",
+                "shasum": "81974e7465f2d6b39cdc6209633985100c3c402c"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4522,15 +4528,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc2+1-dev",
-                    "datestamp": "1549663080",
+                    "version": "8.x-1.0-rc3",
+                    "datestamp": "1558111386",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_digest/issues/3055362": "https://www.drupal.org/files/issues/2019-05-17/3055362-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4559,8 +4562,7 @@
             "homepage": "https://www.drupal.org/project/message_digest",
             "support": {
                 "source": "https://git.drupalcode.org/project/message_digest"
-            },
-            "time": "2019-02-08T21:54:08+00:00"
+            }
         },
         {
             "name": "drupal/message_notify",
@@ -6217,7 +6219,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1557724385",
+                    "datestamp": "1557724631",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -15318,7 +15320,6 @@
     "stability-flags": {
         "drupal/diff": 5,
         "drupal/flag": 15,
-        "drupal/message_digest": 20,
         "drupal/migrate_run": 10,
         "drupal/og": 20,
         "drupal/phingdrushtask": 20,
