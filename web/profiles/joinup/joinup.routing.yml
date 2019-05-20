@@ -58,14 +58,6 @@ joinup.solutions_by_licences_report:
   options:
     _admin_route: TRUE
 
-joinup.legal_notice:
-  path: '/joinup/legal-notice'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
-    _title: 'Legal notice'
-  requirements:
-    _access: 'TRUE'
-
 joinup.site_feature:
   path: '/feature/{entity_type}/{entity}/add'
   defaults:
