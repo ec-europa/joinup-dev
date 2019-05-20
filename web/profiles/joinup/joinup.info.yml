@@ -11,6 +11,8 @@ dependencies:
   - asset_distribution
   - asset_release
   - block
+  - block_content
+  - block_content_permissions
   - changed_fields
   - ckeditor
   - collection
@@ -72,6 +74,7 @@ dependencies:
   - options
   - owner
   - page_cache
+  - page_manager
   - password_policy
   - password_policy_character_types
   - password_policy_characters
