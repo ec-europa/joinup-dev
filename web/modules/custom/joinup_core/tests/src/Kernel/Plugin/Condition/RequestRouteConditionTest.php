@@ -21,8 +21,9 @@ class RequestRouteConditionTest extends KernelTestBase {
    */
   public static $modules = [
     'joinup_core',
-    'og',
     'matomo_reporting_api',
+    'og',
+    'rdf_entity',
     'system',
   ];
 

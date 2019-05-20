@@ -3,8 +3,6 @@
 namespace Drupal\joinup;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -36,19 +34,6 @@ class JoinupHelper {
    */
   public static function isSolution(EntityInterface $entity) {
     return self::isRdfEntityOfBundle($entity, 'solution');
-  }
-
-  /**
-   * Returns whether the entity is a community content node.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to check.
-   *
-   * @return bool
-   *   True if the entity is a community content node, false otherwise.
-   */
-  public static function isCommunityContent(EntityInterface $entity) {
-    return $entity instanceof NodeInterface && in_array($entity->bundle(), CommunityContentHelper::getBundles());
   }
 
   /**

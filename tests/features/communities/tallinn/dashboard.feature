@@ -57,7 +57,7 @@ Feature:
     Given I am logged in as Jared
     When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
-    And the response should be cached
+    And the page should be cached
     When I go to "/admin/config/content/tallinn"
     Then the response status code should be 200
     And I should see the heading "Tallinn Settings"
@@ -75,26 +75,26 @@ Feature:
     Then the response status code should be 200
 
     # After changing the access policy, the cache has been cleared.
-    And the response should not be cached
+    And the page should not be cached
     But I reload the page
-    Then the response should be cached
+    Then the page should be cached
 
     # Edit the group entity.
     Given I go to the "Tallinn Ministerial Declaration" collection edit form
     And I fill in "Description" with "Hooli"
     When I press "Publish"
     And I go to "/api/v1/communities/tallinn/report"
-    Then the response should not be cached
+    Then the page should not be cached
     But I reload the page
-    Then the response should be cached
+    Then the page should be cached
 
     # Edit any report.
     Given I go to the tallinn_report content "Malta" edit screen
     And I press "Save"
     When I go to "/api/v1/communities/tallinn/report"
-    Then the response should not be cached
+    Then the page should not be cached
     But I reload the page
-    Then the response should be cached
+    Then the page should be cached
 
     Given I am logged in as Gilfoyle
     And I go to "/api/v1/communities/tallinn/report"
@@ -132,9 +132,9 @@ Feature:
     Then the response status code should be 200
 
     # After changing the access policy, the cache has been cleared.
-    And the response should not be cached
+    And the page should not be cached
     But I reload the page
-    Then the response should be cached
+    Then the page should be cached
 
     Given I am logged in as Gilfoyle
     And I go to "/api/v1/communities/tallinn/report"

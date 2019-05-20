@@ -22,7 +22,7 @@ use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
 function joinup_community_content_entity_extra_field_info() {
   $fields = [];
 
-  foreach (CommunityContentHelper::getBundles() as $bundle) {
+  foreach (CommunityContentHelper::BUNDLES as $bundle) {
     $fields['node'][$bundle]['display']['share_link'] = [
       'label' => t('Share'),
       'description' => t('A link to share the content'),
@@ -73,7 +73,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
 function joinup_community_content_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Skip if we are not on a community content form.
   $community_content_form_ids = [];
-  foreach (CommunityContentHelper::getBundles() as $bundle) {
+  foreach (CommunityContentHelper::BUNDLES as $bundle) {
     $community_content_form_ids[] = "node_{$bundle}_form";
     $community_content_form_ids[] = "node_{$bundle}_edit_form";
   }

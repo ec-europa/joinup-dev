@@ -44,6 +44,7 @@ Feature: User authentication
       | admin/structure/views                                          |
       | dashboard                                                      |
       | licence                                                        |
+      | licence/add                                                    |
       | node                                                           |
       | node/add                                                       |
       | node/add/custom_page                                           |

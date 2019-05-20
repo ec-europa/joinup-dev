@@ -234,7 +234,7 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    *
-   * Only allow access if the user is viewing his own profile.
+   * Only allow access if the user is viewing their own profile.
    */
   protected function blockAccess(AccountInterface $account) {
     if ($user = $this->currentRouteMatch->getParameter('user')) {

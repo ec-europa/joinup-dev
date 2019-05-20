@@ -59,7 +59,7 @@ function joinup_user_user_update(UserInterface $account) {
     return;
   }
 
-  // Inform the user that his profile was updated.
+  // Inform the user that their profile was updated.
   $params['account'] = $account;
   $params['original'] = $account->original;
 
@@ -410,7 +410,7 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
 
     // Show all the content the user is author of.
     $or->addCondition('id', $groups, 'IN');
-    // Or all the groups he belongs to.
+    // Or all the groups they belong to.
     $or->addCondition('entity_author', $user->id());
     $query->addConditionGroup($or);
   }

@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_community_content;
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Contains helper methods for dealing with community content.
@@ -13,17 +18,16 @@ class CommunityContentHelper {
   const BUNDLES = ['discussion', 'document', 'event', 'news'];
 
   /**
-   * Returns an array of node bundles that are considered community content.
+   * Returns whether the entity is a community content node.
    *
-   * @return array
-   *   An array of node bundle IDs.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to check.
    *
-   * @deprecated
-   *   Use static::BUNDLES instead.
+   * @return bool
+   *   True if the entity is a community content node, false otherwise.
    */
-  public static function getBundles() {
-    @trigger_error(__METHOD__ . ' is deprecated. Use CommunityContentHelper::BUNDLES instead.', E_USER_DEPRECATED);
-    return static::BUNDLES;
+  public static function isCommunityContent(EntityInterface $entity): bool {
+    return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::BUNDLES);
   }
 
   /**
@@ -36,7 +40,7 @@ class CommunityContentHelper {
    * @return string[]
    *   An array of workflow state IDs.
    */
-  public static function getModeratorAttentionNeededStates($bundle = NULL) {
+  public static function getModeratorAttentionNeededStates($bundle = NULL): array {
     $states = [
       'discussion' => [
         'proposed',

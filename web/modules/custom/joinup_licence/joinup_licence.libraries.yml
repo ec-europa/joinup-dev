@@ -1,0 +1,6 @@
+licence-filter:
+  js:
+    js/licence_filter.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

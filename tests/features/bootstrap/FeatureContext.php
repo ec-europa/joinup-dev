@@ -17,16 +17,19 @@ use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\PageCacheTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
+use PHPUnit\Framework\Assert;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -39,6 +42,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use PageCacheTrait;
+  use TagTrait;
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
@@ -302,13 +307,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the image :filename
    */
   public function assertImagePresent($filename) {
-    // Drupal appends an underscore and a number to the filename when duplicate
-    // files are uploaded, for example when a test is run more than once.
-    // We split up the filename and extension and match for both.
-    $parts = pathinfo($filename);
-    $extension = $parts['extension'];
-    $filename = $parts['filename'];
-    $this->assertSession()->elementExists('css', "img[src$='.$extension'][src*='$filename']");
+    Assert::assertTrue($this->findImageInRegion($filename));
   }
 
   /**
@@ -317,13 +316,27 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I should not see the image :filename
    */
   public function assertImageNotPresent($filename) {
-    // Drupal appends an underscore and a number to the filename when duplicate
-    // files are uploaded, for example when a test is run more than once.
-    // We split up the filename and extension and match for both.
-    $parts = pathinfo($filename);
-    $extension = $parts['extension'];
-    $filename = $parts['filename'];
-    $this->assertSession()->elementNotExists('css', "img[src$='.$extension'][src*='$filename']");
+    Assert::assertFalse($this->findImageInRegion($filename));
+  }
+
+  /**
+   * Checks that a given image is present in a given tile.
+   *
+   * @Then I (should )see the image ":filename" in the :tile tile
+   */
+  public function assertImagePresentInRegion($filename, $tile) {
+    $tile = $this->getTileByHeading($tile);
+    Assert::assertTrue($this->findImageInRegion($filename, $tile));
+  }
+
+  /**
+   * Checks that a given image is not present in a given tile.
+   *
+   * @Then I should not see the image :filename in the :tile tile
+   */
+  public function assertImageNotPresentInRegion($filename, $tile) {
+    $tile = $this->getTileByHeading($tile);
+    Assert::assertFalse($this->findImageInRegion($filename, $tile));
   }
 
   /**
@@ -1099,12 +1112,30 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks that the page is cacheable.
+   *
+   * @Then the page should be cacheable
+   */
+  public function assertPageCacheable() {
+    Assert::assertTrue($this->isPageCacheable());
+  }
+
+  /**
+   * Checks that the page is not cacheable.
+   *
+   * @Then the page should not be cacheable
+   */
+  public function assertPageNotCacheable() {
+    Assert::assertFalse($this->isPageCacheable());
+  }
+
+  /**
    * Checks that the page is cached.
    *
    * @Then the page should be cached
    */
   public function assertPageCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'HIT');
+    Assert::assertTrue($this->isPageCached());
   }
 
   /**
@@ -1113,25 +1144,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the page should not be cached
    */
   public function assertPageNotCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
-  }
-
-  /**
-   * Checks that the HTTP response is cached by Drupal dynamic cache.
-   *
-   * @Then the response should be cached
-   */
-  public function assertResponseCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'HIT');
-  }
-
-  /**
-   * Checks that the HTTP response is not cached by Drupal dynamic cache.
-   *
-   * @Then the response should not be cached
-   */
-  public function assertResponseNotCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'MISS');
+    Assert::assertFalse($this->isPageCached());
   }
 
   /**
@@ -1287,9 +1300,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @AfterStep
    */
-  public function clearCacheTagsStaticCache(AfterStepScope $event) {
-    $feature = $event->getFeature();
-    if ($feature->hasTag('clearStaticCache')) {
+  public function clearCacheTagsStaticCache(AfterStepScope $event): void {
+    if ($this->hasTag('clearStaticCache')) {
       parent::clearStaticCaches();
     }
   }
