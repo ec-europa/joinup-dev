@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
@@ -67,6 +68,13 @@ class JoinupSubContext extends DrupalSubContextBase {
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
+
+  /**
+   * Testing content blocks.
+   *
+   * @var \Drupal\block_content\BlockContentInterface[]
+   */
+  protected $contentBlocks = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -2659,6 +2667,41 @@ JS;
   public function assertParagraphText(string $text): void {
     $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
     Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Creates the testing content blocks.
+   *
+   * @beforeScenario @contentBlock
+   */
+  public function createContentBlocks(): void {
+    $block = BlockContent::create([
+      'type' => 'simple_block',
+      'uuid' => 'ec092d17-ef18-42b0-b460-642871150cd3',
+      'status' => TRUE,
+      'info' => 'Legal notice',
+      'body' => [
+        'value' => 'Legal notice text.',
+        'format' => 'content_editor',
+      ],
+    ]);
+    $block->save();
+    $this->contentBlocks[$block->id()] = $block;
+    // As the page that contains the block is created before the block, we need
+    // a cache clear to account the presence of the new block.
+    drupal_flush_all_caches();
+  }
+
+  /**
+   * Clears the testing content blocks.
+   *
+   * @afterScenario @contentBlock
+   */
+  public function clearContentBlocks(): void {
+    if ($this->contentBlocks) {
+      $storage = \Drupal::entityTypeManager()->getStorage('block_content');
+      $storage->delete($storage->loadMultiple(array_keys($this->contentBlocks)));
+    }
   }
 
 }
