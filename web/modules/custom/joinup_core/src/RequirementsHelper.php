@@ -29,11 +29,24 @@ class RequirementsHelper {
   }
 
   /**
-   * Returns a query to find the forward revisions.
+   * Fetches node entries with faulty forward published revisions.
+   *
+   * The node entries that are queried are required to have a published revision
+   * as a default one but also have other published revision(s) that are newer
+   * than the default one. This is an inconsistency that should never happen in
+   * a normal site as, normally, every new revision receives a new version id
+   * higher than the previous ones as it is a serial number and even reverting
+   * a revision, mainly creates a new one.
+   *
+   * The query only queries for the published revisions because the entities in
+   * question might still have forward draft revisions. These are valid cases as
+   * draft revisions are unpublished and it is ok to have unpublished versions
+   * of an entity. For that purpose, the query below only works with the
+   * published versions.
    *
    * @return array
-   *   An associative array of vids indexed by their id. The vid is the latest
-   *   published revision in the database.
+   *   An associative array of version_ids indexed by their id. The vid is the
+   *   latest published revision in the database.
    */
   public function getNodesWithProblematicRevisions(): array {
     $query = <<<QUERY

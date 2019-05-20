@@ -63,10 +63,11 @@ function joinup_core_requirements($phase) {
       }
     }
 
-    // If there are forward published revisions in any entity, this will come up
-    // with this query. This is to ensure that the issue with the forward
-    // published revisions not being the latest published revision, is caught
-    // early if it happens again.
+    // Ensure that a cache state inconsistency will not cause also
+    // inconsistencies with the published revisions of the entities.
+    //
+    // @see: \joinup_core_post_update_set_news_default_version
+    // @see: \Drupal\joinup_core\RequirementsHelper::getNodesWithProblematicRevisions
     // @see: ISAICP-5191
     $requirements['joinup_core_forward_revisions'] = [
       'title' => t('Forward published revisions'),
