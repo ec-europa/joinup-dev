@@ -86,17 +86,17 @@ class SubscriptionDashboardForm extends FormBase {
 
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
     $memberships_with_subscription = array_filter($memberships, function (OgMembershipInterface $membership) {
-      return !empty($membership->get('subscription_bundles'));
+      return $membership->get('subscription_bundles')->getValue();
     });
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     $form['usubscribe_all'] = [
       '#type' => 'link',
       '#title' => t('Unsubscribe from all'),
-      '#url' => Url::fromRoute('joinup_user.unsubscribe_all', [
+      '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
       ]),
-      '#access' => empty($memberships_with_subscription),
+      '#access' => !empty($memberships_with_subscription),
       '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
     ];
 

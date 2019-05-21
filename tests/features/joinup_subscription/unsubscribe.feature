@@ -56,7 +56,6 @@ Feature: Unsubscribe from collections
       | Koon's hideout                                                           |
 
     And I should be on "/user/subscriptions"
-    And I should see the link "Unsubscribe from all"
     And the option with text "No notifications" from select "Discussion" is selected in the "Southpark elementary" card
     And the option with text "No notifications" from select "Document" is selected in the "Southpark elementary" card
     And the option with text "No notifications" from select "Event" is selected in the "Southpark elementary" card
@@ -69,11 +68,4 @@ Feature: Unsubscribe from collections
     And the option with text "No notifications" from select "Document" is selected in the "Koon's hideout" card
     And the option with text "No notifications" from select "Event" is selected in the "Koon's hideout" card
     And the option with text "No notifications" from select "News" is selected in the "Koon's hideout" card
-
-    When I click "Unsubscribe from all"
-    Then I should see the text " You do not have any collections to unsubscribe from."
-    And I should not see the following lines of text:
-      | Are you sure you want to unsubscribe from all collections? |
-      | Southpark elementary                                       |
-      | Kenny's house                                              |
-      | Koon's hideout                                             |
+    And I should not see the link "Unsubscribe from all"
