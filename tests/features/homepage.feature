@@ -216,4 +216,3 @@ Feature: Homepage
     Then I should see the link "LinkedIn" in the Footer region
     And I should see the link "Twitter" in the Footer region
     But I should not see the link "Facebook" in the Footer region
-    And I should not see the link "Google+" in the Footer region

@@ -20,7 +20,6 @@ Feature: Export collection metadata
       | jsonld   | application/ld+json        | content-negotiation/fierce-content-exporters.jsonld   |
 
   Scenario Outline: Export taxonomy terms
-
     When I visit the "Product type" term "Air cylinders" page in the "<format>" serialisation
     Then the output should match the file contents of "<fixture>"
     And the content type of the response should be "<Content-Type>"

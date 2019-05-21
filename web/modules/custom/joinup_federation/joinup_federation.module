@@ -21,8 +21,10 @@ use Drupal\joinup_federation\RdfEntityReferenceFieldItemList;
 function joinup_federation_rdf_entity_mapping_load(array $mappings) {
   /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
   foreach ($mappings as $mapping) {
-    // Add the staging graph to the mapping entity.
-    $mapping->addGraphs(['staging' => 'http://joinup-federation/sink']);
+    if ($mapping->getTargetEntityTypeId() === 'rdf_entity') {
+      // Add the staging graph to the mapping entity only for 'rdf_entity'.
+      $mapping->addGraphs(['staging' => 'http://joinup-federation/sink']);
+    }
   }
 }
 

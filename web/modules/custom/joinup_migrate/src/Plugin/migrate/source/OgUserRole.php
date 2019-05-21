@@ -139,9 +139,9 @@ class OgUserRole extends SourcePluginBase {
 
     array_walk($rows, function (array &$row, $key) use ($existing_memberships) {
       // It's possible that a membership has been already created for this user,
-      // as an effect of his collection authorship. In this case we add also the
-      // membership ID to the row, so the membership will be updated instead of
-      // being created.
+      // as an effect of their collection authorship. In this case we add also
+      // the membership ID to the row, so the membership will be updated instead
+      // of being created.
       if (isset($existing_memberships[$key])) {
         $row['id'] = (int) $existing_memberships[$key];
       }

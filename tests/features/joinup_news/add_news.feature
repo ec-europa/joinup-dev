@@ -35,6 +35,7 @@ Feature: Creation of news through the UI.
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"
+    And I attach the file "logo.png" to "Logo"
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
@@ -80,3 +81,6 @@ Feature: Creation of news through the UI.
     # Verify that the tiles are shown.
     Then I should see the "Dig do's and don'ts" tile
     And I should see the "Anvil test routines" tile
+
+    When I click "Keep up to date"
+    Then I should see the image "logo.png" in the "Ytterbium metal of the year" tile

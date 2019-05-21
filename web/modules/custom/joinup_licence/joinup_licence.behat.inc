@@ -10,6 +10,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Behat step definitions for testing licences.
@@ -18,6 +19,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
 
   use EntityReferenceTrait;
   use RdfEntityTrait;
+  use UtilityTrait;
 
   /**
    * Test licences.
@@ -93,8 +95,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
         }
       };
 
-      $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $values);
-
+      $values = $this->convertValueAliases($values);
       $this->createLicence($values);
     }
   }
@@ -132,8 +133,7 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
       }
     };
 
-    $values = $this->convertEntityReferencesValues('rdf_entity', 'licence', $this->parseRdfEntityFields($values));
-
+    $values = $this->convertValueAliases($values);
     $this->createLicence($values);
   }
 
@@ -225,7 +225,43 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
       'title' => 'label',
       'description' => 'field_licence_description',
       'type' => 'field_licence_type',
+      'deprecated' => 'field_licence_deprecated',
+      'spdx licence' => 'field_licence_spdx_licence',
+      'legal type' => 'field_licence_legal_type',
     ];
+  }
+
+  /**
+   * Converts values from user friendly to normal machine values.
+   *
+   * @param array $fields
+   *   An array of fields keyed by field name.
+   *
+   * @return mixed
+   *   The array with the values converted.
+   *
+   * @throws \Exception
+   *    Throws an exception when a mapped value is not found.
+   */
+  protected function convertValueAliases(array $fields) {
+    $mapped_values = [
+      'field_licence_deprecated' => ['no' => 0, 'yes' => 1],
+    ];
+
+    foreach ($fields as $field => $value) {
+      if (isset($mapped_values[$field])) {
+        if (!isset($mapped_values[$field][$value])) {
+          throw new \Exception("Value $value is not an acceptable value for field $field.");
+        }
+
+        $fields[$field] = $mapped_values[$field][$value];
+      }
+    }
+
+    // Convert any entity reference field label value with the entity id.
+    $fields = $this->convertEntityReferencesValues('rdf_entity', 'licence', $this->parseRdfEntityFields($fields));
+
+    return $fields;
   }
 
 }

@@ -42,3 +42,10 @@ function joinup_post_update_install_joinup_rss() {
 function joinup_post_update_install_isa2_analytics() {
   \Drupal::service('module_installer')->install(['isa2_analytics']);
 }
+
+/**
+ * Enable the "config_readonly" module.
+ */
+function joinup_post_update_install_config_readonly() {
+  \Drupal::service('module_installer')->install(['config_readonly']);
+}

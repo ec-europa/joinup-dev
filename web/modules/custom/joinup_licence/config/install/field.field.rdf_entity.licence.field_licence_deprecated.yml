@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_licence_deprecated
+    - rdf_entity.rdfentity.licence
+id: rdf_entity.licence.field_licence_deprecated
+field_name: field_licence_deprecated
+entity_type: rdf_entity
+bundle: licence
+label: Deprecated
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Deprecated
+  off_label: Active
+field_type: boolean

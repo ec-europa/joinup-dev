@@ -1,0 +1,109 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.rdf_entity.view_mode_search_list_item
+    - field.field.rdf_entity.licence.field_licence_deprecated
+    - field.field.rdf_entity.licence.field_licence_description
+    - field.field.rdf_entity.licence.field_licence_legal_type
+    - field.field.rdf_entity.licence.field_licence_spdx_licence
+    - field.field.rdf_entity.licence.field_licence_type
+    - rdf_entity.rdfentity.licence
+  module:
+    - smart_trim
+    - user
+id: rdf_entity.licence.view_mode_search_list_item
+targetEntityType: rdf_entity
+bundle: licence
+mode: view_mode_search_list_item
+content:
+  field_licence_deprecated:
+    type: boolean
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  field_licence_description:
+    type: smart_trim
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: ...
+      wrap_class: ''
+      more_text: More
+      more_class: more-link
+      wrap_output: false
+      more_link: false
+      trim_options:
+        text: false
+        trim_zero: false
+      summary_handler: full
+    third_party_settings: {  }
+  field_licence_legal_type:
+    type: entity_reference_label
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_licence_spdx_licence:
+    type: entity_reference_label
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_licence_type:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  label:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  spdx_licence_id:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_licence_label:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_licence_text:
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_see_also:
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_licence_external_url:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  changed: true
+  created: true
+  langcode: true
