@@ -29,6 +29,7 @@
 %}
 {% set spdx_licence_id = render_var(content.spdx_licence_id) %}
 <div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id|striptags|trim }}" data-licence-category="{{ legal_categories }}">
+  {{ title_prefix }}
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--shifted">
       {% if spdx_licence_id %}
@@ -37,12 +38,16 @@
         </div>
       {% endif %}
       <div class="listing__field">
-        {{ title_prefix }}
         {{ label }}
-        {{ title_suffix }}
       </div>
     </div>
   </div>
+  {#
+    The title suffix contains the contextual links.
+    Added here because the listing__card items do not allow elements to overlap, thus the contextual
+    links, appeard beneath the next container.
+  #}
+  {{ title_suffix }}
 
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--wider">
