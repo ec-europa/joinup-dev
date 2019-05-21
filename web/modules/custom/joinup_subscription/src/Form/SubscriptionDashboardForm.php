@@ -12,6 +12,7 @@ use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\og\OgMembershipInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -84,6 +85,9 @@ class SubscriptionDashboardForm extends FormBase {
     }
 
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    $memberships_with_subscription = array_filter($memberships, function (OgMembershipInterface $membership) {
+      return !empty($membership->get('subscription_bundles'));
+    });
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     $form['usubscribe_all'] = [
@@ -92,6 +96,7 @@ class SubscriptionDashboardForm extends FormBase {
       '#url' => Url::fromRoute('joinup_user.unsubscribe_all', [
         'user' => $user->id(),
       ]),
+      '#access' => empty($memberships_with_subscription),
       '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
     ];
 

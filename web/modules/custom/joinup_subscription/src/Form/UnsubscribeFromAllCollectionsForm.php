@@ -1,8 +1,11 @@
 <?php
 
-namespace Drupal\joinup_user\Form;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_subscription\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -111,33 +114,20 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    if ($memberships = $this->getUserMembershipIds()) {
-      $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships);
-      $labels = array_map(function (OgMembershipInterface $membership) {
+    if ($memberships_ids = $this->getUserMembershipIds()) {
+      $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships_ids);
+      $labels = array_map(function (OgMembershipInterface $membership): ?string {
         return $membership->getGroup()->label();
       }, $memberships);
       asort($labels);
       $form = parent::buildForm($form, $form_state);
       $form['information'] = [
         '#type' => 'item',
-        '#markup' => t('You are currently registered to be notified for the following collections:'),
-        '#tree' => TRUE,
+        '#markup' => $this->t('You are currently registered to be notified for the following collections:'),
         'items' => [
           '#theme' => 'item_list',
           '#items' => $labels,
         ],
-      ];
-    }
-    else {
-      $form['help'] = [
-        '#type' => 'item',
-        '#markup' => t('You do not have any collections to unsubscribe from.'),
-      ];
-
-      $form['return'] = [
-        '#type' => 'submit',
-        '#value' => $this->t('Return'),
-        '#submit' => ['::returnSubmit'],
       ];
     }
     return $form;
@@ -169,7 +159,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
     $operations = [];
     foreach ($membership_ids as $membership_id) {
       $operations[] = [
-        '\Drupal\joinup_user\Form\UnsubscribeFromAllCollectionsForm::membershipUnsubscribe',
+        UnsubscribeFromAllCollectionsForm::class . '::membershipUnsubscribe',
         [$membership_id],
       ];
     }
@@ -178,8 +168,8 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
       'title' => t('Unsubscribe from collections'),
       'operations' => $operations,
       'finished' => [$this, 'membershipUnsubscribeFinish'],
-      'init_message' => t('Initiating...'),
-      'progress_message' => t('Processed @current out of @total. Estimated time: @estimate.'),
+      'init_message' => $this->t('Initiating...'),
+      'progress_message' => $this->t('Processed @current out of @total. Estimated time: @estimate.'),
     ];
 
     batch_set($batch);
@@ -217,7 +207,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    *   The redirect response.
    */
   public function membershipUnsubscribeFinish(bool $success, array $results, array $operations): RedirectResponse {
-    // @see \callback_batch_finished.
+    // @see \callback_batch_finished()
     if ($success) {
       $list = [
         '#theme' => 'item_list',
@@ -250,22 +240,22 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * @param \Drupal\Core\Session\AccountInterface $account_proxy
    *   The user from the route.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public function access(AccountInterface $account_proxy) {
+  public function access(AccountInterface $account_proxy): AccessResultInterface {
     // Deny access if the user is not logged in.
     if ($account_proxy->isAnonymous()) {
       return AccessResult::forbidden();
     }
 
-    return AccessResult::allowedIf($this->user->id() === $account_proxy->id());
+    return AccessResult::allowedIf($this->user->id() === $account_proxy->id() && $this->getUserMembershipIds());
   }
 
   /**
    * Returns an array of membership ids that the user has active subscriptions.
    *
-   * @return \Drupal\og\OgMembershipInterface[]
+   * @return int[]
    *   An array of memberships.
    */
   protected function getUserMembershipIds(): array {

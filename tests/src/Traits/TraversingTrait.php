@@ -26,7 +26,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when no select field is found.
    */
-  protected function findSelect($select, TraversableElement $region = NULL) {
+  protected function findSelect(string $select, TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
@@ -164,8 +164,11 @@ trait TraversingTrait {
    *
    * @param string $heading
    *   The heading of the tile to find.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The element found.
    */
-  protected function getTileByHeading($heading) {
+  protected function getTileByHeading(string $heading): NodeElement {
     return $this->getListingByHeading('listing__item--tile', $heading);
   }
 
@@ -174,8 +177,11 @@ trait TraversingTrait {
    *
    * @param string $heading
    *   The heading of the tile to find.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The element found.
    */
-  protected function getCollectionSubscriptionCardByHeading($heading) {
+  protected function getCollectionSubscriptionCardByHeading(string $heading): NodeElement {
     return $this->getListingByHeading('collection-subscription', $heading);
   }
 
@@ -187,10 +193,13 @@ trait TraversingTrait {
    * @param string $heading
    *   The heading on the item.
    *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The found node element.
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    *   Thrown when the tile is not found.
    */
-  protected function getListingByHeading($type, $heading) {
+  protected function getListingByHeading(string $type, string $heading): NodeElement {
     // Locate all the items.
     $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
     // That have a heading with the specified text.
