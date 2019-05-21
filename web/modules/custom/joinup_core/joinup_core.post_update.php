@@ -12,6 +12,7 @@ use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 use EasyRdf\Resource;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Enable the Sub-Pathauto module.
@@ -525,6 +526,86 @@ function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
   $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
   foreach ($entity_storage->loadMultiple($result) as $entity) {
     $pathauto_generator->updateEntityAlias($entity, 'update', ['force' => TRUE]);
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Create release aliases and create a redirect from the existing ones.
+ */
+function joinup_core_post_update_create_new_release_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_releases.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_releases')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_release')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Create news aliases for news, event, discussion and document content types.
+ */
+function joinup_core_post_update_create_new_node_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.community_content.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.community_content')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $bundles = ['news', 'event', 'discussion', 'document'];
+    $sandbox['entity_ids'] = \Drupal::entityQuery('node')
+      ->condition('type', $bundles, 'IN')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
     $sandbox['current']++;
   }
 
