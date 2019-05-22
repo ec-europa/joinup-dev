@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Renderer;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\og\MembershipManagerInterface;
@@ -53,10 +52,8 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    *   The membership manager service.
    * @param \Drupal\Core\Render\Renderer $renderer
    *   The renderer service.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The current route match.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, Renderer $renderer, RouteMatchInterface $route_match) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, Renderer $renderer) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $membership_manager;
     $this->renderer = $renderer;
@@ -69,8 +66,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('og.membership_manager'),
-      $container->get('renderer'),
-      $container->get('current_route_match')
+      $container->get('renderer')
     );
   }
 
