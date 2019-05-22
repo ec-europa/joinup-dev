@@ -117,7 +117,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
     $recipients_metadata = [
       [
         'options' => $notifier_options,
-        'notifier' => 'email',
+        'notifier' => $this->getNotifierId($account),
       ],
     ];
     return $this->sendMessage($message, $recipients_metadata);
