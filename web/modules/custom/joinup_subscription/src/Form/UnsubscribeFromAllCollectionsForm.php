@@ -186,11 +186,12 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
         '#theme' => 'item_list',
         '#items' => $results,
       ];
+      $count = count($results);
       $arguments = [
-        '@count' => count($results),
+        '@count' => $count,
         '@items' => $this->renderer->render($list),
       ];
-      $message = $this->t('You will not receive notification for the following @count items collections.<br />@items', $arguments);
+      $message = $this->formatPlural($count, 'You will no longer receive notifications for the following collection:<br />@items', 'You will no longer receive notifications for the following @count collections:<br />@items', $arguments);
       $this->messenger()->addStatus($message);
     }
     else {

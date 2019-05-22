@@ -55,11 +55,11 @@ Feature: Unsubscribe from collections
 
     # Checks partially the success messages so it can work like the step that asserts 'lines of text' above.
     Then I should see the following success messages:
-      | Success messages                                                         |
-      | You will not receive notification for the following 3 items collections. |
-      | Southpark elementary                                                     |
-      | Kenny's house                                                            |
-      | Koon's hideout                                                           |
+      | Success messages                                                          |
+      | You will no longer receive notifications for the following 3 collections: |
+      | Southpark elementary                                                      |
+      | Kenny's house                                                             |
+      | Koon's hideout                                                            |
 
     And I should be on "/user/subscriptions"
     And the option with text "No notifications" from select "Discussion" is selected in the "Southpark elementary" card
