@@ -28,7 +28,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
   field_licence_description:
-    type: smart_trim
+    type: text_default
     weight: 1
     region: content
     label: hidden
