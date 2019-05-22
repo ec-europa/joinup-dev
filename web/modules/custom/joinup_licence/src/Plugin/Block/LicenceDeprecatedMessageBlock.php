@@ -86,14 +86,14 @@ class LicenceDeprecatedMessageBlock extends BlockBase implements ContainerFactor
     if (!$deprecated) {
       return [];
     }
-    $message = t('This licence is deprecated and will not be selected for new distributions.');
+    $message = $this->t('This licence is deprecated and will not be selected for new distributions.');
     $build = [
       '#theme' => 'status_messages',
       '#message_list' => [
         'warning' => [$message],
       ],
       '#status_headings' => [
-        'warning' => t('Warning message'),
+        'warning' => $this->t('Warning message'),
       ],
     ];
 
