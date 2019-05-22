@@ -21,4 +21,15 @@
 
 
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
+    <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice">
+        <exclude name="DrupalPractice.CodeAnalysis" />
+        <exclude name="DrupalPractice.Constants" />
+        <exclude name="DrupalPractice.FunctionCalls" />
+        <exclude name="DrupalPractice.FunctionDefinitions" />
+        <exclude name="DrupalPractice.General" />
+        <exclude name="DrupalPractice.InfoFiles" />
+        <exclude name="DrupalPractice.Objects.GlobalClass.GlobalClass" />
+        <exclude name="DrupalPractice.Objects.GlobalDrupal.GlobalDrupal" />
+        <exclude name="DrupalPractice.Yaml" />
+    </rule>
 </ruleset>
