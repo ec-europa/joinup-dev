@@ -412,7 +412,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the option with text :option from select :select is selected
    */
   public function assertFieldOptionSelected($option, $select) {
-    $this->isFieldOptionSelectedInRegion($option, $select);
+    $this->assertFieldOptionSelectedInRegion($option, $select);
   }
 
   /**
@@ -433,7 +433,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldOptionSelectedInCard(string $option, string $select, string $heading): void {
     $region = $this->getCollectionSubscriptionCardByHeading($heading);
-    $this->isFieldOptionSelectedInRegion($option, $select, $region);
+    $this->assertFieldOptionSelectedInRegion($option, $select, $region);
   }
 
   /**
@@ -450,7 +450,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   Thrown when the select is not found in the page or the selected option is
    *   not the expected one.
    */
-  protected function isFieldOptionSelectedInRegion(string $option, string $select, TraversableElement $region = NULL): void {
+  protected function assertFieldOptionSelectedInRegion(string $option, string $select, TraversableElement $region = NULL): void {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }
