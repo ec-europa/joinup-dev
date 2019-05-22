@@ -164,17 +164,15 @@ class ExportUserListForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $operations = [];
-
     // Retrieve all user IDs, but exclude the anonymous user.
     $user_ids = $this->getUserStorage()->getQuery()->execute();
     unset($user_ids[0]);
 
-    // Split up the work in batches of 50 users.
+    // Split up the work in batches of 250 users.
     $form_class = $this;
     $batch_operations = array_map(function ($user_ids_batch) use ($form_class) {
       return [[$form_class, 'collectUserData'], [$user_ids_batch]];
-    }, array_chunk($user_ids, 50));
+    }, array_chunk($user_ids, 250));
 
     // After the batch process is finished we will redirect to a controller that
     // will serve the CSV file as a download. We need to pass the filename to
@@ -185,7 +183,7 @@ class ExportUserListForm extends FormBase {
       'title' => 'Exporting user list',
       'init_message' => 'Starting collection of user data.',
       'operations' => $batch_operations,
-      'finished' => [$this, 'formatCsv'],
+      'finished' => [$this, 'redirectToDownload'],
     ];
     batch_set($batch);
   }
@@ -199,13 +197,51 @@ class ExportUserListForm extends FormBase {
    *   The batch context.
    */
   public function collectUserData(array $user_ids, array &$context): void {
+    $results = [];
     foreach ($this->getUserStorage()->loadMultiple($user_ids) as $user) {
       foreach (self::EXPORTED_FIELDS as $id => $field) {
         // Get the data from the input processor.
         list($method, $arguments) = $field['input'];
         array_unshift($arguments, $user);
-        $context['results'][$user->id()][$id] = $this->$method(...$arguments);
+        $results[$user->id()][$id] = $this->$method(...$arguments);
       }
+    }
+
+    // Compile the results as a table.
+    $headers = array_keys(self::EXPORTED_FIELDS);
+    $rows = [];
+    foreach ($results as $result) {
+      $columns = [];
+      foreach (self::EXPORTED_FIELDS as $id => $field) {
+        // Run the data through the output processors.
+        $output = $result[$id];
+        foreach ($field['output'] as $method) {
+          $output = $this->$method($output);
+        }
+        $columns[] = $output;
+      }
+      $rows[] = array_combine($headers, $columns);
+    }
+
+    // Convert the data into CSV format.
+    $data = (new CsvEncoder())->encode($rows, 'csv');
+
+    // Create a temporary file to store the result in, if it doesn't exist yet.
+    if (empty($context['results'])) {
+      $context['results'] = [
+        $this->fileSystem->tempnam('temporary://', 'file'),
+      ];
+    }
+    // If the file has been created in a previous batch this means the CSV
+    // headers have already been output. Strip them from the result so they are
+    // not duplicated in the file.
+    else {
+      $data = preg_replace('/^.+\n/', "\n", $data);
+    }
+
+    if (file_put_contents($context['results'][0], $data, FILE_APPEND) === FALSE) {
+      $this->messenger()->addError($this->t('The CSV file could not be created.'));
+      throw new HttpException(500);
     }
   }
 
@@ -222,34 +258,9 @@ class ExportUserListForm extends FormBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   A redirect response to the page that serves the CSV file as a download.
    */
-  public function formatCsv(bool $success, array $results, array $operations): Response {
+  public function redirectToDownload(bool $success, array $results, array $operations): Response {
     if (!$success) {
       $this->messenger()->addError('An error occurred during the export of the user data.');
-      throw new HttpException(500);
-    }
-
-    $headers = array_keys(self::EXPORTED_FIELDS);
-
-    // Compile the results as a table.
-    $rows = [];
-    foreach ($results as $result) {
-      $columns = [];
-      foreach (self::EXPORTED_FIELDS as $id => $field) {
-        // Run the data through the output processors.
-        $output = $result[$id];
-        foreach ($field['output'] as $method) {
-          $output = $this->$method($output);
-        }
-        $columns[] = $output;
-      }
-      $rows[] = array_combine($headers, $columns);
-    }
-
-    // Convert the data into a CSV file and store in a temporary file.
-    $data = (new CsvEncoder())->encode($rows, 'csv');
-    $temp_filename = $this->fileSystem->tempnam('temporary://', 'file');
-    if (file_put_contents($temp_filename, $data) === FALSE) {
-      $this->messenger()->addError($this->t('The CSV file could not be created.'));
       throw new HttpException(500);
     }
 
@@ -257,8 +268,8 @@ class ExportUserListForm extends FormBase {
     // need to pass the temporary file that contains the export in a session
     // variable. Also pass a CSRF token to protect against session tampering.
     // @see batch_set()
-    $_SESSION['temp_filename'] = $temp_filename;
-    $_SESSION['csrf_token'] = $this->csrfTokenGenerator->get($temp_filename);
+    $_SESSION['temp_filename'] = $results[0];
+    $_SESSION['csrf_token'] = $this->csrfTokenGenerator->get($results[0]);
     return new RedirectResponse(Url::fromRoute('joinup.export_user_list_download')->toString());
   }
 
