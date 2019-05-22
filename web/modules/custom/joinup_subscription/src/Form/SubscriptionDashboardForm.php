@@ -90,7 +90,7 @@ class SubscriptionDashboardForm extends FormBase {
     });
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
-    $form['usubscribe_all'] = [
+    $form['unsubscribe_all'] = [
       '#type' => 'link',
       '#title' => t('Unsubscribe from all'),
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
