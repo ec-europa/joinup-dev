@@ -45,13 +45,6 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
   protected $renderer;
 
   /**
-   * The user entity from the route.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $user;
-
-  /**
    * Constructs an UnsubscribeFromAllCollectionsForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -67,7 +60,6 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $membership_manager;
     $this->renderer = $renderer;
-    $this->user = $route_match->getParameter('user');
   }
 
   /**
@@ -249,7 +241,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
       return AccessResult::forbidden();
     }
 
-    return AccessResult::allowedIf($this->user->id() === $account_proxy->id() && $this->getUserMembershipIds());
+    return AccessResult::allowedIf($this->getUser()->id() === $account_proxy->id() && $this->getUserMembershipIds());
   }
 
   /**
@@ -262,10 +254,20 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
     $query = $this->entityTypeManager
       ->getStorage('og_membership')
       ->getQuery()
-      ->condition('uid', $this->user->id())
+      ->condition('uid', $this->getUser()->id())
       ->condition('entity_bundle', 'collection')
       ->exists('subscription_bundles');
     return $query->execute();
+  }
+
+  /**
+   * Returns the user entity from the route.
+   *
+   * @return \Drupal\Core\Session\AccountInterface
+   *   The user account.
+   */
+  protected function getUser(): AccountInterface {
+    return $this->getRouteMatch()->getParameter('user');
   }
 
 }
