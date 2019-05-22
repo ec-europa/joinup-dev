@@ -167,6 +167,9 @@ trait TraversingTrait {
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The element found.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the element is not found.
    */
   protected function getTileByHeading(string $heading): NodeElement {
     return $this->getListingByHeading('listing__item--tile', $heading);
@@ -176,10 +179,13 @@ trait TraversingTrait {
    * Finds a card element by its heading.
    *
    * @param string $heading
-   *   The heading of the tile to find.
+   *   The heading of the card to find.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The element found.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the element is not found.
    */
   protected function getCollectionSubscriptionCardByHeading(string $heading): NodeElement {
     return $this->getListingByHeading('collection-subscription', $heading);
@@ -197,7 +203,7 @@ trait TraversingTrait {
    *   The found node element.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   Thrown when the tile is not found.
+   *   Thrown when the element is not found.
    */
   protected function getListingByHeading(string $type, string $heading): NodeElement {
     // Locate all the items.

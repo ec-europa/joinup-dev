@@ -106,6 +106,7 @@ class SubscriptionDashboardForm extends FormBase {
       '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
     ];
 
+    // Return early if there are no memberships to display.
     if (!(bool) count($memberships)) {
       $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
       $form['empty_text'] = [

@@ -1,6 +1,6 @@
 @api
 Feature: Unsubscribe from collections
-  In order to reduce spam messages
+  In order to reduce the amount of notifications I receive
   As a user of the website
   I need to be able to easily unsubscribe from collections.
 

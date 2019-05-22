@@ -416,7 +416,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds the selected option of the select in a card and check the text.
+   * Finds the selected option of the select in a card and checks the text.
    *
    * @param string $option
    *   Text value of the option to find.
@@ -437,7 +437,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks whether an option is selected in a specific select in a region.
+   * Checks if an option is selected in a specific select element in a region.
    *
    * @param string $option
    *   Text value of the option to find.
@@ -521,7 +521,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Find the selected option of the select and check the text.
+   * Checks that a select element does not have the given text option selected.
    *
    * @param string $option
    *   Text value of the option to find.

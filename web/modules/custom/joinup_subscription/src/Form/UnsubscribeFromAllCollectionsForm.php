@@ -52,7 +52,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
   protected $user;
 
   /**
-   * Constructs a UnsubscribeFromAllCollectionsForm.
+   * Constructs an UnsubscribeFromAllCollectionsForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -253,7 +253,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
   }
 
   /**
-   * Returns an array of membership ids that the user has active subscriptions.
+   * Returns an array of membership IDs that the user has active subscriptions.
    *
    * @return int[]
    *   An array of memberships.
