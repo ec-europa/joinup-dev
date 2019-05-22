@@ -20,6 +20,12 @@ Feature: Unsubscribe from collections
       | Koon's hideout       | Eric Cartman | facilitator |
 
     Given I am logged in as "Eric Cartman"
+
+    Then I should have the following collection content subscriptions:
+      | Southpark elementary | discussion, document, event, news |
+      | Kenny's house        | discussion, document, event, news |
+      | Koon's hideout       | discussion, document, event, news |
+
     When I click "My subscriptions"
     # The button is actually a link but is styled as a button.
     Then I should see the link "Unsubscribe from all"
@@ -69,3 +75,8 @@ Feature: Unsubscribe from collections
     And the option with text "No notifications" from select "Event" is selected in the "Koon's hideout" card
     And the option with text "No notifications" from select "News" is selected in the "Koon's hideout" card
     And I should not see the link "Unsubscribe from all"
+
+    And I should have the following collection content subscriptions:
+      | Southpark elementary | |
+      | Kenny's house        | |
+      | Koon's hideout       | |
