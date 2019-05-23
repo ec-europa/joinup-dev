@@ -62,10 +62,10 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
     // their styles in code.
     $image_style_setting = $this->getSetting('image_style');
     if (isset($image_styles[$image_style_setting])) {
-      $summary[] = t('Image style: @style', ['@style' => $image_styles[$image_style_setting]]);
+      $summary[] = $this->t('Image style: @style', ['@style' => $image_styles[$image_style_setting]]);
     }
     else {
-      $summary[] = t('Original image');
+      $summary[] = $this->t('Original image');
     }
 
     return $summary;
