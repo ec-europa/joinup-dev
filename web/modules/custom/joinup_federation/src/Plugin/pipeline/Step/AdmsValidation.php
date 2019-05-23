@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
-use Drupal\adms_validator\AdmsValidator;
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;

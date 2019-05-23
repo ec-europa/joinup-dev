@@ -5,6 +5,7 @@ namespace Drupal\Tests\joinup_core\Functional;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
@@ -18,8 +19,9 @@ use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
  */
 class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
 
-  use FileUrlTrait;
   use EntityUtilityTrait;
+  use FileUrlTrait;
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -199,7 +201,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     $this->submitForm([
       'name' => $account->getUsername(),
       'pass' => $account->passRaw,
-    ], t('Sign in'));
+    ], $this->t('Sign in'));
 
     // @see BrowserTestBase::drupalUserIsLoggedIn()
     $account->sessionId = $this->getSession()->getCookie($this->getSessionName());

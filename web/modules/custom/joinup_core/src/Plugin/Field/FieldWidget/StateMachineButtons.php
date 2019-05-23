@@ -54,7 +54,7 @@ class StateMachineButtons extends OptionsSelectWidget {
 
     $use_transition_label = $this->getSetting('use_transition_label');
     if ($use_transition_label) {
-      $summary[] = t('Use transition labels');
+      $summary[] = $this->t('Use transition labels');
     }
 
     return $summary;
