@@ -138,7 +138,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         $expected_result = $test_data[1];
 
         $access = $this->ogAccess->userAccessEntity('create', $content, $this->$user_var)->isAllowed();
-        $result = $expected_result ? t('have') : t('not have');
+        $result = $expected_result ? $this->t('have') : $this->t('not have');
         $message = "User {$user_var} should {$result} {$operation} access for bundle 'asset_release'.";
         $this->assertEquals($expected_result, $access, $message);
       }
@@ -165,7 +165,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
           $expected_result = $test_data_array[2];
 
           $access = $this->entityAccess->access($content, $operation, $this->$user_var);
-          $result = $expected_result ? t('have') : t('not have');
+          $result = $expected_result ? $this->t('have') : $this->t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$content_state}) with the parent entity in {$parent_state} state.";
           $this->assertEquals($expected_result, $access, $message);
         }
@@ -197,7 +197,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
         sort($actual_transitions);
         sort($transitions);
 
-        $this->assertEquals($transitions, $actual_transitions, t('Allowed transitions match with settings.'));
+        $this->assertEquals($transitions, $actual_transitions, $this->t('Allowed transitions match with settings.'));
       }
     }
   }
@@ -244,7 +244,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
     $membership->save();
     $loaded = $this->ogMembershipManager->getMembership($group, $user);
-    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
+    $this->assertInstanceOf(OgMembership::class, $loaded, $this->t('A membership was successfully created.'));
   }
 
   /**
