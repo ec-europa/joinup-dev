@@ -297,9 +297,6 @@ trait OgTrait {
    * Clears the OG related caches.
    */
   protected static function resetCache(): void {
-    /** @var \Drupal\og\MembershipManager $membership_manager */
-    $membership_manager = \Drupal::service('og.membership_manager');
-    $membership_manager->reset();
     \Drupal::entityTypeManager()->getStorage('og_membership')->resetCache();
     Og::reset();
   }
