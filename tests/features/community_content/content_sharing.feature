@@ -158,6 +158,82 @@ Feature: Sharing content between collections
       | news         |
 
   @javascript
+  Scenario Outline: Share/Unshare contextual link should only be visible to facilitators
+    Given collections:
+      | title      | state     |
+      | Westeros   | validated |
+      | Essos city | validated |
+    And "<content type>" content:
+      | title       | collection | state     |
+      | Iron throne | Westeros   | validated |
+    Given users:
+      | Username       | E-mail                     | Roles     |
+      | Jamie Lanister | jamie.lanister@example.com | moderator |
+      | John Snow      | john.snow@example.com      |           |
+      | Arya Stark     | arya.stark@example.com     |           |
+    And the following collection user memberships:
+      | collection | user       | roles       |
+      | Westeros   | John snow  | facilitator |
+      | Essos city | John snow  | member      |
+      | Essos city | Arya Stark | facilitator |
+
+    When I am logged in as "Arya Stark"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    And I should not see the contextual link "Unshare" in the "Iron throne" tile
+
+    When I am logged in as "John Snow"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    But I should not see the contextual link "Unshare" in the "Iron throne" tile
+
+    # Normally we would share directly from the Keep up to date page. However, a styling issue is preventing the
+    # checkbox to be located.
+    # @see: ISAICP-5245.
+    # And I click "Keep up to date"
+    # Then I should see the contextual link "Share" in the "Iron throne" tile
+    # And I click the contextual link "Share" in the "Iron throne" tile
+    When I go to the content page of the type "<content type>" with the title "Iron throne"
+    And I click "Share"
+    Then a modal should open
+    And the following fields should be present "Essos city"
+    When I check "Essos city"
+    And I press "Share" in the "Modal buttons" region
+    And I wait for AJAX to finish
+    Then I should see the success message "Item was shared in the following collections: Essos city."
+
+    When I am on the homepage
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    # Simple members can still not unshare content from collections.
+    But I should not see the contextual link "Unshare" in the "Iron throne" tile
+
+    When I am logged in as "Arya Stark"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    # Link vary by user og role since the 2 users up to now have the same permissions outside og.
+    And I should see the contextual link "Unshare" in the "Iron throne" tile
+    When I click the contextual link "Unshare" in the "Iron throne" tile
+    Then a modal should open
+    And the following fields should be present "Essos city"
+
+    When I am logged in as "Jamie Lanister"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    # Moderators should be able to unshare from every group the content is shared in.
+    And I should see the contextual link "Unshare" in the "Iron throne" tile
+    When I click the contextual link "Unshare" in the "Iron throne" tile
+    Then a modal should open
+    And the following fields should be present "Essos city"
+
+    Examples:
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
+
+  @javascript
   Scenario Outline: Shared content should show visual cues in the collections they are shared.
     Given collections:
       | title | state     |
@@ -228,9 +304,9 @@ Feature: Sharing content between collections
       | Username        | E-mail                |
       | Sanjica Sauvage | sanjisauv@example.com |
     And the following collection user memberships:
-      | collection   | user            |
-      | Secrets      | Sanjica Sauvage |
-      | Gossip       | Sanjica Sauvage |
+      | collection | user            |
+      | Secrets    | Sanjica Sauvage |
+      | Gossip     | Sanjica Sauvage |
     And I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "An unshareable secret"
     And I click "Share"

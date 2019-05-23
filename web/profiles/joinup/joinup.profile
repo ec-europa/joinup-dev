@@ -382,8 +382,20 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
   // Add the "collection_context" contextual links group on community content
   // and solutions.
   if (JoinupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
+    // The contextual links need to vary per user roles and per user og roles.
+    // Core already takes care of varying by roles by applying the
+    // user.permissions cache context and applying the permission hash in the
+    // contextual links. We need to include the corresponding data deriving from
+    // the og role cache context.
+    /** @var \Drupal\og\Cache\Context\OgRoleCacheContext $cache_service */
+    $cache_service = \Drupal::service('cache_context.og_role');
+    $roles_hash = $cache_service->getContext();
+
     // The rendered entity needs to vary by og group context.
-    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
+    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
+      'og_role',
+      'og_group_context',
+    ]);
     $build['#contextual_links']['collection_context'] = [
       'route_parameters' => [
         'entity_type' => $entity->getEntityTypeId(),
@@ -395,7 +407,10 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
         // checks will correctly return an access denied.
         'collection' => NULL,
       ],
-      'metadata' => ['changed' => $entity->getChangedTime()],
+      'metadata' => [
+        'changed' => $entity->getChangedTime(),
+        'og_roles_hash' => $roles_hash,
+      ],
     ];
     /** @var \Drupal\rdf_entity\RdfInterface $collection */
     $collection = \Drupal::service('og.context')->getGroup();
