@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'prepare' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 $expected_values = [

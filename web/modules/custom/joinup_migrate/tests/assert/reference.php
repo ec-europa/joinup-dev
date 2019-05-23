@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'reference' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\file\Entity\File;

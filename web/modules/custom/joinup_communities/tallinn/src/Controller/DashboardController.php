@@ -107,7 +107,7 @@ class DashboardController extends ControllerBase {
     $response->addCacheableDependency($tallinn_collection);
 
     $data = [];
-    foreach ($groups as $group_id => $group_info) {
+    foreach ($groups as $group_info) {
       if (empty($group_info['parent_name'])) {
         // The fields are placed in a nested group. Ignore the wrapping group.
         continue;

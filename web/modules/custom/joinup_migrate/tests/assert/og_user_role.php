@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'og_user_role' and 'og_user_role_solution' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\og\Entity\OgRole;

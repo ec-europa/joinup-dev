@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'file:inline' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 // This image is embedded in the body of Project with NID 42438 as

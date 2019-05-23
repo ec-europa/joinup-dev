@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'owner' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 // Imported content check.
