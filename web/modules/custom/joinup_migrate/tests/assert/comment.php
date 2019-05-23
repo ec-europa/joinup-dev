@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'comment' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\comment\Entity\Comment;

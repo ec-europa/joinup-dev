@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'mapping' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 $expected_values = [

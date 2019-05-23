@@ -19,10 +19,10 @@
     <exclude-pattern>web/themes/joinup/vendor/*</exclude-pattern>
     <exclude-pattern>web/themes/joinup/prototype/gulpfile.js</exclude-pattern>
 
+    <config name="installed_paths" value="../../../vendor/drupal/coder/coder_sniffer/Drupal,../../../vendor/drupal/coder/coder_sniffer/DrupalPractice" />
 
-    <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
-    <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice">
-        <exclude name="DrupalPractice.CodeAnalysis" />
+    <rule ref="Drupal" />
+    <rule ref="DrupalPractice">
         <exclude name="DrupalPractice.Constants" />
         <exclude name="DrupalPractice.FunctionCalls" />
         <exclude name="DrupalPractice.FunctionDefinitions" />

@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'video' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\node\Entity\Node;

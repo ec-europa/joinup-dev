@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'newsletter' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\node\Entity\Node;

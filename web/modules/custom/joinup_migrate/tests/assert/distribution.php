@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'distribution' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\file_url\FileUrlHandler;

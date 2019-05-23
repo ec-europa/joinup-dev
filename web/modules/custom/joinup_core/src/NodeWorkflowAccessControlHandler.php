@@ -269,7 +269,7 @@ class NodeWorkflowAccessControlHandler {
     $workflow_id = $this->getEntityWorkflowId($entity);
     $e_library = $this->getEntityElibrary($entity);
 
-    foreach ($create_scheme[$workflow_id][$e_library] as $transition_id => $ownership_data) {
+    foreach ($create_scheme[$workflow_id][$e_library] as $ownership_data) {
       // There is no check whether the transition is allowed as only allowed
       // transitions are mapped in the permission scheme configuration object.
       if ($this->userHasRoles($entity, $account, $ownership_data)) {

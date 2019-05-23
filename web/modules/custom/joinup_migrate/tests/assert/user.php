@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'user' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\user\Entity\User;

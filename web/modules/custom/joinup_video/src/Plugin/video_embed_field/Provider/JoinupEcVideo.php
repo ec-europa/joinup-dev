@@ -58,12 +58,12 @@ class JoinupEcVideo extends ProviderPluginBase {
       if (!isset(static::$resolvedUrl[$input])) {
         // @todo To be refactored in ISAICP-3885.
         /** @var \Psr\Http\Message\UriInterface $uri */
+        $uri = NULL;
         \Drupal::httpClient()->get($input, [
           'on_stats' => function (TransferStats $stats) use (&$uri) {
             $uri = $stats->getEffectiveUri();
           },
-]
-        );
+        ]);
         static::$resolvedUrl[$input] = $uri ? $uri->__toString() : $input;
       }
       $input = static::$resolvedUrl[$input];

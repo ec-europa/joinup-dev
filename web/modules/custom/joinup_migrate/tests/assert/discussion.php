@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'discussion' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\node\Entity\Node;
