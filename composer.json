@@ -55,7 +55,7 @@
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
-        "drupal/spdx": "dev-ISAICP-2704",
+        "drupal/spdx": "^1.0",
         "drupal/state_machine": "1.0-beta3",
         "drupal/subpathauto": "^1.0@rc",
         "drupal/swiftmailer": "^1.0@beta",
