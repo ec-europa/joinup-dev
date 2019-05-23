@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'custom_page' and 'custom_page_parent' migrations.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 use Drupal\node\Entity\Node;

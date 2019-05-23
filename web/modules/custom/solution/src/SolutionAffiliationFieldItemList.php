@@ -75,7 +75,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
       // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($new_collection_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) as $id => $collection) {
+      foreach (Rdf::loadMultiple($new_collection_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) as $collection) {
         if ($collection->bundle() !== 'collection') {
           throw new \Exception('Only collections can be referenced in affiliation requests.');
         }

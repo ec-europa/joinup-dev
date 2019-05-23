@@ -83,7 +83,7 @@ class DashboardController extends ControllerBase {
    *   If the group entity is missing.
    */
   public function getData(): CacheableResponseInterface {
-    if (!$tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID)) {
+    if (!$tallinn_collection = Rdf::load(Tallinn::COMMUNITY_ID)) {
       throw new \LogicException("The Tallinn collection entity is missing.");
     }
 
@@ -107,7 +107,7 @@ class DashboardController extends ControllerBase {
     $response->addCacheableDependency($tallinn_collection);
 
     $data = [];
-    foreach ($groups as $group_id => $group_info) {
+    foreach ($groups as $group_info) {
       if (empty($group_info['parent_name'])) {
         // The fields are placed in a nested group. Ignore the wrapping group.
         continue;

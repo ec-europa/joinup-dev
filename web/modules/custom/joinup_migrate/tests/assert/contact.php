@@ -3,6 +3,8 @@
 /**
  * @file
  * Assertions for 'contact' and 'contact_email' migration.
+ *
+ * @codingStandardsIgnoreFile
  */
 
 // Imported content check.
