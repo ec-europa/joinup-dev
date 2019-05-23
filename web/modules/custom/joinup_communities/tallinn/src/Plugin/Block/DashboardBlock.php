@@ -98,7 +98,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
 
     // Add the collection cache tags.
-    $tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID);
+    $tallinn_collection = Rdf::load(Tallinn::COMMUNITY_ID);
     $tallinn_collection_tags = !empty($tallinn_collection) ? $tallinn_collection->getCacheTags() : [];
     return Cache::mergeTags($tags, $tallinn_collection_tags);
   }

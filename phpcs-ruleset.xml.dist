@@ -23,7 +23,6 @@
 
     <rule ref="Drupal" />
     <rule ref="DrupalPractice">
-        <exclude name="DrupalPractice.Constants" />
         <exclude name="DrupalPractice.FunctionCalls" />
         <exclude name="DrupalPractice.FunctionDefinitions" />
         <exclude name="DrupalPractice.General" />

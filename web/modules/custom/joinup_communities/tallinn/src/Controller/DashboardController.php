@@ -83,7 +83,7 @@ class DashboardController extends ControllerBase {
    *   If the group entity is missing.
    */
   public function getData(): CacheableResponseInterface {
-    if (!$tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID)) {
+    if (!$tallinn_collection = Rdf::load(Tallinn::COMMUNITY_ID)) {
       throw new \LogicException("The Tallinn collection entity is missing.");
     }
 

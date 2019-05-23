@@ -9,6 +9,9 @@ namespace Drupal\tallinn;
  */
 class Tallinn {
 
+  // The RDF ID of the Tallinn community.
+  const COMMUNITY_ID = 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3';
+
   /**
    * The Tallinn reports countries.
    *
