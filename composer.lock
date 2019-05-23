@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "684d5f9bf20f98780ae17be736edc10b",
+    "content-hash": "c6d5a860f32ac4a15b147c40594c1753",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5261,7 +5261,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "resources/patch/bundle-plurals-adapted-to-split.patch"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
