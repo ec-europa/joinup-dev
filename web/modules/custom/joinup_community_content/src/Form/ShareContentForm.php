@@ -8,10 +8,12 @@ use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgRoleManagerInterface;
 use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -37,13 +39,17 @@ class ShareContentForm extends ShareContentFormBase {
    *   The RDF view builder.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The OG membership manager.
+   * @param \Drupal\og\OgRoleManagerInterface $role_manager
+   *   The OG role manager service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user account.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, AccountInterface $current_user, JoinupRelationManagerInterface $relation_manager) {
-    parent::__construct($rdf_storage, $rdf_builder, $membership_manager, $current_user);
+  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, JoinupRelationManagerInterface $relation_manager) {
+    parent::__construct($rdf_storage, $rdf_builder, $membership_manager, $role_manager, $current_user, $messenger);
 
     $this->relationManager = $relation_manager;
   }
@@ -56,7 +62,9 @@ class ShareContentForm extends ShareContentFormBase {
       $container->get('entity_type.manager')->getStorage('rdf_entity'),
       $container->get('entity_type.manager')->getViewBuilder('rdf_entity'),
       $container->get('og.membership_manager'),
+      $container->get('og.role_manager'),
       $container->get('current_user'),
+      $container->get('messenger'),
       $container->get('joinup_core.relations_manager')
     );
   }
@@ -144,7 +152,7 @@ class ShareContentForm extends ShareContentFormBase {
 
     // Show a message if the content was shared in at least one collection.
     if (!empty($collections)) {
-      drupal_set_message('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
+      $this->messenger->addStatus('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
     }
 
     $form_state->setRedirectUrl($this->node->toUrl());
@@ -198,13 +206,11 @@ class ShareContentForm extends ShareContentFormBase {
       return [];
     }
 
-    $user_collections = $this->getUserCollections();
+    $user_collections = $this->getUserGroupsByPermission("share {$this->node->bundle()} content");
     $node_parent = $this->relationManager->getParent($this->node);
 
     // We cannot share in the parent collection.
-    if ($node_parent->bundle() === 'collection' && isset($user_collections[$node_parent->id()])) {
-      unset($user_collections[$node_parent->id()]);
-    }
+    unset($user_collections[$node_parent->id()]);
 
     return array_diff_key($user_collections, array_flip($this->getAlreadySharedCollectionIds()));
   }

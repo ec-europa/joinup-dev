@@ -62,7 +62,7 @@ class UnshareContentForm extends ShareContentFormBase {
     }
 
     if (!empty($collections)) {
-      drupal_set_message('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
+      $this->messenger->addStatus('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
     }
     $form_state->setRedirectUrl($this->node->toUrl());
   }
@@ -105,10 +105,13 @@ class UnshareContentForm extends ShareContentFormBase {
   protected function getCollections() {
     $collections = $this->getAlreadySharedCollectionIds();
     if (empty($collections)) {
-      return [];
+      return $collections;
     }
 
-    return array_intersect_key($this->getUserCollectionsWhereFacilitator(), array_flip($collections));
+    if ($this->currentUser->hasPermission('administer shared content')) {
+      return $this->rdfStorage->loadMultiple($collections);
+    }
+    return array_intersect_key($this->getUserGroupsByPermission("unshare {$this->node->bundle()} content"), array_flip($collections));
   }
 
   /**
