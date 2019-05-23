@@ -26,7 +26,10 @@ services:
     class: Drupal\joinup_core\EventSubscriber\TransferGroupOwnershipSubscriber
     arguments: ['@current_user', '@tempstore.private']
     tags:
-      - name: event_subscriber
+    - name: event_subscriber
   joinup_core.vocabulary_fixtures.helper:
     class: Drupal\joinup_core\VocabularyFixturesHelper
     arguments: ['@sparql_endpoint']
+  joinup_core.requirements_helper:
+    class: Drupal\joinup_core\RequirementsHelper
+    arguments: ['@database', '@sparql_endpoint']

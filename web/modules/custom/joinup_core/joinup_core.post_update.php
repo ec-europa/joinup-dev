@@ -632,3 +632,31 @@ function joinup_core_post_update_enable_spdx() {
 function joinup_core_post_update_re_import_legal_type_vocabulary() {
   \Drupal::service('joinup_core.vocabulary_fixtures.helper')->importFixtures('licence-legal-type');
 }
+
+/**
+ * Corrects the versions of faulty news items.
+ */
+function joinup_core_post_update_set_news_default_version() {
+  // Due to some cache state inconsistency, some nodes had their state
+  // reverted in a previous version without creating a new revision for this.
+  // While in a Drupal site it is normal to have forward revisions, it is not
+  // normal to have forward published revisions. If the entity is published,
+  // then the default version(current published) should be the latest
+  // revision. Instead, what happens is that these entities are published but
+  // also have revision(s) that are also published but of a newer version id.
+  //
+  // The query used is only returning published revisions as even if there is a
+  // forward draft revision in the entity, the draft versions are not published
+  // and thus, are not the default versions. This will set the latest published
+  // revision as the default one.
+  $results = \Drupal::service('joinup_core.requirements_helper')->getNodesWithProblematicRevisions();
+  $nids = array_keys($results);
+  /** @var \Drupal\node\NodeStorage $node_storage */
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\node\NodeInterface $node */
+  foreach ($node_storage->loadMultiple($nids) as $node) {
+    $latest_revision = $node_storage->loadRevision($results[$node->id()]->latest_vid);
+    $latest_revision->isDefaultRevision(TRUE);
+    $latest_revision->save();
+  }
+}
