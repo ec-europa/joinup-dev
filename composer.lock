@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dfe2a2e6979568c1c284761ec7958aa7",
+    "content-hash": "bdc8f4ca6b4a918d0daf870728de750d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5248,14 +5248,14 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha16",
-                    "datestamp": "1556002086",
+                    "datestamp": "1558608184",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff",
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...6ace0a272641ff5617cd5a4208c02475246d7fa4.diff",
                     "Support weights for RDF taxonomy terms @see https://github.com/ec-europa/rdf_entity/pull/93": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/93.diff",
                     "Drop support for Drupal 8.5.x. Support PHP 7.3, Drupal 8.7.x, 8.8.x @see https://github.com/ec-europa/rdf_entity/pull/91": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/91.diff"
                 }
