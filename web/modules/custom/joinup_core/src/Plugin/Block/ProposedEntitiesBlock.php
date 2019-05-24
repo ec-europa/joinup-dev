@@ -84,7 +84,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
    *   An array of rows to render.
    */
   protected function getRows() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $storage */
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $storage */
     $storage = $this->entityTypeManager->getStorage('rdf_entity');
     $query = $storage->getQuery('OR');
     $solution_sub_condition = $query->andConditionGroup();

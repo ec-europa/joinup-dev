@@ -13,8 +13,8 @@ use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
  * Add the missed 'simatosc' user (uid 73932).

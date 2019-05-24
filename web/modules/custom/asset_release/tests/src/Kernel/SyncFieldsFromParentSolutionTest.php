@@ -7,10 +7,10 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests field synchronization between solution and release.
@@ -19,7 +19,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 class SyncFieldsFromParentSolutionTest extends KernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
+  use SparqlConnectionTrait;
 
   /**
    * {@inheritdoc}
@@ -56,6 +56,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'search_api_field',
     'smart_trim',
     'solution',
+    'sparql_entity_storage',
     'state_machine',
     'system',
     'taxonomy',
@@ -83,11 +84,12 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'contact_information',
       'owner',
       'asset_release',
+      'sparql_entity_storage',
     ]);
 
     RdfEntityType::create(['rid' => 'collection'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
-    RdfEntityMapping::create($mapping)->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/sparql_entity_storage.mapping.rdf_entity.collection.yml'));
+    SparqlMapping::create($mapping)->save();
     $field_storage = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.storage.rdf_entity.field_ar_affiliates.yml'));
     FieldStorageConfig::create($field_storage)->save();
     $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));

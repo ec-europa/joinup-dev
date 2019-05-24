@@ -8,7 +8,7 @@
 use Drupal\Core\Database\Database;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 use EasyRdf\Resource;
@@ -119,7 +119,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
 
   $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
   foreach ($data as $bundle) {
-    RdfEntityMapping::loadByName('rdf_entity', $bundle)
+    SparqlMapping::loadByName('rdf_entity', $bundle)
       ->setThirdPartySetting('rdf_schema_field_validation', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain'])
       ->setThirdPartySetting('rdf_schema_field_validation', 'graph', $graph_uri)
       ->setThirdPartySetting('rdf_schema_field_validation', 'class', $class_definition)
@@ -131,7 +131,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
  * Fix the banner predicate [ISAICP-4332].
  */
 function joinup_core_post_update_fix_banner_predicate() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
   SELECT ?graph ?entity_id ?image_uri
@@ -190,11 +190,11 @@ QUERY;
  * Fix the owner class predicate [ISAICP-4333].
  */
 function joinup_core_post_update_fix_owner_predicate() {
-  $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', 'owner');
-  $rdf_entity_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
-  $rdf_entity_mapping->save();
+  $sparql_mapping = SparqlMapping::loadByName('rdf_entity', 'owner');
+  $sparql_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
+  $sparql_mapping->save();
 
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?type
@@ -242,7 +242,7 @@ QUERY;
  * Fix data type of the solution contact point[ISAICP-4334].
  */
 function joinup_core_post_update_fix_solution_contact_datatypea() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   // Two issues are to be fixed here.
   // 1. The contact reference should be a resource instead of a literal.
@@ -298,7 +298,7 @@ QUERY;
  * Fix data type of the access url field [ISAICP-4349].
  */
 function joinup_core_post_update_fix_access_url_datatype() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?predicate ?access_url

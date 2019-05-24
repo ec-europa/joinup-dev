@@ -27,7 +27,7 @@ trait JoinupEntityReferenceConstraintTrait {
    * Loads the existing, unchanged host entity.
    *
    * This method checks if the host entity is an RDF entity. If so, it passes
-   * the host entity graph to RdfEntitySparqlStorageInterface::loadUnchanged().
+   * the host entity graph to SparqlEntityStorageInterface::loadUnchanged().
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The host entity.
@@ -39,7 +39,7 @@ trait JoinupEntityReferenceConstraintTrait {
     $storage = $this->entityTypeManager->getStorage($entity->getEntityTypeId());
     if ($entity->getEntityTypeId() === 'rdf_entity') {
       /** @var \Drupal\rdf_entity\RdfInterface $entity */
-      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
+      /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
       return $storage->loadUnchanged($entity->id(), [$entity->get('graph')->target_id]);
     }
     return $storage->loadUnchanged($entity->id());

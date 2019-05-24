@@ -20,5 +20,5 @@ config_devel:
   - field.storage.rdf_entity.field_owner_name
   - field.storage.rdf_entity.field_owner_state
   - field.storage.rdf_entity.field_owner_type
-  - rdf_entity.mapping.rdf_entity.owner
   - rdf_entity.rdfentity.owner
+  - sparql_entity_storage.mapping.rdf_entity.owner

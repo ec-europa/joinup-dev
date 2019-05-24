@@ -6,9 +6,9 @@ namespace Drupal\asset_distribution\Plugin\Validation\Constraint;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
-use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -28,14 +28,14 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
   /**
    * Static cache of RDF entity storage.
    *
-   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
    */
   protected $rdfStorage;
 
   /**
    * Static cache of RDF entity query.
    *
-   * @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   * @var \Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface
    */
   protected $query;
 
@@ -100,7 +100,7 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
   /**
    * Caches and returns the RDF entity query.
    *
-   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   * @return \Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface
    *   The RDF entity query.
    */
   protected function getQuery(): SparqlQueryInterface {
@@ -127,10 +127,10 @@ class DistributionSingleParentValidator extends ConstraintValidator implements C
   /**
    * Returns the RDF entity storage.
    *
-   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   * @return \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
    *   The RDF entity storage.
    */
-  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
+  protected function getRdfStorage(): SparqlEntityStorageInterface {
     if (!isset($this->rdfStorage)) {
       $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
     }

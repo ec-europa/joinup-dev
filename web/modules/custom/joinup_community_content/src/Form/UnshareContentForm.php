@@ -55,7 +55,7 @@ class UnshareContentForm extends ShareContentFormBase {
     // already by Drupal.
     foreach ($form_state->getValue('collections') as $id => $checked) {
       if ($checked) {
-        $collection = $this->rdfStorage->load($id);
+        $collection = $this->sparqlStorage->load($id);
         $this->removeFromCollection($collection);
         $collections[] = $collection->label();
       }
@@ -109,7 +109,7 @@ class UnshareContentForm extends ShareContentFormBase {
     }
 
     if ($this->currentUser->hasPermission('administer shared content')) {
-      return $this->rdfStorage->loadMultiple($collections);
+      return $this->sparqlStorage->loadMultiple($collections);
     }
     return array_intersect_key($this->getUserGroupsByPermission("unshare {$this->node->bundle()} content"), array_flip($collections));
   }

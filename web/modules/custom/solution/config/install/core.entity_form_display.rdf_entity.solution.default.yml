@@ -330,13 +330,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  id:
-    type: auto_uri
-    weight: 0
-    settings:
-      prefix: 'http://joinup.eu/adms/asset'
-    third_party_settings: {  }
-    region: content
   label:
     type: string_textfield
     weight: 1
