@@ -92,7 +92,7 @@ class SubscriptionDashboardForm extends FormBase {
 
     $form['unsubscribe_all'] = [
       '#type' => 'link',
-      '#title' => t('Unsubscribe from all'),
+      '#title' => $this->t('Unsubscribe from all'),
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
       ]),
