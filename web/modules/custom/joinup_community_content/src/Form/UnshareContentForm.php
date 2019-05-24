@@ -109,7 +109,7 @@ class UnshareContentForm extends ShareContentFormBase {
     }
 
     if ($this->currentUser->hasPermission('administer shared content')) {
-      return $this->rdfStorage->loadMultiple($collections);
+      return $this->sparqlStorage->loadMultiple($collections);
     }
     return array_intersect_key($this->getUserGroupsByPermission("unshare {$this->node->bundle()} content"), array_flip($collections));
   }
