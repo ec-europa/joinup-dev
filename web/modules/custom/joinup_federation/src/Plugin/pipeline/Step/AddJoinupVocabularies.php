@@ -7,9 +7,9 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
-use Drupal\rdf_entity\RdfGraphHandlerInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -27,12 +27,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
 
   use PipelineStepWithClientRedirectResponseTrait;
-  use RdfEntityGraphStoreTrait;
+  use SparqlGraphStoreTrait;
 
   /**
    * The SPARQL graph handler service.
    *
-   * @var \Drupal\rdf_entity\RdfGraphHandlerInterface
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface
    */
   protected $graphHandler;
 
@@ -45,12 +45,12 @@ class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements Pi
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
-   * @param \Drupal\rdf_entity\RdfGraphHandlerInterface $graph_handler
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler
    *   The SPARQL graph handler service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, RdfGraphHandlerInterface $graph_handler) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, SparqlEntityStorageGraphHandlerInterface $graph_handler) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->graphHandler = $graph_handler;
   }

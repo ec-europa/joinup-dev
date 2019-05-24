@@ -5,7 +5,7 @@ dependencies:
     - rdf_entity
     - state_machine
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     mapping:
       value:
         predicate: 'http://joinup.eu/isr/workflow_status'

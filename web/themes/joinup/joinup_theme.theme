@@ -476,9 +476,11 @@ function joinup_theme_preprocess_menu(&$variables) {
     $reference = $photo->getValue();
     /** @var \Drupal\file\Entity\File $file */
     $file = File::load($reference['target_id']);
-    $uri = $file->getFileUri();
-    $url = ImageStyle::load('profile_icon')->buildUrl($uri);
-    $variables['profile_icon'] = $url;
+    if ($file) {
+      $uri = $file->getFileUri();
+      $url = ImageStyle::load('profile_icon')->buildUrl($uri);
+      $variables['profile_icon'] = $url;
+    }
   }
   $variables['#cache']['contexts'][] = 'user.photo';
 }

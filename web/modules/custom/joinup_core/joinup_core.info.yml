@@ -63,22 +63,23 @@ config_devel:
   - image.style.wysiwyg_half_width
   - image.style.wysiwyg_one_third_width
   - joinup_core.matomo_settings
-  - rdf_entity.mapping.taxonomy_term.actor
-  - rdf_entity.mapping.taxonomy_term.business_process
-  - rdf_entity.mapping.taxonomy_term.eira
-  - rdf_entity.mapping.taxonomy_term.eurovoc
-  - rdf_entity.mapping.taxonomy_term.file_type
-  - rdf_entity.mapping.taxonomy_term.language
-  - rdf_entity.mapping.taxonomy_term.owner_type
-  - rdf_entity.mapping.taxonomy_term.policy_domain
-  - rdf_entity.mapping.taxonomy_term.product_type
-  - rdf_entity.mapping.taxonomy_term.representation_technique
-  - rdf_entity.mapping.taxonomy_term.solution_category
-  - rdf_entity.mapping.taxonomy_term.spatial
-  - rdf_entity.mapping.taxonomy_term.standardization_level
-  - rdf_entity.mapping.taxonomy_term.status
-  - rdf_entity.mapping.taxonomy_term.test_resource_type
-  - rdf_entity.mapping.taxonomy_term.themes
+  - sparql_entity_storage.mapping.taxonomy_term.actor
+  - sparql_entity_storage.mapping.taxonomy_term.business_process
+  - sparql_entity_storage.mapping.taxonomy_term.eira
+  - sparql_entity_storage.mapping.taxonomy_term.eurovoc
+  - sparql_entity_storage.mapping.taxonomy_term.file_type
+  - sparql_entity_storage.mapping.taxonomy_term.language
+  - sparql_entity_storage.mapping.taxonomy_term.licence_type
+  - sparql_entity_storage.mapping.taxonomy_term.owner_type
+  - sparql_entity_storage.mapping.taxonomy_term.policy_domain
+  - sparql_entity_storage.mapping.taxonomy_term.product_type
+  - sparql_entity_storage.mapping.taxonomy_term.representation_technique
+  - sparql_entity_storage.mapping.taxonomy_term.solution_category
+  - sparql_entity_storage.mapping.taxonomy_term.spatial
+  - sparql_entity_storage.mapping.taxonomy_term.standardization_level
+  - sparql_entity_storage.mapping.taxonomy_term.status
+  - sparql_entity_storage.mapping.taxonomy_term.test_resource_type
+  - sparql_entity_storage.mapping.taxonomy_term.themes
   - system.action.joinup_transfer_group_ownership
   - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira

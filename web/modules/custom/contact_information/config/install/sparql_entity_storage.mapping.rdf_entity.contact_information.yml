@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - rdf_entity.rdfentity.contact_information
+third_party_settings:
+  rdf_schema_field_validation:
+    graph: 'http://adms-definition'
+    class: 'http://www.w3.org/2000/01/rdf-schema#Class'
+    property_predicates:
+      - 'http://www.w3.org/2000/01/rdf-schema#domain'
+id: rdf_entity.contact_information
+entity_type_id: rdf_entity
+bundle: contact_information
+rdf_type: 'http://www.w3.org/2006/vcard/ns#Kind'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  uid:
+    target_id:
+      predicate: 'http://joinup.eu/owner/uid'
+      format: integer
+  label:
+    value:
+      predicate: 'http://purl.org/dc/terms/title'
+      format: t_literal
+  langcode:
+    value:
+      predicate: 'http://joinup.eu/language'
+      format: t_literal
+  default_langcode:
+    value:
+      predicate: 'http://joinup.eu/language/default'
+      format: literal
+graph:
+  default: 'http://joinup.eu/contact-information/published'
+entity_id_plugin: joinup_po_namespace

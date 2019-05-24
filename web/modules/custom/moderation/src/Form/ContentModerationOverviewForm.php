@@ -166,7 +166,7 @@ class ContentModerationOverviewForm extends FormBase {
       $options[$type] = node_type_get_names()[$type] . " ($type_count)";
     }
 
-    return ['all' => t("All (@count)", ['@count' => $total_count])] + $options;
+    return ['all' => $this->t("All (@count)", ['@count' => $total_count])] + $options;
   }
 
   /**
@@ -206,7 +206,7 @@ class ContentModerationOverviewForm extends FormBase {
       $value = Unicode::ucfirst(strtr($state, ['_' => ' '])) . " ($value)";
     });
 
-    return ['all' => t("All (@count)", ['@count' => $total_count])] + $options;
+    return ['all' => $this->t("All (@count)", ['@count' => $total_count])] + $options;
   }
 
   /**

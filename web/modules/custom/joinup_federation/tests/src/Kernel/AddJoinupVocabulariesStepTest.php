@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\taxonomy\Entity\Vocabulary;
 use EasyRdf\Graph;
 
@@ -39,8 +39,8 @@ class AddJoinupVocabulariesStepTest extends StepTestBase {
 
     // Create the language vocabulary and mapping.
     Vocabulary::create(['vid' => 'language', 'name' => 'Language'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../joinup_core/config/install/rdf_entity.mapping.taxonomy_term.language.yml'));
-    RdfEntityMapping::create($mapping)->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../joinup_core/config/install/sparql_entity_storage.mapping.taxonomy_term.language.yml'));
+    SparqlMapping::create($mapping)->save();
   }
 
   /**

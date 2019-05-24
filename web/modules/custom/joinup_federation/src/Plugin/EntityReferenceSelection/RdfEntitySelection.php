@@ -77,7 +77,7 @@ class RdfEntitySelection extends DefaultSelection {
     if ($this->isRdfEntityInStagingGraph()) {
       $result = [];
       if ($ids) {
-        /** @var \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface $query */
+        /** @var \Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface $query */
         $query = $this->buildEntityQuery();
         $result = $query
           ->graphs($this->stagingCandidateGraphs->getCandidates())

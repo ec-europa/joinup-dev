@@ -2,6 +2,7 @@
 
 namespace Drupal\collection\EventSubscriber;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\og\Event\PermissionEventInterface;
 use Drupal\og\GroupPermission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,6 +11,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Event subscribers for the Collection module.
  */
 class CollectionEventSubscriber implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -31,35 +34,35 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
       $event->setPermissions([
         new GroupPermission([
           'name' => 'request collection deletion',
-          'title' => t('Request to delete collections'),
+          'title' => $this->t('Request to delete collections'),
         ]),
         new GroupPermission([
           'name' => 'request collection archival',
-          'title' => t('Request to archive collections'),
+          'title' => $this->t('Request to archive collections'),
         ]),
         new GroupPermission([
           'name' => 'invite members',
-          'title' => t('Invite users to become collection members'),
+          'title' => $this->t('Invite users to become collection members'),
         ]),
         new GroupPermission([
           'name' => 'approve membership requests',
-          'title' => t('Approve requests to join collections'),
+          'title' => $this->t('Approve requests to join collections'),
         ]),
         new GroupPermission([
           'name' => 'invite facilitators',
-          'title' => t('Invite users to become collection facilitators'),
+          'title' => $this->t('Invite users to become collection facilitators'),
         ]),
         new GroupPermission([
           'name' => 'invite users to discussions',
-          'title' => t('Invite users to participate in discussions'),
+          'title' => $this->t('Invite users to participate in discussions'),
         ]),
         new GroupPermission([
           'name' => 'accept facilitator invitation',
-          'title' => t('Accept invitation to become collection facilitator'),
+          'title' => $this->t('Accept invitation to become collection facilitator'),
         ]),
         new GroupPermission([
           'name' => 'highlight collections',
-          'title' => t('Highlight collections'),
+          'title' => $this->t('Highlight collections'),
         ]),
       ]);
     }

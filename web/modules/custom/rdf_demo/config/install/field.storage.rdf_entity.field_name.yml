@@ -4,7 +4,7 @@ dependencies:
   module:
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     rdf_mapping: 'http://xmlns.com/foaf/0.1/name'
     mapping:
       value: 'http://xmlns.com/foaf/0.1/name'

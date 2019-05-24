@@ -26,13 +26,6 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
-  id:
-    type: auto_uri
-    weight: -10
-    settings:
-      prefix: 'http://example.org/joinup/publisher'
-    third_party_settings: {  }
-    region: content
 hidden:
   current_workflow_state: true
   field_owner_state: true

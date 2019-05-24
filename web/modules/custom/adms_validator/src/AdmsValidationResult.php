@@ -4,13 +4,16 @@ declare(strict_types = 1);
 
 namespace Drupal\adms_validator;
 
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use EasyRdf\Sparql\Result;
 
 /**
  * A collection of Schema Errors.
  */
 class AdmsValidationResult {
+
+  use StringTranslationTrait;
 
   protected $errors = [];
 
@@ -21,7 +24,7 @@ class AdmsValidationResult {
    *   The result of the validation query.
    * @param string $graph_uri
    *   The graph URI.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    *
    * @todo Remove $graph_uri, $sparql params in ISAICP-4296.
@@ -81,17 +84,17 @@ class AdmsValidationResult {
     return [
       '#theme' => 'table',
       '#header' => [
-        t('Class name'),
-        t('Message'),
-        t('Object'),
-        t('Predicate'),
-        t('Rule description'),
-        t('Rule ID'),
-        t('Rule severity'),
-        t('Subject'),
+        $this->t('Class name'),
+        $this->t('Message'),
+        $this->t('Object'),
+        $this->t('Predicate'),
+        $this->t('Rule description'),
+        $this->t('Rule ID'),
+        $this->t('Rule severity'),
+        $this->t('Subject'),
       ],
       '#rows' => $this->toRows(),
-      '#empty' => t('No errors.'),
+      '#empty' => $this->t('No errors.'),
     ];
   }
 
@@ -100,7 +103,7 @@ class AdmsValidationResult {
    *
    * @param string $graph_uri
    *   The graph URI.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL endpoint.
    *
    * @todo Remove this hack in ISAICP-4296.

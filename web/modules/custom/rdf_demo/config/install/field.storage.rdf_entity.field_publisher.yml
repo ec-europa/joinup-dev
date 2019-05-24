@@ -4,7 +4,7 @@ dependencies:
   module:
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     rdf_mapping: 'dct:publisher'
     mapping:
       target_id: 'http://purl.org/dc/terms/publisher'
