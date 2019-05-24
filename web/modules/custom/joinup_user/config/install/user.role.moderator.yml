@@ -20,6 +20,7 @@ permissions:
   - 'administer matomo integration'
   - 'administer nodes'
   - 'administer search fields'
+  - 'administer shared content'
   - 'administer solution ownership'
   - 'administer support menu items'
   - 'administer tallinn settings'

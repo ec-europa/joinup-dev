@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\rdf_schema_field_validation\Kernel;
 
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\Tests\joinup_core\Kernel\JoinupKernelTestBase;
 use EasyRdf\Graph;
 
@@ -16,7 +16,7 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
    */
   protected $spaqlEndpoint;
 
@@ -62,8 +62,8 @@ class RdfSchemaFieldValidationTest extends JoinupKernelTestBase {
     $this->entityTypeManger = $this->container->get('entity_type.manager');
     $this->schemaFieldValidator = $this->container->get('rdf_schema_field_validation.schema_field_validator');
 
-    /** @var \Drupal\rdf_entity\Entity\RdfEntityMapping $dummy_mapping */
-    $dummy_mapping = $this->entityTypeManger->getStorage('rdf_entity_mapping')->load("rdf_entity.dummy");
+    /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $dummy_mapping */
+    $dummy_mapping = $this->entityTypeManger->getStorage('sparql_mapping')->load("rdf_entity.dummy");
     $dummy_mapping->setThirdPartySetting('rdf_schema_field_validation', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain']);
     $dummy_mapping->setThirdPartySetting('rdf_schema_field_validation', 'graph', $this->definitionUri);
     $dummy_mapping->setThirdPartySetting('rdf_schema_field_validation', 'class', 'http://www.w3.org/2000/01/rdf-schema#Class');

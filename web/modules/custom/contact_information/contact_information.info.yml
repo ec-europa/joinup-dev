@@ -25,5 +25,5 @@ config_devel:
   - field.storage.rdf_entity.field_ci_name
   - field.storage.rdf_entity.field_ci_state
   - field.storage.rdf_entity.field_ci_webpage
-  - rdf_entity.mapping.rdf_entity.contact_information
+  - sparql_entity_storage.mapping.rdf_entity.contact_information
   - rdf_entity.rdfentity.contact_information

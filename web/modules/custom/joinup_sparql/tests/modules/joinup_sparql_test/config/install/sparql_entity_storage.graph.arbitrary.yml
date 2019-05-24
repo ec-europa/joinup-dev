@@ -1,0 +1,8 @@
+langcode: en
+status: true
+id: arbitrary
+# Is heavier than the 'draft' graph.
+weight: 20
+name: Arbitrary
+description: 'Default graph. This is available for all entity types and bundles.'
+entity_types: null

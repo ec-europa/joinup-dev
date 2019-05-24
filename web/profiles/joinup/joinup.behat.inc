@@ -15,6 +15,7 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -59,6 +60,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use StringTranslationTrait;
   use TabledragTrait;
   use TraversingTrait;
   use UserTrait;
@@ -1305,7 +1307,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     $current_url = $this->getSession()->getCurrentUrl();
     $current_url = str_replace($this->getMinkParameter('base_url'), '', $current_url);
     if ($current_url !== $url) {
-      $message = t('Url "@current" does not match expected "@expected".', [
+      $message = $this->t('Url "@current" does not match expected "@expected".', [
         '@current' => $current_url,
         '@expected' => $url,
       ]);
@@ -2269,7 +2271,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
         '@found' => implode(', ', $invalid_tags),
       ]));
     }

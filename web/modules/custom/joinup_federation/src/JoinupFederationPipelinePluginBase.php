@@ -12,8 +12,8 @@ use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Drupal\pipeline\PipelineStateManager;
 use Drupal\pipeline\Plugin\PipelinePipelinePluginBase;
 use Drupal\pipeline\Plugin\PipelineStepPluginManager;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,7 +26,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -73,7 +73,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
    *   The pipeline state manager service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $shared_tempstore_factory
    *   The shared temp store factory service.
@@ -304,7 +304,7 @@ abstract class JoinupFederationPipelinePluginBase extends PipelinePipelinePlugin
     }
 
     if ($ids) {
-      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
+      /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
       $storage = $this->entityTypeManager->getStorage('rdf_entity');
       $storage->resetCache($ids, ['staging']);
     }

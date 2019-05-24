@@ -21,7 +21,7 @@ class AdmsValidatorSubContext extends DrupalSubContextBase {
    * @Then the ADMS-AP data of the published entities in Joinup is valid
    */
   public function assertValidPublishedGraph() {
-    /** @var \Drupal\rdf_entity\RdfGraphHandler $sparql_graph */
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $sparql_graph */
     $sparql_graph = \Drupal::service('sparql.graph_handler');
     $graphs = array_merge(
       $sparql_graph->getEntityTypeGraphUris('rdf_entity'),

@@ -4,6 +4,7 @@ namespace Drupal\Tests\joinup_core\Functional;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\og\Entity\OgMembership;
 
 /**
@@ -12,6 +13,8 @@ use Drupal\og\Entity\OgMembership;
  * @group rdf_entity
  */
 abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
+
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -90,7 +93,7 @@ abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
     $membership->save();
     $loaded = $this->ogMembershipManager->getMembership($group, $user);
-    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
+    $this->assertInstanceOf(OgMembership::class, $loaded, $this->t('A membership was successfully created.'));
   }
 
   /**

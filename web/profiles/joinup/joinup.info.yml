@@ -92,6 +92,7 @@ dependencies:
   - social_media_links_field
   - solution
   - spain_ctt
+  - sparql_entity_storage
   - state_machine
   - state_machine_revisions
   - subpathauto
@@ -241,8 +242,8 @@ config_devel:
   - pathauto.pattern.rdf_entities_generic
   - pathauto.pattern.rdf_entities_releases
   - r4032login.settings
-  - rdf_entity.graph.default
   - rest.resource.entity.rdf_entity
+  - sparql_entity_storage.graph.default
   - subpathauto.settings
   - swiftmailer.message
   - swiftmailer.transport

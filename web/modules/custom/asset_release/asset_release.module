@@ -7,14 +7,14 @@
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\og\Og;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 
 /**
  * Implements hook_entity_type_alter().
@@ -228,7 +228,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
   }
 
   // Set the graph only for new releases or those loaded from the main graphs.
-  if (!$entity->isNew() && !in_array($entity->rdfEntityOriginalGraph, ['default', 'draft'])) {
+  if (!$entity->isNew() && !in_array($entity->sparqlEntityOriginalGraph, ['default', 'draft'])) {
     return;
   }
 
@@ -237,7 +237,7 @@ function asset_release_rdf_entity_presave(EntityInterface $entity) {
     $entity->set('graph', 'draft');
   }
   elseif (in_array($state, ['validated'])) {
-    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
+    $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");

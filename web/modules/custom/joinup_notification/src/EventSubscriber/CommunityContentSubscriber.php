@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -24,6 +25,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Class CommunityContentSubscriber.
  */
 class CommunityContentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The transition object.
@@ -243,7 +246,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
         return;
       }
 
-      $transition_action = $state === 'deletion_request' ? t('approved your request of deletion for') : t('deleted');
+      $transition_action = $state === 'deletion_request' ? $this->t('approved your request of deletion for') : $this->t('deleted');
       $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$state]);
       $arguments = ['@transition:request_action:past' => $transition_action];
       $this->sendUserDataMessages($user_data, $arguments);
@@ -327,10 +330,10 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
           }, $membership->getRoles());
 
           if (in_array('administrator', $role_names)) {
-            $arguments['@actor:role'] = t('Owner');
+            $arguments['@actor:role'] = $this->t('Owner');
           }
           elseif (in_array('facilitator', $role_names)) {
-            $arguments['@actor:role'] = t('Facilitator');
+            $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
       }

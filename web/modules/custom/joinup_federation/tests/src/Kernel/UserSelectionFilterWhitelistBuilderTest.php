@@ -4,7 +4,7 @@ namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\RdfEntityGraph;
+use Drupal\sparql_entity_storage\Entity\SparqlGraph;
 
 /**
  * Tests the whitelist builder from the 'user_selection_filter' step plugin.
@@ -39,10 +39,10 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
     parent::setUp();
 
     // Create the 'default' and 'staging' graphs.
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/rdf_entity.graph.default.yml'));
-    RdfEntityGraph::create($graph)->save();
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/rdf_entity.graph.staging.yml'));
-    RdfEntityGraph::create($graph)->save();
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/sparql_entity_storage.graph.default.yml'));
+    SparqlGraph::create($graph)->save();
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/sparql_entity_storage.graph.staging.yml'));
+    SparqlGraph::create($graph)->save();
 
     // All testing bundle and field definitions are from the module config.
     $this->installConfig(['joinup_federation_test']);
@@ -164,7 +164,7 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
    * {@inheritdoc}
    */
   public function tearDown() {
-    /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
     $storage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
     $storage->delete($storage->loadMultiple(array_keys(static::getEntityData())));
     parent::tearDown();

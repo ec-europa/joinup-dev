@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
@@ -14,6 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Class CommentSubscriber.
  */
 class CommentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   const TEMPLATE_CREATE = 'comment_create';
   const TEMPLATE_UPDATE = 'comment_update';
@@ -224,7 +227,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
     $arguments += MessageArgumentGenerator::getGroupArguments($this->group);
 
     if ($this->currentUser->isAnonymous() || empty($arguments['@actor:full_name'])) {
-      $arguments['@actor:full_name'] = $this->currentUser->isAnonymous() ? t('an anonymous user') : t('a Joinup user');
+      $arguments['@actor:full_name'] = $this->currentUser->isAnonymous() ? $this->t('an anonymous user') : $this->t('a Joinup user');
     }
 
     return $arguments;
