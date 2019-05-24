@@ -1,0 +1,7 @@
+name: 'Joiunp SPARQL Test'
+type: module
+description: 'Provides a module for testing joinup_sparql.module.'
+core: 8.x
+package: Testing
+dependencies:
+  - rdf_entity

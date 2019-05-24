@@ -18,8 +18,8 @@ use Drupal\joinup_federation\RdfEntityReferenceFieldItemList;
 /**
  * Implements hook_ENTITY_TYPE_load().
  */
-function joinup_federation_rdf_entity_mapping_load(array $mappings) {
-  /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
+function joinup_federation_sparql_mapping_load(array $mappings) {
+  /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $mapping */
   foreach ($mappings as $mapping) {
     if ($mapping->getTargetEntityTypeId() === 'rdf_entity') {
       // Add the staging graph to the mapping entity only for 'rdf_entity'.

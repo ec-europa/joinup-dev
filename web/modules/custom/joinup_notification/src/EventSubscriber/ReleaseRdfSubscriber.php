@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
@@ -36,6 +37,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @codingStandardsIgnoreEnd
  */
 class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   const TEMPLATE_UPDATE_PUBLISHED = 'release_update';
   const TEMPLATE_DELETE = 'release_delete';
@@ -300,10 +303,10 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
           }, $membership->getRoles());
 
           if (in_array('administrator', $role_names)) {
-            $arguments['@actor:role'] = t('Owner');
+            $arguments['@actor:role'] = $this->t('Owner');
           }
           elseif (in_array('facilitator', $role_names)) {
-            $arguments['@actor:role'] = t('Facilitator');
+            $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
         $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;

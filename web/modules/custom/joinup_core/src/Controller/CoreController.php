@@ -64,7 +64,7 @@ class CoreController extends ControllerBase {
    *   The translated title.
    */
   public function aboutPageTitle(RdfInterface $rdf_entity) {
-    return t('About @entity', ['@entity' => $rdf_entity->getName()]);
+    return $this->t('About @entity', ['@entity' => $rdf_entity->getName()]);
   }
 
   /**

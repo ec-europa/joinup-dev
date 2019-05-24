@@ -8,7 +8,7 @@ dependencies:
   module:
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     mapping:
       target_id:
         predicate: 'http://purl.org/dc/terms/hasVersion'

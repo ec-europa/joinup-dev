@@ -14,7 +14,7 @@ use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use EasyRdf\Graph;
 
 /**
@@ -27,10 +27,10 @@ use EasyRdf\Graph;
  */
 class ManualUpload extends JoinupFederationStepPluginBase implements PipelineStepWithFormInterface, PipelineStepWithResponseInterface, PipelineStepWithBatchInterface {
 
+  use PipelineStepWithBatchTrait;
   use PipelineStepWithFormTrait;
   use PipelineStepWithRedirectResponseTrait;
-  use RdfEntityGraphStoreTrait;
-  use PipelineStepWithBatchTrait;
+  use SparqlGraphStoreTrait;
 
   /**
    * The batch size.

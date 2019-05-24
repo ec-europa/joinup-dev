@@ -7,9 +7,9 @@ namespace Drupal\joinup_rss\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -20,17 +20,17 @@ class CollectionFeedController extends ControllerBase {
   /**
    * The SPARQL storage.
    *
-   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
    */
   private $sparqlStorage;
 
   /**
    * Instantiates a new CollectionFeedController object.
    *
-   * @param \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $sparql_storage
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $sparql_storage
    *   The RDF entity storage.
    */
-  public function __construct(RdfEntitySparqlStorageInterface $sparql_storage) {
+  public function __construct(SparqlEntityStorageInterface $sparql_storage) {
     $this->sparqlStorage = $sparql_storage;
   }
 
@@ -59,8 +59,7 @@ class CollectionFeedController extends ControllerBase {
       $loaded_entity instanceof RdfInterface &&
       $loaded_entity->bundle() === 'collection' &&
       $loaded_entity->isPublished()
-    )
-      ->addCacheableDependency($loaded_entity);
+    )->addCacheableDependency($loaded_entity);
   }
 
 }
