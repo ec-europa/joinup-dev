@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b50fc227ca009a6d80e587c85fbfd670",
+    "content-hash": "05328ad03725af16c8730af2e4204bcd",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4925,21 +4925,15 @@
         },
         {
             "name": "drupal/page_manager",
-            "version": "4.0.0-beta3",
+            "version": "dev-4.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/page_manager.git",
-                "reference": "8.x-4.0-beta3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/page_manager-8.x-4.0-beta3.zip",
-                "reference": "8.x-4.0-beta3",
-                "shasum": "d4776dd32ca34f647bf7f2cfb1acf4800646e231"
+                "reference": "b2c5d9a5905e45d348c1109424eb3630034f761d"
             },
             "require": {
-                "drupal/core": "^8.0.5",
-                "drupal/ctools": "~3"
+                "drupal/core": "~8.5",
+                "drupal/ctools": "~3.1"
             },
             "type": "drupal-module",
             "extra": {
@@ -4947,15 +4941,15 @@
                     "dev-4.x": "4.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-4.0-beta3",
-                    "datestamp": "1523670484",
+                    "version": "8.x-4.0-beta3+8-dev",
+                    "datestamp": "1557949081",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Support contextual links @see https://www.drupal.org/project/page_manager/issues/2601004": "https://www.drupal.org/files/issues/page_manager-block_content_contextual-2601004-14.patch"
+                    "Support contextual links @see https://www.drupal.org/project/page_manager/issues/2601004": "https://www.drupal.org/files/issues/2019-05-27/2601004-30.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4987,7 +4981,8 @@
                 "source": "https://git.drupal.org/project/page_manager.git",
                 "issues": "https://www.drupal.org/project/issues/page_manager",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-05-15T21:40:37+00:00"
         },
         {
             "name": "drupal/password_policy",
@@ -15407,6 +15402,7 @@
         "drupal/flag": 15,
         "drupal/migrate_run": 10,
         "drupal/og": 20,
+        "drupal/page_manager": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
         "drupal/subpathauto": 5,
