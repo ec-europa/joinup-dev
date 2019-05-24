@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "031251553ed7b0999eaa458ed8182430",
+    "content-hash": "4883e87d0047076b3431a152fd2f8cd2",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2423,11 +2423,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "datestamp": "1492709942"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5266,7 +5262,7 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                    "Rename old configs instead removing them @see https://github.com/ec-europa/rdf_entity/pull/96": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...4db27aace42f2c50e252286b98c59fcd751bcf45.diff"
+                    "Rename old configs instead removing them @see https://github.com/ec-europa/rdf_entity/pull/96": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/96.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5622,7 +5618,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5944,7 +5940,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "http://cgit.drupalcode.org/state_machine"
+                "source": "https://git.drupalcode.org/project/state_machine"
             }
         },
         {
@@ -9636,7 +9632,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-22T22:25:24+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
@@ -12599,6 +12595,10 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "matslats",
+                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
