@@ -6,7 +6,7 @@ namespace Drupal\joinup_federation\Plugin\Adms2ConvertPass;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginBase;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\Tests\joinup_federation\Kernel\ConvertToAdms2StepTest;
 
 /**

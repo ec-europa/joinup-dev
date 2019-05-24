@@ -4,7 +4,7 @@ namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests referencing RDF entities when the host entity is in the staging graph.
@@ -13,18 +13,19 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 class StagingGraphValidReferenceTest extends KernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
+  use SparqlConnectionTrait;
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
     'field',
-    'joinup_sparql',
     'joinup_federation',
     'joinup_federation_staging_graph_test',
+    'joinup_sparql',
     'rdf_draft',
     'rdf_entity',
+    'sparql_entity_storage',
     'user',
   ];
 
@@ -36,9 +37,10 @@ class StagingGraphValidReferenceTest extends KernelTestBase {
     $this->setUpSparql();
     $this->installConfig([
       'joinup_federation',
+      'joinup_federation_staging_graph_test',
       'rdf_draft',
       'rdf_entity',
-      'joinup_federation_staging_graph_test',
+      'sparql_entity_storage',
     ]);
     $this->installEntitySchema('user');
   }

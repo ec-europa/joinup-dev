@@ -6,9 +6,8 @@ namespace Drupal\Tests\joinup_sparql\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\RdfEntityGraph;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests the default graphs event subscriber.
@@ -17,16 +16,17 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 class JoinupSparqlDefaultGraphsTest extends KernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
+  use SparqlConnectionTrait;
 
   /**
    * {@inheritdoc}
    */
   protected static $modules = [
     'joinup_sparql',
+    'joinup_sparql_test',
     'rdf_draft',
     'rdf_entity',
-    'rdf_entity_graph_test',
+    'sparql_entity_storage',
     'user',
   ];
 
@@ -35,18 +35,12 @@ class JoinupSparqlDefaultGraphsTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-
     $this->setUpSparql();
-    $this->installConfig(['rdf_draft', 'rdf_entity', 'rdf_entity_graph_test']);
-
-    // Create an arbitrary graph.
-    RdfEntityGraph::create(['id' => 'arbitrary', 'label' => 'Arbitrary'])
-      // Is heavier than the 'draft' graph..
-      ->setWeight(20)
-      ->save();
-    RdfEntityMapping::loadByName('rdf_entity', 'fruit')
-      ->addGraphs(['arbitrary' => "http://example.com/fruit/graph/arbitrary"])
-      ->save();
+    $this->installConfig([
+      'joinup_sparql_test',
+      'rdf_draft',
+      'sparql_entity_storage',
+    ]);
   }
 
   /**
@@ -90,10 +84,10 @@ class JoinupSparqlDefaultGraphsTest extends KernelTestBase {
   /**
    * Returns the entity query.
    *
-   * @return \Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface
+   * @return \Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface
    *   The SPARQL entity query.
    */
-  protected function getQuery() {
+  protected function getQuery(): SparqlQueryInterface {
     return $this->container
       ->get('entity_type.manager')
       ->getStorage('rdf_entity')

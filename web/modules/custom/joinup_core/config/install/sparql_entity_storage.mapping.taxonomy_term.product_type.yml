@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.product_type
+id: taxonomy_term.product_type
+entity_type_id: taxonomy_term
+bundle: product_type
+rdf_type: 'http://joinup.eu/product-type#'
+graph:
+  default: 'http://product_type'
+base_fields_mapping:
+  uuid:
+    value:
+      predicate: ''
+      format: ''
+  vid:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+      format: resource
+  langcode:
+    value:
+      predicate: ''
+      format: ''
+  name:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      format: t_literal
+  description:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+      format: t_literal
+  format:
+    value:
+      predicate: ''
+      format: ''
+  weight:
+    value:
+      predicate: ''
+      format: ''
+  parent:
+    target_id:
+      predicate: ''
+      format: ''
+  changed:
+    value:
+      predicate: ''
+      format: ''
+  default_langcode:
+    value:
+      predicate: ''
+      format: ''
+  path: {  }
