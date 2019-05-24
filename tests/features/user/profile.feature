@@ -58,8 +58,12 @@ Feature: User profile
     # A user should not be able to edit the profile page of another user.
     When I go to the public profile of "Domenico Ghirlandaio"
     Then I should not see the link "Edit"
+    # Verify that the user's "Country of origin" field is visible on its profile.
+    When I go to the public profile of "Leonardo Da Vinci"
+    Then I should see the text "Country of origin:" in the "Header" region
+    And I should see the link "Italy" in the "Header" region
 
-  @terms
+  @wip @terms
   Scenario: A moderator can navigate to any users profile and edit it.
     Given users:
       | Username          | E-mail                | Roles     |
@@ -89,6 +93,7 @@ Feature: User profile
     Then I should not see the error message "Unable to send email. Contact the site administrator if the problem persists."
 
   # Regression test: the wrong profile picture was showing due to a caching problem.
+  @wip
   Scenario: The user's profile picture should be shown in the page header.
     Given users:
       | Username          | E-mail                | Photo        |
@@ -99,7 +104,7 @@ Feature: User profile
     Then my user profile picture should be shown in the page header
     When I am logged in as "Ada Lovelace"
     Then my user profile picture should be shown in the page header
-
+  @wip
   Scenario: The user public profile page shows the content he's author of or is member of.
     Given users:
       | Username          | E-mail                        | First name | Family name |
@@ -172,7 +177,7 @@ Feature: User profile
     When I go to the public profile of "Jayson Granger"
     # This user has no first name inserted, so the message is generic.
     Then I should see the text "This user does not have any content yet."
-
+  @wip
   Scenario: The user profile page title should show the full name of the user.
     Given users:
       | Username   | E-mail                       | First name | Family name |
@@ -193,7 +198,7 @@ Feature: User profile
     Then I should see the heading delwin999 in the "Header" region
     And the HTML title tag should contain the text delwin999
     And I should not see the "Page title" region
-
+  @wip
   Scenario: The user profile page is updated when the user joins or leaves a collection
     Given users:
       | Username      | E-mail                           |
@@ -243,7 +248,7 @@ Feature: User profile
     # Verify the page can be cached correctly.
     When I reload the page
     Then the page should be cached
-
+  @wip
   Scenario: An authenticated user should not have access to restricted pages of his profile.
     When I am logged in as an "authenticated user"
     And I am on the homepage
@@ -252,7 +257,7 @@ Feature: User profile
     And I should not see the link "Persistent Logins"
     And I should not see the link "Newsletters"
 
-  @email
+  @wip @email
   Scenario: A user, changing its E-mail should receive a notification on his old
     E-mail address and a verification link on its new address.
 
