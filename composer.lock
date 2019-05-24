@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a64105ceae2e1bc6f31fcdd1685fc0e",
+    "content-hash": "e95c5453d82d3182f95ea5aca480ee77",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.94.2",
+            "version": "3.94.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "96fd506d4000cc8f3909154e2dd1e4180835941e"
+                "reference": "402a7e30c4ad979ca264079cd224984840ce6b37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/96fd506d4000cc8f3909154e2dd1e4180835941e",
-                "reference": "96fd506d4000cc8f3909154e2dd1e4180835941e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/402a7e30c4ad979ca264079cd224984840ce6b37",
+                "reference": "402a7e30c4ad979ca264079cd224984840ce6b37",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-05-22T18:11:35+00:00"
+            "time": "2019-05-23T18:07:25+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -5265,7 +5265,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5820,30 +5820,30 @@
         },
         {
             "name": "drupal/spdx",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/spdx.git",
-                "reference": "5e3a7920f9b38eb84f0d6a4a9f23856ddb44cb8c"
+                "reference": "972c0c06b936a51f577ada93cb011774e85feb86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/5e3a7920f9b38eb84f0d6a4a9f23856ddb44cb8c",
-                "reference": "5e3a7920f9b38eb84f0d6a4a9f23856ddb44cb8c",
+                "url": "https://api.github.com/repos/ec-europa/spdx/zipball/972c0c06b936a51f577ada93cb011774e85feb86",
+                "reference": "972c0c06b936a51f577ada93cb011774e85feb86",
                 "shasum": ""
             },
             "require": {
-                "drupal/rdf_entity": "^1.0.0-alpha16",
+                "drupal/rdf_entity": "^1.0",
                 "php": ">=7.1",
                 "spdx/license-list-data": "master"
             },
             "type": "drupal-module",
             "description": "Allows to federate and manage the SPDX licences.",
             "support": {
-                "source": "https://github.com/ec-europa/spdx/tree/8.x-1.x",
+                "source": "https://github.com/ec-europa/spdx/tree/1.0.0-alpha5",
                 "issues": "https://github.com/ec-europa/spdx/issues"
             },
-            "time": "2019-05-03T17:53:38+00:00"
+            "time": "2019-05-23T21:16:44+00:00"
         },
         {
             "name": "drupal/state_machine",
@@ -12887,7 +12887,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
-            }
+            },
+            "time": "2018-12-03T07:38:12+00:00"
         },
         {
             "name": "drupal/renderviz",

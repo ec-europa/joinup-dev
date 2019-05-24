@@ -64,5 +64,5 @@ config_devel:
   - field.storage.rdf_entity.field_isr_solution_type
   - field.storage.rdf_entity.field_isr_state
   - field.storage.rdf_entity.field_isr_translation
-  - rdf_entity.mapping.rdf_entity.asset_release
+  - sparql_entity_storage.mapping.rdf_entity.asset_release
   - rdf_entity.rdfentity.asset_release

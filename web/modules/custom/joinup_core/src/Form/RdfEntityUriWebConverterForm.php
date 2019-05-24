@@ -7,8 +7,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\UriEncoder;
 use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
  * Simple form that redirects to a RDF entity page.

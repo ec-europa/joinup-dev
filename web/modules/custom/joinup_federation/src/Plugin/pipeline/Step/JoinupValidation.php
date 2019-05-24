@@ -9,7 +9,7 @@ use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -83,7 +83,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $constraint_manager
    *   The constraint plugin manager service.

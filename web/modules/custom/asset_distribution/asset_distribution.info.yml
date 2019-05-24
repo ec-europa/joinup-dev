@@ -40,6 +40,6 @@ config_devel:
   - field.storage.rdf_entity.field_ad_gitb_compliant
   - field.storage.rdf_entity.field_ad_licence
   - field.storage.rdf_entity.field_ad_repr_technique
-  - rdf_entity.mapping.rdf_entity.asset_distribution
+  - sparql_entity_storage.mapping.rdf_entity.asset_distribution
   - rdf_entity.rdfentity.asset_distribution
   - views.view.asset_distribution_downloads

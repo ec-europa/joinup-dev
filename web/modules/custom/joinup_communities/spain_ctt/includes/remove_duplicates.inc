@@ -6,7 +6,7 @@
  */
 
 use Drupal\og\OgGroupAudienceHelperInterface;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\rdf_entity\Entity\Rdf;
 
 /**

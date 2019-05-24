@@ -350,7 +350,7 @@ class SearchItem extends FieldItemBase implements SearchItemInterface {
    *   Field description.
    */
   protected function allowedValuesDescription() {
-    $description = '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.');
+    $description = '<p>' . $this->t('The possible values this field can contain. Enter one value per line, in the format key|label.');
     $description .= '</p>';
     return $description;
   }

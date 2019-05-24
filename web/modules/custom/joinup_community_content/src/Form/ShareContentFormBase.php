@@ -12,7 +12,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleManagerInterface;
-use Drupal\rdf_entity\Entity\RdfEntitySparqlStorage;
+use Drupal\sparql_entity_storage\SparqlEntityStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -58,9 +58,9 @@ abstract class ShareContentFormBase extends FormBase {
   /**
    * The RDF entity storage.
    *
-   * @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorage
    */
-  protected $rdfStorage;
+  protected $sparqlStorage;
 
   /**
    * The messenger service.
@@ -72,7 +72,7 @@ abstract class ShareContentFormBase extends FormBase {
   /**
    * Constructs a new ShareContentFormBase object.
    *
-   * @param \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage
    *   The RDF entity storage.
    * @param \Drupal\Core\Entity\EntityViewBuilderInterface $rdf_builder
    *   The RDF view builder.
@@ -85,8 +85,8 @@ abstract class ShareContentFormBase extends FormBase {
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
    */
-  public function __construct(RdfEntitySparqlStorage $rdf_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger) {
-    $this->rdfStorage = $rdf_storage;
+  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger) {
+    $this->sparqlStorage = $sparql_storage;
     $this->rdfBuilder = $rdf_builder;
     $this->membershipManager = $membership_manager;
     $this->roleManager = $role_manager;

@@ -14,7 +14,7 @@ use EasyRdf\GraphStore;
 function joinup_licence_post_update_import_legal_type_vocabulary() {
   $graph_uri = 'http://licence-legal-type';
 
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $connection */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection */
   $connection = \Drupal::service('sparql_endpoint');
 
   // Avoid duplicates in case a manual fixtures import has already occurred.

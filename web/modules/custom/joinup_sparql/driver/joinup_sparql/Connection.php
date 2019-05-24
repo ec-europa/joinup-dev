@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Driver\Database\joinup_sparql;
 
 use Drupal\Driver\Database\sparql\Connection as BaseConnection;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
-use Drupal\rdf_entity\Exception\SparqlQueryException;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Exception\SparqlQueryException;
 use EasyRdf\Http;
 use EasyRdf\Http\Client as HttpClient;
 use EasyRdf\Sparql\Client;
