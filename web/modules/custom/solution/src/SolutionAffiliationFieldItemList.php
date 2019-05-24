@@ -9,7 +9,7 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
+use Drupal\sparql_entity_storage\Entity\SparqlGraph;
 
 /**
  * Defines a field item list class for the solution 'collections' field.
@@ -60,7 +60,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
       // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($removed_collection_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) as $collection) {
+      foreach (Rdf::loadMultiple($removed_collection_ids, [SparqlGraph::DEFAULT, 'draft']) as $collection) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $affiliates */
         $affiliates = $collection->get('field_ar_affiliates');
         $this->removeFieldItemByTargetId($affiliates, $this->getEntity()->id());
@@ -75,7 +75,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
       // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
       // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($new_collection_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) as $id => $collection) {
+      foreach (Rdf::loadMultiple($new_collection_ids, [SparqlGraph::DEFAULT, 'draft']) as $id => $collection) {
         if ($collection->bundle() !== 'collection') {
           throw new \Exception('Only collections can be referenced in affiliation requests.');
         }

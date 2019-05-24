@@ -26,7 +26,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate_run\DrushLogMigrateMessage;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

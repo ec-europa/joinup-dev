@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation;
 
 use Drupal\asset_distribution\DistributionParentFieldItemList;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface;
 
 /**
  * Defines a field item list class for the distribution 'parent' field.

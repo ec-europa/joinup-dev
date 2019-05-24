@@ -16,7 +16,7 @@ class RdfDemoController extends ControllerBase {
    *   A simple render array.
    */
   public function repositories() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $entity_storage */
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $entity_storage */
     $entity_storage = \Drupal::service('entity.manager')->getStorage('rdf_entity');
     $query = $entity_storage->getQuery()
       ->sort('id')

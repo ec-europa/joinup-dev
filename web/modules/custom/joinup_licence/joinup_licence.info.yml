@@ -19,7 +19,7 @@ config_devel:
   - field.storage.rdf_entity.field_licence_description
   - field.storage.rdf_entity.field_licence_type
   - filter.format.licence
-  - rdf_entity.mapping.rdf_entity.licence
-  - rdf_entity.mapping.taxonomy_term.licence_type
   - rdf_entity.rdfentity.licence
+  - sparql_entity_storage.mapping.rdf_entity.licence
+  - sparql_entity_storage.mapping.taxonomy_term.licence_type
   - taxonomy.vocabulary.licence_type

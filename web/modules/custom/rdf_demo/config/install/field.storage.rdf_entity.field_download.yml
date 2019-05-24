@@ -5,7 +5,7 @@ dependencies:
     - link
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     mapping:
       uri: 'http://schema.org/downloadUrl'
       title: 'http://purl.org/dc/terms/title'

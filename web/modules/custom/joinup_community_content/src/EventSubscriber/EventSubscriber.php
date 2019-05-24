@@ -69,6 +69,11 @@ class EventSubscriber implements EventSubscriberInterface {
           'title' => $this->t('Delete all revisions'),
           'restrict access' => TRUE,
         ]),
+        new GroupPermission([
+          'name' => 'administer shared content',
+          'title' => $this->t('Administer shared content'),
+          'restrict access' => TRUE,
+        ]),
       ]);
 
       $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
@@ -94,6 +99,20 @@ class EventSubscriber implements EventSubscriberInterface {
             'name' => "delete $bundle_id revisions",
             'title' => $this->t('%bundle: Delete revisions', ['%bundle' => $bundle_label]),
             'operation' => 'delete revision',
+            'entity type' => 'node',
+            'bundle' => $bundle_id,
+          ]),
+          new GroupContentOperationPermission([
+            'name' => "share $bundle_id content",
+            'title' => $this->t('%bundle: Share into a group', ['%bundle' => $bundle_label]),
+            'operation' => 'share',
+            'entity type' => 'node',
+            'bundle' => $bundle_id,
+          ]),
+          new GroupContentOperationPermission([
+            'name' => "unshare $bundle_id content",
+            'title' => $this->t('%bundle: Unshare from a group', ['%bundle' => $bundle_label]),
+            'operation' => 'unshare',
             'entity type' => 'node',
             'bundle' => $bundle_id,
           ]),

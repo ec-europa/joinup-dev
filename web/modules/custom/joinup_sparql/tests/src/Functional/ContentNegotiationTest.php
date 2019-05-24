@@ -9,7 +9,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_taxonomy\Entity\RdfTerm;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use EasyRdf\Format;
 
 /**
@@ -19,7 +19,7 @@ use EasyRdf\Format;
  */
 class ContentNegotiationTest extends BrowserTestBase {
 
-  use RdfDatabaseConnectionTrait;
+  use SparqlConnectionTrait;
 
   /**
    * Formats to be tested.
@@ -214,7 +214,7 @@ class ContentNegotiationTest extends BrowserTestBase {
    */
   protected function getExpectedBody(string $format_name, ContentEntityInterface $entity): string {
     if (!isset($this->expectedBody)) {
-      $fixtures_dir = drupal_get_path('module', 'rdf_entity') . '/tests/fixtures/content-negotiation';
+      $fixtures_dir = drupal_get_path('module', 'sparql_entity_storage') . '/tests/fixtures/content-negotiation';
       foreach (static::FORMATS as $format) {
         foreach (['rdf_entity', 'taxonomy_term'] as $entity_type_id) {
           $path = DRUPAL_ROOT . "/$fixtures_dir/$entity_type_id/$format";

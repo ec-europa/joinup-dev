@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation;
 
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
-use Drupal\rdf_entity\RdfGraphHandlerInterface;
+use Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface;
 
 /**
  * Helper service to provide a list of graph candidates with 'staging' on top.
@@ -17,7 +17,7 @@ class StagingCandidateGraphs implements StagingCandidateGraphsInterface {
   /**
    * The RDF entity graph handler service.
    *
-   * @var \Drupal\rdf_entity\RdfGraphHandlerInterface
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface
    */
   protected $graphHandler;
 
@@ -31,10 +31,10 @@ class StagingCandidateGraphs implements StagingCandidateGraphsInterface {
   /**
    * Builds a new service instance.
    *
-   * @param \Drupal\rdf_entity\RdfGraphHandlerInterface $graph_handler
+   * @param \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler
    *   The RDF entity graph handler service.
    */
-  public function __construct(RdfGraphHandlerInterface $graph_handler) {
+  public function __construct(SparqlEntityStorageGraphHandlerInterface $graph_handler) {
     $this->graphHandler = $graph_handler;
   }
 

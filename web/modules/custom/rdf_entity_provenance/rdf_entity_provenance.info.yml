@@ -7,5 +7,5 @@ dependencies:
   - rdf_entity
 
 config_devel:
-  - rdf_entity.mapping.rdf_entity.provenance_activity
   - rdf_entity.rdfentity.provenance_activity
+  - sparql_entity_storage.mapping.rdf_entity.provenance_activity

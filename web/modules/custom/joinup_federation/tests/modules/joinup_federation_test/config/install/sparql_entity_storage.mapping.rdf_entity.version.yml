@@ -1,0 +1,22 @@
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - rdf_entity.rdfentity.version
+third_party_settings:
+  rdf_schema_field_validation:
+    graph: 'http://adms-definition'
+    class: 'http://www.w3.org/2000/01/rdf-schema#Class'
+    property_predicates:
+      - 'http://www.w3.org/2000/01/rdf-schema#domain'
+id: rdf_entity.version
+entity_type_id: rdf_entity
+bundle: version
+rdf_type: 'http://www.w3.org/ns/dcat#Dataset'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+graph:
+  default: 'http://example.com/version/published'
+entity_id_plugin: default

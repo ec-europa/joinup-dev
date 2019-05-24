@@ -32,7 +32,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
 use Drupal\user\UserInterface;
@@ -369,8 +369,8 @@ function joinup_core_entity_type_alter(array &$entity_types) {
  * get cached in the 'cache_entity' bin, avoiding performance issues.
  */
 function joinup_core_taxonomy_term_storage_load(array $terms) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
 
   $query = <<<QUERY
 SELECT ?extension ?mime_type
@@ -459,7 +459,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
  * reverse.
  * 5. If none of these exist, as a filter, ignore it.
  */
-function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
+function joinup_core_query_sparql_alter(AlterableInterface $query) {
   $conditions = $query->conditions();
   // If only one of the following are true, then add a condition on their
   // corresponding field. If both are set, then do not bother.

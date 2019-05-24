@@ -7,16 +7,16 @@ namespace Drupal\Tests\joinup_federation\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\pipeline\PipelineState;
 use Drupal\pipeline\PipelineStateInterface;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Provides a base class for pipeline step kernel tests.
  */
 abstract class StepTestBase extends KernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
-  use RdfEntityGraphStoreTrait;
+  use SparqlConnectionTrait;
+  use SparqlGraphStoreTrait;
 
   /**
    * Testing pipeline.
@@ -38,10 +38,11 @@ abstract class StepTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'pipeline',
     'joinup_federation',
     'joinup_federation_test',
+    'pipeline',
     'rdf_entity',
+    'sparql_entity_storage',
   ];
 
   /**
