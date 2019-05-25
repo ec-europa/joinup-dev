@@ -79,7 +79,8 @@
         "semiceu/adms-ap_validator": "dev-master",
         "typhonius/behattask": "1.0",
         "webflo/drupal-finder": "~1.0",
-        "webmozart/path-util": "~2.3"
+        "webmozart/path-util": "~2.3",
+        "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "require-dev": {
         "ext-dom": "*",
