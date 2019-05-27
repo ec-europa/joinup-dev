@@ -70,6 +70,13 @@ class JoinupSubContext extends DrupalSubContextBase {
   use WysiwygTrait;
 
   /**
+   * The site's 'Legal notice' content block UUID.
+   *
+   * @var string
+   */
+  const LEGAL_NOTICE_CONTENT_UUID = 'ec092d17-ef18-42b0-b460-642871150cd3';
+
+  /**
    * Testing content blocks.
    *
    * @var \Drupal\block_content\BlockContentInterface[]
@@ -2677,7 +2684,7 @@ JS;
   public function createContentBlocks(): void {
     $block = BlockContent::create([
       'type' => 'simple_block',
-      'uuid' => 'ec092d17-ef18-42b0-b460-642871150cd3',
+      'uuid' => static::LEGAL_NOTICE_CONTENT_UUID,
       'status' => TRUE,
       'info' => 'Legal notice',
       'body' => [
