@@ -60,8 +60,7 @@ Feature: User profile
     Then I should not see the link "Edit"
     # Verify that the user's "Country of origin" field is visible on its profile.
     When I go to the public profile of "Leonardo Da Vinci"
-    Then I should see the text "Country of origin:" in the "Header" region
-    And I should see the link "Italy" in the "Header" region
+    Then I should see the text "Country of origin: Italy" in the "Header" region
 
   @terms
   Scenario: A moderator can navigate to any users profile and edit it.

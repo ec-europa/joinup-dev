@@ -97,8 +97,17 @@ content:
     weight: 3
     label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: entity_reference_label
     region: content
   field_user_organisation:

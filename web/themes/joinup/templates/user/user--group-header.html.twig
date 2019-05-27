@@ -50,7 +50,7 @@
             <span class="stats__text">{{ 'Member for'|t }}:</span>
             <span class="stats__text bold">{{ member_for }}</span>
           </div>
-          {% if content.field_user_nationality|render %}
+          {% if content.field_user_nationality %}
             <div class="stats__wrapper">
               <span class="stats__text">{{ 'Country of origin'|t }}:</span>
               <span class="stats__text bold">{{ content.field_user_nationality }}</span>
