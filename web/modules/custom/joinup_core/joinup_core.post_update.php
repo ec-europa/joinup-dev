@@ -358,6 +358,9 @@ function joinup_core_post_update_install_tallinn() {
  */
 function joinup_core_post_update_install_message_digest() {
   \Drupal::service('module_installer')->install(['message_digest']);
+  // Workaround for the Message Type entity type not being available during
+  // deployments to the UAT environment.
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
 }
 
 /**
