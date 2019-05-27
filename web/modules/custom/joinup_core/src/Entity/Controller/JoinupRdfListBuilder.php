@@ -18,17 +18,17 @@ class JoinupRdfListBuilder extends RdfListBuilder {
    */
   protected function getEntityIds() {
     $request = \Drupal::request();
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
-    $rdf_storage = $this->getStorage();
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage */
+    $sparql_storage = $this->getStorage();
     /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
     $bundle_info = \Drupal::service('entity_type.bundle.info');
-    /** @var \Drupal\rdf_entity\Entity\Query\Sparql\Query $query */
-    $query = $rdf_storage->getQuery();
+    /** @var \Drupal\sparql_entity_storage\Entity\Query\Sparql\Query $query */
+    $query = $sparql_storage->getQuery();
 
     // If a graph type is set in the url, validate it, and use it in the query.
     $graph = $request->get('graph');
     if (!empty($graph)) {
-      $definitions = $rdf_storage->getGraphDefinitions();
+      $definitions = $sparql_storage->getGraphDefinitions();
       if (isset($definitions[$graph])) {
         // Use the graph to build the list.
         $query->graphs([$graph]);

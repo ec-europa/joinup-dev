@@ -10,7 +10,7 @@ dependencies:
     - field.field.rdf_entity.licence.field_licence_type
     - rdf_entity.rdfentity.licence
   module:
-    - text
+    - smart_trim
     - user
 id: rdf_entity.licence.view_mode_search_list_item
 targetEntityType: rdf_entity
@@ -83,6 +83,11 @@ content:
     third_party_settings: {  }
   spdx_see_also:
     weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  spdx_licence_external_url:
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }

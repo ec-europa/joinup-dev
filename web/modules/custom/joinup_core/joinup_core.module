@@ -32,9 +32,10 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
+use Drupal\user\UserInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewExecutable;
@@ -368,8 +369,8 @@ function joinup_core_entity_type_alter(array &$entity_types) {
  * get cached in the 'cache_entity' bin, avoiding performance issues.
  */
 function joinup_core_taxonomy_term_storage_load(array $terms) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
 
   $query = <<<QUERY
 SELECT ?extension ?mime_type
@@ -458,7 +459,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
  * reverse.
  * 5. If none of these exist, as a filter, ignore it.
  */
-function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
+function joinup_core_query_sparql_alter(AlterableInterface $query) {
   $conditions = $query->conditions();
   // If only one of the following are true, then add a condition on their
   // corresponding field. If both are set, then do not bother.
@@ -958,23 +959,32 @@ function joinup_core_user_predelete(EntityInterface $entity) {
 }
 
 /**
- * Invalidate Joinup user membership cache tags after a user is updated.
+ * Implements hook_ENTITY_TYPE_update().
  *
- * @param \Drupal\Core\Entity\EntityInterface $user
- *   The user entity.
+ * Invalidates group membership list cache tags after a user is (un)blocked.
  *
- * @see joinup_core_og_membership_invalidate_group_tags()
+ * If a user gets blocked in the entire site we no longer want to include this
+ * user in the collection membership counts. We handle this use case here in
+ * Joinup Core since Organic Groups currently only handles users that are
+ * blocked on group level through the membership state; at this time OG is
+ * not acting on users that are blocked on user level.
  */
-function joinup_core_user_update(EntityInterface $user) {
+function joinup_core_user_update(UserInterface $user) {
+  // Only invalidate the tags if the user is being (un)blocked.
+  if ($user->isBlocked() == $user->original->isBlocked()) {
+    return;
+  }
+
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
   $memberships = $membership_manager->getMemberships($user);
 
   $tags = [];
   foreach ($memberships as $membership) {
-    $tag = $membership->getGroupEntityType() . ':' . $membership->getGroupId();
-    $tags_to_invalidate = Cache::buildTags('joinup-membership', [$tag]);
-    $tags = Cache::mergeTags($tags, $tags_to_invalidate);
+    if ($group = $membership->getGroup()) {
+      $group_membership_list_cache_tags = Cache::buildTags(OgMembershipInterface::GROUP_MEMBERSHIP_LIST_CACHE_TAG_PREFIX, $group->getCacheTagsToInvalidate());
+      $tags = Cache::mergeTags($tags, $group_membership_list_cache_tags);
+    }
   }
 
   Cache::invalidateTags($tags);
@@ -1334,31 +1344,6 @@ function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string 
   // The first two items will always be langcode and ID.
   $id = array_pop($key_parts);
   return $id;
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function joinup_core_og_membership_presave(OgMembershipInterface $entity) {
-  joinup_core_og_membership_invalidate_group_tags($entity);
-}
-
-/**
- * Implements hook_ENTITY_TYPE_predelete().
- */
-function joinup_core_og_membership_predelete(OgMembershipInterface $entity) {
-  joinup_core_og_membership_invalidate_group_tags($entity);
-}
-
-/**
- * Invalidates the Joinup tags related to a group of a membership.
- *
- * @param \Drupal\og\OgMembershipInterface $entity
- *   The og membership entity.
- */
-function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
-  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
-  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
 }
 
 /**

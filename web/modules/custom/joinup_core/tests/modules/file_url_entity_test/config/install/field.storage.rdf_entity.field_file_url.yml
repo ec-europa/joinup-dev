@@ -6,7 +6,7 @@ dependencies:
     - rdf_entity
     - file_url
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     mapping:
       target_id:
         predicate: 'http://xmlns.com/foaf/spec/#term_page'

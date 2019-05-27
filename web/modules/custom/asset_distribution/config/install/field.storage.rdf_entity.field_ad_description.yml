@@ -5,7 +5,7 @@ dependencies:
     - rdf_entity
     - text
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     mapping:
       value:
         predicate: 'http://purl.org/dc/terms/description'

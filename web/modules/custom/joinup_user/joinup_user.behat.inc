@@ -5,6 +5,7 @@
  * Contains \JoinupUserSubContext.
  */
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
@@ -18,6 +19,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
 
   use UserTrait;
   use UtilityTrait;
+  use StringTranslationTrait;
 
   /**
    * Navigates to the canonical page display of a collection.
@@ -97,7 +99,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     if (empty($matches)) {
-      $message = t("Deletion confirmation url was not found in the mail body: \n@body", [
+      $message = $this->t("Deletion confirmation url was not found in the mail body: \n@body", [
         '@body' => $body,
       ]);
       throw new Exception($message);

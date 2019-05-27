@@ -10,11 +10,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\solution\SolutionAffiliationFieldItemList;
 
 /**
- * Implements hook_rdf_load_bundle_alter().
+ * Implements hook_sparql_bundle_load_alter().
  *
  * Resolves the case when two bundles are sharing the same RDF type URI.
  */
-function joinup_federation_test_rdf_load_bundle_alter($entity_values, &$bundles) {
+function joinup_federation_test_sparql_bundle_load_alter($entity_values, &$bundles) {
   if (count($bundles) > 1 && in_array('solution', $bundles)) {
     if (isset($entity_values['http://example.com/predicate/solution/is_solution'])) {
       $bundles = ['solution'];

@@ -7,6 +7,7 @@ namespace Drupal\custom_page\Controller;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_core\Controller\CommunityContentController;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -18,6 +19,8 @@ use Drupal\rdf_entity\RdfInterface;
  * includes an rdf_entity id.
  */
 class CustomPageController extends CommunityContentController {
+
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -68,7 +71,7 @@ class CustomPageController extends CommunityContentController {
     // form is exposed to regular visitors.
     $group = $ogmenu_instance->og_audience->entity;
     return [
-      '#markup' => t('Edit navigation menu of the %group @type', [
+      '#markup' => $this->t('Edit navigation menu of the %group @type', [
         '%group' => $ogmenu_instance->label(),
         '@type' => $group->bundle(),
       ]),

@@ -8,10 +8,11 @@
 use Drupal\Core\Database\Database;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 use EasyRdf\Resource;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Enable the Sub-Pathauto module.
@@ -118,7 +119,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
 
   $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
   foreach ($data as $bundle) {
-    RdfEntityMapping::loadByName('rdf_entity', $bundle)
+    SparqlMapping::loadByName('rdf_entity', $bundle)
       ->setThirdPartySetting('rdf_schema_field_validation', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain'])
       ->setThirdPartySetting('rdf_schema_field_validation', 'graph', $graph_uri)
       ->setThirdPartySetting('rdf_schema_field_validation', 'class', $class_definition)
@@ -130,7 +131,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
  * Fix the banner predicate [ISAICP-4332].
  */
 function joinup_core_post_update_fix_banner_predicate() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
   SELECT ?graph ?entity_id ?image_uri
@@ -189,11 +190,11 @@ QUERY;
  * Fix the owner class predicate [ISAICP-4333].
  */
 function joinup_core_post_update_fix_owner_predicate() {
-  $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', 'owner');
-  $rdf_entity_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
-  $rdf_entity_mapping->save();
+  $sparql_mapping = SparqlMapping::loadByName('rdf_entity', 'owner');
+  $sparql_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
+  $sparql_mapping->save();
 
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?type
@@ -241,7 +242,7 @@ QUERY;
  * Fix data type of the solution contact point[ISAICP-4334].
  */
 function joinup_core_post_update_fix_solution_contact_datatypea() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   // Two issues are to be fixed here.
   // 1. The contact reference should be a resource instead of a literal.
@@ -297,7 +298,7 @@ QUERY;
  * Fix data type of the access url field [ISAICP-4349].
  */
 function joinup_core_post_update_fix_access_url_datatype() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?predicate ?access_url
@@ -526,6 +527,86 @@ function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
 }
 
 /**
+ * Create release aliases and create a redirect from the existing ones.
+ */
+function joinup_core_post_update_create_new_release_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_releases.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_releases')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_release')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Create news aliases for news, event, discussion and document content types.
+ */
+function joinup_core_post_update_create_new_node_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.community_content.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.community_content')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $bundles = ['news', 'event', 'discussion', 'document'];
+    $sandbox['entity_ids'] = \Drupal::entityQuery('node')
+      ->condition('type', $bundles, 'IN')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
  * Disable database logging, use the syslog instead.
  */
 function joinup_core_post_update_swap_dblog_with_syslog() {
@@ -543,4 +624,39 @@ function joinup_core_post_update_swap_dblog_with_syslog() {
  */
 function joinup_core_post_update_enable_spdx() {
   \Drupal::service('module_installer')->install(['spdx']);
+}
+
+/**
+ * Re import the legal type vocabulary so that the weight is imported.
+ */
+function joinup_core_post_update_re_import_legal_type_vocabulary() {
+  \Drupal::service('joinup_core.vocabulary_fixtures.helper')->importFixtures('licence-legal-type');
+}
+
+/**
+ * Corrects the versions of faulty news items.
+ */
+function joinup_core_post_update_set_news_default_version() {
+  // Due to some cache state inconsistency, some nodes had their state
+  // reverted in a previous version without creating a new revision for this.
+  // While in a Drupal site it is normal to have forward revisions, it is not
+  // normal to have forward published revisions. If the entity is published,
+  // then the default version(current published) should be the latest
+  // revision. Instead, what happens is that these entities are published but
+  // also have revision(s) that are also published but of a newer version id.
+  //
+  // The query used is only returning published revisions as even if there is a
+  // forward draft revision in the entity, the draft versions are not published
+  // and thus, are not the default versions. This will set the latest published
+  // revision as the default one.
+  $results = \Drupal::service('joinup_core.requirements_helper')->getNodesWithProblematicRevisions();
+  $nids = array_keys($results);
+  /** @var \Drupal\node\NodeStorage $node_storage */
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\node\NodeInterface $node */
+  foreach ($node_storage->loadMultiple($nids) as $node) {
+    $latest_revision = $node_storage->loadRevision($results[$node->id()]->latest_vid);
+    $latest_revision->isDefaultRevision(TRUE);
+    $latest_revision->save();
+  }
 }

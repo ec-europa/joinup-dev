@@ -9,10 +9,10 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -58,7 +58,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -120,7 +120,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
     // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-    $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
+    $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [SparqlGraphInterface::DEFAULT, 'draft']) : [];
 
     $entities_to_save = $entities_to_delete = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
@@ -128,7 +128,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
       // This entity already exists.
       if ($ids_to_process[$id]) {
         $graph_ids = [];
-        foreach ([RdfEntityGraphInterface::DEFAULT, 'draft'] as $graph_id) {
+        foreach ([SparqlGraphInterface::DEFAULT, 'draft'] as $graph_id) {
           if ($local_entities[$id]->hasGraph($graph_id)) {
             $graph_ids[$graph_id] = $graph_id;
           }
@@ -156,7 +156,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
       else {
         $local_entity = (clone $entity)
           ->enforceIsNew()
-          ->set('graph', RdfEntityGraphInterface::DEFAULT);
+          ->set('graph', SparqlGraphInterface::DEFAULT);
         // Delete the incoming entity from the staging graph.
         $entity->skip_notification = TRUE;
         $entity->delete();
