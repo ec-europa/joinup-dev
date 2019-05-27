@@ -2694,9 +2694,11 @@ JS;
     ]);
     $block->save();
     $this->contentBlocks[$block->id()] = $block;
-    // As the page that contains the block is created before the block, we need
-    // a cache clear to account the presence of the new block.
-    drupal_flush_all_caches();
+    // As the page that contains the block is created before the block, we
+    // manually clear the block content UUID cache in order to account the
+    // presence of the new block.
+    // @see \Drupal\block_content\BlockContentUuidLookup
+    \Drupal::cache('bootstrap')->delete('block_content_uuid');
   }
 
   /**
