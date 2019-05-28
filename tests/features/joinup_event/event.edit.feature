@@ -4,6 +4,24 @@ Feature: "Event page" editing.
   As an owner of the event
   I need to be able to edit it.
 
+  Scenario: Add and remove map
+    Given collections:
+      | title            | logo     | banner     | state     |
+      | Stream of Dreams | logo.png | banner.jpg | validated |
+    And I am logged in as a facilitator of the "Stream of Dreams" collection
+    When I go to the homepage of the "Stream of Dreams" collection
+    And I click "Add event" in the plus button menu
+    When I fill in the following:
+      | Title             | An amazing event                      |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Rue Belliard 28, Brussels, Belgium    |
+    And I press "Save as draft"
+    And I should see a map on the page
+    When I click the contextual link "Edit" in the Header region
+    When I clear the field "Physical location"
+    And I press "Save as draft"
+    And I should not see a map on the page
+
   Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:
       | Username |
