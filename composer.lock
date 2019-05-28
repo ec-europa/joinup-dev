@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ca47984d5bb6f883f0b61e566953c53",
+    "content-hash": "84e848ac74c707be3850cc75da2d87ea",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5259,7 +5259,8 @@
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
                     "Rename old configs instead removing them @see https://github.com/ec-europa/rdf_entity/pull/96": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/96.diff",
-                    "[regression] Instead of renaming, recreate the new configs @see https://github.com/ec-europa/rdf_entity/pull/99": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/99.diff"
+                    "[regression] Instead of renaming, recreate the new configs @see https://github.com/ec-europa/rdf_entity/pull/99": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/99.diff",
+                    "Fix the missing ?weight parameter @see https://github.com/ec-europa/rdf_entity/pull/98": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/98.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
