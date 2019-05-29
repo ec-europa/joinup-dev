@@ -32,7 +32,7 @@ JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 mkdir -p ${JOINUP_DIR} || exit 1
 
 # Build the site.
-${COMPOSER_PATH} install --no-interaction --prefer-source --prefer-dist || exit 1
+COMPOSER_DISCARD_CHANGES=true ${COMPOSER_PATH} install --no-interaction --prefer-source --prefer-dist || exit 1
 ./vendor/bin/phing compile-sass || exit 1
 
 
