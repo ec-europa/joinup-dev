@@ -16,10 +16,16 @@ Feature: "Event page" editing.
       | Description       | This is going to be an amazing event. |
       | Physical location | Rue Belliard 28, Brussels, Belgium    |
     And I press "Save as draft"
+    Then I should see the heading "An amazing event"
     And I should see a map on the page
-    When I click the contextual link "Edit" in the Header region
+    When I click "Edit" in the "Entity actions" region
+    Then I should see the heading "Edit Event An amazing event"
     When I clear the field "Physical location"
+    And I enter the following for the "Virtual location" link field:
+      | URL                              | Title           |
+      | https://share-and-reuse.example/ | Share and reuse |
     And I press "Save as draft"
+    Then I should see the heading "An amazing event"
     And I should not see a map on the page
 
   Scenario Outline: Owners and moderators should be able to view the Edit link.
