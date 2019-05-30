@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="EU Login" default="help">
+
+    <taskdef name="eulogin-create-docker-compose" classname="\DrupalProject\Phing\EuLoginBuildEcasMockDockerCompose"/>
+
+    <target name="eulogin-ecas-mock-check-requirements">
+        <exec command="docker version --format='{{.Server.Version}}'"
+              dir="${project.basedir}"
+              checkreturn="true"
+              outputProperty="eulogin.ecas_mock.docker.version"
+        />
+        <echo message="Running Docker Engine version: ${eulogin.ecas_mock.docker.version}"/>
+    </target>
+
+    <target name="eulogin-ecas-mock-image-download" depends="eulogin-ecas-mock-check-requirements">
+        <exec command="docker inspect ${eulogin.ecas_mock.docker.image}"
+              dir="${project.basedir}"
+              passthru="true"
+              checkreturn="false"
+              error="/dev/null"
+              output="/dev/null"
+              returnProperty="eulogin-ecas-mock-image-missed"
+        />
+        <if>
+            <equals arg1="${eulogin-ecas-mock-image-missed}" arg2="1"/>
+            <then>
+                <echo message="Downloading Docker image '${eulogin.ecas_mock.docker.image}'."/>
+                <exec command="echo ${eulogin.ecas_mock.docker.registry.password} | docker login -u ${eulogin.ecas_mock.docker.registry.user} --password-stdin ${eulogin.ecas_mock.docker.registry.server}"
+                      dir="${project.basedir}"
+                      passthru="true"
+                      checkreturn="false"
+                      returnProperty="eulogin-ecas-mock-image-missed"
+                />
+                <exec command="docker pull ${eulogin.ecas_mock.docker.image}"
+                      dir="${project.basedir}"
+                      passthru="true"
+                      checkreturn="false"
+                />
+                <exec command="docker logout ${eulogin.ecas_mock.docker.registry.server}"
+                      dir="${project.basedir}"
+                      passthru="true"
+                      checkreturn="false"
+                />
+            </then>
+            <else>
+                <echo message="Docker image '${eulogin.ecas_mock.docker.image}' was already downloaded."/>
+            </else>
+        </if>
+    </target>
+
+    <target name="eulogin-ecas-mock-setup" depends="eulogin-ecas-mock-image-download">
+        <delete dir="${tmp.dir}/eulogin" includeemptydirs="true" failonerror="false"/>
+        <mkdir dir="${tmp.dir}/eulogin"/>
+        <eulogin-create-docker-compose
+                destination="${tmp.dir}/eulogin"
+                dockerServerVersion="${eulogin.ecas_mock.docker.version}"
+        />
+    </target>
+
+    <target name="eulogin-ecas-mock-start" depends="eulogin-ecas-mock-setup">
+        <exec command="docker-compose up -d"
+              dir="${tmp.dir}/eulogin"
+              passthru="true"
+              checkreturn="true"
+        />
+    </target>
+
+    <target name="eulogin-ecas-mock-stop" depends="eulogin-ecas-mock-setup">
+        <exec command='docker-compose down'
+              dir="${tmp.dir}/eulogin"
+              passthru="true"
+              checkreturn="true"/>
+    </target>
+
+</project>
