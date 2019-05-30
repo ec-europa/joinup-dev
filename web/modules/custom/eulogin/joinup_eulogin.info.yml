@@ -1,0 +1,9 @@
+name: 'Joinup EU Login'
+description: 'Provides integration with EU Login.'
+package: Joinup
+
+core: 8.x
+type: module
+
+dependencies:
+  - oe_authentication:oe_authentication
