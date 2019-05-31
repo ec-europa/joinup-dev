@@ -7,9 +7,9 @@ Feature: User registration
     Given I am an anonymous user
     When I am on the homepage
     And I click "Sign in"
-    Then I am at "/user/login"
+    Then I should see the heading "Sign in"
     When I click "Create new account"
-    Then I am at "/user/register"
+    Then I should see the heading "Create new account"
 
   Scenario: User can register with minimal required fields
     Given all e-mails have been sent
