@@ -20,6 +20,9 @@
     <!-- Import Phing targets related to Virtuoso. -->
     <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
 
+    <!-- Import Phing targets related to EU Login. -->
+    <import file="${project.basedir}/build.eulogin.xml" optional="true" />
+
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
