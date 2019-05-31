@@ -262,7 +262,8 @@ class JoinupSubContext extends DrupalSubContextBase {
         $username = $value;
       }
     };
-    // Submit form.
+    // Submit form, waiting for Honeypot protection delay to pass.
+    $this->iWaitForHoneypot();
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.

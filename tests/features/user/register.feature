@@ -74,6 +74,7 @@ Feature: User registration
     And I fill in "Username" with "spam"
     And I fill in "First name" with "Spam"
     And I fill in "Family name" with "Spam"
+    And I wait for the honeypot validation to pass
     Given I press "Create new account"
     Then I should see the success message "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
     And the following email should have been sent:
