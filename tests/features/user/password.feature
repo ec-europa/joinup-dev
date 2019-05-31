@@ -53,7 +53,7 @@ Feature: Password management
     And I click "Sign in"
     And I click "Reset your password"
     And I fill in "Email" with "charlie.change@example.com"
-    And I wait for the honeypot validation to pass
+    And I wait for the spam protection time limit to pass
     And I press the "Submit" button
     Then I should see the success message "Further instructions have been sent to your email address."
     And the following email should have been sent:

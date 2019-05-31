@@ -42,7 +42,7 @@ Feature: Input filter
     Given I am logged in as an authenticated
     When I go to the "Discussion" discussion
     And I fill in "Create comment" with "<q>Quoted</q>"
-    And I wait for the honeypot validation to pass
+    And I wait for the spam protection time limit to pass
     When I press "Post comment"
     Then the page should contain the html text "<q>Quoted</q>"
 
