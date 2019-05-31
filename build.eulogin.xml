@@ -30,7 +30,6 @@
                       dir="${project.basedir}"
                       passthru="true"
                       checkreturn="false"
-                      returnProperty="eulogin-ecas-mock-image-missed"
                 />
                 <exec command="docker pull ${eulogin.ecas_mock.docker.image}"
                       dir="${project.basedir}"
