@@ -2,6 +2,8 @@
 
 namespace Drupal\search_api_arbitrary_facet\Plugin\facets\query_type;
 
+use Drupal\Core\Cache\CacheableDependencyInterface;
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\facets\Plugin\facets\query_type\SearchApiString;
 use Drupal\facets\Result\Result;
 
@@ -57,6 +59,12 @@ class FacetQuery extends SearchApiString {
         $filter->addCondition($field_name, $condition, $operator ?: $exclude);
       }
       $query->addConditionGroup($filter);
+    }
+
+    // Add the cacheability metadata of the facet to the query.
+    $facet = $this->getArbitraryFacetPluginInstance();
+    if ($query instanceof RefinableCacheableDependencyInterface && $facet instanceof CacheableDependencyInterface) {
+      $query->addCacheableDependency($facet);
     }
   }
 
