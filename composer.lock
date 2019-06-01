@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cbf77b42bfbbec1d4cfc82e78b9b49f",
+    "content-hash": "c012b80cd88ff8f10736447cd07f3b41",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5873,6 +5873,9 @@
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Same from/to state restriction @see https://www.drupal.org/project/state_machine/issues/3058874": "https://www.drupal.org/files/issues/2019-06-01/same_from_to_state_restriction-3058874-D8-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
