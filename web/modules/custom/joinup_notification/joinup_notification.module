@@ -37,7 +37,7 @@ function joinup_notification_node_presave(EntityInterface $entity) {
   if ($entity->isNew() || !in_array($entity->bundle(), $bundles)) {
     return;
   }
-  $entity->field_state_initial_value = $entity->get('field_state')->first()->getInitialValue();
+  $entity->field_state_initial_value = $entity->get('field_state')->first()->getOriginalId();
 }
 
 /**
