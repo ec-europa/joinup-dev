@@ -133,6 +133,9 @@
     <target name="download-virtuoso-database">
         <mkdir dir="${exports.virtuoso.destination.folder}" />
         <echo msg="Fetching list of files to download." />
+        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
+        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
+        <php expression="ini_set('memory_limit', '1G');" />
         <httpget
                 url="${exports.virtuoso.source}"
                 authUser="${asda.username}"
@@ -140,6 +143,8 @@
                 authScheme="basic"
                 dir="${exports.virtuoso.destination.folder}"
         />
+        <!-- Restore the original memory limit. -->
+        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
         <untar file="${exports.virtuoso.destination.folder}JOINUP_VIRTUOSO_PRD_LATEST.tar.gz" todir="${exports.virtuoso.destination.folder}" />
 
         <copy todir="${exports.virtuoso.destination.folder}">
@@ -158,6 +163,9 @@
     <!-- Downloads a backup of the SQL database from the ASDA server. -->
     <target name="download-sql-database">
         <echo msg="Downloading SQL database dump from ASDA." />
+        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
+        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
+        <php expression="ini_set('memory_limit', '1G');" />
         <httpget
                 url="${exports.sql.source}"
                 authUser="${asda.username}"
@@ -165,6 +173,8 @@
                 authScheme="basic"
                 dir="${tmp.dir}"
         />
+        <!-- Restore the original memory limit. -->
+        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
         <copy file="${tmp.dir}/JOINUP_PRD_LATEST.sql.gz" tofile="${exports.sql.destination}" overwrite="true"/>
         <delete file="${tmp.dir}/dump.sql" failonerror="false" />
         <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />

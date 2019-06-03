@@ -1,3 +1,6 @@
+# @todo This has a dependency on joinup_user so it causes a circular dependency
+#   in joinup_core. It should be moved to the Joinup profile.
+# @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5206
 langcode: en
 status: true
 dependencies:
