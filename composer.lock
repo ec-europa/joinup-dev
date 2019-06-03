@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84e848ac74c707be3850cc75da2d87ea",
+    "content-hash": "1c2d9ae8caae6be5005537548b8566f6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6382,7 +6382,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
+                "source": "https://git.drupalcode.org/project/views_data_export"
             }
         },
         {
@@ -6479,6 +6479,9 @@
                 },
                 "branch-alias": {
                     "dev-master": "9.x-dev"
+                },
+                "patches_applied": {
+                    "Reduce useless verbosity of batch update output @see https://github.com/drush-ops/drush/pull/4090": "https://github.com/drush-ops/drush/compare/e5f93f4...536cbca.diff"
                 }
             },
             "autoload": {
