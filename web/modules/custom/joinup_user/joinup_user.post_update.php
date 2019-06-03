@@ -121,3 +121,10 @@ function joinup_user_post_update_spam_accounts(array &$sandbox): ?string {
     return "Finished deleting {$sandbox['progress']} spam accounts.";
   }
 }
+
+/**
+ * Enable the "joinup_eulogin" module.
+ */
+function joinup_user_post_update_install_joinup_eulogin() {
+  \Drupal::service('module_installer')->install(['joinup_eulogin']);
+}
