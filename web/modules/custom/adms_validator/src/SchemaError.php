@@ -28,7 +28,7 @@ class SchemaError {
   /**
    * Constructs a SchemaError object from a database result row.
    *
-   * @param \stdClass $record
+   * @param object $record
    *   A SPARQL result row.
    */
   public function __construct(\stdClass $record) {
