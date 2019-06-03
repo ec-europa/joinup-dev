@@ -28,7 +28,7 @@ Feature: Add comments
     # Authenticated users can use a rich text editor to enter comments.
     And I should see the "Create comment" wysiwyg editor
     When I enter "Mr scandal was doing something weird the other day." in the "Create comment" wysiwyg editor
-    And I wait for the honeypot validation to pass
+    And I wait for the spam protection time limit to pass
     And I press "Post comment"
     Then I should not see the following success messages:
       | success messages                                                                                     |
@@ -58,7 +58,7 @@ Feature: Add comments
     And all e-mails have been sent
     When I go to the content page of the type "<content type>" with the title "<title>"
     And I fill in "Create comment" with "<p>Mr scandal was doing something<br />weird the other day.<p/>"
-    And I wait for the honeypot validation to pass
+    And I wait for the spam protection time limit to pass
     Then I press "Post comment"
     Then I should not see the following success messages:
       | success messages                                                                                     |

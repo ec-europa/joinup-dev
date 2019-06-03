@@ -47,7 +47,7 @@ function joinup_invite_entity_delete(EntityInterface $entity) {
  * Set the og_role cache contexts to the local tasks block.
  */
 function joinup_invite_block_view_alter(array &$build, BlockPluginInterface $block) {
-  if ($build['#id'] === 'primaryadminactions') {
+  if (isset($build['#id']) && ($build['#id'] === 'primaryadminactions')) {
     // The primaryadminactions contains the 'Add facilitator' link which is
     // accessible only to facilitators. The members page though is accessible
     // by members as well. If a normal member visits the page first, the block

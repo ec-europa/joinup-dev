@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: simple_block
+label: 'Simple block'
+revision: 0
+description: 'Simple blocks with only a title and a content field.'
