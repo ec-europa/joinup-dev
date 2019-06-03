@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Joinup EU Login install file.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function joinup_eulogin_install(): void {
+  if (!\Drupal::isConfigSyncing()) {
+    \Drupal::configFactory()->getEditable('cas.settings')
+      // Override OE Authentication setting.
+      ->set('forced_login.enabled', FALSE)
+      ->save();
+  }
+}
