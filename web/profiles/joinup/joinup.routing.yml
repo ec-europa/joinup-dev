@@ -13,6 +13,7 @@ rdf_entity.propose_form:
     parameters:
       rdf_type:
         type: entity:rdf_type
+
 homepage.content:
   path: '/homepage'
   defaults:
@@ -36,6 +37,26 @@ joinup.eligibility_criteria:
   requirements:
     _access: 'TRUE'
 
+joinup.export_user_list:
+  path: '/admin/reporting/export-user-list'
+  defaults:
+    _form: '\Drupal\joinup\Form\ExportUserListForm'
+    _title: 'Export user list'
+  requirements:
+    _permission: 'administer users'
+  options:
+    _admin_route: TRUE
+
+joinup.export_user_list_download:
+  path: '/admin/reporting/export-user-list/download'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\DownloadUserListController::downloadUserList'
+    _title: 'Download user list'
+  requirements:
+    _permission: 'administer users'
+  options:
+    _admin_route: TRUE
+
 joinup.group_administrators_report:
   path: '/admin/reporting/group-administrators/{entity_type_id}/{bundle_id}/{format}'
   defaults:
@@ -48,6 +69,14 @@ joinup.group_administrators_report:
   options:
     _admin_route: TRUE
 
+joinup.legal_notice:
+  path: '/joinup/legal-notice'
+  defaults:
+    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
+    _title: 'Legal notice'
+  requirements:
+    _access: 'TRUE'
+
 joinup.solutions_by_licences_report:
   path: '/admin/reporting/solutions-by-licences'
   defaults:
@@ -57,14 +86,6 @@ joinup.solutions_by_licences_report:
     _permission: 'access joinup reports'
   options:
     _admin_route: TRUE
-
-joinup.legal_notice:
-  path: '/joinup/legal-notice'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\JoinupController::legalNotice'
-    _title: 'Legal notice'
-  requirements:
-    _access: 'TRUE'
 
 joinup.site_feature:
   path: '/feature/{entity_type}/{entity}/add'

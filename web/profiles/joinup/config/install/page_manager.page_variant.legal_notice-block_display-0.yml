@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - page_manager.page.legal_notice
+  content:
+    - 'block_content:simple_block:ec092d17-ef18-42b0-b460-642871150cd3'
+  module:
+    - block_content
+id: legal_notice-block_display-0
+label: Page
+variant: block_display
+variant_settings:
+  blocks:
+    aaea2200-feb6-48c0-bd99-0549d5dfad1e:
+      id: 'block_content:ec092d17-ef18-42b0-b460-642871150cd3'
+      label: 'Legal notice'
+      provider: block_content
+      label_display: '0'
+      status: true
+      info: ''
+      view_mode: full
+      region: top
+      weight: 0
+      uuid: aaea2200-feb6-48c0-bd99-0549d5dfad1e
+      context_mapping: {  }
+  id: block_display
+  uuid: 9d849408-7b89-4c70-8253-d05ad3ac1b5b
+  label: null
+  weight: 0
+  page_title: 'Legal notice'
+page: legal_notice
+weight: 0
+selection_criteria: {  }
+selection_logic: and
+static_context: {  }
