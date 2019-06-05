@@ -47,6 +47,7 @@ dependencies:
   - joinup_core
   - joinup_discussion
   - joinup_document
+  - joinup_eulogin
   - joinup_event
   - joinup_federation
   - joinup_invite
@@ -165,6 +166,7 @@ config_devel:
   - block.block.userheader
   - block.block.views_block__licence_list_licence_lict_block
   - block_content.type.simple_block
+  - cas.settings
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
@@ -240,6 +242,7 @@ config_devel:
   - linkit.linkit_profile.default
   - mailsystem.settings
   - matomo.settings
+  - oe_authentication.settings
   - og.settings
   - og_menu.ogmenu.navigation
   - page_manager.page.legal_notice
