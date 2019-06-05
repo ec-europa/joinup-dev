@@ -266,7 +266,8 @@
                 "Reduce useless verbosity of batch update output @see https://github.com/drush-ops/drush/pull/4090": "https://github.com/drush-ops/drush/compare/e5f93f4...536cbca.diff"
             },
             "openeuropa/oe_authentication": {
-                "Optional /user/register redirect. @see https://github.com/openeuropa/oe_authentication/pull/85": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/85.diff"
+                "Optional /user/register redirect @see https://github.com/openeuropa/oe_authentication/pull/85": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/85.diff",
+                "Why only superuser is able to cancel accounts with deletion? @see https://github.com/openeuropa/oe_authentication/pull/87": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/87.diff"
             },
             "openeuropa/oe_webtools_location": {
                 "Add step definitions to check if a map is available or not on the current page.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools_location/pull/10.patch"
