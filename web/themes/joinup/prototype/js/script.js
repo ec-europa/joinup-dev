@@ -108,7 +108,7 @@ var loadMore = loadMore || {};
     $licenceTile.each(function () {
       if (currentSpdxId.length > 0) {
         var spdxId = $(this).attr('data-spdx').toLowerCase();
-        if (!spdxId.includes(currentSpdxId) && !$(this).hasClass('is-hidden')) {
+        if (spdxId.indexOf(currentSpdxId) === -1 && !$(this).hasClass('is-hidden')) {
           $(this).addClass('is-hidden');
         }
       }
