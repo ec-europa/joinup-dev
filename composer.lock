@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65205ae2967f704441a9d872b879e785",
+    "content-hash": "70b7ac136be29e1d1c0b3fb3b87174fc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -8411,6 +8411,9 @@
                     "build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
+                },
+                "patches_applied": {
+                    "Add step definitions to check if a map is available or not on the current page.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools_location/pull/10.patch"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
