@@ -85,7 +85,7 @@ class MySolutionsArbitraryFacet extends ArbitraryFacetBase implements ContainerF
    */
   public function getCacheContexts() {
     $contexts = parent::getCacheContexts();
-    return Cache::mergeContexts(['og_role'], $contexts);
+    return Cache::mergeContexts(['solution_owner'], $contexts);
   }
 
 }

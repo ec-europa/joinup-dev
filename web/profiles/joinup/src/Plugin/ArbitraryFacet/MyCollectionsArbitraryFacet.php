@@ -85,7 +85,7 @@ class MyCollectionsArbitraryFacet extends ArbitraryFacetBase implements Containe
    */
   public function getCacheContexts() {
     $contexts = parent::getCacheContexts();
-    return Cache::mergeContexts(['og_role'], $contexts);
+    return Cache::mergeContexts(['collection_owner'], $contexts);
   }
 
 }

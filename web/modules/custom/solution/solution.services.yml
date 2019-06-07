@@ -4,6 +4,11 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  cache_context.solution_owner:
+    class: 'Drupal\solution\Cache\Context\SolutionOwnerCacheContext'
+    arguments: ['@current_user', '@og.membership_manager', '@private_key']
+    tags:
+      - { name: 'cache.context'}
   solution.fulfillment_guard:
     class: Drupal\solution\Guard\SolutionFulfillmentGuard
     arguments: ['@entity_type.manager', '@config.factory', '@current_user']
