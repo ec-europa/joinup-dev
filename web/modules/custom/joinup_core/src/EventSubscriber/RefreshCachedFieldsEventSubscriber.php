@@ -87,7 +87,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * {@inheritdoc}
    */
   public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {
-    $items = $event->getExpiredItems()->getItems();
+    $items = $event->getExpiredItems();
 
     // All requests are sent by POST method to handle the amount of concurrent
     // requests in terms of request length.
@@ -149,7 +149,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return string|false
    *   The url for the request or false if no url is detected.
    */
-  protected function getUrlParameter(ContentEntityInterface $entity) {
+  protected function getUrlParameter(ContentEntityInterface $entity): string {
     $bundle = $entity->bundle();
     switch ($this->getMethod($bundle)) {
       case 'download_counts':
@@ -241,7 +241,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return string
    *   The URL parameter name. Defaults to 'pageUrl'.
    */
-  protected function getUrlParameterName($bundle) {
+  protected function getUrlParameterName($bundle): string {
     $method = $this->getMethod($bundle);
     return $method === 'download_counts' ? 'downloadUrl' : 'pageUrl';
   }
@@ -344,7 +344,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $type = $this->getType($bundle);
     $method = $this->getMatomoMethod($bundle);
     $url_parameter_name = $this->getUrlParameterName($bundle);
-    $url_parameter = $this->getUrlParameter($entity);
+
+    if (empty($this->getUrlParameter($entity))) {
+      $this->loggerFactory->get('joinup_core')->error('Invalid url parameter: ' . $this->getUrlParameter($entity));
+    }
+    else {
+      $url_parameter = $this->getUrlParameter($entity);
+    }
 
     $sub_query = $this->matomoQueryFactory->getQuery($method);
     $date_range = [
@@ -357,7 +363,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $parameters['date'] = implode(',', $date_range);
     $parameters['method'] = $method;
     $parameters['showColumns'] = $type;
-    $parameters[$url_parameter_name] = $url_parameter;
+    $parameters[$url_parameter_name] = !empty($url_parameter) ? $url_parameter : '';
     // Default settings for current requests.
     $parameters['format'] = 'json';
     $parameters['module'] = 'API';
