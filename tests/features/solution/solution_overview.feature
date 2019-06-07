@@ -91,6 +91,8 @@ Feature: Solutions Overview
     And I am on the homepage
     Then I should see the link "Solutions"
     And I click "Solutions"
+    Then I should see the text "A solution on Joinup is a framework, tool, or service"
+    And the page should be cacheable
 
     # Access the page as a moderator to ensure proper caching.
     When I am logged in as a "moderator"
@@ -100,6 +102,7 @@ Feature: Solutions Overview
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
     And I should not see the "Uniting Europe" tile
+    And the page should be cacheable
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
@@ -109,6 +112,7 @@ Feature: Solutions Overview
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
     But I should not see the "Uniting Europe" tile
+    And the page should be cacheable
 
     When I am an anonymous user
     And I am on the homepage
@@ -120,6 +124,8 @@ Feature: Solutions Overview
     And I should not see the text "Facilitate access to data sets"
     And I should see the link "Isolating Europe"
     And I should not see the text "Reusable tools and services"
+    And the page should be cacheable
+
     When I click "Non electronic health"
     Then I should see the heading "Non electronic health"
 
@@ -150,6 +156,7 @@ Feature: Solutions Overview
     When I am on the homepage
     And I click "Solutions"
     Then I should see the text "Colonies in Earth"
+    And the page should be cacheable
 
     # Check the new solution as an anonymous user.
     When I am an anonymous user
@@ -157,6 +164,7 @@ Feature: Solutions Overview
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the link "Colonies in Earth"
+    And the page should be cacheable
 
     # Clean up the solution that was created manually.
     And I delete the "Colonies in Earth" solution
