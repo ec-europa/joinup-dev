@@ -660,3 +660,13 @@ function joinup_core_post_update_set_news_default_version() {
     $latest_revision->save();
   }
 }
+
+/**
+ * Enforce the privacy mode for providers that support it.
+ */
+function joinup_core_post_install_set_video_privacy_mode() {
+  \Drupal::service('config.factory')
+    ->getEditable('video_embed_field.settings')
+    ->set('privacy_mode', 'enabled')
+    ->save();
+}
