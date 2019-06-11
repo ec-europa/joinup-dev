@@ -263,6 +263,9 @@
             },
             "drush/drush": {
                 "Reduce useless verbosity of batch update output @see https://github.com/drush-ops/drush/pull/4090": "https://github.com/drush-ops/drush/compare/e5f93f4...536cbca.diff"
+            },
+            "openeuropa/oe_webtools_location": {
+                "Add step definitions to check if a map is available or not on the current page.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools_location/pull/10.patch"
             }
         }
     },

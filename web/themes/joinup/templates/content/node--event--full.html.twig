@@ -28,16 +28,18 @@
             {{ content.share_link }}
         </div>
     </div>
+  {% if content.field_location|render %}
     <div id="event-location--{{ node.id }}" class="fieldset--separated">
-        {% if content.field_event_coordinates|render %}
-            <div class="custom-map-wrapper">
-              {{ content.field_event_coordinates }}
-            </div>
-        {% endif %}
-        <div class="page__content">
-            {{ content.field_location }}
+      {% if content.field_event_coordinates|render %}
+        <div class="custom-map-wrapper">
+          {{ content.field_event_coordinates }}
         </div>
+      {% endif %}
+      <div class="page__content">
+        {{ content.field_location }}
+      </div>
     </div>
+  {% endif %}
     {% if content.field_event_online_location|render %}
         <div id="event-online-location--{{ node.id }}" class="fieldset--separated">
             <div class="page__content">
