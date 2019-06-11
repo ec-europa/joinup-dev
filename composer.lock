@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a622324d414d21a7bfbe0a037f9b780d",
+    "content-hash": "67739000086c4fb3937d1d0e717b0e30",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6281,7 +6281,7 @@
                     "package": "Field types"
                 },
                 "patches_applied": {
-                    "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-07/privacy_mode-3060201-D8-5.patch"
+                    "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
