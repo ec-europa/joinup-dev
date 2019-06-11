@@ -105,8 +105,11 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
     if ($memberships_ids = $this->getUserMembershipIds()) {
       $memberships = $this->entityTypeManager->getStorage('og_membership')->loadMultiple($memberships_ids);
       $labels = array_map(function (OgMembershipInterface $membership): ?string {
-        return $membership->getGroup()->label();
+        $group = $membership->getGroup();
+        // Handle also orphaned memberships not deleted yet.
+        return $group ? $group->label() : NULL;
       }, $memberships);
+      $labels = array_filter($labels);
       asort($labels);
       $form = parent::buildForm($form, $form_state);
       $form['information'] = [
@@ -138,7 +141,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
     }
 
     $batch = [
-      'title' => t('Unsubscribe from collections'),
+      'title' => $this->t('Unsubscribe from collections'),
       'operations' => $operations,
       'finished' => [$this, 'membershipUnsubscribeFinish'],
       'init_message' => $this->t('Initiating...'),
@@ -159,6 +162,11 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
   public static function membershipUnsubscribe(int $membership_id, array &$context): void {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     $membership = \Drupal::entityTypeManager()->getStorage('og_membership')->load($membership_id);
+    if (empty($membership->getGroup())) {
+      // Skip in case of an orphaned membership. The membership will be deleted
+      // on cron run.
+      return;
+    }
     $membership->set('subscription_bundles', []);
     $membership->save();
     $context['results'][] = t('%title', [
