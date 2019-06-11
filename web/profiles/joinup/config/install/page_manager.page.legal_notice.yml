@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: legal_notice
+label: 'Legal notice'
+description: 'Site''s "Legal notice" page.'
+use_admin_theme: false
+path: /joinup/legal-notice
+access_logic: and
+access_conditions: {  }
+parameters: {  }

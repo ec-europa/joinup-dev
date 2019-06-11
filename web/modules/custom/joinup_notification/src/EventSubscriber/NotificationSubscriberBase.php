@@ -286,7 +286,7 @@ abstract class NotificationSubscriberBase {
     $arguments += MessageArgumentGenerator::getActorArguments();
     $arguments += MessageArgumentGenerator::getContactFormUrlArgument();
 
-    $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
+    $arguments['@site:legal_notice_url'] = Url::fromRoute('page_manager.page_view_legal_notice_legal_notice-block_display-0', [], ['absolute' => TRUE])->toString();
 
     return $arguments;
   }

@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
@@ -67,6 +68,20 @@ class JoinupSubContext extends DrupalSubContextBase {
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
+
+  /**
+   * The site's 'Legal notice' content block UUID.
+   *
+   * @var string
+   */
+  const LEGAL_NOTICE_CONTENT_UUID = 'ec092d17-ef18-42b0-b460-642871150cd3';
+
+  /**
+   * Testing content blocks.
+   *
+   * @var \Drupal\block_content\BlockContentInterface[]
+   */
+  protected $contentBlocks = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -262,7 +277,12 @@ class JoinupSubContext extends DrupalSubContextBase {
         $username = $value;
       }
     };
-    // Submit form.
+
+    // Submit form, waiting for Honeypot protection delay to pass.
+    /** @var \HoneypotSubContext $honeypot */
+    $honeypot = $this->getContext('\HoneypotSubContext');
+    $honeypot->waitForTimeLimit();
+
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
@@ -1898,22 +1918,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Waits for a few moments to bypass spam bot validation.
-   *
-   * The Honeypot module is intended to block spam bots and detect if actual
-   * humans are entering forms. One of its checks is that it assumes a human
-   * takes at least 5 seconds to fill in a form.
-   *
-   * Use this on forms that are protected by Honeypot before submitting the
-   * form.
-   *
-   * @Then I wait for the honeypot validation to pass
-   */
-  public function iWaitForHoneypot() {
-    sleep(5);
-  }
-
-  /**
    * Wait until a running batch job has finished.
    *
    * This will periodically check if the progress bar is still visible on the
@@ -2659,6 +2663,43 @@ JS;
   public function assertParagraphText(string $text): void {
     $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
     Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Creates the testing content blocks.
+   *
+   * @beforeScenario @contentBlock
+   */
+  public function createContentBlocks(): void {
+    $block = BlockContent::create([
+      'type' => 'simple_block',
+      'uuid' => static::LEGAL_NOTICE_CONTENT_UUID,
+      'status' => TRUE,
+      'info' => 'Legal notice',
+      'body' => [
+        'value' => 'Legal notice text.',
+        'format' => 'content_editor',
+      ],
+    ]);
+    $block->save();
+    $this->contentBlocks[$block->id()] = $block;
+    // As the page that contains the block is created before the block, we
+    // manually clear the block content UUID cache in order to account the
+    // presence of the new block.
+    // @see \Drupal\block_content\BlockContentUuidLookup
+    \Drupal::cache('bootstrap')->delete('block_content_uuid');
+  }
+
+  /**
+   * Clears the testing content blocks.
+   *
+   * @afterScenario @contentBlock
+   */
+  public function clearContentBlocks(): void {
+    if ($this->contentBlocks) {
+      $storage = \Drupal::entityTypeManager()->getStorage('block_content');
+      $storage->delete($storage->loadMultiple(array_keys($this->contentBlocks)));
+    }
   }
 
 }

@@ -73,7 +73,7 @@ Feature: Subscribing to discussions
     # of the comment, he will not receive notification.
     And I click "Subscribe"
     And I fill in "Create comment" with "I'm the moderator of this discussion. Let's talk."
-    But I wait for the honeypot validation to pass
+    But I wait for the spam protection time limit to pass
     Then I press "Post comment"
     # Subscribers are receiving the notifications.
     And the following email should have been sent:
