@@ -11,6 +11,8 @@ dependencies:
   - asset_distribution
   - asset_release
   - block
+  - block_content
+  - block_content_permissions
   - changed_fields
   - ckeditor
   - collection
@@ -72,6 +74,7 @@ dependencies:
   - options
   - owner
   - page_cache
+  - page_manager
   - password_policy
   - password_policy_character_types
   - password_policy_characters
@@ -161,6 +164,7 @@ config_devel:
   - block.block.unpublished_content_of_user
   - block.block.userheader
   - block.block.views_block__licence_list_licence_lict_block
+  - block_content.type.simple_block
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback
@@ -174,12 +178,14 @@ config_devel:
   - core.date_format.long
   - core.date_format.medium
   - core.date_format.short
+  - core.entity_form_display.block_content.simple_block.default
   - core.entity_form_display.ogmenu_instance.navigation.default
   - core.entity_form_display.rdf_entity.collection.propose
   - core.entity_form_display.user.user.default
   - core.entity_form_display.user.user.subscription_settings
   - core.entity_form_mode.node.collection_custom_page
   - core.entity_form_mode.user.register
+  - core.entity_view_display.block_content.simple_block.default
   - core.entity_view_display.node.discussion.default
   - core.entity_view_display.ogmenu_instance.navigation.default
   - core.entity_view_display.user.user.compact
@@ -210,7 +216,9 @@ config_devel:
   - facets.facet.event_date
   - facets.facet.solution_my_content
   - facets.facet.solution_type
+  - field.field.block_content.simple_block.body
   - field.field.ogmenu_instance.navigation.og_audience
+  - field.storage.block_content.body
   - field.storage.node.body
   - field.storage.ogmenu_instance.og_audience
   - file_url.settings
@@ -235,6 +243,8 @@ config_devel:
   - matomo.settings
   - og.settings
   - og_menu.ogmenu.navigation
+  - page_manager.page.legal_notice
+  - page_manager.page_variant.legal_notice-block_display-0
   - password_policy.password_policy.generic_policy
   - pathauto.pattern.community_content
   - pathauto.pattern.custom_page
