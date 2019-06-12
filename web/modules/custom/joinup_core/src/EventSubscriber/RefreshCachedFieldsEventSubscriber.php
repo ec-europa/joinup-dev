@@ -4,16 +4,17 @@ namespace Drupal\joinup_core\EventSubscriber;
 
 use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
 use Drupal\cached_computed_field\EventSubscriber\RefreshExpiredFieldsSubscriberBase;
+use Drupal\cached_computed_field\ExpiredItemCollection;
 use Drupal\cached_computed_field\ExpiredItemInterface;
 use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
+use Matomo\ReportingApi\QueryInterface;
 
 /**
  * Event subscriber that updates stale data with fresh results from Matomo.
@@ -88,35 +89,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    */
   public function refreshExpiredFields(RefreshExpiredFieldsEventInterface $event) {
     $items = $event->getExpiredItems();
+    $items = $this->filterInvalidItems($items);
 
-    // All requests are sent by POST method to handle the amount of concurrent
-    // requests in terms of request length.
-    $this->matomoQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
-    $query = $this->matomoQueryFactory->getQuery('API.getBulkRequest');
-
-    $url_index = 0;
-    foreach ($items as $index => $item) {
-      if (!$entity = $this->getEntity($item)) {
-        continue;
-      }
-
-      // Only refresh the field if it has actually expired. It might have been
-      // updated already since it has been added to the processing queue.
-      if (!$this->fieldNeedsRefresh($item)) {
-        continue;
-      }
-
-      if ($parameters = $this->getSubQueryParameters($entity)) {
-        $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));
-      }
-      else {
-        // Update the entity so that it wont be requested to update the value
-        // every time.
-        $this->updateFieldValue($item, 0);
-        unset($items[$index]);
-      }
-    }
-
+    $query = $this->buildQuery($items);
     try {
       $response = $query->execute()->getResponse();
     }
@@ -143,13 +118,13 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   /**
    * Gets the correct URL parameter for the query.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity that the request url is related to.
    *
-   * @return string|false
+   * @return string
    *   The url for the request or false if no url is detected.
    */
-  protected function getUrlParameter(ContentEntityInterface $entity): string {
+  protected function getUrlParameter(EntityInterface $entity): ?string {
     $bundle = $entity->bundle();
     switch ($this->getMethod($bundle)) {
       case 'download_counts':
@@ -165,7 +140,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     // distribution does not have a file attached. This is against ADMS
     // specifications but might still occur since there are entities migrated
     // and in the future also federated.
-    return $url;
+    return $url ?? NULL;
   }
 
   /**
@@ -177,12 +152,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return int
    *   The time period in days, or 0 for all time. Defaults to 0.
    */
-  protected function getTimePeriod($bundle) {
+  protected function getTimePeriod($bundle): int {
     $settings = $this->getMatomoSettings($bundle);
-    if (!empty($settings['period'])) {
-      return $settings['period'];
-    }
-    return 0;
+    return empty($settings['period']) ? 0 : $settings['period'];
   }
 
   /**
@@ -195,12 +167,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The action type to retrieve, as a parameter to be used in a Matomo API
    *   call. Defaults to 'nb_hits'.
    */
-  protected function getType($bundle) {
+  protected function getType($bundle): string {
     $settings = $this->getMatomoSettings($bundle);
-    if (!empty($settings['type'])) {
-      return $settings['type'];
-    }
-    return 'nb_hits';
+    return empty($settings['type']) ? 'nb_hits' : $settings['type'];
   }
 
   /**
@@ -213,9 +182,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The method. Can be either 'download_counts' or 'visit_counts'. Defaults
    *   to 'visit_counts'.
    */
-  protected function getMethod($bundle) {
+  protected function getMethod($bundle): string {
     $settings = $this->getMatomoSettings($bundle);
-    return !empty($settings['method']) ? $settings['method'] : 'visit_counts';
+    return empty($settings['method']) ? 'visit_counts' : $settings['method'];
   }
 
   /**
@@ -227,7 +196,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return string
    *   The Matomo API method. Defaults to 'Actions.getPageUrl'.
    */
-  protected function getMatomoMethod($bundle) {
+  protected function getMatomoMethod($bundle): string {
     $method = $this->getMethod($bundle);
     return $method === 'download_counts' ? 'Actions.getDownload' : 'Actions.getPageUrl';
   }
@@ -249,30 +218,111 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   /**
    * Returns the absolute URL to the canonical page of the given entity.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity for which to return the URL.
    *
    * @return string
-   *   The URL.
+   *   The entity URL.
    */
-  protected function getEntityUrl(ContentEntityInterface $entity) {
+  protected function getEntityUrl(EntityInterface $entity): string {
     return $entity->toUrl()->setAbsolute()->toString();
+  }
+
+  /**
+   * Generates an argument array that represents the time range.
+   *
+   * @param int $period
+   *   The starting period represented by the number of days ago.
+   *
+   * @return array
+   *   An array with the starting and ending time range.
+   */
+  protected function getDateRange($period): array {
+    return [
+      // If the period is 0 we should get all results since launch.
+      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.matomo_settings')->get('launch_date'),
+      (new DateTimePlus())->format('Y-m-d'),
+    ];
+  }
+
+  /**
+   * Filters out invalid entries from a collection of items.
+   *
+   * Invalid entries can be items that their entities don't exist or have not
+   * expired yet.
+   *
+   * @param \Drupal\cached_computed_field\ExpiredItemCollection $items
+   *   A collection of items.
+   *
+   * @return \Drupal\cached_computed_field\ExpiredItemCollection
+   *   The filtered collection of items.
+   */
+  protected function filterInvalidItems(ExpiredItemCollection $items): ExpiredItemCollection {
+    $valid_items = [];
+    foreach ($items as $item) {
+      if (!$entity = $this->getEntity($item)) {
+        continue;
+      }
+
+      // Only refresh the field if it has actually expired. It might have been
+      // updated already since it has been added to the processing queue.
+      if (!$this->fieldNeedsRefresh($item)) {
+        continue;
+      }
+
+      // Catch the case where the URL is not available. This can currently
+      // happen only when an entity is malformed, for which we already check,
+      // or the distribution we are attempting to track does not have a file.
+      if (empty($this->getUrlParameter($entity))) {
+        $this->loggerFactory->get('joinup_core')->error('Invalid url parameter: ' . $this->getUrlParameter($entity));
+        continue;
+      }
+
+      $valid_items[] = $item;
+    }
+
+    return new ExpiredItemCollection($valid_items);
+  }
+
+  /**
+   * Builds a set of subqueries to send to Matomo.
+   *
+   * @param \Drupal\cached_computed_field\ExpiredItemCollection $items
+   *   A collection of items.
+   *
+   * @return \Matomo\ReportingApi\QueryInterface
+   *   A Matomo reporting query object.
+   */
+  protected function buildQuery(ExpiredItemCollection $items): QueryInterface {
+    // All requests are sent by POST method to handle the amount of concurrent
+    // requests in terms of request length.
+    $this->matomoQueryFactory->getQueryFactory()->getHttpClient()->setMethod('POST');
+    $query = $this->matomoQueryFactory->getQuery('API.getBulkRequest');
+
+    $url_index = 0;
+    foreach ($items as $index => $item) {
+      $entity = $this->getEntity($item);
+      $parameters = $this->getSubQueryParameters($entity);
+      $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));
+    }
+
+    return $query;
   }
 
   /**
    * Returns the URL of the first file that is referenced in the given entity.
    *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity for which to retrieve the URL.
    *
-   * @return string|false
+   * @return string
    *   The URL of the first referenced file, or FALSE if the first file does not
    *   have a URL.
    *
-   * @throws \Exception
+   * @throws \InvalidArgumentException
    *   Thrown when the functionality has not yet been implemented.
    */
-  protected function getFileUrl(ContentEntityInterface $entity) {
+  protected function getFileUrl(EntityInterface $entity): ?string {
     // We only support download counts for distribution entities at the moment.
     // @todo Make this more generic using the EntityFieldManager if we support
     //   more entity types in the future.
@@ -291,7 +341,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
     }
 
-    return FALSE;
+    return NULL;
   }
 
   /**
@@ -303,11 +353,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @param string $bundle
    *   The bundle for which to retrieve the settings.
    *
-   * @return array|false
+   * @return array
    *   The configuration array, or FALSE if there is no configuration for this
    *   bundle.
    */
-  protected function getMatomoSettings($bundle) {
+  protected function getMatomoSettings($bundle): array {
     if (empty($this->matomoSettings)) {
       $this->matomoSettings = $this->configFactory->get('joinup_core.matomo_settings');
     }
@@ -319,7 +369,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
     }
 
-    return FALSE;
+    return [];
   }
 
   /**
@@ -334,7 +384,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @param array $parameters
    *   A list of extra parameters to pass to the array of parameters.
    *
-   * @return array|false
+   * @return array
    *   A list of parameters or false if the entity does not have a valid url to
    *   request.
    */
@@ -344,20 +394,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $type = $this->getType($bundle);
     $method = $this->getMatomoMethod($bundle);
     $url_parameter_name = $this->getUrlParameterName($bundle);
-
-    if (empty($this->getUrlParameter($entity))) {
-      $this->loggerFactory->get('joinup_core')->error('Invalid url parameter: ' . $this->getUrlParameter($entity));
-    }
-    else {
-      $url_parameter = $this->getUrlParameter($entity);
-    }
+    $url_parameter = $this->getUrlParameter($entity);
 
     $sub_query = $this->matomoQueryFactory->getQuery($method);
-    $date_range = [
-      // If the period is 0 we should get all results since launch.
-      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.matomo_settings')->get('launch_date'),
-      (new DateTimePlus())->format('Y-m-d'),
-    ];
+    $date_range = $this->getDateRange($period);
 
     $parameters['period'] = 'range';
     $parameters['date'] = implode(',', $date_range);
