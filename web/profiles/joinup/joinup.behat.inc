@@ -323,28 +323,25 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Checks if the given select field does not contain any of the given values.
+   * Asserts the list of available options in a select box.
    *
    * @param string $select
    *   The name of the field element.
-   * @param string $options
-   *   The options to be checked separated by comma.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
    *
    * @throws Exception
-   *    Throws an exception when a value exists.
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
    *
-   * @Then (the ):select field should not contain the :options option(s)
+   * @Then the :select select should contain the following options:
    */
-  public function checkSelectDoesNotContainOptions($select, $options) {
+  public function assertSelectOptionsAsList($select, TableNode $table) {
     $field = $this->findSelect($select);
     $available_options = array_values($this->getSelectOptions($field));
-    $options = $this->explodeCommaSeparatedStepArgument($options);
 
-    $intersection = array_intersect($available_options, $options);
-
-    if (!empty($intersection)) {
-      throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
-    }
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
   }
 
   /**
