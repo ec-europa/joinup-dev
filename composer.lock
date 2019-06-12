@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8ded3a9b9bb241b2fdb7ad98e4bf086",
+    "content-hash": "0e7cb4f79c49ce0a84dd37bbcaa8ca57",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.100.0",
+            "version": "3.100.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ecf8acf56bdb6e642fe86ead6c80eab0c61067cb"
+                "reference": "0ae18bb40836e9599bdbd6a65b292329bc83df64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ecf8acf56bdb6e642fe86ead6c80eab0c61067cb",
-                "reference": "ecf8acf56bdb6e642fe86ead6c80eab0c61067cb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0ae18bb40836e9599bdbd6a65b292329bc83df64",
+                "reference": "0ae18bb40836e9599bdbd6a65b292329bc83df64",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-06-10T18:09:57+00:00"
+            "time": "2019-06-11T18:32:05+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -5013,21 +5013,21 @@
         },
         {
             "name": "drupal/password_policy",
-            "version": "3.0.0-alpha5",
+            "version": "3.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/password_policy.git",
-                "reference": "8.x-3.0-alpha5"
+                "reference": "8.x-3.0-alpha4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/password_policy-8.x-3.0-alpha5.zip",
-                "reference": "8.x-3.0-alpha5",
-                "shasum": "74f170caa739e886d2de0df27a479f94014e273f"
+                "url": "https://ftp.drupal.org/files/projects/password_policy-8.x-3.0-alpha4.zip",
+                "reference": "8.x-3.0-alpha4",
+                "shasum": "79997599fbce390e79eda0aba10f403324c48b99"
             },
             "require": {
-                "drupal/core": "^8.5.0",
-                "drupal/ctools": "^3.1"
+                "drupal/core": "*",
+                "drupal/ctools": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -5035,7 +5035,7 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha5",
+                    "version": "8.x-3.0-alpha4",
                     "datestamp": "1559915584",
                     "security-coverage": {
                         "status": "not-covered",

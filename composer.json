@@ -44,7 +44,7 @@
         "drupal/og": "^1.0-alpha3",
         "drupal/og_menu": "^1.0-alpha3",
         "drupal/page_manager": "dev-4.x#b2c5d9a5905e45d348c1109424eb3630034f761d",
-        "drupal/password_policy": "^3.0-alpha4",
+        "drupal/password_policy": "3.0-alpha4",
         "drupal/pathauto": "~1.4",
         "drupal/persistent_login": "~1.0",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
