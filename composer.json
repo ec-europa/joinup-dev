@@ -111,7 +111,6 @@
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "~2.8",
-        "symfony/dom-crawler": "4.2.9",
         "symfony/phpunit-bridge": "^4.2"
     },
     "conflict": {
@@ -260,9 +259,6 @@
             },
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
-            },
-            "drush/drush": {
-                "Reduce useless verbosity of batch update output @see https://github.com/drush-ops/drush/pull/4090": "https://github.com/drush-ops/drush/compare/e5f93f4...536cbca.diff"
             },
             "openeuropa/oe_webtools_location": {
                 "Add step definitions to check if a map is available or not on the current page.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools_location/pull/10.patch"
