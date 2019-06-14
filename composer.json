@@ -73,6 +73,7 @@
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
+        "masterminds/html5": "^2.6",
         "ml/json-ld": "^1.0",
         "openeuropa/oe_webtools_location": "dev-master",
         "pear/console_table": "~1.3",
@@ -256,6 +257,9 @@
             },
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
+            },
+            "masterminds/html5": {
+                "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
             },
             "openeuropa/oe_webtools_location": {
                 "Add step definitions to check if a map is available or not on the current page.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools_location/pull/10.patch"
