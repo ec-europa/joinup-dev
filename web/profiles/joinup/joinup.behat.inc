@@ -323,6 +323,31 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Checks if the given select field does not contain any of the given values.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param string $options
+   *   The options to be checked separated by comma.
+   *
+   * @throws Exception
+   *    Throws an exception when a value exists.
+   *
+   * @Then (the ):select field should not contain the :options option(s)
+   */
+  public function checkSelectDoesNotContainOptions($select, $options) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+    $options = $this->explodeCommaSeparatedStepArgument($options);
+
+    $intersection = array_intersect($available_options, $options);
+
+    if (!empty($intersection)) {
+      throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
+    }
+  }
+
+  /**
    * Asserts the list of available options in a select box.
    *
    * @param string $select
