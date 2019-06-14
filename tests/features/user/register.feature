@@ -53,8 +53,8 @@ Feature: User registration
       | Username                   | SuperUser             |
       | First name                 | Super                 |
       | Family name                | User                  |
-      | Password                   | SuperSecret           |
-      | Confirm password           | SuperSecret           |
+      | Password                   | 98eZRhoP              |
+      | Confirm password           | 98eZRhoP              |
       | Notify user of new account | 1                     |
       | Active                     | 1                     |
     Then the following email should have been sent:
