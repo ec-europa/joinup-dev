@@ -41,10 +41,10 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0@beta",
         "drupal/migrate_spreadsheet": "~1.0",
-        "drupal/og": "dev-1.x",
+        "drupal/og": "^1.0-alpha3",
         "drupal/og_menu": "^1.0-alpha3",
         "drupal/page_manager": "dev-4.x#b2c5d9a5905e45d348c1109424eb3630034f761d",
-        "drupal/password_policy": "^3.0-alpha4",
+        "drupal/password_policy": "^3.0-alpha5",
         "drupal/pathauto": "~1.4",
         "drupal/persistent_login": "~1.0",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
@@ -66,7 +66,7 @@
         "drupal/view_unpublished": "~1.0@alpha",
         "drupal/views_bulk_operations": "^2.0",
         "drupal/views_data_export": "^1.0-beta1",
-        "drush/drush": "^9.6.2",
+        "drush/drush": "~9.7",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
@@ -220,9 +220,6 @@
             "drupal/message_notify": {
                 "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
             },
-            "drupal/og": {
-                "Do not invalidate group content list cache tags when the group itself changes @see https://github.com/Gizra/og/pull/509": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/509.patch"
-            },
             "drupal/page_manager": {
                 "Support contextual links @see https://www.drupal.org/project/page_manager/issues/2601004": "https://www.drupal.org/files/issues/2019-05-27/2601004-30.patch"
             },
@@ -261,9 +258,6 @@
             },
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
-            },
-            "drush/drush": {
-                "Reduce useless verbosity of batch update output @see https://github.com/drush-ops/drush/pull/4090": "https://github.com/drush-ops/drush/compare/e5f93f4...536cbca.diff"
             },
             "openeuropa/oe_authentication": {
                 "Optional /user/register redirect @see https://github.com/openeuropa/oe_authentication/pull/85": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/85.diff",
