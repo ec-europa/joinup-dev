@@ -7,10 +7,12 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\og\OgMembershipInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -83,7 +85,20 @@ class SubscriptionDashboardForm extends FormBase {
     }
 
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    $memberships_with_subscription = array_filter($memberships, function (OgMembershipInterface $membership): array {
+      return $membership->get('subscription_bundles')->getValue();
+    });
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
+
+    $form['unsubscribe_all'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Unsubscribe from all'),
+      '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
+        'user' => $user->id(),
+      ]),
+      '#access' => !empty($memberships_with_subscription),
+      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
+    ];
 
     $form['description'] = [
       '#type' => 'html_tag',
@@ -91,6 +106,7 @@ class SubscriptionDashboardForm extends FormBase {
       '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
     ];
 
+    // Return early if there are no memberships to display.
     if (!(bool) count($memberships)) {
       $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
       $form['empty_text'] = [

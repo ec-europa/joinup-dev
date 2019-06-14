@@ -12,6 +12,7 @@ use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -405,22 +406,67 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   CSS selector of the select field.
    *
    * @throws \Exception
+   *   Thrown when the select is not found in the page or the selected option is
+   *   not the expected one.
    *
    * @Then the option with text :option from select :select is selected
    */
   public function assertFieldOptionSelected($option, $select) {
-    $element = $this->findSelect($select);
+    $this->assertFieldOptionSelectedInRegion($option, $select);
+  }
+
+  /**
+   * Finds the selected option of the select in a card and checks the text.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   CSS selector of the select field.
+   * @param string $heading
+   *   The card heading.
+   *
+   * @throws \Exception
+   *   Thrown when the select is not found in the page or the selected option is
+   *   not the expected one.
+   *
+   * @Then the option with text :option from select :select is selected in the :heading card
+   */
+  public function assertFieldOptionSelectedInCard(string $option, string $select, string $heading): void {
+    $region = $this->getCollectionSubscriptionCardByHeading($heading);
+    $this->assertFieldOptionSelectedInRegion($option, $select, $region);
+  }
+
+  /**
+   * Checks if an option is selected in a specific select element in a region.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   CSS selector of the select field.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (optional) The region to search in. Defaults to the whole page.
+   *
+   * @throws \Exception
+   *   Thrown when the select is not found in the page or the selected option is
+   *   not the expected one.
+   */
+  protected function assertFieldOptionSelectedInRegion(string $option, string $select, TraversableElement $region = NULL): void {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
+
+    $element = $this->findSelect($select, $region);
     if (!$element) {
-      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
+      throw new \Exception(sprintf('The select "%s" was not found.', $select));
     }
 
     $option_element = $element->find('xpath', '//option[@selected="selected"]');
     if (!$option_element) {
-      throw new \Exception(sprintf('No option is selected in the %s select in the page %s', $select, $this->getSession()->getCurrentUrl()));
+      throw new \Exception(sprintf('No option is selected in the %s select', $select));
     }
 
     if ($option_element->getText() !== $option) {
-      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+      throw new \Exception(sprintf('The option "%s" was expected to be selected, but %s was selected instead.', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
     }
   }
 
@@ -475,7 +521,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Find the selected option of the select and check the text.
+   * Checks that a select element does not have the given text option selected.
    *
    * @param string $option
    *   Text value of the option to find.

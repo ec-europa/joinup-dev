@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
@@ -15,16 +16,22 @@ trait TraversingTrait {
    *
    * @param string $select
    *   The name of the select element.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (optional) The region in which to search for the select. Defaults to the
+   *   whole page.
    *
-   * @return \Behat\Mink\Element\NodeElement
+   * @return \Behat\Mink\Element\TraversableElement
    *   The select element.
    *
    * @throws \Exception
    *   Thrown when no select field is found.
    */
-  protected function findSelect($select) {
+  protected function findSelect(string $select, TraversableElement $region = NULL): TraversableElement {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
     /** @var \Behat\Mink\Element\NodeElement $element */
-    $element = $this->getSession()->getPage()->find('named', ['select', $select]);
+    $element = $region->find('named', ['select', $select]);
 
     if (empty($element)) {
       throw new \Exception("Select field '{$select}' not found.");
@@ -158,27 +165,61 @@ trait TraversingTrait {
    * @param string $heading
    *   The heading of the tile to find.
    *
-   * @return \Behat\Mink\Element\NodeElement|null
-   *   The tile element, or null if not found.
+   * @return \Behat\Mink\Element\NodeElement
+   *   The element found.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   Thrown when the tile is not found.
+   *   Thrown when the element is not found.
    */
-  protected function getTileByHeading($heading) {
-    // Locate all the tiles.
-    $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__item--tile ")]';
+  protected function getTileByHeading(string $heading): NodeElement {
+    return $this->getListingByHeading('listing__item--tile', $heading);
+  }
+
+  /**
+   * Finds a card element by its heading.
+   *
+   * @param string $heading
+   *   The heading of the card to find.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The element found.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the element is not found.
+   */
+  protected function getCollectionSubscriptionCardByHeading(string $heading): NodeElement {
+    return $this->getListingByHeading('collection-subscription', $heading);
+  }
+
+  /**
+   * Finds a list item element by its heading.
+   *
+   * @param string $type
+   *   The class of the element that is searched for.
+   * @param string $heading
+   *   The heading on the item.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The found node element.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the element is not found.
+   */
+  protected function getListingByHeading(string $type, string $heading): NodeElement {
+    // Locate all the items.
+    $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
     // That have a heading with the specified text.
     $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
 
-    $tile = $this->getSession()->getPage()->find('xpath', $xpath);
+    $item = $this->getSession()->getPage()->find('xpath', $xpath);
 
-    if (!$tile) {
+    if (!$item) {
       // Throw a specific exception, so it can be catched by steps that need to
       // assert that a tile is not present.
-      throw new ElementNotFoundException($this->getSession()->getDriver(), "Tile '$heading'");
+      throw new ElementNotFoundException($this->getSession()->getDriver(), "'$heading' $type item.");
     }
 
-    return $tile;
+    return $item;
   }
 
   /**

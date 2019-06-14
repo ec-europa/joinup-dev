@@ -37,3 +37,15 @@ joinup_subscription.subscriptions_page:
     _title: 'My subscriptions'
   requirements:
     _user_is_logged_in: 'TRUE'
+
+joinup_subscription.unsubscribe_all:
+  path: '/user/{user}/unsubscribe-all'
+  defaults:
+    _form: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm'
+    _title: 'Unsubscribe from all groups'
+  requirements:
+    _custom_access: '\Drupal\joinup_subscription\Form\UnsubscribeFromAllCollectionsForm::access'
+  options:
+    parameters:
+      user:
+        type: entity:user
