@@ -1,3 +1,10 @@
+joinup.export_user_list:
+  title: 'Export user list'
+  route_name: joinup.export_user_list
+  description: 'Export the list of users as a CSV file.'
+  parent: joinup_core.admin_reporting
+  weight: 0
+
 joinup.group_administrators_report:
   title: 'Collection administrators'
   route_name: joinup.group_administrators_report
@@ -6,7 +13,7 @@ joinup.group_administrators_report:
     bundle_id: 'collection'
   description: 'Table containing all collection owners and facilitators'
   parent: joinup_core.admin_reporting
-  weight: 0
+  weight: -1
 
 joinup.solutions_by_licences_report:
   title: 'Solutions by licences'

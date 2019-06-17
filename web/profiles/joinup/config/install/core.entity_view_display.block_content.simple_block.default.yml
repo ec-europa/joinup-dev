@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.simple_block
+    - field.field.block_content.simple_block.body
+  module:
+    - text
+id: block_content.simple_block.default
+targetEntityType: block_content
+bundle: simple_block
+mode: default
+content:
+  body:
+    type: text_default
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

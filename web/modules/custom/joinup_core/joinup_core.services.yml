@@ -1,4 +1,9 @@
 services:
+  cache_context.joinup_core_group_owner:
+    class: 'Drupal\joinup_core\Cache\Context\GroupOwnerCacheContext'
+    arguments: ['@current_user', '@og.membership_manager', '@private_key']
+    tags:
+      - { name: 'cache.context'}
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
     arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper']

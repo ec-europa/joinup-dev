@@ -101,19 +101,23 @@ index f47fc123..2426375c 100644
    $table[$datasource_field]['argument']['disable_break_phrase'] = TRUE;
    $table[$datasource_field]['field']['id'] = 'standard';
 diff --git a/src/Datasource/DatasourceInterface.php b/src/Datasource/DatasourceInterface.php
-index 5cd4ed1a..edf02020 100644
+index 5cd4ed1a..5148f24a 100644
 --- a/src/Datasource/DatasourceInterface.php
 +++ b/src/Datasource/DatasourceInterface.php
-@@ -238,4 +238,15 @@ interface DatasourceInterface extends IndexPluginInterface {
+@@ -238,4 +238,19 @@ interface DatasourceInterface extends IndexPluginInterface {
     */
    public function getFieldDependencies(array $fields);
  
 +  /**
-+   * The list cache contexts associated with this datasource.
++   * Returns the list cache contexts associated with this datasource.
 +   *
-+   * Allows lists that contain items from this data source to be varied as
-+   * necessary, typically to ensure users of role A see other items listed than
-+   * users of role B.
++   * List cache contexts ensure that if items from a datasource are included in
++   * a list that any caches containing this list are varied as necessary. For
++   * example a View might contain a number of items from this data source that
++   * are visible only by users that have a certain role. These list cache
++   * contexts will ensure that separate cached versions exists for users with
++   * this role and without it. They should be included whenever a list is
++   * rendered that contains items from this datasource.
 +   *
 +   * @return string[]
 +   */
@@ -367,6 +371,28 @@ index 6224ce31..c7694791 100644
 +  }
 +
  }
+diff --git a/src/Plugin/views/cache/SearchApiCachePluginTrait.php b/src/Plugin/views/cache/SearchApiCachePluginTrait.php
+index 9f6e7100..6e056206 100644
+--- a/src/Plugin/views/cache/SearchApiCachePluginTrait.php
++++ b/src/Plugin/views/cache/SearchApiCachePluginTrait.php
+@@ -4,6 +4,7 @@ namespace Drupal\search_api\Plugin\views\cache;
+ 
+ use Drupal\Component\Utility\Crypt;
+ use Drupal\Core\Cache\Cache;
++use Drupal\Core\Cache\CacheableDependencyInterface;
+ use Drupal\Core\Cache\CacheBackendInterface;
+ use Drupal\Core\Cache\Context\CacheContextsManager;
+ use Drupal\search_api\Plugin\views\query\SearchApiQuery;
+@@ -188,6 +189,9 @@ trait SearchApiCachePluginTrait {
+         ],
+       ];
+ 
++      // Vary the results key by the cache contexts of the display handler.
++      // These cache contexts are calculated when the view is saved in the Views
++      // UI and stored in the view config entity.
+       $display_handler_cache_contexts = $this->displayHandler
+         ->getCacheMetadata()
+         ->getCacheContexts();
 diff --git a/src/Plugin/views/cache/SearchApiTagCache.php b/src/Plugin/views/cache/SearchApiTagCache.php
 index 48e7728f..9527c82a 100644
 --- a/src/Plugin/views/cache/SearchApiTagCache.php
@@ -716,18 +742,19 @@ index f3c4829f..bd9f6c53 100644
      // Save any keywords that were already set.
      $old = $query->getKeys();
 diff --git a/src/Plugin/views/query/SearchApiQuery.php b/src/Plugin/views/query/SearchApiQuery.php
-index f77a15aa..87d41697 100644
+index f77a15aa..3d8b35ad 100644
 --- a/src/Plugin/views/query/SearchApiQuery.php
 +++ b/src/Plugin/views/query/SearchApiQuery.php
-@@ -3,6 +3,7 @@
+@@ -3,6 +3,8 @@
  namespace Drupal\search_api\Plugin\views\query;
  
  use Drupal\Component\Render\FormattableMarkup;
 +use Drupal\Core\Cache\Cache;
++use Drupal\Core\Cache\CacheableDependencyInterface;
  use Drupal\Core\Database\Query\ConditionInterface;
  use Drupal\Core\Entity\EntityInterface;
  use Drupal\Core\Entity\EntityTypeManagerInterface;
-@@ -16,6 +17,7 @@ use Drupal\search_api\ParseMode\ParseModeInterface;
+@@ -16,6 +18,7 @@ use Drupal\search_api\ParseMode\ParseModeInterface;
  use Drupal\search_api\Plugin\views\field\SearchApiStandard;
  use Drupal\search_api\Plugin\views\ResultRow;
  use Drupal\search_api\Processor\ConfigurablePropertyInterface;
@@ -735,7 +762,16 @@ index f77a15aa..87d41697 100644
  use Drupal\search_api\Query\ConditionGroupInterface;
  use Drupal\search_api\Query\QueryInterface;
  use Drupal\search_api\Query\ResultSetInterface;
-@@ -687,6 +689,33 @@ class SearchApiQuery extends QueryPluginBase {
+@@ -258,7 +261,7 @@ class SearchApiQuery extends QueryPluginBase {
+       if ($display_type === 'rest_export') {
+         $display_type = 'rest';
+       }
+-      $this->query->setSearchId("views_$display_type:" . $view->id() . '__' . $view->current_display);
++      $this->query->setSearchId("views_$display_type:" . $view->id() . '__' . $display->display['id']);
+       $this->query->setOption('search_api_view', $view);
+     }
+     catch (\Exception $e) {
+@@ -687,6 +690,49 @@ class SearchApiQuery extends QueryPluginBase {
      }
    }
  
@@ -743,13 +779,15 @@ index f77a15aa..87d41697 100644
 +   * {@inheritdoc}
 +   */
 +  public function getCacheContexts() {
-+    $contexts = [];
-+
-+    foreach ($this->getIndex()->getDatasources() as $datasource) {
-+      $contexts = Cache::mergeContexts($datasource->getListCacheContexts(), $contexts);
++    $query = $this->getSearchApiQuery();
++    if ($query instanceof CacheableDependencyInterface) {
++      return $query->getCacheContexts();
 +    }
 +
-+    return $contexts;
++    // We are not returning the cache contexts from the parent class since these
++    // are based on the default SQL storage from Views, while our results are
++    // coming from the search engine.
++    return [];
 +  }
 +
 +  /**
@@ -758,18 +796,32 @@ index f77a15aa..87d41697 100644
 +  public function getCacheTags() {
 +    $tags = parent::getCacheTags();
 +
-+    // If the configuration of the search index changes we should invalidate the
-+    // views that show results from this index.
-+    $index_tags = $this->getIndex()->getCacheTagsToInvalidate();
-+    $tags = Cache::mergeTags($index_tags, $tags);
++    $query = $this->getSearchApiQuery();
++    if ($query instanceof CacheableDependencyInterface) {
++      $tags = Cache::mergeTags($query->getCacheTags(), $tags);
++    }
 +
 +    return $tags;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getCacheMaxAge() {
++    $max_age = parent::getCacheMaxAge();
++
++    $query = $this->getSearchApiQuery();
++    if ($query instanceof CacheableDependencyInterface) {
++      $max_age = Cache::mergeMaxAges($query->getCacheMaxAge(), $max_age);
++    }
++
++    return $max_age;
 +  }
 +
    /**
     * Retrieves the conditions placed on this query.
     *
-@@ -861,7 +890,7 @@ class SearchApiQuery extends QueryPluginBase {
+@@ -861,7 +907,7 @@ class SearchApiQuery extends QueryPluginBase {
      if (!$this->shouldAbort()) {
        return $this->query->createConditionGroup($conjunction, $tags);
      }
@@ -794,6 +846,85 @@ index e670f33b..4f3db769 100644
 +  }
 +
  }
+diff --git a/src/Query/Query.php b/src/Query/Query.php
+index e415cc2c..138b9969 100644
+--- a/src/Query/Query.php
++++ b/src/Query/Query.php
+@@ -2,6 +2,9 @@
+ 
+ namespace Drupal\search_api\Query;
+ 
++use Drupal\Core\Cache\Cache;
++use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
++use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
+ use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+ use Drupal\Core\Extension\ModuleHandlerInterface;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+@@ -15,9 +18,10 @@ use Drupal\search_api\Utility\QueryHelperInterface;
+ /**
+  * Provides a standard implementation for a Search API query.
+  */
+-class Query implements QueryInterface {
++class Query implements QueryInterface, RefinableCacheableDependencyInterface {
+ 
+   use StringTranslationTrait;
++  use RefinableCacheableDependencyTrait;
+   use DependencySerializationTrait {
+     __sleep as traitSleep;
+     __wakeup as traitWakeup;
+@@ -696,6 +700,52 @@ class Query implements QueryInterface {
+     return $this->originalQuery ?: clone $this;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getCacheContexts() {
++    // Call the pre-execute method to ensure that processors and modules have
++    // had the chance to alter the query and modify the cacheability metadata.
++    $this->preExecute();
++
++    $contexts = $this->cacheContexts;
++
++    foreach ($this->getIndex()->getDatasources() as $datasource) {
++      $contexts = Cache::mergeContexts($datasource->getListCacheContexts(), $contexts);
++    }
++
++    return $contexts;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getCacheTags() {
++    // Call the pre-execute method to ensure that processors and modules have
++    // had the chance to alter the query and modify the cacheability metadata.
++    $this->preExecute();
++
++    $tags = $this->cacheTags;
++
++    // If the configuration of the search index changes we should invalidate the
++    // views that show results from this index.
++    $index_tags = $this->getIndex()->getCacheTagsToInvalidate();
++    $tags = Cache::mergeTags($index_tags, $tags);
++
++    return $tags;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getCacheMaxAge() {
++    // Call the pre-execute method to ensure that processors and modules have
++    // had the chance to alter the query and modify the cacheability metadata.
++    $this->preExecute();
++
++    return $this->cacheMaxAge;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
 diff --git a/tests/search_api_test/search_api_test.info.yml b/tests/search_api_test/search_api_test.info.yml
 index 7bf224dc..fa1580ac 100644
 --- a/tests/search_api_test/search_api_test.info.yml
@@ -1107,6 +1238,46 @@ index 23407302..49e133b6 100644
  dependencies:
    - search_api:search_api
    - search_api:search_api_test_db
+diff --git a/tests/search_api_test_views/search_api_test_views.module b/tests/search_api_test_views/search_api_test_views.module
+index 739ef892..e6761951 100644
+--- a/tests/search_api_test_views/search_api_test_views.module
++++ b/tests/search_api_test_views/search_api_test_views.module
+@@ -5,6 +5,7 @@
+  * Contains hook implementations for the Search API Views Test module.
+  */
+ 
++use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Entity\EntityListBuilder;
+ use Drupal\search_api\Query\QueryInterface;
+@@ -12,14 +13,25 @@ use Drupal\search_api\Query\QueryInterface;
+ /**
+  * Implements hook_search_api_query_alter().
+  *
+- * Prints the contents of the "search_api_retrieved_field_values" query option
+- * to the page (if present) so it can be checked by the testing code.
++ * - Prints the contents of the "search_api_retrieved_field_values" query option
++ *   to the page (if present) so it can be checked by the testing code.
++ * - Alters the query to include custom cacheability metadata, so that we can
++ *   test if modules can alter the cacheability of search queries.
+  */
+ function search_api_test_views_search_api_query_alter(QueryInterface $query) {
+   $fields = $query->getOption('search_api_retrieved_field_values');
+   if ($fields) {
+     \Drupal::messenger()->addStatus("'" . implode("' '", $fields) . "'");
+   }
++
++  if (\Drupal::state()->get('search_api_test_views.alter_query_cacheability_metadata', FALSE)) {
++    if ($query instanceof RefinableCacheableDependencyInterface) {
++      // Alter in some imaginary cacheability metadata for testing.
++      $query->addCacheContexts(['search_api_test_context']);
++      $query->addCacheTags(['search_api:test_tag']);
++      $query->mergeCacheMaxAge(100);
++    }
++  }
+ }
+ 
+ /**
 diff --git a/tests/src/Functional/IntegrationTest.php b/tests/src/Functional/IntegrationTest.php
 index 105aec10..344d6035 100644
 --- a/tests/src/Functional/IntegrationTest.php
@@ -1201,16 +1372,15 @@ index 1fba7acb..333548b6 100644
    /**
 diff --git a/tests/src/Kernel/Views/ViewsCacheInvalidationTest.php b/tests/src/Kernel/Views/ViewsCacheInvalidationTest.php
 new file mode 100644
-index 00000000..e24889da
+index 00000000..e526c623
 --- /dev/null
 +++ b/tests/src/Kernel/Views/ViewsCacheInvalidationTest.php
-@@ -0,0 +1,458 @@
+@@ -0,0 +1,473 @@
 +<?php
 +
 +namespace Drupal\Tests\search_api\Kernel\Views;
 +
 +use Drupal\Core\Cache\Cache;
-+use Drupal\Core\Datetime\Entity\DateFormat;
 +use Drupal\KernelTests\KernelTestBase;
 +use Drupal\node\Entity\Node;
 +use Drupal\node\Entity\NodeType;
@@ -1238,7 +1408,7 @@ index 00000000..e24889da
 +  /**
 +   * The display ID used in the test.
 +   */
-+  const TEST_VIEW_DISPLAY_ID = 'default';
++  const TEST_VIEW_DISPLAY_ID = 'page_1';
 +
 +  /**
 +   * The entity type manager.
@@ -1260,13 +1430,6 @@ index 00000000..e24889da
 +   * @var \Drupal\Core\Render\RendererInterface
 +   */
 +  protected $renderer;
-+
-+  /**
-+   * The render cache.
-+   *
-+   * @var \Drupal\Core\Render\PlaceholderingRenderCache
-+   */
-+  protected $renderCache;
 +
 +  /**
 +   * The cache tags invalidator.
@@ -1313,7 +1476,7 @@ index 00000000..e24889da
 +  /**
 +   * {@inheritdoc}
 +   */
-+  public static $modules = [
++  protected static $modules = [
 +    'field',
 +    'node',
 +    'rest',
@@ -1353,15 +1516,8 @@ index 00000000..e24889da
 +    $this->entityTypeManager = $this->container->get('entity_type.manager');
 +    $this->viewExecutableFactory = $this->container->get('views.executable');
 +    $this->renderer = $this->container->get('renderer');
-+    $this->renderCache = $this->container->get('render_cache');
 +    $this->cacheTagsInvalidator = $this->container->get('cache_tags.invalidator');
 +    $this->currentUser = $this->container->get('current_user');
-+
-+    DateFormat::create([
-+      'id' => 'fallback',
-+      'label' => 'Fallback',
-+      'pattern' => 'Y-m-d',
-+    ])->save();
 +
 +    // Use the test search index from the search_api_test_db module.
 +    $this->index = Index::load('test_node_index');
@@ -1391,9 +1547,9 @@ index 00000000..e24889da
 +  }
 +
 +  /**
-+   * Tests that a cached views display is invalidated at the right occasions.
++   * Tests that a cached views query result is invalidated at the right moments.
 +   */
-+  public function testDisplayCacheInvalidation() {
++  public function testQueryCacheInvalidation() {
 +    // We are testing two variants of the view, one for users that have
 +    // permission to view unpublished entities, and one for users that do not.
 +    // Initially both variants should be uncached.
@@ -1446,8 +1602,30 @@ index 00000000..e24889da
 +    $this->users['no-access']->addRole($privileged_role);
 +    $this->users['no-access']->save();
 +
++    // Changing the roles of a user should not affect the cached results. The
++    // user will now have a new cache context, but the old context should still
++    // be present for all other users that still have the same combination of
++    // roles that our 'no-access' user had before they were changed.
++    // In fact, since our user now has the same set of roles as the 'has-access'
++    // user, the user will immediately benefit from the cached results that
++    // already exist for the cache contexts of the 'has-access' user.
++    $this->assertCached('no-access');
++    $this->assertCached('has-access');
++
 +    // The user should now be able to see all 4 items.
 +    $this->assertViewsResult('no-access', ['Angua', 'Cheery', 'Carrot', 'Detritus']);
++    $this->assertCached('no-access');
++    $this->assertCached('has-access');
++
++    // Remove the role again from the unprivileged user. This also should not
++    // affect cached results. The 'no-access' user now switches back to only
++    // being able to see the published items, and everything is still happily
++    // cached.
++    $this->users['no-access']->removeRole($privileged_role);
++    $this->users['no-access']->save();
++    $this->assertCached('no-access');
++    $this->assertCached('has-access');
++    $this->assertViewsResult('no-access', ['Cheery', 'Carrot']);
 +    $this->assertCached('no-access');
 +    $this->assertCached('has-access');
 +
@@ -1456,7 +1634,6 @@ index 00000000..e24889da
 +    $this->nodes['Cheery']->set('title', 'Cheery Littlebottom')->save();
 +    $this->assertCached('no-access');
 +    $this->assertCached('has-access');
-+
 +    $this->index->indexItems();
 +    $this->assertNotCached('no-access');
 +    $this->assertNotCached('has-access');
@@ -1464,17 +1641,26 @@ index 00000000..e24889da
 +    // The view should show the updated title when displayed, and the result
 +    // should be cached.
 +    $this->assertViewsResult('has-access', ['Angua', 'Cheery', 'Carrot', 'Detritus']);
++    $this->assertNotCached('no-access');
++    $this->assertCached('has-access');
++    $this->assertViewsResult('no-access', ['Cheery', 'Carrot']);
++    $this->assertCached('no-access');
 +    $this->assertCached('has-access');
 +
 +    // Delete one of the test content entities. This takes effect immediately,
 +    // there is no need to wait until the search index is updated.
 +    // @see search_api_entity_delete()
 +    $this->nodes['Carrot']->delete();
++    $this->assertNotCached('no-access');
 +    $this->assertNotCached('has-access');
 +
 +    // The view should no longer include the deleted content now, and the result
 +    // should be cached after the view has been displayed.
++    $this->assertViewsResult('no-access', ['Cheery']);
++    $this->assertCached('no-access');
++    $this->assertNotCached('has-access');
 +    $this->assertViewsResult('has-access', ['Angua', 'Cheery', 'Detritus']);
++    $this->assertCached('no-access');
 +    $this->assertCached('has-access');
 +
 +    // Update the search index configuration so it will index items immediately
@@ -1487,7 +1673,7 @@ index 00000000..e24889da
 +    $this->assertNotCached('has-access');
 +
 +    // Check that the expected results are still returned and are cacheable.
-+    $this->assertViewsResult('no-access', ['Angua', 'Cheery', 'Detritus']);
++    $this->assertViewsResult('no-access', ['Cheery']);
 +    $this->assertViewsResult('has-access', ['Angua', 'Cheery', 'Detritus']);
 +    $this->assertCached('no-access');
 +    $this->assertCached('has-access');
@@ -1501,7 +1687,7 @@ index 00000000..e24889da
 +    $this->assertNotCached('has-access');
 +
 +    // Check that the expected results are still returned and are cacheable.
-+    $this->assertViewsResult('no-access', ['Angua', 'Cheery', 'Detritus']);
++    $this->assertViewsResult('no-access', ['Cheery']);
 +    $this->assertViewsResult('has-access', ['Angua', 'Cheery', 'Detritus']);
 +    $this->assertCached('no-access');
 +    $this->assertCached('has-access');
@@ -1514,7 +1700,7 @@ index 00000000..e24889da
 +    $this->assertNotCached('has-access');
 +
 +    // Check that the updated results are shown and are cacheable.
-+    $this->assertViewsResult('no-access', ['Angua', 'Cheery', 'Detritus']);
++    $this->assertViewsResult('no-access', ['Cheery']);
 +    $this->assertViewsResult('has-access', ['Angua', 'Cheery', 'Detritus']);
 +    $this->assertCached('no-access');
 +    $this->assertCached('has-access');
@@ -1660,6 +1846,257 @@ index 00000000..e24889da
 +    ];
 +    $this->nodes[$title] = Node::create($values);
 +    $this->nodes[$title]->save();
++  }
++
++}
+diff --git a/tests/src/Kernel/Views/ViewsCacheabilityMetadataExportTest.php b/tests/src/Kernel/Views/ViewsCacheabilityMetadataExportTest.php
+new file mode 100644
+index 00000000..7b549a01
+--- /dev/null
++++ b/tests/src/Kernel/Views/ViewsCacheabilityMetadataExportTest.php
+@@ -0,0 +1,245 @@
++<?php
++
++namespace Drupal\Tests\search_api\Kernel\Views;
++
++use Drupal\Core\Cache\Context\CacheContextsManager;
++use Drupal\Core\Config\Config;
++use Drupal\Core\DependencyInjection\ContainerBuilder;
++use Drupal\KernelTests\KernelTestBase;
++use Drupal\views\ViewExecutable;
++use Prophecy\Argument;
++
++/**
++ * Tests that cacheability metadata is included when views config is exported.
++ *
++ * @group search_api
++ */
++class ViewsCacheabilityMetadataExportTest extends KernelTestBase {
++
++  /**
++   * The ID of the view used in the test.
++   */
++  const TEST_VIEW_ID = 'search_api_test_node_view';
++
++  /**
++   * The display IDs used in the test.
++   */
++  const TEST_VIEW_DISPLAY_IDS = ['default', 'page_1'];
++
++  /**
++   * The entity type manager.
++   *
++   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
++   */
++  protected $entityTypeManager;
++
++  /**
++   * The service that is responsible for creating Views executable objects.
++   *
++   * @var \Drupal\views\ViewExecutableFactory
++   */
++  protected $viewExecutableFactory;
++
++  /**
++   * The state service.
++   *
++   * @var \Drupal\Core\State\StateInterface
++   */
++  protected $state;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'field',
++    'node',
++    'search_api',
++    'search_api_db',
++    'search_api_test_node_indexing',
++    'search_api_test_views',
++    'system',
++    'text',
++    'user',
++    'views',
++  ];
++
++  /**
++   * @inheritDoc
++   */
++  public function register(ContainerBuilder $container) {
++    parent::register($container);
++
++    // Use a mocked version of the cache contexts manager so we can use a mocked
++    // cache context "search_api_test_context" without triggering a validation
++    // error.
++    $cache_contexts_manager = $this->prophesize(CacheContextsManager::class);
++    $cache_contexts_manager->assertValidTokens(Argument::any())->willReturn(TRUE);
++    $container->set('cache_contexts_manager', $cache_contexts_manager->reveal());
++  }
++
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp() {
++    parent::setUp();
++
++    $this->installEntitySchema('node');
++    $this->installEntitySchema('search_api_task');
++
++    $this->installConfig([
++      'search_api',
++      'search_api_test_node_indexing',
++    ]);
++
++    $this->entityTypeManager = $this->container->get('entity_type.manager');
++    $this->viewExecutableFactory = $this->container->get('views.executable');
++    $this->state = $this->container->get('state');
++  }
++
++  /**
++   * Tests that an exported view contains the right cacheability metadata.
++   */
++  public function testViewExport() {
++    $expected_cacheability_metadata = [
++      'contexts' => [
++        // Search API uses the core EntityFieldRenderer for rendering content.
++        // This has support for translatable content, so the result varies by
++        // content language.
++        // @see \Drupal\views\Entity\Render\EntityFieldRenderer::getCacheContexts()
++        'languages:language_content',
++        // By default, Views always adds the interface language cache context
++        // since it is very likely that there will be translatable strings in
++        // the result.
++        // @see \Drupal\views\Entity\View::addCacheMetadata()
++        'languages:language_interface',
++        // Our test view has a pager so we expect it to vary by query arguments.
++        // @see \Drupal\views\Plugin\views\pager\SqlBase::getCacheContexts()
++        'url.query_args',
++        // The test view is a listing of nodes returned as a search result. It
++        // is expected to have the list cache contexts of the node entity type.
++        // This is defined in the "list_cache_contexts" key of the node entity
++        // annotation.
++        'user.node_grants:view',
++      ],
++      'tags' => [
++        // Our test view depends on the search index, so whenever the index
++        // configuration changes the cached results should be invalidated.
++        // @see \Drupal\search_api\Query\Query::getCacheTags()
++        'config:search_api.index.test_node_index',
++      ],
++      // By default the result is permanently cached.
++      'max-age' => -1,
++    ];
++
++    // Check that our test view has the expected cacheability metadata.
++    $view = $this->getView();
++    $this->assertViewCacheabilityMetadata($view, $expected_cacheability_metadata);
++
++    // For efficiency Views calculates the cacheability metadata whenever a view
++    // is saved, and includes it in the exported configuration.
++    // @see \Drupal\views\Entity\View::addCacheMetadata()
++    // Check that the exported configuration contains the expected metadata.
++    $view_config = $this->config('views.view.' . self::TEST_VIEW_ID);
++    $this->assertViewConfigCacheabilityMetadata($view_config, $expected_cacheability_metadata);
++
++    // Test that modules are able to alter the cacheability metadata. Our test
++    // hook implementation will alter all 3 types of metadata.
++    // @see search_api_test_views_search_api_query_alter()
++    $expected_cacheability_metadata['contexts'][] = 'search_api_test_context';
++    $expected_cacheability_metadata['tags'][] = 'search_api:test_tag';
++    $expected_cacheability_metadata['max-age'] = 100;
++
++    // Activate the alter hook and resave the view so it will recalculate the
++    // cacheability metadata.
++    $this->state->set('search_api_test_views.alter_query_cacheability_metadata', TRUE);
++    $view->save();
++
++    // Check that the altered metadata is now present in the view and the
++    // configuration.
++    $view = $this->getView();
++    $this->assertViewCacheabilityMetadata($view, $expected_cacheability_metadata);
++
++    $view_config = $this->config('views.view.' . self::TEST_VIEW_ID);
++    $this->assertViewConfigCacheabilityMetadata($view_config, $expected_cacheability_metadata);
++  }
++
++  /**
++   * Checks that the given view has the expected cacheability metadata.
++   *
++   * @param \Drupal\views\ViewExecutable $view
++   *   The view.
++   * @param array $expected_cacheability_metadata
++   *   An array of cacheability metadata that is expected to be present on the
++   *   view.
++   */
++  protected function assertViewCacheabilityMetadata(ViewExecutable $view, array $expected_cacheability_metadata) {
++    // Cacheability metadata is stored separately for each Views display since
++    // depending on how the display is configured it might have different
++    // caching needs. Ensure to check all displays.
++    foreach (self::TEST_VIEW_DISPLAY_IDS as $display_id) {
++      $view->setDisplay($display_id);
++      $display = $view->getDisplay();
++      $actual_cacheability_metadata = $display->getCacheMetadata();
++
++      $this->assertArrayEquals($expected_cacheability_metadata['contexts'], $actual_cacheability_metadata->getCacheContexts());
++      $this->assertArrayEquals($expected_cacheability_metadata['tags'], $actual_cacheability_metadata->getCacheTags());
++      $this->assertEquals($expected_cacheability_metadata['max-age'], $actual_cacheability_metadata->getCacheMaxAge());
++    }
++  }
++
++  /**
++   * Checks that the given view config has the expected cacheability metadata.
++   *
++   * @param \Drupal\Core\Config\Config $config
++   *   The configuration to check.
++   * @param array $expected_cacheability_metadata
++   *   An array of cacheability metadata that is expected to be present on the
++   *   view configuration.
++   */
++  protected function assertViewConfigCacheabilityMetadata(Config $config, array $expected_cacheability_metadata) {
++    // Cacheability metadata is stored separately for each Views display since
++    // depending on how the display is configured it might have different
++    // caching needs. Ensure to check all displays.
++    foreach (self::TEST_VIEW_DISPLAY_IDS as $display_id) {
++      $view_config_display = $config->get("display.$display_id");
++      foreach ($expected_cacheability_metadata as $cache_key => $value) {
++        if (is_array($value)) {
++          $this->assertArrayEquals($value, $view_config_display['cache_metadata'][$cache_key]);
++        }
++        else {
++          $this->assertEquals($value, $view_config_display['cache_metadata'][$cache_key]);
++        }
++      }
++    }
++  }
++
++  /**
++   * Checks that the given arrays have the same values.
++   *
++   * @param array $array1
++   *   One of the arrays to compare.
++   * @param array $array2
++   *   One of the arrays to compare.
++   */
++  protected function assertArrayEquals(array $array1, array $array2) {
++    sort($array1);
++    sort($array2);
++    $this->assertEquals($array1, $array2);
++  }
++
++  /**
++   * Returns the test view.
++   *
++   * @return \Drupal\views\ViewExecutable
++   *   The view.
++   */
++  protected function getView() {
++    /** @var \Drupal\views\ViewEntityInterface $view */
++    $view = $this->entityTypeManager->getStorage('view')->load(self::TEST_VIEW_ID);
++    $executable = $this->viewExecutableFactory->get($view);
++
++    return $executable;
 +  }
 +
 +}
