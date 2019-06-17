@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Joinup EU Login module.
+ */
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_eulogin_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'user_cancel_methods_alter') {
+    // The oe_authentication.module implements a customization, denying local
+    // user accounts deletion. Remove this customization.
+    // @see oe_authentication_user_cancel_methods_alter()
+    unset($implementations['oe_authentication']);
+  }
+}
