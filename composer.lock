@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf337346682bae0d774673275268e9f8",
+    "content-hash": "a57884ef729920a076951c963dc27abd",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7911,6 +7911,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.6-dev"
+                },
+                "patches_applied": {
+                    "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
                 }
             },
             "autoload": {
@@ -8194,12 +8197,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools_location.git",
-                "reference": "b934ca254f7a0523508205681b287b1396390832"
+                "reference": "040cf79f41ca05e5a9fe16cf858052b193d8ec6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/b934ca254f7a0523508205681b287b1396390832",
-                "reference": "b934ca254f7a0523508205681b287b1396390832",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/040cf79f41ca05e5a9fe16cf858052b193d8ec6b",
+                "reference": "040cf79f41ca05e5a9fe16cf858052b193d8ec6b",
                 "shasum": ""
             },
             "require": {
@@ -8236,7 +8239,7 @@
                 "EUPL-1.2"
             ],
             "description": "Adds support for Webtools location services in Drupal.",
-            "time": "2019-06-13T10:05:43+00:00"
+            "time": "2019-06-17T09:15:56+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
@@ -15267,16 +15270,16 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v4.2.9",
+            "version": "v4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "53c97769814c80a84a8403efcf3ae7ae966d53bb"
+                "reference": "06ee58fbc9a8130f1d35b5280e15235a0515d457"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/53c97769814c80a84a8403efcf3ae7ae966d53bb",
-                "reference": "53c97769814c80a84a8403efcf3ae7ae966d53bb",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/06ee58fbc9a8130f1d35b5280e15235a0515d457",
+                "reference": "06ee58fbc9a8130f1d35b5280e15235a0515d457",
                 "shasum": ""
             },
             "require": {
@@ -15284,7 +15287,11 @@
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-mbstring": "~1.0"
             },
+            "conflict": {
+                "masterminds/html5": "<2.6"
+            },
             "require-dev": {
+                "masterminds/html5": "^2.6",
                 "symfony/css-selector": "~3.4|~4.0"
             },
             "suggest": {
@@ -15293,7 +15300,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "4.3-dev"
                 }
             },
             "autoload": {
@@ -15320,7 +15327,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2019-02-23T15:17:42+00:00"
+            "time": "2019-05-31T18:55:30+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
