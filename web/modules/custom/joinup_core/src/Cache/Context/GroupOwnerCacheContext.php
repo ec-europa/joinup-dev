@@ -3,7 +3,6 @@
 namespace Drupal\joinup_core\Cache\Context;
 
 use Drupal\og\Cache\Context\OgRoleCacheContext;
-use Drupal\og\Entity\OgRole;
 
 /**
  * Defines a cache context service for group owners.
@@ -39,8 +38,7 @@ class GroupOwnerCacheContext extends OgRoleCacheContext {
     // Due to cacheability metadata bubbling this can be called often. Only
     // compute the hash once.
     if (empty($this->hashes[$this->user->id()])) {
-      $roles = OgRole::loadMultiple($this->roleIds);
-      $group_ids = $this->membershipManager->getUserGroupIdsByRoles($this->user, $roles);
+      $group_ids = $this->membershipManager->getUserGroupIdsByRoleIds($this->user, $this->roleIds);
 
       // Discard the parent array, we know that groups are RDF entities.
       $group_ids = $group_ids['rdf_entity'] ?? [];
