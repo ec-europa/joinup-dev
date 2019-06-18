@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\EventSubscriber;
 
 use Drupal\cached_computed_field\Event\RefreshExpiredFieldsEventInterface;
@@ -12,14 +14,20 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 use Matomo\ReportingApi\QueryInterface;
 
 /**
- * Event subscriber that updates stale data with fresh results from Matomo.
+ * Event subscriber that updates counters with data drawn from Matomo.
+ *
+ * Data currently include the download count for distributions and visit count
+ * for nodes.
  */
 class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberBase {
+
+  use StringTranslationTrait;
 
   /**
    * The name of the field that contains download counts.
@@ -121,8 +129,8 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity that the request url is related to.
    *
-   * @return string
-   *   The url for the request or false if no url is detected.
+   * @return string|null
+   *   The url for the request or NULL if no url is detected.
    */
   protected function getUrlParameter(EntityInterface $entity): ?string {
     $bundle = $entity->bundle();
@@ -152,9 +160,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return int
    *   The time period in days, or 0 for all time. Defaults to 0.
    */
-  protected function getTimePeriod($bundle): int {
+  protected function getTimePeriod(string $bundle): int {
     $settings = $this->getMatomoSettings($bundle);
-    return empty($settings['period']) ? 0 : $settings['period'];
+    return empty($settings['period']) ? 0 : (int) $settings['period'];
   }
 
   /**
@@ -167,7 +175,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The action type to retrieve, as a parameter to be used in a Matomo API
    *   call. Defaults to 'nb_hits'.
    */
-  protected function getType($bundle): string {
+  protected function getType(string $bundle): string {
     $settings = $this->getMatomoSettings($bundle);
     return empty($settings['type']) ? 'nb_hits' : $settings['type'];
   }
@@ -182,7 +190,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The method. Can be either 'download_counts' or 'visit_counts'. Defaults
    *   to 'visit_counts'.
    */
-  protected function getMethod($bundle): string {
+  protected function getMethod(string $bundle): string {
     $settings = $this->getMatomoSettings($bundle);
     return empty($settings['method']) ? 'visit_counts' : $settings['method'];
   }
@@ -196,7 +204,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return string
    *   The Matomo API method. Defaults to 'Actions.getPageUrl'.
    */
-  protected function getMatomoMethod($bundle): string {
+  protected function getMatomoMethod(string $bundle): string {
     $method = $this->getMethod($bundle);
     return $method === 'download_counts' ? 'Actions.getDownload' : 'Actions.getPageUrl';
   }
@@ -210,7 +218,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return string
    *   The URL parameter name. Defaults to 'pageUrl'.
    */
-  protected function getUrlParameterName($bundle): string {
+  protected function getUrlParameterName(string $bundle): string {
     $method = $this->getMethod($bundle);
     return $method === 'download_counts' ? 'downloadUrl' : 'pageUrl';
   }
@@ -237,7 +245,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @return array
    *   An array with the starting and ending time range.
    */
-  protected function getDateRange($period): array {
+  protected function getDateRange(int $period): array {
     return [
       // If the period is 0 we should get all results since launch.
       $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->configFactory->get('joinup_core.matomo_settings')->get('launch_date'),
@@ -274,7 +282,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       // happen only when an entity is malformed, for which we already check,
       // or the distribution we are attempting to track does not have a file.
       if (empty($this->getUrlParameter($entity))) {
-        $this->loggerFactory->get('joinup_core')->error('Invalid url parameter: ' . $this->getUrlParameter($entity));
+        $message = $this->t('No URL parameter was found for the :bundle entity with id: @id', [
+          ':bundle' => $entity->bundle(),
+          '@id' => $entity->id(),
+        ]);
+        $this->loggerFactory->get('joinup_core')->error($message);
         continue;
       }
 
@@ -354,10 +366,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   The bundle for which to retrieve the settings.
    *
    * @return array
-   *   The configuration array, or FALSE if there is no configuration for this
-   *   bundle.
+   *   The configuration settings array of the bundle.
    */
-  protected function getMatomoSettings($bundle): array {
+  protected function getMatomoSettings(string $bundle): array {
     if (empty($this->matomoSettings)) {
       $this->matomoSettings = $this->configFactory->get('joinup_core.matomo_settings');
     }
