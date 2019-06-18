@@ -41,6 +41,8 @@ Feature: User authentication
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
       | admin/structure/views                                          |
       | propose/collection                                             |
@@ -92,6 +94,8 @@ Feature: User authentication
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
       | admin/structure/views                                          |
       | dashboard                                                      |
@@ -126,6 +130,8 @@ Feature: User authentication
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
