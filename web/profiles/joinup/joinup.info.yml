@@ -167,6 +167,7 @@ config_devel:
   - block.block.views_block__licence_list_licence_lict_block
   - block_content.type.simple_block
   - cas.settings
+  - cas_attributes.settings
   - core.date_format.date_only
   - core.date_format.date_only_text_month
   - core.date_format.fallback

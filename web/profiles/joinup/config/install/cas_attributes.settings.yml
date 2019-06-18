@@ -1,0 +1,10 @@
+sitewide_token_support: true
+field:
+  sync_frequency: 2
+  overwrite: true
+  mappings: 'a:8:{s:4:"name";s:0:"";s:4:"mail";s:0:"";s:25:"field_user_business_title";s:0:"";s:22:"field_user_family_name";s:24:"[cas:attribute:lastname]";s:21:"field_user_first_name";s:25:"[cas:attribute:firstname]";s:20:"field_user_frequency";s:0:"";s:22:"field_user_group_types";s:0:"";s:23:"field_user_organisation";s:0:"";}'
+role:
+  sync_frequency: 0
+  deny_login_no_match: false
+  deny_registration_no_match: false
+  mappings: 'a:0:{}'
