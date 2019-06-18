@@ -475,8 +475,7 @@ function joinup_theme_preprocess_menu(&$variables) {
   if ($photo) {
     $reference = $photo->getValue();
     /** @var \Drupal\file\Entity\File $file */
-    $file = File::load($reference['target_id']);
-    if ($file) {
+    if (isset($reference['target_id']) && ($file = File::load($reference['target_id']))) {
       $uri = $file->getFileUri();
       $url = ImageStyle::load('profile_icon')->buildUrl($uri);
       $variables['profile_icon'] = $url;
