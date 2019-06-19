@@ -472,10 +472,10 @@ function joinup_theme_preprocess_menu(&$variables) {
   /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
   $photo = $user->get('field_user_photo')->first();
   $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
-  if ($photo) {
+  if (!$photo->isEmpty()) {
     $reference = $photo->getValue();
     /** @var \Drupal\file\Entity\File $file */
-    if (isset($reference['target_id']) && ($file = File::load($reference['target_id']))) {
+    if ($file = File::load($reference['target_id'])) {
       $uri = $file->getFileUri();
       $url = ImageStyle::load('profile_icon')->buildUrl($uri);
       $variables['profile_icon'] = $url;
