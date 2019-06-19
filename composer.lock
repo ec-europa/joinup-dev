@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fae00a350ad2e2097fe694715800571",
+    "content-hash": "130f2b563ca9539e0b7801724a4ec034",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2655,6 +2655,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
