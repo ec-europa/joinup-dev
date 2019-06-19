@@ -5,14 +5,29 @@
  * Main functions and hook implementations of the Joinup EU Login module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Implements hook_module_implements_alter().
  */
-function joinup_eulogin_module_implements_alter(&$implementations, $hook) {
+function joinup_eulogin_module_implements_alter(&$implementations, $hook): void {
   if ($hook === 'user_cancel_methods_alter') {
     // The oe_authentication.module implements a customization, denying local
     // user accounts deletion. Remove this customization.
     // @see oe_authentication_user_cancel_methods_alter()
     unset($implementations['oe_authentication']);
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function joinup_eulogin_cron(): void {
+  $now = \Drupal::time()->getRequestTime();
+  $last_updated = \Drupal::state()->get('joinup_eulogin.schema.last_updated');
+  $check_interval = \Drupal::config('joinup_eulogin.settings')->get('schema.check_interval');
+  if ($now > $last_updated + $check_interval) {
+    // It's time to check for a new version.
+    \Drupal::service('joinup_eulogin.schema')->updateSchema();
   }
 }

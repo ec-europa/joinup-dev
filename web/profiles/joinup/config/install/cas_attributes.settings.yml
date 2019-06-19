@@ -5,6 +5,7 @@ field:
   mappings:
     field_user_family_name: '[cas:attribute:lastname]'
     field_user_first_name: '[cas:attribute:firstname]'
+    field_user_organisation: '[cas:computed-attribute:organisation]'
 role:
   sync_frequency: 0
   deny_login_no_match: false

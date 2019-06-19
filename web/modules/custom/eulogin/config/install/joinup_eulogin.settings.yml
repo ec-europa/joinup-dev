@@ -1,0 +1,4 @@
+schema:
+  url: https://ecas.ec.europa.eu/cas/schemas
+  # We check for a new EU Login response schema each 3 months.
+  check_interval: 7776000

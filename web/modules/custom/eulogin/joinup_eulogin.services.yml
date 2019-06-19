@@ -1,0 +1,7 @@
+services:
+  joinup_eulogin.computed_attributes:
+    class: Drupal\joinup_eulogin\JoinupEuLoginComputedAttributes
+    arguments: ['@keyvalue', '@logger.factory']
+  joinup_eulogin.schema:
+    class: Drupal\joinup_eulogin\JoinupEuLoginSchema
+    arguments: ['@http_client', '@config.factory', '@keyvalue', '@state', '@datetime.time']

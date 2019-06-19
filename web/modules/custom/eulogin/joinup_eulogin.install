@@ -17,4 +17,7 @@ function joinup_eulogin_install(): void {
       ->set('forced_login.enabled', FALSE)
       ->save();
   }
+
+  // Get data from EU Login schema.
+  \Drupal::service('joinup_eulogin.schema')->updateSchema();
 }
