@@ -262,7 +262,7 @@
             "masterminds/html5": {
                 "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
             },
-	        "openeuropa/webtools": {
+	    "openeuropa/oe_webtools": {
                 "Include the smartloader on pages where analytics are used.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/71.patch"
             }
         }
