@@ -21,3 +21,10 @@ function joinup_eulogin_install(): void {
   // Get data from EU Login schema.
   \Drupal::service('joinup_eulogin.schema')->updateSchema();
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function joinup_eulogin_uninstall(): void {
+  \Drupal::keyValue('joinup')->delete('eulogin.schema');
+}
