@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_arbitrary_facet\Plugin;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
@@ -19,6 +21,6 @@ interface ArbitraryFacetInterface extends PluginInspectionInterface {
    * @return array
    *   The facet definition.
    */
-  public function getFacetDefinition();
+  public function getFacetDefinition(): array;
 
 }
