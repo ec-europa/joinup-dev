@@ -88,7 +88,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections, including those you are a facilitator in.');
+    return $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections (including the pending memberships).<br />In the future you will not be notified for the following collections:');
   }
 
   /**
