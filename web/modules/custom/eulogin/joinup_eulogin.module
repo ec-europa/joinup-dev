@@ -24,10 +24,10 @@ function joinup_eulogin_module_implements_alter(&$implementations, $hook): void 
  */
 function joinup_eulogin_cron(): void {
   $now = \Drupal::time()->getRequestTime();
-  $last_updated = \Drupal::state()->get('joinup_eulogin.schema.last_updated');
+  $last_updated = \Drupal::state()->get('joinup_eulogin.schema_updater.last_updated');
   $check_interval = \Drupal::config('joinup_eulogin.settings')->get('schema.check_interval');
   if ($now > $last_updated + $check_interval) {
     // It's time to check for a new version.
-    \Drupal::service('joinup_eulogin.schema')->updateSchema();
+    \Drupal::service('joinup_eulogin.schema_updater')->update();
   }
 }

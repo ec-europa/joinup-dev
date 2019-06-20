@@ -2,6 +2,6 @@ services:
   joinup_eulogin.computed_attributes:
     class: Drupal\joinup_eulogin\JoinupEuLoginComputedAttributes
     arguments: ['@keyvalue', '@logger.factory']
-  joinup_eulogin.schema:
-    class: Drupal\joinup_eulogin\JoinupEuLoginSchema
+  joinup_eulogin.schema_updater:
+    class: Drupal\joinup_eulogin\JoinupEuLoginSchemaUpdater
     arguments: ['@http_client', '@config.factory', '@keyvalue', '@state', '@datetime.time']

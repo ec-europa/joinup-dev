@@ -13,7 +13,7 @@ use GuzzleHttp\ClientInterface;
 /**
  * Default implementation of 'joinup_eulogin.schema_updater' service.
  */
-class JoinupEuLoginSchema implements JoinupEuLoginSchemaInterface {
+class JoinupEuLoginSchemaUpdater implements JoinupEuLoginSchemaUpdaterInterface {
 
   /**
    * The HTTP client service.
@@ -75,7 +75,7 @@ class JoinupEuLoginSchema implements JoinupEuLoginSchemaInterface {
   /**
    * {@inheritdoc}
    */
-  public function updateSchema(): bool {
+  public function update(): bool {
     $config = $this->configFactory->get('joinup_eulogin.settings');
     $url = $config->get('schema.url');
 
@@ -111,7 +111,7 @@ class JoinupEuLoginSchema implements JoinupEuLoginSchemaInterface {
       'version' => $version,
       'organisations' => $organisations,
     ]);
-    $this->state->set('joinup_eulogin.schema.last_updated', $this->time->getRequestTime());
+    $this->state->set('joinup_eulogin.schema_updater.last_updated', $this->time->getRequestTime());
 
     return TRUE;
   }
