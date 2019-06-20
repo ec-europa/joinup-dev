@@ -1,0 +1,6 @@
+joinup_eulogin_test.schema:
+  path: joinup_eulogin_test
+  defaults:
+    _controller: Drupal\joinup_eulogin_test\SchemaEndpointMock::get
+  requirements:
+    _access: 'TRUE'
