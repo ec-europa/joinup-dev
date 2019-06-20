@@ -469,11 +469,10 @@ function joinup_theme_preprocess_menu(&$variables) {
   // Set the account logo.
   $account = \Drupal::currentUser()->getAccount();
   $user = User::load($account->id(), TRUE);
-  /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
-  $photo = $user->get('field_user_photo')->first();
+  $photo = $user->get('field_user_photo');
   $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
   if (!$photo->isEmpty()) {
-    $reference = $photo->getValue();
+    $reference = $photo->first()->getValue();
     /** @var \Drupal\file\Entity\File $file */
     if ($file = File::load($reference['target_id'])) {
       $uri = $file->getFileUri();
