@@ -469,14 +469,12 @@ function joinup_theme_preprocess_menu(&$variables) {
   // Set the account logo.
   $account = \Drupal::currentUser()->getAccount();
   $user = User::load($account->id(), TRUE);
-  /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
-  $photo = $user->get('field_user_photo')->first();
+  $photo = $user->get('field_user_photo');
   $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
-  if ($photo) {
-    $reference = $photo->getValue();
+  if (!$photo->isEmpty()) {
+    $reference = $photo->first()->getValue();
     /** @var \Drupal\file\Entity\File $file */
-    $file = File::load($reference['target_id']);
-    if ($file) {
+    if ($file = File::load($reference['target_id'])) {
       $uri = $file->getFileUri();
       $url = ImageStyle::load('profile_icon')->buildUrl($uri);
       $variables['profile_icon'] = $url;
@@ -1401,7 +1399,7 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
         $suggestions[] = 'form_element__floating';
 
         // Floating form element with label.
-        if (in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
+        if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
           $suggestions[] = 'form_element__floating__with_prefix';
         }
       }
