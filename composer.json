@@ -112,8 +112,9 @@
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~6.0",
-        "symfony/css-selector": "~2.8",
-        "symfony/phpunit-bridge": "^4.2"
+        "symfony/css-selector": "~2.8|~3.0|~4.0",
+        "symfony/phpunit-bridge": "^4.2",
+        "webflo/drupal-core-require-dev": "^8.7.1"
     },
     "conflict": {
         "drupal/drupal": "*",
@@ -140,7 +141,6 @@
         ]
     },
     "scripts": {
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "pre-install-cmd": [
             "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
         ],
@@ -158,17 +158,27 @@
     },
     "extra": {
         "installer-paths": {
+            "drush/Commands/{$name}": ["type:drupal-drush"],
+            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/modules/custom/joinup_communities/tallinn/lib": ["ec-europa/joinup-tallinn-dashboard"],
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
+        "drupal-scaffold": {
+            "initial": {
+                ".editorconfig": "../.editorconfig",
+                ".gitattributes": "../.gitattributes"
+            }
+        },
         "enable-patching": true,
-        "composer-exit-on-patch-failure": 1,
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
         "patches": {
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
