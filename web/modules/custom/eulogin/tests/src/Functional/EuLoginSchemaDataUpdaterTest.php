@@ -42,8 +42,9 @@ class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
       'value' => './tests/modules/joinup_eulogin_test/ecas_schema.yml',
       'required' => TRUE,
     ];
-
     $this->writeSettings($settings);
+
+    $this->drupalLogin($this->createUser(['administer site configuration']));
   }
 
   /**
@@ -74,6 +75,13 @@ class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
     // Check values for version 3.1.0.
     $this->assertSame($expected_v310, $key_value->get('eulogin.schema'));
 
+    // Check the Status Report page.
+    $this->drupalGet('/admin/reports/status');
+    $assert_session = $this->assertSession();
+    $assert_session->pageTextContains('EU Login Schema');
+    $assert_session->pageTextContains('3.1.0');
+    $assert_session->pageTextNotContains('The ./tests/modules/joinup_eulogin_test/ecas_schema.yml fixture file version is outdated');
+
     // Run cron as an attempt to update the stored schema.
     $this->cronRun();
 
@@ -103,6 +111,13 @@ class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
 
     // Check that the stored schema has version 3.2.0.
     $this->assertSame($expected_v320, $key_value->get('eulogin.schema'));
+
+    // Check the Status Report page.
+    $this->drupalGet('/admin/reports/status');
+    $assert_session = $this->assertSession();
+    $assert_session->pageTextContains('EU Login Schema');
+    $assert_session->pageTextContains('3.2.0');
+    $assert_session->pageTextContains("The ./tests/modules/joinup_eulogin_test/ecas_schema.yml fixture file version is outdated (3.1.0). It's recommended to update the fixture file to the latest version (3.2.0).");
 
     // Check that after uninstalling the module there's no data stored.
     $module_installer->uninstall(['joinup_eulogin']);
