@@ -9,7 +9,7 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\Traits\Core\CronRunTrait;
 
 /**
- * Tests the Joinup EU Login schema updater.
+ * Tests the Joinup EU Login schema data updater.
  *
  * @group joinup_eulogin
  */
@@ -37,6 +37,12 @@ class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
       'value' => $schema_url,
       'required' => TRUE,
     ];
+    // Use a minimal fixture file for testing.
+    $settings['config']['joinup_eulogin.settings']['schema']['fixture_file'] = (object) [
+      'value' => './tests/modules/joinup_eulogin_test/ecas_schema.yml',
+      'required' => TRUE,
+    ];
+
     $this->writeSettings($settings);
   }
 
@@ -55,7 +61,7 @@ class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
     // Check that after installing the module data has been stored.
     $module_installer->install(['joinup_eulogin']);
 
-    // @see \Drupal\joinup_eulogin_test\SchemaEndpointMock::getDomainTypesV310()
+    // @see tests/modules/joinup_eulogin_test/ecas_schema.yml
     $expected_v310 = [
       'version' => '3.1.0',
       'organisations' => [
@@ -68,14 +74,11 @@ class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
     // Check values for version 3.1.0.
     $this->assertSame($expected_v310, $key_value->get('eulogin.schema'));
 
-    // Pretend that a new, 3.2.0, schema version has been uploaded.
-    $state->set('joinup_eulogin_test.version', '3.2.0');
-
     // Run cron as an attempt to update the stored schema.
     $this->cronRun();
 
     // Stored data is not changed because cron only checks for a new version
-    // each three months and the last update was no more than few seconds ago.
+    // each three months and the last update was no more than one second ago.
     $this->assertSame($expected_v310, $key_value->get('eulogin.schema'));
 
     // Pretend that the last update occurred three months plus one second ago.
@@ -85,7 +88,7 @@ class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
     // Run cron again.
     $this->cronRun();
 
-    // @see \Drupal\joinup_eulogin_test\SchemaEndpointMock::getDomainTypesV320()
+    // @see \Drupal\joinup_eulogin_test\SchemaEndpointMock::getSchemaBlob()
     $expected_v320 = [
       'version' => '3.2.0',
       'organisations' => [
