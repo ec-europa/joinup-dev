@@ -12,3 +12,6 @@ joinup_eulogin.settings:
         check_interval:
           type: integer
           label: 'How often to check for a new version'
+        fixture_file:
+          type: string
+          label: 'YAML file used for the first schema data install (relative to module root)'

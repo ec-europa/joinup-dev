@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\Component\Serialization\Yaml;
+
 /**
  * Implements hook_install().
  */
@@ -18,8 +20,15 @@ function joinup_eulogin_install(): void {
       ->save();
   }
 
-  // Get data from EU Login schema.
-  \Drupal::service('joinup_eulogin.schema_data_updater')->update();
+  // Store EU Login schema data. We're using a fixture file, rather than parsing
+  // data from https://ecas.ec.europa.eu/cas/schemas in order to avoid HTTP
+  // dependencies in Continuous Integration flows. On production, the schema
+  // data is refreshed from time to time based on a configurable interval.
+  $file = \Drupal::configFactory()->get('joinup_eulogin.settings')->get('schema.fixture_file');
+  $data = Yaml::decode(file_get_contents(__DIR__ . "/$file"));
+  \Drupal::keyValue('joinup')->set('eulogin.schema', $data);
+  $now = \Drupal::time()->getRequestTime();
+  \Drupal::state()->set('joinup_eulogin.schema_data_updater.last_updated', $now);
 }
 
 /**
