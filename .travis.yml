@@ -27,9 +27,9 @@ matrix:
 
 matrix:
   exclude:
-    - php: 7.2
-      env: RELEASE=stable COMPOSER_CHANNEL=stable
-    - php: 7.2
+    - php: 5.6
+      env: RELEASE=dev COMPOSER_CHANNEL=stable
+    - php: 5.6
       env: RELEASE=stable COMPOSER_CHANNEL=snapshot
 
 matrix:
