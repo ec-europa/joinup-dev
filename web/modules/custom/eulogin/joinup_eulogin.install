@@ -19,7 +19,7 @@ function joinup_eulogin_install(): void {
   }
 
   // Get data from EU Login schema.
-  \Drupal::service('joinup_eulogin.schema_updater')->update();
+  \Drupal::service('joinup_eulogin.schema_data_updater')->update();
 }
 
 /**

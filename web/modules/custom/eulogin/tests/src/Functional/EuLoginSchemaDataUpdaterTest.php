@@ -13,7 +13,7 @@ use Drupal\Tests\Traits\Core\CronRunTrait;
  *
  * @group joinup_eulogin
  */
-class EuLoginSchemeUpdaterTest extends BrowserTestBase {
+class EuLoginSchemaDataUpdaterTest extends BrowserTestBase {
 
   use CronRunTrait;
 
@@ -80,7 +80,7 @@ class EuLoginSchemeUpdaterTest extends BrowserTestBase {
 
     // Pretend that the last update occurred three months plus one second ago.
     $three_months_one_second_ago = \Drupal::time()->getRequestTime() - (60 * 60 * 24 * 90 + 1);
-    $state->set('joinup_eulogin.schema_updater.last_updated', $three_months_one_second_ago);
+    $state->set('joinup_eulogin.schema_data_updater.last_updated', $three_months_one_second_ago);
 
     // Run cron again.
     $this->cronRun();

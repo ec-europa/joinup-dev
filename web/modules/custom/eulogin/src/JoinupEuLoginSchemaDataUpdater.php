@@ -11,9 +11,9 @@ use Drupal\Core\State\StateInterface;
 use GuzzleHttp\ClientInterface;
 
 /**
- * Default implementation of 'joinup_eulogin.schema_updater' service.
+ * Default implementation of 'joinup_eulogin.schema_data_updater' service.
  */
-class JoinupEuLoginSchemaUpdater implements JoinupEuLoginSchemaUpdaterInterface {
+class JoinupEuLoginSchemaDataUpdater implements JoinupEuLoginSchemaDataUpdaterInterface {
 
   /**
    * The HTTP client service.
@@ -111,7 +111,7 @@ class JoinupEuLoginSchemaUpdater implements JoinupEuLoginSchemaUpdaterInterface 
       'version' => $version,
       'organisations' => $organisations,
     ]);
-    $this->state->set('joinup_eulogin.schema_updater.last_updated', $this->time->getRequestTime());
+    $this->state->set('joinup_eulogin.schema_data_updater.last_updated', $this->time->getRequestTime());
 
     return TRUE;
   }

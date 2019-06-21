@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\joinup_eulogin;
 
 /**
- * Provides an interface for the 'joinup_eulogin.schema_updater' service.
+ * Provides an interface for the 'joinup_eulogin.schema_data_updater' service.
  */
-interface JoinupEuLoginSchemaUpdaterInterface {
+interface JoinupEuLoginSchemaDataUpdaterInterface {
 
   /**
    * Parses the schema and updates the stored data.
