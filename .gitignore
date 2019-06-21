@@ -21,6 +21,7 @@
 # Ignore environment specific settings
 /build.local.xml
 /build.properties.local
+/drush/drush.yml
 /phpcs.xml
 /tests/behat.yml
 /web/phpunit.xml
