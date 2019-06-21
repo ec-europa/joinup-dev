@@ -103,7 +103,7 @@ class JoinupEuLoginSchemaDataUpdater implements JoinupEuLoginSchemaDataUpdaterIn
       $key = $element->attributes()['value']->__toString();
       $name_element = $element->xpath('xsd:annotation/xsd:documentation');
       // Normalize the value. It might contain consecutive spaces.
-      $value = preg_replace('/\s{2,}/', ' ', $name_element[0]->__toString());
+      $value = trim(preg_replace('/\s{2,}/', ' ', $name_element[0]->__toString()));
       $organisations[$key] = $value;
     }
 
