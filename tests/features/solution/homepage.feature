@@ -18,6 +18,8 @@ Feature: Solution homepage
     And the page should contain the html text "(signified by arrows)…"
     # There should be a link to the about page.
     And I should see the link "Read more"
+    # The page should be cacheable.
+    And the page should be cacheable
     # The abstract itself should be stripped of unsightly links.
     But I should not see the link "mathematical"
     # The 'Read more' link leads to the About page.
