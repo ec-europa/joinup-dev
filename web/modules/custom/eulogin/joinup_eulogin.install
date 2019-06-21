@@ -37,3 +37,35 @@ function joinup_eulogin_install(): void {
 function joinup_eulogin_uninstall(): void {
   \Drupal::keyValue('joinup')->delete('eulogin.schema');
 }
+
+/**
+ * Implements hook_requirements().
+ */
+function joinup_eulogin_requirements(string $phase): array {
+  $requirements = [];
+  if ($phase !== 'runtime') {
+    return $requirements;
+  }
+
+  $version = \Drupal::keyValue('joinup')->get('eulogin.schema')['version'];
+  $file = \Drupal::configFactory()->get('joinup_eulogin.settings')->get('schema.fixture_file');
+  $fixture_version = Yaml::decode(file_get_contents(__DIR__ . "/$file"))['version'];
+  $requirements['eulogin.schema'] = [
+    'title' => t('EU Login Schema'),
+    'value' => t('%version', ['%version' => $version]),
+  ];
+
+  if ($version === $fixture_version) {
+    $requirements['eulogin.schema']['severity'] = REQUIREMENT_INFO;
+  }
+  else {
+    $requirements['eulogin.schema']['severity'] = REQUIREMENT_WARNING;
+    $requirements['eulogin.schema']['description'] = t("The %file fixture file version is outdated (%fixture_version). It's recommended to update the fixture file to the latest version (%version).", [
+      '%file' => $file,
+      '%fixture_version' => $fixture_version,
+      '%version' => $version,
+    ]);
+  }
+
+  return $requirements;
+}
