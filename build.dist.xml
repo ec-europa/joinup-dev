@@ -253,8 +253,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>${drupal.modules.dev}</param>
         </drush>
     </target>
