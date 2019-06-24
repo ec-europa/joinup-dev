@@ -66,7 +66,7 @@ Feature: "Add custom page" visibility options.
     And I should see the contextual link "Add new page" in the "Left sidebar" region
     When I click the contextual link "Add new page" in the "Left sidebar" region
     Then I should see the heading "Add custom page"
-    And the following fields should be present "Title, Body"
+    And the following fields should be present "Title, Body, Published"
 
     # The sections about managing revisions and groups should not be visible.
     And I should not see the text "Revision information"
