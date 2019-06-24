@@ -13,6 +13,7 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/block_content_permissions": "^1.6",
         "drupal/cached_computed_field": "^1.0-beta4",
+        "drupal/cas_attributes": "^1.0@beta",
         "drupal/changed_fields": "^2.0",
         "drupal/config_provider": "~1.0",
         "drupal/config_readonly": "~1.0",
@@ -172,6 +173,9 @@
         "patches": {
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
+            },
+            "drupal/cas_attributes": {
+                "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
             },
             "drupal/config_sync": {
                 "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"

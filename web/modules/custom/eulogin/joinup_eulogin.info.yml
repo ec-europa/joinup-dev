@@ -6,4 +6,5 @@ core: 8.x
 type: module
 
 dependencies:
+  - cas_attributes:cas_attributes
   - oe_authentication:oe_authentication

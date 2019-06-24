@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5bf640946389dfa700b95f430b1e3ed",
+    "content-hash": "130f2b563ca9539e0b7801724a4ec034",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2622,6 +2622,78 @@
                 "source": "http://cgit.drupalcode.org/cas",
                 "issues": "http://drupal.org/project/issues/cas",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/cas_attributes",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/cas_attributes.git",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cas_attributes-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "db14c5cdca7e89c65ba7947f89e10b51071ca27f"
+            },
+            "require": {
+                "drupal/cas": "^1.2",
+                "drupal/core": "~8.0",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1543782180",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Olarin",
+                    "homepage": "https://www.drupal.org/user/334773"
+                },
+                {
+                    "name": "bfroehle",
+                    "homepage": "https://www.drupal.org/user/381391"
+                },
+                {
+                    "name": "bkosborne",
+                    "homepage": "https://www.drupal.org/user/788032"
+                },
+                {
+                    "name": "metzlerd",
+                    "homepage": "https://www.drupal.org/user/32494"
+                },
+                {
+                    "name": "redndahead",
+                    "homepage": "https://www.drupal.org/user/160320"
+                },
+                {
+                    "name": "yalet",
+                    "homepage": "https://www.drupal.org/user/2413764"
+                }
+            ],
+            "description": "Provides tokens for CAS attributes and an interface for token replacement in user account fields as well as advanced role mapping capability.",
+            "homepage": "https://www.drupal.org/project/cas_attributes",
+            "support": {
+                "source": "https://git.drupalcode.org/project/cas_attributes"
             }
         },
         {
@@ -15647,6 +15719,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/cas_attributes": 10,
         "drupal/diff": 5,
         "drupal/flag": 15,
         "drupal/migrate_run": 10,
