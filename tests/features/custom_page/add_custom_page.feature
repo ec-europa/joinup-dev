@@ -79,6 +79,7 @@ Feature: "Add custom page" visibility options.
     And I press "Upload"
     # The "Description" field is the description of the file.
     And I fill in "Description" with "Test file"
+    And I uncheck "Published"
     And I press "Save"
     Then I should see the heading "About us"
     And I should see the success message "Custom page About us has been created."
@@ -88,11 +89,15 @@ Feature: "Add custom page" visibility options.
     And the "<second title>" <group> should have a custom page titled "About us"
     # Check that the link to the custom page is visible on the group page.
     When I go to the homepage of the "<second title>" <group>
-    And I click "About us"
+    And I click "About us" in the "Left sidebar"
 
     # I should not be able to add a custom page to a different <group>
     When I go to the homepage of the "<first title>" <group>
     Then I should not see the link "Add custom page"
+
+    When I am an anonymous user
+    And I go to the homepage of the "<second title>" <group>
+    Then I should not see the link "About us" in the "Left sidebar"
 
     Examples:
       | first title | second title    | group      |
