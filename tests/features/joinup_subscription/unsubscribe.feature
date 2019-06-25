@@ -45,10 +45,12 @@ Feature: Unsubscribe from collections
     When I click "Unsubscribe from all"
     Then I should see the heading "Unsubscribe from all collections"
     And I should see the following lines of text:
-      | Are you sure you want to unsubscribe from all collections? |
-      | Southpark elementary                                       |
-      | Kenny's house                                              |
-      | Koon's hideout                                             |
+      | Are you sure you want to unsubscribe from all collections?                                         |
+      | You will stop receiving news and updates from all collections (including the pending memberships). |
+      | In the future you will not be notified for the following collections:                              |
+      | Southpark elementary                                                                               |
+      | Kenny's house                                                                                      |
+      | Koon's hideout                                                                                     |
 
     When I press "Confirm"
     And I wait for the batch process to finish
@@ -77,6 +79,6 @@ Feature: Unsubscribe from collections
     And I should not see the link "Unsubscribe from all"
 
     And I should have the following collection content subscriptions:
-      | Southpark elementary | |
-      | Kenny's house        | |
-      | Koon's hideout       | |
+      | Southpark elementary |  |
+      | Kenny's house        |  |
+      | Koon's hideout       |  |

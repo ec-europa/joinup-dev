@@ -88,7 +88,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections, including those you are a facilitator in.');
+    return $this->t('Are you sure you want to unsubscribe from all collections?<br />You will stop receiving news and updates from all collections (including the pending memberships).<br />In the future you will not be notified for the following collections:');
   }
 
   /**
@@ -112,13 +112,9 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
       $labels = array_filter($labels);
       asort($labels);
       $form = parent::buildForm($form, $form_state);
-      $form['information'] = [
-        '#type' => 'item',
-        '#markup' => $this->t('You are currently registered to be notified for the following collections:'),
-        'items' => [
-          '#theme' => 'item_list',
-          '#items' => $labels,
-        ],
+      $form['collections'] = [
+        '#theme' => 'item_list',
+        '#items' => $labels,
       ];
     }
     return $form;
