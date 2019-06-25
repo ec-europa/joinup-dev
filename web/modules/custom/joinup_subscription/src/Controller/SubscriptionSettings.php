@@ -168,6 +168,8 @@ class SubscriptionSettings extends ControllerBase {
       }
     }
 
+    // @todo: Change the approach to use a custom class as submits are cached.
+    // @see: https://drupal.stackexchange.com/questions/263861/use-custom-form-submit-function-inside-class
     $form['actions']['submit']['#submit'][] = '::submitForm';
 
     return $form;
