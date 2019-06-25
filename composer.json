@@ -66,7 +66,7 @@
         "drupal/view_unpublished": "~1.0@alpha",
         "drupal/views_bulk_operations": "^2.0",
         "drupal/views_data_export": "^1.0-beta1",
-        "drush/drush": "^9.6.0-rc4",
+        "drush/drush": "dev-master",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
@@ -257,6 +257,9 @@
             },
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
+            },
+            "drush/drush": {
+                "PR 4103": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4103.diff"
             }
         }
     },
