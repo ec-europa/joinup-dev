@@ -112,13 +112,9 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
       $labels = array_filter($labels);
       asort($labels);
       $form = parent::buildForm($form, $form_state);
-      $form['information'] = [
-        '#type' => 'item',
-        '#markup' => $this->t('You are currently registered to be notified for the following collections:'),
-        'items' => [
-          '#theme' => 'item_list',
-          '#items' => $labels,
-        ],
+      $form['collections'] = [
+        '#theme' => 'item_list',
+        '#items' => $labels,
       ];
     }
     return $form;
