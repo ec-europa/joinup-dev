@@ -110,7 +110,7 @@ joinup_core.matomo_settings.*.*:
   mapping:
     period:
       type: integer
-      label: 'Time period, in days.'
+      label: 'The time period in days or 0 to retrieve all data available.'
     type:
       type: string
       label: 'The type of metric to use.'
