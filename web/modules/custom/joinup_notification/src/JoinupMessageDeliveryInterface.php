@@ -93,11 +93,6 @@ interface JoinupMessageDeliveryInterface {
    * @param array $notifier_options
    *   An optional associative array of options to pass to the notifier plugin
    *   that is used (either Email or Digest).
-   * @param bool $digest
-   *   Whether or not to include the message in the user's periodic notification
-   *   digest. If set to TRUE the message will be sent according to the user's
-   *   chosen notification frequency: immediately, daily, weekly or monthly. If
-   *   set to FALSE the message will be sent immediately. Defaults to TRUE.
    *
    * @return bool
    *   Whether or not the message was sent successfully.
@@ -106,7 +101,7 @@ interface JoinupMessageDeliveryInterface {
    *   Thrown when a message is attempted to be sent to a user which doesn't
    *   have an e-mail address.
    */
-  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], bool $digest = TRUE): bool;
+  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = []): bool;
 
   /**
    * Sends a Message based on the given message template to multiple users.

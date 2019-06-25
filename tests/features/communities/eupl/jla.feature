@@ -18,6 +18,7 @@ Feature:
     When I am not logged in
     And I visit the "JLA" custom page
     Then I should see the heading "JLA"
+    And I should see the link "licence SPDX identifier"
     And I should see the following filter categories in the correct order:
       | Can        |
       | Must       |

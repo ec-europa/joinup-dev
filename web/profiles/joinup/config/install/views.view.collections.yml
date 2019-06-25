@@ -511,8 +511,9 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
   page_1:
     display_plugin: page
     id: page_1
@@ -533,8 +534,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - collection_owner
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'

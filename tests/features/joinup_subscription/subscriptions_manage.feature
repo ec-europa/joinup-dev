@@ -136,30 +136,3 @@ Feature: User subscription settings
       | Daily        | daily     |
       | Weekly       | weekly    |
       | Monthly      | monthly   |
-
-  @email
-  Scenario: Choose to receive notifications immediately
-    And collection:
-      | title | Malicious plans |
-      | state | validated       |
-    And discussion content:
-      | title        | body                   | collection      | state     | author           |
-      | Water supply | Contaminate it with GB | Malicious plans | validated | Auric Goldfinger |
-
-    Given I am logged in as "Auric Goldfinger"
-    And I am on the homepage
-    When I click "My account"
-    # Note that the link is located in the '3 dots menu' in the top right.
-    And I click "Subscription settings" in the "Header" region
-    Then I should see the heading "Subscription settings"
-    When I select the radio button "Immediately"
-    And I press "Save"
-
-    Given I am logged in as a moderator
-    When I go to the discussion content "Water supply" edit screen
-    And I fill in "Content" with "Contaminate it with Sarin"
-    And I press "Update"
-    Then the following email should have been sent:
-      | recipient_mail | auric@example.com                                                                   |
-      | subject        | Joinup: The discussion "Water supply" was updated in the space of "Malicious plans" |
-      | body           | The discussion "Water supply" was updated in the "Malicious plans" collection.      |
