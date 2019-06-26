@@ -9,7 +9,8 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
@@ -190,19 +191,12 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_entity_field_access().
  */
-function custom_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form_ids = [
-    'node_custom_page_form',
-    'node_custom_page_edit_form',
-  ];
-  if (!in_array($form_id, $form_ids)) {
-    return;
-  }
-
-  $custom_page = $form_state->getBuildInfo()['callback_object']->getEntity();
-  // Facilitators and moderators are the only ones who can edit the page and
-  // they should both be able to change the status.
-  $form['status']['#access'] = $custom_page->access('update');
+function custom_page_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  return AccessResult::allowedIf(
+    $operation === 'edit'
+    && $field_definition->getName() === 'status'
+    && $field_definition->getTargetEntityTypeId() === 'node'
+    && $field_definition->getTargetBundle() === 'custom_page');
 }
