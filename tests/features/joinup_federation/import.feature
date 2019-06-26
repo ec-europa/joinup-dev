@@ -95,6 +95,7 @@ Feature: As a site moderator I am able to import RDF files.
       | This value should not be null.                                                         |
       | The distribution Windows is linked also by the Asset release 1 release.                |
 
+  @terms
   Scenario: Test a successful import.
     Given solutions:
       | uri                           | title                       | description         | state     | modification date |
@@ -148,11 +149,6 @@ Feature: As a site moderator I am able to import RDF files.
       | The Spain - Center for Technology Transfer execution has finished with success. |
     And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
 
-    # Check that the existing solution values were overridden.
-    Given I go to the "Solution 2" solution edit form
-    Then the "Title" field should contain "Solution 2"
-    And the "Description" field should contain "This solution has a standalone distribution."
-
     # Check how the provenance records were created/updated.
     Then the "Solution 1" entity is not blacklisted for federation
     And the "Solution 2" entity is not blacklisted for federation
@@ -173,6 +169,16 @@ Feature: As a site moderator I am able to import RDF files.
     # Check the affiliation of federated solutions.
     But the "Solution 1" solution should be affiliated with the "Spain" collection
     And the "Solution 2" solution should be affiliated with the "Spain" collection
+
+    # Check that the existing solution values were overridden.
+    Given I go to the "Solution 2" solution edit form
+    Then the "Title" field should contain "Solution 2"
+    And the "Description" field should contain "This solution has a standalone distribution."
+
+    # Verify the user can edit non federated values.
+    And I select "E-health" from "Policy domain"
+    And I press "Publish"
+    Then I should see the heading "Solution 2"
 
     # Ensure that the og relation is set between the distribution and the solution.
     When I go to the "Windows" asset distribution
@@ -220,6 +226,13 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Solution 1" solution should be affiliated with the "Spain" collection
     And the "Solution 2" solution should be affiliated with the "Spain" collection
     And the "Solution 3" solution should be affiliated with the "Spain" collection
+
+    # Check that the Policy domain value was not overridden.
+    Given I go to the "Solution 2" solution edit form
+    # The text is '-E-health' because of the '-' prepended to children options.
+    And the option with text "-E-health" from select "Policy domain" is selected
+    And I press "Publish"
+    Then I should see the heading "Solution 2"
 
     # Check that provenance activity records are not indexed.
     When I am at "/search"
