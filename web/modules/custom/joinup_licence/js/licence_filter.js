@@ -64,8 +64,18 @@
     });
   });
 
-  // Trigger if enter key is pressed in licence search
-  $('#licence-search').on('keyup', function (event) {
+  // Cancel the 'Enter' key of the filter input.
+  // Entered key is cancelled on keypress, not on keyup.
+  $('#licence-search').on('keypress', function (event) {
+    var keyCode = event.keyCode || event.which;
+    if (keyCode === 13) {
+      console.log(keyCode);
+      event.preventDefault();
+      return false;
+    }
+  })
+  // Trigger the update on any key.
+  .on('keyup', function (event) {
     checkLicenceCategories();
   });
 
