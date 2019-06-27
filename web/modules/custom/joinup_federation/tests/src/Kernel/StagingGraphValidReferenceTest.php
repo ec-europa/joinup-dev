@@ -25,6 +25,7 @@ class StagingGraphValidReferenceTest extends KernelTestBase {
     'joinup_sparql',
     'rdf_draft',
     'rdf_entity',
+    'rdf_entity_provenance',
     'sparql_entity_storage',
     'user',
   ];
