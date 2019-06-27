@@ -72,8 +72,11 @@ class NotNullUnlessFederatedConstraintValidator extends NotNullConstraintValidat
       // Check for the parent entity being an rdf entity so that we quickly skip
       // other entity types that use the NotNull constraint.
       if (($parent_entity instanceof RdfInterface) && !empty($parent_entity->id())) {
-        if ($this->fieldValidator->isDefinedInSchema($parent_entity->getEntityTypeId(), $parent_entity->bundle(), $typed_data->getName())
-          && $activity = $this->provenanceHelper->loadProvenanceActivity($parent_entity->id())) {
+        $entity_type_id = $parent_entity->getEntityTypeId();
+        $bundle = $parent_entity->bundle();
+        if ($this->fieldValidator->hasSchemaDefinition($entity_type_id, $bundle)
+          && $this->fieldValidator->isDefinedInSchema($entity_type_id, $bundle, $typed_data->getName())
+          && $this->provenanceHelper->loadProvenanceActivity($parent_entity->id())) {
           return;
         }
       }
