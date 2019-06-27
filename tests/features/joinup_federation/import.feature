@@ -9,9 +9,9 @@ Feature: As a site moderator I am able to import RDF files.
 
   Scenario: Test the pipeline functionality
     Given collection:
-      | uri        | http://administracionelectronica.gob.es/ctt |
-      | title      | Spain                                       |
-      | state      | validated                                   |
+      | uri   | http://administracionelectronica.gob.es/ctt |
+      | title | Spain                                       |
+      | state | validated                                   |
     And users:
       | Username         | Roles     |
       | LaDonna          | moderator |
@@ -97,9 +97,17 @@ Feature: As a site moderator I am able to import RDF files.
 
   @terms
   Scenario: Test a successful import.
-    Given solutions:
+    Given user:
+      | Username    | CS Owner                |
+      | First name  | Collection and solution |
+      | Family name | Owner                   |
+      | E-mail      | csowner@example.com     |
+    And solutions:
       | uri                           | title                       | description         | state     | modification date |
       | http://example.com/solution/2 | Local version of Solution 2 | Initial description | validated | 15-07-2018        |
+    And the following solution user membership:
+      | solution                    | user     | roles                      | state  |
+      | Local version of Solution 2 | CS Owner | facilitator, administrator | active |
     And the following distribution:
       | uri               | http://example.com/distribution/3          |
       | title             | Local version of a standalone distribution |
@@ -113,6 +121,9 @@ Feature: As a site moderator I am able to import RDF files.
       | title      | Spain                                       |
       | state      | validated                                   |
       | affiliates | Local version of Solution 2                 |
+    And the following collection user membership:
+      | collection | user     | roles                      | state  |
+      | Spain      | CS Owner | facilitator, administrator | active |
     And provenance activities:
       | entity                        | enabled | associated with | author          | started          |
       | Local version of Solution 2   | yes     | Spain           | Antoine Batiste | 2012-07-07 23:01 |
@@ -180,12 +191,18 @@ Feature: As a site moderator I am able to import RDF files.
     And I press "Publish"
     Then I should see the heading "Solution 2"
 
+    # Verify that the collection owner can edit the new solutions.
+    When I am logged in as "CS Owner"
+    And I go to the "Solution 1" solution edit form
+    Then the response status code should be 200
+
     # Ensure that the og relation is set between the distribution and the solution.
     When I go to the "Windows" asset distribution
     Then I should see the heading "Solution 1"
 
     # Re-import.
-    Given I visit "/admin/content/pipeline/spain/execute"
+    Given I am logged in as "Antoine Batiste"
+    And I visit "/admin/content/pipeline/spain/execute"
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -269,9 +286,9 @@ Feature: As a site moderator I am able to import RDF files.
   @joinup_collection
   Scenario: Test that solutions cannot be re-federated in a different collection.
     And collection:
-      | uri        | http://administracionelectronica.gob.es/ctt |
-      | title      | Spain                                       |
-      | state      | validated                                   |
+      | uri   | http://administracionelectronica.gob.es/ctt |
+      | title | Spain                                       |
+      | state | validated                                   |
 
     Given I go to "/admin/content/pipeline/spain/execute"
     When I attach the file "single_solution_valid_adms.rdf" to "File"
