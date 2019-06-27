@@ -82,6 +82,14 @@ class SchemaFieldValidator implements SchemaFieldValidatorInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function hasSchemaDefinition(string $entity_type_id, string $bundle): bool {
+    $mapping = $this->getEntityMapping($entity_type_id, $bundle);
+    return !empty($mapping) && !empty($mapping->getThirdPartySettings('rdf_schema_field_validation'));
+  }
+
+  /**
    * Retrieves an SparqlMapping entity.
    *
    * @param string $entity_type_id
