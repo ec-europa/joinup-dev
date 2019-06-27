@@ -9,6 +9,8 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
@@ -186,4 +188,15 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     return AccessResult::allowed();
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function custom_page_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  return AccessResult::allowedIf(
+    $operation === 'edit'
+    && $field_definition->getName() === 'status'
+    && $field_definition->getTargetEntityTypeId() === 'node'
+    && $field_definition->getTargetBundle() === 'custom_page');
 }
