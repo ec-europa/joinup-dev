@@ -130,7 +130,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\joinup\\": "tests/src",
             "DrupalProject\\": "src"
         },
         "classmap": [
@@ -139,6 +138,12 @@
             "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php",
             "web/modules/custom/error_page/src/ErrorPageErrorHandler.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Drupal\\joinup\\": "tests/src",
+            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
+        }
     },
     "scripts": {
         "pre-install-cmd": [
