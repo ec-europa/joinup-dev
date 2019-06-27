@@ -1,0 +1,5 @@
+type: module
+core: 8.x
+name: 'Joinup EU Login Test'
+description: 'Used to test joinup_eulogin module.'
+package: Testing

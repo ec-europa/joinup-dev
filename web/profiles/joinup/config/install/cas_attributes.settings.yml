@@ -1,0 +1,19 @@
+sitewide_token_support: true
+field:
+  sync_frequency: 2
+  overwrite: true
+  mappings:
+    field_user_family_name: '[cas:attribute:lastname]'
+    field_user_first_name: '[cas:attribute:firstname]'
+    # Apart from tokens offered by CAS Attributes module ([cas:attribute:*]),
+    # that are directly mapping CAS server response attributes, we provide
+    # tokens that are mapping computed attributes ([cas:computed-attribute:*]).
+    # Such tokens are computing their replacement values by using CAS response
+    # attributes.
+    # @see joinup_eulogin_tokens()
+    field_user_organisation: '[cas:computed-attribute:organisation]'
+role:
+  sync_frequency: 0
+  deny_login_no_match: false
+  deny_registration_no_match: false
+  mappings: [ ]
