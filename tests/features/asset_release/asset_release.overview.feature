@@ -31,6 +31,7 @@ Feature: Asset distribution overview on solution.
     When I go to the homepage of the "Lovely Butterfly" solution
     And I click "Download releases"
     Then I should see the heading "Releases for Lovely Butterfly solution"
+    And the page should be cacheable
 
     # Check that clean URLs are being applied to the "releases" subpage.
     And I should be on "/solution/lovely-butterfly/releases"
