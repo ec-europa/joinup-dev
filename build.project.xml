@@ -116,15 +116,6 @@
                 root="${website.drupal.dir}"
                 bin="${drush.bin}">
         </drush>
-        <!-- When a module that includes a new entity type is installed through
-        an update hook, cache need to be rebuilt in order to have it recognized.
-        @see ISAICP-5310. -->
-        <drush
-                command="cache:rebuild"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-        </drush>
         <drush
                 command="cs-update"
                 assume="yes"

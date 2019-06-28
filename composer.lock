@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3451e635e030e8ccc051a6ad03b75ab",
+    "content-hash": "fa1c06d272d8fb6e2499609d77db5693",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5243,7 +5243,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0-alpha5",
-                    "datestamp": "1559915584",
+                    "datestamp": "1559916365",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -6730,16 +6730,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "9.7.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "ed1314a88f7ef947b56f0c9da9ca7a0f4aeef40e"
+                "reference": "e1f904cc49a676ad5240e83989d3dd86c7f26e20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/ed1314a88f7ef947b56f0c9da9ca7a0f4aeef40e",
-                "reference": "ed1314a88f7ef947b56f0c9da9ca7a0f4aeef40e",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/e1f904cc49a676ad5240e83989d3dd86c7f26e20",
+                "reference": "e1f904cc49a676ad5240e83989d3dd86c7f26e20",
                 "shasum": ""
             },
             "require": {
@@ -6827,6 +6827,9 @@
                 },
                 "branch-alias": {
                     "dev-master": "9.x-dev"
+                },
+                "patches_applied": {
+                    "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4103.diff"
                 }
             },
             "autoload": {
@@ -6875,7 +6878,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2019-06-04T16:01:18+00:00"
+            "time": "2019-06-27T17:04:27+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -15823,6 +15826,7 @@
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
+        "drush/drush": 20,
         "ec-europa/infra": 20,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
