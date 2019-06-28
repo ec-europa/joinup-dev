@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24b35636a95ad7a25e67782dc37f34a1",
+    "content-hash": "79231d8c79d2de68f5746c09d2fe8c1d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6529,16 +6529,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "9.7.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "ed1314a88f7ef947b56f0c9da9ca7a0f4aeef40e"
+                "reference": "a2c3cedda2a8bdb029947d7015c398fc7c011629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/ed1314a88f7ef947b56f0c9da9ca7a0f4aeef40e",
-                "reference": "ed1314a88f7ef947b56f0c9da9ca7a0f4aeef40e",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/a2c3cedda2a8bdb029947d7015c398fc7c011629",
+                "reference": "a2c3cedda2a8bdb029947d7015c398fc7c011629",
                 "shasum": ""
             },
             "require": {
@@ -6626,6 +6626,9 @@
                 },
                 "branch-alias": {
                     "dev-master": "9.x-dev"
+                },
+                "patches_applied": {
+                    "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4103.diff"
                 }
             },
             "autoload": {
@@ -6674,7 +6677,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2019-06-04T16:01:18+00:00"
+            "time": "2019-06-23T11:31:12+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -15456,6 +15459,7 @@
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
+        "drush/drush": 20,
         "ec-europa/infra": 20,
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
