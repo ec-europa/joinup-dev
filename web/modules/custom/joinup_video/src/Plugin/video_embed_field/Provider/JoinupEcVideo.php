@@ -62,8 +62,7 @@ class JoinupEcVideo extends ProviderPluginBase {
           'on_stats' => function (TransferStats $stats) use (&$uri) {
             $uri = $stats->getEffectiveUri();
           },
-]
-        );
+        ]);
         static::$resolvedUrl[$input] = $uri ? $uri->__toString() : $input;
       }
       $input = static::$resolvedUrl[$input];
