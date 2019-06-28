@@ -62,6 +62,7 @@ Feature: Asset distribution overview on solution.
     When I click "The Child of the Past 1"
     Then I should see the heading "The Child of the Past 1"
     And I should see the text "Latest release"
+    And the page should be cacheable
 
     # Create a new release.
     When I am logged in as a facilitator of the "Lovely Butterfly" solution
