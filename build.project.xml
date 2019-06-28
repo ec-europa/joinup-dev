@@ -538,7 +538,7 @@
 
     <target name="start-cas-mock-server">
         <phingcall target="enable-module">
-            <property name="module" value="cas_mock_server" />
+            <property name="module" value="joinup_cas_mock_server" />
         </phingcall>
         <drush
                 command="cas-mock-server:start"
@@ -549,7 +549,7 @@
 
     <target name="stop-cas-mock-server">
         <phingcall target="enable-module">
-            <property name="module" value="cas_mock_server" />
+            <property name="module" value="joinup_cas_mock_server" />
         </phingcall>
         <drush
                 command="cas-mock-server:stop"
