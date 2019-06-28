@@ -1,0 +1,7 @@
+name: Joinup CAS Mock Server
+type: module
+description: CAS mock server customized for Joinup.
+package: Joinup
+core: 8.x
+dependencies:
+  - cas_mock_server:cas_mock_server
