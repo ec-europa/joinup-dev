@@ -1,6 +1,6 @@
 services:
   isa2_analytics.oe_webtools_analytics_subscriber:
     class: Drupal\isa2_analytics\EventSubscriber\WebtoolsAnalyticsSubscriber
-    arguments: ['@og.context']
+    arguments: ['@entity_type.manager', '@og.context']
     tags:
       - { name: event_subscriber }

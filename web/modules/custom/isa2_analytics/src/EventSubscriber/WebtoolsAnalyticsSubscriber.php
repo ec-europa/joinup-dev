@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\isa2_analytics\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\oe_webtools_analytics\AnalyticsEventInterface;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,6 +16,13 @@ use Drupal\oe_webtools_analytics\Event\AnalyticsEvent;
 class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
 
   /**
+   * The entity type manager interface.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * The OG context service.
    *
    * @var \Drupal\og\OgContextInterface
@@ -24,10 +32,13 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
   /**
    * Constructs a new WebtoolsAnalyticsSubscriber.
    *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager service.
    * @param \Drupal\og\OgContextInterface $ogContext
    *   The OG context service.
    */
-  public function __construct(OgContextInterface $ogContext) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, OgContextInterface $ogContext) {
+    $this->entityTypeManager = $entityTypeManager;
     $this->ogContext = $ogContext;
   }
 
@@ -48,6 +59,24 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
 
     // Set the group label as the site section if there is an active group.
     if ($group = $this->ogContext->getGroup()) {
+      if ($group->bundle() === 'solution') {
+
+        $collection = NULL;
+        // Normally, the solution has the `collections` computed field that
+        // holds the list of collections that are affiliates to the solution.
+        // However, this method is fired during the preparation of the page
+        // while the computation of the value takes place during the rendering
+        // of the page.
+        // @see \Drupal\Core\Render\MainContent\HtmlRenderer::renderResponse
+        if ($collections = solution_get_collection_ids($group)) {
+          $collection_id = reset($collections);
+          $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
+        }
+        $group = $collection;
+      }
+    }
+
+    if (!empty($group)) {
       $event->setSiteSection($group->label());
       $event->addCacheableDependency($group);
     }
