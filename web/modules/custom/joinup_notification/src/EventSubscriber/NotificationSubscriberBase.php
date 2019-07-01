@@ -302,7 +302,7 @@ abstract class NotificationSubscriberBase {
         $actor->get('full_name')->value;
     }
     $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page', [], ['absolute' => TRUE])->toString();
-    $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
+    $arguments['@site:legal_notice_url'] = Url::fromRoute('page_manager.page_view_legal_notice_legal_notice-block_display-0', [], ['absolute' => TRUE])->toString();
 
     return $arguments;
   }
