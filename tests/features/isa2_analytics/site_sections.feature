@@ -34,8 +34,8 @@ Feature: Site sections
     Given I visit the "The Polygone Project" collection
     Then the analytics report should include the site section "The Polygone Project"
     Given I visit the "Miss Fashionista" solution
-    Then the analytics report should include the site section "Miss Fashionista"
+    Then the analytics report should include the site section "The Polygone Project"
     Given I visit the "Deep Carnival" discussion
     Then the analytics report should include the site section "The Polygone Project"
     Given I visit the "Flat Beat 20th Anniversary" event
-    Then the analytics report should include the site section "Miss Fashionista"
+    Then the analytics report should include the site section "The Polygone Project"
