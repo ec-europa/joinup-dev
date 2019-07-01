@@ -209,7 +209,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     // Pickup the parent plugin ID.
     $parent_plugin_id = key($trail);
 
-    return $parent_plugin_id ? $this->getFlattenedMenu()[$parent_plugin_id] : NULL;
+    return $this->getFlattenedMenu()[$parent_plugin_id] ?? NULL;
   }
 
   /**

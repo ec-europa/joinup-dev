@@ -660,3 +660,10 @@ function joinup_core_post_update_set_news_default_version() {
     $latest_revision->save();
   }
 }
+
+/**
+ * Enable the nio module.
+ */
+function joinup_core_post_update_enable_nio() {
+  \Drupal::service('module_installer')->install(['nio']);
+}

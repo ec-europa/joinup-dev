@@ -17,14 +17,12 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueFieldInBundleConstraint extends Constraint {
 
-  public $message = 'Content with @field_name %value already exists. Please choose a different @field_name.';
-
   /**
-   * {@inheritdoc}
+   * The message to show when validation fails.
+   *
+   * @var string
    */
-  public function validatedBy() {
-    return '\Drupal\joinup_core\Plugin\Validation\Constraint\UniqueFieldValueInBundleValidator';
-  }
+  public $message = 'Content with @field_name %value already exists. Please choose a different @field_name.';
 
   /**
    * The bundles for which this constraint applies.
@@ -32,6 +30,13 @@ class UniqueFieldInBundleConstraint extends Constraint {
    * @var string
    */
   public $bundles;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validatedBy() {
+    return '\Drupal\joinup_core\Plugin\Validation\Constraint\UniqueFieldValueInBundleValidator';
+  }
 
   /**
    * {@inheritdoc}

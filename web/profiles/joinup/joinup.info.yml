@@ -67,6 +67,7 @@ dependencies:
   - matomo
   - menu_ui
   - moderation
+  - nio
   - node
   - oe_webtools_geocoding
   - oe_webtools_maps

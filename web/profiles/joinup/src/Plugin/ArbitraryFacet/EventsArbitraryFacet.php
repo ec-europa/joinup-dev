@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Plugin\ArbitraryFacet;
 
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -70,7 +72,7 @@ class EventsArbitraryFacet extends ArbitraryFacetBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function getFacetDefinition() {
+  public function getFacetDefinition(): array {
     $today_midnight = $this->facetDateHandler->isoDate((new DrupalDateTime('today'))->getTimestamp());
     $definition = [
       'upcoming_events' => [

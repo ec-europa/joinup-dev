@@ -25,7 +25,7 @@ Feature: Input filter
   Scenario: Ensure all required formats are supported in the content editor.
     When I go to the "Jessica Jones returns" news
     Then I should see the "iframe" element in the Content region
-    Then I see the "iframe" element with the "src" attribute set to "https://www.youtube.com/embed/nWHUjuJ8zxE" in the "Content" region
+    Then I see the "iframe" element with the "src" attribute set to "https://www.youtube-nocookie.com/embed/nWHUjuJ8zxE" in the "Content" region
     When I go to the "Prezi presentation" news
     Then I see the "iframe" element with the "src" attribute set to "https://prezi.com/embed/lspajpgcpx1k" in the "Content" region
     When I go to the "Slideshare presentation" news
