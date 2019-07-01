@@ -1,0 +1,7 @@
+name: 'Slovenian Interoperability Portal - NIO'
+type: module
+description: 'Specificities for the NIO community.'
+core: 8.x
+package: 'Joinup communities'
+dependencies:
+  - joinup_federation
