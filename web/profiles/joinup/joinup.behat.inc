@@ -348,6 +348,28 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Asserts the list of available options in a select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
+  }
+
+  /**
    * Checks that a select field has exclusively the provided options.
    *
    * @param string $select
