@@ -85,7 +85,7 @@ class MyContentArbitraryFacet extends ArbitraryFacetBase implements ContainerFac
    */
   public function getCacheContexts() {
     $contexts = parent::getCacheContexts();
-    return Cache::mergeContexts(['user'], $contexts);
+    return Cache::mergeContexts(['community_content_author'], $contexts);
   }
 
 }
