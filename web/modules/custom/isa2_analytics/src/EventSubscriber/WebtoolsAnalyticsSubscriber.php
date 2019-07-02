@@ -69,6 +69,10 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
         // of the page.
         // @see \Drupal\Core\Render\MainContent\HtmlRenderer::renderResponse
         if ($collections = solution_get_collection_ids($group)) {
+          // Only the first affiliated collection should be used to set the site
+          // section. This is considered to be the "main" collection. Any other
+          // collections are ignored since they would make the analytics results
+          // more difficult to interpret.
           $collection_id = reset($collections);
           $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
         }
