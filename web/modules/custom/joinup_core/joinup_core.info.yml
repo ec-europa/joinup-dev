@@ -17,6 +17,7 @@ dependencies:
   - message_notify
   - oe_newsroom_newsletter
   - og
+  - publication_date
   - rdf_draft
   - rdf_entity
   - rdf_taxonomy
