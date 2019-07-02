@@ -83,6 +83,7 @@ dependencies:
   - path
   - pathauto
   - persistent_login
+  - publication_date
   - r4032login
   - rdf_draft
   - rdf_entity
