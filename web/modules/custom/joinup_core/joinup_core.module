@@ -869,12 +869,7 @@ function joinup_core_rdf_entity_update(EntityInterface $entity) {
  * published, the creation date is updated with the current datetime.
  */
 function joinup_core_node_presave(EntityInterface $entity) {
-  // Documents do not show the created date in the UI as they have the document
-  // publication date to show instead. However, since the listing screens sort
-  // by created date, the documents are updated just as the rest of the
-  // community content.
-  $community_bundles = ['discussion', 'document', 'event', 'news', 'custom_page'];
-  if ($entity->isNew() || !in_array($entity->bundle(), $community_bundles) || !$entity->isPublished() || !empty($entity->published_at->value)) {
+  if ($entity->isNew() || !$entity->isPublished() || !empty($entity->published_at->value)) {
     return;
   }
   $entity->set('published_at', $entity->getChangedTime());
