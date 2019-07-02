@@ -66,7 +66,7 @@
         "drupal/view_unpublished": "~1.0@alpha",
         "drupal/views_bulk_operations": "^2.0",
         "drupal/views_data_export": "^1.0-beta1",
-        "drush/drush": "dev-master",
+        "drush/drush": "~9.7",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
@@ -261,7 +261,7 @@
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
             },
             "drush/drush": {
-                "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4103.diff"
+                "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
             },
             "masterminds/html5": {
                 "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
