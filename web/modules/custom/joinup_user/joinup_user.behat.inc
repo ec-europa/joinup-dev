@@ -5,12 +5,16 @@
  * Contains \JoinupUserSubContext.
  */
 
+declare(strict_types = 1);
+
+use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing users.
@@ -30,7 +34,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I go to the (public )profile of :user
    * @When I visit the (public )profile of :user
    */
-  public function visitUserPublicProfile($user) {
+  public function visitUserPublicProfile(string $user): void {
     $this->visitPath($this->getUserByName($user)->url());
   }
 
@@ -45,7 +49,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to the one time sign in page of (the user ):user
    */
-  public function visitOneTimeLogIn($user) {
+  public function visitOneTimeLogIn(string $user): void {
     $user = $this->getUserByName($user);
     if (empty($user)) {
       throw new \Exception("User {$user->getAccountName()} was not found.");
@@ -112,11 +116,17 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Checks that a given image is present in the page.
    *
    * This step is copied because the original requires that the link ends in the
-   * extension while modern techniques add extra query parameters in the uri.
+   * extension while modern techniques add extra query parameters in the URI.
+   *
+   * @param string $filename
+   *   The filename of the image to check.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the image is not present in the page.
    *
    * @Then I (should )see the avatar :filename
    */
-  public function assertImagePresent($filename) {
+  public function assertImagePresent(string $filename): void {
     // Drupal appends an underscore and a number to the filename when duplicate
     // files are uploaded, for example when a test is run more than once.
     // We split up the filename and extension and match for both.
@@ -124,6 +134,39 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     $extension = $parts['extension'];
     $filename = $parts['filename'];
     $this->assertSession()->elementExists('css', "[src*='$filename.$extension']");
+  }
+
+  /**
+   * Checks that the user with the given name has the given profile field data.
+   *
+   * Table format:
+   * | Username   | Mr Bond                    |
+   * | Password   | Bond007                    |
+   * | E-mail     | james.bond@mi5.org         |
+   * | Multivalue | Values,separated,by,commas |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $profile_data_table
+   *   A table containing the user profile field data to check.
+   * @param string $username
+   *   The name of the user to check.
+   *
+   * @throws \Exception
+   *   Thrown when a field in the table does not exist.
+   * @Then the user :username should have the following data in their user profile:
+   */
+  public function assertUserFields(TableNode $profile_data_table, string $username): void {
+    $user = $this->getUserByName($username);
+    $profile_data = $this->translateUserFieldAliases($profile_data_table->getRowsHash());
+
+    foreach ($profile_data as $field => $values) {
+      $expected_values = explode(',', $values);
+      $actual_values = $user->get($field)->getValue();
+      Assert::assertSameSize($expected_values, $actual_values);
+      foreach ($expected_values as $key => $expected_value) {
+        $actual_value = $user->get($field)->get($key)->value;
+        Assert::assertSame($expected_value, $actual_value);
+      }
+    }
   }
 
   /**
@@ -138,7 +181,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @BeforeUserCreate
    */
-  public static function massageFieldsBeforeUserCreate(BeforeUserCreateScope $scope) {
+  public static function massageFieldsBeforeUserCreate(BeforeUserCreateScope $scope): void {
     $user = $scope->getEntity();
 
     self::convertObjectPropertyValues($user, 'status', [
