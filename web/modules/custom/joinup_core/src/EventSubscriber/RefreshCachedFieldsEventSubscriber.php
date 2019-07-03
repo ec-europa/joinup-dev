@@ -312,7 +312,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $query = $this->matomoQueryFactory->getQuery('API.getBulkRequest');
 
     $url_index = 0;
-    foreach ($items as $index => $item) {
+    foreach ($items as $item) {
       $entity = $this->getEntity($item);
       $parameters = $this->getSubQueryParameters($entity);
       $query->setParameter('urls[' . $url_index++ . ']', http_build_query($parameters));

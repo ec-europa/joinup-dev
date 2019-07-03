@@ -83,7 +83,7 @@ function custom_page_node_update(NodeInterface $entity) {
     $result = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $entity->id()]);
 
     if (!empty($result)) {
-      foreach ($result as $id => $instance) {
+      foreach ($result as $instance) {
         $menu_link_manager->updateDefinition($instance->getPluginId(), ['title' => $entity->getTitle()], TRUE);
       }
     }
