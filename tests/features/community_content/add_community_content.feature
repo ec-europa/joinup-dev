@@ -83,11 +83,12 @@ Feature: Add community content
 
     When I am logged in as "Publisher"
     And I go to the "Sample <content type>" <content type>
+    Then the "Sample <content type>" <content type> should not have a publication date
     And I should see the text "01/01/2010"
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    And the latest version of the "Sample <content type>" <content type> should have a different created date than the last unpublished version
+    And the published date of the "Sample <content type>" <content type> should not be equal to the created date
 
     When I click "Revisions" in the "Entity actions" region
     And I click the last "Revert" link
@@ -97,7 +98,7 @@ Feature: Add community content
     When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    Then the latest version of the "Sample <content type>" <content type> should have the same created date as the last published version
+    Then the published date of the "Sample <content type>" <content type> should not be equal to the created date
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
     # date is the one shown and this field is exposed to the user.
