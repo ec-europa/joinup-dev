@@ -879,7 +879,7 @@ function joinup_core_node_presave(EntityInterface $entity) {
     $entity->set('published_at', NULL);
   }
 
-  if ($entity->isNew() || !$entity->isPublished()) {
+  if (!$entity->isPublished()) {
     return;
   }
 
