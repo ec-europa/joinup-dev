@@ -82,7 +82,6 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       throw new Exception('No mail was sent.');
     }
 
-    $link = NULL;
     $matches = [];
     foreach ($mails as $mail) {
       if ($mail['to'] !== $user_email) {
@@ -152,6 +151,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @throws \Exception
    *   Thrown when a field in the table does not exist.
+   *
    * @Then the user :username should have the following data in their user profile:
    */
   public function assertUserFields(TableNode $profile_data_table, string $username): void {
