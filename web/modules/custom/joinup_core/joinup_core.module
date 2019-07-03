@@ -884,7 +884,7 @@ function joinup_core_node_presave(EntityInterface $entity) {
   }
 
   if (empty($entity->published_at->value)) {
-    $entity->set('published_at', $entity->getChangedTime());
+    $entity->set('published_at', \Drupal::time()->getRequestTime());
   }
 }
 
