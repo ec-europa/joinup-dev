@@ -8,9 +8,9 @@ dependencies:
     - joinup_core
     - search_api
 id: content_overview
-label: Content
+label: 'Content overview'
 module: views
-description: ''
+description: 'Keep up to date page'
 tag: ''
 base_table: search_api_index_published
 base_field: search_api_id
@@ -621,8 +621,9 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
   page_1:
     display_plugin: page
     id: page_1
@@ -643,8 +644,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - community_content_author
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
