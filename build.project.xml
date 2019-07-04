@@ -527,28 +527,6 @@
             text="$settings['filecache']['strategy']['bins']['geocoder'] = 'persist';${line.separator}" />
     </target>
 
-    <target name="start-cas-mock-server">
-        <phingcall target="enable-module">
-            <property name="module" value="joinup_cas_mock_server" />
-        </phingcall>
-        <drush
-                command="cas-mock-server:start"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-        </drush>
-    </target>
-
-    <target name="stop-cas-mock-server">
-        <phingcall target="enable-module">
-            <property name="module" value="joinup_cas_mock_server" />
-        </phingcall>
-        <drush
-                command="cas-mock-server:stop"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-        </drush>
-    </target>
-
     <target
         name="build-dist"
         description="Build a distribution package."
