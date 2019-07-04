@@ -67,7 +67,7 @@ class AdmsValidator implements AdmsValidatorInterface {
    * {@inheritdoc}
    */
   public function validateGraph(Graph $graph): AdmsValidationResult {
-    if (!$uri = $graph->getUri()) {
+    if (!$graph->getUri()) {
       throw new \InvalidArgumentException("The graph has been instantiated without a URI. Should be instantiated in this way: new Graph('http://example.com/graph-uri');");
     }
 

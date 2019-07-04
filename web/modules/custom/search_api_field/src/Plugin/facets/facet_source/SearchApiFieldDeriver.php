@@ -87,11 +87,6 @@ class SearchApiFieldDeriver extends FacetSourceDeriverBase {
           'description' => $this->t('Provides a facet source.'),
           'search_api_field' => $id,
         ] + $base_plugin_definition;
-
-        $sources[] = $this->t('Search api field: %label (%id)', [
-          '%label' => $field_config->label(),
-          '%id' => $id,
-        ]);
       }
       uasort($plugin_derivatives, [$this, 'compareDerivatives']);
 

@@ -85,7 +85,7 @@ class TourMenuLink extends MenuLinkDefault {
     $tour_storage = $this->entityTypeManager->getStorage('tour');
     /** @var \Drupal\tour\TourInterface[] $tours */
     $tours = $tour_storage->loadByProperties(['status' => TRUE]);
-    foreach ($tours as $tour_id => $tour) {
+    foreach ($tours as $tour) {
       // This tour is configured to show up on this route.
       if ($tour->hasMatchingRoute($route_name, $route_parameters)) {
         return TRUE;
