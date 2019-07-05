@@ -43,6 +43,7 @@ class MinkContext extends DrupalExtensionMinkContext {
   public function assertCheckboxChecked($radio) {
     // We're just adding a step definition, not changing the actual code. Trick
     // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
+    // @codingStandardsIgnoreLine
     $tricksy = TRUE;
     parent::assertCheckboxChecked($radio);
   }
@@ -80,6 +81,7 @@ class MinkContext extends DrupalExtensionMinkContext {
   public function iWaitForAjaxToFinish($event = NULL) {
     // We're just adding a step definition, not changing the actual code. Trick
     // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
+    // @codingStandardsIgnoreLine
     $tricksy = TRUE;
     parent::iWaitForAjaxToFinish($event);
   }

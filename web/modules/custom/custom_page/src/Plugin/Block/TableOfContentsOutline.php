@@ -302,7 +302,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    */
   protected function flatOutlineTree(array $tree): void {
     /** @var \Drupal\Core\Menu\MenuLinkTreeElement[] $tree */
-    foreach ($tree as $menu_link_id => $data) {
+    foreach ($tree as $data) {
       $this->flattenedMenu[$data->link->getPluginId()] = $data->link;
       if ($data->subtree) {
         $this->flatOutlineTree($data->subtree);
