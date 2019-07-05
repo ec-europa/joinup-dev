@@ -3,12 +3,13 @@ type: module
 description: Handles notifications for joinup project.
 core: 8.x
 package: Joinup
+
 dependencies:
-  - joinup_core
-  - message
-  - message_notify
-  - solution
-  - state_machine_revisions
+  - joinup:joinup_core
+  - message:message
+  - message_notify:message_notify
+  - joinup:solution
+  - joinup:state_machine_revisions
 
 config_devel:
   - joinup_notification.notifications.community_content

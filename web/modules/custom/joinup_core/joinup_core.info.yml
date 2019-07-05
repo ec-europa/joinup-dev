@@ -1,30 +1,31 @@
-name: 'Joinup core'
+name: Joinup core
 type: module
-description: 'Contains field storage configuration.'
+description: Contains field storage configuration.
 core: 8.x
 package: Joinup
+
 dependencies:
-  - allowed_formats
-  - cached_computed_field
-  - comment
-  - ds
-  - facets
-  - image
-  - link
-  - matomo_reporting_api
-  - menu_admin_per_menu
-  - message
-  - message_notify
-  - oe_newsroom_newsletter
-  - og
-  - rdf_draft
-  - rdf_entity
-  - rdf_taxonomy
-  - redirect
-  - search_api
-  - search_api_solr
-  - state_machine
-  - tour
+  - allowed_formats:allowed_formats
+  - cached_computed_field:cached_computed_field
+  - drupal:comment
+  - ds:ds
+  - facets:facets
+  - drupal:image
+  - drupal:link
+  - matomo_reporting_api:matomo_reporting_api
+  - menu_admin_per_menu:menu_admin_per_menu
+  - message:message
+  - message_notify:message_notify
+  - joinup:oe_newsroom_newsletter
+  - og:og
+  - rdf_entity:rdf_draft
+  - rdf_entity:rdf_entity
+  - rdf_entity:rdf_taxonomy
+  - redirect:redirect
+  - search_api:search_api
+  - search_api_solr:search_api_solr
+  - state_machine:state_machine
+  - drupal:tour
 
 config_devel:
   - comment.type.comment
