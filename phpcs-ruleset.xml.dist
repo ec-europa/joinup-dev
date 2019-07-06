@@ -22,9 +22,8 @@
 
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
     <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice">
-        <exclude name="DrupalPractice.CodeAnalysis" />
+        <exclude name="DrupalPractice.CodeAnalysis.VariableAnalysis.UndefinedVariable" />
         <exclude name="DrupalPractice.Constants" />
-        <exclude name="DrupalPractice.FunctionCalls" />
         <exclude name="DrupalPractice.FunctionDefinitions" />
         <exclude name="DrupalPractice.General" />
         <exclude name="DrupalPractice.InfoFiles" />

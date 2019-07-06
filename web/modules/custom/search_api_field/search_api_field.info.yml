@@ -3,5 +3,5 @@ type: module
 description: 'Adds a search field to entities.'
 package: Search
 dependencies:
-  - search_api
+  - search_api:search_api
 core: '8.x'

@@ -4,6 +4,7 @@
 
     <taskdef name="eulogin-create-docker-compose" classname="\DrupalProject\Phing\EuLoginBuildEcasMockDockerCompose"/>
 
+    <!-- Checks requirements for the heavyweight proprietary ECAS mock server. -->
     <target name="eulogin-ecas-mock-check-requirements">
         <exec command="docker version --format='{{.Server.Version}}'"
               dir="${project.basedir}"
@@ -13,6 +14,7 @@
         <echo message="Running Docker Engine version: ${eulogin.ecas_mock.docker.version}"/>
     </target>
 
+    <!-- Downloads the heavyweight proprietary ECAS mock server. -->
     <target name="eulogin-ecas-mock-image-download" depends="eulogin-ecas-mock-check-requirements">
         <exec command="docker inspect ${eulogin.ecas_mock.docker.image}"
               dir="${project.basedir}"
@@ -48,6 +50,7 @@
         </if>
     </target>
 
+    <!-- Configures the heavyweight proprietary ECAS mock server. -->
     <target name="eulogin-ecas-mock-setup" depends="eulogin-ecas-mock-image-download">
         <delete dir="${tmp.dir}/eulogin" includeemptydirs="true" failonerror="false"/>
         <mkdir dir="${tmp.dir}/eulogin"/>
@@ -57,6 +60,7 @@
         />
     </target>
 
+    <!-- Starts the heavyweight proprietary ECAS mock server. -->
     <target name="eulogin-ecas-mock-start" depends="eulogin-ecas-mock-setup">
         <exec command="docker-compose up -d"
               dir="${tmp.dir}/eulogin"
@@ -65,11 +69,36 @@
         />
     </target>
 
+    <!-- Stops the heavyweight proprietary ECAS mock server. -->
     <target name="eulogin-ecas-mock-stop" depends="eulogin-ecas-mock-setup">
         <exec command='docker-compose down'
               dir="${tmp.dir}/eulogin"
               passthru="true"
               checkreturn="true"/>
+    </target>
+
+    <!-- Starts the lightweight Drupal based CAS mock server. -->
+    <target name="start-cas-mock-server">
+        <phingcall target="enable-module">
+            <property name="module" value="joinup_cas_mock_server" />
+        </phingcall>
+        <drush
+                command="cas-mock-server:start"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+        </drush>
+    </target>
+
+    <!-- Stops the lightweight Drupal based CAS mock server. -->
+    <target name="stop-cas-mock-server">
+        <phingcall target="enable-module">
+            <property name="module" value="joinup_cas_mock_server" />
+        </phingcall>
+        <drush
+                command="cas-mock-server:stop"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+        </drush>
     </target>
 
 </project>
