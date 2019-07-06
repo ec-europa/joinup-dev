@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_cck\Plugin\Field\FieldFormatter;
+namespace Drupal\joinup_video\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -28,7 +28,7 @@ class Video extends OriginalVideo {
         $element[$delta]['#cache']['contexts'][] = 'user.permissions';
 
         // Override the default url and pass it to the ec cck url.
-        $element[$delta]['#url'] = JOINUP_CCK_EMBED_COOKIE_URL . urlencode($element[$delta]['#url']);
+        $element[$delta]['#url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($element[$delta]['#url']);
 
         $element[$delta] = [
           '#type' => 'container',

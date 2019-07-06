@@ -136,6 +136,9 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
       $autoplay = $this->currentUser->hasPermission('never autoplay videos') ? FALSE : $data['settings']['autoplay'];
       $embed_code = $provider->renderEmbedCode($data['settings']['width'], $data['settings']['height'], $autoplay);
 
+      // Override the default url and pass it to the ec cck url.
+      $embed_code['#url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($embed_code['#url']);
+
       // Add the container to make the video responsive if it's been
       // configured as such. This usually is attached to field output in the
       // case of a formatter, but a custom container must be used where one is

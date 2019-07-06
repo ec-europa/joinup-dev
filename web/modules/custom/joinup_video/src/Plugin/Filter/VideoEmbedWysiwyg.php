@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_cck\Plugin\Filter;
+namespace Drupal\joinup_video\Plugin\Filter;
 
 
 use Drupal\Component\Utility\Html;
@@ -28,7 +28,7 @@ class VideoEmbedWysiwyg extends VideoEmbedWysiwygOriginal {
       $embed_code = $provider->renderEmbedCode($embed_data['settings']['width'], $embed_data['settings']['height'], $autoplay);
 
       // Override the default url and pass it to the ec cck url.
-      $embed_code['#url'] = JOINUP_CCK_EMBED_COOKIE_URL . urlencode($embed_code['#url']);
+      $embed_code['#url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($embed_code['#url']);
 
       $embed_code = [
         '#type' => 'container',

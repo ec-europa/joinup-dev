@@ -5,10 +5,10 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup_community_content
-  - og
-  - smart_trim
-  - video_embed_wysiwyg
+  - joinup:joinup_community_content
+  - og:og
+  - smart_trim:smart_trim
+  - video_embed_wysiwyg:video_embed_wysiwyg
 
 config_devel:
   - core.entity_form_display.node.video.default

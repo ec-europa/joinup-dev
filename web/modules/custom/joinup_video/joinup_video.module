@@ -8,6 +8,10 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_video\Plugin\Field\FieldFormatter\Video;
+use Drupal\joinup_video\Plugin\Filter\VideoEmbedWysiwyg;
+
+define('JOINUP_VIDEO_EMBED_COOKIE_URL', '//europa.eu/webtools/crs/iframe/?oriurl=');
 
 /**
  * Implements hook_form_video_embed_dialog_alter().
@@ -24,4 +28,30 @@ function joinup_video_form_video_embed_dialog_alter(&$form, FormStateInterface $
     . '<br />Youtube example: https://www.youtube.com/watch?v=dQw4w9WgXcQ'
     . '<br />EC url example: http://europa.eu/123abc!123'
     . '<br />EC video example: https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=ABC12345';
+}
+
+
+/**
+ * Implements hook_page_attachments().
+ */
+function joinup_video_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'joinup_video/joinup_video.cck';
+}
+
+/**
+ * Implements hook_filter_info_alter().
+ */
+function joinup_video_filter_info_alter(&$info) {
+  if (isset($info['video_embed_wysiwyg'])) {
+    $info['video_embed_wysiwyg']['class'] = VideoEmbedWysiwyg::class;
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function joinup_video_field_formatter_info_alter(array &$info) {
+  if (isset($info['video_embed_field_video'])) {
+    $info['video_embed_field_video']['class'] = Video::class;
+  }
 }
