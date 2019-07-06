@@ -13,6 +13,7 @@ use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
 use Drupal\video_embed_field\ProviderManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * The filter to normalize embedded videos.
@@ -57,6 +58,13 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
   protected $currentUser;
 
   /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $request;
+
+  /**
    * VideoEmbedWysiwyg constructor.
    *
    * @param array $configuration
@@ -71,12 +79,15 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
    *   The renderer.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request
+   *   The request stack.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ProviderManagerInterface $provider_manager, RendererInterface $renderer, AccountProxyInterface $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ProviderManagerInterface $provider_manager, RendererInterface $renderer, AccountProxyInterface $current_user, RequestStack $request) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->providerManager = $provider_manager;
     $this->renderer = $renderer;
     $this->currentUser = $current_user;
+    $this->request = $request;
   }
 
   /**
@@ -89,7 +100,8 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
       $plugin_definition,
       $container->get('video_embed_field.provider_manager'),
       $container->get('renderer'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('request_stack')
     );
   }
 
@@ -137,7 +149,9 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
       $embed_code = $provider->renderEmbedCode($data['settings']['width'], $data['settings']['height'], $autoplay);
 
       // Override the default url and pass it to the ec cck url.
-      $embed_code['#url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($embed_code['#url']);
+      if (!UrlHelper::externalIsLocal($embed_code['#url'], $this->request->getCurrentRequest()->getSchemeAndHttpHost())) {
+        $embed_code['#url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($embed_code['#url']);
+      }
 
       // Add the container to make the video responsive if it's been
       // configured as such. This usually is attached to field output in the
