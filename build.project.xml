@@ -50,8 +50,7 @@
             command="site-install"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="${website.site.name}" />
             <option name="account-name" value="${drupal.admin.username}" />
@@ -107,8 +106,7 @@
                 command="cache:clear"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>bin</param>
             <param>config</param>
         </drush>
@@ -116,15 +114,13 @@
                 command="updatedb"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
         </drush>
         <drush
                 command="cs-update"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="discard-overrides" />
         </drush>
     </target>
@@ -188,8 +184,7 @@
                 command="sql-query"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="file" value="${tmp.dir}/dump.sql" />
         </drush>
         <!-- Make sure to truncate the cache tables immediately after importing.
@@ -253,8 +248,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>${drupal.modules.uat}</param>
         </drush>
     </target>
@@ -264,8 +258,7 @@
                 command="cr"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
         </drush>
     </target>
 
@@ -361,8 +354,7 @@
             command="config-export"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <option name="destination" value="${drupal.config.dir}" />
         </drush>
     </target>
@@ -406,8 +398,7 @@
                 command="php:eval"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>'\Drupal\search_api_solr\Utility\Utility::getSiteHash();'</param>
         </drush>
     </target>
@@ -420,8 +411,7 @@
                 command="user-create"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="mail" value="user@example.com" />
             <option name="password" value="user" />
             <param>user</param>
@@ -431,8 +421,7 @@
                 command="user-add-role"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>moderator</param>
             <param>administrator</param>
         </drush>
@@ -444,8 +433,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>stage_file_proxy</param>
         </drush>
         <phingcall target="configure-stage-file-proxy"/>
@@ -547,7 +535,7 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-sass" />
 
     <target
         name="setup-acceptance"
@@ -557,6 +545,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
 
 </project>

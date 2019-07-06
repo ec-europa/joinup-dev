@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall hooks for the Joinup CAS Mock Server module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_install().
+ */
+function joinup_cas_mock_server_install(): void {
+  if (\Drupal::isConfigSyncing() === FALSE) {
+    // Configure the CAS authentication form so it uses the same interface text
+    // as on EULogin.
+    \Drupal::configFactory()->getEditable('cas_mock_server.settings')
+      ->set('login_form.title', 'Sign in to continue')
+      ->set('login_form.email', 'E-mail address')
+      ->save();
+
+    // The OpenEuropa Authentication module customizes the validation path of
+    // the CAS service. Restore it to the value that corresponds to the CAS 3.0
+    // specification which is implemented by the CAS mock server.
+    \Drupal::configFactory()->getEditable('oe_authentication.settings')
+      ->set('validation_path', 'p3/serviceValidate')
+      ->save();
+  }
+}

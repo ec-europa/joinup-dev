@@ -47,6 +47,7 @@ dependencies:
   - joinup:joinup_core
   - joinup:joinup_discussion
   - joinup:joinup_document
+  - joinup:joinup_eulogin
   - joinup:joinup_event
   - joinup:joinup_federation
   - joinup:joinup_invite
