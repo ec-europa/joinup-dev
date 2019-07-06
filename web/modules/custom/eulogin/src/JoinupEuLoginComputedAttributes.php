@@ -66,6 +66,18 @@ class JoinupEuLoginComputedAttributes implements JoinupEuLoginComputedAttributes
       return NULL;
     }
 
+    // In the published ECAS schema the domain is defined as a string. The CAS
+    // module might deliver us an array of data but this should only contain a
+    // single value. Log a warning if more values are encountered so we are
+    // alerted that the schema has changed.
+    // @see https://ecas.ec.europa.eu/cas/schemas
+    if (is_array($domain)) {
+      if (count($domain) > 1) {
+        $this->log->warning('Received multiple domains from ECAS for a single user. All domains except the first have been discarded.');
+      }
+      $domain = reset($domain);
+    }
+
     $data = $this->storage->get('eulogin.schema');
     if (empty($data['organisations'])) {
       // Fail softly. We don't want to ruin the user experience on login, we
