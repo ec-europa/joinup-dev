@@ -7,9 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_video\Plugin\Field\FieldFormatter\Video;
-use Drupal\joinup_video\Plugin\Filter\VideoEmbedWysiwyg;
 
 define('JOINUP_VIDEO_EMBED_COOKIE_URL', '//europa.eu/webtools/crs/iframe/?oriurl=');
 
@@ -39,19 +38,13 @@ function joinup_video_page_attachments(array &$attachments) {
 }
 
 /**
- * Implements hook_filter_info_alter().
+ * Implements hook_preprocess_HOOK().
  */
-function joinup_video_filter_info_alter(&$info) {
-  if (isset($info['video_embed_wysiwyg'])) {
-    $info['video_embed_wysiwyg']['class'] = VideoEmbedWysiwyg::class;
+function joinup_video_preprocess_video_embed_iframe(&$variables) {
+  // Override the default url and pass it to the ec cck url but ignore iframes
+  // that refer to the same site.
+  if (!empty($variables['url']) && !UrlHelper::externalIsLocal($variables['url'], \Drupal::request()->getSchemeAndHttpHost())) {
+    $variables['url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($variables['url']);
   }
-}
 
-/**
- * Implements hook_field_formatter_info_alter().
- */
-function joinup_video_field_formatter_info_alter(array &$info) {
-  if (isset($info['video_embed_field_video'])) {
-    $info['video_embed_field_video']['class'] = Video::class;
-  }
 }
