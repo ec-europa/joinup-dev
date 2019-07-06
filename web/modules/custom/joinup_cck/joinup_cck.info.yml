@@ -1,0 +1,5 @@
+name: Joinup cck
+type: module
+description: Provides a cookie concent banner as offered by EC.
+core: 8.x
+package: Joinup
