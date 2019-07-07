@@ -85,3 +85,7 @@ Feature: Embed of videos into the page.
     """
     And I press "Publish"
     Then the response should contain "autoplay=0"
+
+    When I am not logged in
+    And I go to the "Some test video" news
+    Then the response should contain "autoplay=0"
