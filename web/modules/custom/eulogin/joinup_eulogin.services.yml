@@ -5,3 +5,8 @@ services:
   joinup_eulogin.schema_data_updater:
     class: Drupal\joinup_eulogin\JoinupEuLoginSchemaDataUpdater
     arguments: ['@http_client', '@config.factory', '@keyvalue', '@state', '@datetime.time']
+  joinup_eulogin.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: 'event_subscriber' }
