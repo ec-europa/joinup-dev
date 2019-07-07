@@ -67,7 +67,7 @@ Feature: Add community content
   Scenario Outline: Publishing community content for the first time sets the publication date
     Given users:
       | Username  | E-mail                     | First name | Family name    | Roles     |
-      | Publisher | publisher-example@test.com | Publihser  | Georgakopoulos | moderator |
+      | Publisher | publisher-example@test.com | Publisher  | Georgakopoulos | moderator |
     And the following collection:
       | title | The afternoon shift |
       | state | validated           |

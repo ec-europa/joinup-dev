@@ -859,33 +859,6 @@ function joinup_core_rdf_entity_update(EntityInterface $entity) {
       search_api_entity_update($entity_item);
     }
   }
-
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- *
- * During saving a node, if the entity never had a published version and is now
- * published, the creation date is updated with the current datetime.
- */
-function joinup_core_node_presave(EntityInterface $entity) {
-  // By default, publication_date module will set the value of `published_at` to
-  // `PUBLICATION_DATE_DEFAULT` value when the entity is not published and there
-  // is no value set for the field. According to publication_date, this is so
-  // that these entities come first in the results. Set this to NULL in this
-  // case.
-  // @see \Drupal\publication_date\Plugin\Field\FieldType\PublicationDateItem::preSave
-  if ($entity->published_at->value === PUBLICATION_DATE_DEFAULT) {
-    $entity->set('published_at', NULL);
-  }
-
-  if (!$entity->isPublished()) {
-    return;
-  }
-
-  if (empty($entity->published_at->value)) {
-    $entity->set('published_at', \Drupal::time()->getRequestTime());
-  }
 }
 
 /**

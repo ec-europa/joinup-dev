@@ -85,8 +85,10 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
    * @Then the :title :type should not have a publication date
    */
   public function assertDifferentCreatedTimeWithUnpublishedVersion(string $title, string $type): void {
+    // The Publication Date module sets a default value to the publication date
+    // for nodes that have never been published.
     $node = $this->getNodeByTitle($title, $type);
-    Assert::assertEmpty($node->published_at->value);
+    Assert::assertEquals(PUBLICATION_DATE_DEFAULT, $node->published_at->value);
   }
 
   /**
