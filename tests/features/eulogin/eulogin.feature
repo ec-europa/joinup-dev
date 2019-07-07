@@ -4,11 +4,6 @@ Feature: Log in through EU Login
   As a user with an existing EU Login account
   I need to be able to register and log in to Joinup using EU Login
 
-  Scenario: A link to EU Login exists on the login page.
-    Given I am an anonymous user
-    When I visit "/user/login"
-    Then I should see the link "EU Login"
-
   Scenario: A new user logging in through EU Login should be approved by a moderator
     Given CAS users:
       | Username    | E-mail                         | Password  | First name | Last name | Domain            |
