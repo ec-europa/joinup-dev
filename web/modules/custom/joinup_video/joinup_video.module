@@ -45,11 +45,18 @@ function joinup_video_preprocess_video_embed_iframe(&$variables) {
   // Override the default url and pass it to the ec cck url but ignore iframes
   // that refer to the same site.
   if (!empty($variables['url']) && !UrlHelper::externalIsLocal($variables['url'], \Drupal::request()->getSchemeAndHttpHost())) {
+    // video_embed_field prints every part of the URL separately and prints some
+    // key characters in the twig directly (e.g. the '#' for the anchor).
+    // This makes it difficult to properly encode the full URL to pass it to the
+    // cck domain. Pre-create the URL and pass it as an encoded URL.
     $url =  Url::fromUri($variables['url'], [
       'query' => $variables['query'],
-      'fragment' => $variables['fragment'],
+      // Fragment is returned as an array, so give NULL to avoid type errors.
+      'fragment' => empty($variables['fragment']) ? NULL : $variables['fragment'],
     ]);
     $variables['url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($url->setAbsolute()->toString());
+    unset($variables['query']);
+    unset($variables['fragment']);
   }
 
 }
