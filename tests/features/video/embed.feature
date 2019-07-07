@@ -40,7 +40,7 @@ Feature: Embed of videos into the page.
     Then the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI072651%26lg%3DEN%26starttime%3D0%26autoplay%3Dfalse"
     And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-087075%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse"
     And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-136289%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse"
-    And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FxlnYVHRp128%3Fautoplay%3D%26start%3D0%26rel%3D0"
+    And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FxlnYVHRp128%3Fautoplay%3D0%26start%3D0%26rel%3D0"
     And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F225133231"
     But the response should not contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Fwww.dailymotion.com%2Fembed%2Fvideo%2Fx5vl5l0"
 
@@ -67,7 +67,7 @@ Feature: Embed of videos into the page.
 
     Examples:
       | url                                                                        | embed url                                                                                                                                                 |
-      | https://www.youtube.com/watch?v=YTaLmMsaLOg                                | //europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FYTaLmMsaLOg%3Fautoplay%3D%26start%3D0%26rel%3D0                  |
+      | https://www.youtube.com/watch?v=YTaLmMsaLOg                                | //europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FYTaLmMsaLOg%3Fautoplay%3D0%26start%3D0%26rel%3D0                 |
       | http://europa.eu/!dV74uw                                                   | //europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-136289%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse |
       | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836   | //europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI156836%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse  |
       | https://audiovisual.ec.europa.eu/embed/index.html?sitelang=en&ref=I-087075 | //europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-087075%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse |
