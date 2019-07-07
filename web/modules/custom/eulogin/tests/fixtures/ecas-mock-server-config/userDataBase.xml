@@ -1,0 +1,117 @@
+<userDataBase xmlns="https://ecas.ec.europa.eu/cas/schemas/mockup/db">
+	<user>
+		<cn>Chuck NORRIS</cn>
+		<created>1993-04-21T10:00:00.000+02:00</created>
+		<cudGroups>INTERNET</cudGroups>
+		<cudGroups>LIVENEWS</cudGroups>
+		<cudGroups>TEXAS_RANGER</cudGroups>
+		<departmentNumber>DIGIT.A.3.001</departmentNumber>
+		<description>chuckie</description>
+		<email>texasranger@chucknorris.com.eu</email>
+		<employeeType>f</employeeType>
+		<firstName>Chuck</firstName>
+		<internalTelephoneNumber>1</internalTelephoneNumber>
+		<lastName>NORRIS</lastName>
+		<mobilePhone>COMREF:+32123456789</mobilePhone>
+		<objectStatus>a</objectStatus>
+		<organisation>eu.europa.ec</organisation>
+		<organisationUsername>chucknorris</organisationUsername>
+		<passwordLastChangedTime>2013-12-19T19:29:22.196+01:00</passwordLastChangedTime>
+		<registrationLevelVersion level="HIGH">2dfe2ddd-a55e-4196-aa69-d52625c084ef</registrationLevelVersion>
+		<registrationLevelVersion level="LOW">8e9692d7-75ec-4bc1-8c92-402f706a8325</registrationLevelVersion>
+		<registrationLevelVersion level="MEDIUM">c88eaa81-87c2-40df-8595-7789c0afa5fa</registrationLevelVersion>
+		<registrationLevelVersion level="TOP">27e87a8c-c742-4df8-a5a3-b5dcee821f05</registrationLevelVersion>
+		<smsMessageId>MOBISTAR:123@2011-05-04T14:00:00.000+02:00</smsMessageId>
+		<smsMessageId>MOBISTAR:456@2011-05-05T14:00:00.000+02:00</smsMessageId>
+		<strongPasswordHash>{SEQ103}ceY2NvrK7mTlmS75Ho17xDN5/ljBgfUvLOZW1iAG7fNaE014NLaUo7tKJ2C/qtpc+zTWh32iMB3pWM9cHC4A5ivEKxYmBtYI1ErLtH63QJ/l6RXoInA/f8AMYCEuLBpp40WmpJbZbR3iOQX+M+Z3M8DTRPTnsydHAp2WAdMMgsDfsE71VUcEUKS/f+Eyg3ab4H+6XXQq0ZmRMmZhpjiRbIdSvf1tlbTMCUFEEVtUI6Dots4kd9UhCeaO638tnHBT1cx/BHZqBm1QcpL9YlrYX293cUKjWBJjt8sCbwycpT+vMypiBqlAGe+jwu6XEBl9W0jEehbLYzmhkmT5ydV2iA==</strongPasswordHash>
+		<tokenCramId>1234@eu</tokenCramId>
+		<tokenSerialNumber>90-1234567-8</tokenSerialNumber>
+		<uid>chucknorris</uid>
+	</user>
+	<user>
+		<authenticationCount>3</authenticationCount>
+		<cn>Jack BAUER</cn>
+		<created>2001-11-06T09:00:00.000+01:00</created>
+		<cudGroups>CTU</cudGroups>
+		<cudGroups>CTU_DIRECTOR</cudGroups>
+		<cudGroups>CTU_RETIRED</cudGroups>
+		<departmentNumber>DIGIT.A.3.001</departmentNumber>
+		<description>jack</description>
+		<email>Jack.Bauer@ctu.eu</email>
+		<employeeType>f</employeeType>
+		<firstName>Jack</firstName>
+		<goodAuthenticationCount>3</goodAuthenticationCount>
+		<internalTelephoneNumber>(310) 597-3781</internalTelephoneNumber>
+		<lastName>BAUER</lastName>
+		<lastSecureLoginTimes>2019-07-06T17:49:38.010+02:00</lastSecureLoginTimes>
+		<lastSecureLoginTimes>2019-07-06T18:07:02.488+02:00</lastSecureLoginTimes>
+		<mobilePhone>COMREF:+32123456789</mobilePhone>
+		<objectStatus>a</objectStatus>
+		<organisation>eu.europa.curia</organisation>
+		<organisationUsername>jackbauer</organisationUsername>
+		<passwordLastChangedTime>2013-12-19T19:29:22.196+01:00</passwordLastChangedTime>
+		<registrationLevelVersion level="HIGH">69fd9def-53b1-4df5-beae-855443679189</registrationLevelVersion>
+		<registrationLevelVersion level="LOW">f4de0343-a77a-4676-8942-fd72666a6afc</registrationLevelVersion>
+		<registrationLevelVersion level="MEDIUM">854aabe1-7b14-4610-8cb7-c401e956c218</registrationLevelVersion>
+		<registrationLevelVersion level="TOP">fa50479d-4539-43b4-99b1-9db38de01ca7</registrationLevelVersion>
+		<strongPasswordHash>{SEQ103}Am1CJOVSxDjYIL+urVKmCHLviOXw4jUbzViW1ZODPpb6mNnvKC0U8pi0G7LbKsy+5buxUa3/2Lo99r4iCJ4aZlOIiCvO4pvT1b5vvbmC2jkiFnTiL9STv+Jl4PnlCBMoHvhrbk8vMSvRYJiKUX5Z+UCG06LnsmxcdWO2mALuh86Eop9oFUsdCiY+rIJRG8DwNRJ7h8AgSxwwc/xKU9eg2I8VorhLMPbGjq4OYJLqi1oK31tIpItc/CTR+l931BRnFrtQrU12N538la5fdVwOnNrZ9ZJZ/od06D4hj+HlhoglJl57JtOheGp04Lum3iWTTes7jyIFK3+rM5taqCxZPg==</strongPasswordHash>
+		<uid>jackbauer</uid>
+	</user>
+	<user>
+		<cn>James BOND</cn>
+		<created>1953-04-19T09:00:00.000+01:00</created>
+		<cudGroups>AIDA_SELFRG</cudGroups>
+		<cudGroups>DOUBLE_KILL</cudGroups>
+		<cudGroups>LICENSE_TO_KILL</cudGroups>
+		<cudGroups>MI6</cudGroups>
+		<departmentNumber>DIGIT.A.3.001</departmentNumber>
+		<description>james</description>
+		<email>007@mi6.eu</email>
+		<employeeType>n</employeeType>
+		<firstName>James</firstName>
+		<internalTelephoneNumber>123456</internalTelephoneNumber>
+		<lastName>BOND</lastName>
+		<mobilePhone>COMREF:+32123456789</mobilePhone>
+		<objectStatus>a</objectStatus>
+		<organisation>external</organisation>
+		<organisationUsername>jamesbond</organisationUsername>
+		<passwordLastChangedTime>2013-12-19T19:29:22.196+01:00</passwordLastChangedTime>
+		<registrationLevelVersion level="HIGH">6875b4e8-35e8-441c-aff0-d6876ff8490c</registrationLevelVersion>
+		<registrationLevelVersion level="LOW">c1eba41d-4b4b-4ebd-961b-ff7d3e82d80d</registrationLevelVersion>
+		<registrationLevelVersion level="MEDIUM">e89ac87d-8a49-d89c-6767-be145c4ba59c</registrationLevelVersion>
+		<registrationLevelVersion level="TOP">7e0fbde2-21ce-48a7-b26e-4ef26fa080dc</registrationLevelVersion>
+		<strongPasswordHash>{SEQ103}5ydM/oDs4lmp5FQWiu9vIM2LzQCfWr6oC39mSRm4/XOdznOtdrSK5UPwMzqx8qwAYNTaCHtMxoVkztmABErKPIc5VkzMLVJzgB1LwNkSiFUEQzUL3QVkZoFl2HPRf6/Qfg3XB6VTZwPtVo+jgwDXuLHPQ9xnfntkfjDEeh5YKkhLJVBdF0p29qmFXegTnbFrLfFqVBV1MEl55KcCAL+Td6JvZVMMKtRgFi34h7KHZJ/131MN/3JxgvJUr5h8VATz+7yu8qAdTrc2mAmR5xtZYFSjHRHRDfTfKX3RXZ7otcYJFMzqxMKnssPK4QDLVHaSctl8sjPBJC2ahfLLAyV5XA==</strongPasswordHash>
+		<tokenCramId>5678@uk</tokenCramId>
+		<uid>jb007</uid>
+	</user>
+	<user>
+		<cn>Lisbeth SALANDER</cn>
+		<created>2000-01-01T01:00:00.000+01:00</created>
+		<cudGroups>INTERNET</cudGroups>
+		<cudGroups>LIVENEWS</cudGroups>
+		<cudGroups>MILTON_SECURITY</cudGroups>
+		<departmentNumber>DIGIT.A.3.001</departmentNumber>
+		<email>Lisbeth.SALANDER@ext.ec.europa.eu</email>
+		<employeeType>x</employeeType>
+		<firstName>Lisbeth</firstName>
+		<lastName>SALANDER</lastName>
+		<mobilePhone>COMREF:+32133713371</mobilePhone>
+		<objectStatus>a</objectStatus>
+		<organisation>eu.europa.ec</organisation>
+		<organisationUsername>lsalander</organisationUsername>
+		<passwordLastChangedTime>2013-12-19T19:29:22.196+01:00</passwordLastChangedTime>
+		<strongPasswordHash>{SEQ103}9gae8yLyOBuPJxFJCF200DjiMS1IKeVNjggY463ml9JxXSXeATb9LHghpOWl9eEn/0aOlX6+ty/4heByuvQqdhVg1lj6pVhH0iijO0ACG64RvYyzNqXFhs3BsSGTFC+02hif1OPyILKV6iA0oSrgQjyzfR9/DvYkR3A8hvZX5DLZE0uepGlXFkAAZJSHalqtioyfbV/D5YiraByoHZL+BWPNCmhv+gmcZIKYuxyvZvr1gQG2m54XMl0CZcdVTbTXFr82SK7KwkAn8Qv5xf44JH7ijpQI/UYOKkvBle28XN+8xIoS5K9iOPu7ZW1jQqpYoGbzOBBLw8lEvF2cKOOPYA==</strongPasswordHash>
+		<uid>lsalander</uid>
+	</user>
+	<user>
+		<email>minimal@email.eu</email>
+		<firstName>Minimal_first_name</firstName>
+		<lastName>MINIMAL_LAST_NAME</lastName>
+		<objectStatus>a</objectStatus>
+		<organisation>eu.europa.ec</organisation>
+		<organisationUsername>minimal</organisationUsername>
+		<passwordLastChangedTime>2013-12-19T19:29:22.196+01:00</passwordLastChangedTime>
+		<strongPasswordHash>{SEQ103}9aY5VZEXvbFuER95S9TytYl9LpX5/UZm6ypMonXBsKWbjjQOu0gEgTFgeoEjK012df6EdEoVBZqz4Q+KVKxEK5ZZv2jmY4RHOMIdPFog8aMhLzWeicZ0M3kykeAs5Z8Vc/iL699ERxhP8lCTlvNNVD3FcHVxsX2RhUetT505jTQFexFZV1pJKHJ25YMkQmqOlCSIyZk/2J3E0pB1vyoqBSUtamuUbJPDCbDLLWF4NOYlIIIcAfSx/4/bk/amYshJhrGaL8r2/cqF6HzHA7OAApBtvCAWqGl9O93CPMsl8N//lmt8/CV4Wr1OAn1Uoq7gmLj5Q2Vgc97rKDrMHmUhAQ==</strongPasswordHash>
+		<uid>minimal</uid>
+	</user>
+</userDataBase>
