@@ -15,3 +15,22 @@ joinup_eulogin.settings:
         fixture_file:
           type: string
           label: 'YAML file used for the first schema data install (relative to module root)'
+    ticket_validation:
+      type: mapping
+      label: 'CAS ticket validation'
+      mapping:
+        path:
+          type: string
+          label: 'Path'
+        assurance_level:
+          type: string
+          label: 'Assurance level'
+        ticket_types:
+          type: sequence
+          label: 'Ticket types'
+          sequence:
+            type: string
+            label: 'Ticket type'
+        user_details:
+            type: boolean
+            label: 'Provide user details'

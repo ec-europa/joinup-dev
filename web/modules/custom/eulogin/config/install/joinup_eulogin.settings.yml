@@ -3,3 +3,9 @@ schema:
   # We check for a new EU Login response schema each 3 months.
   check_interval: 7776000
   fixture_file: ./ecas_schema.yml
+ticket_validation:
+  path: TicketValidationService
+  assurance_level: TOP
+  ticket_types:
+    - SERVICE
+  user_details: TRUE
