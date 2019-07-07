@@ -30,9 +30,9 @@ proxy:
 user_accounts:
   prevent_normal_login: true
   auto_register: true
-  email_assignment_strategy: 0
+  email_assignment_strategy: 1
   email_hostname: localhost
-  email_attribute: ''
+  email_attribute: 'email'
   auto_assigned_roles: {  }
   restrict_password_management: true
   restrict_email_management: true
