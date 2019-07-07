@@ -25,7 +25,7 @@ Feature: Input filter
   Scenario: Ensure all required formats are supported in the content editor.
     # 'src' attributes are the url encoded version of the URLs that were inputted prepended by the ec cck url.
     When I go to the "Jessica Jones returns" news
-    Then I see the "iframe" element with the "src" attribute set to "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FnWHUjuJ8zxE?autoplay=0&start=0&rel=0" in the "Content" region
+    Then I see the "iframe" element with the "src" attribute set to "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FnWHUjuJ8zxE%3Fautoplay%3D%26start%3D0%26rel%3D0" in the "Content" region
     When I go to the "Prezi presentation" news
     Then I see the "iframe" element with the "src" attribute set to "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fprezi.com%2Fembed%2Flspajpgcpx1k" in the "Content" region
     When I go to the "Slideshare presentation" news
