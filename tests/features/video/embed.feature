@@ -84,8 +84,9 @@ Feature: Embed of videos into the page.
     <p>{"preview_thumbnail":"/sites/default/files/styles/video_embed_wysiwyg_preview/public/video_thumbnails/r5Kd7ltWS9w.jpg?itok=2PfetCfJ","video_url":"https://www.youtube.com/watch?v=r5Kd7ltWS9w","settings":{"responsive":true,"width":"854","height":"480","autoplay":true},"settings_summary":["Embedded Video (Responsive)."]}</p>
     """
     And I press "Publish"
-    Then the response should contain "autoplay=0"
+    # The response contains an encoded version of the 'autoplay=0' since it is passed to the ec cck domain.
+    Then the response should contain "autoplay%3D0"
 
     When I am not logged in
     And I go to the "Some test video" news
-    Then the response should contain "autoplay=0"
+    Then the response should contain "autoplay%3D0"
