@@ -64,7 +64,7 @@ Feature: Add community content
       | event        |
       | news         |
 
-  Scenario Outline: Publishing a content for the first time updates the creation time
+  Scenario Outline: Publishing community content for the first time sets the publication date
     Given users:
       | Username  | E-mail                     | First name | Family name    | Roles     |
       | Publisher | publisher-example@test.com | Publihser  | Georgakopoulos | moderator |
@@ -88,7 +88,7 @@ Feature: Add community content
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    And the published date of the "Sample <content type>" <content type> should not be equal to the created date
+    And the publication date of the "Sample <content type>" <content type> should not be equal to the created date
 
     When I click "Revisions" in the "Entity actions" region
     And I click the last "Revert" link
@@ -98,7 +98,7 @@ Feature: Add community content
     When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    Then the published date of the "Sample <content type>" <content type> should not be equal to the created date
+    Then the publication date of the "Sample <content type>" <content type> should not be equal to the created date
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
     # date is the one shown and this field is exposed to the user.

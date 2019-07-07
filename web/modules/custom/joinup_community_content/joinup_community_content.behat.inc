@@ -90,14 +90,14 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   }
 
   /**
-   * Asserts that a content entity has a published date and is not the created.
+   * Checks that content has a publication date different from the created date.
    *
    * @param string $title
    *   The title of the content.
    * @param string $type
    *   The type of the content.
    *
-   * @Then the published date of the :title :type should not be equal to the created date
+   * @Then the publication date of the :title :type should not be equal to the created date
    */
   public function assertDifferentPublishedCreatedTime(string $title, string $type): void {
     $node = $this->getNodeByTitle($title, $type);
