@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 define('JOINUP_VIDEO_EMBED_COOKIE_URL', '//europa.eu/webtools/crs/iframe/?oriurl=');
 
@@ -44,7 +45,11 @@ function joinup_video_preprocess_video_embed_iframe(&$variables) {
   // Override the default url and pass it to the ec cck url but ignore iframes
   // that refer to the same site.
   if (!empty($variables['url']) && !UrlHelper::externalIsLocal($variables['url'], \Drupal::request()->getSchemeAndHttpHost())) {
-    $variables['url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($variables['url']);
+    $url =  Url::fromUri($variables['url'], [
+      'query' => $variables['query'],
+      'fragment' => $variables['fragment'],
+    ]);
+    $variables['url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($url->setAbsolute()->toString());
   }
 
 }
