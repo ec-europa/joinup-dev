@@ -22,7 +22,13 @@ Feature: Log in through EU Login
     When I fill in "Password" with "Qwerty098"
     And I press the "Log in" button
     # The user gets redirected back to Drupal.
-    Then I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+
+    # Blocking users registered via EU Login is still to be decided after a
+    # final resolution on ISAICP-5333. The tendency is to register users as
+    # active. Until a decision is made consider such users as active users and
+    # we temporary comment out this step.
+    # Then I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
+    Then I click "Sign out"
     And the user chucknorris should have the following data in their user profile:
       | First name   | Chuck                  |
       | Family name  | Norris                 |
@@ -36,7 +42,12 @@ Feature: Log in through EU Login
     When I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
     When I fill in "Password" with "Qwerty098"
     And I press the "Log in" button
-    Then I should see "Your account is blocked or has not been activated. Please contact a site administrator."
+
+    # Blocking users registered via EU Login is still to be decided after a
+    # final resolution on ISAICP-5333. The tendency is to register users as
+    # active. Until a decision is made consider such users as active users and
+    # we temporary comment out this step.
+    # Then I should see "Your account is blocked or has not been activated. Please contact a site administrator."
 
   Scenario: An existing user can log in through EU Login
     Given users:
