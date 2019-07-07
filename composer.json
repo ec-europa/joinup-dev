@@ -76,7 +76,6 @@
         "jacklmoore/autosize": "dev-master",
         "masterminds/html5": "^2.6",
         "ml/json-ld": "^1.0",
-        "openeuropa/oe_authentication": "^1.0.0-beta1",
         "openeuropa/oe_webtools_location": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
@@ -285,10 +284,6 @@
             },
             "masterminds/html5": {
                 "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
-            },
-            "openeuropa/oe_authentication": {
-                "Optional /user/register redirect @see https://github.com/openeuropa/oe_authentication/pull/85": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/85.diff",
-                "Move user fields into a sub-module @see https://github.com/openeuropa/oe_authentication/pull/89": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/89.diff"
             }
         }
     },
