@@ -2625,7 +2625,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "23f8a230ad9fa8ce83bbf778e4dc88fc5f98bf74"
+                "reference": "48fcef3dd771586b53a30c3aa0598a2109359ece"
             },
             "require": {
                 "drupal/cas": "^1.0",
@@ -2641,7 +2641,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1562492585",
+                    "datestamp": "1562618585",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2670,7 +2670,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-07-07T09:33:13+00:00"
+            "time": "2019-07-08T20:47:27+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -12992,6 +12992,9 @@
                     "../cas_mock_server_build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
+                },
+                "patches_applied": {
+                    "Allow to link a local account when creating CAS users in Behat @see https://github.com/pfrenssen/cas_mock_server/pull/6": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/6.diff"
                 }
             },
             "autoload-dev": {
@@ -13022,7 +13025,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-07-05T14:40:42+00:00"
         },
         {
             "name": "drupal/coder",
