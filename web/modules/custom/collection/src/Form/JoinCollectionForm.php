@@ -122,6 +122,7 @@ class JoinCollectionForm extends FormBase {
 
     // In case the user is not a member or does not have a pending membership,
     // give the possibility to request one.
+    $membership = $this->getUserNonBlockedMembership($user, $collection);
     if (empty($membership)) {
       $form['join'] = [
         '#attributes' => [
@@ -131,7 +132,11 @@ class JoinCollectionForm extends FormBase {
         '#value' => $this->t('Join this collection'),
       ];
     }
-    // If the user has an active membership, they can cancel it as well.
+
+    // If the user is already a member of the collection, show a link to the
+    // membership cancellation confirmation form, disguised as a form submit
+    // button. The confirmation form should open in a modal dialog for
+    // JavaScript-enabled browsers.
     elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
       $parameters = ['rdf_entity' => $collection->id()];
       if ($this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters)) {
