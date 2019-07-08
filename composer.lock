@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59b1effba1ce31f2145b858ab290f887",
+    "content-hash": "e749d38a9928f527fe29a17f67dc4fa0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2429,7 +2429,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2548,17 +2552,11 @@
         },
         {
             "name": "drupal/cas",
-            "version": "1.5.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas.git",
-                "reference": "8.x-1.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "e9060d973d69247862d71e2230762cb3147ae946"
+                "reference": "5d52cb5423db547188965cd7ccd88b80b6000e95"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -2570,17 +2568,20 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1553185984",
+                    "version": "8.x-1.5+2-dev",
+                    "datestamp": "1553044385",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-06/3065933-12.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2615,7 +2616,8 @@
                 "source": "http://cgit.drupalcode.org/cas",
                 "issues": "http://drupal.org/project/issues/cas",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-05-08T00:07:59+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -4868,7 +4870,7 @@
             "description": "Simple migrate drush commands: run, generate.",
             "homepage": "https://www.drupal.org/project/migrate_drush",
             "support": {
-                "source": "https://git.drupalcode.org/project/migrate_drush"
+                "source": "http://cgit.drupalcode.org/migrate_drush"
             }
         },
         {
@@ -5159,8 +5161,8 @@
                     "dev-4.x": "4.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-4.0-beta3+8-dev",
-                    "datestamp": "1557949081",
+                    "version": "8.x-4.0-beta3+10-dev",
+                    "datestamp": "1559069285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5561,8 +5563,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1-beta1+0-dev",
-                    "datestamp": "1532080685",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1486527783",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5577,10 +5579,6 @@
                 {
                     "name": "Bevan",
                     "homepage": "https://www.drupal.org/user/49989"
-                },
-                {
-                    "name": "Nixou",
-                    "homepage": "https://www.drupal.org/user/2304734"
                 },
                 {
                     "name": "RobLoach",
@@ -5618,7 +5616,7 @@
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "support": {
-                "source": "https://git.drupalcode.org/project/r4032login"
+                "source": "http://cgit.drupalcode.org/r4032login"
             },
             "time": "2017-02-08T04:20:19+00:00"
         },
@@ -6018,7 +6016,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6340,7 +6338,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "https://git.drupalcode.org/project/state_machine"
+                "source": "http://cgit.drupalcode.org/state_machine"
             }
         },
         {
@@ -6391,7 +6389,7 @@
             "description": "Provides support for extending sub-paths of URL aliases.",
             "homepage": "https://www.drupal.org/project/subpathauto",
             "support": {
-                "source": "https://git.drupalcode.org/project/subpathauto"
+                "source": "http://cgit.drupalcode.org/subpathauto"
             }
         },
         {
@@ -6643,7 +6641,7 @@
             "description": "Select which roles should be able to see unpublished nodes.",
             "homepage": "https://www.drupal.org/project/view_unpublished",
             "support": {
-                "source": "https://git.drupalcode.org/project/view_unpublished"
+                "source": "http://cgit.drupalcode.org/view_unpublished"
             }
         },
         {
@@ -10114,7 +10112,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -12826,7 +12824,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.27",
-                    "datestamp": "1558553350",
+                    "datestamp": "1558552081",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12971,7 +12969,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-07-05T14:40:42+00:00"
         },
         {
             "name": "drupal/coder",
@@ -13210,10 +13209,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
@@ -15877,6 +15872,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/cas": 20,
         "drupal/cas_attributes": 10,
         "drupal/diff": 5,
         "drupal/flag": 15,
