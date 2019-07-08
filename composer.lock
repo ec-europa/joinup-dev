@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e749d38a9928f527fe29a17f67dc4fa0",
+    "content-hash": "8bbd0e8284ff41486778e6da36f0843e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2618,6 +2618,59 @@
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
             "time": "2019-05-08T00:07:59+00:00"
+        },
+        {
+            "name": "drupal/cas_account_link",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/cas_account_link.git",
+                "reference": "23f8a230ad9fa8ce83bbf778e4dc88fc5f98bf74"
+            },
+            "require": {
+                "drupal/cas": "^1.0",
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/cas_mock_server": "dev-0.x|dev-1.x"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1562492585",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/u/claudiu.cristea",
+                    "role": "maintainer"
+                }
+            ],
+            "description": "Allows a user to manually link its CAS account with its Drupal account.",
+            "homepage": "https://www.drupal.org/project/cas_account_link",
+            "keywords": [
+                "CAS",
+                "Drupal",
+                "single sign-on"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/cas_account_link",
+                "issues": "https://www.drupal.org/project/issues/cas_account_link"
+            },
+            "time": "2019-07-07T09:33:13+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -15873,6 +15926,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/cas": 20,
+        "drupal/cas_account_link": 20,
         "drupal/cas_attributes": 10,
         "drupal/diff": 5,
         "drupal/flag": 15,
