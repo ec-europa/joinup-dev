@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bbd0e8284ff41486778e6da36f0843e",
+    "content-hash": "6b88334da8412c0b1495cdeb80a3a430",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13022,8 +13022,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            },
-            "time": "2019-07-05T14:40:42+00:00"
+            }
         },
         {
             "name": "drupal/coder",
