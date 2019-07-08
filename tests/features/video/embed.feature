@@ -40,10 +40,9 @@ Feature: Embed of videos into the page.
     Then the response should contain "//audiovisual.ec.europa.eu/embed/index.html?ref=I072651&amp;lg=EN&amp;starttime=0&amp;autoplay=false"
     And the response should contain "//audiovisual.ec.europa.eu/embed/index.html?ref=I-087075&amp;lg=en&amp;starttime=0&amp;autoplay=false"
     And the response should contain "//audiovisual.ec.europa.eu/embed/index.html?ref=I-136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
-    And the response should contain "https://www.youtube.com/embed/xlnYVHRp128?autoplay=0&amp;start=0&amp;rel=0"
-
-    But the response should not contain "https://player.vimeo.com/video/225133231"
-    And the response should not contain "//www.dailymotion.com/embed/video/x5vl5l0"
+    And the response should contain "https://www.youtube-nocookie.com/embed/xlnYVHRp128?autoplay=0&amp;start=0&amp;rel=0"
+    And the response should contain "https://player.vimeo.com/video/225133231"
+    But the response should not contain "//www.dailymotion.com/embed/video/x5vl5l0"
 
   @javascript
   Scenario Outline: A video embed button should be shown to community content editors.
@@ -68,7 +67,7 @@ Feature: Embed of videos into the page.
 
     Examples:
       | url                                                                        | embed url                                                                                            |
-      | https://www.youtube.com/watch?v=YTaLmMsaLOg                                | https://www.youtube.com/embed/YTaLmMsaLOg?autoplay=0&amp;start=0&amp;rel=0                           |
+      | https://www.youtube.com/watch?v=YTaLmMsaLOg                                | https://www.youtube-nocookie.com/embed/YTaLmMsaLOg?autoplay=0&amp;start=0&amp;rel=0                           |
       | http://europa.eu/!dV74uw                                                   | //audiovisual.ec.europa.eu/embed/index.html?ref=I-136289&amp;lg=en&amp;starttime=0&amp;autoplay=false |
       | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836   | //audiovisual.ec.europa.eu/embed/index.html?ref=I156836&amp;lg=en&amp;starttime=0&amp;autoplay=false |
       | https://audiovisual.ec.europa.eu/embed/index.html?sitelang=en&ref=I-087075 | //audiovisual.ec.europa.eu/embed/index.html?ref=I-087075&amp;lg=en&amp;starttime=0&amp;autoplay=false |

@@ -68,7 +68,7 @@ class CustomPagePostSaveEventSubscriber implements EventSubscriberInterface {
 
     foreach ($event->getDestinationIdValues() as $nid) {
       $nid = (int) $nid;
-      if ($node = Node::load($nid)) {
+      if (Node::load($nid)) {
         $parent_nid = (int) $event->getRow()->getDestinationProperty('parent');
         if (!empty($parent_nid)) {
           if ($parent_link = $this->getMenuLinkByNodeId($parent_nid)) {

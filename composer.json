@@ -256,10 +256,13 @@
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
             "drupal/video_embed_field": {
-                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+                "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
             },
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
+            },
+            "drush/drush": {
+                "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
             },
             "masterminds/html5": {
                 "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
