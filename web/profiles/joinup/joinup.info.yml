@@ -269,6 +269,8 @@ config_devel:
   - system.theme
   - user.flood
   - user.mail
+  - user.role.anonymous
+  - user.role.authenticated
   - user.settings
   - views.view.collection_content
   - views.view.collections
