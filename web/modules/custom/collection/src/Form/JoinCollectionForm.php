@@ -6,6 +6,10 @@ namespace Drupal\collection\Form;
 
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessManagerInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Ajax\PrependCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -125,6 +129,9 @@ class JoinCollectionForm extends FormBase {
     $membership = $this->getUserNonBlockedMembership($user, $collection);
     if (empty($membership)) {
       $form['join'] = [
+        '#ajax' => [
+          'callback' => '::showSubscribeDialog',
+        ],
         '#attributes' => [
           'class' => self::LINK_BUTTON_CLASSES,
         ],
@@ -153,7 +160,7 @@ class JoinCollectionForm extends FormBase {
       }
       else {
         $form['leave'] = [
-          '#markup' => $this->t("You cannot leave the %collection collection", ['%collection' => $collection->label()]),
+          '#markup' => $this->t('You cannot leave the %collection collection', ['%collection' => $collection->label()]),
         ];
       }
       $form['#attached']['library'][] = 'core/drupal.ajax';
@@ -206,8 +213,7 @@ class JoinCollectionForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $collection_id = $form_state->getValue('collection_id');
 
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
+    $collection = $this->loadCollection($collection_id);
     $user_id = $form_state->getValue('user_id');
 
     /** @var \Drupal\user\UserInterface $user */
@@ -237,6 +243,80 @@ class JoinCollectionForm extends FormBase {
   }
 
   /**
+   * AJAX callback showing a form to subscribe to the collection after joining.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   The AJAX response.
+   */
+  public function showSubscribeDialog(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $response = new AjaxResponse();
+
+    // Output messages in the page.
+    $messages = ['#type' => 'status_messages'];
+    $response->addCommand(new PrependCommand('.section--content-top', $messages));
+
+    // If the form submitted successfully, make an offer the user cannot refuse.
+    if (!$form_state->getErrors()) {
+      // Replace the submit button with a message, so that the user can not
+      // accidentally click the button again.
+      $element = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('Welcome!'),
+        '#attributes' => [
+          'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
+        ],
+      ];
+      $response->addCommand(new HtmlCommand('#join-collection-form', $element));
+
+      $collection_id = $form_state->getValue('collection_id');
+      $collection = $this->loadCollection($collection_id);
+      $title = $this->t('Welcome to %collection', ['%collection' => $collection->label()]);
+
+      $modal_content = [
+        'intro' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('By joining the collection you will now be able to publish content in it.'),
+        ],
+        'proposal' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#value' => $this->t('Want to receive notifications, too?'),
+        ],
+        'description' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('You can receive weekly notifications for this collection, by selecting the subscribe button below:'),
+        ],
+        'cancel' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('No thanks'),
+          '#attributes' => [
+            'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small', 'dialog-cancel']),
+          ],
+        ],
+        'confirm' => [
+          '#type' => 'submit',
+          '#value' => $this->t('Subscribe'),
+          '#attributes' => [
+            'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
+          ],
+        ],
+      ];
+
+      $modal_content['#attached']['library'][] = 'core/drupal.dialog.ajax';
+
+      $response->addCommand(new OpenModalDialogCommand($title, $modal_content, ['width' => '300']));
+    }
+    return $response;
+  }
+
+  /**
    * Access check for the form.
    *
    * @return bool
@@ -263,6 +343,19 @@ class JoinCollectionForm extends FormBase {
       OgMembershipInterface::STATE_PENDING,
     ]);
     return $membership;
+  }
+
+  /**
+   * Loads the collection with the given ID.
+   *
+   * @param string $collection_id
+   *   The collection ID.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The collection.
+   */
+  protected function loadCollection(string $collection_id): RdfInterface {
+    return $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
   }
 
 }
