@@ -5,3 +5,4 @@ package: Joinup
 core: 8.x
 dependencies:
   - cas_mock_server:cas_mock_server
+  - joinup:joinup_eulogin

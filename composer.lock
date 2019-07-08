@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "95a8887361463aff37eb4b3ad397bd34",
+    "content-hash": "0a92e1bd838608741b025785443772ce",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -8394,85 +8394,6 @@
             "time": "2019-05-25T20:07:01+00:00"
         },
         {
-            "name": "openeuropa/oe_authentication",
-            "version": "1.0.0-beta1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/openeuropa/oe_authentication.git",
-                "reference": "26765cfde9ed112144c849980eac0e6ecb1beb4a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_authentication/zipball/26765cfde9ed112144c849980eac0e6ecb1beb4a",
-                "reference": "26765cfde9ed112144c849980eac0e6ecb1beb4a",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/cas": "^1.5",
-                "drupal/core": "^8.7",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "composer/installers": "~1.5",
-                "consolidation/annotated-command": "^2.8.2",
-                "consolidation/robo": "~1.4",
-                "drupal-composer/drupal-scaffold": "~2.2",
-                "drupal/config_devel": "~1.2",
-                "drupal/console": "~1.0",
-                "drupal/devel": "~1.2",
-                "drupal/drupal-extension": "~4.0",
-                "drush/drush": "~9.0@stable",
-                "egulias/email-validator": "^1.2.1 || ^2.0",
-                "nikic/php-parser": "~3.0",
-                "openeuropa/behat-transformation-context": "~0.1",
-                "openeuropa/code-review": "~1.0.0-alpha4",
-                "openeuropa/drupal-core-require-dev": "^8.7",
-                "openeuropa/task-runner": "~1.0-beta4",
-                "phpunit/phpunit": "~6.0",
-                "symfony/browser-kit": "~3.0||~4.0",
-                "symfony/dom-crawler": "~3.4"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "composer-exit-on-patch-failure": true,
-                "enable-patching": true,
-                "patches": {
-                    "drupal/cas": {
-                        "https://www.drupal.org/project/cas/issues/3047390": "https://www.drupal.org/files/issues/2019-04-12/3047390_2.patch"
-                    }
-                },
-                "installer-paths": {
-                    "build/core": [
-                        "type:drupal-core"
-                    ],
-                    "build/profiles/contrib/{$name}": [
-                        "type:drupal-profile"
-                    ],
-                    "build/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "build/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
-                },
-                "patches_applied": {
-                    "Optional /user/register redirect @see https://github.com/openeuropa/oe_authentication/pull/85": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/85.diff",
-                    "Move user fields into a sub-module @see https://github.com/openeuropa/oe_authentication/pull/89": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_authentication/pull/89.diff"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Drupal\\oe_authentication\\": "./src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "EUPL-1.2"
-            ],
-            "description": "Authentication against the OpenEuropa Authentication service.",
-            "time": "2019-05-15T09:39:56+00:00"
-        },
-        {
             "name": "openeuropa/oe_webtools_location",
             "version": "dev-master",
             "source": {
@@ -12915,7 +12836,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-07-05T11:02:30+00:00"
         },
         {
             "name": "drupal/coder",

@@ -13,13 +13,6 @@ use Drupal\Component\Serialization\Yaml;
  * Implements hook_install().
  */
 function joinup_eulogin_install(): void {
-  if (!\Drupal::isConfigSyncing()) {
-    \Drupal::configFactory()->getEditable('cas.settings')
-      // Override OE Authentication setting.
-      ->set('forced_login.enabled', FALSE)
-      ->save();
-  }
-
   // Store EU Login schema data. We're using a fixture file, rather than parsing
   // data from https://ecas.ec.europa.eu/cas/schemas in order to avoid HTTP
   // dependencies in Continuous Integration flows. On production, the schema
