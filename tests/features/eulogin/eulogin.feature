@@ -4,7 +4,7 @@ Feature: Log in through EU Login
   As a user with an existing EU Login account
   I need to be able to register and log in to Joinup using EU Login
 
-  Scenario: A new user logging in through EU Login should be approved by a moderator
+  Scenario: A local account is auto-registered on user choice.
     Given CAS users:
       | Username    | E-mail                         | Password  | First name | Last name | Domain            |
       | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    | eu.europa.europol |
@@ -12,7 +12,8 @@ Feature: Log in through EU Login
     Given I am on the homepage
     And I click "Sign in"
     When I click "EU Login"
-    # The user gets redirected to the mock server.
+
+    # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
     And I fill in "Password" with "wrong password"
@@ -21,41 +22,76 @@ Feature: Log in through EU Login
 
     When I fill in "Password" with "Qwerty098"
     And I press the "Log in" button
-    # The user gets redirected back to Drupal.
 
-    # Blocking users registered via EU Login is still to be decided after a
-    # final resolution on ISAICP-5333. The tendency is to register users as
-    # active. Until a decision is made consider such users as active users and
-    # we temporary comment out this step.
-    # Then I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
-    Then I click "Sign out"
+    # The user gets redirected back to Drupal.
+    Then I should see the heading "Already a user?"
+    And I should see "In case you already have a local account, you can link your CAS and your local account using this form."
+
+    Given I select the radio button "No"
+    When I press "Submit"
+    Then I should see the success message "You have been logged in."
     And the user chucknorris should have the following data in their user profile:
       | First name   | Chuck                  |
       | Family name  | Norris                 |
       | Organisation | European Police Office |
 
-    # Upon second log in the user should be informed that the account is not yet
-    # activated.
-    When I click "Sign in"
-    And I click "EU Login"
+  Scenario: An existing local account can be linked by the user.
+    Given CAS users:
+      | Username    | E-mail                         | Password  | First name | Last name | Domain            |
+      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    | eu.europa.europol |
+    And users:
+      | Username             | Password | E-mail                           | First name | Family name | Organisation |
+      | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+
+    # The user gets redirected to the CAS server.
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
     When I fill in "Password" with "Qwerty098"
     And I press the "Log in" button
 
-    # Blocking users registered via EU Login is still to be decided after a
-    # final resolution on ISAICP-5333. The tendency is to register users as
-    # active. Until a decision is made consider such users as active users and
-    # we temporary comment out this step.
-    # Then I should see "Your account is blocked or has not been activated. Please contact a site administrator."
+    # The user gets redirected back to Drupal.
+    Then I should see the heading "Already a user?"
+    And I should see "In case you already have a local account, you can link your CAS and your local account using this form."
+    Given I select the radio button "Yes"
+
+    # Try post the form with incomplete data.
+    When I press "Log in"
+    Then I should see the following error messages:
+      | error messages              |
+      | Username field is required. |
+      | Password field is required. |
+
+    # Try to post with wrong credentials.
+    Given I fill in "Username" with "chuck_the_local_hero"
+    And I fill in "Password" with "wrong..."
+    When I press "Log in"
+    Then I should see the error message "Unrecognized username or password. Forgot your password?"
+
+    # Successful login.
+    Given I fill in "Username" with "chuck_the_local_hero"
+    And I fill in "Password" with "12345"
+    When I press "Log in"
+    Then I should see the success message "You have been logged in."
+
+    # The profile entries are overwritten, except the username & the email.
+    And the user chuck_the_local_hero should have the following data in their user profile:
+      | Username     | chuck_the_local_hero             |
+      | E-mail       | chuck_the_local_hero@example.com |
+      | First name   | Chuck                            |
+      | Family name  | Norris                           |
+      | Organisation | European Police Office           |
 
   Scenario: An existing user can log in through EU Login
     Given users:
-      | Username | E-mail     |
-      | jb007    | 007@mi6.eu |
+      | Username    | E-mail           | First name | Family name | Organisation |
+      | jb007_local | 007-local@mi6.eu | JJaammeess | BBoonndd    | 007-local    |
     Given CAS users:
-      | Username | E-mail     | Password           | First name | Last name |
-      | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      |
+      | Username | E-mail     | Password           | First name | Last name | Local username | Domain         |
+      | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    | eu.europa.easa |
 
     Given I am on the homepage
     And I click "Sign in"
@@ -64,4 +100,13 @@ Feature: Log in through EU Login
     When I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
     And I press the "Log in" button
-    # This will be completed in ISAICP-5337
+
+    Then I should see the success message "You have been logged in."
+
+    # The profile entries are overwritten, except the username & the email.
+    And the user jb007_local should have the following data in their user profile:
+      | Username     | jb007_local                     |
+      | E-mail       | 007-local@mi6.eu                |
+      | First name   | James                           |
+      | Family name  | Bond                            |
+      | Organisation | European Aviation Safety Agency |
