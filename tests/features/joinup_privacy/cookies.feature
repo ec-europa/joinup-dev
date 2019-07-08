@@ -1,5 +1,5 @@
 @api
-Feature: Joinup CCK
+Feature: Cookie consent kit
   In order to ensure privacy
   As a user of the website
   I want to be able to decide on the cookie settings.

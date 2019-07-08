@@ -1,5 +1,0 @@
-name: 'Joinup CCK'
-type: module
-description: 'Provides integration with the EC Cookie Consent Kit'
-core: 8.x
-package: Joinup

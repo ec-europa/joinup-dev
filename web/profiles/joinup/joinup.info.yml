@@ -43,7 +43,6 @@ dependencies:
   - honeypot:honeypot
   - drupal:image
   - inline_entity_form:inline_entity_form
-  - joinup:joinup_cck
   - joinup:joinup_collection
   - joinup:joinup_core
   - joinup:joinup_discussion
@@ -55,6 +54,7 @@ dependencies:
   - joinup:joinup_news
   - joinup:joinup_newsletter
   - joinup:joinup_notification
+  - joinup:joinup_privacy
   - joinup:joinup_rss
   - joinup:joinup_search
   - joinup:joinup_sparql

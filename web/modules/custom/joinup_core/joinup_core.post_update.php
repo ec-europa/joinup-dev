@@ -669,8 +669,8 @@ function joinup_core_post_update_enable_nio() {
 }
 
 /**
- * Enable the joinup_cck module.
+ * Enable the joinup_privacy module.
  */
-function joinup_core_post_update_enable_joinup_cck() {
-  \Drupal::service('module_installer')->install(['joinup_cck']);
+function joinup_core_post_update_enable_joinup_privacy() {
+  \Drupal::service('module_installer')->install(['joinup_privacy']);
 }

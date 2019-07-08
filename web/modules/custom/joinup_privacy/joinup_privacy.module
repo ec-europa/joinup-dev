@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Provides functionality for the Joinup CCK module.
+ * Provides functionality for the Joinup privacy module.
  */
 
 declare(strict_types = 1);
@@ -11,5 +11,5 @@ declare(strict_types = 1);
  * Implements hook_page_attachments().
  */
 function joinup_video_page_attachments(array &$attachments) {
-  $attachments['#attached']['library'][] = 'joinup_cck/joinup_cck.cck';
+  $attachments['#attached']['library'][] = 'joinup_privacy/joinup_privacy.cck';
 }
