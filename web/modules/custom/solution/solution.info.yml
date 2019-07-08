@@ -5,21 +5,21 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - asset_release
-  - contact_information
-  - datetime
-  - file_url
-  - image
-  - inline_entity_form
-  - joinup_core
-  - link
-  - options
-  - owner
-  - rdf_entity
-  - smart_trim
-  - state_machine
-  - text
-  - token
+  - joinup:asset_release
+  - joinup:contact_information
+  - drupal:datetime
+  - file_url:file_url
+  - drupal:image
+  - inline_entity_form:inline_entity_form
+  - joinup:joinup_core
+  - drupal:link
+  - drupal:options
+  - joinup:owner
+  - rdf_entity:rdf_entity
+  - smart_trim:smart_trim
+  - state_machine:state_machine
+  - drupal:text
+  - token:token
 
 config_devel:
   - core.entity_form_display.rdf_entity.solution.default

@@ -1,13 +1,14 @@
 type: module
-name: 'Joinup Newsletter'
-description: 'Provides newsletter functionality to Joinup'
+name: Joinup Newsletter
+description: Provides newsletter functionality to Joinup
 core: 8.x
 package: Joinup
+
 dependencies:
-  - joinup_community_content
-  - oe_newsroom_newsletter
-  - simplenews
-  - smart_trim
+  - joinup:joinup_community_content
+  - joinup:oe_newsroom_newsletter
+  - simplenews:simplenews
+  - smart_trim:smart_trim
 
 config_devel:
   - core.entity_form_display.node.newsletter.default
