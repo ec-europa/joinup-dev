@@ -26,6 +26,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class JoinCollectionForm extends FormBase {
 
   /**
+   * CSS classes that will make a link look like a button.
+   */
+  const LINK_BUTTON_CLASSES = [
+    'button',
+    'button--blue-light',
+    'mdl-button',
+    'mdl-js-button',
+    'mdl-button--raised',
+    'mdl-js-ripple-effect',
+    'mdl-button--accent',
+  ];
+
+  /**
    * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
@@ -107,26 +120,12 @@ class JoinCollectionForm extends FormBase {
       '#value' => $user->id(),
     ];
 
-    // If the user is already a member of the collection, show a link to the
-    // confirmation form, disguised as a form submit button. The confirmation
-    // form should open in a modal dialog for JavaScript-enabled browsers.
-    $membership = $this->getUserNonBlockedMembership($user, $collection);
-    $button_classes = [
-      'button',
-      'button--blue-light',
-      'mdl-button',
-      'mdl-js-button',
-      'mdl-button--raised',
-      'mdl-js-ripple-effect',
-      'mdl-button--accent',
-    ];
-
     // In case the user is not a member or does not have a pending membership,
     // give the possibility to request one.
     if (empty($membership)) {
       $form['join'] = [
         '#attributes' => [
-          'class' => $button_classes,
+          'class' => self::LINK_BUTTON_CLASSES,
         ],
         '#type' => 'submit',
         '#value' => $this->t('Join this collection'),
@@ -161,7 +160,7 @@ class JoinCollectionForm extends FormBase {
         '#title' => $this->t('Membership is pending'),
         '#url' => Url::fromRoute('<current>', [], ['fragment' => 'pending']),
         '#attributes' => [
-          'class' => array_merge($button_classes, ['button--small']),
+          'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
         ],
       ];
     }
