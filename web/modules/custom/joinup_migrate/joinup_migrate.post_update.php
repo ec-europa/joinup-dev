@@ -39,7 +39,7 @@ function joinup_migrate_post_update_add_user_73932() {
     'user_profile',
   ]);
   // Run user migrations.
-  foreach ($migrations as $migration_id => $migration) {
+  foreach ($migrations as $migration) {
     $migration->set('requirements', []);
     (new MigrateExecutable($migration, $message, ['idlist' => $uid]))
       ->import();

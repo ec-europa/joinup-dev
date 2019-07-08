@@ -1959,7 +1959,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Given I wait for the pipeline batch job to finish
    */
   public function iWaitForThePipelineBatchJobToFinish() {
-    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+    while ($this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
       $this->getSession()->reload();
     }
   }

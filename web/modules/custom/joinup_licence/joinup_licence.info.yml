@@ -5,9 +5,9 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - field_group
-  - smart_trim
-  - spdx
+  - field_group:field_group
+  - smart_trim:smart_trim
+  - spdx:spdx
 
 config_devel:
   - core.base_field_override.rdf_entity.licence.label

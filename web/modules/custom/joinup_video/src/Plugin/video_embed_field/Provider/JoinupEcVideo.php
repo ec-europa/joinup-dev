@@ -60,6 +60,11 @@ class JoinupEcVideo extends ProviderPluginBase {
         /** @var \Psr\Http\Message\UriInterface $uri */
         \Drupal::httpClient()->get($input, [
           'on_stats' => function (TransferStats $stats) use (&$uri) {
+            // @todo Allow coding standards checks on the following line once
+            //   the Coder module correctly recognizes that the $uri variable is
+            //   used.
+            // @see https://www.drupal.org/project/coder/issues/3065679
+            // @codingStandardsIgnoreLine
             $uri = $stats->getEffectiveUri();
           },
         ]);
