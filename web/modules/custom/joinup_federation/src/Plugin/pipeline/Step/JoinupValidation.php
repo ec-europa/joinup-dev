@@ -129,7 +129,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
     $rows = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
+    foreach (Rdf::loadMultiple($ids, ['staging']) as $entity) {
       if ($messages = $this->getViolationsMessages($entity)) {
         $rows[] = [
           [

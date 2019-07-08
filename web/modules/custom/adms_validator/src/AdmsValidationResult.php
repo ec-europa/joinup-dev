@@ -15,6 +15,11 @@ class AdmsValidationResult {
 
   use StringTranslationTrait;
 
+  /**
+   * A list of schema errors.
+   *
+   * @var \Drupal\adms_validator\SchemaError[]
+   */
   protected $errors = [];
 
   /**

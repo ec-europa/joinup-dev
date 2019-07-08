@@ -1,14 +1,14 @@
-name: 'Joinup video'
+name: Joinup video
 type: module
-description: 'Provides video functionality'
+description: Provides video functionality
 core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup_community_content
-  - og
-  - smart_trim
-  - video_embed_wysiwyg
+  - joinup:joinup_community_content
+  - og:og
+  - smart_trim:smart_trim
+  - video_embed_field:video_embed_wysiwyg
 
 config_devel:
   - core.entity_form_display.node.video.default

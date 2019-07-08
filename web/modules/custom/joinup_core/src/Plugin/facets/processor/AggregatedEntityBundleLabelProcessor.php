@@ -139,7 +139,7 @@ class AggregatedEntityBundleLabelProcessor extends ProcessorPluginBase implement
     }
 
     $plural_count_label_context = $this->getConfiguration()['plural_count_label']['context'];
-    foreach ($results as $delta => $result) {
+    foreach ($results as $result) {
       $bundle_id = $result->getRawValue();
       if (!isset($bundles[$bundle_id])) {
         continue;

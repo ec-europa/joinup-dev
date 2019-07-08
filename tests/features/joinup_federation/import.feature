@@ -7,6 +7,14 @@ Feature: As a site moderator I am able to import RDF files.
       | Antoine Batiste | moderator |
     And I am logged in as "Antoine Batiste"
 
+  Scenario: Test available pipelines
+    Given I go to the pipeline orchestrator
+    Then the "Data pipeline" select should contain the following options:
+      | - Select -                              |
+      | Joinup collection                       |
+      | Slovenian Interoperability Portal - NIO |
+      | Spain - Center for Technology Transfer  |
+
   Scenario: Test the pipeline functionality
     Given collection:
       | uri   | http://administracionelectronica.gob.es/ctt |

@@ -32,7 +32,7 @@ class AdmsValidatorSubContext extends DrupalSubContextBase {
     // Create a query to copy all the triples from the published graphs to
     // a validation one.
     $query = '';
-    foreach ($graphs as $bundle => $graph_mapping) {
+    foreach ($graphs as $graph_mapping) {
       $published_graph_uri = $graph_mapping['default'];
       $query .= "ADD <$published_graph_uri> TO <http://joinup/validation-graph>; \n";
     }
