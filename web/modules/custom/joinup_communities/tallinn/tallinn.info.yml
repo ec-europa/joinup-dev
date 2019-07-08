@@ -4,17 +4,18 @@ description: Specificities for the Tallinn community.
 core: 8.x
 package: Joinup communities
 configure: tallinn.settings
+
 dependencies:
-  - collection
-  - custom_page
-  - embed_block
-  - field_group
-  - joinup_core
-  - node
-  - og
-  - rdf_entity
-  - search_api_field
-  - user
+  - joinup:collection
+  - joinup:custom_page
+  - joinup:embed_block
+  - field_group:field_group
+  - joinup:joinup_core
+  - drupal:node
+  - og:og
+  - rdf_entity:rdf_entity
+  - joinup:search_api_field
+  - drupal:user
 
 config_devel:
   - core.entity_form_display.node.tallinn_report.default
