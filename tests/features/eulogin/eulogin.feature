@@ -73,13 +73,41 @@ Feature: Log in through EU Login
       | Password field is required. |
 
     # Try to post with wrong credentials.
-    Given I fill in "Username" with "chuck_the_local_hero"
+    Given I fill in "Email or username" with "chuck_the_local_hero"
     And I fill in "Password" with "wrong..."
     When I press "Sign in"
     Then I should see the error message "Unrecognized username or password. Forgot your password?"
 
     # Successful login.
-    Given I fill in "Username" with "chuck_the_local_hero"
+    Given I fill in "Email or username" with "chuck_the_local_hero"
+    And I fill in "Password" with "12345"
+    When I press "Sign in"
+    Then I should see the success message "You have been logged in."
+
+    # The profile entries are overwritten, except the username & the email.
+    And the user chuck_the_local_hero should have the following data in their user profile:
+      | Username     | chuck_the_local_hero             |
+      | E-mail       | chuck_the_local_hero@example.com |
+      | First name   | Chuck                            |
+      | Family name  | Norris                           |
+      | Organisation | European Police Office           |
+
+  Scenario: An existing local account can be linked by the user using the email.
+    Given CAS users:
+      | Username    | E-mail                         | Password  | First name | Last name | Domain            |
+      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    | eu.europa.europol |
+    And users:
+      | Username             | Password | E-mail                           | First name | Family name | Organisation |
+      | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
+
+    Given I visit "/cas"
+    And I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
+    And I fill in "Password" with "Qwerty098"
+    When I press the "Log in" button
+    Then I should see the heading "Already a Joinup user?"
+    Given I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
+
+    And I fill in "Email or username" with "chuck_the_local_hero@example.com"
     And I fill in "Password" with "12345"
     When I press "Sign in"
     Then I should see the success message "You have been logged in."

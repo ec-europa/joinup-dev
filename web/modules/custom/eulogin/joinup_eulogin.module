@@ -7,6 +7,9 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\SubformState;
+
 /**
  * Implements hook_cron().
  */
@@ -18,4 +21,46 @@ function joinup_eulogin_cron(): void {
     // It's time to check for a new version.
     \Drupal::service('joinup_eulogin.schema_data_updater')->update();
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_eulogin_form_cas_account_link_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (\Drupal::moduleHandler()->moduleExists('email_registration')) {
+    // Apply the email_registration form alter on sub-form.
+    email_registration_form_user_login_form_alter($form['login'], $form_state);
+
+    // As the login form is a sub-form, we cannot use the validator callback
+    // provided by the 'email_registration' module. Replace the module validator
+    // with our own.
+    $index = array_search('email_registration_user_login_validate', $form['login']['name']['#element_validate']);
+    if ($index !== FALSE) {
+      unset($form['login']['name']['#element_validate']);
+    }
+    $form['login']['name']['#element_validate'][] = 'joinup_eulogin_email_registration_validation';
+  }
+}
+
+/**
+ * Wraps the email_registration_user_login_validate() validator.
+ *
+ * As the login form is a sub-form, we cannot just use the validator callback
+ * provided by the 'email_registration' module as that expects that the user
+ * values are root-level values. But in this case we're one level below, so we
+ * need to pass a (sub)form state object on that has the user values on the root
+ * level to the 'email_registration' module validator.
+ *
+ * @param array $element
+ *   The Form API form element render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The Form API form state object.
+ * @param array $form
+ *   The Form API form render array.
+ *
+ * @see email_registration_user_login_validate()
+ */
+function joinup_eulogin_email_registration_validation(array $element, FormStateInterface $form_state, array $form): void {
+  $subform_state = SubformState::createForSubform($form['login'], $form, $form_state);
+  email_registration_user_login_validate($element, $subform_state);
 }
