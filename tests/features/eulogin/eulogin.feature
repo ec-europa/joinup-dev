@@ -24,10 +24,18 @@ Feature: Log in through EU Login
     And I press the "Log in" button
 
     # The user gets redirected back to Drupal.
-    Then I should see the heading "Already a user?"
-    And I should see "In case you already have a local account, you can link your CAS and your local account using this form."
+    Then I should see the heading "Already a Joinup user?"
+    And I should see "Since you have signed in for the first time using EU Login, you need to take one extra step."
+    And I should see "Before you make you selection below, please note this important information:"
+    And I should see "If you are an existing user on Joinup, and would like to keep all your account data (collection/solution memberships, published events, news, documents, discussions etc., we suggest you select the first option to pair your existing account with your EU Login account;"
+    And I should see "If you are a new user on Joinup, the second option is the right one for you."
+    And I should see "Please make your selection:"
+    And I should see "I am an existing user (pair my existing account with my EU Login account)"
+    And I should see "You will be asked to login with your site credentials."
+    And I should see "I am a new user (create a new account)"
+    And I should see "No action is required on your side. A new account, linked to your EU Login account, will be created."
 
-    Given I select the radio button "No"
+    Given I select the radio button "I am a new user (create a new account)"
     When I press "Submit"
     Then I should see the success message "You have been logged in."
     And the user chucknorris should have the following data in their user profile:
@@ -54,9 +62,8 @@ Feature: Log in through EU Login
     And I press the "Log in" button
 
     # The user gets redirected back to Drupal.
-    Then I should see the heading "Already a user?"
-    And I should see "In case you already have a local account, you can link your CAS and your local account using this form."
-    Given I select the radio button "Yes"
+    Then I should see the heading "Already a Joinup user?"
+    Given I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
 
     # Try post the form with incomplete data.
     When I press "Log in"
