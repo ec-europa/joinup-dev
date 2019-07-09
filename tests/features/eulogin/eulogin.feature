@@ -36,7 +36,7 @@ Feature: Log in through EU Login
     And I should see "No action is required on your side. A new account, linked to your EU Login account, will be created."
 
     Given I select the radio button "I am a new user (create a new account)"
-    When I press "Submit"
+    When I press "Continue"
     Then I should see the success message "You have been logged in."
     And the user chucknorris should have the following data in their user profile:
       | First name   | Chuck                  |
@@ -66,7 +66,7 @@ Feature: Log in through EU Login
     Given I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
 
     # Try post the form with incomplete data.
-    When I press "Log in"
+    When I press "Sign in"
     Then I should see the following error messages:
       | error messages              |
       | Username field is required. |
@@ -75,13 +75,13 @@ Feature: Log in through EU Login
     # Try to post with wrong credentials.
     Given I fill in "Username" with "chuck_the_local_hero"
     And I fill in "Password" with "wrong..."
-    When I press "Log in"
+    When I press "Sign in"
     Then I should see the error message "Unrecognized username or password. Forgot your password?"
 
     # Successful login.
     Given I fill in "Username" with "chuck_the_local_hero"
     And I fill in "Password" with "12345"
-    When I press "Log in"
+    When I press "Sign in"
     Then I should see the success message "You have been logged in."
 
     # The profile entries are overwritten, except the username & the email.

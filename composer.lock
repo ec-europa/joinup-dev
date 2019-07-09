@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b88334da8412c0b1495cdeb80a3a430",
+    "content-hash": "9cc645336759bab6cdce46d5512d8c1a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2625,11 +2625,12 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "ea1a148a55346f93cdafe7b963b5e01580a69830"
+                "reference": "e644aba4809b6b83af7126f829954652b236cd93"
             },
             "require": {
                 "drupal/cas": "dev-1.x",
-                "drupal/core": "*"
+                "drupal/core": "*",
+                "drupal/externalauth": "dev-1.x"
             },
             "require-dev": {
                 "drupal/cas_mock_server": "dev-0.x|dev-1.x"
@@ -2641,7 +2642,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1562658784",
+                    "datestamp": "1562674087",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2657,6 +2658,14 @@
                     "name": "Claudiu Cristea",
                     "homepage": "https://www.drupal.org/u/claudiu.cristea",
                     "role": "maintainer"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
                 }
             ],
             "description": "Allows a user to manually link its CAS account with its Drupal account.",
@@ -2670,7 +2679,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-07-09T10:21:45+00:00"
+            "time": "2019-07-09T13:38:11+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -3781,17 +3790,11 @@
         },
         {
             "name": "drupal/externalauth",
-            "version": "1.1.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/externalauth.git",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/externalauth-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "171d8482df27aa66cb1b389bad4c711edd58136d"
+                "reference": "1dc2b5a11c121880a35f018b906c82b115a03465"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3802,11 +3805,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1521730685",
+                    "version": "8.x-1.1+2-dev",
+                    "datestamp": "1560259688",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3832,7 +3835,8 @@
             "homepage": "https://www.drupal.org/project/externalauth",
             "support": {
                 "source": "https://git.drupalcode.org/project/externalauth"
-            }
+            },
+            "time": "2019-06-11T14:32:15+00:00"
         },
         {
             "name": "drupal/facets",
@@ -12992,9 +12996,6 @@
                     "../cas_mock_server_build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
-                },
-                "patches_applied": {
-                    "Allow to link a local account when creating CAS users in Behat @see https://github.com/pfrenssen/cas_mock_server/pull/6": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/6.diff"
                 }
             },
             "autoload-dev": {
@@ -13025,8 +13026,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            },
-            "time": "2019-07-05T14:40:42+00:00"
+            }
         },
         {
             "name": "drupal/coder",
@@ -15932,6 +15932,7 @@
         "drupal/cas_account_link": 20,
         "drupal/cas_attributes": 10,
         "drupal/diff": 5,
+        "drupal/externalauth": 20,
         "drupal/flag": 15,
         "drupal/migrate_run": 10,
         "drupal/page_manager": 20,
