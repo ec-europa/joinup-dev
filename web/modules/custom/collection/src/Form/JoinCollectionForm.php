@@ -12,6 +12,7 @@ use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\PrependCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -71,6 +72,13 @@ class JoinCollectionForm extends FormBase {
   protected $messenger;
 
   /**
+   * The form builder.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * Constructs a JoinCollectionForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -81,12 +89,15 @@ class JoinCollectionForm extends FormBase {
    *   The access manager service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
+   *   The form builder.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, AccessManagerInterface $access_manager, MessengerInterface $messenger) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $membership_manager, AccessManagerInterface $access_manager, MessengerInterface $messenger, FormBuilderInterface $form_builder) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $membership_manager;
     $this->accessManager = $access_manager;
     $this->messenger = $messenger;
+    $this->formBuilder = $form_builder;
   }
 
   /**
@@ -97,7 +108,8 @@ class JoinCollectionForm extends FormBase {
       $container->get('entity_type.manager'),
       $container->get('og.membership_manager'),
       $container->get('access_manager'),
-      $container->get('messenger')
+      $container->get('messenger'),
+      $container->get('form_builder')
     );
   }
 
@@ -114,7 +126,7 @@ class JoinCollectionForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, RdfInterface $collection = NULL): array {
     $form['#access'] = $this->access();
 
-    $user = $this->entityTypeManager->getStorage('user')->load($user->id());
+    $user = $this->loadUser((int) $user->id());
     $form['collection_id'] = [
       '#type' => 'value',
       '#value' => $collection->id(),
@@ -186,13 +198,10 @@ class JoinCollectionForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
 
-    $collection_id = $form_state->getValue('collection_id');
-    $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
+    $collection = $this->loadCollection($form_state->getValue('collection_id'));
+    $user = $this->loadUser((int) $form_state->getValue('user_id'));
 
     // Only authenticated users can join a collection.
-    $user_id = $form_state->getValue('user_id');
-    /** @var \Drupal\user\UserInterface $user */
-    $user = $this->entityTypeManager->getStorage('user')->load($user_id);
     if ($user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
         ':login' => $this->urlGenerator->generateFromRoute('user.login'),
@@ -211,17 +220,10 @@ class JoinCollectionForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $collection_id = $form_state->getValue('collection_id');
-
-    $collection = $this->loadCollection($collection_id);
-    $user_id = $form_state->getValue('user_id');
-
-    /** @var \Drupal\user\UserInterface $user */
-    $user = $this->entityTypeManager->getStorage('user')->load($user_id);
+    $collection = $this->loadCollection($form_state->getValue('collection_id'));
+    $user = $this->loadUser((int) $form_state->getValue('user_id'));
     $role_id = $collection->getEntityTypeId() . '-' . $collection->bundle() . '-' . OgRoleInterface::AUTHENTICATED;
-
-    /** @var \Drupal\og\OgRoleInterface $og_role */
-    $og_role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
+    $og_role = $this->loadOgRole($role_id);
     $state = $collection->get('field_ar_closed')->first()->value ? OgMembershipInterface::STATE_PENDING : OgMembershipInterface::STATE_ACTIVE;
 
     /** @var \Drupal\og\OgMembershipInterface $membership */
@@ -260,58 +262,26 @@ class JoinCollectionForm extends FormBase {
 
     // If the form submitted successfully, make an offer the user cannot refuse.
     if (!$form_state->getErrors()) {
+      $collection = $this->loadCollection($form_state->getValue('collection_id'));
+
       // Replace the submit button with a message, so that the user can not
       // accidentally click the button again.
       $element = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('Welcome!'),
+        '#value' => $this->t('Thanks for joining us!'),
         '#attributes' => [
           'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
         ],
       ];
       $response->addCommand(new HtmlCommand('#join-collection-form', $element));
 
-      $collection_id = $form_state->getValue('collection_id');
-      $collection = $this->loadCollection($collection_id);
       $title = $this->t('Welcome to %collection', ['%collection' => $collection->label()]);
 
-      $modal_content = [
-        'intro' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $this->t('By joining the collection you will now be able to publish content in it.'),
-        ],
-        'proposal' => [
-          '#type' => 'html_tag',
-          '#tag' => 'h3',
-          '#value' => $this->t('Want to receive notifications, too?'),
-        ],
-        'description' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $this->t('You can receive weekly notifications for this collection, by selecting the subscribe button below:'),
-        ],
-        'cancel' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $this->t('No thanks'),
-          '#attributes' => [
-            'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small', 'dialog-cancel']),
-          ],
-        ],
-        'confirm' => [
-          '#type' => 'submit',
-          '#value' => $this->t('Subscribe'),
-          '#attributes' => [
-            'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
-          ],
-        ],
-      ];
+      $modal_form = $this->formBuilder->getForm('\Drupal\collection\Form\SubscribeToCollectionForm', $collection);
+      $modal_form['#attached']['library'][] = 'core/drupal.dialog.ajax';
 
-      $modal_content['#attached']['library'][] = 'core/drupal.dialog.ajax';
-
-      $response->addCommand(new OpenModalDialogCommand($title, $modal_content, ['width' => '300']));
+      $response->addCommand(new OpenModalDialogCommand($title, $modal_form, ['width' => '500']));
     }
     return $response;
   }
@@ -320,7 +290,7 @@ class JoinCollectionForm extends FormBase {
    * Access check for the form.
    *
    * @return bool
-   *   True if the form can be access, false otherwise.
+   *   True if the form can be accessed, false otherwise.
    */
   public function access(): bool {
     return $this->currentUser()->isAuthenticated() && $this->getRouteMatch()->getRouteName() !== 'collection.leave_confirm_form';
@@ -356,6 +326,32 @@ class JoinCollectionForm extends FormBase {
    */
   protected function loadCollection(string $collection_id): RdfInterface {
     return $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
+  }
+
+  /**
+   * Loads the user with the given ID.
+   *
+   * @param int $user_id
+   *   The user ID.
+   *
+   * @return \Drupal\user\UserInterface
+   *   The user entity.
+   */
+  protected function loadUser(int $user_id): UserInterface {
+    return $this->entityTypeManager->getStorage('user')->load($user_id);
+  }
+
+  /**
+   * Loads the OG role with the given ID.
+   *
+   * @param string $role_id
+   *   The OG role ID.
+   *
+   * @return \Drupal\og\OgRoleInterface
+   *   The OG role entity.
+   */
+  protected function loadOgRole(string $role_id): OgRoleInterface {
+    return $this->entityTypeManager->getStorage('og_role')->load($role_id);
   }
 
 }
