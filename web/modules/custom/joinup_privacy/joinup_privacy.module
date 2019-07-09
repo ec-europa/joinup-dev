@@ -10,6 +10,6 @@ declare(strict_types = 1);
 /**
  * Implements hook_page_attachments().
  */
-function joinup_video_page_attachments(array &$attachments) {
+function joinup_privacy_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'joinup_privacy/joinup_privacy.cck';
 }
