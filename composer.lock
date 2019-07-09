@@ -2625,11 +2625,11 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "48fcef3dd771586b53a30c3aa0598a2109359ece"
+                "reference": "ea1a148a55346f93cdafe7b963b5e01580a69830"
             },
             "require": {
-                "drupal/cas": "^1.0",
-                "drupal/core": "~8.0"
+                "drupal/cas": "dev-1.x",
+                "drupal/core": "*"
             },
             "require-dev": {
                 "drupal/cas_mock_server": "dev-0.x|dev-1.x"
@@ -2641,7 +2641,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1562618585",
+                    "datestamp": "1562658784",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2670,7 +2670,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-07-08T20:47:27+00:00"
+            "time": "2019-07-09T10:21:45+00:00"
         },
         {
             "name": "drupal/cas_attributes",
