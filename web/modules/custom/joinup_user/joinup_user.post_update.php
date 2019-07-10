@@ -129,10 +129,3 @@ function joinup_user_post_update_reset_default_icons() {
   include_once __DIR__ . '/joinup_user.install';
   joinup_user_setup_default_avatar();
 }
-
-/**
- * Grant the anonymous users the 'never autoplay videos' permission.
- */
-function joinup_user_post_update_add_never_autoplay_anonymous_permission(): void {
-  user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, ['never autoplay videos']);
-}
