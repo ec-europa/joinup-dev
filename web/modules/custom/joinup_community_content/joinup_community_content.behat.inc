@@ -107,4 +107,38 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
     Assert::assertNotEquals($node->created->value, $node->published_at->value);
   }
 
+  /**
+   * Checks that a content has the same publication date with another version.
+   *
+   * @param string $title
+   *   The title of the content.
+   * @param string $type
+   *   The type of the content.
+   * @param string $published
+   *   Whether to check for the last published or unpublished version.
+   *   Possible options are 'published' and 'unpublished'.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown if the $published variable does not have an acceptable value.
+   * @throws \Exception
+   *   Thrown if there was no previous revision found.
+   *
+   * @Then the publication date of the :title :type should be equal to the last :published version's
+   */
+  public function assertEqualRevisionsPublicationTime(string $title, string $type, string $published): void {
+    if (!in_array($published, ['published', 'unpublished'])) {
+      throw new InvalidArgumentException("Only 'published' and 'unpublished' values are allowed for the 'published' flag.");
+    }
+    $published = $published === 'published';
+
+    $node = $this->getNodeByTitle($title, $type);
+    $node_revisions = $this->getNodeRevisionIdsList($title, $type, $published);
+    $revision_id = reset($node_revisions);
+    if (empty($revision_id)) {
+      throw new Exception("There was no revision found with the given criteria.");
+    }
+    $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+    Assert::assertEquals($node->published_at->value, $revision->published_at->value);
+  }
+
 }

@@ -98,7 +98,7 @@ Feature: Add community content
     When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    Then the publication date of the "Sample <content type>" <content type> should not be equal to the created date
+    Then the publication date of the "Sample <content type>" <content type> should be equal to the last unpublished version's
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
     # date is the one shown and this field is exposed to the user.
