@@ -135,7 +135,7 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   $option_transitions = [
     // If the option 'Only collection facilitators' was selected before, then
     // take the option 'Only members'.
-    ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+    ELibraryCreationOptions::FACILITATORS => ELibraryCreationOptions::MEMBERS,
     // If the option 'Any registered user' was selected before, then take the
     // option 'Only members'.
     ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::MEMBERS,
