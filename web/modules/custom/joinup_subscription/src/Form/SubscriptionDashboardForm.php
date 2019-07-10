@@ -155,12 +155,12 @@ class SubscriptionDashboardForm extends FormBase {
           '#default_value' => $value ? JoinupSubscriptionInterface::SUBSCRIBE_ALL : JoinupSubscriptionInterface::SUBSCRIBE_NONE,
         ];
       }
+      $form['collections'][$collection->id()]['bundles']['submit'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Submit'),
+        '#disabled' => TRUE,
+      ];
     }
-
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Submit'),
-    ];
 
     return $form;
   }
@@ -169,6 +169,8 @@ class SubscriptionDashboardForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $collection_id = $this->getTriggeringElementCollectionId($form_state);
+
     $user = $form_state->getBuildInfo()['args'][0];
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
     foreach ($memberships as $membership) {
@@ -192,6 +194,22 @@ class SubscriptionDashboardForm extends FormBase {
       }
     }
     $this->messenger()->addStatus($this->t('The subscriptions have been updated.'));
+  }
+
+  /**
+   * Returns the collection ID for the submit button that was clicked.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state of the submitted form.
+   *
+   * @return string
+   *   The collection ID that corresponds to the submit button that was clicked.
+   */
+  protected function getTriggeringElementCollectionId(FormStateInterface $form_state): string {
+    // Return the collection ID which is stored in the previous to last parent
+    // of the submit button: `['collections'][$collection_id]['bundles']`.
+    $clicked_button_parents = array_values($form_state->getTriggeringElement()['#parents']);
+    return $clicked_button_parents[count($clicked_button_parents) - 2];
   }
 
 }
