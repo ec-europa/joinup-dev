@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a152375a1eb2244072b919be8ed621e8",
+    "content-hash": "e656aecf85305a18c81b6c93e40ef1d5",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.103.0",
+            "version": "3.104.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "77ed156cc323efcc7912941440c622d5f12ffbce"
+                "reference": "295706ab2134bf842837fa0b0162ff3aef8b0aa4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/77ed156cc323efcc7912941440c622d5f12ffbce",
-                "reference": "77ed156cc323efcc7912941440c622d5f12ffbce",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/295706ab2134bf842837fa0b0162ff3aef8b0aa4",
+                "reference": "295706ab2134bf842837fa0b0162ff3aef8b0aa4",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-06-27T18:15:25+00:00"
+            "time": "2019-07-03T18:08:50+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -246,16 +246,16 @@
         },
         {
             "name": "chi-teck/drupal-code-generator",
-            "version": "1.29.2",
+            "version": "1.30.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Chi-teck/drupal-code-generator.git",
-                "reference": "0d2cb5299e5b1361bab6c8b9ee6531e95d68df95"
+                "reference": "1da9f06843b6bf2b0e7d28fea4b6c1d79aead197"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/0d2cb5299e5b1361bab6c8b9ee6531e95d68df95",
-                "reference": "0d2cb5299e5b1361bab6c8b9ee6531e95d68df95",
+                "url": "https://api.github.com/repos/Chi-teck/drupal-code-generator/zipball/1da9f06843b6bf2b0e7d28fea4b6c1d79aead197",
+                "reference": "1da9f06843b6bf2b0e7d28fea4b6c1d79aead197",
                 "shasum": ""
             },
             "require": {
@@ -263,7 +263,7 @@
                 "php": ">=5.5.9",
                 "symfony/console": "^3.4 || ^4.0",
                 "symfony/filesystem": "^2.7 || ^3.4 || ^4.0",
-                "twig/twig": "^1.35"
+                "twig/twig": "^1.38.2 || ^2.10"
             },
             "bin": [
                 "bin/dcg"
@@ -287,7 +287,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal code generator",
-            "time": "2019-06-02T07:36:18+00:00"
+            "time": "2019-06-29T10:29:45+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -2438,7 +2438,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2634,6 +2634,14 @@
             ],
             "authors": [
                 {
+                    "name": "bircher",
+                    "homepage": "https://www.drupal.org/user/1344166"
+                },
+                {
+                    "name": "gnuget",
+                    "homepage": "https://www.drupal.org/user/992990"
+                },
+                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2745,8 +2753,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha7",
-                    "datestamp": "1521314235",
+                    "version": "8.x-1.0-alpha6+2-dev",
+                    "datestamp": "1513615684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2854,16 +2862,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.7.3",
+            "version": "8.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "b8ca92d4274048aff6bb020c329596c0e9b91269"
+                "reference": "a6d447d41545323f54c5034e551fb43b8050eca9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/b8ca92d4274048aff6bb020c329596c0e9b91269",
-                "reference": "b8ca92d4274048aff6bb020c329596c0e9b91269",
+                "url": "https://api.github.com/repos/drupal/core/zipball/a6d447d41545323f54c5034e551fb43b8050eca9",
+                "reference": "a6d447d41545323f54c5034e551fb43b8050eca9",
                 "shasum": ""
             },
             "require": {
@@ -3089,8 +3097,7 @@
                     "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
-                    "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
-                    "Recalculation of display cacheability metadata during module install causing error @see https://www.drupal.org/project/drupal/issues/3060081": "https://www.drupal.org/files/issues/2019-06-07/3060081-2.patch"
+                    "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch"
                 }
             },
             "autoload": {
@@ -3114,7 +3121,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-06-05T19:21:30+00:00"
+            "time": "2019-07-04T07:26:51+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3613,7 +3620,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1556645881",
+                    "datestamp": "1551291083",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3807,7 +3814,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598850",
+                    "datestamp": "1521598685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4199,17 +4206,17 @@
         },
         {
             "name": "drupal/linkit",
-            "version": "5.0.0-beta8",
+            "version": "5.0.0-beta9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/linkit.git",
-                "reference": "8.x-5.0-beta8"
+                "reference": "8.x-5.0-beta9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit-8.x-5.0-beta8.zip",
-                "reference": "8.x-5.0-beta8",
-                "shasum": "677be19d6128f1d5c6d239132e98b1817ad91acb"
+                "url": "https://ftp.drupal.org/files/projects/linkit-8.x-5.0-beta9.zip",
+                "reference": "8.x-5.0-beta9",
+                "shasum": "150291dd87a4f65027492020c28635e2b5249d1a"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4223,8 +4230,8 @@
                     "dev-5.x": "5.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-5.0-beta8",
-                    "datestamp": "1545966784",
+                    "version": "8.x-5.0-beta9",
+                    "datestamp": "1562194985",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -4720,7 +4727,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5371,7 +5378,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5500,17 +5507,17 @@
         },
         {
             "name": "drupal/redirect",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/redirect.git",
-                "reference": "8.x-1.3"
+                "reference": "8.x-1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "3f9620d186e25f36ac56755979932b8ea965b8c7"
+                "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "4c7e0dc0ab0cbcc7d66e16cc684882c0eaa71c1c"
             },
             "require": {
                 "drupal/core": "~8"
@@ -5521,7 +5528,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.3",
+                    "version": "8.x-1.4",
                     "datestamp": "1561757585",
                     "security-coverage": {
                         "status": "covered",
@@ -6062,7 +6069,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "datestamp": "1542122580",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6416,7 +6423,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -6580,7 +6587,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "https://git.drupalcode.org/project/views_data_export"
+                "source": "http://cgit.drupalcode.org/views_data_export"
             }
         },
         {
@@ -7291,33 +7298,37 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.5.2",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9f83dded91781a01c63574e387eaa769be769115"
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9f83dded91781a01c63574e387eaa769be769115",
-                "reference": "9f83dded91781a01c63574e387eaa769be769115",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
                 "psr/http-message": "~1.0",
-                "ralouphie/getallheaders": "^2.0.5"
+                "ralouphie/getallheaders": "^2.0.5 || ^3.0.0"
             },
             "provide": {
                 "psr/http-message-implementation": "1.0"
             },
             "require-dev": {
+                "ext-zlib": "*",
                 "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
+            },
+            "suggest": {
+                "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -7354,7 +7365,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2018-12-04T20:46:45+00:00"
+            "time": "2019-07-01T23:21:34+00:00"
         },
         {
             "name": "html2text/html2text",
@@ -7402,7 +7413,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -8875,28 +8886,29 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "684855f2c2e9d0a61868b8f8d6bd0295c8a4b651"
+                "reference": "e822f86a6983790aa17ab13aa7e69631e86806b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/684855f2c2e9d0a61868b8f8d6bd0295c8a4b651",
-                "reference": "684855f2c2e9d0a61868b8f8d6bd0295c8a4b651",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/e822f86a6983790aa17ab13aa7e69631e86806b6",
+                "reference": "e822f86a6983790aa17ab13aa7e69631e86806b6",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5 || ^7.0"
+                "php": "^7.1"
             },
             "conflict": {
                 "nyholm/psr7": "<1.0"
             },
             "require-dev": {
+                "akeneo/phpspec-skip-example-extension": "^4.0",
                 "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message-factory": "^1.0",
-                "phpspec/phpspec": "^2.4",
+                "phpspec/phpspec": "^5.1",
                 "puli/composer-plugin": "1.0.0-beta10"
             },
             "suggest": {
@@ -8906,7 +8918,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -8935,7 +8947,7 @@
                 "message",
                 "psr7"
             ],
-            "time": "2019-02-23T07:42:53+00:00"
+            "time": "2019-06-30T09:04:27+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -9227,16 +9239,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.7.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "84e09df79855ed3da84e2eab6850eb7741d8cbda"
+                "reference": "352c7002fefe4e4037d02654d853a1b09520946f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/84e09df79855ed3da84e2eab6850eb7741d8cbda",
-                "reference": "84e09df79855ed3da84e2eab6850eb7741d8cbda",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/352c7002fefe4e4037d02654d853a1b09520946f",
+                "reference": "352c7002fefe4e4037d02654d853a1b09520946f",
                 "shasum": ""
             },
             "require": {
@@ -9317,7 +9329,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2019-05-26T02:50:36+00:00"
+            "time": "2019-07-01T20:46:51+00:00"
         },
         {
             "name": "predis/predis",
@@ -9639,24 +9651,24 @@
         },
         {
             "name": "ralouphie/getallheaders",
-            "version": "2.0.5",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ralouphie/getallheaders.git",
-                "reference": "5601c8a83fbba7ef674a7369456d12f1e0d0eafa"
+                "reference": "120b605dfeb996808c31b6477290a714d356e822"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/5601c8a83fbba7ef674a7369456d12f1e0d0eafa",
-                "reference": "5601c8a83fbba7ef674a7369456d12f1e0d0eafa",
+                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/120b605dfeb996808c31b6477290a714d356e822",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3"
+                "php": ">=5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "~3.7.0",
-                "satooshi/php-coveralls": ">=1.0"
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5 || ^6.5"
             },
             "type": "library",
             "autoload": {
@@ -9675,7 +9687,7 @@
                 }
             ],
             "description": "A polyfill for getallheaders.",
-            "time": "2016-02-11T07:05:27+00:00"
+            "time": "2019-03-08T08:55:37+00:00"
         },
         {
             "name": "seld/jsonlint",
@@ -9837,7 +9849,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-03-22T22:25:24+00:00"
         },
         {
             "name": "stack/builder",

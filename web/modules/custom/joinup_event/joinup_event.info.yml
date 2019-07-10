@@ -5,18 +5,18 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field
-  - datetime_range
-  - geocoder
-  - geocoder_field
-  - geocoder_geofield
-  - geofield
-  - joinup_community_content
-  - joinup_core
-  - language
-  - node
-  - oe_webtools_geocoding
-  - smart_trim
+  - cached_computed_field:cached_computed_field
+  - drupal:datetime_range
+  - geocoder:geocoder
+  - geocoder:geocoder_field
+  - geocoder:geocoder_geofield
+  - geofield:geofield
+  - joinup:joinup_community_content
+  - joinup:joinup_core
+  - drupal:language
+  - drupal:node
+  - oe_webtools_location:oe_webtools_geocoding
+  - smart_trim:smart_trim
 
 config_devel:
   - core.entity_form_display.node.event.default
