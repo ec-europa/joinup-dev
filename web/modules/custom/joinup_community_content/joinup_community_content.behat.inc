@@ -134,6 +134,12 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
     $node = $this->getNodeByTitle($title, $type);
     $node_revisions = $this->getNodeRevisionIdsList($title, $type, $published);
     $revision_id = reset($node_revisions);
+    // In case the revision id is the same as the current node, then a node with
+    // the same status was requested. Thus, pick the next id from the list.
+    if ($node->getRevisionId() == $revision_id) {
+      $revision_id = reset($node_revisions);
+    }
+
     if (empty($revision_id)) {
       throw new Exception("There was no revision found with the given criteria.");
     }
