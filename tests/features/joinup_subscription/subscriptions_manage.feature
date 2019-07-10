@@ -81,23 +81,10 @@ Feature: User subscription settings
       | Wolf 359 is a red dwarf star located in the constellation Leo. |
 
     # Check that the subscriptions can be managed through the UI.
-    Given I select the following subscription options for the "Alpha Centauri" collection:
-      | Discussion | all |
-      | Document   | all |
-      | Event      | all |
-      | News       | all |
-
-    And I select the following subscription options for the "Barnard's Star" collection:
-      | Discussion | none |
-      | Document   | none |
-      | Event      | none |
-      | News       | none |
-
-    And I select the following subscription options for the "Wolf 359" collection:
-      | Discussion | all  |
-      | Document   | none |
-      | Event      | all  |
-      | News       | none |
+    Given I select the following collection subscription options:
+      | Alpha Centauri | Discussion, Document, Event, News |
+      | Barnard's Star |                                   |
+      | Wolf 359       | Discussion, Event                 |
 
     And I press "Submit"
     Then I should see the success message "The subscriptions have been updated."
