@@ -90,16 +90,6 @@ class SubscriptionDashboardForm extends FormBase {
     });
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
-    $form['unsubscribe_all'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Unsubscribe from all'),
-      '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
-        'user' => $user->id(),
-      ]),
-      '#access' => !empty($memberships_with_subscription),
-      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
-    ];
-
     $form['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
@@ -156,6 +146,16 @@ class SubscriptionDashboardForm extends FormBase {
         ];
       }
     }
+
+    $form['unsubscribe_all'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Unsubscribe from all'),
+      '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
+        'user' => $user->id(),
+      ]),
+      '#access' => !empty($memberships_with_subscription),
+      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
+    ];
 
     $form['actions']['submit'] = [
       '#type' => 'submit',
