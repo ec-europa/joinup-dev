@@ -11,7 +11,6 @@ use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\og\OgMembershipInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -144,15 +143,10 @@ class SubscriptionDashboardForm extends FormBase {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
         }, FALSE);
         $form['collections'][$collection->id()]['bundles'][$bundle_id] = [
-          '#type' => 'select',
+          '#type' => 'checkbox',
           '#title' => $bundle_info[$bundle_id]['label'],
-          '#options' => [
-            JoinupSubscriptionInterface::SUBSCRIBE_ALL => $this->t('All notifications'),
-            // @todo Add support for `::SUBSCRIBE_NEW` -> "Only new content".
-            // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4980
-            JoinupSubscriptionInterface::SUBSCRIBE_NONE => $this->t('No notifications'),
-          ],
-          '#default_value' => $value ? JoinupSubscriptionInterface::SUBSCRIBE_ALL : JoinupSubscriptionInterface::SUBSCRIBE_NONE,
+          '#return_value' => TRUE,
+          '#default_value' => $value,
         ];
       }
       $form['collections'][$collection->id()]['bundles']['submit'] = [
@@ -176,9 +170,7 @@ class SubscriptionDashboardForm extends FormBase {
     foreach ($memberships as $membership) {
       // Check if the subscriptions have changed. This allows us to skip saving
       // the membership entity if nothing changed.
-      $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()]['bundles'], function (string $subscription_type): bool {
-        return $subscription_type === JoinupSubscriptionInterface::SUBSCRIBE_ALL;
-      }));
+      $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()]['bundles']));
 
       $original_bundles = array_map(function (array $item): string {
         return $item['bundle'];

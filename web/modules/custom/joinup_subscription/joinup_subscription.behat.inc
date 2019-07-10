@@ -16,6 +16,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\Assert;
@@ -102,28 +103,32 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    * will not submit the form.
    *
    * Table format:
-   * | Discussion | all|none |
-   * | Document   | all|none |
-   * | Event      | all|none |
-   * | News       | all|none |
+   * | Collection A | Discussion, Document, Event, News |
+   * | Collection B | Discussion, Event                 |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscription_options
    *   The Behat table node containing the subscription options.
-   * @param string $collection_label
-   *   The collection for which the subscription options will be selected.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   Thrown when the dropdown for the given collection and bundle is not
-   *   found.
+   *   Thrown when a checkbox for a given subscription option is not found.
    *
-   * @When I select the following subscription options for the :collection collection:
+   * @When I select the following collection subscription options:
    */
-  public function selectSubscriptionOptionsInDashboard(TableNode $subscription_options, string $collection_label): void {
-    $collection = self::getRdfEntityByLabel($collection_label, 'collection');
-    foreach ($subscription_options->getRowsHash() as $bundle_id => $subscription_option) {
-      $bundle_id = strtolower($bundle_id);
-      $locator = 'collections[' . $collection->id() . '][bundles][' . $bundle_id . ']';
-      $this->getSession()->getPage()->selectFieldOption($locator, $subscription_option);
+  public function selectSubscriptionOptionsInDashboard(TableNode $subscription_options): void {
+    foreach ($subscription_options->getRowsHash() as $collection_label => $bundle_ids) {
+      $bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($bundle_ids));
+      $collection = self::getRdfEntityByLabel($collection_label, 'collection');
+      foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
+        $locator = 'collections[' . $collection->id() . '][bundles][' . $bundle_id . ']';
+        if (in_array($bundle_id, $bundle_ids)) {
+          if ($this->getSession()->getPage()->hasUncheckedField($locator)) {
+            $this->getSession()->getPage()->checkField($locator);
+          }
+        }
+        elseif ($this->getSession()->getPage()->hasCheckedField($locator)) {
+          $this->getSession()->getPage()->uncheckField($locator);
+        }
+      }
     }
   }
 
@@ -131,22 +136,26 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    * Checks that the given collection content subscriptions are present.
    *
    * Table format:
-   * | Collection A | discussion, document, event, news |
-   * | Collection B | discussion, event                 |
+   * | Collection A | Discussion, Document, Event, News |
+   * | Collection B | Discussion, Event                 |
    *
    * @param \Behat\Gherkin\Node\TableNode $subscriptions
    *   The Behat table node containing the expected subscriptions. The first
    *   column contains the collection labels, the second a comma-separated list
    *   of bundles the user is subscribed to.
    *
+   * @throws \Exception
+   *   Thrown when the user doesn't have a membership in one of the given
+   *   collections. A membership is required in order to have subscriptions.
+   *
    * @Then I should have the following collection content subscriptions:
    */
-  public function assertCollectionContentSubscriptions(TableNode $subscriptions) {
+  public function assertCollectionContentSubscriptions(TableNode $subscriptions): void {
     $user = $this->getUserManager()->getCurrentUser();
     $account = User::load($user->uid);
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
       $collection = self::getRdfEntityByLabel($collection_label);
-      $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument($expected_bundle_ids);
+      $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($expected_bundle_ids));
       $membership = $this->getMembershipByGroupAndUser($collection, $account);
       $actual_bundle_ids = array_map(function (array $item): string {
         return $item['bundle'];
