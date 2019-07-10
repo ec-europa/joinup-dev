@@ -81,7 +81,7 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
     }
 
     if (!empty($group)) {
-      $event->setSiteSection($group->label());
+      $event->setSiteSection($group->id());
       $event->addCacheableDependency($group);
     }
   }
