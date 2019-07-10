@@ -156,6 +156,8 @@ class SubscriptionDashboardForm extends FormBase {
       ];
     }
 
+    $form['#attached']['library'][] = 'joinup_subscription/dashboard';
+
     return $form;
   }
 
