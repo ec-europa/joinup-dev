@@ -155,9 +155,11 @@ class SubscribeToCollectionForm extends FormBase {
         'url' => Url::fromRoute('collection.subscribe_to_collection_form', [
           'rdf_entity' => $rdf_entity->id(),
         ]),
-        'options' => ['query' => [
-          FormBuilderInterface::AJAX_FORM_REQUEST => TRUE,
-        ]],
+        'options' => [
+          'query' => [
+            FormBuilderInterface::AJAX_FORM_REQUEST => TRUE,
+          ],
+        ],
       ],
       '#attributes' => [
         'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
@@ -207,7 +209,9 @@ class SubscribeToCollectionForm extends FormBase {
    * AJAX callback showing a form to subscribe to the collection after joining.
    *
    * @param array $form
+   *   The form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    *
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   The AJAX response.

@@ -7,15 +7,15 @@ namespace Drupal\collection\Form;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessManagerInterface;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\PrependCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
@@ -123,7 +123,7 @@ class JoinCollectionForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, AccountProxyInterface $user = NULL, RdfInterface $collection = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, AccountInterface $user = NULL, RdfInterface $collection = NULL): array {
     $form['#access'] = $this->access();
 
     $user = $this->loadUser((int) $user->id());
@@ -158,8 +158,11 @@ class JoinCollectionForm extends FormBase {
     // JavaScript-enabled browsers.
     elseif ($membership->getState() === OgMembershipInterface::STATE_ACTIVE) {
       $parameters = ['rdf_entity' => $collection->id()];
+      $form['leave'] = [
+        '#theme' => 'collection_leave_button',
+      ];
       if ($this->accessManager->checkNamedRoute('collection.leave_confirm_form', $parameters)) {
-        $form['leave'] = [
+        $form['leave']['#confirm'] = [
           '#type' => 'link',
           '#title' => $this->t('Leave this collection'),
           '#url' => Url::fromRoute('collection.leave_confirm_form', $parameters),
@@ -171,7 +174,7 @@ class JoinCollectionForm extends FormBase {
         ];
       }
       else {
-        $form['leave'] = [
+        $form['leave']['#confirm'] = [
           '#markup' => $this->t('You cannot leave the %collection collection', ['%collection' => $collection->label()]),
         ];
       }
@@ -248,7 +251,9 @@ class JoinCollectionForm extends FormBase {
    * AJAX callback showing a form to subscribe to the collection after joining.
    *
    * @param array $form
+   *   The form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    *
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   The AJAX response.
@@ -264,17 +269,11 @@ class JoinCollectionForm extends FormBase {
     if (!$form_state->getErrors()) {
       $collection = $this->loadCollection($form_state->getValue('collection_id'));
 
-      // Replace the submit button with a message, so that the user can not
-      // accidentally click the button again.
-      $element = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('Thanks for joining us!'),
-        '#attributes' => [
-          'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
-        ],
-      ];
-      $response->addCommand(new HtmlCommand('#join-collection-form', $element));
+      // Rebuild the form and replace it in the page, so that the "Join this
+      // "collection" button will be replaced with either the "You're a member"
+      // button or the "Membership is pending" button.
+      $form_button = $this->formBuilder->rebuildForm('join-collection-form', $form_state, $form);
+      $response->addCommand(new ReplaceCommand('#join-collection-form', $form_button));
 
       $title = $this->t('Welcome to %collection', ['%collection' => $collection->label()]);
 
