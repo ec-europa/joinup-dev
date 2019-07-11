@@ -14,6 +14,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
@@ -31,6 +32,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   use RdfEntityTrait;
   use UserTrait;
   use UtilityTrait;
+  use TraversingTrait;
 
   /**
    * Navigates to the subscription settings form of the given user.
@@ -133,6 +135,41 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
+   * Checks that the given subscription options are selected in the dashboard.
+   *
+   * This performs the action in the user interface, so the browser should be
+   * navigated to the subscription dashboard before performing this step.
+   *
+   * Table format:
+   * | Collection A | Discussion, Document, Event, News |
+   * | Collection B | Discussion, Event                 |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $subscription_options
+   *   The Behat table node containing the subscription options.
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   *   Thrown when a checkbox for a given subscription option is not found or
+   *   not in the expected state.
+   *
+   * @Then the following collection content subscriptions should be selected:
+   */
+  public function assertSubscriptionOptionsInDashboard(TableNode $subscription_options): void {
+    foreach ($subscription_options->getRowsHash() as $collection_label => $bundle_ids) {
+      $bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($bundle_ids));
+      $collection = self::getRdfEntityByLabel($collection_label, 'collection');
+      foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
+        $locator = 'collections[' . $collection->id() . '][bundles][' . $bundle_id . ']';
+        if (in_array($bundle_id, $bundle_ids)) {
+          $this->assertSession()->checkboxChecked($locator);
+        }
+        else {
+          $this->assertSession()->checkboxNotChecked($locator);
+        }
+      }
+    }
+  }
+
+  /**
    * Checks that the given collection content subscriptions are present.
    *
    * Table format:
@@ -175,6 +212,22 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   protected function getSubscriptionService(): JoinupSubscriptionInterface {
     return \Drupal::service('joinup_subscription.subscription');
+  }
+
+  /**
+   * Finds a card element by its heading.
+   *
+   * @param string $heading
+   *   The heading of the card to find.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The element found.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the element is not found.
+   */
+  protected function getCollectionSubscriptionCardByHeading(string $heading): NodeElement {
+    return $this->getListingByHeading('collection-subscription', $heading);
   }
 
 }
