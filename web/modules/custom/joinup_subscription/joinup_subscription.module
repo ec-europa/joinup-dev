@@ -36,12 +36,7 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
       ->setRequired(FALSE)
       // By default, the new member gets subscribed to all community content of
       // the group.
-      ->setDefaultValue([
-        ['entity_type' => 'node', 'bundle' => 'discussion'],
-        ['entity_type' => 'node', 'bundle' => 'document'],
-        ['entity_type' => 'node', 'bundle' => 'event'],
-        ['entity_type' => 'node', 'bundle' => 'news'],
-      ]);
+      ->setDefaultValue([]);
   }
 
   return $fields;
