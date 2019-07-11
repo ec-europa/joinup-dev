@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\Assert;
 
@@ -147,7 +148,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
     foreach ($subscriptions->getRowsHash() as $collection_label => $expected_bundle_ids) {
       $collection = self::getRdfEntityByLabel($collection_label);
       $expected_bundle_ids = $this->explodeCommaSeparatedStepArgument($expected_bundle_ids);
-      $membership = $this->getMembershipByGroupAndUser($collection, $account);
+      $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
       $actual_bundle_ids = array_map(function (array $item): string {
         return $item['bundle'];
       }, $membership->get('subscription_bundles')->getValue());
@@ -156,6 +157,25 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
       sort($actual_bundle_ids);
       Assert::assertEquals($expected_bundle_ids, $actual_bundle_ids);
     }
+  }
+
+  /**
+   * Checks that the current user is not subscribed to the given collection.
+   *
+   * @param string $label
+   *   The name of the collection the user should not be subscribed to.
+   *
+   * @throws \Exception
+   *   Thrown when the user is not a member of the given collection.
+   *
+   * @Then I should not be subscribed to the :label collection
+   */
+  public function assertNoCollectionContentSubscriptions(string $label): void {
+    $user = $this->getUserManager()->getCurrentUser();
+    $account = User::load($user->uid);
+    $collection = self::getRdfEntityByLabel($label);
+    $membership = $this->getMembershipByGroupAndUser($collection, $account, OgMembershipInterface::ALL_STATES);
+    Assert::assertEmpty($membership->get('subscription_bundles')->getValue());
   }
 
   /**
