@@ -674,3 +674,20 @@ function joinup_core_post_update_enable_nio() {
 function joinup_core_post_update_enable_joinup_privacy() {
   \Drupal::service('module_installer')->install(['joinup_privacy']);
 }
+
+/**
+ * Deletes unused files.
+ */
+function joinup_core_post_update_delete_orphaned_files() {
+  $query = \Drupal::database()->select('file_managed', 'fm')
+    ->fields('fm', ['fid']);
+  $query->leftJoin('file_usage', 'fu', 'fm.fid = fu.fid');
+  $query->leftJoin('node_revision', 'nr', 'fu.id = nr.nid');
+  $query->condition('fu.type', 'node');
+  $query->isNull('nr.nid');
+  $results = $query->execute()->fetchCol();
+
+  foreach (File::loadMultiple($results) as $file) {
+    $file->delete();
+  }
+}
