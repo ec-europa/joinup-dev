@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_collection\Controller;
 
 use Drupal\collection\Form\LeaveCollectionConfirmForm;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -17,12 +21,12 @@ class JoinupCollectionLeaveController {
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection that is on the verge of losing a member.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public static function access(RdfInterface $rdf_entity) {
+  public static function access(RdfInterface $rdf_entity): AccessResultInterface {
     // The 'Joinup' membership can not be revoked.
-    if ($rdf_entity->id() === JOINUP_COLLECTION_ID) {
+    if ($rdf_entity->id() === JoinupCollectionHelper::getCollectionId()) {
       return AccessResult::forbidden();
     }
     return LeaveCollectionConfirmForm::access($rdf_entity);

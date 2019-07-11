@@ -5,6 +5,8 @@
  * Contains \CollectionSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -17,6 +19,7 @@ use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -713,9 +716,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @see joinup_collection.module
    */
-  public function createJoinupCollection() {
+  public function createJoinupCollection(): void {
     $this->createCollection([
-      'id' => JOINUP_COLLECTION_ID,
+      'id' => JoinupCollectionHelper::getCollectionId(),
       'label' => 'Joinup',
       'field_ar_state' => 'validated',
     ]);
