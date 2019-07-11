@@ -54,6 +54,7 @@ dependencies:
   - joinup:joinup_news
   - joinup:joinup_newsletter
   - joinup:joinup_notification
+  - joinup:joinup_privacy
   - joinup:joinup_rss
   - joinup:joinup_search
   - joinup:joinup_sparql
@@ -269,6 +270,8 @@ config_devel:
   - system.theme
   - user.flood
   - user.mail
+  - user.role.anonymous
+  - user.role.authenticated
   - user.settings
   - views.view.collection_content
   - views.view.collections
