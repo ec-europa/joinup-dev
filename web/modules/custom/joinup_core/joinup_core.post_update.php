@@ -667,3 +667,10 @@ function joinup_core_post_update_set_news_default_version() {
 function joinup_core_post_update_enable_nio() {
   \Drupal::service('module_installer')->install(['nio']);
 }
+
+/**
+ * Enable the joinup_privacy module.
+ */
+function joinup_core_post_update_enable_joinup_privacy() {
+  \Drupal::service('module_installer')->install(['joinup_privacy']);
+}

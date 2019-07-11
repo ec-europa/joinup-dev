@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies: {  }
+id: anonymous
+label: 'Anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access tour'
+  - 'access user profiles'
+  - 'export rdf metadata'
+  - 'never autoplay videos'
+  - 'subscribe to newsletters'
+  - 'use text format basic_html'
+  - 'use text format simple_text'
+  - 'view rdf entity'
