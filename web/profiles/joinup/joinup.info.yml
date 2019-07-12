@@ -55,6 +55,7 @@ dependencies:
   - joinup:joinup_news
   - joinup:joinup_newsletter
   - joinup:joinup_notification
+  - joinup:joinup_privacy
   - joinup:joinup_rss
   - joinup:joinup_search
   - joinup:joinup_sparql
@@ -84,6 +85,7 @@ dependencies:
   - drupal:path
   - pathauto:pathauto
   - persistent_login:persistent_login
+  - publication_date:publication_date
   - r4032login:r4032login
   - rdf_entity:rdf_draft
   - rdf_entity:rdf_entity
@@ -271,6 +273,8 @@ config_devel:
   - system.theme
   - user.flood
   - user.mail
+  - user.role.anonymous
+  - user.role.authenticated
   - user.settings
   - views.view.collection_content
   - views.view.collections

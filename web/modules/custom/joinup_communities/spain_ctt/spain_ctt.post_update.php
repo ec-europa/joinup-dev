@@ -5,8 +5,12 @@
  * Post update functions for the Spain CTT module.
  */
 
+use Drupal\og\Entity\OgRole;
+use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\user\Entity\User;
 
 /**
  * Clean more solution duplicates in the ctt collection.
@@ -170,4 +174,47 @@ function spain_ctt_post_update_delete_ctt_entities() {
   // Delete entities all together.
   $rdf_entity_storage->delete($rdf_entities_to_delete);
   $node_storage->delete($nodes_to_delete);
+}
+
+/**
+ * Sets the owner of the "Spain CTT" collection to all its solutions.
+ */
+function spain_ctt_post_update_set_solutions_owner(array &$sandbox) {
+  if (!isset($sandbox['solution_ids'])) {
+    $id = 'http://administracionelectronica.gob.es/ctt';
+    $spain_ctt = Rdf::load($id);
+    $solutions = $spain_ctt->field_ar_affiliates->referencedEntities();
+
+    $sandbox['solution_ids'] = array_map(function (RdfInterface $solution): string {
+      return $solution->id();
+    }, $solutions);
+    $sandbox['owner_id'] = $spain_ctt->getOwnerId();
+    $sandbox['processed'] = 0;
+  }
+
+  $solution_ids = array_splice($sandbox['solution_ids'], 0, 10);
+  $user = User::load($sandbox['owner_id']);
+  $roles = [
+    OgRole::getRole('rdf_entity', 'solution', 'administrator'),
+    OgRole::getRole('rdf_entity', 'solution', 'facilitator'),
+  ];
+
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  foreach (Rdf::loadMultiple($solution_ids) as $solution) {
+    if (!empty($membership_manager->getMembership($solution, $user, OgMembershipInterface::ALL_STATES))) {
+      continue;
+    }
+    $membership = $membership_manager->createMembership($solution, $user);
+    $membership->setRoles($roles);
+    $membership->save();
+
+    $sandbox['processed']++;
+  }
+
+  $sandbox['#finished'] = (int) !$sandbox['solution_ids'];
+
+  if ($sandbox['#finished'] === 1) {
+    return "{$sandbox['processed']} memberships were appointed.";
+  }
 }

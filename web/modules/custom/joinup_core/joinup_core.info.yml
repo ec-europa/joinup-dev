@@ -8,16 +8,18 @@ dependencies:
   - allowed_formats:allowed_formats
   - cached_computed_field:cached_computed_field
   - drupal:comment
-  - ds:ds
-  - facets:facets
   - drupal:image
   - drupal:link
+  - drupal:tour
+  - ds:ds
+  - facets:facets
+  - joinup:oe_newsroom_newsletter
   - matomo_reporting_api:matomo_reporting_api
   - menu_admin_per_menu:menu_admin_per_menu
   - message:message
   - message_notify:message_notify
-  - joinup:oe_newsroom_newsletter
   - og:og
+  - publication_date:publication_date
   - rdf_entity:rdf_draft
   - rdf_entity:rdf_entity
   - rdf_entity:rdf_taxonomy
@@ -25,7 +27,6 @@ dependencies:
   - search_api:search_api
   - search_api_solr:search_api_solr
   - state_machine:state_machine
-  - drupal:tour
 
 config_devel:
   - comment.type.comment

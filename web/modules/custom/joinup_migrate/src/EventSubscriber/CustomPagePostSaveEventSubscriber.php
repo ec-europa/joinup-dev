@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
 use Drupal\node\Entity\Node;
@@ -47,6 +48,23 @@ class CustomPagePostSaveEventSubscriber implements EventSubscriberInterface {
    * @var int[]
    */
   protected $weight = [];
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a CustomPagePostSaveEventSubscriber.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+    $this->entityTypeManager = $entityTypeManager;
+  }
 
   /**
    * {@inheritdoc}
@@ -99,7 +117,7 @@ class CustomPagePostSaveEventSubscriber implements EventSubscriberInterface {
   protected function getOgMenuInstance($group_id) {
     if (!isset($this->ogMenuInstances[$group_id])) {
       if (!isset($this->ogMenuInstanceStorage)) {
-        $this->ogMenuInstanceStorage = \Drupal::entityTypeManager()->getStorage('ogmenu_instance');
+        $this->ogMenuInstanceStorage = $this->entityTypeManager->getStorage('ogmenu_instance');
       }
 
       $values = [
@@ -139,7 +157,7 @@ class CustomPagePostSaveEventSubscriber implements EventSubscriberInterface {
       ];
 
       if (!isset($this->menuLinkStorage)) {
-        $this->menuLinkStorage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+        $this->menuLinkStorage = $this->entityTypeManager->getStorage('menu_link_content');
       }
 
       if (!$links = $this->menuLinkStorage->loadByProperties($properties)) {
