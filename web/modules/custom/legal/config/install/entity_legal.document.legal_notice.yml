@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+id: legal_notice
+label: 'Legal notice'
+require_signup: true
+require_existing: true
+settings:
+  new_users:
+    require: true
+    require_method: form_link
+  existing_users:
+    require: true
+    require_method: redirect
