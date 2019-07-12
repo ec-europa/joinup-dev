@@ -9,8 +9,13 @@ declare(strict_types = 1);
 
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\block_content\Entity\BlockContentType;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\page_manager\Entity\Page;
+use Drupal\page_manager\Entity\PageVariant;
 
 /**
  * Enable the "Views data export" module.
@@ -101,4 +106,26 @@ BODY;
       'format' => 'content_editor',
     ],
   ])->save();
+}
+
+/**
+ * Install Entity Legal module.
+ */
+function joinup_post_update_legal() {
+  // Dismantle the actual solution.
+  /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+  $entity_repository = \Drupal::service('entity.repository');
+  $block_content = $entity_repository->loadEntityByUuid('block_content', 'ec092d17-ef18-42b0-b460-642871150cd3');
+  $block_content->delete();
+  EntityFormDisplay::load('block_content.simple_block.default')->delete();
+  EntityViewDisplay::load('block_content.simple_block.default')->delete();
+  FieldConfig::loadByName('block_content', 'simple_block', 'body')->delete();
+  FieldStorageConfig::loadByName('block_content', 'simple_block')->delete();
+  BlockContentType::load('simple_block')->delete();
+  // Remove Page Manager data.
+  PageVariant::load('legal_notice-block_display-0')->delete();
+  Page::load('legal_notice')->delete();
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service('module_installer');
+  $module_installer->uninstall(['block_content_permissions', 'block_content', 'page_manager']);
 }
