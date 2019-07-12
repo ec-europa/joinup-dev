@@ -16,18 +16,6 @@ class JoinupEuExternalAuthnameItemList extends FieldItemList {
   /**
    * {@inheritdoc}
    */
-  public static function createInstance($definition, $name = NULL, TraversableTypedDataInterface $parent = NULL) {
-    return parent::createInstance(
-      $definition,
-      $name,
-      $parent,
-      \Drupal::service('cas.user_manager')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function createItem($offset = 0, $value = NULL) {
     $entity = $this->getEntity();
 
@@ -35,12 +23,8 @@ class JoinupEuExternalAuthnameItemList extends FieldItemList {
       throw new \Exception('This class can be used only with the user entity.');
     }
 
-    if (empty($entity->id())) {
-      return NULL;
-    }
-
-    $cas_user_manager = \Drupal::service('cas.user_manager');
-    return parent::createItem($offset, $cas_user_manager->getCasUsernameForAccount($entity->id()));
+    $value = empty($entity->id()) ? NULL : \Drupal::service('cas.user_manager')->getCasUsernameForAccount($entity->id());
+    return parent::createItem($offset, $value);
   }
 
   /**
@@ -48,10 +32,7 @@ class JoinupEuExternalAuthnameItemList extends FieldItemList {
    */
   public function getValue($include_computed = FALSE) {
     // Ensure that there is always one item created.
-    if ($this->isEmpty()) {
-      $this->list[] = $this->createItem();
-    }
-
+    $this->ensureLoaded();
     return parent::getValue($include_computed);
   }
 
@@ -59,12 +40,36 @@ class JoinupEuExternalAuthnameItemList extends FieldItemList {
    * {@inheritdoc}
    */
   public function getIterator() {
-    // Ensure that there is always one item created.
-    if ($this->isEmpty()) {
-      $this->list[] = $this->createItem();
-    }
+    $this->ensureLoaded();
+    return new \ArrayIterator($this->list);
+  }
 
-    return parent::getIterator();
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmpty() {
+    $this->ensureLoaded();
+    return parent::isEmpty();
+  }
+
+  /**
+   * Makes sure that the item list is never empty.
+   *
+   * For 'normal' fields that use database storage the field item list is
+   * initially empty, but since this is a computed field this always has a
+   * value.
+   * Make sure the item list is always populated, so this field is not skipped
+   * for rendering in EntityViewDisplay and friends.
+   *
+   * This trick has been borrowed from issue #2846554 which does the same for
+   * the PathItem field.
+   *
+   * @see https://www.drupal.org/node/2846554
+   */
+  protected function ensureLoaded() {
+    if (!isset($this->list[0])) {
+      $this->list[0] = $this->createItem(0);
+    }
   }
 
 }
