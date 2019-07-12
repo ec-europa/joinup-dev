@@ -669,6 +669,13 @@ function joinup_core_post_update_enable_nio() {
 }
 
 /**
+ * Enable the Publication Date module.
+ */
+function joinup_core_post_update_install_publication_date() {
+  \Drupal::service('module_installer')->install(['publication_date']);
+}
+
+/**
  * Enable the joinup_privacy module.
  */
 function joinup_core_post_update_enable_joinup_privacy() {
