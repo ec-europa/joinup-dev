@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59b1effba1ce31f2145b858ab290f887",
+    "content-hash": "df3d3645b66e380609cd1e178091a326",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2429,12 +2429,16 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2630,14 +2634,6 @@
             ],
             "authors": [
                 {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
-                },
-                {
-                    "name": "gnuget",
-                    "homepage": "https://www.drupal.org/user/992990"
-                },
-                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2749,8 +2745,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3590,6 +3586,75 @@
             }
         },
         {
+            "name": "drupal/entity_legal",
+            "version": "dev-2.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/entity_legal.git",
+                "reference": "0a56de9da02903381ba2836e74f7e85944b3d22f"
+            },
+            "require": {
+                "drupal/core": "*",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-beta1+4-dev",
+                    "datestamp": "1522061280",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Move the 'published_version' field from bundle to content entity @see https://www.drupal.org/project/entity_legal/issues/3067028": "https://www.drupal.org/files/issues/2019-07-17/3067028-13.patch",
+                    "Expose the field management tabs @see https://www.drupal.org/project/entity_legal/issues/3067018": "https://www.drupal.org/files/issues/2019-07-10/3067018-2.patch",
+                    "Do not redirect logout @see https://www.drupal.org/project/entity_legal/issues/2851667": "https://www.drupal.org/files/issues/2019-07-17/2851667-16.patch",
+                    "Acceptance records not deleted on user removal @see https://www.drupal.org/project/entity_legal/issues/2633040": "https://www.drupal.org/files/issues/2019-07-15/2633040-3.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Deciphered",
+                    "homepage": "https://www.drupal.org/user/103796"
+                },
+                {
+                    "name": "alex.designworks",
+                    "homepage": "https://www.drupal.org/user/620694"
+                },
+                {
+                    "name": "axel.rutz",
+                    "homepage": "https://www.drupal.org/user/229048"
+                },
+                {
+                    "name": "codesidekick",
+                    "homepage": "https://www.drupal.org/user/1633774"
+                },
+                {
+                    "name": "malks",
+                    "homepage": "https://www.drupal.org/user/562504"
+                },
+                {
+                    "name": "neerajsingh",
+                    "homepage": "https://www.drupal.org/user/3202261"
+                }
+            ],
+            "description": "Create versionable, trackable legal forms for site users.",
+            "homepage": "https://www.drupal.org/project/entity_legal",
+            "support": {
+                "source": "https://git.drupalcode.org/project/entity_legal"
+            },
+            "time": "2018-03-26T10:47:34+00:00"
+        },
+        {
             "name": "drupal/facets",
             "version": "1.3.0",
             "source": {
@@ -3810,7 +3875,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4659,7 +4724,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4969,8 +5034,8 @@
                     "dev-4.x": "4.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-4.0-beta3+8-dev",
-                    "datestamp": "1557949081",
+                    "version": "8.x-4.0-beta3+10-dev",
+                    "datestamp": "1559069285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5381,7 +5446,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5824,7 +5889,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6426,7 +6491,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6590,7 +6655,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
+                "source": "https://git.drupalcode.org/project/views_data_export"
             }
         },
         {
@@ -7416,7 +7481,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9852,7 +9917,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -12564,7 +12629,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.27",
-                    "datestamp": "1558553350",
+                    "datestamp": "1558552081",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12858,10 +12923,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
@@ -15526,6 +15587,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/diff": 5,
+        "drupal/entity_legal": 20,
         "drupal/flag": 15,
         "drupal/migrate_run": 10,
         "drupal/page_manager": 20,
