@@ -71,26 +71,21 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Subscribes the given users to the given entity.
+   * Subscribes the given users to the given discussion.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A table with the keys 'username' and 'title'.
-   * @param string $bundle
-   *   The entity bundle to which the entity with given title corresponds.
-   * @param string $entity_type
-   *   The entity type to which the entity with given title corresponds.
    *
-   * @Given (the following ):bundle :entity_type subscriptions:
+   * @Given (the following )discussion subscriptions:
    */
-  public function subscribe(TableNode $table, string $bundle, string $entity_type): void {
+  public function subscribeToDiscussion(TableNode $table): void {
     $subscription_service = $this->getSubscriptionService();
-    $entity_type = self::translateEntityTypeAlias($entity_type);
     foreach ($table->getColumnsHash() as $values) {
       $user = $this->getUserByName($values['username']);
       /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-      $entity = $this->getEntityByLabel($entity_type, $values['title'], $bundle);
+      $entity = $this->getEntityByLabel('node', $values['title'], 'discussion');
       // @todo Currently we only have subscriptions for discussions. Provide a
-      //   lookup table for the discussion ID once we have more.
+      //   lookup table for the flag ID once we have more.
       $subscription_service->subscribe($user, $entity, 'subscribe_discussions');
     }
   }

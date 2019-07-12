@@ -62,7 +62,7 @@ Feature: Subscribing to discussions
     And the following collection user membership:
       | collection     | user        | roles       |
       | Dairy products | facilitator | facilitator |
-    And the following discussion content subscriptions:
+    And the following discussion subscriptions:
       | username | title       |
       | follower | Rare Butter |
 
