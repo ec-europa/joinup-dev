@@ -207,6 +207,9 @@ Feature: Homepage
     Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
     And I should see the small header
 
+    # Homepage should also be cacheable for logged in users.
+    And the page should be cacheable
+
     # The header should still be shown in the other pages.
     When I click "Collections"
     Then I should see the small header

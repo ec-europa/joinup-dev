@@ -78,7 +78,6 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
       throw new Exception('No mail was sent.');
     }
 
-    $link = NULL;
     $matches = [];
     foreach ($mails as $mail) {
       if ($mail['to'] !== $user_email) {

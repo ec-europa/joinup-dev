@@ -5,8 +5,8 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup_core
-  - state_machine
+  - joinup:joinup_core
+  - state_machine:state_machine
 
 config_devel:
   - core.base_field_override.rdf_entity.owner.label

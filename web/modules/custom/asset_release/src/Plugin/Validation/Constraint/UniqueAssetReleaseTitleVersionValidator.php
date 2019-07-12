@@ -21,7 +21,7 @@ class UniqueAssetReleaseTitleVersionValidator extends ConstraintValidator {
    * {@inheritdoc}
    */
   public function validate($items, Constraint $constraint) {
-    if (!$item = $items->first()) {
+    if (!$items->first()) {
       return;
     }
 

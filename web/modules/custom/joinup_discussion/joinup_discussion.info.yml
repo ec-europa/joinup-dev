@@ -5,18 +5,18 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field
-  - changed_fields
-  - comment
-  - joinup_community_content
-  - joinup_core
-  - joinup_invite
-  - joinup_notification
-  - joinup_subscription
-  - joinup_user
-  - language
-  - message
-  - smart_trim
+  - cached_computed_field:cached_computed_field
+  - changed_fields:changed_fields
+  - drupal:comment
+  - joinup:joinup_community_content
+  - joinup:joinup_core
+  - joinup:joinup_invite
+  - joinup:joinup_notification
+  - joinup:joinup_subscription
+  - joinup:joinup_user
+  - drupal:language
+  - message:message
+  - smart_trim:smart_trim
 
 config_devel:
   - comment.type.reply

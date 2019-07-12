@@ -114,7 +114,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
     $blacklist = array_flip($this->getPersistentDataValue('blacklist'));
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $id => $entity) {
+    foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $entity) {
       $changed = 0;
       $reference_fields = $this->getAdmsSchemaEntityReferenceFields($entity->bundle(), ['rdf_entity', 'taxonomy_term']);
 

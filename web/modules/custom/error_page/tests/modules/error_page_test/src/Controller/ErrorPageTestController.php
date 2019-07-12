@@ -35,6 +35,7 @@ class ErrorPageTestController extends ControllerBase {
    * Simulates a PHP notice error.
    */
   public function notice() {
+    // @codingStandardsIgnoreLine
     return ['#markup' => $not_initialised_variable];
   }
 

@@ -5,12 +5,12 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup_core
-  - language
-  - link
-  - rdf_entity
-  - state_machine
-  - text
+  - joinup:joinup_core
+  - drupal:language
+  - drupal:link
+  - rdf_entity:rdf_entity
+  - state_machine:state_machine
+  - drupal:text
 
 config_devel:
   - core.entity_form_display.rdf_entity.contact_information.default
