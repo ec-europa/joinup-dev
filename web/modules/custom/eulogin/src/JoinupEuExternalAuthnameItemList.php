@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_eulogin;
 
 use Drupal\Core\Field\FieldItemList;
-use Drupal\Core\TypedData\TraversableTypedDataInterface;
 use Drupal\user\Entity\User;
 
 /**
