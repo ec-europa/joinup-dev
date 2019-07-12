@@ -591,6 +591,18 @@ display:
             group_items: {  }
           plugin_id: search_api_string
       sorts:
+        published_at:
+          id: published_at
+          table: search_api_index_published
+          field: published_at
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
         entity_created:
           id: entity_created
           table: search_api_index_published

@@ -26,4 +26,21 @@ interface SchemaFieldValidatorInterface {
    */
   public function isDefinedInSchema(string $entity_type_id, string $bundle, string $field_name, string $column = ''): bool;
 
+  /**
+   * Checks whether an entity bundle has a validation schema definition.
+   *
+   * This is different with the field mapping itself as an entity can have a
+   * mapping but it does not necessarily have to be part of an ontology.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $bundle
+   *   The bundle id.
+   *
+   * @return bool
+   *   Whether the bundle has a schema associated with it and can validate
+   *   field schema definitions.
+   */
+  public function hasSchemaDefinition(string $entity_type_id, string $bundle): bool;
+
 }
