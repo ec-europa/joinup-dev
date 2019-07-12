@@ -48,6 +48,7 @@ dependencies:
   - joinup:joinup_event
   - joinup:joinup_federation
   - joinup:joinup_invite
+  - joinup:joinup_legal
   - joinup:joinup_licence
   - joinup:joinup_news
   - joinup:joinup_newsletter
