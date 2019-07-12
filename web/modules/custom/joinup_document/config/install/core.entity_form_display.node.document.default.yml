@@ -25,6 +25,7 @@ dependencies:
     - datetime
     - file_url
     - joinup_core
+    - publication_date
     - text
 id: node.document.default
 targetEntityType: node
@@ -161,6 +162,7 @@ hidden:
   langcode: true
   og_audience: true
   path: true
+  published_at: true
   promote: true
   status: true
   sticky: true

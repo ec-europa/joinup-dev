@@ -1,10 +1,12 @@
 services:
   joinup_migrate.custom_page_post_save_subscriber:
     class: Drupal\joinup_migrate\EventSubscriber\CustomPagePostSaveEventSubscriber
+    arguments: ['@entity_type.manager']
     tags:
       - { name: event_subscriber }
   joinup_migrate.redirect_creation_subscriber:
     class: Drupal\joinup_migrate\EventSubscriber\CreateRedirectEventSubscriber
+    arguments: ['@entity_type.manager', '@redirect.repository']
     tags:
       - { name: event_subscriber }
   joinup_migrate.post_prepare_subscriber:
@@ -13,17 +15,21 @@ services:
       - { name: event_subscriber }
   joinup_migrate.translate_field_subscriber:
     class: Drupal\joinup_migrate\EventSubscriber\TranslateFieldSubscriber
+    arguments: ['@language_manager']
     tags:
       - { name: event_subscriber }
   joinup_migrate.solution_owner_check_subscriber:
     class: Drupal\joinup_migrate\EventSubscriber\SolutionOwnerCheckSubscriber
+    arguments: ['@plugin.manager.migration']
     tags:
       - { name: event_subscriber }
   joinup_migrate.mail_swap_subscriber:
     class: Drupal\joinup_migrate\EventSubscriber\MailSwapSubscriber
+    arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }
   joinup_migrate.user_joinup_membership:
     class: Drupal\joinup_migrate\EventSubscriber\UserJoinupMembershipSubscriber
+    arguments: ['@entity_type.manager']
     tags:
       - { name: event_subscriber }
