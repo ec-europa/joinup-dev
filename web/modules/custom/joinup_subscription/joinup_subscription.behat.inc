@@ -16,6 +16,7 @@ use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
@@ -87,6 +88,42 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
       // @todo Currently we only have subscriptions for discussions. Provide a
       //   lookup table for the flag ID once we have more.
       $subscription_service->subscribe($user, $entity, 'subscribe_discussions');
+    }
+  }
+
+  /**
+   * Subscribes the given users to the given collection content bundles.
+   *
+   * Table format:
+   * | collection   | user   | subscriptions                     |
+   * | Collection A | user A | discussion, document, event, news |
+   * | Collection B | user B | discussion, event                 |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $subscription_table
+   *   A table with the data for subscribing the users.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when a membership cannot be updated with the new subscriptions.
+   * @throws \Exception
+   *   Thrown if a membership is not found for a given user in a given
+   *   collection.
+   *
+   * @Given (the following )collection content subscriptions:
+   */
+  public function subscribeToCollectionContent(TableNode $subscription_table): void {
+    foreach ($subscription_table->getColumnsHash() as $values) {
+      $collection = $this->getRdfEntityByLabel($values['collection'], 'collection');
+      $user = $this->getUserByName($values['user']);
+      $membership = $this->getMembershipByGroupAndUser($collection, $user, OgMembershipInterface::ALL_STATES);
+      $subscriptions = [];
+      foreach ($this->explodeCommaSeparatedStepArgument(strtolower($values['subscriptions'])) as $bundle) {
+        Assert::assertTrue(in_array($bundle, CommunityContentHelper::BUNDLES), "Unknown bundle $bundle.");
+        $subscriptions[] = [
+          'entity_type' => 'node',
+          'bundle' => $bundle,
+        ];
+      }
+      $membership->set('subscription_bundles', $subscriptions)->save();
     }
   }
 
