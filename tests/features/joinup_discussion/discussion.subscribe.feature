@@ -165,7 +165,7 @@ Feature: Subscribing to discussions
     Given discussion content:
       | title     | body                                                   | collection     | state     | author          |
       | Rare feta | Made from milk from the exclusive Manx Loaghtan sheep. | Dairy products | validated | Dr. Hans Zarkov |
-    And discussion content subscriptions:
+    And discussion subscriptions:
       | username    | title     |
       | follower    | Rare feta |
       | facilitator | Rare feta |
