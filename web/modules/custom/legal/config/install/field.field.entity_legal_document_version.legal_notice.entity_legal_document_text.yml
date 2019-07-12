@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_legal.document.legal_notice
+    - field.storage.entity_legal_document_version.entity_legal_document_text
+  module:
+    - text
+id: entity_legal_document_version.legal_notice.entity_legal_document_text
+field_name: entity_legal_document_text
+entity_type: entity_legal_document_version
+bundle: legal_notice
+label: 'Content'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

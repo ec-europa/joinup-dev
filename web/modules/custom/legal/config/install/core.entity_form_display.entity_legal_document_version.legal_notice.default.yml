@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_legal.document.legal_notice
+    - field.field.entity_legal_document_version.legal_notice.entity_legal_document_text
+    - field.field.entity_legal_document_version.legal_notice.version
+  module:
+    - text
+id: entity_legal_document_version.legal_notice.default
+targetEntityType: entity_legal_document_version
+bundle: legal_notice
+mode: default
+content:
+  entity_legal_document_text:
+    type: text_textarea_with_summary
+    weight: 1
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  version:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden: {  }

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_legal.document.legal_notice
+    - field.storage.entity_legal_document_version.version
+id: entity_legal_document_version.legal_notice.version
+field_name: version
+entity_type: entity_legal_document_version
+bundle: legal_notice
+label: Version
+description: 'Legal notice version.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
