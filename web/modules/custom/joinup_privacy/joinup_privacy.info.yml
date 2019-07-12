@@ -1,0 +1,5 @@
+name: 'Joinup Privacy'
+type: module
+description: 'Provides functionality related to privacy management'
+core: 8.x
+package: Joinup
