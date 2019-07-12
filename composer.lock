@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "009019ae554eab5856f509e5678e2109",
+    "content-hash": "66646f4bebc80ccc4283a82787906cde",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.106.1",
+            "version": "3.107.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ed3bd17b8a6caa5c99ed5fe559d061a1f9fc2c8c"
+                "reference": "cf0c0968f93748cbe35d6a78e7babc7b7460945f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed3bd17b8a6caa5c99ed5fe559d061a1f9fc2c8c",
-                "reference": "ed3bd17b8a6caa5c99ed5fe559d061a1f9fc2c8c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cf0c0968f93748cbe35d6a78e7babc7b7460945f",
+                "reference": "cf0c0968f93748cbe35d6a78e7babc7b7460945f",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-07-10T18:29:49+00:00"
+            "time": "2019-07-11T15:05:32+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -5350,6 +5350,77 @@
                 "source": "http://cgit.drupalcode.org/phingdrushtask"
             },
             "time": "2017-09-01T16:27:45+00:00"
+        },
+        {
+            "name": "drupal/publication_date",
+            "version": "2.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/publication_date.git",
+                "reference": "8.x-2.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/publication_date-8.x-2.0-beta1.zip",
+                "reference": "8.x-2.0-beta1",
+                "shasum": "cb10f442b49113ea4a419d1f67ccd0c4a59dfffd"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-beta1",
+                    "datestamp": "1527849184",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-07-07/2983348-19.patch",
+                    "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Clever Age",
+                    "homepage": "https://www.drupal.org/user/547746"
+                },
+                {
+                    "name": "Sheldon Rampton",
+                    "homepage": "https://www.drupal.org/user/13085"
+                },
+                {
+                    "name": "dgtlmoon",
+                    "homepage": "https://www.drupal.org/user/25027"
+                },
+                {
+                    "name": "jstoller",
+                    "homepage": "https://www.drupal.org/user/99012"
+                },
+                {
+                    "name": "tmarly",
+                    "homepage": "https://www.drupal.org/user/159040"
+                },
+                {
+                    "name": "webflo",
+                    "homepage": "https://www.drupal.org/user/254778"
+                }
+            ],
+            "description": "Add a field containing the publication date.",
+            "homepage": "https://www.drupal.org/project/publication_date",
+            "support": {
+                "source": "https://git.drupalcode.org/project/publication_date"
+            }
         },
         {
             "name": "drupal/r4032login",
@@ -12657,17 +12728,17 @@
         },
         {
             "name": "drupal/config_devel",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_devel.git",
-                "reference": "8.x-1.2"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "203bf299b1ad395d1451e22ea5a8f25ae462d880"
+                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "ab880088bbbe955d9c9521655d73bf1a40ca75b8"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -12678,8 +12749,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1510843084",
+                    "version": "8.x-1.3",
+                    "datestamp": "1562862184",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12723,7 +12794,7 @@
             "description": "Helps developers work with configuration.",
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_devel"
+                "source": "https://git.drupalcode.org/project/config_devel"
             }
         },
         {
