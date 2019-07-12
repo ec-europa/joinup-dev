@@ -150,6 +150,13 @@ class SubscribeToCollectionForm extends FormBase {
     $form['actions']['confirm'] = [
       '#type' => 'submit',
       '#value' => $this->t('Subscribe'),
+      // This form is opened via AJAX in a modal dialog that is triggered by
+      // submitting the JoinCollectionForm. By default Drupal will send the
+      // AJAX requests to the route of the original form, which in this case
+      // would be the JoinCollectionForm. We need to manually specify the
+      // callback URL and the query argument that triggers AJAX so that this
+      // form will be loaded.
+      // @see https://www.drupal.org/project/drupal/issues/2934463
       '#ajax' => [
         'callback' => [static::class, 'confirmSubscription'],
         'url' => Url::fromRoute('collection.subscribe_to_collection_form', [
