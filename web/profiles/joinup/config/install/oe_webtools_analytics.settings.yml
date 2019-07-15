@@ -1,0 +1,7 @@
+# @todo This file does not belong in the Joinup profile since it is specific
+#   to the ISA2 installation of Joinup. This should be moved into the exported
+#   config sync folder.
+# @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4858
+siteID: ''
+sitePath: joinup.uat.fpfis.tech.ec.europa.eu
+instance: testing
