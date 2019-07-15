@@ -1,8 +1,5 @@
 joinup_privacy.cck:
   js:
-    //europa.eu/webtools/load.js:
-      type: external
-      attributes:
-        defer: true
     //ec.europa.eu/wel/cookie-consent/consent.js:
       type: external
+      minified: false
