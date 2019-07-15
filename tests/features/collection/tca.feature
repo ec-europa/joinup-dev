@@ -34,14 +34,24 @@ Feature: Collection TCA agreement
     And I press "Yes"
     Then I should see the heading "Propose collection"
 
-  Scenario Outline: TCA page contains links with additional information
+  Scenario: TCA page contains links with additional information
+    Given the following legal document version:
+      | Document     | Label        | Version | Published | Acceptance label                                                                                   | Content                                                    |
+      | Legal notice | Legal notice | 1.1     | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
+
     When I am logged in as a user with the "authenticated" role
     And I visit "/collections"
-    And I click "Create collection"
-    And I click "<link>"
-    Then I should see the heading "<title>"
+    Then I should see the warning message "You must accept this agreement before continuing."
 
-    Examples:
-      | link                 | title                |
-      | legal notice         | Legal notice         |
-      | eligibility criteria | Eligibility criteria |
+    Given I check "I have read and accept the Legal notice"
+    And I press "Submit"
+
+    And I click "Create collection"
+    And I click "legal notice"
+    Then I should see the heading "Legal notice"
+
+    Given move backward one page
+
+    And I click "eligibility criteria"
+    Then I should see the heading "Eligibility criteria"
+
