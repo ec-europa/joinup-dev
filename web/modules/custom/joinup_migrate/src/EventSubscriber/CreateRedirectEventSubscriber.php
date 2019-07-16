@@ -2,10 +2,12 @@
 
 namespace Drupal\joinup_migrate\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_migrate\RedirectImportInterface;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\redirect\RedirectRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,6 +21,33 @@ class CreateRedirectEventSubscriber implements EventSubscriberInterface {
    * @var \Drupal\Core\Entity\ContentEntityStorageInterface[]
    */
   protected $storage = [];
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The redirect repository.
+   *
+   * @var \Drupal\redirect\RedirectRepository
+   */
+  protected $redirectRepository;
+
+  /**
+   * Constructs a CreateRedirectEventSubscriber.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\redirect\RedirectRepository $redirectRepository
+   *   The redirect repository.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, RedirectRepository $redirectRepository) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->redirectRepository = $redirectRepository;
+  }
 
   /**
    * {@inheritdoc}
@@ -51,7 +80,7 @@ class CreateRedirectEventSubscriber implements EventSubscriberInterface {
         $entity_id = $event->getDestinationIdValues()[0];
         $entity_type_id = $destination->getDerivativeId();
         if (!isset($this->storage[$entity_type_id])) {
-          $this->storage[$entity_type_id] = \Drupal::entityTypeManager()->getStorage($entity_type_id);
+          $this->storage[$entity_type_id] = $this->entityTypeManager->getStorage($entity_type_id);
         }
 
         if (!$entity = $this->storage[$entity_type_id]->load($entity_id)) {
@@ -59,11 +88,8 @@ class CreateRedirectEventSubscriber implements EventSubscriberInterface {
         }
         $uri = $source_plugin->getRedirectUri($entity);
 
-        /** @var \Drupal\redirect\RedirectRepository $redirect_repository */
-        $redirect_repository = \Drupal::service('redirect.repository');
-
         foreach ($source_paths as $source_path) {
-          if (!$redirect_repository->findMatchingRedirect($source_path, [])) {
+          if (!$this->redirectRepository->findMatchingRedirect($source_path, [])) {
             // Create the redirect.
             Redirect::create([
               'type' => 'redirect',

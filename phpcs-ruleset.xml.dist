@@ -27,7 +27,6 @@
         <exclude name="DrupalPractice.FunctionDefinitions" />
         <exclude name="DrupalPractice.General" />
         <exclude name="DrupalPractice.Objects.GlobalClass.GlobalClass" />
-        <exclude name="DrupalPractice.Objects.GlobalDrupal.GlobalDrupal" />
         <exclude name="DrupalPractice.Yaml" />
     </rule>
 

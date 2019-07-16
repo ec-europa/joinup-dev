@@ -677,3 +677,17 @@ function joinup_core_post_update_set_news_default_version() {
 function joinup_core_post_update_enable_nio() {
   \Drupal::service('module_installer')->install(['nio']);
 }
+
+/**
+ * Enable the Publication Date module.
+ */
+function joinup_core_post_update_install_publication_date() {
+  \Drupal::service('module_installer')->install(['publication_date']);
+}
+
+/**
+ * Enable the joinup_privacy module.
+ */
+function joinup_core_post_update_enable_joinup_privacy() {
+  \Drupal::service('module_installer')->install(['joinup_privacy']);
+}
