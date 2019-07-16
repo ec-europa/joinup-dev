@@ -7,11 +7,10 @@ namespace Drupal\joinup\Controller;
 use Drupal\Core\Access\CsrfTokenGenerator;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -56,7 +55,6 @@ class DownloadUserListController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('csrf_token'),
-      $container->get('file_system'),
       $container->get('file_system')
     );
   }
@@ -84,24 +82,24 @@ class DownloadUserListController extends ControllerBase {
       throw new NotFoundHttpException();
     }
 
-    $destination = 'public://' . $filename;
-    if ($file_uri = $this->file_system->move($temp_filename, $destination, FileSystemInterface::EXISTS_REPLACE)) {
-      if (!file_exists($file_uri)) {
-        throw new \Exception("The file is note found for some reason.");
-      }
-      register_shutdown_function('file_unmanaged_delete', $file_uri);
-      $data = file_get_contents($file_uri);
-
-      // Create a response that downloads the data instead of displaying it in
-      // the browser.
-      $response = new Response($data);
-      $content_disposition_header = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
-      $response->headers->set('Content-Disposition', $content_disposition_header);
-      $response->headers->set('Content-Type', 'text/csv');
-      $response->send();
+    $data = file_get_contents($temp_filename);
+    if ($data === FALSE) {
+      $this->messenger()->addError('The user list could not be retrieved from disk.');
+      throw new HttpException(500);
     }
 
-    return new RedirectResponse(Url::fromRoute('joinup.export_user_list')->toString());
+    if ($this->fileSystem->unlink($temp_filename) === FALSE) {
+      $this->messenger()->addWarning('The user list could not be deleted from the file system.');
+    }
+
+    // Create a response that downloads the data instead of displaying it in the
+    // browser.
+    $response = new Response($data);
+    $content_disposition_header = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
+    $response->headers->set('Content-Disposition', $content_disposition_header);
+    $response->headers->set('Content-Type', 'text/csv');
+
+    return $response;
   }
 
 }
