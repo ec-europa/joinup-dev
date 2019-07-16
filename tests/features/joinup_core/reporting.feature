@@ -72,18 +72,3 @@ Feature:
     When I am logged in as an "authenticated user"
     And I am on "/admin/reporting/solutions-by-type/csv?_format=csv"
     Then I should get an access denied error
-
-  Scenario: Export user list.
-    Given users:
-      | Username            | E-mail                          | First name | Family name |
-      | Some user to export | some.user.to.export@example.com | Cran       | Berry       |
-    And cas mappings:
-      | User                | External name  |
-      | Some user to export | some_auth_name |
-
-    When I am logged in as a moderator
-    And I am on "/admin/reporting/export-user-list"
-    And I press "Export"
-    And I wait for the batch job to finish
-
-    Then the response should contain "some_auth_name"
