@@ -75,7 +75,7 @@ class JoinupCasMockServerConfigOverrider implements ConfigFactoryOverrideInterfa
   public function getCacheableMetadata($name) {
     $metadata = new CacheableMetadata();
     if (in_array($name, ['cas_mock_server.settings', 'joinup_eulogin.settings'])) {
-      $metadata->addCacheableDependency(\Drupal::configFactory()->get($name));
+      $metadata->addCacheableDependency($this->configFactory->get($name));
     }
     return $metadata;
   }

@@ -5,14 +5,14 @@
  * Contains \EuLoginSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\cas\Service\CasUserManager;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\user\Entity\User;
-
-declare(strict_types = 1);
 
 /**
  * Behat step definitions for functionality provided by Joinup EU login module.
@@ -78,11 +78,12 @@ class EuLoginSubContext extends DrupalSubContextBase {
         }
       };
 
-      if (empty($values['user']) || empty($values['authname'])) {
+      if (empty($values['uid']) || empty($values['authname'])) {
         throw new Exception('"User" and "External name" properties are mandatory.');
       }
 
       $values['user'] = $this->getUserByName($values['uid']);
+      $this->createAuthMap($values);
     }
   }
 
@@ -93,7 +94,7 @@ class EuLoginSubContext extends DrupalSubContextBase {
    *   An array containing the uid, the user object and the authname of the
    *   user.
    */
-  protected function createAuthMap($data): void {
+  protected function createAuthMap(array $data): void {
     $this->getCasUserManagerService()->setCasUsernameForAccount($data['user'], $data['authname']);
     $this->authMaps[$data['uid']] = $data['uid'];
   }

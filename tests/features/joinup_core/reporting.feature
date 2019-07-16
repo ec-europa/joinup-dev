@@ -73,6 +73,7 @@ Feature:
     And I am on "/admin/reporting/solutions-by-type/csv?_format=csv"
     Then I should get an access denied error
 
+  @javascript
   Scenario: Export user list.
     Given users:
       | Username            | E-mail                          | First name | Family name |
