@@ -84,6 +84,7 @@ dependencies:
   - drupal:path
   - pathauto:pathauto
   - persistent_login:persistent_login
+  - publication_date:publication_date
   - r4032login:r4032login
   - rdf_entity:rdf_draft
   - rdf_entity:rdf_entity
