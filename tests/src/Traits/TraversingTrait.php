@@ -382,15 +382,12 @@ trait TraversingTrait {
    *
    * @see \Behat\Mink\Selector\NamedSelector
    */
-  protected function findNamedElementInRegion($locator, $element, $region) {
-    $session = $this->getSession();
-    $region_object = $session->getPage()->find('region', $region);
-    if (!$region_object) {
-      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+  protected function findNamedElementInRegion(string $locator, string $element, NodeElement $region = NULL): NodeElement {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
     }
-
-    // Find the named element in the region.
-    $element = $region_object->find('named', [$element, $locator]);
+    $session = $this->getSession();
+    $element = $region->find('named', [$element, $locator]);
     if (!$element) {
       throw new \Exception(sprintf('No element with locator "%s" found in the "%s" region on the page %s.', $locator, $region, $session->getCurrentUrl()));
     }
