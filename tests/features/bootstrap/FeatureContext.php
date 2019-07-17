@@ -903,7 +903,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $values = $this->explodeCommaSeparatedStepArgument($values);
 
     /** @var \Behat\Mink\Element\NodeElement[] $items */
-    $items = $this->getSession()->getPage()->findAll('named', array('field', $field));
+    $items = $this->getSession()->getPage()->findAll('named', ['field', $field]);
 
     if (empty($items)) {
       throw new \Exception("Cannot find field $field.");
@@ -955,7 +955,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
-    list($title, $site_name) = explode(' | ', $page_title->getText());
+    list($title) = explode(' | ', $page_title->getText());
 
     $title = trim($title);
     if ($title !== $text) {
@@ -971,7 +971,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function assertCapitalisedHeading($heading) {
     $heading = strtoupper($heading);
     $element = $this->getSession()->getPage();
-    foreach (array('h1', 'h2', 'h3', 'h4', 'h5', 'h6') as $tag) {
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
       $results = $element->findAll('css', $tag);
       foreach ($results as $result) {
         if ($result->getText() == $heading) {
@@ -1445,7 +1445,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     // Restore the log saved in @BeforeScenario.
     $error_log = ini_get('error_log');
-    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
+    if (file_exists($error_log) && file_exists('temporary://php.log')) {
       file_unmanaged_move('temporary://php.log', $error_log, 1);
     }
 
@@ -1499,7 +1499,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @param string $vocabulary_name
    *   The name of the vocabulary.
-   * @param string $terme_name
+   * @param string $term_name
    *   The term name.
    * @param string $format
    *   The RDF serialization format.
