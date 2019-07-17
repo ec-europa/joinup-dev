@@ -48,8 +48,7 @@ class JoinupLegalVersionsForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $header = [
-      'title' => $this->t('Title'),
-      'version' => $this->t('Version'),
+      'title' => $this->t('Version'),
       'created' => $this->t('Created'),
       'changed' => $this->t('Updated'),
       'operations' => $this->t('Operations'),
@@ -82,7 +81,6 @@ class JoinupLegalVersionsForm extends FormBase {
       ];
       $options[$version->id()] = [
         'title' => $version->label(),
-        'version' => $version->get('version')->value,
         'created' => $version->getFormattedDate('created'),
         'changed' => $version->getFormattedDate('changed'),
         'operations' => $this->renderer->render($operations),
@@ -119,9 +117,9 @@ class JoinupLegalVersionsForm extends FormBase {
     if ($document->getPublishedVersion()->id() != $form_state->getValue('version')) {
       $version = EntityLegalDocumentVersion::load($form_state->getValue('version'));
       $document->setPublishedVersion($version);
-      $this->messenger()->addStatus($this->t('%label %version has been published.', [
-        '%label' => $version->label(),
-        '%version' => $version->get('version')->value,
+      $this->messenger()->addStatus($this->t('%document %version has been published.', [
+        '%document' => $document->label(),
+        '%version' => $version->label(),
       ]));
       return;
     }

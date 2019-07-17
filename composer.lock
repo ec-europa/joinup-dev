@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df3d3645b66e380609cd1e178091a326",
+    "content-hash": "67e8e544680511f3fb41c45877fa188d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3614,7 +3614,8 @@
                     "Move the 'published_version' field from bundle to content entity @see https://www.drupal.org/project/entity_legal/issues/3067028": "https://www.drupal.org/files/issues/2019-07-17/3067028-13.patch",
                     "Expose the field management tabs @see https://www.drupal.org/project/entity_legal/issues/3067018": "https://www.drupal.org/files/issues/2019-07-10/3067018-2.patch",
                     "Do not redirect logout @see https://www.drupal.org/project/entity_legal/issues/2851667": "https://www.drupal.org/files/issues/2019-07-17/2851667-16.patch",
-                    "Acceptance records not deleted on user removal @see https://www.drupal.org/project/entity_legal/issues/2633040": "https://www.drupal.org/files/issues/2019-07-15/2633040-3.patch"
+                    "Acceptance records not deleted on user removal @see https://www.drupal.org/project/entity_legal/issues/2633040": "https://www.drupal.org/files/issues/2019-07-15/2633040-3.patch",
+                    "Make the legal document title customizable @see https://www.drupal.org/project/entity_legal/issues/3068434": "https://www.drupal.org/files/issues/2019-07-17/3068434-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

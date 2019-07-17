@@ -12,3 +12,4 @@ settings:
   existing_users:
     require: true
     require_method: redirect
+  title_pattern: '[entity_legal_document:label]'

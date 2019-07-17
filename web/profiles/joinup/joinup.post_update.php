@@ -140,8 +140,7 @@ function joinup_post_update_legal() {
   EntityLegalDocumentVersion::create([
     'document_name' => 'legal_notice',
     'published' => TRUE,
-    'label' => 'Legal notice',
-    'version' => '1.1',
+    'label' => '1.1',
     'acceptance_label' => 'I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a>',
     'entity_legal_document_text' => [
       'value' => '<h2>Important legal notice</h2>

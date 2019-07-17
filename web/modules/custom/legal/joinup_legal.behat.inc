@@ -27,7 +27,6 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
   const ALIASES = [
     'Document' => 'document_name',
     'Label' => 'label',
-    'Version' => 'version',
     'Published' => 'published',
     'Acceptance label' => 'acceptance_label',
     'Content' => 'entity_legal_document_text',
@@ -46,9 +45,9 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | Document       | Label        | Version | Published | Acceptance label      | Content           |
-   * | Legal notice   | Legal notice | v2.3    | yes       | Do you agree?         | Take care!        |
-   * | Privacy policy | GDPR         | 1.0     |           | Agree with the policy | All about privacy |
+   * | Document       | Label | Published | Acceptance label      | Content           |
+   * | Legal notice   | v2.3  | yes       | Do you agree?         | Take care!        |
+   * | Privacy policy | 1.0   |           | Agree with the policy | All about privacy |
    * @codingStandardsIgnoreEnd
    *
    * Required: Document, Label, Acceptance label.
@@ -62,7 +61,6 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
    * @Given (the following )legal document version(s):
    */
   public function givenLegalDocumentVersions(TableNode $collection_table) {
-    $legal_document_query = \Drupal::entityQuery(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME);
     $published = [];
     foreach ($collection_table->getColumnsHash() as $version) {
       $values = [];
@@ -82,13 +80,8 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
         }
       }
 
-      $document_ids = $legal_document_query
-        ->condition('label', $values['document_name'])
-        ->execute();
-      if (empty($document_ids)) {
-        throw new \Exception("The '{$values['document_name']}' legal document doesn't exist.");
-      }
-      $values['document_name'] = reset($document_ids);
+      $document = $this->getEntityByLabel(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $values['document_name']);
+      $values['document_name'] = $document->id();
 
       $values['published'] = strtolower($values['published']);
       if (!in_array($values['published'], ['yes', 'no']) && !empty($values['published'])) {
@@ -101,16 +94,14 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
       }
       $published[$values['document_name']] = TRUE;
 
-      $values += array_fill_keys([
-        'version',
-        'entity_legal_document_text',
-      ], NULL);
+      $values += [
+        'entity_legal_document_text' => NULL,
+      ];
 
       $document_version = EntityLegalDocumentVersion::create([
         'document_name' => $values['document_name'],
         'published' => $values['published'],
         'label' => $values['label'],
-        'version' => $values['version'],
         'acceptance_label' => $values['acceptance_label'],
         'entity_legal_document_text' => [
           'value' => $values['entity_legal_document_text'],
@@ -127,29 +118,20 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
    *
    * @param string $document_label
    *   The legal document label.
-   * @param string $version_name
+   * @param string $version_label
    *   The version of the legal document to be published.
    *
    * @throws \Exception
    *   When legal document with label $document_label doesn't exist or the legal
    *   document with version $version doesn't exist.
    *
-   * @Given (the )version :version_name of :document_label (legal document )is published
+   * @Given (the )version :version_label of :document_label (legal document )is published
    */
-  public function publishLegalDocumentVersion(string $document_label, string $version_name): void {
+  public function publishLegalDocumentVersion(string $document_label, string $version_label): void {
     /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $document */
     $document = $this->getEntityByLabel(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $document_label);
-
-    $version_ids = \Drupal::entityQuery(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME)
-      ->condition('document_name', $document->id())
-      ->condition('version', $version_name)
-      ->execute();
-    if (empty($version_ids)) {
-      throw new \Exception("The version '$version_name' of the legal document '$document_label' doesn't exist");
-    }
-    $version_id = reset($version_ids);
-
-    $version = EntityLegalDocumentVersion::load($version_id);
+    /** @var \Drupal\entity_legal\EntityLegalDocumentVersionInterface $version */
+    $version = $this->getEntityByLabel(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $version_label, $document->id());
     $document->setPublishedVersion($version);
   }
 

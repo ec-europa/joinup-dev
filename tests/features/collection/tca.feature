@@ -36,8 +36,8 @@ Feature: Collection TCA agreement
 
   Scenario: TCA page contains links with additional information
     Given the following legal document version:
-      | Document     | Label        | Version | Published | Acceptance label                                                                                   | Content                                                    |
-      | Legal notice | Legal notice | 1.1     | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
+      | Document     | Label | Published | Acceptance label                                                                                   | Content                                                    |
+      | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
 
     When I am logged in as a user with the "authenticated" role
     And I visit "/collections"

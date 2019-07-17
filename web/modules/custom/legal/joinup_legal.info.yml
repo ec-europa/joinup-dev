@@ -8,9 +8,4 @@ dependencies:
   - entity_legal:entity_legal
 
 config_devel:
-  - core.entity_form_display.entity_legal_document_version.legal_notice.default
-  - core.entity_view_display.entity_legal_document_version.legal_notice.default
   - entity_legal.document.legal_notice
-  - entity_legal_document_version.legal_notice.entity_legal_document_text
-  - field.field.entity_legal_document_version.legal_notice.version
-  - field.storage.entity_legal_document_version.version

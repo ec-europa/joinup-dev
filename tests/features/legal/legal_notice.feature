@@ -11,8 +11,8 @@ Feature:
   Background:
 
     Given the following legal document version:
-      | Document     | Label        | Version | Published | Acceptance label                                                                                   | Content                                                    |
-      | Legal notice | Legal notice | 1.1     | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
+      | Document     | Label | Published | Acceptance label                                                                                   | Content                                                    |
+      | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
 
   Scenario: User registration.
 
@@ -102,8 +102,8 @@ Feature:
 
     # While Rick navigates on the site a new version is created and published.
     Given the following legal document versions:
-      | Document     | Label        | Version | Published | Acceptance label    | Content     |
-      | Legal notice | Legal notice | 2.0     | no        | Accept Version 2.0! | Version 2.0 |
+      | Document     | Label | Published | Acceptance label    | Content     |
+      | Legal notice | 2.0   | no        | Accept Version 2.0! | Version 2.0 |
     And the version "2.0" of "Legal notice" legal document is published
 
     When I go to homepage
@@ -122,42 +122,39 @@ Feature:
     When I click "Legal"
     Then I should see the heading "Legal notice versions"
     And I should see the link "New version"
-    And the row "Legal notice" is selected
+    And the row "1.1" is selected
 
     When I press "Set published version"
     Then I should see the success message "No changes have been made."
 
     When I click "Edit"
-    Then I should see the heading "Edit Legal notice"
+    Then I should see the heading "Edit 1.1"
 
-    Given I fill in "Title" with "Legal notice (changed)"
-    And I fill in "Version" with "1.1.1"
+    Given I fill in "Title" with "1.1.1"
     And I fill in "Acceptance label" with "Accept!"
 
     When I press "Save"
-    Then I should see "Legal notice (changed)"
-    And I should see "1.1.1"
-    And the row "Legal notice (changed)" is selected
+    Then I should see "1.1.1"
+    And the row "1.1.1" is selected
 
     Given I click "New version"
-    And I fill in "Title" with "The new legal notice"
-    And I fill in "Version" with "2.0"
-    And I fill in "Content" with "New rules..."
+    And I fill in "Title" with "v2.0"
+    And I fill in "Document text" with "New rules..."
     And I fill in "Acceptance label" with "Accept 2.0!"
 
     When I press "Save"
-    Then the row "Legal notice (changed)" is selected
-    But the row "The new legal notice" is not selected
+    Then the row "1.1.1" is selected
+    But the row "v2.0" is not selected
 
-    When I select the "The new legal notice" row
+    When I select the "v2.0" row
     And I press "Set published version"
-    Then I should see the success message "The new legal notice 2.0 has been published."
-    And the row "The new legal notice" is selected
-    But the row "Legal notice (changed)" is not selected
+    Then I should see the success message "Legal notice v2.0 has been published."
+    And the row "v2.0" is selected
+    But the row "1.1.1" is not selected
 
     When I click "Legal notice" in the Footer region
-    Then I should see the heading "The new legal notice"
+    Then I should see the heading "Legal notice"
     And I should see "New rules..."
 
     # As this version has been created via UI it should be manually deleted.
-    And I delete the version "The new legal notice" of document "Legal notice"
+    And I delete the version "v2.0" of document "Legal notice"
