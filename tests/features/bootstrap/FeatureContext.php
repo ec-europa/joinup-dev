@@ -416,27 +416,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds the selected option of the select in a card and checks the text.
-   *
-   * @param string $option
-   *   Text value of the option to find.
-   * @param string $select
-   *   CSS selector of the select field.
-   * @param string $heading
-   *   The card heading.
-   *
-   * @throws \Exception
-   *   Thrown when the select is not found in the page or the selected option is
-   *   not the expected one.
-   *
-   * @Then the option with text :option from select :select is selected in the :heading card
-   */
-  public function assertFieldOptionSelectedInCard(string $option, string $select, string $heading): void {
-    $region = $this->getCollectionSubscriptionCardByHeading($heading);
-    $this->assertFieldOptionSelectedInRegion($option, $select, $region);
-  }
-
-  /**
    * Checks if an option is selected in a specific select element in a region.
    *
    * @param string $option

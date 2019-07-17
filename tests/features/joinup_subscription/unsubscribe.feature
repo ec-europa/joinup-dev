@@ -29,18 +29,10 @@ Feature: Unsubscribe from collections
     When I click "My subscriptions"
     # The button is actually a link but is styled as a button.
     Then I should see the link "Unsubscribe from all"
-    And the option with text "All notifications" from select "Discussion" is selected in the "Southpark elementary" card
-    And the option with text "All notifications" from select "Document" is selected in the "Southpark elementary" card
-    And the option with text "All notifications" from select "Event" is selected in the "Southpark elementary" card
-    And the option with text "All notifications" from select "News" is selected in the "Southpark elementary" card
-    And the option with text "All notifications" from select "Discussion" is selected in the "Kenny's house" card
-    And the option with text "All notifications" from select "Document" is selected in the "Kenny's house" card
-    And the option with text "All notifications" from select "Event" is selected in the "Kenny's house" card
-    And the option with text "All notifications" from select "News" is selected in the "Kenny's house" card
-    And the option with text "All notifications" from select "Discussion" is selected in the "Koon's hideout" card
-    And the option with text "All notifications" from select "Document" is selected in the "Koon's hideout" card
-    And the option with text "All notifications" from select "Event" is selected in the "Koon's hideout" card
-    And the option with text "All notifications" from select "News" is selected in the "Koon's hideout" card
+    And the following collection content subscriptions should be selected:
+      | Southpark elementary | discussion, document, event, news |
+      | Kenny's house        | discussion, document, event, news |
+      | Koon's hideout       | discussion, document, event, news |
 
     When I click "Unsubscribe from all"
     Then I should see the heading "Unsubscribe from all collections"
@@ -64,18 +56,10 @@ Feature: Unsubscribe from collections
       | Koon's hideout                                                            |
 
     And I should be on "/user/subscriptions"
-    And the option with text "No notifications" from select "Discussion" is selected in the "Southpark elementary" card
-    And the option with text "No notifications" from select "Document" is selected in the "Southpark elementary" card
-    And the option with text "No notifications" from select "Event" is selected in the "Southpark elementary" card
-    And the option with text "No notifications" from select "News" is selected in the "Southpark elementary" card
-    And the option with text "No notifications" from select "Discussion" is selected in the "Kenny's house" card
-    And the option with text "No notifications" from select "Document" is selected in the "Kenny's house" card
-    And the option with text "No notifications" from select "Event" is selected in the "Kenny's house" card
-    And the option with text "No notifications" from select "News" is selected in the "Kenny's house" card
-    And the option with text "No notifications" from select "Discussion" is selected in the "Koon's hideout" card
-    And the option with text "No notifications" from select "Document" is selected in the "Koon's hideout" card
-    And the option with text "No notifications" from select "Event" is selected in the "Koon's hideout" card
-    And the option with text "No notifications" from select "News" is selected in the "Koon's hideout" card
+    And the following collection content subscriptions should be selected:
+      | Southpark elementary | |
+      | Kenny's house        | |
+      | Koon's hideout       | |
     And I should not see the link "Unsubscribe from all"
 
     And I should have the following collection content subscriptions:
