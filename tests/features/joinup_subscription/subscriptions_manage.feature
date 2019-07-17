@@ -4,14 +4,14 @@ Feature: User subscription settings
 
   Background:
     Given user:
-      | Username   | Auric Goldfinger  |
-      | Password   | oddjob            |
-      | E-mail     | auric@example.com |
+      | Username | Auric Goldfinger  |
+      | Password | oddjob            |
+      | E-mail   | auric@example.com |
 
   Scenario: Check access to the subscription management pages
     Given user:
-      | Username   | Chanelle Testa    |
-      | E-mail     | chate@example.com |
+      | Username | Chanelle Testa    |
+      | E-mail   | chate@example.com |
 
     # No access for anonymous users.
     Given I am an anonymous user
@@ -41,6 +41,7 @@ Feature: User subscription settings
     When I go to the subscription dashboard of "Auric Goldfinger"
     Then I should get an access denied error
 
+  @javascript
   Scenario: Manage my subscriptions
     Given collections:
       | title          | state     | abstract                                                       |
@@ -56,11 +57,12 @@ Feature: User subscription settings
     # Users that are not a member of any collections should see the empty text.
     Given I am logged in as an "authenticated user"
     # The "My subscriptions" link is present in the user menu in the top right.
-    When I click "My subscriptions"
+    And I open the account menu
+    And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
     And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
-    But I should not see the text "Alpha Centauri"
-    And I should not see the "Submit" button
+    And I should not see the text "Alpha Centauri"
+    And I should not see the "Save changes" button
 
     # Log in as a user that is a member of 3 collections. The subscriptions for
     # all 3 collections should be shown.
@@ -70,28 +72,60 @@ Feature: User subscription settings
     # The empty text should not be shown now.
     Then I should not see the text "No collection memberships yet."
 
-    # Check that the 3 collections are shown alongside the abstracts.
-    But I should see the following headings:
-      | Alpha Centauri |
-      | Barnard's Star |
-      | Wolf 359       |
+    And the following collection content subscriptions should be selected:
+      | Alpha Centauri | Discussion, Document, Event, News |
+      | Barnard's Star | Discussion, Document, Event, News |
+      | Wolf 359       | Discussion, Document, Event, News |
+
     And I should see the following lines of text:
       | A triple star system at a distance of 4.3 light years.         |
       | A low mass red dwarf at around 6 light years distance.         |
       | Wolf 359 is a red dwarf star located in the constellation Leo. |
 
-    # Check that the subscriptions can be managed through the UI.
-    Given I select the following collection subscription options:
-      | Alpha Centauri | Discussion, Document, Event, News |
-      | Barnard's Star |                                   |
-      | Wolf 359       | Discussion, Event                 |
+    And the "Save changes" button on the "Alpha Centauri" subscription card should be disabled
+    And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
+    And the "Save changes" button on the "Wolf 359" subscription card should be disabled
 
-    And I press "Submit"
-    Then I should see the success message "The subscriptions have been updated."
-    And I should have the following collection content subscriptions:
-      | Alpha Centauri | discussion, document, event, news |
-      | Barnard's Star |                                   |
-      | Wolf 359       | discussion, event                 |
+    Given I uncheck the "Discussion" checkbox of the "Alpha Centauri" subscription
+    And I uncheck the "Event" checkbox of the "Wolf 359" subscription
+
+    And the "Save changes" button on the "Alpha Centauri" subscription card should be enabled
+    And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
+    And the "Save changes" button on the "Wolf 359" subscription card should be enabled
+
+    Given I press "Save changes" on the "Alpha Centauri" subscription card
+    And I wait for AJAX to finish
+    Then I should not see the "Save changes" button on the "Alpha Centauri" subscription card
+    But I should see the "Saved!" button on the "Alpha Centauri" subscription card
+
+    And the "Saved!" button on the "Alpha Centauri" subscription card should be disabled
+    And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
+    # The button remains enabled as changes persist after AJAX save.
+    And the "Save changes" button on the "Wolf 359" subscription card should be enabled
+
+    And the following collection content subscriptions should be selected:
+      | Alpha Centauri | Document, Event, News             |
+      | Barnard's Star | Discussion, Document, Event, News |
+      | Wolf 359       | Discussion, Document, News        |
+
+    # Re-try a change on the same collection.
+    Given I check the "Discussion" checkbox of the "Alpha Centauri" subscription
+    And the "Save changes" button on the "Alpha Centauri" subscription card should be enabled
+    And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
+    And the "Save changes" button on the "Wolf 359" subscription card should be enabled
+    Given I press "Save changes" on the "Alpha Centauri" subscription card
+    And I wait for AJAX to finish
+    Then I should not see the "Save changes" button on the "Alpha Centauri" subscription card
+    But I should see the "Saved!" button on the "Alpha Centauri" subscription card
+
+    # Ensure that the changes are not saved for all cards and unsaved changes are lost.
+    Given I reload the page
+    And the following collection content subscriptions should be selected:
+      | Alpha Centauri | Discussion, Document, Event, News |
+      | Barnard's Star | Discussion, Document, Event, News |
+      # Even though 'Event' was unchecked, and another 'Save changes' button was clicked,
+      # the changes for 'Wolf 359' were not saved and so they are reloaded.
+      | Wolf 359       | Discussion, Document, Event, News |
 
   Scenario Outline: Change the notification frequency of my digests
     Given collection:
