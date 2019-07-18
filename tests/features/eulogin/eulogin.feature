@@ -26,8 +26,8 @@ Feature: Log in through EU Login
     # The user gets redirected back to Drupal.
     Then I should see the heading "Already a Joinup user?"
     And I should see "Since you have signed in for the first time using EU Login, you need to take one extra step."
-    And I should see "Before you make you selection below, please note this important information:"
-    And I should see "If you are an existing user on Joinup, and would like to keep all your account data (collection/solution memberships, published events, news, documents, discussions etc., we suggest you select the first option to pair your existing account with your EU Login account;"
+    And I should see "Before you make your selection below, please note this important information:"
+    And I should see "If you are an existing user on Joinup, and would like to keep all your account data (collection/solution memberships, published events, news, documents, discussions etc.), we suggest you select the first option to pair your existing account with your EU Login account;"
     And I should see "If you are a new user on Joinup, the second option is the right one for you."
     And I should see "Please make your selection:"
     And I should see "I am an existing user (pair my existing account with my EU Login account)"
