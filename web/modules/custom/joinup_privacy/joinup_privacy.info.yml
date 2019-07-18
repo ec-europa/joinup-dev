@@ -3,3 +3,5 @@ type: module
 description: 'Provides functionality related to privacy management'
 core: 8.x
 package: Joinup
+dependecies:
+  - oe_webtools:oe_webtools
