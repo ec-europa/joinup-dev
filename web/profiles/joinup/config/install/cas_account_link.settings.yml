@@ -15,4 +15,4 @@ form:
       no:
         label: 'I am a new user (create a new account)'
         description: 'No action is required on your side. A new account, linked to your EU Login account, will be created.'
-        button: Continue
+        button: Next

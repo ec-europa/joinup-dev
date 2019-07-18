@@ -36,7 +36,7 @@ Feature: Log in through EU Login
     And I should see "No action is required on your side. A new account, linked to your EU Login account, will be created."
 
     Given I select the radio button "I am a new user (create a new account)"
-    When I press "Continue"
+    When I press "Next"
     Then I should see the success message "You have been logged in."
     And the user chucknorris should have the following data in their user profile:
       | First name   | Chuck                  |
