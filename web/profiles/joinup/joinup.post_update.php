@@ -128,7 +128,7 @@ function joinup_post_update_legal() {
   EntityFormDisplay::load('block_content.simple_block.default')->delete();
   EntityViewDisplay::load('block_content.simple_block.default')->delete();
   FieldConfig::loadByName('block_content', 'simple_block', 'body')->delete();
-  FieldStorageConfig::loadByName('block_content', 'simple_block')->delete();
+  FieldStorageConfig::loadByName('block_content', 'body')->delete();
   BlockContentType::load('simple_block')->delete();
   // Remove Page Manager data.
   PageVariant::load('legal_notice-block_display-0')->delete();
