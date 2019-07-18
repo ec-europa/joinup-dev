@@ -212,5 +212,3 @@ there is information on handling draft in CRUD operations for rdf entities.
 there is information on how to handle notifications in Joinup.
 * In [Joinup core module](web/modules/custom/joinup_core/README.md) there is
 information on how to handle and create workflows.
-* In [Matomo analytics](docs/matomo.md) you find information about working with
-the web analytics platform used in Joinup.
