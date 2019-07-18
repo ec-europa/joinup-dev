@@ -366,13 +366,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'solution');
   }
 
   /**
