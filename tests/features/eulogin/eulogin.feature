@@ -37,7 +37,12 @@ Feature: Log in through EU Login
 
     Given I select the radio button "I am a new user (create a new account)"
     When I press "Next"
-    Then I should see the success message "You have been logged in."
+    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+
+    # The user has been redirected to its user account edit form.
+    Then the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
+    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
+
     And the user chucknorris should have the following data in their user profile:
       | First name   | Chuck                  |
       | Family name  | Norris                 |
@@ -82,7 +87,7 @@ Feature: Log in through EU Login
     Given I fill in "Email or username" with "chuck_the_local_hero"
     And I fill in "Password" with "12345"
     When I press "Sign in"
-    Then I should see the success message "You have been logged in."
+    Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
     # The profile entries are overwritten, except the username & the email.
     And the user chuck_the_local_hero should have the following data in their user profile:
@@ -110,7 +115,7 @@ Feature: Log in through EU Login
     And I fill in "Email or username" with "chuck_the_local_hero@example.com"
     And I fill in "Password" with "12345"
     When I press "Sign in"
-    Then I should see the success message "You have been logged in."
+    Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
     # The profile entries are overwritten, except the username & the email.
     And the user chuck_the_local_hero should have the following data in their user profile:

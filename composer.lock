@@ -2625,7 +2625,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "f49d1d6011b8e497723baf10082c82bcf9b1f92c"
+                "reference": "77e00c9e499d2cc8578762f7db599af8a6820353"
             },
             "require": {
                 "drupal/cas": "dev-1.x",
@@ -2642,7 +2642,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1562679487",
+                    "datestamp": "1563449585",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2679,7 +2679,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-07-18T11:30:53+00:00"
+            "time": "2019-07-18T14:38:16+00:00"
         },
         {
             "name": "drupal/cas_attributes",
