@@ -134,7 +134,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function visitEditCollection(string $collection): void {
     $collection = $this->getCollectionByName($collection);
-    $path = $collection->toUrl('edit-form');
+    $path = $collection->toUrl('edit-form')->getInternalPath();
     $this->visitPath($path);
   }
 
@@ -388,7 +388,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   The name of the collection to check.
    * @param int $number
    *   The expected number of members in the collection.
-   * @param int $membership_state
+   * @param string $membership_state
    *   The state of the membership. Can be either active, pending or blocked.
    *
    * @throws \Exception
@@ -396,7 +396,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Then the :collection collection should have :number :membership_state member(s)
    */
-  public function assertMemberCount(string $collection, int $number, int $membership_state): void {
+  public function assertMemberCount(string $collection, int $number, string $membership_state): void {
     $states = [
       OgMembershipInterface::STATE_ACTIVE,
       OgMembershipInterface::STATE_PENDING,
