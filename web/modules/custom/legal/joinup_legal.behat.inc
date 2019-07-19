@@ -60,7 +60,7 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
    *
    * @Given (the following )legal document version(s):
    */
-  public function givenLegalDocumentVersions(TableNode $collection_table) {
+  public function givenLegalDocumentVersions(TableNode $collection_table): void {
     $published = [];
     foreach ($collection_table->getColumnsHash() as $version) {
       $values = [];
