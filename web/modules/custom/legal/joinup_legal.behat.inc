@@ -30,7 +30,6 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
     'Published' => 'published',
     'Acceptance label' => 'acceptance_label',
     'Content' => 'entity_legal_document_text',
-    'Path alias' => 'alias',
   ];
 
   /**
