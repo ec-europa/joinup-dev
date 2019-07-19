@@ -50,7 +50,7 @@ class EntityAuthorshipHelper implements EntityAuthorshipHelperInterface {
         list($datasource_id, $raw_id) = Utility::splitCombinedId($result->getId());
         $datasource = $index->getDatasource($datasource_id);
         $entity_type_id = $datasource->getEntityTypeId();
-        list($entity_id, $langcode) = explode(':', $raw_id);
+        list($entity_id,) = explode(':', $raw_id);
         $entity_ids[$entity_type_id][$entity_id] = $entity_id;
       }
     }

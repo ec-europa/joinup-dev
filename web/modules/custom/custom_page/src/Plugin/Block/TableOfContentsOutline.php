@@ -209,7 +209,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
     // Pickup the parent plugin ID.
     $parent_plugin_id = key($trail);
 
-    return $parent_plugin_id ? $this->getFlattenedMenu()[$parent_plugin_id] : NULL;
+    return $this->getFlattenedMenu()[$parent_plugin_id] ?? NULL;
   }
 
   /**
@@ -302,7 +302,7 @@ class TableOfContentsOutline extends BlockBase implements ContainerFactoryPlugin
    */
   protected function flatOutlineTree(array $tree): void {
     /** @var \Drupal\Core\Menu\MenuLinkTreeElement[] $tree */
-    foreach ($tree as $menu_link_id => $data) {
+    foreach ($tree as $data) {
       $this->flattenedMenu[$data->link->getPluginId()] = $data->link;
       if ($data->subtree) {
         $this->flatOutlineTree($data->subtree);

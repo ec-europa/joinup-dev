@@ -3,11 +3,12 @@ type: module
 description: Handles subscription settings for each user.
 core: 8.x
 package: Joinup
+
 dependencies:
-  - flag
-  - joinup_core
-  - message_digest
-  - options
+  - drupal:options
+  - flag:flag
+  - joinup:joinup_core
+  - message_digest:message_digest
 
 config_devel:
   - core.entity_form_mode.user.subscription_settings

@@ -64,10 +64,10 @@ Feature: Add community content
       | event        |
       | news         |
 
-  Scenario Outline: Publishing a content for the first time updates the creation time
+  Scenario Outline: Publishing community content for the first time sets the publication date
     Given users:
       | Username  | E-mail                     | First name | Family name    | Roles     |
-      | Publisher | publisher-example@test.com | Publihser  | Georgakopoulos | moderator |
+      | Publisher | publisher-example@test.com | Publisher  | Georgakopoulos | moderator |
     And the following collection:
       | title | The afternoon shift |
       | state | validated           |
@@ -83,11 +83,12 @@ Feature: Add community content
 
     When I am logged in as "Publisher"
     And I go to the "Sample <content type>" <content type>
+    Then the "Sample <content type>" <content type> should not have a publication date
     And I should see the text "01/01/2010"
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    And the latest version of the "Sample <content type>" <content type> should have a different created date than the last unpublished version
+    And the publication date of the "Sample <content type>" <content type> should not be equal to the created date
 
     When I click "Revisions" in the "Entity actions" region
     And I click the last "Revert" link
@@ -97,7 +98,8 @@ Feature: Add community content
     When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    Then the latest version of the "Sample <content type>" <content type> should have the same created date as the last published version
+    Then the publication date of the "Sample <content type>" <content type> should be equal to the last unpublished version's
+    Then the publication date of the "Sample <content type>" <content type> should be equal to the last published version's
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
     # date is the one shown and this field is exposed to the user.

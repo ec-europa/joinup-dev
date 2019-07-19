@@ -4,12 +4,12 @@ description: User profile fields, user notifications, ...
 core: 8.x
 package: Joinup
 dependencies:
-  - joinup_core
-  - message
-  - og
-  - search_api_field
-  - social_media_links_field
-  - user
+  - drupal:user
+  - joinup:joinup_core
+  - joinup:search_api_field
+  - message:message
+  - og:og
+  - social_media_links:social_media_links_field
 
 config_devel:
   - core.entity_form_display.message.og_membership_role_change.default

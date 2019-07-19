@@ -6,23 +6,65 @@ namespace Drupal\adms_validator;
 
 /**
  * A value object containing an individual schema violation.
+ *
+ * @todo Better document the meaning of the different properties.
  */
 class SchemaError {
 
+  /**
+   * The name of the class.
+   *
+   * @var string
+   */
   protected $className;
 
+  /**
+   * The message.
+   *
+   * @var string
+   */
   protected $message;
 
+  /**
+   * The object.
+   *
+   * @var string
+   */
   protected $object;
 
+  /**
+   * The predicate.
+   *
+   * @var string
+   */
   protected $predicate;
 
+  /**
+   * The rule description.
+   *
+   * @var string
+   */
   protected $ruleDescription;
 
+  /**
+   * The rule ID.
+   *
+   * @var string
+   */
   protected $ruleID;
 
+  /**
+   * The severity of the rule.
+   *
+   * @var string
+   */
   protected $ruleSeverity;
 
+  /**
+   * The subject.
+   *
+   * @var string
+   */
   protected $subject;
 
   /**
