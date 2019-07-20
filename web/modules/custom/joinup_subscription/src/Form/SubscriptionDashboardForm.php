@@ -8,12 +8,10 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgMembershipInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -97,9 +95,6 @@ class SubscriptionDashboardForm extends FormBase {
     }
 
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
-    $memberships_with_subscription = array_filter($memberships, function (OgMembershipInterface $membership): array {
-      return $membership->get('subscription_bundles')->getValue();
-    });
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     $form['description'] = [
