@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cc645336759bab6cdce46d5512d8c1a",
+    "content-hash": "720c2f025dc5c2f349e7d38cf7c180a9",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2625,7 +2625,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "77e00c9e499d2cc8578762f7db599af8a6820353"
+                "reference": "a4c4f428fa1c21802850605905f08e56562572bc"
             },
             "require": {
                 "drupal/cas": "dev-1.x",
@@ -2642,7 +2642,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1563449585",
+                    "datestamp": "1563607685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2679,7 +2679,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-07-18T14:38:16+00:00"
+            "time": "2019-07-20T08:43:46+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -12944,7 +12944,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "e90187bb3fa066eed656e5be03763ba8f5be1167"
+                "reference": "de5c3477b2854d559c1848b3e3454228bb672ea4"
             },
             "require": {
                 "drupal/cas": "~1.5",
@@ -12972,7 +12972,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1562332689",
+                    "datestamp": "1562337785",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -12996,9 +12996,6 @@
                     "../cas_mock_server_build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
-                },
-                "patches_applied": {
-                    "Allow to link a local account when creating CAS users in Behat @see https://github.com/pfrenssen/cas_mock_server/pull/6": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/6.diff"
                 }
             },
             "autoload-dev": {
@@ -13030,7 +13027,7 @@
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
             },
-            "time": "2019-07-05T14:40:42+00:00"
+            "time": "2019-07-20T07:31:17+00:00"
         },
         {
             "name": "drupal/coder",
