@@ -8,10 +8,13 @@
 declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -27,7 +30,9 @@ use PHPUnit\Framework\Assert;
  */
 class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use BrowserCapabilityDetectionTrait;
   use EntityTrait;
+  use MaterialDesignTrait;
   use OgTrait;
   use RdfEntityTrait;
   use UserTrait;
@@ -95,6 +100,110 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
       //   lookup table for the discussion ID once we have more.
       $subscription_service->subscribe($user, $entity, 'subscribe_discussions');
     }
+  }
+
+  /**
+   * Asserts the status of the save button in a subscription card.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $collection
+   *   The collection name.
+   * @param string $status
+   *   The expected status. Possible values are 'enabled' and 'disabled'.
+   *
+   * @Given the :button button on the :collection subscription card should be :status
+   */
+  public function assertSubscriptionButtonStatus(string $button, string $collection, string $status): void {
+    if (!in_array($status, ['enabled', 'disabled'])) {
+      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
+    }
+
+    $expected_status = $status === 'enabled';
+    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+    $button = $card->findButton($button);
+    $disabled = !($button->getAttribute('disabled') === 'disabled');
+    Assert::assertEquals($expected_status, $disabled);
+  }
+
+  /**
+   * Presses a button on a subscription card.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $collection
+   *   The collection name.
+   *
+   * @Given I press :button on the :collection subscription card
+   */
+  public function pressButtonOnSubscriptionCard(string $button, string $collection): void {
+    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+    $button = $card->findButton($button);
+    $button->press();
+  }
+
+  /**
+   * Asserts that a button exists in a subscription card.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $collection
+   *   The collection name.
+   *
+   * @Given I should see the :button button on the :collection subscription card
+   */
+  public function assertButtonExistsOnSubscriptionCard(string $button, string $collection): void {
+    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+    if (empty($card->findButton($button))) {
+      throw new Exception("The '$button' button was not found in the '$collection' subscription card but should.");
+    }
+  }
+
+  /**
+   * Asserts that a button exists in a subscription card.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $collection
+   *   The collection name.
+   *
+   * @Given I should not see the :button button on the :collection subscription card
+   */
+  public function assertButtonNotExistsOnSubscriptionCard(string $button, string $collection): void {
+    $card = $this->getCollectionSubscriptionCardByHeading($collection);
+    if ($card->findButton($button)) {
+      throw new Exception("The '$button' button was found in the '$collection' subscription card but should not.");
+    }
+  }
+
+  /**
+   * Checks a material checkbox that represents a subscription's bundle.
+   *
+   * @param string $collection
+   *   The collection name.
+   * @param string $bundle
+   *   The bundle to check.
+   *
+   * @Given I check the :bundle checkbox of the :collection subscription
+   */
+  public function selectSubscriptionMaterialOptionInDashboard(string $collection, string $bundle): void {
+    $collection = $this->getCollectionSubscriptionCardByHeading($collection);
+    $this->checkMaterialDesignField($bundle, $collection);
+  }
+
+  /**
+   * Unhecks a material checkbox that represents a subscription's bundle.
+   *
+   * @param string $collection
+   *   The collection name.
+   * @param string $bundle
+   *   The bundle to check.
+   *
+   * @Given I uncheck the :bundle checkbox of the :collection subscription
+   */
+  public function deselectSubscriptionMaterialOptionInDashboard(string $collection, string $bundle): void {
+    $collection = $this->getCollectionSubscriptionCardByHeading($collection);
+    $this->uncheckMaterialDesignField($bundle, $collection);
   }
 
   /**

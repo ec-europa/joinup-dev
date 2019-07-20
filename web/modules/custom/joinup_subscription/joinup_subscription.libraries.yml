@@ -1,0 +1,6 @@
+dashboard:
+  version: 1.x
+  js:
+    js/dashboard.js: {}
+  dependencies:
+    - core/jquery

@@ -2,16 +2,16 @@
 
 namespace Drupal\joinup_subscription\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
-use Drupal\og\OgMembershipInterface;
+use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -41,6 +41,13 @@ class SubscriptionDashboardForm extends FormBase {
   protected $relationManager;
 
   /**
+   * The OG membership manager.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
    * Constructs a new SubscriptionDashboardForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -49,11 +56,14 @@ class SubscriptionDashboardForm extends FormBase {
    *   The entity type bundle info service.
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
    *   The Joinup relation manager service.
+   * @param \Drupal\og\MembershipManagerInterface $membershipManager
+   *   The OG membership manager.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, JoinupRelationManagerInterface $relationManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, JoinupRelationManagerInterface $relationManager, MembershipManagerInterface $membershipManager) {
     $this->entityTypeManager = $entityTypeManager;
     $this->entityTypeBundleInfo = $entityTypeBundleInfo;
     $this->relationManager = $relationManager;
+    $this->membershipManager = $membershipManager;
   }
 
   /**
@@ -63,7 +73,8 @@ class SubscriptionDashboardForm extends FormBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('entity_type.bundle.info'),
-      $container->get('joinup_core.relations_manager')
+      $container->get('joinup_core.relations_manager'),
+      $container->get('og.membership_manager')
     );
   }
 
@@ -84,9 +95,6 @@ class SubscriptionDashboardForm extends FormBase {
     }
 
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
-    $memberships_with_subscription = array_filter($memberships, function (OgMembershipInterface $membership): array {
-      return $membership->get('subscription_bundles')->getValue();
-    });
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     $form['description'] = [
@@ -117,9 +125,13 @@ class SubscriptionDashboardForm extends FormBase {
       if ($collection === NULL) {
         continue;
       }
+      $clean_collection_id = Html::cleanCssIdentifier($collection->id());
       $form['collections'][$collection->id()] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['collection-subscription']],
+        '#id' => 'collection-' . $clean_collection_id,
+        '#attributes' => [
+          'class' => ['collection-subscription'],
+        ],
         'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'list_view'),
         'bundles' => [
           '#type' => 'container',
@@ -137,24 +149,37 @@ class SubscriptionDashboardForm extends FormBase {
           '#title' => $bundle_info[$bundle_id]['label'],
           '#return_value' => TRUE,
           '#default_value' => $value,
+          // Make sure to turn autocomplete off so that the browser doesn't try
+          // to restore a half submitted form when the user does a soft reload.
+          '#attributes' => ['autocomplete' => 'off'],
         ];
       }
+
+      $form['collections'][$collection->id()]['bundles']['submit'] = [
+        '#ajax' => [
+          'callback' => '::reloadCollection',
+          'wrapper' => 'collection-' . $clean_collection_id,
+        ],
+        '#name' => 'submit-' . $clean_collection_id,
+        '#submit' => ['::submitForm'],
+        '#type' => 'submit',
+        '#value' => $this->t('Save changes'),
+        '#attributes' => [
+          // The button should appear disabled initially. It becomes enabled
+          // when the user changes one of the checkboxes. We have to set this
+          // HTML attribute directly instead of using the `#disabled` property
+          // because this will make Drupal ignore the form submissions.
+          'disabled' => 'disabled',
+          // Make sure to turn autocomplete off so that the browser doesn't try
+          // to restore a half submitted form when the user does a soft reload.
+          'autocomplete' => 'off',
+        ],
+      ];
     }
 
-    $form['unsubscribe_all'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Unsubscribe from all'),
-      '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
-        'user' => $user->id(),
-      ]),
-      '#access' => !empty($memberships_with_subscription),
-      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
-    ];
-
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Submit'),
-    ];
+    // Attach JS behavior that enables the submit button for a collection when a
+    // checkbox is toggled.
+    $form['#attached']['library'][] = 'joinup_subscription/dashboard';
 
     return $form;
   }
@@ -163,27 +188,62 @@ class SubscriptionDashboardForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $collection_id = $this->getTriggeringElementCollectionId($form_state);
+    $collection = $this->entityTypeManager->getStorage('rdf_entity')->load($collection_id);
     $user = $form_state->getBuildInfo()['args'][0];
-    $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
-    foreach ($memberships as $membership) {
-      // Check if the subscriptions have changed. This allows us to skip saving
-      // the membership entity if nothing changed.
-      $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()]['bundles']));
+    $membership = $this->membershipManager->getMembership($collection, $user);
 
-      $original_bundles = array_map(function (array $item): string {
-        return $item['bundle'];
-      }, $membership->get('subscription_bundles')->getValue());
+    // Check if the subscriptions have changed. This allows us to skip saving
+    // the membership entity if nothing changed.
+    $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()]['bundles']));
 
-      sort($subscribed_bundles);
-      sort($original_bundles);
-      if ($subscribed_bundles !== $original_bundles) {
-        // Bundle subscriptions have changed, update the membership.
-        $membership->set('subscription_bundles', array_map(function (string $bundle): array {
-          return ['entity_type' => 'node', 'bundle' => $bundle];
-        }, $subscribed_bundles))->save();
-      }
+    $original_bundles = array_map(function (array $item): string {
+      return $item['bundle'];
+    }, $membership->get('subscription_bundles')->getValue());
+
+    sort($subscribed_bundles);
+    sort($original_bundles);
+    if ($subscribed_bundles !== $original_bundles) {
+      // Bundle subscriptions have changed, update the membership.
+      $membership->set('subscription_bundles', array_map(function (string $bundle): array {
+        return ['entity_type' => 'node', 'bundle' => $bundle];
+      }, $subscribed_bundles))->save();
     }
-    $this->messenger()->addStatus($this->t('The subscriptions have been updated.'));
+  }
+
+  /**
+   * AJAX callback that refreshes a collection after it has been submitted.
+   *
+   * This allows the user to manage their subscriptions without page reloads.
+   *
+   * @param array $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array
+   *   The render array containing the updated collection to refresh.
+   */
+  public function reloadCollection(array &$form, FormStateInterface $form_state): array {
+    $submitted_collection_id = $this->getTriggeringElementCollectionId($form_state);
+    $form['collections'][$submitted_collection_id]['bundles']['submit']['#value'] = $this->t('Saved!');
+    return $form['collections'][$submitted_collection_id];
+  }
+
+  /**
+   * Returns the collection ID for the submit button that was clicked.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state of the submitted form.
+   *
+   * @return string
+   *   The collection ID that corresponds to the submit button that was clicked.
+   */
+  protected function getTriggeringElementCollectionId(FormStateInterface $form_state): string {
+    // Return the collection ID which is stored in the third to last parent of
+    // the button: `['collections'][$collection_id]['bundles']['submit']`.
+    $clicked_button_parents = array_values($form_state->getTriggeringElement()['#parents']);
+    return $clicked_button_parents[count($clicked_button_parents) - 3];
   }
 
 }

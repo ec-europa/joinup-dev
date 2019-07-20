@@ -1,87 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="Matomo" default="help">
-
-    <!-- Checks if all required software to install Matomo is available. -->
-    <target name="check-matomo-requirements">
-        <echo message="Matomo installation requires git and docker-compose to be installed." />
-        <echo message="Checking if git is installed. Ref. https://git-scm.com/downloads" />
-        <exec
-            command="${git.bin} --version"
-            dir="${project.basedir}"
-            passthru="true"
-            checkreturn="true" />
-        <echo message="Checking if docker-compose is installed. Ref. https://docs.docker.com/compose/install/" />
-        <exec
-            command='docker-compose --version'
-            dir="${project.basedir}"
-            passthru="true"
-            checkreturn="true" />
-    </target>
-
-    <!-- Downloads the repository that contains the Matomo docker configuration. -->
-    <target
-        name="download-matomo-repository"
-        depends="check-matomo-requirements">
-        <if>
-            <available file="${matomo.dir}/.git" type="dir" property="matomo.repo.available" />
-            <then>
-                <echo message="Matomo repository exists (${matomo.dir}), fetching latest changes." />
-                <gitfetch
-                    gitPath="${git.bin}"
-                    repository="${matomo.dir}"
-                    refspec="${matomo.branch}" />
-            </then>
-            <else>
-                <mkdir dir="${matomo.dir}" />
-                <gitclone
-                    gitPath="${git.bin}"
-                    repository="${matomo.repo}"
-                    branch="${matomo.branch}"
-                    targetPath="${matomo.dir}" />
-            </else>
-        </if>
-    </target>
-
-    <target
-        name="configure-matomo-docker"
-        depends="download-matomo-repository">
-        <!-- Start by doing a clean checkout of the branch. -->
-        <gitcheckout
-            gitPath="${git.bin}"
-            repository="${matomo.dir}"
-            branchname="${matomo.branch}"
-            force="true" />
-        <!-- Configure docker. -->
-        <reflexive>
-            <fileset dir="${matomo.dir}">
-                <include pattern="${matomo.config}" />
-            </fileset>
-            <filterchain>
-                <!-- Comment out references to the external network 'lb_web'. -->
-                <replaceregexp>
-                    <regexp
-                        pattern="^(.*lb_web.*)$"
-                        replace="#\1"
-                        modifiers="m" />
-                </replaceregexp>
-                <replaceregexp>
-                    <regexp
-                        pattern="^(.*external: true.*)$"
-                        replace="#\1"
-                        modifiers="m" />
-                </replaceregexp>
-                <!-- Insert the port configuration. -->
-                <replaceregexp>
-                    <regexp
-                        pattern="^(.*)(cron:.*)$"
-                        replace="\1  ports:${line.separator}\1    - &quot;${matomo.port}:80&quot;${line.separator}\1    - &quot;8443:443&quot;${line.separator}\1\2"
-                        modifiers="m" />
-                </replaceregexp>
-            </filterchain>
-        </reflexive>
-    </target>
-
     <target name="configure-matomo-drupal">
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -91,65 +10,14 @@
                 <!-- Comment out previous configuration. -->
                 <replaceregexp>
                     <regexp
-                        pattern="^[^#](.*matomo.*\.settings.*)$"
-                        replace="#\1"
+                        pattern="^[^#].*(matomo|oe_webtools_analytics).*\.settings.*$${line.separator}"
+                        replace=""
                         modifiers="m" />
                 </replaceregexp>
             </filterchain>
         </reflexive>
         <append
             destFile="${website.settings.local.php}"
-            text="$config['matomo.settings']['site_id'] = '${matomo.website_id}';${line.separator}$config['matomo.settings']['url_http'] = '${matomo.url.http}';${line.separator}$config['matomo.settings']['url_https'] = '${matomo.url.https}';${line.separator}$config['matomo_reporting_api.settings']['token_auth'] = '${matomo.token}';${line.separator}" />
+            text="$config['matomo.settings']['site_id'] = '${matomo.website_id}';${line.separator}$config['matomo.settings']['url_http'] = '${matomo.url.http}';${line.separator}$config['matomo.settings']['url_https'] = '${matomo.url.https}';${line.separator}$config['matomo_reporting_api.settings']['token_auth'] = '${matomo.token}';${line.separator}$config['oe_webtools_analytics.settings']['siteID'] = '${webtools_analytics.site_id}';${line.separator}$config['oe_webtools_analytics.settings']['sitePath'] = '${webtools_analytics.site_path}';${line.separator}$config['oe_webtools_analytics.settings']['instance'] = '${webtools_analytics.instance}';${line.separator}" />
     </target>
-
-    <target
-        name="download-matomo-containers"
-        depends="download-matomo-repository">
-        <exec
-            command='docker-compose up --no-start'
-            dir="${matomo.dir}"
-            passthru="true"
-            checkreturn="true" />
-    </target>
-
-    <target
-        name="start-matomo"
-        description="Start the containerized Matomo instance.">
-        <exec
-            command='MYSQL_ROOT_PASSWORD=${matomo.db.password} docker-compose up -d'
-            dir="${matomo.dir}"
-            passthru="true"
-            checkreturn="true" />
-        <echo message="Matomo is now running at http://localhost:${matomo.port}" />
-        <echo message="Use the following settings when configuring the instance through the web interface:${line.separator}
-            Database server: db${line.separator}
-            Login: root${line.separator}
-            Password: ${matomo.db.password}${line.separator}
-            Database name: matomo${line.separator}${line.separator}
-            Super user login and password: whatever you like${line.separator}${line.separator}
-            Website name: Joinup${line.separator}
-            Website URL: ${drupal.base_url}" />
-    </target>
-
-    <target
-        name="stop-matomo"
-        description="Stop the containerized Matomo instance.">
-        <exec
-            command='docker-compose down'
-            dir="${matomo.dir}"
-            passthru="true"
-            checkreturn="true" />
-    </target>
-
-    <target
-        name="restart-matomo"
-        depends="stop-matomo, start-matomo"
-        description="Restart the Matomo containers.">
-    </target>
-
-    <target
-        name="setup-matomo"
-        description="Set up and start Matomo."
-        depends="download-matomo-containers, configure-matomo-docker, start-matomo" />
-
 </project>
