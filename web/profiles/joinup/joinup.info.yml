@@ -43,6 +43,7 @@ dependencies:
   - honeypot:honeypot
   - drupal:image
   - inline_entity_form:inline_entity_form
+  - joinup:isa2_analytics
   - joinup:joinup_collection
   - joinup:joinup_core
   - joinup:joinup_discussion
@@ -244,6 +245,7 @@ config_devel:
   - linkit.linkit_profile.default
   - mailsystem.settings
   - matomo.settings
+  - oe_webtools_analytics.settings
   - og.settings
   - og_menu.ogmenu.navigation
   - page_manager.page.legal_notice
