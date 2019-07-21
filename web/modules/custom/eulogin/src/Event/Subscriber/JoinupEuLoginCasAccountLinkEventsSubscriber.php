@@ -21,7 +21,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
    */
   public static function getSubscribedEvents() {
     return [
-      CasAccountLinkEvents::POST_LINK => 'setRedirects',
+      CasAccountLinkEvents::POST_LINK => 'setMessageAndRedirect',
     ];
   }
 
@@ -31,12 +31,10 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
    * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent $event
    *   The CAS Account Link post-linking event object.
    */
-  public function setRedirects(CasAccountLinkPostLinkEvent $event): void {
-    if ($event->hasLocalAccount()) {
-      /** @var \Drupal\cas\CasPropertyBag $property_bag */
-      $property_bag = $event->getCasContext()['property_bag'];
+  public function setMessageAndRedirect(CasAccountLinkPostLinkEvent $event): void {
+    if ($event->isLocalAccountSelected()) {
       $event->setSuccessMessage($this->t('Your EU Login account %authname has been successfully linked to your local account %account.', [
-        '%authname' => $property_bag->getOriginalUsername(),
+        '%authname' => $event->getCasPropertyBag()->getOriginalUsername(),
         '%account' => $event->getAccount()->getDisplayName(),
       ]));
     }
