@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca9a18e3617f8899e36bd9fba9be9256",
+    "content-hash": "5181eab47f53fd0d39c29e6d048db3f6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5352,17 +5352,11 @@
         },
         {
             "name": "drupal/r4032login",
-            "version": "1.1.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/r4032login.git",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/r4032login-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "dd9dc2daf8e4b960d2be1fe58e19a8ec4fbf30f1"
+                "reference": "a10444360f0d738e7517616fa30d60b5b1da0871"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -5373,12 +5367,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1533913684",
+                    "version": "8.x-1.1-beta1+0-dev",
+                    "datestamp": "1532080685",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "cache": "https://www.drupal.org/files/issues/2019-07-21/3069204-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5431,7 +5428,8 @@
             "homepage": "https://www.drupal.org/project/r4032login",
             "support": {
                 "source": "https://git.drupalcode.org/project/r4032login"
-            }
+            },
+            "time": "2018-07-20T09:54:11+00:00"
         },
         {
             "name": "drupal/rdf_entity",
@@ -15600,6 +15598,7 @@
         "drupal/migrate_run": 10,
         "drupal/page_manager": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/r4032login": 20,
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
