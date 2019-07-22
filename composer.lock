@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "936ad99b7834c3c2075802fa0789d296",
+    "content-hash": "f04cc780023245bde96661284f0143a7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2581,7 +2581,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-21/3065933-20.patch"
+                    "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-22/3065933-23.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2625,7 +2625,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "da9bd721bb0dd73e42bdba1e0e3f07ebf85a1bb4"
+                "reference": "370b85616a3ab742d418c76aedc0cf903ff48850"
             },
             "require": {
                 "drupal/cas": "dev-1.x",
@@ -2642,7 +2642,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1563612488",
+                    "datestamp": "1563742986",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2679,7 +2679,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-07-21T20:56:31+00:00"
+            "time": "2019-07-22T07:01:15+00:00"
         },
         {
             "name": "drupal/cas_attributes",
