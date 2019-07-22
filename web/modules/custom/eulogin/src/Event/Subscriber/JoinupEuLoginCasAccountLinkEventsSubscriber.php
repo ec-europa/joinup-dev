@@ -19,7 +19,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     return [
       CasAccountLinkEvents::POST_LINK => 'setMessageAndRedirect',
     ];
