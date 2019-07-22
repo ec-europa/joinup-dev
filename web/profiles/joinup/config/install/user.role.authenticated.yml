@@ -23,6 +23,8 @@ permissions:
   - 'edit own tallinn_report content'
   - 'export rdf metadata'
   - 'flag subscribe_discussions'
+  - 'legal re-accept legal_notice'
+  - 'legal view legal_notice'
   - 'never autoplay videos'
   - 'opt-in or out of matomo tracking'
   - 'post comments'
