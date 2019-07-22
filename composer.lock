@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca9a18e3617f8899e36bd9fba9be9256",
+    "content-hash": "fc758b617e6c3fd660d18ce661e45d10",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5352,17 +5352,11 @@
         },
         {
             "name": "drupal/r4032login",
-            "version": "1.1.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/r4032login.git",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/r4032login-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "dd9dc2daf8e4b960d2be1fe58e19a8ec4fbf30f1"
+                "reference": "391f10d69b9b8c466a2fddac2a6b99f1289e7781"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -5373,11 +5367,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1533913684",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1486527783",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -5389,10 +5383,6 @@
                 {
                     "name": "Bevan",
                     "homepage": "https://www.drupal.org/user/49989"
-                },
-                {
-                    "name": "Nixou",
-                    "homepage": "https://www.drupal.org/user/2304734"
                 },
                 {
                     "name": "RobLoach",
@@ -5430,8 +5420,9 @@
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "support": {
-                "source": "https://git.drupalcode.org/project/r4032login"
-            }
+                "source": "http://cgit.drupalcode.org/r4032login"
+            },
+            "time": "2017-02-08T04:20:19+00:00"
         },
         {
             "name": "drupal/rdf_entity",
@@ -15600,6 +15591,7 @@
         "drupal/migrate_run": 10,
         "drupal/page_manager": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/r4032login": 20,
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 10,
         "drupal/view_unpublished": 15,
