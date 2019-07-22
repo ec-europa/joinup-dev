@@ -10,8 +10,7 @@ declare(strict_types = 1);
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-
-define('JOINUP_VIDEO_EMBED_COOKIE_URL', '//europa.eu/webtools/crs/iframe/?oriurl=');
+use Drupal\joinup_video\JoinupVideo;
 
 /**
  * Implements hook_form_video_embed_dialog_alter().
@@ -61,7 +60,7 @@ function joinup_video_preprocess_video_embed_iframe(&$variables) {
       'fragment' => empty($variables['fragment']) ? NULL : $variables['fragment'],
       'absolute' => TRUE,
     ]);
-    $variables['url'] = JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($url->setAbsolute()->toString());
+    $variables['url'] = JoinupVideo::JOINUP_VIDEO_EMBED_COOKIE_URL . urlencode($url->setAbsolute()->toString());
     unset($variables['query']);
     unset($variables['fragment']);
   }
