@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
@@ -120,6 +121,7 @@ class SubscriptionDashboardForm extends FormBase {
 
     $form['collections']['#tree'] = TRUE;
 
+    $memberships_with_subscription = FALSE;
     foreach ($memberships as $membership) {
       $collection = $membership->getGroup();
       if ($collection === NULL) {
@@ -144,6 +146,9 @@ class SubscriptionDashboardForm extends FormBase {
         $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
         }, FALSE);
+        if (!$memberships_with_subscription && $value) {
+          $memberships_with_subscription = TRUE;
+        }
         $form['collections'][$collection->id()]['bundles'][$bundle_id] = [
           '#type' => 'checkbox',
           '#title' => $bundle_info[$bundle_id]['label'],
@@ -187,7 +192,7 @@ class SubscriptionDashboardForm extends FormBase {
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
       ]),
-      '#access' => !empty($memberships_with_subscription),
+      '#access' => $memberships_with_subscription,
       '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
     ];
 
