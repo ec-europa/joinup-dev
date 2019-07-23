@@ -120,6 +120,7 @@ class SubscriptionDashboardForm extends FormBase {
 
     $form['collections']['#tree'] = TRUE;
 
+    $memberships_with_subscription = FALSE;
     foreach ($memberships as $membership) {
       $collection = $membership->getGroup();
       if ($collection === NULL) {
@@ -144,6 +145,9 @@ class SubscriptionDashboardForm extends FormBase {
         $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
         }, FALSE);
+        if (!$memberships_with_subscription && $value) {
+          $memberships_with_subscription = TRUE;
+        }
         $form['collections'][$collection->id()]['bundles'][$bundle_id] = [
           '#type' => 'checkbox',
           '#title' => $bundle_info[$bundle_id]['label'],
@@ -180,6 +184,18 @@ class SubscriptionDashboardForm extends FormBase {
     // Attach JS behavior that enables the submit button for a collection when a
     // checkbox is toggled.
     $form['#attached']['library'][] = 'joinup_subscription/dashboard';
+
+    $form['collections']['#attached']['library'][] = 'joinup_subscription/dashboard';
+
+    $form['unsubscribe_all'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Unsubscribe from all'),
+      '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
+        'user' => $user->id(),
+      ]),
+      '#access' => $memberships_with_subscription,
+      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
+    ];
 
     return $form;
   }
