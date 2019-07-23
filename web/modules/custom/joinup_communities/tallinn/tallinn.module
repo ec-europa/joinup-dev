@@ -64,7 +64,7 @@ function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStat
   elseif ($tallinn_collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID)) {
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($tallinn_collection, $current_user);
+    $membership = $membership_manager->getMembership($tallinn_collection, $current_user->id());
     $access = $membership && $membership->hasRole('rdf_entity-collection-facilitator');
   }
 
@@ -143,7 +143,7 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
     if ($collection = $node->og_audience->entity) {
       /** @var \Drupal\og\MembershipManagerInterface $og_membership_manager */
       $og_membership_manager = \Drupal::service('og.membership_manager');
-      if ($og_membership_manager->isMember($collection, $account)) {
+      if ($og_membership_manager->isMember($collection, $account->id())) {
         return AccessResult::allowed();
       }
     }

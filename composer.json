@@ -229,6 +229,9 @@
             "drupal/message_notify": {
                 "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
             },
+            "drupal/og": {
+                "Do not require to pass the full user object when only the ID is required @see https://github.com/Gizra/og/pull/541": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/541.diff"
+            },
             "drupal/page_manager": {
                 "Support contextual links @see https://www.drupal.org/project/page_manager/issues/2601004": "https://www.drupal.org/files/issues/2019-05-27/2601004-30.patch"
             },
@@ -290,10 +293,6 @@
             "url": "https://git.drupal.org/project/redirect.git"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/ec-europa/spdx.git"
-        },
-	{
             "type": "package",
             "package": {
                 "name": "spdx/license-list-data",
@@ -304,7 +303,7 @@
                     "reference": "master"
                 }
             }
-	},
+        },
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/rdf_entity.git"
@@ -319,7 +318,15 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/ec-europa/spdx.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/ec-europa/TableExtension.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Gizra/og.git"
         },
         {
             "type": "vcs",
