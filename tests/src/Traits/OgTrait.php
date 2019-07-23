@@ -49,7 +49,7 @@ trait OgTrait {
       OgMembershipInterface::STATE_PENDING,
       OgMembershipInterface::STATE_BLOCKED,
     ];
-    $membership = $membership_manager->getMembership($group, $user, $states);
+    $membership = $membership_manager->getMembership($group, $user->id(), $states);
     if (!$membership) {
       $membership = OgMembership::create()
         ->setOwner($user)
@@ -282,7 +282,7 @@ trait OgTrait {
   protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]) {
     /** @var \Drupal\og\MembershipManager $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($group, $user, $states);
+    $membership = $membership_manager->getMembership($group, $user->id(), $states);
     if (empty($membership)) {
       throw new \Exception("Og membership for user {$user->getDisplayName()} in group {$group->label()} was not found.");
     }
