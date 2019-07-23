@@ -179,7 +179,7 @@ class SubscriptionDashboardForm extends FormBase {
 
     // Attach JS behavior that enables the submit button for a collection when a
     // checkbox is toggled.
-    $form['#attached']['library'][] = 'joinup_subscription/dashboard';
+    $form['collections']['#attached']['library'][] = 'joinup_subscription/dashboard';
 
     $form['unsubscribe_all'] = [
       '#type' => 'link',
