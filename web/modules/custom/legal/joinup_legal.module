@@ -12,6 +12,9 @@ use Drupal\entity_legal\Entity\EntityLegalDocument;
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds a checkbox on the contact form for anonymous users so they can accept
+ * the legal notice before submitting the form.
  */
 function joinup_legal_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   // Only anonymous users must agree with the legal notice.
