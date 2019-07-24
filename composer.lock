@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59b1effba1ce31f2145b858ab290f887",
+    "content-hash": "66646f4bebc80ccc4283a82787906cde",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.106.1",
+            "version": "3.107.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ed3bd17b8a6caa5c99ed5fe559d061a1f9fc2c8c"
+                "reference": "cf0c0968f93748cbe35d6a78e7babc7b7460945f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed3bd17b8a6caa5c99ed5fe559d061a1f9fc2c8c",
-                "reference": "ed3bd17b8a6caa5c99ed5fe559d061a1f9fc2c8c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cf0c0968f93748cbe35d6a78e7babc7b7460945f",
+                "reference": "cf0c0968f93748cbe35d6a78e7babc7b7460945f",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-07-10T18:29:49+00:00"
+            "time": "2019-07-11T15:05:32+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2429,7 +2429,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3616,7 +3620,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1556645881",
+                    "datestamp": "1551291083",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4723,7 +4727,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4742,7 +4746,7 @@
             "description": "Simple migrate drush commands: run, generate.",
             "homepage": "https://www.drupal.org/project/migrate_drush",
             "support": {
-                "source": "http://cgit.drupalcode.org/migrate_drush"
+                "source": "https://git.drupalcode.org/project/migrate_drush"
             }
         },
         {
@@ -5033,8 +5037,8 @@
                     "dev-4.x": "4.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-4.0-beta3+8-dev",
-                    "datestamp": "1557949081",
+                    "version": "8.x-4.0-beta3+10-dev",
+                    "datestamp": "1559069285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5435,8 +5439,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1486527783",
+                    "version": "8.x-1.1-beta1+0-dev",
+                    "datestamp": "1532080685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5445,12 +5449,16 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
                     "name": "Bevan",
                     "homepage": "https://www.drupal.org/user/49989"
+                },
+                {
+                    "name": "Nixou",
+                    "homepage": "https://www.drupal.org/user/2304734"
                 },
                 {
                     "name": "RobLoach",
@@ -5488,7 +5496,7 @@
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "support": {
-                "source": "http://cgit.drupalcode.org/r4032login"
+                "source": "https://git.drupalcode.org/project/r4032login"
             },
             "time": "2017-02-08T04:20:19+00:00"
         },
@@ -5888,7 +5896,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6136,7 +6144,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "datestamp": "1542122580",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6210,7 +6218,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "http://cgit.drupalcode.org/state_machine"
+                "source": "https://git.drupalcode.org/project/state_machine"
             }
         },
         {
@@ -6261,7 +6269,7 @@
             "description": "Provides support for extending sub-paths of URL aliases.",
             "homepage": "https://www.drupal.org/project/subpathauto",
             "support": {
-                "source": "http://cgit.drupalcode.org/subpathauto"
+                "source": "https://git.drupalcode.org/project/subpathauto"
             }
         },
         {
@@ -6490,7 +6498,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6513,7 +6521,7 @@
             "description": "Select which roles should be able to see unpublished nodes.",
             "homepage": "https://www.drupal.org/project/view_unpublished",
             "support": {
-                "source": "http://cgit.drupalcode.org/view_unpublished"
+                "source": "https://git.drupalcode.org/project/view_unpublished"
             }
         },
         {
@@ -8331,6 +8339,74 @@
             "time": "2019-05-25T20:07:01+00:00"
         },
         {
+            "name": "openeuropa/oe_webtools",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openeuropa/oe_webtools.git",
+                "reference": "eab913a181326b73b4234930970ceec91b7063e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/eab913a181326b73b4234930970ceec91b7063e1",
+                "reference": "eab913a181326b73b4234930970ceec91b7063e1",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/core": "^8.7",
+                "ext-json": "*",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "composer/installers": "~1.5",
+                "drupal-composer/drupal-scaffold": "^2.5.2",
+                "drupal/config_devel": "~1.2",
+                "drupal/drupal-extension": "^4.0",
+                "drush/drush": "~9.0",
+                "nikic/php-parser": "^3.1.5",
+                "openeuropa/behat-transformation-context": "~0.1",
+                "openeuropa/code-review": "~1.0@beta",
+                "openeuropa/drupal-core-require-dev": "^8.7",
+                "openeuropa/oe_media": "~0.4",
+                "openeuropa/task-runner": "~1.0.0-beta5",
+                "phpunit/phpunit": "~6.0",
+                "symfony/dom-crawler": "~3.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "composer-exit-on-patch-failure": true,
+                "enable-patching": true,
+                "installer-paths": {
+                    "build/core": [
+                        "type:drupal-core"
+                    ],
+                    "build/profiles/contrib/{$name}": [
+                        "type:drupal-profile"
+                    ],
+                    "build/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "build/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ]
+                },
+                "patches_applied": {
+                    "Include the smartloader on pages where analytics are used.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/71.patch"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drupal\\oe_webtools\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "EUPL-1.2"
+            ],
+            "description": "OpenEuropa Webtools integration.",
+            "time": "2019-05-15T11:26:37+00:00"
+        },
+        {
             "name": "openeuropa/oe_webtools_location",
             "version": "dev-master",
             "source": {
@@ -9916,7 +9992,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-22T22:25:24+00:00"
         },
         {
             "name": "stack/builder",
@@ -12628,7 +12704,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.27",
-                    "datestamp": "1558553350",
+                    "datestamp": "1558552081",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12724,17 +12800,17 @@
         },
         {
             "name": "drupal/config_devel",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_devel.git",
-                "reference": "8.x-1.2"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "203bf299b1ad395d1451e22ea5a8f25ae462d880"
+                "url": "https://ftp.drupal.org/files/projects/config_devel-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "ab880088bbbe955d9c9521655d73bf1a40ca75b8"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -12745,8 +12821,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1510843084",
+                    "version": "8.x-1.3",
+                    "datestamp": "1562862184",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12790,7 +12866,7 @@
             "description": "Helps developers work with configuration.",
             "homepage": "https://www.drupal.org/project/config_devel",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_devel"
+                "source": "https://git.drupalcode.org/project/config_devel"
             }
         },
         {
@@ -12922,10 +12998,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",

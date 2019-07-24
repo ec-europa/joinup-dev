@@ -1,9 +1,19 @@
+# @todo This file does not belong in the Joinup profile since it is specific
+#   to the ISA2 installation of Joinup. This should be moved into the exported
+#   config sync folder.
+# @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4858
 site_id: '177'
 url_http: 'http://joinup.acc.ne-dev.eu/'
 url_https: 'https://joinup.acc.ne-dev.eu/'
 domain_mode: 0
 visibility:
-  request_path_mode: 0
+  # Workaround to disable Matomo page tracking. We are currently using Webtools
+  # Analytics for tracking page visits, but are still using the Matomo Reporting
+  # API for showing the visit counts and download counts. By setting the request
+  # path mode to 2 (= "PHP") and not having the PHP module enabled Matomo will
+  # not do any page tracking.
+  # @see _matomo_visibility_pages()
+  request_path_mode: 2
   request_path_pages: "/admin\n/admin/*\n/batch\n/node/add*\n/node/*/*\n/rdf_entity/add/*\n/user/*/*"
   user_role_mode: 0
   user_role_roles: {  }
@@ -21,14 +31,14 @@ privacy:
 custom:
   variable:
     1:
-      name: 'Group context'
-      value: '[joinup-current-page:group-context]'
-      scope: page
+      name: ''
+      value: ''
+      scope: visit
       slot: 1
     2:
-      name: 'Page type'
-      value: '[joinup-current-page:page-type]'
-      scope: page
+      name: ''
+      value: ''
+      scope: visit
       slot: 2
     3:
       name: ''
