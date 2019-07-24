@@ -54,11 +54,14 @@ Feature: User subscription settings
     Then I should see the heading "Subscription settings"
     And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
     And I should not see the text "Alpha Centauri"
-    And I should not see the "Save changes" button
 
     # Log in as a user that is a member of 3 collections. The subscriptions for
     # all 3 collections should be shown.
     Given I am logged in as "Auric Goldfinger"
+
+    # This step is actually a shortcut for
+    # When I open the account menu
+    # And I click "My subscriptions"
     When I go to my subscription dashboard
 
     # The empty text should not be shown now.
