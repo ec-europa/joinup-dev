@@ -100,15 +100,15 @@ class SubscriptionDashboardForm extends FormBase {
     }
     $user = $this->entityTypeManager->getStorage('user')->load($user->id());
 
-    $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
-    $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
-    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
-
     $form['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
     ];
+
+    $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
+    $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     // Add a JS behavior to enable the buttons when the checkboxes or the
     // dropdown on the form are toggled.
