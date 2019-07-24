@@ -77,7 +77,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * The membership manager.
    *
-   * @var \Drupal\og\MembershipManager
+   * @var \Drupal\og\MembershipManagerInterface
    */
   protected $membershipManager;
 
