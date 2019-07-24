@@ -112,7 +112,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
 
     $expected_status = $status === 'enabled';
     $card = $this->getCollectionSubscriptionCardByHeading($collection);
-    $button = $this->findNamedElementInRegion('button', $button, $card);
+    $button = $this->findNamedElementInRegion($button, 'button', $card);
     $disabled = !($button->getAttribute('disabled') === 'disabled');
     Assert::assertEquals($expected_status, $disabled);
   }
