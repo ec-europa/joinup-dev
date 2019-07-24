@@ -110,6 +110,10 @@ class SubscriptionDashboardForm extends FormBase {
       '#value' => $this->t('Set your preferences to receive notifications on a per collection basis.'),
     ];
 
+    // Add a JS behavior to enable the buttons when the checkboxes or the
+    // dropdown on the form are toggled.
+    $form['collections']['#attached']['library'][] = 'joinup_subscription/dashboard';
+
     // Return early if there are no memberships to display.
     if (!(bool) count($memberships)) {
       $empty_message = $this->t('No collection memberships yet. Join one or more collections to subscribe to their content!');
@@ -187,10 +191,6 @@ class SubscriptionDashboardForm extends FormBase {
         ],
       ];
     }
-
-    // Attach JS behavior that enables the submit button for a collection when a
-    // checkbox is toggled.
-    $form['collections']['#attached']['library'][] = 'joinup_subscription/dashboard';
 
     $form['unsubscribe_all'] = [
       '#type' => 'link',
