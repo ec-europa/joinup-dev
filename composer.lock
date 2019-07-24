@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3ebfa541981a295b822b137ab2a4208",
+    "content-hash": "dfdcb1aa3b3cdf5e1c80d70599277eb0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.107.5",
+            "version": "3.107.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "99ec85834bbbeb9365c34a46b792c5421775f021"
+                "reference": "59e56f9ca6d32d3940d71dd9a95b6f784975fd89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/99ec85834bbbeb9365c34a46b792c5421775f021",
-                "reference": "99ec85834bbbeb9365c34a46b792c5421775f021",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/59e56f9ca6d32d3940d71dd9a95b6f784975fd89",
+                "reference": "59e56f9ca6d32d3940d71dd9a95b6f784975fd89",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-07-22T18:31:27+00:00"
+            "time": "2019-07-23T18:42:17+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -4965,17 +4965,11 @@
         },
         {
             "name": "drupal/og_menu",
-            "version": "1.0.0-alpha3",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og_menu.git",
-                "reference": "8.x-1.0-alpha3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "0a2d441ff6edad7d07208a0a3059466859248ac7"
+                "reference": "438b523cd10fa6d0c2214e0831e103822bb7c53e"
             },
             "require": {
                 "drupal/core": "*",
@@ -4987,12 +4981,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1503064744",
+                    "version": "8.x-1.0-alpha3+11-dev",
+                    "datestamp": "1545301380",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5013,6 +5010,10 @@
                     "homepage": "https://www.drupal.org/user/84179"
                 },
                 {
+                    "name": "mpp",
+                    "homepage": "https://www.drupal.org/user/359881"
+                },
+                {
                     "name": "pfrenssen",
                     "homepage": "https://www.drupal.org/user/382067"
                 },
@@ -5026,7 +5027,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
-            }
+            },
+            "time": "2018-12-20T10:22:02+00:00"
         },
         {
             "name": "drupal/page_manager",
@@ -15671,6 +15673,7 @@
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
         "drupal/migrate_run": 10,
+        "drupal/og_menu": 20,
         "drupal/page_manager": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,

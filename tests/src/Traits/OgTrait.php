@@ -280,7 +280,7 @@ trait OgTrait {
    *   Thrown if a membership with the given criteria is not found.
    */
   protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]) {
-    /** @var \Drupal\og\MembershipManager $membership_manager */
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
     $membership = $membership_manager->getMembership($group, $user->id(), $states);
     if (empty($membership)) {
