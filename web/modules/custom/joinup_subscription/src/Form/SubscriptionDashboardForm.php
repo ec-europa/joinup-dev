@@ -7,11 +7,14 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\SubformState;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -93,7 +96,9 @@ class SubscriptionDashboardForm extends FormBase {
     if (empty($user)) {
       throw new \InvalidArgumentException('No user account supplied.');
     }
+    $user = $this->entityTypeManager->getStorage('user')->load($user->id());
 
+    $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
     $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
@@ -165,7 +170,7 @@ class SubscriptionDashboardForm extends FormBase {
           'wrapper' => 'collection-' . $clean_collection_id,
         ],
         '#name' => 'submit-' . $clean_collection_id,
-        '#submit' => ['::submitForm'],
+        '#submit' => ['::submitSubscriptionBundles'],
         '#type' => 'submit',
         '#value' => $this->t('Save changes'),
         '#attributes' => [
@@ -183,8 +188,6 @@ class SubscriptionDashboardForm extends FormBase {
 
     // Attach JS behavior that enables the submit button for a collection when a
     // checkbox is toggled.
-    $form['#attached']['library'][] = 'joinup_subscription/dashboard';
-
     $form['collections']['#attached']['library'][] = 'joinup_subscription/dashboard';
 
     $form['unsubscribe_all'] = [
@@ -228,9 +231,40 @@ class SubscriptionDashboardForm extends FormBase {
   }
 
   /**
-   * AJAX callback that refreshes a collection after it has been submitted.
+   * Submit callback for the frequency settings.
    *
-   * This allows the user to manage their subscriptions without page reloads.
+   * @param array $form
+   *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state object.
+   */
+  public function submitUserFrequency(array &$form, FormStateInterface $form_state) {
+    $account = $form_state->getBuildInfo()['args'][0];
+    $user = $this->entityTypeManager->getStorage('user')->load($account->id());
+
+    $value = $form_state->getValue('field_user_frequency');
+    $user->set('field_user_frequency', $value);
+    $user->save();
+  }
+
+  /**
+   * AJAX callback that refreshes the user frequency settings.
+   *
+   * @param array $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array
+   *   The render array containing the updated frequency settings.
+   */
+  public function reloadFrequency(array &$form, FormStateInterface $form_state): array {
+    $form['user_subscription_settings']['field_user_frequency']['submit']['#value'] = $this->t('Saved!');
+    return $form['user_subscription_settings'];
+  }
+
+  /**
+   * AJAX callback that refreshes a collection after it has been submitted.
    *
    * @param array $form
    *   The form.
@@ -260,6 +294,59 @@ class SubscriptionDashboardForm extends FormBase {
     // the button: `['collections'][$collection_id]['bundles']['submit']`.
     $clicked_button_parents = array_values($form_state->getTriggeringElement()['#parents']);
     return $clicked_button_parents[count($clicked_button_parents) - 3];
+  }
+
+  /**
+   * Loads the field_user_frequency widget and prepares a subform with it.
+   *
+   * @param array $form
+   *   The parent form array.
+   * @param \Drupal\Core\Form\FormStateInterface $formState
+   *   The parent form state.
+   * @param \Drupal\user\UserInterface $user
+   *   The user object.
+   */
+  protected function loadUserSubscriptionFrequencyWidget(array &$form, FormStateInterface $formState, UserInterface $user) {
+    $form['user_subscription_settings'] = [
+      '#type' => 'container',
+      '#tree' => TRUE,
+      '#id' => 'user-frequency',
+      '#parents' => [],
+    ];
+    $subform_state = SubformState::createForSubform($form['user_subscription_settings'], $form, $formState);
+
+    /** @var \Drupal\Core\Entity\Entity\EntityFormDisplay $form_display */
+    $form_display = $this->entityTypeManager->getStorage('entity_form_display')->load('user.user.subscription_settings');
+    $subform_state->set('entity', $user);
+    $subform_state->set('form_display', $form_display);
+
+    /** @var \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsButtonsWidget $widget */
+    $widget = $form_display->getRenderer('field_user_frequency');
+    $items = $user->get('field_user_frequency');
+    $items->filterEmptyItems();
+
+    $form['user_subscription_settings']['field_user_frequency'] = $widget->form($items, $form['user_subscription_settings'], $subform_state);
+    $form['user_subscription_settings']['field_user_frequency']['#access'] = $items->access('edit');
+
+    $form['user_subscription_settings']['field_user_frequency']['submit'] = [
+      '#ajax' => [
+        'callback' => '::reloadFrequency',
+        'wrapper' => 'user-frequency',
+      ],
+      '#submit' => ['::submitUserFrequency'],
+      '#type' => 'submit',
+      '#value' => $this->t('Save changes'),
+      '#attributes' => [
+        // The button should appear disabled initially. It becomes enabled
+        // when the user changes one of the checkboxes. We have to set this
+        // HTML attribute directly instead of using the `#disabled` property
+        // because this will make Drupal ignore the form submissions.
+        'disabled' => 'disabled',
+        // Make sure to turn autocomplete off so that the browser doesn't try
+        // to restore a half submitted form when the user does a soft reload.
+        'autocomplete' => 'off',
+      ],
+    ];
   }
 
 }
