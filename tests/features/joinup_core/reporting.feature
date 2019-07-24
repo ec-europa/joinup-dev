@@ -5,15 +5,16 @@ Feature:
   I want to be able to access the Joinup reporting section.
 
   Scenario Outline: Test the general access to Reporting section.
-    Given I am logged in as a <role>
-    And I am on the homepage
-    When I am on "/admin/reporting"
+    Given I am logged in as a user with the <role> role
+    When I am on "<url>"
     Then I should get a <code> HTTP response
 
     Examples:
-      | role          | code |
-      | authenticated | 403  |
-      | moderator     | 200  |
+      | url                                  | role          | code |
+      | /admin/reporting                     | authenticated | 403  |
+      | /admin/reporting                     | moderator     | 200  |
+      | /admin/reporting/legal-notice-report | authenticated | 403  |
+      | /admin/reporting/legal-notice-report | moderator     | 200  |
 
   # This scenario is a light test to avoid regressions.
   Scenario: Moderators can access the list of published solutions and filter them by dates and type.
