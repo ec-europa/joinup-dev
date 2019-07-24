@@ -23,7 +23,7 @@ bundle: user
 mode: subscription_settings
 content:
   field_user_frequency:
-    type: options_buttons
+    type: options_select
     weight: 0
     settings: {  }
     third_party_settings: {  }
@@ -44,6 +44,6 @@ hidden:
   langcode: true
   language: true
   path: true
-  piwik: true
+  matomo: true
   simplenews: true
   timezone: true
