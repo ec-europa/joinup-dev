@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_subscription\Form;
 
 use Drupal\Component\Utility\Html;
@@ -306,7 +308,7 @@ class SubscriptionDashboardForm extends FormBase {
    * @param \Drupal\user\UserInterface $user
    *   The user object.
    */
-  protected function loadUserSubscriptionFrequencyWidget(array &$form, FormStateInterface $formState, UserInterface $user) {
+  protected function loadUserSubscriptionFrequencyWidget(array &$form, FormStateInterface $formState, UserInterface $user): void {
     $form['user_subscription_settings'] = [
       '#type' => 'container',
       '#tree' => TRUE,
