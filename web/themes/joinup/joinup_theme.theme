@@ -154,7 +154,6 @@ function _joinup_blue_header_routes() {
  */
 function _joinup_non_blue_header_routes() {
   return [
-    'joinup_subscription.subscription_settings',
     'entity.user.edit_form',
     'simplenews.newsletter_subscriptions_user',
   ];

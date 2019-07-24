@@ -49,7 +49,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   public function visitSubscriptionSettingsForm(string $username): void {
     $user = $this->getUserByName($username);
-    $url = Url::fromRoute('joinup_subscription.subscription_settings', [
+    $url = Url::fromRoute('joinup_subscription.subscriptions_page', [
       'user' => $user->id(),
     ]);
     $this->visitPath($url->toString());
