@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\collection\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -156,7 +157,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       $this->collection->setOwnerId(0)->save();
     }
 
-    drupal_set_message($this->t('You are no longer a member of %collection.', [
+    $this->messenger()->addStatus($this->t('You are no longer a member of %collection.', [
       '%collection' => $this->collection->getName(),
     ]));
 
@@ -169,7 +170,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The collection that is on the verge of losing a member.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
   public static function access(RdfInterface $rdf_entity): AccessResultInterface {
