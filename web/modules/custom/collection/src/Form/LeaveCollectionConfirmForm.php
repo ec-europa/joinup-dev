@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\collection\Form;
 
 use Drupal\Core\Access\AccessResult;
@@ -69,7 +71,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription() {
-    return $this->t("Are you sure you want to leave the %collection?<br />By leaving the collection you will be no longer able to publish content in it and to receive notifications.<br />In any case, you will continue to have access to all the Collection's content and whenever you want, you will be able to rejoin the collection.", [
+    return $this->t("Are you sure you want to leave the %collection?<br />By leaving the collection you will be no longer able to publish content in it and to receive notifications.", [
       '%collection' => $this->collection->getName(),
     ]);
   }
@@ -104,10 +106,17 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       }
     }
 
-    // Hide the Cancel link when the form is displayed in a modal. The close
-    // button should be used instead.
-    $form['actions']['cancel']['#access'] = !$this->isModal();
-
+    // In case of a modal dialog, set the cancel button to simply close the
+    // dialog.
+    if ($this->isModal()) {
+      $form['actions']['cancel'] = [
+        '#type' => 'button',
+        '#value' => $this->getCancelText(),
+        '#attributes' => [
+          'class' => ['button--small', 'dialog-cancel'],
+        ],
+      ];
+    }
     return $form;
   }
 
@@ -163,7 +172,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public static function access(RdfInterface $rdf_entity) {
+  public static function access(RdfInterface $rdf_entity): AccessResultInterface {
     // Deny access if the entity is not a 'collection'.
     if ($rdf_entity->bundle() !== 'collection') {
       return AccessResult::forbidden();
@@ -192,7 +201,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    *
    * @see https://www.drupal.org/node/2661046
    */
-  protected function isModal() {
+  protected function isModal(): bool {
     return $this->getRequest()->query->get(MainContentViewSubscriber::WRAPPER_FORMAT) === 'drupal_modal';
   }
 
