@@ -257,10 +257,6 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
-    'join_collection_form' => [
-      'render element' => 'form',
-      'path' => $path . '/templates/form',
-    ],
     'buttons_separated_form' => [
       'render element' => 'form',
       'path' => $path . '/templates/form',

@@ -73,9 +73,9 @@ Feature: User subscription settings
     Then I should not see the text "No collection memberships yet."
 
     And the following collection content subscriptions should be selected:
-      | Alpha Centauri | Discussion, Document, Event, News |
-      | Barnard's Star | Discussion, Document, Event, News |
-      | Wolf 359       | Discussion, Document, Event, News |
+      | Alpha Centauri |  |
+      | Barnard's Star |  |
+      | Wolf 359       |  |
 
     And I should see the following lines of text:
       | A triple star system at a distance of 4.3 light years.         |
@@ -86,8 +86,8 @@ Feature: User subscription settings
     And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
     And the "Save changes" button on the "Wolf 359" subscription card should be disabled
 
-    Given I uncheck the "Discussion" checkbox of the "Alpha Centauri" subscription
-    And I uncheck the "Event" checkbox of the "Wolf 359" subscription
+    Given I check the "Discussion" checkbox of the "Alpha Centauri" subscription
+    And I check the "Event" checkbox of the "Wolf 359" subscription
 
     And the "Save changes" button on the "Alpha Centauri" subscription card should be enabled
     And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
@@ -104,12 +104,12 @@ Feature: User subscription settings
     And the "Save changes" button on the "Wolf 359" subscription card should be enabled
 
     And the following collection content subscriptions should be selected:
-      | Alpha Centauri | Document, Event, News             |
-      | Barnard's Star | Discussion, Document, Event, News |
-      | Wolf 359       | Discussion, Document, News        |
+      | Alpha Centauri | Discussion |
+      | Barnard's Star |            |
+      | Wolf 359       | Event      |
 
     # Re-try a change on the same collection.
-    Given I check the "Discussion" checkbox of the "Alpha Centauri" subscription
+    Given I uncheck the "Discussion" checkbox of the "Alpha Centauri" subscription
     And the "Save changes" button on the "Alpha Centauri" subscription card should be enabled
     And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
     And the "Save changes" button on the "Wolf 359" subscription card should be enabled
@@ -121,11 +121,11 @@ Feature: User subscription settings
     # Ensure that the changes are not saved for all cards and unsaved changes are lost.
     Given I reload the page
     And the following collection content subscriptions should be selected:
-      | Alpha Centauri | Discussion, Document, Event, News |
-      | Barnard's Star | Discussion, Document, Event, News |
+      | Alpha Centauri |  |
+      | Barnard's Star |  |
       # Even though 'Event' was unchecked, and another 'Save changes' button was clicked,
       # the changes for 'Wolf 359' were not saved and so they are reloaded.
-      | Wolf 359       | Discussion, Document, Event, News |
+      | Wolf 359       |  |
 
   Scenario Outline: Change the notification frequency of my digests
     Given collection:
