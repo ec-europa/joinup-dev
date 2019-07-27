@@ -196,6 +196,9 @@
             "drupal/cas": {
                 "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-22/3065933-23.patch"
             },
+            "drupal/cas_account_link": {
+                "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-07-27/username_conflict_3070744_D8_5.patch"
+            },
             "drupal/cas_attributes": {
                 "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
             },
