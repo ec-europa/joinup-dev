@@ -18,14 +18,13 @@ Feature: Unsubscribe from collections
       | Southpark elementary | Eric Cartman | member      |
       | Kenny's house        | Eric Cartman | owner       |
       | Koon's hideout       | Eric Cartman | facilitator |
+    And the following collection content subscriptions:
+      | collection           | user         | subscriptions                     |
+      | Southpark elementary | Eric Cartman | discussion, document, event, news |
+      | Kenny's house        | Eric Cartman | discussion, document, event, news |
+      | Koon's hideout       | Eric Cartman | discussion, document, event, news |
 
     Given I am logged in as "Eric Cartman"
-
-    Then I should have the following collection content subscriptions:
-      | Southpark elementary | discussion, document, event, news |
-      | Kenny's house        | discussion, document, event, news |
-      | Koon's hideout       | discussion, document, event, news |
-
     When I click "My subscriptions"
     # The button is actually a link but is styled as a button.
     Then I should see the link "Unsubscribe from all"

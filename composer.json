@@ -18,12 +18,13 @@
         "drupal/config_readonly": "~1.0",
         "drupal/config_sync": "^1.0-alpha7",
         "drupal/config_update": "~1.4",
-        "drupal/core": "^8.7.4",
+        "drupal/core": "^8.7.5",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
         "drupal/email_registration": "^1.0-rc7",
+        "drupal/entity_legal": "dev-2.x#0a56de9da02903381ba2836e74f7e85944b3d22f",
         "drupal/facets": "1.3",
         "drupal/field_group": "~1.0-rc6",
         "drupal/file_url": "^1.0-alpha7",
@@ -75,7 +76,7 @@
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
-        "masterminds/html5": "^2.6",
+        "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.0",
         "openeuropa/oe_webtools": "~1.0",
         "openeuropa/oe_webtools_location": "dev-master",
@@ -102,7 +103,7 @@
         "drupal/config_inspector": "^1.0@beta",
         "drupal/default_content": "^1.0-alpha7",
         "drupal/devel": "~2.0",
-        "drupal/drupal-extension": "^4.0@beta",
+        "drupal/drupal-extension": "^4.0-rc1",
         "drupal/filecache": "^1.0-beta2",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.16",
@@ -197,11 +198,15 @@
                 "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
                 "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch"
             },
-            "drupal/drupal-extension": {
-                "Add missing negative step @see https://github.com/jhedstrom/drupalextension/pull/527": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/527.diff"
-            },
             "drupal/email_registration": {
                 "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-05-13/2927109-11.patch"
+            },
+            "drupal/entity_legal": {
+                "Move the 'published_version' field from bundle to content entity @see https://www.drupal.org/project/entity_legal/issues/3067028": "https://www.drupal.org/files/issues/2019-07-17/3067028-13.patch",
+                "Expose the field management tabs @see https://www.drupal.org/project/entity_legal/issues/3067018": "https://www.drupal.org/files/issues/2019-07-10/3067018-2.patch",
+                "Do not redirect logout @see https://www.drupal.org/project/entity_legal/issues/2851667": "https://www.drupal.org/files/issues/2019-07-17/2851667-16.patch",
+                "Acceptance records not deleted on user removal @see https://www.drupal.org/project/entity_legal/issues/2633040": "https://www.drupal.org/files/issues/2019-07-15/2633040-3.patch",
+                "Make the legal document title customizable @see https://www.drupal.org/project/entity_legal/issues/3068434": "https://www.drupal.org/files/issues/2019-07-17/3068434-2.patch"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
@@ -269,10 +274,7 @@
             "drush/drush": {
                 "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
             },
-            "masterminds/html5": {
-                "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
-            },
-	    "openeuropa/oe_webtools": {
+            "openeuropa/oe_webtools": {
                 "Include the smartloader on pages where analytics are used.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/71.patch"
             }
         }
@@ -286,7 +288,7 @@
             "type": "vcs",
             "url": "https://github.com/ec-europa/spdx.git"
         },
-	{
+        {
             "type": "package",
             "package": {
                 "name": "spdx/license-list-data",
@@ -297,7 +299,7 @@
                     "reference": "master"
                 }
             }
-	},
+        },
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/rdf_entity.git"

@@ -10,3 +10,13 @@ collection.leave_confirm_form:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+collection.subscribe_to_collection_form:
+  path: '/ajax/collection/{rdf_entity}/subscribe'
+  defaults:
+    _form: \Drupal\collection\Form\SubscribeToCollectionForm
+  requirements:
+    _custom_access: \Drupal\collection\Form\SubscribeToCollectionForm::access
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity

@@ -11,6 +11,7 @@ permissions:
   - 'access tour'
   - 'access user profiles'
   - 'export rdf metadata'
+  - 'legal view legal_notice'
   - 'never autoplay videos'
   - 'subscribe to newsletters'
   - 'use text format basic_html'

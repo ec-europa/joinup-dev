@@ -10,7 +10,6 @@ declare(strict_types = 1);
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
@@ -68,20 +67,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
-
-  /**
-   * The site's 'Legal notice' content block UUID.
-   *
-   * @var string
-   */
-  const LEGAL_NOTICE_CONTENT_UUID = 'ec092d17-ef18-42b0-b460-642871150cd3';
-
-  /**
-   * Testing content blocks.
-   *
-   * @var \Drupal\block_content\BlockContentInterface[]
-   */
-  protected $contentBlocks = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -2403,59 +2388,6 @@ JS;
   }
 
   /**
-   * Asserts that a user is subscribed to specific bundles in a collection.
-   *
-   * @param string $user
-   *   The user name.
-   * @param string $bundles
-   *   A list of bundles separated by commas.
-   * @param string $type
-   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
-   *   entity types respectively.
-   * @param string $group_label
-   *   The group name.
-   * @param string $group_bundle
-   *   The group bundle.
-   *
-   * @throws \Exception
-   *   Throws exception if invalid data passed as arguments or if the subscribed
-   *   bundles for the given type do not match the expected ones.
-   *
-   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
-   */
-  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
-    if ($type === 'content') {
-      $type = 'node';
-    }
-    elseif ($type === 'rdf') {
-      $type = 'rdf_entity';
-    }
-    else {
-      throw new Exception("Unsupported type {$type}.");
-    }
-
-    $user_entity = $this->getUserByName($user);
-    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
-    $og_membership = $this->getMembershipByGroupAndUser($group, $user_entity);
-
-    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
-    $bundles = array_map(function ($bundle) use ($type) {
-      return $type . ':' . trim($bundle);
-    }, $bundles);
-
-    // This can also be accessed with:
-    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
-    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
-    $og_bundles = array_map(function ($row) {
-      return $row['entity_type'] . ':' . $row['bundle'];
-    }, $og_bundles);
-
-    sort($bundles);
-    sort($og_bundles);
-    Assert::assertEquals($bundles, $og_bundles);
-  }
-
-  /**
    * Clears a field (input, textarea, select) value.
    *
    * @param string $field
@@ -2723,43 +2655,6 @@ JS;
   public function assertParagraphText(string $text): void {
     $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
     Assert::assertNotEmpty($element);
-  }
-
-  /**
-   * Creates the testing content blocks.
-   *
-   * @beforeScenario @contentBlock
-   */
-  public function createContentBlocks(): void {
-    $block = BlockContent::create([
-      'type' => 'simple_block',
-      'uuid' => static::LEGAL_NOTICE_CONTENT_UUID,
-      'status' => TRUE,
-      'info' => 'Legal notice',
-      'body' => [
-        'value' => 'Legal notice text.',
-        'format' => 'content_editor',
-      ],
-    ]);
-    $block->save();
-    $this->contentBlocks[$block->id()] = $block;
-    // As the page that contains the block is created before the block, we
-    // manually clear the block content UUID cache in order to account the
-    // presence of the new block.
-    // @see \Drupal\block_content\BlockContentUuidLookup
-    \Drupal::cache('bootstrap')->delete('block_content_uuid');
-  }
-
-  /**
-   * Clears the testing content blocks.
-   *
-   * @afterScenario @contentBlock
-   */
-  public function clearContentBlocks(): void {
-    if ($this->contentBlocks) {
-      $storage = \Drupal::entityTypeManager()->getStorage('block_content');
-      $storage->delete($storage->loadMultiple(array_keys($this->contentBlocks)));
-    }
   }
 
 }
