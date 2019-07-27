@@ -38,7 +38,7 @@ class DashboardController extends ControllerBase {
    */
   public function page() {
     $user_id = $this->currentUser->id();
-    $subscription_settings_url = Url::fromRoute('joinup_subscription.subscriptions_page', [
+    $subscription_settings_url = Url::fromRoute('joinup_subscription.my_subscriptions', [
       'user' => $user_id,
     ]);
 

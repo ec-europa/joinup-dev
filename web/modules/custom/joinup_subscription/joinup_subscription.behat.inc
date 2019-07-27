@@ -56,7 +56,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
       ]);
     }
     else {
-      $url = Url::fromRoute('joinup_subscription.subscriptions_page');
+      $url = Url::fromRoute('joinup_subscription.my_subscriptions');
     }
     $this->visitPath($url->toString());
   }

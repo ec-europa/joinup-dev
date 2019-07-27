@@ -45,8 +45,8 @@ class SubscriptionSettings extends ControllerBase {
    * Displays the subscription dashboard for the currently logged in user.
    *
    * This controller assumes that it is only invoked for authenticated users.
-   * This is enforced for the 'joinup_subscription.subscriptions_page' route
-   * with the '_user_is_logged_in' requirement.
+   * This is enforced for the 'joinup_subscription.my_subscriptions' route with
+   * the '_user_is_logged_in' requirement.
    *
    * @return array
    *   The subscription dashboard form array.
