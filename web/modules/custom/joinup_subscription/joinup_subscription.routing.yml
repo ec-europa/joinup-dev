@@ -2,7 +2,7 @@ joinup_subscription.subscriptions:
   path: '/user/{user}/subscriptions'
   defaults:
     _form: '\Drupal\joinup_subscription\Form\SubscriptionDashboardForm'
-    _title: 'Subscription settings'
+    _title: 'My subscriptions'
   requirements:
     _custom_access: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::access'
   options:
@@ -14,7 +14,7 @@ joinup_subscription.subscriptions_page:
   path: '/user/subscriptions'
   defaults:
     _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::build'
-    _title: 'Subscription settings'
+    _title: 'My subscriptions'
   requirements:
     _user_is_logged_in: 'TRUE'
 

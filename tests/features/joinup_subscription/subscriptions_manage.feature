@@ -1,6 +1,6 @@
 @api
-Feature: User subscription settings
-  As a user I must be able to set and view my subscription settings.
+Feature: My subscriptions
+  As a user I must be able to manage my subscriptions and related settings.
 
   Background:
     Given user:
@@ -21,12 +21,12 @@ Feature: User subscription settings
     # Authenticated users can manage their own subscriptions.
     Given I am logged in as "Auric Goldfinger"
     When I go to the subscription dashboard of "Auric Goldfinger"
-    Then I should see the heading "Subscription settings"
+    Then I should see the heading "My subscriptions"
 
     # Moderators can manage subscriptions of any user.
     Given I am logged in as a moderator
     When I go to the subscription dashboard of "Auric Goldfinger"
-    Then I should see the heading "Subscription settings"
+    Then I should see the heading "My subscriptions"
 
     # Users cannot access subscription settings of other users.
     Given I am logged in as "Chanelle Testa"
@@ -51,7 +51,7 @@ Feature: User subscription settings
     # The "My subscriptions" link is present in the user menu in the top right.
     And I open the account menu
     And I click "My subscriptions"
-    Then I should see the heading "Subscription settings"
+    Then I should see the heading "My subscriptions"
     And I should see the text "No collection memberships yet. Join one or more collections to subscribe to their content!"
     And I should not see the text "Alpha Centauri"
 
@@ -135,7 +135,7 @@ Feature: User subscription settings
     And I open the account menu
     And I click "My subscriptions"
     
-    Then I should see the heading "Subscription settings"
+    Then I should see the heading "My subscriptions"
     And the following fields should be present "Notification frequency"
     Then the "Save changes" button should be disabled
 

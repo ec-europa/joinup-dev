@@ -21,6 +21,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a Joinup subscription form.
+ *
+ * @todo Rename to MySubscriptionsForm
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5447
  */
 class SubscriptionDashboardForm extends FormBase {
 

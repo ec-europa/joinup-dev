@@ -10,6 +10,10 @@ use Drupal\Core\Session\AccountProxy;
 
 /**
  * Controller that shows the subscription settings form.
+ *
+ * @todo Rename to MySubscriptionsController
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5447
  */
 class SubscriptionSettings extends ControllerBase {
 
