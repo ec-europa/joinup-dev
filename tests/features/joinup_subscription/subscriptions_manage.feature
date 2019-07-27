@@ -134,17 +134,22 @@ Feature: My subscriptions
     Given I am logged in as "Auric Goldfinger"
     And I open the account menu
     And I click "My subscriptions"
-    
+
     Then I should see the heading "My subscriptions"
     And the following fields should be present "Notification frequency"
-    Then the "Save changes" button should be disabled
 
-    # Initially select Daily so that in any case the default option is changed and the button is activated otherwise,
-    # depending on the default valuue, it might fail.
+    # The "Save changes" button should initially be disabled, but when a change
+    # is made it should become enabled so the user can save their changes. We
+    # are toggling two values so we can reliably check this regardless of the
+    # initial state of the button when the page is loaded.
+    And the "Save changes" button should be disabled
     When I select "Daily" from "Notification frequency"
-    And I select "<option>" from "Notification frequency"
+    And I select "Weekly" from "Notification frequency"
     Then the "Save changes" button should be enabled
 
+    # When we save the changes the button label should change to "Saved!" and
+    # the button should become disabled again.
+    And I select "<option>" from "Notification frequency"
     When I press "Save changes"
     Then the "Saved!" button should be disabled
     And the following fields should not be present "Save changes"
