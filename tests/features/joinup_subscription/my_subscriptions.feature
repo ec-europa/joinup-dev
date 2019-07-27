@@ -15,22 +15,22 @@ Feature: My subscriptions
 
     # No access for anonymous users.
     Given I am an anonymous user
-    When I go to the subscription dashboard of "Auric Goldfinger"
+    When I go to the subscription settings of "Auric Goldfinger"
     Then I should see the error message "Access denied. You must sign in to view this page."
 
     # Authenticated users can manage their own subscriptions.
     Given I am logged in as "Auric Goldfinger"
-    When I go to the subscription dashboard of "Auric Goldfinger"
+    When I go to the subscription settings of "Auric Goldfinger"
     Then I should see the heading "My subscriptions"
 
     # Moderators can manage subscriptions of any user.
     Given I am logged in as a moderator
-    When I go to the subscription dashboard of "Auric Goldfinger"
+    When I go to the subscription settings of "Auric Goldfinger"
     Then I should see the heading "Subscription settings"
 
     # Users cannot access subscription settings of other users.
     Given I am logged in as "Chanelle Testa"
-    When I go to the subscription dashboard of "Auric Goldfinger"
+    When I go to the subscription settings of "Auric Goldfinger"
     Then I should get an access denied error
 
   @javascript
@@ -62,7 +62,7 @@ Feature: My subscriptions
     # This step is actually a shortcut for
     # When I open the account menu
     # And I click "My subscriptions"
-    When I go to my subscription dashboard
+    When I go to my subscriptions
 
     # The empty text should not be shown now.
     Then I should not see the text "No collection memberships yet."

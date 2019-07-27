@@ -1,7 +1,7 @@
 joinup_subscription.subscriptions:
   path: '/user/{user}/subscriptions'
   defaults:
-    _form: '\Drupal\joinup_subscription\Form\SubscriptionDashboardForm'
+    _form: '\Drupal\joinup_subscription\Form\MySubscriptionsForm'
     # Since this route is for viewing other people's subscriptions, this is not
     # titled 'My subscriptions' but 'Subscription settings'.
     _title: 'Subscription settings'

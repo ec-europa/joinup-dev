@@ -51,10 +51,10 @@ class MySubscriptionsController extends ControllerBase {
    * the '_user_is_logged_in' requirement.
    *
    * @return array
-   *   The subscription dashboard form array.
+   *   The subscription settings form array.
    */
   public function build(): array {
-    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\SubscriptionDashboardForm', $this->currentUser());
+    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\MySubscriptionsForm', $this->currentUser());
   }
 
   /**
