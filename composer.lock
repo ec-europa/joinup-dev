@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31426ee2149a3bc185bc76f647a90157",
+    "content-hash": "8496d45610d5c0642efa7c8bab905aa0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.107.6",
+            "version": "3.108.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "59e56f9ca6d32d3940d71dd9a95b6f784975fd89"
+                "reference": "df65815065b0195bc374bd17d8cc6884b4870da1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/59e56f9ca6d32d3940d71dd9a95b6f784975fd89",
-                "reference": "59e56f9ca6d32d3940d71dd9a95b6f784975fd89",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/df65815065b0195bc374bd17d8cc6884b4870da1",
+                "reference": "df65815065b0195bc374bd17d8cc6884b4870da1",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-07-23T18:42:17+00:00"
+            "time": "2019-07-26T18:22:40+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -4891,7 +4891,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Do not needlessly load OgRole objects when only the role name is required @see https://github.com/Gizra/og/pull/555": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/555.diff"
+                    "Speed up retrieval of membership data by using a SELECT query @see https://github.com/Gizra/og/pull/559": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/559.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8034,16 +8034,16 @@
         },
         {
             "name": "masterminds/html5",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "c961ca6a0a81dc6b55b6859b3f9ea7f402edf9ad"
+                "reference": "104443ad663d15981225f99532ba73c2f1d6b6f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/c961ca6a0a81dc6b55b6859b3f9ea7f402edf9ad",
-                "reference": "c961ca6a0a81dc6b55b6859b3f9ea7f402edf9ad",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/104443ad663d15981225f99532ba73c2f1d6b6f2",
+                "reference": "104443ad663d15981225f99532ba73c2f1d6b6f2",
                 "shasum": ""
             },
             "require": {
@@ -8060,10 +8060,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
-                },
-                "patches_applied": {
-                    "Apply default UTF-8 encoding @see https://github.com/Masterminds/html5-php/pull/168": "https://patch-diff.githubusercontent.com/raw/Masterminds/html5-php/pull/168.patch"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -8081,12 +8078,12 @@
                     "email": "technosophos@gmail.com"
                 },
                 {
-                    "name": "Asmir Mustafic",
-                    "email": "goetas@gmail.com"
-                },
-                {
                     "name": "Matt Farina",
                     "email": "matt@mattfarina.com"
+                },
+                {
+                    "name": "Asmir Mustafic",
+                    "email": "goetas@gmail.com"
                 }
             ],
             "description": "An HTML5 parser and serializer.",
@@ -8100,7 +8097,7 @@
                 "serializer",
                 "xml"
             ],
-            "time": "2019-03-10T11:41:28+00:00"
+            "time": "2019-07-25T07:03:26+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -13096,21 +13093,21 @@
         },
         {
             "name": "drupal/drupal-driver",
-            "version": "v2.0.0-alpha6",
+            "version": "v2.0.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/DrupalDriver.git",
-                "reference": "732f2c7b3c262487bed0876a209e5326bc3935e4"
+                "reference": "5153d58c71e8b6b0da26d91676b89d3e65a83100"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/732f2c7b3c262487bed0876a209e5326bc3935e4",
-                "reference": "732f2c7b3c262487bed0876a209e5326bc3935e4",
+                "url": "https://api.github.com/repos/jhedstrom/DrupalDriver/zipball/5153d58c71e8b6b0da26d91676b89d3e65a83100",
+                "reference": "5153d58c71e8b6b0da26d91676b89d3e65a83100",
                 "shasum": ""
             },
             "require": {
                 "drupal/core-utility": "^8.4",
-                "php": ">=5.5.9",
+                "php": ">=5.6",
                 "symfony/dependency-injection": "~2.6|~3.0",
                 "symfony/process": "~2.5|~3.0"
             },
@@ -13151,20 +13148,20 @@
                 "test",
                 "web"
             ],
-            "time": "2018-12-18T23:21:10+00:00"
+            "time": "2019-07-25T18:40:51+00:00"
         },
         {
             "name": "drupal/drupal-extension",
-            "version": "v4.0.0beta2",
+            "version": "v4.0.0rc1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhedstrom/drupalextension.git",
-                "reference": "3836ccb7fce9a16d26197ee7df13744f0a5799a8"
+                "reference": "145e6617474000b6165cc0eacee64a073311c545"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/3836ccb7fce9a16d26197ee7df13744f0a5799a8",
-                "reference": "3836ccb7fce9a16d26197ee7df13744f0a5799a8",
+                "url": "https://api.github.com/repos/jhedstrom/drupalextension/zipball/145e6617474000b6165cc0eacee64a073311c545",
+                "reference": "145e6617474000b6165cc0eacee64a073311c545",
                 "shasum": ""
             },
             "require": {
@@ -13174,11 +13171,12 @@
                 "behat/mink-goutte-driver": "~1.0",
                 "behat/mink-selenium2-driver": "~1.1",
                 "drupal/drupal-driver": "^2.0.0",
+                "symfony/browser-kit": "^3.4",
                 "symfony/dependency-injection": "~3.0",
-                "symfony/event-dispatcher": "~3.0"
+                "symfony/event-dispatcher": "~3.0",
+                "symfony/translation": "^3.4"
             },
             "require-dev": {
-                "behat/mink-zombie-driver": "^1.2",
                 "drupal/coder": "~8.2.12",
                 "jakub-onderka/php-parallel-lint": "^0.9.2",
                 "phpspec/phpspec": "~2.0 || ~4.0"
@@ -13187,9 +13185,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.0.x-dev"
-                },
-                "patches_applied": {
-                    "Add missing negative step @see https://github.com/jhedstrom/drupalextension/pull/527": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/527.diff"
                 }
             },
             "autoload": {
@@ -13225,7 +13220,7 @@
                 "test",
                 "web"
             ],
-            "time": "2018-12-19T17:24:54+00:00"
+            "time": "2019-07-25T17:14:37+00:00"
         },
         {
             "name": "drupal/filecache",
@@ -15313,27 +15308,25 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v4.3.2",
+            "version": "v3.4.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "a29dd02a1f3f81b9a15c7730cc3226718ddb55ca"
+                "reference": "53266c9a1536e2dc673eb1efb6a6142ef84c6282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/a29dd02a1f3f81b9a15c7730cc3226718ddb55ca",
-                "reference": "a29dd02a1f3f81b9a15c7730cc3226718ddb55ca",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/53266c9a1536e2dc673eb1efb6a6142ef84c6282",
+                "reference": "53266c9a1536e2dc673eb1efb6a6142ef84c6282",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3",
-                "symfony/dom-crawler": "~3.4|~4.0"
+                "php": "^5.5.9|>=7.0.8",
+                "symfony/dom-crawler": "~2.8|~3.0|~4.0"
             },
             "require-dev": {
-                "symfony/css-selector": "~3.4|~4.0",
-                "symfony/http-client": "^4.3",
-                "symfony/mime": "^4.3",
-                "symfony/process": "~3.4|~4.0"
+                "symfony/css-selector": "~2.8|~3.0|~4.0",
+                "symfony/process": "~2.8|~3.0|~4.0"
             },
             "suggest": {
                 "symfony/process": ""
@@ -15341,7 +15334,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.3-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -15368,7 +15361,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2019-06-11T15:41:59+00:00"
+            "time": "2019-06-09T14:27:26+00:00"
         },
         {
             "name": "symfony/config",
@@ -15684,7 +15677,6 @@
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
-        "drupal/drupal-extension": 10,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,
