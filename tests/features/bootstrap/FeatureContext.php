@@ -1175,79 +1175,91 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks if a checkbox in a row with a given text is checked.
+   * Checks if a checkbox or a radio in a row with a given text is checked.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    * @throws \Behat\Mink\Exception\ExpectationException
    *   If the checkbox is unchecked.
    *
    * @Then the row :text is selected/checked
    */
   public function assertRowIsChecked($text) {
-    if (!$this->getRowCheckboxByText($text)->isChecked()) {
-      throw new ExpectationException("Check box in '$text' row is unchecked but it should be checked.", $this->getSession()->getDriver());
+    if (!$this->getCheckboxOrRadioByRowText($text)->isChecked()) {
+      throw new ExpectationException("Checkbox/radio-button in '$text' row is unchecked/unselected but it should be checked/selected.", $this->getSession()->getDriver());
     }
   }
 
   /**
-   * Checks if a checkbox in a row with a given text is not checked.
+   * Checks if a checkbox or a radio in a row with a given text is not checked.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    * @throws \Behat\Mink\Exception\ExpectationException
    *   If the checkbox is checked.
    *
    * @Then the row :text is not selected/checked
    */
   public function assertRowIsNotChecked($text) {
-    if ($this->getRowCheckboxByText($text)->isChecked()) {
-      throw new ExpectationException("Check box in '$text' row is checked but it should be unchecked.", $this->getSession()->getDriver());
+    if ($this->getCheckboxOrRadioByRowText($text)->isChecked()) {
+      throw new ExpectationException("Checkbox/radio-button in '$text' row is checked/selected but it should be unchecked/unselected.", $this->getSession()->getDriver());
     }
   }
 
   /**
-   * Attempts to check a checkbox in a table row containing a given text.
+   * Checks a checkbox or a radio button in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    *
    * @Given I select/check the :text row
    */
   public function checkTableselectRow(string $text): void {
-    $this->getRowCheckboxByText($text)->check();
+    $element = $this->getCheckboxOrRadioByRowText($text);
+    if ($element->getAttribute('type') === 'checkbox') {
+      $element->check();
+    }
+    else {
+      $element->getParent()->selectFieldOption($element->getAttribute('name'), $element->getAttribute('value'));
+    }
   }
 
   /**
-   * Attempts to uncheck a checkbox in a table row containing a given text.
+   * Unchecks a checkbox or a radio in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
+   * @throws \InvalidArgumentException
+   *   If this step definition was used on a radio button.
    *
    * @Given I deselect/uncheck the :text row
    */
   public function uncheckTableselectRow(string $text): void {
-    $this->getRowCheckboxByText($text)->uncheck();
+    $element = $this->getCheckboxOrRadioByRowText($text);
+    if ($element->getAttribute('type') === 'radio') {
+      throw new \InvalidArgumentException("A radio button cannot be unselected.");
+    }
+    $element->uncheck();
   }
 
   /**
-   * Attempts to fetch a checkbox in a table row containing a given text.
+   * Finds a checkbox or a radio button in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
@@ -1257,9 +1269,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    */
-  protected function getRowCheckboxByText(string $text): NodeElement {
+  protected function getCheckboxOrRadioByRowText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1276,11 +1288,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$found) {
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
-    if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
-      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+    if (!$element = $row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
+      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkbox or radio button', $text, $this->getSession()->getCurrentUrl()));
     }
 
-    return $checkbox;
+    return $element;
   }
 
   /**
