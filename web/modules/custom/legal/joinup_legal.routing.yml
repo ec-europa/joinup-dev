@@ -1,0 +1,25 @@
+joinup_legal.version.collection:
+  path: '/admin/legal-notice'
+  defaults:
+    _form: Drupal\joinup_legal\Form\JoinupLegalVersionsForm
+    _title: 'Legal notice versions'
+  requirements:
+    _permission: 'administer entity legal'
+
+joinup_legal.version.add:
+  path: '/admin/legal-notice/add'
+  defaults:
+    _controller: Drupal\entity_legal\Controller\EntityLegalController::documentVersionForm
+    _title_callback: Drupal\entity_legal\Controller\EntityLegalController::documentVersionAddFormTitle
+    entity_legal_document: legal_notice
+  requirements:
+    _permission: 'administer entity legal'
+
+joinup_legal.version.edit:
+  path: '/admin/legal-notice/manage/{entity_legal_document_version}'
+  defaults:
+    _entity_form: entity_legal_document_version.default
+    _title_callback: Drupal\entity_legal\Controller\EntityLegalController::documentVersionEditFormTitle
+    entity_legal_document: legal_notice
+  requirements:
+    _entity_access: 'entity_legal_document_version.update'

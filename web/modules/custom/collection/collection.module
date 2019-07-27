@@ -41,6 +41,15 @@ function collection_theme($existing, $type, $theme, $path) {
         'view_mode' => '',
       ],
     ],
+
+    // A button that (when clicked) opens a dropdown that (when clicked) opens a
+    // modal with a confirmation button that (when clicked) allows the user to
+    // leave the collection. One does not simply leave a collection.
+    'collection_leave_button' => [
+      'variables' => [
+        'confirm' => '',
+      ],
+    ],
   ];
 }
 

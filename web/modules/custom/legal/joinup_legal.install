@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functionality for Joinup Legal module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Language\LanguageInterface;
+
+/**
+ * Implements hook_install().
+ */
+function joinup_legal_install(): void {
+  /** @var \Drupal\Core\Path\AliasStorageInterface $path_storage */
+  $path_storage = \Drupal::service('path.alias_storage');
+  $path_storage->save('/legal/document/legal_notice', '/joinup/legal-notice', LanguageInterface::LANGCODE_NOT_SPECIFIED);
+}

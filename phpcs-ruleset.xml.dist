@@ -28,4 +28,9 @@
         <exclude name="DrupalPractice.Objects.GlobalClass.GlobalClass" />
         <exclude name="DrupalPractice.Yaml" />
     </rule>
+
+    <!-- Do not report lines exceeding 80 characters for Markdown files that contain long file paths. -->
+    <rule ref="Drupal.Files.TxtFileLineLength.TooLong">
+        <exclude-pattern>web/modules/custom/joinup_subscription/README.md</exclude-pattern>
+    </rule>
 </ruleset>

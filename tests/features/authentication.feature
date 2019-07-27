@@ -23,7 +23,6 @@ Feature: User authentication
       | user/login          |
       | user/password       |
       | user/register       |
-      | joinup/legal-notice |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -37,6 +36,8 @@ Feature: User authentication
       | admin/config/search/redirect                                   |
       | admin/content                                                  |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/people                                                   |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
@@ -75,7 +76,6 @@ Feature: User authentication
     Examples:
       | path                       |
       | collections                |
-      | joinup/legal-notice        |
       | propose/collection         |
       | user                       |
       | user/subscriptions         |
@@ -92,6 +92,8 @@ Feature: User authentication
       | admin/config                                                   |
       | admin/content                                                  |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/people                                                   |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
@@ -129,6 +131,8 @@ Feature: User authentication
       | path                                                           |
       | admin/people                                                   |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
@@ -192,6 +196,8 @@ Feature: User authentication
       | admin/config                       |
       | admin/content                      |
       | admin/content/rdf                  |
+      | admin/legal-notice                 |
+      | admin/legal-notice/add             |
       | admin/people                       |
       | admin/structure                    |
       | node                               |
