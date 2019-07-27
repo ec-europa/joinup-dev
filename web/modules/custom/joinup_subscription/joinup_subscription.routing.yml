@@ -2,9 +2,11 @@ joinup_subscription.subscriptions:
   path: '/user/{user}/subscriptions'
   defaults:
     _form: '\Drupal\joinup_subscription\Form\SubscriptionDashboardForm'
-    _title: 'My subscriptions'
+    # Since this route is for viewing other people's subscriptions, this is not
+    # titled 'My subscriptions' but 'Subscription settings'.
+    _title: 'Subscription settings'
   requirements:
-    _custom_access: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::access'
+    _custom_access: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::access'
   options:
     parameters:
       user:
@@ -13,7 +15,7 @@ joinup_subscription.subscriptions:
 joinup_subscription.my_subscriptions:
   path: '/user/subscriptions'
   defaults:
-    _controller: '\Drupal\joinup_subscription\Controller\SubscriptionSettings::build'
+    _controller: '\Drupal\joinup_subscription\Controller\MySubscriptionsController::build'
     _title: 'My subscriptions'
   requirements:
     _user_is_logged_in: 'TRUE'

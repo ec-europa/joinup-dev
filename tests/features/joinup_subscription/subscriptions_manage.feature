@@ -26,7 +26,7 @@ Feature: My subscriptions
     # Moderators can manage subscriptions of any user.
     Given I am logged in as a moderator
     When I go to the subscription dashboard of "Auric Goldfinger"
-    Then I should see the heading "My subscriptions"
+    Then I should see the heading "Subscription settings"
 
     # Users cannot access subscription settings of other users.
     Given I am logged in as "Chanelle Testa"
