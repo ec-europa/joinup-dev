@@ -13,7 +13,7 @@ echo "Disabling config_readonly."
 touch disable-config-readonly
 
 ./vendor/bin/drush cache:clear bin config --yes
-./vendor/bin/drush updatedb --cache-clear --yes
+./vendor/bin/drush updatedb --yes
 ./vendor/bin/drush cs-update --discard-overrides --yes
 ./vendor/bin/drush cache-rebuild --yes
 ./vendor/bin/drush pm:enable stage_file_proxy --yes
