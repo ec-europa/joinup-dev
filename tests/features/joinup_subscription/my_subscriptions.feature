@@ -21,7 +21,7 @@ Feature: My subscriptions
     # Authenticated users can manage their own subscriptions.
     Given I am logged in as "Auric Goldfinger"
     When I go to the subscription settings of "Auric Goldfinger"
-    Then I should see the heading "My subscriptions"
+    Then I should see the heading "Subscription settings"
 
     # Moderators can manage subscriptions of any user.
     Given I am logged in as a moderator
