@@ -7,6 +7,8 @@ Feature:
     login.
   - As a moderator, I want to be able to release new versions of 'Legal notice'
     or to edit the existing ones.
+  - As a visitor, in order to send a support request on the `/contact` page, I
+    have to accept the site's 'Legal notice', otherwise I cannot submit.
 
   Background:
 
@@ -158,3 +160,31 @@ Feature:
 
     # As this version has been created via UI it should be manually deleted.
     And I delete the version "v2.0" of document "Legal notice"
+
+  Scenario: Anonymous using the support contact form.
+
+    Given I am on "/contact"
+    Then I should see "I have read and accept the Legal notice"
+
+    Given I fill in "First name" with "Eleanor"
+    And I fill in "Last name" with "Rigby"
+    And I fill in "Organisation" with "Lonely People"
+    And I fill in "E-mail address" with "depression@example.com"
+    And I select "Legal issue" from "Category"
+    And I fill in "Subject" with "All the lonely people where do they all come from?"
+    And I fill in "Message" with "Father McKenzie, wiping the dirt / From his hands as he walks from the grave / No one was saved"
+    Then I wait for the honeypot time limit to pass
+
+    When I press "Submit"
+    Then I should see the error message "You must accept the Legal notice in order to use our platform."
+
+    But I check "I have read and accept the Legal notice"
+    Then I wait for the honeypot time limit to pass
+    When I press "Submit"
+    Then I should see the success message "Your message has been submitted. Thank you for your feedback."
+
+    Given I am logged in as an "authenticated user"
+    And I accept the "Legal notice" agreement
+
+    When I am on "/contact"
+    Then I should not see "I have read and accept the Legal notice"
