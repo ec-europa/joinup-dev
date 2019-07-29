@@ -5,7 +5,8 @@ schema:
   fixture_file: ./ecas_schema.yml
 ticket_validation:
   path: TicketValidationService
-  assurance_level: TOP
+  # LOW allow users also from the "External" EU Login organization.
+  assurance_level: LOW
   ticket_types:
     - SERVICE
   user_details: TRUE
