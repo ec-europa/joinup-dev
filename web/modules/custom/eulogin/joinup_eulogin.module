@@ -7,8 +7,11 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\joinup_eulogin\JoinupEuLoginAuthnameItemList;
 
 /**
  * Implements hook_cron().
@@ -21,6 +24,27 @@ function joinup_eulogin_cron(): void {
     // It's time to check for a new version.
     \Drupal::service('joinup_eulogin.schema_data_updater')->update();
   }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Adds a computed field to easily retrieve the external authname of a user.
+ */
+function joinup_eulogin_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() === 'user') {
+    $fields['eulogin_authname'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('EU Login name'))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('display', FALSE)
+      ->setComputed(TRUE)
+      ->setCardinality(1)
+      ->setClass(JoinupEuLoginAuthnameItemList::class);
+  }
+
+  return $fields;
 }
 
 /**
