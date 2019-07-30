@@ -333,6 +333,9 @@ class SubscriptionDashboardForm extends FormBase {
 
     $form['user_subscription_settings']['field_user_frequency'] = $widget->form($items, $form['user_subscription_settings'], $subform_state);
     $form['user_subscription_settings']['field_user_frequency']['#access'] = $items->access('edit');
+    if (empty($form['user_subscription_settings']['field_user_frequency']['widget']['#default_value'])) {
+      $form['user_subscription_settings']['field_user_frequency']['widget']['#default_value'] = $items->getFieldDefinition()->getDefaultValue($user);
+    }
 
     $form['user_subscription_settings']['field_user_frequency']['submit'] = [
       '#ajax' => [
