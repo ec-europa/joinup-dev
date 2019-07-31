@@ -14,7 +14,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat step definitions for testing discussions.
  */
-class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupDiscussionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use NodeTrait;
 

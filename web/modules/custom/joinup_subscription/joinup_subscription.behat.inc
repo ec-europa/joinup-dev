@@ -17,7 +17,7 @@ use Drupal\joinup_subscription\JoinupSubscriptionInterface;
 /**
  * Behat step definitions for testing subscriptions.
  */
-class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSubscriptionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityTrait;
   use UserTrait;

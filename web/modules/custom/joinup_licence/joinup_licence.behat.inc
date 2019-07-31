@@ -15,7 +15,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 /**
  * Behat step definitions for testing licences.
  */
-class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupLicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityReferenceTrait;
   use RdfEntityTrait;
