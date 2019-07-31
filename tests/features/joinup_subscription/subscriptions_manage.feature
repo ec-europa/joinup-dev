@@ -33,6 +33,14 @@ Feature: My subscriptions
     When I go to the subscription dashboard of "Auric Goldfinger"
     Then I should get an access denied error
 
+  Scenario: Check default subscription frequency for registered user
+    When I am logged in as "Auric Goldfinger"
+    And I click "My subscriptions"
+    Then I should see the heading "My subscriptions"
+
+    And the option with text "Weekly" from select "Notification frequency" is selected
+    And the available options in the "Notification frequency" select should be "Daily, Weekly, Monthly"
+
   @javascript
   Scenario: Manage my subscriptions
     Given collections:
