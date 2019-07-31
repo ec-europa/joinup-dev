@@ -86,7 +86,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getDescription(): TranslatableMarkup {
-    return $this->t("Are you sure you want to leave the %collection?<br />By leaving the collection you will be no longer able to publish content in it and to receive notifications.", [
+    return $this->t("Are you sure you want to leave the %collection collection?<br />By leaving the collection you will be no longer able to publish content in it and to receive notifications.", [
       '%collection' => $this->collection->getName(),
     ]);
   }
