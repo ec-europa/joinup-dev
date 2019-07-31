@@ -19,7 +19,7 @@ class LoginLogoutMenuLink extends CoreLoginLogoutMenuLink {
       return $this->t('Sign out');
     }
     else {
-      return $this->t('Sign in');
+      return $this->t('Sign in (legacy)');
     }
   }
 
