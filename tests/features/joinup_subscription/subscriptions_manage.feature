@@ -33,8 +33,8 @@ Feature: My subscriptions
     When I go to the subscription dashboard of "Auric Goldfinger"
     Then I should get an access denied error
 
-  Scenario: Check default subscription frequency for registered user
-    When I am logged in as "Auric Goldfinger"
+  Scenario: Check default subscription frequency for a new user
+    When I am logged in as a user with the "authenticated" role
     And I click "My subscriptions"
     Then I should see the heading "My subscriptions"
 
