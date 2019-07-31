@@ -54,7 +54,7 @@ Feature: "Event page" editing.
       | Irvin West     | Bare Past         | Name of Consort          | member      |
       | Emilio Garcia  | The Final Bridges | The Dreaming of the Game | facilitator |
 
-  Scenario: A solution facilitator can edit his content.
+  Scenario: A solution facilitator can edit their content.
     Given users:
       | Username       |
       | Krista Garrett |
@@ -65,8 +65,8 @@ Feature: "Event page" editing.
       | solution             | user           | roles       |
       | Dreamer in the Snake | Krista Garrett | facilitator |
     And "event" content:
-      | title       | author         | solution             | state    |
-      | Silver Snow | Krista Garrett | Dreamer in the Snake | proposed |
+      | title       | author         | solution             | state    | created          |
+      | Silver Snow | Krista Garrett | Dreamer in the Snake | proposed | 2019-07-31 20:01 |
     When I am logged in as "Krista Garrett"
     And I go to the "Silver Snow" event
     Then I should see the link "Edit" in the "Entity actions" region
@@ -74,3 +74,6 @@ Feature: "Event page" editing.
     When I am logged in as a moderator
     And I go to the "Silver Snow" event
     Then I should see the link "Edit" in the "Entity actions" region
+    # An event should not show the publication date, since this can cause the
+    # viewer to confuse it with the event date.
+    And I should not see the text "31/07/2019"
