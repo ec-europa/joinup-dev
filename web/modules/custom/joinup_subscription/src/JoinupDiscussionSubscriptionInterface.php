@@ -8,12 +8,12 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**
- * Interface for Joinup subscription service.
+ * Interface for services that allow users to subscribe to discussions.
  *
  * A subscription is defined as the flagging of certain content entity with a
  * specific flag. The user that performs this process is called subscriber.
  */
-interface JoinupSubscriptionInterface {
+interface JoinupDiscussionSubscriptionInterface {
 
   /**
    * Gets all the subscribers for a given content entity and a given flag.

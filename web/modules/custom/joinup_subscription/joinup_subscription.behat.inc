@@ -21,7 +21,7 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\user\Entity\User;
 use PHPUnit\Framework\Assert;
@@ -87,7 +87,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @Given (the following )discussion subscriptions:
    */
   public function subscribeToDiscussion(TableNode $table): void {
-    $subscription_service = $this->getSubscriptionService();
+    $subscription_service = $this->getDiscussionSubscriptionService();
     foreach ($table->getColumnsHash() as $values) {
       $user = $this->getUserByName($values['username']);
       /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
@@ -367,11 +367,11 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   /**
    * Returns the Joinup subscription service.
    *
-   * @return \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @return \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    *   The subscription service.
    */
-  protected function getSubscriptionService(): JoinupSubscriptionInterface {
-    return \Drupal::service('joinup_subscription.subscription');
+  protected function getDiscussionSubscriptionService(): JoinupDiscussionSubscriptionInterface {
+    return \Drupal::service('joinup_subscription.discussion_subscription');
   }
 
   /**

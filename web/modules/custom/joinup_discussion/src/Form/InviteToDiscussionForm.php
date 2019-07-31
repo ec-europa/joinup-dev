@@ -16,7 +16,7 @@ use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -106,7 +106,7 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * The subscription service.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $subscription;
 
@@ -126,12 +126,12 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   The event dispatcher.
    * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper
    *   The helper service for creating messages for invitations.
-   * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscription
+   * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $subscription
    *   The subscription service.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupSubscriptionInterface $subscription, OgAccessInterface $ogAccess) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupDiscussionSubscriptionInterface $subscription, OgAccessInterface $ogAccess) {
     parent::__construct($entityTypeManager);
 
     $this->eventDispatcher = $eventDispatcher;

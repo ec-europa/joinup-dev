@@ -16,7 +16,7 @@ use Drupal\joinup_discussion\Event\DiscussionUpdateEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
@@ -31,7 +31,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   /**
    * The Joinup subscribe service.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $subscribeService;
 
@@ -66,7 +66,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
   /**
    * Constructs a new event subscriber object.
    *
-   * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscribe_service
+   * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $subscribe_service
    *   The Joinup subscribe service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The Joinup message delivery service.
@@ -77,7 +77,7 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   The logger channel factory.
    */
-  public function __construct(JoinupSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger_factory) {
+  public function __construct(JoinupDiscussionSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger_factory) {
     $this->subscribeService = $subscribe_service;
     $this->messageDelivery = $message_delivery;
     $this->currentUser = $current_user;

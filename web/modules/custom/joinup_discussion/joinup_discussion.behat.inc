@@ -8,7 +8,7 @@
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -45,18 +45,18 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function assertSubscribers($title, $count) {
     $discussion = $this->getNodeByTitle($title, 'discussion');
-    $subscribers = $this->getSubscriptionService()->getSubscribers($discussion, 'subscribe_discussions');
+    $subscribers = $this->getDiscussionSubscriptionService()->getSubscribers($discussion, 'subscribe_discussions');
     Assert::assertEquals($count, count($subscribers));
   }
 
   /**
    * Returns the Joinup subscription service.
    *
-   * @return \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @return \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    *   The subscription service.
    */
-  protected function getSubscriptionService() : JoinupSubscriptionInterface {
-    return \Drupal::service('joinup_subscription.subscription');
+  protected function getDiscussionSubscriptionService() : JoinupDiscussionSubscriptionInterface {
+    return \Drupal::service('joinup_subscription.discussion_subscription');
   }
 
 }
