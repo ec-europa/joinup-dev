@@ -130,8 +130,12 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
         '#attributes' => [
           'class' => ['button--small', 'dialog-cancel'],
         ],
+        // Put the cancel button to the left of the confirmation button so it is
+        // consistent with the dialog shown when joining the collection.
+        '#weight' => -1,
       ];
     }
+
     return $form;
   }
 
