@@ -1059,13 +1059,10 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
   $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
 
-  $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
-
   $author_inline = _joinup_theme_get_author($node);
 
   $variables['additional_content']['field_event_date'] = $field_event_date;
   $variables['additional_content']['field_location'] = $field_event_location;
-  $variables['additional_content']['published'] = $published;
   $variables['additional_content']['author'] = $author_inline;
 }
 
