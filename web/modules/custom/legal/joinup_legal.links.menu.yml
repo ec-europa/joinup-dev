@@ -1,0 +1,6 @@
+joinup_legal.version.collection:
+  title: Legal
+  description: "Administer the 'Legal notice'."
+  route_name: joinup_legal.version.collection
+  parent: system.admin
+  weight: 7
