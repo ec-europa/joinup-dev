@@ -6,14 +6,17 @@ namespace Drupal\collection\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -36,42 +39,53 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   protected $membershipManager;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructs a LeaveCollectionConfirmForm.
    *
-   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    */
-  public function __construct(MembershipManagerInterface $membership_manager) {
-    $this->membershipManager = $membership_manager;
+  public function __construct(MembershipManagerInterface $membershipManager, EntityTypeManagerInterface $entityTypeManager) {
+    $this->membershipManager = $membershipManager;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
-      $container->get('og.membership_manager')
+      $container->get('og.membership_manager'),
+      $container->get('entity_type.manager')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'leave_collection_confirm_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getQuestion() {
+  public function getQuestion(): TranslatableMarkup {
     return $this->t('Leave collection');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getDescription() {
+  public function getDescription(): TranslatableMarkup {
     return $this->t("Are you sure you want to leave the %collection?<br />By leaving the collection you will be no longer able to publish content in it and to receive notifications.", [
       '%collection' => $this->collection->getName(),
     ]);
@@ -80,7 +94,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getCancelUrl() {
+  public function getCancelUrl(): Url {
     return Url::fromRoute('entity.rdf_entity.canonical', [
       'rdf_entity' => $this->collection->id(),
     ]);
@@ -89,12 +103,12 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL): array {
     // Store the collection on the object so it can be reused.
     $this->collection = $rdf_entity;
 
     $form = parent::buildForm($form, $form_state);
-    $user = User::load($this->currentUser()->id());
+    $user = $this->getCurrentUser();
 
     if ($membership = $this->membershipManager->getMembership($this->collection, $user)) {
       $admin_role_id = $this->collection->getEntityTypeId() . '-' . $this->collection->bundle() . '-' . 'administrator';
@@ -124,12 +138,11 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
 
     // Only authenticated users can leave a collection.
-    /** @var \Drupal\user\UserInterface $user */
-    $user = User::load($this->currentUser()->id());
+    $user = $this->getCurrentUser();
     if ($user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
         ':login' => Url::fromRoute('user.login'),
@@ -145,10 +158,10 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $user = User::load($this->currentUser()->id());
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $user = $this->getCurrentUser();
 
-    $membership = Og::getMembership($this->collection, $user);
+    $membership = $this->membershipManager->getMembership($this->collection, $user);
     $membership->delete();
 
     // Also remove the user authorship, if case.
@@ -204,6 +217,17 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    */
   protected function isModal(): bool {
     return $this->getRequest()->query->get(MainContentViewSubscriber::WRAPPER_FORMAT) === 'drupal_modal';
+  }
+
+  /**
+   * Returns the fully loaded User entity for the current user.
+   *
+   * @return \Drupal\user\UserInterface
+   *   The user entity.
+   */
+  protected function getCurrentUser(): UserInterface {
+    $user_id = $this->currentUser()->id();
+    return $this->entityTypeManager->getStorage('user')->load($user_id);
   }
 
 }
