@@ -1,4 +1,0 @@
-entity.user.subscription_settings:
-  route_name: joinup_subscription.subscription_settings
-  base_route: entity.user.canonical
-  title: Subscription settings

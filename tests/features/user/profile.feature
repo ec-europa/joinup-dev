@@ -254,7 +254,7 @@ Feature: User profile
     When I am logged in as an "authenticated user"
     And I am on the homepage
     And I click "My account"
-    Then I should not see the link "Subscription Settings"
+    Then I should not see the link "Subscription settings"
     And I should not see the link "Persistent Logins"
     And I should not see the link "Newsletters"
 

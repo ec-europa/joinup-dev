@@ -67,7 +67,6 @@ Feature: User authentication
       | rdf_entity/add/owner                                           |
       | rdf_entity/add/solution                                        |
       | user/subscriptions                                             |
-      | user/subscription-settings                                     |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -79,7 +78,6 @@ Feature: User authentication
       | collections                |
       | propose/collection         |
       | user                       |
-      | user/subscription-settings |
       | user/subscriptions         |
 
   @api

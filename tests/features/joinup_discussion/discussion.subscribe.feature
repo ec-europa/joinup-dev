@@ -86,7 +86,7 @@ Feature: Subscribing to discussions
       | mail_subject | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
       | mail_body    | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
-    And the daily digest for "Dr. Hans Zarkov" should contain the following message for the "Rare Butter" node:
+    And the weekly digest for "Dr. Hans Zarkov" should contain the following message for the "Rare Butter" node:
       | mail_subject | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
       | mail_body    | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
 
@@ -122,7 +122,7 @@ Feature: Subscribing to discussions
       | html               | no                                                                           |
       | signature_required | no                                                                           |
     # The author of the discussion update doesn't receive any notification.
-    But the daily digest for "Dr. Hans Zarkov" should not contain the following message for the "Rare Butter" node:
+    But the weekly digest for "Dr. Hans Zarkov" should not contain the following message for the "Rare Butter" node:
       | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     Then 2 e-mails should have been sent
@@ -156,7 +156,7 @@ Feature: Subscribing to discussions
     And the daily digest for "debater" should not contain the following message:
       | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
       | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
-    And the daily digest for "Dr. Hans Zarkov" should not contain the following message:
+    And the weekly digest for "Dr. Hans Zarkov" should not contain the following message:
       | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
       | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
 
@@ -180,7 +180,7 @@ Feature: Subscribing to discussions
       | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
       | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
-    And the daily digest for "Dr. Hans Zarkov" should contain the following message:
+    And the weekly digest for "Dr. Hans Zarkov" should contain the following message:
       | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
       | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # The user 'facilitator' is also a discussion subscriber but because she's

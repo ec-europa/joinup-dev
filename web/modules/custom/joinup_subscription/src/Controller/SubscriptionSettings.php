@@ -10,6 +10,10 @@ use Drupal\Core\Session\AccountProxy;
 
 /**
  * Controller that shows the subscription settings form.
+ *
+ * @todo Rename to MySubscriptionsController
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5447
  */
 class SubscriptionSettings extends ControllerBase {
 
@@ -21,7 +25,10 @@ class SubscriptionSettings extends ControllerBase {
   protected $currentUser;
 
   /**
-   * {@inheritdoc}
+   * Constructs a new SubscriptionSettings form.
+   *
+   * @param \Drupal\Core\Session\AccountProxy $current_user
+   *   The current user.
    */
   public function __construct(AccountProxy $current_user) {
     $this->currentUser = $current_user;
@@ -35,14 +42,17 @@ class SubscriptionSettings extends ControllerBase {
   }
 
   /**
-   * Builds the subscription_settings form for the user element.
+   * Displays the subscription dashboard for the currently logged in user.
+   *
+   * This controller assumes that it is only invoked for authenticated users.
+   * This is enforced for the 'joinup_subscription.subscriptions_page' route
+   * with the '_user_is_logged_in' requirement.
    *
    * @return array
-   *   The form array.
+   *   The subscription dashboard form array.
    */
-  public function build($user) {
-    $form = $this->entityFormBuilder()->getForm($user, 'subscription_settings');
-    return $form;
+  public function build() {
+    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\SubscriptionDashboardForm', $this->currentUser());
   }
 
   /**
@@ -67,35 +77,6 @@ class SubscriptionSettings extends ControllerBase {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();
-  }
-
-  /**
-   * Redirects the currently logged in user to their subscription settings form.
-   *
-   * This controller assumes that it is only invoked for authenticated users.
-   * This is enforced for the 'joinup_subscription.subscription_settings_page'
-   * route with the '_user_is_logged_in' requirement.
-   *
-   * @return \Symfony\Component\HttpFoundation\RedirectResponse
-   *   Returns a redirect to the subscription settings form of the currently
-   *   logged in user.
-   */
-  public function subscriptionSettingsPage() {
-    return $this->redirect('joinup_subscription.subscription_settings', ['user' => $this->currentUser()->id()]);
-  }
-
-  /**
-   * Displays the subscription dashboard for the currently logged in user.
-   *
-   * This controller assumes that it is only invoked for authenticated users.
-   * This is enforced for the 'joinup_subscription.subscriptions_page' route
-   * with the '_user_is_logged_in' requirement.
-   *
-   * @return array
-   *   The subscription dashboard form array.
-   */
-  public function subscriptionDashboardPage() {
-    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\SubscriptionDashboardForm', $this->currentUser());
   }
 
 }
