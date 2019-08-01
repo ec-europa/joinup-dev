@@ -95,7 +95,7 @@ class UnsubscribeFromAllCollectionsForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return Url::fromRoute('joinup_subscription.subscriptions_page');
+    return Url::fromRoute('joinup_subscription.my_subscriptions');
   }
 
   /**

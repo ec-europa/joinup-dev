@@ -21,12 +21,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a Joinup subscription form.
- *
- * @todo Rename to MySubscriptionsForm
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5447
  */
-class SubscriptionDashboardForm extends FormBase {
+class MySubscriptionsForm extends FormBase {
 
   /**
    * The entity type manager.
@@ -57,7 +53,7 @@ class SubscriptionDashboardForm extends FormBase {
   protected $membershipManager;
 
   /**
-   * Constructs a new SubscriptionDashboardForm.
+   * Constructs a new MySubscriptionsForm.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
@@ -91,7 +87,7 @@ class SubscriptionDashboardForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'joinup_subscription_dashboard';
+    return 'joinup_subscription_my_subscriptions';
   }
 
   /**
@@ -116,7 +112,7 @@ class SubscriptionDashboardForm extends FormBase {
 
     // Add a JS behavior to enable the buttons when the checkboxes or the
     // dropdown on the form are toggled.
-    $form['collections']['#attached']['library'][] = 'joinup_subscription/dashboard';
+    $form['collections']['#attached']['library'][] = 'joinup_subscription/my_subscriptions';
 
     // Return early if there are no memberships to display.
     if (!(bool) count($memberships)) {
