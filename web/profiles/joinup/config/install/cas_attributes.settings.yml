@@ -11,7 +11,7 @@ field:
     # Such tokens are computing their replacement values by using CAS response
     # attributes.
     # @see joinup_eulogin_tokens()
-    field_user_organisation: '[cas:computed-attribute:organisation]'
+    field_user_eulogin_organisation: '[cas:computed-attribute:organisation]'
 role:
   sync_frequency: 0
   deny_login_no_match: false
