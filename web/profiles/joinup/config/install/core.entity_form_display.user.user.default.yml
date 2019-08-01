@@ -7,6 +7,7 @@ dependencies:
     - field.field.user.user.field_social_media
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
+    - field.field.user.user.field_user_eulogin_organization
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -18,12 +19,10 @@ dependencies:
     - field.field.user.user.field_user_subscription_events
     - image.style.thumbnail
   module:
-    - allowed_formats
     - image
     - path
     - search_api_field
     - social_media_links_field
-    - text
     - user
 id: user.user.default
 targetEntityType: user
@@ -36,7 +35,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_social_media:
-    weight: 31
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: social_media_links_field_default
@@ -51,9 +50,10 @@ content:
     third_party_settings: {  }
   field_user_content:
     type: search_api_field_default
-    weight: 9
+    weight: 8
     region: content
-    settings: {  }
+    settings:
+      query_builder: false
     third_party_settings: {  }
   field_user_family_name:
     type: string_textfield
@@ -82,7 +82,7 @@ content:
     third_party_settings: {  }
   field_user_organisation:
     type: string_textfield
-    weight: 8
+    weight: 7
     region: content
     settings:
       size: 60
@@ -104,13 +104,14 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_last_password_reset: true
   field_password_expiration: true
+  field_user_eulogin_organization: true
   field_user_frequency: true
   field_user_group_types: true
   field_user_subscription_events: true

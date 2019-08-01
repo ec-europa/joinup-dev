@@ -21,7 +21,6 @@ dependencies:
   module:
     - ds
     - image
-    - joinup
     - social_media_links_field
     - user
 id: user.user.group_header

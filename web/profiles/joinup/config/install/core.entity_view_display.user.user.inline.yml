@@ -21,7 +21,6 @@ dependencies:
   module:
     - ds
     - image
-    - joinup
     - user
 id: user.user.inline
 targetEntityType: user
