@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - user
-id: user.field_user_eulogin_organization
-field_name: field_user_eulogin_organization
+id: user.field_user_eulogin_organisation
+field_name: field_user_eulogin_organisation
 entity_type: user
 type: string
 settings:

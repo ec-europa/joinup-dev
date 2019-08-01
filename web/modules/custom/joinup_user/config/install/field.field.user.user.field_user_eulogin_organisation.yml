@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.user.field_user_eulogin_organization
+    - field.storage.user.field_user_eulogin_organisation
   module:
     - user
-id: user.user.field_user_eulogin_organization
-field_name: field_user_eulogin_organization
+id: user.user.field_user_eulogin_organisation
+field_name: field_user_eulogin_organisation
 entity_type: user
 bundle: user
-label: 'EU Login organization'
+label: 'EU Login organisation'
 description: ''
 required: false
 translatable: false

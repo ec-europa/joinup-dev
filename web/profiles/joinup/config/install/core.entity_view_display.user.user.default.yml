@@ -7,7 +7,7 @@ dependencies:
     - field.field.user.user.field_social_media
     - field.field.user.user.field_user_business_title
     - field.field.user.user.field_user_content
-    - field.field.user.user.field_user_eulogin_organization
+    - field.field.user.user.field_user_eulogin_organisation
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
@@ -42,7 +42,7 @@ hidden:
   field_password_expiration: true
   field_social_media: true
   field_user_business_title: true
-  field_user_eulogin_organization: true
+  field_user_eulogin_organisation: true
   field_user_family_name: true
   field_user_first_name: true
   field_user_frequency: true
