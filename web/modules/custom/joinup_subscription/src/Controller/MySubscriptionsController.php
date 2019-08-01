@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_subscription\Controller;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountProxy;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller that shows the subscription settings form.
+ * Controller that shows the My Subscriptions form.
  *
- * @todo Rename to MySubscriptionsController
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5447
+ * This loads the current user entity and passes it to the form. This allows the
+ * form to be shown on the `/user/subscriptions` URI.
  */
-class SubscriptionSettings extends ControllerBase {
+class MySubscriptionsController extends ControllerBase {
 
   /**
    * Drupal\Core\Session\AccountProxy definition.
@@ -25,7 +27,7 @@ class SubscriptionSettings extends ControllerBase {
   protected $currentUser;
 
   /**
-   * Constructs a new SubscriptionSettings form.
+   * Constructs a new MySubscriptionsController.
    *
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user.
@@ -42,21 +44,21 @@ class SubscriptionSettings extends ControllerBase {
   }
 
   /**
-   * Displays the subscription dashboard for the currently logged in user.
+   * Displays the My Subscriptions form for the currently logged in user.
    *
    * This controller assumes that it is only invoked for authenticated users.
-   * This is enforced for the 'joinup_subscription.subscriptions_page' route
-   * with the '_user_is_logged_in' requirement.
+   * This is enforced for the 'joinup_subscription.my_subscriptions' route with
+   * the '_user_is_logged_in' requirement.
    *
    * @return array
-   *   The subscription dashboard form array.
+   *   The subscription settings form array.
    */
-  public function build() {
-    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\SubscriptionDashboardForm', $this->currentUser());
+  public function build(): array {
+    return $this->formBuilder()->getForm('Drupal\joinup_subscription\Form\MySubscriptionsForm', $this->currentUser());
   }
 
   /**
-   * Access control for the subscription settings user page.
+   * Access control for the page that shows the My Subscriptions form.
    *
    * The user is checked for both global permissions and permissions to edit
    * their own subscriptions.
@@ -64,10 +66,10 @@ class SubscriptionSettings extends ControllerBase {
    * @param \Drupal\Core\Entity\EntityInterface $user
    *   The user object from the route.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   An access result object carrying the result of the check.
    */
-  public function access(EntityInterface $user) {
+  public function access(EntityInterface $user): AccessResultInterface {
     // Users that can administer all users have access.
     if ($this->currentUser->hasPermission('administer users')) {
       return AccessResult::allowed();

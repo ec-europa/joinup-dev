@@ -1,5 +1,5 @@
 (function ($, Drupal) {
-  Drupal.behaviors.joinupSubscriptionDashboardBehavior = {
+  Drupal.behaviors.joinupSubscriptionMySubscriptionsBehavior = {
     attach: function (context, settings) {
       // Whenever any of the checkboxes for a collection is clicked, enable the
       // submit button.

@@ -1,6 +1,6 @@
-dashboard:
+my_subscriptions:
   version: 1.x
   js:
-    js/dashboard.js: {}
+    js/my_subscriptions.js: {}
   dependencies:
     - core/jquery

@@ -41,15 +41,15 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   use TraversingTrait;
 
   /**
-   * Navigates to the subscription dashboard of the given user.
+   * Navigates to the My subscriptions form of the given user.
    *
    * @param string $username
    *   The name of the user.
    *
-   * @When I go to the subscription dashboard of :username
-   * @When I go to my subscription dashboard
+   * @When I go to the subscription settings of :username
+   * @When I go to my subscriptions
    */
-  public function visitSubscriptionDashboard(string $username = NULL): void {
+  public function visitMySubscriptions(string $username = NULL): void {
     if (!empty($username)) {
       $user = $this->getUserByName($username);
       $url = Url::fromRoute('joinup_subscription.subscriptions', [
@@ -57,7 +57,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
       ]);
     }
     else {
-      $url = Url::fromRoute('joinup_subscription.subscriptions_page');
+      $url = Url::fromRoute('joinup_subscription.my_subscriptions');
     }
     $this->visitPath($url->toString());
   }
@@ -221,7 +221,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Given I check the :bundle checkbox of the :collection subscription
    */
-  public function selectSubscriptionMaterialOptionInDashboard(string $collection, string $bundle): void {
+  public function selectSubscriptionMaterialOptionInMySubscriptions(string $collection, string $bundle): void {
     $collection = $this->getCollectionSubscriptionCardByHeading($collection);
     $this->checkMaterialDesignField($bundle, $collection);
   }
@@ -240,16 +240,16 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Given I uncheck the :bundle checkbox of the :collection subscription
    */
-  public function deselectSubscriptionMaterialOptionInDashboard(string $collection, string $bundle): void {
+  public function deselectSubscriptionMaterialOptionInMySubscriptions(string $collection, string $bundle): void {
     $collection = $this->getCollectionSubscriptionCardByHeading($collection);
     $this->uncheckMaterialDesignField($bundle, $collection);
   }
 
   /**
-   * Selects collection subscription options in the subscription dashboard.
+   * Selects collection subscription options in the subscription settings form.
    *
    * This performs the action in the user interface, so the browser should be
-   * navigated to the subscription dashboard before performing this step. This
+   * navigated to the my subscriptions form before performing this step. This
    * will not submit the form.
    *
    * Table format:
@@ -264,7 +264,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @When I select the following collection subscription options:
    */
-  public function selectSubscriptionOptionsInDashboard(TableNode $subscription_options): void {
+  public function selectSubscriptionOptionsInMySubscriptions(TableNode $subscription_options): void {
     foreach ($subscription_options->getRowsHash() as $collection_label => $bundle_ids) {
       $bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($bundle_ids));
       $collection = self::getRdfEntityByLabel($collection_label, 'collection');
@@ -283,10 +283,10 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Checks that the given subscription options are selected in the dashboard.
+   * Checks that the given subscription options are selected in the form.
    *
    * This performs the action in the user interface, so the browser should be
-   * navigated to the subscription dashboard before performing this step.
+   * navigated to the my subscription form before performing this step.
    *
    * Table format:
    * | Collection A | Discussion, Document, Event, News |
@@ -301,7 +301,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    *
    * @Then the following collection content subscriptions should be selected:
    */
-  public function assertSubscriptionOptionsInDashboard(TableNode $subscription_options): void {
+  public function assertSubscriptionOptionsInMySubscriptions(TableNode $subscription_options): void {
     foreach ($subscription_options->getRowsHash() as $collection_label => $bundle_ids) {
       $bundle_ids = $this->explodeCommaSeparatedStepArgument(strtolower($bundle_ids));
       $collection = self::getRdfEntityByLabel($collection_label, 'collection');
