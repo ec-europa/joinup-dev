@@ -373,7 +373,7 @@ trait TraversingTrait {
    * @param string $element
    *   The element name, e.g. 'fieldset', 'field', 'link', 'button', 'content',
    *   'select', 'checkbox', 'radio', 'file', 'optgroup', 'option', 'table', ...
-   * @param \Behat\Mink\Element\NodeElement $region
+   * @param \Behat\Mink\Element\TraversableElement $region
    *   (optional) The region to check in.
    *
    * @return \Behat\Mink\Element\NodeElement
@@ -384,7 +384,7 @@ trait TraversingTrait {
    *
    * @see \Behat\Mink\Selector\NamedSelector
    */
-  protected function findNamedElementInRegion(string $locator, string $element, NodeElement $region = NULL): NodeElement {
+  protected function findNamedElementInRegion(string $locator, string $element, TraversableElement $region = NULL): TraversableElement {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }

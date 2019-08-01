@@ -41,22 +41,6 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
   use TraversingTrait;
 
   /**
-   * Navigates to the subscription settings form of the given user.
-   *
-   * @param string $username
-   *   The name of the user.
-   *
-   * @When I go to the subscription settings form of :username
-   */
-  public function visitSubscriptionSettingsForm(string $username): void {
-    $user = $this->getUserByName($username);
-    $url = Url::fromRoute('joinup_subscription.subscription_settings', [
-      'user' => $user->id(),
-    ]);
-    $this->visitPath($url->toString());
-  }
-
-  /**
    * Navigates to the subscription dashboard of the given user.
    *
    * @param string $username
@@ -144,6 +128,13 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $status
    *   The expected status. Possible values are 'enabled' and 'disabled'.
    *
+   * @throws \InvalidArgumentException
+   *   Thrown if the passed value for the $status variable is not an acceptable
+   *   one.
+   * @throws \Exception
+   *   Thrown when the region or the button are not found or if the expected
+   *   status does not match the actual one.
+   *
    * @Given the :button button on the :collection subscription card should be :status
    */
   public function assertSubscriptionButtonStatus(string $button, string $collection, string $status): void {
@@ -153,7 +144,7 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
 
     $expected_status = $status === 'enabled';
     $card = $this->getCollectionSubscriptionCardByHeading($collection);
-    $button = $card->findButton($button);
+    $button = $this->findNamedElementInRegion($button, 'button', $card);
     $disabled = !($button->getAttribute('disabled') === 'disabled');
     Assert::assertEquals($expected_status, $disabled);
   }
@@ -165,6 +156,9 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    *   The button label.
    * @param string $collection
    *   The collection name.
+   *
+   * @throws \Exception
+   *   Thrown when the card is not found.
    *
    * @Given I press :button on the :collection subscription card
    */
@@ -181,6 +175,9 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    *   The button label.
    * @param string $collection
    *   The collection name.
+   *
+   * @throws \Exception
+   *   Thrown when the card or the button is not found.
    *
    * @Given I should see the :button button on the :collection subscription card
    */
@@ -199,6 +196,9 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $collection
    *   The collection name.
    *
+   * @throws \Exception
+   *   Thrown when the card is not found or the button is.
+   *
    * @Given I should not see the :button button on the :collection subscription card
    */
   public function assertButtonNotExistsOnSubscriptionCard(string $button, string $collection): void {
@@ -216,6 +216,9 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @param string $bundle
    *   The bundle to check.
    *
+   * @throws \Exception
+   *   Thrown when the card is not found or the checkbox is not styled properly.
+   *
    * @Given I check the :bundle checkbox of the :collection subscription
    */
   public function selectSubscriptionMaterialOptionInDashboard(string $collection, string $bundle): void {
@@ -230,6 +233,10 @@ class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubCo
    *   The collection name.
    * @param string $bundle
    *   The bundle to check.
+   *
+   * @throws \Exception
+   *   Thrown when the card is not found or there was an issue with the material
+   *   checkbox.
    *
    * @Given I uncheck the :bundle checkbox of the :collection subscription
    */
