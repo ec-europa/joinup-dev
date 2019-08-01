@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
+use Drupal\entity_legal\Entity\EntityLegalDocumentAcceptance;
 use Drupal\entity_legal\Entity\EntityLegalDocumentVersion;
 use Drupal\joinup\Traits\EntityTrait;
 
@@ -153,6 +154,36 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
     $document = $this->getEntityByLabel(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $document_label);
     $version = $this->getEntityByLabel(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $version_label, $document->id());
     $version->delete();
+  }
+
+  /**
+   * Adds a legal document acceptance record.
+   *
+   * @param string $document_label
+   *   The legal document label.
+   *
+   * @throws \Exception
+   *   When the current user is not logged in.
+   * @throws \InvalidArgumentException
+   *   When the given legal document has no published version.
+   *
+   * @Given I accept the :document_label agreement
+   */
+  public function iAcceptTheLegalDocument(string $document_label): void {
+    if ($this->getUserManager()->currentUserIsAnonymous()) {
+      throw new \Exception('User should be logged in when accepting a document.');
+    }
+
+    /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $document */
+    $document = $this->getEntityByLabel(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $document_label);
+    if (!$published_version = $document->getPublishedVersion()) {
+      throw new \InvalidArgumentException("Legal document '{$document->label()}' has no published version.");
+    }
+
+    EntityLegalDocumentAcceptance::create([
+      'document_version_name' => $published_version->id(),
+      'uid' => $this->getUserManager()->getCurrentUser()->uid,
+    ])->save();
   }
 
   /**
