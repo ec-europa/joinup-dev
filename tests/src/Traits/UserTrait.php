@@ -31,6 +31,7 @@ trait UserTrait {
       'Photo' => 'field_user_photo',
       'Business title' => 'field_user_business_title',
       'Organisation' => 'field_user_organisation',
+      'EU login organisation' => 'field_user_eulogin_organisation',
       'Nationality' => 'field_user_nationality',
       'Professional domain' => 'field_user_professional_domain',
       // @todo Social network
