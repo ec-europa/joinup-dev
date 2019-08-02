@@ -29,7 +29,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat step definitions for testing subscriptions.
  */
-class SubscriptionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSubscriptionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use BrowserCapabilityDetectionTrait;
   use EntityTrait;
