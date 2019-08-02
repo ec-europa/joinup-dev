@@ -6,8 +6,8 @@ Feature: Log in through EU Login
 
   Scenario: A new user logging in through EU Login should be approved by a moderator
     Given CAS users:
-      | Username    | E-mail                         | Password  | First name | Last name | Domain            |
-      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    | eu.europa.europol |
+      | Username    | E-mail                         | Password  | First name | Last name |
+      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
 
     Given I am on the homepage
     And I click "Sign in"
@@ -30,9 +30,8 @@ Feature: Log in through EU Login
     # Then I should see "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
     Then I click "Sign out"
     And the user chucknorris should have the following data in their user profile:
-      | First name   | Chuck                  |
-      | Family name  | Norris                 |
-      | Organisation | European Police Office |
+      | First name   | Chuck  |
+      | Family name  | Norris |
 
     # Upon second log in the user should be informed that the account is not yet
     # activated.
