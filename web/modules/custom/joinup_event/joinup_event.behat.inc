@@ -16,7 +16,7 @@ use Drupal\joinup\Traits\NodeTrait;
 /**
  * Behat step definitions for testing events.
  */
-class EventSubContext extends DrupalSubContextBase {
+class JoinupEventSubContext extends DrupalSubContextBase {
 
   use NodeTrait;
 

@@ -16,7 +16,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat integration for the OpenEuropa Newsroom Newsletter module.
  */
-class OpenEuropaNewsroomNewsletterSubContext extends DrupalSubContextBase {
+class OeNewsroomNewsletterSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
   use ScenarioTagTrait;
