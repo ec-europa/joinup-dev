@@ -15,14 +15,14 @@ Feature:
       | Username   | E-mail                  | Password    | First name | Last name | Domain            |
       | mrredirect | mr.redirect@example.com | Mr Redirect | Mister     | Redirect  | eu.europa.europol |
 
-  Scenario: A user logging in from the front page should be redirected to his profile.
+  Scenario: A user logging in from the front page should end up again on the homepage.
     When I go to the homepage
     And I open the account menu
     And I click "Sign in"
     And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
     And I press "Log in"
-    And I should be on the homepage
+    Then I should be on the homepage
 
   Scenario: A user logging in from another page should return to that page after login.
     When I am on "/search?keys=how+to+redirect"
