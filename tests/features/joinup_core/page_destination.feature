@@ -1,4 +1,4 @@
-@api @javascript
+@api @javascript @casMockServer
 Feature:
   As a user of the website
   When I try to login
@@ -10,23 +10,27 @@ Feature:
       | Password    | Mr Redirect             |
       | First name  | Mr                      |
       | Family name | Redirect                |
-      | E-mail      | Mr.redirect@example.com |
+      | E-mail      | mr.redirect@example.com |
+    And CAS users:
+      | Username   | E-mail                  | Password    | First name | Last name | Domain            |
+      | mrredirect | mr.redirect@example.com | Mr Redirect | Mister     | Redirect  | eu.europa.europol |
 
   Scenario: A user logging in from the front page should be redirected to his profile.
     When I go to the homepage
+    And I open the account menu
     And I click "Sign in"
-    And I fill in "Email or username" with "Mr Redirect"
+    And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
-    And I press "Sign in"
+    And I press "Log in"
     And I should be on the homepage
 
   Scenario: A user logging in from another page should return to that page after login.
     When I am on "/search?keys=how+to+redirect"
     And I open the account menu
     And I click "Sign in"
-    And I fill in "Email or username" with "Mr Redirect"
+    And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
-    And I press "Sign in"
+    And I press "Log in"
     Then I should not see the heading "Mr Redirect"
     And the relative url should be "/search?keys=how%20to%20redirect"
 
@@ -34,8 +38,8 @@ Feature:
     When I am on "/search?keys=how+to+redirect&destination=/contact"
     And I open the account menu
     And I click "Sign in"
-    And I fill in "Email or username" with "Mr Redirect"
+    And I fill in "E-mail address" with "mr.redirect@example.com"
     And I fill in "Password" with "Mr Redirect"
-    And I press "Sign in"
+    And I press "Log in"
     Then I should not see the heading "Mr Redirect"
     And the relative url should be "/contact"
