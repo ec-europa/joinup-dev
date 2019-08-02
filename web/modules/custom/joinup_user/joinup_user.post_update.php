@@ -201,3 +201,11 @@ function joinup_user_post_update_set_default_frequency(array &$sandbox) {
     return "Finished updating {$sandbox['progress']} accounts.";
   }
 }
+
+/**
+ * Unsubscribe all members from their collections.
+ */
+function joinup_user_post_update_unsubscribe_all_members() {
+  $database = \Drupal::database();
+  $database->truncate('og_membership__subscription_bundles')->execute();
+}
