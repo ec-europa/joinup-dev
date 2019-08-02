@@ -12,19 +12,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\joinup_eulogin\JoinupEuLoginAuthnameItemList;
 
 /**
- * Implements hook_cron().
- */
-function joinup_eulogin_cron(): void {
-  $now = \Drupal::time()->getRequestTime();
-  $last_updated = \Drupal::state()->get('joinup_eulogin.schema_data_updater.last_updated');
-  $check_interval = \Drupal::config('joinup_eulogin.settings')->get('schema.check_interval');
-  if ($now > $last_updated + $check_interval) {
-    // It's time to check for a new version.
-    \Drupal::service('joinup_eulogin.schema_data_updater')->update();
-  }
-}
-
-/**
  * Implements hook_entity_base_field_info().
  *
  * Adds a computed field to easily retrieve the external authname of a user.
