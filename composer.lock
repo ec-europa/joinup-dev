@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e39645bfae026b11171c99f68a9b3c0",
+    "content-hash": "d51f0cdc9d7ff373bac665e402a15925",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.108.2",
+            "version": "3.108.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1bb860e0ef548355bd97e22549b378c62c7af6ad"
+                "reference": "5b2fda38f057bfab7ce74cc32d8c7d87b3e41437"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1bb860e0ef548355bd97e22549b378c62c7af6ad",
-                "reference": "1bb860e0ef548355bd97e22549b378c62c7af6ad",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5b2fda38f057bfab7ce74cc32d8c7d87b3e41437",
+                "reference": "5b2fda38f057bfab7ce74cc32d8c7d87b3e41437",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-07-30T19:02:39+00:00"
+            "time": "2019-08-02T18:51:44+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -343,16 +343,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "ec2e24d4fa6a0d50d423794a56605ecec3401b85"
+                "reference": "f26a67e397be0e5c00d7c52ec7b5010098e15ce5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/ec2e24d4fa6a0d50d423794a56605ecec3401b85",
-                "reference": "ec2e24d4fa6a0d50d423794a56605ecec3401b85",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/f26a67e397be0e5c00d7c52ec7b5010098e15ce5",
+                "reference": "f26a67e397be0e5c00d7c52ec7b5010098e15ce5",
                 "shasum": ""
             },
             "require": {
@@ -395,20 +395,20 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2019-08-01T07:52:17+00:00"
+            "time": "2019-08-02T09:05:43+00:00"
         },
         {
             "name": "composer/composer",
-            "version": "1.8.6",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "19b5f66a0e233eb944f134df34091fe1c5dfcc11"
+                "reference": "314aa57fdcfc942065996f59fb73a8b3f74f3fa5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/19b5f66a0e233eb944f134df34091fe1c5dfcc11",
-                "reference": "19b5f66a0e233eb944f134df34091fe1c5dfcc11",
+                "url": "https://api.github.com/repos/composer/composer/zipball/314aa57fdcfc942065996f59fb73a8b3f74f3fa5",
+                "reference": "314aa57fdcfc942065996f59fb73a8b3f74f3fa5",
                 "shasum": ""
             },
             "require": {
@@ -444,7 +444,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -468,14 +468,14 @@
                     "homepage": "http://seld.be"
                 }
             ],
-            "description": "Composer helps you declare, manage and install dependencies of PHP projects, ensuring you have the right stack everywhere.",
+            "description": "Composer helps you declare, manage and install dependencies of PHP projects. It ensures you have the right stack everywhere.",
             "homepage": "https://getcomposer.org/",
             "keywords": [
                 "autoload",
                 "dependency",
                 "package"
             ],
-            "time": "2019-06-11T13:03:06+00:00"
+            "time": "2019-08-02T18:55:33+00:00"
         },
         {
             "name": "composer/installers",
@@ -13028,6 +13028,9 @@
                     "../cas_mock_server_build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
+                },
+                "patches_applied": {
+                    "Redirect the user to the page they come from after authenticating @see https://github.com/pfrenssen/cas_mock_server/pull/7": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/7.diff"
                 }
             },
             "autoload-dev": {
@@ -13058,7 +13061,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-08-01T13:08:47+00:00"
         },
         {
             "name": "drupal/coder",
