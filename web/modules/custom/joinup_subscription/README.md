@@ -19,8 +19,8 @@ subscription manually. See the following files for more info:
 
 - [`flag.flag.subscribe_discussions.yml`](./config/install/flag.flag.subscribe_discussions.yml):
   The Flag config.
-- [`JoinupSubscriptionInterface](./src/JoinupSubscriptionInterface.php): The
-  service to manage discussion subscriptions. 
+- [`JoinupDiscussionSubscriptionInterface](src/JoinupDiscussionSubscriptionInterface.php):
+  The service to manage discussion subscriptions.
 
 Collection content subscriptions
 --------------------------------

@@ -8,7 +8,7 @@ use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,7 +19,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
   /**
    * The Joinup subscribe service.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $subscribeService;
 
@@ -61,12 +61,12 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
   /**
    * Constructs a new event subscriber object.
    *
-   * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscribe_service
+   * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $subscribe_service
    *   The Joinup subscribe service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The Joinup message delivery service.
    */
-  public function __construct(JoinupSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(JoinupDiscussionSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery) {
     $this->subscribeService = $subscribe_service;
     $this->messageDelivery = $message_delivery;
   }
