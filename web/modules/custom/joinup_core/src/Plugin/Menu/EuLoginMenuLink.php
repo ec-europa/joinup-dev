@@ -119,7 +119,9 @@ class EuLoginMenuLink extends MenuLinkDefault {
     // If a 'destination' query argument exists, then this is what the user
     // should return to.
     if ($request->query->has('destination')) {
-      $return_to = Url::fromUserInput($request->query->get('destination'))->setAbsolute()->toString();
+      // The path should start with a slash.
+      $destination = '/' . ltrim($request->query->get('destination'), '/');
+      $return_to = Url::fromUserInput($destination)->setAbsolute()->toString();
     }
     // If we are on the homepage, set the 'returnto' path to '/' alias.
     elseif ($this->pathMatcher->isFrontPage()) {
