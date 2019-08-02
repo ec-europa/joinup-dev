@@ -108,7 +108,7 @@ Feature: Add community content
   # This is a variant of the previous tests for events. The only difference is
   # that the creation date / publication date is not shown in the frontend to
   # prevent viewers confusing this with the event date.
-  Scenario Outline: Publishing an event for the first time sets the publication date
+  Scenario: Publishing an event for the first time sets the publication date
     Given users:
       | Username  | E-mail                     | First name | Family name    | Roles     |
       | Publisher | publisher-example@test.com | Publisher  | Georgakopoulos | moderator |
