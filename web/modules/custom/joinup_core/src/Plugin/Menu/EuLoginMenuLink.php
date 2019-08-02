@@ -98,7 +98,13 @@ class EuLoginMenuLink extends MenuLinkDefault {
    * {@inheritdoc}
    */
   public function getCacheContexts(): array {
-    return ['user.roles:authenticated'];
+    // This is different on every URL, including query arguments, and is hidden
+    // for authenticated users.
+    return [
+      'url',
+      'url.query_args',
+      'user.roles:authenticated',
+    ];
   }
 
   /**
