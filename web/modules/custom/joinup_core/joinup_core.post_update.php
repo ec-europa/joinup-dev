@@ -681,3 +681,104 @@ function joinup_core_post_update_install_publication_date() {
 function joinup_core_post_update_enable_joinup_privacy() {
   \Drupal::service('module_installer')->install(['joinup_privacy']);
 }
+
+/**
+ * Fix publication dates for all cases.
+ */
+function joinup_core_post_update_fix_all_publication_dateq(&$sandbox) {
+  // This function will iterate through all content and will apply the default
+  // value to all revisions until the first published one and then, it will
+  // apply the created date to all other revisions. When an entity is initially
+  // published, then every subsequent revision should cary the same value
+  // regardless of whether it is published or not.
+  //
+  // In the below example, the entity is created as an unpublished and is
+  // published in the second version. All other versions retain the value.
+  // @codingStandardsIgnoreStart
+  // | revision | status | publication date          |
+  // | 1        | 0      | PUBLICATION_DATE_DEFAULT  |
+  // | 2        | 1      | <actual publication date> |
+  // | 3        | 0      | <actual publication date> |
+  // | 4        | 1      | <actual publication date> |
+  // | 5        | 0      | <actual publication date> |
+  // @codingStandardsIgnoreEnd
+  //
+  // The above approach is applied to the revision table. For the data table,
+  // the published_at value will have 2 cases. It will receive the default value
+  // if the entity has never been published or the publication date if the
+  // entity has been published at least once, regardless of the current state.
+  $database = \Drupal::database();
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  if (empty($sandbox['nids'])) {
+    // Clean all set publication dates from the revisions table, as the empty
+    // value is needed later on.
+    $database
+      ->update($node_storage->getRevisionDataTable())
+      ->expression('published_at', 'null')
+      ->execute();
+
+    $sandbox['nids'] = $database->query('SELECT nid FROM {node} n')->fetchCol();
+    $sandbox['progress'] = 0;
+    $sandbox['total'] = count($sandbox['nids']);
+  }
+
+  $nids = array_splice($sandbox['nids'], 0, 300);
+  $query = $database->select('node', 'n');
+  $query->leftJoin('node_field_revision', 'nr', 'n.nid = nr.nid');
+  $query->fields('nr', ['nid', 'vid', 'changed']);
+  $query->condition('status', 1);
+  $query->condition('n.nid', $nids, 'IN');
+  $query->groupBy('nr.nid, nr.vid, nr.changed');
+  $query->orderBy('nr.vid', 'DESC');
+
+  $node_data = $query->execute()->fetchAllAssoc('nid');
+  foreach ($nids as $nid) {
+    if (empty($node_data[$nid])) {
+      // Node has never been published. Set the default value to all revisions.
+      $database
+        ->update($node_storage->getDataTable())
+        ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+        ->condition('nid', $nid)
+        ->execute();
+      $database
+        ->update($node_storage->getRevisionDataTable())
+        ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+        ->condition('nid', $nid)
+        ->execute();
+    }
+    else {
+      // Node has been published at least once. The data table will receive the
+      // publication date while for the revision table, the publication date
+      // will be set for all versions including and following the first
+      // published version. All others will receive the default value.
+      $first_published_timestamp = $node_data[$nid]->changed;
+      $first_published_vid = $node_data[$nid]->vid;
+
+      // Set the revisions that will receive the publication timestamp.
+      $database
+        ->update($node_storage->getDataTable())
+        ->expression('published_at', $first_published_timestamp)
+        ->condition('nid', $nid)
+        ->execute();
+      $database
+        ->update($node_storage->getRevisionDataTable())
+        ->expression('published_at', $first_published_timestamp)
+        ->condition('nid', $nid)
+        ->condition('vid', $first_published_vid, '>=')
+        ->execute();
+
+      // The revisions that are left have a null publication date and need to
+      // receive the default value.
+      $database
+        ->update($node_storage->getRevisionDataTable())
+        ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+        ->condition('nid', $nid)
+        ->isNull('published_at')
+        ->execute();
+    }
+  }
+
+  $sandbox['progress'] += count($nids);
+  $sandbox['#finished'] = (int) empty($sandbox['nids']) ? 1 : $sandbox['progress'] / $sandbox['total'];
+  return "Processed {$sandbox['progress']} out of {$sandbox['total']} nodes.";
+}
