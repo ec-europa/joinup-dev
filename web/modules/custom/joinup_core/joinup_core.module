@@ -1362,15 +1362,3 @@ function joinup_core_cron() {
     cached_computed_field_cron();
   }
 }
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- *
- * During saving a node, if the entity never had a published version and is now
- * published, the creation date is updated with the current datetime.
- */
-function joinup_core_node_presave(NodeInterface $entity) {
-  if ($entity->hasField('published_at') && empty($entity->published_at->value) && $entity->isPublished()) {
-    $entity->set('published_at', \Drupal::time()->getRequestTime());
-  }
-}
