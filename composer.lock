@@ -2552,17 +2552,11 @@
         },
         {
             "name": "drupal/cas",
-            "version": "1.5.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas.git",
-                "reference": "8.x-1.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "e9060d973d69247862d71e2230762cb3147ae946"
+                "reference": "5d52cb5423db547188965cd7ccd88b80b6000e95"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -2574,17 +2568,20 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1553185984",
+                    "version": "8.x-1.5+2-dev",
+                    "datestamp": "1553044385",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-22/3065933-23.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2619,7 +2616,73 @@
                 "source": "http://cgit.drupalcode.org/cas",
                 "issues": "http://drupal.org/project/issues/cas",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-05-08T00:07:59+00:00"
+        },
+        {
+            "name": "drupal/cas_account_link",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/cas_account_link.git",
+                "reference": "370b85616a3ab742d418c76aedc0cf903ff48850"
+            },
+            "require": {
+                "drupal/cas": "dev-1.x",
+                "drupal/core": "*",
+                "drupal/externalauth": "dev-1.x"
+            },
+            "require-dev": {
+                "drupal/cas_mock_server": "dev-0.x|dev-1.x"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1563742986",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                },
+                "patches_applied": {
+                    "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-07-27/username_conflict_3070744_D8_5.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/u/claudiu.cristea",
+                    "role": "maintainer"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
+            ],
+            "description": "Allows a user to manually link its CAS account with its Drupal account.",
+            "homepage": "https://www.drupal.org/project/cas_account_link",
+            "keywords": [
+                "CAS",
+                "Drupal",
+                "single sign-on"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/cas_account_link",
+                "issues": "https://www.drupal.org/project/issues/cas_account_link"
+            },
+            "time": "2019-07-22T07:01:15+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -3812,17 +3875,11 @@
         },
         {
             "name": "drupal/externalauth",
-            "version": "1.1.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/externalauth.git",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/externalauth-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "171d8482df27aa66cb1b389bad4c711edd58136d"
+                "reference": "1dc2b5a11c121880a35f018b906c82b115a03465"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3833,11 +3890,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1521730685",
+                    "version": "8.x-1.1+2-dev",
+                    "datestamp": "1560259688",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3863,7 +3920,8 @@
             "homepage": "https://www.drupal.org/project/externalauth",
             "support": {
                 "source": "https://git.drupalcode.org/project/externalauth"
-            }
+            },
+            "time": "2019-06-11T14:32:15+00:00"
         },
         {
             "name": "drupal/facets",
@@ -15960,6 +16018,8 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/cas": 20,
+        "drupal/cas_account_link": 20,
         "drupal/cas_attributes": 10,
         "drupal/diff": 5,
         "drupal/entity_legal": 20,
