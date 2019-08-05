@@ -23,6 +23,7 @@
 		<registrationLevelVersion level="TOP">27e87a8c-c742-4df8-a5a3-b5dcee821f05</registrationLevelVersion>
 		<smsMessageId>MOBISTAR:123@2011-05-04T14:00:00.000+02:00</smsMessageId>
 		<smsMessageId>MOBISTAR:456@2011-05-05T14:00:00.000+02:00</smsMessageId>
+		<!-- The password is "Qwerty098" -->
 		<strongPasswordHash>{SEQ103}ceY2NvrK7mTlmS75Ho17xDN5/ljBgfUvLOZW1iAG7fNaE014NLaUo7tKJ2C/qtpc+zTWh32iMB3pWM9cHC4A5ivEKxYmBtYI1ErLtH63QJ/l6RXoInA/f8AMYCEuLBpp40WmpJbZbR3iOQX+M+Z3M8DTRPTnsydHAp2WAdMMgsDfsE71VUcEUKS/f+Eyg3ab4H+6XXQq0ZmRMmZhpjiRbIdSvf1tlbTMCUFEEVtUI6Dots4kd9UhCeaO638tnHBT1cx/BHZqBm1QcpL9YlrYX293cUKjWBJjt8sCbwycpT+vMypiBqlAGe+jwu6XEBl9W0jEehbLYzmhkmT5ydV2iA==</strongPasswordHash>
 		<tokenCramId>1234@eu</tokenCramId>
 		<tokenSerialNumber>90-1234567-8</tokenSerialNumber>

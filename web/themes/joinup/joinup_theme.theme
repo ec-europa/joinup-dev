@@ -134,6 +134,7 @@ function _joinup_vertical_tabs_routes() {
 function _joinup_blue_header_routes() {
   return [
     'adms_validator.adms_validator_form',
+    'cas_account_link.form',
     'collection.propose_form',
     'contact_form.contact_page',
     'entity.node.edit_form',

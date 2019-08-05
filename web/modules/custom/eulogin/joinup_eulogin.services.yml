@@ -1,6 +1,10 @@
 services:
-  joinup_eulogin.subscriber:
-    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginSubscriber
+  joinup_eulogin.cas.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginCasEventsSubscriber
     arguments: ['@config.factory']
+    tags:
+      - { name: 'event_subscriber' }
+  joinup_eulogin.cas_account_link.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginCasAccountLinkEventsSubscriber
     tags:
       - { name: 'event_subscriber' }
