@@ -241,8 +241,6 @@
         <mkdir dir="${phpunit.browsertest_output_dir}" />
         <touch file="${phpunit.browsertest_output_file}" />
 
-        <!-- If PHPUnit uses a MySQL server, create the database. -->
-        <phingcall target="create-phpunit-mysql-database" />
     </target>
 
     <target name="create-phpunit-mysql-database">
