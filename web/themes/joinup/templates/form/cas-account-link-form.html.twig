@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Joinup theme implementation for CAS Account Link form.
+ *
+ * Available variables:
+ * - form: The CAS Account Link form.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="form__content">
+    {{ form|without('actions') }}
+</div>
+{{ form.actions }}

@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Listens to CAS events.
  */
-class JoinupEuLoginSubscriber implements EventSubscriberInterface {
+class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
 
   /**
    * The module's settings.
