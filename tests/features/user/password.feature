@@ -50,7 +50,7 @@ Feature: Password management
     When I am an anonymous user
     And all e-mails have been sent
     And I am on the homepage
-    And I click "Sign in"
+    And I click "Sign in (legacy)"
     And I click "Reset your password"
     And I fill in "Email" with "charlie.change@example.com"
     And I wait for the spam protection time limit to pass
