@@ -587,7 +587,7 @@ display:
         title: 'Legal notice report'
         description: ''
         expanded: false
-        parent: joinup_core.admin_reporting
+        parent: joinup.admin_reporting
         weight: 4
         context: '0'
         menu_name: admin
