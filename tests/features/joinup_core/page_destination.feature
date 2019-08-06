@@ -12,8 +12,8 @@ Feature:
       | Family name | Redirect                |
       | E-mail      | mr.redirect@example.com |
     And CAS users:
-      | Username   | E-mail                  | Password    | First name | Last name | Domain            |
-      | mrredirect | mr.redirect@example.com | Mr Redirect | Mister     | Redirect  | eu.europa.europol |
+      | Username   | E-mail                  | Password    | First name | Last name | Local username |
+      | mrredirect | mr.redirect@example.com | Mr Redirect | Mister     | Redirect  | Mr Redirect    |
 
   Scenario: A user logging in from the front page should end up again on the homepage.
     When I go to the homepage
