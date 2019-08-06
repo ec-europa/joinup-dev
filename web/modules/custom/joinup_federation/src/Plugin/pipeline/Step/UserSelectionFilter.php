@@ -176,7 +176,12 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
           '#attributes' => ['data-drupal-federation-category' => $category_id],
           '#disabled' => $category_id === 'invalid_collection',
         ];
-        $default_value[$id] = in_array($category_id, ['blacklisted', 'federated_unchanged', 'invalid_collection']) ? NULL : $id;
+        $unchecked_categories = [
+          'blacklisted',
+          'federated_unchanged',
+          'invalid_collection',
+        ];
+        $default_value[$id] = in_array($category_id, $unchecked_categories) ? NULL : $id;
       }
     }
 
@@ -297,7 +302,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $solutions_categories = $this->getPersistentDataValue('solutions_categories');
     $return = [];
 
-    foreach ($solutions_categories as $solution_id => $category) {
+    foreach ($solutions_categories as $category) {
       if ($category === 'federated_unchanged') {
         $return[] = $category;
       }

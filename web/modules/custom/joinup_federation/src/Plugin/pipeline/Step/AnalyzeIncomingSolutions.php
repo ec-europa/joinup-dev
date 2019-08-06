@@ -126,7 +126,7 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public function initBatchProcess() {
     $incoming_solution_ids = $this->getIncomingSolutionIds();
@@ -155,14 +155,12 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
     /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
     $entities = $storage->loadMultiple($ids, ['staging']);
     foreach ($entities as $id => $entity) {
-      $this->buildSolutionDependencyTree($entity, $entity->id());
+      $this->buildSolutionDependencyTree($entity, $id);
     }
 
     $this->buildSolutionsCategories();
     $this->setPersistentDataValue('solution_dependency_tree', $this->solutionDependencyTree);
   }
-
-
 
   /**
    * Builds a dependency tree of a solution.
