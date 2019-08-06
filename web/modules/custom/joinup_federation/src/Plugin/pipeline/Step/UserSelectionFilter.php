@@ -8,7 +8,6 @@ use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
@@ -18,7 +17,6 @@ use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
@@ -137,7 +135,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }
 
     // Build a list of all whitelisted entities.
-    $this->buildWhitelist('solution', $selected_solution_ids);
+    $this->buildWhitelist($selected_solution_ids);
 
     // Get all imported entity IDs by running a SPARQL query.
     /** @var \EasyRdf\Sparql\Result $results */
@@ -147,7 +145,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }, $results->getArrayCopy());
 
     // Remove the blacklisted entities, if any.
-    if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist))) {
+    if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist, $this->getUnchangedSolutionIds()))) {
       $blacklist_ids = SparqlArg::serializeUris($blacklist, ' ');
       $this->sparql->query("WITH <{$this->getGraphUri('sink')}> DELETE { ?entity_id ?p ?o } WHERE { ?entity_id ?p ?o . VALUES ?entity_id { {$blacklist_ids} } }");
     }
@@ -178,7 +176,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
           '#attributes' => ['data-drupal-federation-category' => $category_id],
           '#disabled' => $category_id === 'invalid_collection',
         ];
-        $default_value[$id] = in_array($category_id, ['blacklisted', 'invalid_collection']) ? NULL : $id;
+        $default_value[$id] = in_array($category_id, ['blacklisted', 'federated_unchanged', 'invalid_collection']) ? NULL : $id;
       }
     }
 
@@ -215,105 +213,16 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   /**
    * Collect all the whitelisted incoming entities.
    *
-   * The user selects only solutions on the form of this pipeline step. But each
-   * solution might refer other entities, such as distributions, contact info,
-   * publishers, etc. And the latest might also refer other entities, defining a
-   * relation of type 'directed acyclic graph', with nested relations. Based on
-   * user selected solutions, we build a whitelist of solutions and their
-   * related entities. The whitelist is stored in the `$this->whitelist`
-   * protected property to be used later by the caller method.
-   *
-   * If a subsequent entity is referred, directly or through a nested relation,
-   * by both, a whitelisted and a blacklisted solution, then this entity will be
-   * whitelisted.
-   *
-   * The caller will take care to delete from the 'staging' graph the entities
-   * that are not in the `$this->whitelist`.
-   *
-   * @param string $bundle
-   *   The bundle of the passed whitelisted entity IDs. As this method is called
-   *   recursively, this value will be computed on each call, except the first
-   *   call when it should be 'solution'.
    * @param string[] $whitelist_ids
    *   A list of whitelisted entity IDs. All entities are from $bundle bundle.
    *   The caller should pass the list of whitelisted solution IDs.
-   * @param array|null $whitelisted_solution_ids
-   *   Used internally to distinguish between caller calls and recursive calls.
-   *
-   * @throws \InvalidArgumentException
-   *   If on first call to the method, something different than 'solution' has
-   *   been passed as $bundle parameter or if a passed item from $whitelist_ids
-   *   is not from $bundle bundle.
    */
-  protected function buildWhitelist(string $bundle, array $whitelist_ids, ?array $whitelisted_solution_ids = NULL): void {
-    // Compute the whitelist of IDs not already added but exit early if empty.
-    if (!$new_whitelist_ids = array_diff($whitelist_ids, $this->whitelist)) {
-      return;
+  protected function buildWhitelist(array $whitelist_ids): void {
+    $solution_dependency_tree = $this->getPersistentDataValue('solution_dependency_tree');
+    foreach ($whitelist_ids as $solution_id) {
+      $this->whitelist[] = $solution_id;
+      $this->whitelist = array_merge($this->whitelist, $solution_dependency_tree[$solution_id]);
     }
-
-    // Add new whitelisted IDs.
-    $this->whitelist = array_merge($this->whitelist, $new_whitelist_ids);
-
-    // Store once the top level whitelisted solutions.
-    if (!$whitelisted_solution_ids) {
-      if ($bundle !== 'solution') {
-        throw new \InvalidArgumentException("First call of ::buildWhitelist() should always receive 'solution' as \$bundle parameter ('$bundle' was passed).");
-      }
-      $whitelisted_solution_ids = $whitelist_ids;
-    }
-
-    // This bundle has no entity reference fields.
-    if (!$reference_fields = array_keys($this->getAdmsSchemaEntityReferenceFields($bundle, ['rdf_entity']))) {
-      return;
-    }
-
-    /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    foreach (Rdf::loadMultiple($new_whitelist_ids, ['staging']) as $id => $entity) {
-      if ($entity->bundle() !== $bundle) {
-        throw new \InvalidArgumentException("::buildWhitelist() was called for bundle '$bundle' but the passed ID '$id' is from '{$entity->bundle()}'.");
-      }
-      foreach ($reference_fields as $field_name) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
-        $field = $entity->get($field_name);
-        foreach ($this->getReferencedEntityIdsByBundle($field) as $referenced_bundle => $referenced_entity_ids) {
-          // The list might contain blacklisted solutions.
-          if ($referenced_bundle === 'solution' && array_diff($referenced_entity_ids, $whitelisted_solution_ids)) {
-            // Remove blacklisted solutions.
-            if (!$referenced_entity_ids = array_intersect($referenced_entity_ids, $whitelisted_solution_ids)) {
-              continue;
-            }
-          }
-          $this->buildWhitelist($referenced_bundle, $referenced_entity_ids, $whitelisted_solution_ids);
-        }
-      }
-    }
-  }
-
-  /**
-   * Returns a list of entity IDs grouped by bundle, given a reference field.
-   *
-   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
-   *   The entity reference field.
-   *
-   * @return array[]
-   *   An associative array keyed by bundle and having arrays of IDs as values.
-   */
-  protected function getReferencedEntityIdsByBundle(EntityReferenceFieldItemListInterface $field): array {
-    $return = [];
-    if (!$field->isEmpty()) {
-      // Can't use EntityReferenceFieldItemListInterface::referencedEntities()
-      // here because that doesn't filter on 'staging' graph.
-      $ids = array_filter(array_unique(array_map(function (array $item): string {
-        return $item['target_id'];
-      }, $field->getValue())));
-      if ($ids) {
-        /** @var \Drupal\rdf_entity\RdfInterface $entity */
-        foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $entity) {
-          $return[$entity->bundle()][] = $id;
-        }
-      }
-    }
-    return $return;
   }
 
   /**
@@ -324,52 +233,16 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   keyed by entity ID and having the entity labels as values.
    */
   protected function getEntitiesByCategory(): array {
-    $ids = $this->getSparqlQuery()
-      ->graphs(['staging'])
-      ->condition('rid', 'solution')
-      ->execute();
-
-    $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity($ids);
+    $solutions_categories = $this->getPersistentDataValue('solutions_categories');
     $labels = [];
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    foreach (Rdf::loadMultiple($ids, ['staging']) as $id => $solution) {
-      $category = $this->getCategory($activities[$id]);
+    foreach (Rdf::loadMultiple(array_keys($solutions_categories), ['staging']) as $id => $solution) {
+      $category = $solutions_categories[$id];
       $label = $solution->label() ?: '<' . $this->t('missing label') . '>';
       $labels[$category][$id] = $label . ' [' . $solution->id() . ']';
     }
 
     return $labels;
-  }
-
-  /**
-   * Computes the category of a solution given its provenance activity record.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $activity
-   *   The solution provenance activity.
-   *
-   * @return string
-   *   The category ID.
-   */
-  protected function getCategory(RdfInterface $activity): string {
-    $collection_id = $this->getPipeline()->getCollection();
-
-    // If the provenance activity record is new, there was no previous attempt
-    // to federate this solution.
-    if ($activity->isNew()) {
-      return 'not_federated';
-    }
-    // If the solution is already associated with another collection, we can't
-    // federate it in the scope of this pipeline's collection.
-    elseif ($activity->get('provenance_associated_with')->value !== $collection_id) {
-      return 'invalid_collection';
-    }
-    // If there is an existing provenance activity enabled record, this incoming
-    // entity has been previously federated.
-    elseif ($activity->get('provenance_enabled')->value) {
-      return 'federated';
-    }
-    // Otherwise this solution has been previously blacklisted.
-    return 'blacklisted';
   }
 
   /**
@@ -405,10 +278,31 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       case 'federated':
         return $this->t('Federated on %last_date by %last_user', $arguments);
 
+      case 'unchanged_federated':
+        return $this->t('No changes since the federation on %last_date by %last_user', $arguments);
+
       case 'blacklisted':
         return $this->t('Blacklisted on %last_date by %last_user', $arguments);
     }
     throw new \Exception("Unknown category '$category'.");
+  }
+
+  /**
+   * Returns the list of unchanged entities as a list of solution ids.
+   *
+   * @return array
+   *   The solution entity ids.
+   */
+  protected function getUnchangedSolutionIds(): array {
+    $solutions_categories = $this->getPersistentDataValue('solutions_categories');
+    $return = [];
+
+    foreach ($solutions_categories as $solution_id => $category) {
+      if ($category === 'federated_unchanged') {
+        $return[] = $category;
+      }
+    }
+    return $return;
   }
 
   /**
@@ -433,6 +327,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       'federated' => [
         'label' => t('Federated solutions'),
         'description' => t("These are solutions that were already federated and are part of the Joinup. Unselecting them will prevent this import and will make them visible on the 'Blacklisted Section' below on a future import attempt."),
+      ],
+      'federated_unchanged' => [
+        'label' => t('No changes'),
+        'description' => t("These are solutions that were already federated and there are no changes since the last import."),
       ],
       'blacklisted' => [
         'label' => t('Blacklisted solutions'),
