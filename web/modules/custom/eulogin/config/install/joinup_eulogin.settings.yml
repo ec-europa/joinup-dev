@@ -1,8 +1,3 @@
-schema:
-  url: https://ecas.ec.europa.eu/cas/schemas
-  # We check for a new EU Login response schema each 3 months.
-  check_interval: 7776000
-  fixture_file: ./ecas_schema.yml
 ticket_validation:
   path: TicketValidationService
   # LOW allow users also from the "External" EU Login organization.

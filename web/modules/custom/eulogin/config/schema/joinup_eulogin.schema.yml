@@ -2,19 +2,6 @@ joinup_eulogin.settings:
   type: config_object
   label: 'Joinup EU Login Settings'
   mapping:
-    schema:
-      type: mapping
-      label: 'EU Login response schema'
-      mapping:
-        url:
-          type: uri
-          label: 'Schema URL'
-        check_interval:
-          type: integer
-          label: 'How often to check for a new version'
-        fixture_file:
-          type: string
-          label: 'YAML file used for the first schema data install (relative to module root)'
     ticket_validation:
       type: mapping
       label: 'CAS ticket validation'
