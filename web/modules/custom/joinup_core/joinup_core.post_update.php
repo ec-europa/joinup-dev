@@ -685,13 +685,13 @@ function joinup_core_post_update_enable_joinup_privacy() {
 /**
  * Populate all publication dates.
  */
-function joinup_core_post_update_fix_publication_dates() {
-  $module_path = DRUPAL_ROOT . '/' . drupal_get_path('module', 'publication_date') . '/publication_date.install';
-  require_once $module_path;
-
+function joinup_core_post_update_0_fix_publication_dates() {
   // Due to an incorrect earlier version of the install hook of the
   // Publication Date module a number of older news items were present without a
   // publication date. Erase all publication dates and restore them.
+  // Note that since this update hook is prefixed with a 0 it is guaranteed to
+  // run before the post update hook of the Publication Date module.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $connection = \Drupal::database();
   $connection->update($node_storage->getDataTable())
     ->expression('published_at', PUBLICATION_DATE_DEFAULT)
@@ -699,6 +699,4 @@ function joinup_core_post_update_fix_publication_dates() {
   $connection->update($node_storage->getRevisionDataTable())
     ->expression('published_at', PUBLICATION_DATE_DEFAULT)
     ->execute();
-
-  _publication_date_populate_database_field();
 }
