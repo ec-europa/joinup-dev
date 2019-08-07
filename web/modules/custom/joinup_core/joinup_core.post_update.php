@@ -683,7 +683,7 @@ function joinup_core_post_update_enable_joinup_privacy() {
 }
 
 /**
- * Populate all publication dates.
+ * Reset the publication dates.
  */
 function joinup_core_post_update_0_fix_publication_dates() {
   // Due to an incorrect earlier version of the install hook of the
