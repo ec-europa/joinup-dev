@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80430b10ed5c22de9ccffe0cff9e8cb0",
+    "content-hash": "f91abad95a9f746f06b1b8397d0a7c7b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2438,7 +2438,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2634,14 +2634,6 @@
             ],
             "authors": [
                 {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
-                },
-                {
-                    "name": "gnuget",
-                    "homepage": "https://www.drupal.org/user/992990"
-                },
-                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2753,8 +2745,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3097,7 +3089,8 @@
                     "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
-                    "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch"
+                    "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
+                    "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch"
                 }
             },
             "autoload": {
@@ -3611,8 +3604,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta1+12-dev",
-                    "datestamp": "1563963790",
+                    "version": "8.x-2.0-beta1+4-dev",
+                    "datestamp": "1522061280",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3642,10 +3635,6 @@
                 {
                     "name": "axel.rutz",
                     "homepage": "https://www.drupal.org/user/229048"
-                },
-                {
-                    "name": "claudiu.cristea",
-                    "homepage": "https://www.drupal.org/user/56348"
                 },
                 {
                     "name": "codesidekick",
@@ -3694,7 +3683,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1551291083",
+                    "datestamp": "1556645881",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3888,7 +3877,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4737,7 +4726,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5012,10 +5001,6 @@
                 {
                     "name": "leonk",
                     "homepage": "https://www.drupal.org/user/84179"
-                },
-                {
-                    "name": "mpp",
-                    "homepage": "https://www.drupal.org/user/359881"
                 },
                 {
                     "name": "pfrenssen",
@@ -5463,7 +5448,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6154,7 +6139,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6508,7 +6493,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6672,7 +6657,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
+                "source": "https://git.drupalcode.org/project/views_data_export"
             }
         },
         {
@@ -7499,7 +7484,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10000,7 +9985,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-22T22:25:24+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
