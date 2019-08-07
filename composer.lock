@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "471edb6934909a543574cc3afddc477a",
+    "content-hash": "105d3a3e71e530bebd7e8b20f39ef1c3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13019,7 +13019,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "4b8f4c441d2ad121bd944ef7ea0169f074c5a9e0"
+                "reference": "1415734ccc93d850f058f688962a76f7a1103a98"
             },
             "require": {
                 "drupal/cas": "~1.5",
@@ -13035,7 +13035,8 @@
                 "drush/drush": "^9.7",
                 "mikey179/vfsstream": "^1.6",
                 "phpunit/phpunit": "~6",
-                "symfony/phpunit-bridge": "^3.4|^4.3"
+                "symfony/phpunit-bridge": "^3.4|^4.3",
+                "zaporylie/composer-drupal-optimizations": "^1.1"
             },
             "suggest": {
                 "drupal/config_override_warn": "Shows a warning on the CAS configuration form when the mock server is active."
@@ -13047,7 +13048,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1563608285",
+                    "datestamp": "1565179387",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
