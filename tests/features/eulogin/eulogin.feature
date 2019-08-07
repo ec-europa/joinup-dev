@@ -6,8 +6,8 @@ Feature: Log in through EU Login
 
   Scenario: A local account is auto-registered on user choice.
     Given CAS users:
-      | Username    | E-mail                         | Password  | First name | Last name | Domain            |
-      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    | eu.europa.europol |
+      | Username    | E-mail                         | Password  | First name | Last name |
+      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
 
     Given I am on the homepage
     And I click "Sign in"
@@ -44,14 +44,13 @@ Feature: Log in through EU Login
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
 
     And the user chucknorris should have the following data in their user profile:
-      | First name   | Chuck                  |
-      | Family name  | Norris                 |
-      | Organisation | European Police Office |
+      | First name   | Chuck  |
+      | Family name  | Norris |
 
   Scenario: An existing local account can be linked by the user.
     Given CAS users:
-      | Username    | E-mail                         | Password  | First name | Last name | Domain            |
-      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    | eu.europa.europol |
+      | Username    | E-mail                         | Password  | First name | Last name |
+      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
     And users:
       | Username             | Password | E-mail                           | First name | Family name | Organisation |
       | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
@@ -95,12 +94,11 @@ Feature: Log in through EU Login
       | E-mail       | chuck_the_local_hero@example.com |
       | First name   | Chuck                            |
       | Family name  | Norris                           |
-      | Organisation | European Police Office           |
 
   Scenario: An existing local account can be linked by the user using the email.
     Given CAS users:
-      | Username    | E-mail                         | Password  | First name | Last name | Domain            |
-      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    | eu.europa.europol |
+      | Username    | E-mail                         | Password  | First name | Last name |
+      | chucknorris | texasranger@chucknorris.com.eu | Qwerty098 | Chuck      | Norris    |
     And users:
       | Username             | Password | E-mail                           | First name | Family name | Organisation |
       | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
@@ -123,15 +121,14 @@ Feature: Log in through EU Login
       | E-mail       | chuck_the_local_hero@example.com |
       | First name   | Chuck                            |
       | Family name  | Norris                           |
-      | Organisation | European Police Office           |
 
   Scenario: An existing user can log in through EU Login
     Given users:
       | Username    | E-mail           | First name | Family name | Organisation |
       | jb007_local | 007-local@mi6.eu | JJaammeess | BBoonndd    | 007-local    |
     Given CAS users:
-      | Username | E-mail     | Password           | First name | Last name | Local username | Domain         |
-      | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    | eu.europa.easa |
+      | Username | E-mail     | Password           | First name | Last name | Local username |
+      | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
 
     Given I am on the homepage
     And I click "Sign in"
@@ -149,4 +146,3 @@ Feature: Log in through EU Login
       | E-mail       | 007-local@mi6.eu                |
       | First name   | James                           |
       | Family name  | Bond                            |
-      | Organisation | European Aviation Safety Agency |
