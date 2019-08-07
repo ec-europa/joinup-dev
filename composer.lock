@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59b1effba1ce31f2145b858ab290f887",
+    "content-hash": "5b54cd8540fd6b7ca55e72ac5ca2bae8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2429,7 +2429,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1492709942"
+                    "datestamp": "1492709942",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3616,7 +3620,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1556645881",
+                    "datestamp": "1551291083",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4659,7 +4663,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -4678,7 +4682,7 @@
             "description": "Simple migrate drush commands: run, generate.",
             "homepage": "https://www.drupal.org/project/migrate_drush",
             "support": {
-                "source": "https://git.drupalcode.org/project/migrate_drush"
+                "source": "http://cgit.drupalcode.org/migrate_drush"
             }
         },
         {
@@ -4936,6 +4940,10 @@
                     "homepage": "https://www.drupal.org/user/84179"
                 },
                 {
+                    "name": "mpp",
+                    "homepage": "https://www.drupal.org/user/359881"
+                },
+                {
                     "name": "pfrenssen",
                     "homepage": "https://www.drupal.org/user/382067"
                 },
@@ -4969,8 +4977,8 @@
                     "dev-4.x": "4.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-4.0-beta3+8-dev",
-                    "datestamp": "1557949081",
+                    "version": "8.x-4.0-beta3+10-dev",
+                    "datestamp": "1559069285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5314,7 +5322,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-07-07/2983348-19.patch",
+                    "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-08-07/2983348-29.patch",
                     "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
                 }
             },
@@ -5371,8 +5379,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1-beta1+0-dev",
-                    "datestamp": "1532080685",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1486527783",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -5381,16 +5389,12 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
                     "name": "Bevan",
                     "homepage": "https://www.drupal.org/user/49989"
-                },
-                {
-                    "name": "Nixou",
-                    "homepage": "https://www.drupal.org/user/2304734"
                 },
                 {
                     "name": "RobLoach",
@@ -5428,7 +5432,7 @@
             "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
             "homepage": "https://www.drupal.org/project/r4032login",
             "support": {
-                "source": "https://git.drupalcode.org/project/r4032login"
+                "source": "http://cgit.drupalcode.org/r4032login"
             },
             "time": "2017-02-08T04:20:19+00:00"
         },
@@ -5828,7 +5832,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6076,7 +6080,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "datestamp": "1542122580",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6150,7 +6154,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "https://git.drupalcode.org/project/state_machine"
+                "source": "http://cgit.drupalcode.org/state_machine"
             }
         },
         {
@@ -6201,7 +6205,7 @@
             "description": "Provides support for extending sub-paths of URL aliases.",
             "homepage": "https://www.drupal.org/project/subpathauto",
             "support": {
-                "source": "https://git.drupalcode.org/project/subpathauto"
+                "source": "http://cgit.drupalcode.org/subpathauto"
             }
         },
         {
@@ -6430,7 +6434,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -6453,7 +6457,7 @@
             "description": "Select which roles should be able to see unpublished nodes.",
             "homepage": "https://www.drupal.org/project/view_unpublished",
             "support": {
-                "source": "https://git.drupalcode.org/project/view_unpublished"
+                "source": "http://cgit.drupalcode.org/view_unpublished"
             }
         },
         {
@@ -9924,7 +9928,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-22T22:25:24+00:00"
         },
         {
             "name": "stack/builder",
@@ -12636,7 +12640,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.27",
-                    "datestamp": "1558553350",
+                    "datestamp": "1558552081",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12930,10 +12934,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "matslats",
-                    "homepage": "https://www.drupal.org/user/140053"
                 }
             ],
             "description": "Imports default content when a module is enabled",
