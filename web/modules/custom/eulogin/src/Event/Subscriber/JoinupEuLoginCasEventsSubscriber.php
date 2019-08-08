@@ -4,10 +4,11 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_eulogin\Event\Subscriber;
 
-use Drupal\cas\Event\CasPostValidateEvent;
+use Drupal\cas\Event\CasPostLoginEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\user\UserDataInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -23,13 +24,23 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
   protected $settings;
 
   /**
+   * The user data service.
+   *
+   * @var \Drupal\user\UserDataInterface
+   */
+  protected $userData;
+
+  /**
    * Constructs a new event subscriber instance.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory service.
+   * @param \Drupal\user\UserDataInterface $user_data
+   *   The user data service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
+  public function __construct(ConfigFactoryInterface $config_factory, UserDataInterface $user_data) {
     $this->settings = $config_factory->get('joinup_eulogin.settings');
+    $this->userData = $user_data;
   }
 
   /**
@@ -38,7 +49,7 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       CasHelper::EVENT_PRE_VALIDATE => 'alterValidationUrl',
-      CasHelper::EVENT_POST_VALIDATE => 'prepareAttributes',
+      CasHelper::EVENT_POST_LOGIN => 'storeAttributes',
     ];
   }
 
@@ -66,16 +77,13 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Stores the EU Login attributes in the CAS property bag.
+   * Stores the EU Login attributes in user data storage.
    *
-   * @param \Drupal\cas\Event\CasPostValidateEvent $event
-   *   The CAS post-validate event object.
+   * @param \Drupal\cas\Event\CasPostLoginEvent $event
+   *   The CAS post-login event object.
    */
-  public function prepareAttributes(CasPostValidateEvent $event): void {
-    $xml = new \SimpleXMLElement($event->getResponseData());
-    foreach ($xml->xpath('//cas:authenticationSuccess/*') as $element) {
-      $event->getCasPropertyBag()->setAttribute($element->getName(), $element->__toString());
-    };
+  public function storeAttributes(CasPostLoginEvent $event): void {
+    $this->userData->set('joinup_eulogin', $event->getAccount()->id(), 'attributes', $event->getCasPropertyBag()->getAttributes());
   }
 
 }
