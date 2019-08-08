@@ -146,3 +146,8 @@ Feature: Log in through EU Login
       | E-mail       | 007-local@mi6.eu                |
       | First name   | James                           |
       | Family name  | Bond                            |
+
+  Scenario: The Drupal login form shows a warning message.
+    When I visit "/user/login"
+    Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
+    And I should see the link "EU Login"
