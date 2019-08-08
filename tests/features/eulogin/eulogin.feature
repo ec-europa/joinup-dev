@@ -44,8 +44,8 @@ Feature: Log in through EU Login
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
 
     And the user chucknorris should have the following data in their user profile:
-      | First name   | Chuck  |
-      | Family name  | Norris |
+      | First name  | Chuck  |
+      | Family name | Norris |
 
   Scenario: An existing local account can be linked by the user.
     Given CAS users:
@@ -90,10 +90,10 @@ Feature: Log in through EU Login
 
     # The profile entries are overwritten, except the username & the email.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username     | chuck_the_local_hero             |
-      | E-mail       | chuck_the_local_hero@example.com |
-      | First name   | Chuck                            |
-      | Family name  | Norris                           |
+      | Username    | chuck_the_local_hero             |
+      | E-mail      | chuck_the_local_hero@example.com |
+      | First name  | Chuck                            |
+      | Family name | Norris                           |
 
   Scenario: An existing local account can be linked by the user using the email.
     Given CAS users:
@@ -117,15 +117,15 @@ Feature: Log in through EU Login
 
     # The profile entries are overwritten, except the username & the email.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username     | chuck_the_local_hero             |
-      | E-mail       | chuck_the_local_hero@example.com |
-      | First name   | Chuck                            |
-      | Family name  | Norris                           |
+      | Username    | chuck_the_local_hero             |
+      | E-mail      | chuck_the_local_hero@example.com |
+      | First name  | Chuck                            |
+      | Family name | Norris                           |
 
   Scenario: An existing user can log in through EU Login
     Given users:
-      | Username    | E-mail           | First name | Family name | Organisation |
-      | jb007_local | 007-local@mi6.eu | JJaammeess | BBoonndd    | 007-local    |
+      | Username    | E-mail           | First name | Family name |
+      | jb007_local | 007-local@mi6.eu | JJaammeess | BBoonndd    |
     Given CAS users:
       | Username | E-mail     | Password           | First name | Last name | Local username |
       | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
@@ -142,7 +142,44 @@ Feature: Log in through EU Login
 
     # The profile entries are overwritten, except the username & the email.
     And the user jb007_local should have the following data in their user profile:
-      | Username     | jb007_local                     |
-      | E-mail       | 007-local@mi6.eu                |
-      | First name   | James                           |
-      | Family name  | Bond                            |
+      | Username    | jb007_local      |
+      | E-mail      | 007-local@mi6.eu |
+      | First name  | James            |
+      | Family name | Bond             |
+
+  Scenario Outline: Fields imported from EU Login cannot be edited locally.
+    Given users:
+      | Username   | E-mail  |
+      | <Username> | <Email> |
+
+    Given CAS users:
+      | Username   | E-mail  | Password   | First name  | Last name  | Local username |
+      | <Username> | <Email> | <Password> | <FirstName> | <LastName> | <Username>     |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "<Email>"
+    When I fill in "Password" with "<Password>"
+    And I press the "Log in" button
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain "<FirstName>"
+    And the following fields should <FirstNameDisabled> "First name"
+    And the "Family name" field should contain "<LastName>"
+    And the following fields should <LastNameDisabled> "Family name"
+
+    Examples:
+      | Username            | Email                           | Password | FirstName | LastName | FirstNameDisabled | LastNameDisabled |
+      | full_cas_profile    | full_cas_profile@example.com    | 123      | Joe       | Doe      | be disabled       | be disabled      |
+      | partial_cas_profile | partial_cas_profile@example.com | 123      |           | Roe      | not be disabled   | be disabled      |
+      | no_cas_profile      | no_cas_profile@example.com      | 123      |           |          | not be disabled   | not be disabled  |
+
+  Scenario: A local user with no CAS account is always able to edit its profile.
+    Given I am logged in as an "authenticated user"
+    And I click "My account"
+
+    When I click "Edit"
+    And the following fields should not be disabled "First name"
+    And the following fields should not be disabled "Family name"
