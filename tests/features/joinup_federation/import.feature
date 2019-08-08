@@ -156,9 +156,9 @@ Feature: As a site moderator I am able to import RDF files.
     And the row "Solution 1 [http://example.com/solution/1]" is checked
     And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1]" row
     And the row "Solution 2 [http://example.com/solution/2]" is checked
-    And I should see the text "Federated on 07/07/2012 - 23:01 by Antoine Batiste" in the "Solution 2 [http://example.com/solution/2]" row
+    And I should see the text "Federated on 07/07/2012 - 22:01 by Antoine Batiste" in the "Solution 2 [http://example.com/solution/2]" row
     And the row "Solution 3 [http://example.com/solution/3]" is not checked
-    And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
+    And I should see the text "Blacklisted on 25/12/2015 - 00:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
 
     Given I press "Next"
     And I wait for the pipeline batch job to finish
@@ -218,14 +218,14 @@ Feature: As a site moderator I am able to import RDF files.
     And I wait for the pipeline batch job to finish
 
     Then I should see "Spain - Center for Technology Transfer: User selection"
-    And the row "Solution 1" is checked
-    And the row "Solution 2" is checked
+    # Solution 1 is unchecked because it is unchanged.
+    And the row "Solution 1" is not checked
+    # Solution 2 is unchecked because it is unchanged.
+    And the row "Solution 2" is not checked
+    # Solution 3 is unchecked because it is blacklisted.
     And the row "Solution 3" is not checked
 
-    # Swap 'Solution 1' with 'Solution 3'.
-    Given I uncheck the "Solution 1" row
-    And I check the "Solution 3" row
-
+    Given I check the "Solution 3" row
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
