@@ -3,10 +3,9 @@ status: true
 dependencies:
   module:
     - og
-    - joinup_collection
-id: joinup_collection_og_membership_delete_action
+id: og_membership_delete_action
 label: 'Delete the selected membership(s)'
 type: og_membership
-plugin: joinup_collection_og_membership_delete_action
+plugin: og_membership_delete_action
 configuration: {  }
 weight: -3
