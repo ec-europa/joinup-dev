@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f91abad95a9f746f06b1b8397d0a7c7b",
+    "content-hash": "f2da11bba7b53c9151c4f2dbf796471a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13016,7 +13016,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "de5c3477b2854d559c1848b3e3454228bb672ea4"
+                "reference": "1415734ccc93d850f058f688962a76f7a1103a98"
             },
             "require": {
                 "drupal/cas": "~1.5",
@@ -13032,7 +13032,8 @@
                 "drush/drush": "^9.7",
                 "mikey179/vfsstream": "^1.6",
                 "phpunit/phpunit": "~6",
-                "symfony/phpunit-bridge": "^3.4|^4.3"
+                "symfony/phpunit-bridge": "^3.4|^4.3",
+                "zaporylie/composer-drupal-optimizations": "^1.1"
             },
             "suggest": {
                 "drupal/config_override_warn": "Shows a warning on the CAS configuration form when the mock server is active."
@@ -13044,7 +13045,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1563608285",
+                    "datestamp": "1565179387",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -13098,8 +13099,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            },
-            "time": "2019-07-20T07:31:17+00:00"
+            }
         },
         {
             "name": "drupal/coder",
@@ -13119,6 +13119,11 @@
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
+            "extra": {
+                "patches_applied": {
+                    "Project names calculated incorrectly for themes @see https://github.com/pfrenssen/coder/pull/51": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/51.diff"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\": "coder_sniffer/Drupal/",
