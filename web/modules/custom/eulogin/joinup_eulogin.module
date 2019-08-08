@@ -109,6 +109,10 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
       if (!empty($attributes[$attribute])) {
         $form[$field_name]['#disabled'] = TRUE;
         $form[$field_name]['widget'][0]['value']['#description'] = t('This field can be edited only from the EU Login account.');
+        // Prevent submission of an empty, required and disabled field. That
+        // would make the validation to fail.
+        $form[$field_name]['widget'][0]['value']['#required'] = FALSE;
+
       }
     }
   }

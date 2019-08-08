@@ -147,39 +147,92 @@ Feature: Log in through EU Login
       | First name  | James            |
       | Family name | Bond             |
 
-  Scenario Outline: Fields imported from EU Login cannot be edited locally.
+  Scenario: Fields imported from EU Login cannot be edited locally.
     Given users:
-      | Username   | E-mail  |
-      | <Username> | <Email> |
+      | Username            | E-mail        |
+      | full_cas_profile    | f@example.com |
+      | partial_cas_profile | p@example.com |
+      | no_cas_profile      | n@example.com |
+      | without_cas     | w@example.com |
 
     Given CAS users:
-      | Username   | E-mail  | Password   | First name  | Last name  | Local username |
-      | <Username> | <Email> | <Password> | <FirstName> | <LastName> | <Username>     |
+      | Username            | E-mail        | Password | First name | Last name | Local username      |
+      | full_cas_profile    | f@example.com | 123      | Joe        | Doe       | full_cas_profile    |
+      | partial_cas_profile | p@example.com | 123      |            | Roe       | partial_cas_profile |
+      | no_cas_profile      | n@example.com | 123      |            |           | no_cas_profile      |
 
+    # User with full profile data.
     Given I am on the homepage
     And I click "Sign in"
     When I click "EU Login"
-    When I fill in "E-mail address" with "<Email>"
-    When I fill in "Password" with "<Password>"
+    When I fill in "E-mail address" with "f@example.com"
+    When I fill in "Password" with "123"
     And I press the "Log in" button
     And I click "My account"
 
     When I click "Edit"
-    Then the "First name" field should contain "<FirstName>"
-    And the following fields should <FirstNameDisabled> "First name"
-    And the "Family name" field should contain "<LastName>"
-    And the following fields should <LastNameDisabled> "Family name"
+    Then the "First name" field should contain "Joe"
+    And the "Family name" field should contain "Doe"
+    And the following fields should be disabled "First name,Family name"
 
-    Examples:
-      | Username            | Email                           | Password | FirstName | LastName | FirstNameDisabled | LastNameDisabled |
-      | full_cas_profile    | full_cas_profile@example.com    | 123      | Joe       | Doe      | be disabled       | be disabled      |
-      | partial_cas_profile | partial_cas_profile@example.com | 123      |           | Roe      | not be disabled   | be disabled      |
-      | no_cas_profile      | no_cas_profile@example.com      | 123      |           |          | not be disabled   | not be disabled  |
+    When I press "Save"
+    Then I should see the success message "The changes have been saved."
 
-  Scenario: A local user with no CAS account is always able to edit its profile.
+    # User with partial profile data.
+    Given I am an anonymous user
+    And I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "p@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain ""
+    And the "Family name" field should contain "Roe"
+    And the following fields should not be disabled "First name"
+    And the following fields should be disabled "Family name"
+
+    When I press "Save"
+    Then I should see the error message "First name field is required."
+    But I should not see the error message "Family name field is required."
+
+    # User with no profile data.
+    Given I am an anonymous user
+    And I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "n@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain ""
+    And the "Family name" field should contain ""
+    And the following fields should not be disabled "First name,Family name"
+
+    When I press "Save"
+    Then I should see the error message "First name field is required."
+    And I should see the error message "Family name field is required."
+
     Given I am logged in as an "authenticated user"
     And I click "My account"
 
     When I click "Edit"
     And the following fields should not be disabled "First name"
     And the following fields should not be disabled "Family name"
+
+    # User not linked to a CAS account.
+    Given I am logged in as "without_cas"
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain ""
+    And the "Family name" field should contain ""
+    And the following fields should not be disabled "First name,Family name"
+
+    When I press "Save"
+    Then I should see the error message "First name field is required."
+    And I should see the error message "Family name field is required."
