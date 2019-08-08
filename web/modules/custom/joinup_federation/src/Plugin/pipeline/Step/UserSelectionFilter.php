@@ -36,6 +36,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   use PipelineStepWithClientRedirectResponseTrait;
   use PipelineStepWithFormTrait;
   use SparqlEntityStorageTrait;
+  use IncomingSolutionsDataHelperTrait;
 
   /**
    * The RDF entity provenance helper service.
@@ -145,7 +146,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }, $results->getArrayCopy());
 
     // Remove the blacklisted entities, if any.
-    if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist, $this->getUnchangedSolutionIds()))) {
+    if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist))) {
       $blacklist_ids = SparqlArg::serializeUris($blacklist, ' ');
       $this->sparql->query("WITH <{$this->getGraphUri('sink')}> DELETE { ?entity_id ?p ?o } WHERE { ?entity_id ?p ?o . VALUES ?entity_id { {$blacklist_ids} } }");
     }
@@ -219,15 +220,10 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * Collect all the whitelisted incoming entities.
    *
    * @param string[] $whitelist_ids
-   *   A list of whitelisted entity IDs. All entities are from $bundle bundle.
-   *   The caller should pass the list of whitelisted solution IDs.
+   *   A list of solution ids selected by the user.
    */
   protected function buildWhitelist(array $whitelist_ids): void {
-    $solution_dependency_tree = $this->getPersistentDataValue('solution_dependency_tree');
-    foreach ($whitelist_ids as $solution_id) {
-      $this->whitelist[] = $solution_id;
-      $this->whitelist = array_merge($this->whitelist, $solution_dependency_tree[$solution_id]);
-    }
+    $this->whitelist = $this->getSolutionsWithDependenciesAsFlatList($whitelist_ids);
   }
 
   /**
@@ -238,11 +234,12 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   keyed by entity ID and having the entity labels as values.
    */
   protected function getEntitiesByCategory(): array {
-    $solutions_categories = $this->getPersistentDataValue('solutions_categories');
+    $this->ensureSolutionDataLoaded();
+
     $labels = [];
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    foreach (Rdf::loadMultiple(array_keys($solutions_categories), ['staging']) as $id => $solution) {
-      $category = $solutions_categories[$id];
+    foreach (Rdf::loadMultiple(array_keys($this->solutionData), ['staging']) as $id => $solution) {
+      $category = $this->solutionData[$id]['category'];
       $label = $solution->label() ?: '<' . $this->t('missing label') . '>';
       $labels[$category][$id] = $label . ' [' . $solution->id() . ']';
     }
@@ -283,7 +280,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
       case 'federated':
         return $this->t('Federated on %last_date by %last_user', $arguments);
 
-      case 'unchanged_federated':
+      case 'federated_unchanged':
         return $this->t('No changes since the federation on %last_date by %last_user', $arguments);
 
       case 'blacklisted':
@@ -299,12 +296,11 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The solution entity ids.
    */
   protected function getUnchangedSolutionIds(): array {
-    $solutions_categories = $this->getPersistentDataValue('solutions_categories');
     $return = [];
 
-    foreach ($solutions_categories as $category) {
-      if ($category === 'federated_unchanged') {
-        $return[] = $category;
+    foreach ($this->solutionData as $solution_id => $solution_data) {
+      if ($solution_data['category'] === 'federated_unchanged') {
+        $return[] = $solution_id;
       }
     }
     return $return;
@@ -320,7 +316,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   Associative array with two keys, 'label' and 'description'.
    */
   protected static function getCategoryMetadata(string $category): array {
-    return [
+    $data = [
       'not_federated' => [
         'label' => t('Solutions never federated'),
         'description' => t("These are solutions on the first attempt to be federated. Unselecting them will prevent this import and will make them visible on the 'Blacklisted Section' below on a future import attempt."),
@@ -341,7 +337,8 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
         'label' => t('Blacklisted solutions'),
         'description' => t('The import of these solutions was attempted in the past but they were blacklisted by the user who instantiated the import. If you want to import blacklisted solutions, just select them.'),
       ],
-    ][$category];
+    ];
+    return $data[$category];
   }
 
   /**

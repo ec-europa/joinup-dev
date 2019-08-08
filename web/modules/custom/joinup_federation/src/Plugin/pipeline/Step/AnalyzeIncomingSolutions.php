@@ -42,6 +42,7 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
   use AdmsSchemaEntityReferenceFieldsTrait;
   use SparqlEntityStorageTrait;
   use PipelineStepWithBatchTrait;
+  use IncomingSolutionsDataHelperTrait;
 
   /**
    * The batch size.
@@ -70,16 +71,6 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
    * @var \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface
    */
   protected $rdfSchemaFieldValidator;
-
-  /**
-   * A dependency tree for each incoming solution.
-   *
-   * Each entry is a flat list of entity ids that each solution (the index) is
-   * related to.
-   *
-   * @var array
-   */
-  protected $solutionDependencyTree = [];
 
   /**
    * Creates a new pipeline step plugin instance.
@@ -149,7 +140,6 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
    */
   public function execute() {
     $ids = $this->extractNextSubset('ids_to_process', 50);
-    $this->solutionDependencyTree = $this->getPersistentDataValue('solution_dependency_tree');
     $storage = $this->getRdfStorage();
 
     /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
@@ -157,9 +147,10 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
     foreach ($entities as $id => $entity) {
       $this->buildSolutionDependencyTree($entity, $id);
     }
+    $this->buildSolutionsCategories($ids);
 
-    $this->buildSolutionsCategories();
-    $this->setPersistentDataValue('solution_dependency_tree', $this->solutionDependencyTree);
+    // Ensure the solution data are stored in the persistent state.
+    $this->storeSolutionData();
   }
 
   /**
@@ -173,18 +164,19 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
   protected function buildSolutionDependencyTree(RdfInterface $entity, string $parent): void {
     // If this is the first time it is called, enter the solution id in the
     // dependency tree.
-    if ($entity->id() === $parent && !isset($this->solutionDependencyTree[$parent])) {
-      $this->solutionDependencyTree[$parent] = [];
+    if ($entity->id() === $parent && !$this->solutionDataRootExists($parent)) {
+      $this->addSolutionDataRoot($parent);
     }
 
     // If the entity is already in the list of entities of the solution, return
     // early. The entity is already processed.
-    elseif (in_array($entity->id(), $this->solutionDependencyTree[$parent])) {
+    elseif ($this->hasSolutionDataChildDependency($parent, $entity)) {
       return;
     }
 
-    // If the entity is a solution, it is a different entry and should not
-    // affect the current solution.
+    // If the entity is a solution, do not descend further because each solution
+    // has its own dependencies. Related solutions do not affect the solution
+    // itself.
     elseif ($entity->bundle() === 'solution') {
       return;
     }
@@ -199,7 +191,7 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
       $field = $entity->get($field_name);
 
       foreach ($this->getStagingReferencedEntities($field) as $id => $referenced_entity) {
-        if (in_array($id, $this->solutionDependencyTree)) {
+        if ($this->hasSolutionDataChildDependency($parent, $referenced_entity)) {
           // The entity has already been processed.
           continue;
         }
@@ -211,7 +203,12 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
           $this->buildSolutionDependencyTree($referenced_entity, $parent);
         }
 
-        $this->solutionDependencyTree[$parent][] = $id;
+        // Do not add solutions and licences as a dependency. Solutions are a
+        // tree on their own and licences are stored in Joinup and are not
+        // imported.
+        if (!in_array($referenced_entity->bundle(), ['licence', 'solution'])) {
+          $this->addSolutionDataChildDependency($parent, $referenced_entity);
+        }
       }
     }
   }
@@ -239,25 +236,25 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
 
   /**
    * Builds an array of categories for solutions stored in the dependency tree.
+   *
+   * @param array $solution_ids
+   *   A list of solution ids for which to calculate the category.
    */
-  protected function buildSolutionsCategories(): void {
-    $solutions_categories = $this->getPersistentDataValue('solutions_categories');
-
-    foreach ($this->solutionDependencyTree as $parent => $related_entity_ids) {
+  protected function buildSolutionsCategories(array $solution_ids): void {
+    foreach ($solution_ids as $parent) {
       $provenance_record = $this->provenanceHelper->loadOrCreateEntityActivity($parent);
       $category = $this->getCategory($provenance_record);
       // In case the entity is marked as federated, check all entities related
       // to the entity. If none of them changed, mark it as unchanged.
       if ($category === 'federated') {
-        $entity_list = [$parent] + $related_entity_ids;
+        $entity_list = $this->getSolutionsWithDependenciesAsFlatList([$parent]);
         if (!$this->getSolutionHasChanged($entity_list)) {
-          $category = 'unchanged_federated';
+          $category = 'federated_unchanged';
         }
       }
 
-      $solutions_categories[$parent] = $category;
+      $this->setSolutionCategory($parent, $category);
     }
-    $this->setPersistentDataValue('solutions_categories', $solutions_categories);
   }
 
   /**
@@ -322,10 +319,20 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
       if ($entity->bundle() === 'licence') {
         continue;
       }
-      if (!$entity->hasField('changed') || empty($entity->getChangedTime())) {
+      // Entities that do not have the 'changed' property, do not count towards
+      // the changed validation. These entities will not be re-imported, if the
+      // solution is not marked to be imported as unchanged.
+      if (!$this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $entity->bundle(), 'changed')) {
+        continue;
+      }
+
+      // Changed time can be empty for new entities.
+      if (empty($entity->getChangedTime())) {
         return TRUE;
       }
 
+      // Like the parent solution, if this is the first time the entity is
+      // imported, the solution is marked as new.
       if ($provenance_records[$id]->isNew()) {
         return TRUE;
       }
