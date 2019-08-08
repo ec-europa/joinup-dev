@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f91abad95a9f746f06b1b8397d0a7c7b",
+    "content-hash": "b49d39673edcec664dca5ea4e1a19bdc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5637,7 +5637,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-07-07/2983348-19.patch",
+                    "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-08-07/2983348-32.patch",
                     "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
                 }
             },
@@ -13119,6 +13119,11 @@
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
+            "extra": {
+                "patches_applied": {
+                    "Project names calculated incorrectly for themes @see https://github.com/pfrenssen/coder/pull/51": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/51.diff"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\": "coder_sniffer/Drupal/",
