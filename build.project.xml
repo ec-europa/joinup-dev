@@ -98,8 +98,8 @@
                 command="updatedb"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
+            <option name="cache-clear" />
         </drush>
         <drush
                 command="cs-update"

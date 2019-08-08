@@ -683,6 +683,24 @@ function joinup_core_post_update_enable_joinup_privacy() {
 }
 
 /**
+ * Deletes unused files explicitly requested for deletion.
+ */
+function joinup_core_post_update_delete_orphaned_files() {
+  $files_to_remove = [
+    'public://document/2017-05/e-trustex_software_architecture_document_0.pdf',
+    'public://document/2013-12/e-TrustEx Interface Control Document.pdf',
+  ];
+
+  $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+  foreach ($files_to_remove as $uri) {
+    $files = $file_storage->loadByProperties(['uri' => $uri]);
+    if ($file = reset($files)) {
+      $file->delete();
+    }
+  }
+}
+
+/**
  * Reset the publication dates.
  */
 function joinup_core_post_update_0_fix_publication_dates() {

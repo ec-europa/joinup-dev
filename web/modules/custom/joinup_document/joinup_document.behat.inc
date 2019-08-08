@@ -16,7 +16,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat step definitions for testing documents.
  */
-class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
   use NodeTrait;
