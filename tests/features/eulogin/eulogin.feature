@@ -153,7 +153,7 @@ Feature: Log in through EU Login
       | full_cas_profile    | f@example.com |
       | partial_cas_profile | p@example.com |
       | no_cas_profile      | n@example.com |
-      | without_cas     | w@example.com |
+      | without_cas         | w@example.com |
 
     Given CAS users:
       | Username            | E-mail        | Password | First name | Last name | Local username      |
