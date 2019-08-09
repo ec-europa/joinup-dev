@@ -99,9 +99,15 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
     $user_data = \Drupal::service('user.data');
 
     // User profile fields are string scalars.
-    $attributes = array_filter(array_map(function (array $attribute) {
-      return count($attribute) === 1 ? reset($attribute) : $attribute;
-    }, $user_data->get('joinup_eulogin', $account->id(), 'attributes')), 'is_string');
+    $attributes = array_filter(
+      array_map(
+        function (array $attribute) {
+          return count($attribute) === 1 ? reset($attribute) : $attribute;
+        },
+        $user_data->get('joinup_eulogin', $account->id(), 'attributes')
+      ),
+      'is_string'
+    );
 
     foreach ($mapping as $field_name => $token) {
       // Do the reverse the engineering to extract the CAS attribute from token.
