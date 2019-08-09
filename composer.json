@@ -100,7 +100,7 @@
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "drupal/admin_toolbar": "^1.23",
-        "drupal/cas_mock_server": "1.x-dev",
+        "drupal/cas_mock_server": "~1.0",
         "drupal/coder": "^8.3.1",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
@@ -201,9 +201,6 @@
             },
             "drupal/cas_attributes": {
                 "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
-            },
-            "drupal/cas_mock_server": {
-                "Allow additional attributes on Drush user creation @see https://github.com/pfrenssen/cas_mock_server/pull/12": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/12.diff"
             },
             "drupal/config_sync": {
                 "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
