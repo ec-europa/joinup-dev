@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d3467f42f5bf947f035801684ec0d68",
+    "content-hash": "497ded3ad7665bcdfffa3e8e8cede608",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4868,7 +4868,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "40366a3947848e2886fec79504fcecde54087f8d"
+                "reference": "851cf682ad32be78313318feb7ebf5bec311e95e"
             },
             "require": {
                 "drupal/core": "~8.7",
@@ -4883,15 +4883,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+26-dev",
-                    "datestamp": "1563867185",
+                    "version": "8.x-1.0-alpha3+43-dev",
+                    "datestamp": "1565244485",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Speed up retrieval of membership data by using a SELECT query @see https://github.com/Gizra/og/pull/559": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/559.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4956,7 +4953,7 @@
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "slack": "https://drupal.slack.com/messages/CELR48EA0"
             },
-            "time": "2019-07-23T18:03:08+00:00"
+            "time": "2019-08-09T05:49:26+00:00"
         },
         {
             "name": "drupal/og_menu",
