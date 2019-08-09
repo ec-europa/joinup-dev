@@ -217,13 +217,6 @@ Feature: Log in through EU Login
     Then I should see the error message "First name field is required."
     And I should see the error message "Family name field is required."
 
-    Given I am logged in as an "authenticated user"
-    And I click "My account"
-
-    When I click "Edit"
-    And the following fields should not be disabled "First name"
-    And the following fields should not be disabled "Family name"
-
     # User not linked to a CAS account.
     Given I am logged in as "without_cas"
     And I click "My account"
