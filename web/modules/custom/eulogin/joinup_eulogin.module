@@ -110,15 +110,15 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
     );
 
     foreach ($mapping as $field_name => $token) {
-      // Do the reverse the engineering to extract the CAS attribute from token.
-      $attribute = substr(substr($token, 15), 0, -1);
-      if (!empty($attributes[$attribute])) {
+      // The token is in the format `[cas:attribute:attribute_name]`. Extract
+      // the attribute name from it.
+      $attribute_name = substr(substr($token, 15), 0, -1);
+      if (!empty($attributes[$attribute_name])) {
         $form[$field_name]['#disabled'] = TRUE;
         $form[$field_name]['widget'][0]['value']['#description'] = t('This field can be edited only from the EU Login account.');
         // Prevent submission of an empty, required and disabled field. That
-        // would make the validation to fail.
+        // would cause the validation to fail.
         $form[$field_name]['widget'][0]['value']['#required'] = FALSE;
-
       }
     }
   }
