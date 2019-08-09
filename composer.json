@@ -230,9 +230,6 @@
             "drupal/message_notify": {
                 "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
             },
-            "drupal/og": {
-                "Speed up retrieval of membership data by using a SELECT query @see https://github.com/Gizra/og/pull/559": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/559.diff"
-            },
             "drupal/og_menu": {
                 "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
             },
@@ -307,6 +304,10 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/ec-europa/rdf_entity.git"
         },
         {
@@ -315,19 +316,11 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/ec-europa/spdx.git"
         },
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/TableExtension.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/Gizra/og.git"
         },
         {
             "type": "vcs",
