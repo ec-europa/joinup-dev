@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "292c4f05e26011f1b6624835aaa70327",
+    "content-hash": "73d6cf0c9c35c2c7591d0860b8790986",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5367,7 +5367,7 @@
                 },
                 "patches_applied": {
                     "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
-                    "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-09/3068891-3.patch"
+                    "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
