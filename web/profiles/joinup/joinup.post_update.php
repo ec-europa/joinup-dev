@@ -141,6 +141,8 @@ function joinup_post_update_legal() {
     'page_manager',
   ]);
 
+  drupal_flush_all_caches();
+
   $module_installer->install(['joinup_legal']);
 
   // Create initial content.
@@ -148,7 +150,7 @@ function joinup_post_update_legal() {
     'document_name' => 'legal_notice',
     'published' => TRUE,
     'label' => '1.1',
-    'acceptance_label' => 'I have read and I accept the [entity_legal_document:label]',
+    'acceptance_label' => 'I have read and accept the <a href="[entity_legal_document:url]" target="_blank">[entity_legal_document:label]</a>',
     'entity_legal_document_text' => [
       'value' => '<h2>Important legal notice</h2>
 <p>The information on this site is subject to a disclaimer, a copyright and rules related to personal data protection, each in line with the general <a href="http://ec.europa.eu/geninfo/legal_notices_en.htm">European Commission legal notice</a>, and terms of use.</p>

@@ -87,3 +87,20 @@
     overflow-x: hidden
     overflow-y: auto
     max-height: 400px
+
+// Hide visually the original checkbox input to allow the browser validation message to appear properly.
+.mdl-checkbox.is-upgraded .mdl-checkbox__input
+  position: absolute
+  top: 20px
+  left: 8px
+  width: 1px
+  height: 1px
+  margin: 0
+  padding: 0
+  border: 0
+  clip: rect(1px, 1px, 1px, 1px)
+  clip-path: inset(100%)
+  overflow: hidden
+  outline: 0
+  -webkit-appearance: none
+  appearance: none

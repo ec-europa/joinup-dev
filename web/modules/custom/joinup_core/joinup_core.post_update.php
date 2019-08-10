@@ -699,3 +699,22 @@ function joinup_core_post_update_delete_orphaned_files() {
     }
   }
 }
+
+/**
+ * Reset the publication dates.
+ */
+function joinup_core_post_update_0_fix_publication_dates() {
+  // Due to an incorrect earlier version of the install hook of the
+  // Publication Date module a number of older news items were present without a
+  // publication date. Erase all publication dates and restore them.
+  // Note that since this update hook is prefixed with a 0 it is guaranteed to
+  // run before the post update hook of the Publication Date module.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $connection = \Drupal::database();
+  $connection->update($node_storage->getDataTable())
+    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->execute();
+  $connection->update($node_storage->getRevisionDataTable())
+    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->execute();
+}
