@@ -1,0 +1,1840 @@
+diff --git a/cas.info.yml b/cas.info.yml
+index d9b2649..c05298a 100644
+--- a/cas.info.yml
++++ b/cas.info.yml
+@@ -5,3 +5,5 @@ core: 8.x
+ configure: cas.settings
+ dependencies:
+   - externalauth:externalauth
++test_dependencies:
++  - cas_mock_server:cas_mock_server
+diff --git a/cas.module b/cas.module
+index 2259349..fe362b2 100644
+--- a/cas.module
++++ b/cas.module
+@@ -121,7 +121,7 @@ function _cas_validate_user_pass_form(array &$form, FormStateInterface $form_sta
+       // if so.
+       $cas_user_manager = \Drupal::service('cas.user_manager');
+       if ($cas_user_manager->getCasUsernameForAccount($account->id())) {
+-        $form_state->setErrorByName('name', t("The requested account is associated with CAS and its password cannot be managed from this website."));
++        $form_state->setErrorByName('name', \Drupal::service('cas.helper')->getMessage('error_handling.message_restrict_password_management'));
+       }
+     }
+   }
+@@ -261,8 +261,7 @@ function _cas_user_login_validate(&$form, FormStateInterface $form_state) {
+   if ($config->get('user_accounts.prevent_normal_login') && !empty($uid)) {
+     $cas_user_manager = \Drupal::service('cas.user_manager');
+     if ($cas_user_manager->getCasUsernameForAccount($uid)) {
+-      $login_url = new Url('cas.login');
+-      $form_state->setErrorByName('name', t('This account must log in using <a href="@cas">CAS</a>.', ['@cas' => $login_url->toString()]));
++      $form_state->setErrorByName('name', \Drupal::service('cas.helper')->getMessage('error_handling.message_prevent_normal_login'));
+     }
+   }
+ }
+diff --git a/cas.post_update.php b/cas.post_update.php
+new file mode 100644
+index 0000000..84ae53d
+--- /dev/null
++++ b/cas.post_update.php
+@@ -0,0 +1,16 @@
++<?php
++
++/**
++ * @file
++ * Post-update functions for CAS module.
++ */
++
++/**
++ * Add prevent normal login and restrict password management error messages.
++ */
++function cas_post_update_8001() {
++  \Drupal::configFactory()->get('cas.settings')
++    ->set('error_handling.message_prevent_normal_login', 'This account must log in using <a href="[cas:login-url]">CAS</a>.')
++    ->set('error_handling.message_restrict_password_management', 'The requested account is associated with CAS and its password cannot be managed from this website.')
++    ->save();
++}
+diff --git a/cas.services.yml b/cas.services.yml
+index f440318..749dacc 100644
+--- a/cas.services.yml
++++ b/cas.services.yml
+@@ -6,7 +6,7 @@ services:
+       - { name: 'event_subscriber' }
+   cas.helper:
+     class: Drupal\cas\Service\CasHelper
+-    arguments: ['@config.factory', '@logger.factory']
++    arguments: ['@config.factory', '@logger.factory', '@token']
+   cas.redirector:
+     class: Drupal\cas\Service\CasRedirector
+     arguments: ['@cas.helper', '@event_dispatcher', '@url_generator.non_bubbling']
+@@ -15,7 +15,7 @@ services:
+     arguments: ['@http_client', '@cas.helper', '@config.factory', '@url_generator.non_bubbling', '@event_dispatcher']
+   cas.user_manager:
+     class: Drupal\cas\Service\CasUserManager
+-    arguments: ['@externalauth.externalauth', '@externalauth.authmap', '@config.factory', '@session', '@database', '@event_dispatcher', '@cas.helper']
++    arguments: ['@externalauth.externalauth', '@externalauth.authmap', '@config.factory', '@session', '@database', '@event_dispatcher', '@cas.helper', '@cas.proxy_helper']
+   cas.logout:
+     class: Drupal\cas\Service\CasLogout
+     arguments: ['@cas.helper', '@database', '@config.factory']
+diff --git a/cas.tokens.inc b/cas.tokens.inc
+index 15c5440..97aea2b 100644
+--- a/cas.tokens.inc
++++ b/cas.tokens.inc
+@@ -6,6 +6,7 @@
+  */
+ 
+ use Drupal\Core\Render\BubbleableMetadata;
++use Drupal\Core\Url;
+ 
+ /**
+  * Implements hook_token_info().
+@@ -24,6 +25,10 @@ function cas_token_info() {
+           'name' => t('Username'),
+           'description' => t('On most sites this is the same as the Drupal username.'),
+         ],
++        'login-url' => [
++          'name' => t('Login URL'),
++          'description' => t('The CAS login URL.'),
++        ],
+       ],
+     ],
+   ];
+@@ -50,6 +55,10 @@ function cas_tokens($type, $tokens, array $data, array $options, BubbleableMetad
+             }
+           }
+           break;
++
++        case 'login-url':
++          $replacements[$original] = Url::fromRoute('cas.login')->toString();
++          break;
+       }
+     }
+   }
+diff --git a/composer.json b/composer.json
+index ffdf40d..06409e7 100644
+--- a/composer.json
++++ b/composer.json
+@@ -32,6 +32,12 @@
+   },
+   "license": "GPL-2.0+",
+   "minimum-stability": "dev",
++  "require": {
++    "drupal/externalauth": "^1.1"
++  },
++  "require-dev": {
++    "drupal/cas_mock_server": "dev-0.x"
++  },
+   "extra": {
+     "drush": {
+       "services": {
+@@ -40,4 +46,3 @@
+     }
+   }
+ }
+-
+diff --git a/config/install/cas.settings.yml b/config/install/cas.settings.yml
+index ce9044b..c253279 100644
+--- a/config/install/cas.settings.yml
++++ b/config/install/cas.settings.yml
+@@ -44,9 +44,11 @@ error_handling:
+   message_account_blocked: 'Your account is blocked or has not been activated. Please contact a site administrator.'
+   message_subscriber_denied_login: 'You do not have access to log in to this website. Please contact a site administrator if you believe you should have access.'
+   message_username_already_exists: 'An account on this website with your username already exists. Please contact a site administrator.'
++  message_prevent_normal_login: 'This account must log in using <a href="[cas:login-url]">CAS</a>.'
++  message_restrict_password_management: 'The requested account is associated with CAS and its password cannot be managed from this website.'
+ advanced:
+   debug_log: false
+   connection_timeout: 10
+ login_link_enabled: false
+ login_link_label: 'CAS Login'
+-login_success_message: ''
++login_success_message: 'You have been logged in.'
+diff --git a/config/schema/cas.schema.yml b/config/schema/cas.schema.yml
+index 20d803a..fe893d9 100644
+--- a/config/schema/cas.schema.yml
++++ b/config/schema/cas.schema.yml
+@@ -113,6 +113,12 @@ cas.settings:
+         message_username_already_exists:
+           type: label
+           label: 'Local account username already exists error message'
++        message_prevent_normal_login:
++          type: label
++          label: 'Prevent normal login error message'
++        message_restrict_password_management:
++          type: label
++          label: 'Restrict password management error message'
+     logout:
+       type: mapping
+       label: 'Logout'
+diff --git a/src/CasPropertyBag.php b/src/CasPropertyBag.php
+index f3a6fc8..6a22fcb 100644
+--- a/src/CasPropertyBag.php
++++ b/src/CasPropertyBag.php
+@@ -14,6 +14,13 @@ class CasPropertyBag {
+    */
+   protected $username;
+ 
++  /**
++   * The original username as it has been received from the CAS server.
++   *
++   * @var string
++   */
++  protected $originalUsername;
++
+   /**
+    * The proxy granting ticket, if supplied.
+    *
+@@ -36,6 +43,7 @@ class CasPropertyBag {
+    */
+   public function __construct($user) {
+     $this->username = $user;
++    $this->originalUsername = $user;
+   }
+ 
+   /**
+@@ -68,6 +76,16 @@ class CasPropertyBag {
+     return $this->username;
+   }
+ 
++  /**
++   * Returns the original username property.
++   *
++   * @return string
++   *   The original username.
++   */
++  public function getOriginalUsername() {
++    return $this->originalUsername;
++  }
++
+   /**
+    * Proxy granting ticket getter.
+    *
+diff --git a/src/Controller/ServiceController.php b/src/Controller/ServiceController.php
+index eab54dc..70cf7e5 100644
+--- a/src/Controller/ServiceController.php
++++ b/src/Controller/ServiceController.php
+@@ -2,19 +2,23 @@
+ 
+ namespace Drupal\cas\Controller;
+ 
++use Drupal\cas\Event\CasPreUserLoadEvent;
++use Drupal\cas\Event\CasPreUserLoadRedirectEvent;
+ use Drupal\cas\Exception\CasLoginException;
+ use Drupal\cas\Exception\CasSloException;
+ use Drupal\cas\Service\CasHelper;
+ use Drupal\cas\Exception\CasValidateException;
+-use Drupal\cas\Service\CasProxyHelper;
+ use Drupal\cas\Service\CasUserManager;
+ use Drupal\Core\Config\ConfigFactoryInterface;
+ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+ use Drupal\Core\Routing\UrlGeneratorInterface;
++use Drupal\Core\TempStore\PrivateTempStoreFactory;
+ use Drupal\Core\Url;
++use Drupal\externalauth\ExternalAuthInterface;
+ use Psr\Log\LogLevel;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+ use Drupal\cas\Service\CasValidator;
++use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+ use Symfony\Component\HttpFoundation\RedirectResponse;
+ use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\HttpFoundation\RequestStack;
+@@ -37,13 +41,6 @@ class ServiceController implements ContainerInjectionInterface {
+    */
+   protected $casHelper;
+ 
+-  /**
+-   * CAS proxy helper.
+-   *
+-   * @var \Drupal\cas\Service\CasProxyHelper
+-   */
+-  protected $casProxyHelper;
+-
+   /**
+    * Used to validate CAS service tickets.
+    *
+@@ -93,13 +90,25 @@ class ServiceController implements ContainerInjectionInterface {
+    */
+   protected $messenger;
+ 
++  /**
++   * The event dispatcher service.
++   *
++   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
++   */
++  protected $eventDispatcher;
++
++  /**
++   * The external auth service.
++   *
++   * @var \Drupal\externalauth\ExternalAuthInterface
++   */
++  protected $externalAuth;
++
+   /**
+    * Constructor.
+    *
+    * @param \Drupal\cas\Service\CasHelper $cas_helper
+    *   The CAS Helper service.
+-   * @param \Drupal\cas\Service\CasProxyHelper $cas_proxy_helper
+-   *   The CAS Proxy helper.
+    * @param \Drupal\cas\Service\CasValidator $cas_validator
+    *   The CAS Validator service.
+    * @param \Drupal\cas\Service\CasUserManager $cas_user_manager
+@@ -114,10 +123,13 @@ class ServiceController implements ContainerInjectionInterface {
+    *   The config factory.
+    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+    *   The messenger.
++   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
++   *   The event dispatcher service.
++   * @param \Drupal\externalauth\ExternalAuthInterface $external_auth
++   *   The external auth service.
+    */
+-  public function __construct(CasHelper $cas_helper, CasProxyHelper $cas_proxy_helper, CasValidator $cas_validator, CasUserManager $cas_user_manager, CasLogout $cas_logout, RequestStack $request_stack, UrlGeneratorInterface $url_generator, ConfigFactoryInterface $config_factory, MessengerInterface $messenger) {
++  public function __construct(CasHelper $cas_helper, CasValidator $cas_validator, CasUserManager $cas_user_manager, CasLogout $cas_logout, RequestStack $request_stack, UrlGeneratorInterface $url_generator, ConfigFactoryInterface $config_factory, MessengerInterface $messenger, EventDispatcherInterface $event_dispatcher, ExternalAuthInterface $external_auth) {
+     $this->casHelper = $cas_helper;
+-    $this->casProxyHelper = $cas_proxy_helper;
+     $this->casValidator = $cas_validator;
+     $this->casUserManager = $cas_user_manager;
+     $this->casLogout = $cas_logout;
+@@ -125,13 +137,26 @@ class ServiceController implements ContainerInjectionInterface {
+     $this->urlGenerator = $url_generator;
+     $this->settings = $config_factory->get('cas.settings');
+     $this->messenger = $messenger;
++    $this->eventDispatcher = $event_dispatcher;
++    $this->externalAuth = $external_auth;
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+   public static function create(ContainerInterface $container) {
+-    return new static($container->get('cas.helper'), $container->get('cas.proxy_helper'), $container->get('cas.validator'), $container->get('cas.user_manager'), $container->get('cas.logout'), $container->get('request_stack'), $container->get('url_generator'), $container->get('config.factory'), $container->get('messenger'));
++    return new static(
++      $container->get('cas.helper'),
++      $container->get('cas.validator'),
++      $container->get('cas.user_manager'),
++      $container->get('cas.logout'),
++      $container->get('request_stack'),
++      $container->get('url_generator'),
++      $container->get('config.factory'),
++      $container->get('messenger'),
++      $container->get('event_dispatcher'),
++      $container->get('externalauth.externalauth')
++    );
+   }
+ 
+   /**
+@@ -180,7 +205,7 @@ class ServiceController implements ContainerInjectionInterface {
+      */
+     if (!$request->query->has('ticket')) {
+       $this->casHelper->log(LogLevel::DEBUG, "No CAS ticket found in request to service controller; backing out.");
+-      $this->handleReturnToParameter($request);
++      $this->casHelper->handleReturnToParameter($request);
+       return RedirectResponse::create($this->urlGenerator->generate('<front>'));
+     }
+ 
+@@ -206,7 +231,7 @@ class ServiceController implements ContainerInjectionInterface {
+         'Error when validating ticket: %error',
+         ['%error' => $e->getMessage()]
+       );
+-      $message_validation_failure = $this->settings->get('error_handling.message_validation_failure');
++      $message_validation_failure = $this->casHelper->getMessage('error_handling.message_validation_failure');
+       if (!empty($message_validation_failure)) {
+         $this->messenger->addError($message_validation_failure);
+       }
+@@ -214,17 +239,44 @@ class ServiceController implements ContainerInjectionInterface {
+       return $this->createRedirectResponse($request, TRUE);
+     }
+ 
++    $this->casHelper->log(LogLevel::DEBUG, 'Starting login process for CAS user %username', ['%username' => $cas_validation_info->getUsername()]);
++
++    // Dispatch an event that allows modules to alter any of the CAS data before
++    // it's used to lookup a Drupal user account via the authmap table.
++    $this->casHelper->log(LogLevel::DEBUG, 'Dispatching EVENT_PRE_USER_LOAD.');
++    $this->eventDispatcher->dispatch(CasHelper::EVENT_PRE_USER_LOAD, new CasPreUserLoadEvent($cas_validation_info));
++
++    if ($cas_validation_info->getUsername() !== $cas_validation_info->getOriginalUsername()) {
++      $this->casHelper->log(
++        LogLevel::DEBUG,
++        'Username was changed from %original to %new from a subscriber.',
++        ['%original' => $cas_validation_info->getOriginalUsername(), '%new' => $cas_validation_info->getUsername()]
++      );
++    }
++
++    // At this point, the ticket is validated and third-party modules got the
++    // chance to alter the username and also perform other 'pre user load'
++    // tasks. Before authenticating the user locally, let's allow third-party
++    // code to inject user interaction into the flow.
++    // @see \Drupal\cas\Event\CasPreUserLoadRedirectEvent
++    $cas_pre_user_load_redirect_event = new CasPreUserLoadRedirectEvent($ticket, $cas_validation_info, $service_params);
++    $this->casHelper->log(LogLevel::DEBUG, 'Dispatching EVENT_PRE_USER_LOAD_REDIRECT.');
++    $this->eventDispatcher->dispatch(CasHelper::EVENT_PRE_USER_LOAD_REDIRECT, $cas_pre_user_load_redirect_event);
++
++    // A subscriber might have set an HTTP redirect response allowing potential
++    // user interaction to be injected into the flow.
++    $redirect_response = $cas_pre_user_load_redirect_event->getRedirectResponse();
++    if ($redirect_response) {
++      $this->casHelper->log(LogLevel::DEBUG, 'Redirecting to @url as requested by one of EVENT_PRE_USER_LOAD event subscribers.', ['@url' => $redirect_response->getTargetUrl()]);
++      return $redirect_response;
++    }
++
+     // Now that the ticket has been validated, we can use the information from
+     // validation request to authenticate the user locally on the Drupal site.
+     try {
+       $this->casUserManager->login($cas_validation_info, $ticket);
+-      if ($this->settings->get('proxy.initialize') && $cas_validation_info->getPgt()) {
+-        $this->casHelper->log(LogLevel::DEBUG, "Storing PGT information for this session.");
+-        $this->casProxyHelper->storePgtSession($cas_validation_info->getPgt());
+-      }
+ 
+-      $login_success_message = $this->settings->get('login_success_message');
+-      if (!empty($login_success_message)) {
++      $login_success_message = $this->casHelper->getMessage('login_success_message');      if (!empty($login_success_message)) {
+         $this->messenger->addStatus($login_success_message);
+       }
+     }
+@@ -266,41 +318,11 @@ class ServiceController implements ContainerInjectionInterface {
+     // on when login was initiated (which will be represented by the 'returnto'
+     // parameter).
+     else {
+-      $this->handleReturnToParameter($request);
++      $this->casHelper->handleReturnToParameter($request);
+       return RedirectResponse::create($this->urlGenerator->generate('<front>'));
+     }
+   }
+ 
+-  /**
+-   * Converts a "returnto" query param to a "destination" query param.
+-   *
+-   * The original service URL for CAS server may contain a "returnto" query
+-   * parameter that was placed there to redirect a user to specific page after
+-   * logging in with CAS.
+-   *
+-   * Drupal has a built in mechanism for doing this, by instead using a
+-   * "destination" parameter in the URL. Anytime there's a RedirectResponse
+-   * returned, RedirectResponseSubscriber looks for the destination param and
+-   * will redirect a user there instead.
+-   *
+-   * We cannot use this built in method when constructing the service URL,
+-   * because when we redirect to the CAS server for login, Drupal would see
+-   * our destination parameter in the URL and redirect there instead of CAS.
+-   *
+-   * However, when we redirect the user after a login success / failure,
+-   * we can then convert it back to a "destination" parameter and let Drupal
+-   * do it's thing when redirecting.
+-   *
+-   * @param \Symfony\Component\HttpFoundation\Request $request
+-   *   The Symfony request object.
+-   */
+-  private function handleReturnToParameter(Request $request) {
+-    if ($request->query->has('returnto')) {
+-      $this->casHelper->log(LogLevel::DEBUG, "Converting query parameter 'returnto' to 'destination'.");
+-      $request->query->set('destination', $request->query->get('returnto'));
+-    }
+-  }
+-
+   /**
+    * Get the error message to display when there is a login exception.
+    *
+@@ -340,7 +362,7 @@ class ServiceController implements ContainerInjectionInterface {
+     }
+ 
+     if (!empty($msgKey)) {
+-      return $this->settings->get('error_handling.' . $msgKey);
++      return $this->casHelper->getMessage('error_handling.' . $msgKey);
+     }
+ 
+     return $this->t('There was a problem logging in. Please contact a site administrator.');
+diff --git a/src/Event/CasPreUserLoadRedirectEvent.php b/src/Event/CasPreUserLoadRedirectEvent.php
+new file mode 100644
+index 0000000..6e6d567
+--- /dev/null
++++ b/src/Event/CasPreUserLoadRedirectEvent.php
+@@ -0,0 +1,134 @@
++<?php
++
++namespace Drupal\cas\Event;
++
++use Drupal\cas\CasPropertyBag;
++use Symfony\Component\EventDispatcher\Event;
++use Symfony\Component\HttpFoundation\RedirectResponse;
++
++/**
++ * Allows third-party code to inject user interaction into the flow.
++ *
++ * After a successful CAS login and validation, some third-party modules may
++ * require to get some user input just before local logging in or before
++ * registering a new local account.
++ *
++ * Potential use cases:
++ * - There's a new version of site's 'Terms & Conditions' page. On the first
++ *   login after the new version has been published, the user should accept the
++ *   new terms or he/she cannot login.
++ * - There's no local account and the site is configured with 'auto register'. A
++ *   third-party module wants to allow the user to login with the local
++ *   credentials so that the CAS account and the Drupal account get paired in
++ *   the {authmap} table.
++ *
++ * Third-party modules that want to build this kind of interaction should listen
++ * to \Drupal\cas\Service\CasHelper::EVENT_PRE_USER_LOAD_REDIRECT event and set
++ * an HTTP redirect response, using self::setRedirectResponse() provided by this
++ * class. After fulfilling their logic, they're responsible to complete the
++ * process by explicitly calling \Drupal\cas\Service\CasUserManager::login(),
++ * showing a status message to user and executing the final redirect.
++ */
++class CasPreUserLoadRedirectEvent extends Event {
++
++  /**
++   * The CAS property bag.
++   *
++   * @var \Drupal\cas\CasPropertyBag
++   */
++  protected $propertyBag;
++
++  /**
++   * The CAS authentication ticket.
++   *
++   * @var string
++   */
++  protected $ticket;
++
++  /**
++   * The CAS service parameters.
++   *
++   * @var array
++   */
++  protected $serviceParameters;
++
++  /**
++   * Subscribers may trigger an HTTP redirect.
++   *
++   * @var \Symfony\Component\HttpFoundation\RedirectResponse|null
++   */
++  protected $redirectResponse;
++
++  /**
++   * Constructs a new event instance.
++   *
++   * @param string $ticket
++   *   The CAS authentication ticket.
++   * @param \Drupal\cas\CasPropertyBag $property_bag
++   *   The CasPropertyBag of the current login cycle.
++   * @param array $service_parameters
++   *   The CAS service parameters.
++   */
++  public function __construct($ticket, CasPropertyBag $property_bag, array $service_parameters) {
++    $this->ticket = $ticket;
++    $this->propertyBag = $property_bag;
++    $this->serviceParameters = $service_parameters;
++  }
++
++  /**
++   * Returns the CAS property bag.
++   *
++   * @return \Drupal\cas\CasPropertyBag
++   *   The the CAS property bag.
++   */
++  public function getPropertyBag() {
++    return $this->propertyBag;
++  }
++
++  /**
++   * Returns the CAS authentication ticket.
++   *
++   * @return string
++   *   The CAS authentication ticket.
++   */
++  public function getTicket() {
++    return $this->ticket;
++  }
++
++  /**
++   * Returns the CAS service parameters.
++   *
++   * @return array
++   *   The CAS service parameters.
++   */
++  public function getServiceParameters() {
++    return $this->serviceParameters;
++  }
++
++  /**
++   * Sets an HTTP redirect response.
++   *
++   * Subscribers may decide to trigger a redirect just after the attempt to
++   * find a local Drupal user account.
++   *
++   * @param \Symfony\Component\HttpFoundation\RedirectResponse $redirect_response
++   *   The HTTP redirect response to be set along with the event.
++   *
++   * @return $this
++   */
++  public function setRedirectResponse(RedirectResponse $redirect_response) {
++    $this->redirectResponse = $redirect_response;
++    return $this;
++  }
++
++  /**
++   * Returns the HTTP redirect response.
++   *
++   * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
++   *   The HTTP redirect response or NULL, if none was set.
++   */
++  public function getRedirectResponse() {
++    return $this->redirectResponse;
++  }
++
++}
+diff --git a/src/Form/CasSettings.php b/src/Form/CasSettings.php
+index 947bbc4..91a5b65 100755
+--- a/src/Form/CasSettings.php
++++ b/src/Form/CasSettings.php
+@@ -4,6 +4,7 @@ namespace Drupal\cas\Form;
+ 
+ use Drupal\cas\Service\CasUserManager;
+ use Drupal\Component\Plugin\Factory\FactoryInterface;
++use Drupal\Component\Render\FormattableMarkup;
+ use Drupal\Core\Config\ConfigFactoryInterface;
+ use Drupal\Core\Extension\ModuleHandlerInterface;
+ use Drupal\Core\Form\ConfigFormBase;
+@@ -306,6 +307,17 @@ class CasSettings extends ConfigFormBase {
+       '#type' => 'fieldset',
+       '#title' => $this->t('Error messages'),
+     ];
++    $form['error_handling']['messages']['help'] = [
++      [
++        '#markup' => $this->t('Replacement tokens can be used to customize the messages.'),
++      ],
++    ];
++    if (!$this->moduleHandler->moduleExists('token')) {
++      $form['error_handling']['messages']['help'][] = [
++        '#prefix' => ' ',
++        '#markup' => $this->t('Install the <a href="https://www.drupal.org/project/token">Token</a> module to see what tokens are available.'),
++      ];
++    }
+     $form['error_handling']['messages']['message_validation_failure'] = [
+       '#type' => 'textfield',
+       '#title' => $this->t('Ticket validation failure'),
+@@ -342,6 +354,41 @@ class CasSettings extends ConfigFormBase {
+       '#description' => $this->t('Displayed when automatic registraton of new user fails because an existing Drupal user is using the same username.'),
+       '#default_value' => $config->get('error_handling.message_username_already_exists'),
+     ];
++    $form['error_handling']['messages']['message_prevent_normal_login'] = [
++      '#type' => 'textfield',
++      '#title' => $this->t('Prevent normal login error message'),
++      '#description' => $this->t('Displayed when prevent normal login for CAS users is on and a CAS user tries to logon using the normal Drupal login form.'),
++      '#default_value' => $config->get('error_handling.message_prevent_normal_login'),
++      '#states' => [
++        'disabled' => [
++          ':input[name="user_accounts[prevent_normal_login]"]' => [
++            'checked' => FALSE,
++          ],
++        ],
++      ],
++    ];
++    $form['error_handling']['messages']['message_restrict_password_management'] = [
++      '#type' => 'textfield',
++      '#title' => $this->t('Restrict password management error message'),
++      '#description' => $this->t('Displayed when restrict password management is on and a CAS user tries to reset its Drupal password.'),
++      '#default_value' => $config->get('error_handling.message_restrict_password_management'),
++      '#states' => [
++        'disabled' => [
++          ':input[name="user_accounts[restrict_password_management]"]' => [
++            'checked' => FALSE,
++          ],
++        ],
++      ],
++    ];
++
++    if ($this->moduleHandler->moduleExists('token')) {
++      $form['error_handling']['messages']['tokens'] = [
++        '#theme' => 'token_tree_link',
++        '#token_types' => ['cas'],
++        '#global_types' => TRUE,
++        '#dialog' => TRUE,
++      ];
++    }
+ 
+     $form['gateway'] = array(
+       '#type' => 'details',
+@@ -623,7 +670,9 @@ class CasSettings extends ConfigFormBase {
+       ->set('error_handling.message_subscriber_denied_reg', trim($messages['message_subscriber_denied_reg']))
+       ->set('error_handling.message_subscriber_denied_login', trim($messages['message_subscriber_denied_login']))
+       ->set('error_handling.message_account_blocked', trim($messages['message_account_blocked']))
+-      ->set('error_handling.message_username_already_exists', trim($messages['message_username_already_exists']));
++      ->set('error_handling.message_username_already_exists', trim($messages['message_username_already_exists']))
++      ->set('error_handling.message_prevent_normal_login', trim($messages['message_prevent_normal_login']))
++      ->set('error_handling.message_restrict_password_management', trim($messages['message_restrict_password_management']));
+ 
+     $config
+       ->set('advanced.debug_log', $form_state->getValue(['advanced', 'debug_log']))
+diff --git a/src/Service/CasHelper.php b/src/Service/CasHelper.php
+index c073484..97680e7 100644
+--- a/src/Service/CasHelper.php
++++ b/src/Service/CasHelper.php
+@@ -2,9 +2,14 @@
+ 
+ namespace Drupal\cas\Service;
+ 
++use Drupal\Component\Render\FormattableMarkup;
++use Drupal\Component\Render\MarkupInterface;
++use Drupal\Component\Utility\Xss;
+ use Drupal\Core\Config\ConfigFactoryInterface;
+ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
++use Drupal\Core\Utility\Token;
+ use Psr\Log\LogLevel;
++use Symfony\Component\HttpFoundation\Request;
+ 
+ /**
+  * Class CasHelper.
+@@ -60,6 +65,13 @@ class CasHelper {
+    */
+   const EVENT_PRE_USER_LOAD = 'cas.pre_user_load';
+ 
++  /**
++   * Event type identifier for the CasPreUserLoadRedirectEvent event.
++   *
++   * @var string
++   */
++  const EVENT_PRE_USER_LOAD_REDIRECT = 'cas.pre_user_load.redirect';
++
+   /**
+    * Event type identifier for the CasPreRegisterEvent.
+    *
+@@ -114,6 +126,13 @@ class CasHelper {
+    */
+   protected $loggerChannel;
+ 
++  /**
++   * The token service.
++   *
++   * @var \Drupal\Core\Utility\Token
++   */
++  protected $token;
++
+   /**
+    * Constructor.
+    *
+@@ -121,10 +140,13 @@ class CasHelper {
+    *   The configuration factory.
+    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+    *   The logger channel factory.
++   * @param \Drupal\Core\Utility\Token $token
++   *   The token service.
+    */
+-  public function __construct(ConfigFactoryInterface $config_factory, LoggerChannelFactoryInterface $logger_factory) {
++  public function __construct(ConfigFactoryInterface $config_factory, LoggerChannelFactoryInterface $logger_factory, Token $token) {
+     $this->settings = $config_factory->get('cas.settings');
+     $this->loggerChannel = $logger_factory->get('cas');
++    $this->token = $token;
+   }
+ 
+   /**
+@@ -171,4 +193,61 @@ class CasHelper {
+     $this->loggerChannel->log($level, $message, $context);
+   }
+ 
++  /**
++   * Converts a "returnto" query param to a "destination" query param.
++   *
++   * The original service URL for CAS server may contain a "returnto" query
++   * parameter that was placed there to redirect a user to specific page after
++   * logging in with CAS.
++   *
++   * Drupal has a built in mechanism for doing this, by instead using a
++   * "destination" parameter in the URL. Anytime there's a RedirectResponse
++   * returned, RedirectResponseSubscriber looks for the destination param and
++   * will redirect a user there instead.
++   *
++   * We cannot use this built in method when constructing the service URL,
++   * because when we redirect to the CAS server for login, Drupal would see
++   * our destination parameter in the URL and redirect there instead of CAS.
++   *
++   * However, when we redirect the user after a login success/failure, we can
++   * then convert it back to a "destination" parameter and let Drupal do it's
++   * thing when redirecting.
++   *
++   * @param \Symfony\Component\HttpFoundation\Request $request
++   *   The Symfony request object.
++   */
++  public function handleReturnToParameter(Request $request) {
++    if ($request->query->has('returnto')) {
++      $this->log(LogLevel::DEBUG, "Converting query parameter 'returnto' to 'destination'.");
++      $request->query->set('destination', $request->query->get('returnto'));
++    }
++  }
++
++  /**
++   * Returns a translated configurable message given the message config key.
++   *
++   * @param string $key
++   *   The message config key.
++   *
++   * @return \Drupal\Component\Render\MarkupInterface|string
++   *   The customized message or an empty string.
++   *
++   * @throws \InvalidArgumentException
++   *   If the passed key don't match a config entry.
++   */
++  public function getMessage($key) {
++    assert($key && is_string($key));
++    $message = $this->settings->get($key);
++    if ($message === NULL || !is_string($message)) {
++      throw new \InvalidArgumentException("Invalid key '$key'");
++    }
++
++    // Empty string.
++    if (!$message) {
++      return '';
++    }
++
++    return new FormattableMarkup(Xss::filter($this->token->replace($message)), []);
++  }
++
+ }
+diff --git a/src/Service/CasUserManager.php b/src/Service/CasUserManager.php
+index 37aa2cb..a4f417d 100644
+--- a/src/Service/CasUserManager.php
++++ b/src/Service/CasUserManager.php
+@@ -5,7 +5,6 @@ namespace Drupal\cas\Service;
+ use Drupal\cas\Event\CasPostLoginEvent;
+ use Drupal\cas\Event\CasPreLoginEvent;
+ use Drupal\cas\Event\CasPreRegisterEvent;
+-use Drupal\cas\Event\CasPreUserLoadEvent;
+ use Drupal\externalauth\AuthmapInterface;
+ use Drupal\externalauth\Exception\ExternalAuthRegisterException;
+ use Drupal\cas\Exception\CasLoginException;
+@@ -80,6 +79,13 @@ class CasUserManager {
+    */
+   protected $casHelper;
+ 
++  /**
++   * CAS proxy helper.
++   *
++   * @var \Drupal\cas\Service\CasProxyHelper
++   */
++  protected $casProxyHelper;
++
+   /**
+    * Used to dispatch CAS login events.
+    *
+@@ -106,8 +112,10 @@ class CasUserManager {
+    *   The event dispatcher.
+    * @param \Drupal\cas\Service\CasHelper $cas_helper
+    *   The CAS helper.
++   * @param \Drupal\cas\Service\CasProxyHelper $cas_proxy_helper
++   *   The CAS Proxy helper.
+    */
+-  public function __construct(ExternalAuthInterface $external_auth, AuthmapInterface $authmap, ConfigFactoryInterface $settings, SessionInterface $session, Connection $database_connection, EventDispatcherInterface $event_dispatcher, CasHelper $cas_helper) {
++  public function __construct(ExternalAuthInterface $external_auth, AuthmapInterface $authmap, ConfigFactoryInterface $settings, SessionInterface $session, Connection $database_connection, EventDispatcherInterface $event_dispatcher, CasHelper $cas_helper, CasProxyHelper $cas_proxy_helper = NULL) {
+     $this->externalAuth = $external_auth;
+     $this->authmap = $authmap;
+     $this->settings = $settings;
+@@ -115,6 +123,11 @@ class CasUserManager {
+     $this->connection = $database_connection;
+     $this->eventDispatcher = $event_dispatcher;
+     $this->casHelper = $cas_helper;
++    if (!$cas_proxy_helper) {
++      @trigger_error('Calling CasUserManager::__construct() without the $cas_proxy_helper argument is deprecated in cas:8.x-1.6 and the $cas_proxy_helper argument will be required in cas:8.x-1.10.', E_USER_DEPRECATED);
++      $cas_proxy_helper = \Drupal::service('cas.proxy_helper');
++    }
++    $this->casProxyHelper = $cas_proxy_helper;
+   }
+ 
+   /**
+@@ -154,23 +167,6 @@ class CasUserManager {
+    *   Thrown if there was a problem logging in the user.
+    */
+   public function login(CasPropertyBag $property_bag, $ticket) {
+-    $original_username = $property_bag->getUsername();
+-
+-    $this->casHelper->log(LogLevel::DEBUG, 'Starting login process for CAS user %username', ['%username' => $original_username]);
+-
+-    // Dispatch an event that allows modules to alter any of the CAS data
+-    // before it's used to lookup a Drupal user account via the authmap table.
+-    $this->casHelper->log(LogLevel::DEBUG, 'Dispatching EVENT_PRE_USER_LOAD.');
+-    $this->eventDispatcher->dispatch(CasHelper::EVENT_PRE_USER_LOAD, new CasPreUserLoadEvent($property_bag));
+-
+-    if ($property_bag->getUsername() !== $original_username) {
+-      $this->casHelper->log(
+-        LogLevel::DEBUG,
+-        'Username was changed from %original to %new from a subscriber.',
+-        ['%original' => $original_username, '%new' => $property_bag->getUsername()]
+-      );
+-    }
+-
+     $account = $this->externalAuth->load($property_bag->getUsername(), $this->provider);
+     if ($account === FALSE) {
+       // Check if we should create the user or not.
+@@ -212,6 +208,9 @@ class CasUserManager {
+     $this->eventDispatcher->dispatch(CasHelper::EVENT_PRE_LOGIN, $pre_login_event);
+ 
+     // Save user entity since event listeners may have altered it.
++    // @todo Don't take it for granted. Find if the account was really altered.
++    // @todo Should this be swapped with the following if(...) block? Why
++    //   altering the account if the login has been denied?
+     $account->save();
+ 
+     if (!$pre_login_event->getAllowLogin()) {
+@@ -221,11 +220,16 @@ class CasUserManager {
+     $this->externalAuth->userLoginFinalize($account, $property_bag->getUsername(), $this->provider);
+     $this->storeLoginSessionData($this->session->getId(), $ticket);
+     $this->session->set('is_cas_user', TRUE);
+-    $this->session->set('cas_username', $original_username);
++    $this->session->set('cas_username', $property_bag->getOriginalUsername());
+ 
+     $postLoginEvent = new CasPostLoginEvent($account, $property_bag);
+     $this->casHelper->log(LogLevel::DEBUG, 'Dispatching EVENT_POST_LOGIN.');
+     $this->eventDispatcher->dispatch(CasHelper::EVENT_POST_LOGIN, $postLoginEvent);
++
++    if ($this->settings->get('proxy.initialize') && $property_bag->getPgt()) {
++      $this->casHelper->log(LogLevel::DEBUG, "Storing PGT information for this session.");
++      $this->casProxyHelper->storePgtSession($property_bag->getPgt());
++    }
+   }
+ 
+   /**
+diff --git a/tests/modules/cas_user_interaction_test/cas_user_interaction_test.info.yml b/tests/modules/cas_user_interaction_test/cas_user_interaction_test.info.yml
+new file mode 100644
+index 0000000..75886b0
+--- /dev/null
++++ b/tests/modules/cas_user_interaction_test/cas_user_interaction_test.info.yml
+@@ -0,0 +1,5 @@
++name: 'CAS User Interaction Test'
++type: module
++description: 'Support for testing insertion of user interaction into the flow.'
++core: 8.x
++package: Testing
+diff --git a/tests/modules/cas_user_interaction_test/cas_user_interaction_test.routing.yml b/tests/modules/cas_user_interaction_test/cas_user_interaction_test.routing.yml
+new file mode 100644
+index 0000000..71ac524
+--- /dev/null
++++ b/tests/modules/cas_user_interaction_test/cas_user_interaction_test.routing.yml
+@@ -0,0 +1,8 @@
++cas_user_interaction_test.form:
++  path: '/cas-user-interaction-test'
++  defaults:
++    _form: Drupal\cas_user_interaction_test\CasUserInteractionTestForm
++    _title: 'We need your agreement'
++  requirements:
++    # On a real use case, access rules should be carefully enforced.
++    _access: 'TRUE'
+diff --git a/tests/modules/cas_user_interaction_test/cas_user_interaction_test.services.yml b/tests/modules/cas_user_interaction_test/cas_user_interaction_test.services.yml
+new file mode 100644
+index 0000000..93619ae
+--- /dev/null
++++ b/tests/modules/cas_user_interaction_test/cas_user_interaction_test.services.yml
+@@ -0,0 +1,5 @@
++services:
++  cas_user_interaction_test.subscriber:
++    class: Drupal\cas_user_interaction_test\CasUserInteractionTestSubscriber
++    tags:
++      - { name: 'event_subscriber' }
+diff --git a/tests/modules/cas_user_interaction_test/src/CasUserInteractionTestForm.php b/tests/modules/cas_user_interaction_test/src/CasUserInteractionTestForm.php
+new file mode 100644
+index 0000000..2d6e0fa
+--- /dev/null
++++ b/tests/modules/cas_user_interaction_test/src/CasUserInteractionTestForm.php
+@@ -0,0 +1,51 @@
++<?php
++
++namespace Drupal\cas_user_interaction_test;
++
++use Drupal\Core\Form\FormBase;
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Url;
++
++/**
++ * Form that enforces the user to accept the new site's 'Legal Notice'.
++ */
++class CasUserInteractionTestForm extends FormBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function buildForm(array $form, FormStateInterface $form_state) {
++    $form['accept'] = [
++      '#type' => 'checkbox',
++      '#title' => "I agree with the 'Legal Notice'",
++      '#required' => TRUE,
++    ];
++    $form['submit'] = [
++      '#type' => 'submit',
++      '#value' => 'I agree',
++    ];
++    return $form;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function submitForm(array &$form, FormStateInterface $form_state) {
++    /** @var \Drupal\cas\Service\CasUserManager $cas_user_manager */
++    $cas_user_manager = \Drupal::service('cas.user_manager');
++
++    /** @var \Drupal\Core\TempStore\PrivateTempStore $tempstore */
++    $tempstore = \Drupal::service('tempstore.private')->get('cas_user_interaction_test');
++
++    $cas_user_manager->login($tempstore->get('property_bag'), $tempstore->get('ticket'));
++    $form_state->setRedirectUrl(Url::fromUserInput('/'));
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getFormId() {
++    return 'cas_user_interaction_test_form';
++  }
++
++}
+diff --git a/tests/modules/cas_user_interaction_test/src/CasUserInteractionTestSubscriber.php b/tests/modules/cas_user_interaction_test/src/CasUserInteractionTestSubscriber.php
+new file mode 100644
+index 0000000..ea7d442
+--- /dev/null
++++ b/tests/modules/cas_user_interaction_test/src/CasUserInteractionTestSubscriber.php
+@@ -0,0 +1,45 @@
++<?php
++
++namespace Drupal\cas_user_interaction_test;
++
++use Drupal\cas\Event\CasPreUserLoadRedirectEvent;
++use Drupal\cas\Service\CasHelper;
++use Drupal\Core\Url;
++use Symfony\Component\EventDispatcher\EventSubscriberInterface;
++use Symfony\Component\HttpFoundation\RedirectResponse;
++
++/**
++ * Class CasTestSubscriber.
++ */
++class CasUserInteractionTestSubscriber implements EventSubscriberInterface {
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function getSubscribedEvents() {
++    return [
++      CasHelper::EVENT_PRE_USER_LOAD_REDIRECT => 'onPreUserLoadRedirect',
++    ];
++  }
++
++  /**
++   * Redirects to a form that asks user to accept the site's 'Legal Notice'.
++   *
++   * @param \Drupal\cas\Event\CasPreUserLoadRedirectEvent $event
++   *   The event.
++   */
++  public function onPreUserLoadRedirect(CasPreUserLoadRedirectEvent $event) {
++    $is_legal_notice_changed = \Drupal::state()->get('cas_user_interaction_test.changed', FALSE);
++    $local_account = \Drupal::service('externalauth.externalauth')->load($event->getPropertyBag()->getUsername(), 'cas');
++    // Add a redirect only if a local account exists (i.e. it's a login
++    // operation) and the site's 'Legal Notice' has changed.
++    if ($local_account && $is_legal_notice_changed) {
++      /** @var \Drupal\Core\TempStore\PrivateTempStore $tempstore */
++      $tempstore = \Drupal::service('tempstore.private')->get('cas_user_interaction_test');
++      $tempstore->set('ticket', $event->getTicket());
++      $tempstore->set('property_bag', $event->getPropertyBag());
++      $event->setRedirectResponse(new RedirectResponse(Url::fromRoute('cas_user_interaction_test.form')->toString()));
++    }
++  }
++
++}
+diff --git a/tests/src/Functional/CasAdminSettingsTest.php b/tests/src/Functional/CasAdminSettingsTest.php
+index 9a6b42a..4949698 100644
+--- a/tests/src/Functional/CasAdminSettingsTest.php
++++ b/tests/src/Functional/CasAdminSettingsTest.php
+@@ -83,6 +83,15 @@ class CasAdminSettingsTest extends BrowserTestBase {
+     $this->assertSession()->addressEquals('user/password');
+     $this->assertSession()->pageTextContains(t('The requested account is associated with CAS and its password cannot be managed from this website.'));
+ 
++    // Test a customized error message.
++    $this->config('cas.settings')
++      ->set('error_handling.message_restrict_password_management', 'You cannot manage your password. Back to <a href="[site:url]">homepage</a>.')
++      ->save();
++
++    $this->getSession()->reload();
++    $this->assertSession()->pageTextContains('You cannot manage your password. Back to homepage.');
++    $this->assertSession()->linkExists('homepage');
++
+     $this->drupalPostForm('/user/password', ['name' => 'user_without_cas'], 'Submit');
+     $this->assertSession()->addressEquals('user/login');
+     $this->assertSession()->pageTextContains(t('Further instructions have been sent to your email address.'));
+diff --git a/tests/src/Functional/CasLoginFormTest.php b/tests/src/Functional/CasLoginFormTest.php
+index 33412e5..ce7f407 100644
+--- a/tests/src/Functional/CasLoginFormTest.php
++++ b/tests/src/Functional/CasLoginFormTest.php
+@@ -74,7 +74,21 @@ class CasLoginFormTest extends BrowserTestBase {
+       'pass' => 'password',
+     ], 'Log in');
+     $this->assertSession()->addressEquals('/user/login');
+-    $this->assertSession()->pageTextContains('This account must log in using');
++    $this->assertSession()->pageTextContains('This account must log in using CAS.');
++    $this->assertSession()->linkExists('CAS');
++
++    // Test a customized error message.
++    $this->config('cas.settings')
++      ->set('error_handling.message_prevent_normal_login', 'Just use the <a href="[cas:login-url]">CAS Login</a>')
++      ->save();
++
++    $this->drupalPostForm('/user/login', [
++      'name' => 'cas_user',
++      'pass' => 'password',
++    ], 'Log in');
++    $this->assertSession()->addressEquals('/user/login');
++    $this->assertSession()->pageTextContains('Just use the CAS Login');
++    $this->assertSession()->linkExists('CAS Login');
+ 
+     // Now turn off the setting and try again.
+     $this->drupalLogin($this->drupalCreateUser(['administer account settings']));
+diff --git a/tests/src/Functional/CasUserInteractionTest.php b/tests/src/Functional/CasUserInteractionTest.php
+new file mode 100644
+index 0000000..6d19651
+--- /dev/null
++++ b/tests/src/Functional/CasUserInteractionTest.php
+@@ -0,0 +1,105 @@
++<?php
++
++namespace Drupal\Tests\cas\Functional;
++
++use Drupal\Core\Url;
++use Drupal\Tests\BrowserTestBase;
++
++/**
++ * Tests inserting user interaction into the flow.
++ *
++ * @group cas
++ */
++class CasUserInteractionTest extends BrowserTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  public static $modules = [
++    'block',
++    'cas',
++    'cas_mock_server',
++    'cas_user_interaction_test',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp() {
++    parent::setUp();
++
++    // Create a local user.
++    $account = $this->createUser([], 'beavis');
++    // Create a CAS user.
++    \Drupal::service('cas_mock_server.user_manager')->addUser([
++      'username' => 'beavis',
++      'email' => 'beavis@example.com',
++      'password' => 'needtp',
++      'firstname' => 'Beavis',
++      'lastname' => 'El Gran Cornholio',
++    ]);
++    // Link the two accounts.
++    \Drupal::service('externalauth.externalauth')->linkExistingAccount('beavis', 'cas', $account);
++    // Start the CAS mock server.
++    \Drupal::service('cas_mock_server.server_manager')->start();
++    // Place the login/logout block so that we can check if user is logged in.
++    $this->placeBlock('system_menu_block:account');
++  }
++
++  /**
++   * Tests user interaction.
++   */
++  public function testUserInteraction() {
++    // The 'Legal Notice' has not been changed.
++    \Drupal::state()->set('cas_user_interaction_test.changed', FALSE);
++    $this->casLogin();
++    $this->assertUserLoggedIn();
++    $this->drupalLogout();
++
++    // The 'Legal Notice' has been changed. Login again with CAS.
++    \Drupal::state()->set('cas_user_interaction_test.changed', TRUE);
++    $this->casLogin();
++    $this->assertUserNotLoggedIn();
++    $this->assertSession()->pageTextContains("I agree with the 'Legal Notice'");
++
++    // The user doesn't check he "I agree..." checkbox. Form doesn't validate.
++    $page = $this->getSession()->getPage();
++    $page->pressButton('I agree');
++    $this->assertSession()->pageTextContains("I agree with the 'Legal Notice' field is required.");
++    $this->assertUserNotLoggedIn();
++
++    // The user checks the "I agree..." checkbox.
++    $page->checkField("I agree with the 'Legal Notice'");
++    $page->pressButton('I agree');
++    $this->assertUserLoggedIn();
++  }
++
++  /**
++   * Logs-in the user to the CAS mock server.
++   */
++  protected function casLogin() {
++    $query = [
++      'service' => Url::fromRoute('cas.service')->setAbsolute()->toString(),
++    ];
++    $edit = [
++      'email' => 'beavis@example.com',
++      'password' => 'needtp',
++    ];
++    $this->drupalPostForm('/cas-mock-server/login', $edit, 'Log in', ['query' => $query]);
++  }
++
++  /**
++   * Asserts that the user is logged in.
++   */
++  protected function assertUserLoggedIn() {
++    $this->assertSession()->linkExists('My account');
++  }
++
++  /**
++   * Asserts that the user is not logged in.
++   */
++  protected function assertUserNotLoggedIn() {
++    $this->assertSession()->linkExists('Log in');
++  }
++
++}
+diff --git a/tests/src/Unit/CasPropertyBagTest.php b/tests/src/Unit/CasPropertyBagTest.php
+index 0f4d3f7..9ded6e6 100644
+--- a/tests/src/Unit/CasPropertyBagTest.php
++++ b/tests/src/Unit/CasPropertyBagTest.php
+@@ -24,6 +24,7 @@ class CasPropertyBagTest extends UnitTestCase {
+     $name = $this->randomMachineName(8);
+     $bag = new CasPropertyBag($name);
+     $this->assertEquals($name, $this->readAttribute($bag, 'username'));
++    $this->assertEquals($name, $this->readAttribute($bag, 'originalUsername'));
+   }
+ 
+   /**
+@@ -32,10 +33,12 @@ class CasPropertyBagTest extends UnitTestCase {
+    * @covers ::setUsername
+    */
+   public function testSetUsername() {
+-    $bag = new CasPropertyBag($this->randomMachineName(8));
++    $name = $this->randomMachineName(8);
++    $bag = new CasPropertyBag($name);
+     $new_name = $this->randomMachineName(8);
+     $bag->setUsername($new_name);
+     $this->assertEquals($new_name, $this->readAttribute($bag, 'username'));
++    $this->assertEquals($name, $this->readAttribute($bag, 'originalUsername'));
+   }
+ 
+   /**
+@@ -71,13 +74,15 @@ class CasPropertyBagTest extends UnitTestCase {
+    * @covers ::getUsername
+    */
+   public function testGetUsername() {
+-    $bag = new CasPropertyBag($this->randomMachineName(8));
++    $name = $this->randomMachineName(8);
++    $bag = new CasPropertyBag($name);
+     $reflection = new \ReflectionClass($bag);
+     $property = $reflection->getProperty('username');
+     $property->setAccessible(TRUE);
+     $new_name = $this->randomMachineName(8);
+     $property->setValue($bag, $new_name);
+     $this->assertEquals($new_name, $bag->getUsername());
++    $this->assertEquals($name, $bag->getOriginalUsername());
+   }
+ 
+   /**
+diff --git a/tests/src/Unit/Controller/ServiceControllerTest.php b/tests/src/Unit/Controller/ServiceControllerTest.php
+index 45ee5ca..ed234be 100644
+--- a/tests/src/Unit/Controller/ServiceControllerTest.php
++++ b/tests/src/Unit/Controller/ServiceControllerTest.php
+@@ -2,13 +2,20 @@
+ 
+ namespace Drupal\Tests\cas\Unit\Controller;
+ 
++use Drupal\cas\CasPropertyBag;
++use Drupal\cas\Controller\ServiceController;
++use Drupal\cas\Event\CasPreUserLoadRedirectEvent;
++use Drupal\cas\Exception\CasLoginException;
++use Drupal\cas\Exception\CasValidateException;
++use Drupal\cas\Service\CasHelper;
++use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
+ use Drupal\Core\DependencyInjection\ContainerBuilder;
++use Drupal\Core\Logger\LoggerChannelFactory;
++use Drupal\externalauth\ExternalAuthInterface;
+ use Drupal\Tests\UnitTestCase;
+-use Drupal\cas\Exception\CasValidateException;
+-use Drupal\cas\Exception\CasLoginException;
+-use Drupal\cas\CasPropertyBag;
++use Prophecy\Argument;
++use Symfony\Component\EventDispatcher\Event;
+ use Symfony\Component\HttpFoundation\Request;
+-use Drupal\cas\Controller\ServiceController;
+ 
+ /**
+  * ServiceController unit tests.
+@@ -27,13 +34,6 @@ class ServiceControllerTest extends UnitTestCase {
+    */
+   protected $casHelper;
+ 
+-  /**
+-   * The mocked CasProxyHelper.
+-   *
+-   * @var \Drupal\cas\Service\CasProxyHelper|\PHPUnit_Framework_MockObject_MockObject
+-   */
+-  protected $casProxyHelper;
+-
+   /**
+    * The mocked Request Stack.
+    *
+@@ -65,10 +65,13 @@ class ServiceControllerTest extends UnitTestCase {
+   /**
+    * The mocked Url Generator.
+    *
+-   * @var \Drupal\Core\Routing\UrlGeneratorInterface
++   * @var \Drupal\Core\Routing\UrlGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+    */
+   protected $urlGenerator;
+ 
++  /**
++   * @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
++   */
+   protected $configFactory;
+ 
+   protected $requestBag;
+@@ -79,18 +82,22 @@ class ServiceControllerTest extends UnitTestCase {
+ 
+   protected $messenger;
+ 
++  /**
++   * @var \Prophecy\Prophecy\ObjectProphecy
++   */
++  protected $eventDispatcher;
++
++  /**
++   * @var \Prophecy\Prophecy\ObjectProphecy
++   */
++  protected $externalAuth;
++
+   /**
+    * {@inheritdoc}
+    */
+   protected function setUp() {
+     parent::setUp();
+ 
+-    $this->casHelper = $this->getMockBuilder('\Drupal\cas\Service\CasHelper')
+-      ->disableOriginalConstructor()
+-      ->getMock();
+-    $this->casProxyHelper = $this->getMockBuilder('\Drupal\cas\Service\CasProxyHelper')
+-      ->disableOriginalConstructor()
+-      ->getMock();
+     $this->casValidator = $this->getMockBuilder('\Drupal\cas\Service\CasValidator')
+       ->disableOriginalConstructor()
+       ->getMock();
+@@ -108,6 +115,7 @@ class ServiceControllerTest extends UnitTestCase {
+         'error_handling.login_failure_page' => '/user/login',
+       ),
+     ));
++    $this->casHelper = new CasHelper($this->configFactory, new LoggerChannelFactory());
+     $this->requestStack = $this->createMock('\Symfony\Component\HttpFoundation\RequestStack');
+     $this->urlGenerator = $this->createMock('\Drupal\Core\Routing\UrlGeneratorInterface');
+ 
+@@ -132,6 +140,9 @@ class ServiceControllerTest extends UnitTestCase {
+     $this->queryBag = $query_bag;
+ 
+     $this->messenger = $this->createMock('\Drupal\Core\Messenger\MessengerInterface');
++
++    $this->eventDispatcher = $this->prophesize(ContainerAwareEventDispatcher::class);
++    $this->externalAuth = $this->prophesize(ExternalAuthInterface::class);
+   }
+ 
+   /**
+@@ -159,14 +170,15 @@ class ServiceControllerTest extends UnitTestCase {
+ 
+     $serviceController = new ServiceController(
+       $this->casHelper,
+-      $this->casProxyHelper,
+       $this->casValidator,
+       $this->casUserManager,
+       $this->casLogout,
+       $this->requestStack,
+       $this->urlGenerator,
+       $this->configFactory,
+-      $this->messenger
++      $this->messenger,
++      $this->eventDispatcher->reveal(),
++      $this->externalAuth->reveal()
+     );
+     $serviceController->setStringTranslation($this->getStringTranslationStub());
+ 
+@@ -200,14 +212,15 @@ class ServiceControllerTest extends UnitTestCase {
+ 
+     $serviceController = new ServiceController(
+       $this->casHelper,
+-      $this->casProxyHelper,
+       $this->casValidator,
+       $this->casUserManager,
+       $this->casLogout,
+       $this->requestStack,
+       $this->urlGenerator,
+       $this->configFactory,
+-      $this->messenger
++      $this->messenger,
++      $this->eventDispatcher->reveal(),
++      $this->externalAuth->reveal()
+     );
+     $serviceController->setStringTranslation($this->getStringTranslationStub());
+ 
+@@ -248,14 +261,15 @@ class ServiceControllerTest extends UnitTestCase {
+ 
+     $serviceController = new ServiceController(
+       $this->casHelper,
+-      $this->casProxyHelper,
+       $this->casValidator,
+       $this->casUserManager,
+       $this->casLogout,
+       $this->requestStack,
+       $this->urlGenerator,
+       $this->configFactory,
+-      $this->messenger
++      $this->messenger,
++      $this->eventDispatcher->reveal(),
++      $this->externalAuth->reveal()
+     );
+     $serviceController->setStringTranslation($this->getStringTranslationStub());
+ 
+@@ -295,11 +309,6 @@ class ServiceControllerTest extends UnitTestCase {
+       ->method('login')
+       ->with($this->equalTo($validation_data), $this->equalTo('ST-foobar'));
+ 
+-    // PGT should be saved.
+-    $this->casProxyHelper->expects($this->once())
+-      ->method('storePGTSession')
+-      ->with($this->equalTo('testpgt'));
+-
+     $configFactory = $this->getConfigFactoryStub(array(
+       'cas.settings' => array(
+         'server.hostname' => 'example-server.com',
+@@ -311,14 +320,15 @@ class ServiceControllerTest extends UnitTestCase {
+ 
+     $serviceController = new ServiceController(
+       $this->casHelper,
+-      $this->casProxyHelper,
+       $this->casValidator,
+       $this->casUserManager,
+       $this->casLogout,
+       $this->requestStack,
+       $this->urlGenerator,
+       $configFactory,
+-      $this->messenger
++      $this->messenger,
++      $this->eventDispatcher->reveal(),
++      $this->externalAuth->reveal()
+     );
+     $serviceController->setStringTranslation($this->getStringTranslationStub());
+ 
+@@ -355,14 +365,15 @@ class ServiceControllerTest extends UnitTestCase {
+ 
+     $serviceController = new ServiceController(
+       $this->casHelper,
+-      $this->casProxyHelper,
+       $this->casValidator,
+       $this->casUserManager,
+       $this->casLogout,
+       $this->requestStack,
+       $this->urlGenerator,
+       $this->configFactory,
+-      $this->messenger
++      $this->messenger,
++      $this->eventDispatcher->reveal(),
++      $this->externalAuth->reveal()
+     );
+     $serviceController->setStringTranslation($this->getStringTranslationStub());
+ 
+@@ -397,20 +408,81 @@ class ServiceControllerTest extends UnitTestCase {
+ 
+     $serviceController = new ServiceController(
+       $this->casHelper,
+-      $this->casProxyHelper,
+       $this->casValidator,
+       $this->casUserManager,
+       $this->casLogout,
+       $this->requestStack,
+       $this->urlGenerator,
+       $this->configFactory,
+-      $this->messenger
++      $this->messenger,
++      $this->eventDispatcher->reveal(),
++      $this->externalAuth->reveal()
+     );
+     $serviceController->setStringTranslation($this->getStringTranslationStub());
+ 
+     $this->assertRedirectedToSpecialPageOnLoginFailure($serviceController);
+   }
+ 
++  /**
++   * An event listener alters username before attempting to load user.
++   *
++   * @covers ::handle
++   *
++   * @dataProvider parameterDataProvider
++   */
++  public function testEventListenerChangesCasUsername($returnto) {
++    $this->setupRequestParameters(
++      // returnto.
++      $returnto,
++      // logoutRequest.
++      FALSE,
++      // ticket.
++      TRUE
++    );
++
++    $this->requestStack->expects($this->once())
++      ->method('getCurrentRequest')
++      ->will($this->returnValue($this->requestObject));
++
++    $this->eventDispatcher
++      ->dispatch(Argument::type('string'), Argument::type(Event::class))
++      ->will(function (array $args) {
++        if ($args[0] === CasHelper::EVENT_PRE_USER_LOAD_REDIRECT && $args[1] instanceof CasPreUserLoadRedirectEvent) {
++          $args[1]->getPropertyBag()->setUsername('foobar');
++        }
++      });
++
++    $expected_bag = new CasPropertyBag('foobar');
++
++    $this->casUserManager->expects($this->once())
++      ->method('login')
++      ->with($this->equalTo($expected_bag), 'ST-foobar');
++
++    $this->casValidator->expects($this->once())
++      ->method('validateTicket')
++      ->with($this->equalTo('ST-foobar'))
++      ->will($this->returnValue($expected_bag));
++
++    $this->urlGenerator->expects($this->once())
++      ->method('generate')
++      ->with('<front>')
++      ->willReturn('/user/login');
++
++    $serviceController = new ServiceController(
++      $this->casHelper,
++      $this->casValidator,
++      $this->casUserManager,
++      $this->casLogout,
++      $this->requestStack,
++      $this->urlGenerator,
++      $this->configFactory,
++      $this->messenger,
++      $this->eventDispatcher->reveal(),
++      $this->externalAuth->reveal()
++    );
++    $serviceController->handle();
++  }
++
+   /**
+    * Asserts that user is redirected to a special page on login failure.
+    */
+diff --git a/tests/src/Unit/Service/CasHelperTest.php b/tests/src/Unit/Service/CasHelperTest.php
+index e1dfc30..abb9631 100644
+--- a/tests/src/Unit/Service/CasHelperTest.php
++++ b/tests/src/Unit/Service/CasHelperTest.php
+@@ -2,9 +2,13 @@
+ 
+ namespace Drupal\Tests\cas\Unit\Service;
+ 
++use Drupal\cas\Service\CasHelper;
++use Drupal\Component\Render\FormattableMarkup;
++use Drupal\Core\Logger\LoggerChannelFactory;
++use Drupal\Core\Utility\Token;
+ use Drupal\Tests\UnitTestCase;
+ use Psr\Log\LogLevel;
+-use Drupal\cas\Service\CasHelper;
++use Symfony\Component\HttpFoundation\Request;
+ 
+ /**
+  * CasHelper unit tests.
+@@ -37,6 +41,13 @@ class CasHelperTest extends UnitTestCase {
+    */
+   protected $loggerChannel;
+ 
++  /**
++   * The token service.
++   *
++   * @var \Prophecy\Prophecy\ObjectProphecy
++   */
++  protected $token;
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -51,6 +62,11 @@ class CasHelperTest extends UnitTestCase {
+       ->method('get')
+       ->with('cas')
+       ->will($this->returnValue($this->loggerChannel));
++    $this->token = $this->prophesize(Token::class);
++    $this->token->replace('Use <a href="[cas:login-url]">CAS login</a>')
++      ->willReturn('Use <a href="/caslogin">CAS login</a>');
++    $this->token->replace('<script>alert("Hacked!");</script>')
++      ->willReturn('<script>alert("Hacked!");</script>');
+   }
+ 
+   /**
+@@ -90,7 +106,7 @@ class CasHelperTest extends UnitTestCase {
+         'server.path' => '/cas',
+       ),
+     ));
+-    $cas_helper = new CasHelper($config_factory, $this->loggerFactory);
++    $cas_helper = new CasHelper($config_factory, $this->loggerFactory, $this->token->reveal());
+ 
+     $this->assertEquals('https://example.com/cas/', $cas_helper->getServerBaseUrl());
+   }
+@@ -113,7 +129,7 @@ class CasHelperTest extends UnitTestCase {
+         'server.path' => '/cas',
+       ),
+     ));
+-    $cas_helper = new CasHelper($config_factory, $this->loggerFactory);
++    $cas_helper = new CasHelper($config_factory, $this->loggerFactory, $this->token->reveal());
+ 
+     $this->assertEquals('https://example.com:4433/cas/', $cas_helper->getServerBaseUrl());
+   }
+@@ -136,7 +152,7 @@ class CasHelperTest extends UnitTestCase {
+         'server.path' => '/cas',
+       ),
+     ));
+-    $cas_helper = new CasHelper($config_factory, $this->loggerFactory);
++    $cas_helper = new CasHelper($config_factory, $this->loggerFactory, $this->token->reveal());
+ 
+     $this->assertEquals('http://example.com/cas/', $cas_helper->getServerBaseUrl());
+   }
+@@ -154,7 +170,7 @@ class CasHelperTest extends UnitTestCase {
+         'advanced.debug_log' => TRUE,
+       ),
+     ));
+-    $cas_helper = new CasHelper($config_factory, $this->loggerFactory);
++    $cas_helper = new CasHelper($config_factory, $this->loggerFactory, $this->token->reveal());
+ 
+     // The actual logger should be called twice.
+     $this->loggerChannel->expects($this->exactly(2))
+@@ -177,7 +193,7 @@ class CasHelperTest extends UnitTestCase {
+         'advanced.debug_log' => FALSE,
+       ),
+     ));
+-    $cas_helper = new CasHelper($config_factory, $this->loggerFactory);
++    $cas_helper = new CasHelper($config_factory, $this->loggerFactory, $this->token->reveal());
+ 
+     // The actual logger should only called once, when we log an error.
+     $this->loggerChannel->expects($this->once())
+@@ -187,4 +203,59 @@ class CasHelperTest extends UnitTestCase {
+     $cas_helper->log(LogLevel::ERROR, 'This is an error log');
+   }
+ 
++  /**
++   * @covers ::handleReturnToParameter
++   */
++  public function testHandleReturnToParameter() {
++    $config_factory = $this->getConfigFactoryStub([
++      'cas.settings' => [
++        'advanced.debug_log' => FALSE,
++      ],
++    ]);
++    $cas_helper = new CasHelper($config_factory, new LoggerChannelFactory());
++
++    $request = new Request(['returnto' => 'node/1']);
++
++    $this->assertFalse($request->query->has('destination'));
++    $this->assertSame('node/1', $request->query->get('returnto'));
++
++    $cas_helper->handleReturnToParameter($request);
++
++    // Check that the 'returnto' has been copied to 'destination'.
++    $this->assertSame('node/1', $request->query->get('destination'));
++    $this->assertSame('node/1', $request->query->get('returnto'));
++  }
++
++  /**
++   * Tests the message generator.
++   *
++   * @covers ::getMessage
++   */
++  public function testGetMessage() {
++    /** @var \Drupal\Core\Config\ConfigFactory $config_factory */
++    $config_factory = $this->getConfigFactoryStub(array(
++      'cas.settings' => array(
++        'arbitrary_message' => 'Use <a href="[cas:login-url]">CAS login</a>',
++        'messages' => [
++          'empty_message' => '',
++          'do_not_trust_user_input' => '<script>alert("Hacked!");</script>',
++        ],
++      ),
++    ));
++    $cas_helper = new CasHelper($config_factory, $this->loggerFactory, $this->token->reveal());
++
++    $message = $cas_helper->getMessage('arbitrary_message');
++    $this->assertInstanceOf(FormattableMarkup::class, $message);
++    $this->assertEquals('Use <a href="/caslogin">CAS login</a>', $message);
++
++    // Empty message.
++    $message = $cas_helper->getMessage('messages.empty_message');
++    $this->assertSame('', $message);
++
++    // Check hacker entered message.
++    $message = $cas_helper->getMessage('messages.do_not_trust_user_input');
++    // Check that the dangerous tags were stripped-out.
++    $this->assertEquals('alert("Hacked!");', $message);
++  }
++
+ }
+diff --git a/tests/src/Unit/Service/CasUserManagerTest.php b/tests/src/Unit/Service/CasUserManagerTest.php
+index 940b3e6..80639d3 100644
+--- a/tests/src/Unit/Service/CasUserManagerTest.php
++++ b/tests/src/Unit/Service/CasUserManagerTest.php
+@@ -4,7 +4,7 @@ namespace Drupal\Tests\cas\Unit\Service;
+ 
+ use Drupal\cas\Event\CasPreLoginEvent;
+ use Drupal\cas\Event\CasPreRegisterEvent;
+-use Drupal\cas\Event\CasPreUserLoadEvent;
++use Drupal\cas\Service\CasProxyHelper;
+ use Drupal\cas\Service\CasUserManager;
+ use Drupal\Tests\UnitTestCase;
+ use Drupal\cas\CasPropertyBag;
+@@ -76,6 +76,11 @@ class CasUserManagerTest extends UnitTestCase {
+    */
+   protected $casHelper;
+ 
++  /**
++   * @var \Prophecy\Prophecy\ObjectProphecy
++   */
++  protected $casProxyHelper;
++
+   /**
+    * The mocked user account.
+    *
+@@ -113,6 +118,7 @@ class CasUserManagerTest extends UnitTestCase {
+     $this->account = $this->getMockBuilder('Drupal\user\UserInterface')
+       ->disableOriginalConstructor()
+       ->getMock();
++    $this->casProxyHelper = $this->prophesize(CasProxyHelper::class);
+   }
+ 
+   /**
+@@ -144,6 +150,7 @@ class CasUserManagerTest extends UnitTestCase {
+         $this->connection,
+         $this->eventDispatcher,
+         $this->casHelper,
++        $this->casProxyHelper->reveal()
+       ))
+       ->getMock();
+ 
+@@ -174,6 +181,7 @@ class CasUserManagerTest extends UnitTestCase {
+         $this->connection,
+         $this->eventDispatcher,
+         $this->casHelper,
++        $this->casProxyHelper->reveal(),
+       ))
+       ->getMock();
+ 
+@@ -218,6 +226,7 @@ class CasUserManagerTest extends UnitTestCase {
+         $this->connection,
+         $this->eventDispatcher,
+         $this->casHelper,
++        $this->casProxyHelper->reveal(),
+       ))
+       ->getMock();
+ 
+@@ -273,6 +282,7 @@ class CasUserManagerTest extends UnitTestCase {
+         $this->connection,
+         $this->eventDispatcher,
+         $this->casHelper,
++        $this->casProxyHelper->reveal(),
+       ))
+       ->getMock();
+ 
+@@ -304,7 +314,8 @@ class CasUserManagerTest extends UnitTestCase {
+ 
+     $this->externalAuth
+       ->expects($this->once())
+-      ->method('userLoginFinalize');
++      ->method('userLoginFinalize')
++      ->willReturn($this->account);
+ 
+     $cas_property_bag = new CasPropertyBag('test');
+     $cas_property_bag->setAttributes(['email' => 'test_email@foo.com']);
+@@ -341,6 +352,7 @@ class CasUserManagerTest extends UnitTestCase {
+         $this->connection,
+         $this->eventDispatcher,
+         $this->casHelper,
++        $this->casProxyHelper->reveal(),
+       ))
+       ->getMock();
+ 
+@@ -373,49 +385,6 @@ class CasUserManagerTest extends UnitTestCase {
+     $cas_user_manager->login(new CasPropertyBag('test'), 'ticket');
+   }
+ 
+-  /**
+-   * An event listener alters username before attempting to load user.
+-   *
+-   * @covers ::login
+-   */
+-  public function testEventListenerChangesCasUsername() {
+-    $cas_user_manager = $this->getMockBuilder('Drupal\cas\Service\CasUserManager')
+-      ->setMethods(array('storeLoginSessionData'))
+-      ->setConstructorArgs(array(
+-        $this->externalAuth,
+-        $this->authmap,
+-        $this->getConfigFactoryStub(),
+-        $this->session,
+-        $this->connection,
+-        $this->eventDispatcher,
+-        $this->casHelper,
+-      ))
+-      ->getMock();
+-
+-    $this->eventDispatcher
+-      ->method('dispatch')
+-      ->willReturnCallback(function ($event_type, $event) {
+-        if ($event instanceof CasPreUserLoadEvent) {
+-          $event->getCasPropertyBag()->setUsername('foobar');
+-        }
+-      });
+-
+-    $this->account
+-      ->method('isactive')
+-      ->willReturn(TRUE);
+-
+-    $this->externalAuth
+-      ->method('load')
+-      ->with('foobar')
+-      ->willReturn($this->account);
+-
+-    $this->externalAuth
+-      ->expects($this->once())
+-      ->method('userLoginFinalize');
+-
+-    $cas_user_manager->login(new CasPropertyBag('test'), 'ticket');
+-  }
+-
+   /**
+    * A user is able to login when their account exists.
+    *
+@@ -432,6 +401,7 @@ class CasUserManagerTest extends UnitTestCase {
+         $this->connection,
+         $this->eventDispatcher,
+         $this->casHelper,
++        $this->casProxyHelper->reveal(),
+       ))
+       ->getMock();
+ 
+@@ -449,7 +419,8 @@ class CasUserManagerTest extends UnitTestCase {
+ 
+     $this->externalAuth
+       ->expects($this->once())
+-      ->method('userLoginFinalize');
++      ->method('userLoginFinalize')
++      ->willReturn($this->account);
+ 
+     $attributes = ['attr1' => 'foo', 'attr2' => 'bar'];
+     $this->session
+@@ -481,6 +452,7 @@ class CasUserManagerTest extends UnitTestCase {
+         $this->connection,
+         $this->eventDispatcher,
+         $this->casHelper,
++        $this->casProxyHelper->reveal(),
+       ))
+       ->getMock();
+ 

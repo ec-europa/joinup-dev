@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e5438ff84b407108d4389e277a0a883",
+    "content-hash": "8647c40f7cda7647d3799e3012022d9a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2581,7 +2581,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-22/3065933-23.patch"
+                    "#3065933 and #3068913 combined": "resources/patch/cas-3065933_and_3068913-combined.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -13106,7 +13106,7 @@
             "version": "8.3.5",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/coder.git",
+                "url": "https://git.drupalcode.org/project/coder.git",
                 "reference": "35277fc8675b6a2cbb194f8880145a9c85c845c4"
             },
             "require": {
