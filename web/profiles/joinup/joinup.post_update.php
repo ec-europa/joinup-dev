@@ -141,6 +141,8 @@ function joinup_post_update_legal() {
     'page_manager',
   ]);
 
+  drupal_flush_all_caches();
+
   $module_installer->install(['joinup_legal']);
 
   // Create initial content.

@@ -101,7 +101,7 @@
         "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "drupal/admin_toolbar": "^1.23",
         "drupal/cas_mock_server": "~1.0",
-        "drupal/coder": "^8.3.1",
+        "drupal/coder": "^8.3.6",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
         "drupal/default_content": "^1.0-alpha7",
@@ -204,9 +204,6 @@
             },
             "drupal/config_sync": {
                 "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
-            },
-            "drupal/coder": {
-                "Project names calculated incorrectly for themes @see https://github.com/pfrenssen/coder/pull/51": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/51.diff"
             },
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-10-16/85494-261.patch",
