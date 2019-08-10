@@ -124,11 +124,27 @@ Feature: Log in through EU Login
 
   Scenario: An existing user can log in through EU Login
     Given users:
-      | Username    | E-mail           | First name | Family name | Organisation |
-      | jb007_local | 007-local@mi6.eu | JJaammeess | BBoonndd    | 007-local    |
+      | Username    | E-mail           | Password | First name | Family name | Organisation |
+      | jb007_local | 007-local@mi6.eu | 123      | JJaammeess | BBoonndd    | 007-local    |
     Given CAS users:
       | Username | E-mail     | Password           | First name | Last name | Local username |
       | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
+
+    # Try to login using the Drupal login form.
+    Given I go to "/user/login"
+    And I fill in "Email or username" with "jb007_local"
+    And I fill in "Password" with "123"
+    And I wait for the honeypot time limit to pass
+    When I press "Sign in"
+    Then I should see the error message "Please sign in with your EU Login account."
+
+    # Test the password reset customized message as anonymous.
+    Given I visit "/user/password"
+    And I fill in "Email" with "007-local@mi6.eu"
+    And I wait for the honeypot time limit to pass
+    And I press "Submit"
+    Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
+    And I should see the link "EU Login"
 
     Given I am on the homepage
     And I click "Sign in"
@@ -146,3 +162,10 @@ Feature: Log in through EU Login
       | E-mail       | 007-local@mi6.eu                |
       | First name   | James                           |
       | Family name  | Bond                            |
+
+    # Test the customized message as logged in user.
+    Given I visit "/user/password"
+    And I wait for the honeypot time limit to pass
+    And I press "Submit"
+    Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
+    And I should see the link "EU Login"
