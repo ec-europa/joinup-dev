@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e5438ff84b407108d4389e277a0a883",
+    "content-hash": "5dee18639036faa045f7c119ad653b7d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.109.0",
+            "version": "3.109.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f0c2725d146c4c7d5386e3e9765e68e316ab9acb"
+                "reference": "1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f0c2725d146c4c7d5386e3e9765e68e316ab9acb",
-                "reference": "f0c2725d146c4c7d5386e3e9765e68e316ab9acb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31",
+                "reference": "1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-08T18:37:53+00:00"
+            "time": "2019-08-09T18:17:08+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -13103,11 +13103,11 @@
         },
         {
             "name": "drupal/coder",
-            "version": "8.3.5",
+            "version": "8.3.6",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/coder.git",
-                "reference": "35277fc8675b6a2cbb194f8880145a9c85c845c4"
+                "url": "https://git.drupalcode.org/project/coder.git",
+                "reference": "4337ddf58d28dbdee4e1367bf71ee13393ab9820"
             },
             "require": {
                 "ext-mbstring": "*",
@@ -13119,11 +13119,6 @@
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
-            "extra": {
-                "patches_applied": {
-                    "Project names calculated incorrectly for themes @see https://github.com/pfrenssen/coder/pull/51": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/51.diff"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\": "coder_sniffer/Drupal/",
@@ -13141,7 +13136,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-06-14T15:06:06+00:00"
+            "time": "2019-08-09T09:27:26+00:00"
         },
         {
             "name": "drupal/config_devel",
