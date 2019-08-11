@@ -176,3 +176,16 @@ function joinup_post_update_legal() {
     ],
   ])->save();
 }
+
+/**
+ * Clears the cache of the config importer after applying the actions' weights.
+ *
+ * @throws \Exception
+ *   Thrown if the method is called without the core update function.
+ */
+function joinup_post_update_clear_config_cache() {
+  /** @var \Drupal\config_sync\ConfigSyncSnapshotter $service */
+  $service = \Drupal::service('config_sync.snapshotter');
+  $service->deleteSnapshot();
+  $service->refreshSnapshot();
+}
