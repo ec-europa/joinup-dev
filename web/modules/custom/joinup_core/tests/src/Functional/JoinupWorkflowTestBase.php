@@ -24,14 +24,14 @@ abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
   /**
    * The og membership access manager service.
    *
-   * @var \Drupal\og\OgAccess
+   * @var \Drupal\og\OgAccessInterface
    */
   protected $ogAccess;
 
   /**
    * The og membership manager service.
    *
-   * @var \Drupal\og\MembershipManager
+   * @var \Drupal\og\MembershipManagerInterface
    */
   protected $ogMembershipManager;
 
@@ -45,7 +45,7 @@ abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
   /**
    * The workflow helper service.
    *
-   * @var \Drupal\joinup_core\WorkflowHelper
+   * @var \Drupal\joinup_core\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -92,7 +92,7 @@ abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
   protected function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
     $membership->save();
-    $loaded = $this->ogMembershipManager->getMembership($group, $user);
+    $loaded = $this->ogMembershipManager->getMembership($group, $user->id());
     $this->assertInstanceOf(OgMembership::class, $loaded, $this->t('A membership was successfully created.'));
   }
 

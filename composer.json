@@ -42,8 +42,8 @@
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0@beta",
         "drupal/migrate_spreadsheet": "~1.0",
-        "drupal/og": "^1.0-alpha3",
-        "drupal/og_menu": "^1.0-alpha3",
+        "drupal/og": "dev-1.x",
+        "drupal/og_menu": "dev-1.x",
         "drupal/page_manager": "dev-4.x#b2c5d9a5905e45d348c1109424eb3630034f761d",
         "drupal/password_policy": "^3.0-alpha5",
         "drupal/pathauto": "~1.4",
@@ -226,6 +226,9 @@
             "drupal/message_notify": {
                 "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
             },
+            "drupal/og_menu": {
+                "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
+            },
             "drupal/page_manager": {
                 "Support contextual links @see https://www.drupal.org/project/page_manager/issues/2601004": "https://www.drupal.org/files/issues/2019-05-27/2601004-30.patch"
             },
@@ -284,10 +287,6 @@
             "url": "https://git.drupal.org/project/redirect.git"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/ec-europa/spdx.git"
-        },
-        {
             "type": "package",
             "package": {
                 "name": "spdx/license-list-data",
@@ -301,6 +300,10 @@
         },
         {
             "type": "vcs",
+            "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/ec-europa/rdf_entity.git"
         },
         {
@@ -309,7 +312,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
+            "url": "https://github.com/ec-europa/spdx.git"
         },
         {
             "type": "vcs",
