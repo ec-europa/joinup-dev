@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5dee18639036faa045f7c119ad653b7d",
+    "content-hash": "5741f716b6aeb4a583550fc42ca74eb7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2556,11 +2556,14 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas.git",
-                "reference": "5d52cb5423db547188965cd7ccd88b80b6000e95"
+                "reference": "4bedf649ee7fbead7283098583c8951f07c69690"
             },
             "require": {
                 "drupal/core": "~8.0",
-                "drupal/externalauth": "*"
+                "drupal/externalauth": "^1.1"
+            },
+            "require-dev": {
+                "drupal/cas_mock_server": "dev-0.x"
             },
             "type": "drupal-module",
             "extra": {
@@ -2568,8 +2571,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5+2-dev",
-                    "datestamp": "1553044385",
+                    "version": "8.x-1.5+5-dev",
+                    "datestamp": "1565572081",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -2579,9 +2582,6 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
-                },
-                "patches_applied": {
-                    "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-22/3065933-23.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2617,7 +2617,7 @@
                 "issues": "http://drupal.org/project/issues/cas",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2019-05-08T00:07:59+00:00"
+            "time": "2019-08-12T01:11:23+00:00"
         },
         {
             "name": "drupal/cas_account_link",
@@ -13099,7 +13099,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-08-09T07:05:49+00:00"
         },
         {
             "name": "drupal/coder",
