@@ -160,7 +160,7 @@ function joinup_notification_mail_alter(&$message) {
     /** @var \Drupal\message\Entity\Message $message_entity */
     $message_entity = $message['params']['message_entity'];
     if ($message_entity && $message_entity->hasField('field_message_bcc') && !$message_entity->get('field_message_bcc')->isEmpty()) {
-      $bcc = array_map(function($value) {
+      $bcc = array_map(function ($value) {
         return $value['value'];
       }, $message_entity->get('field_message_bcc')->getValue());
       $message['headers']['Bcc'] = implode(' ', $bcc);

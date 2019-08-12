@@ -208,14 +208,13 @@ abstract class NotificationSubscriberBase {
   /**
    * Retrieves a list of emails from a given list of roles.
    *
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The group entity.
    * @param array $bcc_data
    *   An associative array of roles indexed by the 'roles' key or the
    *   'og_roles' key depending on whether it is a site wide role or an og role.
    * @param array $uids_to_skip
    *   (optional) An array of ids to skip.
-   * @param
    *
    * @return array
    *   An array of emails.
@@ -225,7 +224,7 @@ abstract class NotificationSubscriberBase {
     foreach ($bcc_data['roles'] as $role_id) {
       $uids = $this->getRecipientIdsByRole($role_id);
       if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
-        $emails = array_map(function(UserInterface $user): string {
+        $emails = array_map(function (UserInterface $user): string {
           return $user->getEmail();
         }, $this->entityTypeManager->getStorage('user')->loadMultiple($uids));
         $return += $emails;
@@ -238,7 +237,7 @@ abstract class NotificationSubscriberBase {
         $role = $og_role_storage->load($role_id);
         $uids = $this->getRecipientIdsByOgRole($entity, $role);
         if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
-          $emails = array_map(function(UserInterface $user): string {
+          $emails = array_map(function (UserInterface $user): string {
             return $user->getEmail();
           }, $this->entityTypeManager->getStorage('user')->loadMultiple($uids));
           $return += $emails;
