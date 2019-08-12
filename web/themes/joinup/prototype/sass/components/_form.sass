@@ -107,6 +107,15 @@
       content: '*'
       color: $color-error
 
+.form__with-asterisk .mdl-checkbox__label label.form-required
+  &:before
+    display: none
+  &:after
+    display: inline-block
+    content: "*"
+    color: #eb5b5c
+    margin: 0 0 0 5px
+
 .form__exposed-form
   select, .form-item
     width: 100%
