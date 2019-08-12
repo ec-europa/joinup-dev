@@ -174,6 +174,7 @@ Feature: Moderate community content
     # Approve the content, and check that it no longer shows up in the moderation overview.
     When I press "Publish"
     Then I should see the success message "Discussion Black-body spectrum radiation has been updated."
+    When I go to the homepage of the "Black hole research" collection
     And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should not see the text "Black-body spectrum radiation"
@@ -321,6 +322,7 @@ Feature: Moderate community content
 
     When I am logged in as a facilitator of the "Neutron stars" collection
     And I go to the homepage of the "Neutron stars" collection
+    And I open the header local tasks menu
     And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And the available options in the "Content of type" select should be "All (7), Discussion (2), Document (3), Event (1), News (1)"
