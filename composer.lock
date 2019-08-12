@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e5438ff84b407108d4389e277a0a883",
+    "content-hash": "5741f716b6aeb4a583550fc42ca74eb7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.109.0",
+            "version": "3.109.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f0c2725d146c4c7d5386e3e9765e68e316ab9acb"
+                "reference": "1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f0c2725d146c4c7d5386e3e9765e68e316ab9acb",
-                "reference": "f0c2725d146c4c7d5386e3e9765e68e316ab9acb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31",
+                "reference": "1fb0ddf20c9b1a82dcc4dbae2362bb6de1392d31",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-08T18:37:53+00:00"
+            "time": "2019-08-09T18:17:08+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2556,11 +2556,14 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas.git",
-                "reference": "5d52cb5423db547188965cd7ccd88b80b6000e95"
+                "reference": "4bedf649ee7fbead7283098583c8951f07c69690"
             },
             "require": {
                 "drupal/core": "~8.0",
-                "drupal/externalauth": "*"
+                "drupal/externalauth": "^1.1"
+            },
+            "require-dev": {
+                "drupal/cas_mock_server": "dev-0.x"
             },
             "type": "drupal-module",
             "extra": {
@@ -2568,8 +2571,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5+2-dev",
-                    "datestamp": "1553044385",
+                    "version": "8.x-1.5+5-dev",
+                    "datestamp": "1565572081",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -2579,9 +2582,6 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
-                },
-                "patches_applied": {
-                    "Allow user interaction to be inserted into the flow @see https://www.drupal.org/project/cas/issues/3065933": "https://www.drupal.org/files/issues/2019-07-22/3065933-23.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2617,7 +2617,7 @@
                 "issues": "http://drupal.org/project/issues/cas",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2019-05-08T00:07:59+00:00"
+            "time": "2019-08-12T01:11:23+00:00"
         },
         {
             "name": "drupal/cas_account_link",
@@ -13016,7 +13016,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "de5c3477b2854d559c1848b3e3454228bb672ea4"
+                "reference": "6633266bde30e75b9cca1f2277c7dd5b6700a8bf"
             },
             "require": {
                 "drupal/cas": "~1.5",
@@ -13032,7 +13032,8 @@
                 "drush/drush": "^9.7",
                 "mikey179/vfsstream": "^1.6",
                 "phpunit/phpunit": "~6",
-                "symfony/phpunit-bridge": "^3.4|^4.3"
+                "symfony/phpunit-bridge": "^3.4|^4.3",
+                "zaporylie/composer-drupal-optimizations": "^1.1"
             },
             "suggest": {
                 "drupal/config_override_warn": "Shows a warning on the CAS configuration form when the mock server is active."
@@ -13044,7 +13045,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1563608285",
+                    "datestamp": "1565334485",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -13099,15 +13100,15 @@
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
             },
-            "time": "2019-07-20T07:31:17+00:00"
+            "time": "2019-08-09T07:05:49+00:00"
         },
         {
             "name": "drupal/coder",
-            "version": "8.3.5",
+            "version": "8.3.6",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/coder.git",
-                "reference": "35277fc8675b6a2cbb194f8880145a9c85c845c4"
+                "url": "https://git.drupalcode.org/project/coder.git",
+                "reference": "4337ddf58d28dbdee4e1367bf71ee13393ab9820"
             },
             "require": {
                 "ext-mbstring": "*",
@@ -13119,11 +13120,6 @@
                 "phpunit/phpunit": ">=3.7 <6"
             },
             "type": "phpcodesniffer-standard",
-            "extra": {
-                "patches_applied": {
-                    "Project names calculated incorrectly for themes @see https://github.com/pfrenssen/coder/pull/51": "https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/51.diff"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Drupal\\": "coder_sniffer/Drupal/",
@@ -13141,7 +13137,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-06-14T15:06:06+00:00"
+            "time": "2019-08-09T09:27:26+00:00"
         },
         {
             "name": "drupal/config_devel",
