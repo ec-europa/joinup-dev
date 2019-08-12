@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
@@ -8,7 +10,10 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a 'GroupHeaderBlock' block.
+ * Provides the block used as a header on collection and solution pages.
+ *
+ * This header contains the name of the group, as well as some statistics and
+ * the join / leave buttons.
  *
  * @Block(
  *   id = "group_header_block",
@@ -28,7 +33,7 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
   protected $entityTypeManager;
 
   /**
-   * Construct.
+   * Constructs an instance of the GroupHeaderBlock.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -48,7 +53,7 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static(
       $configuration,
       $plugin_id,
@@ -60,7 +65,7 @@ class GroupHeaderBlock extends BlockBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     /** @var \Drupal\Core\Entity\EntityInterface $group */
     $group = $this->getContext('og')->getContextValue();
     $view_builder = $this->entityTypeManager->getViewBuilder($group->getEntityTypeId());
