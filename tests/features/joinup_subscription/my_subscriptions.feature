@@ -17,21 +17,33 @@ Feature: My subscriptions
     Given I am an anonymous user
     When I go to the subscription settings of "Auric Goldfinger"
     Then I should see the error message "Access denied. You must sign in to view this page."
+    When I go to the public profile of "Auric Goldfinger"
+    Then I should not see the link "Subscriptions"
 
     # Authenticated users can manage their own subscriptions.
     Given I am logged in as "Auric Goldfinger"
     When I go to the subscription settings of "Auric Goldfinger"
+    Then I should see the heading "Subscription settings"
+    When I go to the public profile of "Auric Goldfinger"
+    Then I should see the link "Subscriptions" in the "Entity actions" region
+    When I click "Subscriptions" in the "Entity actions" region
     Then I should see the heading "Subscription settings"
 
     # Moderators can manage subscriptions of any user.
     Given I am logged in as a moderator
     When I go to the subscription settings of "Auric Goldfinger"
     Then I should see the heading "Subscription settings"
+    When I go to the public profile of "Auric Goldfinger"
+    Then I should see the link "Subscriptions" in the "Entity actions" region
+    When I click "Subscriptions" in the "Entity actions" region
+    Then I should see the heading "Subscription settings"
 
     # Users cannot access subscription settings of other users.
     Given I am logged in as "Chanelle Testa"
     When I go to the subscription settings of "Auric Goldfinger"
     Then I should get an access denied error
+    When I go to the public profile of "Auric Goldfinger"
+    Then I should not see the link "Subscriptions"
 
   Scenario: Check default subscription frequency for a new user
     When I am logged in as a user with the "authenticated" role
