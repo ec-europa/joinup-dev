@@ -1,0 +1,6 @@
+joinup.moderate_content:
+  route_name: moderation.content_moderation_overview
+  title: 'Moderate content'
+  base_route: entity.rdf_entity.canonical
+  weight: 199
+
