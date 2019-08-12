@@ -3,4 +3,3 @@ joinup.moderate_content:
   title: 'Moderate content'
   base_route: entity.rdf_entity.canonical
   weight: 199
-
