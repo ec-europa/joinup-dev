@@ -156,7 +156,28 @@ function joinup_notification_mail_alter(&$message) {
       $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
       $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
     }
+
+    /** @var \Drupal\message\Entity\Message $message_entity */
+    $message_entity = $message['params']['message_entity'];
+    if ($message_entity && $message_entity->hasField('field_message_bcc') && !$message_entity->get('field_message_bcc')->isEmpty()) {
+      $bcc = array_map(function($value) {
+        return $value['value'];
+      }, $message_entity->get('field_message_bcc')->getValue());
+      $message['headers']['Bcc'] = implode(' ', $bcc);
+    }
   }
+
+  /**
+   * Implements hook_swiftmailer_alter().
+   *
+   * Handles Bcc in case the email is sent with swiftmailer.
+   */
+  function joinup_notification_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Message &$swiftMessage, $message) {
+    if (isset($message['headers']['Bcc'])) {
+      $swiftMessage->setBcc(explode(' ', $message['headers']['Bcc']));
+    }
+  }
+
 }
 
 /**

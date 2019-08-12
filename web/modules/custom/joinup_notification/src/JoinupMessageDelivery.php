@@ -112,6 +112,32 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
+  public function addBccRecipients(array $bcc_emails): JoinupMessageDeliveryInterface {
+    if (empty($this->message)) {
+      throw new \Exception('The message has not been initialized yet.');
+    }
+    if (!$this->message->hasField('field_message_bcc')) {
+      throw new \Exception('This message type does not support bcc. Please, add the field_message_bcc field to it.');
+    }
+
+    // Ensure that an empty list is not going to remove the previous entries.
+    if (empty($bcc_emails)) {
+      return $this;
+    }
+
+    $values = $this->message->get('field_message_bcc')->getValue();
+    $values = array_map(function (array $value): string {
+      return $value['value'];
+    }, $values);
+
+    $final = array_unique(array_merge($values, $bcc_emails));
+    $this->message->set('field_message_bcc', $final);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function sendMail(): bool {
     if (empty($this->message) || !$this->message instanceof MessageInterface) {
       throw new \RuntimeException("Message entity not set or is invalid. Use ::setMessage() to set a message entity or ::createMessage() to create one.");

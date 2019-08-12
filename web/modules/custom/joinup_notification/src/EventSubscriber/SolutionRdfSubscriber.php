@@ -232,7 +232,13 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
 
       // Notification ids handled: 10.
       case 'request_deletion':
-        $user_data = ['roles' => ['moderator' => [self::TEMPLATE_REQUEST_DELETION]]];
+        $user_data = [
+          'roles' => [
+            'moderator' => [
+              self::TEMPLATE_REQUEST_DELETION,
+            ],
+          ],
+        ];
         $this->getUsersAndSend($user_data);
         break;
 
@@ -257,7 +263,8 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
             ],
           ],
         ];
-        $this->getUsersAndSend($user_data);
+        $bcc_data = ['roles' => ['moderator']];
+        $this->getUsersAndSend($user_data, $bcc_data);
         break;
 
     }
@@ -314,7 +321,13 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
         break;
 
       case 'needs_update':
-        $user_data = ['roles' => ['moderator' => [self::TEMPLATE_PROPOSE_FROM_REQUEST_CHANGES]]];
+        $user_data = [
+          'roles' => [
+            'moderator' => [
+              self::TEMPLATE_PROPOSE_FROM_REQUEST_CHANGES,
+            ],
+          ],
+        ];
         break;
 
       // The only case left is when the entity is proposed from the owner when
@@ -506,12 +519,23 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *
    * @param array $user_data
    *   The user data array.
+   * @param array $bcc_data
+   *   (optional) A list of users to pass as bcc. The template must have the
+   *   field_message_bcc field.
    *
    * @see: ::getUsersMessages() for more information on the array.
    */
-  protected function getUsersAndSend(array $user_data) {
+  protected function getUsersAndSend(array $user_data, array $bcc_data = NULL) {
     $user_data = $this->getUsersMessages($user_data);
-    $this->sendUserDataMessages($user_data);
+    if (!empty($bcc_data)) {
+      $ids_to_skip = [];
+      foreach ($user_data as $user_ids) {
+        $ids_to_skip += $user_ids;
+      }
+      $bcc_data = $this->getBccEmails($this->entity, $bcc_data, $ids_to_skip);
+    }
+
+    $this->sendUserDataMessages($user_data, [], $bcc_data);
   }
 
   /**
