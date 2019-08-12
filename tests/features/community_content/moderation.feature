@@ -281,6 +281,7 @@ Feature: Moderate community content
     # Approve the content, and check that it no longer shows up in the moderation overview.
     When I press "Publish"
     Then I should see the success message "Discussion Cataclysmic variables has been updated."
+    When I go to the homepage of the "Survey For Supernovae" solution
     And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should not see the text "Cataclysmic variables"
@@ -292,6 +293,7 @@ Feature: Moderate community content
     And I fill in "Title" with "Cataclysmic conditions"
     And I fill in "Motivation" with "This is a regression issue."
     And I press "Request changes"
+    And I go to the homepage of the "Survey For Supernovae" solution
     And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should see the text "Cataclysmic conditions"

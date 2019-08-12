@@ -90,7 +90,8 @@ Feature: Subscribing to collection newsletters
   Scenario: Subscribe to a newsletter
     Given I am logged in as "Magdalini Kokinos"
     When I go to the "Volkor X" collection
-    When I click "Edit" in the "Entity actions" region
+    And I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     And I check "Enable newsletter subscriptions"
     And I fill in "Universe acronym" with "volkor-x"
