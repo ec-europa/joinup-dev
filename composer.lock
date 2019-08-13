@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7d2c138d75c3c5221b865c98e699ebe",
+    "content-hash": "864520854a475b3442a88efb5960f134",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3090,7 +3090,7 @@
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
                     "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
-                    "Delete should not be the first action @see https://www.drupal.org/project/drupal/issues/2381293": "resources/patch/2381293_D8-89_8.7.x.patch"
+                    "Delete should not be the first action @see https://www.drupal.org/project/drupal/issues/2381293": "resources/patch/2381293_D8-90_8.7.x.patch"
                 }
             },
             "autoload": {

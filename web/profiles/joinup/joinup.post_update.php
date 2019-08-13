@@ -180,14 +180,14 @@ function joinup_post_update_legal() {
 }
 
 /**
- * Clears the cache of the config importer after applying the actions' weights.
- *
- * @throws \Exception
- *   Thrown if the method is called without the core update function.
+ * Sets the default action for the single og role management.
  */
-function joinup_post_update_clear_config_cache() {
-  /** @var \Drupal\config_sync\ConfigSyncSnapshotter $service */
-  $service = \Drupal::service('config_sync.snapshotter');
-  $service->deleteSnapshot();
-  $service->refreshSnapshot();
+function joinup_post_update_set_default_og_action_weight() {
+  $config_factory = \Drupal::configFactory();
+  $action = $config_factory->getEditable('system.action.og_membership_remove_single_role_action');
+  $data = $action->getRawData();
+  $data['weight'] = 0;
+
+  $action->setData($data);
+  $action->save();
 }
