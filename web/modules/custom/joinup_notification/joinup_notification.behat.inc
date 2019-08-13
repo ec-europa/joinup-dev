@@ -168,7 +168,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       }
 
       if (isset($bcc)) {
-        Assert::assertEquals($bcc, $mail['headers']['Bcc'], 'Bcc is properly set to the email.');
+        Assert::assertContains($bcc, $mail['headers']['Bcc'], 'Bcc is properly set to the email.');
       }
 
       // We found a match. Stop searching.
