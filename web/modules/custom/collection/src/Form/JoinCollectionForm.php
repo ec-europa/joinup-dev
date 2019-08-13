@@ -233,7 +233,7 @@ class JoinCollectionForm extends FormBase {
    *   The membership of the user or null.
    */
   protected function getUserNonBlockedMembership(UserInterface $user, RdfInterface $collection) {
-    $membership = $this->membershipManager->getMembership($collection, $user, [
+    $membership = $this->membershipManager->getMembership($collection, $user->id(), [
       OgMembershipInterface::STATE_ACTIVE,
       OgMembershipInterface::STATE_PENDING,
     ]);
