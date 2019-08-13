@@ -258,10 +258,10 @@ index 26c9c39bd3..e26b83da08 100644
     * {@inheritdoc}
     */
 diff --git a/core/modules/system/system.post_update.php b/core/modules/system/system.post_update.php
-index 11f72ecfeb..01797aff5d 100644
+index 11f72ecfeb..5de9e8cd02 100644
 --- a/core/modules/system/system.post_update.php
 +++ b/core/modules/system/system.post_update.php
-@@ -206,3 +206,49 @@ function system_post_update_add_expand_all_items_key_in_system_menu_block(&$sand
+@@ -206,3 +206,48 @@ function system_post_update_add_expand_all_items_key_in_system_menu_block(&$sand
  function system_post_update_clear_menu_cache() {
    // Empty post-update hook.
  }
@@ -282,16 +282,15 @@ index 11f72ecfeb..01797aff5d 100644
 +    'system.action.node_save_action' => 0,
 +  ];
 +
-+  if (!empty($data['weight'])) {
-+    continue;
-+  }
-+
 +  $config_factory = \Drupal::configFactory();
 +
 +  // Find all system action configs.
 +  foreach ($config_factory->listAll('system.action.') as $action_name) {
 +    $action = $config_factory->getEditable($action_name);
 +    $data = $action->getRawData();
++    if (isset($data['weight']) && !is_int($data['weight'])) {
++      continue;
++    }
 +
 +    // Set appropriate weights to node actions, otherwise set 0 as default
 +    // weight for other actions.
