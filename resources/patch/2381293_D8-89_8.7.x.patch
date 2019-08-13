@@ -1,0 +1,453 @@
+diff --git a/core/modules/comment/config/install/system.action.comment_delete_action.yml b/core/modules/comment/config/install/system.action.comment_delete_action.yml
+index 08f796667e..547ddd3caa 100644
+--- a/core/modules/comment/config/install/system.action.comment_delete_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_delete_action.yml
+@@ -7,4 +7,5 @@ id: comment_delete_action
+ label: 'Delete comment'
+ type: comment
+ plugin: entity:delete_action:comment
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/comment/config/install/system.action.comment_publish_action.yml b/core/modules/comment/config/install/system.action.comment_publish_action.yml
+index 7a47b2d9e6..35d61038a8 100644
+--- a/core/modules/comment/config/install/system.action.comment_publish_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_publish_action.yml
+@@ -7,4 +7,5 @@ id: comment_publish_action
+ label: 'Publish comment'
+ type: comment
+ plugin: entity:publish_action:comment
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/comment/config/install/system.action.comment_save_action.yml b/core/modules/comment/config/install/system.action.comment_save_action.yml
+index 614cf4b681..09cc92794c 100644
+--- a/core/modules/comment/config/install/system.action.comment_save_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_save_action.yml
+@@ -7,4 +7,5 @@ id: comment_save_action
+ label: 'Save comment'
+ type: comment
+ plugin: entity:save_action:comment
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/comment/config/install/system.action.comment_unpublish_action.yml b/core/modules/comment/config/install/system.action.comment_unpublish_action.yml
+index a1800b4a8c..fa251eeeb7 100644
+--- a/core/modules/comment/config/install/system.action.comment_unpublish_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_unpublish_action.yml
+@@ -7,4 +7,5 @@ id: comment_unpublish_action
+ label: 'Unpublish comment'
+ type: comment
+ plugin: entity:unpublish_action:comment
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/jsonapi/tests/src/Functional/ActionTest.php b/core/modules/jsonapi/tests/src/Functional/ActionTest.php
+index 796494c21d..db1aeffa0d 100644
+--- a/core/modules/jsonapi/tests/src/Functional/ActionTest.php
++++ b/core/modules/jsonapi/tests/src/Functional/ActionTest.php
+@@ -54,6 +54,7 @@ protected function createEntity() {
+         'rid' => RoleInterface::ANONYMOUS_ID,
+       ],
+       'plugin' => 'user_add_role_action',
++      'weight' => -2,
+     ]);
+     $action->save();
+ 
+@@ -97,6 +98,7 @@ protected function getExpectedDocument() {
+           'status' => TRUE,
+           'action_type' => 'user',
+           'drupal_internal__id' => 'user_add_role_action.anonymous',
++          'weight' => -2,
+         ],
+       ],
+     ];
+diff --git a/core/modules/media/config/optional/system.action.media_delete_action.yml b/core/modules/media/config/optional/system.action.media_delete_action.yml
+index 7311917463..72fd641d7f 100644
+--- a/core/modules/media/config/optional/system.action.media_delete_action.yml
++++ b/core/modules/media/config/optional/system.action.media_delete_action.yml
+@@ -7,4 +7,5 @@ id: media_delete_action
+ label: 'Delete media'
+ type: media
+ plugin: entity:delete_action:media
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/media/config/optional/system.action.media_publish_action.yml b/core/modules/media/config/optional/system.action.media_publish_action.yml
+index 0e5cf4f75b..9927902fe6 100644
+--- a/core/modules/media/config/optional/system.action.media_publish_action.yml
++++ b/core/modules/media/config/optional/system.action.media_publish_action.yml
+@@ -7,4 +7,5 @@ id: media_publish_action
+ label: 'Publish media'
+ type: media
+ plugin: entity:publish_action:media
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/media/config/optional/system.action.media_save_action.yml b/core/modules/media/config/optional/system.action.media_save_action.yml
+index ead7574087..edaadb0c73 100644
+--- a/core/modules/media/config/optional/system.action.media_save_action.yml
++++ b/core/modules/media/config/optional/system.action.media_save_action.yml
+@@ -7,4 +7,5 @@ id: media_save_action
+ label: 'Save media'
+ type: media
+ plugin: entity:save_action:media
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/media/config/optional/system.action.media_unpublish_action.yml b/core/modules/media/config/optional/system.action.media_unpublish_action.yml
+index 2d24d73d5c..c400787dfa 100644
+--- a/core/modules/media/config/optional/system.action.media_unpublish_action.yml
++++ b/core/modules/media/config/optional/system.action.media_unpublish_action.yml
+@@ -7,4 +7,5 @@ id: media_unpublish_action
+ label: 'Unpublish media'
+ type: media
+ plugin: entity:unpublish_action:media
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_delete_action.yml b/core/modules/node/config/install/system.action.node_delete_action.yml
+index da2d886bf9..7e30e5fd6e 100644
+--- a/core/modules/node/config/install/system.action.node_delete_action.yml
++++ b/core/modules/node/config/install/system.action.node_delete_action.yml
+@@ -7,4 +7,5 @@ id: node_delete_action
+ label: 'Delete content'
+ type: node
+ plugin: entity:delete_action:node
++weight: -1
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_make_sticky_action.yml b/core/modules/node/config/install/system.action.node_make_sticky_action.yml
+index 94a81bf860..39fd7461d5 100644
+--- a/core/modules/node/config/install/system.action.node_make_sticky_action.yml
++++ b/core/modules/node/config/install/system.action.node_make_sticky_action.yml
+@@ -7,4 +7,5 @@ id: node_make_sticky_action
+ label: 'Make content sticky'
+ type: node
+ plugin: node_make_sticky_action
++weight: -7
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_make_unsticky_action.yml b/core/modules/node/config/install/system.action.node_make_unsticky_action.yml
+index 6572963566..6b28163cfd 100644
+--- a/core/modules/node/config/install/system.action.node_make_unsticky_action.yml
++++ b/core/modules/node/config/install/system.action.node_make_unsticky_action.yml
+@@ -7,4 +7,5 @@ id: node_make_unsticky_action
+ label: 'Make content unsticky'
+ type: node
+ plugin: node_make_unsticky_action
++weight: -6
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_promote_action.yml b/core/modules/node/config/install/system.action.node_promote_action.yml
+index 7c45a42db3..019e430287 100644
+--- a/core/modules/node/config/install/system.action.node_promote_action.yml
++++ b/core/modules/node/config/install/system.action.node_promote_action.yml
+@@ -7,4 +7,5 @@ id: node_promote_action
+ label: 'Promote content to front page'
+ type: node
+ plugin: node_promote_action
++weight: -5
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_publish_action.yml b/core/modules/node/config/install/system.action.node_publish_action.yml
+index 3e139bbe6a..80f34b5277 100644
+--- a/core/modules/node/config/install/system.action.node_publish_action.yml
++++ b/core/modules/node/config/install/system.action.node_publish_action.yml
+@@ -7,4 +7,5 @@ id: node_publish_action
+ label: 'Publish content'
+ type: node
+ plugin: entity:publish_action:node
++weight: -3
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_save_action.yml b/core/modules/node/config/install/system.action.node_save_action.yml
+index 1759c35ae2..8cf0eaadca 100644
+--- a/core/modules/node/config/install/system.action.node_save_action.yml
++++ b/core/modules/node/config/install/system.action.node_save_action.yml
+@@ -7,4 +7,5 @@ id: node_save_action
+ label: 'Save content'
+ type: node
+ plugin: entity:save_action:node
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_unpromote_action.yml b/core/modules/node/config/install/system.action.node_unpromote_action.yml
+index cb290ddcc4..20e4d2a0d8 100644
+--- a/core/modules/node/config/install/system.action.node_unpromote_action.yml
++++ b/core/modules/node/config/install/system.action.node_unpromote_action.yml
+@@ -7,4 +7,5 @@ id: node_unpromote_action
+ label: 'Remove content from front page'
+ type: node
+ plugin: node_unpromote_action
++weight: -4
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_unpublish_action.yml b/core/modules/node/config/install/system.action.node_unpublish_action.yml
+index 0d5e35e9c8..28f34f485c 100644
+--- a/core/modules/node/config/install/system.action.node_unpublish_action.yml
++++ b/core/modules/node/config/install/system.action.node_unpublish_action.yml
+@@ -7,4 +7,5 @@ id: node_unpublish_action
+ label: 'Unpublish content'
+ type: node
+ plugin: entity:unpublish_action:node
++weight: -2
+ configuration: {  }
+diff --git a/core/modules/node/tests/src/Functional/Views/BulkFormTest.php b/core/modules/node/tests/src/Functional/Views/BulkFormTest.php
+index eded04530d..e533f3da1e 100644
+--- a/core/modules/node/tests/src/Functional/Views/BulkFormTest.php
++++ b/core/modules/node/tests/src/Functional/Views/BulkFormTest.php
+@@ -90,6 +90,18 @@ protected function setUp($import_test_views = TRUE) {
+     $this->drupalGet('test-node-bulk-form');
+     $elements = $this->xpath('//select[@id="edit-action"]//option');
+     $this->assertIdentical(count($elements), 8, 'All node operations are found.');
++
++    // Check the node operations order.
++    $order = TRUE;
++    $order = $order && $elements[0]->getValue() == 'node_make_sticky_action';
++    $order = $order && $elements[1]->getValue() == 'node_make_unsticky_action';
++    $order = $order && $elements[2]->getValue() == 'node_promote_action';
++    $order = $order && $elements[3]->getValue() == 'node_unpromote_action';
++    $order = $order && $elements[4]->getValue() == 'node_publish_action';
++    $order = $order && $elements[5]->getValue() == 'node_unpublish_action';
++    $order = $order && $elements[6]->getValue() == 'node_delete_action';
++    $order = $order && $elements[7]->getValue() == 'node_save_action';
++    $this->assertTrue($order, 'All node operations are in proper order.');
+   }
+ 
+   /**
+diff --git a/core/modules/system/config/schema/system.schema.yml b/core/modules/system/config/schema/system.schema.yml
+index e68bbae5a8..31f5656438 100644
+--- a/core/modules/system/config/schema/system.schema.yml
++++ b/core/modules/system/config/schema/system.schema.yml
+@@ -258,6 +258,9 @@ system.action.*:
+     plugin:
+       type: string
+       label: 'Plugin'
++    weight:
++      type: integer
++      label: 'Weight'
+     configuration:
+       type: action.configuration.[%parent.plugin]
+ 
+diff --git a/core/modules/system/src/Entity/Action.php b/core/modules/system/src/Entity/Action.php
+index 26c9c39bd3..e26b83da08 100644
+--- a/core/modules/system/src/Entity/Action.php
++++ b/core/modules/system/src/Entity/Action.php
+@@ -32,6 +32,7 @@
+  *     "label",
+  *     "type",
+  *     "plugin",
++ *     "weight",
+  *     "configuration",
+  *   }
+  * )
+@@ -73,6 +74,13 @@ class Action extends ConfigEntityBase implements ActionConfigEntityInterface, En
+    */
+   protected $plugin;
+ 
++  /**
++   * The weight of the action.
++   *
++   * @var int
++   */
++  protected $weight;
++
+   /**
+    * The plugin collection that stores action plugins.
+    *
+@@ -143,6 +151,15 @@ public function getType() {
+     return $this->type;
+   }
+ 
++  /**
++   * Returns the weight of operation.
++   *
++   * @return int
++   */
++  public function getWeight() {
++    return $this->weight;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/modules/system/system.post_update.php b/core/modules/system/system.post_update.php
+index 11f72ecfeb..01797aff5d 100644
+--- a/core/modules/system/system.post_update.php
++++ b/core/modules/system/system.post_update.php
+@@ -206,3 +206,45 @@ function system_post_update_add_expand_all_items_key_in_system_menu_block(&$sand
+ function system_post_update_clear_menu_cache() {
+   // Empty post-update hook.
+ }
++
++/**
++ * Set weights to actions.
++ */
++function system_post_update_set_actions_default_weight() {
++  // List of node actions.
++  $node_actions_default_weight = [
++    'system.action.node_make_sticky_action' => -7,
++    'system.action.node_make_unsticky_action' => -6,
++    'system.action.node_promote_action' => -5,
++    'system.action.node_unpromote_action' => -4,
++    'system.action.node_publish_action' => -3,
++    'system.action.node_unpublish_action' => -2,
++    'system.action.node_delete_action' => -1,
++    'system.action.node_save_action' => 0,
++  ];
++
++  $config_factory = \Drupal::configFactory();
++
++  // Find all system action configs.
++  foreach ($config_factory->listAll('system.action.') as $action_name) {
++    $action = $config_factory->getEditable($action_name);
++    $data = $action->getRawData();
++
++    // Set appropriate weights to node actions, otherwise set 0 as default
++    // weight for other actions.
++    if (array_key_exists($action_name, $node_actions_default_weight)) {
++      $data['weight'] = $node_actions_default_weight[$action_name];
++    }
++    elseif (strpos($action_name, 'delete') !== FALSE) {
++      $data['weight'] = -1;
++    }
++    elseif (strpos($action_name, 'save') !== FALSE) {
++      $data['weight'] = 0;
++    }
++    else {
++      $data['weight'] = -2;
++    }
++    $action->setData($data);
++    $action->save();
++  }
++}
+diff --git a/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml b/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
+index 1186ec9472..7e9568a34e 100644
+--- a/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
++++ b/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
+@@ -8,5 +8,6 @@ id: goto_2815379
+ label: 'Goto action'
+ type: system
+ plugin: action_goto_action
++weight: -2
+ configuration:
+   url: /user
+diff --git a/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml b/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml
+index 01b51cee70..d83f974715 100644
+--- a/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml
++++ b/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml
+@@ -8,5 +8,6 @@ id: message_2815379
+ label: 'Display message'
+ type: system
+ plugin: action_message_action
++weight: -2
+ configuration:
+   message: 'Test message'
+diff --git a/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml b/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml
+index 7651bcafdd..8cd395d274 100644
+--- a/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml
++++ b/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml
+@@ -8,6 +8,7 @@ id: send_email_2815379
+ label: 'Send email'
+ type: system
+ plugin: action_send_email_action
++weight: -2
+ configuration:
+   recipient: drupal@example.com
+   subject: Subject
+diff --git a/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php b/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php
+index 5134e910a6..40c7c3794a 100644
+--- a/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php
++++ b/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php
+@@ -67,6 +67,7 @@ protected function getExpectedNormalizedEntity() {
+       'status' => TRUE,
+       'type' => 'user',
+       'uuid' => $this->entity->uuid(),
++      'weight' => NULL,
+     ];
+   }
+ 
+diff --git a/core/modules/user/config/install/system.action.user_block_user_action.yml b/core/modules/user/config/install/system.action.user_block_user_action.yml
+index d9753bc59b..1ef190f5d0 100644
+--- a/core/modules/user/config/install/system.action.user_block_user_action.yml
++++ b/core/modules/user/config/install/system.action.user_block_user_action.yml
+@@ -7,4 +7,5 @@ id: user_block_user_action
+ label: 'Block the selected user(s)'
+ type: user
+ plugin: user_block_user_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/user/config/install/system.action.user_cancel_user_action.yml b/core/modules/user/config/install/system.action.user_cancel_user_action.yml
+index cd90ff2ca1..fd4c4a206b 100644
+--- a/core/modules/user/config/install/system.action.user_cancel_user_action.yml
++++ b/core/modules/user/config/install/system.action.user_cancel_user_action.yml
+@@ -7,4 +7,5 @@ id: user_cancel_user_action
+ label: 'Cancel the selected user account(s)'
+ type: user
+ plugin: user_cancel_user_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/user/config/install/system.action.user_unblock_user_action.yml b/core/modules/user/config/install/system.action.user_unblock_user_action.yml
+index 406edb2066..1d11dd7856 100644
+--- a/core/modules/user/config/install/system.action.user_unblock_user_action.yml
++++ b/core/modules/user/config/install/system.action.user_unblock_user_action.yml
+@@ -7,4 +7,5 @@ id: user_unblock_user_action
+ label: 'Unblock the selected user(s)'
+ type: user
+ plugin: user_unblock_user_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/views/src/Plugin/views/field/BulkForm.php b/core/modules/views/src/Plugin/views/field/BulkForm.php
+index 33b1afb015..cdb15a6518 100644
+--- a/core/modules/views/src/Plugin/views/field/BulkForm.php
++++ b/core/modules/views/src/Plugin/views/field/BulkForm.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\views\Plugin\views\field;
+ 
++use Drupal\Component\Utility\SortArray;
+ use Drupal\Core\Cache\CacheableDependencyInterface;
+ use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
+ use Drupal\Core\Entity\EntityInterface;
+@@ -376,9 +377,12 @@ protected function getBulkOptions($filtered = TRUE) {
+         }
+       }
+ 
+-      $options[$id] = $action->label();
++      $options[$id] = $action->toArray();
+     }
+ 
++    // Sort and get "label" indexed by the "id".
++    uasort($options, [SortArray::class, 'sortByWeightElement']);
++    $options = array_column($options, 'label', 'id');
+     return $options;
+   }
+ 
+diff --git a/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php b/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php
+index e3faa88405..aec39dfeb4 100644
+--- a/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php
++++ b/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php
+@@ -58,7 +58,11 @@ public function testBulkSelection() {
+ 
+     // Now click 'Apply to selected items' and assert the first node is selected
+     // on the confirm form.
+-    $this->drupalPostForm(NULL, ['node_bulk_form[0]' => TRUE], 'Apply to selected items');
++    $edit = [
++      'node_bulk_form[0]' => TRUE,
++      'action' => 'node_delete_action',
++    ];
++    $this->drupalPostForm(NULL, $edit, 'Apply to selected items');
+     $this->assertText($node_1->getTitle());
+     $this->assertNoText($node_2->getTitle());
+ 
+@@ -76,7 +80,11 @@ public function testBulkSelection() {
+ 
+     // Now click 'Apply to selected items' and assert the second node is
+     // selected on the confirm form.
+-    $this->drupalPostForm(NULL, ['node_bulk_form[1]' => TRUE], 'Apply to selected items');
++    $edit = [
++      'node_bulk_form[1]' => TRUE,
++      'action' => 'node_delete_action',
++    ];
++    $this->drupalPostForm(NULL, $edit, 'Apply to selected items');
+     $this->assertText($node_1->getTitle());
+     $this->assertNoText($node_3->getTitle());
+   }
+diff --git a/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml b/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml
+index f902ff1a68..99b35e1244 100644
+--- a/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml
++++ b/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml
+@@ -4,6 +4,7 @@ status: true
+ langcode: en
+ type: user
+ plugin: user_block_user_action
++weight: 0
+ dependencies:
+   module:
+     - user
