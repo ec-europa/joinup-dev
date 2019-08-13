@@ -364,7 +364,7 @@ abstract class NotificationSubscriberBase {
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = NULL) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []) : bool {
     $arguments += $this->generateArguments($this->entity);
 
     $success = TRUE;

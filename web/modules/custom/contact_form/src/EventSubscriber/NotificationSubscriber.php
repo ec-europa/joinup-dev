@@ -127,7 +127,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    *
    * Skip generating the arguments during the sending process.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = NULL) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []) : bool {
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
       $success = $success && $this->messageDelivery
