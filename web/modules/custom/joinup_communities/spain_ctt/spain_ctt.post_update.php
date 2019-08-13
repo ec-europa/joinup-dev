@@ -202,7 +202,7 @@ function spain_ctt_post_update_set_solutions_owner(array &$sandbox) {
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
   foreach (Rdf::loadMultiple($solution_ids) as $solution) {
-    if (!empty($membership_manager->getMembership($solution, $user, OgMembershipInterface::ALL_STATES))) {
+    if (!empty($membership_manager->getMembership($solution, $user->id(), OgMembershipInterface::ALL_STATES))) {
       continue;
     }
     $membership = $membership_manager->createMembership($solution, $user);
