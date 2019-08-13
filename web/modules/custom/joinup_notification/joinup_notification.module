@@ -163,18 +163,7 @@ function joinup_notification_mail_alter(&$message) {
       $bcc = array_map(function ($value) {
         return $value['value'];
       }, $message_entity->get('field_message_bcc')->getValue());
-      $message['headers']['Bcc'] = implode(' ', $bcc);
-    }
-  }
-
-  /**
-   * Implements hook_swiftmailer_alter().
-   *
-   * Handles Bcc in case the email is sent with swiftmailer.
-   */
-  function joinup_notification_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Message &$swiftMessage, $message) {
-    if (isset($message['headers']['Bcc'])) {
-      $swiftMessage->setBcc(explode(' ', $message['headers']['Bcc']));
+      $message['headers']['Bcc'] = implode(';', $bcc);
     }
   }
 
