@@ -525,7 +525,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    *
    * @see: ::getUsersMessages() for more information on the array.
    */
-  protected function getUsersAndSend(array $user_data, array $bcc_data = NULL) {
+  protected function getUsersAndSend(array $user_data, array $bcc_data = []) {
     $user_data = $this->getUsersMessages($user_data);
     if (!empty($bcc_data)) {
       $ids_to_skip = [];

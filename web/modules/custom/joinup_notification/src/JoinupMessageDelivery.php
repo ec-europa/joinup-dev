@@ -113,16 +113,16 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    * {@inheritdoc}
    */
   public function addBccRecipients(array $bcc_emails): JoinupMessageDeliveryInterface {
+    // If there are no bcc recipients, return early.
+    if (empty($bcc_emails)) {
+      return $this;
+    }
+
     if (empty($this->message)) {
       throw new \Exception('The message has not been initialized yet.');
     }
     if (!$this->message->hasField('field_message_bcc')) {
       throw new \Exception('This message type does not support bcc. Please, add the field_message_bcc field to it.');
-    }
-
-    // Ensure that an empty list is not going to remove the previous entries.
-    if (empty($bcc_emails)) {
-      return $this;
     }
 
     $values = $this->message->get('field_message_bcc')->getValue();
