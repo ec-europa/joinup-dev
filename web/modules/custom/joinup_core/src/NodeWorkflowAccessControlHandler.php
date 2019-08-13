@@ -77,7 +77,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * The membership manager.
    *
-   * @var \Drupal\og\MembershipManager
+   * @var \Drupal\og\MembershipManagerInterface
    */
   protected $membershipManager;
 
@@ -203,7 +203,7 @@ class NodeWorkflowAccessControlHandler {
           return AccessResult::forbidden();
         }
         $parent = $this->relationManager->getParent($entity);
-        $membership = $this->membershipManager->getMembership($parent, $account);
+        $membership = $this->membershipManager->getMembership($parent, $account->id());
         if ($membership instanceof OgMembership) {
           return AccessResult::allowedIf($membership->hasPermission($operation));
         }
@@ -372,7 +372,7 @@ class NodeWorkflowAccessControlHandler {
    */
   protected function userHasRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
     $parent = $this->getEntityParent($entity);
-    $membership = $this->membershipManager->getMembership($parent, $account);
+    $membership = $this->membershipManager->getMembership($parent, $account->id());
 
     // First check the 'any' permissions.
     if (isset($roles['roles'])) {

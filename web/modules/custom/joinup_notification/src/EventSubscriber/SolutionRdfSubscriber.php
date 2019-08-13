@@ -455,7 +455,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
     $arguments['@transition:motivation'] = $motivation;
 
     if (empty($arguments['@actor:role'])) {
-      $membership = $this->membershipManager->getMembership($entity, $actor);
+      $membership = $this->membershipManager->getMembership($entity, $actor->id());
       if (!empty($membership)) {
         $role_names = array_map(function (OgRoleInterface $og_role) {
           return $og_role->getName();

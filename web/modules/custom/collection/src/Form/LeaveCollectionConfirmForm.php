@@ -16,7 +16,6 @@ use Drupal\og\MembershipManagerInterface;
 use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -108,9 +107,9 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     $this->collection = $rdf_entity;
 
     $form = parent::buildForm($form, $form_state);
-    $user = $this->getCurrentUser();
+    $user = $this->currentUser();
 
-    if ($membership = $this->membershipManager->getMembership($this->collection, $user)) {
+    if ($membership = $this->membershipManager->getMembership($this->collection, $user->id())) {
       $admin_role_id = $this->collection->getEntityTypeId() . '-' . $this->collection->bundle() . '-' . 'administrator';
       if ($membership->hasRole($admin_role_id)) {
         $administrators = $this->membershipManager->getGroupMembershipsByRoleNames($this->collection, ['administrator']);
@@ -146,7 +145,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     parent::validateForm($form, $form_state);
 
     // Only authenticated users can leave a collection.
-    $user = $this->getCurrentUser();
+    $user = $this->currentUser();
     if ($user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
         ':login' => Url::fromRoute('user.login'),
@@ -154,7 +153,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       ]));
     }
 
-    if (!$this->membershipManager->isMember($this->collection, $user)) {
+    if (!$this->membershipManager->isMember($this->collection, $user->id())) {
       $form_state->setErrorByName('collection', $this->t('You are not a member of this collection. You cannot leave it.'));
     }
   }
@@ -163,7 +162,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $user = $this->getCurrentUser();
+    $user = $this->currentUser();
 
     $membership = $this->membershipManager->getMembership($this->collection, $user);
     $membership->delete();
@@ -221,17 +220,6 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
    */
   protected function isModal(): bool {
     return $this->getRequest()->query->get(MainContentViewSubscriber::WRAPPER_FORMAT) === 'drupal_modal';
-  }
-
-  /**
-   * Returns the fully loaded User entity for the current user.
-   *
-   * @return \Drupal\user\UserInterface
-   *   The user entity.
-   */
-  protected function getCurrentUser(): UserInterface {
-    $user_id = $this->currentUser()->id();
-    return $this->entityTypeManager->getStorage('user')->load($user_id);
   }
 
 }

@@ -124,7 +124,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
 
     // If the user is a member of one or more collections or solutions, show
     // the latest content from those.
-    $group_ids = $this->ogMembershipManager->getUserGroupIds($this->currentUser->getAccount());
+    $group_ids = $this->ogMembershipManager->getUserGroupIds($this->currentUser->id());
     if (!empty($group_ids['rdf_entity'])) {
       $this->entities += $this->getContentFromMemberships($group_ids, $count - count($this->entities));
     }
