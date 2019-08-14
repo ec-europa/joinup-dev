@@ -83,13 +83,13 @@ class LicenceFilterBlock extends BlockBase implements ContainerFactoryPluginInte
       return [];
     }
 
-    $build['input_search'] = [
-      '#theme' => 'licence_filter_search_input',
-    ];
-
     $build['tree_filters'] = [
       '#theme' => 'licence_filter_list',
       '#items' => $tree,
+    ];
+
+    $build['input_search'] = [
+      '#theme' => 'licence_filter_search_input',
     ];
     $build['#cache']['max-age'] = 0;
     $build['#attached']['library'][] = 'joinup_licence/licence-filter';
