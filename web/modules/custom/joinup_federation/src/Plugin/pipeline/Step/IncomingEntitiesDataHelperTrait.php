@@ -8,9 +8,9 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Utility trait to retrieve information from the solution structured data.
+ * Utility trait to handle information of the federation incoming entities.
  */
-trait IncomingSolutionsDataHelperTrait {
+trait IncomingEntitiesDataHelperTrait {
 
     /**
      * A dependency tree for each incoming solution.
@@ -23,19 +23,30 @@ trait IncomingSolutionsDataHelperTrait {
   protected $solutionData = NULL;
 
   /**
+   * An associative array of hashes indexed by entity id.
+   *
+   * @var array
+   */
+  protected $entityHashes = NULL;
+
+  /**
    * Loads the solution data from the persistent state.
    */
-  protected function ensureSolutionDataLoaded(): void {
+  protected function ensureEntityDataLoaded(): void {
     if ($this->solutionData === NULL) {
       $this->solutionData = $this->hasPersistentDataValue('incoming_solution_data') ? $this->getPersistentDataValue('incoming_solution_data') : [];
+    }
+    if ($this->entityHashes === NULL) {
+      $this->entityHashes = $this->hasPersistentDataValue('entity_hashes') ? $this->getPersistentDataValue('entity_hashes') : [];
     }
   }
 
   /**
-   * Stores the solution data to the persistent pipeline state.
+   * Stores the entity data to the persistent pipeline state.
    */
-  protected function storeSolutionData(): void {
+  protected function storeEntityData(): void {
     $this->setPersistentDataValue('incoming_solution_data', $this->solutionData);
+    $this->setPersistentDataValue('entity_hashes', $this->entityHashes);
   }
 
   /**
@@ -48,7 +59,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   Whether the solution id exists on the root level of the solution data.
    */
   protected function solutionDataRootExists(string $solution_id): bool {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     return isset($this->solutionData[$solution_id]);
   }
 
@@ -62,7 +73,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   The solution entity id.
    */
   protected function addSolutionDataRoot(string $solution_id): void {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     $this->solutionData[$solution_id] = [];
   }
 
@@ -75,7 +86,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   The child entity.
    */
   protected function addSolutionDataChildDependency(string $parent, EntityInterface $entity): void {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     $this->solutionData[$parent]['dependencies'][$entity->bundle()][$entity->id()] = $entity->id();
   }
 
@@ -91,7 +102,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   Whether the solution already has this entity listed as a dependency.
    */
   protected function hasSolutionDataChildDependency(string $parent, EntityInterface $entity): bool {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     return isset($this->solutionData[$parent]['dependencies'][$entity->bundle()][$entity->id()]);
   }
 
@@ -106,7 +117,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   indexed by their bundle.
    */
   protected function getSolutionDataChildDependencies(string $solution_id): array {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     return $this->solutionData[$solution_id]['dependencies'];
   }
 
@@ -122,7 +133,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   the releases first in the list.
    */
   protected function getSolutionsWithDependenciesAsFlatList(array $solution_ids): array {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     $requested_dependencies = [];
 
     $skipped_solutions = array_diff(array_keys($this->solutionData), $solution_ids);
@@ -155,7 +166,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   The solution category.
    */
   protected function setSolutionCategory(string $solution_id, string $category): void {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     $this->solutionData[$solution_id]['category'] = $category;
   }
 
@@ -172,7 +183,7 @@ trait IncomingSolutionsDataHelperTrait {
    *   Thrown if the category of the solution requested has not been set yet.
    */
   protected function getSolutionCategory(string $solution_id): string {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     if (empty($this->solutionData[$solution_id]['category'])) {
       throw new \Exception("Category has not been set for solution with id {$solution_id}");
     }
@@ -191,8 +202,33 @@ trait IncomingSolutionsDataHelperTrait {
    *   Whether the solution is listed under this category.
    */
   protected function solutionHasCategory(string $solution_id, string $category): bool {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
     return $this->solutionData[$solution_id]['category'] === $category;
+  }
+
+  /**
+   * Returns a hash related to a given entity.
+   *
+   * @param string $entity_id
+   *   The entity id.
+   *
+   * @return string
+   *   The hash related to the entity.
+   */
+  protected function getEntityHash(string $entity_id): string {
+    $this->ensureEntityDataLoaded();
+    return $this->entityHashes[$entity_id] ?? '';
+  }
+
+  /**
+   * Adds the passed hashes to the list of hashes.
+   *
+   * @param array $data
+   *   An associative array of hashes indexed by the related entity id.
+   */
+  protected function setEntityHashes(array $data): void {
+    $this->ensureEntityDataLoaded();
+    $this->entityHashes += $data;
   }
 
 }

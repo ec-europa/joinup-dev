@@ -36,7 +36,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   use PipelineStepWithClientRedirectResponseTrait;
   use PipelineStepWithFormTrait;
   use SparqlEntityStorageTrait;
-  use IncomingSolutionsDataHelperTrait;
+  use IncomingEntitiesDataHelperTrait;
 
   /**
    * The RDF entity provenance helper service.
@@ -234,7 +234,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   keyed by entity ID and having the entity labels as values.
    */
   protected function getEntitiesByCategory(): array {
-    $this->ensureSolutionDataLoaded();
+    $this->ensureEntityDataLoaded();
 
     $labels = [];
     /** @var \Drupal\rdf_entity\RdfInterface $solution */

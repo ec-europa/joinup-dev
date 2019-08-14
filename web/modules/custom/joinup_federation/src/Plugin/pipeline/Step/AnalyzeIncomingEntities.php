@@ -7,6 +7,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\joinup_federation\JoinupFederationHashGenerator;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
@@ -37,12 +38,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   label = @Translation("Analyze the incoming solutions"),
  * )
  */
-class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
+class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
   use AdmsSchemaEntityReferenceFieldsTrait;
   use SparqlEntityStorageTrait;
   use PipelineStepWithBatchTrait;
-  use IncomingSolutionsDataHelperTrait;
+  use IncomingEntitiesDataHelperTrait;
 
   /**
    * The batch size.
@@ -73,6 +74,13 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
   protected $rdfSchemaFieldValidator;
 
   /**
+   * The hash generator service.
+   *
+   * @var \Drupal\joinup_federation\JoinupFederationHashGenerator
+   */
+  protected $hashGenerator;
+
+  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
@@ -91,13 +99,16 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
    *   The provenance helper service.
    * @param \Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface $rdf_schema_field_validator
    *   The RDF schema field validator service.
+   * @param \Drupal\joinup_federation\JoinupFederationHashGenerator $hash_generator
+   *   The hash generator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, ProvenanceHelperInterface $provenance_helper, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, ProvenanceHelperInterface $provenance_helper, SchemaFieldValidatorInterface $rdf_schema_field_validator, JoinupFederationHashGenerator $hash_generator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->provenanceHelper = $provenance_helper;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
+    $this->hashGenerator = $hash_generator;
   }
 
   /**
@@ -112,7 +123,8 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager'),
       $container->get('rdf_entity_provenance.provenance_helper'),
-      $container->get('rdf_schema_field_validation.schema_field_validator')
+      $container->get('rdf_schema_field_validation.schema_field_validator'),
+      $container->get('joinup_federation.hash_generator')
     );
   }
 
@@ -122,8 +134,6 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
   public function initBatchProcess() {
     $incoming_solution_ids = $this->getIncomingSolutionIds();
     $this->setBatchValue('ids_to_process', $incoming_solution_ids);
-    $this->setPersistentDataValue('solution_dependency_tree', []);
-    $this->setPersistentDataValue('solutions_categories', []);
 
     return ceil(count($incoming_solution_ids) / self::BATCH_SIZE);
   }
@@ -140,6 +150,12 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
    */
   public function execute() {
     $ids = $this->extractNextSubset('ids_to_process', 50);
+    $this->entityHashes = $this->getPersistentDataValue('entity_hashes');
+
+    // Skip calculation of the same ids.
+    $hash_ids = array_diff($ids, array_keys($this->entityHashes));
+    $this->setEntityHashes($this->hashGenerator->generateDataHash($hash_ids));
+
     $storage = $this->getRdfStorage();
 
     /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
@@ -149,8 +165,8 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
     }
     $this->buildSolutionsCategories($ids);
 
-    // Ensure the solution data are stored in the persistent state.
-    $this->storeSolutionData();
+    // Store data in the persistent state.
+    $this->storeEntityData();
   }
 
   /**
@@ -319,25 +335,16 @@ class AnalyzeIncomingSolutions extends JoinupFederationStepPluginBase implements
       if ($entity->bundle() === 'licence') {
         continue;
       }
-      // Entities that do not have the 'changed' property, do not count towards
-      // the changed validation. These entities will not be re-imported, if the
-      // solution is not marked to be imported as unchanged.
-      if (!$this->rdfSchemaFieldValidator->isDefinedInSchema('rdf_entity', $entity->bundle(), 'changed')) {
-        continue;
-      }
-
-      // Changed time can be empty for new entities.
-      if (empty($entity->getChangedTime())) {
-        return TRUE;
-      }
 
       // Like the parent solution, if this is the first time the entity is
       // imported, the solution is marked as new.
-      if ($provenance_records[$id]->isNew()) {
+      if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('field_provenance_entity_hash')->isEmpty()) {
         return TRUE;
       }
 
-      if ($entity->getChangedTime() > $provenance_records[$id]->provenance_started->value) {
+
+      $entity_hash = $this->getEntityHash($id);
+      if ($entity_hash !== $provenance_records[$id]->field_provenance_entity_hash->value) {
         return TRUE;
       }
     }
