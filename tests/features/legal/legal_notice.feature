@@ -24,20 +24,20 @@ Feature:
     Then I should see the heading "Legal notice"
     And I should see "The information on this site is subject to a disclaimer..."
 
-    When I click "Sign in"
+    When I click "Sign in (legacy)"
     And I click "Create new account"
 
-    Given I fill in "Email" with "dewan@example.com"
+    And I fill in "Email" with "dewan@example.com"
     And I fill in "Username" with "dewan"
     And I fill in "First name" with "Jo"
     And I fill in "Family name" with "de Wan"
 
-    But I wait for the honeypot time limit to pass
+    And I wait for the honeypot time limit to pass
 
-    When I press "Create new account"
+    And I press "Create new account"
     Then I should see the error message "I have read and accept the "
 
-    Given I check "I have read and accept the Legal notice"
+    When I check "I have read and accept the Legal notice"
     And I press "Create new account"
 
     Then I should see the success message "Thank you for applying for an account."
@@ -48,7 +48,7 @@ Feature:
     And I should see "The information on this site is subject to a disclaimer..."
 
     # As the user is created via UI, we should explicitly delete it.
-    Given I delete the "dewan" user
+    And I delete the "dewan" user
 
   Scenario: User login when a new 'Legal notice' version is released.
 
@@ -57,7 +57,7 @@ Feature:
       | Password | secretz |
 
     When I am on the homepage
-    And I click "Sign in"
+    And I click "Sign in (legacy)"
 
     And I fill in "Email or username" with "Rick"
     And I fill in "Password" with "secretz"
@@ -76,7 +76,7 @@ Feature:
     Then I should not see the warning message "You must accept this agreement before continuing."
     And I should see the link "Sign in"
 
-    And I click "Sign in"
+    And I click "Sign in (legacy)"
 
     And I fill in "Email or username" with "Rick"
     And I fill in "Password" with "secretz"
@@ -93,7 +93,7 @@ Feature:
     # Login again to check that the acceptance enforcement has gone.
     Given I click "Sign out"
     And I go to homepage
-    And I click "Sign in"
+    And I click "Sign in (legacy)"
     And I fill in "Email or username" with "Rick"
     And I fill in "Password" with "secretz"
 

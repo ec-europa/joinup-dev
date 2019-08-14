@@ -51,3 +51,10 @@ joinup_core.support.contact:
   menu_name: support
   url: 'internal:/contact'
   weight: -100
+
+joinup_core.eulogin:
+  title: 'Sign in with EU Login (recommended)'
+  menu_name: account
+  route_name: cas.login
+  class: Drupal\joinup_core\Plugin\Menu\EuLoginMenuLink
+  weight: -21

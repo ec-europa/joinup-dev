@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Url;
 use Drupal\joinup_eulogin\JoinupEuLoginAuthnameItemList;
 
 /**
@@ -122,4 +123,25 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
       }
     }
   }
+}
+
+/**
+ * Show a warning on the Drupal logon form.
+ */
+function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $weight = ($form['name']['#weight'] ?? 0) - 1;
+  $form['warning'] = [
+    '#theme' => 'status_messages',
+    '#message_list' => [
+      'warning' => [
+        '#markup' => t('As of 01/02/2020, <a href=":url">EU Login</a> will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!', [
+          ':url' => Url::fromRoute('cas.login')->toString(),
+        ]),
+      ],
+    ],
+    '#status_headings' => [
+      'warning' => t('Warning message'),
+    ],
+    '#weight' => $weight,
+  ];
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc700876b72359cef047ff535df9e85e",
+    "content-hash": "3cf745338e82e29181f1cab2047ebb39",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2582,6 +2582,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Customize the prevent_normal_login & restrict_password_management error messages @see https://www.drupal.org/project/cas/issues/3068913": "https://www.drupal.org/files/issues/2019-08-12/3068913-9.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5112,17 +5115,11 @@
         },
         {
             "name": "drupal/og",
-            "version": "1.0.0-alpha3",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "8.x-1.0-alpha3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "492d437a1820956bb4a64efcf4de70b9ff1a43f1"
+                "reference": "851cf682ad32be78313318feb7ebf5bec311e95e"
             },
             "require": {
                 "drupal/core": "~8.7",
@@ -5137,11 +5134,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1560179584",
+                    "version": "8.x-1.0-alpha3+43-dev",
+                    "datestamp": "1565244485",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -5206,21 +5203,16 @@
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "slack": "https://drupal.slack.com/messages/CELR48EA0"
-            }
+            },
+            "time": "2019-08-09T05:49:26+00:00"
         },
         {
             "name": "drupal/og_menu",
-            "version": "1.0.0-alpha3",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og_menu.git",
-                "reference": "8.x-1.0-alpha3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "0a2d441ff6edad7d07208a0a3059466859248ac7"
+                "reference": "438b523cd10fa6d0c2214e0831e103822bb7c53e"
             },
             "require": {
                 "drupal/core": "*",
@@ -5232,12 +5224,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1503064744",
+                    "version": "8.x-1.0-alpha3+11-dev",
+                    "datestamp": "1545301380",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5271,7 +5266,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
-            }
+            },
+            "time": "2018-12-20T10:22:02+00:00"
         },
         {
             "name": "drupal/page_manager",
@@ -5366,7 +5362,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
+                    "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -16010,6 +16007,8 @@
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
         "drupal/migrate_run": 10,
+        "drupal/og": 20,
+        "drupal/og_menu": 20,
         "drupal/page_manager": 20,
         "drupal/phingdrushtask": 20,
         "drupal/r4032login": 20,
