@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -36,7 +38,7 @@ trait OgTrait {
    *    Throws an exception when the user is anonymous or the entity is not a
    *    group.
    */
-  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], $state = NULL, int $created = NULL) {
+  protected function subscribeUserToGroup(AccountInterface $user, EntityInterface $group, array $roles = [], string $state = NULL, int $created = NULL): void {
     if (!Og::isGroup($group->getEntityTypeId(), $group->bundle())) {
       throw new \Exception("The {$group->label()} is not a group.");
     }
@@ -44,12 +46,7 @@ trait OgTrait {
     // If a membership already exists, load it. Otherwise create a new one.
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
-    $states = [
-      OgMembershipInterface::STATE_ACTIVE,
-      OgMembershipInterface::STATE_PENDING,
-      OgMembershipInterface::STATE_BLOCKED,
-    ];
-    $membership = $membership_manager->getMembership($group, $user, $states);
+    $membership = $membership_manager->getMembership($group, $user->id(), OgMembershipInterface::ALL_STATES);
     if (!$membership) {
       $membership = OgMembership::create()
         ->setOwner($user)
@@ -80,7 +77,7 @@ trait OgTrait {
    * @return array
    *   An array with the converted names.
    */
-  protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group) {
+  protected function convertOgRoleNamesToIds(array $roles, EntityInterface $group): array {
     $role_prefix = $group->getEntityTypeId() . '-' . $group->bundle() . '-';
     foreach ($roles as $key => $role) {
       // What is called a "collection owner" or a "solution owner" in Joinup, is
@@ -108,7 +105,7 @@ trait OgTrait {
    * @throws \Exception
    *    Throws exception when the user is not a member or is not an owner.
    */
-  protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, array $roles) {
+  protected function assertOgGroupOwnership(AccountInterface $user, RdfInterface $group, array $roles): void {
     $membership = Og::getMembership($group, $user);
     if (empty($membership)) {
       throw new \Exception("User {$user->getAccountName()} is not a member of the {$group->label()} group.");
@@ -131,7 +128,7 @@ trait OgTrait {
    * @return \Drupal\og\Entity\OgRole[]
    *   The OgRole objects.
    */
-  protected function getOgRoles(array $roles, EntityInterface $group) {
+  protected function getOgRoles(array $roles, EntityInterface $group): array {
     $ids = $this->convertOgRoleNamesToIds($roles, $group);
     return array_values(OgRole::loadMultiple($ids));
   }
@@ -153,7 +150,7 @@ trait OgTrait {
    *   Thrown when the actual number of group content items does not match the
    *   expectation.
    */
-  protected function assertGroupContentCount($count, EntityInterface $group, $group_content_entity_type_id, $group_content_bundle_id) {
+  protected function assertGroupContentCount(int $count, EntityInterface $group, string $group_content_entity_type_id, string $group_content_bundle_id): void {
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
     $ids = $membership_manager->getGroupContentIds($group, [
@@ -196,7 +193,7 @@ trait OgTrait {
    * @throws \Exception
    *   Thrown when a event with the given title does not exist.
    */
-  public function assertOgMembership($parent, $parent_bundle, $content, $content_bundle) {
+  public function assertOgMembership(string $parent, string $parent_bundle, string $content, string $content_bundle): void {
     $parent = $this->getRdfEntityByLabel($parent, $parent_bundle);
 
     $results = \Drupal::entityTypeManager()
@@ -236,7 +233,7 @@ trait OgTrait {
    * @throws \Exception
    *   Thrown when a user with the given user name is not found.
    */
-  protected function givenUserMembership(RdfInterface $group, array $values) {
+  protected function givenUserMembership(RdfInterface $group, array $values): void {
     // Load member.
     $member = user_load_by_name($values['user']);
     if (empty($member)) {
@@ -279,10 +276,10 @@ trait OgTrait {
    * @throws \Exception
    *   Thrown if a membership with the given criteria is not found.
    */
-  protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]) {
-    /** @var \Drupal\og\MembershipManager $membership_manager */
+  protected function getMembershipByGroupAndUser(EntityInterface $group, AccountInterface $user, array $states = [OgMembershipInterface::STATE_ACTIVE]): OgMembershipInterface {
+    /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($group, $user, $states);
+    $membership = $membership_manager->getMembership($group, $user->id(), $states);
     if (empty($membership)) {
       throw new \Exception("Og membership for user {$user->getDisplayName()} in group {$group->label()} was not found.");
     }

@@ -243,7 +243,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   public function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
     $membership->save();
-    $loaded = $this->ogMembershipManager->getMembership($group, $user);
+    $loaded = $this->ogMembershipManager->getMembership($group, $user->id());
     $this->assertInstanceOf(OgMembership::class, $loaded, $this->t('A membership was successfully created.'));
   }
 
