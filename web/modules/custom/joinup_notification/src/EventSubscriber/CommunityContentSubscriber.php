@@ -321,7 +321,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
 
       // If the role is not yet set, get it from the parent collection|solution.
       if (empty($arguments['@actor:role'])) {
-        $membership = $this->membershipManager->getMembership($parent, $actor);
+        $membership = $this->membershipManager->getMembership($parent, $actor->id());
         if (!empty($membership)) {
           $role_names = array_map(function (OgRoleInterface $og_role) {
             return $og_role->getName();
