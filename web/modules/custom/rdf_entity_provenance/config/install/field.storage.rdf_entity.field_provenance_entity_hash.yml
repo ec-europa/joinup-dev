@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - sparql_entity_storage
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/provenance_activity/entity_hash'
+        format: 'xsd:string'
+id: rdf_entity.field_provenance_entity_hash
+field_name: field_provenance_entity_hash
+entity_type: rdf_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
