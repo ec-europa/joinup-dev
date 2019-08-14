@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_eulogin\Event\Subscriber;
 
 use Drupal\cas\Event\CasPostLoginEvent;
+use Drupal\cas\Event\CasPostValidateEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -50,6 +51,7 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
     return [
       CasHelper::EVENT_PRE_VALIDATE => 'alterValidationUrl',
       CasHelper::EVENT_POST_LOGIN => 'storeAttributes',
+      CasHelper::EVENT_POST_VALIDATE => 'prepareAttributes',
     ];
   }
 
@@ -84,6 +86,19 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
    */
   public function storeAttributes(CasPostLoginEvent $event): void {
     $this->userData->set('joinup_eulogin', $event->getAccount()->id(), 'attributes', $event->getCasPropertyBag()->getAttributes());
+  }
+
+  /**
+   * Stores the EU Login attributes in the CAS property bag.
+   *
+   * @param \Drupal\cas\Event\CasPostValidateEvent $event
+   *   The CAS post-validate event object.
+   */
+  public function prepareAttributes(CasPostValidateEvent $event): void {
+    $xml = new \SimpleXMLElement($event->getResponseData());
+    foreach ($xml->xpath('//cas:authenticationSuccess/*') as $element) {
+      $event->getCasPropertyBag()->setAttribute($element->getName(), $element->__toString());
+    };
   }
 
 }
