@@ -163,14 +163,14 @@ Feature: Log in through EU Login
       | First name   | James                           |
       | Family name  | Bond                            |
 
-  Scenario: The Drupal login form shows a warning message.
-    When I visit "/user/login"
-    Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
-    And I should see the link "EU Login"
-
     # Test the customized message as logged in user.
-    Given I visit "/user/password"
+  Given I visit "/user/password"
     And I wait for the honeypot time limit to pass
     And I press "Submit"
     Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
+    And I should see the link "EU Login"
+
+  Scenario: The Drupal login form shows a warning message.
+    When I visit "/user/login"
+    Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
     And I should see the link "EU Login"
