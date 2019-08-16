@@ -718,3 +718,16 @@ function joinup_core_post_update_0_fix_publication_dates() {
     ->expression('published_at', PUBLICATION_DATE_DEFAULT)
     ->execute();
 }
+
+/**
+ * Reset the publication dates again.
+ */
+function joinup_core_post_update_refix_publication_dates() {
+  // The previous approach had a bug where nodes with a single published
+  // revision but a newer changed date accidentally had the most recent change
+  // date set as the publication date.
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'publication_date') . '/publication_date.install';
+
+  joinup_core_post_update_0_fix_publication_dates();
+  _publication_date_populate_database_field();
+}
