@@ -1,11 +1,17 @@
 <html>
 <head>
+    <link rel="stylesheet" media="all" href="/themes/joinup/vendor/material-design-lite/material.min.css" />
+    <link rel="stylesheet" media="all" href="/themes/joinup/css/style.min.css" />
     <title>We cannot serve your request</title>
 </head>
 <body>
-<h2>There was an unexpected problem serving your request</h2>
-<p>Please try again and contact us if the problem persist including <em>{{ uuid }}</em> in your message.</p>
-<p><a href="{{ base_path }}contact">Contact support</a></p>
-<p>{{ error_report }}</p>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+            <h2>There was an unexpected problem serving your request</h2>
+            <p>Please try again and contact us if the problem persist including <em>{{ uuid }}</em> in your message.</p>
+            <p><a href="{{ base_path }}contact">Contact support</a></p>
+            <p>{{ error_report }}</p>
+        </div>
+    </div>
 </body>
 </html>
