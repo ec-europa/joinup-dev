@@ -199,10 +199,13 @@ form .description
     border: none
     padding: 0 !important
     margin: 0
+    display: flex
+    justify-content: flex-end
     .button
       margin: 0
       font-weight: $font-weight-medium
-      @extend .button--blue-light
+      &:not(.button--blue-important)
+        @extend .button--blue-light
 
   .ui-widget-content
     padding: 0

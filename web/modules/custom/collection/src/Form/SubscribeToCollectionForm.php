@@ -36,7 +36,6 @@ class SubscribeToCollectionForm extends FormBase {
    */
   const LINK_BUTTON_CLASSES = [
     'button',
-    'button--blue-light',
     'mdl-button',
     'mdl-js-button',
     'mdl-button--raised',
@@ -169,7 +168,7 @@ class SubscribeToCollectionForm extends FormBase {
         ],
       ],
       '#attributes' => [
-        'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
+        'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small', 'button--blue-important']),
       ],
     ];
 
