@@ -130,8 +130,8 @@ QUERY;
       $values_per_entity[$entity_id][(string) $result->predicate][] = (string) $result->field_value;
     }
 
-    foreach ($values_per_entity as $entity_ids => &$values_by_predicate) {
-      foreach ($values_by_predicate as $predicate => &$values) {
+    foreach ($values_per_entity as &$values_by_predicate) {
+      foreach ($values_by_predicate as &$values) {
         ksort($values);
       }
       ksort($values_by_predicate);

@@ -209,7 +209,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
       $field = $entity->get($field_name);
 
-      foreach ($this->getStagingReferencedEntities($field) as $id => $referenced_entity) {
+      foreach ($this->getStagingReferencedEntities($field) as $referenced_entity) {
         if ($this->hasSolutionDataChildDependency($parent, $referenced_entity)) {
           // The entity has already been processed.
           continue;

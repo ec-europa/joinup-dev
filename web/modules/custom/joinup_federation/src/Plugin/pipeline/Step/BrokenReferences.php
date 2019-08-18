@@ -122,7 +122,8 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
         $field = $entity->get($field_name);
 
-        // Remove references to entities that were not selected for import by the user.
+        // Remove references to entities that were not selected for import by
+        // the user.
         if ($not_selected && ($target_entity_type_id === 'rdf_entity')) {
           $changed |= $this->removeBlacklistedReferences($field, $not_selected);
         }
@@ -140,7 +141,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
   }
 
   /**
-   * Removes the items referencing entities from a field that will not be imported.
+   * Removes the items referencing not imported entities from the given field.
    *
    * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
    *   The entity reference field item list.
