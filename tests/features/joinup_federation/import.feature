@@ -161,10 +161,10 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1]" row
     # Solution 2 is checked because there are changes detected (The title is different).
     And the row "Solution 2 [http://example.com/solution/2]" is checked
-    And I should see the text "Federated on 07/07/2012 - 22:01 by Antoine Batiste" in the "Solution 2 [http://example.com/solution/2]" row
+    And I should see the text "Federated on 07/07/2012 - 23:01 by Antoine Batiste" in the "Solution 2 [http://example.com/solution/2]" row
     # Solution 3 is not checked because it is marked as blacklisted.
     And the row "Solution 3 [http://example.com/solution/3]" is not checked
-    And I should see the text "Blacklisted on 25/12/2015 - 00:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
+    And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
 
     Given I press "Next"
     And I wait for the pipeline batch job to finish
