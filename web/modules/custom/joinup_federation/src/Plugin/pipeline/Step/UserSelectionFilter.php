@@ -284,23 +284,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   }
 
   /**
-   * Returns the list of unchanged entities as a list of solution ids.
-   *
-   * @return array
-   *   The solution entity ids.
-   */
-  protected function getUnchangedSolutionIds(): array {
-    $return = [];
-
-    foreach ($this->solutionData as $solution_id => $solution_data) {
-      if ($solution_data['category'] === 'federated_unchanged') {
-        $return[] = $solution_id;
-      }
-    }
-    return $return;
-  }
-
-  /**
    * Returns data about the imported solutions categories.
    *
    * @param string $category
