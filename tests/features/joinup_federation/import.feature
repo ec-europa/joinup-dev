@@ -132,10 +132,13 @@ Feature: As a site moderator I am able to import RDF files.
     And the following collection user membership:
       | collection | user     | roles                      | state  |
       | Spain      | CS Owner | facilitator, administrator | active |
+    # Hash for 'Solution 2' includes the custom title 'Local version of solution 2' so that it will detect changes in
+    # the first attempt.
+    # Hash for 'Solution 3' is the one matching to the values from valid_adms.rdf.
     And provenance activities:
-      | entity                        | enabled | associated with | author          | started          |
-      | Local version of Solution 2   | yes     | Spain           | Antoine Batiste | 2012-07-07 23:01 |
-      | http://example.com/solution/3 | no      | Spain           | Antoine Batiste | 2015-12-25 01:30 |
+      | entity                        | enabled | associated with | author          | started          | hash                             |
+      | Local version of Solution 2   | yes     | Spain           | Antoine Batiste | 2012-07-07 23:01 | 35d6c55a727d10cbfd38f09db70b136d |
+      | http://example.com/solution/3 | no      | Spain           | Antoine Batiste | 2015-12-25 01:30 | e5e7aceb15c50ab628c744673daf5ca1 |
     # The license contained in valid_adms.rdf is named "A federated license".
     # However, the goal is to not import or update any values in the license entity so
     # the following license has different details.
@@ -153,10 +156,13 @@ Feature: As a site moderator I am able to import RDF files.
     And I wait for the pipeline batch job to finish
 
     Then I should see "Spain - Center for Technology Transfer: User selection"
+    # Solution 1 is checked because it is new.
     And the row "Solution 1 [http://example.com/solution/1]" is checked
     And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1]" row
+    # Solution 2 is checked because there are changes detected (The title is different).
     And the row "Solution 2 [http://example.com/solution/2]" is checked
     And I should see the text "Federated on 07/07/2012 - 22:01 by Antoine Batiste" in the "Solution 2 [http://example.com/solution/2]" row
+    # Solution 3 is not checked because it is marked as blacklisted.
     And the row "Solution 3 [http://example.com/solution/3]" is not checked
     And I should see the text "Blacklisted on 25/12/2015 - 00:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
 
@@ -241,11 +247,12 @@ Feature: As a site moderator I am able to import RDF files.
     # Licenses should still be excluded from the import process.
     And the "Federated open license" entity should not have a related provenance activity
 
-    But the "Solution 1" entity is blacklisted for federation
-    And the "Asset release 1" entity is blacklisted for federation
-    And the "Asset release 2" entity is blacklisted for federation
-    And the "Windows" entity is blacklisted for federation
-    And the "Linux" entity is blacklisted for federation
+    # Unchanged solutions and dependencies do not become blacklisted if they are not federated.
+    And the "Solution 1" entity is not blacklisted for federation
+    And the "Asset release 1" entity is not blacklisted for federation
+    And the "Asset release 2" entity is not blacklisted for federation
+    And the "Windows" entity is not blacklisted for federation
+    And the "Linux" entity is not blacklisted for federation
 
     # Check the affiliation of federated solutions.
     And the "Solution 1" solution should be affiliated with the "Spain" collection
