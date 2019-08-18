@@ -17,7 +17,7 @@ use Drupal\taxonomy\TermInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Removes the references to entities blacklisted in the previous step.
+ * Removes the references to entities removed in the previous step.
  *
  * @PipelineStep(
  *   id = "broken_references",
@@ -112,7 +112,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    */
   public function execute() {
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
-    $blacklist = array_flip($this->getPersistentDataValue('blacklist'));
+    $not_selected = array_flip($this->getPersistentDataValue('not_selected'));
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
     foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $entity) {
       $changed = 0;
@@ -122,9 +122,9 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
         $field = $entity->get($field_name);
 
-        // Remove references to entities that were blacklisted by the user.
-        if ($blacklist && ($target_entity_type_id === 'rdf_entity')) {
-          $changed |= $this->removeBlacklistedReferences($field, $blacklist);
+        // Remove references to entities that were not selected for import by the user.
+        if ($not_selected && ($target_entity_type_id === 'rdf_entity')) {
+          $changed |= $this->removeBlacklistedReferences($field, $not_selected);
         }
         // Remove references to non-existing taxonomy terms.
         elseif ($target_entity_type_id === 'taxonomy_term') {
@@ -140,22 +140,22 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
   }
 
   /**
-   * Removes the items referencing blacklisted entities from a field.
+   * Removes the items referencing entities from a field that will not be imported.
    *
    * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
    *   The entity reference field item list.
-   * @param array $blacklist
-   *   The list of blacklisted entity IDs.
+   * @param array $ids_to_remove
+   *   The list of entity IDs to remove.
    *
    * @return int
    *   If at least one field item has been removed, the value is 1. 0 otherwise.
    */
-  protected function removeBlacklistedReferences(EntityReferenceFieldItemListInterface $field, array $blacklist): int {
+  protected function removeBlacklistedReferences(EntityReferenceFieldItemListInterface $field, array $ids_to_remove): int {
     $changed = 0;
 
     if (!$field->isEmpty()) {
-      $field->filter(function (FieldItemInterface $field_item) use ($blacklist, &$changed): bool {
-        if (isset($blacklist[$field_item->target_id])) {
+      $field->filter(function (FieldItemInterface $field_item) use ($ids_to_remove, &$changed): bool {
+        if (isset($ids_to_remove[$field_item->target_id])) {
           $changed = 1;
           return FALSE;
         }

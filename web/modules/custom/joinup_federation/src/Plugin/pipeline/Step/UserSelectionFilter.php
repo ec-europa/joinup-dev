@@ -137,24 +137,18 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
 
     // Build a list of all whitelisted entities.
     $this->buildWhitelist($selected_solution_ids);
+    $all_imported_ids = $this->getAllIncomingIds();
 
-    // Get all imported entity IDs by running a SPARQL query.
-    /** @var \EasyRdf\Sparql\Result $results */
-    $results = $this->sparql->query("SELECT DISTINCT(?entityId) WHERE { GRAPH <{$this->getGraphUri('sink')}> { ?entityId ?p ?o . } }");
-    $all_imported_ids = array_map(function (\stdClass $item): string {
-      return $item->entityId->getUri();
-    }, $results->getArrayCopy());
-
-    // Remove the blacklisted entities, if any.
-    if ($blacklist = array_values(array_diff($all_imported_ids, $this->whitelist))) {
-      $blacklist_ids = SparqlArg::serializeUris($blacklist, ' ');
-      $this->sparql->query("WITH <{$this->getGraphUri('sink')}> DELETE { ?entity_id ?p ?o } WHERE { ?entity_id ?p ?o . VALUES ?entity_id { {$blacklist_ids} } }");
+    // Remove the not selected entities, if any.
+    if ($not_selected = array_values(array_diff($all_imported_ids, $this->whitelist))) {
+      $not_selected_ids = SparqlArg::serializeUris($not_selected, ' ');
+      $this->sparql->query("WITH <{$this->getGraphUri('sink')}> DELETE { ?entity_id ?p ?o } WHERE { ?entity_id ?p ?o . VALUES ?entity_id { {$not_selected_ids} } }");
     }
 
     // Persist data for next steps.
     $this
       ->setPersistentDataValue('whitelist', $this->whitelist)
-      ->setPersistentDataValue('blacklist', $blacklist);
+      ->setPersistentDataValue('not_selected', $not_selected);
 
   }
 
@@ -165,7 +159,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     $entities_per_category = $this->getEntitiesByCategory();
 
     $form['description'] = [
-      '#markup' => $this->t("Check the solutions that you wish to import. Unselected solutions will be saved to 'Blacklisted Solutions' section on the next import attempt. You can always import a blacklisted solution by selecting it."),
+      '#markup' => $this->t("Check the solutions that you wish to import. Unselected solutions will be saved to 'Blacklisted Solutions' or in the 'Unchanged Solutions' section on the next import attempt depending on whether they were imported and changed or not. You can always import these solutions by selecting them."),
     ];
 
     $options = $default_value = [];

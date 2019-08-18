@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ProvenanceActivity extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
   use PipelineStepWithBatchTrait;
+  use IncomingEntitiesDataHelperTrait;
 
   /**
    * The batch size.
@@ -85,9 +86,9 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    * {@inheritdoc}
    */
   public function initBatchProcess() {
-    $black_list = array_fill_keys($this->getPersistentDataValue('blacklist'), FALSE);
+    $not_selected = array_fill_keys($this->getPersistentDataValue('not_selected'), FALSE);
     $entities = array_fill_keys(array_keys($this->getPersistentDataValue('entities')), TRUE);
-    $remaining_ids = $black_list + $entities;
+    $remaining_ids = $not_selected + $entities;
     $this->setBatchValue('remaining_ids', $remaining_ids);
     return ceil(count($remaining_ids) / static::BATCH_SIZE);
   }
@@ -104,6 +105,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    */
   public function execute() {
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
+    $unchanged_ids = $this->getSolutionIdsMatchingCategory('federated_unchanged');
     $current_user_id = $this->currentUser->id();
     $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity(array_keys($ids));
     $collection_id = $this->getPipeline()->getCollection();
@@ -112,8 +114,9 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($current_user_id)
-        ->set('provenance_enabled', $ids[$id])
+        ->set('provenance_enabled', $ids[$id] || isset($unchanged_ids[$ids]))
         ->set('provenance_associated_with', $collection_id)
+        ->set('field_provenance_entity_hash', $this->getEntityHash($id))
         ->save();
     }
   }

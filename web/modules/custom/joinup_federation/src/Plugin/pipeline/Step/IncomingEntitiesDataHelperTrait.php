@@ -12,14 +12,14 @@ use Drupal\Core\Entity\EntityInterface;
  */
 trait IncomingEntitiesDataHelperTrait {
 
-    /**
-     * A dependency tree for each incoming solution.
-     *
-     * Each entry is a flat list of entity ids that each solution (the index) is
-     * related to.
-     *
-     * @var array
-     */
+  /**
+   * A dependency tree for each incoming solution.
+   *
+   * Each entry is a flat list of entity ids that each solution (the index) is
+   * related to.
+   *
+   * @var array
+   */
   protected $solutionData = NULL;
 
   /**
@@ -171,6 +171,26 @@ trait IncomingEntitiesDataHelperTrait {
   }
 
   /**
+   * Returns a list of solutions that have been marked as unchanged.
+   *
+   * @param string $category
+   *   The category to filter by.
+   *
+   * @return array
+   *   An array of solution ids.
+   */
+  protected function getSolutionIdsMatchingCategory(string $category): array {
+    $this->ensureEntityDataLoaded();
+    $return = [];
+    foreach ($this->solutionData as $solution_id => $solution_data) {
+      if ($solution_data['category'] === $category) {
+        $return[$solution_id] = $solution_id;
+      }
+    }
+    return $return;
+  }
+
+  /**
    * Retrieves the solution category from the persistent state.
    *
    * @param string $solution_id
@@ -191,7 +211,7 @@ trait IncomingEntitiesDataHelperTrait {
   }
 
   /**
-   * Returns whether a solution is listed in the given category
+   * Returns whether a solution is listed in the given category.
    *
    * @param string $solution_id
    *   The solution entity id.
@@ -218,6 +238,17 @@ trait IncomingEntitiesDataHelperTrait {
   protected function getEntityHash(string $entity_id): string {
     $this->ensureEntityDataLoaded();
     return $this->entityHashes[$entity_id] ?? '';
+  }
+
+  /**
+   * Returns an array of ids that have hashes calculated.
+   *
+   * @return array
+   *   An array of entity ids.
+   */
+  protected function getEntityIdsWithHashes(): array {
+    $this->ensureEntityDataLoaded();
+    return array_keys($this->entityHashes);
   }
 
   /**

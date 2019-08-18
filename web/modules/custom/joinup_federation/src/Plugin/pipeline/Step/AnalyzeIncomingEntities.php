@@ -132,10 +132,10 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * {@inheritdoc}
    */
   public function initBatchProcess() {
-    $incoming_solution_ids = $this->getIncomingSolutionIds();
-    $this->setBatchValue('ids_to_process', $incoming_solution_ids);
-
-    return ceil(count($incoming_solution_ids) / self::BATCH_SIZE);
+    $incoming_ids = $this->getAllIncomingIds();
+    $this->setBatchValue('ids_to_process', $incoming_ids);
+    $this->setBatchValue('solution_ids', $this->getIncomingSolutionIds());
+    return ceil(count($incoming_ids) / self::BATCH_SIZE);
   }
 
   /**
@@ -150,20 +150,23 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    */
   public function execute() {
     $ids = $this->extractNextSubset('ids_to_process', 50);
-    $this->entityHashes = $this->getPersistentDataValue('entity_hashes');
+    $solution_ids = array_intersect($ids, $this->getBatchValue('solution_ids'));
 
     // Skip calculation of the same ids.
-    $hash_ids = array_diff($ids, array_keys($this->entityHashes));
+    $hash_ids = array_diff($ids, $this->getEntityIdsWithHashes());
     $this->setEntityHashes($this->hashGenerator->generateDataHash($hash_ids));
 
+    // Handle the solutions and their dependencies of this iteration.
     $storage = $this->getRdfStorage();
 
     /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
-    $entities = $storage->loadMultiple($ids, ['staging']);
+    $entities = $storage->loadMultiple($solution_ids, ['staging']);
     foreach ($entities as $id => $entity) {
-      $this->buildSolutionDependencyTree($entity, $id);
+      if ($entity->bundle() === 'solution') {
+        $this->buildSolutionDependencyTree($entity, $id);
+      }
     }
-    $this->buildSolutionsCategories($ids);
+    $this->buildSolutionsCategories($solution_ids);
 
     // Store data in the persistent state.
     $this->storeEntityData();
@@ -341,7 +344,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
       if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('field_provenance_entity_hash')->isEmpty()) {
         return TRUE;
       }
-
 
       $entity_hash = $this->getEntityHash($id);
       if ($entity_hash !== $provenance_records[$id]->field_provenance_entity_hash->value) {

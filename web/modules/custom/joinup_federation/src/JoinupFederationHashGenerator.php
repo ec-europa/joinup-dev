@@ -4,13 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation;
 
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
-use Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandler;
 use Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface;
-use EasyRdf\Literal;
 use EasyRdf\Sparql\Result;
 
 /**
@@ -44,7 +41,7 @@ class JoinupFederationHashGenerator {
   /**
    * Constructs a JoinupFederationHashGenerator object.
    *
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $connection
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
    *   The SPARQL database connection.
    * @param \Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface $field_handler
    *   The SPARQL storage field handler service.
@@ -73,7 +70,13 @@ class JoinupFederationHashGenerator {
   public function generateDataHash(array $entity_ids): array {
     $query = $this->buildEntityQuery($entity_ids);
     $results = $this->connection->query($query);
-    return $this->parseQueryData($results);
+    $entities_data = $this->parseQueryData($results);
+    $return = [];
+    foreach ($entities_data as $entity_id => $data) {
+      $return[$entity_id] = md5(serialize($data));
+    }
+
+    return $return;
   }
 
   /**
@@ -90,11 +93,11 @@ class JoinupFederationHashGenerator {
    * @see \Drupal\sparql_entity_storage\SparqlEntityStorage::loadFromStorage
    */
   protected function buildEntityQuery(array $entity_ids): string {
-    $ids_string = SparqlArg::serializeUris($entity_ids);
-    $graphs = $this->graphHandler->getEntityTypeGraphUrisFlatList('rdf_entity', ['staging']);
+    $ids_string = SparqlArg::serializeUris($entity_ids, ' ');
+    $graphs = array_unique($this->graphHandler->getEntityTypeGraphUrisFlatList('rdf_entity', ['staging']));
     $named_graph = '';
     foreach ($graphs as $graph) {
-      $named_graph .= 'FROM NAMED ' . SparqlArg::uri($graph) . "\n";
+      $named_graph .= 'FROM ' . SparqlArg::uri($graph) . "\n";
     }
 
     $query = <<<QUERY

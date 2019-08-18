@@ -73,4 +73,19 @@ trait SparqlEntityStorageTrait {
       ->execute();
   }
 
+  /**
+   * Returns a list of entity ids existing in the sink graph.
+   *
+   * @return array
+   *   An array of entity ids.
+   */
+  protected function getAllIncomingIds(): array {
+    $results = $this->sparql->query("SELECT DISTINCT(?entityId) WHERE { GRAPH <{$this->getGraphUri('sink')}> { ?entityId ?p ?o . } }");
+    $all_imported_ids = array_map(function (\stdClass $item): string {
+      return $item->entityId->getUri();
+    }, $results->getArrayCopy());
+
+    return $all_imported_ids;
+  }
+
 }
