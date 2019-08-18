@@ -213,11 +213,11 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   /**
    * Collect all the whitelisted incoming entities.
    *
-   * @param string[] $whitelist_ids
+   * @param string[] $solution_ids
    *   A list of solution ids selected by the user.
    */
-  protected function buildWhitelist(array $whitelist_ids): void {
-    $this->whitelist = $this->getSolutionsWithDependenciesAsFlatList($whitelist_ids);
+  protected function buildWhitelist(array $solution_ids): void {
+    $this->whitelist = $this->getSolutionsWithDependenciesAsFlatList($solution_ids);
   }
 
   /**

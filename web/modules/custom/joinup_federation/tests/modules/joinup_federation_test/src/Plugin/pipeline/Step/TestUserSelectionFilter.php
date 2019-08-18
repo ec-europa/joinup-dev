@@ -20,10 +20,12 @@ use Drupal\joinup_federation\Plugin\pipeline\Step\UserSelectionFilter;
 class TestUserSelectionFilter extends UserSelectionFilter {
 
   /**
-   * {@inheritdoc}
+   * Wrapper method for the ::buildWhitelist method.
+   *
+   * @see \Drupal\joinup_federation\Plugin\pipeline\Step\UserSelectionFilter::buildWhitelist
    */
-  public function buildWhitelistWrapper(string $bundle, array $whitelist_ids): void {
-    parent::buildWhitelist($bundle, $whitelist_ids);
+  public function buildWhitelistWrapper(array $whitelist_ids): void {
+    parent::buildWhitelist($whitelist_ids);
   }
 
   /**
