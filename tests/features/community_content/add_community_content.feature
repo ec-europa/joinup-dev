@@ -74,9 +74,6 @@ Feature: Add community content
     And discussion content:
       | title             | content         | author    | state | collection          | created    |
       | Sample discussion | Sample content. | Publisher | draft | The afternoon shift | 01-01-2010 |
-    And event content:
-      | title        | body            | location        | author    | collection          | state | created    |
-      | Sample event | Sample content. | Sample location | Publisher | The afternoon shift | draft | 01-01-2010 |
     And news content:
       | title       | headline    | body            | state | author    | collection          | created    |
       | Sample news | Sample news | Sample content. | draft | Publisher | The afternoon shift | 01-01-2010 |
@@ -106,5 +103,37 @@ Feature: Add community content
     Examples:
       | content type |
       | discussion   |
-      | event        |
       | news         |
+
+  # This is a variant of the previous tests for events. The only difference is
+  # that the creation date / publication date is not shown in the frontend to
+  # prevent viewers confusing this with the event date.
+  Scenario: Publishing an event for the first time sets the publication date
+    Given users:
+      | Username  | E-mail                     | First name | Family name    | Roles     |
+      | Publisher | publisher-example@test.com | Publisher  | Georgakopoulos | moderator |
+    And the following collection:
+      | title | The afternoon shift |
+      | state | validated           |
+    And event content:
+      | title        | body            | location        | author    | collection          | state | created    |
+      | Sample event | Sample content. | Sample location | Publisher | The afternoon shift | draft | 01-01-2010 |
+
+    When I am logged in as "Publisher"
+    And I go to the "Sample event" event
+    Then the "Sample event" event should not have a publication date
+    And I click "Edit" in the "Entity actions" region
+    And I press "Publish"
+    Then I should see the heading "Sample event"
+    And the publication date of the "Sample event" event should not be equal to the created date
+
+    When I click "Revisions" in the "Entity actions" region
+    And I click the last "Revert" link
+    And I press "Revert"
+    And I go to the "Sample event" event
+
+    When I click "Edit" in the "Entity actions" region
+    And I press "Publish"
+    Then I should see the heading "Sample event"
+    Then the publication date of the "Sample event" event should be equal to the last unpublished version's
+    Then the publication date of the "Sample event" event should be equal to the last published version's
