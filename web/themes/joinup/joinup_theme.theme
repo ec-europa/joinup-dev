@@ -652,11 +652,8 @@ function joinup_theme_preprocess_container(&$variables) {
   }
 
   // Remove margin for subscribe button in tile.
-  if (isset($variables['element']['submit']) && is_object($variables['element']['submit']['#value'])) {
-    $input_value = $variables['element']['submit']['#value'];
-    if ($input_value->getUntranslatedString() == 'Subscribe') {
-      $variables['no_margin'] = TRUE;
-    }
+  if (isset($variables['element']['submit']['#extra_suggestion']) && $variables['element']['submit']['#extra_suggestion'] == 'subscribe') {
+    $variables['no_margin'] = TRUE;
   }
 }
 
@@ -1249,14 +1246,6 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   // Suggestion for search form submit.
   if (isset($variables['element']['#id']) && strpos($variables['element']['#id'], 'edit-submit-search') !== FALSE) {
     $suggestions[] = 'input__submit__search_bar';
-  }
-  // Remove margin for subscribe button in tile.
-  // Add proper classes for subscribe button.
-  if (isset($variables['element']['#value']) && is_object($variables['element']['#value'])) {
-    $input_value = $variables['element']['#value'];
-    if ($input_value->getUntranslatedString() == 'Subscribe') {
-      $suggestions[] = 'input__submit__subscribe';
-    }
   }
 }
 

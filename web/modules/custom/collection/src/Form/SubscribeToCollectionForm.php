@@ -141,6 +141,7 @@ class SubscribeToCollectionForm extends FormBase {
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => $this->t('No thanks'),
+      '#extra_suggestion' => 'light_blue',
       '#attributes' => [
         'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small', 'dialog-cancel']),
       ],
@@ -168,7 +169,7 @@ class SubscribeToCollectionForm extends FormBase {
         ],
       ],
       '#attributes' => [
-        'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small', 'button--blue-important']),
+        'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
       ],
     ];
 
