@@ -15,7 +15,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "remove_unsupported_data",
  *     "add_joinup_vocabularies",
  *     "adms_validation",
- *     "analyze_incoming_solutions",
+ *     "analyze_incoming_entities",
  *     "user_selection_filter",
  *     "3_way_merge",
  *     "broken_references",

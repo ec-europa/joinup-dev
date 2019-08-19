@@ -34,7 +34,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * by the corresponding id.
  *
  * @PipelineStep(
- *   id = "analyze_incoming_solutions",
+ *   id = "analyze_incoming_entities",
  *   label = @Translation("Analyze the incoming solutions"),
  * )
  */
