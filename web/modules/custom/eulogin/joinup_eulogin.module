@@ -80,6 +80,44 @@ function joinup_eulogin_email_registration_validation(array $element, FormStateI
 /**
  * Implements hook_form_alter().
  *
+ * Disable fields that are managed by EU Login.
+ */
+function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  /** @var \Drupal\user\UserInterface $account */
+  $account = $form_state->getFormObject()->getEntity();
+
+  // This account is not linked to an EU Login account.
+  if ($account->get('eulogin_authname')->isEmpty()) {
+    return;
+  }
+
+  $mapping = \Drupal::configFactory()
+    ->get('cas_attributes.settings')
+    ->get('field.mappings');
+
+  if ($mapping) {
+    /** @var \Drupal\user\UserDataInterface $user_data */
+    $user_data = \Drupal::service('user.data');
+
+    // User profile fields are string scalars.
+    $attributes = array_filter($user_data->get('joinup_eulogin', $account->id(), 'attributes'));
+
+    foreach ($mapping as $field_name => $token) {
+      // The token is in the format `[cas:attribute:attribute_name]`. Extract
+      // the attribute name from it.
+      $attribute_name = substr(substr($token, 15), 0, -1);
+      if (!empty($attributes[$attribute_name])) {
+        $form[$field_name]['#disabled'] = TRUE;
+        $form[$field_name]['widget'][0]['value']['#description'] = t('This field can be edited only from the EU Login account.');
+        // Prevent submission of an empty, required and disabled field. That
+        // would cause the validation to fail.
+        $form[$field_name]['widget'][0]['value']['#required'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
  * Show a warning on the Drupal logon form.
  */
 function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {

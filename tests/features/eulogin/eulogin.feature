@@ -44,8 +44,8 @@ Feature: Log in through EU Login
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
 
     And the user chucknorris should have the following data in their user profile:
-      | First name   | Chuck  |
-      | Family name  | Norris |
+      | First name  | Chuck  |
+      | Family name | Norris |
 
   Scenario: An existing local account can be linked by the user.
     Given CAS users:
@@ -90,10 +90,10 @@ Feature: Log in through EU Login
 
     # The profile entries are overwritten, except the username & the email.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username     | chuck_the_local_hero             |
-      | E-mail       | chuck_the_local_hero@example.com |
-      | First name   | Chuck                            |
-      | Family name  | Norris                           |
+      | Username    | chuck_the_local_hero             |
+      | E-mail      | chuck_the_local_hero@example.com |
+      | First name  | Chuck                            |
+      | Family name | Norris                           |
 
   Scenario: An existing local account can be linked by the user using the email.
     Given CAS users:
@@ -117,15 +117,15 @@ Feature: Log in through EU Login
 
     # The profile entries are overwritten, except the username & the email.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username     | chuck_the_local_hero             |
-      | E-mail       | chuck_the_local_hero@example.com |
-      | First name   | Chuck                            |
-      | Family name  | Norris                           |
+      | Username    | chuck_the_local_hero             |
+      | E-mail      | chuck_the_local_hero@example.com |
+      | First name  | Chuck                            |
+      | Family name | Norris                           |
 
   Scenario: An existing user can log in through EU Login
     Given users:
-      | Username    | E-mail           | Password | First name | Family name | Organisation |
-      | jb007_local | 007-local@mi6.eu | 123      | JJaammeess | BBoonndd    | 007-local    |
+      | Username    | E-mail           | Password | First name | Family name |
+      | jb007_local | 007-local@mi6.eu | 123      | JJaammeess | BBoonndd    |
     Given CAS users:
       | Username | E-mail     | Password           | First name | Last name | Local username |
       | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
@@ -158,17 +158,100 @@ Feature: Log in through EU Login
 
     # The profile entries are overwritten, except the username & the email.
     And the user jb007_local should have the following data in their user profile:
-      | Username     | jb007_local                     |
-      | E-mail       | 007-local@mi6.eu                |
-      | First name   | James                           |
-      | Family name  | Bond                            |
+      | Username    | jb007_local      |
+      | E-mail      | 007-local@mi6.eu |
+      | First name  | James            |
+      | Family name | Bond             |
 
     # Test the customized message as logged in user.
-  Given I visit "/user/password"
+    Given I visit "/user/password"
     And I wait for the honeypot time limit to pass
     And I press "Submit"
     Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
     And I should see the link "EU Login"
+
+  Scenario: Fields imported from EU Login cannot be edited locally.
+    Given users:
+      | Username            | E-mail        |
+      | full_cas_profile    | f@example.com |
+      | partial_cas_profile | p@example.com |
+      | no_cas_profile      | n@example.com |
+      | without_cas         | w@example.com |
+
+    Given CAS users:
+      | Username            | E-mail        | Password | First name | Last name | Local username      |
+      | full_cas_profile    | f@example.com | 123      | Joe        | Doe       | full_cas_profile    |
+      | partial_cas_profile | p@example.com | 123      |            | Roe       | partial_cas_profile |
+      | no_cas_profile      | n@example.com | 123      |            |           | no_cas_profile      |
+
+    # User with full profile data.
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "f@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain "Joe"
+    And the "Family name" field should contain "Doe"
+    And the following fields should be disabled "First name,Family name"
+
+    When I press "Save"
+    Then I should see the success message "The changes have been saved."
+
+    # User with partial profile data.
+    Given I am an anonymous user
+    And I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "p@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain ""
+    And the "Family name" field should contain "Roe"
+    And the following fields should not be disabled "First name"
+    And the following fields should be disabled "Family name"
+
+    When I press "Save"
+    Then I should see the error message "First name field is required."
+    But I should not see the error message "Family name field is required."
+
+    # User with no profile data.
+    Given I am an anonymous user
+    And I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "n@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain ""
+    And the "Family name" field should contain ""
+    And the following fields should not be disabled "First name,Family name"
+
+    When I press "Save"
+    Then I should see the error message "First name field is required."
+    And I should see the error message "Family name field is required."
+
+    # User not linked to a CAS account.
+    Given I am logged in as "without_cas"
+    And I click "My account"
+
+    When I click "Edit"
+    Then the "First name" field should contain ""
+    And the "Family name" field should contain ""
+    And the following fields should not be disabled "First name,Family name"
+
+    When I press "Save"
+    Then I should see the error message "First name field is required."
+    And I should see the error message "Family name field is required."
 
   Scenario: The Drupal login form shows a warning message.
     When I visit "/user/login"

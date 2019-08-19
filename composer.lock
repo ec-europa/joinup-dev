@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c74b3efceefdc13d887f228c61f3819",
+    "content-hash": "c67d7c9d89fa88305fe0480505c6ed3f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2582,6 +2582,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Customize the prevent_normal_login & restrict_password_management error messages @see https://www.drupal.org/project/cas/issues/3068913": "https://www.drupal.org/files/issues/2019-08-12/3068913-9.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -13006,11 +13009,17 @@
         },
         {
             "name": "drupal/cas_mock_server",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "6633266bde30e75b9cca1f2277c7dd5b6700a8bf"
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cas_mock_server-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "0dc2424d29d35fbc2f6a77573bd9f8d3d91e7728"
             },
             "require": {
                 "drupal/cas": "~1.5",
@@ -13038,8 +13047,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1565334485",
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1565334784",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -16013,7 +16022,6 @@
         "openeuropa/oe_webtools_location": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
-        "drupal/cas_mock_server": 20,
         "drupal/config_inspector": 10,
         "jcalderonzumba/gastonjs": 20
     },

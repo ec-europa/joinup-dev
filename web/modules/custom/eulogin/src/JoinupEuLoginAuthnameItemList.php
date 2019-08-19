@@ -18,15 +18,21 @@ class JoinupEuLoginAuthnameItemList extends FieldItemList {
   /**
    * {@inheritdoc}
    */
-  protected function computeValue() {
-    $entity = $this->getEntity();
+  protected function computeValue(): void {
+    /** @var \Drupal\user\UserInterface $account */
+    $account = $this->getEntity();
 
-    if (!$entity instanceof UserInterface) {
+    if (!$account instanceof UserInterface) {
       throw new \Exception('This class can be used only with the user entity.');
     }
 
-    $value = empty($entity->id()) ? NULL : \Drupal::service('cas.user_manager')->getCasUsernameForAccount($entity->id());
-    $this->list[0] = $this->createItem(0, $value);
+    if ($account->isAuthenticated()) {
+      /** @var \Drupal\cas\Service\CasUserManager $cas_user_manager */
+      $cas_user_manager = \Drupal::service('cas.user_manager');
+      if ($authname = $cas_user_manager->getCasUsernameForAccount($account->id())) {
+        $this->list[0] = $this->createItem(0, $authname);
+      }
+    }
   }
 
 }
