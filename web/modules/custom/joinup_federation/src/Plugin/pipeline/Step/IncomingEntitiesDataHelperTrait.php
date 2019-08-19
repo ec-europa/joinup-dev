@@ -15,8 +15,12 @@ trait IncomingEntitiesDataHelperTrait {
   /**
    * A dependency tree for each incoming solution.
    *
-   * Each entry is a flat list of entity ids that each solution (the index) is
-   * related to.
+   * An associative array indexed by the solution ids that contains the
+   * 'dependencies' and the 'category' values. The 'dependencies' is an
+   * associative array itself, of entity ids indexed by their bundle that are
+   * related to the solution. The 'category' is a string representing the status
+   * of the solution. Possible values are 'not_federated', 'federated',
+   * 'invalid_solution', 'federated_unchanged' and 'blacklisted'.
    *
    * @var array
    */
