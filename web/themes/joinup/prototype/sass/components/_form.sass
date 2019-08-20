@@ -209,25 +209,61 @@
     border-width: 1px
     border-color: $color-error
 
+// My subscriptions form
 .form__subscribe-types
-  @extend .white-box
+  background: #fff
+  padding: 20px
   .form-item
     flex: 1 100%
-    padding: 10px
+    padding-bottom: 20px
     select
       width: 100%
-  +breakpoint(tablet)
+  .form__subscribe-save
+    flex: 1 100%
+    max-width: 100%
+  +breakpoint(mobile)
     .form-item
       flex: 1 50%
-  +breakpoint(desktop)
+  +breakpoint(tablet)
     .form-item
       flex: 1 25%
       max-width: 25%
+  +breakpoint(lg-desktop)
+    .form-item
+      flex: 1 18%
+      max-width: 18%
+      padding-bottom: 0
+    .form__subscribe-save
+      flex: 1 28%
+      max-width: 28%
 
 .form__subscribe-types-inner
-  margin: -10px
   display: flex
   flex-flow: row wrap
+  align-items: center
+
+.form__subscribe-frequency
+  .form-item
+    margin-bottom: $field-margin
+  +breakpoint(lg-desktop)
+    display: flex
+    align-items: flex-end
+    .form-item
+      flex: 1 72%
+      max-width: 72%
+      margin-bottom: 0
+    .form__subscribe-save
+      flex: 1 28%
+      max-width: 28%
+
+.form__subscribe-actions
+  text-align: right
+  margin-right: 0
+  .button
+    margin-right: 0
+
+.form__subscribe-save
+  text-align: right
 
 // States
 // --------------------------------------------------

@@ -178,6 +178,7 @@ class MySubscriptionsForm extends FormBase {
         '#name' => 'submit-' . $clean_collection_id,
         '#submit' => ['::submitSubscriptionBundles'],
         '#type' => 'submit',
+        '#extra_suggestion' => 'subscribe_save',
         '#value' => $this->t('Save changes'),
         '#attributes' => [
           // The button should appear disabled initially. It becomes enabled
@@ -192,7 +193,12 @@ class MySubscriptionsForm extends FormBase {
       ];
     }
 
-    $form['unsubscribe_all'] = [
+    $form['edit-actions'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => 'form__subscribe-actions'],
+    ];
+
+    $form['edit-actions']['unsubscribe_all'] = [
       '#type' => 'link',
       '#title' => $this->t('Unsubscribe from all'),
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
@@ -329,6 +335,7 @@ class MySubscriptionsForm extends FormBase {
 
     $form['user_subscription_settings']['field_user_frequency'] = $widget->form($items, $form['user_subscription_settings'], $subform_state);
     $form['user_subscription_settings']['field_user_frequency']['#access'] = $items->access('edit');
+    $form['user_subscription_settings']['field_user_frequency']['#attributes']['class'][] = 'form__subscribe-frequency';
 
     $form['user_subscription_settings']['field_user_frequency']['submit'] = [
       '#ajax' => [
@@ -337,6 +344,7 @@ class MySubscriptionsForm extends FormBase {
       ],
       '#submit' => ['::submitUserFrequency'],
       '#type' => 'submit',
+      '#extra_suggestion' => 'subscribe_save',
       '#value' => $this->t('Save changes'),
       '#attributes' => [
         // The button should appear disabled initially. It becomes enabled
