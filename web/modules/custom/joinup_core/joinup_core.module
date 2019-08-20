@@ -1247,7 +1247,7 @@ function joinup_core_form_views_form_og_members_overview_default_alter(&$form, F
  *   The form state object.
  */
 function joinup_core_form_views_form_og_members_overview_default_validate(array &$form, FormStateInterface $form_state) {
-  if ($form_state->getValue('action') !== 'joinup_collection_og_membership_delete_action') {
+  if ($form_state->getValue('action') !== 'joinup_og_membership_delete_action') {
     return;
   }
 
