@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c67d7c9d89fa88305fe0480505c6ed3f",
+    "content-hash": "c24883ba923b6bfc67770a936202caa0",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2556,7 +2556,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas.git",
-                "reference": "4bedf649ee7fbead7283098583c8951f07c69690"
+                "reference": "50cb5cb68d1100626bba92610f004c7a42896ec0"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -2571,8 +2571,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5+5-dev",
-                    "datestamp": "1565572081",
+                    "version": "8.x-1.5+9-dev",
+                    "datestamp": "1566071888",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -2582,9 +2582,6 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
-                },
-                "patches_applied": {
-                    "Customize the prevent_normal_login & restrict_password_management error messages @see https://www.drupal.org/project/cas/issues/3068913": "https://www.drupal.org/files/issues/2019-08-12/3068913-9.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2620,7 +2617,7 @@
                 "issues": "http://drupal.org/project/issues/cas",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2019-08-12T01:11:23+00:00"
+            "time": "2019-08-17T20:05:49+00:00"
         },
         {
             "name": "drupal/cas_account_link",
@@ -2689,20 +2686,14 @@
         },
         {
             "name": "drupal/cas_attributes",
-            "version": "1.0.0-beta1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_attributes.git",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas_attributes-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "db14c5cdca7e89c65ba7947f89e10b51071ca27f"
+                "reference": "db2d472f1bfb62c9ef082e00848c9f8147c529ae"
             },
             "require": {
-                "drupal/cas": "^1.2",
+                "drupal/cas": "*",
                 "drupal/core": "~8.0",
                 "drupal/token": "*"
             },
@@ -2712,15 +2703,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1543782180",
+                    "version": "8.x-1.0-beta1+0-dev",
+                    "datestamp": "1543781880",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2757,7 +2745,8 @@
             "homepage": "https://www.drupal.org/project/cas_attributes",
             "support": {
                 "source": "https://git.drupalcode.org/project/cas_attributes"
-            }
+            },
+            "time": "2019-08-18T23:06:31+00:00"
         },
         {
             "name": "drupal/changed_fields",
@@ -13009,17 +12998,11 @@
         },
         {
             "name": "drupal/cas_mock_server",
-            "version": "1.0.0-alpha1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "8.x-1.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas_mock_server-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "0dc2424d29d35fbc2f6a77573bd9f8d3d91e7728"
+                "reference": "6a9b26c2bf84f99cd4d96d42d626881c7508fc07"
             },
             "require": {
                 "drupal/cas": "~1.5",
@@ -13047,8 +13030,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1565334784",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1565334485",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -16002,7 +15985,7 @@
     "stability-flags": {
         "drupal/cas": 20,
         "drupal/cas_account_link": 20,
-        "drupal/cas_attributes": 10,
+        "drupal/cas_attributes": 20,
         "drupal/diff": 5,
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
@@ -16022,6 +16005,7 @@
         "openeuropa/oe_webtools_location": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
+        "drupal/cas_mock_server": 20,
         "drupal/config_inspector": 10,
         "jcalderonzumba/gastonjs": 20
     },

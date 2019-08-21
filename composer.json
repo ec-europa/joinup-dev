@@ -14,8 +14,8 @@
         "drupal/block_content_permissions": "^1.6",
         "drupal/cached_computed_field": "^1.0-beta4",
         "drupal/cas": "dev-1.x",
-        "drupal/cas_account_link": "1.x-dev",
-        "drupal/cas_attributes": "^1.0@beta",
+        "drupal/cas_account_link": "dev-1.x",
+        "drupal/cas_attributes": "dev-1.x",
         "drupal/changed_fields": "^2.0",
         "drupal/config_provider": "~1.0",
         "drupal/config_readonly": "~1.0",
@@ -100,7 +100,7 @@
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "drupal/admin_toolbar": "^1.23",
-        "drupal/cas_mock_server": "~1.0",
+        "drupal/cas_mock_server": "dev-1.x",
         "drupal/coder": "^8.3.6",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
@@ -193,17 +193,8 @@
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
             },
-            "drupal/cas": {
-                "Customize the prevent_normal_login & restrict_password_management error messages @see https://www.drupal.org/project/cas/issues/3068913": "https://www.drupal.org/files/issues/2019-08-12/3068913-9.patch"
-            },
             "drupal/cas_account_link": {
                 "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-07-27/username_conflict_3070744_D8_5.patch"
-            },
-            "drupal/cas_attributes": {
-                "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
-            },
-            "drupal/cas_mock_server": {
-                "Allow to customize the CAS mock server validation response @see https://github.com/pfrenssen/cas_mock_server/pull/14": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/14.diff"
             },
             "drupal/config_sync": {
                 "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
