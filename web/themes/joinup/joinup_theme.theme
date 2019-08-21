@@ -652,7 +652,7 @@ function joinup_theme_preprocess_container(&$variables) {
   }
 
   // Remove margin for subscribe button in tile.
-  if (isset($variables['element']['submit']['#extra_suggestion']) && $variables['element']['submit']['#extra_suggestion'] == 'subscribe') {
+  if (isset($variables['element']['submit']['#extra_suggestion']) && $variables['element']['submit']['#extra_suggestion'] === 'subscribe') {
     $variables['no_margin'] = TRUE;
   }
 }
