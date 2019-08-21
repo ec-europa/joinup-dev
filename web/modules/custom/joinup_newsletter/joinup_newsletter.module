@@ -58,12 +58,10 @@ function joinup_newsletter_entity_prepare_view(string $entity_type_id, array $en
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  *
  * Add custom template for a newsletter subscribe button.
  */
-function joinup_newsletter_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'oe_newsroom_newsletter_subscribe') {
-    $form['actions']['submit']['#extra_suggestion'] = 'subscribe';
-  }
+function joinup_newsletter_form_oe_newsroom_newsletter_subscribe_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#extra_suggestion'] = 'subscribe';
 }
