@@ -8,6 +8,7 @@
 use Drupal\Core\Database\Database;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
+use Drupal\search_api\Entity\Index;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -712,10 +713,10 @@ function joinup_core_post_update_0_fix_publication_dates() {
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $connection = \Drupal::database();
   $connection->update($node_storage->getDataTable())
-    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->expression('published_at', NULL)
     ->execute();
   $connection->update($node_storage->getRevisionDataTable())
-    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->expression('published_at', NULL)
     ->execute();
 }
 
@@ -723,11 +724,98 @@ function joinup_core_post_update_0_fix_publication_dates() {
  * Reset the publication dates again.
  */
 function joinup_core_post_update_refix_publication_dates() {
-  // The previous approach had a bug where nodes with a single published
-  // revision but a newer changed date accidentally had the most recent change
-  // date set as the publication date.
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'publication_date') . '/publication_date.install';
+  $connection = Database::getConnection();
 
+  // Retrieve all nids that have the publication date not equal to the creation
+  // or the default value.
+  // Since we are using the `created` property to track the publication date,
+  // entities that are published and have a faulty publication date will have
+  // their `published_at` property not equal to the creation date. Entities that
+  // are not published will also not have the date set to the
+  // PUBLICATION_DATE_DEFAULT value.
+  // Find and remove all these entities from the index and mark them to
+  // re-index.
+  $nids = $connection->select('node_field_data', 'n')
+    ->fields('n', ['nid'])
+    ->where('n.published_at != n.created AND n.published_at != :default_value', [':default_value' => PUBLICATION_DATE_DEFAULT])
+    ->execute()
+    ->fetchCol();
+
+  $search_api_changelist = array_map(function (int $nid): string {
+    return "$nid:en";
+  }, $nids);
+
+  // Reset the items in the index.
+  $published_index = Index::load('published');
+  $published_index->trackItemsDeleted('entity:node', $search_api_changelist);
+  $published_index->trackItemsInserted('entity:node', $search_api_changelist);
+
+  // Clean up the values from the database and start anew.
   joinup_core_post_update_0_fix_publication_dates();
-  _publication_date_populate_database_field();
+
+  // The upstream update path is using the `changed` timestamp in order to
+  // update the publication timestamp. However, we already have a way of
+  // accurately tracking it, the `created` property. We already update the
+  // `created` property during the initial publication so by reproducing the
+  // upstream queries but having the `created` property used instead, we
+  // properly set the publication date.
+  $queries = [
+    // Update nodes with multiple revisions that have at least one published
+    // revision so the publication date is set to the created timestamp of the
+    // first published revision.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_revision} r, (
+  SELECT
+    nid,
+    MIN(vid) as vid,
+    MIN(created) as created
+  FROM {node_field_revision}
+  WHERE status = 1
+  GROUP BY nid
+  ORDER BY vid
+) s
+SET r.published_at = s.created
+WHERE r.nid = s.nid AND r.vid >= s.vid;
+SQL
+      ,
+      'arguments' => [],
+    ],
+
+    // Set the remainder of the publication dates in the revisions table to the
+    // default timestamp. This applies to all revisions that were created before
+    // the node was first published.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_revision} r
+SET r.published_at = :default_timestamp
+WHERE r.published_at IS NULL;
+SQL
+      ,
+      'arguments' => [':default_timestamp' => PUBLICATION_DATE_DEFAULT],
+    ],
+
+    // Copy the publication date from the revisions table to the node table.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_data} d, {node_field_revision} r
+SET d.published_at = r.published_at
+WHERE d.vid = r.vid;
+SQL
+      ,
+      'arguments' => [],
+    ],
+  ];
+
+  // Perform the operations in a single atomic transaction.
+  $transaction = $connection->startTransaction();
+  try {
+    foreach ($queries as $query_data) {
+      \Drupal::database()->query($query_data['query'], $query_data['arguments']);
+    }
+  }
+  catch (Exception $e) {
+    $transaction->rollBack();
+    throw new Exception('Database error', 0, $e);
+  }
 }
