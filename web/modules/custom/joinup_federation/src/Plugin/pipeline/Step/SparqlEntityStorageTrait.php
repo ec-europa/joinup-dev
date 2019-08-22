@@ -69,7 +69,6 @@ trait SparqlEntityStorageTrait {
     return $this->getSparqlQuery()
       ->graphs(['staging'])
       ->condition('rid', 'solution')
-      ->notExists('field_is_version_of')
       ->execute();
   }
 
@@ -80,12 +79,8 @@ trait SparqlEntityStorageTrait {
    *   An array of entity ids.
    */
   protected function getAllIncomingIds(): array {
-    $results = $this->sparql->query("SELECT DISTINCT(?entityId) WHERE { GRAPH <{$this->getGraphUri('sink')}> { ?entityId ?p ?o . } }");
-    $all_imported_ids = array_map(function (\stdClass $item): string {
-      return $item->entityId->getUri();
-    }, $results->getArrayCopy());
-
-    return $all_imported_ids;
+    $results = $this->getSparqlQuery()->graphs(['staging'])->execute();
+    return $results;
   }
 
 }

@@ -125,7 +125,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
         ->setOwnerId($current_user_id)
         ->set('provenance_enabled', $ids[$id] || isset($unchanged_ids[$id]))
         ->set('provenance_associated_with', $collection_id)
-        ->set('field_provenance_entity_hash', $this->getEntityHash($id))
+        ->set('provenance_hash', $this->getEntityHash($id))
         ->save();
     }
   }

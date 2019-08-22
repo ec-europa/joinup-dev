@@ -267,7 +267,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
       // to the entity. If none of them changed, mark it as unchanged.
       if ($category === 'federated') {
         $entity_list = $this->getSolutionsWithDependenciesAsFlatList([$parent]);
-        if (!$this->getSolutionHasChanged($entity_list)) {
+        if (!$this->isSolutionChanged($entity_list)) {
           $category = 'federated_unchanged';
         }
       }
@@ -326,7 +326,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   Whether the solution or one of its related entities have changed since
    *   the last import.
    */
-  protected function getSolutionHasChanged(array $entity_ids): bool {
+  protected function isSolutionChanged(array $entity_ids): bool {
     $storage = $this->getRdfStorage();
     /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
     $entities = $storage->loadMultiple($entity_ids, ['staging']);
@@ -341,12 +341,12 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
 
       // Like the parent solution, if this is the first time the entity is
       // imported, the solution is marked as new.
-      if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('field_provenance_entity_hash')->isEmpty()) {
+      if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('provenance_hash')->isEmpty()) {
         return TRUE;
       }
 
       $entity_hash = $this->getEntityHash($id);
-      if ($entity_hash !== $provenance_records[$id]->field_provenance_entity_hash->value) {
+      if ($entity_hash !== $provenance_records[$id]->provenance_hash->value) {
         return TRUE;
       }
     }
