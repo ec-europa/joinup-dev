@@ -713,10 +713,10 @@ function joinup_core_post_update_0_fix_publication_dates() {
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $connection = \Drupal::database();
   $connection->update($node_storage->getDataTable())
-    ->expression('published_at', NULL)
+    ->fields(['published_at' => NULL])
     ->execute();
   $connection->update($node_storage->getRevisionDataTable())
-    ->expression('published_at', NULL)
+    ->fields(['published_at' => NULL])
     ->execute();
 }
 
