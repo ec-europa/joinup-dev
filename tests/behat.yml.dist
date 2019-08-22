@@ -19,7 +19,6 @@ default:
             attributes_map:
               firstname: First name
               lastname: Last name
-              domain: Domain
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
