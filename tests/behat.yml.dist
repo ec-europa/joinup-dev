@@ -17,8 +17,8 @@ default:
             s3Secret: '${exports.s3.secret}'
         - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
             attributes_map:
-              firstname: First name
-              lastname: Last name
+              firstName: First name
+              lastName: Last name
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
