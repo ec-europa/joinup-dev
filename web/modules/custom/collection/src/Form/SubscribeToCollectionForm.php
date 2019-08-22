@@ -36,7 +36,6 @@ class SubscribeToCollectionForm extends FormBase {
    */
   const LINK_BUTTON_CLASSES = [
     'button',
-    'button--blue-light',
     'mdl-button',
     'mdl-js-button',
     'mdl-button--raised',
@@ -142,6 +141,7 @@ class SubscribeToCollectionForm extends FormBase {
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => $this->t('No thanks'),
+      '#extra_suggestion' => 'light_blue',
       '#attributes' => [
         'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small', 'dialog-cancel']),
       ],
