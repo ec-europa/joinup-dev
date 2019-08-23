@@ -11,9 +11,9 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenu;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests the custom page OG menu link updater service.
@@ -22,7 +22,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
+  use SparqlConnectionTrait;
 
   /**
    * {@inheritdoc}
@@ -40,6 +40,7 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     'og_ui',
     'rdf_entity',
     'rdf_schema_field_validation',
+    'sparql_entity_storage',
     'system',
     'user',
   ];
@@ -51,7 +52,13 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     parent::setUp();
 
     $this->setUpSparql();
-    $this->installConfig(['language', 'og', 'og_menu', 'rdf_entity']);
+    $this->installConfig([
+      'language',
+      'og',
+      'og_menu',
+      'rdf_entity',
+      'sparql_entity_storage',
+    ]);
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('ogmenu');
@@ -85,8 +92,8 @@ class CustomPageOgMenuLinksManagerTest extends KernelTestBase {
     $mocked_collection_type->save();
 
     // Create the corresponding mapping config entity.
-    $mapping_values = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
-    RdfEntityMapping::create($mapping_values)
+    $mapping_values = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/sparql_entity_storage.mapping.rdf_entity.collection.yml'));
+    SparqlMapping::create($mapping_values)
       // Don't care about the 'draft' graph.
       ->unsetGraphs(['draft'])
       ->save();

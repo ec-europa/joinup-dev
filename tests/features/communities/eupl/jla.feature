@@ -18,6 +18,7 @@ Feature:
     When I am not logged in
     And I visit the "JLA" custom page
     Then I should see the heading "JLA"
+    And I should see the link "licence SPDX identifier"
     And I should see the following filter categories in the correct order:
       | Can        |
       | Must       |
@@ -52,6 +53,11 @@ Feature:
     And I should see the text "Bar Licence"
 
     When I fill in "SPDX id" with "SPDX_FOO"
+    Then I should see the text "1 licences found"
+    And I should see the text "Foo Licence"
+    But I should not see the text "Bar Licence"
+    # Hitting 'Enter' does not trigger anything.
+    When I hit enter in the keyboard on the field "SPDX id"
     Then I should see the text "1 licences found"
     And I should see the text "Foo Licence"
     But I should not see the text "Bar Licence"

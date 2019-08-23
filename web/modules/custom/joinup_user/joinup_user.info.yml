@@ -4,11 +4,11 @@ description: User profile fields, user notifications, ...
 core: 8.x
 package: Joinup
 dependencies:
-  - joinup_core
-  - og
-  - search_api_field
-  - social_media_links_field
-  - user
+  - drupal:user
+  - joinup:joinup_core
+  - joinup:search_api_field
+  - og:og
+  - social_media_links:social_media_links_field
 
 config_devel:
   - facets.facet.user_content_bundle
@@ -35,3 +35,4 @@ config_devel:
   - og.og_membership_type.og_membership_type
   - user.role.administrator
   - user.role.licence_manager
+  - user.role.moderator

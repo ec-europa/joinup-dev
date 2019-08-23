@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\rdf_demo\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -15,9 +17,9 @@ class RdfDemoController extends ControllerBase {
    * @return array
    *   A simple render array.
    */
-  public function repositories() {
-    /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $entity_storage */
-    $entity_storage = \Drupal::service('entity.manager')->getStorage('rdf_entity');
+  public function repositories(): array {
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $entity_storage */
+    $entity_storage = $this->entityTypeManager()->getStorage('rdf_entity');
     $query = $entity_storage->getQuery()
       ->sort('id')
       ->condition('rid', 'collection')

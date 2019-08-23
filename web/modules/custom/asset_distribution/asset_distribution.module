@@ -67,13 +67,13 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
 }
 
 /**
- * Implements hook_rdf_load_bundle_alter().
+ * Implements hook_sparql_bundle_load_alter().
  *
  * There is an initial check whether the bundle is empty because the method
  * that invokes this hook is also called for taxonomies and the bundle is
  * currently being skipped for the taxonomies.
  */
-function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundles) {
+function asset_distribution_sparql_bundle_load_alter($entity_values, &$bundles) {
   if (count($bundles) > 1 && in_array('solution', $bundles)) {
     if (isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
       $bundles = array_diff($bundles, ['solution']);
@@ -175,7 +175,7 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
  *   The term ID as URI or NULL, if the term doesn't exists.
  */
 function asset_distribution_get_file_type_term_by_mime($mime_type) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
 
   $query = <<<QUERY

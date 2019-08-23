@@ -28,8 +28,8 @@ Feature: Submit the contact form
       | Subject        | Screen reader accessibility |
       | Message        | Dear sir, madam, ...        |
     And I attach the file "logo.png" to "Attachment"
-    # We need to wait 5 seconds for the honeypot validation to pass.
-    And I wait for the honeypot validation to pass
+    # We need to wait 5 seconds for the spam protection time limit to pass.
+    And I wait for the spam protection time limit to pass
     And I press "Submit"
 
     # Both moderators should have received the notification e-mail.

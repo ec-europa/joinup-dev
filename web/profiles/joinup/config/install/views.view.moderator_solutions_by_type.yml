@@ -535,7 +535,7 @@ display:
         title: 'Solutions by solution type'
         description: ''
         expanded: false
-        parent: joinup_core.admin_reporting
+        parent: joinup.admin_reporting
         weight: 0
         context: '0'
         menu_name: admin

@@ -5,17 +5,17 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field
-  - collection
-  - ds
-  - image
-  - joinup_comment
-  - joinup_community_content
-  - joinup_core
-  - og
-  - smart_trim
-  - solution
-  - view_unpublished
+  - cached_computed_field:cached_computed_field
+  - joinup:collection
+  - ds:ds
+  - drupal:image
+  - joinup:joinup_comment
+  - joinup:joinup_community_content
+  - joinup:joinup_core
+  - og:og
+  - smart_trim:smart_trim
+  - joinup:solution
+  - view_unpublished:view_unpublished
 
 config_devel:
   - core.base_field_override.node.news.status

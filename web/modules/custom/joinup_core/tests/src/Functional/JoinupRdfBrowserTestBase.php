@@ -3,14 +3,14 @@
 namespace Drupal\Tests\joinup_core\Functional;
 
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Base setup for a browser tests using RDF module.
  */
 abstract class JoinupRdfBrowserTestBase extends BrowserTestBase {
 
-  use RdfDatabaseConnectionTrait;
+  use SparqlConnectionTrait;
 
   /**
    * An array of graphs to clear after the test.

@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueSolutionTitleConstraint extends Constraint {
 
+  /**
+   * The message to show when validation fails.
+   *
+   * @var string
+   */
   public $message = 'A solution titled %value already exists in this collection. Please choose a different title.';
 
   /**

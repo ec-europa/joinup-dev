@@ -1,0 +1,9 @@
+name: ISA2 Analytics
+description: Integrates the ISA2 Joinup instance with Webtools Analytics for tracking user behaviour.
+package: ISA2
+
+core: 8.x
+type: module
+
+dependencies:
+  - oe_webtools:oe_webtools_analytics

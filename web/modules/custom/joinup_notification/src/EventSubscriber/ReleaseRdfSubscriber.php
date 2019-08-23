@@ -3,6 +3,7 @@
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
@@ -33,6 +34,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @codingStandardsIgnoreEnd
  */
 class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   const TEMPLATE_UPDATE_PUBLISHED = 'release_update';
   const TEMPLATE_DELETE = 'release_delete';
@@ -291,17 +294,17 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
       $arguments['@group:title'] = $parent->label();
       $arguments['@group:bundle'] = $parent->bundle();
       if (empty($arguments['@actor:role'])) {
-        $membership = $this->membershipManager->getMembership($parent, $actor);
+        $membership = $this->membershipManager->getMembership($parent, $actor->id());
         if (!empty($membership)) {
           $role_names = array_map(function (OgRoleInterface $og_role) {
             return $og_role->getName();
           }, $membership->getRoles());
 
           if (in_array('administrator', $role_names)) {
-            $arguments['@actor:role'] = t('Owner');
+            $arguments['@actor:role'] = $this->t('Owner');
           }
           elseif (in_array('facilitator', $role_names)) {
-            $arguments['@actor:role'] = t('Facilitator');
+            $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
         $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;

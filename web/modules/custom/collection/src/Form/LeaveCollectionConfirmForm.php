@@ -93,7 +93,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
     $form = parent::buildForm($form, $form_state);
     $user = User::load($this->currentUser()->id());
 
-    if ($membership = $this->membershipManager->getMembership($this->collection, $user)) {
+    if ($membership = $this->membershipManager->getMembership($this->collection, $user->id())) {
       $admin_role_id = $this->collection->getEntityTypeId() . '-' . $this->collection->bundle() . '-' . 'administrator';
       if ($membership->hasRole($admin_role_id)) {
         $administrators = $this->membershipManager->getGroupMembershipsByRoleNames($this->collection, ['administrator']);
@@ -119,7 +119,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
 
     // Only authenticated users can leave a collection.
     /** @var \Drupal\user\UserInterface $user */
-    $user = User::load($this->currentUser()->id());
+    $user = $this->currentUser();
     if ($user->isAnonymous()) {
       $form_state->setErrorByName('user', $this->t('<a href=":login">Sign in</a> or <a href=":register">register</a> to change your group membership.', [
         ':login' => Url::fromRoute('user.login'),
@@ -127,7 +127,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       ]));
     }
 
-    if (!$this->membershipManager->isMember($this->collection, $user)) {
+    if (!$this->membershipManager->isMember($this->collection, $user->id())) {
       $form_state->setErrorByName('collection', $this->t('You are not a member of this collection. You cannot leave it.'));
     }
   }

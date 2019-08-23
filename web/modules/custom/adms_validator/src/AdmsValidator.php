@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\adms_validator;
 
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 use EasyRdf\Graph;
 
 /**
@@ -13,12 +13,12 @@ use EasyRdf\Graph;
  */
 class AdmsValidator implements AdmsValidatorInterface {
 
-  use RdfEntityGraphStoreTrait;
+  use SparqlGraphStoreTrait;
 
   /**
    * The connection to the SPARQL backend.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparqlEndpoint;
 
@@ -67,7 +67,7 @@ class AdmsValidator implements AdmsValidatorInterface {
    * {@inheritdoc}
    */
   public function validateGraph(Graph $graph): AdmsValidationResult {
-    if (!$uri = $graph->getUri()) {
+    if (!$graph->getUri()) {
       throw new \InvalidArgumentException("The graph has been instantiated without a URI. Should be instantiated in this way: new Graph('http://example.com/graph-uri');");
     }
 
