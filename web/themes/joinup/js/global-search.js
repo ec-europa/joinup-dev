@@ -15,7 +15,14 @@
           $(this).find('.search-bar__input').css('padding-left', chipWidth + 'px');
         }
 
-        $('.mdl-chip__action').on('click', function () {
+        var $chipAction = $('.mdl-chip__action');
+
+        $chipAction.on('mousedown', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        });
+
+        $chipAction.on('click', function (event) {
           var chipWidth = $searchBar.find('.mdl-chip').width();
           if (chipWidth === 0 || chipWidth === undefined) {
             $('.search-bar--header').find('.search-bar__input').css('padding-left', '0px');
