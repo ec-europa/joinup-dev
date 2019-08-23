@@ -46,7 +46,7 @@ interface PipelineStateManagerInterface {
    * @param string $pipeline_id
    *   The pipeline plugin ID.
    *
-   * @return \stdClass|null
+   * @return object|null
    *   An object with the owner and updated time if the key has a value, or
    *   NULL otherwise.
    */

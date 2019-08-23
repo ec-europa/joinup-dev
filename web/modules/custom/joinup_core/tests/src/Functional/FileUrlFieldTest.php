@@ -5,6 +5,7 @@ namespace Drupal\Tests\joinup_core\Functional;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
@@ -18,8 +19,9 @@ use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
  */
 class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
 
-  use FileUrlTrait;
   use EntityUtilityTrait;
+  use FileUrlTrait;
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -51,7 +53,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
    *
    * @var \Drupal\Core\Entity\ContentEntityStorageInterface
    */
-  protected $rdfStorage;
+  protected $sparqlStorage;
 
   /**
    * {@inheritdoc}
@@ -62,7 +64,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     $this->fileSystem = $this->container->get('file_system');
     // @todo This will no longer be needed once ISAICP-3392 is fixed.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    $this->rdfStorage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
+    $this->sparqlStorage = $this->container->get('entity_type.manager')->getStorage('rdf_entity');
   }
 
   /**
@@ -105,7 +107,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    $this->rdfStorage->resetCache([$rdf_entity->id()]);
+    $this->sparqlStorage->resetCache([$rdf_entity->id()]);
 
     // Check that the file has been uploaded to the file URL field.
     $rdf_entity = Rdf::load($rdf_entity->id());
@@ -132,7 +134,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    $this->rdfStorage->resetCache([$rdf_entity->id()]);
+    $this->sparqlStorage->resetCache([$rdf_entity->id()]);
 
     // Check that the remote URL replaced the uploaded file.
     $rdf_entity = Rdf::load($rdf_entity->id());
@@ -199,7 +201,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     $this->submitForm([
       'name' => $account->getUsername(),
       'pass' => $account->passRaw,
-    ], t('Sign in'));
+    ], $this->t('Sign in'));
 
     // @see BrowserTestBase::drupalUserIsLoggedIn()
     $account->sessionId = $this->getSession()->getCookie($this->getSessionName());

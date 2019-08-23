@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\image\Plugin\Field\FieldFormatter\ImageFormatter;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\image\Plugin\Field\FieldFormatter\ImageFormatter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'image_url_formatter' formatter.
@@ -20,12 +26,67 @@ use Drupal\Core\Cache\Cache;
  *   }
  * )
  */
-class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPluginInterface {
+class ImageUrlFormatter extends ImageFormatter {
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
+   * Constructs an ImageUrlFormatter object.
+   *
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the formatter is associated.
+   * @param array $settings
+   *   The formatter settings.
+   * @param string $label
+   *   The formatter label display setting.
+   * @param string $view_mode
+   *   The view mode.
+   * @param array $third_party_settings
+   *   Any third party settings settings.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $image_style_storage
+   *   The image style storage.
+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   *   The language manager.
+   */
+  public function __construct(string $plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, string $label, string $view_mode, array $third_party_settings, AccountInterface $current_user, EntityStorageInterface $image_style_storage, LanguageManagerInterface $language_manager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage);
+
+    $this->languageManager = $language_manager;
+  }
 
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings() {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('current_user'),
+      $container->get('entity_type.manager')->getStorage('image_style'),
+      $container->get('language_manager')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings(): array {
     $settings = parent::defaultSettings();
 
     // This formatter doesn't support linking.
@@ -37,7 +98,7 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
+  public function settingsForm(array $form, FormStateInterface $form_state): array {
     $element = parent::settingsForm($form, $form_state);
 
     // This formatter doesn't support linking.
@@ -52,7 +113,7 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
    * This method contains the same code as the parent class, except the image
    * link part.
    */
-  public function settingsSummary() {
+  public function settingsSummary(): array {
     $summary = [];
 
     $image_styles = image_style_options(FALSE);
@@ -62,10 +123,10 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
     // their styles in code.
     $image_style_setting = $this->getSetting('image_style');
     if (isset($image_styles[$image_style_setting])) {
-      $summary[] = t('Image style: @style', ['@style' => $image_styles[$image_style_setting]]);
+      $summary[] = $this->t('Image style: @style', ['@style' => $image_styles[$image_style_setting]]);
     }
     else {
-      $summary[] = t('Original image');
+      $summary[] = $this->t('Original image');
     }
 
     return $summary;
@@ -74,10 +135,10 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function view(FieldItemListInterface $items, $langcode = NULL) {
+  public function view(FieldItemListInterface $items, $langcode = NULL): array {
     // Default the language to the current content language.
     if (empty($langcode)) {
-      $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+      $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
     }
     return $this->viewElements($items, $langcode);
   }
@@ -85,7 +146,7 @@ class ImageUrlFormatter extends ImageFormatter implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
     $files = $this->getEntitiesToView($items, $langcode);
 

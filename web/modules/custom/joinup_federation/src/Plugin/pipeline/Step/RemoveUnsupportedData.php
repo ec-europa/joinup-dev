@@ -7,9 +7,9 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlArg;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
 
 /**
  * Defines a process step that removes the triples not supported by Joinup.
@@ -26,7 +26,7 @@ use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
 class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements PipelineStepWithResponseInterface {
 
   use PipelineStepWithClientRedirectResponseTrait;
-  use RdfEntityGraphStoreTrait;
+  use SparqlGraphStoreTrait;
 
   /**
    * {@inheritdoc}
@@ -35,8 +35,8 @@ class RemoveUnsupportedData extends JoinupFederationStepPluginBase implements Pi
     $graph_uri = $this->getGraphUri('sink');
 
     $rdf_entity_bundle_uris = [];
-    /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
-    foreach (RdfEntityMapping::loadMultiple() as $mapping) {
+    /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $mapping */
+    foreach (SparqlMapping::loadMultiple() as $mapping) {
       // Only add rdf:type URI for RDF entities. We exclude the 'collection' RDF
       // entity bundle because:
       // - Usually a pipeline is already an effect of an existing Joinup

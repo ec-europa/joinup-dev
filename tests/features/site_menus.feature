@@ -1,9 +1,9 @@
-@api
 Feature: Site menus
   In order to navigate through the sections of the site
   As a user
   I want to have access to site-wide menus
 
+  @api
   Scenario: Main menu items should be active based on the current page.
     Given solution:
       | title | Rich Sound |

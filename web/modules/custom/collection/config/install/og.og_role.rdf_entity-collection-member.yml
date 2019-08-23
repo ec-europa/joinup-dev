@@ -31,6 +31,10 @@ permissions:
   - 'edit own event content'
   - 'edit own news content'
   - 'post comments'
+  - 'share discussion content'
+  - 'share document content'
+  - 'share event content'
+  - 'share news content'
   - unsubscribe
   - 'view own unpublished content'
 role_type: required

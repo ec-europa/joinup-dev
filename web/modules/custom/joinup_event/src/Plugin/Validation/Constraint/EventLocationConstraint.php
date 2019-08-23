@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class EventLocationConstraint extends Constraint {
 
+  /**
+   * The message to show if validation fails.
+   *
+   * @var string
+   */
   public $message = 'At least one location field should be filled in.';
 
 }

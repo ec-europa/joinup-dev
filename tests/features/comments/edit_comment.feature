@@ -24,7 +24,7 @@ Feature: Edit a comment
     # Sons' comment is the only comment available.
     And I click the contextual link "Edit comment" in the "Comment" region
     And I fill in "Create comment" with "Cracking the web."
-    And I wait for the honeypot validation to pass
+    And I wait for the spam protection time limit to pass
     And I press "Post comment"
     Then the email sent to "Comment edit moderator" with subject "Joinup: A comment has been updated." contains the following lines of text:
       | text                                                                               |

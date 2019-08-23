@@ -6,6 +6,9 @@ services:
       - { name: cache.context}
   joinup_user.active_form_submit:
     class: Drupal\joinup_user\ActiveFormSubmit
+  joinup_user.entity_authorship_helper:
+    class: Drupal\joinup_user\EntityAuthorshipHelper
+    arguments: ['@entity_type.manager']
   joinup_user.user_route_context:
     class: Drupal\joinup_user\ContextProvider\UserRouteContext
     arguments: ['@current_route_match']

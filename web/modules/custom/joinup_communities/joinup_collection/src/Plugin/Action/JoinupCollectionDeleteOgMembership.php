@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_collection\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\og\Plugin\Action\DeleteOgMembership;
 
 /**
@@ -23,7 +26,7 @@ class JoinupCollectionDeleteOgMembership extends DeleteOgMembership {
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\og\Entity\OgMembership $object */
     // 'Joinup' collection membership cannot be revoked.
-    if ($object->getGroupId() === JOINUP_COLLECTION_ID) {
+    if ($object->getGroupId() === JoinupCollectionHelper::getCollectionId()) {
       return $return_as_object ? AccessResult::forbidden() : FALSE;
     }
     return parent::access($object, $account, $return_as_object);

@@ -1,3 +1,12 @@
+joinup_community_content.share:
+  route_name: joinup_community_content.share_content_form
+  title: Share
+  group: node
+  options:
+    attributes:
+      class: ['use-ajax']
+      data-dialog-type: 'modal'
+
 joinup_community_content.unshare:
   route_name: joinup_community_content.unshare_content_form
   title: Unshare

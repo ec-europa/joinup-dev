@@ -5,5 +5,5 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - facets
-  - search_api_solr
+  - facets:facets
+  - search_api_solr:search_api_solr

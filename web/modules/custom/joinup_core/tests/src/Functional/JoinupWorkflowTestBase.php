@@ -4,6 +4,7 @@ namespace Drupal\Tests\joinup_core\Functional;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\og\Entity\OgMembership;
 
 /**
@@ -13,6 +14,8 @@ use Drupal\og\Entity\OgMembership;
  */
 abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
 
+  use StringTranslationTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -21,14 +24,14 @@ abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
   /**
    * The og membership access manager service.
    *
-   * @var \Drupal\og\OgAccess
+   * @var \Drupal\og\OgAccessInterface
    */
   protected $ogAccess;
 
   /**
    * The og membership manager service.
    *
-   * @var \Drupal\og\MembershipManager
+   * @var \Drupal\og\MembershipManagerInterface
    */
   protected $ogMembershipManager;
 
@@ -42,7 +45,7 @@ abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
   /**
    * The workflow helper service.
    *
-   * @var \Drupal\joinup_core\WorkflowHelper
+   * @var \Drupal\joinup_core\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -89,8 +92,8 @@ abstract class JoinupWorkflowTestBase extends JoinupRdfBrowserTestBase {
   protected function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
     $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
     $membership->save();
-    $loaded = $this->ogMembershipManager->getMembership($group, $user);
-    $this->assertInstanceOf(OgMembership::class, $loaded, t('A membership was successfully created.'));
+    $loaded = $this->ogMembershipManager->getMembership($group, $user->id());
+    $this->assertInstanceOf(OgMembership::class, $loaded, $this->t('A membership was successfully created.'));
   }
 
   /**

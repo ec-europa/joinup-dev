@@ -469,16 +469,16 @@ function joinup_theme_preprocess_menu(&$variables) {
   // Set the account logo.
   $account = \Drupal::currentUser()->getAccount();
   $user = User::load($account->id(), TRUE);
-  /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $photo */
-  $photo = $user->get('field_user_photo')->first();
+  $photo = $user->get('field_user_photo');
   $variables['profile_icon'] = '/themes/joinup/images/user-profile-icon.png';
-  if ($photo) {
-    $reference = $photo->getValue();
+  if (!$photo->isEmpty()) {
+    $reference = $photo->first()->getValue();
     /** @var \Drupal\file\Entity\File $file */
-    $file = File::load($reference['target_id']);
-    $uri = $file->getFileUri();
-    $url = ImageStyle::load('profile_icon')->buildUrl($uri);
-    $variables['profile_icon'] = $url;
+    if ($file = File::load($reference['target_id'])) {
+      $uri = $file->getFileUri();
+      $url = ImageStyle::load('profile_icon')->buildUrl($uri);
+      $variables['profile_icon'] = $url;
+    }
   }
   $variables['#cache']['contexts'][] = 'user.photo';
 }
@@ -487,7 +487,7 @@ function joinup_theme_preprocess_menu(&$variables) {
  * Implements hook_preprocess_block().
  */
 function joinup_theme_preprocess_block(&$variables) {
-  $block_id = $variables['elements']['#id'];
+  $block_id = $variables['elements']['#id'] ?? NULL;
 
   if (isset($block_id) && $block_id == 'joinup_theme_content') {
     $route_match = \Drupal::routeMatch();
@@ -548,6 +548,9 @@ function joinup_theme_preprocess_block(&$variables) {
     // Add class to navigation bottom links on custom pages.
     case 'toc_outline':
       $variables['content']['#attributes']['class'][] = 'navigation-bottom__links';
+      if (isset($variables['content']['#links']) && count($variables['content']['#links']) == 1) {
+        $variables['content']['#attributes']['class'][] = 'navigation-bottom__links--only-next';
+      }
       break;
 
   }
@@ -919,8 +922,8 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   $field_news_headline = $viewBuilder->viewField($node->field_news_headline, 'default');
   $variables['additional_content']['field_news_headline'] = $field_news_headline;
 
-  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
-  $variables['additional_content']['created'] = $created;
+  $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
+  $variables['additional_content']['published'] = $published;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -933,8 +936,8 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
-  $variables['additional_content']['created'] = $created;
+  $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
+  $variables['additional_content']['published'] = $published;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -947,8 +950,8 @@ function joinup_theme_preprocess_page_title__node__video(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
-  $variables['additional_content']['created'] = $created;
+  $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
+  $variables['additional_content']['published'] = $published;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1047,13 +1050,13 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
   $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
 
-  $created = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
 
   $author_inline = _joinup_theme_get_author($node);
 
   $variables['additional_content']['field_event_date'] = $field_event_date;
   $variables['additional_content']['field_location'] = $field_event_location;
-  $variables['additional_content']['created'] = $created;
+  $variables['additional_content']['published'] = $published;
   $variables['additional_content']['author'] = $author_inline;
 }
 
@@ -1092,7 +1095,7 @@ function joinup_theme_preprocess_joinup_tiles__members_overview(&$variables) {
   /** @var \Drupal\og\OgMembershipInterface $row */
   foreach ($variables['rows'] as &$row) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = $result_row = $row['content']['#row']->_entity;
+    $membership = $row['content']['#row']->_entity;
     $row['content'] = $view_builder->view($membership->getOwner(), 'view_mode_tile');
   }
 }
@@ -1387,7 +1390,7 @@ function joinup_theme_theme_suggestions_alter(array &$suggestions, array $variab
         $suggestions[] = 'form_element__floating';
 
         // Floating form element with label.
-        if (in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
+        if (!empty($variables['element']['#array_parents']) && in_array('field_social_media', $variables['element']['#array_parents'], TRUE)) {
           $suggestions[] = 'form_element__floating__with_prefix';
         }
       }

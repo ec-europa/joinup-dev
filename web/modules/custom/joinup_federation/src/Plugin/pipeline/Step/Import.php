@@ -9,10 +9,10 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -58,7 +58,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -93,6 +93,26 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
    * {@inheritdoc}
    */
   public function initBatchProcess() {
+    $owner_id = NULL;
+    $membership_storage = $this->entityTypeManager->getStorage('og_membership');
+    $memberships = $membership_storage->loadByProperties([
+      'entity_type' => 'rdf_entity',
+      'entity_bundle' => 'collection',
+      'entity_id' => $this->pipeline->getCollection(),
+      'roles' => 'rdf_entity-collection-administrator',
+    ]);
+
+    // Normally, there is always an owner for every collection. However, since
+    // there is no constraint for whether a collection is created without an
+    // owner (e.g. directly through the API), and there are cases where it is
+    // not (e.g. tests), we silently avoid an error in the pipeline which will
+    // occur during the import phase.
+    if ($membership = reset($memberships)) {
+      $owner_id = $membership->getOwnerId();
+    }
+
+    $this->setBatchValue('owner_id', $owner_id);
+
     // Retrieve the list of entities from the persistent data store as an
     // associative array keyed by entity ID and having a boolean as value,
     // signaling if the entity already exists in Joinup.
@@ -120,7 +140,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
     // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-    $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [RdfEntityGraphInterface::DEFAULT, 'draft']) : [];
+    $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [SparqlGraphInterface::DEFAULT, 'draft']) : [];
 
     $entities_to_save = $entities_to_delete = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
@@ -128,7 +148,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
       // This entity already exists.
       if ($ids_to_process[$id]) {
         $graph_ids = [];
-        foreach ([RdfEntityGraphInterface::DEFAULT, 'draft'] as $graph_id) {
+        foreach ([SparqlGraphInterface::DEFAULT, 'draft'] as $graph_id) {
           if ($local_entities[$id]->hasGraph($graph_id)) {
             $graph_ids[$graph_id] = $graph_id;
           }
@@ -156,7 +176,8 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
       else {
         $local_entity = (clone $entity)
           ->enforceIsNew()
-          ->set('graph', RdfEntityGraphInterface::DEFAULT);
+          ->set('graph', SparqlGraphInterface::DEFAULT)
+          ->set('uid', $this->getBatchValue('owner_id'));
         // Delete the incoming entity from the staging graph.
         $entity->skip_notification = TRUE;
         $entity->delete();

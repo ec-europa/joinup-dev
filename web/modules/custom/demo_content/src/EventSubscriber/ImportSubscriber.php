@@ -3,6 +3,8 @@
 namespace Drupal\demo_content\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Path\AliasStorageInterface;
 use Drupal\file\Entity\File;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -20,13 +22,23 @@ class ImportSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
+   * The path alias storage service.
+   *
+   * @var \Drupal\Core\Path\AliasStorageInterface
+   */
+  protected $pathAliasStorage;
+
+  /**
    * Constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
+   * @param \Drupal\Core\Path\AliasStorageInterface $path_alias_storage
+   *   The path alias storage service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasStorageInterface $path_alias_storage) {
     $this->configFactory = $config_factory;
+    $this->pathAliasStorage = $path_alias_storage;
   }
 
   /**
@@ -49,7 +61,8 @@ class ImportSubscriber implements EventSubscriberInterface {
     $imported = $event->getImportedEntities();
     $directory = drupal_get_path('module', 'demo_content') . '/fixtures/files/';
 
-    foreach ($imported as $entity) {
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+    foreach ($imported as $uuid => $entity) {
       $id = $entity->id();
       if (isset($file_mapping[$id])) {
         foreach ($file_mapping[$id] as $field_name => $file_name) {
@@ -66,6 +79,10 @@ class ImportSubscriber implements EventSubscriberInterface {
         }
       }
       $entity->save();
+
+      if ($uuid === 'c0bac256-c243-4440-bd31-b2b988375f5b') {
+        $this->pathAliasStorage->save('/legal/document/legal_notice', '/joinup/legal-notice', LanguageInterface::LANGCODE_NOT_SPECIFIED);
+      }
     }
   }
 

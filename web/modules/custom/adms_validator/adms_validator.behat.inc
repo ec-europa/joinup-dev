@@ -21,7 +21,7 @@ class AdmsValidatorSubContext extends DrupalSubContextBase {
    * @Then the ADMS-AP data of the published entities in Joinup is valid
    */
   public function assertValidPublishedGraph() {
-    /** @var \Drupal\rdf_entity\RdfGraphHandler $sparql_graph */
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $sparql_graph */
     $sparql_graph = \Drupal::service('sparql.graph_handler');
     $graphs = array_merge(
       $sparql_graph->getEntityTypeGraphUris('rdf_entity'),
@@ -32,7 +32,7 @@ class AdmsValidatorSubContext extends DrupalSubContextBase {
     // Create a query to copy all the triples from the published graphs to
     // a validation one.
     $query = '';
-    foreach ($graphs as $bundle => $graph_mapping) {
+    foreach ($graphs as $graph_mapping) {
       $published_graph_uri = $graph_mapping['default'];
       $query .= "ADD <$published_graph_uri> TO <http://joinup/validation-graph>; \n";
     }

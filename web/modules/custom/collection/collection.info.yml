@@ -5,26 +5,26 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - contact_information
-  - datetime
-  - ds
-  - facets
-  - field_group
-  - image
-  - inline_entity_form
-  - joinup_core
-  - link
-  - oe_newsroom_newsletter
-  - og
-  - og_menu
-  - options
-  - owner
-  - rdf_entity
-  - rdf_schema_field_validation
-  - search_api_field
-  - smart_trim
-  - state_machine
-  - text
+  - joinup:contact_information
+  - drupal:datetime
+  - ds:ds
+  - facets:facets
+  - field_group:field_group
+  - drupal:image
+  - inline_entity_form:inline_entity_form
+  - joinup:joinup_core
+  - drupal:link
+  - joinup:oe_newsroom_newsletter
+  - og:og
+  - og_menu:og_menu
+  - drupal:options
+  - joinup:owner
+  - rdf_entity:rdf_entity
+  - joinup:rdf_schema_field_validation
+  - joinup:search_api_field
+  - smart_trim:smart_trim
+  - state_machine:state_machine
+  - drupal:text
 
 config_devel:
   - core.entity_form_display.rdf_entity.collection.default
@@ -73,5 +73,5 @@ config_devel:
   - og.og_role.rdf_entity-collection-facilitator
   - og.og_role.rdf_entity-collection-member
   - og.og_role.rdf_entity-collection-non-member
-  - rdf_entity.mapping.rdf_entity.collection
+  - sparql_entity_storage.mapping.rdf_entity.collection
   - rdf_entity.rdfentity.collection

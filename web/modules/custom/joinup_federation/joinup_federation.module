@@ -13,13 +13,14 @@ use Drupal\joinup_federation\Plugin\Validation\Constraint\FederationDistribution
 use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupEntityChangedConstraint;
 use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupReferenceAccessConstraint;
 use Drupal\joinup_federation\Plugin\Validation\Constraint\JoinupValidReferenceConstraint;
+use Drupal\joinup_federation\Plugin\Validation\Constraint\NotNullUnlessFederatedConstraint;
 use Drupal\joinup_federation\RdfEntityReferenceFieldItemList;
 
 /**
  * Implements hook_ENTITY_TYPE_load().
  */
-function joinup_federation_rdf_entity_mapping_load(array $mappings) {
-  /** @var \Drupal\rdf_entity\RdfEntityMappingInterface $mapping */
+function joinup_federation_sparql_mapping_load(array $mappings) {
+  /** @var \Drupal\sparql_entity_storage\SparqlMappingInterface $mapping */
   foreach ($mappings as $mapping) {
     if ($mapping->getTargetEntityTypeId() === 'rdf_entity') {
       // Add the staging graph to the mapping entity only for 'rdf_entity'.
@@ -67,6 +68,7 @@ function joinup_federation_validation_constraint_alter(array &$definitions) {
   $definitions['ReferenceAccess']['class'] = JoinupReferenceAccessConstraint::class;
   $definitions['EntityChanged']['class'] = JoinupEntityChangedConstraint::class;
   $definitions['DistributionSingleParent']['class'] = FederationDistributionSingleParentConstraint::class;
+  $definitions['NotNull']['class'] = NotNullUnlessFederatedConstraint::class;
 }
 
 /**

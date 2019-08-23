@@ -37,6 +37,7 @@ dependencies:
     - image
     - joinup_core
     - link
+    - publication_date
     - text
 third_party_settings:
   field_group:
@@ -242,6 +243,7 @@ hidden:
   langcode: true
   og_audience: true
   path: true
+  published_at: true
   promote: true
   status: true
   sticky: true

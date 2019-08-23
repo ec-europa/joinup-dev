@@ -15,6 +15,7 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -59,6 +60,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use StringTranslationTrait;
   use TabledragTrait;
   use TraversingTrait;
   use UserTrait;
@@ -260,7 +262,12 @@ class JoinupSubContext extends DrupalSubContextBase {
         $username = $value;
       }
     };
-    // Submit form.
+
+    // Submit form, waiting for Honeypot protection delay to pass.
+    /** @var \HoneypotSubContext $honeypot */
+    $honeypot = $this->getContext('\HoneypotSubContext');
+    $honeypot->waitForTimeLimit();
+
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
@@ -323,6 +330,28 @@ class JoinupSubContext extends DrupalSubContextBase {
     if (!empty($intersection)) {
       throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
     }
+  }
+
+  /**
+   * Asserts the list of available options in a select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
   }
 
   /**
@@ -1305,7 +1334,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     $current_url = $this->getSession()->getCurrentUrl();
     $current_url = str_replace($this->getMinkParameter('base_url'), '', $current_url);
     if ($current_url !== $url) {
-      $message = t('Url "@current" does not match expected "@expected".', [
+      $message = $this->t('Url "@current" does not match expected "@expected".', [
         '@current' => $current_url,
         '@expected' => $url,
       ]);
@@ -1896,22 +1925,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Waits for a few moments to bypass spam bot validation.
-   *
-   * The Honeypot module is intended to block spam bots and detect if actual
-   * humans are entering forms. One of its checks is that it assumes a human
-   * takes at least 5 seconds to fill in a form.
-   *
-   * Use this on forms that are protected by Honeypot before submitting the
-   * form.
-   *
-   * @Then I wait for the honeypot validation to pass
-   */
-  public function iWaitForHoneypot() {
-    sleep(5);
-  }
-
-  /**
    * Wait until a running batch job has finished.
    *
    * This will periodically check if the progress bar is still visible on the
@@ -1931,7 +1944,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Given I wait for the pipeline batch job to finish
    */
   public function iWaitForThePipelineBatchJobToFinish() {
-    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+    while ($this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
       $this->getSession()->reload();
     }
   }
@@ -2269,7 +2282,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
         '@found' => implode(', ', $invalid_tags),
       ]));
     }
