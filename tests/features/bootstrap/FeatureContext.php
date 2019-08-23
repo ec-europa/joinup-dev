@@ -17,16 +17,19 @@ use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\PageCacheTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
+use PHPUnit\Framework\Assert;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -39,6 +42,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use PageCacheTrait;
+  use TagTrait;
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
@@ -302,13 +307,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I (should )see the image :filename
    */
   public function assertImagePresent($filename) {
-    // Drupal appends an underscore and a number to the filename when duplicate
-    // files are uploaded, for example when a test is run more than once.
-    // We split up the filename and extension and match for both.
-    $parts = pathinfo($filename);
-    $extension = $parts['extension'];
-    $filename = $parts['filename'];
-    $this->assertSession()->elementExists('css', "img[src$='.$extension'][src*='$filename']");
+    Assert::assertTrue($this->findImageInRegion($filename));
   }
 
   /**
@@ -317,13 +316,27 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then I should not see the image :filename
    */
   public function assertImageNotPresent($filename) {
-    // Drupal appends an underscore and a number to the filename when duplicate
-    // files are uploaded, for example when a test is run more than once.
-    // We split up the filename and extension and match for both.
-    $parts = pathinfo($filename);
-    $extension = $parts['extension'];
-    $filename = $parts['filename'];
-    $this->assertSession()->elementNotExists('css', "img[src$='.$extension'][src*='$filename']");
+    Assert::assertFalse($this->findImageInRegion($filename));
+  }
+
+  /**
+   * Checks that a given image is present in a given tile.
+   *
+   * @Then I (should )see the image ":filename" in the :tile tile
+   */
+  public function assertImagePresentInRegion($filename, $tile) {
+    $tile = $this->getTileByHeading($tile);
+    Assert::assertTrue($this->findImageInRegion($filename, $tile));
+  }
+
+  /**
+   * Checks that a given image is not present in a given tile.
+   *
+   * @Then I should not see the image :filename in the :tile tile
+   */
+  public function assertImageNotPresentInRegion($filename, $tile) {
+    $tile = $this->getTileByHeading($tile);
+    Assert::assertFalse($this->findImageInRegion($filename, $tile));
   }
 
   /**
@@ -613,7 +626,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I click the contextual link :text in the :region region
    */
-  public function iClickTheContextualLinkInTheRegion($text, $region) {
+  public function iClickTheContextualLinkInTheRegion(string $text, string $region): void {
     $this->clickContextualLink($this->getRegion($region), $text);
   }
 
@@ -630,7 +643,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I (should )see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionPresent($text, $region) {
+  public function assertContextualLinkInRegionPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
@@ -649,13 +662,32 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when the contextual link is found in the region.
    *
-   * @Then I (should )not see the contextual link :text in the :region region
+   * @Then I should not see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionNotPresent($text, $region) {
+  public function assertContextualLinkInRegionNotPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
       throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
+    }
+  }
+
+  /**
+   * Asserts that no contextual links are present in a region.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when any contextual link is found in the region.
+   *
+   * @Then I should not see any contextual links in the :region region
+   */
+  public function assertNoContextualLinksInRegion(string $region): void {
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
+
+    if (!empty($links)) {
+      throw new \Exception(sprintf('Unexpected contextual links found in the region %s', $region));
     }
   }
 
@@ -778,7 +810,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function clickVerticalTabLink($tab) {
     // When this is running in a browser without JavaScript the vertical tabs
     // are rendered as a details element.
-    if (!$this->browserSupportsJavascript()) {
+    if (!$this->browserSupportsJavaScript()) {
       return;
     }
 
@@ -912,7 +944,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $session = $this->getSession();
     $page_title = $session->getPage()->find('xpath', '//head/title');
     if (!$page_title) {
-      throw new \Exception(sprintf('Page title tag not found on the page ', $session, $session->getCurrentUrl()));
+      throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
     list($title, $site_name) = explode(' | ', $page_title->getText());
@@ -1099,12 +1131,30 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Checks that the page is cacheable.
+   *
+   * @Then the page should be cacheable
+   */
+  public function assertPageCacheable() {
+    Assert::assertTrue($this->isPageCacheable());
+  }
+
+  /**
+   * Checks that the page is not cacheable.
+   *
+   * @Then the page should not be cacheable
+   */
+  public function assertPageNotCacheable() {
+    Assert::assertFalse($this->isPageCacheable());
+  }
+
+  /**
    * Checks that the page is cached.
    *
    * @Then the page should be cached
    */
   public function assertPageCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'HIT');
+    Assert::assertTrue($this->isPageCached());
   }
 
   /**
@@ -1113,101 +1163,95 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the page should not be cached
    */
   public function assertPageNotCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Cache', 'MISS');
+    Assert::assertFalse($this->isPageCached());
   }
 
   /**
-   * Checks that the HTTP response is cached by Drupal dynamic cache.
-   *
-   * @Then the response should be cached
-   */
-  public function assertResponseCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'HIT');
-  }
-
-  /**
-   * Checks that the HTTP response is not cached by Drupal dynamic cache.
-   *
-   * @Then the response should not be cached
-   */
-  public function assertResponseNotCached() {
-    $this->assertSession()->responseHeaderContains('X-Drupal-Dynamic-Cache', 'MISS');
-  }
-
-  /**
-   * Checks if a checkbox in a row with a given text is checked.
+   * Checks if a checkbox or a radio in a row with a given text is checked.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    * @throws \Behat\Mink\Exception\ExpectationException
    *   If the checkbox is unchecked.
    *
    * @Then the row :text is selected/checked
    */
   public function assertRowIsChecked($text) {
-    if (!$this->getRowCheckboxByText($text)->isChecked()) {
-      throw new ExpectationException("Check box in '$text' row is unchecked but it should be checked.", $this->getSession()->getDriver());
+    if (!$this->getCheckboxOrRadioByRowText($text)->isChecked()) {
+      throw new ExpectationException("Checkbox/radio-button in '$text' row is unchecked/unselected but it should be checked/selected.", $this->getSession()->getDriver());
     }
   }
 
   /**
-   * Checks if a checkbox in a row with a given text is not checked.
+   * Checks if a checkbox or a radio in a row with a given text is not checked.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    * @throws \Behat\Mink\Exception\ExpectationException
    *   If the checkbox is checked.
    *
    * @Then the row :text is not selected/checked
    */
   public function assertRowIsNotChecked($text) {
-    if ($this->getRowCheckboxByText($text)->isChecked()) {
-      throw new ExpectationException("Check box in '$text' row is checked but it should be unchecked.", $this->getSession()->getDriver());
+    if ($this->getCheckboxOrRadioByRowText($text)->isChecked()) {
+      throw new ExpectationException("Checkbox/radio-button in '$text' row is checked/selected but it should be unchecked/unselected.", $this->getSession()->getDriver());
     }
   }
 
   /**
-   * Attempts to check a checkbox in a table row containing a given text.
+   * Checks a checkbox or a radio button in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    *
    * @Given I select/check the :text row
    */
   public function checkTableselectRow(string $text): void {
-    $this->getRowCheckboxByText($text)->check();
+    $element = $this->getCheckboxOrRadioByRowText($text);
+    if ($element->getAttribute('type') === 'checkbox') {
+      $element->check();
+    }
+    else {
+      $element->getParent()->selectFieldOption($element->getAttribute('name'), $element->getAttribute('value'));
+    }
   }
 
   /**
-   * Attempts to uncheck a checkbox in a table row containing a given text.
+   * Unchecks a checkbox or a radio in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
+   * @throws \InvalidArgumentException
+   *   If this step definition was used on a radio button.
    *
    * @Given I deselect/uncheck the :text row
    */
   public function uncheckTableselectRow(string $text): void {
-    $this->getRowCheckboxByText($text)->uncheck();
+    $element = $this->getCheckboxOrRadioByRowText($text);
+    if ($element->getAttribute('type') === 'radio') {
+      throw new \InvalidArgumentException("A radio button cannot be unselected.");
+    }
+    $element->uncheck();
   }
 
   /**
-   * Attempts to fetch a checkbox in a table row containing a given text.
+   * Finds a checkbox or a radio button in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
@@ -1217,9 +1261,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    */
-  protected function getRowCheckboxByText(string $text): NodeElement {
+  protected function getCheckboxOrRadioByRowText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1236,11 +1280,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$found) {
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
-    if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
-      throw new \Exception(sprintf('The row "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+    if (!$element = $row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
+      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkbox or radio button', $text, $this->getSession()->getCurrentUrl()));
     }
 
-    return $checkbox;
+    return $element;
   }
 
   /**
@@ -1287,9 +1331,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @AfterStep
    */
-  public function clearCacheTagsStaticCache(AfterStepScope $event) {
-    $feature = $event->getFeature();
-    if ($feature->hasTag('clearStaticCache')) {
+  public function clearCacheTagsStaticCache(AfterStepScope $event): void {
+    if ($this->hasTag('clearStaticCache')) {
       parent::clearStaticCaches();
     }
   }
@@ -1453,6 +1496,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       $config->set('error_level', $error_level)->save();
       static::restoreReadOnlyConfig();
     }
+  }
+
+  /**
+   * Navigates to the canonical page of a taxonomy term with a given format.
+   *
+   * @param string $vocabulary_name
+   *   The name of the vocabulary.
+   * @param string $terme_name
+   *   The term name.
+   * @param string $format
+   *   The RDF serialization format.
+   *
+   * @Given I visit the :vocabulary_name term :term_name page in the :format serialisation
+   */
+  public function visitTermWithFormat(string $vocabulary_name, string $term_name, string $format): void {
+    /** @var \Drupal\taxonomy\Entity\Vocabulary $vocabulary */
+    $vocabulary = $this->getEntityByLabel('taxonomy_vocabulary', $vocabulary_name);
+    $term = $this->getEntityByLabel('taxonomy_term', $term_name, $vocabulary->id());
+    $this->visitPath($term->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
   }
 
 }

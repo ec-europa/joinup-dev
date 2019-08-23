@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Contains the Joinup Legal module main file.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\entity_legal\Entity\EntityLegalDocument;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds a checkbox on the contact form for anonymous users so they can accept
+ * the legal notice before submitting the form.
+ */
+function joinup_legal_form_message_contact_form_submission_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  // Only anonymous users must agree with the legal notice.
+  if (\Drupal::currentUser()->isAuthenticated()) {
+    return;
+  }
+
+  /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $legal_notice */
+  $legal_notice = EntityLegalDocument::load('legal_notice');
+
+  // Only show if there's a published version.
+  if ($legal_notice->getPublishedVersion()) {
+    $form['legal'] = [
+      '#type' => 'checkbox',
+      '#title' => $legal_notice->getAcceptanceLabel(),
+      '#required' => TRUE,
+      // On HTML5 there's a client-side validation that prevents posting when
+      // this checkbox is not checked.
+      '#required_error' => t('You must accept the <a href=":url">%document</a> in order to use our platform.', [
+        ':url' => $legal_notice->toUrl('canonical')->toString(),
+        '%document' => $legal_notice->label(),
+      ]),
+      '#weight' => 12,
+    ];
+  }
+}

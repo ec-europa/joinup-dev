@@ -236,7 +236,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
       return FALSE;
     }
 
-    $membership = $this->membershipManager->getMembership($parent, $account);
+    $membership = $this->membershipManager->getMembership($parent, $account->id());
 
     // First check the 'any' permissions.
     if (isset($roles['roles'])) {

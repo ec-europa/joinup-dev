@@ -366,7 +366,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    */
   protected function applyQueryBuilderConfiguration(QueryInterface $query, array $configuration): void {
     $or = $query->createConditionGroup('OR');
-    foreach ($configuration['filters'] as $delta => $plugin_config) {
+    foreach ($configuration['filters'] as $plugin_config) {
       /** @var \Drupal\search_api_field\Plugin\FilterPluginInterface $plugin */
       $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
       $plugin->applyFilter($or);
@@ -403,7 +403,6 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       'tags' => $tags,
       'contexts' => [
         'url.path',
-        'user',
       ],
     ];
 

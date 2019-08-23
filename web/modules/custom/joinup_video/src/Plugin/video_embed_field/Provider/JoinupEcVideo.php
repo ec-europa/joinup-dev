@@ -29,7 +29,7 @@ class JoinupEcVideo extends ProviderPluginBase {
     $iframe = [
       '#type' => 'video_embed_iframe',
       '#provider' => 'joinup_ec_video',
-      '#url' => '//ec.europa.eu/avservices/play.cfm',
+      '#url' => '//audiovisual.ec.europa.eu/embed/index.html',
       '#query' => [
         'ref' => $this->getVideoId(),
         'lg' => $this->getLanguagePreference(),
@@ -60,17 +60,32 @@ class JoinupEcVideo extends ProviderPluginBase {
         /** @var \Psr\Http\Message\UriInterface $uri */
         \Drupal::httpClient()->get($input, [
           'on_stats' => function (TransferStats $stats) use (&$uri) {
+            // @todo Allow coding standards checks on the following line once
+            //   the Coder module correctly recognizes that the $uri variable is
+            //   used.
+            // @see https://www.drupal.org/project/coder/issues/3065679
+            // @codingStandardsIgnoreLine
             $uri = $stats->getEffectiveUri();
           },
-]
-        );
+        ]);
         static::$resolvedUrl[$input] = $uri ? $uri->__toString() : $input;
       }
       $input = static::$resolvedUrl[$input];
     }
 
-    preg_match('#^(?:(?:https?:)?//)?ec\.europa\.eu/(?:.*ref=)?(?<id>[^&\?]+)#i', $input, $matches);
-    return isset($matches['id']) ? $matches['id'] : FALSE;
+    $expressions = [
+      // Backwards compatible with old style uris.
+      '#^(?:(?:https?:)?//)?ec\.europa\.eu/(?:.*ref=)?(?<id>[^&\?]+)#i',
+      // New style uris.
+      '#^(?:(?:https?:)?//)?audiovisual\.ec\.europa\.eu/embed/index.html(?:.*ref=)?(?<id>[^&\?]+)#i',
+    ];
+    foreach ($expressions as $expression) {
+      preg_match($expression, $input, $matches);
+      if (isset($matches['id'])) {
+        return $matches['id'];
+      }
+    }
+    return FALSE;
   }
 
   /**

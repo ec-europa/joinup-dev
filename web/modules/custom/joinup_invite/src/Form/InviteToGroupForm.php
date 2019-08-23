@@ -111,7 +111,7 @@ class InviteToGroupForm extends InviteFormBase {
     $role = $this->entityTypeManager->getStorage('og_role')->load($role_id);
 
     foreach ($users as $user) {
-      $membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user);
+      $membership = $this->ogMembershipManager->getMembership($this->rdfEntity, $user->id());
       if (empty($membership)) {
         $membership = $this->ogMembershipManager->createMembership($this->rdfEntity, $user);
       }

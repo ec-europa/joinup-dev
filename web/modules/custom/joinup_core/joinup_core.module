@@ -18,9 +18,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -30,9 +32,10 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
+use Drupal\user\UserInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewExecutable;
@@ -138,6 +141,24 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
   /** @var \Drupal\rdf_entity\RdfInterface $rdf */
   $rdf = $form_object->getEntity();
 
+  // List the related entity bundles.
+  $related_bundles = [
+    'collection',
+    'solution',
+  ];
+  // List related operation types.
+  $operation_types = [
+    'add',
+    'default',
+    'propose',
+  ];
+
+  // Add submit callback when the current bundle is in the list
+  // and when we are in an affected operation type.
+  if (in_array($rdf->bundle(), $related_bundles) && (in_array($form_object->getOperation(), $operation_types))) {
+    $form['actions']['submit']['#submit'][] = 'joinup_core_propose_message_submit';
+  }
+
   /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
   $field_definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions($rdf->getEntityTypeId(), $rdf->bundle());
   // Keep only fields that are on the form.
@@ -149,6 +170,21 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
     }
   }
 
+}
+
+/**
+ * Displays status message after the user saved the related RDF content.
+ */
+function joinup_core_propose_message_submit(&$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  $fields = ['collection' => 'field_ar_state', 'solution' => 'field_is_state'];
+  $entity = $form_object->getEntity();
+
+  $state = $entity->get($fields[$entity->bundle()])->value;
+
+  if ($state === 'proposed') {
+    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+  }
 }
 
 /**
@@ -236,9 +272,8 @@ function joinup_core_entity_graph_access(EntityInterface $entity, $operation, Ac
 /**
  * Implements hook_node_access().
  */
-function joinup_core_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // @todo: when all bundles are in, remove the first check.
-  if (!in_array($entity->bundle(), ['document', 'discussion', 'news', 'event'])) {
+function joinup_core_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
     return AccessResult::neutral();
   }
   return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
@@ -334,8 +369,8 @@ function joinup_core_entity_type_alter(array &$entity_types) {
  * get cached in the 'cache_entity' bin, avoiding performance issues.
  */
 function joinup_core_taxonomy_term_storage_load(array $terms) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
 
   $query = <<<QUERY
 SELECT ?extension ?mime_type
@@ -424,7 +459,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
  * reverse.
  * 5. If none of these exist, as a filter, ignore it.
  */
-function joinup_core_query_rdf_entity_alter(AlterableInterface $query) {
+function joinup_core_query_sparql_alter(AlterableInterface $query) {
   $conditions = $query->conditions();
   // If only one of the following are true, then add a condition on their
   // corresponding field. If both are set, then do not bother.
@@ -790,8 +825,8 @@ function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $tran
  */
 function joinup_core_search_api_index_items_alter(IndexInterface $index, array &$items) {
   foreach ($items as $item_id => $item) {
-    list($datasource_id, $raw_id) = Utility::splitCombinedId($item_id);
-    list($id, $langcode) = Utility::splitPropertyPath($raw_id);
+    list(, $raw_id) = Utility::splitCombinedId($item_id);
+    list(, $langcode) = Utility::splitPropertyPath($raw_id);
     // Unset non-english content from the index.
     if ($langcode != 'en') {
       unset($items[$item_id]);
@@ -824,51 +859,6 @@ function joinup_core_rdf_entity_update(EntityInterface $entity) {
       search_api_entity_update($entity_item);
     }
   }
-
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- *
- * During saving a node, if the entity never had a published version and is now
- * published, the creation date is updated with the current datetime.
- */
-function joinup_core_node_presave(EntityInterface $entity) {
-  // Documents do not show the created date in the UI as they have the document
-  // publication date to show instead. However, since the listing screens sort
-  // by created date, the documents are updated just as the rest of the
-  // community content.
-  $community_bundles = ['discussion', 'document', 'event', 'news'];
-  if ($entity->isNew() || !in_array($entity->bundle(), $community_bundles) || !$entity->isPublished()) {
-    return;
-  }
-  // Set the update time as the created time only if this is the first time this
-  // entity is published.
-  $published_revisions = \Drupal::entityQuery('node')
-    ->allRevisions()
-    ->condition('type', $entity->bundle())
-    ->condition('status', 1)
-    ->condition('nid', $entity->id())
-    ->sort('vid', 'ASC')
-    ->range(0, 1)
-    ->execute();
-
-  if (count($published_revisions) === 0) {
-    $entity->set('created', \Drupal::time()->getRequestTime());
-  }
-  else {
-    // If the node is reverted into a previously created draft version, the
-    // created time is a date different than the first publication date. For
-    // that case, always set the created time from the first published revision
-    // every time a community content is saved.
-    $revision_ids = array_keys($published_revisions);
-    $revision_id = reset($revision_ids);
-    $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
-    if (!empty($revision)) {
-      $entity->set('created', $revision->getCreatedTime());
-    }
-  }
-
 }
 
 /**
@@ -917,30 +907,39 @@ function joinup_core_local_tasks_alter(&$local_tasks) {
 function joinup_core_user_predelete(EntityInterface $entity) {
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
-  foreach ($membership_manager->getMemberships($entity, []) as $membership) {
+  foreach ($membership_manager->getMemberships($entity->id(), []) as $membership) {
     $membership->skip_notification = TRUE;
     $membership->delete();
   }
 }
 
 /**
- * Invalidate Joinup user membership cache tags after a user is updated.
+ * Implements hook_ENTITY_TYPE_update().
  *
- * @param \Drupal\Core\Entity\EntityInterface $user
- *   The user entity.
+ * Invalidates group membership list cache tags after a user is (un)blocked.
  *
- * @see joinup_core_og_membership_invalidate_group_tags()
+ * If a user gets blocked in the entire site we no longer want to include this
+ * user in the collection membership counts. We handle this use case here in
+ * Joinup Core since Organic Groups currently only handles users that are
+ * blocked on group level through the membership state; at this time OG is
+ * not acting on users that are blocked on user level.
  */
-function joinup_core_user_update(EntityInterface $user) {
+function joinup_core_user_update(UserInterface $user) {
+  // Only invalidate the tags if the user is being (un)blocked.
+  if ($user->isBlocked() == $user->original->isBlocked()) {
+    return;
+  }
+
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
-  $memberships = $membership_manager->getMemberships($user);
+  $memberships = $membership_manager->getMemberships($user->id());
 
   $tags = [];
   foreach ($memberships as $membership) {
-    $tag = $membership->getGroupEntityType() . ':' . $membership->getGroupId();
-    $tags_to_invalidate = Cache::buildTags('joinup-membership', [$tag]);
-    $tags = Cache::mergeTags($tags, $tags_to_invalidate);
+    if ($group = $membership->getGroup()) {
+      $group_membership_list_cache_tags = Cache::buildTags(OgMembershipInterface::GROUP_MEMBERSHIP_LIST_CACHE_TAG_PREFIX, $group->getCacheTagsToInvalidate());
+      $tags = Cache::mergeTags($tags, $group_membership_list_cache_tags);
+    }
   }
 
   Cache::invalidateTags($tags);
@@ -1303,31 +1302,6 @@ function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string 
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function joinup_core_og_membership_presave(OgMembershipInterface $entity) {
-  joinup_core_og_membership_invalidate_group_tags($entity);
-}
-
-/**
- * Implements hook_ENTITY_TYPE_predelete().
- */
-function joinup_core_og_membership_predelete(OgMembershipInterface $entity) {
-  joinup_core_og_membership_invalidate_group_tags($entity);
-}
-
-/**
- * Invalidates the Joinup tags related to a group of a membership.
- *
- * @param \Drupal\og\OgMembershipInterface $entity
- *   The og membership entity.
- */
-function joinup_core_og_membership_invalidate_group_tags(OgMembershipInterface $entity) {
-  $tags = [$entity->getGroupEntityType() . ':' . $entity->getGroupId()];
-  Cache::invalidateTags(Cache::buildTags('joinup-membership', $tags));
-}
-
-/**
  * Invalidates the cache tags of the list of entities having the same bundle.
  *
  * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
@@ -1361,4 +1335,38 @@ function joinup_core_config_readonly_whitelist_patterns() {
     'system.menu.support',
     'core.menu.static_menu_link_overrides',
   ];
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_core_module_implements_alter(array &$implementations, $hook) {
+  switch ($hook) {
+    case 'cron':
+      // Use the custom hook_cron() implementation, provided by 'joinup_core'
+      // module, to trigger the Cached Computed Field cron tasks.
+      // @see joinup_core_cron()
+      unset($implementations['cached_computed_field']);
+      break;
+
+    case 'block_view_system_menu_block_alter':
+      // Do not show the contextual links to edit menus. This functionality is
+      // used very rarely but the contextual links menu causes visual clutter.
+      unset($implementations['menu_ui']);
+      break;
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function joinup_core_cron() {
+  // By adding this line in settings.php and rebuilding the cache, the process
+  // of cached computed fields can be suppressed:
+  // @code
+  // $settings['joinup.parse_cached_computed_field'] = FALSE;
+  // @endcode
+  if (Settings::get('joinup.parse_cached_computed_field', TRUE)) {
+    cached_computed_field_cron();
+  }
 }

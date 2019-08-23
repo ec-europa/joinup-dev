@@ -109,13 +109,20 @@
   overflow: hidden
   img
     margin-bottom: 16px
-
   img.align-left
-    +breakpoint(md)
+    float: none
+    +breakpoint(xs)
+      float: left
       margin-right: 20px
   img.align-right
-    +breakpoint(md)
+    float: none
+    +breakpoint(xs)
+      float: right
       margin-left: 20px
+  table
+    table-layout: fixed
+    td
+      vertical-align: top
 
 // Dependiencies
 // --------------------------------------------------

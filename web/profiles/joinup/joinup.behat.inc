@@ -15,12 +15,13 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
@@ -49,8 +50,9 @@ use WebDriver\Exception\StaleElementReference;
 /**
  * Behat step definitions that are generally useful for the Joinup project.
  */
-class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSubContext extends DrupalSubContextBase {
 
+  use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
@@ -58,6 +60,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use StringTranslationTrait;
   use TabledragTrait;
   use TraversingTrait;
   use UserTrait;
@@ -213,7 +216,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   /**
    * Checks that the logged in user has the given OG roles in the given group.
    *
-   * If the user has more than the required roles, he might have permissions
+   * If the user has more than the required roles, they might have permissions
    * from the rest of the roles that will lead the test to a false positive.
    * For this reason, we request check for the specific roles passed.
    *
@@ -259,7 +262,12 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
         $username = $value;
       }
     };
-    // Submit form.
+
+    // Submit form, waiting for Honeypot protection delay to pass.
+    /** @var \HoneypotSubContext $honeypot */
+    $honeypot = $this->getContext('\HoneypotSubContext');
+    $honeypot->waitForTimeLimit();
+
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
@@ -325,6 +333,28 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
+   * Asserts the list of available options in a select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
+  }
+
+  /**
    * Checks that a select field has exclusively the provided options.
    *
    * @param string $select
@@ -380,7 +410,9 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $available_optgroups = array_values($this->getSelectOptgroups($field));
     $options = $this->explodeCommaSeparatedStepArgument($optgroups);
 
-    Assert::assertArraySubset($options, $available_optgroups, TRUE, "The '{$select}' select doesn't contain all the wanted optgroups.");
+    foreach ($options as $option) {
+      Assert::assertContains($option, $available_optgroups, TRUE, "The '{$select}' select doesn't contain the option '{$option}''.");
+    }
   }
 
   /**
@@ -414,8 +446,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $title
    *   The title of the node.
    *
-   * @When (I )go to the :bundle (content ) :title edit screen
-   * @When (I )visit the :bundle (content ) :title edit screen
+   * @When I go to the :bundle (content ) :title edit screen
+   * @When I visit the :bundle (content ) :title edit screen
    */
   public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
@@ -434,8 +466,8 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @param string $title
    *   The name of the news page.
    *
-   * @When (I )go to the content page of the type :type with the title :title
-   * @When (I )visit the content page of the type :type with the title :title
+   * @When I go to the content page of the type :type with the title :title
+   * @When I visit the content page of the type :type with the title :title
    */
   public function visitNodePage($type, $title) {
     /** @var \Drupal\node\Entity\Node $node */
@@ -1302,7 +1334,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     $current_url = $this->getSession()->getCurrentUrl();
     $current_url = str_replace($this->getMinkParameter('base_url'), '', $current_url);
     if ($current_url !== $url) {
-      $message = t('Url "@current" does not match expected "@expected".', [
+      $message = $this->t('Url "@current" does not match expected "@expected".', [
         '@current' => $current_url,
         '@expected' => $url,
       ]);
@@ -1316,7 +1348,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @When the plus button menu should be empty
    */
   public function assertEmptyPlusButtonMenu() {
-    if ($this->browserSupportsJavascript()) {
+    if ($this->browserSupportsJavaScript()) {
       if ($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " add-content-menu ")]//li[last()]')) {
         throw new \Exception("The plus button menu is not empty.");
       }
@@ -1340,7 +1372,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
     // If we are running in a JavaScript enabled browser, first click the
     // 'Source' button so we can enter the text as HTML and get the same result
     // as in a non-JS browser.
-    if ($this->browserSupportsJavascript()) {
+    if ($this->browserSupportsJavaScript()) {
       $this->pressWysiwygButton($label, 'Source');
       $this->setWysiwygText($label, $text);
     }
@@ -1701,7 +1733,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then a modal should/will open
    */
   public function waitForDrupalModalToOpen() {
-    // A modal can be opened only in a Javascript-enabled browser.
+    // A modal can be opened only in a JavaScript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
 
     $result = $this->getSession()->getPage()->waitFor(5, function () {
@@ -1725,7 +1757,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the modal should be closed
    */
   public function waitForDrupalModalToClose() {
-    // A modal can be opened only in a Javascript-enabled browser.
+    // A modal can be opened only in a JavaScript-enabled browser.
     self::assertJavaScriptEnabledBrowser();
 
     $result = $this->getSession()->getPage()->waitFor(5, function () {
@@ -1893,22 +1925,6 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
   }
 
   /**
-   * Waits for a few moments to bypass spam bot validation.
-   *
-   * The Honeypot module is intended to block spam bots and detect if actual
-   * humans are entering forms. One of its checks is that it assumes a human
-   * takes at least 5 seconds to fill in a form.
-   *
-   * Use this on forms that are protected by Honeypot before submitting the
-   * form.
-   *
-   * @Then I wait for the honeypot validation to pass
-   */
-  public function iWaitForHoneypot() {
-    sleep(5);
-  }
-
-  /**
    * Wait until a running batch job has finished.
    *
    * This will periodically check if the progress bar is still visible on the
@@ -1928,7 +1944,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Given I wait for the pipeline batch job to finish
    */
   public function iWaitForThePipelineBatchJobToFinish() {
-    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+    while ($this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
       $this->getSession()->reload();
     }
   }
@@ -2253,7 +2269,7 @@ class JoinupSubContext extends DrupalSubContextBase implements DrupalSubContextI
    * @Then the paragraph formats in the :field field should not contain the :format_tags format(s)
    */
   public function assertNotFormatInCkeditorExists($field, $format_tags) {
-    if (!$this->browserSupportsJavascript()) {
+    if (!$this->browserSupportsJavaScript()) {
       throw new \Exception('This step requires javascript to run.');
     }
     $element = $this->getSession()->getPage()->findField($field);
@@ -2266,7 +2282,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
         '@found' => implode(', ', $invalid_tags),
       ]));
     }
@@ -2297,20 +2313,20 @@ JS;
   /**
    * Press the enter key in the keyboard.
    *
-   * Works only in Javascript-enabled browsers.
+   * Works only in JavaScript-enabled browsers.
    *
    * @param string $field
    *   The field where to press the enter key.
    *
    * @throws \Exception
-   *   Thrown when the browser doesn't support Javascript or when the field is
+   *   Thrown when the browser doesn't support JavaScript or when the field is
    *   not found.
    *
    * @When I hit enter( in the keyboard) on the field :field
    */
   public function hitEnterKeyboard($field) {
-    if (!$this->browserSupportsJavascript()) {
-      throw new \Exception('This step requires Javascript to run.');
+    if (!$this->browserSupportsJavaScript()) {
+      throw new \Exception('This step requires JavaScript to run.');
     }
 
     $element = $this->getSession()->getPage()->findField($field);
@@ -2439,8 +2455,8 @@ JS;
   /**
    * Asserts the order and nesting of rows of a draggable menu table.
    *
-   * It requires a Javascript browser to run as many draggable classes are set
-   * by Javascript.
+   * It requires a JavaScript browser to run as many draggable classes are set
+   * by JavaScript.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The menu data.
@@ -2721,6 +2737,19 @@ JS;
     }
 
     return $elements;
+  }
+
+  /**
+   * Asserts that a paragraph containing the given text is present in the page.
+   *
+   * @param string $text
+   *   The text that should be present in a paragraph.
+   *
+   * @Then I should see a paragraph containing the text :text
+   */
+  public function assertParagraphText(string $text): void {
+    $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
+    Assert::assertNotEmpty($element);
   }
 
 }

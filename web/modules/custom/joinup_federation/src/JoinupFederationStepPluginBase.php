@@ -7,7 +7,7 @@ namespace Drupal\joinup_federation;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\pipeline\Exception\PipelineStepPrepareLogicException;
 use Drupal\pipeline\Plugin\PipelineStepPluginBase;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,7 +18,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -40,7 +40,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql) {
@@ -71,7 +71,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
     // Try to refresh the lock on each step. Potentially, the current user can
     // time-out a step with form by postponing the submit until the pipeline
     // lock expires. This makes possible for a different user to start a new
-    // import process that creates a new lock in his behalf. In this case we
+    // import process that creates a new lock in their behalf. In this case we
     // have to abandon this pipeline.
     if (!$this->pipeline->lock()) {
       throw (new PipelineStepPrepareLogicException())->setError([

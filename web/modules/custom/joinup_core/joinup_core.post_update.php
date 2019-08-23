@@ -5,10 +5,14 @@
  * Post update functions for the Joinup core module.
  */
 
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\Core\Database\Database;
+use Drupal\Core\Serialization\Yaml;
+use Drupal\file\Entity\File;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 use EasyRdf\Resource;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Enable the Sub-Pathauto module.
@@ -115,7 +119,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
 
   $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
   foreach ($data as $bundle) {
-    RdfEntityMapping::loadByName('rdf_entity', $bundle)
+    SparqlMapping::loadByName('rdf_entity', $bundle)
       ->setThirdPartySetting('rdf_schema_field_validation', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain'])
       ->setThirdPartySetting('rdf_schema_field_validation', 'graph', $graph_uri)
       ->setThirdPartySetting('rdf_schema_field_validation', 'class', $class_definition)
@@ -127,7 +131,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
  * Fix the banner predicate [ISAICP-4332].
  */
 function joinup_core_post_update_fix_banner_predicate() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
   SELECT ?graph ?entity_id ?image_uri
@@ -186,11 +190,11 @@ QUERY;
  * Fix the owner class predicate [ISAICP-4333].
  */
 function joinup_core_post_update_fix_owner_predicate() {
-  $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', 'owner');
-  $rdf_entity_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
-  $rdf_entity_mapping->save();
+  $sparql_mapping = SparqlMapping::loadByName('rdf_entity', 'owner');
+  $sparql_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
+  $sparql_mapping->save();
 
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?type
@@ -238,7 +242,7 @@ QUERY;
  * Fix data type of the solution contact point[ISAICP-4334].
  */
 function joinup_core_post_update_fix_solution_contact_datatypea() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   // Two issues are to be fixed here.
   // 1. The contact reference should be a resource instead of a literal.
@@ -294,7 +298,7 @@ QUERY;
  * Fix data type of the access url field [ISAICP-4349].
  */
 function joinup_core_post_update_fix_access_url_datatype() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?predicate ?access_url
@@ -386,4 +390,331 @@ function joinup_core_post_update_remove_tour_buttons() {
  */
 function joinup_core_post_update_install_error_page() {
   \Drupal::service('module_installer')->install(['error_page']);
+}
+
+/**
+ * Update the EIRA terms and perform other related tasks.
+ */
+function joinup_core_post_update_eira() {
+  \Drupal::service('module_installer')->install(['eira']);
+
+  $graph_uri = 'http://eira_skos';
+  /** @var \Drupal\Driver\Database\joinup_sparql\Connection $connection */
+  $connection = \Drupal::service('sparql_endpoint');
+  $connection->query('CLEAR GRAPH <http://eira_skos>;');
+
+  $graph = new Graph($graph_uri);
+  $filename = DRUPAL_ROOT . '/../resources/fixtures/EIRA_SKOS.rdf';
+  $graph->parseFile($filename);
+
+  $sparql_connection = Database::getConnection('default', 'sparql_default');
+  $connection_options = $sparql_connection->getConnectionOptions();
+  $connect_string = "http://{$connection_options['host']}:{$connection_options['port']}/sparql-graph-crud";
+  $graph_store = new GraphStore($connect_string);
+  $graph_store->insert($graph);
+
+  $graphs = [
+    'http://joinup.eu/solution/published',
+    'http://joinup.eu/solution/draft',
+  ];
+  $map = [
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyService' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyService',
+    'http://data.europa.eu/dr8/TestReport' => 'http://data.europa.eu/dr8/ConformanceTestReport',
+    'http://data.europa.eu/dr8/TestService' => 'http://data.europa.eu/dr8/ConformanceTestingService',
+    'http://data.europa.eu/dr8/ConfigurationAndCartographyServiceComponent' => 'http://data.europa.eu/dr8/ConfigurationAndSolutionCartographyServiceComponent',
+    'http://data.europa.eu/dr8/TestComponent' => 'http://data.europa.eu/dr8/ConformanceTestingComponent',
+    'http://data.europa.eu/dr8/ApplicationService' => 'http://data.europa.eu/dr8/InteroperableEuropeanSolutionService',
+    'http://data.europa.eu/dr8/TestScenario' => 'http://data.europa.eu/dr8/ConformanceTestScenario',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentMandate' => 'http://data.europa.eu/dr8/PublicPolicyImplementationMandate',
+    'http://data.europa.eu/dr8/Data-levelMapping' => 'http://data.europa.eu/dr8/DataLevelMapping',
+    'http://data.europa.eu/dr8/Schema-levelMapping' => 'http://data.europa.eu/dr8/SchemaLevelMapping',
+    'http://data.europa.eu/dr8/AuditAndLoggingComponent' => 'http://data.europa.eu/dr8/AuditComponent',
+    'http://data.europa.eu/dr8/LegalRequirementOrConstraint' => 'http://data.europa.eu/dr8/LegalAct',
+    'http://data.europa.eu/dr8/BusinessInformationExchange' => 'http://data.europa.eu/dr8/ExchangeOfBusinessInformation',
+    'http://data.europa.eu/dr8/InteroperabilityAgreement' => 'http://data.europa.eu/dr8/OrganisationalInteroperabilityAgreement',
+    'http://data.europa.eu/dr8/BusinessProcessManagementComponent' => 'http://data.europa.eu/dr8/OrchestrationComponent',
+    'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructureService' => 'http://data.europa.eu/dr8/HostingAndNetworkingInfrastructure',
+    'http://data.europa.eu/dr8/PublicPolicyDevelopmentApproach' => 'http://data.europa.eu/dr8/PublicPolicyImplementationApproach',
+  ];
+
+  foreach ($graphs as $graph) {
+    foreach ($map as $old_uri => $new_uri) {
+      $query = <<<QUERY
+WITH <$graph>
+DELETE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+INSERT { ?solution_id <http://purl.org/dc/terms/type> <$new_uri> }
+WHERE { ?solution_id <http://purl.org/dc/terms/type> <$old_uri> }
+QUERY;
+      $connection->query($query);
+    }
+  }
+
+  // Finally, repeat the process that initially fixed the eira skos vocabulary.
+  // @see ISAICP-3216.
+  // @see \DrupalProject\Phing\AfterFixturesImportCleanup::main()
+  //
+  // Add the "Concept" type to all collection elements so that they are listed
+  // as Parent terms.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject a skos:Concept } WHERE { ?subject a skos:Collection . };');
+  // Add the link to all "Concept" type elements so that they are all considered
+  // as children of the EIRA vocabulary regardless of the depth.
+  $connection->query('INSERT INTO <http://eira_skos> { ?subject skos:topConceptOf <http://data.europa.eu/dr8> } WHERE { GRAPH <http://eira_skos> { ?subject a skos:Concept .} };');
+  // Create a backwards connection from the children to the parent.
+  $connection->query('INSERT INTO <http://eira_skos> { ?member skos:broaderTransitive ?collection } WHERE { ?collection a skos:Collection . ?collection skos:member ?member };');
+}
+
+/**
+ * Remove temporary 'file' entities that lack the file on file system.
+ */
+function joinup_core_post_update_fix_files(array &$sandbox) {
+  if (!isset($sandbox['fids'])) {
+    $sandbox['fids'] = array_values(\Drupal::entityQuery('file')
+      ->condition('status', FILE_STATUS_PERMANENT, '<>')
+      ->sort('fid')
+      ->execute());
+    $sandbox['processed'] = 0;
+  }
+
+  $fids = array_splice($sandbox['fids'], 0, 50);
+  foreach (File::loadMultiple($fids) as $file) {
+    /** @var \Drupal\file\FileInterface $file */
+    if (!file_exists($file->getFileUri())) {
+      $file->delete();
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = (int) !$sandbox['fids'];
+
+  if ($sandbox['#finished'] === 1) {
+    return $sandbox['processed'] ? "{$sandbox['processed']} file entities deleted." : "No file entities were deleted.";
+  }
+}
+
+/**
+ * Force-update all distribution aliases.
+ */
+function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
+  if (!isset($sandbox['entity_ids'])) {
+    // In order to force-update all distribution aliases in a post_update
+    // function the pattern config file is imported manually, as normally, the
+    // config sync runs after the database updatess.
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_distributions.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_distributions')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_distribution')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $pathauto_generator->updateEntityAlias($entity, 'update', ['force' => TRUE]);
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Create release aliases and create a redirect from the existing ones.
+ */
+function joinup_core_post_update_create_new_release_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_releases.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_releases')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_release')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Create news aliases for news, event, discussion and document content types.
+ */
+function joinup_core_post_update_create_new_node_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.community_content.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.community_content')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $bundles = ['news', 'event', 'discussion', 'document'];
+    $sandbox['entity_ids'] = \Drupal::entityQuery('node')
+      ->condition('type', $bundles, 'IN')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Disable database logging, use the syslog instead.
+ */
+function joinup_core_post_update_swap_dblog_with_syslog() {
+  // Writing log entries in the database during anonymous requests is causing
+  // load on the database. Another problem is that there is a cap on the number
+  // of log entries that are retained in the the database. On some occasions
+  // during heavy logging activity they rotated before we had the chance to read
+  // them. Write the log entries to the syslog instead.
+  \Drupal::service('module_installer')->install(['syslog']);
+  \Drupal::service('module_installer')->uninstall(['dblog']);
+}
+
+/**
+ * Enable the spdx module.
+ */
+function joinup_core_post_update_enable_spdx() {
+  \Drupal::service('module_installer')->install(['spdx']);
+}
+
+/**
+ * Re import the legal type vocabulary so that the weight is imported.
+ */
+function joinup_core_post_update_re_import_legal_type_vocabulary() {
+  \Drupal::service('joinup_core.vocabulary_fixtures.helper')->importFixtures('licence-legal-type');
+}
+
+/**
+ * Corrects the versions of faulty news items.
+ */
+function joinup_core_post_update_set_news_default_version() {
+  // Due to some cache state inconsistency, some nodes had their state
+  // reverted in a previous version without creating a new revision for this.
+  // While in a Drupal site it is normal to have forward revisions, it is not
+  // normal to have forward published revisions. If the entity is published,
+  // then the default version(current published) should be the latest
+  // revision. Instead, what happens is that these entities are published but
+  // also have revision(s) that are also published but of a newer version id.
+  //
+  // The query used is only returning published revisions as even if there is a
+  // forward draft revision in the entity, the draft versions are not published
+  // and thus, are not the default versions. This will set the latest published
+  // revision as the default one.
+  $results = \Drupal::service('joinup_core.requirements_helper')->getNodesWithProblematicRevisions();
+  $nids = array_keys($results);
+  /** @var \Drupal\node\NodeStorage $node_storage */
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\node\NodeInterface $node */
+  foreach ($node_storage->loadMultiple($nids) as $node) {
+    $latest_revision = $node_storage->loadRevision($results[$node->id()]->latest_vid);
+    $latest_revision->isDefaultRevision(TRUE);
+    $latest_revision->save();
+  }
+}
+
+/**
+ * Enable the nio module.
+ */
+function joinup_core_post_update_enable_nio() {
+  \Drupal::service('module_installer')->install(['nio']);
+}
+
+/**
+ * Enable the Publication Date module.
+ */
+function joinup_core_post_update_install_publication_date() {
+  \Drupal::service('module_installer')->install(['publication_date']);
+}
+
+/**
+ * Enable the joinup_privacy module.
+ */
+function joinup_core_post_update_enable_joinup_privacy() {
+  \Drupal::service('module_installer')->install(['joinup_privacy']);
+}
+
+/**
+ * Deletes unused files explicitly requested for deletion.
+ */
+function joinup_core_post_update_delete_orphaned_files() {
+  $files_to_remove = [
+    'public://document/2017-05/e-trustex_software_architecture_document_0.pdf',
+    'public://document/2013-12/e-TrustEx Interface Control Document.pdf',
+  ];
+
+  $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+  foreach ($files_to_remove as $uri) {
+    $files = $file_storage->loadByProperties(['uri' => $uri]);
+    if ($file = reset($files)) {
+      $file->delete();
+    }
+  }
+}
+
+/**
+ * Reset the publication dates.
+ */
+function joinup_core_post_update_0_fix_publication_dates() {
+  // Due to an incorrect earlier version of the install hook of the
+  // Publication Date module a number of older news items were present without a
+  // publication date. Erase all publication dates and restore them.
+  // Note that since this update hook is prefixed with a 0 it is guaranteed to
+  // run before the post update hook of the Publication Date module.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $connection = \Drupal::database();
+  $connection->update($node_storage->getDataTable())
+    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->execute();
+  $connection->update($node_storage->getRevisionDataTable())
+    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->execute();
 }

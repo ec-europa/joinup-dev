@@ -18,12 +18,14 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing solutions.
@@ -36,6 +38,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use FileTrait;
   use NodeTrait;
   use OgTrait;
+  use TraversingTrait;
   use RdfEntityTrait;
   use UtilityTrait;
   use WorkflowTrait;
@@ -53,8 +56,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $collection
    *   The parent collection.
    *
-   * @When (I )go to the add solution form of the :collection collection
-   * @When (I )visit the add solution form of the :collection collection
+   * @When I go to the add solution form of the :collection collection
+   * @When I visit the add solution form of the :collection collection
    */
   public function visitAddSolutionForm($collection) {
     $collection = $this->getRdfEntityByLabel($collection);
@@ -71,8 +74,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $solution
    *   The name of the solution.
    *
-   * @When (I )go to (the homepage of )the :solution solution
-   * @When (I )visit (the homepage of )the :solution solution
+   * @When I go to (the homepage of )the :solution solution
+   * @When I visit (the homepage of )the :solution solution
    */
   public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
@@ -86,8 +89,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $solution
    *   The name of the solution.
    *
-   * @When (I )go to the :solution solution edit form
-   * @When (I )visit the :solution solution edit form
+   * @When I go to the :solution solution edit form
+   * @When I visit the :solution solution edit form
    */
   public function visitEditSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
@@ -216,7 +219,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   public function givenContentMemberships($bundle, TableNode $membership_table) {
     // As each given step is executed in the same request
     // we need to reset the mapping.
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
@@ -296,7 +298,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param string $solution
    *   The name of the solution.
    *
-   * @When (I )delete the :solution solution
+   * @When I delete the :solution solution
    */
   public function deleteSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
@@ -364,13 +366,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'solution');
   }
 
   /**
@@ -682,6 +678,51 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     if (!$ids) {
       throw new \Exception("The '$solution_label' solution is not affiliated with the '$collection_label' collection but it should be.");
     }
+  }
+
+  /**
+   * Navigates to the solutions overview page.
+   *
+   * @When I visit the solution overview( page)
+   */
+  public function visitSolutionOverviewPage() {
+    $this->visitPath('/solutions');
+  }
+
+  /**
+   * Checks that the given tile contains the given number of downloads.
+   *
+   * @param string $heading
+   *   Heading of the tile.
+   * @param int $count
+   *   Number of the downloads.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the tile is not found in the page.
+   *
+   * @Then the :heading tile should show :count downloads
+   */
+  public function assertTileContainsDownloadCount(string $heading, int $count): void {
+    $tile = $this->getTileByHeading($heading);
+    $elements = $tile->findAll('xpath', '//span[contains(@class, "stats__text") and text() = "' . $count . '"]');
+    Assert::assertCount(1, $elements);
+  }
+
+  /**
+   * Checks that the given tile contains a download icon.
+   *
+   * @param string $heading
+   *   Heading of the tile.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the tile is not found in the page.
+   *
+   * @Then the download icon should not be shown in the :heading tile
+   */
+  public function assertTileNotContainsDownloadIcon(string $heading): void {
+    $tile = $this->getTileByHeading($heading);
+    $elements = $tile->findAll('xpath', '//span[contains(@class, "icon--download")]');
+    Assert::assertEmpty($elements);
   }
 
 }

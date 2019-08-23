@@ -52,7 +52,7 @@ Feature: Proposing a collection
     # Click the button to select an existing owner.
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Organisation example"
-    And I press "Save as draft"
+    And I press "Propose"
     # Regression test for setting the Logo and Banner fields as optional.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3215
     Then I should not see the following error messages:
@@ -62,6 +62,7 @@ Feature: Proposing a collection
     And I should see the heading "Ancient and Classical Mythology"
     And I should see a logo on the header
     And I should see a banner on the header
+    And I should see "Thank you for proposing a collection. Your request is currently pending approval by the site administrator."
 
     # The user that proposed the collection should be auto-subscribed.
     And the "Ancient and Classical Mythology" collection should have 1 active member
@@ -104,9 +105,9 @@ Feature: Proposing a collection
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I click the "Additional fields" tab
-    And I attach the file "banner.jpg" to "Banner"
+    And I attach the file "banner1.jpg" to "Banner"
     And I wait for AJAX to finish
-    Then I should see the link "banner.jpg"
+    Then I should see the link "banner1.jpg"
     And I should see the text "Only members can create new content."
     And I should see the text "Any registered user can create new content."
 

@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - rdf_entity.rdfentity.fruit
+third_party_settings: {  }
+id: rdf_entity.fruit
+entity_type_id: rdf_entity
+bundle: fruit
+rdf_type: 'http://example.com/fruit/type'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  label:
+    value:
+      predicate: 'http://example.com/fruit/name'
+      format: t_literal
+graph:
+  default: 'http://example.com/fruit/graph/default'
+  draft: 'http://example.com/fruit/graph/draft'
+  staging: 'http://example.com/fruit/graph/staging'
+entity_id_plugin: default

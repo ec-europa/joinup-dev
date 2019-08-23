@@ -16,7 +16,7 @@ use Drupal\joinup\Traits\NodeTrait;
 /**
  * Behat step definitions for testing events.
  */
-class EventSubContext extends DrupalSubContextBase {
+class JoinupEventSubContext extends DrupalSubContextBase {
 
   use NodeTrait;
 
@@ -33,8 +33,8 @@ class EventSubContext extends DrupalSubContextBase {
    * @param string $title
    *   The name of the event.
    *
-   * @When (I )go to the :title event
-   * @When (I )visit the :title event
+   * @When I go to the :title event
+   * @When I visit the :title event
    */
   public function visitEvent(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */

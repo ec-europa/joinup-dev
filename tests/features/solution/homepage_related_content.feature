@@ -12,9 +12,9 @@ Feature: Solution homepage
       | name  | Placebo             |
       | email | Placebo@example.com |
     And the following solutions:
-      | title                        | description                           | logo     | banner     | state     | owner         | contact information | solution type     | policy domain |
-      | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | [ABB169] Business | E-inclusion   |
-      | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | [ABB169] Business | E-inclusion   |
+      | title                        | description                           | logo     | banner     | state     | owner         | contact information | solution type | policy domain |
+      | Information sharing protocol | Handling information sharing securely | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | Business      | E-inclusion   |
+      | Security audit tools         | Automated test of security            | logo.png | banner.jpg | validated | Kostas Agathe | Placebo             | Business      | E-inclusion   |
     And the following releases:
       | title             | release number | creation date     | release notes                               | is version of                | state     | spatial coverage |
       | IS protocol paper | 1              | 2018-10-04 8:01am | First stable version.                       | Information sharing protocol | validated | Belgium          |

@@ -13,8 +13,8 @@ use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\UriEncoder;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
  * Add the missed 'simatosc' user (uid 73932).
@@ -39,7 +39,7 @@ function joinup_migrate_post_update_add_user_73932() {
     'user_profile',
   ]);
   // Run user migrations.
-  foreach ($migrations as $migration_id => $migration) {
+  foreach ($migrations as $migration) {
     $migration->set('requirements', []);
     (new MigrateExecutable($migration, $message, ['idlist' => $uid]))
       ->import();
@@ -284,7 +284,7 @@ function joinup_migrate_post_update_srits_change_owner() {
 
   // Revoke the administrator role from the 'Joinup moderator'.
   $admin_role = 'rdf_entity-collection-' . OgRoleInterface::ADMINISTRATOR;
-  $membership = $membership_manager->getMembership($collection, $current_owner);
+  $membership = $membership_manager->getMembership($collection, $current_owner->id());
   if (!empty($membership)) {
     $membership->revokeRoleById($admin_role);
     $membership->skip_notification = TRUE;
@@ -293,7 +293,7 @@ function joinup_migrate_post_update_srits_change_owner() {
 
   // Make user 'Joinup editor' the owner for the 'Sharing and reuse of IT
   // solutions' collection.
-  $membership = $membership_manager->getMembership($collection, $new_owner);
+  $membership = $membership_manager->getMembership($collection, $new_owner->id());
   if (empty($membership)) {
     $membership = $membership_manager->createMembership($collection, $new_owner);
   }

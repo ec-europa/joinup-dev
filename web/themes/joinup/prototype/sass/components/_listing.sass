@@ -48,7 +48,8 @@
   +border-radius(50%)
 
 .listing__metadata,
-.listing__wrapper
+.listing__wrapper,
+.listing__inner-tile
   padding: 20px
 
 .listing__field
@@ -161,11 +162,40 @@
     +breakpoint(mobile)
       flex: 0 1 100%
       align-self: center
-  .listing__image
+  .listing__image,
+  .listing__inner-tile
     +breakpoint(mobile)
       flex: 0 0 220px
       height: auto
       min-height: 100%
+  .listing__inner-tile
+    .listing__field
+      &:last-child
+        margin-bottom: 0
+  .listing__inner-tile--wider
+    +breakpoint(mobile)
+      flex: 0 0 40%
+      padding-right: 0
+  .listing__inner-tile--shifted
+    padding-bottom: 0
+    .listing__field
+      display: inline-block
+      margin-bottom: 0
+      &:first-child
+        margin-right: 15px
+    +breakpoint(mobile)
+      padding-left: 41px
+      flex: 0 0 100%
+  .listing__metadata--licence
+    .listing__teaser
+      max-height: none
+      a
+        overflow-wrap: break-word
+        word-wrap: break-word
+        word-break: break-all
+    +breakpoint(mobile)
+      padding-bottom: 70px
+      flex: 0 0 60%
 
 .listing__card--stats-container
   .listing__metadata

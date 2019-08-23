@@ -1,0 +1,81 @@
+{#
+/**
+ * @file
+ * Themeing for the search_list_item view mode of licence rdf entities.
+ *
+ * Available variables:
+ * - licence_title: The licence title.
+ * - spdx_title: The spdx licence title.
+ * - spdx_url: The spdx licence url.
+ * - spdx_licence_id: The spdx licence code.
+ * - legal_categories: a concatenated string of lowercase characters of the legal type categories related to the
+ * licence.
+ * - category_lists: An array of variables with details on the category lists. Contains variables:
+ * -- title: The title of the parent.
+ * -- class: An array of list items.
+ * -- items: A list of items for each category. Contains variables:
+ * --- title: The label of the item.
+ * --- description: the description of the item.
+ */
+#}
+{%
+  set classes = [
+    'listing__item ',
+    'listing__item--tile',
+    'licence-tile mdl-cell',
+    'mdl-cell--12-col',
+    'mdl-cell--12-col-wide',
+  ]
+%}
+{% set spdx_licence_id = render_var(content.spdx_licence_id) %}
+<div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id|striptags|trim }}" data-licence-category="{{ legal_categories }}">
+  {{ title_prefix }}
+  <div class="listing__card listing__card--inline-container mdl-card">
+    <div class="listing__inner-tile listing__inner-tile--shifted">
+      {% if spdx_licence_id %}
+        <div class="listing__field">
+          <h2 class="listing__title licence-tile__title">{{ spdx_licence_id }}</h2>
+        </div>
+      {% endif %}
+      <div class="listing__field">
+        {{ label }}
+      </div>
+    </div>
+  </div>
+  {#
+    The title suffix contains the contextual links.
+    Added here because the listing__card items do not allow elements to overlap, thus the contextual
+    links, appeard beneath the next container.
+  #}
+  {{ title_suffix }}
+
+  <div class="listing__card listing__card--inline-container mdl-card">
+    <div class="listing__inner-tile listing__inner-tile--wider">
+      {% for category_list in category_lists  %}
+        <div class="listing__field">
+          <div class="licence-tile__line {{ category_list.class }}">
+            <div class="licence-tile__label-wrapper">
+              <span class="licence-tile__label">
+                {{ category_list.title }}
+              </span>
+            </div>
+            <div class="licence-tile__value">
+              {% for item in category_list.items %}
+                <span title="{{ item.description }}">{{ item.title }}</span>{% if loop.last == false %}, {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="listing__metadata listing__metadata--licence">
+      <p>{{ 'Licence comment'|t }}:</p>
+      <div class="listing__field">
+        {{ content.field_licence_description }}
+      </div>
+      {% if content.spdx_licence_external_url %}
+        {{ content.spdx_licence_external_url }}
+      {% endif %}
+    </div>
+  </div>
+</div>

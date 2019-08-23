@@ -16,7 +16,6 @@ dependencies:
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
     - field.field.user.user.field_user_subscription_events
     - image.style.image_style_collection_logo
   module:
@@ -98,8 +97,17 @@ content:
     weight: 3
     label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
     type: entity_reference_label
     region: content
   field_user_organisation:
@@ -157,7 +165,6 @@ hidden:
   field_user_content: true
   field_user_frequency: true
   field_user_group_types: true
-  field_user_professional_profile: true
   field_user_subscription_events: true
   langcode: true
   simplenews: true

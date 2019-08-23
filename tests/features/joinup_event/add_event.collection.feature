@@ -42,7 +42,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "Stream of Dreams" collection
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Spatial coverage"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Physical location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Spatial coverage"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
     And the following fields should not be present "Shared in"
@@ -57,17 +57,12 @@ Feature: "Add event" visibility options.
       | File description field is required. |
 
     When I fill in the following:
-      | Title            | An amazing event                      |
-      | Short title      | Amazing event                         |
-      | Description      | This is going to be an amazing event. |
-      | Location         | Rue Belliard 28, Brussels, Belgium    |
-      | File description | Taxi discount voucher.                |
-      | Spatial coverage | France                                |
-    And I press "Add another item" at the "Online location" field
-    And I enter the following for the "Online location" link field:
-      | URL                          | Title           |
-      | https://joinup.ec.europa.eu/ | Joinup homepage |
-      | https://drupal.org/          |                 |
+      | Title             | An amazing event                      |
+      | Short title       | Amazing event                         |
+      | Description       | This is going to be an amazing event. |
+      | File description  | Taxi discount voucher.                |
+      | Spatial coverage  | France                                |
+    And I press "Add another item" at the "Virtual location" field
     And I fill the start date of the Date widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:59"
     And I fill the end date of the Date widget with "2018-08-30"
@@ -76,9 +71,17 @@ Feature: "Add event" visibility options.
     And I select "National" from "Scope"
     And  I additionally select "Regional" from "Scope"
     And I press "Save as draft"
+    Then I should see the error message "At least one location field should be filled in."
+    When I fill in "Physical location" with "Rue Belliard 28, Brussels, Belgium"
+    And I enter the following for the "Virtual location" link field:
+      | URL                          | Title           |
+      | https://joinup.ec.europa.eu/ | Joinup homepage |
+      | https://drupal.org/          |                 |
+    And I press "Save as draft"
     Then I should see the heading "An amazing event"
     But I should not see the text "National"
     And I should not see the text "Regional"
+    And I should see the text "Rue Belliard 28, Brussels, Belgium"
     But I should see the success message "Event An amazing event has been created."
     And I should see the text "29 to 30 August 2018"
     And I should see a map centered on latitude 4.370375 and longitude 50.842156

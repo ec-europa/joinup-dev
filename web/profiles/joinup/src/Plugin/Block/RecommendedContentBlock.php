@@ -14,7 +14,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\og\MembershipManager;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
 use Drupal\search_api\SearchApiException;
@@ -125,9 +124,9 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
 
     // If the user is a member of one or more collections or solutions, show
     // the latest content from those.
-    $groups = $this->ogMembershipManager->getUserGroups($this->currentUser->getAccount());
-    if (!empty($groups['rdf_entity'])) {
-      $this->entities += $this->getContentFromMemberships($groups, $count - count($this->entities));
+    $group_ids = $this->ogMembershipManager->getUserGroupIds($this->currentUser->id());
+    if (!empty($group_ids['rdf_entity'])) {
+      $this->entities += $this->getContentFromMemberships($group_ids, $count - count($this->entities));
     }
     // Show popular content to anonymous users and users without memberships.
     else {
@@ -181,8 +180,8 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   /**
    * Receives the content of the groups the user is a member of.
    *
-   * @param array $groups
-   *   The user's memberships.
+   * @param array $group_ids
+   *   The user's membership IDs.
    * @param int $limit
    *   The number of results to fetch.
    *
@@ -192,29 +191,25 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    * @throws \Drupal\search_api\SearchApiException
    *   Thrown if an error occurred during the search for group content.
    */
-  protected function getContentFromMemberships(array $groups, int $limit): array {
+  protected function getContentFromMemberships(array $group_ids, int $limit): array {
     // Early exit if we do not need to retrieve any data.
     if ($limit === 0) {
       return [];
     }
 
-    $rdf_entities = $groups['rdf_entity'] ?? [];
+    $rdf_entity_ids = $group_ids['rdf_entity'] ?? [];
 
     // Only show content from the first 100 groups to avoid hitting the query
     // size limit.
-    if (count($rdf_entities) > 100) {
-      $subset = array_chunk($rdf_entities, 100);
-      $rdf_entities = reset($subset);
+    if (count($rdf_entity_ids) > 100) {
+      $subset = array_chunk($rdf_entity_ids, 100);
+      $rdf_entity_ids = reset($subset);
     }
-
-    $cids = array_map(function (RdfInterface $rdf_entity) {
-      return $rdf_entity->id();
-    }, $rdf_entities);
 
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $this->getPublishedIndex()->query();
     $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
-    $query->addCondition('entity_groups', $cids, 'IN');
+    $query->addCondition('entity_groups', $rdf_entity_ids, 'IN');
     $query->sort('entity_created', 'DESC');
     $query->range(0, $limit);
     $this->excludeEntitiesFromQuery($query);

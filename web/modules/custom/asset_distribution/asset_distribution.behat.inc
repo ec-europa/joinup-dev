@@ -5,7 +5,10 @@
  * Contains \AssetDistributionSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -13,6 +16,7 @@ use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\file_url\FileUrlHandler;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Behat step definitions for testing asset distributions.
@@ -36,12 +40,12 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $asset_distribution
    *   The title of the asset distribution.
    *
-   * @When (I )go to (the homepage of )the :asset_distribution distribution
-   * @When (I )visit (the homepage of )the :asset_distribution distribution
-   * @When (I )go to (the homepage of )the :asset_distribution asset distribution
-   * @When (I )visit (the homepage of )the :asset_distribution asset distribution
+   * @When I go to (the homepage of )the :asset_distribution distribution
+   * @When I visit (the homepage of )the :asset_distribution distribution
+   * @When I go to (the homepage of )the :asset_distribution asset distribution
+   * @When I visit (the homepage of )the :asset_distribution asset distribution
    */
-  public function visitDistribution($asset_distribution) {
+  public function visitDistribution($asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     $this->visitPath($asset_distribution->url());
@@ -53,10 +57,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $asset_distribution
    *   The title of the $asset_distribution.
    *
-   * @When (I )go to the :asset_distribution asset distribution edit form
-   * @When (I )visit the :asset_distribution asset distribution edit form
+   * @When I go to the :asset_distribution asset distribution edit form
+   * @When I visit the :asset_distribution asset distribution edit form
    */
-  public function visitEditAssetDistribution($asset_distribution) {
+  public function visitEditAssetDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     $path = $asset_distribution->url('edit-form');
@@ -84,7 +88,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Given (the following )(asset )distributions:
    */
-  public function givenAssetDistributions(TableNode $asset_distribution_table) {
+  public function givenAssetDistributions(TableNode $asset_distribution_table): void {
     foreach ($asset_distribution_table->getColumnsHash() as $values) {
       $this->createAssetDistributionFromAliasedTableValues($values);
     }
@@ -111,7 +115,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Given (the following )(asset )distribution:
    */
-  public function givenAssetDistribution(TableNode $asset_distribution_table) {
+  public function givenAssetDistribution(TableNode $asset_distribution_table): void {
     $values = $asset_distribution_table->getRowsHash();
     $this->createAssetDistributionFromAliasedTableValues($values);
   }
@@ -122,13 +126,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   A new asset distribution entity.
    *
    * @throws \Exception
    *   Thrown when a given file is not found.
    */
-  protected function createAssetDistribution(array $values) {
+  protected function createAssetDistribution(array $values): RdfInterface {
     // The Access URL field is either an external URI, or file upload.
     if (!empty($values['field_ad_access_url'])) {
       global $base_url;
@@ -158,7 +162,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @throws \InvalidArgumentException
    *   Thrown when an unknown key alias is present in the list of values.
    */
-  protected function createAssetDistributionFromAliasedTableValues(array $aliased_values) {
+  protected function createAssetDistributionFromAliasedTableValues(array $aliased_values): void {
     $aliases = self::assetDistributionFieldAliases();
 
     $values = [];
@@ -186,9 +190,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $asset_distribution
    *   The title of the asset distribution.
    *
-   * @When (I )delete the :asset_distribution asset distribution
+   * @When I delete the :asset_distribution asset distribution
    */
-  public function deleteAssetDistribution($asset_distribution) {
+  public function deleteAssetDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
     $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
     $asset_distribution->skip_notification = TRUE;
@@ -204,13 +208,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $title
    *   The asset distribution title.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The asset distribution.
    *
    * @throws \InvalidArgumentException
    *   Thrown when an asset distribution with the given title does not exist.
    */
-  protected function getAssetDistributionByName($title) {
+  protected function getAssetDistributionByName(string $title): RdfInterface {
     return $this->getRdfEntityByLabel($title, 'asset_distribution');
   }
 
@@ -222,13 +226,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param string $title
    *   The solution title.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The solution.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a solution with the given title does not exist.
    */
-  protected function getSolutionByName($title) {
+  protected function getSolutionByName(string $title): RdfInterface {
     return $this->getRdfEntityByLabel($title, 'solution');
   }
 
@@ -238,9 +242,12 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @param int $number
    *   The expected number of asset distributions.
    *
+   * @throws \Exception
+   *   Thrown if the count does not match the expected number.
+   *
    * @Then I should have :number distribution(s)
    */
-  public function assertAssetDistributionCount($number) {
+  public function assertAssetDistributionCount(int $number): void {
     $this->assertRdfEntityCount($number, 'asset_distribution');
   }
 
@@ -249,7 +256,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @AfterScenario
    */
-  public function cleanAssetDistributions() {
+  public function cleanAssetDistributions(): void {
     // Remove any asset distributions that were created.
     foreach ($this->assetDistributions as $asset_distribution) {
       $asset_distribution->skip_notification = TRUE;
@@ -263,7 +270,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @return array
    *   Mapping.
    */
-  protected static function assetDistributionFieldAliases() {
+  protected static function assetDistributionFieldAliases(): array {
     // Mapping alias - field name.
     return [
       'access url' => 'field_ad_access_url',
@@ -296,7 +303,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then I should see the download link in the :distribution( asset) distribution
    */
-  public function assertLinkPresentInCompactDistributionTile($distribution) {
+  public function assertLinkPresentInCompactDistributionTile(string $distribution): void {
     $distribution = $this->getAssetDistributionByName($distribution);
     if (empty($distribution->field_ad_access_url->first())) {
       throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
@@ -322,7 +329,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then the :distribution( asset) distribution should not have any download urls
    */
-  public function assertLinkNotPresentInCompactDistributionTile($distribution) {
+  public function assertLinkNotPresentInCompactDistributionTile(string $distribution): void {
     $link = $this->getSession()->getPage()->find('xpath', "//a[contains(text(), '$distribution')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//span[contains(concat(' ', @class, ' '), ' file ')]/a");
     if (!empty($link)) {
       throw new \Exception(sprintf('Asset distribution "%s" contains download link(s).', $distribution));
@@ -342,7 +349,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then the :distribution distribution should have the link of the :file_name in the access URL field
    */
-  public function assertLinkSynchronized($distribution, $file_name) {
+  public function assertLinkSynchronized(string $distribution, string $file_name): void {
     $distribution = $this->getAssetDistributionByName($distribution);
     $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
     if (($file->getFilename() !== $file_name) || !file_create_url($file->getFileUri())) {
@@ -386,7 +393,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @Given I upload the file :file_or_url to :file_url_field
    * @Given I set a remote URL :file_or_url to :file_url_field
    */
-  public function addFileUrlItem($file_or_url, $file_url_field) {
+  public function addFileUrlItem(string $file_or_url, string $file_url_field): void {
     $type = UrlHelper::isExternal($file_or_url) ? 'remote' : 'upload';
 
     $session = $this->getSession();
@@ -432,7 +439,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @When I click :link in the :heading asset distribution
    */
-  public function clickLinkInCompactDistribution($link, $heading) {
+  public function clickLinkInCompactDistribution(string $link, string $heading): void {
     $element = $this->getCompactDistributionByHeading($heading);
 
     if (!$element) {
@@ -457,7 +464,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @Then I should see the following download entries:
    */
-  public function assertDownloadEventEntries(TableNode $table) {
+  public function assertDownloadEventEntries(TableNode $table): void {
     $base_selector = '.distribution-download-table table > tbody > tr';
     $count = 0;
     foreach ($table->getColumnsHash() as $entry) {
@@ -475,7 +482,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @When I go to the distribution downloads page
    */
-  public function goToDistributionDownloadsPage() {
+  public function goToDistributionDownloadsPage(): void {
     $this->visitPath('admin/statistics/distribution-downloads');
   }
 
@@ -488,7 +495,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @return \Behat\Mink\Element\NodeElement|null
    *   The compact distribution element, or null if not found.
    */
-  protected function getCompactDistributionByHeading($heading) {
+  protected function getCompactDistributionByHeading(string $heading): ?NodeElement {
     // Locate all the elements.
     $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " timeline__listing-item ")]';
     // That have a heading with the specified text.

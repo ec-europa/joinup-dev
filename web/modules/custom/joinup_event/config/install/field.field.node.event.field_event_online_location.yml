@@ -10,7 +10,7 @@ id: node.event.field_event_online_location
 field_name: field_event_online_location
 entity_type: node
 bundle: event
-label: 'Online location'
+label: 'Virtual location'
 description: 'If the event can be attended remotely, please provide links to the web pages that contain the available video streams.'
 required: false
 translatable: false

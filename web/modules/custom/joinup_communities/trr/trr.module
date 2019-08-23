@@ -25,9 +25,9 @@ function trr_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entit
         $fields[$field]->addConstraint('RequiredIfOtherFieldHasValue', [
           'field' => 'field_is_solution_type',
           'values' => [
-            'http://data.europa.eu/dr8/TestComponent',
-            'http://data.europa.eu/dr8/TestService',
-            'http://data.europa.eu/dr8/TestScenario',
+            'http://data.europa.eu/dr8/ConformanceTestingComponent',
+            'http://data.europa.eu/dr8/ConformanceTestingService',
+            'http://data.europa.eu/dr8/ConformanceTestScenario',
           ],
         ]);
       }

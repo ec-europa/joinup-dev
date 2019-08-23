@@ -5,16 +5,17 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field
-  - collection
-  - ds
-  - joinup_comment
-  - joinup_community_content
-  - joinup_core
-  - og
-  - smart_trim
-  - solution
-  - view_unpublished
+  - cached_computed_field:cached_computed_field
+  - joinup:collection
+  - ds:ds
+  - drupal:image
+  - joinup:joinup_comment
+  - joinup:joinup_community_content
+  - joinup:joinup_core
+  - og:og
+  - smart_trim:smart_trim
+  - joinup:solution
+  - view_unpublished:view_unpublished
 
 config_devel:
   - core.base_field_override.node.news.status
@@ -29,6 +30,7 @@ config_devel:
   - field.field.node.news.field_attachment
   - field.field.node.news.field_keywords
   - field.field.node.news.field_news_headline
+  - field.field.node.news.field_news_logo
   - field.field.node.news.field_news_referenced_solution
   - field.field.node.news.field_news_source_url
   - field.field.node.news.field_news_spatial_coverage
@@ -40,7 +42,9 @@ config_devel:
   - field.field.node.news.field_visit_count
   - field.field.node.news.og_audience
   - field.storage.node.field_news_headline
+  - field.storage.node.field_news_logo
   - field.storage.node.field_news_referenced_solution
   - field.storage.node.field_news_source_url
   - field.storage.node.field_news_spatial_coverage
+  - image.style.image_style_news_logo
   - node.type.news

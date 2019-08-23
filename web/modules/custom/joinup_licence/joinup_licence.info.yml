@@ -5,7 +5,9 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - smart_trim
+  - field_group:field_group
+  - smart_trim:smart_trim
+  - spdx:spdx
 
 config_devel:
   - core.base_field_override.rdf_entity.licence.label
@@ -16,5 +18,8 @@ config_devel:
   - field.field.rdf_entity.licence.field_licence_type
   - field.storage.rdf_entity.field_licence_description
   - field.storage.rdf_entity.field_licence_type
-  - rdf_entity.mapping.rdf_entity.licence
+  - filter.format.licence
   - rdf_entity.rdfentity.licence
+  - sparql_entity_storage.mapping.rdf_entity.licence
+  - sparql_entity_storage.mapping.taxonomy_term.licence_type
+  - taxonomy.vocabulary.licence_type

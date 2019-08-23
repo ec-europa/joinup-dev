@@ -3,6 +3,7 @@
 namespace Drupal\joinup\Context;
 
 use Drupal\DrupalExtension\Context\MinkContext as DrupalExtensionMinkContext;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -11,6 +12,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 class MinkContext extends DrupalExtensionMinkContext {
 
+  use BrowserCapabilityDetectionTrait;
   use MaterialDesignTrait;
 
   /**
@@ -41,6 +43,7 @@ class MinkContext extends DrupalExtensionMinkContext {
   public function assertCheckboxChecked($radio) {
     // We're just adding a step definition, not changing the actual code. Trick
     // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
+    // @codingStandardsIgnoreLine
     $tricksy = TRUE;
     parent::assertCheckboxChecked($radio);
   }
@@ -51,7 +54,7 @@ class MinkContext extends DrupalExtensionMinkContext {
   public function assertPageNotContainsText($text) {
     // When running in a JS enabled browser, check that the text is not visually
     // visible.
-    if ($this->browserSupportsJavascript()) {
+    if ($this->browserSupportsJavaScript()) {
       $xpath = '//*[text()[contains(.,"' . $text . '")]]';
       foreach ($this->getSession()->getPage()->findAll('xpath', $xpath) as $element) {
         if ($element->isVisible()) {
@@ -78,6 +81,7 @@ class MinkContext extends DrupalExtensionMinkContext {
   public function iWaitForAjaxToFinish($event = NULL) {
     // We're just adding a step definition, not changing the actual code. Trick
     // PHP_CodeSniffer so it doesn't throw 'Useless method detected.'.
+    // @codingStandardsIgnoreLine
     $tricksy = TRUE;
     parent::iWaitForAjaxToFinish($event);
   }

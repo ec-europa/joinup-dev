@@ -8,6 +8,7 @@
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\joinup\Traits\UserTrait;
@@ -20,6 +21,7 @@ use Drupal\taxonomy\TermInterface;
  */
 class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use BrowserCapabilityDetectionTrait;
   use MaterialDesignTrait;
   use RdfEntityTrait;
   use UserTrait;
@@ -134,7 +136,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @throws \Exception
    *   Thrown when the owner field appears empty in the page.
    *
-   * @When (I )set the Owner type(s) to :option
+   * @When I set the Owner type(s) to :option
    */
   public function setOwnerType($options) {
     // Explode into an array.
@@ -167,8 +169,8 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @param string $owner
    *   The label of the owner.
    *
-   * @When (I )go to (the homepage of )the :owner owner
-   * @When (I )visit (the homepage of )the :owner owner
+   * @When I go to (the homepage of )the :owner owner
+   * @When I visit (the homepage of )the :owner owner
    */
   public function visitOwner($owner) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $owner */

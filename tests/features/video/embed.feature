@@ -22,7 +22,9 @@ Feature: Embed of videos into the page.
       """
       <h2>All below videos have 'autoplay' set to TRUE</h2>
       European Commission videos are allowed.
-      <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I072651&videolang=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
+      <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I072651&lg=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
+      European Commission videos are allowed.
+      <iframe src="https://ec.europa.eu/avservices/play.cfm?ref=I-087075&lg=EN&starttime=0&autostart=true" id="videoplayer" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
       European Commission videos (with short URL that will be resolved) are allowed.
       <iframe src="http://europa.eu/!dV74uw" width="852" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"></iframe>
       YouTube videos are allowed.
@@ -35,12 +37,12 @@ Feature: Embed of videos into the page.
 
     Given I press "Publish"
     # All allowed videos have now the autoplay set to FALSE.
-    Then the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I072651&amp;lg=EN&amp;starttime=0&amp;autoplay=false"
-    And the response should contain "//ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false"
-    And the response should contain "https://www.youtube.com/embed/xlnYVHRp128?autoplay=0&amp;start=0&amp;rel=0"
-
-    But the response should not contain "https://player.vimeo.com/video/225133231"
-    And the response should not contain "//www.dailymotion.com/embed/video/x5vl5l0"
+    Then the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI072651%26lg%3DEN%26starttime%3D0%26autoplay%3Dfalse"
+    And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-087075%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse"
+    And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-136289%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse"
+    And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FxlnYVHRp128%3Fautoplay%3D0%26start%3D0%26rel%3D0"
+    And the response should contain "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F225133231"
+    But the response should not contain "//europa.eu/webtools/crs/iframe/?oriurl=%2F%2Fwww.dailymotion.com%2Fembed%2Fvideo%2Fx5vl5l0"
 
   @javascript
   Scenario Outline: A video embed button should be shown to community content editors.
@@ -64,10 +66,11 @@ Feature: Embed of videos into the page.
     Then the response should contain "<embed url>"
 
     Examples:
-      | url                                                                      | embed url                                                                                   |
-      | https://www.youtube.com/watch?v=YTaLmMsaLOg                              | https://www.youtube.com/embed/YTaLmMsaLOg?autoplay=0&amp;start=0&amp;rel=0                  |
-      | http://europa.eu/!dV74uw                                                 | //ec.europa.eu/avservices/play.cfm?ref=I136289&amp;lg=en&amp;starttime=0&amp;autoplay=false |
-      | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836 | //ec.europa.eu/avservices/play.cfm?ref=I156836&amp;lg=en&amp;starttime=0&amp;autoplay=false |
+      | url                                                                        | embed url                                                                                                                                                 |
+      | https://www.youtube.com/watch?v=YTaLmMsaLOg                                | //europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FYTaLmMsaLOg%3Fautoplay%3D0%26start%3D0%26rel%3D0                 |
+      | http://europa.eu/!dV74uw                                                   | //europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-136289%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse |
+      | https://ec.europa.eu/avservices/video/player.cfm?sitelang=en&ref=I156836   | //europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI156836%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse  |
+      | https://audiovisual.ec.europa.eu/embed/index.html?sitelang=en&ref=I-087075 | //europa.eu/webtools/crs/iframe/?oriurl=%2F%2Faudiovisual.ec.europa.eu%2Fembed%2Findex.html%3Fref%3DI-087075%26lg%3Den%26starttime%3D0%26autoplay%3Dfalse |
 
   Scenario: Forcing auto-play into the content of an entity will not trigger the auto-play.
     Given I am logged in as a "facilitator" of the "Beer brewing corporation" collection
@@ -81,4 +84,9 @@ Feature: Embed of videos into the page.
     <p>{"preview_thumbnail":"/sites/default/files/styles/video_embed_wysiwyg_preview/public/video_thumbnails/r5Kd7ltWS9w.jpg?itok=2PfetCfJ","video_url":"https://www.youtube.com/watch?v=r5Kd7ltWS9w","settings":{"responsive":true,"width":"854","height":"480","autoplay":true},"settings_summary":["Embedded Video (Responsive)."]}</p>
     """
     And I press "Publish"
-    Then the response should contain "autoplay=0"
+    # The response contains an encoded version of the 'autoplay=0' since it is passed to the ec cck domain.
+    Then the response should contain "autoplay%3D0"
+
+    When I am not logged in
+    And I go to the "Some test video" news
+    Then the response should contain "autoplay%3D0"

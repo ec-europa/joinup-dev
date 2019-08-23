@@ -1,29 +1,38 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_user;
 
 /**
- * Class ActiveFormSubmit.
- *
- * Keep track of the form id of the form being submitted.
+ * Keeps track of the form ID of the form being submitted.
  */
 class ActiveFormSubmit {
+
+  /**
+   * The form ID being submitted.
+   *
+   * @var string
+   */
   protected $formId = NULL;
 
   /**
-   * Set the form_id being submitted.
+   * Sets the form ID being submitted.
    *
    * @param string $form_id
    *   The form id.
    */
-  public function setFormId($form_id) {
+  public function setFormId(string $form_id): void {
     $this->formId = $form_id;
   }
 
   /**
-   * Get the form_id being submitted.
+   * Returns the form ID being submitted.
+   *
+   * @return string|null
+   *   The form ID, or NULL if no form ID has been set.
    */
-  public function getFormId() {
+  public function getFormId(): ?string {
     return $this->formId;
   }
 

@@ -34,7 +34,7 @@ Feature: Event moderation
     # create content, authenticated users that are not members can create
     # events.
     When I am logged in as "Salvador Thomas"
-    And go to the homepage of the "Wet Lords" collection
+    And I go to the homepage of the "Wet Lords" collection
     And I click "Add event" in the plus button menu
     # Post moderated collections allow publishing content directly.
     And I should see the button "Publish"
@@ -83,10 +83,10 @@ Feature: Event moderation
     And I go to the homepage of the "Wet Lords" collection
     And I click "Add event"
     When I fill in the following:
-      | Title       | Rainbow of Worlds                     |
-      | Short title | Rainbow of Worlds                     |
-      | Description | This is going to be an amazing event. |
-      | Location    | Worlds crossroad                      |
+      | Title             | Rainbow of Worlds                     |
+      | Short title       | Rainbow of Worlds                     |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Worlds crossroad                      |
     And I fill the start date of the Date widget with "2018-08-30"
     And I fill the start time of the Date widget with "23:59:00"
     And I fill the end date of the Date widget with "2018-09-01"

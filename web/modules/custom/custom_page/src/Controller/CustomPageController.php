@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\custom_page\Controller;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_core\Controller\CommunityContentController;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -17,13 +20,15 @@ use Drupal\rdf_entity\RdfInterface;
  */
 class CustomPageController extends CommunityContentController {
 
+  use StringTranslationTrait;
+
   /**
    * {@inheritdoc}
    *
    * The custom pages are only allowed to be created for collections and
    * solutions.
    */
-  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResult {
     if (empty($account)) {
       $account = $this->currentUser();
     }
@@ -45,7 +50,7 @@ class CustomPageController extends CommunityContentController {
   /**
    * {@inheritdoc}
    */
-  protected function getBundle() {
+  protected function getBundle(): string {
     return 'custom_page';
   }
 
@@ -66,7 +71,7 @@ class CustomPageController extends CommunityContentController {
     // form is exposed to regular visitors.
     $group = $ogmenu_instance->og_audience->entity;
     return [
-      '#markup' => t('Edit navigation menu of the %group @type', [
+      '#markup' => $this->t('Edit navigation menu of the %group @type', [
         '%group' => $ogmenu_instance->label(),
         '@type' => $group->bundle(),
       ]),

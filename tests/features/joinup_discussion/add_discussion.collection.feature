@@ -88,9 +88,9 @@ Feature: Discussions added to collections
 
     # Make sure that the page is cached, so that we can ascertain that adding a
     # comment will invalidate the cache.
-    # @todo: uncomment when ISAICP-3899 is fixed.
-    # When I reload the page
-    # Then the page should be cached
+    And the page should be cacheable
+    When I reload the page
+    Then the page should be cached
 
     # Create two new comments and check that the counter is incremented.
     Given comments:
@@ -103,7 +103,6 @@ Feature: Discussions added to collections
 
     # Check that the page cache has been correctly invalidated, and a reload
     # will serve again from cache.
-    # @todo: uncomment when ISAICP-3899 is fixed.
-    # And the page should not be cached
-    # When I reload the page
-    # Then the page should be cached
+    And the page should not be cached
+    When I reload the page
+    Then the page should be cached

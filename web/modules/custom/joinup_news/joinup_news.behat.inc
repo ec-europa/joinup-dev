@@ -12,7 +12,7 @@ use Drupal\joinup\Traits\NodeTrait;
 /**
  * Behat step definitions for testing news pages.
  */
-class NewsSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupNewsSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use NodeTrait;
 
@@ -22,8 +22,8 @@ class NewsSubContext extends DrupalSubContextBase implements DrupalSubContextInt
    * @param string $title
    *   The name of the news page.
    *
-   * @When (I )go to the :title news
-   * @When (I )visit the :title news
+   * @When I go to the :title news
+   * @When I visit the :title news
    */
   public function visitNewsPage($title) {
     /** @var \Drupal\node\Entity\Node $node */
