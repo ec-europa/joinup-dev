@@ -6,7 +6,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\views\Plugin\views\argument_default\ArgumentDefaultPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -62,7 +62,7 @@ class RdfEntity extends ArgumentDefaultPluginBase implements CacheableDependency
   public function getArgument() {
     $raw = $this->routeMatch->getRawParameter('rdf_entity');
     $id = UriEncoder::decodeUrl($raw);
-    if ($rdf = Rdf::load($id)) {
+    if (Rdf::load($id)) {
       return $raw;
     }
     return NULL;

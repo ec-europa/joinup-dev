@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_sparql;
 
-use Drupal\rdf_entity\Encoder\SparqlEncoder;
+use Drupal\sparql_entity_storage\Encoder\SparqlEncoder;
 use Symfony\Component\HttpFoundation\AcceptHeader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

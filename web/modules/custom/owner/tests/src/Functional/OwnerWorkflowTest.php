@@ -77,7 +77,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
     // Test create access.
     foreach ($this->createAccessProvider() as $user_var => $expected_result) {
       $access = $this->entityAccess->createAccess('owner', $this->$user_var);
-      $result = $expected_result ? t('have') : t('not have');
+      $result = $expected_result ? $this->t('have') : $this->t('not have');
       $message = "User {$user_var} should {$result} create access for bundle 'owner'.";
       $this->assertEquals($expected_result, $access, $message);
     }
@@ -107,7 +107,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
           $expected_result = in_array($user_var, $allowed_users);
 
           $access = $this->entityAccess->access($content, $operation, $this->$user_var);
-          $result = $expected_result ? t('have') : t('not have');
+          $result = $expected_result ? $this->t('have') : $this->t('not have');
           $message = "User {$user_var} should {$result} {$operation} access for entity {$content->label()} ({$entity_state}).";
           $this->assertEquals($expected_result, $access, $message);
         }

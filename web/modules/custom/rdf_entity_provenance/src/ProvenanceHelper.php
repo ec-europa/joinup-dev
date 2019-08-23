@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\rdf_entity_provenance;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\rdf_entity\RdfEntitySparqlStorageInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 
 /**
  * Provides helper methods to fetch, check and update provenance data.
@@ -23,7 +23,7 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * The RDF entity storage.
    *
-   * @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
    */
   protected $rdfStorage;
 
@@ -118,10 +118,10 @@ class ProvenanceHelper implements ProvenanceHelperInterface {
   /**
    * Returns the RDF entity storage.
    *
-   * @return \Drupal\rdf_entity\RdfEntitySparqlStorageInterface
+   * @return \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
    *   The RDF entity storage.
    */
-  protected function getRdfStorage(): RdfEntitySparqlStorageInterface {
+  protected function getRdfStorage(): SparqlEntityStorageInterface {
     if (!isset($this->rdfStorage)) {
       $this->rdfStorage = $this->entityTypeManager->getStorage('rdf_entity');
     }

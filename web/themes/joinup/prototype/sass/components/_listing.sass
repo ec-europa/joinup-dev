@@ -175,15 +175,27 @@
   .listing__inner-tile--wider
     +breakpoint(mobile)
       flex: 0 0 40%
+      padding-right: 0
   .listing__inner-tile--shifted
+    padding-bottom: 0
+    .listing__field
+      display: inline-block
+      margin-bottom: 0
+      &:first-child
+        margin-right: 15px
     +breakpoint(mobile)
       padding-left: 41px
-      flex: 0 0 30%
-      padding-bottom: 70px
+      flex: 0 0 100%
   .listing__metadata--licence
-    word-wrap: break-word
+    .listing__teaser
+      max-height: none
+      a
+        overflow-wrap: break-word
+        word-wrap: break-word
+        word-break: break-all
     +breakpoint(mobile)
-      flex: 0 0 30%
+      padding-bottom: 70px
+      flex: 0 0 60%
 
 .listing__card--stats-container
   .listing__metadata

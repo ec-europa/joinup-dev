@@ -6,8 +6,9 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Site\Settings;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\user\Entity\User;
 
 /**
@@ -20,7 +21,7 @@ use Drupal\user\Entity\User;
 function joinup_core_requirements($phase) {
   $requirements = [];
 
-  if ($phase == 'runtime') {
+  if ($phase === 'runtime') {
     // Check if UID 1 is blocked. Not allowing to log in as the root user
     // greatly decreases the chances of a privilege escalation bug to do real
     // damage on production.
@@ -61,6 +62,29 @@ function joinup_core_requirements($phase) {
           'value' => t('Database logging is enabled'),
         ];
       }
+    }
+
+    // Ensure that a cache state inconsistency will not cause also
+    // inconsistencies with the published revisions of the entities.
+    //
+    // @see: \joinup_core_post_update_set_news_default_version
+    // @see: \Drupal\joinup_core\RequirementsHelper::getNodesWithProblematicRevisions
+    // @see: ISAICP-5191
+    $requirements['joinup_core_forward_revisions'] = [
+      'title' => t('Forward published revisions'),
+      'description' => t('In all content, the last published revision should be the latest of the published revisions.'),
+    ];
+
+    $results = \Drupal::service('joinup_core.requirements_helper')->getNodesWithProblematicRevisions();
+    if (!empty($results)) {
+      $nids = array_keys($results);
+      $error = t('Issues with the latest revision have been found in the following nid(s): :nids', [
+        ':nids' => implode(', ', $nids),
+      ]);
+      $requirements['joinup_core_forward_revisions'] += [
+        'severity' => REQUIREMENT_ERROR,
+        'value' => $error,
+      ];
     }
   }
 
@@ -207,13 +231,13 @@ function joinup_core_update_8106() {
 
   $bundle_predicate = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
   foreach ($bundles as $bundle => $properties) {
-    $rdf_entity_mapping = RdfEntityMapping::loadByName($entity_type_id, $bundle);
+    $sparql_mapping = SparqlMapping::loadByName($entity_type_id, $bundle);
 
     // Update the mappings.
-    $rdf_entity_mapping->setRdfType($properties['new_uri'])->save();
+    $sparql_mapping->setRdfType($properties['new_uri'])->save();
 
     // Update the existing entities.
-    $graphs = $rdf_entity_mapping->getGraphs();
+    $graphs = $sparql_mapping->getGraphs();
     foreach ($graphs as $graph_uri) {
       // In SPARQL, there is no UPDATE query. For updates, one has to first
       // delete and then re insert.
@@ -271,4 +295,27 @@ QUERY;
 function joinup_core_update_8109() {
   $entity_type = \Drupal::entityTypeManager()->getDefinition('solr_field_type');
   \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+}
+
+/**
+ * Install the 'Published on' field storage definition.
+ */
+function joinup_core_update_8110() {
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition(
+    'published_at',
+    'node',
+    'publication_date',
+    BaseFieldDefinition::create('published_at')
+      ->setLabel(t('Published on'))
+      ->setDescription(t('Keep the publication timestamp for each node.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', ['type' => 'hidden'])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'publication_date_timestamp',
+        'weight' => 10,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+  );
 }

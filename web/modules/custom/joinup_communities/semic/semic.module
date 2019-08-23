@@ -6,9 +6,7 @@
  */
 
 use Drupal\Core\Render\Markup;
-use Drupal\Core\Site\Settings;
-
-define('SEMIC_COLLECTION_ID', Settings::get('semic.collection_id', 'http://data.europa.eu/w21/bf8ff383-be51-4d25-ba57-f4fbb194be08'));
+use Drupal\semic\Semic;
 
 /**
  * Render the semic map.
@@ -34,7 +32,7 @@ function semic_preprocess_field(&$variables) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $variables['element']['#object'];
   // On the semic collection?
-  if ($entity->id() !== SEMIC_COLLECTION_ID) {
+  if ($entity->id() !== Semic::SEMIC_COMMUNITY_ID) {
     return;
   }
   $content = &$variables['items'][0]['content'];

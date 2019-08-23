@@ -5,7 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup_notification
+  - joinup:joinup_notification
 
 config_devel:
  - contact_form.settings

@@ -4,8 +4,8 @@ description: Provides basic properties to track provenance data related to the e
 core: 8.x
 package: Custom
 dependencies:
-  - rdf_entity
+  - rdf_entity:rdf_entity
 
 config_devel:
-  - rdf_entity.mapping.rdf_entity.provenance_activity
   - rdf_entity.rdfentity.provenance_activity
+  - sparql_entity_storage.mapping.rdf_entity.provenance_activity

@@ -22,13 +22,12 @@ bundle: user
 mode: register
 content:
   account:
-    weight: 0
-    region: content
+    weight: -100
     settings: {  }
     third_party_settings: {  }
     region: content
   field_user_family_name:
-    weight: 2
+    weight: -90
     settings:
       size: 60
       placeholder: ''
@@ -36,18 +35,13 @@ content:
     type: string_textfield
     region: content
   field_user_first_name:
-    weight: 1
+    weight: -80
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
-  simplenews:
-    weight: 3
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   field_user_business_title: true
   field_user_content: true
@@ -59,4 +53,5 @@ hidden:
   field_user_professional_domain: true
   field_user_subscription_events: true
   language: true
+  simplenews: true
   timezone: true

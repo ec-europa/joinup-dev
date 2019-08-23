@@ -4,7 +4,7 @@ dependencies:
   module:
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     mapping:
       value:
         predicate: 'http://www.w3.org/2006/vcard/ns#hasEmail'

@@ -24,6 +24,7 @@ class RequestRouteConditionTest extends KernelTestBase {
     'matomo_reporting_api',
     'og',
     'rdf_entity',
+    'sparql_entity_storage',
     'system',
   ];
 

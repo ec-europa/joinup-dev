@@ -55,14 +55,14 @@ class UnshareContentForm extends ShareContentFormBase {
     // already by Drupal.
     foreach ($form_state->getValue('collections') as $id => $checked) {
       if ($checked) {
-        $collection = $this->rdfStorage->load($id);
+        $collection = $this->sparqlStorage->load($id);
         $this->removeFromCollection($collection);
         $collections[] = $collection->label();
       }
     }
 
     if (!empty($collections)) {
-      drupal_set_message('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
+      $this->messenger->addStatus('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
     }
     $form_state->setRedirectUrl($this->node->toUrl());
   }
@@ -105,10 +105,13 @@ class UnshareContentForm extends ShareContentFormBase {
   protected function getCollections() {
     $collections = $this->getAlreadySharedCollectionIds();
     if (empty($collections)) {
-      return [];
+      return $collections;
     }
 
-    return array_intersect_key($this->getUserCollectionsWhereFacilitator(), array_flip($collections));
+    if ($this->currentUser->hasPermission('administer shared content')) {
+      return $this->sparqlStorage->loadMultiple($collections);
+    }
+    return array_intersect_key($this->getUserGroupsByPermission("unshare {$this->node->bundle()} content"), array_flip($collections));
   }
 
   /**

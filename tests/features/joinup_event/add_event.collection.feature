@@ -81,6 +81,7 @@ Feature: "Add event" visibility options.
     Then I should see the heading "An amazing event"
     But I should not see the text "National"
     And I should not see the text "Regional"
+    And I should see the text "Rue Belliard 28, Brussels, Belgium"
     But I should see the success message "Event An amazing event has been created."
     And I should see the text "29 to 30 August 2018"
     And I should see a map centered on latitude 4.370375 and longitude 50.842156

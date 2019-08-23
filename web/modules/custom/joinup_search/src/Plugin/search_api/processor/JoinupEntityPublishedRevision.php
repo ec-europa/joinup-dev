@@ -92,9 +92,9 @@ class JoinupEntityPublishedRevision extends ProcessorPluginBase {
       }
       elseif ($object instanceof RdfInterface) {
         if (!$object->isPublished()) {
-          /** @var \Drupal\rdf_entity\Entity\RdfEntitySparqlStorage $rdf_storage */
-          $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
-          $published = $rdf_storage->load($object->id(), ['default']);
+          /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage */
+          $sparql_storage = $this->entityTypeManager->getStorage('rdf_entity');
+          $published = $sparql_storage->load($object->id(), ['default']);
           if (!empty($published)) {
             $original_object->setValue($published);
             $item->setOriginalObject($original_object);

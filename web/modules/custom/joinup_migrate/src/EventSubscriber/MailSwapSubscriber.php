@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\EventSubscriber;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Event\MigrateRollbackEvent;
@@ -11,6 +12,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * A subscriber that swaps out the system mail during migration.
  */
 class MailSwapSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Constructs a MailSwapSubscriber.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
+   */
+  public function __construct(ConfigFactoryInterface $configFactory) {
+    $this->configFactory = $configFactory;
+  }
 
   /**
    * {@inheritdoc}
@@ -68,11 +86,10 @@ class MailSwapSubscriber implements EventSubscriberInterface {
    * Switches mailing off.
    */
   protected function toggleMailOff() {
-    $config_factory = \Drupal::configFactory();
     // Switch to 'null' mailer.
-    $config_factory->getEditable('system.mail')
+    $this->configFactory->getEditable('system.mail')
       ->set('interface.default', 'null')->save();
-    $config_factory->getEditable('mailsystem.settings')
+    $this->configFactory->getEditable('mailsystem.settings')
       ->set('defaults.sender', 'null')->save();
   }
 
@@ -80,11 +97,10 @@ class MailSwapSubscriber implements EventSubscriberInterface {
    * Switches mailing back on.
    */
   protected function toggleMailOn() {
-    $config_factory = \Drupal::configFactory();
     // Restore the system mailer.
-    $config_factory->getEditable('system.mail')
+    $this->configFactory->getEditable('system.mail')
       ->set('interface.default', 'php_mail')->save();
-    $config_factory->getEditable('mailsystem.settings')
+    $this->configFactory->getEditable('mailsystem.settings')
       ->set('defaults.sender', 'swiftmailer')->save();
   }
 
