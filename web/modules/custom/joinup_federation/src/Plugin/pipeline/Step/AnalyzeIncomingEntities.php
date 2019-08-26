@@ -133,6 +133,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * {@inheritdoc}
    */
   public function initBatchProcess(): int {
+    $this->loadSolutionDependencyStructure();
     $incoming_ids = $this->getAllIncomingIds();
     $this->setBatchValue('ids_to_process', $incoming_ids);
     $this->setBatchValue('solution_ids', $this->getIncomingSolutionIds());
