@@ -125,7 +125,7 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
       'http://version/1' => [
         'rid' => 'version',
         'version_to_distro' => [
-          'http://distro/1',
+          'http://distro/6',
           'http://distro/2',
           'http://distro/5',
         ],
@@ -144,6 +144,7 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
       'http://distro/3' => ['rid' => 'distro'],
       'http://distro/4' => ['rid' => 'distro'],
       'http://distro/5' => ['rid' => 'distro'],
+      'http://distro/6' => ['rid' => 'distro'],
     ];
   }
 
@@ -161,22 +162,26 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
     return [
       'http://solution/1' => [
         'dependencies' => [
+          'distro' => [
+            'http://distro/5' => 'http://distro/5',
+            'http://distro/2' => 'http://distro/2',
+            'http://distro/6' => 'http://distro/6',
+            'http://distro/1' => 'http://distro/1',
+          ],
           'version' => [
             'http://version/1' => 'http://version/1',
-          ],
-          'distro' => [
-            'http://distro/1' => 'http://distro/1',
           ],
         ],
       ],
       'http://solution/2' => [
         'dependencies' => [
-          'version' => [
-            'http://version/2' => 'http://version/2',
-          ],
           'distro' => [
+            'http://distro/4' => 'http://distro/4',
             'http://distro/1' => 'http://distro/1',
             'http://distro/3' => 'http://distro/3',
+          ],
+          'version' => [
+            'http://version/2' => 'http://version/2',
           ],
         ],
       ],

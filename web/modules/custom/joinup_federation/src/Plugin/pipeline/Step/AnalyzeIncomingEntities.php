@@ -214,7 +214,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
         // Only for the case of the release, dive deeper and check whether there
         // are more referenced entities. Normally, the only difference between
         // the solution and the release, would be the distributions.
-        if ($referenced_entity->bundle() === 'asset_release') {
+        if ($referenced_entity instanceof RdfInterface && !in_array($referenced_entity->bundle(), ['licence', 'solution'])) {
           $this->buildSolutionDependencyTree($referenced_entity, $parent_id);
         }
 
