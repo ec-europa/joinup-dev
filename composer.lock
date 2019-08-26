@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a47a9e0253f3fb75fdcfd3459f30089f",
+    "content-hash": "3b7055f4b5880ee4ac00f3ca791b9197",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3427,6 +3427,65 @@
             }
         },
         {
+            "name": "drupal/dynamic_entity_reference",
+            "version": "2.0.0-alpha9",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/dynamic_entity_reference.git",
+                "reference": "8.x-2.0-alpha9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/dynamic_entity_reference-8.x-2.0-alpha9.zip",
+                "reference": "8.x-2.0-alpha9",
+                "shasum": "a1ba9d7c1272a8600a6c5dfce254c7a49d3f8548"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-alpha9",
+                    "datestamp": "1554021181",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Lee Rowlands",
+                    "homepage": "https://www.drupal.org/u/larowlan",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jibran Ijaz",
+                    "homepage": "https://www.drupal.org/u/jibran",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                }
+            ],
+            "description": "Provides a field that allows an entity-reference field to reference more than one entity type.",
+            "homepage": "http://drupal.org/project/dynamic_entity_reference",
+            "support": {
+                "source": "http://cgit.drupalcode.org/dynamic_entity_reference",
+                "issues": "http://drupal.org/project/dynamic_entity_reference",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
             "name": "drupal/editor_file",
             "version": "1.4.0",
             "source": {
@@ -4646,6 +4705,42 @@
                 "issues": "https://drupal.org/project/issues/message_notify",
                 "irc": "irc://irc.freenode.org/drupal"
             }
+        },
+        {
+            "name": "drupal/meta_entity",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/claudiu-cristea/meta_entity.git",
+                "reference": "afeb69529c8c38d496140be59f4dc57f07a58c4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/claudiu-cristea/meta_entity/zipball/afeb69529c8c38d496140be59f4dc57f07a58c4d",
+                "reference": "afeb69529c8c38d496140be59f4dc57f07a58c4d",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/dynamic_entity_reference": "^2.0",
+                "php": ">=7.1"
+            },
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "email": "https://www.drupal.org/u/claudiucristea"
+                }
+            ],
+            "description": "Allows to store metadata about an entity outside its storage.",
+            "homepage": "https://www.drupal.org/project/meta_entity",
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/meta_entity",
+                "source": "https://git.drupalcode.org/project/meta_entity"
+            },
+            "time": "2019-08-29T21:39:13+00:00"
         },
         {
             "name": "drupal/migrate_drush",
@@ -9875,7 +9970,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -15544,6 +15639,7 @@
         "drupal/diff": 5,
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
+        "drupal/meta_entity": 20,
         "drupal/migrate_run": 10,
         "drupal/og": 20,
         "drupal/og_menu": 20,
