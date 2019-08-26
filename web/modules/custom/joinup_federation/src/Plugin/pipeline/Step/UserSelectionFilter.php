@@ -118,6 +118,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function execute() {
+    $this->loadSolutionDependencyStructure();
     $user_selection = $this->getPersistentDataValue('user_selection');
     $this->unsetPersistentDataValue('user_selection');
 
@@ -211,8 +212,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   keyed by entity ID and having the entity labels as values.
    */
   protected function getEntitiesByCategory(): array {
-    $this->ensureEntityDataLoaded();
-
     $labels = [];
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     foreach (Rdf::loadMultiple(array_keys($this->solutionData), ['staging']) as $id => $solution) {

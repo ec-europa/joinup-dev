@@ -357,7 +357,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   The solution category.
    */
   protected function setSolutionCategory(string $solution_id, string $category): void {
-    $this->ensureEntityDataLoaded();
     $this->solutionData[$solution_id]['category'] = $category;
   }
 
@@ -379,7 +378,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   The solution entity id.
    */
   protected function addSolutionDataRoot(string $solution_id): void {
-    $this->ensureEntityDataLoaded();
     $this->solutionData[$solution_id] = [];
   }
 
@@ -392,7 +390,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   The child entity.
    */
   protected function addSolutionDataChildDependency(string $parent_id, EntityInterface $entity): void {
-    $this->ensureEntityDataLoaded();
     $this->solutionData[$parent_id]['dependencies'][$entity->bundle()][$entity->id()] = $entity->id();
   }
 
@@ -408,7 +405,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   Whether the solution already has this entity listed as a dependency.
    */
   protected function hasSolutionDataChildDependency(string $parent_id, EntityInterface $entity): bool {
-    $this->ensureEntityDataLoaded();
     return isset($this->solutionData[$parent_id]['dependencies'][$entity->bundle()][$entity->id()]);
   }
 
@@ -419,7 +415,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   An array of entity ids.
    */
   protected function getEntityIdsWithHashes(): array {
-    $this->ensureEntityDataLoaded();
     return array_keys($this->entityHashes);
   }
 
@@ -430,7 +425,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   An associative array of hashes indexed by the related entity id.
    */
   protected function setEntityHashes(array $data): void {
-    $this->ensureEntityDataLoaded();
     $this->entityHashes += $data;
   }
 

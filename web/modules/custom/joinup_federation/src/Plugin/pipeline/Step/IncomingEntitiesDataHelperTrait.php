@@ -35,13 +35,9 @@ trait IncomingEntitiesDataHelperTrait {
   /**
    * Loads the solution data from the persistent state.
    */
-  protected function ensureEntityDataLoaded(): void {
-    if (!isset($this->solutionData)) {
-      $this->solutionData = $this->hasPersistentDataValue('incoming_solution_data') ? $this->getPersistentDataValue('incoming_solution_data') : [];
-    }
-    if (!isset($this->entityHashes)) {
-      $this->entityHashes = $this->hasPersistentDataValue('entity_hashes') ? $this->getPersistentDataValue('entity_hashes') : [];
-    }
+  protected function loadSolutionDependencyStructure(): void {
+    $this->solutionData = $this->hasPersistentDataValue('incoming_solution_data') ? $this->getPersistentDataValue('incoming_solution_data') : [];
+    $this->entityHashes = $this->hasPersistentDataValue('entity_hashes') ? $this->getPersistentDataValue('entity_hashes') : [];
   }
 
   /**
@@ -56,7 +52,6 @@ trait IncomingEntitiesDataHelperTrait {
    *   the releases first in the list.
    */
   protected function getSolutionsWithDependenciesAsFlatList(array $solution_ids): array {
-    $this->ensureEntityDataLoaded();
     $requested_dependencies = [];
 
     foreach ($solution_ids as $solution_id) {
@@ -89,7 +84,6 @@ trait IncomingEntitiesDataHelperTrait {
    *   The hash related to the entity.
    */
   protected function getEntityHash(string $entity_id): string {
-    $this->ensureEntityDataLoaded();
     return $this->entityHashes[$entity_id];
   }
 

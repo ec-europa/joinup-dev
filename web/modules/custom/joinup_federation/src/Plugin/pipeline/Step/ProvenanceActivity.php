@@ -140,7 +140,6 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    *   An array of solution ids.
    */
   protected function getSolutionIdsMatchingCategory(string $category): array {
-    $this->ensureEntityDataLoaded();
     $return = [];
     foreach ($this->solutionData as $solution_id => $solution_data) {
       if ($solution_data['category'] === $category) {
