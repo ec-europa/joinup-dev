@@ -178,3 +178,10 @@ function joinup_post_update_legal() {
     ],
   ])->save();
 }
+
+/**
+ * Install 'joinup_stats' module.
+ */
+function joinup_post_update_install_joinup_stats(): void {
+  \Drupal::service('module_installer')->install(['joinup_stats']);
+}
