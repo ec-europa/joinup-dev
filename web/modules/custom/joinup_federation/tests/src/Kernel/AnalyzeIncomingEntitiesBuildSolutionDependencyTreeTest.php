@@ -63,17 +63,24 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
   public function testBuildSolutionDependencyTree(): void {
     $step_plugin = $this->pipeline->createStepInstance('analyze_incoming_entities');
     $state = (new PipelineState())->setStepId('analyze_incoming_entities');
+    $state->setData(['solutionData', []]);
     $this->pipeline->setCurrentState($state);
 
     // Make AnalyzeIncomingEntities::buildSolutionDependencyTree() and
     // IncomingEntitiesDataHelperTrait::$solutionData accessible for test.
     $reflection = new \ReflectionClass($step_plugin);
+    // Allow access to the ::buildSolutionDependencyTree.
     $solution_dependency_tree_method = $reflection->getMethod('buildSolutionDependencyTree');
     $solution_dependency_tree_method->setAccessible(TRUE);
+    // Allow access to the ::addSolutionDataRoot.
+    $add_solution_data_root_method = $reflection->getMethod('addSolutionDataRoot');
+    $add_solution_data_root_method->setAccessible(TRUE);
+
     $solution_data_property = $reflection->getProperty('solutionData');
     $solution_data_property->setAccessible(TRUE);
 
     foreach ($this->getTestCases() as $solution_id => $expected_solution_data) {
+      $add_solution_data_root_method->invokeArgs($step_plugin, [$solution_id]);
       $solution_dependency_tree_method->invokeArgs($step_plugin, [
         Rdf::load($solution_id),
         $solution_id,

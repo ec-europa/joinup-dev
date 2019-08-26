@@ -182,16 +182,17 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   The solution parent. Set in the root of the tree.
    */
   protected function buildSolutionDependencyTree(RdfInterface $entity, string $parent_id): void {
-    // If the entity is already in the list of entities of the solution, return
-    // early. The entity is already processed.
-    if ($this->hasSolutionDataChildDependency($parent_id, $entity)) {
+    // If the entity is a solution and is not the parent (the first time
+    // entering the recursion), do not descend further because each solution
+    // has its own dependencies. Related solutions do not affect the solution
+    // itself.
+    if ($entity->bundle() === 'solution' && $entity->id() !== $parent_id) {
       return;
     }
 
-    // If the entity is a solution, do not descend further because each solution
-    // has its own dependencies. Related solutions do not affect the solution
-    // itself.
-    elseif ($entity->bundle() === 'solution') {
+    // If the entity is already in the list of entities of the solution, return
+    // early. The entity is already processed.
+    elseif ($this->hasSolutionDataChildDependency($parent_id, $entity)) {
       return;
     }
 
