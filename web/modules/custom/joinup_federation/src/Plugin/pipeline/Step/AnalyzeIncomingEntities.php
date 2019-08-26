@@ -257,15 +257,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     foreach ($solution_ids as $solution_id) {
       $provenance_record = $this->provenanceHelper->loadOrCreateEntityActivity($solution_id);
       $category = $this->getCategory($provenance_record);
-      // In case the entity is marked as federated, check all entities related
-      // to the entity. If none of them changed, mark it as unchanged.
-      if ($category === 'federated') {
-        $entity_list = $this->getSolutionsWithDependenciesAsFlatList([$solution_id]);
-        if (!$this->isSolutionChanged($entity_list)) {
-          $category = 'federated_unchanged';
-        }
-      }
-
       $this->setSolutionCategory($solution_id, $category);
     }
   }
@@ -295,6 +286,13 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     // If there is an existing provenance activity enabled record, this incoming
     // entity has been previously federated.
     elseif ($activity->get('provenance_enabled')->value) {
+      // In case the entity is marked as federated, check all entities related
+      // to the entity. If none of them changed, mark it as unchanged.
+      $entity_list = $this->getSolutionsWithDependenciesAsFlatList([$activity->get('provenance_entity')->value]);
+      if (!$this->isSolutionChanged($entity_list)) {
+        return 'federated_unchanged';
+      }
+
       return 'federated';
     }
     // Otherwise this solution has been previously blacklisted.
