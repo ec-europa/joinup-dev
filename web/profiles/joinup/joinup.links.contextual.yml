@@ -13,11 +13,6 @@ comment_approve:
   route_name: 'comment.approve'
   group: comment
 
-group_header_block.moderate_content:
-  title: 'Moderate content'
-  route_name: 'moderation.content_moderation_overview'
-  group: group_header_block
-
 joinup.site_feature:
   title: Feature
   route_name: joinup.site_feature
