@@ -1,0 +1,10 @@
+name: Statistics
+type: module
+description: 'Provide statistics to Joinup entities.'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - meta_entity:meta_entity
+
+config_devel: {  }
