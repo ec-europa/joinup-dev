@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0980e6f3738a6b2c42d4affedb48e52",
+    "content-hash": "63e48e62d792e69c1969e142ef94160a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6287,6 +6287,7 @@
                     }
                 },
                 "patches_applied": {
+                    "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
                     "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
                     "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2019-08-26/2892104-21.patch"
                 }
