@@ -15,14 +15,12 @@
           $(this).find('.search-bar__input').css('padding-left', chipWidth + 'px');
         }
 
-        var $chipAction = $('.mdl-chip__action');
-
-        $chipAction.on('mousedown', function (event) {
+        $('.mdl-chip').on('mousedown', function (event) {
           event.preventDefault();
           event.stopPropagation();
         });
 
-        $chipAction.on('click', function (event) {
+        $('.mdl-chip__action').on('click', function () {
           var chipWidth = $searchBar.find('.mdl-chip').width();
           if (chipWidth === 0 || chipWidth === undefined) {
             $('.search-bar--header').find('.search-bar__input').css('padding-left', '0px');
