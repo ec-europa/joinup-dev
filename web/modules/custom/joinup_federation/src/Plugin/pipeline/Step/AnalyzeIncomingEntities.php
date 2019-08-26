@@ -5,17 +5,18 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\joinup_federation\JoinupFederationHashGenerator;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -41,9 +42,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
   use AdmsSchemaEntityReferenceFieldsTrait;
-  use SparqlEntityStorageTrait;
-  use PipelineStepWithBatchTrait;
   use IncomingEntitiesDataHelperTrait;
+  use PipelineStepWithBatchTrait;
+  use SparqlEntityStorageTrait;
 
   /**
    * The batch size.
@@ -102,7 +103,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * @param \Drupal\joinup_federation\JoinupFederationHashGenerator $hash_generator
    *   The hash generator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, ProvenanceHelperInterface $provenance_helper, SchemaFieldValidatorInterface $rdf_schema_field_validator, JoinupFederationHashGenerator $hash_generator) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, ProvenanceHelperInterface $provenance_helper, SchemaFieldValidatorInterface $rdf_schema_field_validator, JoinupFederationHashGenerator $hash_generator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
@@ -114,7 +115,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static(
       $configuration,
       $plugin_id,
@@ -131,24 +132,24 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
   /**
    * {@inheritdoc}
    */
-  public function initBatchProcess() {
+  public function initBatchProcess(): int {
     $incoming_ids = $this->getAllIncomingIds();
     $this->setBatchValue('ids_to_process', $incoming_ids);
     $this->setBatchValue('solution_ids', $this->getIncomingSolutionIds());
-    return ceil(count($incoming_ids) / self::BATCH_SIZE);
+    return (int) ceil(count($incoming_ids) / self::BATCH_SIZE);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function batchProcessIsCompleted() {
+  public function batchProcessIsCompleted(): bool {
     return empty($this->getBatchValue('ids_to_process'));
   }
 
   /**
    * {@inheritdoc}
    */
-  public function execute() {
+  public function execute(): void {
     $ids = $this->extractNextSubset('ids_to_process', 50);
     $solution_ids = array_intersect($ids, $this->getBatchValue('solution_ids'));
 
@@ -162,9 +163,8 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
     $entities = $storage->loadMultiple($solution_ids, ['staging']);
     foreach ($entities as $id => $entity) {
-      if ($entity->bundle() === 'solution') {
-        $this->buildSolutionDependencyTree($entity, $id);
-      }
+      $this->addSolutionDataRoot($id);
+      $this->buildSolutionDependencyTree($entity, $id);
     }
     $this->buildSolutionsCategories($solution_ids);
 
@@ -177,19 +177,13 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
    *   The rdf entity currently checking for relations.
-   * @param string $parent
+   * @param string $parent_id
    *   The solution parent. Set in the root of the tree.
    */
-  protected function buildSolutionDependencyTree(RdfInterface $entity, string $parent): void {
-    // If this is the first time it is called, enter the solution id in the
-    // dependency tree.
-    if ($entity->id() === $parent && !$this->solutionDataRootExists($parent)) {
-      $this->addSolutionDataRoot($parent);
-    }
-
+  protected function buildSolutionDependencyTree(RdfInterface $entity, string $parent_id): void {
     // If the entity is already in the list of entities of the solution, return
     // early. The entity is already processed.
-    elseif ($this->hasSolutionDataChildDependency($parent, $entity)) {
+    if ($this->hasSolutionDataChildDependency($parent_id, $entity)) {
       return;
     }
 
@@ -210,7 +204,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
       $field = $entity->get($field_name);
 
       foreach ($this->getStagingReferencedEntities($field) as $referenced_entity) {
-        if ($this->hasSolutionDataChildDependency($parent, $referenced_entity)) {
+        if ($this->hasSolutionDataChildDependency($parent_id, $referenced_entity)) {
           // The entity has already been processed.
           continue;
         }
@@ -219,14 +213,14 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
         // are more referenced entities. Normally, the only difference between
         // the solution and the release, would be the distributions.
         if ($referenced_entity->bundle() === 'asset_release') {
-          $this->buildSolutionDependencyTree($referenced_entity, $parent);
+          $this->buildSolutionDependencyTree($referenced_entity, $parent_id);
         }
 
         // Do not add solutions and licences as a dependency. Solutions are a
         // tree on their own and licences are stored in Joinup and are not
         // imported.
         if (!in_array($referenced_entity->bundle(), ['licence', 'solution'])) {
-          $this->addSolutionDataChildDependency($parent, $referenced_entity);
+          $this->addSolutionDataChildDependency($parent_id, $referenced_entity);
         }
       }
     }
@@ -260,19 +254,19 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   A list of solution ids for which to calculate the category.
    */
   protected function buildSolutionsCategories(array $solution_ids): void {
-    foreach ($solution_ids as $parent) {
-      $provenance_record = $this->provenanceHelper->loadOrCreateEntityActivity($parent);
+    foreach ($solution_ids as $solution_id) {
+      $provenance_record = $this->provenanceHelper->loadOrCreateEntityActivity($solution_id);
       $category = $this->getCategory($provenance_record);
       // In case the entity is marked as federated, check all entities related
       // to the entity. If none of them changed, mark it as unchanged.
       if ($category === 'federated') {
-        $entity_list = $this->getSolutionsWithDependenciesAsFlatList([$parent]);
+        $entity_list = $this->getSolutionsWithDependenciesAsFlatList([$solution_id]);
         if (!$this->isSolutionChanged($entity_list)) {
           $category = 'federated_unchanged';
         }
       }
 
-      $this->setSolutionCategory($parent, $category);
+      $this->setSolutionCategory($solution_id, $category);
     }
   }
 
@@ -313,13 +307,13 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * The solution will be considered as changed if one of the following occur
    * for at least one of the entries:
    * - The entity does not have a changed property. This means we cannot know if
-   * it has changed.
+   *   it has changed.
    * - The provenance record of the entity is new. This meanst the entity has
-   * not been federated before.
+   *   not been federated before.
    * - The entity's changed time is more recent than the provenance record's
-   * provenance_started property.
+   *   provenance_started property.
    *
-   * @param array $entity_ids
+   * @param string[] $entity_ids
    *   A list of entity ids that the solution is related to.
    *
    * @return bool
@@ -327,21 +321,21 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   the last import.
    */
   protected function isSolutionChanged(array $entity_ids): bool {
-    $storage = $this->getRdfStorage();
-    /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
-    $entities = $storage->loadMultiple($entity_ids, ['staging']);
+    /** @var \Drupal\rdf_entity\RdfInterface[] $solutions */
+    $solutions = $this->getRdfStorage()->loadMultiple($entity_ids, ['staging']);
     $provenance_records = $this->provenanceHelper->loadOrCreateEntitiesActivity($entity_ids);
 
-    foreach ($entities as $id => $entity) {
+    foreach ($solutions as $id => $solution) {
       // Licences are stored in Joinup so changes do not affect incoming
       // solution.
-      if ($entity->bundle() === 'licence') {
+      if ($solution->bundle() === 'licence') {
         continue;
       }
 
-      // Like the parent solution, if this is the first time the entity is
+      // Like the parent solution, if this is the first time the solution is
       // imported, the solution is marked as new.
-      if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('provenance_hash')->isEmpty()) {
+      if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('provenance_hash')
+        ->isEmpty()) {
         return TRUE;
       }
 
@@ -352,6 +346,92 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     }
 
     return FALSE;
+  }
+
+  /**
+   * Sets the solution category to the solution data.
+   *
+   * @param string $solution_id
+   *   The solution id.
+   * @param string $category
+   *   The solution category.
+   */
+  protected function setSolutionCategory(string $solution_id, string $category): void {
+    $this->ensureEntityDataLoaded();
+    $this->solutionData[$solution_id]['category'] = $category;
+  }
+
+  /**
+   * Stores the entity data to the persistent pipeline state.
+   */
+  protected function storeEntityData(): void {
+    $this->setPersistentDataValue('incoming_solution_data', $this->solutionData);
+    $this->setPersistentDataValue('entity_hashes', $this->entityHashes);
+  }
+
+  /**
+   * Adds a solution id on the root of the solution data array.
+   *
+   * This method does not check if the root already exists and initializes the
+   * entry as a new array.
+   *
+   * @param string $solution_id
+   *   The solution entity id.
+   */
+  protected function addSolutionDataRoot(string $solution_id): void {
+    $this->ensureEntityDataLoaded();
+    $this->solutionData[$solution_id] = [];
+  }
+
+  /**
+   * Sets an entity as a dependency to the structured data.
+   *
+   * @param string $parent_id
+   *   The parent solution entity id.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The child entity.
+   */
+  protected function addSolutionDataChildDependency(string $parent_id, EntityInterface $entity): void {
+    $this->ensureEntityDataLoaded();
+    $this->solutionData[$parent_id]['dependencies'][$entity->bundle()][$entity->id()] = $entity->id();
+  }
+
+  /**
+   * Returns whether the given solution has the given entity as a dependency.
+   *
+   * @param string $parent_id
+   *   The parent solution id.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The candidate child entity.
+   *
+   * @return bool
+   *   Whether the solution already has this entity listed as a dependency.
+   */
+  protected function hasSolutionDataChildDependency(string $parent_id, EntityInterface $entity): bool {
+    $this->ensureEntityDataLoaded();
+    return isset($this->solutionData[$parent_id]['dependencies'][$entity->bundle()][$entity->id()]);
+  }
+
+  /**
+   * Returns an array of ids that have hashes calculated.
+   *
+   * @return array
+   *   An array of entity ids.
+   */
+  protected function getEntityIdsWithHashes(): array {
+    $this->ensureEntityDataLoaded();
+    return array_keys($this->entityHashes);
+  }
+
+  /**
+   * Adds the passed hashes to the list of hashes.
+   *
+   * @param array $data
+   *   An associative array of hashes indexed by the related entity id.
+   */
+  protected function setEntityHashes(array $data): void {
+    $this->ensureEntityDataLoaded();
+    $this->entityHashes += $data;
   }
 
 }

@@ -67,13 +67,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   protected $rdfSchemaFieldValidator;
 
   /**
-   * The incoming entities whitelist.
-   *
-   * @var array
-   */
-  protected $whitelist = [];
-
-  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
@@ -136,18 +129,18 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
     }
 
     // Build a list of all whitelisted entities.
-    $this->buildWhitelist($selected_solution_ids);
+    $whitelist = $this->getSolutionsWithDependenciesAsFlatList($selected_solution_ids);
     $all_imported_ids = $this->getAllIncomingIds();
 
     // Remove the not selected entities, if any.
-    if ($not_selected = array_values(array_diff($all_imported_ids, $this->whitelist))) {
+    if ($not_selected = array_values(array_diff($all_imported_ids, $whitelist))) {
       $not_selected_ids = SparqlArg::serializeUris($not_selected, ' ');
       $this->sparql->query("WITH <{$this->getGraphUri('sink')}> DELETE { ?entity_id ?p ?o } WHERE { ?entity_id ?p ?o . VALUES ?entity_id { {$not_selected_ids} } }");
     }
 
     // Persist data for next steps.
     $this
-      ->setPersistentDataValue('whitelist', $this->whitelist)
+      ->setPersistentDataValue('whitelist', $whitelist)
       ->setPersistentDataValue('not_selected', $not_selected);
 
   }
@@ -208,16 +201,6 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
         return (bool) $checked;
       }, $form_state->getValue('user_selection')),
     ];
-  }
-
-  /**
-   * Collect all the whitelisted incoming entities.
-   *
-   * @param string[] $solution_ids
-   *   A list of solution ids selected by the user.
-   */
-  protected function buildWhitelist(array $solution_ids): void {
-    $this->whitelist = $this->getSolutionsWithDependenciesAsFlatList($solution_ids);
   }
 
   /**

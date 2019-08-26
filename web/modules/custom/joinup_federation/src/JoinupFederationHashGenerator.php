@@ -61,10 +61,10 @@ class JoinupFederationHashGenerator {
    * ordered by the field predicate and values alphabetically so that the end
    * result cannot vary between same versions.
    *
-   * @param array $entity_ids
+   * @param string[] $entity_ids
    *   An array of entity ids to generate the hashes for.
    *
-   * @return array
+   * @return string[]
    *   An associative array of hashed indexed by their related entity id.
    */
   public function generateDataHash(array $entity_ids): array {
@@ -84,7 +84,7 @@ class JoinupFederationHashGenerator {
    *
    * The query is based on the sparql entity storage class.
    *
-   * @param array $entity_ids
+   * @param string[] $entity_ids
    *   The entity id.
    *
    * @return string
@@ -120,7 +120,7 @@ QUERY;
    * @param \EasyRdf\Sparql\Result $results
    *   The results from the SPARQL query.
    *
-   * @return array
+   * @return string[]
    *   An associative ids of values indexed by the predicate for each entity.
    */
   protected function parseQueryData(Result $results): array {

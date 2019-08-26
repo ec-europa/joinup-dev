@@ -145,7 +145,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    *
    * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
    *   The entity reference field item list.
-   * @param array $ids_to_remove
+   * @param string[] $ids_to_remove
    *   The list of entity IDs to remove.
    *
    * @return int
