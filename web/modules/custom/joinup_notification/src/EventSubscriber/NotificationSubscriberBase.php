@@ -213,33 +213,35 @@ abstract class NotificationSubscriberBase {
    * @param array $bcc_data
    *   An associative array of roles indexed by the 'roles' key or the
    *   'og_roles' key depending on whether it is a site wide role or an og role.
-   * @param array $uids_to_skip
+   * @param int[] $uids_to_skip
    *   (optional) An array of ids to skip.
    *
-   * @return array
+   * @return string[]
    *   An array of emails.
    */
   protected function getBccEmails(EntityInterface $entity, array $bcc_data, array $uids_to_skip = []): array {
+    $user_storage = $this->entityTypeManager->getStorage('user');
     $return = [];
     foreach ($bcc_data['roles'] as $role_id) {
       $uids = $this->getRecipientIdsByRole($role_id);
       if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
         $emails = array_map(function (UserInterface $user): string {
           return $user->getEmail();
-        }, $this->entityTypeManager->getStorage('user')->loadMultiple($uids));
+        }, $user_storage->loadMultiple($uids));
         $return += $emails;
       }
     }
 
     if (isset($bcc_data['og_roles'])) {
       $og_role_storage = $this->entityTypeManager->getStorage('og_role');
+      /** @var \Drupal\og\OgRoleInterface[] $roles */
+      $roles = $og_role_storage->loadMultiple(array_keys($bcc_data['og_roles']));
       foreach ($bcc_data['og_roles'] as $role_id => $messages) {
-        $role = $og_role_storage->load($role_id);
-        $uids = $this->getRecipientIdsByOgRole($entity, $role);
+        $uids = $this->getRecipientIdsByOgRole($entity, $roles[$role_id]);
         if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
           $emails = array_map(function (UserInterface $user): string {
             return $user->getEmail();
-          }, $this->entityTypeManager->getStorage('user')->loadMultiple($uids));
+          }, $user_storage->loadMultiple($uids));
           $return += $emails;
         }
       }
@@ -358,13 +360,13 @@ abstract class NotificationSubscriberBase {
    *   An array of user ids and their corresponding messages.
    * @param array $arguments
    *   (optional) Additional arguments to be passed to the message.
-   * @param array $bcc_emails
+   * @param string[] $bcc_emails
    *   (optional) A list of emails to be passed as Bcc.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []): bool {
     $arguments += $this->generateArguments($this->entity);
 
     $success = TRUE;

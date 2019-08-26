@@ -141,11 +141,10 @@ interface JoinupMessageDeliveryInterface {
   /**
    * Sets the list of accounts that will be added to bcc.
    *
-   * @param array $bcc_emails
+   * @param string[] $bcc_emails
    *   A list of user emails.
    *
    * @return $this
-   *   Return the object for chaining.
    *
    * @see self::setRecipientsAsEmails()
    */
