@@ -54,7 +54,7 @@
         "drupal/rdf_entity": "^1.0.0-alpha17",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.1",
-        "drupal/search_api": "^1.11",
+        "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "^1.0",
