@@ -13,6 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -22,6 +23,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use EntityReferenceTrait;
   use FileTrait;
+  use SearchTrait;
   use RdfEntityTrait;
 
   /**
@@ -220,11 +222,21 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @AfterScenario
    */
   public function cleanAssetReleases(): void {
+    if (empty($this->assetReleases)) {
+      return;
+    }
+
+    // Since we might be cleaning up many releases, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any asset_releases that were created.
     foreach ($this->assetReleases as $asset_release) {
       $asset_release->skip_notification = TRUE;
       $asset_release->delete();
     }
+    $this->assetReleases = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**

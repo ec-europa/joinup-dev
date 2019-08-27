@@ -30,6 +30,10 @@ class SolariumEventSubscriber implements EventSubscriberInterface {
   public function commitOnUpdate(PreExecute $event) {
     $query = $event->getQuery();
 
+    if (\Drupal::state()->get('joinup_search.skip_solr_commit_on_update', FALSE) === TRUE) {
+      return;
+    }
+
     if ($query->getType() !== Client::QUERY_UPDATE) {
       return;
     }

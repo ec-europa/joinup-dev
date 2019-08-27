@@ -16,6 +16,7 @@ use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\file_url\FileUrlHandler;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -25,6 +26,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
 
   use FileTrait;
   use RdfEntityTrait;
+  use SearchTrait;
   use EntityReferenceTrait;
 
   /**
@@ -257,11 +259,21 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @AfterScenario
    */
   public function cleanAssetDistributions(): void {
+    if (empty($this->assetDistributions)) {
+      return;
+    }
+
+    // Since we might be cleaning up many distributions, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any asset distributions that were created.
     foreach ($this->assetDistributions as $asset_distribution) {
       $asset_distribution->skip_notification = TRUE;
       $asset_distribution->delete();
     }
+    $this->assetDistributions = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**
