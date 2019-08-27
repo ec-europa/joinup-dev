@@ -65,7 +65,7 @@ Feature: As a site moderator I am able to import RDF files.
     Then the response status code should be 200
 
   Scenario: Test the import of a file that doesn't pass the ADMS-AP validation.
-    Given I go to "/admin/content/pipeline/spain/execute"
+    And I click "ADMS-AP Importer" in the "Administration toolbar" region
     When I attach the file "invalid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -79,8 +79,9 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see "Imported data is not ADMS v2 compliant"
 
   Scenario: Test the import of a file that doesn't pass the Drupal validation.
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I click "ADMS-AP Importer" in the "Administration toolbar" region
     When I attach the file "invalid_drupal.rdf" to "File"
+
     And I press "Upload"
 
     When I press "Next"
@@ -148,7 +149,7 @@ Feature: As a site moderator I am able to import RDF files.
       | description | Licence agreement details    |
       | type        | Public domain                |
 
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I click "ADMS-AP Importer" in the "Administration toolbar" region
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -216,7 +217,7 @@ Feature: As a site moderator I am able to import RDF files.
 
     # Re-import.
     Given I am logged in as "Antoine Batiste"
-    And I visit "/admin/content/pipeline/spain/execute"
+    And I click "ADMS-AP Importer" in the "Administration toolbar" region
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -305,7 +306,7 @@ Feature: As a site moderator I am able to import RDF files.
       | title | Spain                                       |
       | state | validated                                   |
 
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I click "ADMS-AP Importer" in the "Administration toolbar" region
     When I attach the file "single_solution_valid_adms.rdf" to "File"
     And I press "Upload"
 
