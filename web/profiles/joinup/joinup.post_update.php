@@ -182,12 +182,9 @@ function joinup_post_update_legal() {
 /**
  * Sets the default weight for specific og actions with configuration.
  */
-function joinup_post_update_set_default_og_action_weights() {
-  $config_factory = \Drupal::configFactory();
-  $action = $config_factory->getEditable('system.action.og_membership_remove_single_role_action.facilitator');
-  $data = $action->getRawData();
-  $data['weight'] = 1;
-
-  $action->setData($data);
-  $action->save();
+function joinup_post_update_set_default_og_action_weightsd() {
+  \Drupal::configFactory()
+    ->getEditable('system.action.og_membership_add_single_role_action.facilitator')
+    ->set('weight', -2)
+    ->save();
 }
