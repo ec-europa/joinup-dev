@@ -8,7 +8,7 @@ Feature: As a site moderator I am able to import RDF files.
     And I am logged in as "Antoine Batiste"
 
   Scenario: Test available pipelines
-    Given I go to the pipeline orchestrator
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
     Then the "Data pipeline" select should contain the following options:
       | - Select -                              |
       | Joinup collection                       |
@@ -25,14 +25,14 @@ Feature: As a site moderator I am able to import RDF files.
       | LaDonna          | moderator |
       | Janette Desautel |           |
 
-    Given I go to the pipeline orchestrator
-    When I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
     Then I should see "Spain - Center for Technology Transfer: Manual upload"
 
     # Go back to the pipeline selection. You should be redirected to the current
     # active/unfinished step.
-    And I go to the pipeline orchestrator
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
     Then I should see "Spain - Center for Technology Transfer: Manual upload"
 
     # Test the wizard reset.
@@ -42,8 +42,8 @@ Feature: As a site moderator I am able to import RDF files.
 
     # The pipeline should be locked for different user.
     Given I am logged in as LaDonna
-    And I go to the pipeline orchestrator
-    When I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
     Then I should see the following error messages:
       | error messages                                                                                                                                                                               |
@@ -65,7 +65,10 @@ Feature: As a site moderator I am able to import RDF files.
     Then the response status code should be 200
 
   Scenario: Test the import of a file that doesn't pass the ADMS-AP validation.
-    And I click "ADMS-AP importer" in the "Administration toolbar" region
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I press "Execute"
+
     When I attach the file "invalid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -80,6 +83,8 @@ Feature: As a site moderator I am able to import RDF files.
 
   Scenario: Test the import of a file that doesn't pass the Drupal validation.
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I press "Execute"
     When I attach the file "invalid_drupal.rdf" to "File"
 
     And I press "Upload"
@@ -150,6 +155,8 @@ Feature: As a site moderator I am able to import RDF files.
       | type        | Public domain                |
 
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I press "Execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
