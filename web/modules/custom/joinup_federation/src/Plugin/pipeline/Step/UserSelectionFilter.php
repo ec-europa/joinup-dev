@@ -150,6 +150,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
+    $this->loadSolutionDependencyStructure();
     $entities_per_category = $this->getEntitiesByCategory();
 
     $form['description'] = [

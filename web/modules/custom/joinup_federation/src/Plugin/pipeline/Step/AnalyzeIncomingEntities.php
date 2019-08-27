@@ -133,7 +133,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * {@inheritdoc}
    */
   public function initBatchProcess(): int {
-    $this->loadSolutionDependencyStructure();
     $incoming_ids = $this->getAllIncomingIds();
     $this->setBatchValue('ids_to_process', $incoming_ids);
     $this->setBatchValue('solution_ids', $this->getIncomingSolutionIds());
@@ -151,6 +150,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * {@inheritdoc}
    */
   public function execute(): void {
+    $this->loadSolutionDependencyStructure();
     $ids = $this->extractNextSubset('ids_to_process', 50);
     $solution_ids = array_intersect($ids, $this->getBatchValue('solution_ids'));
 
