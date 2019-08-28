@@ -8,6 +8,7 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
+use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\og_menu\Plugin\Block\OgMenuBlock;
 
 /**
@@ -190,7 +191,7 @@ class GroupMenuBlock extends OgMenuBlock {
   /**
    * {@inheritdoc}
    */
-  public function getOgMenuInstance() {
+  public function getOgMenuInstance(): ?OgMenuInstanceInterface {
     // Wraps the parent method only for caching reasons.
     if (!isset($this->ogMenuInstance)) {
       $this->ogMenuInstance = parent::getOgMenuInstance();

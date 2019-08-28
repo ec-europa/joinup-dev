@@ -98,11 +98,10 @@ class DashboardController extends ControllerBase {
     // content.
     $response = new CacheableJsonResponse();
 
-    // Tag the response cache with 'tallinn_dashboard' so that we can invalidate
-    // it in \Drupal\tallinn\Form\TallinnSettingsForm::submitForm().
-    // @see \Drupal\tallinn\Form\TallinnSettingsForm::submitForm()
-    $cacheable_metadata = (new CacheableMetadata())->addCacheTags(['tallinn_dashboard']);
+    // The response should be invalidated when the access policy changes.
+    $cacheable_metadata = (new CacheableMetadata())->addCacheContexts(['tallinn_access_policy']);
     $response->addCacheableDependency($cacheable_metadata);
+
     // The response cache should be invalidated on any collection change.
     $response->addCacheableDependency($tallinn_collection);
 
