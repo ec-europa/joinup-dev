@@ -28,10 +28,8 @@ Feature:
 
     Given I am an anonymous user
     When I go to "/api/v1/communities/tallinn/report"
-    Then I should see the following error message:
-      | error messages                                     |
-      | Access denied. You must sign in to view this page. |
-    And I go to "/admin/config/content/tallinn"
+    Then I should get an access denied error
+    When I go to "/admin/config/content/tallinn"
     Then I should see the following error message:
       | error messages                                     |
       | Access denied. You must sign in to view this page. |
@@ -39,19 +37,19 @@ Feature:
     Given I am logged in as Dinesh
     When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
-    And I go to "/admin/config/content/tallinn"
+    When I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Monica
     When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
-    And I go to "/admin/config/content/tallinn"
+    When I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Gilfoyle
     When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
-    And I go to "/admin/config/content/tallinn"
+    When I go to "/admin/config/content/tallinn"
     Then I should get an access denied error
 
     Given I am logged in as Jared
@@ -76,7 +74,7 @@ Feature:
 
     # After changing the access policy, the cache has been cleared.
     And the page should not be cached
-    But I reload the page
+    When I reload the page
     Then the page should be cached
 
     # Edit the group entity.
@@ -85,7 +83,7 @@ Feature:
     When I press "Publish"
     And I go to "/api/v1/communities/tallinn/report"
     Then the page should not be cached
-    But I reload the page
+    When I reload the page
     Then the page should be cached
 
     # Edit any report.
@@ -93,7 +91,7 @@ Feature:
     And I press "Save"
     When I go to "/api/v1/communities/tallinn/report"
     Then the page should not be cached
-    But I reload the page
+    When I reload the page
     Then the page should be cached
 
     Given I am logged in as Gilfoyle
@@ -110,9 +108,7 @@ Feature:
 
     Given I am an anonymous user
     And I go to "/api/v1/communities/tallinn/report"
-    Then I should see the following error message:
-      | error messages                                     |
-      | Access denied. You must sign in to view this page. |
+    Then I should get an access denied error
 
     Given I am logged in as Jared
     When I go to "/admin/config/content/tallinn"
@@ -133,17 +129,17 @@ Feature:
 
     # After changing the access policy, the cache has been cleared.
     And the page should not be cached
-    But I reload the page
+    When I reload the page
     Then the page should be cached
 
     Given I am logged in as Gilfoyle
-    And I go to "/api/v1/communities/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am logged in as Dinesh
-    And I go to "/api/v1/communities/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
 
     Given I am an anonymous user
-    And I go to "/api/v1/communities/tallinn/report"
+    When I go to "/api/v1/communities/tallinn/report"
     Then the response status code should be 200
