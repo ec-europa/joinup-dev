@@ -7,4 +7,5 @@ package: Joinup
 dependencies:
   - meta_entity:meta_entity
 
-config_devel: {  }
+config_devel:
+  - meta_entity.type.visit_count
