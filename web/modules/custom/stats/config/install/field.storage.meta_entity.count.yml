@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - meta_entity
+id: meta_entity.count
+field_name: count
+entity_type: meta_entity
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

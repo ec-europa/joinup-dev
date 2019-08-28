@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.meta_entity.count
+    - meta_entity.type.visit_count
+id: meta_entity.visit_count.count
+field_name: count
+entity_type: meta_entity
+bundle: visit_count
+label: Count
+description: ''
+required: false
+translatable: false
+default_value:
+  - value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
