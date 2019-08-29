@@ -2672,4 +2672,99 @@ JS;
     Assert::assertNotEmpty($element);
   }
 
+  /**
+   * Asserts that the content absolute urls exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the nodes.
+   *
+   * @throws \Exception
+   *   Thrown if any link does not exist in the page.
+   *
+   * @Given I should see the absolute urls of the following content entities:
+   */
+  public function assertContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('node', $title[0]);
+    }
+  }
+
+  /**
+   * Asserts that the rdf entity absolute urls exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the rdf entities.
+   *
+   * @throws \Exception
+   *   Thrown if any link does not exist in the page.
+   *
+   * @Given I should see the absolute urls of the following RDF entities:
+   */
+  public function assertRdfEntityAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('rdf_entity', $title[0]);
+    }
+  }
+
+  /**
+   * Asserts that the content absolute urls do not exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the nodes.
+   *
+   * @throws \Exception
+   *   Thrown if at least a link exists in the page.
+   *
+   * @Given I should not see the absolute urls of the following content entities:
+   */
+  public function assertEmptyContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('node', $title[0], FALSE);
+    }
+  }
+
+  /**
+   * Asserts that the absolute url of an rdf entity exists as a link.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the rdf entities.
+   *
+   * @throws \Exception
+   *   Thrown if the link does not exist in the page.
+   *
+   * @Given I should not see the absolute urls of the following RDF entities:
+   */
+  public function assertEmptyRdfEntityAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('rdf_entity', $title[0], FALSE);
+    }
+  }
+
+  /**
+   * Asserts a url in the sitemap response.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $entity_id
+   *   The entity id.
+   * @param bool $exists
+   *   (optional) Whether to assert that a link exists or not exists. Defaults
+   *   to true.
+   *
+   * @throws \Exception
+   *   Thrown if the link assertion is not the expected one.
+   */
+  protected function assertEntityUrlInSitemap(string $entity_type_id, string $entity_id, $exists = TRUE): void {
+    $entity = $this->getEntityByLabel($entity_type_id, $entity_id);
+    $link_text = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $expected = '<loc>' . $link_text . '</loc>';
+    $response = $this->getSession()->getPage()->getContent();
+    if ($exists) {
+      Assert::assertContains($expected, $response);
+    }
+    else {
+      Assert::assertNotContains($expected, $response);
+    }
+  }
+
 }
