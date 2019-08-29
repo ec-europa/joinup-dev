@@ -62,7 +62,7 @@
 // --------------------------------------------------
 .button--blue
   color: #fff
-  border-color: $color-blue-medium
+  border-color: $color-blue-medium !important
   background-color: $color-blue-medium !important
 
 .button--blue.is-disabled
@@ -71,13 +71,19 @@
   background-color: $color-grey-light !important
 
 .button--blue-light
-  border-color: $color-blue-lighter
+  border-color: $color-blue-lighter !important
   background-color: $color-blue-lighter !important
 
 .button--transparent
   color: $color-grey-medium !important
   border-color: $color-grey-medium
   background-color: transparent !important
+
+.button--blue-important
+  border-color: $color-blue-medium
+  background-color: $color-blue-medium !important
+  &:hover
+    border-color: $color-blue-medium
 
 .button--full-width
   width: 100%

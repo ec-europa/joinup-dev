@@ -126,6 +126,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
       $form['actions']['cancel'] = [
         '#type' => 'button',
         '#value' => $this->getCancelText(),
+        '#extra_suggestion' => 'light_blue',
         '#attributes' => [
           'class' => ['button--small', 'dialog-cancel'],
         ],
@@ -133,6 +134,8 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
         // consistent with the dialog shown when joining the collection.
         '#weight' => -1,
       ];
+
+      $form['actions']['submit']['#extra_suggestion'] = 'light_blue';
     }
 
     return $form;
