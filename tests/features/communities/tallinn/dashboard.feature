@@ -142,5 +142,4 @@ Feature:
 
     Given I am an anonymous user
     When I go to "/api/v1/communities/tallinn/report"
-    Then I break
     Then the response status code should be 200
