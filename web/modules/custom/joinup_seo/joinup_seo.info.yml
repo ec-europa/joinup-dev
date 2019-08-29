@@ -1,0 +1,8 @@
+name: Joinup SEO
+type: module
+description: Contains specific functionality that helps visibility of the platform in search engines.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - simple_sitemap:simple_sitemap

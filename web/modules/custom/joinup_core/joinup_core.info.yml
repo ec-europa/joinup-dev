@@ -14,6 +14,7 @@ dependencies:
   - ds:ds
   - facets:facets
   - joinup:oe_newsroom_newsletter
+  - joinup:joinup_seo
   - matomo_reporting_api:matomo_reporting_api
   - menu_admin_per_menu:menu_admin_per_menu
   - message:message
