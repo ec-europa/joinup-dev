@@ -544,6 +544,9 @@ function joinup_theme_preprocess_block(&$variables) {
     // Add class to navigation bottom links on custom pages.
     case 'toc_outline':
       $variables['content']['#attributes']['class'][] = 'navigation-bottom__links';
+      if (isset($variables['content']['#links']) && count($variables['content']['#links']) == 1) {
+        $variables['content']['#attributes']['class'][] = 'navigation-bottom__links--only-next';
+      }
       break;
 
   }
