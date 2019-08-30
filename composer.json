@@ -38,7 +38,7 @@
         "drupal/menu_admin_per_menu": "^1.0",
         "drupal/message": "^1.0-rc2",
         "drupal/message_notify": "~1.0",
-        "drupal/meta_entity": "dev-8.x-1.x",
+        "drupal/meta_entity": "dev-1.x",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0@beta",
         "drupal/migrate_spreadsheet": "~1.0",
@@ -294,10 +294,6 @@
                     "reference": "master"
                 }
             }
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/claudiu-cristea/meta_entity.git"
         },
         {
             "type": "vcs",

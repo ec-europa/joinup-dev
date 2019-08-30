@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b7055f4b5880ee4ac00f3ca791b9197",
+    "content-hash": "81c06afeaf6b1726b082a9bc9a9a6a81",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4708,39 +4708,49 @@
         },
         {
             "name": "drupal/meta_entity",
-            "version": "dev-8.x-1.x",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
-                "url": "https://github.com/claudiu-cristea/meta_entity.git",
-                "reference": "afeb69529c8c38d496140be59f4dc57f07a58c4d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/claudiu-cristea/meta_entity/zipball/afeb69529c8c38d496140be59f4dc57f07a58c4d",
-                "reference": "afeb69529c8c38d496140be59f4dc57f07a58c4d",
-                "shasum": ""
+                "url": "https://git.drupalcode.org/project/meta_entity.git",
+                "reference": "24bc0c8d7a25a07538768637665a372b19e079a5"
             },
             "require": {
+                "drupal/core": "~8.0",
                 "drupal/dynamic_entity_reference": "^2.0",
                 "php": ">=7.1"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1567357385",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
             "authors": [
                 {
                     "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/user/56348",
                     "email": "https://www.drupal.org/u/claudiucristea"
                 }
             ],
             "description": "Allows to store metadata about an entity outside its storage.",
             "homepage": "https://www.drupal.org/project/meta_entity",
             "support": {
-                "issues": "https://www.drupal.org/project/issues/meta_entity",
-                "source": "https://git.drupalcode.org/project/meta_entity"
+                "source": "https://git.drupalcode.org/project/meta_entity",
+                "issues": "https://www.drupal.org/project/issues/meta_entity"
             },
-            "time": "2019-08-29T21:39:13+00:00"
+            "time": "2019-09-02T10:19:08+00:00"
         },
         {
             "name": "drupal/migrate_drush",
