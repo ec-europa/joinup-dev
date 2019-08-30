@@ -11,7 +11,6 @@
         "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
-        "drupal/block_content_permissions": "^1.6",
         "drupal/cached_computed_field": "^1.0-beta4",
         "drupal/changed_fields": "^2.0",
         "drupal/config_provider": "~1.0",
