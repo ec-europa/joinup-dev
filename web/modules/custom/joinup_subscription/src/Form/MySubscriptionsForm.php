@@ -176,7 +176,7 @@ class MySubscriptionsForm extends FormBase {
           'wrapper' => 'collection-' . $clean_collection_id,
         ],
         '#name' => 'submit-' . $clean_collection_id,
-        '#submit' => ['::submitSubscriptionBundles'],
+        '#submit' => ['::submitForm'],
         '#type' => 'submit',
         '#value' => $this->t('Save changes'),
         '#attributes' => [
