@@ -803,6 +803,20 @@ function joinup_theme_preprocess_form(&$variables) {
     $variables['attributes']['class'][] = 'form__margin-top';
     $variables['attributes']['class'][] = 'form__member-actions';
   }
+
+  // Get group parameter on the search page.
+  if ($variables['element']['#id'] == 'views-exposed-form-search-page-1') {
+    $param = \Drupal::request()->get('f');
+    if (isset($param[0])) {
+      $id = str_replace('group:', '', $param[0], $count);
+      if ($count == 1) {
+        $rdf_entity = \Drupal::entityTypeManager()->getStorage('rdf_entity')->load($id);
+        if (!empty($rdf_entity)) {
+          $variables['filters'][$id] = $rdf_entity->label();
+        }
+      }
+    }
+  }
 }
 
 /**
