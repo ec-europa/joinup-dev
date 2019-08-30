@@ -11,7 +11,6 @@
         "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
-        "drupal/block_content_permissions": "^1.6",
         "drupal/cached_computed_field": "^1.0-beta4",
         "drupal/changed_fields": "^2.0",
         "drupal/config_provider": "~1.0",
@@ -44,13 +43,12 @@
         "drupal/migrate_spreadsheet": "~1.0",
         "drupal/og": "dev-1.x",
         "drupal/og_menu": "dev-1.x",
-        "drupal/page_manager": "dev-4.x#b2c5d9a5905e45d348c1109424eb3630034f761d",
         "drupal/password_policy": "^3.0-alpha5",
         "drupal/pathauto": "~1.4",
         "drupal/persistent_login": "~1.0",
         "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
         "drupal/publication_date": "^2.0-beta1",
-        "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
+        "drupal/r4032login": "~1.1",
         "drupal/rdf_entity": "^1.0.0-alpha17",
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.1",
@@ -229,9 +227,6 @@
             },
             "drupal/og_menu": {
                 "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
-            },
-            "drupal/page_manager": {
-                "Support contextual links @see https://www.drupal.org/project/page_manager/issues/2601004": "https://www.drupal.org/files/issues/2019-05-27/2601004-30.patch"
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"

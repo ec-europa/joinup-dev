@@ -586,7 +586,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: "Type something to filter the list"
+            label: 'Type something to filter the list'
             description: ''
             use_operator: false
             operator: combine_op
