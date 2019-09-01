@@ -161,7 +161,7 @@ class MySubscriptionsForm extends FormBase {
         'link' => [
           '#type' => 'link',
           '#title' => $collection->label(),
-          '#url' => $collection->toUrl()
+          '#url' => $collection->toUrl(),
         ],
         'teaser' => $collection->field_ar_abstract->view([
           'label' => 'hidden',
