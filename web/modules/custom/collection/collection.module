@@ -336,7 +336,7 @@ function collection_entity_extra_field_info() {
   // This hook can fire before the collection bundle config is defined, in that
   // case we have nothing meaningful to add.
   if (empty($collection)) {
-    return;
+    return [];
   }
 
   // Add the join/leave collection form as field.

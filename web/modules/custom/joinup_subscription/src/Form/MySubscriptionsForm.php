@@ -107,8 +107,8 @@ class MySubscriptionsForm extends FormBase {
     ];
 
     $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
+
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
-    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     // Add a JS behavior to enable the buttons when the checkboxes or the
     // dropdown on the form are toggled.
@@ -129,8 +129,14 @@ class MySubscriptionsForm extends FormBase {
       return $form;
     }
 
+    // Generate the list of memberships with checkboxes to choose which bundles
+    // to subscribe to.
     $form['collections']['#tree'] = TRUE;
+    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
+    // Keep track if the user has any memberships with active subscriptions. If
+    // this is the case we will show the 'Unsubscribe from all' button at the
+    // bottom of the form.
     $memberships_with_subscription = FALSE;
     foreach ($memberships as $membership) {
       $collection = $membership->getGroup();
@@ -144,11 +150,30 @@ class MySubscriptionsForm extends FormBase {
         '#attributes' => [
           'class' => ['collection-subscription'],
         ],
-        'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'list_view'),
+        'logo' => $collection->field_ar_logo->view([
+          'label' => 'hidden',
+          'type' => 'image',
+          'settings' => [
+            'image_style' => 'vertical_medium_image',
+            'image_link' => 'content',
+          ],
+        ]),
+        'link' => [
+          '#type' => 'link',
+          '#title' => $collection->label(),
+          '#url' => $collection->toUrl()
+        ],
+        'teaser' => $collection->field_ar_abstract->view([
+          'label' => 'hidden',
+        ]),
+        'motivation' => [
+          '#markup' => $this->t('Send me notifications for:'),
+        ],
         'bundles' => [
           '#type' => 'container',
           '#extra_suggestion' => 'container__subscribe_form',
         ],
+        '#extra_suggestion' => 'container__collection_subscription',
       ];
 
       foreach (CommunityContentHelper::BUNDLES as $bundle_id) {

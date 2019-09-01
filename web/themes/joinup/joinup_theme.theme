@@ -673,6 +673,17 @@ function joinup_theme_preprocess_container__facet_region__inline_facets__with_ad
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for the collection subscription container.
+ *
+ * Template: 'container--collection-subscription'.
+ */
+function joinup_theme_preprocess_container__collection_subscription(&$variables) {
+  // @todo This is originally used to make the entire collection preview
+  //   clickable, but is probably no longer desired. Remove if this is the case.
+  // $variables['url'] = $variables['element']['link']['#url'];
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field-multiple-value-form.html.twig.
  */
 function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
@@ -1284,8 +1295,6 @@ function joinup_theme_theme_suggestions_select_alter(array &$suggestions, array 
  * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
  */
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
-  $has_extra_suggestions = isset($variables['element']['#extra_suggestion']);
-
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
 
@@ -1301,6 +1310,7 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
   }
 
   // Add extra suggestion for grid elements.
+  $has_extra_suggestions = isset($variables['element']['#extra_suggestion']);
   if ($has_extra_suggestions) {
     $suggestions[] = $variables['element']['#extra_suggestion'];
   }
