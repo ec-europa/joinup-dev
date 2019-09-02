@@ -482,6 +482,14 @@ function joinup_theme_preprocess_menu(&$variables) {
     }
   }
   $variables['#cache']['contexts'][] = 'user.photo';
+
+  // Set login text instead of image.
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  if ($route_name == 'homepage.content' && $user->isAnonymous()) {
+    $variables['has_sign_in_text'] = TRUE;
+  }
 }
 
 /**
