@@ -58,13 +58,19 @@
     margin-bottom: 0
 
 .listing__title,
-.listing__title a
+.listing__title a,
+.listing__motivation
   font-size: 16px
   font-weight: 600
   margin: 0
   text-decoration: none
   color: $color-blue-dark
   word-wrap: break-word
+
+.listing__motivation
+  margin-bottom: $tile-margin
+  +breakpoint(lg-desktop)
+    margin-bottom: 0
 
 .listing__subtitle
   margin: 0
