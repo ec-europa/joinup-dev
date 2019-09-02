@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a47a9e0253f3fb75fdcfd3459f30089f",
+    "content-hash": "3f2f0f34ec821cb4aecc4425f0356526",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5784,6 +5784,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Error with new entities with IDs. @see https://www.drupal.org/project/simple_sitemap/issues/3066138": "https://www.drupal.org/files/issues/2019-09-02/3066138_D8_11.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7436,7 +7439,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
