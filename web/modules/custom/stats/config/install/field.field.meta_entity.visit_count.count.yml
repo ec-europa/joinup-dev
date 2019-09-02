@@ -4,20 +4,22 @@ dependencies:
   config:
     - field.storage.meta_entity.count
     - meta_entity.type.visit_count
+  module:
+    - cached_computed_field
 id: meta_entity.visit_count.count
 field_name: count
 entity_type: meta_entity
 bundle: visit_count
-label: Count
-description: ''
+label: 'Visit count'
+description: 'The number of visits this page has had. This is updated periodically with data from the Matomo web analytics platform.'
 required: false
 translatable: false
-default_value:
-  - value: 0
+default_value: {  }
 default_value_callback: ''
 settings:
-  min: 0
+  min: null
   max: null
   prefix: ''
   suffix: ''
-field_type: integer
+  cache-max-age: 86400
+field_type: cached_computed_integer

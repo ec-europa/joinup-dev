@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: download_count
+label: 'Download count'
+mapping:
+  rdf_entity:
+    - asset_distribution

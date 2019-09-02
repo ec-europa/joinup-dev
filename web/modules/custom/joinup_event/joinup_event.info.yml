@@ -45,7 +45,6 @@ config_devel:
   - field.field.node.event.field_site_featured
   - field.field.node.event.field_site_pinned
   - field.field.node.event.field_state
-  - field.field.node.event.field_visit_count
   - field.field.node.event.og_audience
   - field.storage.node.field_event_agenda
   - field.storage.node.field_event_contact_email
