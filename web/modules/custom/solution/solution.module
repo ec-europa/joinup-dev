@@ -241,18 +241,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       /** @var \Drupal\asset_distribution\AssetDistributionRelations $relationship_counselor */
       $relationship_counselor = \Drupal::service('asset_distribution.relations');
       foreach ($relationship_counselor->getSolutionDistributions($entity) as $distribution) {
-        foreach ($distribution->field_download_count->getValue() as $item) {
-          // @todo The support for fields with multiple properties has not yet
-          //   been implemented in RDF entity. These are currently returned as
-          //   multiple field items, each containing one of the properties.
-          //   Once this is fixed we no longer need to check whether the 'value'
-          //   parameter exists, it will always be there.
-          // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3576
-          // @see https://www.drupal.org/node/2892361
-          if (!empty($item['value'])) {
-            $total += (int) $item['value'];
-          }
-        }
+        $total += $distribution->meta_entity->entity->count->value;
       }
     }
 
