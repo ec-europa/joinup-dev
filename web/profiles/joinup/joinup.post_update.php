@@ -9,12 +9,14 @@ declare(strict_types = 1);
 
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\block_content\Entity\BlockContentType;
+use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\Core\Serialization\Yaml;
+use Drupal\Core\Site\Settings;
 use Drupal\entity_legal\Entity\EntityLegalDocumentVersion;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\page_manager\Entity\Page;
 use Drupal\page_manager\Entity\PageVariant;
 
@@ -180,8 +182,195 @@ function joinup_post_update_legal() {
 }
 
 /**
- * Install 'joinup_stats' module.
+ * Move statistics (part 1): Create metadata entities.
  */
-function joinup_post_update_install_joinup_stats(): void {
-  \Drupal::service('module_installer')->install(['joinup_stats']);
+function joinup_post_update_stats1(array &$sandbox): ?string {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $rdf_entity_storage = $entity_type_manager->getStorage('rdf_entity');
+  $node_storage = $entity_type_manager->getStorage('node');
+
+  if (!isset($sandbox['rdf_entity'])) {
+    \Drupal::service('module_installer')->install(['joinup_stats']);
+    $sandbox['rdf_entity'] = $rdf_entity_storage->getQuery()
+      ->condition('rid', 'asset_distribution')
+      ->sort('id')
+      ->execute();
+    $sandbox['node'] = $node_storage->getQuery()
+      ->condition('type', ['discussion', 'document', 'event', 'news'], 'IN')
+      ->sort('nid')
+      ->execute();
+    $sandbox['processed_rdf_entity'] = 0;
+    $sandbox['processed_node'] = 0;
+  }
+
+  if ($sandbox['rdf_entity'] && ($ids_to_process = array_splice($sandbox['rdf_entity'], 0, 30))) {
+    foreach ($rdf_entity_storage->loadMultiple($ids_to_process) as $distribution) {
+      MetaEntity::create([
+        'type' => 'download_count',
+        'target' => $distribution,
+        'count' => $distribution->get('field_download_count'),
+      ])->save();
+      $sandbox['processed_rdf_entity']++;
+    }
+  }
+  if ($sandbox['node'] && ($nids_to_process = array_splice($sandbox['node'], 0, 80))) {
+    foreach ($node_storage->loadMultiple($nids_to_process) as $node) {
+      MetaEntity::create([
+        'type' => 'visit_count',
+        'target' => $node,
+        'count' => $node->get('field_visit_count'),
+      ])->save();
+      $sandbox['processed_node']++;
+    }
+  }
+  $sandbox['#finished'] = empty($sandbox['rdf_entity']) && empty($sandbox['node']) ? 1 : 0;
+
+  if ($sandbox['#finished']) {
+    return "Finished processing {$sandbox['processed_rdf_entity']} distributions and {$sandbox['processed_node']} nodes.";
+  }
+
+  return "Progress: {$sandbox['processed_rdf_entity']} distributions, {$sandbox['processed_node']} nodes.";
+}
+
+/**
+ * Move statistics (part 2): Cleanup obsolete configs.
+ */
+function joinup_post_update_stats2(): void {
+  $config_factory = \Drupal::configFactory();
+  $configs_to_remove = [
+    'field.storage.node.field_visit_count',
+    'field.storage.rdf_entity.field_download_count',
+    'field.field.rdf_entity.asset_distribution.field_download_count',
+    'field.field.node.discussion.field_visit_count',
+    'field.field.node.document.field_visit_count',
+    'field.field.node.event.field_visit_count',
+    'field.field.node.news.field_visit_count',
+    'joinup_core.matomo_settings',
+  ];
+  array_walk($configs_to_remove, function (string $name) use ($config_factory): void {
+    $config_factory->getEditable($name)->delete();
+  });
+}
+
+/**
+ * Move statistics (part 3): Uninstall stale fields.
+ */
+function joinup_post_update_stats3(): void {
+  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $download_count_definition = $definition_update_manager->getFieldStorageDefinition('field_download_count', 'rdf_entity');
+  $definition_update_manager->uninstallFieldStorageDefinition($download_count_definition);
+  $visit_count_definition = $definition_update_manager->getFieldStorageDefinition('field_visit_count', 'node');
+  $definition_update_manager->uninstallFieldStorageDefinition($visit_count_definition);
+}
+
+/**
+ * Move statistics (part 4): Remove stale triples.
+ */
+function joinup_post_update_stats4(): void {
+  /** @var \Drupal\Driver\Database\sparql\Connection $sparql_connection */
+  $sparql_connection = \Drupal::service('sparql.endpoint');
+  $sparql_connection->query("WITH <http://joinup.eu/asset_distribution/published>
+DELETE {
+  ?s ?p ?o .
+}
+WHERE {
+  ?s ?p ?o .
+  VALUES ?p { <http://schema.org/userInteractionCount> <http://schema.org/expires> }
+}");
+}
+
+/**
+ * Move statistics (part 5): Search API tasks.
+ */
+function joinup_post_update_stats5(): void {
+  // The 'search_api.index.published' config entity should not be updated by
+  // the configuration management, later in the flow, as changing this config
+  // triggers a reindex but, unfortunately, because of the current config import
+  // tools, it uses the obsolete config data. Instead, we partially disable the
+  // reindex and import here the config entity. Later, in the update flow, we
+  // always trigger a reindex.
+  $config_data = Yaml::decode(file_get_contents(drupal_get_path('module', 'joinup_search') . '/config/install/search_api.index.published.yml'));
+  $state = \Drupal::state();
+  $state->set('search_api.index.published.has_reindexed', TRUE);
+  \Drupal::configFactory()->getEditable('search_api.index.published')->setData($config_data)->save();
+  $state->set('search_api.index.published.has_reindexed', FALSE);
+}
+
+/**
+ * Move statistics (part 6): Update field queue.
+ */
+function joinup_post_update_stats6(array &$sandbox): ?string {
+  $db = \Drupal::database();
+
+  // Make sure that cron is not consuming the queue while we're updating it.
+  $settings = Settings::getAll();
+  $settings['joinup.parse_cached_computed_field'] = FALSE;
+  new Settings($settings);
+
+  if (!isset($sandbox['items'])) {
+    $sandbox['items'] = [];
+    $sandbox['node'] = [];
+    $sandbox['processed'] = 0;
+
+    // Store all 'cached_computed_field_expired_fields' queue items in sandbox.
+    $items = $db->select('queue', 'q')
+      ->fields('q', ['item_id', 'data'])
+      ->condition('name', 'cached_computed_field_expired_fields')
+      ->orderBy('q.item_id')
+      ->execute()
+      ->fetchAllKeyed();
+    foreach ($items as $item_id => $data) {
+      $data = unserialize($data);
+      $sandbox['items'][] = [
+        'id' => $item_id,
+        'entity_id' => $data['entity_id'],
+        'entity_type_id' => $data['entity_type'],
+      ];
+    }
+  }
+
+  if ($items_to_process = array_splice($sandbox['items'], 0, 500)) {
+    $ids = array_map(function (array $item): string {
+      return $item['entity_id'];
+    }, $items_to_process);
+    $entities = $db->select('meta_entity', 'm')
+      ->fields('m', ['target__target_id', 'id'])
+      ->condition('target__target_id', $ids, 'IN')
+      ->execute()
+      ->fetchAllKeyed();
+    $items_to_delete = [];
+    foreach ($items_to_process as $item) {
+      if (isset($entities[$item['entity_id']])) {
+        // References to content entities replaced with same to meta entities.
+        $data = [
+          'entity_type' => 'meta_entity',
+          'entity_id' => $entities[$item['entity_id']],
+          'field_name' => 'count',
+          'expire' => 0,
+        ];
+        $db->update('queue')
+          ->fields(['data' => serialize($data)])
+          ->condition('item_id', $item['id'])
+          ->execute();
+      }
+      else {
+        // The entity might have been deleted in the meantime.
+        $items_to_delete[] = $item['id'];
+      }
+      if ($items_to_delete) {
+        $db->delete('queue')
+          ->condition('item_id', $items_to_delete, 'IN')
+          ->execute();
+      }
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = $sandbox['items'] ? 0 : 1;
+
+  if ($sandbox['#finished']) {
+    return "Processed {$sandbox['processed']} items from queue.";
+  }
+
+  return "Finished processing {$sandbox['processed']} items from queue.";
 }
