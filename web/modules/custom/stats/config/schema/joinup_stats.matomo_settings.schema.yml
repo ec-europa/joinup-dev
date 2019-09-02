@@ -1,0 +1,25 @@
+joinup_stats.matomo_settings:
+  type: config_object
+  label: 'Matomo integration settings'
+  mapping:
+    visit_counts:
+      type: sequence
+      sequence:
+        type: joinup_stats.matomo_settings.visit_counts.[%key]
+    download_counts:
+      type: sequence
+      sequence:
+        type: joinup_stats.matomo_settings.download_counts.[%key]
+    launch_date:
+      type: string
+      label: 'The date when the website was launched, in ISO-8601 extended format.'
+
+joinup_stats.matomo_settings.*.*:
+  type: mapping
+  mapping:
+    period:
+      type: integer
+      label: 'The time period in days or 0 to retrieve all data available.'
+    type:
+      type: string
+      label: 'The type of metric to use.'

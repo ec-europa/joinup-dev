@@ -60,7 +60,6 @@ config_devel:
   - image.style.wysiwyg_full_width
   - image.style.wysiwyg_half_width
   - image.style.wysiwyg_one_third_width
-  - joinup_core.matomo_settings
   - sparql_entity_storage.mapping.taxonomy_term.actor
   - sparql_entity_storage.mapping.taxonomy_term.business_process
   - sparql_entity_storage.mapping.taxonomy_term.eira
