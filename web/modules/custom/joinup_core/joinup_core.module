@@ -18,7 +18,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\file\Entity\File;
@@ -1342,31 +1341,10 @@ function joinup_core_config_readonly_whitelist_patterns() {
  */
 function joinup_core_module_implements_alter(array &$implementations, $hook) {
   switch ($hook) {
-    case 'cron':
-      // Use the custom hook_cron() implementation, provided by 'joinup_core'
-      // module, to trigger the Cached Computed Field cron tasks.
-      // @see joinup_core_cron()
-      unset($implementations['cached_computed_field']);
-      break;
-
     case 'block_view_system_menu_block_alter':
       // Do not show the contextual links to edit menus. This functionality is
       // used very rarely but the contextual links menu causes visual clutter.
       unset($implementations['menu_ui']);
       break;
-  }
-}
-
-/**
- * Implements hook_cron().
- */
-function joinup_core_cron() {
-  // By adding this line in settings.php and rebuilding the cache, the process
-  // of cached computed fields can be suppressed:
-  // @code
-  // $settings['joinup.parse_cached_computed_field'] = FALSE;
-  // @endcode
-  if (Settings::get('joinup.parse_cached_computed_field', TRUE)) {
-    cached_computed_field_cron();
   }
 }
