@@ -83,6 +83,7 @@ config_devel:
   - sparql_entity_storage.mapping.taxonomy_term.status
   - sparql_entity_storage.mapping.taxonomy_term.test_resource_type
   - sparql_entity_storage.mapping.taxonomy_term.themes
+  - system.action.joinup_og_membership_delete_action
   - system.action.joinup_transfer_group_ownership
   - taxonomy.vocabulary.business_process
   - taxonomy.vocabulary.eira
