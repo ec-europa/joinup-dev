@@ -92,7 +92,10 @@ Feature: My subscriptions
       | Barnard's Star |  |
       | Wolf 359       |  |
 
-    And I should see the following lines of text:
+    # The collection abstracts were visible in an earlier version but were
+    # removed in a more recent design update. Let's ensure they do not pop back
+    # into existence.
+    And I should not see the following lines of text:
       | A triple star system at a distance of 4.3 light years.         |
       | A low mass red dwarf at around 6 light years distance.         |
       | Wolf 359 is a red dwarf star located in the constellation Leo. |

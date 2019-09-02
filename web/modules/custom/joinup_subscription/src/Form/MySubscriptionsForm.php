@@ -163,9 +163,6 @@ class MySubscriptionsForm extends FormBase {
           '#title' => $collection->label(),
           '#url' => $collection->toUrl(),
         ],
-        'teaser' => $collection->field_ar_abstract->view([
-          'label' => 'hidden',
-        ]),
         'motivation' => [
           '#markup' => $this->t('Send me notifications for:'),
         ],
