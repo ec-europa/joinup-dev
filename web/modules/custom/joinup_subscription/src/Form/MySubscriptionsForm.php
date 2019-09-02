@@ -176,7 +176,7 @@ class MySubscriptionsForm extends FormBase {
           'wrapper' => 'collection-' . $clean_collection_id,
         ],
         '#name' => 'submit-' . $clean_collection_id,
-        '#submit' => ['::submitSubscriptionBundles'],
+        '#submit' => ['::submitForm'],
         '#type' => 'submit',
         '#value' => $this->t('Save changes'),
         '#attributes' => [
@@ -216,7 +216,10 @@ class MySubscriptionsForm extends FormBase {
 
     // Check if the subscriptions have changed. This allows us to skip saving
     // the membership entity if nothing changed.
-    $subscribed_bundles = array_keys(array_filter($form_state->getValue('collections')[$membership->getGroupId()]['bundles']));
+    $bundles_value = $form_state->getValue('collections')[$membership->getGroupId()]['bundles'];
+    // Ignore the submit button.
+    unset($bundles_value['submit']);
+    $subscribed_bundles = array_keys(array_filter($bundles_value));
 
     $original_bundles = array_map(function (array $item): string {
       return $item['bundle'];
