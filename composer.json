@@ -60,7 +60,7 @@
         "drupal/spdx": "^1.0.0-alpha5",
         "drupal/state_machine": "1.0-beta3",
         "drupal/subpathauto": "^1.0@rc",
-        "drupal/swiftmailer": "^1.0@beta",
+        "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
         "drupal/token": "~1.0",
         "drupal/video_embed_field": "~1.5",
         "drupal/view_unpublished": "~1.0@alpha",
@@ -256,7 +256,8 @@
             },
             "drupal/swiftmailer": {
                 "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
-                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2018-11-07/3000553-9_includes-3000546-4.patch"
+                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
+                "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2019-08-26/2892104-21.patch"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
