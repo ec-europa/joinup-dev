@@ -673,17 +673,6 @@ function joinup_theme_preprocess_container__facet_region__inline_facets__with_ad
 }
 
 /**
- * Implements hook_preprocess_HOOK() for the collection subscription container.
- *
- * Template: 'container--collection-subscription'.
- */
-function joinup_theme_preprocess_container__collection_subscription(&$variables) {
-  // @todo This is originally used to make the entire collection preview
-  //   clickable, but is probably no longer desired. Remove if this is the case.
-  // $variables['url'] = $variables['element']['link']['#url'];
-}
-
-/**
  * Implements hook_preprocess_HOOK() for field-multiple-value-form.html.twig.
  */
 function joinup_theme_preprocess_field_multiple_value_form(&$variables) {
