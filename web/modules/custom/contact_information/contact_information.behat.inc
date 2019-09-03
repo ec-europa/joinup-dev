@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 
 /**
@@ -17,6 +18,7 @@ use Drupal\joinup\Traits\UserTrait;
 class ContactInformationSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use RdfEntityTrait;
+  use SearchTrait;
   use UserTrait;
 
   /**
@@ -159,10 +161,20 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * @AfterScenario
    */
   public function cleanContactInformationEntities() {
+    if (empty($this->contactInformations)) {
+      return;
+    }
+
+    // Since we might be cleaning up many informations, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     foreach ($this->contactInformations as $entity) {
       $entity->skip_notification = TRUE;
       $entity->delete();
     }
+    $this->contactInformations = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**

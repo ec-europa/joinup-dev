@@ -81,3 +81,10 @@ joinup_core.transfer_group_ownership_confirm:
     _title: Transfer
   requirements:
     _custom_access: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm::access'
+
+joinup_core.membership_delete_action.confirm:
+  path: '/group/delete/membership'
+  defaults:
+    _form: 'Drupal\joinup_core\Form\DeleteGroupMembershipConfirmForm'
+  requirements:
+    _custom_access: 'Drupal\joinup_core\Form\DeleteGroupMembershipConfirmForm::access'
