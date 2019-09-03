@@ -11,6 +11,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\taxonomy\Entity\Term;
@@ -24,6 +25,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
   use BrowserCapabilityDetectionTrait;
   use MaterialDesignTrait;
   use RdfEntityTrait;
+  use SearchTrait;
   use UserTrait;
   use UtilityTrait;
 
@@ -120,11 +122,21 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    * @AfterScenario
    */
   public function cleanOwners() {
+    if (empty($this->owners)) {
+      return;
+    }
+
+    // Since we might be cleaning up many owners, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any owners that were created.
     foreach ($this->owners as $owner) {
       $owner->skip_notification = TRUE;
       $owner->delete();
     }
+    $this->owners = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**
