@@ -9,3 +9,11 @@ mapping:
     - document
     - event
     - news
+
+third_party_settings:
+  joinup_stats:
+    matomo_method: 'Actions.getPageUrl'
+    parameter_name: pageUrl
+    parameter_method: getEntityUrl
+    period: 30
+    type: nb_visits
