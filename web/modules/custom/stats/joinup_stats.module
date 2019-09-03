@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\meta_entity\Entity\MetaEntity;
 
@@ -55,4 +56,83 @@ function joinup_stats_cron(): void {
   if (Settings::get('joinup.parse_cached_computed_field', TRUE)) {
     cached_computed_field_cron();
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_stats_form_meta_entity_type_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Other modules might have already set this wrapper.
+  if (!isset($form['third_party_settings'])) {
+    $form['third_party_settings'] = [
+      '#tree' => TRUE,
+    ];
+  }
+
+  /** @var \Drupal\meta_entity\Form\MetaEntityTypeForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\meta_entity\Entity\MetaEntityTypeInterface $meta_entity_type */
+  $meta_entity_type = $form_object->getEntity();
+
+  $form['third_party_settings']['joinup_stats'] = [
+    '#type' => 'details',
+    '#title' => t('Joinup Statistics'),
+    'matomo_method' => [
+      '#type' => 'textfield',
+      '#title' => t('Matomo method'),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'matomo_method'),
+    ],
+    'parameter_name' => [
+      '#type' => 'textfield',
+      '#title' => t('URL parameter name'),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'parameter_name'),
+    ],
+    'parameter_method' => [
+      '#type' => 'textfield',
+      '#title' => t('Parameter method'),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'parameter_method'),
+    ],
+    'period' => [
+      '#type' => 'select',
+      '#title' => t('Period'),
+      '#options' => joinup_stats_get_period_options(),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'period'),
+    ],
+    'type' => [
+      '#type' => 'radios',
+      '#title' => t('Type'),
+      '#options' => [
+        'nb_visits' => t('Visits'),
+        'nb_hits' => t('Hits'),
+      ],
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'type'),
+    ],
+  ];
+
+}
+
+/**
+ * Returns select options for the time period fields.
+ *
+ * @return array
+ *   An array of select options.
+ */
+function joinup_stats_get_period_options() {
+  // How long is a month? Somewhere between 30 and 31 days. To get a better
+  // answer we can say that an average month is 1/12th of a year. And a year is
+  // the time needed for the earth to orbit the sun, which is a bit more than
+  // 365 days. So an average month is 30 days, 10 hours, 30 minutes, and 45
+  // seconds.
+  // @see http://www.wolframalpha.com/input/?i=earth+orbital+period
+  $month_in_days = 365.25636 / 12;
+  return [
+    7 => t('1 week'),
+    14 => t('2 weeks'),
+    22 => t('3 weeks'),
+    (int) round($month_in_days) => t('1 month'),
+    (int) round(2 * $month_in_days) => t('2 months'),
+    (int) round(3 * $month_in_days) => t('3 months'),
+    (int) round(6 * $month_in_days) => t('6 months'),
+    0 => t('All time'),
+  ];
 }
