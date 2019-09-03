@@ -108,14 +108,46 @@ Feature: Collection membership administration
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"
     Then I select "Delete the selected membership(s)" from "Action"
-    And I press the "Apply to selected items" button
+
+    When I press the "Apply to selected items" button
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
+    And I should see "The member Kathie Cumbershot will be deleted from the 'Medical diagnosis' collection."
+    And I should see "This action cannot be undone."
+
+    Given I click "Cancel"
+    Then I should see the heading "Members"
+
+    Given I check the box "Update the member Kathie Cumbershot"
+    Then I select "Delete the selected membership(s)" from "Action"
+
+    When I press the "Apply to selected items" button
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
+
+    When I press "Confirm"
     Then I should see the following success messages:
-      | success messages                                         |
-      | Delete the selected membership(s) was applied to 1 item. |
+      | success messages                                                                       |
+      | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' collection. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
       | subject   | Joinup: Your request to join the collection Medical diagnosis was rejected      |
       | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" collection |
+
+    # Delete multiple members from collection.
+    Given I check the box "Update the member Gregory House"
+    And I check the box "Update the member Turkey Ham"
+
+    When I select "Delete the selected membership(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the heading "Are you sure you want to delete the selected memberships from the 'Medical diagnosis' collection?"
+    And I should see "The following members:"
+    And I should see "Gregory House"
+    And I should see "Turkey Ham"
+    And I should see "will be deleted from the 'Medical diagnosis' collection."
+    And I should see "This action cannot be undone."
+
+    Given I press "Confirm"
+    Then I should see the success message "The following members were removed from the 'Medical diagnosis' collection: Gregory House, Turkey Ham"
+    And I should see "Lisa Cuddy" in the "Lisa Cuddy" row
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
