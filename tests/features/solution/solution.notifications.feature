@@ -18,10 +18,10 @@ Feature: Solution notifications
       | name  | Information Desk             |
       | email | information.desk@example.com |
     And users:
-      | Username     | Roles     | First name | Family name |
-      | Pat Harper   | moderator | Pat        | Harper      |
-      | Ramiro Myers |           | Ramiro     | Myers       |
-      | Edith Poole  |           | Edith      | Poole       |
+      | Username     | Roles     | First name | Family name | E-mail                   |
+      | Pat Harper   | moderator | Pat        | Harper      | pat.harper@example.com   |
+      | Ramiro Myers |           | Ramiro     | Myers       | ramiro.myers@example.com |
+      | Edith Poole  |           | Edith      | Poole       | edith.poole@example.com  |
     And the following solutions:
       | title                                                 | author       | description | logo     | banner     | owner              | contact information | state            | policy domain | solution type | collection                     |
       | Solution notification to propose changes              | Ramiro Myers | Sample text | logo.png | banner.jpg | Karanikolas Kitsos | Information Desk    | validated        | E-inclusion   | Business      | Collection of random solutions |
@@ -104,7 +104,12 @@ Feature: Solution notifications
     Then I should see the error message "This action requires you to fill in the motivation field"
     When I fill in "Motivation" with "Can you change this?"
     And I press "Request changes"
-    Then the email sent to "Ramiro Myers" with subject "Joinup: You are requested to update your solution" contains the following lines of text:
+    Then the following email should have been sent:
+      | recipient | Ramiro Myers                                                                                                                                                              |
+      | subject   | Joinup: You are requested to update your solution                                                                                                                         |
+      | body      | the moderator has requested you to modify the interoperability solution - Solution notification to request changes following the following advises: Can you change this?. |
+      | bcc       | pat.harper@example.com                                                                                                                                                    |
+    And the email sent to "Ramiro Myers" with subject "Joinup: You are requested to update your solution" contains the following lines of text:
       | text                                                                                                                                                                      |
       | the moderator has requested you to modify the interoperability solution - Solution notification to request changes following the following advises: Can you change this?. |
       | If you think this action is not clear or not due, please contact Joinup Support at                                                                                        |

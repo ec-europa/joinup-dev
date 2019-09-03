@@ -9,6 +9,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\tallinn\Tallinn;
@@ -21,6 +22,7 @@ class TallinnSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
   use EntityTrait;
+  use SearchTrait;
   use RdfEntityTrait;
 
   /**
@@ -103,6 +105,9 @@ class TallinnSubContext extends DrupalSubContextBase {
    * @afterScenario @tallinn
    */
   public function cleanTallinnData() {
+    // Temporarily disable the feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
     $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad')->delete();
@@ -119,6 +124,8 @@ class TallinnSubContext extends DrupalSubContextBase {
 
     // Clear the dashboard access policy state.
     \Drupal::state()->delete('tallinn.access_policy');
+
+    $this->enableCommitOnUpdate();
   }
 
 }
