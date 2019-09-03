@@ -120,7 +120,7 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
         'notifier' => $this->getNotifierId($account),
       ],
     ];
-    return $this->sendMessage($message, $message_values, $recipients_metadata);
+    return $this->sendMessage($message, $recipients_metadata);
   }
 
   /**
