@@ -170,9 +170,9 @@ Feature: Collection membership administration
       | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following email should have been sent:
-      | recipient | Gregory House                                                                                 |
-      | subject   | Your role has been change to Medical diagnosis                                                |
-      | body      | A collection moderator has changed your role in this group to Member, Collection facilitator. |
+      | recipient | Gregory House                                                                      |
+      | subject   | Your role has been changed to facilitator                                          |
+      | body      | Lisa Cuddy has changed your role in collection "Medical diagnosis" to facilitator. |
 
     # Dr House can now edit the collection.
     When I am logged in as "Gregory House"

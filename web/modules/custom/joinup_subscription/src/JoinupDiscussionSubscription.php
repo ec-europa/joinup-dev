@@ -14,9 +14,9 @@ use Drupal\joinup_subscription\Exception\UserAlreadySubscribedException;
 use Drupal\user\Entity\User;
 
 /**
- * Provides a service class to handle subscriptions to content.
+ * Provides a service to handle subscriptions to discussions.
  */
-class JoinupSubscription implements JoinupSubscriptionInterface {
+class JoinupDiscussionSubscription implements JoinupDiscussionSubscriptionInterface {
 
   /**
    * The entity type manager service.

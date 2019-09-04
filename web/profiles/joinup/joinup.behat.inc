@@ -2202,7 +2202,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     if (in_array($type, ['collection', 'solution'])) {
       $entity_type_id = 'rdf_entity';
     }
-    elseif (in_array($type, CommunityContentHelper::getBundles())) {
+    elseif (in_array($type, CommunityContentHelper::BUNDLES)) {
       $entity_type_id = 'node';
     }
     else {
@@ -2385,59 +2385,6 @@ JS;
     if ($element->find('css', '.icon--pin')) {
       throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
     }
-  }
-
-  /**
-   * Asserts that a user is subscribed to specific bundles in a collection.
-   *
-   * @param string $user
-   *   The user name.
-   * @param string $bundles
-   *   A list of bundles separated by commas.
-   * @param string $type
-   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
-   *   entity types respectively.
-   * @param string $group_label
-   *   The group name.
-   * @param string $group_bundle
-   *   The group bundle.
-   *
-   * @throws \Exception
-   *   Throws exception if invalid data passed as arguments or if the subscribed
-   *   bundles for the given type do not match the expected ones.
-   *
-   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
-   */
-  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
-    if ($type === 'content') {
-      $type = 'node';
-    }
-    elseif ($type === 'rdf') {
-      $type = 'rdf_entity';
-    }
-    else {
-      throw new Exception("Unsupported type {$type}.");
-    }
-
-    $user = $this->getUserByName($user);
-    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
-    $og_membership = $this->getMembershipByGroupAndUser($group, $user);
-
-    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
-    $bundles = array_map(function ($bundle) use ($type) {
-      return $type . ':' . trim($bundle);
-    }, $bundles);
-
-    // This can also be accessed with:
-    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
-    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
-    $og_bundles = array_map(function ($row) {
-      return $row['entity_type'] . ':' . $row['bundle'];
-    }, $og_bundles);
-
-    sort($bundles);
-    sort($og_bundles);
-    Assert::assertEquals($bundles, $og_bundles);
   }
 
   /**
@@ -2657,6 +2604,44 @@ JS;
       }
       $title_input_element->setValue($row['title']);
     }
+  }
+
+  /**
+   * Asserts the status of the save button in a given region or in the page.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $status
+   *   The expected status. Possible values are 'enabled' and 'disabled'.
+   * @param string $region
+   *   (optional) The region name. If left empty, the whole page will be used.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown if the passed value for the $status variable is not an acceptable
+   *   one.
+   * @throws \Exception
+   *   Thrown when the region or the button are not found or if the expected
+   *   status does not match the actual one.
+   *
+   * @Then the :button button on the :region region should be :status
+   * @Then the :button button should be :status
+   */
+  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+    if (!in_array($status, ['enabled', 'disabled'])) {
+      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
+    }
+
+    if (!empty($region)) {
+      $region = $this->getRegion($region);
+    }
+    else {
+      $region = $this->getSession()->getPage();
+    }
+
+    $expected_status = $status === 'enabled';
+    $button = $this->findNamedElementInRegion($button, 'button', $region);
+    $disabled = !($button->getAttribute('disabled') === 'disabled');
+    Assert::assertEquals($expected_status, $disabled);
   }
 
   /**

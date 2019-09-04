@@ -5,13 +5,13 @@ Feature: As a group (collection or solution) owner or site moderator
 
   Background:
     Given users:
-      | Username | Roles                   | Password |
-      | loner    |                         | Pass     |
-      | happy    | administrator,moderator | Pass     |
-      | cruel    |                         | Pass     |
-      | shy      |                         | Pass     |
-      | light    | moderator               | Pass     |
-      | frozen   |                         | Pass     |
+      | Username | Roles                   | Password | First name | Family name   |
+      | loner    |                         | Pass     | Freyja     | Stefánsdóttir |
+      | happy    | administrator,moderator | Pass     | Saga       | Þórirsdóttir  |
+      | cruel    |                         | Pass     | Finnur     | Robertsson    |
+      | shy      |                         | Pass     | Ásdís      | Sigurðsdóttir |
+      | light    | moderator               | Pass     | Bjartur    | Jóhannsson    |
+      | frozen   |                         | Pass     | Edda       | Agnarsdóttir  |
     And the following collection:
       | title | Intensive Language Learning |
       | state | validated                   |
@@ -31,6 +31,7 @@ Feature: As a group (collection or solution) owner or site moderator
       | Learn German in 1 Month | shy    | facilitator |
       | Learn German in 1 Month | frozen | owner       |
 
+  @email
   Scenario Outline: Administrators, moderators and owners can transfer the group ownership.
     Given I am logged in as "<user>"
     And I go to the homepage of the "<title>" <type>
@@ -40,7 +41,7 @@ Feature: As a group (collection or solution) owner or site moderator
     Given I select the "cruel" row
     And I select "Transfer the ownership of the <type> to the selected member" from "Action"
     When I press "Apply to selected items"
-    Then I should see "Member cruel is already the owner of <title> <type>. Please select other user."
+    Then I should see "Member Finnur Robertsson is already the owner of <title> <type>. Please select other user."
 
     # Try to transfer the ownership to multiple users.
     Given I select the "loner" row
@@ -52,10 +53,10 @@ Feature: As a group (collection or solution) owner or site moderator
     Given I select the "shy" row
     And I select "Transfer the ownership of the <type> to the selected member" from "Action"
     When I press "Apply to selected items"
-    Then I should see "Are you sure you want to transfer the ownership of <title> <type> to shy?"
+    Then I should see "Are you sure you want to transfer the ownership of <title> <type> to Ásdís Sigurðsdóttir?"
 
     When I press "Confirm"
-    Then I should see "Ownership of <title> <type> transferred from users cruel, frozen to shy."
+    Then I should see "Ownership of <title> <type> transferred from users Finnur Robertsson, Edda Agnarsdóttir to Ásdís Sigurðsdóttir."
     And I should see the text "<type capitalized> owner" in the "shy" row
     # Because the 'happy' user is granted with the site-wide permission
     # ('administer {group} ownership'), he is not dependent on the ownership
@@ -70,15 +71,29 @@ Feature: As a group (collection or solution) owner or site moderator
     And I should not see the text "<type capitalized> owner" in the "frozen" row
     # The former owners are receiving, in compensation, the facilitator role.
     But I should see the text "<type capitalized> facilitator" in the "frozen" row
+    # The new owner should be notified.
+    And the following email should have been sent:
+      | recipient | shy                                                             |
+      | subject   | Your role has been changed to owner                             |
+      | body      | <full name> has changed your role in <type> "<title>" to owner. |
+    # The old owners that were demoted to facilitator should be notified.
+    And the following email should have been sent:
+      | recipient | cruel                                                                 |
+      | subject   | Your role has been changed to facilitator                             |
+      | body      | <full name> has changed your role in <type> "<title>" to facilitator. |
+    And the following email should have been sent:
+      | recipient | frozen                                                                |
+      | subject   | Your role has been changed to facilitator                             |
+      | body      | <full name> has changed your role in <type> "<title>" to facilitator. |
 
     Examples:
-      | user  | option exists | type       | type capitalized | title                       |
-      | happy | contain       | collection | Collection       | Intensive Language Learning |
-      | light | contain       | collection | Collection       | Intensive Language Learning |
-      | cruel | not contain   | collection | Collection       | Intensive Language Learning |
-      | happy | contain       | solution   | Solution         | Learn German in 1 Month     |
-      | light | contain       | solution   | Solution         | Learn German in 1 Month     |
-      | cruel | not contain   | solution   | Solution         | Learn German in 1 Month     |
+      | user  | option exists | type       | type capitalized | title                       | full name               |
+      | happy | contain       | collection | Collection       | Intensive Language Learning | The Joinup Support Team |
+      | light | contain       | collection | Collection       | Intensive Language Learning | The Joinup Support Team |
+      | cruel | not contain   | collection | Collection       | Intensive Language Learning | Finnur Robertsson       |
+      | happy | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
+      | light | contain       | solution   | Solution         | Learn German in 1 Month     | The Joinup Support Team |
+      | cruel | not contain   | solution   | Solution         | Learn German in 1 Month     | Finnur Robertsson       |
 
   Scenario Outline: Group facilitators do not have access to transfer ownership.
     Given I am logged in as "shy"

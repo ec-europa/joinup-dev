@@ -1,21 +1,18 @@
 name: Joinup subscription
 type: module
-description: Handles subscription settings for each user.
+description: Allows users to subscribe to collection community content.
 core: 8.x
 package: Joinup
 
 dependencies:
+  - drupal:options
   - flag:flag
   - joinup:joinup_core
-  - drupal:options
+  - message_digest:message_digest
 
 config_devel:
- - core.entity_form_display.user.user.subscription_settings
- - core.entity_form_mode.user.subscription_settings
- - field.field.user.user.field_user_frequency
- - field.field.user.user.field_user_group_types
- - field.field.user.user.field_user_subscription_events
- - field.storage.user.field_user_frequency
- - field.storage.user.field_user_group_types
- - field.storage.user.field_user_subscription_events
- - flag.flag.subscribe_discussions
+  - core.entity_form_mode.user.subscription_settings
+  - field.field.user.user.field_user_frequency
+  - field.storage.user.field_user_frequency
+  - flag.flag.subscribe_discussions
+  - message_digest.interval.monthly

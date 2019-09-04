@@ -38,13 +38,13 @@ class DashboardController extends ControllerBase {
    */
   public function page() {
     $user_id = $this->currentUser->id();
-    $subscription_settings_url = Url::fromRoute('joinup_subscription.subscription_settings', [
+    $my_subscriptions_url = Url::fromRoute('joinup_subscription.my_subscriptions', [
       'user' => $user_id,
     ]);
 
-    $links['subscription_settings'] = [
+    $links['my_subscriptions'] = [
       'title' => $this->t('My subscriptions'),
-      'url' => $subscription_settings_url,
+      'url' => $my_subscriptions_url,
       'attributes' => ['class' => ['button', 'button--small']],
     ];
 
@@ -62,6 +62,7 @@ class DashboardController extends ControllerBase {
     $links = [
       '#theme' => 'links',
       '#links' => $links,
+      '#attributes' => ['class' => ['links--buttons']],
     ];
 
     return $links;

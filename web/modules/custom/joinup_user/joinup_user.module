@@ -12,6 +12,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\Query\QueryInterface;
@@ -139,19 +140,6 @@ function joinup_user_mail_tokens(array &$replacements, array $data, array $optio
     $changes = joinup_user_account_changes($data['original'], $data['user']);
     $replacements['[user:changes]'] = implode("\n", $changes);
   }
-
-  if (isset($data['membership'])) {
-    /** @var \Drupal\og\OgMembershipInterface $membership */
-    $membership = $data['membership'];
-
-    foreach ($membership->getRoles() as $role) {
-      $roles[$role->id()] = $role->label();
-    }
-
-    $replacements['[group:label]'] = $membership->getGroup()->label();
-    $replacements['[group:bundle]'] = $membership->getGroup()->bundle();
-    $replacements['[group:roles]'] = implode(', ', $roles);
-  }
 }
 
 /**
@@ -251,28 +239,6 @@ function joinup_user_form_user_admin_settings_alter(&$form, FormStateInterface $
     '#rows' => 15,
   ];
 
-  // Settings for the e-mail sent when a OG role is added to a user.
-  $form['email_og_roles_changed'] = [
-    '#type' => 'details',
-    '#title' => t('Role changed inside a group'),
-    '#description' => t('Edit the email messages sent to group members when their roles change.'),
-    '#group' => 'email',
-    '#weight' => 101,
-  ];
-  $form['email_og_roles_changed']['#description'] .= ' ' . $email_token_help;
-  $form['email_og_roles_changed']['user_mail_og_roles_changed_subject'] = [
-    '#type' => 'textfield',
-    '#title' => t('Subject'),
-    '#default_value' => $mail_config->get('og_roles_changed.subject'),
-    '#maxlength' => 180,
-  ];
-  $form['email_og_roles_changed']['user_mail_og_roles_changed_body'] = [
-    '#type' => 'textarea',
-    '#title' => t('Body'),
-    '#default_value' => $mail_config->get('og_roles_changed.body'),
-    '#rows' => 15,
-  ];
-
   // Settings for the e-mail sent when a user successfully resets its password.
   $form['email_password_reset_confirm'] = [
     '#type' => 'details',
@@ -303,8 +269,6 @@ function joinup_user_form_user_admin_settings_alter_submit(array &$form, FormSta
   \Drupal::configFactory()->getEditable('joinup_user.mail')
     ->set('email_admin_update.subject', $form_state->getValue('user_mail_update_account_subject'))
     ->set('email_admin_update.body', $form_state->getValue('user_mail_update_account_body'))
-    ->set('og_roles_changed.subject', $form_state->getValue('user_mail_og_roles_changed_subject'))
-    ->set('og_roles_changed.body', $form_state->getValue('user_mail_og_roles_changed_body'))
     ->set('password_reset_confirm.subject', $form_state->getValue('user_mail_password_reset_confirm_subject'))
     ->set('password_reset_confirm.body', $form_state->getValue('user_mail_password_reset_confirm_body'))
     ->save();
@@ -498,6 +462,9 @@ function joinup_user_entity_base_field_info(EntityTypeInterface $entity_type) {
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
+ *
+ * - Invalidates the user cache tags when an OG membership changes.
+ * - Sends an e-mail when a user's role(s) change.
  */
 function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   joinup_user_invalidate_user_cache_tags($entity);
@@ -531,19 +498,18 @@ function joinup_user_og_membership_presave(OgMembershipInterface $entity) {
   /** @var \Drupal\user\UserInterface $account */
   $account = $entity->getOwner();
 
-  $params = [
-    'account' => $account,
-    'membership' => $entity,
-  ];
+  $arguments = MessageArgumentGenerator::getOgMembershipArguments($entity);
+  $arguments += MessageArgumentGenerator::getGroupArguments($entity->getGroup());
+  $arguments += MessageArgumentGenerator::getActorArguments();
+  $arguments += MessageArgumentGenerator::getContactFormUrlArgument();
 
-  $params['account'] = $account;
-  \Drupal::service('plugin.manager.mail')->mail(
-    'joinup_user',
-    'og_roles_changed',
-    $account->getEmail(),
-    $account->getPreferredLangcode(),
-    $params
-  );
+  /** @var \Drupal\joinup_notification\EntityMessageHelperInterface $entity_message_helper */
+  $entity_message_helper = \Drupal::service('joinup_notification.entity_message_helper');
+  $message = $entity_message_helper->createMessage($entity, 'og_membership_role_change', $arguments, 'field_membership');
+
+  /** @var \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery */
+  $message_delivery = \Drupal::service('joinup_notification.message_delivery');
+  $message_delivery->sendMessageToMultipleUsers($message, [$account]);
 }
 
 /**

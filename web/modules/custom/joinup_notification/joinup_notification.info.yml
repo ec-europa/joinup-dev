@@ -6,10 +6,11 @@ package: Joinup
 
 dependencies:
   - joinup:joinup_core
-  - message:message
-  - message_notify:message_notify
   - joinup:solution
   - joinup:state_machine_revisions
+  - message:message
+  - message_digest:message_digest
+  - message_notify:message_notify
 
 config_devel:
   - joinup_notification.notifications.community_content

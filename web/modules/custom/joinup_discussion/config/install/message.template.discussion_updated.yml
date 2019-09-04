@@ -7,9 +7,9 @@ template: discussion_updated
 label: 'Notify discussion subscribers on discussion update'
 description: 'Message sent to subscribers of a discussion when a discussion is updated'
 text:
-  - value: 'Joinup: The discussion "@entity:title" was updated in the space of "@group:label"'
+  - value: 'Joinup: The discussion "@entity:title" was updated in the space of "@group:title"'
     format: full_html
-  - value: '<p>The discussion "@entity:title" was updated in the "@group:label" @group:bundle.</p><p>To view the discussion, click @entity:url.</p>'
+  - value: '<p>The discussion "@entity:title" was updated in the "@group:title" @group:bundle.</p><p>To view the discussion, click @entity:url.</p>'
     format: full_html
 settings:
   'token options':

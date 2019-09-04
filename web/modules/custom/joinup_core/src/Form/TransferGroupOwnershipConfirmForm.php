@@ -221,16 +221,11 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
       if (!$membership->hasRole($facilitator->id())) {
         $membership->addRole($facilitator);
       }
-      // Skip notifications.
-      $membership->skip_notification = TRUE;
       $membership->save();
     }
 
     // Add the 'owner' role.
-    // @todo Send a notification to the new owner in ISAICP-4111. Till then, we
-    //   disable all notifications.
     $role = OgRole::loadByGroupAndName($group, 'administrator');
-    $this->membership->skip_notification = TRUE;
     $this->membership->addRole($role)->save();
 
     // Make this user also author of the group.

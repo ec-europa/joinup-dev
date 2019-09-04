@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -199,7 +201,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $message) {
+  protected function generateArguments(EntityInterface $message): array {
     $arguments = parent::generateArguments($message);
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];

@@ -46,8 +46,6 @@ Feature: User authentication
       | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
       | admin/structure/views                                          |
-      | propose/collection                                             |
-      | propose/solution                                               |
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
@@ -58,6 +56,8 @@ Feature: User authentication
       | node/add/document                                              |
       | node/add/event                                                 |
       | node/add/news                                                  |
+      | propose/collection                                             |
+      | propose/solution                                               |
       | rdf_entity/add                                                 |
       | rdf_entity/add/asset_distribution                              |
       | rdf_entity/add/asset_release                                   |
@@ -66,6 +66,7 @@ Feature: User authentication
       | rdf_entity/add/licence                                         |
       | rdf_entity/add/owner                                           |
       | rdf_entity/add/solution                                        |
+      | user/subscriptions                                             |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -73,10 +74,11 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                |
-      | propose/collection  |
-      | collections         |
-      | user                |
+      | path                       |
+      | collections                |
+      | propose/collection         |
+      | user                       |
+      | user/subscriptions         |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration

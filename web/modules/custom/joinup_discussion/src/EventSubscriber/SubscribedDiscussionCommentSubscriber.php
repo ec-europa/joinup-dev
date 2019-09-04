@@ -6,8 +6,9 @@ namespace Drupal\joinup_discussion\EventSubscriber;
 
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -18,7 +19,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
   /**
    * The Joinup subscribe service.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $subscribeService;
 
@@ -60,12 +61,12 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
   /**
    * Constructs a new event subscriber object.
    *
-   * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscribe_service
+   * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $subscribe_service
    *   The Joinup subscribe service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The Joinup message delivery service.
    */
-  public function __construct(JoinupSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(JoinupDiscussionSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery) {
     $this->subscribeService = $subscribe_service;
     $this->messageDelivery = $message_delivery;
   }
@@ -91,6 +92,11 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    *   The notification event object.
    */
   public function commentCrudProxy(NotificationEvent $event): void {
+    // @todo We shouldn't rely on data stored in local properties. This service
+    //   persists on the dependency injection container and might contain stale
+    //   data. Instead the Comment entity should be passed to any other methods
+    //   that require it.
+    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4253
     $this->comment = $event->getEntity();
 
     // Discussion comments are 'reply' comment types.
@@ -184,13 +190,11 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
     return [
       '@comment:author:username' => $this->comment->getOwner()->getDisplayName(),
       '@entity:title' => $this->discussion->label(),
-      '@group:label' => $this->group->label(),
-      '@group:bundle' => $this->group->bundle(),
       '@entity:url' => $this->discussion->toUrl('canonical', [
         'absolute' => TRUE,
         'fragment' => "comment-{$this->comment->id()}",
       ])->toString(),
-    ];
+    ] + MessageArgumentGenerator::getGroupArguments($this->group);
   }
 
   /**
@@ -200,11 +204,20 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    *   Whether or not the sending of the e-mails has succeeded.
    */
   protected function sendMessage(): bool {
-    return $this->messageDelivery
-      ->createMessage('discussion_comment_new')
-      ->setArguments($this->getArguments())
-      ->setRecipients($this->getRecipients())
-      ->sendMail();
+    $success = TRUE;
+    // Create individual messages for each subscriber so that we can honor the
+    // user's chosen digest frequency.
+    foreach ($this->getRecipients() as $recipient) {
+      if ($recipient->isAnonymous()) {
+        continue;
+      }
+      $notifier_options = [
+        'entity_type' => $this->discussion->getEntityTypeId(),
+        'entity_id' => $this->discussion->id(),
+      ];
+      $success = $this->messageDelivery->sendMessageTemplateToUser('discussion_comment_new', $this->getArguments(), $recipient, $notifier_options) && $success;
+    }
+    return $success;
   }
 
 }

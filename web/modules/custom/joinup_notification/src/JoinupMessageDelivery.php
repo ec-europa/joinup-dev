@@ -11,37 +11,19 @@ use Drupal\user\UserInterface;
 
 /**
  * Provides a service class for creating and delivering messages.
- *
- * @todo Since this class is a service it acts as a singleton and all data that
- *   is stored in properties will be persisted and be present the next time the
- *   service is called. This will cause problems if this is used more than once,
- *   especially because if different calls store data on both the `$accounts`
- *   and `$mails` properties.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4169
  */
 class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
 
   /**
-   * The message to be delivered.
+   * A list of message digest notifier plugin IDs.
    *
-   * @var \Drupal\message\MessageInterface
+   * @var array
    */
-  protected $message;
-
-  /**
-   * A list of user accounts acting as recipients for the message.
-   *
-   * @var \Drupal\user\UserInterface[]
-   */
-  protected $accounts = [];
-
-  /**
-   * E-mail recipients.
-   *
-   * @var string[]
-   */
-  protected $mails = [];
+  const DIGEST_NOTIFIER_IDS = [
+    'daily' => 'message_digest:daily',
+    'weekly' => 'message_digest:weekly',
+    'monthly' => 'message_digest:monthly',
+  ];
 
   /**
    * The message notifier service.
@@ -49,13 +31,6 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    * @var \Drupal\message_notify\MessageNotifier
    */
   protected $messageNotifier;
-
-  /**
-   * Additional arguments.
-   *
-   * @var array
-   */
-  protected $arguments = [];
 
   /**
    * Constructs a new Joinup deliver service object.
@@ -70,108 +45,152 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function setMessage(MessageInterface $message): JoinupMessageDeliveryInterface {
-    $this->message = $message;
-    return $this;
+  public function sendMessageToMultipleUsers(MessageInterface $message, array $accounts, array $notifier_options = []): bool {
+    $recipients_metadata = [];
+    /** @var \Drupal\user\UserInterface $account */
+    foreach ($accounts as $account) {
+      // Throw an exception when attempting to send mails to anonymous users or
+      // users that for some reason do not have an e-mail address set.
+      if ($account->isAnonymous()) {
+        throw new \LogicException('Cannot send mail to an anonymous user.');
+      }
+      $mail = $account->getEmail();
+      if (empty($mail)) {
+        throw new \LogicException('Cannot send mail to a user that does not have an e-mail address.');
+      }
+
+      // By keying on the user ID we can avoid that a user might get the message
+      // more than once.
+      $recipients_metadata[$account->id()] = [
+        'options' => $notifier_options + ['save on success' => FALSE, 'mail' => $mail],
+        'notifier' => 'email',
+      ];
+    }
+
+    return $this->sendMessage($message, $recipients_metadata);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function createMessage(string $message_template, array $values = []): JoinupMessageDeliveryInterface {
-    // If the template was passed in $values, $message_template take precedence.
-    $values = ['template' => $message_template] + $values;
-    $this->message = Message::create($values);
-    return $this;
+  public function sendMessageToEmailAddresses(MessageInterface $message, array $mails, array $notifier_options = []): bool {
+    $recipients_metadata = [];
+
+    // Ensure uniqueness so that the message is not delivered multiple times to
+    // the same address.
+    foreach (array_unique($mails) as $mail) {
+      $recipients_metadata[] = [
+        'options' => $notifier_options + ['save on success' => FALSE, 'mail' => $mail],
+        'notifier' => 'email',
+      ];
+    }
+
+    return $this->sendMessage($message, $recipients_metadata);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setArguments(array $arguments): JoinupMessageDeliveryInterface {
-    $this->arguments = $arguments;
-    return $this;
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = []): bool {
+    $message = $this->createMessage($message_template, $message_values, $arguments);
+    return $this->sendMessageToMultipleUsers($message, $accounts, $notifier_options);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setRecipients(array $accounts): JoinupMessageDeliveryInterface {
-    $this->accounts = $accounts;
-    return $this;
+  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails, array $notifier_options = [], array $message_values = []): bool {
+    $message = $this->createMessage($message_template, $message_values, $arguments);
+    return $this->sendMessageToEmailAddresses($message, $mails, $notifier_options);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setRecipientsAsEmails(array $mails): JoinupMessageDeliveryInterface {
-    $this->mails = $mails;
-    return $this;
+  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], array $message_values = []): bool {
+    if ($account->isAnonymous()) {
+      throw new \LogicException('Cannot send mail to an anonymous user.');
+    }
+
+    $message = $this->createMessage($message_template, $message_values, $arguments);
+    $message->setOwner($account);
+    $recipients_metadata = [
+      [
+        'options' => $notifier_options,
+        'notifier' => $this->getNotifierId($account),
+      ],
+    ];
+    return $this->sendMessage($message, $recipients_metadata);
   }
 
   /**
-   * {@inheritdoc}
+   * Returns the message digest notifier plugin ID for the given user.
+   *
+   * Users may configure the frequency they wish to receive a message digest.
+   * This returns the corresponding digest notifier plugin ID.
+   *
+   * @param \Drupal\user\UserInterface $account
+   *   The user account for which to return the plugin ID.
+   *
+   * @return string
+   *   The plugin ID.
    */
-  public function addBccRecipients(array $bcc_emails): JoinupMessageDeliveryInterface {
-    // If there are no bcc recipients, return early.
-    if (empty($bcc_emails)) {
-      return $this;
+  protected function getNotifierId(UserInterface $account): string {
+    $frequency = $account->get('field_user_frequency')->value;
+    if (array_key_exists($frequency, self::DIGEST_NOTIFIER_IDS)) {
+      return self::DIGEST_NOTIFIER_IDS[$frequency];
     }
 
-    if (empty($this->message)) {
-      throw new \Exception('The message has not been initialized yet.');
-    }
-    if (!$this->message->hasField('field_message_bcc')) {
-      throw new \Exception('This message type does not support bcc. Please, add the field_message_bcc field to it.');
-    }
-
-    $values = $this->message->get('field_message_bcc')->getValue();
-    $values = array_map(function (array $value): string {
-      return $value['value'];
-    }, $values);
-
-    $final = array_unique(array_merge($values, $bcc_emails));
-    $this->message->set('field_message_bcc', $final);
-    return $this;
+    // Use standard email notification if the user didn't choose a frequency.
+    return 'email';
   }
 
   /**
-   * {@inheritdoc}
+   * Sends the given message to the given recipients.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message to send.
+   * @param array $recipients_metadata
+   *   An array of recipient data, each item an associative array with the
+   *   following keys:
+   *   - options: An associative array of options for the message notifier.
+   *   - notifier: The plugin ID of the message notifier to use.
+   *
+   * @return bool
+   *   Whether or not all messages were successfully sent.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when a message could not be saved.
    */
-  public function sendMail(): bool {
-    if (empty($this->message) || !$this->message instanceof MessageInterface) {
-      throw new \RuntimeException("Message entity not set or is invalid. Use ::setMessage() to set a message entity or ::createMessage() to create one.");
+  protected function sendMessage(MessageInterface $message, array $recipients_metadata): bool {
+    // If the message is not saved, do this right now.
+    if ($message->isNew()) {
+      $message->save();
     }
 
-    $message_arguments = (array) $this->message->getArguments();
-    ksort($message_arguments);
-    ksort($this->arguments);
-    if ($this->arguments !== $message_arguments) {
-      $message_needs_save = TRUE;
-      // Arguments set with ::addArguments() are taking precedence.
-      $arguments = $this->arguments + $message_arguments;
-      $this->message->setArguments($arguments);
-    }
-
-    // If the arguments were altered or message is not saved, do this right now.
-    if (!empty($message_needs_save) || $this->message->isNew()) {
-      $this->message->save();
-    }
-
-    $mails = array_filter(array_map(function (UserInterface $account): ?string {
-      // Anonymous accounts are filtered out.
-      return !$account->isAnonymous() ? $account->getEmail() : NULL;
-    }, $this->accounts));
-
-    // Merge E-mail addresses extracted from passed from user accounts with
-    // those passed directly as recipient E-mail addresses. Ensure uniqueness.
-    $mails = array_unique(array_merge($mails, $this->mails));
-
-    // Send E-mail messages.
-    return array_reduce($mails, function (bool $success, string $mail): bool {
-      $options = ['save on success' => FALSE, 'mail' => $mail];
-      return $success && $this->messageNotifier->send($this->message, $options);
+    return array_reduce($recipients_metadata, function (bool $success, array $recipient_metadata) use ($message): bool {
+      return $this->messageNotifier->send($message, $recipient_metadata['options'], $recipient_metadata['notifier']) && $success;
     }, TRUE);
+  }
+
+  /**
+   * Returns a new Message entity from the given template and arguments.
+   *
+   * @param string $message_template
+   *   The message template to use for creating the message.
+   * @param array $values
+   *   Array of field values to set on the Message entity.
+   * @param array $arguments
+   *   The arguments array to set on the message.
+   *
+   * @return \Drupal\message\MessageInterface
+   *   The message.
+   */
+  protected function createMessage(string $message_template, array $values, array $arguments): MessageInterface {
+    $values['template'] = $message_template;
+    $message = Message::create($values);
+    $message->setArguments($arguments);
+    return $message;
   }
 
 }

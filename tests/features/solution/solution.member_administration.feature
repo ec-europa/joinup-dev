@@ -77,9 +77,9 @@ Feature: Solution membership administration
       | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following email should have been sent:
-      | recipient | Marcia Garcia                                                                             |
-      | subject   | Your role has been change to The Missing Sons                                             |
-      | body      | A solution moderator has changed your role in this group to Member, Solution facilitator. |
+      | recipient | Marcia Garcia                                                                         |
+      | subject   | Your role has been changed to facilitator                                             |
+      | body      | Guadalupe Norman has changed your role in solution "The Missing Sons" to facilitator. |
     Then I check the box "Update the member Marcia Garcia"
     Then I select "Remove the facilitator role from the selected members" from "Action"
     And I press the "Apply to selected items" button
@@ -87,6 +87,6 @@ Feature: Solution membership administration
       | success messages                                                             |
       | Remove the facilitator role from the selected members was applied to 1 item. |
     And the following email should have been sent:
-      | recipient | Marcia Garcia                                                       |
-      | subject   | Your role has been change to The Missing Sons                       |
-      | body      | A solution moderator has changed your role in this group to Member. |
+      | recipient | Marcia Garcia                                                                    |
+      | subject   | Your role has been changed to member                                             |
+      | body      | Guadalupe Norman has changed your role in solution "The Missing Sons" to member. |

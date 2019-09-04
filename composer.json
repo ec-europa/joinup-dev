@@ -40,6 +40,7 @@
         "drupal/matomo_reporting_api": "~2.0",
         "drupal/menu_admin_per_menu": "^1.0",
         "drupal/message": "^1.0-rc2",
+        "drupal/message_digest": "^1.0-rc3",
         "drupal/message_notify": "~1.0",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0@beta",
