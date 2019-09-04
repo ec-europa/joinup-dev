@@ -171,6 +171,7 @@ function joinup_notification_mail_alter(array &$message): void {
       $message['headers']['Bcc'] = implode(';', $bcc);
     }
   }
+
 }
 
 /**
