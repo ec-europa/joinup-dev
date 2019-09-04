@@ -78,6 +78,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @When I go to (the homepage of )the :solution solution
    * @When I visit (the homepage of )the :solution solution
+   * @Given I am on (the homepage of )the :solution solution
    */
   public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
