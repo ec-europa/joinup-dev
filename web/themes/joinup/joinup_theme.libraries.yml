@@ -6,7 +6,7 @@ material-design-lite:
     vendor/material-design-lite/material.min.js: {}
 
 global-components:
-  Version: 1.x
+  version: 1.x
   css:
     theme:
       css/style.min.css: {}
@@ -15,8 +15,21 @@ global-components:
   dependencies:
     - core/jquery
 
+global-search:
+  version: 1.x
+  js:
+    js/global-search.js: {}
+  dependencies:
+    - joinup_theme/mdl-chip-input
+
+mdl-chip-input:
+  version: dev-master
+  js:
+    # Hacked version of vendor/mdl-chip-input/dist/mdl-chips-input.js
+    js/mdl-chips-input.js: {}
+
 form-components:
-  Version: 1.x
+  version: 1.x
   js:
     js/form.js: {}
     vendor/autosize/dist/autosize.js: {}
@@ -28,7 +41,7 @@ form-components:
     - core/drupalSettings
 
 fieldset-show-more:
-  Version: 1.x
+  version: 1.x
   js:
     js/fieldset-show-more.js: {}
   dependencies:

@@ -23,7 +23,7 @@ Feature: Global search
     # @todo The search page cache should be cleared when new content is added.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     And the cache has been cleared
-    When I am at "/search"
+    When I visit the search page
     # All content is visible.
     Then I should see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
@@ -34,9 +34,12 @@ Feature: Global search
     And the "policy domain" inline facet should allow selecting the following values "Demography (2), Statistics and Analysis (1)"
     And "everywhere" should be selected in the "spatial coverage" inline facet
     And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1), Luxembourg (1)"
+    # Check that only one search field is available. In an earlier version of
+    # Joinup there were two search fields, but this was confusing users.
+    And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
-    When I click "Demography" in the "policy domain" inline facet
+    When I click "Demography" in the "policy domain" inline facet in the "Left sidebar" region
     Then "Demography (2)" should be selected in the "policy domain" inline facet
     And the "policy domain" inline facet should allow selecting the following values "Statistics and Analysis (1), all policy domains"
     And "everywhere" should be selected in the "spatial coverage" inline facet
@@ -47,7 +50,7 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I click "Belgium" in the "spatial coverage" inline facet
+    When I click "Belgium" in the "spatial coverage" inline facet in the "Left sidebar" region
     Then "Belgium (1)" should be selected in the "spatial coverage" inline facet
     And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), everywhere"
     And "Demography (1)" should be selected in the "policy domain" inline facet
@@ -58,20 +61,27 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Reset the search by visiting again the search page.
-    Given I am at "/search"
+    Given I am on the search page
+    Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I click the Solutions content tab
-    Then the "policy domain" inline facet should allow selecting the following values "Demography (1)"
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
+    When I click "News" in the "Left sidebar"
+    Then the "News" content checkbox item should be selected
+    And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+
+    When I click "Solutions" in the "Left sidebar"
+    Then the "Solutions" content checkbox item should be selected
+    And the "News" content checkbox item should be selected
+    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+    And the "policy domain" inline facet should allow selecting the following values "Demography (1), Statistics and Analysis (1)"
+    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), Luxembourg (1)"
     And I should not see the "Molecular cooking collection" tile
-    And I should not see the "El Celler de Can Roca" tile
+    And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
     And I should see the "Foam" tile
 
     # Launch a text search.
-    When I fill in "Search" with "Cooking"
-    And I press "Search"
+    When I enter "Cooking" in the search bar and press enter
     Then I should see the "Molecular cooking collection" tile
     And I should see the "Foam" tile
     But I should not see the "Spherification" tile
@@ -128,70 +138,70 @@ Feature: Global search
       | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
     # "Alpha" is used in all the rdf entities titles.
-    When I enter "Alpha" in the header search bar and hit enter
+    When I enter "Alpha" in the search bar and press enter
     Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
-    When I enter "omega" in the header search bar and hit enter
+    When I enter "omega" in the search bar and press enter
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 
     # "Beta" is used in all the rdf entities body fields.
-    When I enter "beta" in the header search bar and hit enter
+    When I enter "beta" in the search bar and press enter
     Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
-    When I enter "epsilon" in the header search bar and hit enter
+    When I enter "epsilon" in the search bar and press enter
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 
     # "Alphabet" is used in all the keywords fields.
-    When I enter "Alphabet" in the header search bar and hit enter
+    When I enter "Alphabet" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
-    When I enter "gamma" in the header search bar and hit enter
+    When I enter "gamma" in the search bar and press enter
     Then the page should show the tiles "Collection alpha"
     And I should not see the text "Newsletter omega"
 
     # "Delta" is used in headline and short titles.
-    When I enter "delta" in the header search bar and hit enter
+    When I enter "delta" in the search bar and press enter
     Then the page should show the tiles "News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
 
     # Search for the event fields: agenda, location, address, organisation, scope.
-    When I enter "agenda" in the header search bar and hit enter
+    When I enter "agenda" in the search bar and press enter
     Then the page should show the tiles "Event Omega"
-    When I enter "location" in the header search bar and hit enter
+    When I enter "location" in the search bar and press enter
     Then the page should show the tiles "Alternative event"
-    When I enter "place" in the header search bar and hit enter
+    When I enter "place" in the search bar and press enter
     Then the page should show the tiles "Event Omega"
-    When I enter "organisation" in the header search bar and hit enter
+    When I enter "organisation" in the search bar and press enter
     Then the page should show the tiles "Alternative event"
-    When I enter "international" in the header search bar and hit enter
+    When I enter "international" in the search bar and press enter
     Then the page should show the tiles "Event Omega"
 
     # The owner and contact information names should be indexed inside the solutions/releases they are linked to.
-    When I enter "responsible" in the header search bar and hit enter
+    When I enter "responsible" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha"
     # Visit the homepage to be sure that the test fetches the correct updated page.
     When I go to the homepage
-    And I enter "contact" in the header search bar and hit enter
+    And I enter "contact" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
-    When I enter "Jenessa" in the header search bar and hit enter
+    When I enter "Jenessa" in the search bar and press enter
     Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "freeman" in the header search bar and hit enter
+    When I enter "freeman" in the search bar and press enter
     Then the page should show the tiles "Ulysses Freeman"
-    When I enter "clyffco" in the header search bar and hit enter
+    When I enter "clyffco" in the search bar and press enter
     Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "Omero+snc" in the header search bar and hit enter
+    When I enter "Omero+snc" in the search bar and press enter
     Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Collections and solutions are shown first in search results with the same relevance.
@@ -222,7 +232,7 @@ Feature: Global search
       | Family name | Birdman      |
 
     # The bird is the word... to search.
-    When I enter "Bird" in the header search bar and hit enter
+    When I enter "Bird" in the search bar and press enter
     Then I should see the following tiles in the correct order:
       | Ornithology: the study of birds   |
       | Bird outposts in the wild         |

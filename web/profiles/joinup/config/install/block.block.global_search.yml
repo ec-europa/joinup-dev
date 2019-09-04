@@ -1,27 +1,25 @@
 langcode: en
 status: true
 dependencies:
-  config:
-    - facets.facet.group
   module:
-    - facets
     - joinup_core
+    - joinup_search
   theme:
     - joinup_theme
-id: group_facet
+id: global_search
 theme: joinup_theme
-region: sidebar_left
-weight: -11
+region: header
+weight: -19
 provider: null
-plugin: 'facet_block:group'
+plugin: joinup_search_global_search
 settings:
-  id: 'facet_block:group'
-  label: 'Search page - Group facet'
-  provider: facets
+  id: joinup_search_global_search
+  label: 'Global search'
+  provider: joinup_search
   label_display: '0'
 visibility:
   request_route:
     id: request_route
     routes: view.search.page_1
-    negate: false
+    negate: true
     context_mapping: {  }

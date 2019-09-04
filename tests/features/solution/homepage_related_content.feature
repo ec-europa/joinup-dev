@@ -85,27 +85,6 @@ Feature: Solution homepage
     # The total downloads of the 2 distributions should be shown.
     And I should see the text "1172"
 
-  Scenario: Forward search facets to the search page (Advanced search)
-    When I go to the homepage of the "Information sharing protocol" solution
-    When I click the Document content tab
-    And I click "E-inclusion" in the "solution policy domain" inline facet
-    And I click "European Union" in the "solution spatial coverage" inline facet
-    And I click "Advanced search"
-    Then I should be on the search page
-    And the Document content tab should be selected
-    And "Information sharing protocol (1)" should be selected in the "from" inline facet
-    And "E-inclusion (1)" should be selected in the "policy domain" inline facet
-    And "European Union (1)" should be selected in the "spatial coverage" inline facet
-    # Check that unfiltered content is not shown, including related content.
-    And I should see the "IS protocol draft 2" tile
-    But I should not see the "IS protocol paper 1" tile
-    And I should not see the "Protocol draft" tile
-    And I should not see the "PDF version" tile
-    And I should not see the "ZIP version" tile
-    And I should not see the "Fireproof" tile
-    And I should not see the "Code of conduct" tile
-    And I should not see the "Information sharing protocol" tile
-
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.

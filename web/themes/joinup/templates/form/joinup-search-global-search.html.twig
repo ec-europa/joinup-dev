@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the global search bar.
+ *
+ * Available variables:
+ * - filters: the search filters, to be displayed as chips.
+ *
+ * @see template_preprocess_joinup_search_global_search()
+ *
+ * @ingroup themeable
+ */
+#}
+{{ attach_library('joinup_theme/global-search') }}
+<label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon" for="search-bar__input">
+    <span class="search-bar__icon icon icon--search"></span>
+</label>
+
+<form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
+    {% for id, filter in filters %}
+        <input type="hidden" class="mdl-chipfield__input" name="f[]" value="{{ id }}" data-description="{{ filter }}">
+    {% endfor %}
+    <input class="search-bar__input mdl-textfield__input" type="text" name="keys" id="search-bar__input">
+</form>

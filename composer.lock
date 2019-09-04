@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd4ce8a8cc958f5efeded31a3757f948",
+    "content-hash": "27a11efa7e96332dc8eb276267aa7b08",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -1677,6 +1677,17 @@
                 "notation"
             ],
             "time": "2017-01-20T21:14:22+00:00"
+        },
+        {
+            "name": "dkarv/mdl-chip-input",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:dkarv/mdl-chip-input.git",
+                "reference": "master"
+            },
+            "type": "drupal-theme-library",
+            "time": "2018-10-19T20:09:36+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -13056,7 +13067,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-08-15T10:45:14+00:00"
         },
         {
             "name": "drupal/coder",
@@ -15950,6 +15962,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "dkarv/mdl-chip-input": 20,
         "drupal/cas": 20,
         "drupal/cas_account_link": 20,
         "drupal/cas_attributes": 20,

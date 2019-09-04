@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Theme override for a 'form' element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ */
+#}
+{{ attach_library('joinup_theme/global-search') }}
+<label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon" for="search-bar__input">
+  <span class="search-bar__icon icon icon--search"></span>
+</label>
+<form{{ attributes.addClass('search-bar__input-container mdl-textfield__expandable-holder') }}>
+  {% for id, filter in filters %}
+    <input type="hidden" class="mdl-chipfield__input" name="f[]" value="{{ id }}" data-description="{{ filter }}">
+  {% endfor %}
+  {{ children }}
+</form>

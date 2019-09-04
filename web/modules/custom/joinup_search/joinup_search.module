@@ -17,6 +17,17 @@ use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
+ * Implements hook_theme().
+ */
+function joinup_search_theme($existing, $type, $theme, $path) {
+  return [
+    'joinup_search_global_search' => [
+      'variables' => ['filters' => []],
+    ],
+  ];
+}
+
+/**
  * Implements hook_entity_field_access().
  *
  * Grant access to fields of type search only to moderators except from
@@ -62,8 +73,11 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
  *
  * Sets a default search ordering for the content displayed in the collections'
  * and solutions' overview page as well as the custom pages.
+ *
+ * @throws \Drupal\search_api\SearchApiException
+ *   Thrown when the Search API server instance could not be loaded.
  */
-function joinup_search_search_api_query_alter(QueryInterface &$query) {
+function joinup_search_search_api_query_alter(QueryInterface $query) {
   if ($query->getSearchId() === 'rdf_entity.field_collection_content') {
     // In case the user has filtered by event, first sort by the event date.
     // @todo: This will be generic when event calendar will be implemented for
@@ -78,16 +92,16 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
     }
   }
 
+  // Sort collection content by creation date, newest first.
   $search_ids = [
     'rdf_entity.field_collection_content',
     'rdf_entity.field_is_content',
     'node.field_cp_content_listing',
   ];
 
-  if (!in_array($query->getSearchId(), $search_ids)) {
-    return;
+  if (in_array($query->getSearchId(), $search_ids)) {
+    $query->sort('entity_created', 'DESC');
   }
-  $query->sort('entity_created', 'DESC');
 }
 
 /**

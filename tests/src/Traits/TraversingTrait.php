@@ -213,16 +213,23 @@ trait TraversingTrait {
    *
    * @param string $alias
    *   The facet alias.
+   * @param \Behat\Mink\Element\NodeElement $region
+   *   (optional) Limit the search to a specific region. If empty, the whole
+   *   page will be used. Defaults to NULL.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The facet node element.
    *
    * @throws \Exception
-   *   Thrown when the facet is not found in the page.
+   *   Thrown when the facet is not found in the designated area.
    */
-  protected function findFacetByAlias(string $alias): NodeElement {
+  protected function findFacetByAlias(string $alias, NodeElement $region = NULL): NodeElement {
+    if ($region === NULL) {
+      $region = $this->getSession()->getPage();
+    }
+
     $facet_id = self::getFacetIdFromAlias($alias);
-    $element = $this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
+    $element = $region->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
 
     if (!$element) {
       throw new \Exception("The facet '$alias' was not found in the page.");
@@ -259,6 +266,7 @@ trait TraversingTrait {
       'My content' => 'content_my_content',
       'Event date' => 'event_date',
       'Collection event date' => 'collection_event_type',
+      'Content types' => 'type',
     ];
 
     if (!isset($mappings[$alias])) {
@@ -394,6 +402,72 @@ trait TraversingTrait {
       throw new \Exception(sprintf('No element with locator "%s" found in the "%s" region on the page %s.', $locator, $region, $session->getCurrentUrl()));
     }
     return $element;
+  }
+
+  /**
+   * Returns selectors used to find elements with a human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return array[]
+   *   An indexed array of selectors intended to be used with Mink's `find()`
+   *   methods. Each value is a tuple containing two strings:
+   *   - 0: the selector, e.g. 'css' or 'xpath'.
+   *   - 1: the locator.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getSelectorsMatchingElementAlias(string $alias): array {
+    $elements = [
+      // The various search input fields.
+      [
+        'names' => [
+          'search bar',
+          'search bars',
+          'search field',
+          'search fields',
+        ],
+        'selectors' => [
+          // The site-wide search field in the top right corner.
+          ['css', 'input#search-bar__input'],
+          // The search field on the search result pages.
+          ['css', '#block-exposed-form-search-page input.form-text'],
+        ],
+      ],
+    ];
+
+    foreach ($elements as $element) {
+      if (in_array($alias, $element['names'])) {
+        return $element['selectors'];
+      }
+    }
+
+    throw new \InvalidArgumentException("No selectors are defined for the element named '$alias'.");
+  }
+
+  /**
+   * Returns elements that match the given human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements matching the identifier.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getElementsMatchingElementAlias(string $alias): array {
+    $elements = [];
+
+    foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
+      list ($selector, $locator) = $selector_tuple;
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
+    }
+
+    return $elements;
   }
 
   /**
