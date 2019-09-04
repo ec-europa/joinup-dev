@@ -127,10 +127,10 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    *
    * Skip generating the arguments during the sending process.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $notifier_options = [], array $message_values = []): bool {
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, User::loadMultiple($user_ids)) && $success;
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, User::loadMultiple($user_ids), $notifier_options, $message_values) && $success;
     }
     return $success;
   }
