@@ -75,6 +75,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     /** @var string $template */
     /** @var string $recipient */
     /** @var string $recipient_mail */
+    /** @var string $bcc */
     /** @var string $from */
     /** @var string $body */
     /** @var string $subject */
@@ -133,7 +134,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
 
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
-      if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
+      if (preg_match('/\B@\S/', $mail_body) || preg_match('/\B@\S/', $mail['subject'])) {
         throw new \Exception('There were arguments found in the subject or the body of the email that were not replaced.');
       }
 
@@ -164,6 +165,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
         if ($template !== $message_template->getDescription() && $template !== $message_template->getLabel()) {
           continue;
         };
+      }
+
+      if (isset($bcc)) {
+        Assert::assertContains($bcc, $mail['headers']['Bcc'] ?? "", 'Bcc is properly set to the email.');
       }
 
       // We found a match. Stop searching.

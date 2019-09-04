@@ -5,6 +5,8 @@
  * Module handling notifications in joinup.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -126,11 +128,13 @@ function joinup_notification_dispatch_notification($operation, $event_name, Enti
 /**
  * Implements hook_mail_alter().
  *
- * Converts in HTML the mails sent by the user and joinup_user modules.
- *
- * For emails sent by the message_notify module, add a prefix and a suffix.
+ * Performs the following alterations:
+ * - Converts the mails sent by the "user" and "joinup_user" modules to HTML.
+ * - Adds the following data to emails sent by the "message_notify" module:
+ *   - Prefixes the mail body with a greeting, and ends it with a goodbye.
+ *   - Adds a list of BCC recipients.
  */
-function joinup_notification_mail_alter(&$message) {
+function joinup_notification_mail_alter(array &$message): void {
   if ($message['module'] === 'user' || $message['module'] === 'joinup_user') {
     // Convert new lines to paragraphs and line breaks. Also transform the body
     // to markup.
@@ -155,6 +159,16 @@ function joinup_notification_mail_alter(&$message) {
       $prefix = t('<p>Dear @first_name,</p>', ['@first_name' => $first_name]);
       $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
       $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
+    }
+
+    // Add BCC recipients if they are present.
+    /** @var \Drupal\message\Entity\Message $message_entity */
+    $message_entity = $message['params']['message_entity'] ?? NULL;
+    if ($message_entity && $message_entity->hasField('field_message_bcc') && !$message_entity->get('field_message_bcc')->isEmpty()) {
+      $bcc = array_map(function ($value) {
+        return $value['value'];
+      }, $message_entity->get('field_message_bcc')->getValue());
+      $message['headers']['Bcc'] = implode(';', $bcc);
     }
   }
 }
