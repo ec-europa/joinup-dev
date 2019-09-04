@@ -106,7 +106,6 @@
     padding-left: 60px
 
 .fieldset--textarea
-  overflow: hidden
   img
     margin-bottom: 16px
   img.align-left
@@ -123,6 +122,12 @@
     table-layout: fixed
     td
       vertical-align: top
+  &:after
+    content: "."
+    visibility: hidden
+    display: block
+    height: 0
+    clear: both
 
 // Dependiencies
 // --------------------------------------------------
