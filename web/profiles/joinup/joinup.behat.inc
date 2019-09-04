@@ -36,6 +36,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -630,6 +631,13 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception('Please use "pinned" instead of "sticky".');
     }
 
+    if (property_exists($node, 'meta_entity')) {
+      $node->meta_entity = MetaEntity::create([
+        'type' => 'visit_count',
+        'count' => (int) $node->meta_entity,
+      ]);
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -697,7 +705,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
-        'visits' => 'field_visit_count',
+        'visits' => 'meta_entity',
         'featured' => 'field_site_featured',
         'pinned site-wide' => 'field_site_pinned',
       ],
