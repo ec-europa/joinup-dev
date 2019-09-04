@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\joinup\Traits\SearchTrait;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -144,6 +145,14 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
           $values['field_ad_access_url'][$key] = FileUrlHandler::fileToUrl($this->createFile($url));
         }
       }
+    }
+
+    if (array_key_exists('downloads', $values)) {
+      $values['meta_entity'] = MetaEntity::create([
+        'type' => 'download_count',
+        'count' => (int) $values['downloads'],
+      ]);
+      unset($values['downloads']);
     }
 
     $asset_distribution = $this->createRdfEntity('asset_distribution', $values);
@@ -288,7 +297,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'access url' => 'field_ad_access_url',
       'creation date' => 'created',
       'description' => 'field_ad_description',
-      'downloads' => 'field_download_count',
+      'downloads' => 'downloads',
       'file size' => 'field_ad_file_size',
       'format' => 'field_ad_format',
       'licence' => 'field_ad_licence',
