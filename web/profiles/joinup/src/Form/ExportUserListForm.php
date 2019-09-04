@@ -44,6 +44,10 @@ class ExportUserListForm extends FormBase {
       'input' => ['getFieldValues', ['mail']],
       'output' => ['getFirstValue', 'formatString'],
     ],
+    'EU Login name' => [
+      'input' => ['getFieldValues', ['eulogin_authname']],
+      'output' => ['getFirstValue', 'formatString'],
+    ],
     'Status' => [
       'input' => ['getFieldValues', ['status']],
       'output' => ['getFirstValue', 'formatStatus'],

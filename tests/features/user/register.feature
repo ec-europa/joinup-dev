@@ -6,7 +6,7 @@ Feature: User registration
   Scenario: User can find the register page
     Given I am an anonymous user
     When I am on the homepage
-    And I click "Sign in"
+    And I click "Sign in (legacy)"
     Then I should see the heading "Sign in"
     When I click "Create new account"
     Then I should see the heading "Create new account"
@@ -64,13 +64,13 @@ Feature: User registration
     And the account for SuperUser should be active
 
   @email
-  Scenario: A user account whose first and last names are the identical is
+  Scenario: A user account whose first and last names are identical is
     deleted after creation but the user is receiving all notification as if the
     account would have been created.
 
     Given I am an anonymous user
     And I am on the homepage
-    When I click "Sign in"
+    When I click "Sign in (legacy)"
     Then I click "Create new account"
 
     Given I fill in "Email" with "spam@example.com"

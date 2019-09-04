@@ -1,0 +1,145 @@
+<?php
+
+/**
+ * @file
+ * Main functions and hook implementations of the Joinup EU Login module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\SubformState;
+use Drupal\Core\Url;
+use Drupal\joinup_eulogin\JoinupEuLoginAuthnameItemList;
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Adds a computed field to easily retrieve the external authname of a user.
+ */
+function joinup_eulogin_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() === 'user') {
+    $fields['eulogin_authname'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('EU Login name'))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('display', FALSE)
+      ->setComputed(TRUE)
+      ->setCardinality(1)
+      ->setClass(JoinupEuLoginAuthnameItemList::class);
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_eulogin_form_cas_account_link_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (\Drupal::moduleHandler()->moduleExists('email_registration')) {
+    // Apply the email_registration form alter on sub-form.
+    email_registration_form_user_login_form_alter($form['login'], $form_state);
+
+    // As the login form is a sub-form, we cannot use the validator callback
+    // provided by the 'email_registration' module. Replace the module validator
+    // with our own.
+    $index = array_search('email_registration_user_login_validate', $form['login']['name']['#element_validate']);
+    if ($index !== FALSE) {
+      unset($form['login']['name']['#element_validate']);
+    }
+    $form['login']['name']['#element_validate'][] = 'joinup_eulogin_email_registration_validation';
+  }
+}
+
+/**
+ * Wraps the email_registration_user_login_validate() validator.
+ *
+ * As the login form is a sub-form, we cannot just use the validator callback
+ * provided by the 'email_registration' module as that expects that the user
+ * values are root-level values. But in this case we're one level below, so we
+ * need to pass a (sub)form state object on that has the user values on the root
+ * level to the 'email_registration' module validator.
+ *
+ * @param array $element
+ *   The Form API form element render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The Form API form state object.
+ * @param array $form
+ *   The Form API form render array.
+ *
+ * @see email_registration_user_login_validate()
+ */
+function joinup_eulogin_email_registration_validation(array $element, FormStateInterface $form_state, array $form): void {
+  $subform_state = SubformState::createForSubform($form['login'], $form, $form_state);
+  email_registration_user_login_validate($element, $subform_state);
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Disable fields that are managed by EU Login.
+ */
+function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  /** @var \Drupal\user\UserInterface $account */
+  $account = $form_state->getFormObject()->getEntity();
+
+  // This account is not linked to an EU Login account.
+  if ($account->get('eulogin_authname')->isEmpty()) {
+    return;
+  }
+
+  $mapping = \Drupal::configFactory()
+    ->get('cas_attributes.settings')
+    ->get('field.mappings');
+
+  if ($mapping) {
+    /** @var \Drupal\user\UserDataInterface $user_data */
+    $user_data = \Drupal::service('user.data');
+
+    // The CAS Attributes tokens are always in lowercase. Lowercase also the
+    // attributes received from CAS so that we can properly compare them later.
+    // @see cas_attributes_tokens()
+    $attributes = array_change_key_case(
+      // Cast to an array to overcome the NULL value when user data is missed.
+      (array) $user_data->get('joinup_eulogin', $account->id(), 'attributes'),
+      CASE_LOWER
+    );
+
+    foreach ($mapping as $field_name => $token) {
+      // The token is in the format `[cas:attribute:attribute_name]`. Extract
+      // the attribute name from it.
+      $attribute_name = substr(substr($token, 15), 0, -1);
+      if (!empty($attributes[$attribute_name])) {
+        $form[$field_name]['#disabled'] = TRUE;
+        $form[$field_name]['widget'][0]['value']['#description'] = t('This field can be edited only from the EU Login account.');
+        // Prevent submission of an empty, required and disabled field. That
+        // would cause the validation to fail.
+        $form[$field_name]['widget'][0]['value']['#required'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Show a warning on the Drupal logon form.
+ */
+function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $weight = ($form['name']['#weight'] ?? 0) - 1;
+  $form['warning'] = [
+    '#theme' => 'status_messages',
+    '#message_list' => [
+      'warning' => [
+        '#markup' => t('As of 01/02/2020, <a href=":url">EU Login</a> will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!', [
+          ':url' => Url::fromRoute('cas.login')->toString(),
+        ]),
+      ],
+    ],
+    '#status_headings' => [
+      'warning' => t('Warning message'),
+    ],
+    '#weight' => $weight,
+  ];
+}

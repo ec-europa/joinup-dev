@@ -1,0 +1,23 @@
+joinup_eulogin.settings:
+  type: config_object
+  label: 'Joinup EU Login Settings'
+  mapping:
+    ticket_validation:
+      type: mapping
+      label: 'CAS ticket validation'
+      mapping:
+        path:
+          type: string
+          label: 'Path'
+        assurance_level:
+          type: string
+          label: 'Assurance level'
+        ticket_types:
+          type: sequence
+          label: 'Ticket types'
+          sequence:
+            type: string
+            label: 'Ticket type'
+        user_details:
+            type: boolean
+            label: 'Provide user details'

@@ -129,3 +129,10 @@ function joinup_user_post_update_reset_default_icons() {
   include_once __DIR__ . '/joinup_user.install';
   joinup_user_setup_default_avatar();
 }
+
+/**
+ * Enable the "joinup_eulogin" module.
+ */
+function joinup_user_post_update_install_joinup_eulogin() {
+  \Drupal::service('module_installer')->install(['joinup_eulogin']);
+}
