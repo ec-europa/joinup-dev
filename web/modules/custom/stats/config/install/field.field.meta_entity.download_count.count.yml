@@ -11,7 +11,7 @@ field_name: count
 entity_type: meta_entity
 bundle: download_count
 label: 'Download count'
-description: 'The number of times the file attached to this distribution has been downloaded. This data is retrieved from the Matomo analytics platform and is updated on regular intervals, causing any manually entered data to be overwritten.'
+description: 'The number of times the file attached to the target entity of this metadata has been downloaded. This data is retrieved from the Matomo analytics platform and is updated on regular intervals, causing any manually entered data to be overwritten.'
 required: false
 translatable: false
 default_value: {  }
