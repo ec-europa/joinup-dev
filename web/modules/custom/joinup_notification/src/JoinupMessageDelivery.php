@@ -91,28 +91,28 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = []): bool {
-    $message = $this->createMessage($message_template, $arguments);
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = []): bool {
+    $message = $this->createMessage($message_template, $message_values, $arguments);
     return $this->sendMessageToMultipleUsers($message, $accounts, $notifier_options);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails, array $notifier_options = []): bool {
-    $message = $this->createMessage($message_template, $arguments);
+  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails, array $notifier_options = [], array $message_values = []): bool {
+    $message = $this->createMessage($message_template, $message_values, $arguments);
     return $this->sendMessageToEmailAddresses($message, $mails, $notifier_options);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = []): bool {
+  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], array $message_values = []): bool {
     if ($account->isAnonymous()) {
       throw new \LogicException('Cannot send mail to an anonymous user.');
     }
 
-    $message = $this->createMessage($message_template, $arguments);
+    $message = $this->createMessage($message_template, $message_values, $arguments);
     $message->setOwner($account);
     $recipients_metadata = [
       [
@@ -178,14 +178,17 @@ class JoinupMessageDelivery implements JoinupMessageDeliveryInterface {
    *
    * @param string $message_template
    *   The message template to use for creating the message.
+   * @param array $values
+   *   Array of field values to set on the Message entity.
    * @param array $arguments
    *   The arguments array to set on the message.
    *
    * @return \Drupal\message\MessageInterface
    *   The message.
    */
-  protected function createMessage(string $message_template, array $arguments): MessageInterface {
-    $message = Message::create(['template' => $message_template]);
+  protected function createMessage(string $message_template, array $values, array $arguments): MessageInterface {
+    $values['template'] = $message_template;
+    $message = Message::create($values);
     $message->setArguments($arguments);
     return $message;
   }

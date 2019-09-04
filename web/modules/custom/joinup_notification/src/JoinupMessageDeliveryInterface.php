@@ -93,6 +93,8 @@ interface JoinupMessageDeliveryInterface {
    * @param array $notifier_options
    *   An optional associative array of options to pass to the notifier plugin
    *   that is used (either Email or Digest).
+   * @param array $message_values
+   *   Optional array of field values to send on the message entity.
    *
    * @return bool
    *   Whether or not the message was sent successfully.
@@ -101,7 +103,7 @@ interface JoinupMessageDeliveryInterface {
    *   Thrown when a message is attempted to be sent to a user which doesn't
    *   have an e-mail address.
    */
-  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = []): bool;
+  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], array $message_values = []): bool;
 
   /**
    * Sends a Message based on the given message template to multiple users.
@@ -118,11 +120,13 @@ interface JoinupMessageDeliveryInterface {
    * @param array $notifier_options
    *   An optional associative array of options to pass to the Email notifier
    *   plugin.
+   * @param array $message_values
+   *   Optional array of field values to send on the message entity.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = []): bool;
+  public function sendMessageTemplateToMultipleUsers(string $message_template, array $arguments, array $accounts, array $notifier_options = [], array $message_values = []): bool;
 
   /**
    * Sends a Message based on the given message template to the given addresses.
@@ -140,10 +144,12 @@ interface JoinupMessageDeliveryInterface {
    * @param array $notifier_options
    *   An optional associative array of options to pass to the Email notifier
    *   plugin.
+   * @param array $message_values
+   *   Optional array of field values to send on the message entity.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails, array $notifier_options = []): bool;
+  public function sendMessageTemplateToEmailAddresses(string $message_template, array $arguments, array $mails, array $notifier_options = [], array $message_values = []): bool;
 
 }
