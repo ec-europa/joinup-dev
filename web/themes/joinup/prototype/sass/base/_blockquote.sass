@@ -8,13 +8,26 @@ blockquote
   position: relative
   clear: both
   overflow: hidden
-  margin: 24px -60px
-  padding: 40px 80px
+  margin: 24px -20px
+  padding: 20px 40px
   color: #fff
   background-color: $color-blue-medium
+  font-size: $font-size-base
+  font-weight: $font-weight
+  font-style: italic
+  line-height: 1.8
   &:before,
   &:after
     display: none
+  +breakpoint(tablet)
+    padding: 30px 50px
+    margin-left: -30px
+    margin-right: -30px
+  +breakpoint(desktop)
+    padding: 40px 80px
+    margin-left: -60px
+    margin-right: -60px
+
 
 .blockquote__paragraph
   font-size: $font-size-base
