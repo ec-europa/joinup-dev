@@ -140,6 +140,29 @@ index e6cfea03..5cc1391f 100644
 +  }
 +
  }
+diff --git a/src/Entity/Index.php b/src/Entity/Index.php
+index 7765e079..5c64000f 100644
+--- a/src/Entity/Index.php
++++ b/src/Entity/Index.php
+@@ -1184,6 +1184,18 @@ class Index extends ConfigEntityBase implements IndexInterface {
+       ->createQuery($this, $options);
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getCacheTagsToInvalidate() {
++    // Whenever this entity changes we need to invalidate all caches tagged with
++    // the config entity, and also all listings that contain results from this
++    // index.
++    return array_merge(parent::getCacheTagsToInvalidate(), [
++      'search_api_list:' . $this->id(),
++    ]);
++  }
++
+   /**
+    * {@inheritdoc}
+    */
 diff --git a/src/Form/IndexForm.php b/src/Form/IndexForm.php
 index 5615fd99..16e3d068 100644
 --- a/src/Form/IndexForm.php
@@ -394,7 +417,7 @@ index 9f6e7100..6e056206 100644
          ->getCacheMetadata()
          ->getCacheContexts();
 diff --git a/src/Plugin/views/cache/SearchApiTagCache.php b/src/Plugin/views/cache/SearchApiTagCache.php
-index 48e7728f..9527c82a 100644
+index 48e7728f..6132e996 100644
 --- a/src/Plugin/views/cache/SearchApiTagCache.php
 +++ b/src/Plugin/views/cache/SearchApiTagCache.php
 @@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -406,16 +429,14 @@ index 48e7728f..9527c82a 100644
   *
   * @ingroup views_cache_plugins
   *
-@@ -78,8 +78,14 @@ class SearchApiTagCache extends Tag {
+@@ -78,8 +78,10 @@ class SearchApiTagCache extends Tag {
     */
    public function getCacheTags() {
      $tags = $this->view->storage->getCacheTags();
-+    // Add the list cache tag of the search index, so that the view will be
-+    // invalidated whenever the index is updated.
-     $tag = 'search_api_list:' . $this->getQuery()->getIndex()->id();
-     $tags = Cache::mergeTags([$tag], $tags);
-+    // Also add the cache tags of the index itself, so that the view will be
-+    // invalidated if the configuration of the index changes.
+-    $tag = 'search_api_list:' . $this->getQuery()->getIndex()->id();
+-    $tags = Cache::mergeTags([$tag], $tags);
++    // Add the cache tags of the search index, so that the view will be
++    // invalidated whenever the index changes or its contents are updated.
 +    $index_tags = $this->getQuery()->getIndex()->getCacheTagsToInvalidate();
 +    $tags = Cache::mergeTags($index_tags, $tags);
      return $tags;

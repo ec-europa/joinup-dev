@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -43,6 +44,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ContextualLinksTrait;
   use EntityTrait;
   use PageCacheTrait;
+  use SearchTrait;
   use TagTrait;
   use TraversingTrait;
   use UserTrait;
@@ -1418,6 +1420,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // not remove focus from the field so the autocomplete results remain
     // visible and can be inspected.
     $element->postValue(['value' => [$value]]);
+  }
+
+  /**
+   * Commits the search index before starting the scenario.
+   *
+   * Use this in scenarios for which it is important that the search index is
+   * committed before any content is created in the scenario.
+   *
+   * Since most scenarios start with creating some test content and this will
+   * automatically commit the search index, this is only needed for tests that
+   * perform asserts before creating any content of their own, since the search
+   * index might still contain stale content from the previous scenario.
+   *
+   * @BeforeScenario @commitSearchIndex
+   */
+  public function commitSearchIndexBeforeScenario() {
+    $this->commitSearchIndex();
   }
 
   /**
