@@ -359,6 +359,14 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Set title back in the global page variables.
   $variables['title'] = $title;
+
+  // Move title on batch pages from header to content.
+  if ($route_name == 'system.batch_page.html') {
+    unset($variables['page']['header']['#type']);
+    unset($variables['page']['header']['#title']);
+
+    $variables['custom_content_title'] = $title;
+  }
 }
 
 /**

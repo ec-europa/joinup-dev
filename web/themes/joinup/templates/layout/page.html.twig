@@ -89,6 +89,11 @@
               {% endif %}
 
               <div class="section section--content-middle {{ has_vertical_tabs ? 'mdl-cell mdl-cell--12-col form__cell' }}">
+                {% if custom_content_title %}
+                  <div class="page__title-wrapper">
+                    <h1 class="page__title">{{ custom_content_title }}</h1>
+                  </div>
+                {% endif %}
                 {{ page.content }}
               </div>
 
