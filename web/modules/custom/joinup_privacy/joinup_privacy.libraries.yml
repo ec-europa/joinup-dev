@@ -1,0 +1,5 @@
+joinup_privacy.cck:
+  js:
+    //ec.europa.eu/wel/cookie-consent/consent.js:
+      type: external
+      minified: false

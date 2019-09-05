@@ -56,22 +56,3 @@ Feature: Site menus
     Then "Solutions" should be the active item in the "Header menu" menu
     When I click "First movement"
     Then "Solutions" should be the active item in the "Header menu" menu
-
-  @api @contentBlock
-  Scenario: Test edit of 'Legal notice' page access.
-
-    Given I am an anonymous user
-    When I visit '/joinup/legal-notice'
-    Then I should see the heading "Legal notice"
-    But I should not see the contextual link "Edit" in the Content region
-
-    Given I am logged in as an "authenticated user"
-    When I visit '/joinup/legal-notice'
-    Then I should see the heading "Legal notice"
-    But I should not see the contextual link "Edit" in the Content region
-
-    Given I am logged in as a moderator
-    When I visit '/joinup/legal-notice'
-    Then I should see the heading "Legal notice"
-    And I click the contextual link "Edit" in the Content region
-    Then I should see the heading "Edit custom block Legal notice"

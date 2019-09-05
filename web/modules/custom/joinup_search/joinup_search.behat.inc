@@ -17,7 +17,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat step definitions for testing searches.
  */
-class SearchSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use TraversingTrait;
   use UtilityTrait;

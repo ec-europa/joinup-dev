@@ -93,6 +93,26 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
    * {@inheritdoc}
    */
   public function initBatchProcess() {
+    $owner_id = NULL;
+    $membership_storage = $this->entityTypeManager->getStorage('og_membership');
+    $memberships = $membership_storage->loadByProperties([
+      'entity_type' => 'rdf_entity',
+      'entity_bundle' => 'collection',
+      'entity_id' => $this->pipeline->getCollection(),
+      'roles' => 'rdf_entity-collection-administrator',
+    ]);
+
+    // Normally, there is always an owner for every collection. However, since
+    // there is no constraint for whether a collection is created without an
+    // owner (e.g. directly through the API), and there are cases where it is
+    // not (e.g. tests), we silently avoid an error in the pipeline which will
+    // occur during the import phase.
+    if ($membership = reset($memberships)) {
+      $owner_id = $membership->getOwnerId();
+    }
+
+    $this->setBatchValue('owner_id', $owner_id);
+
     // Retrieve the list of entities from the persistent data store as an
     // associative array keyed by entity ID and having a boolean as value,
     // signaling if the entity already exists in Joinup.
@@ -156,7 +176,8 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
       else {
         $local_entity = (clone $entity)
           ->enforceIsNew()
-          ->set('graph', SparqlGraphInterface::DEFAULT);
+          ->set('graph', SparqlGraphInterface::DEFAULT)
+          ->set('uid', $this->getBatchValue('owner_id'));
         // Delete the incoming entity from the staging graph.
         $entity->skip_notification = TRUE;
         $entity->delete();

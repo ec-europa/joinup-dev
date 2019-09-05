@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Site\Settings;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\user\Entity\User;
@@ -294,4 +295,27 @@ QUERY;
 function joinup_core_update_8109() {
   $entity_type = \Drupal::entityTypeManager()->getDefinition('solr_field_type');
   \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+}
+
+/**
+ * Install the 'Published on' field storage definition.
+ */
+function joinup_core_update_8110() {
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition(
+    'published_at',
+    'node',
+    'publication_date',
+    BaseFieldDefinition::create('published_at')
+      ->setLabel(t('Published on'))
+      ->setDescription(t('Keep the publication timestamp for each node.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', ['type' => 'hidden'])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'publication_date_timestamp',
+        'weight' => 10,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+  );
 }

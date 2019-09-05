@@ -1,5 +1,6 @@
 services:
   joinup_search.solarium:
     class: Drupal\joinup_search\EventSubscriber\SolariumEventSubscriber
+    arguments: ['@state']
     tags:
       - { name: event_subscriber }

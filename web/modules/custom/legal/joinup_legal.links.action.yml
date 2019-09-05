@@ -1,0 +1,8 @@
+joinup_legal.version.add:
+  route_name: joinup_legal.version.add
+  title: 'New version'
+  appears_on:
+    - joinup_legal.version.collection
+  options:
+    query:
+      destination: admin/legal-notice

@@ -203,7 +203,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
       $arguments['@group:title'] = $solution->label();
       $arguments['@group:bundle'] = $solution->bundle();
       if (empty($arguments['@actor:role'])) {
-        $membership = $this->membershipManager->getMembership($solution, $actor);
+        $membership = $this->membershipManager->getMembership($solution, $actor->id());
         if (!empty($membership)) {
           $role_names = array_map(function (OgRoleInterface $og_role) {
             return $og_role->getName();
