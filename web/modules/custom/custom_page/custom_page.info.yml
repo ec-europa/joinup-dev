@@ -5,15 +5,15 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - ds
-  - joinup_community_content
-  - joinup_core
-  - menu_ui
-  - og
-  - path
-  - search_api_field
-  - smart_trim
-  - user
+  - ds:ds
+  - joinup:joinup_community_content
+  - joinup:joinup_core
+  - drupal:menu_ui
+  - og:og
+  - drupal:path
+  - joinup:search_api_field
+  - smart_trim:smart_trim
+  - drupal:user
 
 config_devel:
   - core.base_field_override.node.custom_page.promote

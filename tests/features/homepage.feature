@@ -4,6 +4,7 @@ Feature: Homepage
   As a product owner
   I want to highlight the most important sections on the homepage
 
+  @commitSearchIndex
   Scenario: Statistics about important content types are shown to anonymous users
     Given I am not logged in
     And I am on the homepage

@@ -27,6 +27,7 @@ dependencies:
     - image
     - joinup_core
     - link
+    - publication_date
     - text
 id: node.news.default
 targetEntityType: node
@@ -173,5 +174,6 @@ hidden:
   og_audience: true
   path: true
   promote: true
+  published_at: true
   status: true
   sticky: true

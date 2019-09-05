@@ -12,7 +12,7 @@ use Drupal\joinup\Traits\NodeTrait;
 /**
  * Behat step definitions for testing news pages.
  */
-class NewsSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupNewsSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use NodeTrait;
 

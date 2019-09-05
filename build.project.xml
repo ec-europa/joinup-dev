@@ -94,27 +94,12 @@
 
     <!-- Execute Drupal updates. -->
     <target name="execute-updates">
-        <!-- Cache might be stale with memory cache backends, such as Redis,
-        after a database restore. Running `drush updatedb` may give unexpected
-        results, for example when trying to enable modules that were enabled
-        prior to database restore. That's because they will be falsely reported
-        as "already installed". Clear the config cache bin so that updates will
-        run on with non-cached configuration values. -->
-        <drush
-                command="cache:clear"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-            <param>bin</param>
-            <param>config</param>
-        </drush>
         <drush
                 command="updatedb"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
+            <option name="cache-clear" />
         </drush>
         <drush
                 command="cs-update"
@@ -211,7 +196,7 @@
                 password="${drupal.db.password}" />
     </target>
 
-    <target name="restore-databases" depends="restore-apache-solr, restore-mysql-dump, virtuoso-restore-backup" />
+    <target name="restore-databases" depends="restore-apache-solr, restore-mysql-dump, virtuoso-restore-backup, clear-cache" />
 
     <target name="rebuild-environment" depends="restore-databases, execute-updates" />
 
@@ -240,6 +225,24 @@
         <!-- Create the directory and file for browsertest output. -->
         <mkdir dir="${phpunit.browsertest_output_dir}" />
         <touch file="${phpunit.browsertest_output_file}" />
+
+    </target>
+
+    <target name="create-phpunit-mysql-database">
+        <php expression="explode('://', '${phpunit.db_url}', 2)[0]" returnProperty="phpunit.db.type"/>
+        <if>
+            <equals arg1="${phpunit.db.type}" arg2="mysql"/>
+            <then>
+                <drush
+                        command="sql:create"
+                        assume="yes"
+                        root="${website.drupal.dir}"
+                        bin="${drush.bin}"
+                        verbose="${drush.verbose}">
+                    <option name="db-url" value="${phpunit.db_url}"/>
+                </drush>
+            </then>
+        </if>
     </target>
 
     <!-- Enable modules for user acceptance testing. These are different from the

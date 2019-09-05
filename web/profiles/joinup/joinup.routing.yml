@@ -176,3 +176,11 @@ joinup.unpin_entity:
         type: entity:{entity_type}
       collection:
         type: entity:rdf_entity
+
+joinup.admin_reporting:
+  path: '/admin/reporting'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Reporting'
+  requirements:
+    _permission: 'access joinup reports'

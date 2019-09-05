@@ -5,6 +5,7 @@ namespace Drupal\joinup_migrate\EventSubscriber;
 use Drupal\Core\Database\Database;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -12,6 +13,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * A that runs after 'og_user_role_solution' migration.
  */
 class SolutionOwnerCheckSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The migration plugin manager.
+   *
+   * @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface
+   */
+  protected $migrationPluginManager;
+
+  /**
+   * Constructs a SolutionOwnerCheckSubscriber.
+   *
+   * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migrationPluginManager
+   *   The migration plugin manager.
+   */
+  public function __construct(MigrationPluginManagerInterface $migrationPluginManager) {
+    $this->migrationPluginManager = $migrationPluginManager;
+  }
 
   /**
    * {@inheritdoc}
@@ -55,10 +73,8 @@ class SolutionOwnerCheckSubscriber implements EventSubscriberInterface {
         }
       }
 
-      /** @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migration_plugin_manager */
-      $migration_plugin_manager = \Drupal::service('plugin.manager.migration');
       /** @var \Drupal\migrate\Plugin\MigrationInterface $solution_migration */
-      $solution_migration = $migration_plugin_manager->createInstance('solution');
+      $solution_migration = $this->migrationPluginManager->createInstance('solution');
       $id_map = $solution_migration->getIdMap();
 
       foreach ($data as $id => $row) {

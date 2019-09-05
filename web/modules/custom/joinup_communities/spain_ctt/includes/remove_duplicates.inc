@@ -90,7 +90,7 @@ function _spain_ctt_duplicates_merge_content() {
  * Remove ctt duplicates.
  */
 function _spain_ctt_duplicates_delete_duplicates() {
-  foreach (_span_ctt_get_duplicated_ids() as $original_id => $duplicated_ids) {
+  foreach (_span_ctt_get_duplicated_ids() as $duplicated_ids) {
     foreach (Rdf::loadMultiple($duplicated_ids) as $entity) {
       $entity->skip_notification = TRUE;
       $entity->delete();

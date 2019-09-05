@@ -667,3 +667,54 @@ function joinup_core_post_update_set_news_default_version() {
 function joinup_core_post_update_enable_nio() {
   \Drupal::service('module_installer')->install(['nio']);
 }
+
+/**
+ * Enable the Publication Date module.
+ */
+function joinup_core_post_update_install_publication_date() {
+  \Drupal::service('module_installer')->install(['publication_date']);
+}
+
+/**
+ * Enable the joinup_privacy module.
+ */
+function joinup_core_post_update_enable_joinup_privacy() {
+  \Drupal::service('module_installer')->install(['joinup_privacy']);
+}
+
+/**
+ * Deletes unused files explicitly requested for deletion.
+ */
+function joinup_core_post_update_delete_orphaned_files() {
+  $files_to_remove = [
+    'public://document/2017-05/e-trustex_software_architecture_document_0.pdf',
+    'public://document/2013-12/e-TrustEx Interface Control Document.pdf',
+  ];
+
+  $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+  foreach ($files_to_remove as $uri) {
+    $files = $file_storage->loadByProperties(['uri' => $uri]);
+    if ($file = reset($files)) {
+      $file->delete();
+    }
+  }
+}
+
+/**
+ * Reset the publication dates.
+ */
+function joinup_core_post_update_0_fix_publication_dates() {
+  // Due to an incorrect earlier version of the install hook of the
+  // Publication Date module a number of older news items were present without a
+  // publication date. Erase all publication dates and restore them.
+  // Note that since this update hook is prefixed with a 0 it is guaranteed to
+  // run before the post update hook of the Publication Date module.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $connection = \Drupal::database();
+  $connection->update($node_storage->getDataTable())
+    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->execute();
+  $connection->update($node_storage->getRevisionDataTable())
+    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->execute();
+}

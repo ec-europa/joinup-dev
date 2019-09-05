@@ -1,0 +1,16 @@
+diff --git a/src/Commands/core/UpdateDBCommands.php b/src/Commands/core/UpdateDBCommands.php
+index 9132552003..0c6b891c24 100644
+--- a/src/Commands/core/UpdateDBCommands.php
++++ b/src/Commands/core/UpdateDBCommands.php
+@@ -364,8 +364,9 @@ public static function updateDoOnePostUpdate($function, DrushBatchContext $conte
+      */
+     public static function updateFinished($success, $results, $operations)
+     {
+-        // No code needed but the batch result bookkeeping fails without a finished callback.
+-        $noop = 1;
++        // Some (post)updates might install/uninstall extensions that require
++        // clearing the static and persistent caches and container invalidation.
++        drupal_flush_all_caches();
+     }
+ 
+

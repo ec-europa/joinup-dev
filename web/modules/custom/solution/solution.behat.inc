@@ -18,6 +18,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
@@ -38,6 +39,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use FileTrait;
   use NodeTrait;
   use OgTrait;
+  use SearchTrait;
   use TraversingTrait;
   use RdfEntityTrait;
   use UtilityTrait;
@@ -219,7 +221,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   public function givenContentMemberships($bundle, TableNode $membership_table) {
     // As each given step is executed in the same request
     // we need to reset the mapping.
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
@@ -367,13 +368,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Then I should have :number solution(s)
    */
   public function assertSolutionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'solution');
   }
 
   /**
@@ -428,6 +423,14 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @AfterScenario
    */
   public function cleanSolutions(AfterScenarioScope $event) {
+    if (empty($this->solutions)) {
+      return;
+    }
+
+    // Since we might be cleaning up many solutions, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any solutions that were created.
     foreach ($this->solutions as $solution) {
       $name = $solution->getName();
@@ -440,6 +443,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
       }
     }
+    $this->solutions = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**
