@@ -16,6 +16,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
@@ -40,6 +41,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use SearchTrait;
   use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
@@ -586,11 +588,21 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @AfterScenario
    */
   public function cleanCollections(): void {
+    if (empty($this->collections)) {
+      return;
+    }
+
+    // Since we might be cleaning up many collections, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
       $collection->skip_notification = TRUE;
       $collection->delete();
     }
+    $this->collections = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**
