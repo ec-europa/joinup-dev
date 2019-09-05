@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81c06afeaf6b1726b082a9bc9a9a6a81",
+    "content-hash": "67f6b0e140849e6149d22250a9928a91",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2483,6 +2483,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Expiry items should be computed against current time rather than request time @see https://www.drupal.org/project/cached_computed_field/issues/3079368": "https://www.drupal.org/files/issues/2019-09-05/3079368-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
