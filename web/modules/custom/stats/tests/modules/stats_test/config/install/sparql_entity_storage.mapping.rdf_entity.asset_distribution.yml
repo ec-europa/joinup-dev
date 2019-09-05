@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - rdf_entity.rdfentity.asset_distribution
+id: rdf_entity.asset_distribution
+entity_type_id: rdf_entity
+bundle: asset_distribution
+rdf_type: 'http://www.w3.org/ns/dcat#Distribution'
+base_fields_mapping:
+  rid:
+    target_id:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      format: resource
+  label:
+    value:
+      predicate: 'http://purl.org/dc/terms/title'
+      format: t_literal
+  created:
+    value:
+      predicate: 'http://purl.org/dc/terms/issued'
+      format: 'xsd:dateTime'
+  changed:
+    value:
+      predicate: 'http://purl.org/dc/terms/modified'
+      format: 'xsd:dateTime'
+graph:
+  default: 'http://example.com/asset_distribution/graph'
+entity_id_plugin: joinup_po_namespace
