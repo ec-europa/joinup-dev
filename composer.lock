@@ -4715,7 +4715,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/meta_entity.git",
-                "reference": "0b3d7f2921033bb95ae5b540da243badf82215f2"
+                "reference": "69f1672cbabe4d3ba6d55818909f3371ba2489bf"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4729,7 +4729,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1567544285",
+                    "datestamp": "1567589587",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4753,7 +4753,7 @@
                 "source": "https://git.drupalcode.org/project/meta_entity",
                 "issues": "https://www.drupal.org/project/issues/meta_entity"
             },
-            "time": "2019-09-04T09:30:24+00:00"
+            "time": "2019-09-08T20:20:28+00:00"
         },
         {
             "name": "drupal/migrate_drush",
