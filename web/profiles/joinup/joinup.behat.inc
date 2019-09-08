@@ -631,10 +631,10 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception('Please use "pinned" instead of "sticky".');
     }
 
-    if (property_exists($node, 'meta_entity')) {
-      $node->meta_entity = MetaEntity::create([
+    if (property_exists($node, 'visit_count')) {
+      $node->visit_count = MetaEntity::create([
         'type' => 'visit_count',
-        'count' => (int) $node->meta_entity,
+        'count' => (int) $node->visit_count,
       ]);
     }
 
@@ -705,7 +705,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
-        'visits' => 'meta_entity',
+        'visits' => 'visit_count',
         'featured' => 'field_site_featured',
         'pinned site-wide' => 'field_site_pinned',
       ],

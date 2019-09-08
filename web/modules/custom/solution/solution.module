@@ -241,7 +241,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       /** @var \Drupal\asset_distribution\AssetDistributionRelations $relationship_counselor */
       $relationship_counselor = \Drupal::service('asset_distribution.relations');
       foreach ($relationship_counselor->getSolutionDistributions($entity) as $distribution) {
-        $total += $distribution->meta_entity->entity->count->value;
+        $total += $distribution->download_count->entity->count->value;
       }
     }
 

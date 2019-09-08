@@ -148,7 +148,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     }
 
     if (array_key_exists('downloads', $values)) {
-      $values['meta_entity'] = MetaEntity::create([
+      $values['download_count'] = MetaEntity::create([
         'type' => 'download_count',
         'count' => (int) $values['downloads'],
       ]);

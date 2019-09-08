@@ -81,9 +81,9 @@ class RefreshCountersTest extends KernelTestBase {
     // Check that creating entities the meta entities are also created. Only
     // test one RDF entity and one node.
     $distro = $this->entities['rdf_entity']['http://example.com/distro/2'];
-    $this->assertSame('http://example.com/distro/2', $distro->meta_entity->entity->target->target_id);
+    $this->assertSame('http://example.com/distro/2', $distro->download_count->entity->target->target_id);
     $node = $this->entities['node'][3];
-    $this->assertEquals(3, $node->meta_entity->entity->target->target_id);
+    $this->assertEquals(3, $node->visit_count->entity->target->target_id);
 
     // Check that before first cron run the queue is empty.
     $this->assertEquals(0, $queue->numberOfItems());
@@ -102,13 +102,13 @@ class RefreshCountersTest extends KernelTestBase {
 
     // Check that the cached computed fields were updated.
     // @see \Drupal\joinup_stats_test\Mocks\TestQuery::getMockedResponseArray()
-    $this->assertEquals(55, $this->entities['rdf_entity']['http://example.com/distro/1']->meta_entity->entity->count->value);
-    $this->assertEquals(2034, $this->entities['rdf_entity']['http://example.com/distro/2']->meta_entity->entity->count->value);
-    $this->assertEquals(0, $this->entities['rdf_entity']['http://example.com/distro/3']->meta_entity->entity->count->value);
-    $this->assertEquals(3846545, $this->entities['node'][1]->meta_entity->entity->count->value);
-    $this->assertEquals(234, $this->entities['node'][2]->meta_entity->entity->count->value);
-    $this->assertEquals(8766, $this->entities['node'][3]->meta_entity->entity->count->value);
-    $this->assertEquals(334, $this->entities['node'][4]->meta_entity->entity->count->value);
+    $this->assertEquals(55, $this->entities['rdf_entity']['http://example.com/distro/1']->download_count->entity->count->value);
+    $this->assertEquals(2034, $this->entities['rdf_entity']['http://example.com/distro/2']->download_count->entity->count->value);
+    $this->assertEquals(0, $this->entities['rdf_entity']['http://example.com/distro/3']->download_count->entity->count->value);
+    $this->assertEquals(3846545, $this->entities['node'][1]->visit_count->entity->count->value);
+    $this->assertEquals(234, $this->entities['node'][2]->visit_count->entity->count->value);
+    $this->assertEquals(8766, $this->entities['node'][3]->visit_count->entity->count->value);
+    $this->assertEquals(334, $this->entities['node'][4]->visit_count->entity->count->value);
 
     // Pretend that the stats were incremented on Matomo side.
     $this->container->get('state')->set('joinup_stats_test.increment', [
@@ -135,13 +135,13 @@ class RefreshCountersTest extends KernelTestBase {
         $this->entities[$entity_type_id][$entity->id()] = $entity_type_manager->getStorage($entity_type_id)->load($entity->id());
       }
     }
-    $this->assertEquals(1055, $this->entities['rdf_entity']['http://example.com/distro/1']->meta_entity->entity->count->value);
-    $this->assertEquals(12034, $this->entities['rdf_entity']['http://example.com/distro/2']->meta_entity->entity->count->value);
-    $this->assertEquals(39, $this->entities['rdf_entity']['http://example.com/distro/3']->meta_entity->entity->count->value);
-    $this->assertEquals(4846545, $this->entities['node'][1]->meta_entity->entity->count->value);
-    $this->assertEquals(10234, $this->entities['node'][2]->meta_entity->entity->count->value);
-    $this->assertEquals(28766, $this->entities['node'][3]->meta_entity->entity->count->value);
-    $this->assertEquals(200334, $this->entities['node'][4]->meta_entity->entity->count->value);
+    $this->assertEquals(1055, $this->entities['rdf_entity']['http://example.com/distro/1']->download_count->entity->count->value);
+    $this->assertEquals(12034, $this->entities['rdf_entity']['http://example.com/distro/2']->download_count->entity->count->value);
+    $this->assertEquals(39, $this->entities['rdf_entity']['http://example.com/distro/3']->download_count->entity->count->value);
+    $this->assertEquals(4846545, $this->entities['node'][1]->visit_count->entity->count->value);
+    $this->assertEquals(10234, $this->entities['node'][2]->visit_count->entity->count->value);
+    $this->assertEquals(28766, $this->entities['node'][3]->visit_count->entity->count->value);
+    $this->assertEquals(200334, $this->entities['node'][4]->visit_count->entity->count->value);
   }
 
   /**

@@ -280,7 +280,7 @@ field_settings:
   field_visit_count:
     label: 'Visit count'
     datasource_id: 'entity:node'
-    property_path: 'meta_entity:entity:count'
+    property_path: 'visit_count:entity:count'
     type: integer
     dependencies:
       config:
