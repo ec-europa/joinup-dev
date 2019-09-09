@@ -21,3 +21,6 @@ joinup_eulogin.settings:
         user_details:
             type: boolean
             label: 'Provide user details'
+    register_url:
+      type: uri
+      label: 'EU Login registration URL'
