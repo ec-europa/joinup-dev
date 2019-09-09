@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -56,6 +57,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
@@ -1187,7 +1189,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Assert that the given form submission buttons are present on the page.
+   * Asserts that the given form submission buttons are present on the page.
    *
    * @param string $buttons
    *   A comma separated list of button labels.
@@ -1206,17 +1208,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
-    $page = $this->getSession()->getPage();
-    $not_found = [];
-    foreach ($buttons as $button) {
-      if (!$page->findButton($button)) {
-        $not_found[] = $button;
-      }
-    }
-
-    if (!empty($not_found)) {
-      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
-    }
+    $this->assertSubmitButtonsVisible($buttons, FALSE);
 
     if (!empty($count)) {
       // Only check the actual form submit buttons, ignore other buttons that
