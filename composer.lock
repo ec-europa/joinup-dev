@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a47a9e0253f3fb75fdcfd3459f30089f",
+    "content-hash": "6756de10a3a8ea5a7407fd84519a4dc2",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3381,7 +3381,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.3",
-                    "datestamp": "1551355085",
+                    "datestamp": "1567165687",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3936,7 +3936,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0-alpha1",
-                    "datestamp": "1560481389",
+                    "datestamp": "1567546388",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -5171,6 +5171,11 @@
                 "satooshi/php-coveralls": "^1.0"
             },
             "type": "library",
+            "extra": {
+                "patches_applied": {
+                    "Allow array options": "https://patch-diff.githubusercontent.com/raw/pfrenssen/phingdrushtask/pull/1.diff"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Phing\\Drush\\": "src/",
@@ -9875,7 +9880,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
