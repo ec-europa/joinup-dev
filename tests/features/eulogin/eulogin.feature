@@ -257,3 +257,27 @@ Feature: Log in through EU Login
     When I visit "/user/login"
     Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
     And I should see the link "EU Login"
+
+  Scenario: A new user tries to register with an existing Email.
+    Given users:
+      | Username | E-mail          |
+      | joe      | joe@example.com |
+
+    And CAS users:
+      | Username | E-mail          | Password |
+      | joe_doe  | joe@example.com | 123      |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "joe@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+
+    Given I select the radio button "I am a new user (create a new account)"
+    When I press "Next"
+
+    Then I should see the following error messages:
+      | error messages                                                                                             |
+      | The email address joe@example.com is already taken.                                                        |
+      | If you are the owner of this account please select the first option, otherwise contact the Joinup support. |
