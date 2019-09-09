@@ -16,10 +16,6 @@ node:pre_moderated:
     deletion_request:
       label: 'Deletion request'
   transitions:
-    save_as_draft:
-      label: 'Save as draft'
-      from: [draft]
-      to: draft
     save_new_draft:
       label: 'Save new draft'
       from: [validated]
@@ -39,14 +35,6 @@ node:pre_moderated:
     approve_proposed:
       label: 'Publish'
       from: [proposed]
-      to: validated
-    update_proposed:
-      label: 'Update'
-      from: [proposed]
-      to: proposed
-    update_published:
-      label: 'Update'
-      from: [validated]
       to: validated
     report:
       label: 'Report'
@@ -80,10 +68,6 @@ node:post_moderated:
     proposed:
       label: Proposed
   transitions:
-    save_as_draft:
-      label: 'Save as draft'
-      from: [draft]
-      to: draft
     save_new_draft:
       label: 'Save new draft'
       from: [validated]
@@ -99,14 +83,6 @@ node:post_moderated:
     approve_proposed:
       label: 'Publish'
       from: [proposed]
-      to: validated
-    update_proposed:
-      label: 'Update'
-      from: [proposed]
-      to: proposed
-    update_published:
-      label: 'Update'
-      from: [validated]
       to: validated
     report:
       label: 'Report'
@@ -136,10 +112,6 @@ node:discussion:post_moderated:
       label: Archived
       published: true
   transitions:
-    save_as_draft:
-      label: 'Save as draft'
-      from: [draft]
-      to: draft
     save_new_draft:
       label: 'Save new draft'
       from: [validated]
@@ -155,14 +127,6 @@ node:discussion:post_moderated:
     approve_proposed:
       label: 'Publish'
       from: [proposed]
-      to: validated
-    update_proposed:
-      label: 'Update'
-      from: [proposed]
-      to: proposed
-    update_published:
-      label: 'Update'
-      from: [validated]
       to: validated
     report:
       label: 'Report'

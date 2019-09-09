@@ -19,17 +19,9 @@ contact_information_workflow:
       label: Publish
       from: [__new__, deletion_request]
       to: validated
-    update_published:
-      label: Update
-      from: [validated]
-      to: validated
     request_changes:
       label: Request changes
       from: [validated]
-      to: needs_update
-    update_changes:
-      label: Update
-      from: [needs_update]
       to: needs_update
     approve_changes:
       label: Approve changes

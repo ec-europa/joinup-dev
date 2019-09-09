@@ -33,17 +33,9 @@ transitions:
   request_changes:
     validated:
       - moderator
-  update_changes:
-    needs_update:
-      - moderator
-      - rdf_entity-solution-facilitator
   validate:
     draft:
       - moderator
       - rdf_entity-solution-facilitator
     needs_update:
       - moderator
-  update_published:
-    validated:
-      - moderator
-      - rdf_entity-solution-facilitator

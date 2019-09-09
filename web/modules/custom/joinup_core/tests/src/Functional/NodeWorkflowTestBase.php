@@ -305,52 +305,42 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::PRE_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
           ],
           ELibraryCreationOptions::MEMBERS => [
             'userModerator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgMember' => [
-              'save_as_draft',
               'propose',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
               'propose',
             ],
             'userModerator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
               'propose',
             ],
             'userOgMember' => [
-              'save_as_draft',
               'propose',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
@@ -359,47 +349,37 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::POST_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'publish',
             ],
           ],
           ELibraryCreationOptions::MEMBERS => [
             'userModerator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgMember' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
               'publish',
             ],
             'userModerator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgMember' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'publish',
             ],
           ],
@@ -409,32 +389,26 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::PRE_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
               'propose',
             ],
             'userModerator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
               'propose',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
@@ -443,29 +417,23 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
         self::POST_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
               'publish',
             ],
             'userModerator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'publish',
             ],
           ],
@@ -617,28 +585,22 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
       self::PRE_MODERATION => [
         'draft' => [
           'own' => [
-            'save_as_draft',
             'propose',
           ],
           'any' => [
             'userModerator' => [
-              'save_as_draft',
               'propose',
               'publish',
             ],
           ],
         ],
         'proposed' => [
-          'own' => [
-            'update_proposed',
-          ],
+          'own' => [],
           'any' => [
             'userModerator' => [
-              'update_proposed',
               'approve_proposed',
             ],
             'userOgFacilitator' => [
-              'update_proposed',
               'approve_proposed',
             ],
           ],
@@ -650,13 +612,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           ],
           'any' => [
             'userModerator' => [
-              'update_published',
               'save_new_draft',
               'request_changes',
               'report',
             ],
             'userOgFacilitator' => [
-              'update_published',
               'save_new_draft',
               'request_changes',
               'report',
@@ -690,49 +650,39 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
       self::POST_MODERATION => [
         'draft' => [
           'own' => [
-            'save_as_draft',
             'publish',
           ],
           'any' => [
             'userModerator' => [
-              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
               'publish',
             ],
           ],
         ],
         'proposed' => [
-          'own' => [
-            'update_proposed',
-          ],
+          'own' => [],
           'any' => [
             'userModerator' => [
-              'update_proposed',
               'approve_proposed',
             ],
             'userOgFacilitator' => [
-              'update_proposed',
               'approve_proposed',
             ],
           ],
         ],
         'validated' => [
           'own' => [
-            'update_published',
             'save_new_draft',
           ],
           'any' => [
             'userModerator' => [
-              'update_published',
               'save_new_draft',
               'request_changes',
               'report',
             ],
             'userOgFacilitator' => [
-              'update_published',
               'save_new_draft',
               'request_changes',
               'report',

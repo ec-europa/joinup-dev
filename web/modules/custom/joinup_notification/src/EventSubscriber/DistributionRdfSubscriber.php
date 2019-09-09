@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @codingStandardsIgnoreStart
  * Template 21: release_update
  *   Operation: update
- *   Transition: update_published
+ *   Source state: published
  *   Recipients: solution owners, solution facilitators, moderators
  * Template 22: release_delete
  *   Operation: delete
