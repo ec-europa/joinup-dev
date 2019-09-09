@@ -161,6 +161,8 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
    *
    * @param string $document_label
    *   The legal document label.
+   * @param string|null $username
+   *   The name of the user that accepts the agreement.
    *
    * @throws \Exception
    *   When the current user is not logged in.
@@ -168,10 +170,20 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
    *   When the given legal document has no published version.
    *
    * @Given I accept the :document_label agreement
+   * @Given (User ):username accepts the :document_label agreement
    */
-  public function iAcceptTheLegalDocument(string $document_label): void {
-    if ($this->getUserManager()->currentUserIsAnonymous()) {
-      throw new \Exception('User should be logged in when accepting a document.');
+  public function iAcceptTheLegalDocument(string $document_label, ?string $username = NULL): void {
+    if ($username) {
+      if (!$account = user_load_by_name($username)) {
+        throw new \Exception("Unknown user '$username'.");
+      }
+      $uid = $account->id();
+    }
+    else {
+      if ($this->getUserManager()->currentUserIsAnonymous()) {
+        throw new \Exception('User should be logged in when accepting a document.');
+      }
+      $uid = $this->getUserManager()->getCurrentUser()->uid;
     }
 
     /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $document */
@@ -182,7 +194,7 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
 
     EntityLegalDocumentAcceptance::create([
       'document_version_name' => $published_version->id(),
-      'uid' => $this->getUserManager()->getCurrentUser()->uid,
+      'uid' => $uid,
     ])->save();
   }
 

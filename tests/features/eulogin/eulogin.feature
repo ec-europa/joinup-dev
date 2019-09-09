@@ -4,6 +4,11 @@ Feature: Log in through EU Login
   As a user with an existing EU Login account
   I need to be able to register and log in to Joinup using EU Login
 
+  Background:
+    Given the following legal document version:
+      | Document     | Label | Published | Acceptance label                                                                                   | Content                                                    |
+      | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
+
   Scenario: A local account is auto-registered on user choice.
     Given CAS users:
       | Username    | E-mail                         | Password  | First name | Last name |
@@ -37,6 +42,13 @@ Feature: Log in through EU Login
 
     Given I select the radio button "I am a new user (create a new account)"
     When I press "Next"
+
+    Then I should see the warning message "You must accept this agreement before continuing."
+    But I should not see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+
+    Given I check "I have read and accept the Legal notice"
+    And I press "Submit"
+
     Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
 
     # The user has been redirected to its user account edit form.
@@ -86,6 +98,13 @@ Feature: Log in through EU Login
     Given I fill in "Email or username" with "chuck_the_local_hero"
     And I fill in "Password" with "12345"
     When I press "Sign in"
+
+    Then I should see the warning message "You must accept this agreement before continuing."
+    But I should not see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
+
+    Given I check "I have read and accept the Legal notice"
+    And I press "Submit"
+
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
     # The profile entries are overwritten, except the username & the email.
@@ -102,6 +121,8 @@ Feature: Log in through EU Login
     And users:
       | Username             | Password | E-mail                           | First name | Family name | Organisation |
       | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
+    # Test that the user is not redirected anymore to accept the 'Legal notice'.
+    And User "chuck_the_local_hero" accepts the "Legal notice" agreement
 
     Given I visit "/cas"
     And I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
@@ -154,6 +175,12 @@ Feature: Log in through EU Login
     When I fill in "Password" with "shaken_not_stirred"
     And I press the "Log in" button
 
+    Then I should see the warning message "You must accept this agreement before continuing."
+    But I should not see the success message "You have been logged in."
+
+    Given I check "I have read and accept the Legal notice"
+    And I press "Submit"
+
     Then I should see the success message "You have been logged in."
 
     # The profile entries are overwritten, except the username & the email.
@@ -177,8 +204,12 @@ Feature: Log in through EU Login
       | partial_cas_profile | p@example.com |
       | no_cas_profile      | n@example.com |
       | without_cas         | w@example.com |
+    And User "full_cas_profile" accepts the "Legal notice" agreement
+    And User "partial_cas_profile" accepts the "Legal notice" agreement
+    And User "no_cas_profile" accepts the "Legal notice" agreement
+    And User "without_cas" accepts the "Legal notice" agreement
 
-    Given CAS users:
+    And CAS users:
       | Username            | E-mail        | Password | First name | Last name | Local username      |
       | full_cas_profile    | f@example.com | 123      | Joe        | Doe       | full_cas_profile    |
       | partial_cas_profile | p@example.com | 123      |            | Roe       | partial_cas_profile |
