@@ -257,3 +257,10 @@ Feature: Log in through EU Login
     When I visit "/user/login"
     Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
     And I should see the link "EU Login"
+
+  Scenario: The Drupal registration tab has been removed and the /user/register
+    route redirects to EU Login registration form.
+    When I visit "/user/login"
+    Then I should not see the link "Create new account"
+    When I visit "/user/register"
+    Then the url should match "/cas/eim/external/register.cgi"
