@@ -137,3 +137,20 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
     '#weight' => $weight,
   ];
 }
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function joinup_eulogin_menu_local_actions_alter(&$local_actions) {
+  unset($local_actions['cas.bulk_add_cas_users']);
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_eulogin_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'menu_links_discovered_alter') {
+    // @see cas_menu_links_discovered_alter()
+    unset($implementations['cas']);
+  }
+}
