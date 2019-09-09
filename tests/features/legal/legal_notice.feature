@@ -16,39 +16,12 @@ Feature:
       | Document     | Label | Published | Acceptance label                                                                                   | Content                                                    |
       | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
 
-  Scenario: User registration.
+  Scenario: Anonymous user can read the Legal notice.
 
     Given I am on the homepage
-
     When I click "Legal notice" in the Footer region
     Then I should see the heading "Legal notice"
     And I should see "The information on this site is subject to a disclaimer..."
-
-    When I click "Sign in (legacy)"
-    And I click "Create new account"
-
-    And I fill in "Email" with "dewan@example.com"
-    And I fill in "Username" with "dewan"
-    And I fill in "First name" with "Jo"
-    And I fill in "Family name" with "de Wan"
-
-    And I wait for the honeypot time limit to pass
-
-    And I press "Create new account"
-    Then I should see the error message "I have read and accept the "
-
-    When I check "I have read and accept the Legal notice"
-    And I press "Create new account"
-
-    Then I should see the success message "Thank you for applying for an account."
-
-    # Check again that the link is accessible in the footer.
-    When I click "Legal notice" in the Footer region
-    Then I should see the heading "Legal notice"
-    And I should see "The information on this site is subject to a disclaimer..."
-
-    # As the user is created via UI, we should explicitly delete it.
-    And I delete the "dewan" user
 
   Scenario: User login when a new 'Legal notice' version is released.
 
