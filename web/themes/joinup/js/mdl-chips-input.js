@@ -87,9 +87,7 @@
 
     MaterialChipInput.prototype.init = function() {
         if(this.element_) {
-            // wrap all content in the .inputs div
-            this.element_.innerHTML = '<div class="inputs">' + this.element_.innerHTML + '</div>';
-            this.inputs_ = this.element_.children[0];
+            this.inputs_ = this.element_.getElementsByClassName('inputs')[0];
 
             this.input_ = this.element_.getElementsByClassName('mdl-textfield__input')[0];
             this.input_.addEventListener('keydown', this.keyDown_.bind(this));
