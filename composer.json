@@ -219,9 +219,6 @@
             "drupal/email_registration": {
                 "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-05-13/2927109-11.patch"
             },
-            "drupal/entity_legal": {
-                "Pending messages should be postponed to the destination page @see https://www.drupal.org/project/entity_legal/issues/3080124": "https://www.drupal.org/files/issues/2019-09-09/3080124-5.patch"
-            },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },

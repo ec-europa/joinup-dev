@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bd7a43f3d943f547e49a28051722031",
+    "content-hash": "4b5e289cdc2e27c61cc1ceebc178d2fb",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3745,7 +3745,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_legal.git",
-                "reference": "e35d95a98efb0503cc74ae01770be41cc4928ff4"
+                "reference": "b51706028523d065d04f022d6414f706c973d5ff"
             },
             "require": {
                 "drupal/core": "*",
@@ -3757,15 +3757,12 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta1+13-dev",
-                    "datestamp": "1563964388",
+                    "version": "8.x-2.0-beta1+14-dev",
+                    "datestamp": "1568017091",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Pending messages should be postponed to the destination page @see https://www.drupal.org/project/entity_legal/issues/3080124": "https://www.drupal.org/files/issues/2019-09-09/3080124-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3807,7 +3804,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/entity_legal"
             },
-            "time": "2019-09-09T08:16:40+00:00"
+            "time": "2019-09-10T10:34:30+00:00"
         },
         {
             "name": "drupal/externalauth",
