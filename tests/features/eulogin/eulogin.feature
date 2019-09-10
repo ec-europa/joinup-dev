@@ -257,3 +257,40 @@ Feature: Log in through EU Login
     When I visit "/user/login"
     Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
     And I should see the link "EU Login"
+
+  Scenario: A moderator is able to manually link a local user to its EU Login.
+
+    Given user:
+      | Username    | joe |
+      | First name  | Joe |
+      | Family name | Doe |
+
+    And CAS users:
+      | Username | E-mail          | Password | First name | Last name |
+      | joe      | joe@example.com | 123      | Joe        | Doe       |
+
+    Given I am logged in as a moderator
+    And I click "People"
+    When I click "Edit" in the "Joe Doe" row
+    Then the "Allow user to log in via CAS" checkbox should not be checked
+
+    Given I check "Allow user to log in via CAS"
+    And I fill in "CAS Username" with "joe"
+    When I press "Save"
+    Then I should see the following success messages:
+      | success messages                                                                |
+      | An e-mail has been send to the user to notify him on the change to his account. |
+      | The changes have been saved.                                                    |
+
+    When I click "Edit" in the "Joe Doe" row
+    Then the "Allow user to log in via CAS" checkbox should be checked
+    And the "CAS Username" field should contain "joe"
+
+    Given I am an anonymous user
+    And I am on the homepage
+    And I click "Sign in"
+    And I click "EU Login"
+    And I fill in "E-mail address" with "joe@example.com"
+    And I fill in "Password" with "123"
+    When I press the "Log in" button
+    Then I should see the success message "You have been logged in."
