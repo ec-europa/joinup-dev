@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2c77373bba78057728b221604c447cc",
+    "content-hash": "8bd7a43f3d943f547e49a28051722031",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2641,20 +2641,14 @@
         },
         {
             "name": "drupal/cas_attributes",
-            "version": "1.0.0-beta1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_attributes.git",
-                "reference": "8.x-1.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas_attributes-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "db14c5cdca7e89c65ba7947f89e10b51071ca27f"
+                "reference": "db2d472f1bfb62c9ef082e00848c9f8147c529ae"
             },
             "require": {
-                "drupal/cas": "^1.2",
+                "drupal/cas": "*",
                 "drupal/core": "~8.0",
                 "drupal/token": "*"
             },
@@ -2664,15 +2658,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1543782180",
+                    "version": "8.x-1.0-beta1+0-dev",
+                    "datestamp": "1543781880",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Don't serialize field & role mappings @see https://www.drupal.org/project/cas_attributes/issues/3062557": "https://www.drupal.org/files/issues/2019-06-19/3062557-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2709,7 +2700,8 @@
             "homepage": "https://www.drupal.org/project/cas_attributes",
             "support": {
                 "source": "https://git.drupalcode.org/project/cas_attributes"
-            }
+            },
+            "time": "2019-08-18T23:06:31+00:00"
         },
         {
             "name": "drupal/changed_fields",
@@ -4193,7 +4185,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0-alpha2",
-                    "datestamp": "1567546388",
+                    "datestamp": "1567998484",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -12905,17 +12897,11 @@
         },
         {
             "name": "drupal/cas_mock_server",
-            "version": "1.0.0-alpha1",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_mock_server.git",
-                "reference": "8.x-1.0-alpha1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cas_mock_server-8.x-1.0-alpha1.zip",
-                "reference": "8.x-1.0-alpha1",
-                "shasum": "0dc2424d29d35fbc2f6a77573bd9f8d3d91e7728"
+                "reference": "6a9b26c2bf84f99cd4d96d42d626881c7508fc07"
             },
             "require": {
                 "drupal/cas": "~1.5",
@@ -12943,8 +12929,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1",
-                    "datestamp": "1565334784",
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1565334485",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -12968,9 +12954,6 @@
                     "../cas_mock_server_build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
-                },
-                "patches_applied": {
-                    "Allow to customize the CAS mock server validation response @see https://github.com/pfrenssen/cas_mock_server/pull/14": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/14.diff"
                 }
             },
             "autoload-dev": {
@@ -13001,7 +12984,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-08-15T10:45:14+00:00"
         },
         {
             "name": "drupal/coder",
@@ -15897,7 +15881,7 @@
     "stability-flags": {
         "drupal/cas": 20,
         "drupal/cas_account_link": 20,
-        "drupal/cas_attributes": 10,
+        "drupal/cas_attributes": 20,
         "drupal/diff": 5,
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
@@ -15915,6 +15899,7 @@
         "openeuropa/oe_webtools_location": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
+        "drupal/cas_mock_server": 20,
         "drupal/config_inspector": 10,
         "jcalderonzumba/gastonjs": 20
     },

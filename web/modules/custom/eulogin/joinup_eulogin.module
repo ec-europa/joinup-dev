@@ -99,8 +99,14 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
     /** @var \Drupal\user\UserDataInterface $user_data */
     $user_data = \Drupal::service('user.data');
 
-    // User profile fields are string scalars.
-    $attributes = array_filter($user_data->get('joinup_eulogin', $account->id(), 'attributes'));
+    // The CAS Attributes tokens are always in lowercase. Lowercase also the
+    // attributes received from CAS so that we can properly compare them later.
+    // @see cas_attributes_tokens()
+    $attributes = array_change_key_case(
+      // Cast to an array to overcome the NULL value when user data is missed.
+      (array) $user_data->get('joinup_eulogin', $account->id(), 'attributes'),
+      CASE_LOWER
+    );
 
     foreach ($mapping as $field_name => $token) {
       // The token is in the format `[cas:attribute:attribute_name]`. Extract
