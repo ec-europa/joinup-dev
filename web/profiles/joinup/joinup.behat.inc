@@ -2717,7 +2717,7 @@ JS;
    *
    * @Given I should not see the absolute urls of the following content entities:
    */
-  public function assertEmptyContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+  public function assertNotContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
     foreach ($titles->getRows() as $title) {
       $this->assertEntityUrlInSitemap('node', $title[0], FALSE);
     }
@@ -2745,18 +2745,18 @@ JS;
    *
    * @param string $entity_type_id
    *   The entity type id.
-   * @param string $entity_id
-   *   The entity id.
+   * @param string $entity_label
+   *   The entity label.
    * @param bool $exists
    *   (optional) Whether to assert that a link exists or not exists. Defaults
-   *   to true.
+   *   to TRUE.
    *
    * @throws \Exception
    *   Thrown if the link assertion is not the expected one.
    */
-  protected function assertEntityUrlInSitemap(string $entity_type_id, string $entity_id, $exists = TRUE): void {
-    $entity = $this->getEntityByLabel($entity_type_id, $entity_id);
-    $link_text = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+  protected function assertEntityUrlInSitemap(string $entity_type_id, string $entity_label, bool $exists = TRUE): void {
+    $entity = $this->getEntityByLabel($entity_type_id, $entity_label);
+    $link_text = $entity->toUrl()->setAbsolute()->toString();
     $expected = '<loc>' . $link_text . '</loc>';
     $response = $this->getSession()->getPage()->getContent();
     if ($exists) {
