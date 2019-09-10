@@ -259,7 +259,6 @@ Feature: Log in through EU Login
     And I should see the link "EU Login"
 
   Scenario: A moderator is able to manually link a local user to its EU Login.
-
     Given user:
       | Username    | joe |
       | First name  | Joe |
@@ -294,3 +293,10 @@ Feature: Log in through EU Login
     And I fill in "Password" with "123"
     When I press the "Log in" button
     Then I should see the success message "You have been logged in."
+
+  Scenario: The Drupal registration tab has been removed and the /user/register
+    route redirects to EU Login registration form.
+    When I visit "/user/login"
+    Then I should not see the link "Create new account"
+    When I visit "/user/register"
+    Then the url should match "/cas/eim/external/register.cgi"

@@ -5,3 +5,4 @@ ticket_validation:
   ticket_types:
     - SERVICE
   user_details: TRUE
+register_url: https://ecas.ec.europa.eu/cas/eim/external/register.cgi

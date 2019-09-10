@@ -143,3 +143,10 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
     '#weight' => $weight,
   ];
 }
+
+/**
+ * Implements hook_local_tasks_alter().
+ */
+function joinup_eulogin_local_tasks_alter(&$local_tasks) {
+  unset($local_tasks['user.register']);
+}
