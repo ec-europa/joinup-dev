@@ -1,0 +1,72 @@
+uuid: 2c87a7c2-b2ab-46b0-b9ed-818350fdbcfe
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.view_mode_tile
+    - field.field.node.tallinn_report.field_tallinn_action_1
+    - field.field.node.tallinn_report.field_tallinn_action_10
+    - field.field.node.tallinn_report.field_tallinn_action_11
+    - field.field.node.tallinn_report.field_tallinn_action_12
+    - field.field.node.tallinn_report.field_tallinn_action_13
+    - field.field.node.tallinn_report.field_tallinn_action_14
+    - field.field.node.tallinn_report.field_tallinn_action_15
+    - field.field.node.tallinn_report.field_tallinn_action_16
+    - field.field.node.tallinn_report.field_tallinn_action_17
+    - field.field.node.tallinn_report.field_tallinn_action_18
+    - field.field.node.tallinn_report.field_tallinn_action_19
+    - field.field.node.tallinn_report.field_tallinn_action_2
+    - field.field.node.tallinn_report.field_tallinn_action_20
+    - field.field.node.tallinn_report.field_tallinn_action_21
+    - field.field.node.tallinn_report.field_tallinn_action_22
+    - field.field.node.tallinn_report.field_tallinn_action_23
+    - field.field.node.tallinn_report.field_tallinn_action_24
+    - field.field.node.tallinn_report.field_tallinn_action_25
+    - field.field.node.tallinn_report.field_tallinn_action_3
+    - field.field.node.tallinn_report.field_tallinn_action_4
+    - field.field.node.tallinn_report.field_tallinn_action_5
+    - field.field.node.tallinn_report.field_tallinn_action_6
+    - field.field.node.tallinn_report.field_tallinn_action_7
+    - field.field.node.tallinn_report.field_tallinn_action_8
+    - field.field.node.tallinn_report.field_tallinn_action_9
+    - field.field.node.tallinn_report.og_audience
+    - node.type.tallinn_report
+  module:
+    - user
+_core:
+  default_config_hash: vvHt11LmQnWVrhH1UrY64G9R4WhEDItDaC8x9Y2k4kc
+id: node.tallinn_report.view_mode_tile
+targetEntityType: node
+bundle: tallinn_report
+mode: view_mode_tile
+content: {  }
+hidden:
+  field_tallinn_action_1: true
+  field_tallinn_action_10: true
+  field_tallinn_action_11: true
+  field_tallinn_action_12: true
+  field_tallinn_action_13: true
+  field_tallinn_action_14: true
+  field_tallinn_action_15: true
+  field_tallinn_action_16: true
+  field_tallinn_action_17: true
+  field_tallinn_action_18: true
+  field_tallinn_action_19: true
+  field_tallinn_action_2: true
+  field_tallinn_action_20: true
+  field_tallinn_action_21: true
+  field_tallinn_action_22: true
+  field_tallinn_action_23: true
+  field_tallinn_action_24: true
+  field_tallinn_action_25: true
+  field_tallinn_action_3: true
+  field_tallinn_action_4: true
+  field_tallinn_action_5: true
+  field_tallinn_action_6: true
+  field_tallinn_action_7: true
+  field_tallinn_action_8: true
+  field_tallinn_action_9: true
+  langcode: true
+  links: true
+  og_audience: true
+  report: true

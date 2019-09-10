@@ -1,0 +1,7 @@
+text:
+  -
+    value: '<p>Joinup: Content has been updated</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has requested to delete the @entity:bundle - "@entity:title" in the @group:bundle: "@group:title", with the following motivation: "@transition:motivation".</p><p>You can access your content at the following link: <a href="@entity:url">@entity:url</a></p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html

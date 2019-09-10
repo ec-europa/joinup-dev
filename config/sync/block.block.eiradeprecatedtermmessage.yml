@@ -1,0 +1,26 @@
+uuid: 540d213f-05b1-4757-a4af-a3953b7a6886
+langcode: en
+status: true
+dependencies:
+  module:
+    - eira
+    - joinup_core
+  theme:
+    - joinup_theme
+id: eiradeprecatedtermmessage
+theme: joinup_theme
+region: content_top
+weight: 0
+provider: null
+plugin: eira_derprecated_term_block
+settings:
+  id: eira_derprecated_term_block
+  label: 'Eira deprecated term message'
+  provider: eira
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: entity.taxonomy_term.canonical
+    negate: false
+    context_mapping: {  }

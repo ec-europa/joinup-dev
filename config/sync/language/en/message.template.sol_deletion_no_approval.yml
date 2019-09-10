@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: Your solution has been deleted by the moderation team'
+    format: full_html
+  -
+    value: '<p>The Joinup moderation team deleted the interoperability solution @entity:title.</p>'
+    format: full_html

@@ -1,0 +1,15 @@
+definitions:
+  joinup_core__support__tour:
+    weight: -49
+    menu_name: support
+    parent: ''
+    enabled: true
+    expanded: false
+  joinup_core__support__contact:
+    weight: -46
+    menu_name: support
+    parent: ''
+    expanded: false
+    enabled: true
+_core:
+  default_config_hash: jdY7AU0tU-QsjmiOw3W8vwpYMb-By--_MSFgbqKUTYM

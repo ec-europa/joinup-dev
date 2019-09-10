@@ -1,0 +1,22 @@
+uuid: dd427319-0d50-470b-98cf-e21da90ea810
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: b1qi37bljWi97vQO7lWh3tnx3aEOMwSbU57c4TTCJ-I
+template: comment_create
+label: 'Comment create'
+description: 'Sent when a comment is created.'
+text:
+  -
+    value: '<p>Joinup: A new comment has been created.</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name posted a comment in collection "@group:title".</p><p>To view the comment click <a href="@entity:url">here</a>.</p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

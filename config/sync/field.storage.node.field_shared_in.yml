@@ -1,0 +1,22 @@
+uuid: c3a0d20e-23ac-4d81-99f6-fa259045cbdb
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - rdf_entity
+_core:
+  default_config_hash: oAbzlw73NN2z6OLcp6SFKIl9usv1zWNKuoKKdcs5qqo
+id: node.field_shared_in
+field_name: field_shared_in
+entity_type: node
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
