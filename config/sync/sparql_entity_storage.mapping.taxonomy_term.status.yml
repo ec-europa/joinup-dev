@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.status
+id: taxonomy_term.status
+entity_type_id: taxonomy_term
+bundle: status
+rdf_type: 'http://purl.org/adms/status/1.0'
+graph:
+  default: 'http://adms_skos_v1.00'
+base_fields_mapping:
+  uuid:
+    value:
+      predicate: ''
+      format: ''
+  vid:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+      format: resource
+  langcode:
+    value:
+      predicate: ''
+      format: ''
+  name:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      format: t_literal
+  description:
+    value:
+      predicate: ''
+      format: ''
+  format:
+    value:
+      predicate: ''
+      format: ''
+  weight:
+    value:
+      predicate: ''
+      format: ''
+  parent:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+      format: resource
+  changed:
+    value:
+      predicate: ''
+      format: ''
+  default_langcode:
+    value:
+      predicate: ''
+      format: ''
+  path: {  }

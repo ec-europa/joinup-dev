@@ -1,0 +1,25 @@
+uuid: c3aa5dab-0f5e-4ba5-ab18-54b229ddec45
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_licence
+  theme:
+    - joinup_theme
+id: licencedeprecatedmessage
+theme: joinup_theme
+region: content_top
+weight: 0
+provider: null
+plugin: licence_deprecated_message_block
+settings:
+  id: licence_deprecated_message_block
+  label: 'Licence overview deprecated message'
+  provider: joinup_licence
+  label_display: '0'
+visibility:
+  request_route:
+    id: request_route
+    routes: entity.rdf_entity.canonical
+    negate: false
+    context_mapping: {  }

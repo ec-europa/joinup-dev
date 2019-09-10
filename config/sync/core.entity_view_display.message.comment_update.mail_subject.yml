@@ -1,0 +1,19 @@
+uuid: dba2555a-687c-4981-9171-c330759e15a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.comment_update
+id: message.comment_update.mail_subject
+targetEntityType: message
+bundle: comment_update
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

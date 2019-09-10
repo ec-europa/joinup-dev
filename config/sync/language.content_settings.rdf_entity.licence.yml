@@ -1,0 +1,18 @@
+uuid: ddab907f-b952-41ce-8d5a-e69ea4decd2a
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.licence
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+_core:
+  default_config_hash: SQIlFKcW6YHz1WufIWhPPHQET4eJAWA7OcLb0H0G4Xw
+id: rdf_entity.licence
+target_entity_type_id: rdf_entity
+target_bundle: licence
+default_langcode: site_default
+language_alterable: false

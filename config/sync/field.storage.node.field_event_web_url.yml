@@ -1,0 +1,21 @@
+uuid: f7e98e88-337d-4132-9b2a-8f6f8f0e9f3c
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+_core:
+  default_config_hash: ZpAv5PCLeW9XAo9Rm543U7eP4p25i8s3N5cxYPJvgFg
+id: node.field_event_web_url
+field_name: field_event_web_url
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

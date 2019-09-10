@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - rdf_entity
+id: rdf_entities_distributions
+label: 'Rdf entities - distributions'
+type: rdf_entity
+pattern: 'solution/[rdf_entity:og_audience:entity:label]/distribution/[rdf_entity:label]'
+selection_criteria:
+  2a26dbd0-fa08-4994-83ac-2cbbfbe3a230:
+    id: 'entity_bundle:rdf_entity'
+    bundles:
+      asset_distribution: asset_distribution
+    negate: false
+    context_mapping:
+      rdf_entity: rdf_entity
+    uuid: 2a26dbd0-fa08-4994-83ac-2cbbfbe3a230
+selection_logic: and
+weight: -5
+relationships: {  }

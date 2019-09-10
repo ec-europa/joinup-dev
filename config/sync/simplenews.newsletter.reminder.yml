@@ -1,0 +1,17 @@
+uuid: aa3f46b5-f285-473b-be51-d6777ca231ce
+langcode: en
+status: true
+dependencies: {  }
+name: Reminder
+id: reminder
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

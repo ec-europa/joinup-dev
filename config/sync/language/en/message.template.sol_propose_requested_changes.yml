@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: An update of a solution has been proposed'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has proposed an update of the Interoperability solution: "@entity:title" on Joinup.</p><p>The publication of this content requires your validation.</p><p>You can access the new content at the following link: <a href="@entity:url">@entity:url</a> where you can validate or reject the new content.</p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html

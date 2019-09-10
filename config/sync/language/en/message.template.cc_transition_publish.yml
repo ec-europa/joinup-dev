@@ -1,0 +1,7 @@
+text:
+  -
+    value: '<p>Joinup: Content has been published</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has published the new @entity:bundle - "@entity:title" in the @group:bundle: "@group:title".</p><p>You can access the new content at the following link: <a href="@entity:url">@entity:url</a></p>'
+    format: full_html
