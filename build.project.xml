@@ -54,6 +54,7 @@
             <option name="account-name" value="${drupal.admin.username}" />
             <option name="account-pass" value="${drupal.admin.password}" />
             <option name="account-mail" value="${drupal.admin.email}" />
+            <option name="existing-config" />
             <param>${website.profile.name}</param>
             <!-- Disable sending of e-mails during installation. -->
             <param>install_configure_form.enable_update_status_module=NULL</param>
