@@ -40,7 +40,7 @@ function joinup_collection_user_insert(UserInterface $account): void {
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  *
- * Remove the action 'joinup_collection_og_membership_delete_action'.
+ * Remove the 'joinup_og_membership_delete_action' action.
  */
 function joinup_collection_form_views_form_og_members_overview_default_alter(&$form, FormStateInterface $form_state, $form_id): void {
   /** @var \Drupal\views\ViewExecutable $view */
@@ -49,7 +49,7 @@ function joinup_collection_form_views_form_og_members_overview_default_alter(&$f
   if (isset($view->args[0]) && $view->args[0] === 'rdf_entity') {
     // The second view argument is the group entity ID.
     if (!empty($view->args[1]) && $view->args[1] === JoinupCollectionHelper::getCollectionId()) {
-      unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_collection_og_membership_delete_action']);
+      unset($form['header']['og_membership_bulk_form']['action']['#options']['joinup_og_membership_delete_action']);
     }
   }
 }
