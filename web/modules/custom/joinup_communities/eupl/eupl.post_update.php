@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Drupal\eupl\Eupl;
 use Drupal\node\Entity\Node;
 
 /**
@@ -15,7 +16,7 @@ use Drupal\node\Entity\Node;
 function eupl_post_update_jla_move(): void {
   // Move the node under JLA solution.
   Node::load(701805)
-    ->set('og_audience', 'http://data.europa.eu/w21/0b18c781-6c88-41ad-b986-63a184693725')
+    ->set('og_audience', Eupl::JLA_SOLUTION)
     ->save();
   // Sink the left side menu link deep under the standard solution links.
   $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
