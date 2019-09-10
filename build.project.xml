@@ -103,12 +103,11 @@
             <option name="cache-clear" />
         </drush>
         <drush
-                command="cs-update"
+                command="config:import"
                 assume="yes"
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
-            <option name="discard-overrides" />
         </drush>
     </target>
 
