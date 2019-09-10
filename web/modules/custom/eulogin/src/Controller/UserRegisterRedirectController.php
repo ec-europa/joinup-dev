@@ -6,6 +6,7 @@ namespace Drupal\joinup_eulogin\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Routing\TrustedRedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides route controllers.
@@ -19,7 +20,11 @@ class UserRegisterRedirectController extends ControllerBase {
    *   The redirect response.
    */
   public function redirectUserRegister(): TrustedRedirectResponse {
-    return new TrustedRedirectResponse($this->config('joinup_eulogin.settings')->get('register_url'));
+    $register_url = $this->config('joinup_eulogin.settings')->get('register_url');
+    if ($register_url) {
+      return new TrustedRedirectResponse($register_url);
+    }
+    throw new NotFoundHttpException();
   }
 
 }
