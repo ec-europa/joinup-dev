@@ -169,8 +169,8 @@ class JoinupLegalSubContext extends DrupalSubContextBase {
    * @throws \InvalidArgumentException
    *   When the given legal document has no published version.
    *
-   * @Given I accept the :document_label agreement
-   * @Given (User ):username accepts the :document_label agreement
+   * @When I accept the :document_label agreement
+   * @Given the :document_label agreement has been accepted by (the ):username( user)
    */
   public function iAcceptTheLegalDocument(string $document_label, ?string $username = NULL): void {
     if ($username) {

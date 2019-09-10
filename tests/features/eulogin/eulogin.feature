@@ -46,7 +46,7 @@ Feature: Log in through EU Login
     Then I should see the warning message "You must accept this agreement before continuing."
     But I should not see the success message "Fill in the fields below to let the Joinup community learn more about you!"
 
-    Given I check "I have read and accept the Legal notice"
+    When I check "I have read and accept the Legal notice"
     And I press "Submit"
 
     Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
@@ -102,7 +102,7 @@ Feature: Log in through EU Login
     Then I should see the warning message "You must accept this agreement before continuing."
     But I should not see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
-    Given I check "I have read and accept the Legal notice"
+    When I check "I have read and accept the Legal notice"
     And I press "Submit"
 
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
@@ -122,7 +122,7 @@ Feature: Log in through EU Login
       | Username             | Password | E-mail                           | First name | Family name | Organisation |
       | chuck_the_local_hero | 12345    | chuck_the_local_hero@example.com | LocalChick | LocalNorris | ACME         |
     # Test that the user is not redirected anymore to accept the 'Legal notice'.
-    And User "chuck_the_local_hero" accepts the "Legal notice" agreement
+    And the "Legal notice" agreement has been accepted by the "chuck_the_local_hero" user
 
     Given I visit "/cas"
     And I fill in "E-mail address" with "texasranger@chucknorris.com.eu"
@@ -204,10 +204,10 @@ Feature: Log in through EU Login
       | partial_cas_profile | p@example.com |
       | no_cas_profile      | n@example.com |
       | without_cas         | w@example.com |
-    And User "full_cas_profile" accepts the "Legal notice" agreement
-    And User "partial_cas_profile" accepts the "Legal notice" agreement
-    And User "no_cas_profile" accepts the "Legal notice" agreement
-    And User "without_cas" accepts the "Legal notice" agreement
+    And the "Legal notice" agreement has been accepted by the "full_cas_profile" user
+    And the "Legal notice" agreement has been accepted by the "partial_cas_profile" user
+    And the "Legal notice" agreement has been accepted by the "no_cas_profile" user
+    And the "Legal notice" agreement has been accepted by the "without_cas" user
 
     And CAS users:
       | Username            | E-mail        | Password | First name | Last name | Local username      |
@@ -290,7 +290,6 @@ Feature: Log in through EU Login
     And I should see the link "EU Login"
 
   Scenario: A moderator is able to manually link a local user to its EU Login.
-
     Given user:
       | Username    | joe |
       | First name  | Joe |
