@@ -1,0 +1,27 @@
+transitions:
+  draft:
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+  request_changes:
+    validated:
+      - moderator
+  update_changes:
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+  validate:
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+  update_published:
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+_core:
+  default_config_hash: ZuHZrWhpU-Pc0o1hnICSCCY26fUu-CsTaK9zfLq5ciE

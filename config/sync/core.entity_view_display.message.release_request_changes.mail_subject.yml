@@ -1,0 +1,19 @@
+uuid: b3da5661-dddd-4fc8-aad3-d8d4b62818ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.release_request_changes
+id: message.release_request_changes.mail_subject
+targetEntityType: message
+bundle: release_request_changes
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

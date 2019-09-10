@@ -1,0 +1,16 @@
+uuid: ac04faaa-8a3c-4d9f-b8b8-4ee02cfb3f20
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.ogmenu_instance.navigation.og_audience
+    - og_menu.ogmenu.navigation
+_core:
+  default_config_hash: lDqp1I9YtS3VREjV18hYR0AFGhuz9oiBZF6d6241LME
+id: ogmenu_instance.navigation.default
+targetEntityType: ogmenu_instance
+bundle: navigation
+mode: default
+content: {  }
+hidden:
+  og_audience: true

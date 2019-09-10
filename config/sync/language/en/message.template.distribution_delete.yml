@@ -1,0 +1,7 @@
+text:
+  -
+    value: 'Joinup: A distribution has been deleted'
+    format: full_html
+  -
+    value: 'The distribution @entity:title @release:info:with_version of the solution @group:title was successfully deleted.'
+    format: full_html

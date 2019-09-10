@@ -1,0 +1,25 @@
+uuid: c04c2197-d886-4a94-9dd1-0667f292e890
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_elibrary_creation
+    - rdf_entity.rdfentity.collection
+  module:
+    - options
+_core:
+  default_config_hash: IoZGfUZCM7tt_84KzF4FTim_ftIk9zkLp70qvro59Bg
+id: rdf_entity.collection.field_ar_elibrary_creation
+field_name: field_ar_elibrary_creation
+entity_type: rdf_entity
+bundle: collection
+label: 'eLibrary creation'
+description: 'Specify the type of user that can create eLibrary content (news, events, and documents).'
+required: true
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings: {  }
+field_type: list_integer
