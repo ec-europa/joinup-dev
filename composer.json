@@ -225,7 +225,8 @@
                 "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
             },
             "drupal/password_policy": {
-                "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+                "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
+                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch"
             },
             "drupal/publication_date": {
                 "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-08-16/2983348-39.patch",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6330f9a416f2cf688063f67208237681",
+    "content-hash": "9b5badb84383f66a94be6f35cb4119db",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5004,7 +5004,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
+                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -15562,6 +15563,9 @@
                     "web/core": [
                         "type:drupal-core"
                     ]
+                },
+                "patches_applied": {
+                    "Extend createUser() method with 'values' argument @see https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73": "https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73.diff"
                 }
             },
             "autoload": {
