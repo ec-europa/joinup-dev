@@ -1,0 +1,22 @@
+uuid: c194c65b-7426-40f6-9f22-2aa47a2561d4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - rdf_entity
+_core:
+  default_config_hash: fTF5s1RO5icfGMnzXESbJGqprhRaytI4BJS-B3Agq8g
+id: node.field_licence
+field_name: field_licence
+entity_type: node
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

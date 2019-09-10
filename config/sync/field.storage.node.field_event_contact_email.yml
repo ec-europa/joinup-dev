@@ -1,0 +1,20 @@
+uuid: 3a98ae59-bd14-4abe-8213-873bf43f363c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: MZoWDUNHumhngwxa0rzj4wTjW0cXakBsAkQBg9RT5ns
+id: node.field_event_contact_email
+field_name: field_event_contact_email
+entity_type: node
+type: email
+settings: {  }
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

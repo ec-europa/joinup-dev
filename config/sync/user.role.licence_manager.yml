@@ -1,0 +1,14 @@
+uuid: 498c6842-7a39-4604-b09d-03e582afc376
+langcode: en
+status: true
+dependencies: {  }
+id: licence_manager
+label: 'Licence manager'
+weight: -8
+is_admin: null
+permissions:
+  - 'access dashboard'
+  - 'create licence rdf entity'
+  - 'delete licence rdf entity'
+  - 'edit licence rdf entity'
+  - 'view licence overview page'

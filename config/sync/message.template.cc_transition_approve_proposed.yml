@@ -1,0 +1,22 @@
+uuid: 7914f768-3ae4-46ff-838f-56a6bfbced33
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: vUY_5QcH7XiG8p6n7XcYqPQ_UJ1-J8bTgQArqHqzdcs
+template: cc_transition_approve_proposed
+label: 'Community content on Approve proposed'
+description: 'Template id 6'
+text:
+  -
+    value: '<p>Joinup: Content has been updated</p>'
+    format: full_html
+  -
+    value: '<p>the @actor:role, @actor:field_user_first_name @actor:field_user_family_name has approved your request of publication of the @entity:bundle - "@entity:title" in the @group:bundle: "@group:title".</p><p>You can access your content at the following link: <a href="@entity:url">@entity:url</a></p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

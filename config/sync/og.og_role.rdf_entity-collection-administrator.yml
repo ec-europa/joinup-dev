@@ -1,0 +1,18 @@
+uuid: f9340817-f370-467e-8483-9d47ca64e28c
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.collection
+_core:
+  default_config_hash: kPZrK7XWi0O_33gCHryjO4R1VJdSRzEL9B1HHnq2EEk
+id: rdf_entity-collection-administrator
+label: 'Collection owner'
+weight: 2
+is_admin: null
+group_type: rdf_entity
+group_bundle: collection
+group_id: null
+permissions:
+  - 'request collection deletion'
+role_type: null
