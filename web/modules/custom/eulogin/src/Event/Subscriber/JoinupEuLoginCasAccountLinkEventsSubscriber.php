@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\joinup_eulogin\Event\Subscriber;
 
 use Drupal\cas_account_link\Event\CasAccountLinkEvents;
+use Drupal\cas_account_link\Event\Events\CasAccountLinkEmailCollisionEvent;
 use Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -21,8 +23,34 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
    */
   public static function getSubscribedEvents(): array {
     return [
+      CasAccountLinkEvents::EMAIL_COLLISION => 'setEmailCollisionMessage',
       CasAccountLinkEvents::POST_LINK => 'setMessageAndRedirect',
     ];
+  }
+
+  /**
+   * Sets the email collision error message.
+   *
+   * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkEmailCollisionEvent $event
+   *   The CAS Account Link post-linking event object.
+   */
+  public function setEmailCollisionMessage(CasAccountLinkEmailCollisionEvent $event): void {
+    $event->setErrorMessage([
+      [
+        '#markup' => $this->t('The email address %mail is already taken.', [
+          '%mail' => $event->getLocalMail(),
+        ]),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ],
+      [
+        '#markup' => $this->t('If you are the owner of this account please select the first option, otherwise contact the <a href=":contact">Joinup support</a>.', [
+          ':contact' => Url::fromRoute('contact_form.contact_page')->toString(),
+        ]),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ],
+    ]);
   }
 
   /**

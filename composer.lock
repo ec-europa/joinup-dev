@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27a11efa7e96332dc8eb276267aa7b08",
+    "content-hash": "4ea411c444be69f6a89940c30c7018ac",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2617,7 +2617,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-07-27/username_conflict_3070744_D8_5.patch"
+                    "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-07-27/username_conflict_3070744_D8_5.patch",
+                    "Prevent Email collision @see https://www.drupal.org/project/cas_account_link/issues/3080231": "https://www.drupal.org/files/issues/2019-09-09/3080231-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -13069,7 +13070,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-08-15T10:45:14+00:00"
         },
         {
             "name": "drupal/coder",
