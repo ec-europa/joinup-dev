@@ -64,6 +64,9 @@ website.themes.dir = ${website.drupal.dir}/themes
 
 drupal.private_files.dir = ${project.basedir}/private
 
+# Configuration
+website.config_sync.dir = ${project.basedir}/config/sync
+
 # Behat configuration
 # -------------------
 
