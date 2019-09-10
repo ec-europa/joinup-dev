@@ -294,6 +294,7 @@ Feature: Log in through EU Login
       | Username    | joe |
       | First name  | Joe |
       | Family name | Doe |
+    And the "Legal notice" agreement has been accepted by the "joe" user
 
     And CAS users:
       | Username | E-mail          | Password | First name | Last name |
