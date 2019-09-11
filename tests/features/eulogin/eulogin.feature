@@ -282,6 +282,20 @@ Feature: Log in through EU Login
       | The email address joe@example.com is already taken.                                                        |
       | If you are the owner of this account please select the first option, otherwise contact the Joinup support. |
 
+  Scenario: The Drupal registration tab has been removed and the /user/register
+    route redirects to EU Login registration form.
+    When I visit "/user/login"
+    Then I should not see the link "Create new account"
+    When I visit "/user/register"
+    Then the url should match "/cas/eim/external/register.cgi"
+
+  Scenario: The CAS module 'Add CAS user(s)' functionality is dismantled.
+    Given I am logged in as a moderator
+    When I visit "/admin/people"
+    Then I should not see the link "Add CAS user(s)"
+    When I go to "/admin/people/create/cas-bulk"
+    Then the response status code should be 404
+
   Scenario: A moderator is able to manually link a local user to its EU Login.
     Given user:
       | Username    | joe |
