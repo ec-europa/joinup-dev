@@ -8,7 +8,7 @@ services:
     class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginCasAccountLinkEventsSubscriber
     tags:
       - { name: 'event_subscriber' }
-  joinup_eulogin.user.register.subscriber:
-    class: Drupal\joinup_eulogin\Event\Subscriber\UserRegisterRouteSubscriber
+  joinup_eulogin.route.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginRouteSubscriber
     tags:
       - { name: 'event_subscriber' }

@@ -99,8 +99,14 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
     /** @var \Drupal\user\UserDataInterface $user_data */
     $user_data = \Drupal::service('user.data');
 
-    // User profile fields are string scalars.
-    $attributes = array_filter($user_data->get('joinup_eulogin', $account->id(), 'attributes'));
+    // The CAS Attributes tokens are always in lowercase. Lowercase also the
+    // attributes received from CAS so that we can properly compare them later.
+    // @see cas_attributes_tokens()
+    $attributes = array_change_key_case(
+      // Cast to an array to overcome the NULL value when user data is missed.
+      (array) $user_data->get('joinup_eulogin', $account->id(), 'attributes'),
+      CASE_LOWER
+    );
 
     foreach ($mapping as $field_name => $token) {
       // The token is in the format `[cas:attribute:attribute_name]`. Extract
@@ -142,5 +148,31 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
  * Implements hook_local_tasks_alter().
  */
 function joinup_eulogin_local_tasks_alter(&$local_tasks) {
+  // Remove the 'Create new account' local task.
   unset($local_tasks['user.register']);
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function joinup_eulogin_menu_local_actions_alter(&$local_actions) {
+  // Remove the local action to bulk add CAS users from the admin/people form.
+  // This action is added by the CAS module to all roles with the `administer
+  // users` permission but this functionality is not included in the functional
+  // specifications, and is confusing for the moderator team.
+  unset($local_actions['cas.bulk_add_cas_users']);
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_eulogin_module_implements_alter(&$implementations, $hook) {
+  // Remove the hook implementation that adds a link to the bulk form for adding
+  // CAS users. This form is made available by the CAS module to all roles with
+  // the `administer users` permission but this functionality is not included in
+  // the functional specifications, and is confusing for the moderator team.
+  if ($hook === 'menu_links_discovered_alter') {
+    // @see cas_menu_links_discovered_alter()
+    unset($implementations['cas']);
+  }
 }
