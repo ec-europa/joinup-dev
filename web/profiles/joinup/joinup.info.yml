@@ -6,6 +6,9 @@ core: 8.x
 distribution:
   name: Joinup
 
+dependecies:
+  - sparql_entity_storage:sparql_entity_storage
+
 themes:
   - seven
   - joinup_theme
