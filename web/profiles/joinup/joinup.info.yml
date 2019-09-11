@@ -7,7 +7,11 @@ distribution:
   name: Joinup
 
 dependecies:
-  - sparql_entity_storage:sparql_entity_storage
+  - joinup:joinup_sparql
+
+install:
+  - block
+  - help
 
 themes:
   - seven
