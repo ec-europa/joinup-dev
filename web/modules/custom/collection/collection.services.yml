@@ -11,6 +11,7 @@ services:
       - { name: 'cache.context'}
   collection.event_subscriber:
     class: Drupal\collection\EventSubscriber\CollectionEventSubscriber
+    arguments: ['@current_user', '@collection.workflow_state_permission']
     tags:
       - { name: 'event_subscriber' }
   collection.fulfillment_guard:

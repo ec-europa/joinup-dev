@@ -4,13 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\collection\Guard;
 
-use Drupal\collection\CollectionWorkflowStatePermission;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\WorkflowStatePermissionInterface;
-use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;

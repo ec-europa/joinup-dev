@@ -6,11 +6,9 @@ namespace Drupal\collection;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\WorkflowStatePermissionInterface;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og\Og;
 
 /**
  * Service for determining whether changing workflow states is permitted.
@@ -68,7 +66,7 @@ class CollectionWorkflowStatePermission implements WorkflowStatePermissionInterf
     }
 
     // Check if the user has one of the allowed group roles.
-    $membership = $this->membershipManager->getMembership($entity, $account);
+    $membership = $this->membershipManager->getMembership($entity, $account->id());
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
   }
 
