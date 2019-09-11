@@ -13,6 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -37,6 +38,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use EntityReferenceTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use NodeTrait;
   use OgMenuTrait;
   use OgTrait;
@@ -611,9 +613,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * The method also checks that these options are the only options available.
    *
    * Table format:
-   * | collection   | user | options          |
-   * | Collection A | John | Status1          |
-   * | Collection B | Jack | Status1, Status2 |
+   * | collection   | user | buttons         |
+   * | Collection A | John | Save as draft   |
+   * | Collection B | Jack | Update, Publish |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
    *   The table with the triplets collection-user-options.
@@ -627,22 +629,21 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given for the following collection, the corresponding user should have the corresponding (available )state buttons:
    */
-  public function verifyWorkflowTransitions(TableNode $check_table): void {
+  public function verifyStateButtons(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
-      // Load entity.
-      $collection = $this->getCollectionByName($values['collection']);
+      $username = $values['user'];
+      $user = $this->userManager->getUser($username);
 
-      // Load user.
-      $user = user_load_by_name($values['user']);
-      if (empty($user)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
+      // Check if we are already logged in as the user to test.
+      $current_username = $this->userManager->getCurrentUser()->name ?? NULL;
+      if ($username !== $current_username) {
+        $this->authenticationManager->logIn($user);
       }
 
-      // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(',', $values['states']);
-      $states = array_map('trim', $states);
-
-      $this->assertAvailableTransitions($collection, $states, $user);
+      // Go to the edit form and check that the expected buttons are visible.
+      $this->visitEditCollection($values['collection']);
+      $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
+      $this->assertSubmitButtonsVisible($buttons);
     }
   }
 
