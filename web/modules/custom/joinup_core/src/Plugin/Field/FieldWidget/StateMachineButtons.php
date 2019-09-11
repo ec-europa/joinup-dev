@@ -40,7 +40,7 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
   /**
    * Constructs a StateMachineButtons widget.
    *
-   * @param array $plugin_id
+   * @param string $plugin_id
    *   The plugin_id for the widget.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
@@ -53,7 +53,7 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
    *   The event dispatcher.
    */
-  public function __construct(array $plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EventDispatcherInterface $event_dispatcher) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EventDispatcherInterface $event_dispatcher) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->eventDispatcher = $event_dispatcher;
   }
