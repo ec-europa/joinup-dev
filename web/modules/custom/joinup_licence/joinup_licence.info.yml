@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - field_group:field_group
+  - joinup:joinup_core
   - smart_trim:smart_trim
   - spdx:spdx
 
