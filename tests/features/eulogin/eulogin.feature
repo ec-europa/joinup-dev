@@ -289,6 +289,44 @@ Feature: Log in through EU Login
     Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
     And I should see the link "EU Login"
 
+  Scenario: A new user tries to register with an existing Email.
+    Given users:
+      | Username | E-mail          |
+      | joe      | joe@example.com |
+
+    And CAS users:
+      | Username | E-mail          | Password |
+      | joe_doe  | joe@example.com | 123      |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "joe@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+
+    Given I select the radio button "I am a new user (create a new account)"
+    When I press "Next"
+
+    Then I should see the following error messages:
+      | error messages                                                                                             |
+      | The email address joe@example.com is already taken.                                                        |
+      | If you are the owner of this account please select the first option, otherwise contact the Joinup support. |
+
+  Scenario: The Drupal registration tab has been removed and the /user/register
+    route redirects to EU Login registration form.
+    When I visit "/user/login"
+    Then I should not see the link "Create new account"
+    When I visit "/user/register"
+    Then the url should match "/cas/eim/external/register.cgi"
+
+  Scenario: The CAS module 'Add CAS user(s)' functionality is dismantled.
+    Given I am logged in as a moderator
+    When I visit "/admin/people"
+    Then I should not see the link "Add CAS user(s)"
+    When I go to "/admin/people/create/cas-bulk"
+    Then the response status code should be 404
+
   Scenario: A moderator is able to manually link a local user to its EU Login.
     Given user:
       | Username    | joe |
