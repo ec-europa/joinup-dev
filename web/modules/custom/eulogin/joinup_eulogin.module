@@ -145,6 +145,14 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
 }
 
 /**
+ * Implements hook_local_tasks_alter().
+ */
+function joinup_eulogin_local_tasks_alter(&$local_tasks) {
+  // Remove the 'Create new account' local task.
+  unset($local_tasks['user.register']);
+}
+
+/**
  * Implements hook_menu_local_actions_alter().
  */
 function joinup_eulogin_menu_local_actions_alter(&$local_actions) {
