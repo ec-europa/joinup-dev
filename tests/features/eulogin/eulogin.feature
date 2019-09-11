@@ -258,8 +258,14 @@ Feature: Log in through EU Login
     Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
     And I should see the link "EU Login"
 
-  Scenario: A moderator is able to manually link a local user to its EU Login.
+  Scenario: The CAS module 'Add CAS user(s)' functionality is dismantled.
+    Given I am logged in as a moderator
+    When I visit "/admin/people"
+    Then I should not see the link "Add CAS user(s)"
+    When I go to "/admin/people/create/cas-bulk"
+    Then the response status code should be 404
 
+  Scenario: A moderator is able to manually link a local user to its EU Login.
     Given user:
       | Username    | joe |
       | First name  | Joe |
