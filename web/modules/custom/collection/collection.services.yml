@@ -15,9 +15,12 @@ services:
       - { name: 'event_subscriber' }
   collection.fulfillment_guard:
     class: Drupal\collection\Guard\CollectionFulfillmentGuard
-    arguments: ['@entity_type.manager', '@config.factory', '@current_user']
+    arguments: ['@entity_type.manager', '@current_user', '@collection.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: collection }
   collection.lazy_builders:
     class: Drupal\collection\CollectionLazyBuilders
     arguments: ['@entity_type.manager', '@form_builder', '@current_user']
+  collection.workflow_state_permission:
+    class: Drupal\collection\CollectionWorkflowStatePermission
+    arguments: ['@config.factory', '@og.membership_manager']
