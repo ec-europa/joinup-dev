@@ -58,6 +58,7 @@ dependencies:
   - joinup:joinup_privacy
   - joinup:joinup_rss
   - joinup:joinup_search
+  - joinup:joinup_seo
   - joinup:joinup_sparql
   - joinup:joinup_subscription
   - joinup:joinup_user

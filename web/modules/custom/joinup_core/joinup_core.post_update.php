@@ -728,3 +728,10 @@ function joinup_core_post_update_0_fix_publication_dates() {
     ->expression('published_at', PUBLICATION_DATE_DEFAULT)
     ->execute();
 }
+
+/**
+ * Enable the joinup_seo module.
+ */
+function joinup_core_post_update_install_joinup_seo() {
+  \Drupal::service('module_installer')->install(['joinup_seo']);
+}
