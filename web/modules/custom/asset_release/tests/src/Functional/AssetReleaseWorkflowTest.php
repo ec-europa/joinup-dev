@@ -441,11 +441,9 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
       'draft' => [
         'userAuthenticated' => [],
         'userModerator' => [
-          'draft',
           'validate',
         ],
         'userOgFacilitator' => [
-          'draft',
           'validate',
         ],
         'userOgAdministrator' => [],
