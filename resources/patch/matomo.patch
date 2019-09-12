@@ -1,0 +1,83 @@
+diff --git a/matomo_reporting_api.install b/matomo_reporting_api.install
+index aa26d01..50bcf52 100644
+--- a/matomo_reporting_api.install
++++ b/matomo_reporting_api.install
+@@ -14,24 +14,6 @@ function matomo_reporting_api_requirements($phase) {
+   $requirements = [];
+ 
+   if ($phase == 'runtime') {
+-    // Warn the user if they are using insecure HTTP transport.
+-    $matomo_settings = \Drupal::configFactory()->get('matomo.settings');
+-    $https_url = $matomo_settings->get('url_https');
+-    if (empty($https_url) || parse_url($https_url)['scheme'] !== 'https') {
+-      $requirements['matomo_reporting_api_https'] = [
+-        'title' => t('Matomo reporting API'),
+-        'value' => t('Matomo user credentials are not encrypted and visible on the network.'),
+-        'description' => t('The user authentication token is transmitted without encryption and is vulnerable to being discovered on the network. Attackers can use this token to take over the Matomo server. It is <strong>highly recommended</strong> to provide an encrypted HTTPS URL for Matomo on production environments.'),
+-        'severity' => REQUIREMENT_WARNING,
+-      ];
+-    }
+-    else {
+-      $requirements['matomo_reporting_api_https'] = [
+-        'title' => t('Matomo reporting API'),
+-        'value' => t('Communication with the Matomo server is handled using a secure connection.'),
+-      ];
+-    }
+-
+     // Throw an error when the authentication token is not set.
+     $matomo_reporting_api_settings = \Drupal::configFactory()->get('matomo_reporting_api.settings');
+     if (empty($matomo_reporting_api_settings->get('token_auth'))) {
+@@ -43,9 +25,10 @@ function matomo_reporting_api_requirements($phase) {
+         ]),
+         'severity' => REQUIREMENT_ERROR,
+       ];
++      return $requirements;
+     }
+     // Throw an error when the Matomo server cannot be reached.
+-    elseif (matomo_reporting_api_get_api_version() === FALSE) {
++    elseif (($matomo_version = matomo_reporting_api_get_api_version()) === FALSE) {
+       $requirements['matomo_reporting_api_server_unreachable'] = [
+         'title' => t('Matomo reporting API'),
+         'value' => t('Matomo server cannot be reached.'),
+@@ -55,8 +38,28 @@ function matomo_reporting_api_requirements($phase) {
+         ]),
+         'severity' => REQUIREMENT_ERROR,
+       ];
++      return $requirements;
+     }
+ 
++    // Warn the user if they are using insecure HTTP transport.
++    $matomo_settings = \Drupal::configFactory()->get('matomo.settings');
++    $https_url = $matomo_settings->get('url_https');
++    if (empty($https_url) || parse_url($https_url)['scheme'] !== 'https') {
++      $requirements['matomo_reporting_api_https'] = [
++        'title' => t('Matomo reporting API'),
++        'value' => t('Matomo user credentials are not encrypted and visible on the network.'),
++        'description' => t('The user authentication token is transmitted without encryption and is vulnerable to being discovered on the network. Attackers can use this token to take over the Matomo server. It is <strong>highly recommended</strong> to provide an encrypted HTTPS URL for Matomo on production environments.'),
++        'severity' => REQUIREMENT_WARNING,
++      ];
++      $value = t('Matomo %version', ['%version' => $matomo_version]);
++    }
++    else {
++      $value = t('Matomo %version. Communication with the Matomo server is handled using a secure connection.', ['%version' => $matomo_version]);
++    }
++    $requirements['matomo_reporting_api_https'] = [
++      'title' => t('Matomo reporting API'),
++      'value' => $value,
++    ];
+   }
+ 
+   return $requirements;
+diff --git a/matomo_reporting_api.module b/matomo_reporting_api.module
+index fccc40e..aae1dcf 100644
+--- a/matomo_reporting_api.module
++++ b/matomo_reporting_api.module
+@@ -18,7 +18,7 @@ use GuzzleHttp\Exception\ConnectException;
+ function matomo_reporting_api_get_api_version() {
+   /** @var \Matomo\ReportingApi\QueryResult $result */
+   try {
+-    $query = \Drupal::service('matomo.query_factory')->getQuery('API.getMatomoVersion');
++    $query = \Drupal::service('matomo.query_factory')->getQuery('API.getPiwikVersion');
+   }
+   catch (MissingMatomoServerUrlException $e) {
+     return FALSE;
