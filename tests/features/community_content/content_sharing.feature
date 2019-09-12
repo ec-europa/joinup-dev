@@ -187,14 +187,7 @@ Feature: Sharing content between collections
     Then I should see the contextual link "Share" in the "Iron throne" tile
     But I should not see the contextual link "Unshare" in the "Iron throne" tile
 
-    # Normally we would share directly from the Keep up to date page. However, a styling issue is preventing the
-    # checkbox to be located.
-    # @see: ISAICP-5245.
-    # And I click "Keep up to date"
-    # Then I should see the contextual link "Share" in the "Iron throne" tile
-    # And I click the contextual link "Share" in the "Iron throne" tile
-    When I go to the content page of the type "<content type>" with the title "Iron throne"
-    And I click "Share"
+    When I click the contextual link "Share" in the "Iron throne" tile
     Then a modal should open
     And the following fields should be present "Essos city"
     When I check "Essos city"
