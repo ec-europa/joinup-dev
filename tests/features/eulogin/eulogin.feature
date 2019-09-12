@@ -199,6 +199,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "First name,Family name"
     But I should not see "Username"
     And I should not see "full_cas_profile"
+    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
 
     When I press "Save"
     Then I should see the success message "The changes have been saved."
@@ -220,6 +221,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "Family name"
     But I should not see "Username"
     And I should not see "partial_cas_profile"
+    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
 
     When I press "Save"
     Then I should see the error message "First name field is required."
@@ -242,6 +244,7 @@ Feature: Log in through EU Login
     But I should not see "Username"
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
+    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
 
     When I press "Save"
     Then I should see the error message "First name field is required."
@@ -257,6 +260,7 @@ Feature: Log in through EU Login
     And the following fields should not be disabled "First name,Family name"
     And I should see "Username"
     And I should see "without_cas"
+    And I should see "A valid email address. All emails from the system will be sent to this address. The email address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by email."
 
     When I press "Save"
     Then I should see the error message "First name field is required."
