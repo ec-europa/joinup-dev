@@ -78,16 +78,32 @@ function joinup_eulogin_email_registration_validation(array $element, FormStateI
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_BASE_FORM_ID_alter().
  *
- * Disable fields that are managed by EU Login.
+ * For accounts linked to EU Login:
+ * - Hide the username field.
+ * - Disable fields that are managed by EU Login.
  */
 function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if ($form_id !== 'user_form') {
+    // The registration form.
+    return;
+  }
+
   /** @var \Drupal\user\UserInterface $account */
   $account = $form_state->getFormObject()->getEntity();
 
   // This account is not linked to an EU Login account.
   if ($account->get('eulogin_authname')->isEmpty()) {
+    // Show the user name if the user does not have access to the original
+    // account name field.
+    $form['user_name'] = [
+      '#type' => 'inline_template',
+      '#template' => '<p><strong>{{ "Username"|t }}:</strong> <em>{{ name }}</em></p>',
+      '#context' => ['name' => $account->getAccountName()],
+      '#access' => !$form['account']['name']['#access'],
+      '#weight' => -100,
+    ];
     return;
   }
 
