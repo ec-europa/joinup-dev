@@ -132,6 +132,7 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
       $element['#same_state_button'] = [
         'label' => $event->getLabel(),
         'weight' => $event->getWeight(),
+        'state_id' => $state,
       ];
     }
 
@@ -172,6 +173,8 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
       $button = [
         '#weight' => $element['#same_state_button']['weight'],
         '#value' => $element['#same_state_button']['label'],
+        '#state_id' => $element['#same_state_button']['state_id'],
+        '#state_field' => $element['#field_name'],
       ];
 
       $form['actions']['update'] = $button + $default_button;
