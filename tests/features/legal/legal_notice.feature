@@ -161,3 +161,30 @@ Feature:
 
     When I am on "/contact"
     Then I should not see "I have read and accept the Legal notice"
+
+  @casMockServer
+  Scenario: A user registers its account via EU Login.
+    Given CAS users:
+      | Username | E-mail          | Password | First name | Last name |
+      | joe      | joe@example.com | 123      | Joe        | Doe       |
+
+    When I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    And I fill in "E-mail address" with "joe@example.com"
+    And I fill in "Password" with "123"
+    And I press the "Log in" button
+
+    When I select the radio button "I am a new user (create a new account)"
+    Then I should see "I have read and accept the Legal notice"
+
+    # Submit without accepting the 'Legal notice'.
+    When I press "Next"
+    Then I should see the error message "You must accept the Legal notice in order to use our platform."
+
+    When I check "I have read and accept the Legal notice"
+    And I press "Next"
+    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+    # The user has been redirected to its user account edit form.
+    And the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
+    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
