@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3a2d53a57c3402448885f71abf8da91",
+    "content-hash": "8d50ad886afc5e62fb70322d4fa9ed63",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2606,7 +2606,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-09-11/3070744-12-reroll.patch"
+                    "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-09-11/3070744-12-reroll.patch",
+                    "Make the account available for other custom submit callbacks @see https://www.drupal.org/project/cas_account_link/issues/3081049": "https://www.drupal.org/files/issues/2019-09-13/3081049-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
