@@ -107,8 +107,8 @@ class MySubscriptionsForm extends FormBase {
     ];
 
     $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
+
     $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
-    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
     // Add a JS behavior to enable the buttons when the checkboxes or the
     // dropdown on the form are toggled.
@@ -129,8 +129,14 @@ class MySubscriptionsForm extends FormBase {
       return $form;
     }
 
+    // Generate the list of memberships with checkboxes to choose which bundles
+    // to subscribe to.
     $form['collections']['#tree'] = TRUE;
+    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo('node');
 
+    // Keep track if the user has any memberships with active subscriptions. If
+    // this is the case we will show the 'Unsubscribe from all' button at the
+    // bottom of the form.
     $memberships_with_subscription = FALSE;
     foreach ($memberships as $membership) {
       $collection = $membership->getGroup();
@@ -144,11 +150,27 @@ class MySubscriptionsForm extends FormBase {
         '#attributes' => [
           'class' => ['collection-subscription'],
         ],
-        'preview' => $this->entityTypeManager->getViewBuilder($collection->getEntityTypeId())->view($collection, 'list_view'),
+        'logo' => $collection->field_ar_logo->view([
+          'label' => 'hidden',
+          'type' => 'image',
+          'settings' => [
+            'image_style' => 'vertical_medium_image',
+            'image_link' => 'content',
+          ],
+        ]),
+        'link' => [
+          '#type' => 'link',
+          '#title' => $collection->label(),
+          '#url' => $collection->toUrl(),
+        ],
+        'motivation' => [
+          '#markup' => $this->t('Send me notifications for:'),
+        ],
         'bundles' => [
           '#type' => 'container',
           '#extra_suggestion' => 'container__subscribe_form',
         ],
+        '#extra_suggestion' => 'container__collection_subscription',
       ];
 
       foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
@@ -178,6 +200,7 @@ class MySubscriptionsForm extends FormBase {
         '#name' => 'submit-' . $clean_collection_id,
         '#submit' => ['::submitForm'],
         '#type' => 'submit',
+        '#extra_suggestion' => 'subscribe_save',
         '#value' => $this->t('Save changes'),
         '#attributes' => [
           // The button should appear disabled initially. It becomes enabled
@@ -192,7 +215,12 @@ class MySubscriptionsForm extends FormBase {
       ];
     }
 
-    $form['unsubscribe_all'] = [
+    $form['edit-actions'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => 'form__subscribe-actions'],
+    ];
+
+    $form['edit-actions']['unsubscribe_all'] = [
       '#type' => 'link',
       '#title' => $this->t('Unsubscribe from all'),
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
@@ -332,6 +360,7 @@ class MySubscriptionsForm extends FormBase {
 
     $form['user_subscription_settings']['field_user_frequency'] = $widget->form($items, $form['user_subscription_settings'], $subform_state);
     $form['user_subscription_settings']['field_user_frequency']['#access'] = $items->access('edit');
+    $form['user_subscription_settings']['field_user_frequency']['#attributes']['class'][] = 'form__subscribe-frequency';
 
     $form['user_subscription_settings']['field_user_frequency']['submit'] = [
       '#ajax' => [
@@ -340,6 +369,7 @@ class MySubscriptionsForm extends FormBase {
       ],
       '#submit' => ['::submitUserFrequency'],
       '#type' => 'submit',
+      '#extra_suggestion' => 'subscribe_save',
       '#value' => $this->t('Save changes'),
       '#attributes' => [
         // The button should appear disabled initially. It becomes enabled

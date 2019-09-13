@@ -57,6 +57,9 @@
   &.listing__tags
     margin-bottom: 0
 
+.listing__field--no-margin
+  margin-bottom: 0
+
 .listing__title,
 .listing__title a
   font-size: 16px
@@ -65,6 +68,12 @@
   text-decoration: none
   color: $color-blue-dark
   word-wrap: break-word
+
+.listing__motivation
+  margin-bottom: $tile-margin
+  color: $color-blue-dark
+  +breakpoint(lg-desktop)
+    margin-bottom: 0
 
 .listing__subtitle
   margin: 0
