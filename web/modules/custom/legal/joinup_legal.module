@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\entity_legal\Entity\EntityLegalDocument;
+use Drupal\entity_legal\Entity\EntityLegalDocumentAcceptance;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -39,5 +40,82 @@ function joinup_legal_form_message_contact_form_submission_form_alter(&$form, Fo
       ]),
       '#weight' => 12,
     ];
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add the 'Legal notice' acceptance checkbox to the CAS Account Link form, but
+ * only when the user selects 'I am a new user (create a new account)'.
+ */
+function joinup_legal_form_cas_account_link_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $legal_notice */
+  $legal_notice = EntityLegalDocument::load('legal_notice');
+
+  // Only show if there's a published version.
+  if ($legal_notice->getPublishedVersion()) {
+    $new_user_selected = [':input[name="account_exist"]' => ['value' => 'no']];
+    $form['legal'] = [
+      '#type' => 'checkbox',
+      '#title' => $legal_notice->getAcceptanceLabel(),
+      '#states' => [
+        // On HTML5 there's a client-side validation that prevents posting when
+        // this checkbox is not checked. However, we ensure also server-side
+        // validation for the case when this client feature is not supported.
+        // @see joinup_legal_form_cas_account_link_form_validate()
+        'required' => $new_user_selected,
+        'visible' => $new_user_selected,
+      ],
+    ];
+    // Once we've loaded the entity, store it to be reused later in the flow.
+    $form['legal_notice'] = [
+      '#type' => 'value',
+      '#value' => $legal_notice,
+    ];
+  }
+  // Validate that the 'Legal notice'.
+  $form['#validate'][] = 'joinup_legal_form_cas_account_link_form_validate';
+  // Store the user acceptance.
+  $form['#submit'][] = 'joinup_legal_form_cas_account_link_form_submit';
+}
+
+/**
+ * Provides a validator that checks if the 'Legal notice' has been accepted.
+ *
+ * @param array $form
+ *   The Form API form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The Form API form state.
+ */
+function joinup_legal_form_cas_account_link_form_validate(array &$form, FormStateInterface $form_state): void {
+  if ($form_state->getValue('account_exist') === 'no' && $form_state->hasValue('legal_notice') && !$form_state->getValue('legal')) {
+    /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $legal_notice */
+    $legal_notice = $form_state->getValue('legal_notice');
+    $form_state->setErrorByName('legal', t('You must accept the <a href=":url">%document</a> in order to use our platform.', [
+      ':url' => $legal_notice->toUrl('canonical')->toString(),
+      '%document' => $legal_notice->label(),
+    ]));
+  }
+}
+
+/**
+ * Stores the 'Legal notice' user acceptance, if case.
+ *
+ * @param array $form
+ *   The Form API form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The Form API form state.
+ */
+function joinup_legal_form_cas_account_link_form_submit(array &$form, FormStateInterface $form_state): void {
+  if ($form_state->getValue('account_exist') === 'no' && $form_state->hasValue('legal_notice') && $form_state->getValue('legal')) {
+    /** @var \Drupal\user\UserInterface $account */
+    $account = $form_state->getValue('account');
+    /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $legal_notice */
+    $legal_notice = $form_state->getValue('legal_notice');
+    EntityLegalDocumentAcceptance::create([
+      'uid' => $account->id(),
+      'document_version_name' => $legal_notice->getPublishedVersion()->id(),
+    ])->save();
   }
 }
