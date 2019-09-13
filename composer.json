@@ -137,6 +137,7 @@
             "scripts/composer/ScriptHandler.php",
             "scripts/composer/RemoveWrongPatchedObjects.php",
             "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php",
+            "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
             "web/modules/custom/error_page/src/ErrorPageErrorHandler.php"
         ]
     },
