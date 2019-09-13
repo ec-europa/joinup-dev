@@ -33,6 +33,7 @@
   font-weight: $font-weight-thin
   color: lighten($color-grey-medium, 10%)
   border-bottom-color: lighten($color-grey-medium, 10%)
+  box-sizing: border-box
   &::-webkit-input-placeholder
     font-size: $font-size-base
     font-weight: $font-weight-thin
@@ -152,19 +153,22 @@
 // States
 // --------------------------------------------------
 .search-bar--header
-  width: calc(100% - 130px)
-  background-color: $color-blue-default
-  +z-index(navigation)
-  +breakpoint(tablet)
-    width: calc(100% - 200px)
-  .search-bar__input-container
-    width: calc(100% - 50px)
-    max-width: 100%
+  &.is-focused,
+  &.is-dirty
+    width: calc(100% - 130px)
+    background-color: $color-blue-default
+    +z-index(navigation)
+    +breakpoint(tablet)
+      width: calc(100% - 200px)
+    .search-bar__input-container
+      width: calc(100% - 50px)
+      max-width: 100%
 
 .search-bar--header-shifted
-  width: calc(100% - 175px)
-  +breakpoint(tablet)
-    width: calc(100% - 245px)
-  .search-bar__input-container
-    width: calc(100% - 50px)
-
+  &.is-focused,
+  &.is-dirty
+    width: calc(100% - 175px)
+    +breakpoint(tablet)
+      width: calc(100% - 245px)
+    .search-bar__input-container
+      width: calc(100% - 50px)

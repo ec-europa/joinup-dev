@@ -78,6 +78,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @When I go to (the homepage of )the :solution solution
    * @When I visit (the homepage of )the :solution solution
+   * @Given I am on (the homepage of )the :solution solution
    */
   public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
@@ -705,15 +706,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     if (!$ids) {
       throw new \Exception("The '$solution_label' solution is not affiliated with the '$collection_label' collection but it should be.");
     }
-  }
-
-  /**
-   * Navigates to the solutions overview page.
-   *
-   * @When I visit the solution overview( page)
-   */
-  public function visitSolutionOverviewPage() {
-    $this->visitPath('/solutions');
   }
 
   /**

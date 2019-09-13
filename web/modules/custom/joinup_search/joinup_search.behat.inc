@@ -329,6 +329,24 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
+   * Enters keywords in the search bar.
+   *
+   * Note that this will just enter the keywords, it will not launch the search.
+   *
+   * @param string $keywords
+   *   A list of words to search.
+   *
+   * @throws \Exception
+   *   Thrown when the header search bar is not found.
+   *
+   * @When I enter :keywords in the search bar
+   */
+  public function enterSearchKeywords(string $keywords): void {
+    $element = $this->getSearchBarElement();
+    $element->setValue($keywords);
+  }
+
+  /**
    * Launches a search.
    *
    * @param string $keywords
@@ -337,23 +355,30 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @throws \Exception
    *   Thrown when the header search bar is not found.
    *
-   * @When I enter :keywords in the header search bar and hit enter
+   * @When I enter :keywords in the search bar and press enter
    */
   public function launchSearchFromHeader(string $keywords): void {
-    // The header search form is not a full form, so it doesn't have a submit
-    // button.
-    // Sending keys is not supported by Behat\Mink\Driver\GoutteDriver , so we
-    // cannot fake the pressing of the Enter key.
-    // To keep speed, we provide a step that fakes the user input in the header
-    // search bar and pressing the enter key. Simple tests can be written to
-    // verify the form functionality if needed.
-    $this->getSession()->visit($this->locatePath('/search?keys=' . $keywords));
+    if ($this->browserSupportsJavaScript()) {
+      $element = $this->getSearchBarElement();
+      $element->setValue($keywords);
+      $this->submitSearch();
+    }
+    else {
+      // The header search form doesn't have a submit button but is submitted by
+      // pressing the Enter key. Sending keys is not supported by GoutteDriver,
+      // so we cannot fake the pressing of the Enter key. We will simply
+      // redirect to the search page.
+      $this->getSession()->visit($this->locatePath('/search?keys=' . $keywords));
+    }
   }
 
   /**
    * Press a key in the search field.
    *
    * Works only in Javascript-enabled browsers.
+   *
+   * Don't use this for submitting the form by sending an `enter` key since this
+   * does not trigger the form submission. Use ::submitSearch() instead.
    *
    * @param string $key
    *   The human readable name of the key to press.
@@ -362,19 +387,32 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
    *   Thrown when the browser doesn't support Javascript or when the search
    *   field is not found.
    *
-   * @When I press :key in the search field
+   * @When I press :key in the search bar
    */
-  public function pressKeyInSearchField(string $key): void {
+  public function pressKeyInSearchBar(string $key): void {
     $this->assertJavaScriptEnabledBrowser();
-
-    $elements = $this->getElementsMatchingElementAlias('search bar');
-
-    Assert::assertNotEmpty($elements, 'Could not find the search field in the page.');
-    Assert::assertCount(1, $elements, 'There are multiple search fields on the page.');
-
-    $element = reset($elements);
-
+    $element = $this->getSearchBarElement();
     $this->pressKeyInElement($key, $element);
+  }
+
+  /**
+   * Submits the search form.
+   *
+   * For some reason sending a return key press to the form input field does not
+   * result in a form submission in Selenium, even though it works when
+   * performed manually in the browser. This step forces a form submission by
+   * calling the Selenium method directly.
+   *
+   * @throws \Exception
+   *   Thrown when the browser doesn't support Javascript or when the search
+   *   field is not found.
+   *
+   * @When I submit the search by pressing enter
+   */
+  public function submitSearch(): void {
+    $this->assertJavaScriptEnabledBrowser();
+    $element = $this->getSearchBarElement();
+    $element->submit();
   }
 
   /**
@@ -399,6 +437,33 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
     if ($element->getAttribute('rel') !== 'nofollow') {
       throw new \Exception("Link '$link' doesn't have the 'rel' attribute set to 'nofollow'.");
     }
+  }
+
+  /**
+   * Opens the search bar.
+   *
+   * @When I open the search bar by clicking on the search icon
+   */
+  public function openSearchBar() {
+    // One can only open the search bar if JavaScript is enabled.
+    $this->assertJavaScriptEnabledBrowser();
+    $element = $this->getSearchBarElement();
+    $element->focus();
+  }
+
+  /**
+   * Returns the search bar as a Mink page element.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The search bar.
+   */
+  protected function getSearchBarElement(): NodeElement {
+    $elements = $this->getElementsMatchingElementAlias('search bar');
+
+    Assert::assertNotEmpty($elements, 'Could not find the search field in the page.');
+    Assert::assertCount(1, $elements, 'There are multiple search fields on the page.');
+
+    return reset($elements);
   }
 
 }
