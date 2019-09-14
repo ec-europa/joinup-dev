@@ -24,6 +24,7 @@ class ETest extends ExistingSiteBase {
     ]);
 
     $this->assertSame('Page', $n->label());
+    $this->assertTrue(0);
   }
 
 }
