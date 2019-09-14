@@ -5,7 +5,7 @@
  or your current system user. See core/tests/README.md and
  https://www.drupal.org/node/2116263 for details.
 -->
-<phpunit bootstrap="../vendor/weitzman/drupal-test-traits/src/bootstrap-fast.php"
+<phpunit bootstrap="../vendor/weitzman/drupal-test-traits/src/bootstrap.php"
          colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
