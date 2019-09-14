@@ -65,15 +65,9 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
     $solution = $this->createRdfEntity([
       'rid' => 'solution',
       'label' => $this->randomString(),
-      'field_is_state' => 'validated'
+      'field_is_state' => 'validated',
     ]);
-    $collection = $this->createRdfEntity([
-      'rid' => 'collection',
-      'label' => $this->randomString(),
-      'field_ar_state' => 'validated',
-      'field_ar_affiliates' => [$solution->id()],
-    ]);
-    $licence = $this->createRdfEntity([
+      $licence = $this->createRdfEntity([
       'rid' => 'licence',
       'label' => $this->randomString(),
     ]);
@@ -217,10 +211,6 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
       'name' => $account->getUsername(),
       'pass' => $account->passRaw,
     ], $this->t('Sign in'));
-
-    // @see BrowserTestBase::drupalUserIsLoggedIn()
-//    $account->sessionId = $this->getSession()->getCookie(session_name());
-//    $this->assertTrue($this->drupalUserIsLoggedIn($account), new FormattableMarkup('User %name successfully logged in.', ['%name' => $account->getAccountName()]));
 
     $this->loggedInUser = $account;
     $this->container->get('current_user')->setAccount($account);

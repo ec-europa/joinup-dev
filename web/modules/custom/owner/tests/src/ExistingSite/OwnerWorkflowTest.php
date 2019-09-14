@@ -120,7 +120,7 @@ class OwnerWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
       $this->entityAccess->resetCache();
 
       // Owner entities that are referenced in other ones cannot be deleted.
-      $parent = $this->createRdfEntity([
+      $this->createRdfEntity([
         'rid' => 'collection',
         'label' => $this->randomMachineName(),
         'uid' => $this->userOwner->id(),
@@ -168,7 +168,7 @@ class OwnerWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
    * @return array
    *   Test cases.
    */
-  public function createAccessProvider(): array  {
+  public function createAccessProvider(): array {
     return [
       'userAnonymous' => FALSE,
       'userAuthenticated' => TRUE,
