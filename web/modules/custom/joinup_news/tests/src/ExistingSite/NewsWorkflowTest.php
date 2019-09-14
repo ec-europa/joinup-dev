@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_news\Functional;
+namespace Drupal\Tests\joinup_news\ExistingSite;
 
 use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
 
