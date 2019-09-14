@@ -1,3 +1,4 @@
+uuid: d623c3dd-07f9-4090-b20c-8fc3bf0553c2
 langcode: en
 status: true
 dependencies:
@@ -14,6 +15,8 @@ id: rdf_entity.asset_distribution
 entity_type_id: rdf_entity
 bundle: asset_distribution
 rdf_type: 'http://www.w3.org/ns/dcat#Distribution'
+graph:
+  default: 'http://joinup.eu/asset_distribution/published'
 base_fields_mapping:
   rid:
     target_id:
@@ -71,6 +74,4 @@ base_fields_mapping:
     value:
       predicate: 'http://joinup.eu/language/translation_changed_time'
       format: t_literal
-graph:
-  default: 'http://joinup.eu/asset_distribution/published'
 entity_id_plugin: joinup_po_namespace

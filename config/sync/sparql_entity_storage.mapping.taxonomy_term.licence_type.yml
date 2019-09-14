@@ -1,3 +1,4 @@
+uuid: cabb6e9c-ddf2-4349-b436-905887e5c678
 langcode: en
 status: true
 dependencies:
@@ -27,3 +28,4 @@ base_fields_mapping:
     target_id:
       predicate: 'http://www.w3.org/2004/02/skos/core#broader'
       format: resource
+entity_id_plugin: null

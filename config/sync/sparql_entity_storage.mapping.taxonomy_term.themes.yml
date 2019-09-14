@@ -1,3 +1,4 @@
+uuid: d7d3ed7f-e2ff-42fb-973d-e262f31bf12f
 langcode: en
 status: true
 dependencies:
@@ -52,3 +53,4 @@ base_fields_mapping:
       predicate: ''
       format: ''
   path: {  }
+entity_id_plugin: null

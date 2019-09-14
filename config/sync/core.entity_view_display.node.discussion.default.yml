@@ -24,6 +24,8 @@ dependencies:
     - options
     - text
     - user
+_core:
+  default_config_hash: MH5IsqzkjyHQwMAIhBMkvdrrpJeonD3UC7kQpOvXJX0
 id: node.discussion.default
 targetEntityType: node
 bundle: discussion

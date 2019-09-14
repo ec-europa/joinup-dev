@@ -1,3 +1,4 @@
+uuid: f3e15728-3fb1-4349-b9b6-1f4a54b1b67e
 langcode: en
 status: true
 dependencies:
@@ -10,7 +11,6 @@ bundle: policy_domain
 rdf_type: 'http://joinup.eu/policy-domain'
 graph:
   default: 'http://policy_domain'
-entity_id_plugin: policy_domain
 base_fields_mapping:
   uuid:
     value:
@@ -53,3 +53,4 @@ base_fields_mapping:
       predicate: ''
       format: ''
   path: {  }
+entity_id_plugin: policy_domain

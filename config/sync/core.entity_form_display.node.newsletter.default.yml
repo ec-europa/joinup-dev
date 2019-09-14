@@ -42,6 +42,12 @@ content:
     settings:
       include_locked: true
     third_party_settings: {  }
+  published_at:
+    type: publication_date_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   simplenews_issue:
     type: options_select
     weight: 1

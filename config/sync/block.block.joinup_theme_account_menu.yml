@@ -8,6 +8,8 @@ dependencies:
     - system
   theme:
     - joinup_theme
+_core:
+  default_config_hash: lxJVRvbhOgBVEtScW90v2nLxj8qbvvkD2WMnhgqFHFs
 id: joinup_theme_account_menu
 theme: joinup_theme
 region: header_profile_menu

@@ -1,3 +1,4 @@
+uuid: ee6a56c7-4a47-4b4d-9aa3-06cf3948b819
 langcode: en
 status: true
 dependencies:
@@ -15,6 +16,9 @@ id: rdf_entity.asset_release
 entity_type_id: rdf_entity
 bundle: asset_release
 rdf_type: 'http://www.w3.org/ns/dcat#Dataset'
+graph:
+  default: 'http://joinup.eu/asset_release/published'
+  draft: 'http://joinup.eu/asset_release/draft'
 base_fields_mapping:
   rid:
     target_id:
@@ -72,7 +76,4 @@ base_fields_mapping:
     value:
       predicate: 'http://joinup.eu/language/translation_changed_time'
       format: t_literal
-graph:
-  default: 'http://joinup.eu/asset_release/published'
-  draft: 'http://joinup.eu/asset_release/draft'
 entity_id_plugin: joinup_po_namespace
