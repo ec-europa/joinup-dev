@@ -113,7 +113,8 @@
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "~2.8|~3.0|~4.0",
-        "symfony/phpunit-bridge": "^4.2"
+        "symfony/phpunit-bridge": "^4.2",
+        "weitzman/drupal-test-traits": "^1.2"
     },
     "conflict": {
         "drupal/drupal": "*",
