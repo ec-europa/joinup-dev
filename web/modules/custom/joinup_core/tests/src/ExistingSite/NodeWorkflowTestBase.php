@@ -125,7 +125,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       foreach ($moderation_data as $moderation => $elibrary_data) {
         foreach ($elibrary_data as $elibrary => $allowed_roles) {
           $parent = $this->createParent($parent_bundle, 'validated', $moderation, $elibrary);
-          $content = Node::create ([
+          $content = Node::create([
             'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
