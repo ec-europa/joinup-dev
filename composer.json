@@ -113,7 +113,8 @@
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "~2.8|~3.0|~4.0",
-        "symfony/phpunit-bridge": "^4.2"
+        "symfony/phpunit-bridge": "^4.2",
+        "weitzman/drupal-test-traits": "^1.2"
     },
     "conflict": {
         "drupal/drupal": "*",
@@ -273,6 +274,9 @@
             },
             "openeuropa/oe_webtools": {
                 "Include the smartloader on pages where analytics are used.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/71.patch"
+            },
+            "weitzman/drupal-test-traits": {
+                "Extend createUser() method with 'values' argument @see https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73": "https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73.diff"
             }
         }
     },
