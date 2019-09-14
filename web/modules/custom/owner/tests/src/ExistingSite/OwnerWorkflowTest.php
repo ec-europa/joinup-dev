@@ -1,17 +1,18 @@
 <?php
 
-namespace Drupal\Tests\owner\Functional;
+declare(strict_types = 1);
+
+namespace Drupal\Tests\owner\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 
 /**
  * Tests crud operations and the workflow for the owner rdf entity.
  *
  * @group owner
  */
-class OwnerWorkflowTest extends JoinupWorkflowTestBase {
+class OwnerWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
 
   /**
    * A non authenticated user.
@@ -44,26 +45,26 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->userAnonymous = new AnonymousUserSession();
-    $this->userAuthenticated = $this->createUserWithRoles();
-    $this->userModerator = $this->createUserWithRoles(['moderator']);
-    $this->userOwner = $this->createUserWithRoles();
+    $this->userAuthenticated = $this->createUser();
+    $this->userModerator = $this->createUser([], NULL, FALSE, ['roles' => ['moderator']]);
+    $this->userOwner = $this->createUser();
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEntityType() {
+  protected function getEntityType(): string {
     return 'rdf_entity';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEntityBundle() {
+  protected function getEntityBundle(): string {
     return 'owner';
   }
 
@@ -73,7 +74,7 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
    * Since the browser test is a slow test, both create access and read/update/
    * delete access are tested below.
    */
-  public function testCrudAccess() {
+  public function testCrudAccess(): void {
     // Test create access.
     foreach ($this->createAccessProvider() as $user_var => $expected_result) {
       $access = $this->entityAccess->createAccess('owner', $this->$user_var);
@@ -92,13 +93,12 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
 
     // Test view, update, delete access.
     foreach ($this->readUpdateDeleteAccessProvider() as $entity_state => $test_data) {
-      $content = Rdf::create([
+      $content = $this->createRdfEntity([
         'rid' => 'owner',
         'label' => $this->randomMachineName(),
         'field_owner_state' => $entity_state,
         'uid' => $this->userOwner->id(),
       ]);
-      $content->save();
 
       foreach ($test_data as $operation => $allowed_users) {
         foreach ($available_users as $user_var) {
@@ -120,14 +120,13 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
       $this->entityAccess->resetCache();
 
       // Owner entities that are referenced in other ones cannot be deleted.
-      $parent = Rdf::create([
+      $this->createRdfEntity([
         'rid' => 'collection',
         'label' => $this->randomMachineName(),
         'uid' => $this->userOwner->id(),
         'field_ar_state' => 'draft',
         'field_ar_owner' => $content->id(),
       ]);
-      $parent->save();
       foreach ($available_users as $user_var) {
         $this->assertFalse($this->entityAccess->access($content, 'delete', $this->$user_var), "User {$user_var} should not have delete access for entity {$content->label()} ({$entity_state}).");
       }
@@ -137,10 +136,10 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
   /**
    * Tests the owner workflow.
    */
-  public function testWorkflow() {
+  public function testWorkflow(): void {
     foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
       foreach ($workflow_data as $user_var => $transitions) {
-        $content = Rdf::create([
+        $content = $this->createRdfEntity([
           'rid' => 'owner',
           'label' => $this->randomMachineName(),
         ]);
@@ -165,8 +164,11 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
 
   /**
    * Provides data for create access check.
+   *
+   * @return array
+   *   Test cases.
    */
-  public function createAccessProvider() {
+  public function createAccessProvider(): array {
     return [
       'userAnonymous' => FALSE,
       'userAuthenticated' => TRUE,
@@ -188,8 +190,11 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
    *   ],
    * ];
    * @code
+   *
+   * @return array
+   *   Test cases.
    */
-  public function readUpdateDeleteAccessProvider() {
+  public function readUpdateDeleteAccessProvider(): array {
     return [
       'validated' => [
         'view' => [
@@ -254,8 +259,11 @@ class OwnerWorkflowTest extends JoinupWorkflowTestBase {
    * @code
    * There can be multiple transitions that can lead to a specific state, so
    * the check is being done on allowed transitions.
+   *
+   * @return array
+   *   Test cases.
    */
-  public function workflowTransitionsProvider() {
+  public function workflowTransitionsProvider(): array {
     return [
       '__new__' => [
         'userAuthenticated' => [
