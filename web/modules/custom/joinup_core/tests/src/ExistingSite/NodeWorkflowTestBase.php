@@ -1,22 +1,26 @@
 <?php
 
-namespace Drupal\Tests\joinup_core\Functional;
+declare(strict_types = 1);
+
+namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\joinup_core\ELibraryCreationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use weitzman\DrupalTestTraits\Entity\NodeCreationTrait;
 
 /**
  * Base setup for a Joinup workflow test for community content.
  *
  * @group rdf_entity
  */
-abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
+abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
+
+  use NodeCreationTrait;
 
   const PRE_MODERATION = 1;
   const POST_MODERATION = 0;
@@ -85,14 +89,14 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
-    $this->workflowAccess = $this->container->get('joinup_core.node_workflow_access');
+    $this->workflowAccess = \Drupal::service('joinup_core.node_workflow_access');
     $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUser();
-    $this->userModerator = $this->createUserWithRoles(['moderator']);
+    $this->userModerator = $this->createUser([], NULL, FALSE, ['roles' => ['moderator']]);
     $this->userOgMember = $this->createUser();
     $this->userOgFacilitator = $this->createUser();
     $this->userOgAdministrator = $this->createUser();
@@ -104,7 +108,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * Since the browser test is a slow test, we test all CRUD operations in the
    * same test.
    */
-  public function testCrudAccess() {
+  public function testCrudAccess(): void {
     $this->createOperationTest();
     $this->readOperationTest();
     $this->updateOperationTest();
@@ -114,14 +118,14 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
   /**
    * Tests the 'create' operation access.
    */
-  protected function createOperationTest() {
+  protected function createOperationTest(): void {
     $operation = 'create';
     $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);
     foreach ($this->createAccessProvider() as $parent_bundle => $moderation_data) {
       foreach ($moderation_data as $moderation => $elibrary_data) {
         foreach ($elibrary_data as $elibrary => $allowed_roles) {
           $parent = $this->createParent($parent_bundle, 'validated', $moderation, $elibrary);
-          $content = Node::create([
+          $content = Node::create ([
             'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
@@ -155,7 +159,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
     foreach ($this->viewAccessProvider() as $parent_bundle => $state_data) {
       $parent = $this->createParent($parent_bundle, 'validated');
       foreach ($state_data as $content_state => $ownership_data) {
-        $content = Node::create([
+        $content = $this->createNode([
           'title' => $this->randomMachineName(),
           'type' => $this->getEntityBundle(),
           OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
@@ -163,7 +167,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
           'field_state' => $content_state,
           'status' => $this->isPublishedState($content_state),
         ]);
-        $content->save();
 
         $expected_own_access = isset($ownership_data['own']) && $ownership_data['own'] === TRUE;
         $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
@@ -189,14 +192,14 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
   /**
    * Tests the 'update' operation access.
    */
-  protected function updateOperationTest() {
+  protected function updateOperationTest(): void {
     $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);
     $operation = 'update';
     foreach ($this->updateAccessProvider() as $parent_bundle => $moderation_data) {
       foreach ($moderation_data as $moderation => $state_data) {
         $parent = $this->createParent($parent_bundle, 'validated', $moderation);
         foreach ($state_data as $content_state => $ownership_data) {
-          $content = Node::create([
+          $content = $this->createNode([
             'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
@@ -204,7 +207,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
             'field_state' => $content_state,
             'status' => $this->isPublishedState($content_state),
           ]);
-          $content->save();
 
           $own_access = isset($ownership_data['own']) && !empty($ownership_data['own']);
           if ($own_access) {
@@ -238,14 +240,14 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
   /**
    * Tests the 'delete' operation access.
    */
-  protected function deleteOperationTest() {
+  protected function deleteOperationTest(): void {
     $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);
     $operation = 'delete';
     foreach ($this->deleteAccessProvider() as $parent_bundle => $moderation_data) {
       foreach ($moderation_data as $moderation => $state_data) {
         $parent = $this->createParent($parent_bundle, 'validated', $moderation);
         foreach ($state_data as $content_state => $ownership_data) {
-          $content = Node::create([
+          $content = $this->createNode([
             'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
             OgGroupAudienceHelper::DEFAULT_FIELD => $parent->id(),
@@ -298,8 +300,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * The user variable represents the variable defined in the test.
    * No parent state needs to be checked as it does not affect the possibility
    * to create document.
+   *
+   * @return array
+   *   Test cases.
    */
-  protected function createAccessProvider() {
+  protected function createAccessProvider(): array {
     return [
       'collection' => [
         self::PRE_MODERATION => [
@@ -496,8 +501,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * The user variable represents the variable defined in the test.
    * No parent state needs to be checked as it does not affect the possibility
    * to create document.
+   *
+   * @return array
+   *   Test cases.
    */
-  protected function viewAccessProvider() {
+  protected function viewAccessProvider(): array {
     return [
       'collection' => [
         'draft' => [
@@ -611,8 +619,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * The user variable represents the variable defined in the test.
    * No parent state needs to be checked as it does not affect the possibility
    * to create document.
+   *
+   * @return array
+   *   Test cases.
    */
-  protected function updateAccessProvider() {
+  protected function updateAccessProvider(): array {
     $data = [
       self::PRE_MODERATION => [
         'draft' => [
@@ -786,8 +797,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * The user variable represents the variable defined in the test.
    * No parent state needs to be checked as it does not affect the possibility
    * to create document.
+   *
+   * @return array
+   *   Test cases.
    */
-  protected function deleteAccessProvider() {
+  protected function deleteAccessProvider(): array {
     return [
       'collection' => [
         self::PRE_MODERATION => [
@@ -921,10 +935,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
   /**
    * Returns a list of users to be used for the tests.
    *
-   * @return array
+   * @return string[]
    *   A list of user variables.
    */
-  protected function getAvailableUsers() {
+  protected function getAvailableUsers(): array {
     return [
       'userOwner',
       'userAnonymous',
@@ -948,10 +962,13 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * @param string $e_library
    *   The 'eLibrary_creation' value of the parent entity.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   The created entity.
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The created parent entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   If entity creation fails.
    */
-  protected function createParent($bundle, $state = 'validated', $moderation = NULL, $e_library = NULL) {
+  protected function createParent($bundle, $state = 'validated', $moderation = NULL, $e_library = NULL): RdfInterface {
     // Make sure the current user is set to anonymous when creating solutions
     // through the API so we can assign the administrator manually. If a user is
     // logged in during creation of the solution they will automatically become
@@ -963,14 +980,13 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
       'solution' => 'field_is_',
     ];
 
-    $parent = Rdf::create([
+    $parent = $this->createRdfEntity([
       'label' => $this->randomMachineName(),
       'rid' => $bundle,
       $field_identifier[$bundle] . 'state' => $state,
       $field_identifier[$bundle] . 'moderation' => $moderation,
       $field_identifier[$bundle] . 'elibrary_creation' => $e_library === NULL ? ELibraryCreationOptions::REGISTERED_USERS : $e_library,
     ]);
-    $parent->save();
     $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
 
     $member_role = OgRole::getRole('rdf_entity', $bundle, 'member');
@@ -986,17 +1002,17 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEntityType() {
+  protected function getEntityType(): string {
     return 'node';
   }
 
   /**
    * Returns an array of the available eLibrary states.
    *
-   * @return array
+   * @return int[]
    *   An array of the available eLibrary states.
    */
-  protected function getElibraryStates() {
+  protected function getElibraryStates(): array {
     return [
       ELibraryCreationOptions::FACILITATORS,
       ELibraryCreationOptions::MEMBERS,
@@ -1014,7 +1030,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * @param string $message
    *   A message to show to the assertion.
    */
-  protected function assertTransitionsEqual(array $expected, array $actual, $message = '') {
+  protected function assertTransitionsEqual(array $expected, array $actual, $message = ''): void {
     $actual = array_map(function (WorkflowTransition $transition) {
       return $transition->getId();
     }, $actual);
@@ -1039,17 +1055,17 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowTestBase {
    * @return bool
    *   If the state is published or not.
    */
-  protected function isPublishedState($state) {
+  protected function isPublishedState($state): bool {
     return in_array($state, $this->getPublishedStates());
   }
 
   /**
    * Returns the published states.
    *
-   * @return array
+   * @return string[]
    *   An array of workflow states.
    */
-  protected function getPublishedStates() {
+  protected function getPublishedStates(): array {
     return ['validated'];
   }
 

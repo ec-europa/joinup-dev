@@ -24,6 +24,7 @@ use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -633,7 +634,7 @@ function collection_node_delete(NodeInterface $node) {
   }
 
   /** @var \Drupal\rdf_entity\RdfInterface $group */
-  if (($group = $node->og_audience->entity) && $group->bundle() === 'collection') {
+  if (($group = Rdf::load($node->og_audience->target_id)) && $group->bundle() === 'collection') {
     // Touch the parent collection in order to update its changed timestamp.
     $group->skip_notification = TRUE;
     $group->setChangedTime(\Drupal::time()->getRequestTime())->save();

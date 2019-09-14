@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\contact_information\Functional;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 
 /**
  * Tests the workflow for the contact information entity.
  *
  * @group contact_information
  */
-class ContactInformationWorkflowTest extends JoinupWorkflowTestBase {
+class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
 
   /**
    * A non authenticated user.
@@ -44,33 +46,33 @@ class ContactInformationWorkflowTest extends JoinupWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->userAnonymous = new AnonymousUserSession();
-    $this->userAuthenticated = $this->createUserWithRoles();
-    $this->userModerator = $this->createUserWithRoles(['moderator']);
-    $this->userOwner = $this->createUserWithRoles();
+    $this->userAuthenticated = $this->createUser();
+    $this->userModerator = $this->createUser([], NULL, FALSE, ['roles' => ['moderator']]);
+    $this->userOwner = $this->createUser();
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEntityType() {
+  protected function getEntityType(): string {
     return 'rdf_entity';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEntityBundle() {
+  protected function getEntityBundle(): string {
     return 'contact_information';
   }
 
   /**
    * Tests the workflow for contact information entities.
    */
-  public function testWorkflow() {
+  public function testWorkflow(): void {
     foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
       foreach ($workflow_data as $user_var => $transitions) {
         // The created entity is not saved because this will trigger the
@@ -112,8 +114,11 @@ class ContactInformationWorkflowTest extends JoinupWorkflowTestBase {
    * @code
    * There can be multiple transitions that can lead to a specific state, so
    * the check is being done on allowed transitions.
+   *
+   * @return array
+   *   Test cases.
    */
-  public function workflowTransitionsProvider() {
+  public function workflowTransitionsProvider(): array {
     return [
       '__new__' => [
         'userAuthenticated' => [

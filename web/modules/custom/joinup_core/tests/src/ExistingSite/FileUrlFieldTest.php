@@ -1,45 +1,33 @@
 <?php
 
-namespace Drupal\Tests\joinup_core\Functional;
+declare(strict_types = 1);
+
+namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
 use Drupal\file_url\FileUrlHandler;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\sparql_entity_storage\UriEncoder;
+use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
+use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
  *
  * @group joinup_core
  */
-class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
+class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
   use EntityUtilityTrait;
   use FileUrlTrait;
+  use RdfEntityCreationTrait;
+  use SparqlConnectionTrait;
   use StringTranslationTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'file_url_entity_test',
-    'joinup_core',
-  ];
-
-  /**
-   * An array of graphs to clear after the test.
-   *
-   * @var array
-   */
-  protected $usedGraphs = [
-    'http://example.com/file_url/draft',
-    'http://example.com/file_url/published',
-  ];
 
   /**
    * The helper service that deals with files and stream wrappers.
@@ -58,7 +46,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->fileSystem = $this->container->get('file_system');
@@ -70,27 +58,50 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
   /**
    * Tests upload of a file to an file URL field.
    */
-  public function testSingleValuedWidgetLocalFile() {
-    $this->drupalLogin($this->rootUser);
+  public function testSingleValuedWidgetLocalFile(): void {
+    $account = $this->createUser([], NULL, FALSE, ['roles' => ['moderator']]);
+    $this->drupalLogin($account);
 
-    $field_name = 'field_file_url';
+    $solution = $this->createRdfEntity([
+      'rid' => 'solution',
+      'label' => $this->randomString(),
+      'field_is_state' => 'validated'
+    ]);
+    $collection = $this->createRdfEntity([
+      'rid' => 'collection',
+      'label' => $this->randomString(),
+      'field_ar_state' => 'validated',
+      'field_ar_affiliates' => [$solution->id()],
+    ]);
+    $licence = $this->createRdfEntity([
+      'rid' => 'licence',
+      'label' => $this->randomString(),
+    ]);
+
     $test_file = $this->getTestFile('text');
     $this->assertTrue($test_file instanceof FileInterface);
 
-    $rdf_entity = Rdf::create([
-      'rid' => 'file_url',
-      'label' => 'Foo',
+    $distribution = $this->createRdfEntity([
+      'rid' => 'asset_distribution',
+      'label' => $this->randomString(),
+      'og_audience' => $solution->id(),
+      'field_ad_licence' => $licence->id(),
+      'field_ad_description' => $this->randomString(),
     ]);
-    $rdf_entity->save();
+
+    $field_name = 'field_ad_access_url';
 
     // Test file for new entities.
-    $this->drupalGet($rdf_entity->toUrl('edit-form'));
+    $url = "/rdf_entity/" . UriEncoder::encodeUrl($distribution->id()) . "/edit";
+
+    $this->drupalGet($url);
     $this->addFileUrlItem($field_name, 'upload', $test_file->getFileUri());
     $this->drupalPostForm(NULL, ['label[0][value]' => 'Foo'], 'Save');
 
     // Check that the file has been uploaded to the file URL field.
-    $rdf_entity = Rdf::load($rdf_entity->id());
-    $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $distribution = Rdf::load($distribution->id());
+    $rdf_entity_file = FileUrlHandler::urlToFile($distribution->{$field_name}->target_id);
+    $this->markEntityForCleanup($rdf_entity_file);
     $initial_uri = $rdf_entity_file->getFileUri();
     $this->assertFileExists($initial_uri);
 
@@ -98,20 +109,22 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     $this->drupalGet(file_create_url($initial_uri));
     $this->assertSession()->statusCodeEquals(200);
 
+    $this->drupalGet($distribution->toUrl());
+    $this->getSession()->getPage()->clickLink('Edit');
     // Upload the same file again to test if the file is saved in a new location
     // while still keeping the same file basename.
-    $this->drupalPostForm($rdf_entity->toUrl('edit-form'), [], 'Remove');
+    $this->drupalPostForm(NULL, [], 'Remove');
     $this->addFileUrlItem($field_name, 'upload', $test_file->getFileUri());
     $this->drupalPostForm(NULL, [], 'Save');
 
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    $this->sparqlStorage->resetCache([$rdf_entity->id()]);
+    $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the file has been uploaded to the file URL field.
-    $rdf_entity = Rdf::load($rdf_entity->id());
-    $rdf_entity_file = FileUrlHandler::urlToFile($rdf_entity->{$field_name}->target_id);
+    $distribution = Rdf::load($distribution->id());
+    $rdf_entity_file = FileUrlHandler::urlToFile($distribution->{$field_name}->target_id);
     $second_uri = $rdf_entity_file->getFileUri();
     $this->assertFileExists($second_uri);
 
@@ -126,7 +139,9 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     $this->assertEquals($this->fileSystem->basename($initial_uri), $this->fileSystem->basename($second_uri));
 
     // Edit the entity and change the field to a remote URL.
-    $this->drupalPostForm($rdf_entity->toUrl('edit-form'), [], 'Remove');
+    $this->drupalGet($distribution->toUrl());
+    $this->getSession()->getPage()->clickLink('Edit');
+    $this->drupalPostForm(NULL, [], 'Remove');
     $url = 'http://example.com/' . $this->randomMachineName();
     $this->addFileUrlItem($field_name, 'remote', $url);
     $this->drupalPostForm(NULL, [], 'Save');
@@ -134,11 +149,11 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     // @todo We should not need cache clearing here. The cache should have been
     //   wiped out at this point. Fix this regression in ISAICP-3392.
     // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3392
-    $this->sparqlStorage->resetCache([$rdf_entity->id()]);
+    $this->sparqlStorage->resetCache([$distribution->id()]);
 
     // Check that the remote URL replaced the uploaded file.
-    $rdf_entity = Rdf::load($rdf_entity->id());
-    $this->assertEquals($url, $rdf_entity->{$field_name}->target_id);
+    $distribution = Rdf::load($distribution->id());
+    $this->assertEquals($url, $distribution->{$field_name}->target_id);
   }
 
   /**
@@ -155,7 +170,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    *   If the field doesn't exist.
    */
-  protected function addFileUrlItem($field_name, $file_mode, $value) {
+  protected function addFileUrlItem($field_name, $file_mode, $value): void {
     $session = $this->getSession();
     $page = $session->getPage();
 
@@ -192,7 +207,7 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
    * value, thus we cannot use the original method because that searches for the
    * login button with 'Log in' as value.
    */
-  protected function drupalLogin(AccountInterface $account) {
+  protected function drupalLogin(AccountInterface $account): void {
     if ($this->loggedInUser) {
       $this->drupalLogout();
     }
@@ -204,8 +219,8 @@ class FileUrlFieldTest extends JoinupRdfBrowserTestBase {
     ], $this->t('Sign in'));
 
     // @see BrowserTestBase::drupalUserIsLoggedIn()
-    $account->sessionId = $this->getSession()->getCookie($this->getSessionName());
-    $this->assertTrue($this->drupalUserIsLoggedIn($account), new FormattableMarkup('User %name successfully logged in.', ['%name' => $account->getAccountName()]));
+//    $account->sessionId = $this->getSession()->getCookie(session_name());
+//    $this->assertTrue($this->drupalUserIsLoggedIn($account), new FormattableMarkup('User %name successfully logged in.', ['%name' => $account->getAccountName()]));
 
     $this->loggedInUser = $account;
     $this->container->get('current_user')->setAccount($account);

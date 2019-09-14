@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_news\Functional;
 
-use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
+use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the news node.
@@ -14,7 +16,7 @@ class NewsWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEntityBundle() {
+  protected function getEntityBundle(): string {
     return 'news';
   }
 
