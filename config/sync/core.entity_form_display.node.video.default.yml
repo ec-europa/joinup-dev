@@ -63,6 +63,12 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  published_at:
+    type: publication_date_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:

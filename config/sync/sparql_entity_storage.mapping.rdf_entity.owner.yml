@@ -1,3 +1,4 @@
+uuid: 6c83cbd0-45a5-41f8-8a05-24ae66309f93
 langcode: en
 status: true
 dependencies:
@@ -14,6 +15,8 @@ id: rdf_entity.owner
 entity_type_id: rdf_entity
 bundle: owner
 rdf_type: 'http://xmlns.com/foaf/0.1/Agent'
+graph:
+  default: 'http://joinup.eu/owner/published'
 base_fields_mapping:
   rid:
     target_id:
@@ -35,6 +38,4 @@ base_fields_mapping:
     value:
       predicate: 'http://joinup.eu/language/default'
       format: literal
-graph:
-  default: 'http://joinup.eu/owner/published'
 entity_id_plugin: joinup_po_namespace

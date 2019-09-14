@@ -1,3 +1,4 @@
+uuid: d2fae771-5a47-4ad8-beb5-8b1381ec0596
 langcode: en
 status: true
 dependencies:
@@ -8,7 +9,6 @@ id: taxonomy_term.business_process
 entity_type_id: taxonomy_term
 bundle: business_process
 rdf_type: 'http://joinup.eu/business-process'
-entity_id_plugin: default
 graph:
   default: 'http://business-process'
 base_fields_mapping:
@@ -55,3 +55,4 @@ base_fields_mapping:
     value:
       predicate: ''
       format: ''
+entity_id_plugin: default

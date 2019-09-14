@@ -1,3 +1,4 @@
+uuid: fccac127-7a13-4d26-8401-703234a30930
 langcode: en
 status: true
 dependencies:
@@ -31,3 +32,4 @@ base_fields_mapping:
     value:
       predicate: 'http://joinup.eu/skos#weight'
       format: 'xsd:integer'
+entity_id_plugin: null

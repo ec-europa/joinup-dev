@@ -58,6 +58,7 @@ content:
     type: link_legacy_multicardinality
     region: content
 hidden:
+  created: true
   label: true
   langcode: true
   uid: true

@@ -14,7 +14,7 @@ field_name: field_is_banner
 entity_type: rdf_entity
 bundle: solution
 label: Banner
-description: 'For best result the image must be larger than 2400x770 pixels.'
+description: 'For best result the image must be larger than 2400x345 pixels.'
 required: false
 translatable: false
 default_value: {  }

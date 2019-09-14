@@ -220,3 +220,4 @@ hidden:
   langcode: true
   links: true
   og_audience: true
+  published_at: true

@@ -8,6 +8,8 @@ dependencies:
     - system
   theme:
     - joinup_theme
+_core:
+  default_config_hash: IBAuorDvEPLpOEBTV6rOAnCmaW1fezbLLj0dtgQI2G0
 id: footer_menu
 theme: joinup_theme
 region: footer

@@ -274,3 +274,4 @@ hidden:
   field_visit_count: true
   langcode: true
   og_audience: true
+  published_at: true

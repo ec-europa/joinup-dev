@@ -1,3 +1,4 @@
+uuid: 9e133412-2942-41de-a24f-a14a436c2d70
 langcode: en
 status: true
 dependencies:
@@ -15,6 +16,9 @@ id: rdf_entity.collection
 entity_type_id: rdf_entity
 bundle: collection
 rdf_type: 'http://www.w3.org/ns/dcat#Catalog'
+graph:
+  default: 'http://joinup.eu/collection/published'
+  draft: 'http://joinup.eu/collection/draft'
 base_fields_mapping:
   rid:
     target_id:
@@ -76,7 +80,4 @@ base_fields_mapping:
     value:
       predicate: ''
       format: ''
-graph:
-  default: 'http://joinup.eu/collection/published'
-  draft: 'http://joinup.eu/collection/draft'
 entity_id_plugin: joinup_po_namespace
