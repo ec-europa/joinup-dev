@@ -2,6 +2,9 @@
 
 <project name="Joinup" default="help">
 
+    <!-- Import Config management targets. -->
+    <import file="${project.basedir}/build.config.xml" optional="true" />
+
     <!-- Import Phing targets related to the D6 migration. -->
     <import file="${project.basedir}/build.migration.xml" optional="true" />
 

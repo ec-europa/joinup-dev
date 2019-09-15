@@ -1,0 +1,6 @@
+ignored_config_entities:
+  # The menu links are editable on PROD.
+  - core.menu.static_menu_link_overrides
+  # Usually this module is configured in settings.php and will popup as changed
+  # in config management status.
+  - stage_file_proxy.settings
