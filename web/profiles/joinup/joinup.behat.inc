@@ -1520,6 +1520,19 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Checks that the given workflow buttons are visible.
+   *
+   * @param string $buttons
+   *   A comma separated list of workflow button labels.
+   *
+   * @Then I should see the workflow buttons :buttons
+   */
+  public function assertWorkflowButtons(string $buttons): void {
+    $labels = $this->explodeCommaSeparatedStepArgument($buttons);
+    $this->assertSubmitButtonsVisible($labels);
+  }
+
+  /**
    * Emulates closing and re-opening of the browser.
    *
    * @When I close and reopen the browser

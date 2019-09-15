@@ -32,6 +32,8 @@ Feature: Asset release moderation
     When I am logged in as "Bonnie Holloway"
     And I go to the homepage of the "Dark Ship" solution
     And I click "Add release" in the plus button menu
+    Then I should see the heading "Add Release"
+    And I should see the workflow buttons "Save as draft, Publish"
     And I fill in the following:
       | Name           | Release of the dark ship |
       | Release number | 1                        |
@@ -40,24 +42,26 @@ Feature: Asset release moderation
     Then I should see the heading "Release of the dark ship 1"
     # Ensure that owners do not have access to override the creation date.
     # @see ISAICP-4068
-    And I should not see the text "Authored on"
-    Then I should not see the following warning messages:
+    But I should not see the text "Authored on"
+    And I should not see the following warning messages:
       | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
     When I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Draft"
+    And I should see the workflow buttons "Save as draft, Publish"
     # Ensure that owners do not have access to override the creation date.
     # @see ISAICP-4068
-    And I should not see the text "Authored on"
+    But I should not see the text "Authored on"
     When I fill in "Release number" with "v1"
     And I press "Publish"
     Then I should see the heading "Release of the dark ship v1"
     And I should not see the following warning messages:
       | warning messages                                                                     |
       | You are viewing the published version. To view the latest draft version, click here. |
-    When all e-mails have been sent
-    And I click "Edit" in the "Entity actions" region
-    And I fill in "Release notes" with "We go live soon."
+    Given all e-mails have been sent
+    When I click "Edit" in the "Entity actions" region
+    And I should see the workflow buttons "Update, Save as draft"
+    When I fill in "Release notes" with "We go live soon."
     And I press "Update"
     Then I should see the heading "Release of the dark ship v1"
     And the following email should have been sent:
@@ -70,10 +74,10 @@ Feature: Asset release moderation
       | body      | The release Release of the dark ship, v1 of the solution Dark Ship was updated. |
 
     # Request changes as a moderator.
-    When I am logged in as a moderator
+    Given I am logged in as a moderator
 
     # Ensure that the moderator has access to the 'Authored on' field when creating a release.
-    And I go to the homepage of the "Dark Ship" solution
+    When I go to the homepage of the "Dark Ship" solution
     And I click "Add release" in the plus button menu
     Then I should see the text "Authored on"
 
@@ -81,6 +85,10 @@ Feature: Asset release moderation
     And I go to the "Release of the dark ship" release
     And I click "Edit" in the "Entity actions" region
     Then the current workflow state should be "Validated"
+    And I should see the workflow buttons "Update, Save as draft, Request changes"
+    # The "Delete" button is actually a link to the confirmation form, but it is
+    # styled to look identical to a button.
+    And I should see the link "Delete"
     And the following fields should be present "Motivation"
     # Ensure that owners has access to override the creation date.
     # @see ISAICP-4068
@@ -117,6 +125,7 @@ Feature: Asset release moderation
     When I am logged in as "Bonnie Holloway"
     And I go to the "Release of the dark ship" release
     Then I should see the heading "Release of the dark ship v1"
+    And I should see the workflow buttons "Update, Save as draft, Request changes, Delete"
     When I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Release Release"
     And the current workflow state should be "Needs update"

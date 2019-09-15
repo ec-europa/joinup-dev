@@ -18,32 +18,28 @@ trait FormTrait {
    *   An array containing the button labels that are expected to be present.
    * @param bool $strict
    *   If set to TRUE, an exception will be thrown if there are any unexpected
-   *   for submission buttons on the page.
+   *   form submission buttons on the page, or if the buttons are in the wrong
+   *   order.
    *
    * @throws \Exception
    *   Thrown when an expected button is not present or when an unexpected
    *   button is present.
    */
   public function assertSubmitButtonsVisible(array $labels, bool $strict = TRUE) {
-    $page = $this->getSession()->getPage();
-    $not_found = [];
-    foreach ($labels as $label) {
-      if (!$page->findButton($label)) {
-        $not_found[] = $label;
-      }
+    $buttons = $this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]');
+    $actual_labels = [];
+    foreach ($buttons as $button) {
+      $actual_labels[] = $button->getValue();
     }
 
-    if (!empty($not_found)) {
-      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
+    $missing_labels = array_diff($labels, $actual_labels);
+
+    if (!empty($missing_labels)) {
+      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $missing_labels));
     }
 
     if ($strict) {
-      // Only check the actual form submit buttons, ignore other buttons that
-      // might be present in wysiwygs or are used to add multiple values to a
-      // field.
-      $expected_count = count($labels);
-      $actual_count = count($this->getSession()->getPage()->findAll('xpath', '//div[contains(concat(" ", normalize-space(@class), " "), " form-actions ")]//input[@type = "submit"]'));
-      Assert::assertEquals($expected_count, $actual_count);
+      Assert::assertSame($actual_labels, $labels);
     }
   }
 
