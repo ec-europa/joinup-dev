@@ -14,6 +14,7 @@ module:
   config_exclude: 0
   config_filter: 0
   config_ignore: 0
+  config_readonly: 0
   contact_form: 0
   contact_information: 0
   contextual: 0
