@@ -14,11 +14,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * The notification base conditions are an extension of the solution templates.
  * @codingStandardsIgnoreStart
- * Template 21: release_update
+ * Template 21: distribution_update
  *   Operation: update
  *   Source state: published
  *   Recipients: solution owners, solution facilitators, moderators
- * Template 22: release_delete
+ * Template 22: distribution_delete
  *   Operation: delete
  *   Source state: published, needs_update
  *   Recipients: owner
