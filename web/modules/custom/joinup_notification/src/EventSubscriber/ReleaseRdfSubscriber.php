@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -7,6 +9,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -155,7 +158,8 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
       $this->getUsersAndSend($user_data);
     }
 
-    switch ($this->transition->getId()) {
+    $transition_id = $this->transition instanceof WorkflowTransition ? $this->transition->getId() : NULL;
+    switch ($transition_id) {
       case 'validate':
         if ($this->fromState === 'needs_update') {
           $user_data = [
@@ -200,6 +204,12 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
 
     if ($this->operation !== 'update') {
       return FALSE;
+    }
+
+    // Notifications can be sent for asset releases that are updated without
+    // changing the workflow state.
+    if ($this->fromState === $this->toState) {
+      return TRUE;
     }
 
     if (empty($this->transition)) {
