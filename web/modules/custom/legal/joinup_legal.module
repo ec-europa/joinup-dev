@@ -74,7 +74,7 @@ function joinup_legal_form_cas_account_link_form_alter(array &$form, FormStateIn
       '#value' => $legal_notice,
     ];
   }
-  // Validate that the 'Legal notice'.
+  // Validate that the 'Legal notice' has been accepted.
   $form['#validate'][] = 'joinup_legal_form_cas_account_link_form_validate';
   // Store the user acceptance.
   $form['#submit'][] = 'joinup_legal_form_cas_account_link_form_submit';
@@ -100,7 +100,7 @@ function joinup_legal_form_cas_account_link_form_validate(array &$form, FormStat
 }
 
 /**
- * Stores the 'Legal notice' user acceptance, if case.
+ * Stores the user's acceptance of the 'Legal notice'.
  *
  * @param array $form
  *   The Form API form render array.
