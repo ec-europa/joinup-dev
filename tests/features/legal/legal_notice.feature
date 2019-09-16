@@ -11,25 +11,22 @@ Feature:
     have to accept the site's 'Legal notice', otherwise I cannot submit.
 
   Background:
-
     Given the following legal document version:
       | Document     | Label | Published | Acceptance label                                                                                   | Content                                                    |
       | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
 
   Scenario: Anonymous user can read the Legal notice.
-
     Given I am on the homepage
     When I click "Legal notice" in the Footer region
     Then I should see the heading "Legal notice"
     And I should see "The information on this site is subject to a disclaimer..."
 
   Scenario: User login when a new 'Legal notice' version is released.
-
     Given user:
       | Username | Rick    |
       | Password | secretz |
 
-    When I am on the homepage
+    And I am on the homepage
     And I click "Sign in (legacy)"
 
     And I fill in "Email or username" with "Rick"
@@ -92,7 +89,6 @@ Feature:
     Then I should not see the warning message "You must accept this agreement before continuing."
 
   Scenario: Moderator tasks.
-
     Given I am logged in as a moderator
     When I click "Legal"
     Then I should see the heading "Legal notice versions"
@@ -135,7 +131,6 @@ Feature:
     And I delete the version "v2.0" of document "Legal notice"
 
   Scenario: Anonymous using the support contact form.
-
     Given I am on "/contact"
     Then I should see "I have read and accept the Legal notice"
 
@@ -170,7 +165,7 @@ Feature:
 
     When I am on the homepage
     And I click "Sign in"
-    When I click "EU Login"
+    And I click "EU Login"
     And I fill in "E-mail address" with "joe@example.com"
     And I fill in "Password" with "123"
     And I press the "Log in" button
