@@ -19,7 +19,7 @@ use Drupal\joinup_eulogin\JoinupEuLoginAuthnameItemList;
  *
  * Adds a computed field to easily retrieve the external authname of a user.
  */
-function joinup_eulogin_entity_base_field_info(EntityTypeInterface $entity_type) {
+function joinup_eulogin_entity_base_field_info(EntityTypeInterface $entity_type): array {
   $fields = [];
 
   if ($entity_type->id() === 'user') {
@@ -166,7 +166,7 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
 /**
  * Implements hook_local_tasks_alter().
  */
-function joinup_eulogin_local_tasks_alter(&$local_tasks) {
+function joinup_eulogin_local_tasks_alter(&$local_tasks): void {
   // Remove the 'Create new account' local task.
   unset($local_tasks['user.register']);
 }
@@ -174,7 +174,7 @@ function joinup_eulogin_local_tasks_alter(&$local_tasks) {
 /**
  * Implements hook_menu_local_actions_alter().
  */
-function joinup_eulogin_menu_local_actions_alter(&$local_actions) {
+function joinup_eulogin_menu_local_actions_alter(&$local_actions): void {
   // Remove the local action to bulk add CAS users from the admin/people form.
   // This action is added by the CAS module to all roles with the `administer
   // users` permission but this functionality is not included in the functional
@@ -185,7 +185,7 @@ function joinup_eulogin_menu_local_actions_alter(&$local_actions) {
 /**
  * Implements hook_module_implements_alter().
  */
-function joinup_eulogin_module_implements_alter(&$implementations, $hook) {
+function joinup_eulogin_module_implements_alter(&$implementations, $hook): void {
   // Remove the hook implementation that adds a link to the bulk form for adding
   // CAS users. This form is made available by the CAS module to all roles with
   // the `administer users` permission but this functionality is not included in
