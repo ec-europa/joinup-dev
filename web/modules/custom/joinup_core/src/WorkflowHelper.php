@@ -48,6 +48,13 @@ class WorkflowHelper implements WorkflowHelperInterface {
   protected $membershipManager;
 
   /**
+   * The workflow state permission service.
+   *
+   * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
+   */
+  protected $workflowStatePermission;
+
+  /**
    * Constructs a WorkflowHelper.
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
@@ -58,23 +65,31 @@ class WorkflowHelper implements WorkflowHelperInterface {
    *   The entity field manager.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager service.
+   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflowStatePermission
+   *   The workflow state permission service.
    */
-  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher, EntityFieldManagerInterface $entityFieldManager, MembershipManagerInterface $membershipManager) {
+  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher, EntityFieldManagerInterface $entityFieldManager, MembershipManagerInterface $membershipManager, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->accountSwitcher = $accountSwitcher;
     $this->currentUser = $currentUser;
     $this->entityFieldManager = $entityFieldManager;
     $this->membershipManager = $membershipManager;
+    $this->workflowStatePermission = $workflowStatePermission;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
     $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getToState()->getLabel();
     }, $allowed_transitions);
+
+    $current_state = $this->getEntityStateField($entity)->value;
+    if ($this->workflowStatePermission->isStateUpdatePermitted($account, $entity, $current_state, $current_state)) {
+      $allowed_states[] = $current_state;
+    }
 
     return $allowed_states;
   }

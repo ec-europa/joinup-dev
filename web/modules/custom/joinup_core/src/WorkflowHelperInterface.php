@@ -13,20 +13,25 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 interface WorkflowHelperInterface {
 
   /**
-   * Returns the available transition states labels of an entity for given user.
+   * Returns the available workflow states of an entity for the given user.
    *
    * If no user is passed, the logged in user is checked. If no user is logged
    * in, an anonymous account is passed.
    *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity with the states.
-   * @param \Drupal\Core\Session\AccountInterface|null $account
-   *   The account interface object. Can be left empty.
+   * This will return all states that are available to the user, meaning the
+   * transition states and the current state if it is allowed to update the
+   * entity without changing the state.
    *
-   * @return array
-   *   An array of transition state labels.
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity to check.
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   The user account for which to check the available workflow states. If
+   *   omitted the currently logged in user will be checked.
+   *
+   * @return string[]
+   *   An array of available workflow states.
    */
-  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL);
+  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
 
   /**
    * Returns the available transitions labels of an entity for the given user.
