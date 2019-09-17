@@ -48,10 +48,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I go to (the homepage of )the :asset_distribution asset distribution
    * @When I visit (the homepage of )the :asset_distribution asset distribution
    */
-  public function visitDistribution($asset_distribution): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-    $this->visitPath($asset_distribution->url());
+  public function visitDistribution(string $asset_distribution): void {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetDistributionByName($asset_distribution);
+    $this->visitPath($entity->url());
   }
 
   /**
@@ -64,9 +64,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I visit the :asset_distribution asset distribution edit form
    */
   public function visitEditAssetDistribution(string $asset_distribution): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-    $path = $asset_distribution->url('edit-form');
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetDistributionByName($asset_distribution);
+    $path = $entity->url('edit-form');
     $this->visitPath($path);
   }
 
@@ -204,10 +204,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I delete the :asset_distribution asset distribution
    */
   public function deleteAssetDistribution(string $asset_distribution): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-    $asset_distribution->skip_notification = TRUE;
-    $asset_distribution->delete();
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetDistributionByName($asset_distribution);
+    $entity->skip_notification = TRUE;
+    $entity->delete();
   }
 
   /**
