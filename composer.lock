@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64223606c8887fc5717ae5bc59556f6b",
+    "content-hash": "e71a3f059f087342f14e1f715771a8e2",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2455,6 +2455,48 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/allowed_formats"
             }
+        },
+        {
+            "name": "drupal/antibot",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/antibot.git",
+                "reference": "af7f9f6af9e1214b03e5b2a1521459f8b723d3be"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.2+7-dev",
+                    "datestamp": "1559221681",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mstef",
+                    "homepage": "https://www.drupal.org/user/107190"
+                }
+            ],
+            "description": "Prevent forms from being submitted without JavaScript enabled",
+            "homepage": "https://www.drupal.org/project/antibot",
+            "support": {
+                "source": "https://git.drupalcode.org/project/antibot"
+            },
+            "time": "2019-05-30T13:18:42+00:00"
         },
         {
             "name": "drupal/cached_computed_field",
@@ -15542,6 +15584,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/antibot": 20,
         "drupal/diff": 5,
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
