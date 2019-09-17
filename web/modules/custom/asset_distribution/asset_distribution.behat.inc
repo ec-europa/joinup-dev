@@ -147,6 +147,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       }
     }
 
+    // Downloads are stored in a meta entity.
     if (array_key_exists('downloads', $values)) {
       $values['download_count'] = MetaEntity::create([
         'type' => 'download_count',

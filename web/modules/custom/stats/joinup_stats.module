@@ -48,7 +48,7 @@ function joinup_stats_module_implements_alter(array &$implementations, $hook): v
  * Implements hook_cron().
  */
 function joinup_stats_cron(): void {
-  // By adding this line in settings.php and rebuilding the cache, the process
+  // By adding this line in settings.php and rebuilding the cache the processing
   // of cached computed fields can be suppressed:
   // @code
   // $settings['joinup.parse_cached_computed_field'] = FALSE;
