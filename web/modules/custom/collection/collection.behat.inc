@@ -648,37 +648,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Applies a transition to a collection.
-   *
-   * @param string $username
-   *   The username applying the transition.
-   * @param string $entity_name
-   *   The title of the collection.
-   * @param string $to_state
-   *   The state that the collection transits to.
-   *
-   * @throws \Exception
-   *    An exception is thrown if the user is not found or the transition is not
-   *    allowed for this user.
-   *
-   * @Given the user :username changes the state of the :entity_name collection to :to_state
-   */
-  public function applyCollectionWorkflowTransition(string $username, string $entity_name, string $to_state): void {
-    $user = user_load_by_name($username);
-    if (empty($user)) {
-      throw new \Exception("User {$username} was not found.");
-    }
-    $collection = $this->getCollectionByName($entity_name);
-    $available_states = $this->getAvailableStates($collection, $user);
-    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
-      throw new \Exception("The given user does not have permission to apply the specific transition.");
-    }
-    $transition = $collection->get('field_ar_state')->first()->getWorkflow()->getTransition($transition_id);
-    $collection->get('field_ar_state')->first()->applyTransition($transition);
-    $collection->save();
-  }
-
-  /**
    * Navigates to the collection leave confirmation form.
    *
    * @param string $label
