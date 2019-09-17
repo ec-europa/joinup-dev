@@ -20,6 +20,13 @@ trait PipelineStepWithBatchTrait {
   /**
    * {@inheritdoc}
    */
+  public function hasBatchValue($key) {
+    return $this->pipeline->getCurrentState()->hasBatchValue($key);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getBatchValue($key) {
     return $this->pipeline->getCurrentState()->getBatchValue($key);
   }
