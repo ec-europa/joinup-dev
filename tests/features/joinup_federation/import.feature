@@ -136,14 +136,17 @@ Feature: As a site moderator I am able to import RDF files.
       | entity                        | enabled | associated with | author          | started          |
       | Local version of Solution 2   | yes     | NIO             | Antoine Batiste | 2012-07-07 23:01 |
       | http://example.com/solution/3 | no      | NIO             | Antoine Batiste | 2015-12-25 01:30 |
+    Given SPDX licences:
+      | uri                                 | title       |
+      | http://spdx.org/licenses/Apache-2.0 | Apache 2    |
+      | http://spdx.org/licenses/MIT        | MIT License |
     # The license contained in valid_adms.rdf is named "A federated license".
-    # However, the goal is to not import or update any values in the license entity so
-    # the following license has different details.
-    And the following licence:
-      | uri         | http://example.com/license/1 |
-      | title       | Federated open license       |
-      | description | Licence agreement details    |
-      | type        | Public domain                |
+    # However, the goal is to not import or update any values in the license
+    # entity so the following licenses have different details.
+    And the following licences:
+      | uri                          | title                    | description               | type          | spdx licence |
+      | http://example.com/license/1 | Licence same as Apache 2 | Licence agreement details | Public domain | Apache 2     |
+      | http://example.com/license/2 | Licence same as MIT      | So on...                  | Public domain | MIT License  |
 
     Given I go to "/admin/content/pipeline/nio/execute"
     When I attach the file "valid_adms.rdf" to "File"
@@ -183,7 +186,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "http://example.com/distribution/4" entity is blacklisted for federation
 
     # License should be excluded from the import process.
-    And the "Federated open license" entity should not have a related provenance activity
+    And the "Licence same as Apache 2" entity should not have a related provenance activity
 
     # Check the affiliation of federated solutions.
     But the "Solution 1" solution should be affiliated with the "NIO" collection
@@ -207,6 +210,13 @@ Feature: As a site moderator I am able to import RDF files.
     # Ensure that the og relation is set between the distribution and the solution.
     When I go to the "Windows" asset distribution
     Then I should see the heading "Solution 1"
+
+    # And the SPDX licence IDs were converted to Joinup licence IDs.
+    And I should see "Licence same as Apache 2"
+    When I go to the "Linux" asset distribution
+    And I should see "Licence same as Apache 2"
+    When I go to the "A standalone distribution" asset distribution
+    And I should see "Licence same as MIT"
 
     # Re-import.
     Given I am logged in as "Antoine Batiste"
@@ -239,7 +249,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Contact" entity is not blacklisted for federation
 
     # Licenses should still be excluded from the import process.
-    And the "Federated open license" entity should not have a related provenance activity
+    And the "Licence same as Apache 2" entity should not have a related provenance activity
 
     But the "Solution 1" entity is blacklisted for federation
     And the "Asset release 1" entity is blacklisted for federation
