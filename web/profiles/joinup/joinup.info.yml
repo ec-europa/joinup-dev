@@ -119,6 +119,7 @@ themes:
   - joinup_theme
 
 config_devel:
+  - antibot.settings
   - block.block.authoredon
   - block.block.changed
   - block.block.contentbundle
