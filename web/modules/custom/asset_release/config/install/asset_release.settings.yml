@@ -2,7 +2,7 @@
 # Format of array:
 # @code
 # [
-#   <transition key> => [
+#   <target state> => [
 #     <source state> => [
 #       <role1>
 #       <role2>
@@ -14,7 +14,7 @@
 # @endcode
 #
 # The array is a three dimensions array. The first level is the
-# transition key. Each target state is an array of allowed source
+# target state. Each target state is an array of allowed source
 # states which in every check, is the current state of the entity.
 # Finally, the source states are arrays of roles that are allowed to
 # perform this action.
@@ -27,15 +27,24 @@ transitions:
     draft:
       - moderator
       - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
     validated:
       - moderator
       - rdf_entity-solution-facilitator
-  request_changes:
+  needs_update:
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
     validated:
       - moderator
-  validate:
+  validated:
     draft:
       - moderator
       - rdf_entity-solution-facilitator
     needs_update:
       - moderator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
