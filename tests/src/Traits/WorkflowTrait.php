@@ -4,6 +4,7 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\WorkflowHelperInterface;
 
 /**
  * Helper methods to deal with workflow checks.
@@ -40,21 +41,26 @@ trait WorkflowTrait {
   }
 
   /**
-   * Returns the available transition states of an entity for the given user.
+   * Returns the available workflow states of an entity for the given user.
    *
    * If no user is passed, the logged in user is checked. If no user is logged
    * in, an anonymous account is passed.
    *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity with the states.
-   * @param \Drupal\Core\Session\AccountInterface|null $user
-   *   The account interface object. Can be left empty.
+   * This will return all states that are available to the user, meaning the
+   * transition states and the current state if it is allowed to update the
+   * entity without changing the state.
    *
-   * @return array
-   *   An array of transition state labels.
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity to check.
+   * @param \Drupal\Core\Session\AccountInterface|null $user
+   *   The user account for which to check the available workflow states. If
+   *   omitted the currently logged in user will be checked.
+   *
+   * @return string[]
+   *   An array of available workflow states.
    */
-  protected function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL) {
-    return $this->getWorkflowHelper()->getAvailableStatesLabels($entity, $user);
+  protected function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL): array {
+    return $this->getWorkflowHelper()->getAvailableStates($entity, $user);
   }
 
   /**
@@ -121,7 +127,7 @@ trait WorkflowTrait {
    * @return \Drupal\joinup_core\WorkflowHelperInterface
    *   The workflow helper service.
    */
-  protected function getWorkflowHelper() {
+  protected function getWorkflowHelper(): WorkflowHelperInterface {
     return \Drupal::service('joinup_core.workflow.helper');
   }
 
