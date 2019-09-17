@@ -8,6 +8,7 @@ distribution:
 
 dependencies:
   - joinup:adms_validator
+  - antibot:antibot
   - joinup:asset_distribution
   - joinup:asset_release
   - drupal:block

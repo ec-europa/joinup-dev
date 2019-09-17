@@ -178,3 +178,10 @@ function joinup_post_update_legal() {
     ],
   ])->save();
 }
+
+/**
+ * Enable the "antibot" module.
+ */
+function joinup_post_update_install_antibot() {
+  \Drupal::service('module_installer')->install(['antibot']);
+}
