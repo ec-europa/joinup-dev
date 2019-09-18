@@ -198,6 +198,9 @@
             "drupal/email_registration": {
                 "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-05-13/2927109-11.patch"
             },
+            "drupal/entity_legal": {
+                "Fix the module's database schema": "resources/patch/entity_legal.schema.patch"
+            },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
