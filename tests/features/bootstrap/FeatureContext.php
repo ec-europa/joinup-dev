@@ -1536,4 +1536,37 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $this->visitPath($term->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
   }
 
+  /**
+   * Disables the 'antibot' module during tests run.
+   *
+   * Antibot module blocks all form submissions the for browsers without
+   * JavaScript support or when there's no keyboard or mouse interaction before
+   * the form is submitted. This would make most of Behat tests to fail. We
+   * uninstall the 'antibot' module during Behat tests run.
+   *
+   * @BeforeSuite
+   */
+  public static function disableAntibot(): void {
+    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+    $module_installer = \Drupal::service('module_installer');
+    static::bypassReadOnlyConfig(5);
+    $module_installer->uninstall(['antibot']);
+    static::restoreReadOnlyConfig();
+  }
+
+  /**
+   * Re-enables the 'antibot' module after tests run.
+   *
+   * @AfterSuite
+   *
+   * @see self::disableAntibot()
+   */
+  public static function reEnableAntibot(): void {
+    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+    $module_installer = \Drupal::service('module_installer');
+    static::bypassReadOnlyConfig(5);
+    $module_installer->install(['antibot']);
+    static::restoreReadOnlyConfig();
+  }
+
 }
