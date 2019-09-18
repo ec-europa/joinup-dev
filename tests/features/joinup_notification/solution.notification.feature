@@ -25,7 +25,10 @@ Feature: Solution notification system
       | Some Scent            | Benjamin Stevens | owner |
 
     # Test validation email.
-    When the user "Cecelia Kim" changes the state of the "The Time of the Child" solution to "Validated"
+    Given I am logged in as "Cecelia Kim"
+    When I go to the homepage of the "The Time of the Child" solution
+    And I click Edit
+    When I press "Publish"
     Then the following email should have been sent:
       | template  | Message to the owner when a solution transits to 'Validated' state           |
       | recipient | Benjamin Stevens                                                             |
@@ -33,7 +36,10 @@ Feature: Solution notification system
       | body      | The content "The Time of the Child" has been moved to the "Validated" state. |
 
     # Test deletion request email.
-    When the user "Benjamin Stevens" changes the state of the "The Time of the Child" solution to "Request deletion"
+    Given I am logged in as "Benjamin Stevens"
+    When I go to the homepage of the "The Time of the Child" solution
+    And I click Edit
+    When I press "Request deletion"
     Then the following email should have been sent:
       | template  | Message to the moderator when a request for deletion is made on a solution                           |
       | recipient | Cecelia Kim                                                                                          |

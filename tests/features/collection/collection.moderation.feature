@@ -16,7 +16,7 @@ Feature: Collection moderation
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
-  Scenario: Test the moderation workflow available states.
+  Scenario: Test the available buttons in every stage of the editorial workflow
     Given the following owner:
       | name           |
       | Simon Sandoval |
@@ -66,7 +66,7 @@ Feature: Collection moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following collection, the corresponding user should have the corresponding available state buttons:
-      | collection              | user            | states                                                     |
+      | collection              | user            | buttons                                                    |
 
       # The owner is also a facilitator so the only
       # UATable part of the owner is that he has the ability to request deletion
