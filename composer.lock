@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71d65ead7bc9f548f092cd2153130b9f",
+    "content-hash": "ba9c319105fa10b4b7db8eef40b43ec7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4682,7 +4682,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
+                    "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch",
+                    "Show version @see https://www.drupal.org/project/matomo_reporting_api/issues/3081726": "https://www.drupal.org/files/issues/2019-09-17/3081726-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -12989,8 +12990,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            },
-            "time": "2019-08-15T10:45:14+00:00"
+            }
         },
         {
             "name": "drupal/coder",
