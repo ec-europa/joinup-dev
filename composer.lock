@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74a1986614de26cd86d630cc88c484fb",
+    "content-hash": "2c471b707791e22a667977bdc2f89315",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3561,8 +3561,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta1+4-dev",
-                    "datestamp": "1522061280",
+                    "version": "8.x-2.0-beta1+14-dev",
+                    "datestamp": "1568017091",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3586,16 +3586,20 @@
                     "homepage": "https://www.drupal.org/user/103796"
                 },
                 {
-                    "name": "alex.designworks",
+                    "name": "alex.skrypnyk",
                     "homepage": "https://www.drupal.org/user/620694"
                 },
                 {
-                    "name": "axel.rutz",
-                    "homepage": "https://www.drupal.org/user/229048"
+                    "name": "claudiu.cristea",
+                    "homepage": "https://www.drupal.org/user/56348"
                 },
                 {
                     "name": "codesidekick",
                     "homepage": "https://www.drupal.org/user/1633774"
+                },
+                {
+                    "name": "geek.merlin aka axel.rutz",
+                    "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
                     "name": "malks",
@@ -4409,17 +4413,11 @@
         },
         {
             "name": "drupal/matomo_reporting_api",
-            "version": "2.0.0",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/matomo_reporting_api.git",
-                "reference": "8.x-2.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/matomo_reporting_api-8.x-2.0.zip",
-                "reference": "8.x-2.0",
-                "shasum": "285a62697c333a10f1be90e8a55f4c034a6fa31c"
+                "reference": "da2095c20c62fd36b72982521dead3f08d3929ec"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4432,15 +4430,15 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0",
-                    "datestamp": "1534438380",
+                    "version": "8.x-2.0+1-dev",
+                    "datestamp": "1534849084",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
                 },
                 "patches_applied": {
-                    "Migrate from 'piwik_reporting_api' @see https://www.drupal.org/project/matomo_reporting_api/issues/2993831": "https://www.drupal.org/files/issues/2018-08-20/2993831-2.patch"
+                    "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4477,7 +4475,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/matomo_reporting_api",
                 "issues": "https://www.drupal.org/project/issues/matomo_reporting_api"
-            }
+            },
+            "time": "2019-08-13T11:51:36+00:00"
         },
         {
             "name": "drupal/menu_admin_per_menu",
