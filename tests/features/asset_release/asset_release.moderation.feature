@@ -128,7 +128,7 @@ Feature: Asset release moderation
     When I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Release Release"
     And the current workflow state should be "Needs update"
-    And I should see the workflow buttons "Update, Save as draft"
+    And I should see the workflow buttons "Update"
     When I fill in "Name" with "Release fix"
     And I press "Update"
     # The updated version is still not published.
@@ -139,7 +139,7 @@ Feature: Asset release moderation
     And all e-mails have been sent
     And I go to the "Release of the dark ship" release
     And I click "Edit" in the "Entity actions" region
-    And I should see the workflow buttons "Update, Save as draft, Publish"
+    And I should see the workflow buttons "Update, Publish"
     And I press "Publish"
     # The published is updated.
     Then I should see the heading "Release fix v1"
