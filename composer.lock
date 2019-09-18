@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d88cd33677de99ab70d7a35f537f3e4",
+    "content-hash": "79b63ebc16fbf28630c45445bedd71da",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4693,7 +4693,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
+                    "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch",
+                    "Show version @see https://www.drupal.org/project/matomo_reporting_api/issues/3081726": "https://www.drupal.org/files/issues/2019-09-17/3081726-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
