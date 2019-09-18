@@ -72,7 +72,7 @@ Feature: Collection moderation
       # UATable part of the owner is that he has the ability to request deletion
       # or archival when the collection is validated.
       | Deep Past               | Erika Reid      | Save as draft, Propose                                     |
-      | The Licking Silence     | Erika Reid      | Save as draft, Propose                                     |
+      | The Licking Silence     | Erika Reid      | Propose, Save as draft                                     |
       | Person of Wizards       | Erika Reid      | Save as draft, Propose, Request archival, Request deletion |
       | The Shard's Hunter      | Erika Reid      |                                                            |
       | The Dreams of the Mists | Erika Reid      |                                                            |
@@ -81,7 +81,7 @@ Feature: Collection moderation
       # The following collections do not follow the rule above and should be
       # testes as shown.
       | Deep Past               | Carole James    | Save as draft, Propose                                     |
-      | The Licking Silence     | Carole James    | Save as draft, Propose                                     |
+      | The Licking Silence     | Carole James    | Propose, Save as draft                                     |
       | Person of Wizards       | Carole James    | Save as draft, Propose                                     |
       | The Shard's Hunter      | Carole James    |                                                            |
       | The Dreams of the Mists | Carole James    |                                                            |
@@ -93,8 +93,8 @@ Feature: Collection moderation
       | The Dreams of the Mists | Velma Smith     |                                                            |
       | Luck in the Abyss       | Velma Smith     |                                                            |
       | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                            |
-      | The Licking Silence     | Lena Richardson | Save as draft, Propose, Publish                            |
-      | Person of Wizards       | Lena Richardson | Save as draft, Propose, Publish                            |
+      | The Licking Silence     | Lena Richardson | Propose, Save as draft, Publish                            |
+      | Person of Wizards       | Lena Richardson | Publish, Save as draft, Propose                            |
       | The Shard's Hunter      | Lena Richardson | Publish, Archive                                           |
       | The Dreams of the Mists | Lena Richardson | Publish                                                    |
       | Luck in the Abyss       | Lena Richardson |                                                            |
@@ -127,6 +127,8 @@ Feature: Collection moderation
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
+    # The delete button is actually a link that is styled to look like a button.
+    And I should see the link "Delete"
 
   @terms
   Scenario: Published collections should be shown in the collections overview page.
