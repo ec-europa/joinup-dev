@@ -1445,7 +1445,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @BeforeScenario @errorPage
    */
   public function installErrorPageTestingModule() {
-    $this->toggleErrorPageTestingModule('install');
+    static::toggleModule('install', 'error_page_test');
 
     // The test writes to the PHP error log because it's in its scope to test
     // fatal errors. But the testing bots might reject tests that are not ending
@@ -1464,7 +1464,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @AfterScenario @errorPage
    */
   public function uninstallErrorPageTestingModule(): void {
-    $this->toggleErrorPageTestingModule('uninstall');
+    static::toggleModule('uninstall', 'error_page_test');
 
     // Restore the log saved in @BeforeScenario.
     $error_log = ini_get('error_log');
@@ -1474,20 +1474,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     // Restore the original system logging error level.
     $this->setSiteErrorLevel();
-  }
-
-  /**
-   * Installs/uninstalls the testing module.
-   *
-   * @param string $method
-   *   Either 'install' or 'uninstall'.
-   */
-  protected function toggleErrorPageTestingModule(string $method): void {
-    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
-    new Settings($settings);
-    static::bypassReadOnlyConfig(10);
-    \Drupal::service('module_installer')->$method(['error_page_test']);
-    static::restoreReadOnlyConfig();
   }
 
   /**
@@ -1546,12 +1532,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeSuite
    */
-  public static function disableAntibot(): void {
-    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
-    $module_installer = \Drupal::service('module_installer');
-    static::bypassReadOnlyConfig(5);
-    $module_installer->uninstall(['antibot']);
-    static::restoreReadOnlyConfig();
+  public static function disableAntibotForSuite(): void {
+    static::toggleModule('uninstall', 'antibot');
   }
 
   /**
@@ -1561,11 +1543,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @see self::disableAntibot()
    */
-  public static function reEnableAntibot(): void {
-    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
-    $module_installer = \Drupal::service('module_installer');
-    static::bypassReadOnlyConfig(5);
-    $module_installer->install(['antibot']);
+  public static function enableAntibotForSuite(): void {
+    static::toggleModule('install', 'antibot');
+  }
+
+  /**
+   * Installs/uninstalls a module in tests.
+   *
+   * @param string $method
+   *   Either 'install' or 'uninstall'.
+   * @param string $module_name
+   *   The module to be installed/uninstalled.
+   */
+  protected static function toggleModule(string $method, string $module_name): void {
+    // Ensure that test modules are also discoverable.
+    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
+    new Settings($settings);
+
+    static::bypassReadOnlyConfig(10);
+    \Drupal::service('module_installer')->$method([$module_name]);
     static::restoreReadOnlyConfig();
   }
 
