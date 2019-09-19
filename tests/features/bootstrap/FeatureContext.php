@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -43,6 +44,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use ContextualLinksTrait;
   use EntityTrait;
   use PageCacheTrait;
+  use SearchTrait;
   use TagTrait;
   use TraversingTrait;
   use UserTrait;
@@ -626,7 +628,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I click the contextual link :text in the :region region
    */
-  public function iClickTheContextualLinkInTheRegion($text, $region) {
+  public function iClickTheContextualLinkInTheRegion(string $text, string $region): void {
     $this->clickContextualLink($this->getRegion($region), $text);
   }
 
@@ -643,7 +645,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I (should )see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionPresent($text, $region) {
+  public function assertContextualLinkInRegionPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
@@ -662,13 +664,32 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when the contextual link is found in the region.
    *
-   * @Then I (should )not see the contextual link :text in the :region region
+   * @Then I should not see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionNotPresent($text, $region) {
+  public function assertContextualLinkInRegionNotPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
       throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
+    }
+  }
+
+  /**
+   * Asserts that no contextual links are present in a region.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when any contextual link is found in the region.
+   *
+   * @Then I should not see any contextual links in the :region region
+   */
+  public function assertNoContextualLinksInRegion(string $region): void {
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
+
+    if (!empty($links)) {
+      throw new \Exception(sprintf('Unexpected contextual links found in the region %s', $region));
     }
   }
 
@@ -1399,6 +1420,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // not remove focus from the field so the autocomplete results remain
     // visible and can be inspected.
     $element->postValue(['value' => [$value]]);
+  }
+
+  /**
+   * Commits the search index before starting the scenario.
+   *
+   * Use this in scenarios for which it is important that the search index is
+   * committed before any content is created in the scenario.
+   *
+   * Since most scenarios start with creating some test content and this will
+   * automatically commit the search index, this is only needed for tests that
+   * perform asserts before creating any content of their own, since the search
+   * index might still contain stale content from the previous scenario.
+   *
+   * @BeforeScenario @commitSearchIndex
+   */
+  public function commitSearchIndexBeforeScenario() {
+    $this->commitSearchIndex();
   }
 
   /**
