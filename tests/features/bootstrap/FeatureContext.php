@@ -1591,4 +1591,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     static::restoreReadOnlyConfig();
   }
 
+  /**
+   * Checks if the current form is protected by Antibot.
+   *
+   * @throws \Exception
+   *   When the expectancy is not met.
+   *
+   * @Then the form is protected by Antibot
+   */
+  public function assertFormIsProtectedByAntibot(): void {
+    $session = $page = $this->getSession();
+
+    // Unlock the form by using the Antibot javascript API.
+    $session->executeScript('Drupal.antibot.unlockForms();');
+
+    $has_js_assigned_value = (bool) $session->getPage()->find('xpath', '//form[@data-action]//input[@data-drupal-selector="edit-antibot-key" and @name="antibot_key" and string(@value)]');
+    if (!$has_js_assigned_value) {
+      throw new \Exception("Not an Antibot protected form.");
+    }
+  }
+
 }
