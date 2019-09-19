@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eec6f8c38d20451e272e4da3cc4ed2d4",
+    "content-hash": "64223606c8887fc5717ae5bc59556f6b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4434,7 +4434,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
+                    "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch",
+                    "Show version @see https://www.drupal.org/project/matomo_reporting_api/issues/3081726": "https://www.drupal.org/files/issues/2019-09-17/3081726-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5273,7 +5274,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-08-07/2983348-32.patch",
+                    "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-08-16/2983348-39.patch",
                     "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
                 }
             },
