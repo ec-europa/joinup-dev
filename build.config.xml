@@ -4,7 +4,7 @@
 
     <target
             name="setup-config-sync-dir"
-            description="Sets the config sync dir to profiles/joinup/config/sync"
+            description="Sets the config sync dir to '${website.config_sync.dir}'"
             depends="writable-settings-folder, writable-settings-php">
 
         <reflexive>
