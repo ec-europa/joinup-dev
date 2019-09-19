@@ -1548,6 +1548,32 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Enables the 'antibot' module in the scope of @antibot tagged scenarios.
+   *
+   * The 'antibot' module is disabled for the whole test suite run, in
+   * self::disableAntibotForSuite(). However, if a scenario wants run its test
+   * with 'antibot' module enabled, it should be tagged with @antibot.
+   *
+   * @BeforeScenario @antibot
+   *
+   * @see self::disableAntibotForSuite()
+   */
+  public function enableAntibotForScenario(): void {
+    static::toggleModule('install', 'antibot');
+  }
+
+  /**
+   * Disables the 'antibot' module after @antibot tagged scenarios.
+   *
+   * @AfterScenario @antibot
+   *
+   * @see self::enableAntibotForScenario()
+   */
+  public function disableAntibotForScenario(): void {
+    static::toggleModule('uninstall', 'antibot');
+  }
+
+  /**
    * Installs/uninstalls a module in tests.
    *
    * @param string $method
