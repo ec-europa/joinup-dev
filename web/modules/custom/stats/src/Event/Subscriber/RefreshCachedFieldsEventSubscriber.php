@@ -179,8 +179,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    * @param int $period
    *   The starting period represented by the number of days ago.
    *
-   * @return array
-   *   An array with the starting and ending time range.
+   * @return string[]
+   *   An array with two values: the start date and the end date (which will
+   *   always be the current date).
    */
   protected function getDateRange(int $period): array {
     return [
