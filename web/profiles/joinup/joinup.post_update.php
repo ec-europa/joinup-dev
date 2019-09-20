@@ -12,7 +12,6 @@ use Drupal\block_content\Entity\BlockContentType;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\Core\Site\Settings;
 use Drupal\entity_legal\Entity\EntityLegalDocumentVersion;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -302,14 +301,19 @@ function joinup_post_update_stats5(): void {
 function joinup_post_update_stats6(array &$sandbox): ?string {
   $db = \Drupal::database();
 
-  // Make sure that cron is not consuming the queue while we're updating it.
-  $settings = Settings::getAll();
-  $settings['joinup.parse_cached_computed_field'] = FALSE;
-  new Settings($settings);
-
   if (!isset($sandbox['items'])) {
+    // Make sure that cron is not consuming the queue while we're updating it.
+    // We try to acquire a lock, pretending that cron is running. If we succeed,
+    // a cron that attempts to start after this update has started, will not run
+    // as it will not be able to acquire the lock. If we fail, means the cron
+    // has already started before this update. That should be reported, as all
+    // cron processes should be stopped before starting the Joinup update.
+    // @see \Drupal\Core\Cron::run()
+    if (!\Drupal::lock()->acquire('cron', 900.0)) {
+      // Cron is currently running.
+      throw new \RuntimeException("Cannot update Joinup because cron is currently running. Ensure the conjob processes are stopped before attempting to update Joinup.");
+    }
     $sandbox['items'] = [];
-    $sandbox['node'] = [];
     $sandbox['processed'] = 0;
 
     // Store all 'cached_computed_field_expired_fields' queue items in sandbox.
@@ -369,6 +373,8 @@ function joinup_post_update_stats6(array &$sandbox): ?string {
   $sandbox['#finished'] = $sandbox['items'] ? 0 : 1;
 
   if ($sandbox['#finished']) {
+    // Release the fake 'cron' lock.
+    \Drupal::lock()->release('cron');
     return "Processed {$sandbox['processed']} items from queue.";
   }
 
