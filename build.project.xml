@@ -93,7 +93,7 @@
     </target>
 
     <!-- Execute Drupal updates. -->
-    <target name="execute-updates">
+    <target name="execute-updates" depends="disable-config-read-only">
         <drush
                 command="updatedb"
                 assume="yes"
@@ -109,6 +109,7 @@
                 verbose="${drush.verbose}">
             <option name="discard-overrides" />
         </drush>
+        <phingcall target="enable-config-read-only"/>
     </target>
 
     <!-- Download database backups from the ASDA server. -->
@@ -370,35 +371,40 @@
     <target
         name="enable-config-read-only"
         depends="writable-settings-folder, writable-settings-php"
-        description="Make config read-only.">
-        <phingcall target="enable-module">
-            <property name="module" value="config_readonly" />
-        </phingcall>
-        <append destFile="${website.settings.php}" text="$settings['config_readonly'] = TRUE;${line.separator}" />
+        description="Enables config_readonly.">
+
+        <!-- Remove any existing setting. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$settings\['config_readonly'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+
+        <!-- Add config_readonly kill-switch. -->
+        <append destFile="${website.settings.php}" text="$settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');${line.separator}" />
+
+        <!-- Make sure config_readonly is enabled. -->
+        <if>
+            <istrue value="${config_readonly.enabled}"/>
+            <then>
+                <delete file="${project.basedir}/disable-config-readonly" quiet="true"/>
+            </then>
+        </if>
     </target>
 
     <target
         name="disable-config-read-only"
         depends="writable-settings-folder, writable-settings-php"
-        description="Make config writable.">
-        <if>
-            <available file="${website.settings.php}" type="file" property="settings.php.available" />
-            <then>
-                <reflexive>
-                    <fileset dir="${website.settings.dir}">
-                        <include pattern="settings.php" />
-                    </fileset>
-                    <filterchain>
-                        <replaceregexp>
-                            <regexp
-                                pattern="^\$settings\['config_readonly'\].*$\n"
-                                replace=""
-                                modifiers="m" />
-                        </replaceregexp>
-                    </filterchain>
-                </reflexive>
-            </then>
-        </if>
+        description="Disables config_readonly.">
+        <touch file="${project.basedir}/disable-config-readonly" />
     </target>
 
     <target name="ensure-search-api-solr-site-hash">
@@ -557,6 +563,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, enable-config-read-only" />
 
 </project>
