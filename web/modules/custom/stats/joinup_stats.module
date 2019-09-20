@@ -16,8 +16,13 @@ use Drupal\meta_entity\Entity\MetaEntity;
 /**
  * Implements hook_entity_insert().
  *
- * Ensure meta entities for new content entities configured to have attached
- * metadata.
+ * Ensure that the meta entity is automatically created whenever a new content
+ * entity is created that is configured to have metadata attached to it. We need
+ * to have the meta entities available because we are tracking download counts
+ * in the meta entity using a cached computed field. This field has an
+ * expiration time after which it will be refreshed during a cron job. If we do
+ * not have the field, then we will not know when it expires, and it will never
+ * be updated.
  */
 function joinup_stats_entity_insert(EntityInterface $entity): void {
   if ($entity instanceof ContentEntityInterface) {
