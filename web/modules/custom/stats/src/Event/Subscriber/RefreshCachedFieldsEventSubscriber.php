@@ -42,11 +42,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   protected $loggerFactory;
 
   /**
-   * The Matomo settings config object.
+   * The config factory service.
    *
-   * @var \Drupal\Core\Config\ImmutableConfig
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $settings;
+  protected $configFactory;
 
   /**
    * Settings derived from meta entity types data.
@@ -72,7 +72,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
   public function __construct(EntityTypeManagerInterface $entityTypeManager, TimeInterface $time, MatomoQueryFactoryInterface $matomoQueryFactory, ConfigFactoryInterface $configFactory, LoggerChannelFactoryInterface $loggerFactory) {
     parent::__construct($entityTypeManager, $time);
     $this->matomoQueryFactory = $matomoQueryFactory;
-    $this->settings = $configFactory->get('joinup_stats.matomo_settings');
+    $this->configFactory = $configFactory;
     $this->loggerFactory = $loggerFactory;
   }
 
@@ -184,9 +184,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   always be the current date).
    */
   protected function getDateRange(int $period): array {
+    $launch_date = $this->configFactory->get('joinup_stats.matomo_settings')->get('launch_date');
     return [
       // If the period is 0 we should get all results since launch.
-      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $this->settings->get('launch_date'),
+      $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $launch_date,
       (new DateTimePlus())->format('Y-m-d'),
     ];
   }
@@ -343,8 +344,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
             throw new \Exception("Incomplete configuration for '$type' meta entity type: missing {$key} key.");
           }
         }
-        if (!is_callable([$this, $this->metaEntityTypeSettings[$type]['parameter_method']])) {
-          throw new \Exception("Method ::{$this->metaEntityTypeSettings['parameter_method']}() doesn't exist.");
+        $parameter_method_whitelist = ['getDistributionFileUrl', 'getEntityUrl'];
+        $parameter_method = $this->metaEntityTypeSettings[$type]['parameter_method'];
+        if (!is_callable([$this, $parameter_method]) || !in_array($parameter_method, $parameter_method_whitelist)) {
+          throw new \Exception("::{$this->metaEntityTypeSettings['parameter_method']}() is not a valid parameter method.");
         }
       }
     }
