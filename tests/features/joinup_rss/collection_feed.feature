@@ -4,6 +4,7 @@ Feature: Collection RSS feed.
   As a user of Joinup
   I want to subscribe to RSS feeds for each collection
 
+  @clearStaticCache
   Scenario: Collection RSS feed.
     Given users:
       | Username | First name | Family name |
@@ -58,6 +59,30 @@ Feature: Collection RSS feed.
     And the RSS feed should have 7 items
     And the RSS feed items should be:
       | title                                                      | link                                                                     | description                                                                            | publication date                | author          |
+      | Discussion: Is the indigo coloration caused by their food? | /collection/indigo-monkey/discussion/indigo-coloration-caused-their-food | I was reading the technical paper and it seems their main food is the indigo cherries. | Mon, 21 Jan 2019 13:00:00 +0100 | Aleta Jakeman   |
+      | News: Monkeys favourite indigo amongst colors              | /collection/indigo-monkey/news/monkeys-favourite-indigo-amongst-colors   | Research results are out.                                                              | Mon, 21 Jan 2019 12:36:00 +0100 | Aleta Jakeman   |
+      | Solution: Proton Lonesome                                  | /solution/proton-lonesome                                                |                                                                                        | Sat, 05 Jan 2019 10:00:00 +0100 | Aleta Jakeman   |
+      | Solution: Lantern Global                                   | /solution/lantern-global                                                 |                                                                                        | Tue, 18 Dec 2018 08:00:00 +0100 | Aleta Jakeman   |
+      | Event: Banana tasting                                      | /collection/indigo-monkey/event/banana-tasting                           | Testing more than 20 varities of bananas from all over the world.                      | Fri, 14 Sep 2018 07:36:00 +0200 | Forest Robinson |
+      | Custom page: Indigo variations                             | /collection/indigo-monkey/indigo-variations                              | The four major tones of indigo are listed here.                                        | Sun, 15 Oct 2017 18:30:00 +0200 | Forest Robinson |
+      | Document: Indigo technical paper                           | /collection/indigo-monkey/document/indigo-technical-paper                | All technical information about the rare indigo monkeys.                               | Mon, 30 May 2016 12:21:00 +0200 | Aleta Jakeman   |
+
+    Given solutions:
+      | title              | state     | author  | creation date    | collection    |
+      | Solve all problems | validated | alejake | 2019-09-16 03:40 | Indigo Monkey |
+    And news content:
+      | title                     | body          | state     | author  | created          | collection    |
+      | New in chewing gum crisis | New evidence. | validated | alejake | 2019-09-20 07:33 | Indigo Monkey |
+
+    # We've just added new content in 'Indigo Monkey' collection and we want to
+    # ensure that feed cache has been cleared to reflect the changes.
+    When I reload the page
+    Then I should see a valid RSS feed
+    And the RSS feed should have 9 items
+    And the RSS feed items should be:
+      | title                                                      | link                                                                     | description                                                                            | publication date                | author          |
+      | News: New in chewing gum crisis                            | /collection/indigo-monkey/news/new-chewing-gum-crisis                    | New evidence.                                                                          | Fri, 20 Sep 2019 07:33:00 +0200 | Aleta Jakeman   |
+      | Solution: Solve all problems                               | /solution/solve-all-problems                                             |                                                                                        | Mon, 16 Sep 2019 03:40:00 +0200 | Aleta Jakeman   |
       | Discussion: Is the indigo coloration caused by their food? | /collection/indigo-monkey/discussion/indigo-coloration-caused-their-food | I was reading the technical paper and it seems their main food is the indigo cherries. | Mon, 21 Jan 2019 13:00:00 +0100 | Aleta Jakeman   |
       | News: Monkeys favourite indigo amongst colors              | /collection/indigo-monkey/news/monkeys-favourite-indigo-amongst-colors   | Research results are out.                                                              | Mon, 21 Jan 2019 12:36:00 +0100 | Aleta Jakeman   |
       | Solution: Proton Lonesome                                  | /solution/proton-lonesome                                                |                                                                                        | Sat, 05 Jan 2019 10:00:00 +0100 | Aleta Jakeman   |
