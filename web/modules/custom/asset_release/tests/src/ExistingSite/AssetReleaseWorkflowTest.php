@@ -1,22 +1,21 @@
 <?php
 
-namespace Drupal\Tests\asset_release\Functional;
+declare(strict_types = 1);
 
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Session\AccountInterface;
+namespace Drupal\Tests\asset_release\ExistingSite;
+
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\Functional\JoinupWorkflowTestBase;
+use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 
 /**
  * Tests crud operations and the workflow for the asset release rdf entity.
  *
  * @group asset_release
  */
-class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
+class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
 
   /**
    * A non authenticated user.
@@ -77,42 +76,23 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->userAnonymous = new AnonymousUserSession();
-    $this->userAuthenticated = $this->createUserWithRoles();
-    $this->userModerator = $this->createUserWithRoles(['moderator']);
-    $this->userOgFacilitator = $this->createUserWithRoles();
-    $this->userOgAdministrator = $this->createUserWithRoles();
+    $this->userAuthenticated = $this->createUser();
+    $this->userModerator = $this->createUser([], NULL, FALSE, ['roles' => ['moderator']]);
+    $this->userOgFacilitator = $this->createUser();
+    $this->userOgAdministrator = $this->createUser();
 
     $this->roleFacilitator = OgRole::getRole('rdf_entity', 'solution', 'facilitator');
     $this->roleAdministrator = OgRole::getRole('rdf_entity', 'solution', 'administrator');
   }
 
   /**
-   * Creates a user with roles.
-   *
-   * @param array $roles
-   *   An array of roles to initialize the user with.
-   *
-   * @return \Drupal\Core\Session\AccountInterface
-   *   The created user object.
-   */
-  public function createUserWithRoles(array $roles = []) {
-    $user = $this->createUser();
-    foreach ($roles as $role) {
-      $user->addRole($role);
-    }
-    $user->save();
-
-    return $user;
-  }
-
-  /**
    * {@inheritdoc}
    */
-  protected function getEntityType() {
+  protected function getEntityType(): string {
     return 'rdf_entity';
   }
 
@@ -122,13 +102,12 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * Since the browser test is a slow test, both create access and read/update/
    * delete access are tested below.
    */
-  public function testCrudAccess() {
+  public function testCrudAccess(): void {
     // Test create access.
     foreach ($this->createAccessProvider() as $parent_state => $test_data_arrays) {
       $parent = $this->createDefaultParent($parent_state);
-      // Initialize the release entity as it is going to be used in all sub
-      // cases.
-      $content = Rdf::create([
+      // Initialize the release entity as is used in all sub-cases.
+      $content = $this->createRdfEntity([
         'rid' => 'asset_release',
         'field_isr_is_version_of' => $parent->id(),
       ]);
@@ -151,13 +130,12 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
       foreach ($content_data as $content_state => $test_data_arrays) {
         // Initialize the release entity as it is going to be used in all sub
         // cases.
-        $content = Rdf::create([
+        $content = $this->createRdfEntity([
           'rid' => 'asset_release',
           'label' => $this->randomMachineName(),
           'field_isr_state' => $content_state,
           'field_isr_is_version_of' => $parent->id(),
         ]);
-        $content->save();
 
         foreach ($test_data_arrays as $test_data_array) {
           $operation = $test_data_array[0];
@@ -208,43 +186,28 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * @param string $state
    *   The state of the entity.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The created solution entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   If the entity fails to create.
    */
-  protected function createDefaultParent($state) {
+  protected function createDefaultParent(string $state): RdfInterface {
     // Make sure the current user is set to anonymous when creating solutions
     // through the API so we can assign the administrator manually. If a user is
     // logged in during creation of the solution they will automatically become
     // the administrator.
     $this->setCurrentUser($this->userAnonymous);
 
-    $parent = Rdf::create([
+    $parent = $this->createRdfEntity([
       'rid' => 'solution',
       'field_is_state' => $state,
       'label' => $this->randomMachineName(),
     ]);
-    $parent->save();
-    $this->assertInstanceOf(RdfInterface::class, $parent, 'The solution group was created.');
+    $this->assertInstanceOf(RdfInterface::class, $parent);
     $this->createOgMembership($parent, $this->userOgFacilitator, [$this->roleFacilitator]);
     $this->createOgMembership($parent, $this->userOgAdministrator, [$this->roleAdministrator]);
     return $parent;
-  }
-
-  /**
-   * Creates and asserts an Og membership.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $group
-   *   The Og group.
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user this membership refers to.
-   * @param array $roles
-   *   An array of role objects.
-   */
-  public function createOgMembership(EntityInterface $group, AccountInterface $user, array $roles = []) {
-    $membership = $this->ogMembershipManager->createMembership($group, $user)->setRoles($roles);
-    $membership->save();
-    $loaded = $this->ogMembershipManager->getMembership($group, $user->id());
-    $this->assertInstanceOf(OgMembership::class, $loaded, $this->t('A membership was successfully created.'));
   }
 
   /**
@@ -263,8 +226,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * The user variable represents the variable defined in the test.
    * Only two parent states need to be tested as the expected result might
    * differ depending on whether the parent is published or not.
+   *
+   * @return array
+   *   Testing data.
    */
-  public function createAccessProvider() {
+  public function createAccessProvider(): array {
     return [
       // Unpublished parent.
       'draft' => [
@@ -305,8 +271,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * The reason that this is just an array and not a proper provider is that it
    * would take a lot of time to reinstall an instance of the site for each
    * entry.
+   *
+   * @return array
+   *   Testing data.
    */
-  public function readUpdateDeleteAccessProvider() {
+  public function readUpdateDeleteAccessProvider(): array {
     return [
       // Unpublished parent.
       'draft' => [
@@ -435,8 +404,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
    * @code
    * There can be multiple transitions that can lead to a specific state, so
    * the check is being done on allowed transitions.
+   *
+   * @return array
+   *   Testing data.
    */
-  public function workflowTransitionsProvider() {
+  public function workflowTransitionsProvider(): array {
     return [
       'draft' => [
         'userAuthenticated' => [],
@@ -480,7 +452,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEntityBundle() {
+  protected function getEntityBundle(): string {
     return 'asset_release';
   }
 

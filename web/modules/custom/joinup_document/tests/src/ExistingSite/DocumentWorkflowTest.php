@@ -1,8 +1,10 @@
 <?php
 
-namespace Drupal\Tests\joinup_document\Functional;
+declare(strict_types = 1);
 
-use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
+namespace Drupal\Tests\joinup_document\ExistingSite;
+
+use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the document node.
@@ -14,7 +16,7 @@ class DocumentWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEntityBundle() {
+  protected function getEntityBundle(): string {
     return 'document';
   }
 
