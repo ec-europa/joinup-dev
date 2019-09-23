@@ -71,7 +71,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): JoinupFederationStepPluginBase {
     return new static(
       $configuration,
       $plugin_id,
@@ -104,6 +104,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    * {@inheritdoc}
    */
   public function execute() {
+    $this->loadSolutionDependencyStructure();
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
 
     // Get all entities that are unchanged by fetching the dependencies of the
