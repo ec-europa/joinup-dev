@@ -85,7 +85,13 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
         Rdf::load($solution_id),
         $solution_id,
       ]);
-      $this->assertSame($expected_solution_data, $solution_data_property->getValue($step_plugin)[$solution_id]);
+      $actual_data = $solution_data_property->getValue($step_plugin)[$solution_id];
+      // Results order might differ between versions of Virtuoso. Ensure that
+      // results are ordered properly before asserting.
+      foreach ($actual_data['dependencies'] as &$bundle_dependencies) {
+        ksort($bundle_dependencies);
+      }
+      $this->assertSame($expected_solution_data, $actual_data);
     }
   }
 
@@ -163,10 +169,10 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
       'http://solution/1' => [
         'dependencies' => [
           'distro' => [
-            'http://distro/5' => 'http://distro/5',
-            'http://distro/2' => 'http://distro/2',
-            'http://distro/6' => 'http://distro/6',
             'http://distro/1' => 'http://distro/1',
+            'http://distro/2' => 'http://distro/2',
+            'http://distro/5' => 'http://distro/5',
+            'http://distro/6' => 'http://distro/6',
           ],
           'version' => [
             'http://version/1' => 'http://version/1',
@@ -176,9 +182,9 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
       'http://solution/2' => [
         'dependencies' => [
           'distro' => [
-            'http://distro/4' => 'http://distro/4',
             'http://distro/1' => 'http://distro/1',
             'http://distro/3' => 'http://distro/3',
+            'http://distro/4' => 'http://distro/4',
           ],
           'version' => [
             'http://version/2' => 'http://version/2',
