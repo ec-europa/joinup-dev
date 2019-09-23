@@ -14,6 +14,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -25,6 +26,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
   use EntityReferenceTrait;
   use EntityTrait;
   use RdfEntityTrait;
+  use SearchTrait;
 
   /**
    * Provenance activity RDF entities used in test.
@@ -286,7 +288,16 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
    * @AfterScenario
    */
   public function cleanActivities(): void {
+    if (empty($this->provenanceActivities)) {
+      return;
+    }
+
+    // Since we might be cleaning up many activities, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->delete($this->provenanceActivities);
+    $this->provenanceActivities = [];
+    $this->enableCommitOnUpdate();
   }
 
 }

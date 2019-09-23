@@ -75,6 +75,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     /** @var string $template */
     /** @var string $recipient */
     /** @var string $recipient_mail */
+    /** @var string $bcc */
     /** @var string $from */
     /** @var string $body */
     /** @var string $subject */
@@ -164,6 +165,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
         if ($template !== $message_template->getDescription() && $template !== $message_template->getLabel()) {
           continue;
         };
+      }
+
+      if (isset($bcc)) {
+        Assert::assertContains($bcc, $mail['headers']['Bcc'], 'Bcc is properly set to the email.');
       }
 
       // We found a match. Stop searching.
