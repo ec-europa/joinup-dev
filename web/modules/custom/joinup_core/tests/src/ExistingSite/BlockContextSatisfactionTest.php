@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_core\Functional;
+namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Extension\Extension;
 
@@ -10,8 +10,10 @@ use Drupal\Core\Extension\Extension;
  * Tests that our custom blocks satisfy at least one of the available contexts.
  *
  * @group joinup_core
+ *
+ * @todo Shouldn't this be a Kernel test?
  */
-class BlockContextSatisfactionTest extends JoinupRdfBrowserTestBase {
+class BlockContextSatisfactionTest extends JoinupExistingSiteTestBase {
 
   /**
    * An array containing the paths that contain custom Joinup code.
@@ -24,11 +26,6 @@ class BlockContextSatisfactionTest extends JoinupRdfBrowserTestBase {
     'profiles/',
     'themes/',
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $profile = 'joinup';
 
   /**
    * The block manager.
@@ -54,7 +51,7 @@ class BlockContextSatisfactionTest extends JoinupRdfBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->blockManager = $this->container->get('plugin.manager.block');
@@ -68,7 +65,7 @@ class BlockContextSatisfactionTest extends JoinupRdfBrowserTestBase {
   /**
    * Tests that our custom blocks satisfy at least one available context.
    */
-  public function testBlockContextSatisfaction() {
+  public function testBlockContextSatisfaction(): void {
     $satisfied_definition_ids = array_keys($this->getBlockDefinitionsFilteredByAvailableContexts());
     $joinup_definition_ids = array_keys($this->getJoinupBlockDefinitions());
 

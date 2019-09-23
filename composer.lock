@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64223606c8887fc5717ae5bc59556f6b",
+    "content-hash": "6330f9a416f2cf688063f67208237681",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5399,17 +5399,11 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha17",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rdf_entity.git",
-                "reference": "8.x-1.0-alpha17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha17.zip",
-                "reference": "8.x-1.0-alpha17",
-                "shasum": "fc913f8c48b1160185c828414aa15dce8beacead"
+                "reference": "9c7ba5204191540a7f76a41c8370bd95a46223bb"
             },
             "require": {
                 "drupal/core": "*",
@@ -5425,8 +5419,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha17",
-                    "datestamp": "1558608184",
+                    "version": "8.x-1.0-alpha17+9-dev",
+                    "datestamp": "1559256488",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5434,10 +5428,8 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                    "Rename old configs instead removing them @see https://github.com/ec-europa/rdf_entity/pull/96": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/96.diff",
-                    "[regression] Instead of renaming, recreate the new configs @see https://github.com/ec-europa/rdf_entity/pull/99": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/99.diff",
-                    "Fix the missing ?weight parameter @see https://github.com/ec-europa/rdf_entity/pull/98": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/98.diff",
-                    "Do not vary all RDF listings by user @see https://github.com/ec-europa/rdf_entity/pull/100": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/100.patch"
+                    "Add missed @group tag for test @see https://github.com/ec-europa/rdf_entity/pull/102": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/102.diff",
+                    "Add Drupal Test Traits support for RDF Entity @see https://github.com/ec-europa/rdf_entity/pull/104": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/104.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5475,7 +5467,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/rdf_entity",
                 "issues": "https://drupal.org/project/issues/rdf_entity"
-            }
+            },
+            "time": "2019-09-14T09:52:19+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -15530,6 +15523,64 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
+        },
+        {
+            "name": "weitzman/drupal-test-traits",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/weitzman/drupal-test-traits.git",
+                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Fdrupal-test-traits/repository/archive.zip?sha=6687d17233707e0fca5c95e171701b9bf82bf1ff",
+                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff",
+                "shasum": ""
+            },
+            "require": {
+                "behat/mink": "^1.7",
+                "behat/mink-goutte-driver": "^1.2",
+                "php": ">=7.0.0",
+                "phpunit/phpunit": "^5.7|^6.5",
+                "webflo/drupal-finder": "^1.1"
+            },
+            "require-dev": {
+                "behat/mink-selenium2-driver": "1.3.x-dev",
+                "composer/installers": "^1.2",
+                "dmore/chrome-mink-driver": "^2.6",
+                "drupal-composer/drupal-scaffold": "2.3.0",
+                "drupal/core": "^8.7@alpha",
+                "drush/drush": "^9",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "squizlabs/php_codesniffer": "^3.2",
+                "zaporylie/composer-drupal-optimizations": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "web/core": [
+                        "type:drupal-core"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "weitzman\\DrupalTestTraits\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                }
+            ],
+            "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
+            "time": "2019-04-22T08:56:51+00:00"
         }
     ],
     "aliases": [
@@ -15549,6 +15600,7 @@
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/rdf_entity": 20,
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,

@@ -1,8 +1,10 @@
 <?php
 
-namespace Drupal\Tests\joinup_event\Functional;
+declare(strict_types = 1);
 
-use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
+namespace Drupal\Tests\joinup_event\ExistingSite;
+
+use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the event node.
@@ -14,7 +16,7 @@ class EventWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getEntityBundle() {
+  protected function getEntityBundle(): string {
     return 'event';
   }
 
