@@ -38,6 +38,7 @@
         "drupal/menu_admin_per_menu": "^1.0",
         "drupal/message": "^1.0-rc2",
         "drupal/message_notify": "~1.0",
+        "drupal/metatag": "^1.10",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0@beta",
         "drupal/migrate_spreadsheet": "~1.0",
@@ -220,6 +221,9 @@
             },
             "drupal/message_notify": {
                 "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
+            },
+            "drupal/metatag": {
+                "Summary for text fields @see https://www.drupal.org/project/metatag/issues/3063087": "https://www.drupal.org/files/issues/2019-09-23/3063087-8.patch"
             },
             "drupal/og_menu": {
                 "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
