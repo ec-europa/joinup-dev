@@ -182,7 +182,14 @@ function joinup_post_update_legal() {
 /**
  * Sets the default weight for specific og actions with configuration.
  */
-function joinup_post_update_set_default_og_action_weightsd() {
+function joinup_post_update_set_default_og_action_weight() {
+  // The plugin default weight applies in the action base class. The og role
+  // add/remove action is an instance of the
+  // \Drupal\og\Plugin\Action\AddSingleOgMembershipRole which receives the
+  // default action on its total. In Joinup, we have two instances of this
+  // class, one for the administrator role and one for the facilitator. The
+  // default weight is ok for the administrator role but we need to set the
+  // weight for the facilitator role explicitly to override the default value.
   \Drupal::configFactory()
     ->getEditable('system.action.og_membership_add_single_role_action.facilitator')
     ->set('weight', -2)
