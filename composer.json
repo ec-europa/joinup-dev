@@ -75,8 +75,8 @@
         "jacklmoore/autosize": "dev-master",
         "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.0",
+        "openeuropa/webtools-geocoding-provider": "dev-master",
         "openeuropa/oe_webtools": "~1.0",
-        "openeuropa/oe_webtools_location": "dev-master",
         "pear/console_table": "~1.3",
         "phing/phing": "^2.15.0",
         "predis/predis": "~1.1",
@@ -268,8 +268,11 @@
             "drush/drush": {
                 "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
             },
+            "openeuropa/webtools-geocoding-provider": {
+              "Allow to optionally pass a referer header. @see https://github.com/openeuropa/webtools-geocoding-provider/pull/6": "https://patch-diff.githubusercontent.com/raw/openeuropa/webtools-geocoding-provider/pull/6.diff"
+            },
             "openeuropa/oe_webtools": {
-                "Include the smartloader on pages where analytics are used.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/71.patch"
+                "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"
             }
         }
     },

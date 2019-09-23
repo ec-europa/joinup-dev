@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64223606c8887fc5717ae5bc59556f6b",
+    "content-hash": "93d2af943ecf6e2d007fb71162dee287",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.0",
+            "version": "3.112.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1e21446c6780a3b9b5e4315bd6d4347d2c3381eb"
+                "reference": "5c6f05d68576f845a8391b83020b480840eca759"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1e21446c6780a3b9b5e4315bd6d4347d2c3381eb",
-                "reference": "1e21446c6780a3b9b5e4315bd6d4347d2c3381eb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5c6f05d68576f845a8391b83020b480840eca759",
+                "reference": "5c6f05d68576f845a8391b83020b480840eca759",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-12T18:09:53+00:00"
+            "time": "2019-09-20T22:08:27+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2442,7 +2442,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2591,6 +2591,14 @@
             ],
             "authors": [
                 {
+                    "name": "bircher",
+                    "homepage": "https://www.drupal.org/user/1344166"
+                },
+                {
+                    "name": "gnuget",
+                    "homepage": "https://www.drupal.org/user/992990"
+                },
+                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2702,8 +2710,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha7",
-                    "datestamp": "1521314235",
+                    "version": "8.x-1.0-alpha6+2-dev",
+                    "datestamp": "1513615684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3640,7 +3648,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1556645881",
+                    "datestamp": "1551291083",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3834,7 +3842,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598850",
+                    "datestamp": "1521598685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4687,7 +4695,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -6391,7 +6399,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -6555,7 +6563,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "https://git.drupalcode.org/project/views_data_export"
+                "source": "http://cgit.drupalcode.org/views_data_export"
             }
         },
         {
@@ -7382,7 +7390,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -8231,16 +8239,16 @@
         },
         {
             "name": "openeuropa/oe_webtools",
-            "version": "1.0.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools.git",
-                "reference": "eab913a181326b73b4234930970ceec91b7063e1"
+                "reference": "1d4a18ee2cfbeaea24cccaa58ce73742708cae3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/eab913a181326b73b4234930970ceec91b7063e1",
-                "reference": "eab913a181326b73b4234930970ceec91b7063e1",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/1d4a18ee2cfbeaea24cccaa58ce73742708cae3e",
+                "reference": "1d4a18ee2cfbeaea24cccaa58ce73742708cae3e",
                 "shasum": ""
             },
             "require": {
@@ -8248,18 +8256,23 @@
                 "ext-json": "*",
                 "php": "^7.1"
             },
+            "conflict": {
+                "openeuropa/oe_webtools_location": "*"
+            },
             "require-dev": {
                 "composer/installers": "~1.5",
                 "drupal-composer/drupal-scaffold": "^2.5.2",
                 "drupal/config_devel": "~1.2",
                 "drupal/drupal-extension": "^4.0",
+                "drupal/geocoder": "^3.0",
                 "drush/drush": "~9.0",
                 "nikic/php-parser": "^3.1.5",
                 "openeuropa/behat-transformation-context": "~0.1",
                 "openeuropa/code-review": "~1.0@beta",
                 "openeuropa/drupal-core-require-dev": "^8.7",
-                "openeuropa/oe_media": "~0.4",
+                "openeuropa/oe_media": "^1.0@beta",
                 "openeuropa/task-runner": "~1.0.0-beta5",
+                "openeuropa/webtools-geocoding-provider": "~0.1",
                 "phpunit/phpunit": "~6.0",
                 "symfony/dom-crawler": "~3.0"
             },
@@ -8282,7 +8295,7 @@
                     ]
                 },
                 "patches_applied": {
-                    "Include the smartloader on pages where analytics are used.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/71.patch"
+                    "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"
                 }
             },
             "autoload": {
@@ -8295,70 +8308,20 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa Webtools integration.",
-            "time": "2019-05-15T11:26:37+00:00"
-        },
-        {
-            "name": "openeuropa/oe_webtools_location",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/openeuropa/oe_webtools_location.git",
-                "reference": "040cf79f41ca05e5a9fe16cf858052b193d8ec6b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/040cf79f41ca05e5a9fe16cf858052b193d8ec6b",
-                "reference": "040cf79f41ca05e5a9fe16cf858052b193d8ec6b",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/core": "^8.7",
-                "drupal/geocoder": "^3.0",
-                "openeuropa/webtools-geocoding-provider": "~0.1",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "composer/installers": "~1.5",
-                "drupal-composer/drupal-scaffold": "^2.5",
-                "drupal/drupal-extension": "^4.0",
-                "drush/drush": "^9.3",
-                "openeuropa/code-review": "^1.0",
-                "openeuropa/drupal-core-require-dev": "^8.7",
-                "openeuropa/task-runner": "^0.7.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "installer-paths": {
-                    "build/core": [
-                        "type:drupal-core"
-                    ],
-                    "build/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "build/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "EUPL-1.2"
-            ],
-            "description": "Adds support for Webtools location services in Drupal.",
-            "time": "2019-06-17T09:15:56+00:00"
+            "time": "2019-07-26T11:25:58+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
-            "version": "0.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/webtools-geocoding-provider.git",
-                "reference": "22ab74bdb38754227d1428b53acd0203ae9228a7"
+                "reference": "10c3e1af4dafc1823be0c0b79c5c36d0403cab47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/22ab74bdb38754227d1428b53acd0203ae9228a7",
-                "reference": "22ab74bdb38754227d1428b53acd0203ae9228a7",
+                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/10c3e1af4dafc1823be0c0b79c5c36d0403cab47",
+                "reference": "10c3e1af4dafc1823be0c0b79c5c36d0403cab47",
                 "shasum": ""
             },
             "require": {
@@ -8376,6 +8339,11 @@
                 "phpunit/phpunit": "~6.3"
             },
             "type": "library",
+            "extra": {
+                "patches_applied": {
+                    "Allow to optionally pass a referer header. @see https://github.com/openeuropa/webtools-geocoding-provider/pull/6": "https://patch-diff.githubusercontent.com/raw/openeuropa/webtools-geocoding-provider/pull/6.diff"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "OpenEuropa\\Provider\\WebtoolsGeocoding\\": "src/"
@@ -8387,7 +8355,7 @@
             ],
             "description": "Webtools Geocoding provider for Geocoder PHP.",
             "homepage": "https://github.com/openeuropa/webtools-geocoding-provider",
-            "time": "2018-08-31T06:51:22+00:00"
+            "time": "2019-06-07T09:11:34+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -9882,7 +9850,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-03-22T22:25:24+00:00"
         },
         {
             "name": "stack/builder",
@@ -13119,7 +13087,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/filecache.git",
-                "reference": "0291f94eb7132cdbe9a0485d6fe145915b2dc269"
+                "reference": "474f3562b045200b5abb983ee94c9d96c49c7cde"
             },
             "require": {
                 "drupal/core": "~8.5"
@@ -13136,8 +13104,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+0-dev",
-                    "datestamp": "1554731581",
+                    "version": "8.x-1.0-alpha2+2-dev",
+                    "datestamp": "1568894884",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -13177,7 +13145,7 @@
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
             },
-            "time": "2018-12-03T07:38:12+00:00"
+            "time": "2019-09-19T12:07:17+00:00"
         },
         {
             "name": "drupal/renderviz",
@@ -15556,7 +15524,7 @@
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
-        "openeuropa/oe_webtools_location": 20,
+        "openeuropa/webtools-geocoding-provider": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
