@@ -1,34 +1,36 @@
 <?php
 
-namespace Drupal\Tests\joinup_discussion\Functional;
+declare(strict_types = 1);
 
-use Drupal\Tests\joinup_core\Functional\NodeWorkflowTestBase;
+namespace Drupal\Tests\joinup_discussion\ExistingSite;
+
+use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the discussion node.
  *
- * @group workflow
+ * @group joinup_discussion
  */
 class DiscussionWorkflowTest extends NodeWorkflowTestBase {
 
   /**
    * {@inheritdoc}
    */
-  protected function getPublishedStates() {
+  protected function getPublishedStates(): array {
     return ['validated', 'archived'];
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEntityBundle() {
+  protected function getEntityBundle(): string {
     return 'discussion';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function createAccessProvider() {
+  protected function createAccessProvider(): array {
     $return = parent::createAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
       unset($return[$bundle][self::PRE_MODERATION]);
@@ -39,7 +41,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function viewAccessProvider() {
+  protected function viewAccessProvider(): array {
     $data = parent::viewAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
       $data[$bundle]['archived']['own'] = TRUE;
@@ -59,7 +61,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function updateAccessProvider() {
+  protected function updateAccessProvider(): array {
     $data = parent::updateAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
       unset($data[$bundle][self::PRE_MODERATION]);
@@ -74,7 +76,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function deleteAccessProvider() {
+  protected function deleteAccessProvider(): array {
     $data = parent::deleteAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
       unset($data[$bundle][self::PRE_MODERATION]);
