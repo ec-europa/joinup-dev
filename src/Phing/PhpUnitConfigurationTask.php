@@ -92,6 +92,27 @@ class PhpUnitConfigurationTask extends \Task {
   private $browsertestOutputFile = '';
 
   /**
+   * The DTT base URL.
+   *
+   * @var string
+   */
+  private $dttBaseUrl = '';
+
+  /**
+   * The DTT API URL.
+   *
+   * @var string
+   */
+  private $dttApiUrl = '';
+
+  /**
+   * The DTT Mink driver arguments.
+   *
+   * @var string
+   */
+  private $dttMinkDriverArgs = '';
+
+  /**
    * Configures PHPUnit.
    */
   public function main() {
@@ -121,6 +142,11 @@ class PhpUnitConfigurationTask extends \Task {
 
     // Set the path to the browsertest output file.
     $this->setEnvironmentVariable('BROWSERTEST_OUTPUT_FILE', $this->browsertestOutputFile, $document);
+
+    // Set the DTT (Drupal Test Traits) env variables.
+    $this->setEnvironmentVariable('DTT_BASE_URL', $this->dttBaseUrl, $document);
+    $this->setEnvironmentVariable('DTT_API_URL', $this->dttApiUrl, $document);
+    $this->setEnvironmentVariable('DTT_MINK_DRIVER_ARGS', $this->dttMinkDriverArgs, $document);
 
     // Add a test suite for the Drupal project.
     $test_suite = $document->createElement('testsuite');
@@ -301,6 +327,36 @@ class PhpUnitConfigurationTask extends \Task {
    */
   public function setBrowsertestOutputFile($browsertestOutputFile) {
     $this->browsertestOutputFile = $browsertestOutputFile;
+  }
+
+  /**
+   * Sets the DTT base URL.
+   *
+   * @param string $dttBaseUrl
+   *   The DTT base URL.
+   */
+  public function setDttBaseUrl($dttBaseUrl) {
+    $this->dttBaseUrl = $dttBaseUrl;
+  }
+
+  /**
+   * Sets the DTT API URL.
+   *
+   * @param string $dttApiUrl
+   *   The DTT API URL.
+   */
+  public function setDttApiUrl($dttApiUrl) {
+    $this->dttApiUrl = $dttApiUrl;
+  }
+
+  /**
+   * Sets the DTT Mink driver arguments.
+   *
+   * @param string $dttMinkDriverArgs
+   *   The DTT Mink driver arguments.
+   */
+  public function setDttMinkDriverArgs($dttMinkDriverArgs) {
+    $this->dttMinkDriverArgs = $dttMinkDriverArgs;
   }
 
 }

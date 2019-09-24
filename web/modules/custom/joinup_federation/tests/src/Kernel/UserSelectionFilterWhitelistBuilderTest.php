@@ -39,7 +39,7 @@ class UserSelectionFilterWhitelistBuilderTest extends StepTestBase {
     parent::setUp();
 
     // Create the 'default' and 'staging' graphs.
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/sparql_entity_storage.graph.default.yml'));
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../contrib/sparql_entity_storage/config/install/sparql_entity_storage.graph.default.yml'));
     SparqlGraph::create($graph)->save();
     $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/sparql_entity_storage.graph.staging.yml'));
     SparqlGraph::create($graph)->save();
