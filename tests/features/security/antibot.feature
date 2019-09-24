@@ -14,44 +14,43 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
       | /user/register |
       | /contact       |
 
-    Scenario: Authenticated users.
+  Scenario: Authenticated users.
+    Given users:
+      | Username |
+      | Günther  |
+    And the following collection:
+      | title | Family photos |
+      | state | validated     |
+    And discussion content:
+      | title      | collection    | state     |
+      | Let's talk | Family photos | validated |
+    And event content:
+      | title      | collection    | state     |
+      | Birthday | Family photos | validated |
+    And news content:
+      | title      | collection    | state     |
+      | Got married | Family photos | validated |
 
-      Given users:
-        | Username |
-        | Günther  |
-      And the following collection:
-        | title | Family photos |
-        | state | validated     |
-      And discussion content:
-        | title      | collection    | state     |
-        | Let's talk | Family photos | validated |
-      And event content:
-        | title      | collection    | state     |
-        | Birthday | Family photos | validated |
-      And news content:
-        | title      | collection    | state     |
-        | Got married | Family photos | validated |
+    Given I am logged in as "Günther"
+    And I go to the homepage of the "Family photos" collection
+    Then the form is protected by Antibot
 
-      Given I am logged in as "Günther"
-      And I go to the homepage of the "Family photos" collection
-      Then the form is protected by Antibot
+    When I press "Join this collection"
+    And I click "Add discussion" in the plus button menu
+    Then the form is protected by Antibot
 
-      When I press "Join this collection"
-      And I click "Add discussion" in the plus button menu
-      Then the form is protected by Antibot
+    When I go to the "Let's talk" discussion
+    # Comment form.
+    Then the form is protected by Antibot
 
-      When I go to the "Let's talk" discussion
-      # Comment form.
-      Then the form is protected by Antibot
+    When I go to the "Birthday" event
+    # Comment form.
+    Then the form is protected by Antibot
 
-      When I go to the "Birthday" event
-      # Comment form.
-      Then the form is protected by Antibot
+    When I go to the "Got married" news
+    # Comment form.
+    Then the form is protected by Antibot
 
-      When I go to the "Got married" news
-      # Comment form.
-      Then the form is protected by Antibot
-
-      When I click "Share"
-      And I wait for AJAX to finish
-      Then the form is protected by Antibot
+    When I click "Share"
+    And I wait for AJAX to finish
+    Then the form is protected by Antibot
