@@ -221,7 +221,10 @@
                 sparqlUrl="${phpunit.sparql_url}"
                 legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
-                browsertestOutputFile="${phpunit.browsertest_output_file}" />
+                browsertestOutputFile="${phpunit.browsertest_output_file}"
+                dttBaseUrl="${dtt.base_url}"
+                dttApiUrl="${dtt.api_url}"
+                dttMinkDriverArgs="${dtt.mink_driver_args}" />
 
         <!-- Create the directory and file for browsertest output. -->
         <mkdir dir="${phpunit.browsertest_output_dir}" />
