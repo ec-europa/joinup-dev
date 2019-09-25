@@ -219,13 +219,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
 
       // Catch the case where the URL is not available. This can currently
-      // happen only when an entity is malformed, for which we already check,
-      // or the distribution we are attempting to track does not have a file.
+      // happen only when a distribution we are attempting to track doesn't
+      // have a file attached, but an external link.
       if (empty($this->getUrlParameter($meta_entity))) {
-        $this->loggerFactory->get('joinup_stats')->error('No URL parameter was found for the :bundle entity with id: @id', [
-          ':bundle' => $meta_entity->bundle(),
-          '@id' => $meta_entity->id(),
-        ]);
         continue;
       }
 
