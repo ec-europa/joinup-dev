@@ -4,7 +4,7 @@
 
     <target
             name="setup-config-sync-dir"
-            description="Sets the config sync dir to '${website.config_sync.dir}'"
+            description="Sets the config sync dir to '${drupal.config.dir}'"
             depends="writable-settings-folder, writable-settings-php">
 
         <reflexive>
@@ -20,7 +20,7 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
-        <append destFile="${website.settings.php}" text="${line.separator}$config_directories[CONFIG_SYNC_DIRECTORY] = '${website.config_sync.dir}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$config_directories[CONFIG_SYNC_DIRECTORY] = '${drupal.config.dir}';${line.separator}" />
     </target>
 
 
