@@ -235,31 +235,19 @@ function joinup_post_update_stats1(array &$sandbox): ?string {
  * Move statistics (part 2): Cleanup obsolete configs.
  */
 function joinup_post_update_stats2(): void {
-  $config_factory = \Drupal::configFactory();
-  $configs_to_remove = [
-    'field.storage.node.field_visit_count',
-    'field.storage.rdf_entity.field_download_count',
-    'field.field.rdf_entity.asset_distribution.field_download_count',
-    'field.field.node.discussion.field_visit_count',
-    'field.field.node.document.field_visit_count',
-    'field.field.node.event.field_visit_count',
-    'field.field.node.news.field_visit_count',
-    'joinup_core.matomo_settings',
-  ];
-  array_walk($configs_to_remove, function (string $name) use ($config_factory): void {
-    $config_factory->getEditable($name)->delete();
-  });
+  \Drupal::configFactory()->getEditable('joinup_core.matomo_settings')->delete();
 }
 
 /**
  * Move statistics (part 3): Uninstall stale fields.
  */
 function joinup_post_update_stats3(): void {
-  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
-  $download_count_definition = $definition_update_manager->getFieldStorageDefinition('field_download_count', 'rdf_entity');
-  $definition_update_manager->uninstallFieldStorageDefinition($download_count_definition);
-  $visit_count_definition = $definition_update_manager->getFieldStorageDefinition('field_visit_count', 'node');
-  $definition_update_manager->uninstallFieldStorageDefinition($visit_count_definition);
+  // Delete 'field_download_count' field.
+  FieldConfig::loadByName('rdf_entity', 'asset_distribution', 'field_download_count')->delete();
+  // Delete 'field_visit_count' field.
+  foreach (['discussion', 'document', 'event', 'news'] as $bundle) {
+    FieldConfig::loadByName('node', $bundle, 'field_visit_count')->delete();
+  }
 }
 
 /**
