@@ -1,0 +1,19 @@
+uuid: 361aa31e-fa8f-4b90-b36a-edf97fb91a88
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.og_membership_decision
+id: message.og_membership_decision.mail_subject
+targetEntityType: message
+bundle: og_membership_decision
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

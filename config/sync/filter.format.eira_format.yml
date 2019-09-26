@@ -1,0 +1,38 @@
+uuid: 31c0b016-e058-4c29-84b7-338e036dece1
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 6TYT5seKHYxoAB4RSEPFmSEKjRH3L_mp11rav_tcmbo
+name: 'EIRA format'
+format: eira_format
+weight: 0
+filters:
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -10
+    settings:
+      allowed_html: '<em> <br> <strong> <cite> <blockquote cite> <code> <q> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src altwidth height> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href id rel target title>'
+      filter_html_help: true
+      filter_html_nofollow: false
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: true
+    weight: 0
+    settings:
+      filter_url_length: 72
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: 10
+    settings: {  }

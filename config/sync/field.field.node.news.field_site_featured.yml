@@ -1,0 +1,25 @@
+uuid: 45a0d89b-0eb4-4114-af70-5c551225e8f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_site_featured
+    - node.type.news
+_core:
+  default_config_hash: bqjV23X4-KIQT6kRCRGiKUl2phjb1x63Trs4-gmBwM8
+id: node.news.field_site_featured
+field_name: field_site_featured
+entity_type: node
+bundle: news
+label: 'Site featured'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

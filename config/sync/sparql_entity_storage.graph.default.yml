@@ -1,0 +1,9 @@
+uuid: adb4491f-7cbc-46d9-975d-41bf83b14637
+langcode: en
+status: true
+dependencies: {  }
+id: default
+weight: 0
+name: Default
+description: 'Default graph. This is available for all entity types and bundles.'
+entity_types: null

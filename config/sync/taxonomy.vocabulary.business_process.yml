@@ -1,0 +1,10 @@
+uuid: 1ae806e2-9cc9-415d-91cc-107a045c7565
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 5ulJZGsFLIwq30fIr7zlyrF2Rf24i6dxWfJoc54OUjQ
+name: 'Business process'
+vid: business_process
+description: ''
+weight: 0

@@ -1,0 +1,21 @@
+uuid: 19edaa1e-7af5-49ad-961e-d46cf17723f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ci_email
+    - rdf_entity.rdfentity.contact_information
+_core:
+  default_config_hash: ctbUlQaVNfNIV80QMPjqrAk0y7bpN7uZ4IrOknZ2Huo
+id: rdf_entity.contact_information.field_ci_email
+field_name: field_ci_email
+entity_type: rdf_entity
+bundle: contact_information
+label: 'E-mail address'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email
