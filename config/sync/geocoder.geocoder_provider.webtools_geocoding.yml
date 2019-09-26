@@ -7,4 +7,5 @@ dependencies:
 id: webtools_geocoding
 label: 'Webtools Geocoding'
 plugin: webtools_geocoding
-configuration: {  }
+configuration:
+  referer: 'https://joinup.ec.europa.eu/'
