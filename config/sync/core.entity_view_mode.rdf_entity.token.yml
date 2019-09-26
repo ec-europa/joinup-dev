@@ -1,0 +1,10 @@
+uuid: 7b61ff10-afaf-4d85-aadd-fec02730c78e
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.token
+label: Token
+targetEntityType: rdf_entity
+cache: true

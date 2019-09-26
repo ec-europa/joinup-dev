@@ -1,0 +1,19 @@
+uuid: 84cc2a41-595a-4ade-a421-663e72b95524
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.comment_delete
+id: message.comment_delete.mail_subject
+targetEntityType: message
+bundle: comment_delete
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true
