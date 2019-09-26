@@ -178,17 +178,3 @@ function joinup_post_update_legal() {
     ],
   ])->save();
 }
-
-/**
- * Fix 'default' graph UUID.
- */
-function joinup_post_update_default_graph(): void {
-  // If a config have a different UUID in active store compared to staging, the
-  // config is deleted and recreated. But the 'default' graph cannot be deleted,
-  // so we avoid deletion by manually setting its UUID.
-  // @see \Drupal\Core\Config\StorageComparer::addChangelistUpdate()
-  // @see \Drupal\sparql_entity_storage\Entity\SparqlGraph::delete()
-  \Drupal::configFactory()->getEditable('sparql_entity_storage.graph.default')
-    ->set('uuid', 'adb4491f-7cbc-46d9-975d-41bf83b14637')
-    ->save();
-}
