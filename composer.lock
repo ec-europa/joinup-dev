@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ddc9fe88871c94b6bdef2868fcab120",
+    "content-hash": "0dc6f46a14bc32e47dc4727241bed698",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.0",
+            "version": "3.112.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1e21446c6780a3b9b5e4315bd6d4347d2c3381eb"
+                "reference": "2a2f2bb0e05c2756573155353648521a9a08f5b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1e21446c6780a3b9b5e4315bd6d4347d2c3381eb",
-                "reference": "1e21446c6780a3b9b5e4315bd6d4347d2c3381eb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2a2f2bb0e05c2756573155353648521a9a08f5b3",
+                "reference": "2a2f2bb0e05c2756573155353648521a9a08f5b3",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-12T18:09:53+00:00"
+            "time": "2019-09-25T18:23:09+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2442,7 +2442,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -2555,6 +2555,177 @@
             }
         },
         {
+            "name": "drupal/config_exclude",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/config_exclude.git",
+                "reference": "dbe433b9a7519fe64060b32ccf7d82b574d41b6d"
+            },
+            "require": {
+                "drupal/config_filter": "*",
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1512684184",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Marc van Gend",
+                    "homepage": "https://www.drupal.org/u/marcvangend",
+                    "email": "info@marcvangend.nl",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Filter for excluding modules and dependent configuration during config export",
+            "homepage": "https://www.drupal.org/project/config_exclude",
+            "keywords": [
+                "Configuration Management",
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_exclude",
+                "issues": "https://www.drupal.org/project/issues/config_exclude"
+            },
+            "time": "2017-12-07T21:31:19+00:00"
+        },
+        {
+            "name": "drupal/config_filter",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/config_filter.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_filter-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "4b2b7f4dfc8358212f9e25f63dcc77cc2c1dcf6c"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "suggest": {
+                "drupal/config_split": "Split site configuration for different environments."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1542184982",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Fabian Bircher",
+                    "homepage": "https://www.drupal.org/u/bircher",
+                    "email": "opensource@fabianbircher.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Nuvole Web",
+                    "homepage": "http://nuvole.org",
+                    "email": "info@nuvole.org",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "pescetti",
+                    "homepage": "https://www.drupal.org/user/436244"
+                }
+            ],
+            "description": "Config Filter allows other modules to interact with a ConfigStorage through filter plugins.",
+            "homepage": "https://www.drupal.org/project/config_filter",
+            "keywords": [
+                "Drupal",
+                "configuration",
+                "configuration management"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_filter",
+                "issues": "https://www.drupal.org/project/issues/config_filter",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/config_ignore",
+            "version": "dev-2.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/config_ignore.git",
+                "reference": "2b1740411fd1eb8bb139711be5e10535c40ddbbf"
+            },
+            "require": {
+                "drupal/config_filter": "1.*",
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.1+5-dev",
+                    "datestamp": "1537980780",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Tommy Lynge Jørgensen",
+                    "homepage": "https://www.drupal.org/u/tlyngej",
+                    "email": "tlyngej@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Fabian Bircher",
+                    "homepage": "https://www.drupal.org/u/bircher",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Ignore certain configuration during import.",
+            "homepage": "http://drupal.org/project/config_ignore",
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_ignore",
+                "issues": "http://drupal.org/project/config_ignore",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            },
+            "time": "2018-09-26T16:48:09+00:00"
+        },
+        {
             "name": "drupal/config_provider",
             "version": "1.0.0-beta7",
             "source": {
@@ -2590,6 +2761,14 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
+                {
+                    "name": "bircher",
+                    "homepage": "https://www.drupal.org/user/1344166"
+                },
+                {
+                    "name": "gnuget",
+                    "homepage": "https://www.drupal.org/user/992990"
+                },
                 {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
@@ -2702,8 +2881,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha7",
-                    "datestamp": "1521314235",
+                    "version": "8.x-1.0-alpha6+2-dev",
+                    "datestamp": "1513615684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3047,7 +3226,9 @@
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
-                    "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch"
+                    "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
+                    "Shipping a profile with multiple languages without locale module not possible @see https://www.drupal.org/project/drupal/issues/2413191": "https://www.drupal.org/files/issues/2019-01-12/2413191-31.patch",
+                    "Config import creates 'Undefined index: uuid' notice @see https://www.drupal.org/project/drupal/issues/2863785": "https://www.drupal.org/files/issues/config_import_creates-2863785-2.patch"
                 }
             },
             "autoload": {
@@ -3640,7 +3821,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1556645881",
+                    "datestamp": "1551291083",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3834,7 +4015,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598850",
+                    "datestamp": "1521598685",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4009,17 +4190,17 @@
         },
         {
             "name": "drupal/geofield",
-            "version": "1.3.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/geofield.git",
-                "reference": "8.x-1.3"
+                "reference": "8.x-1.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/geofield-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "ab9691a959dd4e4ad48e7138f96a500caabb43a9"
+                "url": "https://ftp.drupal.org/files/projects/geofield-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "7d4263317c331b8236cdf02b3ef0680af3974673"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4031,8 +4212,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.3",
-                    "datestamp": "1555935785",
+                    "version": "8.x-1.6",
+                    "datestamp": "1569408784",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4687,7 +4868,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -5004,7 +5185,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+                    "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
+                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5399,17 +5581,11 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha17",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rdf_entity.git",
-                "reference": "8.x-1.0-alpha17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha17.zip",
-                "reference": "8.x-1.0-alpha17",
-                "shasum": "fc913f8c48b1160185c828414aa15dce8beacead"
+                "reference": "9c7ba5204191540a7f76a41c8370bd95a46223bb"
             },
             "require": {
                 "drupal/core": "*",
@@ -5425,8 +5601,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha17",
-                    "datestamp": "1558608184",
+                    "version": "8.x-1.0-alpha17+9-dev",
+                    "datestamp": "1559256488",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5434,10 +5610,8 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                    "Rename old configs instead removing them @see https://github.com/ec-europa/rdf_entity/pull/96": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/96.diff",
-                    "[regression] Instead of renaming, recreate the new configs @see https://github.com/ec-europa/rdf_entity/pull/99": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/99.diff",
-                    "Fix the missing ?weight parameter @see https://github.com/ec-europa/rdf_entity/pull/98": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/98.diff",
-                    "Do not vary all RDF listings by user @see https://github.com/ec-europa/rdf_entity/pull/100": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/100.patch"
+                    "Add missed @group tag for test @see https://github.com/ec-europa/rdf_entity/pull/102": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/102.diff",
+                    "Add Drupal Test Traits support for RDF Entity @see https://github.com/ec-europa/rdf_entity/pull/104": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/104.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5475,7 +5649,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/rdf_entity",
                 "issues": "https://drupal.org/project/issues/rdf_entity"
-            }
+            },
+            "time": "2019-09-14T09:52:19+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -6105,7 +6280,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1477868939",
+                    "datestamp": "1542122580",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6179,7 +6354,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "http://cgit.drupalcode.org/state_machine"
+                "source": "https://git.drupalcode.org/project/state_machine"
             }
         },
         {
@@ -6455,7 +6630,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
@@ -6576,7 +6751,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1525280285",
+                    "datestamp": "1569361684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -7446,7 +7621,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9946,7 +10121,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-03-22T22:25:24+00:00"
         },
         {
             "name": "stack/builder",
@@ -12826,17 +13001,17 @@
         },
         {
             "name": "drupal/config_inspector",
-            "version": "1.0.0-beta2",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_inspector.git",
-                "reference": "8.x-1.0-beta2"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "1f7b27c4b1c800a605a6d6583d0b1d120794658e"
+                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "dc92ceb8fd3e289f9e5c058692346e4b9ef3fa74"
             },
             "require": {
                 "drupal/core": "*"
@@ -12847,11 +13022,16 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
-                    "datestamp": "1537879680",
+                    "version": "8.x-1.0",
+                    "datestamp": "1569419586",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
                     }
                 }
             },
@@ -12871,6 +13051,10 @@
                 {
                     "name": "aspilicious",
                     "homepage": "https://www.drupal.org/user/172527"
+                },
+                {
+                    "name": "ilchovuchkov",
+                    "homepage": "https://www.drupal.org/user/3568458"
                 },
                 {
                     "name": "vijaycs85",
@@ -13183,7 +13367,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/filecache.git",
-                "reference": "0291f94eb7132cdbe9a0485d6fe145915b2dc269"
+                "reference": "474f3562b045200b5abb983ee94c9d96c49c7cde"
             },
             "require": {
                 "drupal/core": "~8.5"
@@ -13200,8 +13384,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+0-dev",
-                    "datestamp": "1554731581",
+                    "version": "8.x-1.0-alpha2+2-dev",
+                    "datestamp": "1568894884",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -13241,7 +13425,7 @@
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
             },
-            "time": "2018-12-03T07:38:12+00:00"
+            "time": "2019-09-19T12:07:17+00:00"
         },
         {
             "name": "drupal/renderviz",
@@ -13496,16 +13680,16 @@
         },
         {
             "name": "instaclick/php-webdriver",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/instaclick/php-webdriver.git",
-                "reference": "6fa959452e774dcaed543faad3a9d1a37d803327"
+                "reference": "bd9405077ca04129a73059a06873bedb5e138402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/6fa959452e774dcaed543faad3a9d1a37d803327",
-                "reference": "6fa959452e774dcaed543faad3a9d1a37d803327",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/bd9405077ca04129a73059a06873bedb5e138402",
+                "reference": "bd9405077ca04129a73059a06873bedb5e138402",
                 "shasum": ""
             },
             "require": {
@@ -13551,7 +13735,7 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2017-06-30T04:02:48+00:00"
+            "time": "2019-09-23T15:50:44+00:00"
         },
         {
             "name": "jcalderonzumba/gastonjs",
@@ -15594,6 +15778,67 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
+        },
+        {
+            "name": "weitzman/drupal-test-traits",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/weitzman/drupal-test-traits.git",
+                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Fdrupal-test-traits/repository/archive.zip?sha=6687d17233707e0fca5c95e171701b9bf82bf1ff",
+                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff",
+                "shasum": ""
+            },
+            "require": {
+                "behat/mink": "^1.7",
+                "behat/mink-goutte-driver": "^1.2",
+                "php": ">=7.0.0",
+                "phpunit/phpunit": "^5.7|^6.5",
+                "webflo/drupal-finder": "^1.1"
+            },
+            "require-dev": {
+                "behat/mink-selenium2-driver": "1.3.x-dev",
+                "composer/installers": "^1.2",
+                "dmore/chrome-mink-driver": "^2.6",
+                "drupal-composer/drupal-scaffold": "2.3.0",
+                "drupal/core": "^8.7@alpha",
+                "drush/drush": "^9",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "squizlabs/php_codesniffer": "^3.2",
+                "zaporylie/composer-drupal-optimizations": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "web/core": [
+                        "type:drupal-core"
+                    ]
+                },
+                "patches_applied": {
+                    "Extend createUser() method with 'values' argument @see https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73": "https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73.diff"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "weitzman\\DrupalTestTraits\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                }
+            ],
+            "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
+            "time": "2019-04-22T08:56:51+00:00"
         }
     ],
     "aliases": [
@@ -15606,6 +15851,8 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/config_exclude": 20,
+        "drupal/config_ignore": 20,
         "drupal/diff": 5,
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
@@ -15613,6 +15860,7 @@
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/rdf_entity": 20,
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,

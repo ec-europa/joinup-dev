@@ -1,0 +1,12 @@
+uuid: 1c1ddab2-1312-41ba-83a0-36eb12c7e0c4
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: Ggclz9My2ahpEs9JniKrjC7QNGt0nenU0hTU0sY05SE
+id: rdf_entity.view_mode_featured
+label: Featured
+targetEntityType: rdf_entity
+cache: true

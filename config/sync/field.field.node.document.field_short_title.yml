@@ -1,0 +1,21 @@
+uuid: 06cbc2d5-0d3d-43c2-af69-53b6d1800631
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_short_title
+    - node.type.document
+_core:
+  default_config_hash: HmvvwMkg19uKQ6ldYbMWnyoD2XUII_U3MmIAn_VIhds
+id: node.document.field_short_title
+field_name: field_short_title
+entity_type: node
+bundle: document
+label: 'Short title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

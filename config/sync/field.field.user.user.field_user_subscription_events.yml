@@ -1,0 +1,26 @@
+uuid: 7f6fb7c4-f584-4360-b19e-ee0fa2491547
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_subscription_events
+  module:
+    - user
+_core:
+  default_config_hash: iABjFU7AA-6BmgVtm0DcUXAkLQqeRvhppAYDUHPAgIA
+id: user.user.field_user_subscription_events
+field_name: field_user_subscription_events
+entity_type: user
+bundle: user
+label: Updates
+description: 'When selected you will receive notification for all content changes. If not you will only be notified about new created content.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'Notify me on updates'
+  off_label: 'Notify me on new content only'
+field_type: boolean

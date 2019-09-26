@@ -1,0 +1,21 @@
+uuid: af2df261-984d-47ad-bdf5-1c00a2f08164
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.mime_type
+    - taxonomy.vocabulary.file_type
+_core:
+  default_config_hash: G_hLYSUg04p7o3Sf9BRYjJS9W_V6Aeen6bjK2bhSGLg
+id: taxonomy_term.file_type.mime_type
+field_name: mime_type
+entity_type: taxonomy_term
+bundle: file_type
+label: Mimetype
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

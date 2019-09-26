@@ -1,0 +1,10 @@
+uuid: a4296cfa-6bc6-4c09-ad79-a5e830617afa
+langcode: en
+status: true
+dependencies:
+  module:
+    - og_menu
+id: ogmenu_instance.token
+label: Token
+targetEntityType: ogmenu_instance
+cache: true

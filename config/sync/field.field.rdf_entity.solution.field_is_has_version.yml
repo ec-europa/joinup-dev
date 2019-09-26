@@ -1,0 +1,30 @@
+uuid: 34d1e93c-7cb2-45ab-8f9f-dfef56f0902e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_has_version
+    - rdf_entity.rdfentity.asset_release
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: GqI02z-JGF7LKImrTyKhpVv64XV4AaQbDFQ4lPa-at0
+id: rdf_entity.solution.field_is_has_version
+field_name: field_is_has_version
+entity_type: rdf_entity
+bundle: solution
+label: Releases
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      asset_release: asset_release
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: null
+field_type: entity_reference

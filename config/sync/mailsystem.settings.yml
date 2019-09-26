@@ -1,0 +1,11 @@
+theme: current
+defaults:
+  sender: swiftmailer
+  formatter: swiftmailer
+modules:
+  swiftmailer:
+    none:
+      formatter: swiftmailer
+      sender: swiftmailer
+_core:
+  default_config_hash: 64LU75RdzlSfkiiUC4Eu9sKHY8bk3Ahqsrlmdz9G4xk
