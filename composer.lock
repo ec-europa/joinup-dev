@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93d2af943ecf6e2d007fb71162dee287",
+    "content-hash": "d350b056e35b2e5242bb869ab9ee24fe",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2442,7 +2442,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2591,14 +2591,6 @@
             ],
             "authors": [
                 {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
-                },
-                {
-                    "name": "gnuget",
-                    "homepage": "https://www.drupal.org/user/992990"
-                },
-                {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
                 },
@@ -2710,8 +2702,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha6+2-dev",
-                    "datestamp": "1513615684",
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1521314235",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3648,7 +3640,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1551291083",
+                    "datestamp": "1556645881",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3842,7 +3834,7 @@
                 },
                 "drupal": {
                     "version": "8.x-4.0-alpha3",
-                    "datestamp": "1521598685",
+                    "datestamp": "1521598850",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4695,7 +4687,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6399,7 +6391,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6563,7 +6555,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
+                "source": "https://git.drupalcode.org/project/views_data_export"
             }
         },
         {
@@ -7390,7 +7382,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -8312,16 +8304,16 @@
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
-            "version": "dev-master",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/webtools-geocoding-provider.git",
-                "reference": "10c3e1af4dafc1823be0c0b79c5c36d0403cab47"
+                "reference": "42e60c1896a0647884c47d5a8fce528bd32adda3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/10c3e1af4dafc1823be0c0b79c5c36d0403cab47",
-                "reference": "10c3e1af4dafc1823be0c0b79c5c36d0403cab47",
+                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/42e60c1896a0647884c47d5a8fce528bd32adda3",
+                "reference": "42e60c1896a0647884c47d5a8fce528bd32adda3",
                 "shasum": ""
             },
             "require": {
@@ -8339,11 +8331,6 @@
                 "phpunit/phpunit": "~6.3"
             },
             "type": "library",
-            "extra": {
-                "patches_applied": {
-                    "Allow to optionally pass a referer header. @see https://github.com/openeuropa/webtools-geocoding-provider/pull/6": "https://patch-diff.githubusercontent.com/raw/openeuropa/webtools-geocoding-provider/pull/6.diff"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "OpenEuropa\\Provider\\WebtoolsGeocoding\\": "src/"
@@ -8355,7 +8342,7 @@
             ],
             "description": "Webtools Geocoding provider for Geocoder PHP.",
             "homepage": "https://github.com/openeuropa/webtools-geocoding-provider",
-            "time": "2019-06-07T09:11:34+00:00"
+            "time": "2019-09-26T10:38:36+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -9850,7 +9837,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-22T22:25:24+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -15524,7 +15511,6 @@
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
-        "openeuropa/webtools-geocoding-provider": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
