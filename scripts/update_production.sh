@@ -40,9 +40,8 @@ touch disable-config-readonly
 
 ./vendor/bin/drush cache:rebuild --yes &&
 ./vendor/bin/drush updatedb --yes --cache-clear &&
-./vendor/bin/drush cs-update --discard-overrides --yes &&
+./vendor/bin/drush config:import --yes &&
 ./vendor/bin/drush search-api:reset-tracker --yes &&
-./vendor/bin/drush cache:rebuild --yes &&
 
 echo "Rebuilding node access records." &&
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"

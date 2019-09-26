@@ -1,0 +1,19 @@
+uuid: 3950429e-9a57-4d53-bb72-f5642e3256c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.col_arc_del_sol_generic
+id: message.col_arc_del_sol_generic.mail_subject
+targetEntityType: message
+bundle: col_arc_del_sol_generic
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

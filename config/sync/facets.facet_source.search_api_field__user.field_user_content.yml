@@ -1,0 +1,11 @@
+uuid: 54e19ade-6665-460b-9f6a-20f0e8c64756
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 1qw2ONyY9Piyt5x19xLAkEkUT6Xoa69Zl36tRwGFwEU
+id: search_api_field__user.field_user_content
+name: 'search_api_field:user.field_user_content'
+filter_key: ''
+url_processor: query_string
+breadcrumb: {  }

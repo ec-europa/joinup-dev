@@ -1,0 +1,23 @@
+uuid: fe5e7317-c357-488a-bb4e-7cab05a64156
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_affiliations_requests
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: MI5IVaaTOpkM_IDGByMshEVlrqQwb122QM9mWkNFX50
+id: rdf_entity.solution.field_is_affiliations_requests
+field_name: field_is_affiliations_requests
+entity_type: rdf_entity
+bundle: solution
+label: 'Affiliations requests'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

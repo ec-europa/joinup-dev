@@ -1,0 +1,19 @@
+uuid: 71de1481-204b-4cfa-953d-dab1e2156b2c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.col_arc_del_apr_own
+id: message.col_arc_del_apr_own.mail_subject
+targetEntityType: message
+bundle: col_arc_del_apr_own
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

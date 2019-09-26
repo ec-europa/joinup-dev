@@ -1,0 +1,19 @@
+uuid: c3ba291a-d859-4427-b15d-8efcd887d0e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.distribution_update
+id: message.distribution_update.mail_body
+targetEntityType: message
+bundle: distribution_update
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

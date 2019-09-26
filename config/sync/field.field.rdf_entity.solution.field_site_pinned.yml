@@ -1,0 +1,25 @@
+uuid: 69f2f39d-d87b-4fbc-b6eb-0895ee3ac7cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_site_pinned
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: 6BXMytCezjUm-MqOgnf4CQrptU1v77HuOO8LuYNv6M0
+id: rdf_entity.solution.field_site_pinned
+field_name: field_site_pinned
+entity_type: rdf_entity
+bundle: solution
+label: 'Site pinned'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,45 @@
+uuid: b513de13-cad4-4f76-b16a-f05a59403a2c
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+id: account
+label: 'User account tour.'
+module: joinup_core
+routes:
+  -
+    route_name: entity.user.canonical
+tips:
+  content:
+    id: content
+    plugin: text
+    body: 'In the "My account" page, the content area displays items that have been created by you, as well as content that belongs to the collections and solutions you are a member of.'
+    weight: 1
+    location: left
+    attributes:
+      data-class: 'listing .listing__item'
+  filter_icons:
+    id: filter_icons
+    plugin: text
+    body: 'By clicking on these icons, you can view specific content types in the content area.'
+    weight: 2
+    location: bottom
+    attributes:
+      data-class: 'facet-region .tab__container a'
+  search:
+    id: search
+    plugin: text
+    body: 'Search through the entire Joinup platform and its supported content items.'
+    weight: 3
+    location: left
+    attributes:
+      data-class: search-bar
+  local_tasks:
+    id: local_tasks
+    plugin: text
+    body: 'The "three dots" menu allows you to edit your user account.'
+    weight: 4
+    location: left
+    attributes:
+      data-id: local-tasks-primary

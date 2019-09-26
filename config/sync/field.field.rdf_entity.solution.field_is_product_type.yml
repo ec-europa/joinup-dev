@@ -1,0 +1,30 @@
+uuid: fdb79d53-fc2b-4071-b9b6-be1f1b469bd2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_product_type
+    - rdf_entity.rdfentity.solution
+    - taxonomy.vocabulary.product_type
+_core:
+  default_config_hash: luWiuBa5C6SrwEauq3KCkkFRf7eIRXO2JxqAw991W24
+id: rdf_entity.solution.field_is_product_type
+field_name: field_is_product_type
+entity_type: rdf_entity
+bundle: solution
+label: 'Product type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      product_type: product_type
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
