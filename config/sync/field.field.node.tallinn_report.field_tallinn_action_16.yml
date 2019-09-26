@@ -1,0 +1,19 @@
+uuid: d23583da-91f9-44a7-9232-97e08cc6d7be
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_16
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_16
+field_name: field_tallinn_action_16
+entity_type: node
+bundle: tallinn_report
+label: 'Long-term preservation of public information resources'
+description: 'Take steps to ensure long-term preservation of public information resources in a cost-effective way by taking it into consideration in design of public administration ICT solutions.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

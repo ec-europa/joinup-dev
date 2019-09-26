@@ -1,0 +1,24 @@
+uuid: 2e0d5a4a-ebe6-4bb1-a140-8f26ffde5086
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_legal.document.legal_notice
+    - field.field.entity_legal_document_version.legal_notice.entity_legal_document_text
+  module:
+    - text
+id: entity_legal_document_version.legal_notice.default
+targetEntityType: entity_legal_document_version
+bundle: legal_notice
+mode: default
+content:
+  entity_legal_document_text:
+    type: text_textarea_with_summary
+    weight: 0
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+hidden: {  }

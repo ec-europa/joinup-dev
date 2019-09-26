@@ -1,0 +1,12 @@
+uuid: 2766fb6c-1c64-49f9-a64b-35783b480de0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: 3HaswjhYcYw8UDJEmJAV-gb6jr8rdAmP7ffhcHl9w_Y
+id: node.view_mode_tile
+label: Tile
+targetEntityType: node
+cache: true

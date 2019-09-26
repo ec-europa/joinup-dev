@@ -1,0 +1,8 @@
+uuid: ba028118-c6d6-49ad-abda-f0de6241b195
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: etLCyXOwhMb5y3vTzh47oYIBhMxh0TPTq0Mop-N9pQM
+id: navigation
+label: Navigation

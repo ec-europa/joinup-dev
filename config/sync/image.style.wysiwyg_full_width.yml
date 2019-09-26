@@ -1,0 +1,17 @@
+uuid: d8a5db1b-f83e-424a-a98f-5a60c882ff09
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 96rzWJtRwXu0cPP7IkqBFkyM9goqVXWstan4lmOGeIY
+name: wysiwyg_full_width
+label: 'Full width'
+effects:
+  9dfaf805-c1fa-4301-9f1f-8181e7135f7d:
+    uuid: 9dfaf805-c1fa-4301-9f1f-8181e7135f7d
+    id: image_scale
+    weight: 1
+    data:
+      width: 920
+      height: null
+      upscale: false

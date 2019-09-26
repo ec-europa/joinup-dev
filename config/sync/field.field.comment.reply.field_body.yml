@@ -1,0 +1,31 @@
+uuid: 23bfd3e5-a463-400e-90e9-66557aeb23ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.reply
+    - field.storage.comment.field_body
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    simple_html: simple_html
+    simple_text: simple_text
+    content_editor: '0'
+    basic_html: '0'
+    plain_text: '0'
+_core:
+  default_config_hash: CJfKHjD2vnR0R6a0XJEncvSH13myxwawoObLy2j8QTM
+id: comment.reply.field_body
+field_name: field_body
+entity_type: comment
+bundle: reply
+label: 'Create comment'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
