@@ -1,15 +1,15 @@
-uuid: c57e3239-bd4b-4800-b076-b02bd146e948
+uuid: a64bcd5d-c230-4c66-be93-24e20766ef97
 langcode: en
 status: true
 dependencies:
   module:
     - cached_computed_field
-    - node
+    - meta_entity
 _core:
-  default_config_hash: kRIo7LJVDIds29mSZ9sBsT7psPb3J-Zx4ICM4IGEGFc
-id: node.field_visit_count
-field_name: field_visit_count
-entity_type: node
+  default_config_hash: 3SDMKDyIUFMiNez3gzkJ4CdJT57n5asKLiU-mtMXTQ8
+id: meta_entity.count
+field_name: count
+entity_type: meta_entity
 type: cached_computed_integer
 settings:
   unsigned: false

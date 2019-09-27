@@ -189,7 +189,6 @@ function joinup_post_update_stats1(array &$sandbox): ?string {
   $node_storage = $entity_type_manager->getStorage('node');
 
   if (!isset($sandbox['rdf_entity'])) {
-    \Drupal::service('module_installer')->install(['joinup_stats']);
     $sandbox['rdf_entity'] = $rdf_entity_storage->getQuery()
       ->condition('rid', 'asset_distribution')
       ->sort('id')
