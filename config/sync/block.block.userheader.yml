@@ -1,0 +1,24 @@
+uuid: a3489a87-2177-4463-b0dd-5867f346432d
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_user
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: cUHOddgt8ZfDNPWn5Oz4x-XWRYRKnfmp23iF-wfobwg
+id: userheader
+theme: joinup_theme
+region: featured
+weight: -16
+provider: null
+plugin: user_header_block
+settings:
+  id: user_header_block
+  label: 'User header'
+  provider: joinup_user
+  label_display: '0'
+  context_mapping:
+    user_route: '@joinup_user.user_route_context:user_route'
+visibility: {  }

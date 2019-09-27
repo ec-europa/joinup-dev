@@ -1,0 +1,30 @@
+uuid: 6b069726-e88c-4aec-832b-f4cb7ae2ebd1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_spatial_coverage
+    - node.type.event
+    - taxonomy.vocabulary.spatial
+_core:
+  default_config_hash: 0JUgoZkyhAaFh6IMewr40196zGccwQYY_1orBe0-VZs
+id: node.event.field_event_spatial_coverage
+field_name: field_event_spatial_coverage
+entity_type: node
+bundle: event
+label: 'Spatial coverage'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      spatial: spatial
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

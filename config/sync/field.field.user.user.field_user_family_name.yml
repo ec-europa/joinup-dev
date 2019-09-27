@@ -1,0 +1,22 @@
+uuid: 442e0adc-47c1-4a19-b332-4e2743a1ab6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_family_name
+  module:
+    - user
+_core:
+  default_config_hash: umDB6cufYwnUzm28nQWqLLv2vOFnypq8-tTmoKMEpEc
+id: user.user.field_user_family_name
+field_name: field_user_family_name
+entity_type: user
+bundle: user
+label: 'Family name'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

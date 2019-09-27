@@ -1,0 +1,22 @@
+uuid: 998c6074-0e67-43ac-b241-615239dee76a
+langcode: en
+status: true
+dependencies:
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: oSSnm-ulGYQXZ_MTRcLJBHUJ4z-8YpaSECm4yCDziW0
+id: joinup_theme_local_tasks
+theme: joinup_theme
+region: featured
+weight: -12
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

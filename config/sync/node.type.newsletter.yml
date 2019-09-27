@@ -1,0 +1,17 @@
+uuid: fc457566-1437-484d-bb47-326d9033b8a3
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: o-bRUyjbsReLBtO2FYE5jCJaYkkMFGYV1W9rVzrxJzY
+name: Newsletter
+type: newsletter
+description: 'Newsletter entries'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false
+label_singular: newsletter
+label_plural: newsletters
+label_count:
+  no_count_capitalize: !!binary TmV3c2xldHRlcgNOZXdzbGV0dGVycw==

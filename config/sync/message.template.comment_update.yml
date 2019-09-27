@@ -1,0 +1,22 @@
+uuid: a52bc6c3-678c-4a9e-9c4b-6c4c3769694e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: fPQ5COrcZFi2mNtW6VgCbLn5vMc66jFCm6s_HoUk5Zw
+template: comment_update
+label: 'Comment update'
+description: 'Sent when a comment is updated.'
+text:
+  -
+    value: '<p>Joinup: A comment has been updated.</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name updated the comment in "<a href="@entity:url">@parent:title</a>".</p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

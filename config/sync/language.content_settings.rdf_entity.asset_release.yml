@@ -1,0 +1,18 @@
+uuid: 602f8d70-07c8-426c-88bd-fe81c603c390
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.asset_release
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+_core:
+  default_config_hash: YwlOltuDRtYoJ-P4912L7IlLuiYIYwH8mB00vhvozjY
+id: rdf_entity.asset_release
+target_entity_type_id: rdf_entity
+target_bundle: asset_release
+default_langcode: site_default
+language_alterable: false

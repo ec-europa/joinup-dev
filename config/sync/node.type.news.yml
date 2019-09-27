@@ -1,0 +1,23 @@
+uuid: 5dfa9a1b-96f6-4917-a904-09006c0c11d5
+langcode: en
+status: false
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+_core:
+  default_config_hash: E4GjQRdiw2kt8jVrFFoDXOpeYUp2K693bzUZ4IEYNCU
+name: News
+type: news
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false
+label_singular: news
+label_plural: news
+label_count:
+  no_count_capitalize: !!binary TmV3cwNOZXdz
