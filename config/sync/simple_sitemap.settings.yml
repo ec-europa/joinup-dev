@@ -12,3 +12,5 @@ excluded_languages: {  }
 enabled_entity_types:
   - node
   - rdf_entity
+_core:
+  default_config_hash: 52CWcEcMD0WxvDTjONwtNpMR2DILJ9UUPn30tGa23co

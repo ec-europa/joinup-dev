@@ -6,3 +6,14 @@ package: Joinup
 
 dependencies:
   - simple_sitemap:simple_sitemap
+
+config_devel:
+  install:
+    - simple_sitemap.bundle_settings.default.node.custom_page
+    - simple_sitemap.bundle_settings.default.node.discussion
+    - simple_sitemap.bundle_settings.default.node.document
+    - simple_sitemap.bundle_settings.default.node.event
+    - simple_sitemap.bundle_settings.default.node.news
+    - simple_sitemap.bundle_settings.default.rdf_entity.asset_release
+    - simple_sitemap.bundle_settings.default.rdf_entity.collection
+    - simple_sitemap.bundle_settings.default.rdf_entity.solution
