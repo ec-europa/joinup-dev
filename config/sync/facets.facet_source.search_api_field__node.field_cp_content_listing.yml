@@ -1,0 +1,11 @@
+uuid: e3cdfefe-8be9-4c1e-bc07-28600c8f51e8
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: ZsDfTSOSayzeTbGn5Rn21pP0y50MIGJFBYvIMASTp58
+id: search_api_field__node.field_cp_content_listing
+name: 'search_api_field:node.field_cp_content_listing'
+filter_key: ''
+url_processor: query_string
+breadcrumb: {  }

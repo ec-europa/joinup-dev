@@ -1,0 +1,23 @@
+uuid: e3ea3817-89cd-49f8-97a9-66bb5a490409
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+_core:
+  default_config_hash: 2SZl0T4XEbb8sTpPu5ANw3ATUpJdQ_BQrwErBQNllzU
+name: Discussion
+type: discussion
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false
+label_singular: discussion
+label_plural: discussions
+label_count:
+  no_count_capitalize: !!binary RGlzY3Vzc2lvbgNEaXNjdXNzaW9ucw==

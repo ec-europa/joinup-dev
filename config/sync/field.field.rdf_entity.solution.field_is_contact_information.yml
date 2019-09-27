@@ -1,0 +1,30 @@
+uuid: 076ff5f0-dfd5-4049-b01b-2904fe5549fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_contact_information
+    - rdf_entity.rdfentity.contact_information
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: Y7_Q-rG7J1hIpMCVAQv7sK9XKnxrp8MvDHCSqdfdmiM
+id: rdf_entity.solution.field_is_contact_information
+field_name: field_is_contact_information
+entity_type: rdf_entity
+bundle: solution
+label: 'Contact information'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      contact_information: contact_information
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,12 @@
+uuid: ebd77c00-566a-4fba-93c3-a66732d3f64a
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - og
+id: joinup_transfer_group_ownership
+label: 'Transfer the ownership of the group to the selected member'
+type: og_membership
+plugin: joinup_transfer_group_ownership
+configuration: {  }
