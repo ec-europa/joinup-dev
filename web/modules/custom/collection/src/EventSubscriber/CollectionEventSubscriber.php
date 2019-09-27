@@ -122,10 +122,10 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
     $event->setAccess($access);
 
     // If a published collection is updated, set the label to "Publish" and move
-    // it to the end of the row of buttons.
+    // it to the start of the row of buttons.
     if ($state === 'validated') {
       $event->setLabel($this->t('Publish'));
-      $event->setWeight(0);
+      $event->setWeight(-20);
     }
   }
 
