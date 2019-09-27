@@ -1,0 +1,26 @@
+uuid: 5827e506-a67a-43e3-84a0-7485bfa46941
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      target_id:
+        predicate: 'http://www.w3.org/2004/02/skos/core#related'
+        format: resource
+id: taxonomy_term.field_taxonomy_related_term
+field_name: field_taxonomy_related_term
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

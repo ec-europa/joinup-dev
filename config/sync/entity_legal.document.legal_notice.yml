@@ -1,0 +1,18 @@
+uuid: 59fd2910-96a4-4605-9fe0-3ecc50f2c998
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: R9ftnDkuauHYcQuqGXrT7mZ-Cs1z0q4C9ZVMlwi2XFM
+id: legal_notice
+label: 'Legal notice'
+require_signup: true
+require_existing: true
+settings:
+  new_users:
+    require: true
+    require_method: form_link
+  existing_users:
+    require: true
+    require_method: redirect
+  title_pattern: '[entity_legal_document:label]'

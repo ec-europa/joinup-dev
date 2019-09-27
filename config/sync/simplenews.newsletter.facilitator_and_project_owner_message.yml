@@ -1,0 +1,17 @@
+uuid: 94a21f9a-2b62-4107-bb1d-f6e0995c28fe
+langcode: en
+status: true
+dependencies: {  }
+name: 'Facilitator and Project owner message'
+id: facilitator_and_project_owner_message
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

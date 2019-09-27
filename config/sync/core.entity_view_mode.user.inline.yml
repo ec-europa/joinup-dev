@@ -1,0 +1,12 @@
+uuid: c3d7af98-5f15-4c25-b8ef-d0fbf0de42a5
+langcode: en
+status: false
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: 3WdcGzQ9tuxQotejtmWZyuDMFZXIS5YC1763rJBrKRk
+id: user.inline
+label: 'User inline'
+targetEntityType: user
+cache: true
