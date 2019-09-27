@@ -1,0 +1,12 @@
+uuid: 3904e38b-70b3-4240-a815-84663e45f9f9
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: pc08haDEnvszDyrVRoEgL-nQDYFpdyWWg_9HLKGTQGM
+id: rdf_entity.propose
+label: Propose
+targetEntityType: rdf_entity
+cache: true

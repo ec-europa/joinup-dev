@@ -1,0 +1,21 @@
+uuid: ee7a694d-98de-4bf2-ba3e-a55423aec958
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_keywords
+    - node.type.document
+_core:
+  default_config_hash: JmnwcvXrDz0xi72e6CB8xiXYy1sScjTUHOQKKAE0NJo
+id: node.document.field_keywords
+field_name: field_keywords
+entity_type: node
+bundle: document
+label: Keywords
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

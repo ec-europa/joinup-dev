@@ -1,0 +1,23 @@
+uuid: b169e5a3-71d8-42c4-8c06-a66b1b6a6183
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_user_group_types
+  module:
+    - options
+    - user
+_core:
+  default_config_hash: '-45RpZ9uMTEX8NLNEIRlQUPviYi_seCfB8ymHJ2H4lY'
+id: user.user.field_user_group_types
+field_name: field_user_group_types
+entity_type: user
+bundle: user
+label: 'Receive notifications for'
+description: 'The types of content you''re interested in receiving updates about.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

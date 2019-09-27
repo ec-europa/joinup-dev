@@ -1,0 +1,20 @@
+uuid: 2a958790-9561-48a8-83ed-d2a1ad596e09
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.custom_page
+_core:
+  default_config_hash: ExjXpmOsJNCBTZdNgkhCFxKNnLxXsJvqhWg9dJcM1lg
+id: node.custom_page.title
+field_name: title
+entity_type: node
+bundle: custom_page
+label: Title
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

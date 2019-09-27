@@ -1,0 +1,14 @@
+uuid: 83df1c75-56b6-4b53-8efb-23b7015ebbf5
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.licence_manager
+  module:
+    - user
+id: user_remove_role_action.licence_manager
+label: 'Remove the Licence manager role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: licence_manager

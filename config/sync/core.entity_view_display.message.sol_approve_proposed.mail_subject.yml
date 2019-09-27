@@ -1,0 +1,19 @@
+uuid: 9cec7ae3-ca14-4280-8ceb-bb897ac3d7d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.sol_approve_proposed
+id: message.sol_approve_proposed.mail_subject
+targetEntityType: message
+bundle: sol_approve_proposed
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

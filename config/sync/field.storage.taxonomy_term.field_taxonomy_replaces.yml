@@ -1,0 +1,26 @@
+uuid: 30e34cee-a5ac-4751-99da-542c016ecf46
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      target_id:
+        predicate: 'http://purl.org/dc/terms/replaces'
+        format: resource
+id: taxonomy_term.field_taxonomy_replaces
+field_name: field_taxonomy_replaces
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
