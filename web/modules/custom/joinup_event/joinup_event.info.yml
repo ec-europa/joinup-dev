@@ -59,4 +59,5 @@ config_devel:
   - field.storage.node.field_organisation
   - field.storage.node.field_organisation_type
   - field.storage.node.field_scope
+  - geocoder.geocoder_provider.webtools_geocoding
   - node.type.event
