@@ -39,8 +39,9 @@ echo "Disabling config_readonly."
 touch disable-config-readonly
 
 ./vendor/bin/drush cache:rebuild --yes &&
-./vendor/bin/drush updatedb --yes --cache-clear &&
+./vendor/bin/drush updatedb --yes --no-post-updates &&
 ./vendor/bin/drush config:import --yes &&
+./vendor/bin/drush updatedb --yes &&
 ./vendor/bin/drush search-api:reset-tracker --yes &&
 
 echo "Rebuilding node access records." &&
