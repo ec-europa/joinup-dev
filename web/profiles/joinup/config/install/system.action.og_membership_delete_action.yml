@@ -2,11 +2,10 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup_core
     - og
-id: joinup_og_membership_delete_action
+id: og_membership_delete_action
 label: 'Delete the selected membership(s)'
 type: og_membership
-plugin: joinup_og_membership_delete_action
+plugin: og_membership_delete_action
 configuration: {  }
 weight: -3
