@@ -27,13 +27,6 @@ trait SparqlEntityStorageTrait {
   protected $rdfStorage;
 
   /**
-   * The cached SPARQL entity query.
-   *
-   * @var \Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface
-   */
-  protected $sparqlQuery;
-
-  /**
    * Returns the RDF storage.
    *
    * @return \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
@@ -53,10 +46,9 @@ trait SparqlEntityStorageTrait {
    *   The entity query.
    */
   protected function getSparqlQuery(): SparqlQueryInterface {
-    if (!isset($this->sparqlQuery)) {
-      $this->sparqlQuery = $this->getRdfStorage()->getQuery();
-    }
-    return $this->sparqlQuery;
+    /** @var \Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface $query */
+    $query = $this->getRdfStorage()->getQuery();
+    return $query;
   }
 
 }
