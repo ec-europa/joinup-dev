@@ -1,0 +1,12 @@
+uuid: c70f4289-c4fc-48a8-b680-539c12c29fe0
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: AhkWlRH-t5Ho27qfnio98_Hj_sLhNQridzkv8P6ohok
+id: rdf_entity.view_mode_tile
+label: Tile
+targetEntityType: rdf_entity
+cache: true

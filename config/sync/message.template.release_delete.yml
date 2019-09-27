@@ -1,0 +1,22 @@
+uuid: 6dfcaf25-eeb6-43ba-9305-1aa74fcbc47a
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: JieTS7F9P7njA8n7xkAVJffKK0rTRIHj9hRHO4QPuwA
+template: release_delete
+label: 'Solution release delete'
+description: 'Template 19: Deletion of release'
+text:
+  -
+    value: 'Joinup: A release has been deleted'
+    format: full_html
+  -
+    value: '<p>release @entity:title, @entity:field_isr_release_number of @group:title solution was deleted.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

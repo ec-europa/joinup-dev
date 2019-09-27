@@ -1,0 +1,12 @@
+uuid: 6ffb1eae-8f1c-4810-890d-08fd6dbabbfd
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: 8fs6eowHoKSVra8VvQvlZWPTYtDgO_ldni53WawcB14
+id: rdf_entity.group_header
+label: 'Group header'
+targetEntityType: rdf_entity
+cache: true
