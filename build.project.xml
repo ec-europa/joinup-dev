@@ -103,7 +103,7 @@
                 assume="yes"
                 root="${website.drupal.dir}"
                 bin="${drush.bin}">
-            <option name="cache-clear" />
+            <option name="no-post-updates"/>
         </drush>
         <drush
                 command="config:import"
@@ -111,6 +111,12 @@
                 root="${website.drupal.dir}"
                 bin="${drush.bin}"
                 verbose="${drush.verbose}">
+        </drush>
+        <drush
+                command="updatedb"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
         </drush>
     </target>
 
