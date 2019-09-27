@@ -1,6 +1,7 @@
 module:
   adms_validator: 0
   allowed_formats: 0
+  antibot: 0
   asset_distribution: 0
   asset_release: 0
   block: 0

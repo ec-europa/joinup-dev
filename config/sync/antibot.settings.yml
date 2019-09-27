@@ -14,3 +14,5 @@ form_ids:
   - join_collection_form
   - share_content_form
 show_form_ids: false
+_core:
+  default_config_hash: l8L9L4IhQRBqhq15NSPZmZaOWoD65-JuuxxspvwfEpM
