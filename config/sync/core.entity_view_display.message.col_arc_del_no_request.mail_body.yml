@@ -1,0 +1,19 @@
+uuid: 81f48c5c-8be4-4a63-8e9d-9e10c00e1a21
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.col_arc_del_no_request
+id: message.col_arc_del_no_request.mail_body
+targetEntityType: message
+bundle: col_arc_del_no_request
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

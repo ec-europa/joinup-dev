@@ -1,0 +1,10 @@
+uuid: e923982e-e1c0-4d33-9370-dcd064f764b3
+langcode: en
+status: true
+dependencies: {  }
+id: staging
+weight: 1000
+name: Staging
+description: 'Used to temporary store imported RDF data.'
+entity_types:
+  - rdf_entity

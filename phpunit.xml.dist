@@ -5,7 +5,8 @@
  or your current system user. See core/tests/README.md and
  https://www.drupal.org/node/2116263 for details.
 -->
-<phpunit bootstrap="core/tests/bootstrap.php" colors="true"
+<phpunit bootstrap="../vendor/weitzman/drupal-test-traits/src/bootstrap.php"
+         colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
@@ -40,6 +41,11 @@
     <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
     <!-- Example for changing the driver args to phantomjs tests MINK_DRIVER_ARGS_PHANTOMJS value: '["http://127.0.0.1:8510"]' -->
     <!-- Example for changing the driver args to webdriver tests MINK_DRIVER_ARGS_WEBDRIVER value: '["firefox", null, "http://localhost:4444/wd/hub"]' -->
+
+    <!-- Drupal Test Traits defaults. -->
+    <env name="DTT_BASE_URL" value="http://example.com"/>
+    <env name="DTT_API_URL" value="http://localhost:9222"/>
+    <env name="DTT_MINK_DRIVER_ARGS" value='["firefox", null, "http://localhost:4444/wd/hub"]'/>
   </php>
   <testsuites>
   </testsuites>

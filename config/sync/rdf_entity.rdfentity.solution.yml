@@ -1,0 +1,13 @@
+uuid: b17f2d64-b15b-41ac-8b7a-80dd5219a723
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: GyRYvTfYjjaZ2pg13gMR0T2W45Akp5PFQIyUSkgg6PM
+name: Solution
+rid: solution
+description: ''
+label_singular: solution
+label_plural: solutions
+label_count:
+  no_count_capitalize: !!binary U29sdXRpb24DU29sdXRpb25z

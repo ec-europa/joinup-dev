@@ -3,7 +3,6 @@
 namespace Drupal\Tests\joinup_core\Traits;
 
 use Drupal\file\Entity\File;
-use Drupal\Tests\rdf_entity\Traits\RdfEntityCreationTrait;
 use Drupal\Tests\TestFileCreationTrait;
 
 /**
@@ -11,7 +10,6 @@ use Drupal\Tests\TestFileCreationTrait;
  */
 trait FileUrlTrait {
 
-  use RdfEntityCreationTrait;
   use TestFileCreationTrait {
     getTestFiles as drupalGetTestFiles;
   }
