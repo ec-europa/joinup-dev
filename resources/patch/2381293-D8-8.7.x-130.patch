@@ -1,5 +1,5 @@
 diff --git a/core/lib/Drupal/Core/Action/ActionBase.php b/core/lib/Drupal/Core/Action/ActionBase.php
-index cb009c30ef..f34b220943 100644
+index cb009c30ef..42c380ff19 100644
 --- a/core/lib/Drupal/Core/Action/ActionBase.php
 +++ b/core/lib/Drupal/Core/Action/ActionBase.php
 @@ -14,6 +14,13 @@
@@ -7,28 +7,42 @@ index cb009c30ef..f34b220943 100644
  abstract class ActionBase extends PluginBase implements ActionInterface {
  
 +  /**
-+   * A default weight new actions.
++   * The default weight for new actions.
 +   *
-+   * @var int (optional)
++   * @var int
 +   */
 +  protected $weight = 0;
 +
    /**
     * {@inheritdoc}
     */
-@@ -23,4 +30,14 @@ public function executeMultiple(array $entities) {
+@@ -23,4 +30,11 @@ public function executeMultiple(array $entities) {
      }
    }
  
 +  /**
-+   * Returns the weight of the action.
-+   *
-+   * @return int
-+   *   The action weight.
++   * {@inheritdoc}
 +   */
 +  public function getWeight() {
 +    return $this->weight;
 +  }
++
+ }
+diff --git a/core/lib/Drupal/Core/Action/ActionInterface.php b/core/lib/Drupal/Core/Action/ActionInterface.php
+index 5158f96a1f..8726675c15 100644
+--- a/core/lib/Drupal/Core/Action/ActionInterface.php
++++ b/core/lib/Drupal/Core/Action/ActionInterface.php
+@@ -58,4 +58,12 @@ public function executeMultiple(array $objects);
+    */
+   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE);
+ 
++  /**
++   * Returns the default weight of the action.
++   *
++   * @return int
++   *   The action weight.
++   */
++  public function getWeight();
 +
  }
 diff --git a/core/lib/Drupal/Core/Action/Plugin/Action/DeleteAction.php b/core/lib/Drupal/Core/Action/Plugin/Action/DeleteAction.php
@@ -48,7 +62,7 @@ index fcf76a4fbe..c863c9f695 100644
     * Constructs a new DeleteAction object.
     *
 diff --git a/core/lib/Drupal/Core/Annotation/Action.php b/core/lib/Drupal/Core/Annotation/Action.php
-index 94781c754a..d8902dca0f 100644
+index 94781c754a..78c273e5a3 100644
 --- a/core/lib/Drupal/Core/Annotation/Action.php
 +++ b/core/lib/Drupal/Core/Annotation/Action.php
 @@ -63,4 +63,11 @@ class Action extends Plugin {
@@ -56,11 +70,11 @@ index 94781c754a..d8902dca0f 100644
    public $category;
  
 +  /**
-+   * The action weight
++   * The default weight the action will have in the UI.
 +   *
 +   * @var int
 +   */
-+  public $weight;
++  public $weight = 0;
 +
  }
 diff --git a/core/modules/comment/config/install/system.action.comment_delete_action.yml b/core/modules/comment/config/install/system.action.comment_delete_action.yml
@@ -163,6 +177,40 @@ index 2d24d73d5c..c400787dfa 100644
  plugin: entity:unpublish_action:media
 +weight: 0
  configuration: {  }
+diff --git a/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php b/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php
+index f740b33f1c..5d81f97299 100644
+--- a/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php
++++ b/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php
+@@ -88,6 +88,21 @@ protected function setUp() {
+     $this->drupalPlaceBlock('local_actions_block');
+   }
+ 
++  /**
++   * Tests that actions are sorted first by weight and then by name.
++   */
++  public function testBulkFormActionOrder() {
++    $this->drupalGet('admin/content/media');
++    $order = TRUE;
++    $elements = $this->xpath('//select[@id="edit-action"]//option');
++
++    $order = $order && $elements[0]->getValue() == 'media_save_action';
++    $order = $order && $elements[1]->getValue() == 'media_publish_action';
++    $order = $order && $elements[2]->getValue() == 'media_unpublish_action';
++    $order = $order && $elements[3]->getValue() == 'media_delete_action';
++    $this->assertTrue($order, 'All actions related to media are ordered alphabetically by default due to equal weight apart from the delete action which has a bigger weight.');
++  }
++
+   /**
+    * Tests that the Media Library's administration page works as expected.
+    */
+@@ -124,6 +139,7 @@ public function testAdministrationPage() {
+     $assert_session->assertWaitOnAjaxRequest();
+     // This tests that anchor tags clicked inside the preview are suppressed.
+     $this->getSession()->executeScript('jQuery(".js-click-to-select-trigger a")[4].click()');
++    $this->getSession()->getPage()->selectFieldOption('Action', 'media_delete_action');
+     $this->submitForm([], 'Apply to selected items');
+     $assert_session->pageTextContains('Dog');
+     $assert_session->pageTextNotContains('Cat');
 diff --git a/core/modules/node/config/install/system.action.node_delete_action.yml b/core/modules/node/config/install/system.action.node_delete_action.yml
 index da2d886bf9..0ba312daad 100644
 --- a/core/modules/node/config/install/system.action.node_delete_action.yml
@@ -287,7 +335,7 @@ index e68bbae5a8..31f5656438 100644
        type: action.configuration.[%parent.plugin]
  
 diff --git a/core/modules/system/src/ActionConfigEntityInterface.php b/core/modules/system/src/ActionConfigEntityInterface.php
-index 32b6eef6ec..f0e25b25cb 100644
+index 32b6eef6ec..b1300036db 100644
 --- a/core/modules/system/src/ActionConfigEntityInterface.php
 +++ b/core/modules/system/src/ActionConfigEntityInterface.php
 @@ -30,4 +30,11 @@ public function getType();
@@ -295,15 +343,15 @@ index 32b6eef6ec..f0e25b25cb 100644
    public function getPlugin();
  
 +  /**
-+   * Returns the weight of the action.
++   * Returns the action weight or null if the weight has not been set yet.
 +   *
-+   * @return int
++   * @return int|null
 +   */
 +  public function getWeight();
 +
  }
 diff --git a/core/modules/system/src/Entity/Action.php b/core/modules/system/src/Entity/Action.php
-index 26c9c39bd3..020177569e 100644
+index 26c9c39bd3..8b422c5408 100644
 --- a/core/modules/system/src/Entity/Action.php
 +++ b/core/modules/system/src/Entity/Action.php
 @@ -5,6 +5,7 @@
@@ -336,22 +384,8 @@ index 26c9c39bd3..020177569e 100644
    /**
     * The plugin collection that stores action plugins.
     *
-@@ -143,6 +152,13 @@ public function getType() {
+@@ -143,6 +152,23 @@ public function getType() {
      return $this->type;
-   }
- 
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function getWeight() {
-+    return $this->weight;
-+  }
-+
-   /**
-    * {@inheritdoc}
-    */
-@@ -157,4 +173,14 @@ public static function sort(ConfigEntityInterface $a, ConfigEntityInterface $b)
-     return parent::sort($a, $b);
    }
  
 +  /**
@@ -364,12 +398,21 @@ index 26c9c39bd3..020177569e 100644
 +    }
 +  }
 +
- }
++  /**
++   * {@inheritdoc}
++   */
++  public function getWeight() {
++    return $this->weight;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
 diff --git a/core/modules/system/system.post_update.php b/core/modules/system/system.post_update.php
-index 11f72ecfeb..fa5084b9c2 100644
+index 11f72ecfeb..4c3498db0e 100644
 --- a/core/modules/system/system.post_update.php
 +++ b/core/modules/system/system.post_update.php
-@@ -206,3 +206,17 @@ function system_post_update_add_expand_all_items_key_in_system_menu_block(&$sand
+@@ -206,3 +206,24 @@ function system_post_update_add_expand_all_items_key_in_system_menu_block(&$sand
  function system_post_update_clear_menu_cache() {
    // Empty post-update hook.
  }
@@ -378,15 +421,22 @@ index 11f72ecfeb..fa5084b9c2 100644
 + * Set the default weights to actions.
 + */
 +function system_post_update_set_actions_default_weight(&$sandbox = NULL) {
++  // Only update actions that have not a weight value set to avoid overriding
++  // already fixed values.
++  $sandbox_key = 'config_entity_updater:action';
++  $entities = \Drupal::entityTypeManager()->getStorage('action')
++    ->getQuery()
++    ->notExists('weight')
++    ->accessCheck(FALSE)
++    ->execute();
++  $sandbox[$sandbox_key]['entities'] = $entities;
++  $sandbox[$sandbox_key]['count'] = count($sandbox[$sandbox_key]['entities']);
++
 +  \Drupal::classResolver(ConfigEntityUpdater::class)->update($sandbox, 'action', function ($action) {
-+    if ($action->getWeight() !== NULL) {
 +      $action->set('weight', 0);
 +      return TRUE;
-+    }
-+    return FALSE;
 +  });
 +}
-+
 diff --git a/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml b/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
 index 1186ec9472..84c4355445 100644
 --- a/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
@@ -433,15 +483,66 @@ index 5134e910a6..fd1c4bf950 100644
      ];
    }
  
+diff --git a/core/modules/system/tests/src/Functional/Update/ActionWeightUpdateTest.php b/core/modules/system/tests/src/Functional/Update/ActionWeightUpdateTest.php
+new file mode 100644
+index 0000000000..a57f13586b
+--- /dev/null
++++ b/core/modules/system/tests/src/Functional/Update/ActionWeightUpdateTest.php
+@@ -0,0 +1,42 @@
++<?php
++
++namespace Drupal\Tests\system\Functional\Update;
++
++use Drupal\FunctionalTests\Update\UpdatePathTestBase;
++
++/**
++ * Tests the post-update functions.
++ *
++ * @group Update
++ */
++class ActionWeightUpdateTest extends UpdatePathTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setDatabaseDumpFiles() {
++    $this->databaseDumpFiles = [
++      DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-8.6.0.bare.testing.php.gz',
++    ];
++  }
++
++  /**
++   * Tests that all actions retrieve a weight after the update.
++   *
++   * @see system_post_update_set_actions_default_weight()
++   */
++  public function testActionWeightSetup() {
++    $action_storage = \Drupal::entityTypeManager()->getStorage('action');
++    $total_count = $action_storage->getQuery()->count()->execute();
++
++    $count = $action_storage->getQuery()->condition('weight', NULL)->accessCheck(FALSE)->count()->execute();
++    $this->assertEquals(0, $count, 'No weight exists on actions before the update.');
++
++    // Run updates.
++    $this->runUpdates();
++
++    $count = $action_storage->getQuery()->condition('weight', NULL, '<>')->accessCheck(FALSE)->count()->execute();
++    $this->assertEquals($total_count, $count, 'All actions have a weight set after the update.');
++  }
++
++}
 diff --git a/core/modules/system/tests/src/Kernel/Action/ActionTest.php b/core/modules/system/tests/src/Kernel/Action/ActionTest.php
-index 6c381d7c80..e6e123ee60 100644
+index 6c381d7c80..27cde80f0f 100644
 --- a/core/modules/system/tests/src/Kernel/Action/ActionTest.php
 +++ b/core/modules/system/tests/src/Kernel/Action/ActionTest.php
-@@ -98,4 +98,32 @@ public function testDependencies() {
+@@ -98,4 +98,35 @@ public function testDependencies() {
      $this->assertIdentical($expected, $action->calculateDependencies()->getDependencies());
    }
  
-+  function testDefaultWeight() {
++  /**
++   * Tests the action default and overridden weight.
++   */
++  public function testDefaultWeight() {
 +    $action = Action::create([
 +      'id' => 'user_add_role_action.' . RoleInterface::ANONYMOUS_ID,
 +      'type' => 'user',
@@ -453,7 +554,7 @@ index 6c381d7c80..e6e123ee60 100644
 +    ]);
 +    $this->assertNull($action->getWeight(), 'Weight is not set during creation.');
 +    $action->save();
-+    $this->assertEquals(0, $action->getWeight(), 'Weight is set to the plugin default value.');
++    $this->assertSame(0, $action->getWeight(), 'Weight is set to the plugin default value.');
 +
 +    $action = Action::create([
 +      'id' => 'user_add_role_action.' . RoleInterface::AUTHENTICATED_ID,
@@ -466,7 +567,7 @@ index 6c381d7c80..e6e123ee60 100644
 +      'weight' => 4,
 +    ]);
 +    $action->save();
-+    $this->assertEquals(4, $action->getWeight(), 'Default value is overridden if explicitly set.');
++    $this->assertSame(4, $action->getWeight(), 'Default value is overridden if explicitly set.');
 +  }
 +
  }
