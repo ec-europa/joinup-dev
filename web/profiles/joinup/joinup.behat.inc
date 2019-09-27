@@ -10,7 +10,6 @@ declare(strict_types = 1);
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\block_content\Entity\BlockContent;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
@@ -68,20 +67,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   use UtilityTrait;
   use WorkflowTrait;
   use WysiwygTrait;
-
-  /**
-   * The site's 'Legal notice' content block UUID.
-   *
-   * @var string
-   */
-  const LEGAL_NOTICE_CONTENT_UUID = 'ec092d17-ef18-42b0-b460-642871150cd3';
-
-  /**
-   * Testing content blocks.
-   *
-   * @var \Drupal\block_content\BlockContentInterface[]
-   */
-  protected $contentBlocks = [];
 
   /**
    * Creates a user with data provided in a table.
@@ -345,6 +330,28 @@ class JoinupSubContext extends DrupalSubContextBase {
     if (!empty($intersection)) {
       throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
     }
+  }
+
+  /**
+   * Asserts the list of available options in a select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
   }
 
   /**
@@ -1937,7 +1944,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Given I wait for the pipeline batch job to finish
    */
   public function iWaitForThePipelineBatchJobToFinish() {
-    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+    while ($this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
       $this->getSession()->reload();
     }
   }
@@ -2663,43 +2670,6 @@ JS;
   public function assertParagraphText(string $text): void {
     $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
     Assert::assertNotEmpty($element);
-  }
-
-  /**
-   * Creates the testing content blocks.
-   *
-   * @beforeScenario @contentBlock
-   */
-  public function createContentBlocks(): void {
-    $block = BlockContent::create([
-      'type' => 'simple_block',
-      'uuid' => static::LEGAL_NOTICE_CONTENT_UUID,
-      'status' => TRUE,
-      'info' => 'Legal notice',
-      'body' => [
-        'value' => 'Legal notice text.',
-        'format' => 'content_editor',
-      ],
-    ]);
-    $block->save();
-    $this->contentBlocks[$block->id()] = $block;
-    // As the page that contains the block is created before the block, we
-    // manually clear the block content UUID cache in order to account the
-    // presence of the new block.
-    // @see \Drupal\block_content\BlockContentUuidLookup
-    \Drupal::cache('bootstrap')->delete('block_content_uuid');
-  }
-
-  /**
-   * Clears the testing content blocks.
-   *
-   * @afterScenario @contentBlock
-   */
-  public function clearContentBlocks(): void {
-    if ($this->contentBlocks) {
-      $storage = \Drupal::entityTypeManager()->getStorage('block_content');
-      $storage->delete($storage->loadMultiple(array_keys($this->contentBlocks)));
-    }
   }
 
 }

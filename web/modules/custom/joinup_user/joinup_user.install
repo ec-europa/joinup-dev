@@ -5,59 +5,13 @@
  * Install functions of the Joinup user module.
  */
 
-use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 
 /**
  * Implements hook_install().
  */
 function joinup_user_install() {
-  $authenticated_permissions = [
-    'access comments',
-    'access content',
-    'access contextual links',
-    'access tour',
-    'access user profiles',
-    'cancel account',
-    'create contact_information rdf entity',
-    'create owner rdf entity',
-    'create document content',
-    'delete own comments',
-    'delete own document content',
-    'edit own comments',
-    'edit own contact_information rdf entity',
-    'edit own owner rdf entity',
-    'edit own tallinn_report content',
-    'export rdf metadata',
-    'flag subscribe_discussions',
-    'never autoplay videos',
-    'post comments',
-    'propose collection rdf entity',
-    'skip comment approval',
-    'unflag subscribe_discussions',
-    'update own document content',
-    'use text format basic_html',
-    'use text format content_editor',
-    'use text format simple_html',
-    'view own unpublished content',
-    'view published og menu instance entities',
-    'view rdf entity',
-  ];
-  user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, $authenticated_permissions);
-
-  $anonymous_permissions = [
-    'access comments',
-    'access content',
-    'access tour',
-    'access user profiles',
-    'use text format basic_html',
-    'use text format simple_text',
-    'view rdf entity',
-    'export rdf metadata',
-    'access comments',
-  ];
-  user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, $anonymous_permissions);
-
   joinup_user_setup_default_avatar();
 }
 
@@ -70,18 +24,17 @@ function joinup_user_setup_default_avatar() {
   $file_name = 'user_icon.png';
   $file_path = $directory . '/' . $file_name;
   $internal_path = "public://default_images";
-  if (is_file($file_path) && file_prepare_directory($internal_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
-    $file_path = file_unmanaged_copy($file_path, $internal_path, FILE_EXISTS_REPLACE);
+  if (is_file($file_path) && \Drupal::service('file_system')->prepareDirectory($internal_path, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+    $file_system = \Drupal::service('file_system');
+    $destination = file_build_uri($file_system->basename($file_path));
+    $file_path = $file_system->copy($file_path, $destination, FileSystemInterface::EXISTS_REPLACE);
   }
+  /** @var \Drupal\file\FileInterface $file */
   $file = File::create(['uri' => $file_path]);
+
+  // The uuid is the one assigned to the user photo field so there is no need
+  // to manually edit and assign the file.
+  $file->set('uuid', '2e24bbc5-dedf-42b0-85cf-35940274c2f8');
+  $file->setPermanent();
   $file->save();
-  $config_factory = \Drupal::configFactory();
-  $field_user_photo = $config_factory->getEditable('field.field.user.user.field_user_photo');
-  $default_image = $field_user_photo->get('settings.default_image');
-
-  $default_image['uuid'] = $file->uuid();
-  $default_image['height'] = 615;
-  $default_image['width'] = 640;
-
-  $field_user_photo->set('settings.default_image', $default_image)->save(TRUE);
 }

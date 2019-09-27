@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_migrate\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
@@ -15,6 +16,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * A subscriber that acts after a user profile row is saved.
  */
 class UserJoinupMembershipSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a UserJoinupMembershipSubscriber.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+    $this->entityTypeManager = $entityTypeManager;
+  }
 
   /**
    * {@inheritdoc}
@@ -36,7 +54,7 @@ class UserJoinupMembershipSubscriber implements EventSubscriberInterface {
 
     $joinup_collection_label = Settings::get('joinup_joinup_collection', 'Joinup');
     $conditions = ['label' => $joinup_collection_label, 'rid' => 'collection'];
-    $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+    $storage = $this->entityTypeManager->getStorage('rdf_entity');
     if ($storage && $collections = $storage->loadByProperties($conditions)) {
       $joinup_collection = reset($collections);
       if ($uid = $event->getRow()->getSourceProperty('uid')) {

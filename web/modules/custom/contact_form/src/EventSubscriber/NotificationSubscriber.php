@@ -127,13 +127,14 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    *
    * Skip generating the arguments during the sending process.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []): bool {
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
       $success = $success && $this->messageDelivery
         ->createMessage($template_id)
         ->setArguments($arguments)
         ->setRecipients(User::loadMultiple($user_ids))
+        ->addBccRecipients($bcc_emails)
         ->sendMail();
     }
     return $success;
@@ -180,7 +181,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $arguments['@actor:field_user_first_name'] = $message->get('field_contact_first_name')->first()->value;
     $arguments['@actor:field_user_last_name'] = $message->get('field_contact_last_name')->first()->value;
     $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] . ' ' . $arguments['@actor:field_user_last_name'];
-    $arguments['@legal_notice:url'] = Url::fromRoute('page_manager.page_view_legal_notice_legal_notice-block_display-0', [], ['absolute' => TRUE])->toString();
+    $arguments['@legal_notice:url'] = Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString();
     $arguments['@message:subject'] = $message->get('field_contact_subject')->first()->value;
     $arguments['@message:message'] = strip_tags($message->get('field_contact_message')->first()->value);
     if (!empty($message->get('field_contact_url')->first()->uri)) {

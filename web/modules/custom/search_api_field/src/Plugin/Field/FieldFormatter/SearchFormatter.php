@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\search_api_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -168,6 +169,8 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       ];
     }
 
+    $this->mergeQueryCacheMetadata($render, $query);
+
     // Add some information about the field.
     // @see \Drupal\Core\Field\FormatterBase::view()
     $entity = $items->getEntity();
@@ -314,7 +317,13 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
       ];
     }
 
-    return $this->attachCacheMetadata($build);
+    $build['#cache'] = [
+      'tags' => [],
+      'max-age' => -1,
+      'contexts' => ['url.path'],
+    ];
+
+    return $build;
   }
 
   /**
@@ -366,7 +375,7 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
    */
   protected function applyQueryBuilderConfiguration(QueryInterface $query, array $configuration): void {
     $or = $query->createConditionGroup('OR');
-    foreach ($configuration['filters'] as $delta => $plugin_config) {
+    foreach ($configuration['filters'] as $plugin_config) {
       /** @var \Drupal\search_api_field\Plugin\FilterPluginInterface $plugin */
       $plugin = $this->filterPluginManager->createInstance($plugin_config['plugin'], $plugin_config);
       $plugin->applyFilter($or);
@@ -375,38 +384,21 @@ class SearchFormatter extends FormatterBase implements ContainerFactoryPluginInt
   }
 
   /**
-   * Attaches cache metadata to the rendered search results.
+   * Merges Search API query cache metadata with the given render array.
    *
    * @param array $build
    *   The search result render array.
-   *
-   * @return array
-   *   The render array with cache metadata.
+   * @param \Drupal\search_api\Query\QueryInterface $query
+   *   The search API query.
    */
-  protected function attachCacheMetadata(array $build): array {
-    $tags = [];
-    // Check the search index for entity data sources,
-    // and add all as cache tags.
-    foreach ($this->getSearchApiIndex()->getDatasources() as $datasource) {
-      $plugin_def = $datasource->getPluginDefinition();
-      if ($plugin_def['id'] != 'entity') {
-        continue;
-      }
-      $entity_type_id = $plugin_def['entity_type'];
-      $entity_type = $this->entityTypeManager->getDefinition($entity_type_id);
-      // @todo we should add also the list cache contexts.
-      $list_tags = $entity_type->getListCacheTags();
-      $tags = Cache::mergeTags($tags, $list_tags);
+  protected function mergeQueryCacheMetadata(array &$build, QueryInterface $query): void {
+    if ($query instanceof CacheableDependencyInterface) {
+      $build['#cache'] = [
+        'tags' => Cache::mergeTags($build['#cache']['tags'], $query->getCacheTags()),
+        'max-age' => Cache::mergeMaxAges($build['#cache']['max-age'], $query->getCacheMaxAge()),
+        'contexts' => Cache::mergeContexts($build['#cache']['contexts'], $query->getCacheContexts()),
+      ];
     }
-
-    $build['#cache'] = [
-      'tags' => $tags,
-      'contexts' => [
-        'url.path',
-      ],
-    ];
-
-    return $build;
   }
 
   /**

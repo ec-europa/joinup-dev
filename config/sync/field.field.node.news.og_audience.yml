@@ -1,0 +1,33 @@
+uuid: ee1a499f-51e7-4ec8-9034-5576b2a88c40
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.og_audience
+    - node.type.news
+    - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
+  module:
+    - og
+_core:
+  default_config_hash: tYJltRJ_IqH5jQ9k-brR-2aurcPssGCuxBYggSP_Wek
+id: node.news.og_audience
+field_name: og_audience
+entity_type: node
+bundle: news
+label: Collection
+description: 'The collection this entity belongs to.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+      solution: solution
+    sort:
+      field: _none
+  access_override: false
+field_type: og_standard_reference

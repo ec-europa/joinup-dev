@@ -23,7 +23,6 @@ Feature: User authentication
       | user/login          |
       | user/password       |
       | user/register       |
-      | joinup/legal-notice |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
@@ -37,10 +36,14 @@ Feature: User authentication
       | admin/config/search/redirect                                   |
       | admin/content                                                  |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/people                                                   |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
       | admin/structure/views                                          |
       | propose/collection                                             |
@@ -74,7 +77,6 @@ Feature: User authentication
       | propose/collection  |
       | collections         |
       | user                |
-      | joinup/legal-notice |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
@@ -88,10 +90,14 @@ Feature: User authentication
       | admin/config                                                   |
       | admin/content                                                  |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/people                                                   |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
       | admin/structure/views                                          |
       | dashboard                                                      |
@@ -123,9 +129,13 @@ Feature: User authentication
       | path                                                           |
       | admin/people                                                   |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
@@ -184,6 +194,8 @@ Feature: User authentication
       | admin/config                       |
       | admin/content                      |
       | admin/content/rdf                  |
+      | admin/legal-notice                 |
+      | admin/legal-notice/add             |
       | admin/people                       |
       | admin/structure                    |
       | node                               |

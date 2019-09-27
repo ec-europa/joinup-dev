@@ -9,8 +9,10 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\tallinn\Tallinn;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -20,6 +22,7 @@ class TallinnSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
   use EntityTrait;
+  use SearchTrait;
   use RdfEntityTrait;
 
   /**
@@ -55,7 +58,7 @@ class TallinnSubContext extends DrupalSubContextBase {
     // Create the Tallinn entity.
     Rdf::create([
       'rid' => 'collection',
-      'id' => TALLINN_COMMUNITY_ID,
+      'id' => Tallinn::TALLINN_COMMUNITY_ID,
       'label' => 'Tallinn Ministerial Declaration',
       'field_ar_state' => 'validated',
       'field_policy_domain' => 'http://example.com/term/2',
@@ -67,7 +70,7 @@ class TallinnSubContext extends DrupalSubContextBase {
       'type' => 'custom_page',
       'uuid' => '9d7b6405-061a-4064-ae7e-b34c67f3afad',
       'title' => 'Implementation monitoring',
-      'og_audience' => TALLINN_COMMUNITY_ID,
+      'og_audience' => Tallinn::TALLINN_COMMUNITY_ID,
       'body' => [
         [
           'value' => '{block:tallinn_dashboard}',
@@ -102,11 +105,14 @@ class TallinnSubContext extends DrupalSubContextBase {
    * @afterScenario @tallinn
    */
   public function cleanTallinnData() {
+    // Temporarily disable the feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
     $entity_repository = \Drupal::service('entity.repository');
     $entity_repository->loadEntityByUuid('node', '9d7b6405-061a-4064-ae7e-b34c67f3afad')->delete();
 
-    $collection = Rdf::load(TALLINN_COMMUNITY_ID);
+    $collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID);
     $collection->skip_notification = TRUE;
     $collection->delete();
 
@@ -118,6 +124,8 @@ class TallinnSubContext extends DrupalSubContextBase {
 
     // Clear the dashboard access policy state.
     \Drupal::state()->delete('tallinn.access_policy');
+
+    $this->enableCommitOnUpdate();
   }
 
 }

@@ -110,7 +110,7 @@ joinup_core.matomo_settings.*.*:
   mapping:
     period:
       type: integer
-      label: 'Time period, in days.'
+      label: 'The time period in days or 0 to retrieve all data available.'
     type:
       type: string
       label: 'The type of metric to use.'
@@ -154,3 +154,7 @@ group_menu_block_default:
 block.settings.group_menu_block:*:
   type: group_menu_block_default
   label: 'Group sidebar menu block settings'
+
+action.configuration.joinup_og_membership_delete_action:
+  type: action_configuration_default
+  label: 'Delete the selected membership(s) config'

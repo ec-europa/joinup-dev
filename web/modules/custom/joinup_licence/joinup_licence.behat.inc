@@ -10,15 +10,17 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 
 /**
  * Behat step definitions for testing licences.
  */
-class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupLicenceSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use EntityReferenceTrait;
   use RdfEntityTrait;
+  use SearchTrait;
   use UtilityTrait;
 
   /**
@@ -205,11 +207,21 @@ class LicenceSubContext extends DrupalSubContextBase implements DrupalSubContext
    * @AfterScenario
    */
   public function cleanLicences() {
-    // Remove any asset distributions that were created.
+    if (empty($this->licences)) {
+      return;
+    }
+
+    // Since we might be cleaning up many licences, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
+    // Remove any licences that were created through the API during the test.
     foreach ($this->licences as $licence) {
       $licence->skip_notification = TRUE;
       $licence->delete();
     }
+    $this->licences = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**

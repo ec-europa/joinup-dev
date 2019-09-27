@@ -9,8 +9,14 @@ declare(strict_types = 1);
 
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\block_content\Entity\BlockContentType;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Serialization\Yaml;
+use Drupal\entity_legal\Entity\EntityLegalDocumentVersion;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\page_manager\Entity\Page;
+use Drupal\page_manager\Entity\PageVariant;
 
 /**
  * Enable the "Views data export" module.
@@ -39,6 +45,13 @@ function joinup_post_update_install_geocoder(): void {
  */
 function joinup_post_update_install_joinup_rss() {
   \Drupal::service('module_installer')->install(['joinup_rss']);
+}
+
+/**
+ * Enable the "ISA2 Analytics" module.
+ */
+function joinup_post_update_install_isa2_analytics() {
+  \Drupal::service('module_installer')->install(['isa2_analytics']);
 }
 
 /**
@@ -98,6 +111,69 @@ BODY;
     'info' => 'Legal notice',
     'body' => [
       'value' => $body,
+      'format' => 'content_editor',
+    ],
+  ])->save();
+}
+
+/**
+ * Install Entity Legal module.
+ */
+function joinup_post_update_legal() {
+  // Dismantle the actual solution.
+  /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+  $entity_repository = \Drupal::service('entity.repository');
+  $block_content = $entity_repository->loadEntityByUuid('block_content', 'ec092d17-ef18-42b0-b460-642871150cd3');
+  $block_content->delete();
+  EntityFormDisplay::load('block_content.simple_block.default')->delete();
+  EntityViewDisplay::load('block_content.simple_block.default')->delete();
+  FieldConfig::loadByName('block_content', 'simple_block', 'body')->delete();
+  FieldStorageConfig::loadByName('block_content', 'body')->delete();
+  BlockContentType::load('simple_block')->delete();
+  // Remove Page Manager data.
+  PageVariant::load('legal_notice-block_display-0')->delete();
+  Page::load('legal_notice')->delete();
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $module_installer */
+  $module_installer = \Drupal::service('module_installer');
+  $module_installer->uninstall([
+    'block_content_permissions',
+    'block_content',
+    'page_manager',
+  ]);
+
+  drupal_flush_all_caches();
+
+  $module_installer->install(['joinup_legal']);
+
+  // Create initial content.
+  EntityLegalDocumentVersion::create([
+    'document_name' => 'legal_notice',
+    'published' => TRUE,
+    'label' => '1.1',
+    'acceptance_label' => 'I have read and accept the <a href="[entity_legal_document:url]" target="_blank">[entity_legal_document:label]</a>',
+    'entity_legal_document_text' => [
+      'value' => '<h2>Important legal notice</h2>
+<p>The information on this site is subject to a disclaimer, a copyright and rules related to personal data protection, each in line with the general <a href="http://ec.europa.eu/geninfo/legal_notices_en.htm">European Commission legal notice</a>, and terms of use.</p>
+<h2>Copyright notice</h2>
+<p>Unless otherwise indicated, reproduction is authorised, except for commercial purposes, provided that the source (Joinup) is acknowledged. Where prior permission must be obtained for the reproduction or use of textual and multimedia information (sound, images, software, etc.), such permission shall cancel the above-mentioned general permission and shall clearly indicate any restrictions on use.</p>
+<h3>Special Rules for hosted and federated Open-Source Software projects</h3>
+<p>Please note that all the Open-Source Applications (Projects), which are available through the repository on Joinup are provided by their owners (named in each case) subject to the copyright licences indicated in each case; the owners have to certify that all intellectual property rights concerning the Assets belong to them and no intellectual property rights of third parties are infringed. Please refer to the individual project for further information. Please note, that the European Commission accepts no responsibility with regard to these projects.</p>
+<h3>Special Rules for interoperability solutions</h3>
+<p>Reproduction is not authorized in general for the interoperability solutions. The copyright for the interoperability solutions is defined individually by the licence attached to the individual solution by its owner. Please refer to the individual solution for further information.</p>
+<h2>Disclaimer</h2>
+<p>The European Commission maintains this website to enhance public access to information about its initiatives and European Union policies in general. Our goal is to keep this information timely and accurate. If errors are brought to our attention, we will try to correct them. However, the Commission accepts no responsibility or liability whatsoever with regard to the information on this site.</p>
+<p>This information is:</p>
+<ol>
+  <li>of a general nature only and is not intended to address the specific circumstances of any particular individual or entity;</li>
+  <li>not necessarily comprehensive, complete, accurate or up to date; sometimes linked to external sites over which the Commission services have no control and for which the Commission assumes no responsibility;</li>
+  <li>not professional or legal advice (if you need specific advice, you should always consult a suitably qualified professional).</li>
+</ol>
+<p>Please note that it cannot be guaranteed that a document available on-line exactly reproduces an officially adopted text. Only European Union legislation published in paper editions of the Official Journal of the European Union is deemed authentic.</p>
+<p>Please also note that all interoperability solutions, which are available through the repository on Joinup are provided by their owners (named in each case) subject to the licences indicated in each case; the owners have to certify that all intellectual property rights concerning the solutions belong to them and no intellectual property rights of third parties are infringed. The European Commission accepts no responsibility with regard to these solutions.</p>
+<p>It is our goal to minimize disruption caused by technical errors. However, some data or information on our site may have been created or structured in files or formats that are not error-free and we cannot guarantee that our service will not be interrupted or otherwise affected by such problems. The Commission accepts no responsibility with regard to such problems incurred as a result of using this site or any linked external sites.</p>
+<p>This disclaimer is not intended to limit the liability of the Commission in contravention of any requirements laid down in applicable national law nor to exclude its liability for matters which may not be excluded under that law.</p>
+<h2>Privacy Statement</h2>
+<h3>The Specific Privacy Statement for the Joinup website can be found <a href="https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/2019-07/Specific_Privacy_Statement_Joinup_clean.pdf">here</a></h3>',
       'format' => 'content_editor',
     ],
   ])->save();

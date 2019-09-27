@@ -22,17 +22,19 @@ Feature: Input filter
     And discussion content:
       | title      | body             | collection    | state     |
       | Discussion | Start discussion | Netflix group | validated |
+
   Scenario: Ensure all required formats are supported in the content editor.
+    # 'src' attributes are the url encoded version of the URLs that were inputted prepended by the ec cck url.
     When I go to the "Jessica Jones returns" news
-    Then I should see the "iframe" element in the Content region
-    Then I see the "iframe" element with the "src" attribute set to "https://www.youtube.com/embed/nWHUjuJ8zxE" in the "Content" region
+    Then I see the "iframe" element with the "src" attribute set to "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.youtube-nocookie.com%2Fembed%2FnWHUjuJ8zxE%3Fautoplay%3D0%26start%3D0%26rel%3D0" in the "Content" region
     When I go to the "Prezi presentation" news
-    Then I see the "iframe" element with the "src" attribute set to "https://prezi.com/embed/lspajpgcpx1k" in the "Content" region
+    Then I see the "iframe" element with the "src" attribute set to "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fprezi.com%2Fembed%2Flspajpgcpx1k" in the "Content" region
     When I go to the "Slideshare presentation" news
-    Then I see the "iframe" element with the "src" attribute set to "//www.slideshare.net/slideshow/embed_code/key/hJ3x3pTrtGaatQ" in the "Content" region
+    Then I see the "iframe" element with the "src" attribute set to "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fwww.slideshare.net%2Fslideshow%2Fembed_code%2Fkey%2FhJ3x3pTrtGaatQ" in the "Content" region
     When I go to the "Google docs" news
-    Then I see the "iframe" element with the "src" attribute set to "https://docs.google.com/forms/d/1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4/viewform?embedded=true" in the "Content" region
+    Then I see the "iframe" element with the "src" attribute set to "//europa.eu/webtools/crs/iframe/?oriurl=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2F1dBGzMp9whY2Ibxf4pUQNadpE2C3ywxdDefSSM3BdwJ4%2Fviewform%3Fembedded%3Dtrue" in the "Content" region
     When I go to the "Joinup iframe" news
+    # Local urls are not prone to the external cookie consent check.
     Then I see the "iframe" element with the "src" attribute set to "/homepage" in the "Content" region
     When I go to the "Luke cage" news
     Then I should not see the "iframe" element with the "src" attribute set to "https://www.example.com" in the "Content" region

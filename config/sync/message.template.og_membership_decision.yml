@@ -1,0 +1,20 @@
+uuid: 0080e2ef-309f-4b7a-a5d0-ca72fc23a7ac
+langcode: en
+status: true
+dependencies: {  }
+template: og_membership_decision
+label: 'Group membership approval/rejection'
+description: 'Group privileged user decides on a membership request.'
+text:
+  -
+    value: '<p>Joinup: Your request to join the @entity:bundle @entity:title was @membership:decision:state</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has @membership:decision:state your request to join the "@entity:title" @entity:bundle.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

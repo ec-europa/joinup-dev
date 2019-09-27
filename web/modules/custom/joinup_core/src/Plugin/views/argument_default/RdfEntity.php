@@ -62,7 +62,7 @@ class RdfEntity extends ArgumentDefaultPluginBase implements CacheableDependency
   public function getArgument() {
     $raw = $this->routeMatch->getRawParameter('rdf_entity');
     $id = UriEncoder::decodeUrl($raw);
-    if ($rdf = Rdf::load($id)) {
+    if (Rdf::load($id)) {
       return $raw;
     }
     return NULL;
