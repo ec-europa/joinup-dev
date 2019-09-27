@@ -10,4 +10,5 @@ id: comment_unpublish_action
 label: 'Unpublish comment'
 type: comment
 plugin: 'entity:unpublish_action:comment'
+weight: 0
 configuration: {  }

@@ -10,4 +10,5 @@ id: og_membership_unblock_action
 label: 'Unblock the selected membership(s)'
 type: og_membership
 plugin: og_membership_unblock_action
+weight: 0
 configuration: {  }
