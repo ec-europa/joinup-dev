@@ -68,6 +68,7 @@ module:
   joinup_privacy: 0
   joinup_rss: 0
   joinup_search: 0
+  joinup_seo: 0
   joinup_sparql: 0
   joinup_subscription: 0
   joinup_user: 0
@@ -120,6 +121,7 @@ module:
   search_api_solr: 0
   semic: 0
   serialization: 0
+  simple_sitemap: 0
   simplenews: 0
   smart_trim: 0
   social_media_links: 0

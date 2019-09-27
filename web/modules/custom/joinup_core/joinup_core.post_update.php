@@ -794,10 +794,3 @@ SQL
     throw new Exception('Database error', 0, $e);
   }
 }
-
-/**
- * Enable the joinup_seo module.
- */
-function joinup_core_post_update_install_joinup_seo() {
-  \Drupal::service('module_installer')->install(['joinup_seo']);
-}
