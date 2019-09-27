@@ -1,0 +1,10 @@
+uuid: d758286e-1af0-4156-ab8e-9931d1dfdea3
+langcode: en
+status: true
+dependencies:
+  module:
+    - asset_distribution
+id: download_event.token
+label: Token
+targetEntityType: download_event
+cache: true

@@ -1,0 +1,15 @@
+uuid: 03d3f946-d7d9-4c62-bcbb-6b2c66f1259d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: xKyy6NiCYYSeq0L__tK8RfM3jxXIHAFSrHulgff4TJw
+id: administrator
+label: Administrator
+weight: 4
+is_admin: false
+permissions:
+  - 'administer account settings'
+  - 'administer redirects'
+  - 'edit collection rdf entity'
+  - 'view the administration theme'

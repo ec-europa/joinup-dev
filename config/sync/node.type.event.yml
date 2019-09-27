@@ -1,0 +1,23 @@
+uuid: d2ff27fa-d020-42e8-8efb-25520fc67948
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+_core:
+  default_config_hash: 80yVY6enGQyCzhag752D1KZrymzzLHVp7d5ra8Bl468
+name: Event
+type: event
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false
+label_singular: event
+label_plural: events
+label_count:
+  no_count_capitalize: !!binary RXZlbnQDRXZlbnRz

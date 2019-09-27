@@ -1,0 +1,21 @@
+uuid: 1caaccdc-6b3a-4b29-9bcf-3e53aa638830
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.extension
+    - taxonomy.vocabulary.file_type
+_core:
+  default_config_hash: V8Ufw3W_FumOfiNcNCDeLJboRnXI7yNC-2r3Au4L1EE
+id: taxonomy_term.file_type.extension
+field_name: extension
+entity_type: taxonomy_term
+bundle: file_type
+label: Extension
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

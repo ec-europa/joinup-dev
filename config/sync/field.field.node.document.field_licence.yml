@@ -1,0 +1,30 @@
+uuid: 6a8a9161-7d62-41d3-8498-62c2436e3783
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licence
+    - node.type.document
+    - rdf_entity.rdfentity.licence
+_core:
+  default_config_hash: VwDvtFBad6x6TmADaZM_Rlad8oWQxhkpQzuy5bTjCgk
+id: node.document.field_licence
+field_name: field_licence
+entity_type: node
+bundle: document
+label: Licence
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      licence: licence
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

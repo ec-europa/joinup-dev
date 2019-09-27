@@ -1,0 +1,13 @@
+uuid: a69f9a80-9048-4c4a-84c7-c6ef178b8e39
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Lq-FHp4TWigQACXyoaLLRTJFclf-qL9Wno7oH8FTZkM
+name: 'Provenance activity'
+rid: provenance_activity
+description: ''
+label_singular: Activity
+label_plural: Activities
+label_count:
+  no_count_capitalize: !!binary QWN0aXZpdHkDQWN0aXZpdGllcw==

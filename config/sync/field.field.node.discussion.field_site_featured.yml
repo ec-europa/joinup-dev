@@ -1,0 +1,25 @@
+uuid: 6b0bb4eb-7276-4fc5-9947-31c06fc963cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_site_featured
+    - node.type.discussion
+_core:
+  default_config_hash: v1yUMqvueHCZ7yh7OuXLGH_GhJSB21vlGrqcdLq7FHQ
+id: node.discussion.field_site_featured
+field_name: field_site_featured
+entity_type: node
+bundle: discussion
+label: 'Site featured'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

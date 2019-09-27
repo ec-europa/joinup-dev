@@ -1,0 +1,19 @@
+uuid: f4e8e1e8-fb00-4fcf-be24-c7282098a146
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.col_arc_del_members
+id: message.col_arc_del_members.mail_subject
+targetEntityType: message
+bundle: col_arc_del_members
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

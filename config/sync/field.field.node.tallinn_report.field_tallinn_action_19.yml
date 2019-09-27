@@ -1,0 +1,19 @@
+uuid: 14ceb3f5-4693-43f6-968b-485828ff1959
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_19
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_19
+field_name: field_tallinn_action_19
+entity_type: node
+bundle: tallinn_report
+label: 'ICT solutions more readily available for reuse by 3rd parties'
+description: 'Make ICT solutions owned by or developed for the public administrations more readily available for reuse in private sector and civil society, for example, by developing and publishing terms and conditions on how third parties may reuse the solutions.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

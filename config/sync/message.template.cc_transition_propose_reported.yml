@@ -1,0 +1,22 @@
+uuid: 720abf28-e28b-44d8-857c-fd8e2f1421f1
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: MGkni6qY0l2skvhcQur_MSnd20yot_KxDa-Zy2h0thQ
+template: cc_transition_propose_reported
+label: 'Community content on Propose reported'
+description: 'Template id 10'
+text:
+  -
+    value: '<p>Joinup: Content has been updated</p>'
+    format: full_html
+  -
+    value: '<p>@actor:field_user_first_name @actor:field_user_family_name has updated the content of the @entity:bundle - "@entity:title" as advised and requests again its publication in the @group:bundle: "@group:title".</p><p>You can access the proposed new content at the following link: <a href="@entity:url">@entity:url</a></p><p>If you think this action is not clear or not due, please contact Joinup Support at <a href="@site:contact_url">@site:contact_url</a>.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
