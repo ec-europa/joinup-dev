@@ -6,7 +6,7 @@ services:
       - { name: 'cache.context'}
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
-    arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper']
+    arguments: ['@joinup_core.relations_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@joinup_core.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: community_content }
   joinup_core.node_workflow_access:

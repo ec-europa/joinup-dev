@@ -2,8 +2,13 @@
 
 namespace Drupal\joinup_community_content\EventSubscriber;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent;
+use Drupal\joinup_core\WorkflowStatePermissionInterface;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupContentOperationPermission;
 use Drupal\og\GroupPermission;
@@ -24,13 +29,34 @@ class EventSubscriber implements EventSubscriberInterface {
   protected $entityTypeBundleInfo;
 
   /**
+   * The currently logged in user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The service that determines the access to update workflow states.
+   *
+   * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
+   */
+  protected $workflowStatePermission;
+
+  /**
    * Constructs an EventSubscriber object.
    *
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The service providing information about bundles.
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
+   *   The current logged in user.
+   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflowStatePermission
+   *   The service that determines the permission to update the workflow state
+   *   of entities.
    */
-  public function __construct(EntityTypeBundleInfoInterface $entity_type_bundle_info) {
+  public function __construct(EntityTypeBundleInfoInterface $entity_type_bundle_info, AccountInterface $currentUser, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+    $this->currentUser = $currentUser;
+    $this->workflowStatePermission = $workflowStatePermission;
   }
 
   /**
@@ -39,6 +65,7 @@ class EventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       OgPermissionEventInterface::EVENT_NAME => [['provideOgRevisionPermissions']],
+      UnchangedWorkflowStateUpdateEvent::EVENT_NAME => 'onUnchangedWorkflowStateUpdate',
     ];
   }
 
@@ -118,6 +145,36 @@ class EventSubscriber implements EventSubscriberInterface {
           ]),
         ]);
       }
+    }
+  }
+
+  /**
+   * Determines if the content be updated without changing workflow state.
+   *
+   * @param \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent $event
+   *   The event.
+   */
+  public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
+    $entity = $event->getEntity();
+    if (!CommunityContentHelper::isCommunityContent($entity)) {
+      return;
+    }
+
+    $state = $event->getState();
+    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $state, $state);
+    $access = AccessResult::forbiddenIf(!$permitted);
+    $access->addCacheContexts(['user.roles', 'og_role']);
+    $event->setAccess($access);
+
+    // Set a custom button label as defined in the functional specification.
+    switch ($state) {
+      case 'draft':
+        $event->setLabel($this->t('Save as draft'));
+        break;
+
+      case 'proposed':
+      case 'validated':
+        $event->setLabel($this->t('Update'));
     }
   }
 

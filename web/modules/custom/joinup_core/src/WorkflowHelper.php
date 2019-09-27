@@ -83,12 +83,12 @@ class WorkflowHelper implements WorkflowHelperInterface {
     $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
-      return (string) $transition->getToState()->getLabel();
+      return (string) $transition->getToState()->getId();
     }, $allowed_transitions);
 
     $current_state = $this->getEntityStateField($entity)->value;
     if ($this->workflowStatePermission->isStateUpdatePermitted($account, $entity, $current_state, $current_state)) {
-      $allowed_states[] = $current_state;
+      $allowed_states[$current_state] = $current_state;
     }
 
     return $allowed_states;
