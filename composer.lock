@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d967e6afe8eb7c7deb99f196feb3d9e",
+    "content-hash": "ee1d63d5dc5a191de2b6f1b35ae51844",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.8",
+            "version": "3.112.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2a2f2bb0e05c2756573155353648521a9a08f5b3"
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2a2f2bb0e05c2756573155353648521a9a08f5b3",
-                "reference": "2a2f2bb0e05c2756573155353648521a9a08f5b3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-25T18:23:09+00:00"
+            "time": "2019-09-26T18:13:00+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -8480,16 +8480,16 @@
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
-            "version": "dev-master",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/webtools-geocoding-provider.git",
-                "reference": "10c3e1af4dafc1823be0c0b79c5c36d0403cab47"
+                "reference": "42e60c1896a0647884c47d5a8fce528bd32adda3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/10c3e1af4dafc1823be0c0b79c5c36d0403cab47",
-                "reference": "10c3e1af4dafc1823be0c0b79c5c36d0403cab47",
+                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/42e60c1896a0647884c47d5a8fce528bd32adda3",
+                "reference": "42e60c1896a0647884c47d5a8fce528bd32adda3",
                 "shasum": ""
             },
             "require": {
@@ -8507,11 +8507,6 @@
                 "phpunit/phpunit": "~6.3"
             },
             "type": "library",
-            "extra": {
-                "patches_applied": {
-                    "Allow to optionally pass a referer header. @see https://github.com/openeuropa/webtools-geocoding-provider/pull/6": "https://patch-diff.githubusercontent.com/raw/openeuropa/webtools-geocoding-provider/pull/6.diff"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "OpenEuropa\\Provider\\WebtoolsGeocoding\\": "src/"
@@ -8523,7 +8518,7 @@
             ],
             "description": "Webtools Geocoding provider for Geocoder PHP.",
             "homepage": "https://github.com/openeuropa/webtools-geocoding-provider",
-            "time": "2019-06-07T09:11:34+00:00"
+            "time": "2019-09-26T10:38:36+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -15291,16 +15286,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.4.2",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8"
+                "reference": "0afebf16a2e7f1e434920fa976253576151effe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
-                "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0afebf16a2e7f1e434920fa976253576151effe9",
+                "reference": "0afebf16a2e7f1e434920fa976253576151effe9",
                 "shasum": ""
             },
             "require": {
@@ -15338,7 +15333,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-04-10T23:49:02+00:00"
+            "time": "2019-09-26T23:12:26+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -15765,7 +15760,6 @@
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
-        "openeuropa/webtools-geocoding-provider": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/config_inspector": 10,
