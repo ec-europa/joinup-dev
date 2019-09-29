@@ -20,6 +20,7 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
+use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
@@ -39,8 +40,8 @@ use WebDriver\Key;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use AntibotTrait;
   use BrowserCapabilityDetectionTrait;
-  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use PageCacheTrait;
@@ -1533,7 +1534,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @BeforeSuite
    */
   public static function disableAntibotForSuite(): void {
-    static::toggleModule('uninstall', 'antibot');
+    static::disableAntibot();
   }
 
   /**
@@ -1544,7 +1545,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @see self::disableAntibot()
    */
   public static function enableAntibotForSuite(): void {
-    static::toggleModule('install', 'antibot');
+    static::restoreAntibot();
   }
 
   /**
@@ -1559,7 +1560,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @see self::disableAntibotForSuite()
    */
   public function enableAntibotForScenario(): void {
-    static::toggleModule('install', 'antibot');
+    self::restoreAntibot();
   }
 
   /**
@@ -1570,7 +1571,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @see self::enableAntibotForScenario()
    */
   public function disableAntibotForScenario(): void {
-    static::toggleModule('uninstall', 'antibot');
+    static::disableAntibot();
   }
 
   /**
