@@ -1524,12 +1524,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Disables the 'antibot' module during tests run.
+   * Disables the Antibot functionality during tests run.
    *
    * Antibot module blocks all form submissions the for browsers without
    * JavaScript support or when there's no keyboard or mouse interaction before
    * the form is submitted. This would make most of Behat tests to fail. We
-   * uninstall the 'antibot' module during Behat tests run.
+   * disable Antibot functionality during Behat tests run.
    *
    * @BeforeSuite
    */
@@ -1538,37 +1538,37 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Re-enables the 'antibot' module after tests run.
+   * Restores the Antibot functionality after tests run.
    *
    * @AfterSuite
    *
-   * @see self::disableAntibot()
+   * @see self::disableAntibotForSuite()
    */
-  public static function enableAntibotForSuite(): void {
+  public static function restoreAntibotForSuite(): void {
     static::restoreAntibot();
   }
 
   /**
-   * Enables the 'antibot' module in the scope of @antibot tagged scenarios.
+   * Restores Antibot functionality in the scope of @antibot tagged scenarios.
    *
-   * The 'antibot' module is disabled for the whole test suite run, in
+   * The Antibot functionality is disabled for the whole test suite run, in
    * self::disableAntibotForSuite(). However, if a scenario wants run its test
-   * with 'antibot' module enabled, it should be tagged with @antibot.
+   * with Antibot functionality enabled, it should be tagged with @antibot.
    *
    * @BeforeScenario @antibot
    *
    * @see self::disableAntibotForSuite()
    */
-  public function enableAntibotForScenario(): void {
+  public function restoreAntibotForScenario(): void {
     self::restoreAntibot();
   }
 
   /**
-   * Disables the 'antibot' module after @antibot tagged scenarios.
+   * Disables Antibot functionality after @antibot tagged scenarios.
    *
    * @AfterScenario @antibot
    *
-   * @see self::enableAntibotForScenario()
+   * @see self::restoreAntibotForScenario()
    */
   public function disableAntibotForScenario(): void {
     static::disableAntibot();
