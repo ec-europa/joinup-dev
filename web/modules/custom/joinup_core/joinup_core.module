@@ -1370,12 +1370,3 @@ function joinup_core_cron() {
     cached_computed_field_cron();
   }
 }
-
-/**
- * Implements hook_library_info_alter().
- */
-function joinup_core_library_info_alter(&$libraries, $extension) {
-  if ($extension === 'oe_webtools_maps') {
-    $libraries['eu.webtools.load']['header'] = TRUE;
-  }
-}
