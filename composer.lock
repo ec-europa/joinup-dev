@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c913e3a55b6e332c35a7065f54e1107",
+    "content-hash": "45b64e6e85233d4f21fb42ee6877842e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.0",
+            "version": "3.112.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1e21446c6780a3b9b5e4315bd6d4347d2c3381eb"
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1e21446c6780a3b9b5e4315bd6d4347d2c3381eb",
-                "reference": "1e21446c6780a3b9b5e4315bd6d4347d2c3381eb",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
+                "reference": "224955fcb7ca9edc8de3e4147c0b180aeaee5a48",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-12T18:09:53+00:00"
+            "time": "2019-09-26T18:13:00+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2753,6 +2753,177 @@
             }
         },
         {
+            "name": "drupal/config_exclude",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/config_exclude.git",
+                "reference": "dbe433b9a7519fe64060b32ccf7d82b574d41b6d"
+            },
+            "require": {
+                "drupal/config_filter": "*",
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1512684184",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Marc van Gend",
+                    "homepage": "https://www.drupal.org/u/marcvangend",
+                    "email": "info@marcvangend.nl",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Filter for excluding modules and dependent configuration during config export",
+            "homepage": "https://www.drupal.org/project/config_exclude",
+            "keywords": [
+                "Configuration Management",
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_exclude",
+                "issues": "https://www.drupal.org/project/issues/config_exclude"
+            },
+            "time": "2017-12-07T21:31:19+00:00"
+        },
+        {
+            "name": "drupal/config_filter",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/config_filter.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_filter-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "4b2b7f4dfc8358212f9e25f63dcc77cc2c1dcf6c"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "suggest": {
+                "drupal/config_split": "Split site configuration for different environments."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1542184982",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Fabian Bircher",
+                    "homepage": "https://www.drupal.org/u/bircher",
+                    "email": "opensource@fabianbircher.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Nuvole Web",
+                    "homepage": "http://nuvole.org",
+                    "email": "info@nuvole.org",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "pescetti",
+                    "homepage": "https://www.drupal.org/user/436244"
+                }
+            ],
+            "description": "Config Filter allows other modules to interact with a ConfigStorage through filter plugins.",
+            "homepage": "https://www.drupal.org/project/config_filter",
+            "keywords": [
+                "Drupal",
+                "configuration",
+                "configuration management"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_filter",
+                "issues": "https://www.drupal.org/project/issues/config_filter",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/config_ignore",
+            "version": "dev-2.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/config_ignore.git",
+                "reference": "2b1740411fd1eb8bb139711be5e10535c40ddbbf"
+            },
+            "require": {
+                "drupal/config_filter": "1.*",
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.1+5-dev",
+                    "datestamp": "1537980780",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Tommy Lynge Jørgensen",
+                    "homepage": "https://www.drupal.org/u/tlyngej",
+                    "email": "tlyngej@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Fabian Bircher",
+                    "homepage": "https://www.drupal.org/u/bircher",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Ignore certain configuration during import.",
+            "homepage": "http://drupal.org/project/config_ignore",
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_ignore",
+                "issues": "http://drupal.org/project/config_ignore",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            },
+            "time": "2018-09-26T16:48:09+00:00"
+        },
+        {
             "name": "drupal/config_provider",
             "version": "1.0.0-beta7",
             "source": {
@@ -2958,17 +3129,11 @@
         },
         {
             "name": "drupal/config_update",
-            "version": "1.6.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_update.git",
-                "reference": "8.x-1.6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.6.zip",
-                "reference": "8.x-1.6",
-                "shasum": "04bbd0fc440017fd0129dceae240a8bba409a450"
+                "reference": "bc323ea5aadf49d61987d16a02b77d186e7b176d"
             },
             "require": {
                 "drupal/core": "*"
@@ -2979,11 +3144,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.6",
-                    "datestamp": "1545090480",
+                    "version": "8.x-1.6+2-dev",
+                    "datestamp": "1551802686",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3004,8 +3169,9 @@
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_update"
-            }
+                "source": "https://git.drupalcode.org/project/config_update"
+            },
+            "time": "2019-07-19T19:27:23+00:00"
         },
         {
             "name": "drupal/core",
@@ -3245,7 +3411,9 @@
                     "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
                     "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
-                    "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch"
+                    "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
+                    "Shipping a profile with multiple languages without locale module not possible @see https://www.drupal.org/project/drupal/issues/2413191": "https://www.drupal.org/files/issues/2019-01-12/2413191-31.patch",
+                    "Config import creates 'Undefined index: uuid' notice @see https://www.drupal.org/project/drupal/issues/2863785": "https://www.drupal.org/files/issues/config_import_creates-2863785-2.patch"
                 }
             },
             "autoload": {
@@ -4257,17 +4425,17 @@
         },
         {
             "name": "drupal/geofield",
-            "version": "1.3.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/geofield.git",
-                "reference": "8.x-1.3"
+                "reference": "8.x-1.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/geofield-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "ab9691a959dd4e4ad48e7138f96a500caabb43a9"
+                "url": "https://ftp.drupal.org/files/projects/geofield-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "7d4263317c331b8236cdf02b3ef0680af3974673"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -4279,8 +4447,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.3",
-                    "datestamp": "1555935785",
+                    "version": "8.x-1.6",
+                    "datestamp": "1569408784",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5253,7 +5421,7 @@
                 },
                 "patches_applied": {
                     "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
-                    "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
+                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5648,17 +5816,11 @@
         },
         {
             "name": "drupal/rdf_entity",
-            "version": "1.0.0-alpha17",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/rdf_entity.git",
-                "reference": "8.x-1.0-alpha17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/rdf_entity-8.x-1.0-alpha17.zip",
-                "reference": "8.x-1.0-alpha17",
-                "shasum": "fc913f8c48b1160185c828414aa15dce8beacead"
+                "reference": "9c7ba5204191540a7f76a41c8370bd95a46223bb"
             },
             "require": {
                 "drupal/core": "*",
@@ -5674,8 +5836,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha17",
-                    "datestamp": "1558608184",
+                    "version": "8.x-1.0-alpha17+9-dev",
+                    "datestamp": "1559256488",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5683,10 +5845,8 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                    "Rename old configs instead removing them @see https://github.com/ec-europa/rdf_entity/pull/96": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/96.diff",
-                    "[regression] Instead of renaming, recreate the new configs @see https://github.com/ec-europa/rdf_entity/pull/99": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/99.diff",
-                    "Fix the missing ?weight parameter @see https://github.com/ec-europa/rdf_entity/pull/98": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/98.diff",
-                    "Do not vary all RDF listings by user @see https://github.com/ec-europa/rdf_entity/pull/100": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/100.patch"
+                    "Add missed @group tag for test @see https://github.com/ec-europa/rdf_entity/pull/102": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/102.diff",
+                    "Add Drupal Test Traits support for RDF Entity @see https://github.com/ec-europa/rdf_entity/pull/104": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/104.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5724,7 +5884,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/rdf_entity",
                 "issues": "https://drupal.org/project/issues/rdf_entity"
-            }
+            },
+            "time": "2019-09-14T09:52:19+00:00"
         },
         {
             "name": "drupal/redirect",
@@ -8480,16 +8641,16 @@
         },
         {
             "name": "openeuropa/oe_webtools",
-            "version": "1.0.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools.git",
-                "reference": "eab913a181326b73b4234930970ceec91b7063e1"
+                "reference": "25401b054260b5b146b5ed44dbc152661aba19ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/eab913a181326b73b4234930970ceec91b7063e1",
-                "reference": "eab913a181326b73b4234930970ceec91b7063e1",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/25401b054260b5b146b5ed44dbc152661aba19ba",
+                "reference": "25401b054260b5b146b5ed44dbc152661aba19ba",
                 "shasum": ""
             },
             "require": {
@@ -8497,18 +8658,24 @@
                 "ext-json": "*",
                 "php": "^7.1"
             },
+            "conflict": {
+                "openeuropa/oe_webtools_location": "*"
+            },
             "require-dev": {
                 "composer/installers": "~1.5",
                 "drupal-composer/drupal-scaffold": "^2.5.2",
                 "drupal/config_devel": "~1.2",
                 "drupal/drupal-extension": "^4.0",
+                "drupal/geocoder": "^3.0",
+                "drupal/json_field": "^1.0@RC",
                 "drush/drush": "~9.0",
                 "nikic/php-parser": "^3.1.5",
                 "openeuropa/behat-transformation-context": "~0.1",
                 "openeuropa/code-review": "~1.0@beta",
                 "openeuropa/drupal-core-require-dev": "^8.7",
-                "openeuropa/oe_media": "~0.4",
+                "openeuropa/oe_media": "^1.0@beta",
                 "openeuropa/task-runner": "~1.0.0-beta5",
+                "openeuropa/webtools-geocoding-provider": "~0.1",
                 "phpunit/phpunit": "~6.0",
                 "symfony/dom-crawler": "~3.0"
             },
@@ -8531,7 +8698,7 @@
                     ]
                 },
                 "patches_applied": {
-                    "Include the smartloader on pages where analytics are used.": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/71.patch"
+                    "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"
                 }
             },
             "autoload": {
@@ -8544,70 +8711,20 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa Webtools integration.",
-            "time": "2019-05-15T11:26:37+00:00"
-        },
-        {
-            "name": "openeuropa/oe_webtools_location",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/openeuropa/oe_webtools_location.git",
-                "reference": "040cf79f41ca05e5a9fe16cf858052b193d8ec6b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools_location/zipball/040cf79f41ca05e5a9fe16cf858052b193d8ec6b",
-                "reference": "040cf79f41ca05e5a9fe16cf858052b193d8ec6b",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/core": "^8.7",
-                "drupal/geocoder": "^3.0",
-                "openeuropa/webtools-geocoding-provider": "~0.1",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "composer/installers": "~1.5",
-                "drupal-composer/drupal-scaffold": "^2.5",
-                "drupal/drupal-extension": "^4.0",
-                "drush/drush": "^9.3",
-                "openeuropa/code-review": "^1.0",
-                "openeuropa/drupal-core-require-dev": "^8.7",
-                "openeuropa/task-runner": "^0.7.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "installer-paths": {
-                    "build/core": [
-                        "type:drupal-core"
-                    ],
-                    "build/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "build/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "EUPL-1.2"
-            ],
-            "description": "Adds support for Webtools location services in Drupal.",
-            "time": "2019-06-17T09:15:56+00:00"
+            "time": "2019-09-24T12:53:58+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/webtools-geocoding-provider.git",
-                "reference": "22ab74bdb38754227d1428b53acd0203ae9228a7"
+                "reference": "42e60c1896a0647884c47d5a8fce528bd32adda3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/22ab74bdb38754227d1428b53acd0203ae9228a7",
-                "reference": "22ab74bdb38754227d1428b53acd0203ae9228a7",
+                "url": "https://api.github.com/repos/openeuropa/webtools-geocoding-provider/zipball/42e60c1896a0647884c47d5a8fce528bd32adda3",
+                "reference": "42e60c1896a0647884c47d5a8fce528bd32adda3",
                 "shasum": ""
             },
             "require": {
@@ -8636,7 +8753,7 @@
             ],
             "description": "Webtools Geocoding provider for Geocoder PHP.",
             "homepage": "https://github.com/openeuropa/webtools-geocoding-provider",
-            "time": "2018-08-31T06:51:22+00:00"
+            "time": "2019-09-26T10:38:36+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -12990,7 +13107,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/cas_mock_server",
                 "issues": "https://www.drupal.org/project/issues/cas_mock_server"
-            }
+            },
+            "time": "2019-08-15T10:45:14+00:00"
         },
         {
             "name": "drupal/coder",
@@ -13102,17 +13220,17 @@
         },
         {
             "name": "drupal/config_inspector",
-            "version": "1.0.0-beta2",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_inspector.git",
-                "reference": "8.x-1.0-beta2"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "1f7b27c4b1c800a605a6d6583d0b1d120794658e"
+                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "dc92ceb8fd3e289f9e5c058692346e4b9ef3fa74"
             },
             "require": {
                 "drupal/core": "*"
@@ -13123,11 +13241,16 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
-                    "datestamp": "1537879680",
+                    "version": "8.x-1.0",
+                    "datestamp": "1569419586",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
                     }
                 }
             },
@@ -13147,6 +13270,10 @@
                 {
                     "name": "aspilicious",
                     "homepage": "https://www.drupal.org/user/172527"
+                },
+                {
+                    "name": "ilchovuchkov",
+                    "homepage": "https://www.drupal.org/user/3568458"
                 },
                 {
                     "name": "vijaycs85",
@@ -13459,7 +13586,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/filecache.git",
-                "reference": "0291f94eb7132cdbe9a0485d6fe145915b2dc269"
+                "reference": "474f3562b045200b5abb983ee94c9d96c49c7cde"
             },
             "require": {
                 "drupal/core": "~8.5"
@@ -13476,8 +13603,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+0-dev",
-                    "datestamp": "1554731581",
+                    "version": "8.x-1.0-alpha2+2-dev",
+                    "datestamp": "1568894884",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -13517,7 +13644,7 @@
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
             },
-            "time": "2018-12-03T07:38:12+00:00"
+            "time": "2019-09-19T12:07:17+00:00"
         },
         {
             "name": "drupal/renderviz",
@@ -13642,17 +13769,17 @@
         },
         {
             "name": "drupal/stage_file_proxy",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/stage_file_proxy.git",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0-rc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/stage_file_proxy-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "6609a2166509fd7cc2e593ff2efd7c44daeb0e5b"
+                "url": "https://ftp.drupal.org/files/projects/stage_file_proxy-8.x-1.0-rc1.zip",
+                "reference": "8.x-1.0-rc1",
+                "shasum": "609dc94f9e6d5e4e0fe4c2f71f3134625a071860"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -13663,11 +13790,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1555515785",
+                    "version": "8.x-1.0-rc1",
+                    "datestamp": "1569500290",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -13681,7 +13808,7 @@
                     "homepage": "https://www.drupal.org/user/107229"
                 },
                 {
-                    "name": "axel.rutz",
+                    "name": "geek.merlin aka axel.rutz",
                     "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
@@ -13772,16 +13899,16 @@
         },
         {
             "name": "instaclick/php-webdriver",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/instaclick/php-webdriver.git",
-                "reference": "6fa959452e774dcaed543faad3a9d1a37d803327"
+                "reference": "bd9405077ca04129a73059a06873bedb5e138402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/6fa959452e774dcaed543faad3a9d1a37d803327",
-                "reference": "6fa959452e774dcaed543faad3a9d1a37d803327",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/bd9405077ca04129a73059a06873bedb5e138402",
+                "reference": "bd9405077ca04129a73059a06873bedb5e138402",
                 "shasum": ""
             },
             "require": {
@@ -13827,7 +13954,7 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2017-06-30T04:02:48+00:00"
+            "time": "2019-09-23T15:50:44+00:00"
         },
         {
             "name": "jcalderonzumba/gastonjs",
@@ -15486,16 +15613,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.4.2",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8"
+                "reference": "0afebf16a2e7f1e434920fa976253576151effe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
-                "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0afebf16a2e7f1e434920fa976253576151effe9",
+                "reference": "0afebf16a2e7f1e434920fa976253576151effe9",
                 "shasum": ""
             },
             "require": {
@@ -15533,7 +15660,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-04-10T23:49:02+00:00"
+            "time": "2019-09-26T23:12:26+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -15870,6 +15997,67 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
+        },
+        {
+            "name": "weitzman/drupal-test-traits",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/weitzman/drupal-test-traits.git",
+                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Fdrupal-test-traits/repository/archive.zip?sha=6687d17233707e0fca5c95e171701b9bf82bf1ff",
+                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff",
+                "shasum": ""
+            },
+            "require": {
+                "behat/mink": "^1.7",
+                "behat/mink-goutte-driver": "^1.2",
+                "php": ">=7.0.0",
+                "phpunit/phpunit": "^5.7|^6.5",
+                "webflo/drupal-finder": "^1.1"
+            },
+            "require-dev": {
+                "behat/mink-selenium2-driver": "1.3.x-dev",
+                "composer/installers": "^1.2",
+                "dmore/chrome-mink-driver": "^2.6",
+                "drupal-composer/drupal-scaffold": "2.3.0",
+                "drupal/core": "^8.7@alpha",
+                "drush/drush": "^9",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "squizlabs/php_codesniffer": "^3.2",
+                "zaporylie/composer-drupal-optimizations": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "web/core": [
+                        "type:drupal-core"
+                    ]
+                },
+                "patches_applied": {
+                    "Extend createUser() method with 'values' argument @see https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73": "https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73.diff"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "weitzman\\DrupalTestTraits\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                }
+            ],
+            "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
+            "time": "2019-04-22T08:56:51+00:00"
         }
     ],
     "aliases": [
@@ -15885,6 +16073,9 @@
         "drupal/cas": 20,
         "drupal/cas_account_link": 20,
         "drupal/cas_attributes": 20,
+        "drupal/config_exclude": 20,
+        "drupal/config_ignore": 20,
+        "drupal/config_update": 20,
         "drupal/diff": 5,
         "drupal/entity_legal": 20,
         "drupal/flag": 15,
@@ -15892,6 +16083,7 @@
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/rdf_entity": 20,
         "drupal/subpathauto": 5,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
@@ -15899,7 +16091,6 @@
         "ec-europa/joinup-tallinn-dashboard": 20,
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
-        "openeuropa/oe_webtools_location": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/cas_mock_server": 20,

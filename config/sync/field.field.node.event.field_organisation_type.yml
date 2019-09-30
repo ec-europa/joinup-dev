@@ -1,0 +1,23 @@
+uuid: de4b63b9-06a3-4ea2-8837-082753a746e2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_organisation_type
+    - node.type.event
+  module:
+    - options
+_core:
+  default_config_hash: AIwnJwZXQw7Sth21w6I79G8YqtCJXCKXxdaPLkfnYoU
+id: node.event.field_organisation_type
+field_name: field_organisation_type
+entity_type: node
+bundle: event
+label: 'Organisation type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

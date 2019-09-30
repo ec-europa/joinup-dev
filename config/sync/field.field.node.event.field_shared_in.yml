@@ -1,0 +1,30 @@
+uuid: a3ecd5e9-c336-4e04-a2b1-f4133b9e6e0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_shared_in
+    - node.type.event
+    - rdf_entity.rdfentity.collection
+_core:
+  default_config_hash: UDSXoqboUbctX2ZSOz21BkQSGKScPBi6OKeimwv6jJc
+id: node.event.field_shared_in
+field_name: field_shared_in
+entity_type: node
+bundle: event
+label: 'Shared in'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      collection: collection
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

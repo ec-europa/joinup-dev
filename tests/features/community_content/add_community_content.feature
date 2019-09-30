@@ -75,8 +75,8 @@ Feature: Add community content
       | title             | content         | author    | state | collection          | created    |
       | Sample discussion | Sample content. | Publisher | draft | The afternoon shift | 01-01-2010 |
     And event content:
-      | title        | body            | location        | author    | collection          | state | created    |
-      | Sample event | Sample content. | Sample location | Publisher | The afternoon shift | draft | 01-01-2010 |
+      | title        | body            | location          | author    | collection          | state | created    |
+      | Sample event | Sample content. | Buckingham Palace | Publisher | The afternoon shift | draft | 01-01-2010 |
     And news content:
       | title       | headline    | body            | state | author    | collection          | created    |
       | Sample news | Sample news | Sample content. | draft | Publisher | The afternoon shift | 01-01-2010 |

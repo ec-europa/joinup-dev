@@ -1,0 +1,19 @@
+uuid: e09fd4ec-7ebb-48cd-bd01-cbbcf6bf1af0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_9
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_9
+field_name: field_tallinn_action_9
+entity_type: node
+bundle: tallinn_report
+label: 'Use of available funding for implementing once-only'
+description: 'Make use of available funding to digitise all necessary key data and implement data exchange services between administrations for applying once only on both national and/or cross-border levels.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

@@ -1,0 +1,21 @@
+uuid: 9388643e-522b-48ee-beb8-d43de79ef3c1
+langcode: en
+status: true
+dependencies: {  }
+id: licencefilterblock
+theme: joinup_theme
+region: content
+weight: -15
+provider: null
+plugin: licence_filter_block
+settings:
+  id: licence_filter_block
+  label: 'Licence filter block'
+  provider: eupl
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/701805
+    negate: false
+    context_mapping: {  }

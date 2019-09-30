@@ -1,0 +1,21 @@
+uuid: b065e211-9fd0-4a73-b746-725457c55b0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_organisation
+    - node.type.event
+_core:
+  default_config_hash: '-VeNHee3OW7f79gTSRzyftuwWDHKMO2XAZIYYzTycd0'
+id: node.event.field_organisation
+field_name: field_organisation
+entity_type: node
+bundle: event
+label: Organisation
+description: 'Organisation name.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
