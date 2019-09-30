@@ -611,6 +611,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Checks that a user has the available state options for the collection.
    *
    * The method also checks that these options are the only options available.
+   * This method will log in as each user in sequence, so take care to only use
+   * it when the currently logged in user can be discarded.
    *
    * Table format:
    * | collection   | user | buttons         |
@@ -618,7 +620,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | Collection B | Jack | Update, Publish |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
-   *   The table with the triplets collection-user-options.
+   *   The table with the triplets collection-user-buttons.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
@@ -627,7 +629,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * following state buttons should be available for the user on the
    * collection'.
    *
-   * @Given for the following collection, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following collection, the corresponding user should have the corresponding (available )state buttons:
    */
   public function verifyStateButtons(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
