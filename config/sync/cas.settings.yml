@@ -32,7 +32,7 @@ user_accounts:
   auto_register: true
   email_assignment_strategy: 1
   email_hostname: localhost
-  email_attribute: 'email'
+  email_attribute: email
   auto_assigned_roles: {  }
   restrict_password_management: true
   restrict_email_management: true
@@ -52,3 +52,5 @@ advanced:
 login_link_enabled: false
 login_link_label: 'EU Login'
 login_success_message: 'You have been logged in.'
+_core:
+  default_config_hash: tgdYSvJhMKuQncFGbzlDagPl05HoQ3rSx49j9CL3oWU
