@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71b7327a104c3bf8dea864e18cbf47d1",
+    "content-hash": "8f3a3048127dc8852133c13e278b3314",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2479,6 +2479,9 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Forms cache must invalidate when Antibot settings are changed @see https://www.drupal.org/project/antibot/issues/3084654": "https://www.drupal.org/files/issues/2019-09-30/3084654-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
