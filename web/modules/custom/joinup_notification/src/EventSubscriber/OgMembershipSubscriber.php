@@ -243,7 +243,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
     $route_parameters = [
       $entity_type_id => $this->entity->id(),
     ];
-    $url = Url::fromRoute($route_name, $route_parameters)->toString();
+    $url = Url::fromRoute($route_name, $route_parameters, ['absolute' => TRUE])->toString();
     return $url;
   }
 
