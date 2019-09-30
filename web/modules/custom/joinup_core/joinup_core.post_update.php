@@ -6,13 +6,14 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
+use Drupal\redirect\Entity\Redirect;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 use EasyRdf\Resource;
-use Drupal\redirect\Entity\Redirect;
 
 /**
  * Enable the Sub-Pathauto module.
@@ -793,4 +794,165 @@ SQL
     $transaction->rollBack();
     throw new Exception('Database error', 0, $e);
   }
+}
+
+/**
+ * Stats #4: Create metadata entities.
+ */
+function joinup_core_post_update_stats4(array &$sandbox): ?string {
+  $db = \Drupal::database();
+  if (!isset($sandbox['current'])) {
+    $sandbox['current'] = 0;
+    $sandbox['processed'] = ['rdf_entity' => 0, 'node' => 0];
+  }
+
+  $items = $db->select('joinup_core_stats_update_temp')
+    ->fields('joinup_core_stats_update_temp')
+    ->condition('id', $sandbox['current'], '>')
+    ->orderBy('id')
+    ->range(0, 500)
+    ->execute()
+    ->fetchAll();
+  $sandbox['#finished'] = (int) empty($items);
+
+  if (!$sandbox['#finished']) {
+    /** @var \Drupal\Component\Uuid\UuidInterface $uuid */
+    $uuid = \Drupal::service('uuid');
+    $timestamp = \Drupal::time()->getRequestTime();
+
+    foreach ($items as $item) {
+      $target_entity_type_id = $item->entity_type_id;
+      $target_entity_id = $item->entity_id;
+      $meta_entity_type_id = $target_entity_type_id === 'rdf_entity' ? 'download_count' : 'visit_count';
+
+      // We're using direct SQL insert statements to speedup the process.
+      $meta_entity_id = $db->insert('meta_entity')->fields([
+        'type' => $meta_entity_type_id,
+        'uuid' => $uuid->generate(),
+        'label' => "$target_entity_type_id: $target_entity_id",
+        'target__target_id' => $target_entity_id,
+        'target__target_type' => $target_entity_type_id,
+        'created' => $timestamp,
+        'changed' => $timestamp,
+        'target__target_id_int' => $target_entity_type_id === 'rdf_entity' ? NULL : (int) $target_entity_id,
+      ])->execute();
+      $db->insert('meta_entity__count')->fields([
+        'bundle' => $meta_entity_type_id,
+        'entity_id' => $meta_entity_id,
+        'revision_id' => $meta_entity_id,
+        'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+        'delta' => 0,
+        'count_value' => (int) $item->counter,
+      ])->execute();
+      $sandbox['current'] = $item->id;
+      $sandbox['processed'][$target_entity_type_id]++;
+    }
+
+    return "Progress: {$sandbox['processed']['rdf_entity']} distributions, {$sandbox['processed']['node']} nodes.";
+  }
+  $db->schema()->dropTable('joinup_core_stats_update_temp');
+
+  return "Finished processing {$sandbox['processed']['rdf_entity']} distributions and {$sandbox['processed']['node']} nodes.";
+}
+
+/**
+ * Stats #5: Remove stale triples.
+ */
+function joinup_core_post_update_stats5(): void {
+  /** @var \Drupal\Driver\Database\sparql\Connection $sparql_connection */
+  $sparql_connection = \Drupal::service('sparql.endpoint');
+  $sparql_connection->query("WITH <http://joinup.eu/asset_distribution/published>
+DELETE {
+  ?s ?p ?o .
+}
+WHERE {
+  ?s ?p ?o .
+  VALUES ?p { <http://schema.org/userInteractionCount> <http://schema.org/expires> }
+}");
+}
+
+/**
+ * Stats #6: Update field queue.
+ */
+function joinup_core_post_update_stats6(array &$sandbox): ?string {
+  $db = \Drupal::database();
+
+  if (!isset($sandbox['items'])) {
+    // Make sure that cron is not consuming the queue while we're updating it.
+    // We try to acquire a lock, pretending that cron is running. If we succeed,
+    // a cron that attempts to start after this update has started, will not run
+    // as it will not be able to acquire the lock. If we fail, means the cron
+    // has already started before this update. That should be reported, as all
+    // cron processes should be stopped before starting the Joinup update.
+    // @see \Drupal\Core\Cron::run()
+    if (!\Drupal::lock()->acquire('cron', 900.0)) {
+      // Cron is currently running.
+      throw new \RuntimeException("Cannot update Joinup because cron is currently running. Ensure the conjob processes are stopped before attempting to update Joinup.");
+    }
+    $sandbox['items'] = [];
+    $sandbox['processed'] = 0;
+
+    // Store all 'cached_computed_field_expired_fields' queue items in sandbox.
+    $items = $db->select('queue', 'q')
+      ->fields('q', ['item_id', 'data'])
+      ->condition('name', 'cached_computed_field_expired_fields')
+      ->orderBy('q.item_id')
+      ->execute()
+      ->fetchAllKeyed();
+    foreach ($items as $item_id => $data) {
+      $data = unserialize($data);
+      $sandbox['items'][] = [
+        'id' => $item_id,
+        'entity_id' => $data['entity_id'],
+        'entity_type_id' => $data['entity_type'],
+      ];
+    }
+  }
+
+  if ($items_to_process = array_splice($sandbox['items'], 0, 500)) {
+    $ids = array_map(function (array $item): string {
+      return $item['entity_id'];
+    }, $items_to_process);
+    $entities = $db->select('meta_entity', 'm')
+      ->fields('m', ['target__target_id', 'id'])
+      ->condition('target__target_id', $ids, 'IN')
+      ->execute()
+      ->fetchAllKeyed();
+    $items_to_delete = [];
+    foreach ($items_to_process as $item) {
+      if (isset($entities[$item['entity_id']])) {
+        // References to content entities replaced with same to meta entities.
+        $data = [
+          'entity_type' => 'meta_entity',
+          'entity_id' => $entities[$item['entity_id']],
+          'field_name' => 'count',
+          'expire' => 0,
+        ];
+        $db->update('queue')
+          ->fields(['data' => serialize($data)])
+          ->condition('item_id', $item['id'])
+          ->execute();
+      }
+      else {
+        // The entity might have been deleted in the meantime.
+        $items_to_delete[] = $item['id'];
+      }
+      if ($items_to_delete) {
+        $db->delete('queue')
+          ->condition('item_id', $items_to_delete, 'IN')
+          ->execute();
+      }
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = $sandbox['items'] ? 0 : 1;
+
+  if ($sandbox['#finished']) {
+    // Release the fake 'cron' lock.
+    \Drupal::lock()->release('cron');
+    return "Processed {$sandbox['processed']} items from queue.";
+  }
+
+  return "Finished processing {$sandbox['processed']} items from queue.";
 }
