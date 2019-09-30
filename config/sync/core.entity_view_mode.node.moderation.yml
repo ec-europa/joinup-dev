@@ -1,0 +1,12 @@
+uuid: ddac0053-3cfd-49b5-ab52-c27192bc4330
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: rgWUVgPP2jvHXOgi9MQjWlnwbEFqrQlxl_PJkUdbsz0
+id: node.moderation
+label: Moderation
+targetEntityType: node
+cache: true

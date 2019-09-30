@@ -1,0 +1,19 @@
+uuid: 2244951b-048a-4f39-82b1-9861d52ab11c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: p--OjEkHKa4NzPYJzXiaqyK_hmal4RQYLwG4ReWMXLo
+template: col_arc_del_no_request
+label: 'Collection archive/delete without request'
+description: 'Template id 13 - This will be sent in case the deletion/archival happened without request'
+text:
+  1:
+    value: '<p>Your @entity:bundle "@entity:title" has been @transition:request_action:past.</p>@transition:archive:extra:owner'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

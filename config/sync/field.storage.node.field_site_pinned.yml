@@ -1,0 +1,20 @@
+uuid: 45dbf133-adf4-491a-81e9-09430e282bee
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: BO56I4a-bgxrSVio6tpuHZ1oZWnkwrQvGOO2YyqCpN8
+id: node.field_site_pinned
+field_name: field_site_pinned
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

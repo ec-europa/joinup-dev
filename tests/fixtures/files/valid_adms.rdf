@@ -118,7 +118,7 @@
         <dc:description xml:lang="en">A distribution for windows</dc:description>
         <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T18:53:57+03:00</dc:issued>
         <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T09:58:01+03:00</dc:modified>
-        <dc:license rdf:resource="http://example.com/license/1"/>
+        <dc:license rdf:resource="http://spdx.org/licenses/Apache-2.0"/>
         <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
         <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_1.zip</dcat:accessURL>
     </rdf:Description>
@@ -130,7 +130,8 @@
         <dc:description xml:lang="en">A distribution for linux</dc:description>
         <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T18:53:57+03:00</dc:issued>
         <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-28T09:58:01+03:00</dc:modified>
-        <dc:license rdf:resource="http://example.com/license/1"/>
+        <!-- Same licence as for distribution 1 but suffixed with '.html'. -->
+        <dc:license rdf:resource="http://spdx.org/licenses/Apache-2.0.html"/>
         <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
         <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_2.zip</dcat:accessURL>
     </rdf:Description>
@@ -141,7 +142,7 @@
         <dc:description xml:lang="en">Some description of a standalone distribution</dc:description>
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
         <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2018-05-27T18:53:57+03:00</dc:issued>
-        <dc:license rdf:resource="http://example.com/license/1"/>
+        <dc:license rdf:resource="http://spdx.org/licenses/MIT"/>
         <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
         <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_standalone.zip</dcat:accessURL>
     </rdf:Description>

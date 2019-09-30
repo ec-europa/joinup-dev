@@ -1,0 +1,23 @@
+uuid: 440d1bcb-4106-42b6-8e4e-efa871dee281
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_included_asset
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: tVXihsFF-68491RHwTATi3adl1QtDm-UptytA11AVZ8
+id: rdf_entity.solution.field_is_included_asset
+field_name: field_is_included_asset
+entity_type: rdf_entity
+bundle: solution
+label: 'Included asset'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings: {  }
+field_type: entity_reference

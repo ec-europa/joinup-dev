@@ -1,0 +1,19 @@
+uuid: 5a7f1524-085f-46b2-8caf-a51a37dae905
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.cc_transition_reject_deletion
+id: message.cc_transition_reject_deletion.mail_body
+targetEntityType: message
+bundle: cc_transition_reject_deletion
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

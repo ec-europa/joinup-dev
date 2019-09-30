@@ -352,7 +352,7 @@
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="enable-dev-settings, redirect-outgoing-email, enable-dev-modules" />
+        depends="enable-dev-settings, setup-config-exclude, redirect-outgoing-email, enable-dev-modules" />
 
     <target
         name="setup-acceptance"

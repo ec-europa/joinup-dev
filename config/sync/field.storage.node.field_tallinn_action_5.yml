@@ -1,0 +1,21 @@
+uuid: 26ebf63e-c62d-47d5-ba5d-76ec11a046a9
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - tallinn
+_core:
+  default_config_hash: IPCce1hE40OD7h8m9ee0h-Jcizi2b8NTYOzAWVIItFo
+id: node.field_tallinn_action_5
+field_name: field_tallinn_action_5
+entity_type: node
+type: tallinn_entry
+settings: {  }
+module: tallinn
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

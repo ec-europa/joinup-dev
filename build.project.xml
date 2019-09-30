@@ -2,6 +2,9 @@
 
 <project name="Joinup" default="help">
 
+    <!-- Import Config management targets. -->
+    <import file="${project.basedir}/build.config.xml" optional="true" />
+
     <!-- Import Phing targets related to the D6 migration. -->
     <import file="${project.basedir}/build.migration.xml" optional="true" />
 
@@ -56,6 +59,7 @@
             <option name="account-name" value="${drupal.admin.username}" />
             <option name="account-pass" value="${drupal.admin.password}" />
             <option name="account-mail" value="${drupal.admin.email}" />
+            <option name="existing-config" />
             <param>${website.profile.name}</param>
             <!-- Disable sending of e-mails during installation. -->
             <param>install_configure_form.enable_update_status_module=NULL</param>
@@ -101,14 +105,19 @@
                 assume="yes"
                 root="${website.drupal.dir}"
                 bin="${drush.bin}">
-            <option name="cache-clear" />
+            <option name="no-post-updates"/>
         </drush>
         <drush
-                command="cs-update"
+                command="config:import"
                 assume="yes"
                 root="${website.drupal.dir}"
                 bin="${drush.bin}">
-            <option name="discard-overrides" />
+        </drush>
+        <drush
+                command="updatedb"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
         </drush>
     </target>
 
@@ -220,7 +229,10 @@
                 sparqlUrl="${phpunit.sparql_url}"
                 legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
-                browsertestOutputFile="${phpunit.browsertest_output_file}" />
+                browsertestOutputFile="${phpunit.browsertest_output_file}"
+                dttBaseUrl="${dtt.base_url}"
+                dttApiUrl="${dtt.api_url}"
+                dttMinkDriverArgs="${dtt.mink_driver_args}" />
 
         <!-- Create the directory and file for browsertest output. -->
         <mkdir dir="${phpunit.browsertest_output_dir}" />
@@ -349,19 +361,6 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
-    </target>
-
-    <!-- Export complete site configuration. -->
-    <target name="export-config">
-        <!-- Make sure the config directory exists. -->
-        <mkdir dir="${drupal.config.dir}" />
-        <drush
-            command="config-export"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
-            <option name="destination" value="${drupal.config.dir}" />
-        </drush>
     </target>
 
     <target
@@ -545,11 +544,11 @@
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, setup-config-sync-dir, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
 
 </project>

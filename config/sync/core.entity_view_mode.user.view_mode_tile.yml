@@ -1,0 +1,12 @@
+uuid: 1636c1f9-ff99-42f0-bd06-a844fb667dc9
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: 7Y9TX7a3AXVRmGMpee7q7qfWmZJ9QXoXmK3iXQeLGcY
+id: user.view_mode_tile
+label: Tile
+targetEntityType: user
+cache: true

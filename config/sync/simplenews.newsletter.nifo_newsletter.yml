@@ -1,0 +1,17 @@
+uuid: 56f0b2f8-8ac2-45f5-aa5e-6d66280a8605
+langcode: en
+status: true
+dependencies: {  }
+name: 'NIFO Newsletter'
+id: nifo_newsletter
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

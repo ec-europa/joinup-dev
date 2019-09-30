@@ -1,0 +1,11 @@
+uuid: 85a64feb-ce50-4a6b-94af-f6c65d715218
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: rVXy81Z2UBMk51INrGk3cBRkkS6fAcNnH0Ndq6xUaKo
+id: search_api_field__rdf_entity.field_collection_content
+name: 'search_api_field:rdf_entity.field_collection_content'
+filter_key: ''
+url_processor: query_string
+breadcrumb: {  }
