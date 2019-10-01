@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\collection\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\WorkflowStatePermissionInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -24,13 +23,6 @@ class CollectionFulfillmentGuard implements GuardInterface {
   const NON_STATE = '__new__';
 
   /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager
-   */
-  protected $entityTypeManager;
-
-  /**
    * The current logged in user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -42,23 +34,20 @@ class CollectionFulfillmentGuard implements GuardInterface {
    *
    * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
    */
-  protected $collectionWorkflowStatePermission;
+  protected $workflowStatePermission;
 
   /**
    * Instantiates a CollectionFulfillmentGuard service.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
-   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $collection_workflow_state_permission
+   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflow_state_permission
    *   The service that determines the permission to update the workflow state
-   *   of a collection.
+   *   for a given entity.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user, WorkflowStatePermissionInterface $collection_workflow_state_permission) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(AccountInterface $current_user, WorkflowStatePermissionInterface $workflow_state_permission) {
     $this->currentUser = $current_user;
-    $this->collectionWorkflowStatePermission = $collection_workflow_state_permission;
+    $this->workflowStatePermission = $workflow_state_permission;
   }
 
   /**
@@ -73,7 +62,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
 
     $from_state = $this->getState($entity);
 
-    return $this->collectionWorkflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
   }
 
   /**

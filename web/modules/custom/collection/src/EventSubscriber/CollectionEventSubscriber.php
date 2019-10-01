@@ -32,20 +32,20 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
    *
    * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
    */
-  protected $collectionWorkflowStatePermission;
+  protected $workflowStatePermission;
 
   /**
    * Constructs a CollectionEventSubscriber.
    *
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
-   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $collectionWorkflowStatePermission
+   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflowStatePermission
    *   The service that determines the permission to update the workflow state
-   *   of a collection.
+   *   of a given entity.
    */
-  public function __construct(AccountInterface $currentUser, WorkflowStatePermissionInterface $collectionWorkflowStatePermission) {
+  public function __construct(AccountInterface $currentUser, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->currentUser = $currentUser;
-    $this->collectionWorkflowStatePermission = $collectionWorkflowStatePermission;
+    $this->workflowStatePermission = $workflowStatePermission;
   }
 
   /**
@@ -106,17 +106,22 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
   /**
    * Determines if a collection can be updated without changing workflow state.
    *
+   * This applies both to collections and solutions.
+   *
+   * @todo Move this in a shared 'group' module that can contain code that is
+   *   shared between collections and solutions.
+   *
    * @param \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent $event
    *   The event.
    */
   public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
     $entity = $event->getEntity();
-    if ($entity->getEntityTypeId() !== 'rdf_entity' || $entity->bundle() !== 'collection') {
+    if ($entity->getEntityTypeId() !== 'rdf_entity' || !in_array($entity->bundle(), ['collection', 'solution'])) {
       return;
     }
 
     $state = $event->getState();
-    $permitted = $this->collectionWorkflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $state, $state);
+    $permitted = $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $event->getEntity(), $state, $state);
     $access = AccessResult::forbiddenIf(!$permitted);
     $access->addCacheContexts(['user.roles', 'og_role']);
     $event->setAccess($access);
