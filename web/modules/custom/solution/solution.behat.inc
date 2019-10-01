@@ -371,7 +371,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Then I should have :number solution(s)
    */
-  public function assertSolutionCount($number) {
+  public function assertSolutionCount(int $number): void {
     $this->assertRdfEntityCount($number, 'solution');
   }
 
