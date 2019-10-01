@@ -9,4 +9,6 @@ role:
   sync_frequency: 0
   deny_login_no_match: false
   deny_registration_no_match: false
-  mappings: [ ]
+  mappings: {  }
+_core:
+  default_config_hash: 1Ipw0F9YNfPUvW0q63zjIRwxB8mxPTUpgPz2pT1IoE0

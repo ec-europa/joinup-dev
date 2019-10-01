@@ -8,11 +8,13 @@ form:
     title: 'Please make your selection:'
     description: ''
     answers:
-      yes:
+      'yes':
         label: 'I am an existing user (pair my existing account with my EU Login account)'
         description: 'You will be asked to login with your site credentials.'
         button: 'Sign in'
-      no:
+      'no':
         label: 'I am a new user (create a new account)'
         description: 'No action is required on your side. A new account, linked to your EU Login account, will be created.'
         button: Next
+_core:
+  default_config_hash: wDPJbNOvGdD3P1j-Fqz4o_XlkqkQYeszXBfDYggIG-E

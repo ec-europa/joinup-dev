@@ -2582,15 +2582,15 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "1bd514740bd8c28acbee3f68168cc7b66b463a19"
+                "reference": "c8d2d6808ad56935e38fc46a2163e4bb356454ae"
             },
             "require": {
                 "drupal/cas": "dev-1.x",
                 "drupal/core": "*",
-                "drupal/externalauth": "dev-1.x"
+                "drupal/externalauth": "^1.2"
             },
             "require-dev": {
-                "drupal/cas_mock_server": "dev-0.x|dev-1.x"
+                "drupal/cas_mock_server": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -2599,7 +2599,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1568122084",
+                    "datestamp": "1569266288",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2639,7 +2639,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-09-16T09:25:23+00:00"
+            "time": "2019-09-23T19:36:12+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -3985,7 +3985,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/externalauth.git",
-                "reference": "1dc2b5a11c121880a35f018b906c82b115a03465"
+                "reference": "0eca56f2dd826b8f588e791bdb1405d3f460d1a7"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3996,8 +3996,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.1+2-dev",
-                    "datestamp": "1560259688",
+                    "version": "8.x-1.1+6-dev",
+                    "datestamp": "1569251585",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4027,7 +4027,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/externalauth"
             },
-            "time": "2019-06-11T14:32:15+00:00"
+            "time": "2019-09-23T15:11:48+00:00"
         },
         {
             "name": "drupal/facets",
