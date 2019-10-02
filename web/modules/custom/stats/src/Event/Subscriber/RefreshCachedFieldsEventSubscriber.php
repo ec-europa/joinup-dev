@@ -13,6 +13,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
@@ -26,6 +27,8 @@ use Matomo\ReportingApi\QueryInterface;
  * for nodes.
  */
 class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberBase {
+
+  use StringTranslationTrait;
 
   /**
    * The Matomo query factory.
@@ -92,11 +95,22 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       return;
     }
 
+    $errors = [];
     foreach ($items as $index => $expired_item) {
+      $response_item = $response[$index];
+      // If an error occurs, the response for the expired item is an object and
+      // not an array of objects.
+      if (is_object($response_item) && isset($response_item->result) && $response_item->result === 'error') {
+        $arguments = [
+          ':entity_id' => $expired_item->getEntityId(),
+          '@error' => $response_item->message,
+        ];
+        $errors[] = $this->t('Meta entity :entity_id, error: @error', $arguments);
+        continue;
+      }
       /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
       $meta_entity = $this->getEntity($expired_item);
       $type = $this->getSettingsForMetaEntity($meta_entity)['type'];
-      $response_item = $response[$index];
       $count = 0;
       foreach ($response_item as $result) {
         if (!empty($result->$type)) {
@@ -105,6 +119,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
 
       $this->updateFieldValue($expired_item, $count);
+    }
+
+    if (!empty($errors)) {
+      $this->loggerFactory->get('joinup_stats')->error(implode("\n", $errors));
     }
   }
 
