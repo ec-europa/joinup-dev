@@ -138,12 +138,12 @@ Feature: As a site moderator I am able to import RDF files.
     And the following collection user membership:
       | collection | user     | roles                      | state  |
       | NIO        | CS Owner | facilitator, administrator | active |
-    # Hash for 'Solution 2' includes the custom title 'Local version of solution 2' so that it will detect changes in
-    # the first attempt.
-    # Hash for 'Solution 3' is the one matching to the values from valid_adms.rdf.
+    # Hash for solution 2 includes the title 'Local version of solution 2' so
+    # that it will detect changes in the first attempt.
+    # Hash for solution 3 is the one matching to the values from valid_adms.rdf.
     And provenance activities:
       | entity                        | enabled | associated with | author          | started          | hash                             |
-      | Local version of Solution 2   | yes     | NIO             | Antoine Batiste | 2012-07-07 23:01 | 35d6c55a727d10cbfd38f09db70b136d |
+      | Local version of Solution 2   | yes     | NIO             | Antoine Batiste | 2012-07-07 23:01 | 958c1834800217af62253353d0d4bdef |
       | http://example.com/solution/3 | no      | NIO             | Antoine Batiste | 2015-12-25 01:30 | e5e7aceb15c50ab628c744673daf5ca1 |
     Given SPDX licences:
       | uri                                 | title       |
