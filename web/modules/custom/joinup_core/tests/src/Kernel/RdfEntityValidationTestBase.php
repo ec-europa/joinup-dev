@@ -30,6 +30,7 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'state_machine',
     'taxonomy',
     'tour',
+    'workflow_state_permission',
   ];
 
   /**
