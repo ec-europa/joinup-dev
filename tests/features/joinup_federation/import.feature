@@ -243,7 +243,6 @@ Feature: As a site moderator I am able to import RDF files.
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
-<<<<<<< HEAD
     Then I should see "Slovenian Interoperability Portal - NIO: User selection"
     # Solution 1 is unchecked because it is unchanged.
     And the row "Solution 1" is not checked
