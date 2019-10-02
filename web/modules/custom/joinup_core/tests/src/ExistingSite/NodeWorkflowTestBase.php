@@ -211,9 +211,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           $own_access = isset($ownership_data['own']) && !empty($ownership_data['own']);
           if ($own_access) {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
-            $allowed_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->userOwner);
-            $expected_transitions = $ownership_data['own'];
-            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions, $message);
+            $allowed_states = $this->workflowHelper->getAvailableStates($content, $this->userOwner);
+            $expected_states = $ownership_data['own'];
+            $this->assertWorkflowStatesEqual($expected_states, $allowed_states, $message);
           }
           else {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
@@ -223,10 +223,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
 
           $allowed_roles = array_keys($ownership_data['any']);
           $non_allowed_roles = array_diff($test_roles, $allowed_roles);
-          foreach ($ownership_data['any'] as $user_var => $expected_transitions) {
+          foreach ($ownership_data['any'] as $user_var => $expected_states) {
             $message = "Parent bundle: {$parent_bundle}, Moderation: {$moderation}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
-            $allowed_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->{$user_var});
-            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions, $message);
+            $allowed_states = $this->workflowHelper->getAvailableStates($content, $this->{$user_var});
+            $this->assertWorkflowStatesEqual($expected_states, $allowed_states, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
@@ -568,15 +568,15 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    * $access_array = [
    *  'parent bundle' => [
    *    'moderation' => [
-   *      'state' => [
+   *      'from state' => [
    *        'own' => [
-   *          'transition allowed',
-   *          'transition allowed',
+   *          'allowed to state',
+   *          'allowed to state',
    *        ],
    *        'any' => [
    *          'user variable' => [
-   *            'transition allowed',
-   *            'transition allowed',
+   *            'allowed to state',
+   *            'allowed to state',
    *           ],
    *         ],
    *       ],
@@ -596,64 +596,72 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       self::PRE_MODERATION => [
         'draft' => [
           'own' => [
-            'propose',
+            'draft',
+            'proposed',
           ],
           'any' => [
             'userModerator' => [
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
           ],
         ],
         'proposed' => [
-          'own' => [],
+          'own' => [
+            'proposed',
+          ],
           'any' => [
             'userModerator' => [
-              'approve_proposed',
+              'proposed',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'approve_proposed',
+              'proposed',
+              'validated',
             ],
           ],
         ],
         'validated' => [
           'own' => [
-            'save_new_draft',
-            'request_deletion',
+            'draft',
+            'deletion_request',
           ],
           'any' => [
             'userModerator' => [
-              'save_new_draft',
-              'request_changes',
-              'report',
+              'draft',
+              'proposed',
+              'needs_update',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_new_draft',
-              'request_changes',
-              'report',
+              'draft',
+              'proposed',
+              'needs_update',
+              'validated',
             ],
           ],
         ],
         'needs_update' => [
           'own' => [
-            'propose_from_reported',
+            'proposed',
           ],
           'any' => [
             'userModerator' => [
-              'propose_from_reported',
+              'proposed',
             ],
             'userOgFacilitator' => [
-              'propose_from_reported',
+              'proposed',
             ],
           ],
         ],
         'deletion_request' => [
           'any' => [
             'userModerator' => [
-              'reject_deletion',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'reject_deletion',
+              'validated',
             ],
           ],
         ],
@@ -661,55 +669,65 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       self::POST_MODERATION => [
         'draft' => [
           'own' => [
-            'publish',
+            'draft',
+            'validated',
           ],
           'any' => [
             'userModerator' => [
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'publish',
+              'draft',
+              'validated',
             ],
           ],
         ],
         'proposed' => [
-          'own' => [],
+          'own' => [
+            'proposed',
+          ],
           'any' => [
             'userModerator' => [
-              'approve_proposed',
+              'proposed',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'approve_proposed',
+              'proposed',
+              'validated',
             ],
           ],
         ],
         'validated' => [
           'own' => [
-            'save_new_draft',
+            'draft',
+            'validated',
           ],
           'any' => [
             'userModerator' => [
-              'save_new_draft',
-              'request_changes',
-              'report',
+              'draft',
+              'proposed',
+              'needs_update',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_new_draft',
-              'request_changes',
-              'report',
+              'draft',
+              'proposed',
+              'needs_update',
+              'validated',
             ],
           ],
         ],
         'needs_update' => [
           'own' => [
-            'propose_from_reported',
+            'proposed',
           ],
           'any' => [
             'userModerator' => [
-              'propose_from_reported',
+              'proposed',
             ],
             'userOgFacilitator' => [
-              'propose_from_reported',
+              'proposed',
             ],
           ],
         ],
@@ -985,6 +1003,23 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       return $transition->getId();
     }, $actual);
     $actual = array_values($actual);
+    sort($actual);
+    sort($expected);
+
+    $this->assertEquals($expected, $actual, $message);
+  }
+
+  /**
+   * Asserts that two workflow state arrays are equal.
+   *
+   * @param string[] $expected
+   *   The expected workflow states.
+   * @param string[] $actual
+   *   The actual workflow states.
+   * @param string $message
+   *   A message to show to the assertion.
+   */
+  protected function assertWorkflowStatesEqual(array $expected, array $actual, $message = ''): void {
     sort($actual);
     sort($expected);
 
