@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
@@ -100,7 +101,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): JoinupFederationStepPluginBase {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,

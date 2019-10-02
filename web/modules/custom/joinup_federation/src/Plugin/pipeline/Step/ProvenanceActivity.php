@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
@@ -71,7 +72,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): JoinupFederationStepPluginBase {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,

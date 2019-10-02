@@ -6,6 +6,7 @@ namespace Drupal\joinup_federation;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\pipeline\Exception\PipelineStepPrepareLogicException;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepPluginBase;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,7 +52,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,

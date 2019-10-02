@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\joinup_federation\JoinupFederationHashGenerator;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -115,7 +116,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,

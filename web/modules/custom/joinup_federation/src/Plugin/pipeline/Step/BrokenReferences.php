@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
@@ -79,7 +80,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,
