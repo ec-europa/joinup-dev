@@ -10,4 +10,5 @@ id: node_make_sticky_action
 label: 'Make content sticky'
 type: node
 plugin: node_make_sticky_action
+weight: 0
 configuration: {  }

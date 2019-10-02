@@ -10,4 +10,5 @@ id: pathauto_update_alias_node
 label: 'Update URL alias'
 type: node
 plugin: pathauto_update_alias
+weight: 0
 configuration: {  }

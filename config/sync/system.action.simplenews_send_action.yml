@@ -10,4 +10,5 @@ id: simplenews_send_action
 label: 'Send newsletter issue'
 type: node
 plugin: simplenews_send_action
+weight: 0
 configuration: {  }
