@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\workflow_state_permission;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -25,10 +25,10 @@ class WorkflowStatePermissionPluginManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/WorkflowStatePermission', $namespaces, $module_handler, '\Drupal\joinup_core\WorkflowStatePermissionPluginInterface', 'Drupal\joinup_core\Annotation\WorkflowStatePermission');
+    parent::__construct('Plugin/WorkflowStatePermission', $namespaces, $module_handler, '\Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface', 'Drupal\workflow_state_permission\Annotation\WorkflowStatePermission');
 
-    $this->alterInfo('joinup_core_workflow_state_permission_info');
-    $this->setCacheBackend($cache_backend, 'joinup_core_workflow_state_permission');
+    $this->alterInfo('workflow_state_permission_plugin_info');
+    $this->setCacheBackend($cache_backend, 'workflow_state_permission_plugin');
   }
 
 }

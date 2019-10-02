@@ -6,6 +6,7 @@ package: Joinup
 
 dependencies:
   - joinup:joinup_core
+  - joinup:workflow_state_permission
   - state_machine:state_machine
 
 config_devel:

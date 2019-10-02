@@ -12,8 +12,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
 use Drupal\joinup_core\WorkflowHelperInterface;
-use Drupal\joinup_core\WorkflowStatePermissionPluginInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

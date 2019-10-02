@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Annotation;
+namespace Drupal\workflow_state_permission\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
 

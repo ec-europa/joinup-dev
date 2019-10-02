@@ -1,6 +1,6 @@
 services:
   owner.fulfillment_guard:
     class: Drupal\owner\Guard\OwnerFulfillmentGuard
-    arguments: ['@current_user', '@joinup_core.workflow_state_permission']
+    arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: owner }

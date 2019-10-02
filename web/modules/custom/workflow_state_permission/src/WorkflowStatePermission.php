@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\workflow_state_permission;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -15,14 +15,14 @@ class WorkflowStatePermission implements WorkflowStatePermissionInterface {
   /**
    * The workflow state permission plugin manager.
    *
-   * @var \Drupal\joinup_core\WorkflowStatePermissionPluginManager
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionPluginManager
    */
   protected $pluginManager;
 
   /**
    * Constructs a WorkflowStatePermission service.
    *
-   * @param \Drupal\joinup_core\WorkflowStatePermissionPluginManager $pluginManager
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionPluginManager $pluginManager
    *   The workflow state permission plugin manager.
    */
   public function __construct(WorkflowStatePermissionPluginManager $pluginManager) {
@@ -34,7 +34,7 @@ class WorkflowStatePermission implements WorkflowStatePermissionInterface {
    */
   public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool {
     foreach ($this->pluginManager->getDefinitions() as $definition) {
-      /** @var \Drupal\joinup_core\WorkflowStatePermissionPluginInterface $plugin */
+      /** @var \Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface $plugin */
       $plugin = $this->pluginManager->createInstance($definition['id']);
       if ($plugin->applies($entity)) {
         $result = $plugin->isStateUpdatePermitted($account, $entity, $from_state, $to_state);

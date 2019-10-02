@@ -8,9 +8,9 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent;
-use Drupal\joinup_core\WorkflowStatePermissionInterface;
 use Drupal\og\Event\PermissionEventInterface;
 use Drupal\og\GroupPermission;
+use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -30,7 +30,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
   /**
    * The service that determines the access to update workflow states.
    *
-   * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
    */
   protected $workflowStatePermission;
 
@@ -39,7 +39,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
-   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflowStatePermission
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The service that determines the permission to update the workflow state
    *   of a given entity.
    */

@@ -5,26 +5,27 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup:contact_information
   - drupal:datetime
+  - drupal:image
+  - drupal:link
+  - drupal:options
+  - drupal:text
   - ds:ds
   - facets:facets
   - field_group:field_group
-  - drupal:image
   - inline_entity_form:inline_entity_form
+  - joinup:contact_information
   - joinup:joinup_core
-  - drupal:link
   - joinup:oe_newsroom_newsletter
-  - og:og
-  - og_menu:og_menu
-  - drupal:options
   - joinup:owner
-  - rdf_entity:rdf_entity
   - joinup:rdf_schema_field_validation
   - joinup:search_api_field
+  - joinup:workflow_state_permission
+  - og:og
+  - og_menu:og_menu
+  - rdf_entity:rdf_entity
   - smart_trim:smart_trim
   - state_machine:state_machine
-  - drupal:text
 
 config_devel:
   - core.entity_form_display.rdf_entity.collection.default

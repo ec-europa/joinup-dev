@@ -6,11 +6,11 @@ namespace Drupal\collection\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\WorkflowStatePermissionInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
  * Guard class for the transitions of the collection entity.
@@ -32,7 +32,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
   /**
    * The service that determines the access to update workflow states.
    *
-   * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
    */
   protected $workflowStatePermission;
 
@@ -41,7 +41,7 @@ class CollectionFulfillmentGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
-   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflow_state_permission
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflow_state_permission
    *   The service that determines the permission to update the workflow state
    *   for a given entity.
    */

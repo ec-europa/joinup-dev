@@ -9,10 +9,10 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
-use Drupal\joinup_core\WorkflowStatePermissionInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
  * Guard class for the transitions of nodes.
@@ -57,7 +57,7 @@ class NodeGuard implements GuardInterface {
   /**
    * The workflow state permission service.
    *
-   * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
    */
   protected $workflowStatePermission;
 
@@ -75,7 +75,7 @@ class NodeGuard implements GuardInterface {
    *   The current logged in user.
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflowStatePermission
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The workflow state permission service.
    */
   public function __construct(JoinupRelationManagerInterface $relationManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {

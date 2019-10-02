@@ -6,11 +6,11 @@ namespace Drupal\asset_release\Guard;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\WorkflowStatePermission;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\workflow_state_permission\WorkflowStatePermission;
 
 /**
  * Guard class for the transitions of the asset release entity.
@@ -27,7 +27,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
   /**
    * The workflow state permission service.
    *
-   * @var \Drupal\joinup_core\WorkflowStatePermission
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermission
    */
   protected $workflowStatePermission;
 
@@ -36,7 +36,7 @@ class AssetReleaseFulfillmentGuard implements GuardInterface {
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
-   * @param \Drupal\joinup_core\WorkflowStatePermission $workflow_state_permission
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermission $workflow_state_permission
    *   The workflow state permission service.
    */
   public function __construct(AccountInterface $current_user, WorkflowStatePermission $workflow_state_permission) {

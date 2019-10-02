@@ -13,6 +13,7 @@ use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
  * Contains helper methods to retrieve workflow related data from entities.
@@ -50,7 +51,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * The workflow state permission service.
    *
-   * @var \Drupal\joinup_core\WorkflowStatePermissionInterface
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
    */
   protected $workflowStatePermission;
 
@@ -65,7 +66,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
    *   The entity field manager.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager service.
-   * @param \Drupal\joinup_core\WorkflowStatePermissionInterface $workflowStatePermission
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The workflow state permission service.
    */
   public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher, EntityFieldManagerInterface $entityFieldManager, MembershipManagerInterface $membershipManager, WorkflowStatePermissionInterface $workflowStatePermission) {
