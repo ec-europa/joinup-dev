@@ -149,13 +149,13 @@ Feature: As a site moderator I am able to import RDF files.
       | uri                                 | title       |
       | http://spdx.org/licenses/Apache-2.0 | Apache 2    |
       | http://spdx.org/licenses/MIT        | MIT License |
-    # The license contained in valid_adms.rdf is named "A federated license".
-    # However, the goal is to not import or update any values in the license
-    # entity so the following licenses have different details.
+    # The licence contained in valid_adms.rdf is named "A federated licence".
+    # However, the goal is to not import or update any values in the licence
+    # entity so the following licences have different details.
     And the following licences:
       | uri                          | title                    | description               | type          | spdx licence |
-      | http://example.com/license/1 | Licence same as Apache 2 | Licence agreement details | Public domain | Apache 2     |
-      | http://example.com/license/2 | Licence same as MIT      | So on...                  | Public domain | MIT License  |
+      | http://example.com/licence/1 | Licence same as Apache 2 | Licence agreement details | Public domain | Apache 2     |
+      | http://example.com/licence/2 | Licence same as MIT      | So on...                  | Public domain | MIT License  |
 
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
     And I select "Slovenian Interoperability Portal - NIO: User selection" from "Data pipeline"
@@ -199,7 +199,7 @@ Feature: As a site moderator I am able to import RDF files.
     But the "http://example.com/solution/3" entity is blacklisted for federation
     And the "http://example.com/distribution/4" entity is blacklisted for federation
 
-    # License should be excluded from the import process.
+    # Licence should be excluded from the import process.
     And the "Licence same as Apache 2" entity should not have a related provenance activity
 
     # Check the affiliation of federated solutions.
