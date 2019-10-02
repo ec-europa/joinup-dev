@@ -184,7 +184,7 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
    *   always be the current date).
    */
   protected function getDateRange(int $period): array {
-    $launch_date = $this->configFactory->get('joinup_stats.matomo_settings')->get('launch_date');
+    $launch_date = $this->configFactory->get('joinup_stats.settings')->get('launch_date');
     return [
       // If the period is 0 we should get all results since launch.
       $period > 0 ? (new DateTimePlus("$period days ago"))->format('Y-m-d') : $launch_date,
