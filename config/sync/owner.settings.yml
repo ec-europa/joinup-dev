@@ -1,16 +1,21 @@
 transitions:
-  validate:
+  validated:
     __new__:
       - authenticated
       - moderator
     deletion_request:
       - moderator
-  request_changes:
-    validated:
-      - moderator
-  approve_changes:
     needs_update:
       - moderator
-  request_deletion:
+    validated:
+      - authenticated
+      - moderator
+  needs_update:
+    needs_update:
+      - authenticated
+      - moderator
+    validated:
+      - moderator
+  deletion_request:
     validated:
       - authenticated
