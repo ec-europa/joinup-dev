@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f3a3048127dc8852133c13e278b3314",
+    "content-hash": "cf1e2ae244594b3398ea6de68fac1ee6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2462,7 +2462,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/antibot.git",
-                "reference": "af7f9f6af9e1214b03e5b2a1521459f8b723d3be"
+                "reference": "77bb7c076d3360fba0d78014e0fc62fab1f16ce4"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2473,15 +2473,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.2+7-dev",
-                    "datestamp": "1559221681",
+                    "version": "8.x-1.2+9-dev",
+                    "datestamp": "1569922085",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Forms cache must invalidate when Antibot settings are changed @see https://www.drupal.org/project/antibot/issues/3084654": "https://www.drupal.org/files/issues/2019-09-30/3084654-4.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2499,7 +2496,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/antibot"
             },
-            "time": "2019-05-30T13:18:42+00:00"
+            "time": "2019-10-01T12:03:38+00:00"
         },
         {
             "name": "drupal/cached_computed_field",

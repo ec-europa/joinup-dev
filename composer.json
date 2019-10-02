@@ -11,7 +11,7 @@
         "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
-        "drupal/antibot": "dev-1.x#af7f9f6af9e1214b03e5b2a1521459f8b723d3be",
+        "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
         "drupal/cached_computed_field": "^1.0-beta4",
         "drupal/changed_fields": "^2.0",
         "drupal/config_exclude": "dev-1.x",
@@ -177,9 +177,6 @@
         "patches": {
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
-            },
-            "drupal/antibot": {
-                "Forms cache must invalidate when Antibot settings are changed @see https://www.drupal.org/project/antibot/issues/3084654": "https://www.drupal.org/files/issues/2019-09-30/3084654-4.patch"
             },
             "drupal/config_sync": {
                 "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
