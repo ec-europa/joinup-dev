@@ -264,7 +264,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "A local authority" entity is not blacklisted for federation
     And the "Contact" entity is not blacklisted for federation
 
-    # Licenses should still be excluded from the import process.
+    # Licences should still be excluded from the import process.
     And the "Licence same as Apache 2" entity should not have a related provenance activity
 
     # Unchanged solutions and dependencies do not become blacklisted if they are not federated.
