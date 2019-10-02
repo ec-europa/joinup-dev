@@ -74,7 +74,7 @@ class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase 
    */
   public function testWorkflow(): void {
     foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
-      foreach ($workflow_data as $user_var => $transitions) {
+      foreach ($workflow_data as $user_var => $expected_states) {
         // The created entity is not saved because this will trigger the
         // '__new__' state to be converted to 'validated'.
         // @see: contact_information_rdf_entity_presave().
@@ -85,15 +85,12 @@ class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase 
         ]);
 
         // Override the user to be checked for the allowed transitions.
-        $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
-        $actual_transitions = array_map(function ($transition) {
-          return $transition->getId();
-        }, $actual_transitions);
+        $actual_states = $this->workflowHelper->getAvailableStates($content, $this->$user_var);
 
-        sort($actual_transitions);
-        sort($transitions);
+        sort($actual_states);
+        sort($expected_states);
 
-        $this->assertEquals($transitions, $actual_transitions, "Transitions do not match for user $user_var, state $entity_state.");
+        $this->assertEquals($expected_states, $actual_states, "Transitions do not match for user $user_var, state $entity_state.");
       }
     }
   }
@@ -122,30 +119,30 @@ class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase 
     return [
       '__new__' => [
         'userAuthenticated' => [
-          'validate',
+          'validated',
         ],
         'userModerator' => [
-          'validate',
+          'validated',
         ],
       ],
       'validated' => [
         'userAuthenticated' => [
-          'update_published',
-          'request_deletion',
+          'validated',
+          'deletion_request',
         ],
         'userModerator' => [
-          'update_published',
-          'request_changes',
-          'request_deletion',
+          'validated',
+          'needs_update',
+          'deletion_request',
         ],
       ],
       'needs_update' => [
         'userAuthenticated' => [
-          'update_changes',
+          'needs_update',
         ],
         'userModerator' => [
-          'update_changes',
-          'approve_changes',
+          'needs_update',
+          'validated',
         ],
       ],
     ];
