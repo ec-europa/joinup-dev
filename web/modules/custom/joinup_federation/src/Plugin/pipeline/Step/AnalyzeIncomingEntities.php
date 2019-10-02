@@ -322,11 +322,11 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   the last import.
    */
   protected function isSolutionChanged(array $entity_ids): bool {
-    /** @var \Drupal\rdf_entity\RdfInterface[] $solutions */
-    $solutions = $this->getRdfStorage()->loadMultiple($entity_ids, ['staging']);
+    /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
+    $entities = $this->getRdfStorage()->loadMultiple($entity_ids, ['staging']);
     $provenance_records = $this->provenanceHelper->loadOrCreateEntitiesActivity($entity_ids);
 
-    foreach ($solutions as $id => $solution) {
+    foreach ($entities as $id => $solution) {
       // Licences are stored in Joinup so changes do not affect incoming
       // solution.
       if ($solution->bundle() === 'licence') {
@@ -335,8 +335,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
 
       // Like the parent solution, if this is the first time the solution is
       // imported, the solution is marked as new.
-      if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('provenance_hash')
-        ->isEmpty()) {
+      if ($provenance_records[$id]->isNew() || $provenance_records[$id]->get('provenance_hash')->isEmpty()) {
         return TRUE;
       }
 
