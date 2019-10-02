@@ -1,0 +1,21 @@
+uuid: f89252ee-ec31-4212-9120-8c04274fa99d
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_legal
+    - text
+_core:
+  default_config_hash: LLOiHtMLRC9R71xD9I6XkG9uF2HYe7QvTh8KoeO6Q84
+id: entity_legal_document_version.entity_legal_document_text
+field_name: entity_legal_document_text
+entity_type: entity_legal_document_version
+type: text_with_summary
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: true
+custom_storage: false

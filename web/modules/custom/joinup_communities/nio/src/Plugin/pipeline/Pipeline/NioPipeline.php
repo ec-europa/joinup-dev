@@ -13,6 +13,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   steps = {
  *     "manual_upload",
  *     "remove_unsupported_data",
+ *     "spdx_to_joinup_licence",
  *     "add_joinup_vocabularies",
  *     "adms_validation",
  *     "analyze_incoming_entities",

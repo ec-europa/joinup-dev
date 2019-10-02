@@ -1,0 +1,23 @@
+uuid: 73318fd4-8837-41e8-b0c0-a8989912c35a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_copy
+    - message.template.contact_form_submission
+id: message.contact_form_submission.field_contact_copy
+field_name: field_contact_copy
+entity_type: message
+bundle: contact_form_submission
+label: 'Send yourself a copy'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

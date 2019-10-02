@@ -1,0 +1,11 @@
+uuid: 2d327abf-3cf9-4840-afa8-e2cc8ed887e2
+langcode: en
+status: true
+dependencies:
+  module:
+    - oe_webtools_geocoding
+id: webtools_geocoding
+label: 'Webtools Geocoding'
+plugin: webtools_geocoding
+configuration:
+  referer: 'https://joinup.ec.europa.eu/'

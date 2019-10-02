@@ -131,31 +131,34 @@ Feature: As a site moderator I am able to import RDF files.
       | creation date     | 15-07-2018                                 |
       | modification date | 15-07-2018                                 |
     And collection:
-      | uri        | http://administracionelectronica.gob.es/ctt |
-      | title      | Spain                                       |
-      | state      | validated                                   |
-      | affiliates | Local version of Solution 2                 |
+      | uri        | http://nio.gov.si/nio/      |
+      | title      | NIO                         |
+      | state      | validated                   |
+      | affiliates | Local version of Solution 2 |
     And the following collection user membership:
       | collection | user     | roles                      | state  |
-      | Spain      | CS Owner | facilitator, administrator | active |
+      | NIO        | CS Owner | facilitator, administrator | active |
     # Hash for 'Solution 2' includes the custom title 'Local version of solution 2' so that it will detect changes in
     # the first attempt.
     # Hash for 'Solution 3' is the one matching to the values from valid_adms.rdf.
     And provenance activities:
       | entity                        | enabled | associated with | author          | started          | hash                             |
-      | Local version of Solution 2   | yes     | Spain           | Antoine Batiste | 2012-07-07 23:01 | 35d6c55a727d10cbfd38f09db70b136d |
-      | http://example.com/solution/3 | no      | Spain           | Antoine Batiste | 2015-12-25 01:30 | e5e7aceb15c50ab628c744673daf5ca1 |
+      | Local version of Solution 2   | yes     | NIO             | Antoine Batiste | 2012-07-07 23:01 | 35d6c55a727d10cbfd38f09db70b136d |
+      | http://example.com/solution/3 | no      | NIO             | Antoine Batiste | 2015-12-25 01:30 | e5e7aceb15c50ab628c744673daf5ca1 |
+    Given SPDX licences:
+      | uri                                 | title       |
+      | http://spdx.org/licenses/Apache-2.0 | Apache 2    |
+      | http://spdx.org/licenses/MIT        | MIT License |
     # The license contained in valid_adms.rdf is named "A federated license".
-    # However, the goal is to not import or update any values in the license entity so
-    # the following license has different details.
-    And the following licence:
-      | uri         | http://example.com/license/1 |
-      | title       | Federated open license       |
-      | description | Licence agreement details    |
-      | type        | Public domain                |
+    # However, the goal is to not import or update any values in the license
+    # entity so the following licenses have different details.
+    And the following licences:
+      | uri                          | title                    | description               | type          | spdx licence |
+      | http://example.com/license/1 | Licence same as Apache 2 | Licence agreement details | Public domain | Apache 2     |
+      | http://example.com/license/2 | Licence same as MIT      | So on...                  | Public domain | MIT License  |
 
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
-    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I select "Slovenian Interoperability Portal - NIO: User selection" from "Data pipeline"
     And I press "Execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
@@ -163,7 +166,7 @@ Feature: As a site moderator I am able to import RDF files.
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
-    Then I should see "Spain - Center for Technology Transfer: User selection"
+    Then I should see "Slovenian Interoperability Portal - NIO: User selection"
     # Solution 1 is checked because it is new.
     And the row "Solution 1 [http://example.com/solution/1]" is checked
     And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1]" row
@@ -178,9 +181,9 @@ Feature: As a site moderator I am able to import RDF files.
     And I wait for the pipeline batch job to finish
 
     Then I should see the following success messages:
-      | success messages                                                                |
-      | The Spain - Center for Technology Transfer execution has finished with success. |
-    And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
+      | success messages                                                             |
+      | Slovenian Interoperability Portal - NIO execution has finished with success. |
+    And I should see the heading "Successfully executed Slovenian Interoperability Portal - NIO import pipeline"
 
     # Check how the provenance records were created/updated.
     Then the "Solution 1" entity is not blacklisted for federation
@@ -197,11 +200,11 @@ Feature: As a site moderator I am able to import RDF files.
     And the "http://example.com/distribution/4" entity is blacklisted for federation
 
     # License should be excluded from the import process.
-    And the "Federated open license" entity should not have a related provenance activity
+    And the "Licence same as Apache 2" entity should not have a related provenance activity
 
     # Check the affiliation of federated solutions.
-    But the "Solution 1" solution should be affiliated with the "Spain" collection
-    And the "Solution 2" solution should be affiliated with the "Spain" collection
+    But the "Solution 1" solution should be affiliated with the "NIO" collection
+    And the "Solution 2" solution should be affiliated with the "NIO" collection
 
     # Check that the existing solution values were overridden.
     Given I go to the "Solution 2" solution edit form
@@ -222,10 +225,17 @@ Feature: As a site moderator I am able to import RDF files.
     When I go to the "Windows" asset distribution
     Then I should see the heading "Solution 1"
 
+    # And the SPDX licence IDs were converted to Joinup licence IDs.
+    And I should see "Licence same as Apache 2"
+    When I go to the "Linux" asset distribution
+    And I should see "Licence same as Apache 2"
+    When I go to the "A standalone distribution" asset distribution
+    And I should see "Licence same as MIT"
+
     # Re-import.
     Given I am logged in as "Antoine Batiste"
     And I click "ADMS-AP importer" in the "Administration toolbar" region
-    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I select "Slovenian Interoperability Portal - NIO: User selection" from "Data pipeline"
     And I press "Execute"
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
@@ -233,7 +243,8 @@ Feature: As a site moderator I am able to import RDF files.
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
-    Then I should see "Spain - Center for Technology Transfer: User selection"
+<<<<<<< HEAD
+    Then I should see "Slovenian Interoperability Portal - NIO: User selection"
     # Solution 1 is unchecked because it is unchanged.
     And the row "Solution 1" is not checked
     # Solution 2 is unchecked because it is unchanged.
@@ -255,7 +266,7 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Contact" entity is not blacklisted for federation
 
     # Licenses should still be excluded from the import process.
-    And the "Federated open license" entity should not have a related provenance activity
+    And the "Licence same as Apache 2" entity should not have a related provenance activity
 
     # Unchanged solutions and dependencies do not become blacklisted if they are not federated.
     And the "Solution 1" entity is not blacklisted for federation
@@ -265,9 +276,9 @@ Feature: As a site moderator I am able to import RDF files.
     And the "Linux" entity is not blacklisted for federation
 
     # Check the affiliation of federated solutions.
-    And the "Solution 1" solution should be affiliated with the "Spain" collection
-    And the "Solution 2" solution should be affiliated with the "Spain" collection
-    And the "Solution 3" solution should be affiliated with the "Spain" collection
+    And the "Solution 1" solution should be affiliated with the "NIO" collection
+    And the "Solution 2" solution should be affiliated with the "NIO" collection
+    And the "Solution 3" solution should be affiliated with the "NIO" collection
 
     # Check that the Policy domain value was not overridden.
     Given I go to the "Solution 2" solution edit form

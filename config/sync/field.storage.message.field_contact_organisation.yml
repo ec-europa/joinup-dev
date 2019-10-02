@@ -1,0 +1,23 @@
+uuid: 8872c1d3-205d-4d1c-8849-18a9ee3ae547
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+_core:
+  default_config_hash: zlZ5yVGehWNDx4FxwSMxbkQx-XSWTrvXgeSRMBZgANY
+id: message.field_contact_organisation
+field_name: field_contact_organisation
+entity_type: message
+type: string
+settings:
+  max_length: 64
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

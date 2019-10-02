@@ -1,0 +1,25 @@
+uuid: 02831a17-a273-4849-8b9c-721f1f798a4f
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+    - taxonomy
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://www.w3.org/2002/07/owl#deprecated'
+        format: resource
+id: taxonomy_term.field_taxonomy_deprecated
+field_name: field_taxonomy_deprecated
+entity_type: taxonomy_term
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
