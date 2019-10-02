@@ -158,7 +158,7 @@ Feature: As a site moderator I am able to import RDF files.
       | http://example.com/licence/2 | Licence same as MIT      | So on...                  | Public domain | MIT License  |
 
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
-    And I select "Slovenian Interoperability Portal - NIO: User selection" from "Data pipeline"
+    And I select "Slovenian Interoperability Portal - NIO" from "Data pipeline"
     And I press "Execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
@@ -235,7 +235,7 @@ Feature: As a site moderator I am able to import RDF files.
     # Re-import.
     Given I am logged in as "Antoine Batiste"
     And I click "ADMS-AP importer" in the "Administration toolbar" region
-    And I select "Slovenian Interoperability Portal - NIO: User selection" from "Data pipeline"
+    And I select "Slovenian Interoperability Portal - NIO" from "Data pipeline"
     And I press "Execute"
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
