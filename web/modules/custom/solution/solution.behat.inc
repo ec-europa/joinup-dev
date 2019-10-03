@@ -611,13 +611,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a simple multilingual solution.
    *
-   * @Given the multilingual :title solution
+   * @Given the multilingual :title solution of :collection collection
    */
-  public function theMultilingualSolution($title) {
+  public function theMultilingualSolution(string $title, string $collection): void {
+    $collection = $this->getEntityByLabel('rdf_entity', $collection, 'collection');
     $values = [
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",
+      'collection' => $collection->id(),
     ];
     $solution = $this->createRdfEntity('solution', $values);
     // Fill with the specific content translation fields and fall-back to
@@ -633,7 +635,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Create the translation.
     $solution->addTranslation('ca', $solution_values)->save();
     $this->solutions[$solution->id()] = $solution;
-
   }
 
   /**
