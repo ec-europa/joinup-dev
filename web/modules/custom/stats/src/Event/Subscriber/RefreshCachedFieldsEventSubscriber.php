@@ -13,7 +13,6 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
@@ -27,8 +26,6 @@ use Matomo\ReportingApi\QueryInterface;
  * for nodes.
  */
 class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberBase {
-
-  use StringTranslationTrait;
 
   /**
    * The Matomo query factory.
@@ -98,14 +95,11 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     $errors = [];
     foreach ($items as $index => $expired_item) {
       $response_item = $response[$index];
-      // If an error occurs, the response for the expired item is an object and
-      // not an array of objects.
+      // If an error occurs, the response for the expired item is an object
+      // rather than an array of objects.
       if (is_object($response_item) && isset($response_item->result) && $response_item->result === 'error') {
-        $arguments = [
-          ':entity_id' => $expired_item->getEntityId(),
-          '@error' => $response_item->message,
-        ];
-        $errors[] = $this->t('Meta entity :entity_id, error: @error', $arguments);
+        $message = $response_item->message ?? '[unknown]';
+        $errors[$message][] = $expired_item->getEntityId();
         continue;
       }
       /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
@@ -122,7 +116,14 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     }
 
     if (!empty($errors)) {
-      $this->loggerFactory->get('joinup_stats')->error(implode("\n", $errors));
+      $stats_channel = $this->loggerFactory->get('joinup_stats');
+      foreach ($errors as $message => $ids) {
+        sort($ids, SORT_NUMERIC);
+        $stats_channel->error("Matomo error '@error' on meta entities: @ids.", [
+          '@error' => $message,
+          '@ids' => implode(', ', $ids),
+        ]);
+      }
     }
   }
 
