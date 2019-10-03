@@ -10,7 +10,6 @@ use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use weitzman\DrupalTestTraits\Entity\NodeCreationTrait;
 
 /**
@@ -133,10 +132,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ]);
 
           $non_allowed_roles = array_diff($test_roles, array_keys($allowed_roles));
-          foreach ($allowed_roles as $user_var => $expected_transitions) {
+          foreach ($allowed_roles as $user_var => $expected_states) {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
-            $allowed_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->{$user_var});
-            $this->assertTransitionsEqual($expected_transitions, $allowed_transitions, $message);
+            $actual_states = $this->workflowHelper->getAvailableStates($content, $this->{$user_var});
+            $this->assertWorkflowStatesEqual($expected_states, $actual_states, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
@@ -310,102 +309,102 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         self::PRE_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
           ],
           ELibraryCreationOptions::MEMBERS => [
             'userModerator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
             'userOgMember' => [
-              'save_as_draft',
-              'propose',
+              'draft',
+              'proposed',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
-              'propose',
+              'draft',
+              'proposed',
             ],
             'userModerator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
-              'propose',
+              'draft',
+              'proposed',
             ],
             'userOgMember' => [
-              'save_as_draft',
-              'propose',
+              'draft',
+              'proposed',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
           ],
         ],
         self::POST_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
           ],
           ELibraryCreationOptions::MEMBERS => [
             'userModerator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgMember' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userModerator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgMember' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
           ],
         ],
@@ -414,64 +413,64 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         self::PRE_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
-              'propose',
+              'draft',
+              'proposed',
             ],
             'userModerator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
-              'propose',
+              'draft',
+              'proposed',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'propose',
-              'publish',
+              'draft',
+              'proposed',
+              'validated',
             ],
           ],
         ],
         self::POST_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userModerator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgAdministrator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
             'userOgFacilitator' => [
-              'save_as_draft',
-              'publish',
+              'draft',
+              'validated',
             ],
           ],
         ],
@@ -1018,27 +1017,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       ELibraryCreationOptions::MEMBERS,
       ELibraryCreationOptions::REGISTERED_USERS,
     ];
-  }
-
-  /**
-   * Asserts that two transition arrays are equal.
-   *
-   * @param array $expected
-   *   The expected transitions as a list of Ids.
-   * @param \Drupal\state_machine\Plugin\Workflow\WorkflowTransition[] $actual
-   *   The actual transitions.
-   * @param string $message
-   *   A message to show to the assertion.
-   */
-  protected function assertTransitionsEqual(array $expected, array $actual, $message = ''): void {
-    $actual = array_map(function (WorkflowTransition $transition) {
-      return $transition->getId();
-    }, $actual);
-    $actual = array_values($actual);
-    sort($actual);
-    sort($expected);
-
-    $this->assertEquals($expected, $actual, $message);
   }
 
   /**
