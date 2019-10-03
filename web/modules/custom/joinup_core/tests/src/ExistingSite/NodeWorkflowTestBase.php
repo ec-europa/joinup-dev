@@ -310,42 +310,52 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         self::PRE_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
           ],
           ELibraryCreationOptions::MEMBERS => [
             'userModerator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgMember' => [
+              'save_as_draft',
               'propose',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
+              'save_as_draft',
               'propose',
             ],
             'userModerator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgAdministrator' => [
+              'save_as_draft',
               'propose',
             ],
             'userOgMember' => [
+              'save_as_draft',
               'propose',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
@@ -354,37 +364,47 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         self::POST_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'publish',
             ],
           ],
           ELibraryCreationOptions::MEMBERS => [
             'userModerator' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgMember' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
+              'save_as_draft',
               'publish',
             ],
             'userModerator' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgAdministrator' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgMember' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'publish',
             ],
           ],
@@ -394,26 +414,32 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         self::PRE_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
+              'save_as_draft',
               'propose',
             ],
             'userModerator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
             'userOgAdministrator' => [
+              'save_as_draft',
               'propose',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'propose',
               'publish',
             ],
@@ -422,23 +448,29 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         self::POST_MODERATION => [
           ELibraryCreationOptions::FACILITATORS => [
             'userModerator' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'publish',
             ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
+              'save_as_draft',
               'publish',
             ],
             'userModerator' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgAdministrator' => [
+              'save_as_draft',
               'publish',
             ],
             'userOgFacilitator' => [
+              'save_as_draft',
               'publish',
             ],
           ],
