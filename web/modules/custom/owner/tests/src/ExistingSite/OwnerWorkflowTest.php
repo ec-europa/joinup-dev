@@ -278,7 +278,7 @@ class OwnerWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         ],
         'userModerator' => [
           'validated',
-          'request_changes',
+          'needs_update',
           'deletion_request',
         ],
       ],
