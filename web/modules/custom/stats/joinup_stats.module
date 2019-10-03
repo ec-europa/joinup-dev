@@ -7,11 +7,13 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\meta_entity\Entity\MetaEntity;
+use Drupal\meta_entity\Entity\MetaEntityInterface;
 
 /**
  * Implements hook_entity_insert().
@@ -33,6 +35,23 @@ function joinup_stats_entity_insert(EntityInterface $entity): void {
       if ($meta_entity->isNew()) {
         $meta_entity->save();
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_stats_meta_entity_update(MetaEntityInterface $meta_entity) {
+  if ($meta_entity->bundle() === 'download_count') {
+    /** @var \Drupal\rdf_entity\RdfInterface $distribution */
+    $distribution = $meta_entity->getTargetEntity();
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    if ($solution = $distribution->get('og_audience')->entity) {
+      // On solution page we show the sum of all compounded distributions
+      // download count. When a distribution download count changes, we need to
+      // recompute the value by invalidating the cached render array.
+      Cache::invalidateTags(['solution_download_count:' . md5($solution->id())]);
     }
   }
 }

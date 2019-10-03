@@ -255,6 +255,12 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       0 => ['#markup' => (string) $total],
       // Hide the download stats when there are no downloads.
       '#access' => $total > 0,
+      '#cache' => [
+        // Allow clearing the render cache of this element. By using a dedicated
+        // cache tag, we avoid invalidating the solution tag, that would result
+        // in clearing too many cache entries.
+        'tags' => ['solution_download_count:' . md5($entity->id())],
+      ],
     ];
   }
 
