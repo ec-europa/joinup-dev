@@ -23,6 +23,7 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -735,6 +736,43 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $tile = $this->getTileByHeading($heading);
     $elements = $tile->findAll('xpath', '//span[contains(@class, "icon--download")]');
     Assert::assertEmpty($elements);
+  }
+
+  /**
+   * Sets the visit or download count for a given entity to a certain value.
+   *
+   * @param string $type
+   *   The type of counter: 'download' or 'visit'.
+   * @param string $target_entity_label
+   *   The target entit label.
+   * @param string $counter
+   *   The counter to be set.
+   *
+   * @throws \Exception
+   *   When:
+   *   - An invalid $type was specified.
+   *   - The entity with $target_entity_label doesn't exists.
+   *   - A related meta entity doesn't exist.
+   *
+   * @Given the :type count of :target_entity_label is :count
+   */
+  public function setDownloadCountForEntity(string $type, string $target_entity_label, string $count): void {
+    if (!in_array($type, ['download', 'visit'])) {
+      throw new \Exception("Type should be 'download' or 'visit' but '{$type}' was given.");
+    }
+
+    $target_entity_type_id = $type === 'visit' ? 'node' : 'rdf_entity';
+    $field_name = "{$type}_count";
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $target_entity */
+    $target_entity = $this->getEntityByLabel($target_entity_type_id, $target_entity_label);
+
+    /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+    $meta_entity = $target_entity->{$field_name}->entity;
+    if (!$meta_entity) {
+      throw new \Exception("The '{$target_entity_label}' doesn't have a related meta entity.");
+    }
+
+    $meta_entity->set('count', (int) $count)->save();
   }
 
 }

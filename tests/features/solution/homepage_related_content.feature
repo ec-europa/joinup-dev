@@ -35,6 +35,7 @@ Feature: Solution homepage
       | title               | document type | short title | created           | body                    | spatial coverage | policy domain | solution                     | state     |
       | IS protocol draft 2 | Document      | IS draft 2  | 2018-10-04 8:08am | Next proposition draft. | European Union   | E-inclusion   | Information sharing protocol | validated |
 
+  @clearStaticCache
   Scenario: The solution homepage shows related content.
     When I go to the homepage of the "Information sharing protocol" solution
     # I should see only the related release.
@@ -61,6 +62,12 @@ Feature: Solution homepage
     And I should not see the "Information sharing protocol" tile
     # The total downloads of the 3 distributions should be shown.
     And I should see the text "1667"
+
+    # Test that the solution download counter is updating.
+    Given the download count of "PDF version" is 1589
+    When I reload the page
+    Then I should not see the text "1667"
+    But I should see the text "2667"
 
     # Test the filtering on the content type facet.
     When I click the Distribution content tab
