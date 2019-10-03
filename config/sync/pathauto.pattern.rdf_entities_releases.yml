@@ -8,16 +8,16 @@ dependencies:
 id: rdf_entities_releases
 label: 'Rdf entities - releases'
 type: rdf_entity
-pattern: 'solution/[rdf_entity:field_isr_is_version_of:entity:label]/release/[rdf_entity:field_isr_release_number]'
+pattern: 'collection/[rdf_entity:collection]/solution/[rdf_entity:field_isr_is_version_of:entity:label]/release/[rdf_entity:field_isr_release_number]'
 selection_criteria:
-  5a8a721e-7acc-46ac-8822-90b177ed44e3:
+  1c9031b6-b93c-4107-b630-2007f593a5d4:
     id: 'entity_bundle:rdf_entity'
     bundles:
       asset_release: asset_release
     negate: false
     context_mapping:
       rdf_entity: rdf_entity
-    uuid: 5a8a721e-7acc-46ac-8822-90b177ed44e3
+    uuid: 1c9031b6-b93c-4107-b630-2007f593a5d4
 selection_logic: and
-weight: -5
+weight: -7
 relationships: {  }

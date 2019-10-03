@@ -1,0 +1,23 @@
+uuid: bad8ecc0-be95-4051-ac66-685f084562d9
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - rdf_entity
+id: rdf_entities_solutions
+label: 'Rdf entities - solutions'
+type: rdf_entity
+pattern: 'collection/[rdf_entity:collection]/solution/[rdf_entity:label]'
+selection_criteria:
+  e4a460f2-46da-49d0-abae-c8a7643ef0d1:
+    id: 'entity_bundle:rdf_entity'
+    bundles:
+      solution: solution
+    negate: false
+    context_mapping:
+      rdf_entity: rdf_entity
+    uuid: e4a460f2-46da-49d0-abae-c8a7643ef0d1
+selection_logic: and
+weight: -6
+relationships: {  }

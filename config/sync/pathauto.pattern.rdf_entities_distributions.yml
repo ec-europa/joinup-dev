@@ -19,5 +19,5 @@ selection_criteria:
       rdf_entity: rdf_entity
     uuid: 2a26dbd0-fa08-4994-83ac-2cbbfbe3a230
 selection_logic: and
-weight: -5
+weight: -8
 relationships: {  }
