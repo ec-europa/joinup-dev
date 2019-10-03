@@ -125,7 +125,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($current_user_id)
-        ->set('provenance_enabled', $ids[$id] || isset($unchanged_ids[$id]))
+        ->set('provenance_enabled', isset($ids[$id]) || isset($unchanged_ids[$id]))
         ->set('provenance_associated_with', $collection_id)
         ->set('provenance_hash', $this->getEntityHash($id))
         ->save();

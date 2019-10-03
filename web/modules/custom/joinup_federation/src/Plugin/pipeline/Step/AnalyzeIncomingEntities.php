@@ -326,10 +326,10 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     $entities = $this->getRdfStorage()->loadMultiple($entity_ids, ['staging']);
     $provenance_records = $this->provenanceHelper->loadOrCreateEntitiesActivity($entity_ids);
 
-    foreach ($entities as $id => $solution) {
+    foreach ($entities as $id => $entity) {
       // Licences are stored in Joinup so changes do not affect incoming
       // solution.
-      if ($solution->bundle() === 'licence') {
+      if ($entity->bundle() === 'licence') {
         continue;
       }
 
