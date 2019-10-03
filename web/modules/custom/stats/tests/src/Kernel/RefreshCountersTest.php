@@ -39,6 +39,7 @@ class RefreshCountersTest extends KernelTestBase {
     'matomo_reporting_api',
     'meta_entity',
     'node',
+    'og',
     'rdf_entity',
     'sparql_entity_storage',
     'system',
@@ -173,12 +174,18 @@ class RefreshCountersTest extends KernelTestBase {
     return [
       'rdf_entity' => [
         [
+          'id' => 'http://example.com/solution/1',
+          'rid' => 'solution',
+          'label' => 'Solution 1',
+        ],
+        [
           'id' => 'http://example.com/distro/1',
           'rid' => 'asset_distribution',
           'label' => 'Distro 1',
           'field_ad_access_url' => File::create([
             'uri' => 'public://d1',
           ]),
+          'og_audience' => 'http://example.com/solution/1',
         ],
         [
           'id' => 'http://example.com/distro/2',

@@ -1,13 +1,11 @@
-langcode: en
-status: true
 dependencies:
   config:
     - sparql_entity_storage.graph.default
-    - rdf_entity.rdfentity.asset_distribution
-id: rdf_entity.asset_distribution
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution
 entity_type_id: rdf_entity
-bundle: asset_distribution
-rdf_type: 'http://www.w3.org/ns/dcat#Distribution'
+bundle: solution
+rdf_type: 'http://www.w3.org/ns/dcat#Dataset'
 base_fields_mapping:
   rid:
     target_id:
@@ -26,5 +24,5 @@ base_fields_mapping:
       predicate: 'http://purl.org/dc/terms/modified'
       format: 'xsd:dateTime'
 graph:
-  default: 'http://example.com/asset_distribution/graph'
+  default: 'http://joinup.eu/solution/published'
 entity_id_plugin: default
