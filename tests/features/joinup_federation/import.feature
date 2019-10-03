@@ -256,7 +256,8 @@ Feature: As a site moderator I am able to import RDF files.
     And I wait for the pipeline batch job to finish
 
     # Check how the provenance records were updated.
-    Then the "Solution 2" entity is not blacklisted for federation
+    Then I should see the heading "Successfully executed Slovenian Interoperability Portal - NIO import pipeline"
+    And the "Solution 2" entity is not blacklisted for federation
     And the "Solution 3" entity is not blacklisted for federation
     And the "MacOS" entity is not blacklisted for federation
     And the "A standalone distribution" entity is not blacklisted for federation

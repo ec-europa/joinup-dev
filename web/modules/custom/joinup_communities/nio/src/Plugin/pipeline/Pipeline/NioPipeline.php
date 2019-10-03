@@ -13,10 +13,10 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   steps = {
  *     "manual_upload",
  *     "remove_unsupported_data",
- *     "spdx_to_joinup_licence",
  *     "add_joinup_vocabularies",
  *     "adms_validation",
  *     "analyze_incoming_entities",
+ *     "spdx_to_joinup_licence",
  *     "user_selection_filter",
  *     "3_way_merge",
  *     "broken_references",
