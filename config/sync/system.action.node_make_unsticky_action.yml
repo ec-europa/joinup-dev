@@ -10,4 +10,5 @@ id: node_make_unsticky_action
 label: 'Make content unsticky'
 type: node
 plugin: node_make_unsticky_action
+weight: 0
 configuration: {  }

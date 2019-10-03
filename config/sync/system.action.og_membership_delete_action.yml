@@ -10,4 +10,5 @@ id: og_membership_delete_action
 label: 'Delete the selected membership(s)'
 type: og_membership
 plugin: og_membership_delete_action
+weight: 3
 configuration: {  }

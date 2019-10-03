@@ -5,14 +5,13 @@ dependencies:
   config:
     - field.storage.rdf_entity.field_ad_licence
     - rdf_entity.rdfentity.asset_distribution
-_core:
-  default_config_hash: bS3_nhrZYUaGen7ScnEX9ePO-CgzvQI1_bBEZ_xn8kQ
+    - rdf_entity.rdfentity.licence
 id: rdf_entity.asset_distribution.field_ad_licence
 field_name: field_ad_licence
 entity_type: rdf_entity
 bundle: asset_distribution
-label: License
-description: 'If you cannot find the desired license in the list above, please request a new one by <a href="/contact?category=legal">contacting us</a>.'
+label: Licence
+description: 'If you cannot find the desired licence in the list above, please request a new one by <a href="/contact?category=legal">contacting us</a>.'
 required: true
 translatable: false
 default_value: {  }
