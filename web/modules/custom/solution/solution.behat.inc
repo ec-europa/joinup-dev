@@ -23,7 +23,6 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
-use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
@@ -745,7 +744,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *   The type of counter: 'download' or 'visit'.
    * @param string $target_entity_label
    *   The target entit label.
-   * @param string $counter
+   * @param string $count
    *   The counter to be set.
    *
    * @throws \Exception
