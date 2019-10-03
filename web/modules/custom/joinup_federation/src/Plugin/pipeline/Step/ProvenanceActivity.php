@@ -106,6 +106,10 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    */
   public function execute() {
     $this->loadSolutionDependencyStructure();
+    // The $ids is an array of booleans indexed by an entity id. The boolean
+    // represents whether the user has selected the entity - or its
+    // corresponding solution - for import. All entities are listed since even
+    // blacklisted entities have to have their provenance activity updated.
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
 
     // Get all entities that are unchanged by fetching the dependencies of the
@@ -125,7 +129,10 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($current_user_id)
-        ->set('provenance_enabled', isset($ids[$id]) || isset($unchanged_ids[$id]))
+        // The entity is marked as enabled if the user has selected it for
+        // import or has not been imported as unchanged. Otherwise, it is marked
+        // as disabled - blacklisted.
+        ->set('provenance_enabled', $ids[$id] || isset($unchanged_ids[$id]))
         ->set('provenance_associated_with', $collection_id)
         ->set('provenance_hash', $this->getEntityHash($id))
         ->save();
