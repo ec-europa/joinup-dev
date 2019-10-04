@@ -1578,8 +1578,8 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
  */
 function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables) {
   // Add a flag to indicate if the download counter is visible.
-  if (isset($variables['elements']['downloads'][0]['#access'])) {
-    $variables['show_download_counter'] = $variables['elements']['downloads'][0]['#access'];
+  if (isset($variables['elements']['downloads']['count']['#access'])) {
+    $variables['show_download_counter'] = $variables['elements']['downloads']['count']['#access'];
   }
 }
 

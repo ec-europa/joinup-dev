@@ -251,7 +251,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     // @see joinup_theme_preprocess_container__stats_topic()
     $build['downloads'] = [
       '#type' => 'container',
-      [
+      'count' => [
         '#type' => 'container',
         '#stats_topic' => t('Downloads'),
         [
