@@ -23,10 +23,10 @@ use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -235,7 +235,6 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   // @todo Add the `og-group-content` cache tag because the downloads are
   //   contained in the distribution entities which is group content.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
-  $solution_tag = 'solution_download_count:' . md5($entity->id());
   if ($display->getComponent('download_total')) {
     $total = 0;
     if (!$entity->isNew()) {
@@ -246,34 +245,30 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       }
     }
 
-    if ($total > 0) {
-      // The '#stats_topic' property is used as the label for the statistic, and
-      // to set a template suggestion for the container.
-      // @see joinup_theme_theme_suggestions_alter()
-      // @see joinup_theme_preprocess_container__stats_topic()
-      $build['downloads'] = [
+    // The '#stats_topic' property is used as the label for the statistic, and
+    // to set a template suggestion for the container.
+    // @see joinup_theme_theme_suggestions_alter()
+    // @see joinup_theme_preprocess_container__stats_topic()
+    $build['downloads'] = [
+      '#type' => 'container',
+      [
         '#type' => 'container',
         '#stats_topic' => t('Downloads'),
-        0 => ['#markup' => (string) $total],
+        [
+          '#markup' => $total,
+        ],
         // Hide the download stats when there are no downloads.
-        '#cache' => [
-          // Allow clearing the render cache of this element. By using a
-          // dedicated cache tag, we avoid invalidating the solution tag, that
-          // would result in clearing too many cache entries.
-          'tags' => [$solution_tag],
-        ],
-      ];
-    }
-    else {
-      // Add an empty element even if there are no downloads for the solution to
-      // allow the build to be properly invalidated when needed.
-      $build['downloads'] = [
-        '#type' => 'hidden',
-        '#cache' => [
-          'tags' => [$solution_tag],
-        ],
-      ];
-    }
+        '#access' => $total > 0,
+      ],
+      '#cache' => [
+        // Allow clearing the render cache of this element. By using a dedicated
+        // cache tag, we avoid invalidating the solution tag as that would
+        // result in clearing of too many cache entries. We're applying the
+        // cache tag to an outer wrapper so that, when the inner element is not
+        // rendered ($total === 0), the cache tag also bubbles up to the page.
+        'tags' => ['solution_download_count:' . md5($entity->id())],
+      ],
+    ];
   }
 
   // Show the collection the solution belongs to. A solution can be affiliated
