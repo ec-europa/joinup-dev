@@ -51,9 +51,9 @@ Feature:
     When I go to the "Pathauto collection" collection
     Then the url should match "collection/pathauto-collection"
     When I go to the "Pathauto solution" solution
-    Then the url should match "solution/pathauto-solution"
+    Then the url should match "collection/pathauto-collection/solution/pathauto-solution"
     When I go to the "Pathauto release" release
-    Then the url should match "solution/pathauto-solution/release/23"
+    Then the url should match "collection/pathauto-collection/solution/pathauto-solution/release/23"
     When I go to the "Pathauto distribution" distribution
     Then the url should match "solution/pathauto-solution/distribution/pathauto-distribution"
     When I visit the "Pathauto document" document
