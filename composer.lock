@@ -2457,6 +2457,48 @@
             }
         },
         {
+            "name": "drupal/antibot",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/antibot.git",
+                "reference": "77bb7c076d3360fba0d78014e0fc62fab1f16ce4"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.2+9-dev",
+                    "datestamp": "1569922085",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mstef",
+                    "homepage": "https://www.drupal.org/user/107190"
+                }
+            ],
+            "description": "Prevent forms from being submitted without JavaScript enabled",
+            "homepage": "https://www.drupal.org/project/antibot",
+            "support": {
+                "source": "https://git.drupalcode.org/project/antibot"
+            },
+            "time": "2019-10-01T12:03:38+00:00"
+        },
+        {
             "name": "drupal/cached_computed_field",
             "version": "1.0.0-beta4",
             "source": {
@@ -15731,6 +15773,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/antibot": 20,
         "drupal/config_exclude": 20,
         "drupal/config_ignore": 20,
         "drupal/config_update": 20,
