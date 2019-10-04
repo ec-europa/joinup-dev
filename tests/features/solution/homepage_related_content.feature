@@ -68,6 +68,18 @@ Feature: Solution homepage
     When I reload the page
     Then I should not see the text "1667"
     But I should see the text "2667"
+    # Reset all compounded distribution download counters to 0.
+    Given the download count of "PDF version" is 0
+    And the download count of "ZIP version" is 0
+    And the download count of "Protocol draft" is 0
+    When I reload the page
+    Then I should not see "Downloads"
+    # Restore counters to their original values.
+    Given the download count of "PDF version" is 589
+    And the download count of "ZIP version" is 514
+    And the download count of "Protocol draft" is 564
+    When I reload the page
+    Then I should see "1667"
 
     # Test the filtering on the content type facet.
     When I click the Distribution content tab
