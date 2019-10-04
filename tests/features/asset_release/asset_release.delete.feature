@@ -12,13 +12,17 @@ Feature: Asset release "delete" functionality.
       | name        | Yet another contact |
       | email       | yetanothercontact@example.com |
       | Website URL | http://example.com         |
+    And the following collection:
+      | title | The Big Collection |
+      | state | validated          |
     And the following solution:
-      | title               | Yet another solution |
-      | description         | Bored of finding new texts     |
-      | documentation       | text.pdf                |
+      | title               | Yet another solution       |
+      | description         | Bored of finding new texts |
+      | documentation       | text.pdf                   |
       | owner               | Yet another owner          |
       | contact information | Yet another contact        |
-      | state               | validated               |
+      | state               | validated                  |
+      | collection          | The Big Collection         |
     And the following release:
       | title               | Yet another release |
       | description         | A sample release           |
@@ -36,4 +40,4 @@ Feature: Asset release "delete" functionality.
     And I go to the "Yet another release" release edit form
     And I click "Delete"
     And I press "Delete"
-    Then I should be on "/solution/yet-another-solution"
+    Then I should be on "/collection/big-collection/solution/yet-another-solution"

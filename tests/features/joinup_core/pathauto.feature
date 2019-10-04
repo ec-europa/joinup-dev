@@ -5,15 +5,15 @@ Feature:
   I need to have url aliases generated automatically.
 
   Scenario: Entities should have distinct pathauto aliases.
-    Given the following solution:
-      | title       | Pathauto solution |
-      | description | Pathauto solution |
-      | state       | validated         |
-    And the following collection:
-      | title      | Pathauto collection |
-      | logo       | logo.png            |
-      | affiliates | Pathauto solution   |
-      | state      | validated           |
+    Given the following collection:
+      | title | Pathauto collection |
+      | logo  | logo.png            |
+      | state | validated           |
+    And the following solution:
+      | title       | Pathauto solution   |
+      | description | Pathauto solution   |
+      | state       | validated           |
+      | collection  | Pathauto collection |
     And the following release:
       | title          | Pathauto release  |
       | release number | 23                |
@@ -51,11 +51,11 @@ Feature:
     When I go to the "Pathauto collection" collection
     Then the url should match "collection/pathauto-collection"
     When I go to the "Pathauto solution" solution
-    Then the url should match "solution/pathauto-solution"
+    Then the url should match "collection/pathauto-collection/solution/pathauto-solution"
     When I go to the "Pathauto release" release
-    Then the url should match "solution/pathauto-solution/release/23"
+    Then the url should match "collection/pathauto-collection/solution/pathauto-solution/release/23"
     When I go to the "Pathauto distribution" distribution
-    Then the url should match "solution/pathauto-solution/distribution/pathauto-distribution"
+    Then the url should match "collection/pathauto-collection/solution/pathauto-solution/distribution/pathauto-distribution"
     When I visit the "Pathauto document" document
     Then the url should match "collection/pathauto-collection/document/pathauto-document"
     When I visit the "Pathauto document 2" document

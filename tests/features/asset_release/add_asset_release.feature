@@ -5,11 +5,15 @@ Feature: "Add release" visibility options.
   I need to be able to add "Release" rdf entities through UI.
 
   Scenario: "Add release" button should only be shown to solution facilitators.
-    Given the following solution:
-      | title         | Release solution test |
-      | description   | My awesome solution   |
-      | documentation | text.pdf              |
-      | state         | validated             |
+    Given the following collection:
+      | title | Release collection test |
+      | state | validated               |
+    And the following solution:
+      | title         | Release solution test   |
+      | collection    | Release collection test |
+      | description   | My awesome solution     |
+      | documentation | text.pdf                |
+      | state         | validated               |
 
     When I am logged in as a "facilitator" of the "Release solution test" solution
     And I go to the homepage of the "Release solution test" solution
@@ -29,9 +33,12 @@ Feature: "Add release" visibility options.
     Given the following owner:
       | name                 | type    |
       | Organisation example | Company |
+    And the following collection:
+      | title | Release collection test |
+      | state | validated               |
     And the following solutions:
-      | title          | description        | documentation | owner                | state     |
-      | Release Test 1 | test description 1 | text.pdf      | Organisation example | validated |
+      | title          | collection              | description        | documentation | owner                | state     |
+      | Release Test 1 | Release collection test | test description 1 | text.pdf      | Organisation example | validated |
     And the following release:
       | title             | Chasing shadows |
       | is version of     | Release Test 1  |

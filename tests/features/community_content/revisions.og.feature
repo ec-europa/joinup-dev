@@ -13,8 +13,9 @@ Feature: Revision permissions support in OG
       | title | Mechanics 101 |
       | state | validated     |
     And the following solution:
-      | title | Carpenters DIY |
-      | state | validated      |
+      | title      | Carpenters DIY |
+      | state      | validated      |
+      | collection | Mechanics 101  |
     And collection user membership:
       | collection    | user         |
       | Mechanics 101 | Ainslee Hext |

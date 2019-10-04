@@ -14,8 +14,17 @@ Feature: In order to avoid users changing federated values
       | title       | A federated licence       |
       | description | Licence agreement details |
       | type        | Public domain             |
+    And the following collection:
+      | title               | A federated collection   |
+      | logo                | logo.png                 |
+      | moderation          | yes                      |
+      | owner               | John Federator           |
+      | contact information | John Federator's contact |
+      | elibrary creation   | facilitators             |
+      | state               | validated                |
     And the following solution:
       | title               | A federated solution                 |
+      | collection          | A federated collection               |
       | description         | This is a federated solution         |
       | owner               | John Federator                       |
       | contact information | John Federator's contact             |
@@ -26,15 +35,6 @@ Feature: In order to avoid users changing federated values
       | webdav url          | http://joinup.eu/solution/foo/webdav |
       | wiki                | http://example.wiki/foobar/wiki      |
       | state               | validated                            |
-    And the following collection:
-      | title               | A federated collection   |
-      | logo                | logo.png                 |
-      | moderation          | yes                      |
-      | owner               | John Federator           |
-      | contact information | John Federator's contact |
-      | elibrary creation   | facilitators             |
-      | affiliates          | A federated solution     |
-      | state               | validated                |
     And the following release:
       | title          | A federated release         |
       | description    | This is a federated release |

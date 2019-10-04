@@ -12,6 +12,9 @@ Feature: "Edit" visibility options.
       | name        | Awesome contact            |
       | email       | awesomecontact@example.com |
       | Website URL | http://example.com         |
+    And the following collection:
+      | title | The Big Collection |
+      | state | validated          |
     And the following solution:
       | title               | My awesome solution abc |
       | description         | My awesome solution     |
@@ -19,6 +22,7 @@ Feature: "Edit" visibility options.
       | owner               | Awesome person          |
       | contact information | Awesome contact         |
       | state               | validated               |
+      | collection          | The Big Collection      |
     And the following release:
       | title               | My awesome solution abc v1 |
       | description         | A sample release           |
