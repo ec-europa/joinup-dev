@@ -55,7 +55,7 @@ Feature:
     When I go to the "Pathauto release" release
     Then the url should match "collection/pathauto-collection/solution/pathauto-solution/release/23"
     When I go to the "Pathauto distribution" distribution
-    Then the url should match "solution/pathauto-solution/distribution/pathauto-distribution"
+    Then the url should match "collection/pathauto-collection/solution/pathauto-solution/distribution/pathauto-distribution"
     When I visit the "Pathauto document" document
     Then the url should match "collection/pathauto-collection/document/pathauto-document"
     When I visit the "Pathauto document 2" document
