@@ -722,9 +722,85 @@ function joinup_core_post_update_0_fix_publication_dates() {
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $connection = \Drupal::database();
   $connection->update($node_storage->getDataTable())
-    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->fields(['published_at' => NULL])
     ->execute();
   $connection->update($node_storage->getRevisionDataTable())
-    ->expression('published_at', PUBLICATION_DATE_DEFAULT)
+    ->fields(['published_at' => NULL])
     ->execute();
+}
+
+/**
+ * Reset the publication dates again.
+ */
+function joinup_core_post_update_refix_publication_dates() {
+  $connection = Database::getConnection();
+
+  // Clean up the values from the database and start anew.
+  joinup_core_post_update_0_fix_publication_dates();
+
+  // The upstream update path is using the `changed` timestamp in order to
+  // update the publication timestamp. However, we already have a way of
+  // accurately tracking it, the `created` property. We already update the
+  // `created` property during the initial publication so by reproducing the
+  // upstream queries but having the `created` property used instead, we
+  // properly set the publication date.
+  $queries = [
+    // Update nodes with multiple revisions that have at least one published
+    // revision so the publication date is set to the created timestamp of the
+    // first published revision.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_revision} r, (
+  SELECT
+    nid,
+    MIN(vid) as vid,
+    MIN(created) as created
+  FROM {node_field_revision}
+  WHERE status = 1
+  GROUP BY nid
+  ORDER BY vid
+) s
+SET r.published_at = s.created
+WHERE r.nid = s.nid AND r.vid >= s.vid;
+SQL
+      ,
+      'arguments' => [],
+    ],
+
+    // Set the remainder of the publication dates in the revisions table to the
+    // default timestamp. This applies to all revisions that were created before
+    // the node was first published.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_revision} r
+SET r.published_at = :default_timestamp
+WHERE r.published_at IS NULL;
+SQL
+      ,
+      'arguments' => [':default_timestamp' => PUBLICATION_DATE_DEFAULT],
+    ],
+
+    // Copy the publication date from the revisions table to the node table.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_data} d, {node_field_revision} r
+SET d.published_at = r.published_at
+WHERE d.vid = r.vid;
+SQL
+      ,
+      'arguments' => [],
+    ],
+  ];
+
+  // Perform the operations in a single atomic transaction.
+  $transaction = $connection->startTransaction();
+  try {
+    foreach ($queries as $query_data) {
+      \Drupal::database()->query($query_data['query'], $query_data['arguments']);
+    }
+  }
+  catch (Exception $e) {
+    $transaction->rollBack();
+    throw new Exception('Database error', 0, $e);
+  }
 }

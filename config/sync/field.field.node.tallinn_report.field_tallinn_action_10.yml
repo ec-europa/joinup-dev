@@ -1,0 +1,19 @@
+uuid: 84098de2-9377-4ea1-a19c-6f23e6c72381
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_10
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_10
+field_name: field_tallinn_action_10
+entity_type: node
+bundle: tallinn_report
+label: 'Use across sectors of eIDAS regulation'
+description: 'Speed up preparations in our countries to ensure timely implementation and promote the widespread  se across sectors of the Regulation on electronic identification (eID) and trust services for electronic transactions in the internal market (eIDAS)10, including to undertake the voluntary notification of electronic identity schemes used for access to public services at earliest possibility.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

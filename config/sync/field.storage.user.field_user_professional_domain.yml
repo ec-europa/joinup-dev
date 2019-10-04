@@ -1,0 +1,22 @@
+uuid: a7d697f8-11f5-4649-bb33-7cf8c1934650
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+    - user
+_core:
+  default_config_hash: bb24vTT0UnwjoyNM1jMMEr5aRoxP8PPJgOXC-P4z2c8
+id: user.field_user_professional_domain
+field_name: field_user_professional_domain
+entity_type: user
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

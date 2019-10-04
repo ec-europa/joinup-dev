@@ -44,6 +44,13 @@ class EuplSubContext extends DrupalSubContextBase {
       'field_owner_name' => 'Owner',
     ])->save();
 
+    Rdf::create([
+      'rid' => 'solution',
+      'id' => Eupl::JLA_SOLUTION,
+      'label' => 'Joinup Licensing Assistant',
+      'field_is_state' => 'validated',
+    ])->save();
+
     // Create the EUPL entity.
     Rdf::create([
       'rid' => 'collection',
@@ -51,6 +58,7 @@ class EuplSubContext extends DrupalSubContextBase {
       'label' => 'EUPL',
       'field_ar_state' => 'validated',
       'field_ar_owner' => 'http://example.com/owner',
+      'field_ar_affiliates' => [Eupl::JLA_SOLUTION],
     ])->save();
 
     // The 'Implementation monitoring' standard custom page.
@@ -59,7 +67,7 @@ class EuplSubContext extends DrupalSubContextBase {
       'type' => 'custom_page',
       'uuid' => '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41',
       'title' => 'JLA',
-      'og_audience' => Eupl::EUPL_COMMUNITY_ID,
+      'og_audience' => Eupl::JLA_SOLUTION,
     ])->save();
   }
 
@@ -125,6 +133,10 @@ class EuplSubContext extends DrupalSubContextBase {
     $collection = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
     $collection->skip_notification = TRUE;
     $collection->delete();
+
+    $solution = Rdf::load(Eupl::JLA_SOLUTION);
+    $solution->skip_notification = TRUE;
+    $solution->delete();
 
     Rdf::load('http://example.com/owner')->delete();
   }

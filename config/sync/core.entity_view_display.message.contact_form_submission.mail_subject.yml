@@ -1,0 +1,39 @@
+uuid: 4b9943d4-69ff-47f7-ba30-e0f8167808a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.contact_form_submission.field_contact_attachment
+    - field.field.message.contact_form_submission.field_contact_category
+    - field.field.message.contact_form_submission.field_contact_copy
+    - field.field.message.contact_form_submission.field_contact_email
+    - field.field.message.contact_form_submission.field_contact_first_name
+    - field.field.message.contact_form_submission.field_contact_last_name
+    - field.field.message.contact_form_submission.field_contact_message
+    - field.field.message.contact_form_submission.field_contact_organisation
+    - field.field.message.contact_form_submission.field_contact_subject
+    - field.field.message.contact_form_submission.field_contact_url
+    - message.template.contact_form_submission
+id: message.contact_form_submission.mail_subject
+targetEntityType: message
+bundle: contact_form_submission
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_contact_attachment: true
+  field_contact_category: true
+  field_contact_copy: true
+  field_contact_email: true
+  field_contact_first_name: true
+  field_contact_last_name: true
+  field_contact_message: true
+  field_contact_organisation: true
+  field_contact_subject: true
+  field_contact_url: true
+  partial_1: true
