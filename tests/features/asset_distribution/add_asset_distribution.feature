@@ -5,15 +5,15 @@ Feature: Add distribution through the UI
   I need to be able to add "Distribution" RDF entities through the UI.
 
   Background:
-    Given the following solution:
-      | title       | Solution random x name           |
-      | description | Some reusable random description |
-      | state       | validated                        |
-    And the following collection:
+    Given the following collection:
       | title      | Asset Distribution Test |
       | logo       | logo.png                |
-      | affiliates | Solution random x name  |
       | state      | validated               |
+     And the following solution:
+      | title       | Solution random x name           |
+      | collection  | Asset Distribution Test          |
+      | description | Some reusable random description |
+      | state       | validated                        |
     And the following release:
       | title         | 1.0.0 Authoritarian Alpaca |
       | description   | First public release.      |
@@ -144,8 +144,12 @@ Feature: Add distribution through the UI
     Then I should see the description "Allowed types: 7z adf archimate asc aspx bak bat bin bmp bz2 cab cer cml conf css csv dbf deb dgn diff dmg doc docx dwg dxf eap ear ecw emf exe gdms gid gif gml gsb gvl gvp gvspkg gvspki gvt gz hdr hlp jar java jp2 jpeg jpg jpgw js json jsp kml ksh lan log lograster mht msi odg odp ods odt ogv org ott out oxt patch path pdf pem pkg png pod pps ppt pptx prj ps rar raw rdf rmf rst rtf sbn sh shp shx sld sp0 sp1 spx sql swf sym tar tgz tif tiff torrent trig ttf ttl txt type vmdk vmx vrt vsd war wld wsdl xls xlsm xlsx xmi xml xsd xsl xslt zip." for the "Access URL" field
 
   Scenario: Adding a distribution with a duplicate title
-    Given the following solution:
+    Given the following collection:
+      | title | The Gas Case |
+      | state | validated    |
+    And the following solution:
       | title       | Solubility of gases     |
+      | collection  | The Gas Case            |
       | description | Affected by temperature |
       | state       | validated               |
     And the following release:

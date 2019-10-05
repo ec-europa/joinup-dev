@@ -44,14 +44,17 @@ Feature: Solution moderation
       | Franklin Walker  |           |
       # Facilitator of all the solutions.
       | William Curtis   |           |
+    And the following collection:
+      | title | Wonderland |
+      | state | validated  |
     And the following solutions:
-      | title                      | description                | logo     | banner     | owner          | contact information | state            |
-      | Azure Ship                 | Azure ship                 | logo.png | banner.jpg | Angelos Agathe | Placide             | draft            |
-      | The Last Illusion          | The Last Illusion          | logo.png | banner.jpg | Angelos Agathe | Placide             | proposed         |
-      | Rose of Doors              | Rose of Doors              | logo.png | banner.jpg | Angelos Agathe | Placide             | validated        |
-      | The Ice's Secrets          | The Ice's Secrets          | logo.png | banner.jpg | Angelos Agathe | Placide             | deletion request |
-      | The Guardian of the Stream | The Guardian of the Stream | logo.png | banner.jpg | Angelos Agathe | Placide             | needs update     |
-      | Flames in the Swords       | Flames in the Swords       | logo.png | banner.jpg | Angelos Agathe | Placide             | blacklisted      |
+      | title                      | description                | logo     | banner     | owner          | contact information | state            | collection |
+      | Azure Ship                 | Azure ship                 | logo.png | banner.jpg | Angelos Agathe | Placide             | draft            | Wonderland |
+      | The Last Illusion          | The Last Illusion          | logo.png | banner.jpg | Angelos Agathe | Placide             | proposed         | Wonderland |
+      | Rose of Doors              | Rose of Doors              | logo.png | banner.jpg | Angelos Agathe | Placide             | validated        | Wonderland |
+      | The Ice's Secrets          | The Ice's Secrets          | logo.png | banner.jpg | Angelos Agathe | Placide             | deletion request | Wonderland |
+      | The Guardian of the Stream | The Guardian of the Stream | logo.png | banner.jpg | Angelos Agathe | Placide             | needs update     | Wonderland |
+      | Flames in the Swords       | Flames in the Swords       | logo.png | banner.jpg | Angelos Agathe | Placide             | blacklisted      | Wonderland |
     And the following solution user memberships:
       | solution                   | user            | roles       |
       | Azure Ship                 | Franklin Walker | owner       |

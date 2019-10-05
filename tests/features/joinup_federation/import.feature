@@ -110,9 +110,13 @@ Feature: As a site moderator I am able to import RDF files.
       | First name  | Collection and solution |
       | Family name | Owner                   |
       | E-mail      | csowner@example.com     |
+    And collection:
+      | uri   | http://nio.gov.si/nio/ |
+      | title | NIO                    |
+      | state | validated              |
     And solutions:
-      | uri                           | title                       | description         | state     | modification date |
-      | http://example.com/solution/2 | Local version of Solution 2 | Initial description | validated | 15-07-2018        |
+      | uri                           | title                       | collection | description         | state     | modification date |
+      | http://example.com/solution/2 | Local version of Solution 2 | NIO        | Initial description | validated | 15-07-2018        |
     And the following solution user membership:
       | solution                    | user     | roles                      | state  |
       | Local version of Solution 2 | CS Owner | facilitator, administrator | active |
@@ -124,11 +128,6 @@ Feature: As a site moderator I am able to import RDF files.
       | parent            | Local version of Solution 2                |
       | creation date     | 15-07-2018                                 |
       | modification date | 15-07-2018                                 |
-    And collection:
-      | uri        | http://nio.gov.si/nio/      |
-      | title      | NIO                         |
-      | state      | validated                   |
-      | affiliates | Local version of Solution 2 |
     And the following collection user membership:
       | collection | user     | roles                      | state  |
       | NIO        | CS Owner | facilitator, administrator | active |

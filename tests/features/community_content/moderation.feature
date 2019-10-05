@@ -9,8 +9,9 @@ Feature: Moderate community content
       | title | Black hole research |
       | state | validated           |
     And the following solution:
-      | title | Survey For Supernovae |
-      | state | validated             |
+      | title      | Survey For Supernovae |
+      | state      | validated             |
+      | collection | Black hole research   |
 
     # Before adding content, check that the 'empty message' is displayed on the
     # content moderation overview.

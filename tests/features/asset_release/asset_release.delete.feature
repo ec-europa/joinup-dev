@@ -12,13 +12,17 @@ Feature: Asset release "delete" functionality.
       | name        | Yet another contact |
       | email       | yetanothercontact@example.com |
       | Website URL | http://example.com         |
+    And the following collection:
+      | title | The Big Collection |
+      | state | validated          |
     And the following solution:
-      | title               | Yet another solution |
-      | description         | Bored of finding new texts     |
-      | documentation       | text.pdf                |
+      | title               | Yet another solution       |
+      | description         | Bored of finding new texts |
+      | documentation       | text.pdf                   |
       | owner               | Yet another owner          |
       | contact information | Yet another contact        |
-      | state               | validated               |
+      | state               | validated                  |
+      | collection          | The Big Collection         |
     And the following release:
       | title               | Yet another release |
       | description         | A sample release           |

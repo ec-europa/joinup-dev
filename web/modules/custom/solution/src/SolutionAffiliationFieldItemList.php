@@ -9,7 +9,6 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\sparql_entity_storage\Entity\SparqlGraph;
 
 /**
  * Defines a field item list class for the solution 'collections' field.
@@ -36,6 +35,16 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   /**
    * {@inheritdoc}
    */
+  public function preSave() {
+    parent::preSave();
+    if (empty($this->list)) {
+      throw new \Exception("Solution '{$this->getEntity()->label()}' should have a parent collection.");
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function postSave($update) {
     $solution_id = $this->getEntity()->id();
 
@@ -47,6 +56,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       $collection_ids = array_values(array_unique($collection_ids));
     }
     else {
+      // @todo In what circumstances is possible to land here?
       // It's possible we land here without the field being computed. If this is
       // en existing entity, get affiliation from the backend.
       $collection_ids = $solution_id ? $this->getAffiliation() : [];
@@ -58,9 +68,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     // Update collections where this solution is no more affiliate.
     if ($removed_collection_ids = array_diff($existing_collection_ids, $collection_ids)) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($removed_collection_ids, [SparqlGraph::DEFAULT, 'draft']) as $collection) {
+      foreach (Rdf::loadMultiple($removed_collection_ids) as $collection) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $affiliates */
         $affiliates = $collection->get('field_ar_affiliates');
         $this->removeFieldItemByTargetId($affiliates, $this->getEntity()->id());
@@ -73,9 +81,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     if ($new_collection_ids = array_diff($collection_ids, $existing_collection_ids)) {
       $field_value = ['target_id' => $solution_id];
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($new_collection_ids, [SparqlGraph::DEFAULT, 'draft']) as $collection) {
+      foreach (Rdf::loadMultiple($new_collection_ids) as $collection) {
         if ($collection->bundle() !== 'collection') {
           throw new \Exception('Only collections can be referenced in affiliation requests.');
         }

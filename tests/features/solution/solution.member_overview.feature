@@ -25,10 +25,14 @@ Feature: Solution membership overview
       | Glædwine Ruskin     | Glædwine   | Ruskin      | linus.jpeg   | Comptroller                     |
       | Pocahontas Mathieu  | Pocahontas | Mathieu     | blaise.jpg   | Chief Communications Officer    |
       | Callista Wronski    | Callista   | Wronski     | richard.jpg  | Founder                         |
+    And the following collection:
+      | title | Sandwinds |
+      | state | validated |
     And the following solution:
       | title       | Growing zone    |
       | description | Soil and gravel |
       | state       | validated       |
+      | collection  | Sandwinds       |
     And the following solution user memberships:
       | solution     | user                | roles       | state   |
       | Growing zone | Ariadna Astrauskas  | owner       |         |

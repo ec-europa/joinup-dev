@@ -44,13 +44,6 @@ class EuplSubContext extends DrupalSubContextBase {
       'field_owner_name' => 'Owner',
     ])->save();
 
-    Rdf::create([
-      'rid' => 'solution',
-      'id' => Eupl::JLA_SOLUTION,
-      'label' => 'Joinup Licensing Assistant',
-      'field_is_state' => 'validated',
-    ])->save();
-
     // Create the EUPL entity.
     Rdf::create([
       'rid' => 'collection',
@@ -58,7 +51,14 @@ class EuplSubContext extends DrupalSubContextBase {
       'label' => 'EUPL',
       'field_ar_state' => 'validated',
       'field_ar_owner' => 'http://example.com/owner',
-      'field_ar_affiliates' => [Eupl::JLA_SOLUTION],
+    ])->save();
+
+    Rdf::create([
+      'rid' => 'solution',
+      'collection' => Eupl::EUPL_COMMUNITY_ID,
+      'id' => Eupl::JLA_SOLUTION,
+      'label' => 'Joinup Licensing Assistant',
+      'field_is_state' => 'validated',
     ])->save();
 
     // The 'Implementation monitoring' standard custom page.
