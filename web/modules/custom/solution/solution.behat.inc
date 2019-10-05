@@ -215,14 +215,11 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param array $values
    *   The solution creation values.
    *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   *   If saving the parent collection fails.
-   *
    * @see \Drupal\solution\SolutionAffiliationFieldItemList::preSave()
    */
   protected function ensureParentCollection(array &$values): void {
     if (empty($values['collection'])) {
-      $label = $this->getRandom()->sentences(5);
+      $label = $this->getRandom()->sentences(3);
       $collection = Rdf::create([
         'rid' => 'collection',
         'label' => $label,
@@ -232,6 +229,16 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       $values['collection'] = $label;
       // Track this collection.
       $this->rdfEntities[$collection->id()] = $collection;
+
+      // Remove any links created by this collection because they might produce
+      // name collisions with the solution. E.g. the left sidebar link 'About'.
+      $entity_type_manager = \Drupal::entityTypeManager();
+      $storage = $entity_type_manager->getStorage('ogmenu_instance');
+      $ids = $storage->getQuery()
+        ->condition('type', 'navigation')
+        ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $collection->id())
+        ->execute();
+      $storage->delete($storage->loadMultiple($ids));
     }
   }
 
