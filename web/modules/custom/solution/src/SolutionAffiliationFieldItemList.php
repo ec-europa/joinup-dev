@@ -35,32 +35,35 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   /**
    * {@inheritdoc}
    */
-  public function preSave() {
+  public function preSave(): void {
     parent::preSave();
-    if (empty($this->list)) {
-      throw new \Exception("Solution '{$this->getEntity()->label()}' should have a parent collection.");
+
+    // A solution cannot be saved without having a parent collection.
+    if ($this->isEmpty()) {
+      /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
+      $graph_handler = \Drupal::service('sparql.graph_handler');
+      // We enforce data integrity only for solutions from the 'official'
+      // graphs. Solutions stored in other graphs, might exist, temporary,
+      // without a parent collection. The code that is handling such cases is
+      // responsible to ensure data integrity. Such a use case is the data
+      // federation, where the imported solutions are stored in a 'non-official'
+      // graph and solutions are allowed to temporary exist or/and be saved
+      // without having a parent collection.
+      if (in_array($this->getEntity()->get('graph')->target_id, $graph_handler->getEntityTypeDefaultGraphIds('rdf_entity'))) {
+        throw new \Exception("Solution '{$this->getEntity()->id()}' should have a parent collection.");
+      }
     }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function postSave($update) {
+  public function postSave($update): bool {
     $solution_id = $this->getEntity()->id();
 
-    if (!empty($this->list)) {
-      $collection_ids = array_map(function (EntityReferenceItem $field_item): string {
-        return $field_item->target_id;
-      }, $this->list);
-      // Ensure no duplicates.
-      $collection_ids = array_values(array_unique($collection_ids));
-    }
-    else {
-      // @todo In what circumstances is possible to land here?
-      // It's possible we land here without the field being computed. If this is
-      // en existing entity, get affiliation from the backend.
-      $collection_ids = $solution_id ? $this->getAffiliation() : [];
-    }
+    $collection_ids = array_map(function (EntityReferenceItem $field_item): string {
+      return $field_item->target_id;
+    }, $this->list);
 
     // Optimize when the solution doesn't have yet an ID.
     $existing_collection_ids = $solution_id ? $this->getAffiliation() : [];
