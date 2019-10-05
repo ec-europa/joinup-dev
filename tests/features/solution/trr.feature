@@ -75,20 +75,15 @@ Feature: Creating a test (solution) in the TRR collection.
     Then I should see the heading "Linked Open Data"
 
   Scenario: TRR distribution
-    Given the following collection:
-      | title | Royal Museum |
-      | state | validated    |
-    And the following solution:
+    Given the following solution:
       | title         | TRR solution foo          |
       | description   | The test repository       |
       | state         | validated                 |
       | solution type | Conformance Test Scenario |
-      | collection    | Royal Museum              |
     And the following solution:
       | title       | TRR solution bar    |
       | description | The test repository |
       | state       | validated           |
-      | collection  | Royal Museum        |
     And the following release:
       | title          | TRR release foo         |
       | description    | TRR release description |

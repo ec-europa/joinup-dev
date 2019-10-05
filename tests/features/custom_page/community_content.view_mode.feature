@@ -11,12 +11,9 @@ Feature:
     And the following contact:
       | name  | Some fancy named contact |
       | email | who.cares@example.com    |
-    And the following collection:
-      | title | The Only And Lonely |
-      | state | validated           |
     And the following solutions:
-      | title         | description | owner                  | contact information      | state     | collection          |
-      | Tile solution | Meh...      | Some fancy named owner | Some fancy named contact | validated | The Only And Lonely |
+      | title         | description | owner                  | contact information      | state     |
+      | Tile solution | Meh...      | Some fancy named owner | Some fancy named contact | validated |
     And the following releases:
       | title        | release number | release notes | is version of | owner                  | contact information      | state     |
       | Tile release | 1              | Meh...        | Tile solution | Some fancy named owner | Some fancy named contact | validated |

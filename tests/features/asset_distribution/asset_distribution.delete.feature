@@ -5,12 +5,9 @@ Feature: Asset distribution deleting.
   I need to be able to delete asset distributions through the UI.
 
   Scenario: "Delete" button should be shown to facilitators of the related solution.
-    Given the following collection:
-      | title | Party     |
-      | state | validated |
-    And the following solutions:
-      | title                 | collection | description        | state     |
-      | Rough valentine's day | Party      | Sample description | validated |
+    Given the following solutions:
+      | title                 | description        | state     |
+      | Rough valentine's day | Sample description | validated |
     And users:
       | Username   | E-mail                |
       | Papa Roach | paparoach@example.com |

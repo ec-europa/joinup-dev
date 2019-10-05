@@ -40,15 +40,15 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
 
     // A solution cannot be saved without having a parent collection.
     if ($this->isEmpty()) {
+      // We enforce data integrity only for solutions from the 'official'
+      // graphs. Solutions stored in other graphs, can be live temporary without
+      // a parent collection. The code that is handling such cases is
+      // responsible to ensure data integrity. A use case is the data
+      // federation, where the imported solutions are stored in a 'non-official'
+      // graph and, temporary, orphan solutions are allowed. See the
+      // 'joinup_federation' module for more details.
       /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
       $graph_handler = \Drupal::service('sparql.graph_handler');
-      // We enforce data integrity only for solutions from the 'official'
-      // graphs. Solutions stored in other graphs, might exist, temporary,
-      // without a parent collection. The code that is handling such cases is
-      // responsible to ensure data integrity. Such a use case is the data
-      // federation, where the imported solutions are stored in a 'non-official'
-      // graph and solutions are allowed to temporary exist or/and be saved
-      // without having a parent collection.
       if (in_array($this->getEntity()->get('graph')->target_id, $graph_handler->getEntityTypeDefaultGraphIds('rdf_entity'))) {
         throw new \Exception("Solution '{$this->getEntity()->id()}' should have a parent collection.");
       }

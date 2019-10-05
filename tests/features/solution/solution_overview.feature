@@ -18,25 +18,22 @@ Feature: Solutions Overview
     Then I should see the heading "Solutions"
 
   Scenario: Solution overview paging
-    Given the following collection:
-      | title | Scandal   |
-      | state | validated |
-    And the following solutions:
-      | title      | creation date     | state     | collection |
-      | Arctic fox | 2018-10-04 8:21am | validated | Scandal    |
-      | Alpaca     | 2018-10-04 8:31am | validated | Scandal    |
-      | Boomalope  | 2018-10-04 8:28am | validated | Scandal    |
-      | Boomrat    | 2018-10-04 8:35am | validated | Scandal    |
-      | Megasloth  | 2018-10-04 8:01am | validated | Scandal    |
-      | Thrumbo    | 2018-10-04 8:07am | validated | Scandal    |
-      | Spelopede  | 2018-10-04 8:18am | validated | Scandal    |
-      | Muffalo    | 2018-10-04 8:59am | validated | Scandal    |
-      | Husky      | 2018-10-04 8:00am | validated | Scandal    |
-      | Gazelle    | 2018-10-04 8:43am | validated | Scandal    |
-      | Cow        | 2018-10-04 8:27am | validated | Scandal    |
-      | Panther    | 2018-10-04 8:22am | validated | Scandal    |
-      | Tortoise   | 2018-10-04 8:34am | validated | Scandal    |
-      | Warg       | 2018-10-04 8:39am | validated | Scandal    |
+    Given solutions:
+      | title      | creation date     | state     |
+      | Arctic fox | 2018-10-04 8:21am | validated |
+      | Alpaca     | 2018-10-04 8:31am | validated |
+      | Boomalope  | 2018-10-04 8:28am | validated |
+      | Boomrat    | 2018-10-04 8:35am | validated |
+      | Megasloth  | 2018-10-04 8:01am | validated |
+      | Thrumbo    | 2018-10-04 8:07am | validated |
+      | Spelopede  | 2018-10-04 8:18am | validated |
+      | Muffalo    | 2018-10-04 8:59am | validated |
+      | Husky      | 2018-10-04 8:00am | validated |
+      | Gazelle    | 2018-10-04 8:43am | validated |
+      | Cow        | 2018-10-04 8:27am | validated |
+      | Panther    | 2018-10-04 8:22am | validated |
+      | Tortoise   | 2018-10-04 8:34am | validated |
+      | Warg       | 2018-10-04 8:39am | validated |
     And I am an anonymous user
     And I am on the homepage
     When I click "Solutions"
@@ -75,17 +72,17 @@ Feature: Solutions Overview
     Given users:
       | Username      | E-mail                            |
       | Madam Shirley | i.dont.see.the.future@example.com |
-    And the following collections:
-      | title                 | logo     | state     |
-      | Pikachu, I choose you | logo.png | validated |
-      | Meh                   |          | validated |
+    And the following collection:
+      | title | Pikachu, I choose you |
+      | logo  | logo.png              |
+      | state | validated             |
     And solutions:
     # As of ISAICP-3618 descriptions should not be visible in regular tiles.
-      | title                 | description                    | state     | collection |
-      | Non electronic health | Supports health-related fields | validated | Meh        |
-      | Closed data           | Facilitate access to data sets | validated | Meh        |
-      | Isolating Europe      | Reusable tools and services    | validated | Meh        |
-      | Uniting Europe        | Unusable tools and services    | draft     | Meh        |
+      | title                 | description                    | state     |
+      | Non electronic health | Supports health-related fields | validated |
+      | Closed data           | Facilitate access to data sets | validated |
+      | Isolating Europe      | Reusable tools and services    | validated |
+      | Uniting Europe        | Unusable tools and services    | draft     |
     And the following owner:
       | name              | type                    |
       | NonProfit example | Non-Profit Organisation |

@@ -9,11 +9,10 @@ Feature: "Add custom page" visibility options.
       | title           | logo     | state     |
       | Open Collective | logo.png | validated |
       | Code Camp       | logo.png | validated |
-      | Group           |          | validated |
     And solutions:
-      | title     | logo     | state     | collection |
-      | Parachute | logo.png | validated | Group      |
-      | Skydiving | logo.png | validated | Group      |
+      | title     | logo     | state     |
+      | Parachute | logo.png | validated |
+      | Skydiving | logo.png | validated |
 
   Scenario Outline: Links and help text for adding custom pages should should only be shown to privileged users
     # Custom pages cannot be added by normal members. Custom pages are

@@ -15,17 +15,14 @@ Feature: As a user of the website
     And the following owner:
       | name    | type                  |
       | Mr Crab | Private Individual(s) |
-    And the following collection:
-      | title | In The Air Tonight |
-      | state | validated          |
     And the following solutions:
-      | title                    | description                | logo     | banner     | owner   | contact information | solution type | state            | policy domain | collection         |
-      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | draft            | E-inclusion   | In The Air Tonight |
-      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | proposed         | E-inclusion   | In The Air Tonight |
-      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | validated        | E-inclusion   | In The Air Tonight |
-      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | deletion request | E-inclusion   | In The Air Tonight |
-      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | needs update     | E-inclusion   | In The Air Tonight |
-      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | blacklisted      | E-inclusion   | In The Air Tonight |
+      | title                    | description                | logo     | banner     | owner   | contact information | solution type | state            | policy domain |
+      | Professional Dreams      | Azure ship                 | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | draft            | E-inclusion   |
+      | The Falling Swords       | The Falling Swords         | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | proposed         | E-inclusion   |
+      | Flight of Night          | Rose of Doors              | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | validated        | E-inclusion   |
+      | The Streams of the Lover | The Ice's Secrets          | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | deletion request | E-inclusion   |
+      | Teacher in the Twins     | The Guardian of the Stream | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | needs update     | E-inclusion   |
+      | Missing Fire             | Flames in the Swords       | logo.png | banner.jpg | Mr Crab | Crusty crab         | Business      | blacklisted      | E-inclusion   |
     And the following solution user memberships:
       | solution        | user | roles |
       | Flight of Night | Hulk | owner |
