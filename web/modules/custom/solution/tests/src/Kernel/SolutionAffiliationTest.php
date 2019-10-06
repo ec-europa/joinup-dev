@@ -112,16 +112,16 @@ class SolutionAffiliationTest extends KernelTestBase {
     Rdf::create([
       'rid' => 'solution',
       'graph' => 'arbitrary',
-      'id' => 'http://example.com/solution',
+      'id' => 'http://example.com/main-solution',
       'label' => 'Test solution',
       'field_is_state' => 'validated',
     ])->save();
 
     // Check that creating an orphan solution in a normal graph is disallowed.
-    $this->expectExceptionObject(new \Exception("Solution 'http://example.com/solution' should have a parent collection."));
+    $this->expectExceptionObject(new \Exception("Solution 'http://example.com/main-solution' should have a parent collection."));
     Rdf::create([
       'rid' => 'solution',
-      'id' => 'http://example.com/solution',
+      'id' => 'http://example.com/main-solution',
       'label' => 'Test solution',
       'field_is_state' => 'validated',
     ])->save();
@@ -143,7 +143,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = Rdf::create([
       'rid' => 'solution',
-      'id' => 'http://example.com/solution',
+      'id' => 'http://example.com/main-solution',
       'label' => 'Test solution',
       'collection' => [
         // API allows an 1..N cardinality while UI doesn't.
@@ -157,11 +157,11 @@ class SolutionAffiliationTest extends KernelTestBase {
     // Check that collection 1 has the correct affiliates.
     $affiliates = Rdf::load('http://example.com/collection/1')->get('field_ar_affiliates');
     $this->assertCount(1, $affiliates);
-    $this->assertSame('http://example.com/solution', $affiliates->target_id);
+    $this->assertSame('http://example.com/main-solution', $affiliates->target_id);
     // Check that collection 2 has the correct affiliates.
     $affiliates = Rdf::load('http://example.com/collection/2')->get('field_ar_affiliates');
     $this->assertCount(1, $affiliates);
-    $this->assertSame('http://example.com/solution', $affiliates->target_id);
+    $this->assertSame('http://example.com/main-solution', $affiliates->target_id);
 
     // Collection 1 is preserved but collection 2 is replaced with 3.
     $solution->set('collection', [
@@ -172,14 +172,14 @@ class SolutionAffiliationTest extends KernelTestBase {
     // Check that collection 1 has the correct affiliates.
     $affiliates = Rdf::load('http://example.com/collection/1')->get('field_ar_affiliates');
     $this->assertCount(1, $affiliates);
-    $this->assertSame('http://example.com/solution', $affiliates->target_id);
+    $this->assertSame('http://example.com/main-solution', $affiliates->target_id);
     // Check that collection 2 has no affiliates.
     $affiliates = Rdf::load('http://example.com/collection/2')->get('field_ar_affiliates');
     $this->assertTrue($affiliates->isEmpty());
     // Check that collection 3 has the correct affiliates.
     $affiliates = Rdf::load('http://example.com/collection/3')->get('field_ar_affiliates');
     $this->assertCount(1, $affiliates);
-    $this->assertSame('http://example.com/solution', $affiliates->target_id);
+    $this->assertSame('http://example.com/main-solution', $affiliates->target_id);
 
     // Keep only collection 2.
     $solution->set('collection', 'http://example.com/collection/2')->save();
@@ -190,7 +190,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     // Check that collection 2 has the correct affiliates.
     $affiliates = Rdf::load('http://example.com/collection/2')->get('field_ar_affiliates');
     $this->assertCount(1, $affiliates);
-    $this->assertSame('http://example.com/solution', $affiliates->target_id);
+    $this->assertSame('http://example.com/main-solution', $affiliates->target_id);
     // Check that collection 3 has no affiliates.
     $affiliates = Rdf::load('http://example.com/collection/3')->get('field_ar_affiliates');
     $this->assertTrue($affiliates->isEmpty());
@@ -203,7 +203,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     $this->assertTrue($affiliates->isEmpty());
     $affiliates = Rdf::load('http://example.com/collection/2')->get('field_ar_affiliates');
     $this->assertCount(1, $affiliates);
-    $this->assertSame('http://example.com/solution', $affiliates->target_id);
+    $this->assertSame('http://example.com/main-solution', $affiliates->target_id);
     $affiliates = Rdf::load('http://example.com/collection/3')->get('field_ar_affiliates');
     $this->assertTrue($affiliates->isEmpty());
   }
@@ -217,7 +217,7 @@ class SolutionAffiliationTest extends KernelTestBase {
       'collection/1',
       'collection/2',
       'collection/3',
-      'solution',
+      'main-solution',
     ];
     foreach ($rdf_entity_keys as $key) {
       Rdf::load("http://example.com/$key")->delete();

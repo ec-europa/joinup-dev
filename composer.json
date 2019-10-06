@@ -258,6 +258,9 @@
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
+            "drupal/sparql_entity_storage": {
+                "Set the default graph on entity creation @see https://github.com/ec-europa/sparql_entity_storage/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/5.diff"
+            },
             "drupal/state_machine": {
                 "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
                 "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",

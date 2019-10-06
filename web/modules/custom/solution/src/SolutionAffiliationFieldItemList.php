@@ -20,6 +20,18 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   use ComputedItemListTrait;
 
   /**
+   * If the current solution is in one of the 'official' graphs.
+   *
+   * An 'official graph' is one of the graphs returned by
+   * SparqlEntityStorageGraphHandlerInterface::getEntityTypeDefaultGraphIds().
+   *
+   * @see \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface::getEntityTypeDefaultGraphIds()
+   *
+   * @var bool
+   */
+  protected $solutionInOfficialGraph;
+
+  /**
    * {@inheritdoc}
    */
   protected function computeValue() {
@@ -42,14 +54,10 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       // graphs. Solutions stored in other graphs, can live temporary without a
       // parent collection. The code that is handling such cases is responsible
       // to ensure data integrity. A use case is the data federation, where the
-      // imported solutions are stored in a 'non-official' graph and, temporary,
+      // imported solutions are stored in a 'nonofficial' graph and, temporary,
       // orphan solutions are allowed. See the 'joinup_federation' module for
       // more details.
-      /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
-      $graph_handler = \Drupal::service('sparql.graph_handler');
-      $graph = $this->getEntity()->get('graph');
-      // An empty graph will default to the default graph, which is 'official'.
-      if ($graph->isEmpty() || in_array($graph->target_id, $graph_handler->getEntityTypeDefaultGraphIds('rdf_entity'))) {
+      if ($this->solutionInOfficialGraph()) {
         throw new \Exception("Solution '{$this->getEntity()->id()}' should have a parent collection.");
       }
     }
@@ -59,7 +67,15 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    * {@inheritdoc}
    */
   public function postSave($update): bool {
-    $this->updateAffiliation();
+    // This field can be also set when the solution in in one of the 'official'
+    // graphs. The code dealing with solutions stored in other graphs is
+    // responsible for establishing the relation between the solution and the
+    // parent collection. This is useful when solutions are allowed to be
+    // temporary stored without a parent collection. Such a case is data
+    // federation. See the 'joinup_federation' module for more details.
+    if ($this->solutionInOfficialGraph()) {
+      $this->updateAffiliation();
+    }
     return parent::postSave($update);
   }
 
@@ -134,6 +150,22 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     // Clear the cache of collections that were affected by changes.
     $affected_ids = array_unique(array_merge($new_ids, $existing_ids));
     \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache($affected_ids);
+  }
+
+  /**
+   * Checks if the solution belongs to one of the 'official' graphs.
+   *
+   * @return bool
+   *   If the solution belongs to one of the 'official' graphs.
+   */
+  protected function solutionInOfficialGraph(): bool {
+    if (!isset($this->solutionInOfficialGraph)) {
+      $graph_id = $this->getEntity()->get('graph')->target_id;
+      /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
+      $graph_handler = \Drupal::service('sparql.graph_handler');
+      $this->solutionInOfficialGraph = in_array($graph_id, $graph_handler->getEntityTypeDefaultGraphIds('rdf_entity'));
+    }
+    return $this->solutionInOfficialGraph;
   }
 
 }
