@@ -149,6 +149,10 @@ class ThreeWayMergeStepTest extends StepTestBase {
    * Test values assignment with an existing solution.
    */
   public function testExistingSolution() {
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => 'http://catalog',
+    ])->save();
     // Create a local entity whose values will be overwritten.
     Rdf::create([
       'rid' => 'solution',
@@ -157,11 +161,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'field_is_description' => 'Also this...',
       'field_status' => 'http://example.com/status',
       'field_is_textfield' => 'This value should not be empty after re-import.',
-    ])->save();
-    Rdf::create([
-      'rid' => 'collection',
-      'id' => 'http://catalog',
-      'field_ar_affiliates' => 'http://asset',
+      'collection' => 'http://catalog',
     ])->save();
 
     $graph = new Graph(static::getTestingGraphs()['sink']);
