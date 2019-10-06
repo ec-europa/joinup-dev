@@ -219,10 +219,6 @@ class ThreeWayMergeStepTest extends StepTestBase {
       ->setBatchValue('remaining_incoming_ids', ['http://asset' => FALSE]);
     $this->runPipelineStep('3_way_merge', $state);
 
-    // Check that the solution has been assigned to the configured collection.
-    $collection = Rdf::load('http://catalog');
-    $this->assertEquals('http://asset', $collection->field_ar_affiliates->target_id);
-
     // Check that, for an empty field, the default value is assigned.
     $solution = Rdf::load('http://asset', ['staging']);
     $this->assertEquals('http://example.com/default-status', $solution->get('field_status')->target_id);
