@@ -232,13 +232,16 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
 
       // Remove any links created by this collection because they might produce
       // name collisions with the solution. E.g. the left sidebar link 'About'.
+      // @todo Remove this workaround in ISAICP-5597.
+      // @see tests/features/custom_page/navigation_menu.feature
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5597
       $entity_type_manager = \Drupal::entityTypeManager();
       $storage = $entity_type_manager->getStorage('ogmenu_instance');
-      $ids = $storage->getQuery()
+      $og_menu_instance_ids = $storage->getQuery()
         ->condition('type', 'navigation')
         ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $collection->id())
         ->execute();
-      $storage->delete($storage->loadMultiple($ids));
+      $storage->delete($storage->loadMultiple($og_menu_instance_ids));
     }
   }
 
