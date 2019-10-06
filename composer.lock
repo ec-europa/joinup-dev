@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36f45b65dabdf53efb782e57e66ffb13",
+    "content-hash": "efa2dcf3082e7fc4986e290d27c93edc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6179,6 +6179,11 @@
                 "minimaxir/big-list-of-naughty-strings": "dev-master"
             },
             "type": "drupal-module",
+            "extra": {
+                "patches_applied": {
+                    "Set the default graph on entity creation @see https://github.com/ec-europa/sparql_entity_storage/pull/5": "https://patch-diff.githubusercontent.com/raw/ec-europa/sparql_entity_storage/pull/5.diff"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "driver/sparql/Connection.php"
