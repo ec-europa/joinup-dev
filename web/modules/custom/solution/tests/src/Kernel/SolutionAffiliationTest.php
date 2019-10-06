@@ -202,7 +202,9 @@ class SolutionAffiliationTest extends KernelTestBase {
     ];
     // Delete RDF entities.
     foreach ($rdf_entity_keys as $key) {
-      Rdf::load("http://example.com/$key")->delete();
+      if ($entity = Rdf::load("http://example.com/$key")) {
+        $entity->delete();
+      }
     }
   }
 
