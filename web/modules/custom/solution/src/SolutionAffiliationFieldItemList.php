@@ -13,7 +13,8 @@ use Drupal\Core\TypedData\ComputedItemListTrait;
  *
  * In ADMS-AP collections point to solutions. The reverse relation would have
  * been more logical, and this is quite inconvenient, especially for the search
- * index. This field computes the reverse relationship.
+ * index. This field computes the reverse relationship but is a read-write
+ * field, allowing also to set the parent collection.
  */
 class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
 
