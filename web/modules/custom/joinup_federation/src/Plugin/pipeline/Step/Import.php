@@ -139,9 +139,7 @@ class Import extends JoinupFederationStepPluginBase implements PipelineStepWithB
     // Build a list of local entities that are about to be updated.
     $local_entity_ids = array_keys(array_filter($ids_to_process));
     /** @var \Drupal\rdf_entity\RdfInterface[] $local_entities */
-    // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-    $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids, [SparqlGraphInterface::DEFAULT, 'draft']) : [];
+    $local_entities = $local_entity_ids ? Rdf::loadMultiple($local_entity_ids) : [];
 
     $entities_to_save = $entities_to_delete = [];
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
