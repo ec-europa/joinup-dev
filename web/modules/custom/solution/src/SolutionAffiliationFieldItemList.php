@@ -25,9 +25,9 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    * An 'official graph' is one of the graphs returned by
    * SparqlEntityStorageGraphHandlerInterface::getEntityTypeDefaultGraphIds().
    *
-   * @see \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface::getEntityTypeDefaultGraphIds()
-   *
    * @var bool
+   *
+   * @see \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface::getEntityTypeDefaultGraphIds()
    */
   protected $solutionInOfficialGraph;
 
