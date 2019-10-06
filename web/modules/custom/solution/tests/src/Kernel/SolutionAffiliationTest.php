@@ -10,7 +10,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\sparql_entity_storage\Entity\SparqlGraph;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
