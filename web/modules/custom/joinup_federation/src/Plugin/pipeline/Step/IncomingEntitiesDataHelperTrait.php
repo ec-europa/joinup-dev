@@ -12,27 +12,6 @@ use Drupal\Component\Utility\NestedArray;
 trait IncomingEntitiesDataHelperTrait {
 
   /**
-   * A dependency tree for each incoming solution.
-   *
-   * An associative array indexed by the solution ids that contains the
-   * 'dependencies' and the 'category' values. The 'dependencies' is an
-   * associative array itself, of entity ids indexed by their bundle that are
-   * related to the solution. The 'category' is a string representing the status
-   * of the solution. Possible values are 'not_federated', 'federated',
-   * 'invalid_solution', 'federated_unchanged' and 'blacklisted'.
-   *
-   * @var array
-   */
-  protected $solutionData;
-
-  /**
-   * Loads the solution data from the persistent state.
-   */
-  protected function loadSolutionDependencyStructure(): void {
-    $this->solutionData = $this->hasPersistentDataValue('incoming_solution_data') ? $this->getPersistentDataValue('incoming_solution_data') : [];
-  }
-
-  /**
    * Returns a flat list of dependencies for a list of solutions.
    *
    * @param array $solution_ids
@@ -46,10 +25,11 @@ trait IncomingEntitiesDataHelperTrait {
   protected function getSolutionsWithDependenciesAsFlatList(array $solution_ids): array {
     $requested_dependencies = [];
 
+    $solution_data = $this->getPersistentDataValue('solution_dependency');
     foreach ($solution_ids as $solution_id) {
       $requested_dependencies = NestedArray::mergeDeepArray([
         $requested_dependencies,
-        $this->solutionData[$solution_id]['dependencies'],
+        $solution_data[$solution_id],
       ]);
     }
 

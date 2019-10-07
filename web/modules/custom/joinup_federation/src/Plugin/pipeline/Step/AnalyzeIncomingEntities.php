@@ -83,6 +83,16 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
   protected $hashGenerator;
 
   /**
+   * Used to build a list of solution's dependencies to be stored in pipeline.
+   *
+   * An associative array having the solution ID as index. The value is an
+   * associative array itself, of entity IDs indexed by their bundle.
+   *
+   * @var array
+   */
+  protected $solutionDependency;
+
+  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
@@ -138,6 +148,8 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     $this->setBatchValue('entity_ids', $incoming_ids);
     $this->setBatchValue('solution_ids', $this->getIncomingSolutionIds());
     $this->setPersistentDataValue('entity_hashes', []);
+    $this->setPersistentDataValue('solution_dependency', []);
+    $this->setPersistentDataValue('solution_category', []);
     return (int) ceil(count($incoming_ids) / self::BATCH_SIZE);
   }
 
@@ -152,7 +164,8 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * {@inheritdoc}
    */
   public function execute(): void {
-    $this->loadSolutionDependencyStructure();
+    $this->solutionDependency = $this->getPersistentDataValue('solution_dependency');
+
     $ids_to_process = $this->extractNextSubset('entity_ids', static::BATCH_SIZE);
     $solution_ids = array_intersect($ids_to_process, $this->getBatchValue('solution_ids'));
 
@@ -166,13 +179,13 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     $solutions = $this->getRdfStorage()->loadMultiple($solution_ids, ['staging']);
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     foreach ($solutions as $solution_id => $solution) {
-      $this->addSolutionDataRoot($solution_id);
       $this->buildSolutionDependencyTree($solution, $solution_id);
     }
-    $this->buildSolutionsCategories($solution_ids);
+    // Store solutions dependencies in the pipeline persistent data store.
+    $this->setPersistentDataValue('solution_dependency', $this->solutionDependency);
 
-    // Store data in the persistent state.
-    $this->storeEntityData();
+    // Get and store the solutions categories.
+    $this->buildSolutionsCategories($solution_ids);
   }
 
   /**
@@ -190,6 +203,11 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     // itself.
     if ($entity->bundle() === 'solution' && $entity->id() !== $parent_id) {
       return;
+    }
+
+    // The first time entering the recursion. Init the solution data array.
+    elseif ($entity->bundle() === 'solution' && $entity->id() === $parent_id) {
+      $this->solutionDependency[$parent_id] = [];
     }
 
     // If the entity is already in the list of entities of the solution, return
@@ -222,7 +240,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
         // tree on their own and licences are stored in Joinup and are not
         // imported.
         if (!in_array($referenced_entity->bundle(), ['licence', 'solution'])) {
-          $this->addSolutionDataChildDependency($parent_id, $referenced_entity);
+          $this->solutionDependency[$parent_id][$referenced_entity->bundle()][$referenced_entity->id()] = $referenced_entity->id();
         }
       }
     }
@@ -250,17 +268,19 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
   }
 
   /**
-   * Builds an array of categories for solutions stored in the dependency tree.
+   * Builds an array of categories for solutions.
    *
    * @param array $solution_ids
-   *   A list of solution ids for which to calculate the category.
+   *   A list of solution IDs for which to calculate the category.
    */
   protected function buildSolutionsCategories(array $solution_ids): void {
+    $solution_category = $this->getPersistentDataValue('solution_category');
     foreach ($solution_ids as $solution_id) {
       $provenance_record = $this->provenanceHelper->loadOrCreateEntityActivity($solution_id);
       $category = $this->getCategory($provenance_record);
-      $this->setSolutionCategory($solution_id, $category);
+      $solution_category[$solution_id] = $category;
     }
+    $this->setPersistentDataValue('solution_category', $solution_category);
   }
 
   /**
@@ -339,50 +359,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
   }
 
   /**
-   * Sets the solution category to the solution data.
-   *
-   * @param string $solution_id
-   *   The solution id.
-   * @param string $category
-   *   The solution category.
-   */
-  protected function setSolutionCategory(string $solution_id, string $category): void {
-    $this->solutionData[$solution_id]['category'] = $category;
-  }
-
-  /**
-   * Stores the entity data to the persistent pipeline state.
-   */
-  protected function storeEntityData(): void {
-    $this->setPersistentDataValue('incoming_solution_data', $this->solutionData);
-  }
-
-  /**
-   * Adds a solution id on the root of the solution data array.
-   *
-   * This method does not check if the root already exists and initializes the
-   * entry as a new array.
-   *
-   * @param string $solution_id
-   *   The solution entity id.
-   */
-  protected function addSolutionDataRoot(string $solution_id): void {
-    $this->solutionData[$solution_id] = [];
-  }
-
-  /**
-   * Sets an entity as a dependency to the structured data.
-   *
-   * @param string $parent_id
-   *   The parent solution entity id.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The child entity.
-   */
-  protected function addSolutionDataChildDependency(string $parent_id, EntityInterface $entity): void {
-    $this->solutionData[$parent_id]['dependencies'][$entity->bundle()][$entity->id()] = $entity->id();
-  }
-
-  /**
    * Returns whether the given solution has the given entity as a dependency.
    *
    * @param string $parent_id
@@ -394,7 +370,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    *   Whether the solution already has this entity listed as a dependency.
    */
   protected function hasSolutionDataChildDependency(string $parent_id, EntityInterface $entity): bool {
-    return isset($this->solutionData[$parent_id]['dependencies'][$entity->bundle()][$entity->id()]);
+    return isset($this->solutionDependency[$parent_id][$entity->bundle()][$entity->id()]);
   }
 
   /**

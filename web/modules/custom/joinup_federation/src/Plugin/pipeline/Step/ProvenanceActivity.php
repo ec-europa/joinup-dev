@@ -115,7 +115,6 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    * {@inheritdoc}
    */
   public function execute() {
-    $this->loadSolutionDependencyStructure();
     // The $ids is an array of booleans indexed by an entity id. The boolean
     // represents whether the user has selected the entity - or its
     // corresponding solution - for import. All entities are listed since even
