@@ -160,13 +160,11 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     $this->setEntityHashes($this->hashGenerator->generateDataHash($hash_ids));
 
     // Handle the solutions and their dependencies of this iteration.
-    $storage = $this->getRdfStorage();
-
-    /** @var \Drupal\rdf_entity\RdfInterface[] $entities */
-    $entities = $storage->loadMultiple($solution_ids, ['staging']);
-    foreach ($entities as $id => $entity) {
-      $this->addSolutionDataRoot($id);
-      $this->buildSolutionDependencyTree($entity, $id);
+    $solutions = $this->getRdfStorage()->loadMultiple($solution_ids, ['staging']);
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    foreach ($solutions as $solution_id => $solution) {
+      $this->addSolutionDataRoot($solution_id);
+      $this->buildSolutionDependencyTree($solution, $solution_id);
     }
     $this->buildSolutionsCategories($solution_ids);
 
