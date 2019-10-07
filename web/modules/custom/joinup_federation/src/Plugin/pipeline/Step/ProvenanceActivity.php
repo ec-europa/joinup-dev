@@ -134,7 +134,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
         // as disabled - blacklisted.
         ->set('provenance_enabled', $ids[$id] || isset($unchanged_ids[$id]))
         ->set('provenance_associated_with', $collection_id)
-        ->set('provenance_hash', $this->getEntityHash($id))
+        ->set('provenance_hash', $this->getPersistentDataValue('entity_hashes')[$id])
         ->save();
     }
   }
@@ -145,12 +145,12 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    * @param string $category
    *   The category to filter by.
    *
-   * @return array
-   *   An array of solution ids.
+   * @return string[]
+   *   An array of solution IDs.
    */
   protected function getSolutionIdsMatchingCategory(string $category): array {
     $return = [];
-    foreach ($this->solutionData as $solution_id => $solution_data) {
+    foreach ($this->getPersistentDataValue('incoming_solution_data') as $solution_id => $solution_data) {
       if ($solution_data['category'] === $category) {
         $return[$solution_id] = $solution_id;
       }
