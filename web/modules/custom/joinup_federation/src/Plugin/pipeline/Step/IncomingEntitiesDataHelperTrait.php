@@ -26,18 +26,10 @@ trait IncomingEntitiesDataHelperTrait {
   protected $solutionData;
 
   /**
-   * An associative array of hashes indexed by entity id.
-   *
-   * @var array
-   */
-  protected $entityHashes;
-
-  /**
    * Loads the solution data from the persistent state.
    */
   protected function loadSolutionDependencyStructure(): void {
     $this->solutionData = $this->hasPersistentDataValue('incoming_solution_data') ? $this->getPersistentDataValue('incoming_solution_data') : [];
-    $this->entityHashes = $this->hasPersistentDataValue('entity_hashes') ? $this->getPersistentDataValue('entity_hashes') : [];
   }
 
   /**
@@ -72,19 +64,6 @@ trait IncomingEntitiesDataHelperTrait {
     }
 
     return $return;
-  }
-
-  /**
-   * Returns a hash related to a given entity.
-   *
-   * @param string $entity_id
-   *   The entity id.
-   *
-   * @return string
-   *   The hash related to the entity.
-   */
-  protected function getEntityHash(string $entity_id): string {
-    return $this->entityHashes[$entity_id];
   }
 
 }
