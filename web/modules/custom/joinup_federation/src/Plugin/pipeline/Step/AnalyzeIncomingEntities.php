@@ -137,6 +137,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     $incoming_ids = $this->getAllIncomingIds();
     $this->setBatchValue('entity_ids', $incoming_ids);
     $this->setBatchValue('solution_ids', $this->getIncomingSolutionIds());
+    $this->setPersistentDataValue('entity_hashes', []);
     return (int) ceil(count($incoming_ids) / self::BATCH_SIZE);
   }
 
@@ -155,9 +156,11 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     $ids_to_process = $this->extractNextSubset('entity_ids', static::BATCH_SIZE);
     $solution_ids = array_intersect($ids_to_process, $this->getBatchValue('solution_ids'));
 
-    // Skip calculation of the same ids.
-    $hash_ids = array_diff($ids_to_process, $this->getEntityIdsWithHashes());
-    $this->setEntityHashes($this->hashGenerator->generateDataHash($hash_ids));
+    // Skip calculation of the same IDs.
+    $entity_hashes = $this->getPersistentDataValue('entity_hashes');
+    $ids_to_hash = array_diff($ids_to_process, array_keys($entity_hashes));
+    $entity_hashes += $this->hashGenerator->generateDataHash($ids_to_hash);
+    $this->setPersistentDataValue('entity_hashes', $entity_hashes);
 
     // Handle the solutions and their dependencies of this iteration.
     $solutions = $this->getRdfStorage()->loadMultiple($solution_ids, ['staging']);
@@ -337,7 +340,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
         return TRUE;
       }
 
-      $entity_hash = $this->getEntityHash($id);
+      $entity_hash = $this->getPersistentDataValue('entity_hashes')[$id];
       if ($entity_hash !== $provenance_records[$id]->provenance_hash->value) {
         return TRUE;
       }
@@ -363,7 +366,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    */
   protected function storeEntityData(): void {
     $this->setPersistentDataValue('incoming_solution_data', $this->solutionData);
-    $this->setPersistentDataValue('entity_hashes', $this->entityHashes);
   }
 
   /**
@@ -404,26 +406,6 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    */
   protected function hasSolutionDataChildDependency(string $parent_id, EntityInterface $entity): bool {
     return isset($this->solutionData[$parent_id]['dependencies'][$entity->bundle()][$entity->id()]);
-  }
-
-  /**
-   * Returns an array of ids that have hashes calculated.
-   *
-   * @return array
-   *   An array of entity ids.
-   */
-  protected function getEntityIdsWithHashes(): array {
-    return array_keys($this->entityHashes);
-  }
-
-  /**
-   * Adds the passed hashes to the list of hashes.
-   *
-   * @param array $data
-   *   An associative array of hashes indexed by the related entity id.
-   */
-  protected function setEntityHashes(array $data): void {
-    $this->entityHashes += $data;
   }
 
   /**
