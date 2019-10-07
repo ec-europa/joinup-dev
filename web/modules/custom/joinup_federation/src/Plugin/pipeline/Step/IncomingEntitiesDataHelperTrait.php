@@ -63,7 +63,7 @@ trait IncomingEntitiesDataHelperTrait {
 
     // For proper import, releases must be imported right after the solutions
     // so that child entities have the valid reference during Drupal validation.
-    $releases = $requested_dependencies['asset_release'] ?: [];
+    $releases = $requested_dependencies['asset_release'] ?? [];
     unset($requested_dependencies['asset_release']);
 
     $return = $solution_ids + $releases;
