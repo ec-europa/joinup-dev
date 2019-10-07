@@ -91,6 +91,16 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
     $entities = array_fill_keys(array_keys($this->getPersistentDataValue('entities')), TRUE);
     $remaining_ids = $not_selected + $entities;
     $this->setBatchValue('remaining_ids', $remaining_ids);
+
+    // Get all entities that are unchanged by fetching the dependencies of the
+    // unchanged solutions. That way, if any entity is a dependency to more than
+    // one solution (e.g. a contact information entity), out of which some
+    // solutions are unchanged and some are blacklisted, the entity itself
+    // should not be blacklisted as it is a dependency to some unchanged
+    // (federated) solutions.
+    $unchanged_solution_ids = $this->getUnchangedSolutionIds();
+    $this->setBatchValue('unchanged_ids', $this->getSolutionsWithDependenciesAsFlatList($unchanged_solution_ids));
+
     return ceil(count($remaining_ids) / static::BATCH_SIZE);
   }
 
@@ -112,15 +122,6 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
     // blacklisted entities have to have their provenance activity updated.
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
 
-    // Get all entities that are unchanged by fetching the dependencies of the
-    // unchanged solutions. That way, if any entity is a dependency to more than
-    // one solution (e.g. a contact information entity), out of which some
-    // solutions are unchanged and some are blacklisted, the entity itself
-    // should not be blacklisted as it is a dependency to some unchanged
-    // (federated) solutions.
-    $unchanged_solution_ids = $this->getSolutionIdsMatchingCategory('federated_unchanged');
-    $unchanged_ids = $this->getSolutionsWithDependenciesAsFlatList($unchanged_solution_ids);
-
     $current_user_id = $this->currentUser->id();
     $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity(array_keys($ids));
     $collection_id = $this->getPipeline()->getCollection();
@@ -132,7 +133,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
         // The entity is marked as enabled if the user has selected it for
         // import or has not been imported as unchanged. Otherwise, it is marked
         // as disabled - blacklisted.
-        ->set('provenance_enabled', $ids[$id] || isset($unchanged_ids[$id]))
+        ->set('provenance_enabled', $ids[$id] || isset($this->getBatchValue('unchanged_ids')[$id]))
         ->set('provenance_associated_with', $collection_id)
         ->set('provenance_hash', $this->getPersistentDataValue('entity_hashes')[$id])
         ->save();
@@ -142,16 +143,13 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
   /**
    * Returns a list of solutions that have been marked as unchanged.
    *
-   * @param string $category
-   *   The category to filter by.
-   *
    * @return string[]
    *   An array of solution IDs.
    */
-  protected function getSolutionIdsMatchingCategory(string $category): array {
+  protected function getUnchangedSolutionIds(): array {
     $return = [];
-    foreach ($this->getPersistentDataValue('incoming_solution_data') as $solution_id => $solution_data) {
-      if ($solution_data['category'] === $category) {
+    foreach ($this->getPersistentDataValue('solution_category') as $solution_id => $category) {
+      if ($category === 'federated_unchanged') {
         $return[$solution_id] = $solution_id;
       }
     }
