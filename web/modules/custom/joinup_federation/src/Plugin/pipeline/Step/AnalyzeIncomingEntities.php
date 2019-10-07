@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * The solution_dependency_tree is an associative array where each value is an
  * array of entity ids that are related to the solution id which is the index.
- * Related entities can be releases, distributions, licences, publishers etc.
+ * Related entities can be releases, distributions, licences, publishers, etc.
  * The array does not contain related solutions.
  *
  * The solutions_categories array is an associative array of categories indexed
