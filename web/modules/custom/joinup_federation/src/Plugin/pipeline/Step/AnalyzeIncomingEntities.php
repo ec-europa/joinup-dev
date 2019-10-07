@@ -302,16 +302,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
   }
 
   /**
-   * Returns whether a solution has changed given a list of entity ids.
-   *
-   * The solution will be considered as changed if one of the following occur
-   * for at least one of the entries:
-   * - The entity does not have a changed property. This means we cannot know if
-   *   it has changed.
-   * - The provenance record of the entity is new. This meanst the entity has
-   *   not been federated before.
-   * - The entity's changed time is more recent than the provenance record's
-   *   provenance_started property.
+   * Returns whether a solution has changed given a list of entity IDs.
    *
    * @param string[] $entity_ids
    *   A list of entity ids that the solution is related to.
