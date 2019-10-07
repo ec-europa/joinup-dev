@@ -118,8 +118,8 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
     // solutions are unchanged and some are blacklisted, the entity itself
     // should not be blacklisted as it is a dependency to some unchanged
     // (federated) solutions.
-    $solution_ids = $this->getSolutionIdsMatchingCategory('federated_unchanged');
-    $unchanged_ids = $this->getSolutionsWithDependenciesAsFlatList($solution_ids);
+    $unchanged_solution_ids = $this->getSolutionIdsMatchingCategory('federated_unchanged');
+    $unchanged_ids = $this->getSolutionsWithDependenciesAsFlatList($unchanged_solution_ids);
 
     $current_user_id = $this->currentUser->id();
     $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity(array_keys($ids));
