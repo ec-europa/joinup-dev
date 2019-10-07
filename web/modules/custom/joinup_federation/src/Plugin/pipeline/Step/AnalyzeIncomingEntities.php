@@ -426,4 +426,17 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     $this->entityHashes += $data;
   }
 
+  /**
+   * Returns the IDs of solutions in the 'staging' graph.
+   *
+   * @return string[]
+   *   An array of IDs.
+   */
+  protected function getIncomingSolutionIds(): array {
+    return $this->getSparqlQuery()
+      ->graphs(['staging'])
+      ->condition('rid', 'solution')
+      ->execute();
+  }
+
 }

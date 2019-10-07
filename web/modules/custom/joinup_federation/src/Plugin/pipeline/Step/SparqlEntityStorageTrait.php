@@ -52,19 +52,6 @@ trait SparqlEntityStorageTrait {
   }
 
   /**
-   * Returns the ids of solutions in the staging graph.
-   *
-   * @return string[]
-   *   And array of ids.
-   */
-  protected function getIncomingSolutionIds(): array {
-    return $this->getSparqlQuery()
-      ->graphs(['staging'])
-      ->condition('rid', 'solution')
-      ->execute();
-  }
-
-  /**
    * Returns a list of entity ids existing in the sink graph.
    *
    * @return string[]
