@@ -135,7 +135,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    */
   public function initBatchProcess(): int {
     $incoming_ids = $this->getAllIncomingIds();
-    $this->setBatchValue('ids_to_process', $incoming_ids);
+    $this->setBatchValue('entity_ids', $incoming_ids);
     $this->setBatchValue('solution_ids', $this->getIncomingSolutionIds());
     return (int) ceil(count($incoming_ids) / self::BATCH_SIZE);
   }
@@ -144,7 +144,7 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    * {@inheritdoc}
    */
   public function batchProcessIsCompleted(): bool {
-    return empty($this->getBatchValue('ids_to_process'));
+    return empty($this->getBatchValue('entity_ids'));
   }
 
   /**
@@ -152,11 +152,11 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
    */
   public function execute(): void {
     $this->loadSolutionDependencyStructure();
-    $ids = $this->extractNextSubset('ids_to_process', 50);
-    $solution_ids = array_intersect($ids, $this->getBatchValue('solution_ids'));
+    $ids_to_process = $this->extractNextSubset('entity_ids', static::BATCH_SIZE);
+    $solution_ids = array_intersect($ids_to_process, $this->getBatchValue('solution_ids'));
 
     // Skip calculation of the same ids.
-    $hash_ids = array_diff($ids, $this->getEntityIdsWithHashes());
+    $hash_ids = array_diff($ids_to_process, $this->getEntityIdsWithHashes());
     $this->setEntityHashes($this->hashGenerator->generateDataHash($hash_ids));
 
     // Handle the solutions and their dependencies of this iteration.
