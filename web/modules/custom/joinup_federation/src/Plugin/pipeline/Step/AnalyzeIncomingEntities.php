@@ -206,16 +206,14 @@ class AnalyzeIncomingEntities extends JoinupFederationStepPluginBase implements 
     foreach ($reference_fields as $field_name) {
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
       $field = $entity->get($field_name);
-
       foreach ($this->getStagingReferencedEntities($field) as $referenced_entity) {
         if ($this->hasSolutionDataChildDependency($parent_id, $referenced_entity)) {
           // The entity has already been processed.
           continue;
         }
 
-        // Only for the case of the release, dive deeper and check whether there
-        // are more referenced entities. Normally, the only difference between
-        // the solution and the release, would be the distributions.
+        // Dive deeper and check whether there are more referenced entities but
+        // not for licences and solutions.
         if ($referenced_entity instanceof RdfInterface && !in_array($referenced_entity->bundle(), ['licence', 'solution'])) {
           $this->buildSolutionDependencyTree($referenced_entity, $parent_id);
         }
