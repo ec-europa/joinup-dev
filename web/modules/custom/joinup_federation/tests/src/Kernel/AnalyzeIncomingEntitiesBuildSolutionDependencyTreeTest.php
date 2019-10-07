@@ -67,28 +67,24 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
     $this->pipeline->setCurrentState($state);
 
     // Make AnalyzeIncomingEntities::buildSolutionDependencyTree() and
-    // IncomingEntitiesDataHelperTrait::$solutionData accessible for test.
+    // IncomingEntitiesDataHelperTrait::$solutionDependency accessible for test.
     $reflection = new \ReflectionClass($step_plugin);
     // Allow access to the ::buildSolutionDependencyTree.
     $solution_dependency_tree_method = $reflection->getMethod('buildSolutionDependencyTree');
     $solution_dependency_tree_method->setAccessible(TRUE);
-    // Allow access to the ::addSolutionDataRoot.
-    $add_solution_data_root_method = $reflection->getMethod('addSolutionDataRoot');
-    $add_solution_data_root_method->setAccessible(TRUE);
 
-    $solution_data_property = $reflection->getProperty('solutionData');
-    $solution_data_property->setAccessible(TRUE);
+    $solution_dependency_property = $reflection->getProperty('solutionDependency');
+    $solution_dependency_property->setAccessible(TRUE);
 
     foreach ($this->getTestCases() as $solution_id => $expected_solution_data) {
-      $add_solution_data_root_method->invokeArgs($step_plugin, [$solution_id]);
       $solution_dependency_tree_method->invokeArgs($step_plugin, [
         Rdf::load($solution_id),
         $solution_id,
       ]);
-      $actual_data = $solution_data_property->getValue($step_plugin)[$solution_id];
+      $actual_data = $solution_dependency_property->getValue($step_plugin)[$solution_id];
       // Results order might differ between versions of Virtuoso. Ensure that
       // results are ordered properly before asserting.
-      foreach ($actual_data['dependencies'] as &$bundle_dependencies) {
+      foreach ($actual_data as &$bundle_dependencies) {
         ksort($bundle_dependencies);
       }
       $this->assertSame($expected_solution_data, $actual_data);
@@ -167,28 +163,24 @@ class AnalyzeIncomingEntitiesBuildSolutionDependencyTreeTest extends StepTestBas
   protected function getTestCases() {
     return [
       'http://solution/1' => [
-        'dependencies' => [
-          'distro' => [
-            'http://distro/1' => 'http://distro/1',
-            'http://distro/2' => 'http://distro/2',
-            'http://distro/5' => 'http://distro/5',
-            'http://distro/6' => 'http://distro/6',
-          ],
-          'version' => [
-            'http://version/1' => 'http://version/1',
-          ],
+        'distro' => [
+          'http://distro/1' => 'http://distro/1',
+          'http://distro/2' => 'http://distro/2',
+          'http://distro/5' => 'http://distro/5',
+          'http://distro/6' => 'http://distro/6',
+        ],
+        'version' => [
+          'http://version/1' => 'http://version/1',
         ],
       ],
       'http://solution/2' => [
-        'dependencies' => [
-          'distro' => [
-            'http://distro/1' => 'http://distro/1',
-            'http://distro/3' => 'http://distro/3',
-            'http://distro/4' => 'http://distro/4',
-          ],
-          'version' => [
-            'http://version/2' => 'http://version/2',
-          ],
+        'distro' => [
+          'http://distro/1' => 'http://distro/1',
+          'http://distro/3' => 'http://distro/3',
+          'http://distro/4' => 'http://distro/4',
+        ],
+        'version' => [
+          'http://version/2' => 'http://version/2',
         ],
       ],
     ];
