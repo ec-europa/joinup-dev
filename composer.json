@@ -11,6 +11,7 @@
         "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/allowed_formats": "^1.1",
+        "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
         "drupal/cached_computed_field": "^1.0-beta4",
         "drupal/changed_fields": "^2.0",
         "drupal/config_exclude": "dev-1.x",
@@ -145,6 +146,9 @@
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+        "post-drupal-scaffold-cmd": [
+            "cd web && cat ../resources/patch/robots.txt.patch | git apply"
+        ],
         "pre-install-cmd": [
             "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
         ],

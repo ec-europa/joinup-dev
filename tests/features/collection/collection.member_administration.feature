@@ -47,6 +47,7 @@ Feature: Collection membership administration
       | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
       | To approve or reject this request, click on                                        |
       | If you think this action is not clear or not due, please contact Joinup Support at |
+      | /collection/medical-diagnosis/members                                              |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                         |
       | subject   | Joinup: A user has requested to join your collection                               |
