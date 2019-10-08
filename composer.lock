@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92403327af6be79fa2ced8618d973d3e",
+    "content-hash": "257d356d630321099956c14451a44f85",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6218,6 +6218,9 @@
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "StateItem cache is leaking @see https://www.drupal.org/project/state_machine/issues/3086207": "https://www.drupal.org/files/issues/2019-10-08/3086207-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

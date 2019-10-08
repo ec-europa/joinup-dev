@@ -253,6 +253,9 @@
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
+            "drupal/state_machine": {
+                "StateItem cache is leaking @see https://www.drupal.org/project/state_machine/issues/3086207": "https://www.drupal.org/files/issues/2019-10-08/3086207-5.patch"
+            },
             "drupal/swiftmailer": {
                 "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
                 "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
