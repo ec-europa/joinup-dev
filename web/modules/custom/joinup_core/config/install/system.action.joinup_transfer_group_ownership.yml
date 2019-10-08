@@ -9,3 +9,4 @@ label: 'Transfer the ownership of the group to the selected member'
 type: og_membership
 plugin: joinup_transfer_group_ownership
 configuration: {  }
+weight: -1

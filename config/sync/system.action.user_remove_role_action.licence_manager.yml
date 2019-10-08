@@ -10,5 +10,6 @@ id: user_remove_role_action.licence_manager
 label: 'Remove the Licence manager role from the selected user(s)'
 type: user
 plugin: user_remove_role_action
+weight: 0
 configuration:
   rid: licence_manager

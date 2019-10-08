@@ -4,12 +4,25 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
+use Drupal\joinup\Traits\AntibotTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Base class for Joinup ExistingSite tests.
  */
 class JoinupExistingSiteTestBase extends ExistingSiteBase {
+
+  use AntibotTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    // As ExistingSiteBase tests are running without javascript, we disable
+    // Antibot during the tests run.
+    static::disableAntibot();
+  }
 
   /**
    * {@inheritdoc}
@@ -29,6 +42,9 @@ class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Delete the OG group content orphans now because parent::tearDown() is
     // destroying the container and the registered shutdown callback will fail.
     $delete_orphans_plugin->process();
+
+    // Restores the Antibot functionality.
+    static::restoreAntibot();
   }
 
 }
