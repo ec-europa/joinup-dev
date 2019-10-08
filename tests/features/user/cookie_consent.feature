@@ -1,11 +1,11 @@
 @api
-Feature: Cookie consent kit
-  In order to ensure privacy
-  As a user of the website
-  I want to be able to decide on the cookie settings.
+Feature: Cookie consent
+  In order to be compliant with the ePrivacy directive
+  As a product owner
+  I want to offer the possibility for users to reject the use of cookies
 
   @javascript
-  Scenario Outline: Accept cookies
+  Scenario Outline: Accept or refuse cookies
     Given user:
       | Username | test_cck |
       | Password | test_cck |

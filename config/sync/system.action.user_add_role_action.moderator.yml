@@ -10,5 +10,6 @@ id: user_add_role_action.moderator
 label: 'Add the Moderator role to the selected user(s)'
 type: user
 plugin: user_add_role_action
+weight: 0
 configuration:
   rid: moderator

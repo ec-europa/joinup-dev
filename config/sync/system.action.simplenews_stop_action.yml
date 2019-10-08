@@ -10,4 +10,5 @@ id: simplenews_stop_action
 label: 'Stop sending'
 type: node
 plugin: simplenews_stop_action
+weight: 0
 configuration: {  }

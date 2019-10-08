@@ -1,6 +1,7 @@
 module:
   adms_validator: 0
   allowed_formats: 0
+  antibot: 0
   asset_distribution: 0
   asset_release: 0
   block: 0
@@ -69,7 +70,6 @@ module:
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
-  joinup_privacy: 0
   joinup_rss: 0
   joinup_search: 0
   joinup_sparql: 0
@@ -92,6 +92,7 @@ module:
   oe_newsroom_newsletter: 0
   oe_webtools: 0
   oe_webtools_analytics: 0
+  oe_webtools_cookie_consent: 0
   oe_webtools_geocoding: 0
   oe_webtools_maps: 0
   og: 0
