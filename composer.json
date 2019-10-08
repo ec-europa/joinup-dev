@@ -154,6 +154,7 @@
         }
     },
     "scripts": {
+        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "post-drupal-scaffold-cmd": [
             "cd web && cat ../resources/patch/robots.txt.patch | git apply"
         ],
