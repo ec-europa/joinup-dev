@@ -7,7 +7,7 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
- * Base class for Joinup  ExistingSite tests.
+ * Base class for Joinup ExistingSite tests.
  */
 class JoinupExistingSiteTestBase extends ExistingSiteBase {
 
@@ -20,6 +20,8 @@ class JoinupExistingSiteTestBase extends ExistingSiteBase {
       $entity->skip_notification = TRUE;
     }
 
+    parent::tearDown();
+
     /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
     $delete_orphans_manager = \Drupal::service('plugin.manager.og.delete_orphans');
     /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
@@ -27,8 +29,6 @@ class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Delete the OG group content orphans now because parent::tearDown() is
     // destroying the container and the registered shutdown callback will fail.
     $delete_orphans_plugin->process();
-
-    parent::tearDown();
   }
 
 }
