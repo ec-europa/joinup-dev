@@ -203,6 +203,12 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
       'rid' => 'solution',
       'field_is_state' => $state,
       'label' => $this->randomMachineName(),
+      // Ensure a parent collection.
+      'collection' => $this->createRdfEntity([
+        'rid' => 'collection',
+        'label' => $this->randomString(),
+        'field_ar_state' => 'validated',
+      ]),
     ]);
     $this->assertInstanceOf(RdfInterface::class, $parent);
     $this->createOgMembership($parent, $this->userOgFacilitator, [$this->roleFacilitator]);

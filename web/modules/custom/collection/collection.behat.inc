@@ -55,7 +55,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'title' => 'label',
     'abstract' => 'field_ar_abstract',
     'access url' => 'field_ar_access_url',
-    'affiliates' => 'field_ar_affiliates',
     'banner' => 'field_ar_banner',
     'closed' => 'field_ar_closed',
     'contact information' => 'field_ar_contact_information',

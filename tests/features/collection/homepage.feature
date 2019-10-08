@@ -15,13 +15,7 @@ Feature: Collection homepage
     Given the following owner:
       | name          |
       | Bilbo Baggins |
-    Given the following solution:
-      | title             | Bilbo's book          |
-      | description       | Bilbo's autobiography |
-      | elibrary creation | members               |
-      | creation date     | 2014-10-17 8:32am     |
-      | state             | validated             |
-    And the following collection:
+    Given the following collection:
       | title             | Middle earth daily               |
       | description       | Middle earth daily               |
       | owner             | Bilbo Baggins                    |
@@ -30,7 +24,13 @@ Feature: Collection homepage
       | elibrary creation | members                          |
       | state             | validated                        |
       | policy domain     | Employment and Support Allowance |
-      | affiliates        | Bilbo's book                     |
+    And the following solution:
+      | title             | Bilbo's book          |
+      | collection        | Middle earth daily    |
+      | description       | Bilbo's autobiography |
+      | elibrary creation | members               |
+      | creation date     | 2014-10-17 8:32am     |
+      | state             | validated             |
     And the following collection user memberships:
       | collection         | user     | roles       |
       | Middle earth daily | Frodo    | facilitator |
