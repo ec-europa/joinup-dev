@@ -10,4 +10,5 @@ id: node_publish_action
 label: 'Publish content'
 type: node
 plugin: 'entity:publish_action:node'
+weight: 0
 configuration: {  }

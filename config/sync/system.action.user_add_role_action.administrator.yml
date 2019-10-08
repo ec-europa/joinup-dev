@@ -10,5 +10,6 @@ id: user_add_role_action.administrator
 label: 'Add the Administrator role to the selected user(s)'
 type: user
 plugin: user_add_role_action
+weight: 0
 configuration:
   rid: administrator
