@@ -14,6 +14,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Url;
+use Drupal\file_url\Entity\RemoteFile;
 use Drupal\matomo_reporting_api\MatomoQueryFactoryInterface;
 use Drupal\meta_entity\Entity\MetaEntityInterface;
 use Drupal\meta_entity\Entity\MetaEntityType;
@@ -182,9 +183,9 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
     /** @var \Drupal\file\FileInterface $file */
     foreach ($distribution->field_ad_access_url->referencedEntities() as $file) {
       if ($file !== NULL) {
-        return Url::fromUri(file_create_url($file->getFileUri()))
-          ->setAbsolute()
-          ->toString();
+        return ($file instanceof RemoteFile) ?
+          $file->getFileUri() :
+          Url::fromUri(file_create_url($file->getFileUri()))->setAbsolute()->toString();
       }
     }
 
