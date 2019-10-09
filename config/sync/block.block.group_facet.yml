@@ -1,0 +1,31 @@
+uuid: cf94fd0f-8d17-4fbf-9f2f-388da1a3db5b
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.group
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: Q-yF1_SXvQ4zJe7jAbEOjlIknalAqWN6dK4hw2rrFWw
+id: group_facet
+theme: joinup_theme
+region: filters
+weight: -15
+provider: null
+plugin: 'facet_block:group'
+settings:
+  id: 'facet_block:group'
+  label: 'Search page - Group facet'
+  provider: facets
+  label_display: '0'
+  block_id: group_facet
+visibility:
+  request_route:
+    id: request_route
+    routes: view.search.page_1
+    negate: false
+    context_mapping: {  }

@@ -47,6 +47,7 @@ Feature: Collection membership administration
       | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
       | To approve or reject this request, click on                                        |
       | If you think this action is not clear or not due, please contact Joinup Support at |
+      | /collection/medical-diagnosis/members                                              |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                         |
       | subject   | Joinup: A user has requested to join your collection                               |
@@ -70,6 +71,14 @@ Feature: Collection membership administration
     When all e-mails have been sent
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
+    Then the "Action" select should contain the following options:
+      | Approve the pending membership(s)                               |
+      | Block the selected membership(s)                                |
+      | Unblock the selected membership(s)                              |
+      | Delete the selected membership(s)                               |
+      | Add the facilitator role to the selected members                |
+      | Transfer the ownership of the collection to the selected member |
+      | Remove the facilitator role from the selected members           |
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"

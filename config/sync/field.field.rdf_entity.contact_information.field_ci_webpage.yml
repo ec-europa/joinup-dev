@@ -1,0 +1,25 @@
+uuid: 0471012c-7cd0-45cb-9e82-bd194766f700
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ci_webpage
+    - rdf_entity.rdfentity.contact_information
+  module:
+    - link
+_core:
+  default_config_hash: zngacSDnJtxSIHP2DVvioLvVuN6VCSy4M_xJ3Qpqh4U
+id: rdf_entity.contact_information.field_ci_webpage
+field_name: field_ci_webpage
+entity_type: rdf_entity
+bundle: contact_information
+label: 'Website URL'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

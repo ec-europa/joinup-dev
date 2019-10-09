@@ -1,0 +1,24 @@
+uuid: 3ec37851-db99-440c-b230-4108fca69d7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment
+    - field.field.comment.comment.field_body
+_core:
+  default_config_hash: 1pqbtJl4kPoWoUVg305Sq43ImIeCrjxJg2H1-GTrepU
+id: comment.comment.default
+targetEntityType: comment
+bundle: comment
+mode: default
+content:
+  field_body:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  langcode: true
+  links: true

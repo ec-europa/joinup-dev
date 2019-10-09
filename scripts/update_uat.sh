@@ -13,9 +13,9 @@ echo "Disabling config_readonly."
 touch disable-config-readonly
 
 ./vendor/bin/drush cache:rebuild --yes
-./vendor/bin/drush updatedb --yes --cache-clear
-./vendor/bin/drush cs-update --discard-overrides --yes
-./vendor/bin/drush cache-rebuild --yes
+./vendor/bin/drush updatedb --yes --no-post-updates
+./vendor/bin/drush config:import --yes
+./vendor/bin/drush updatedb --yes
 ./vendor/bin/drush pm:enable stage_file_proxy --yes
 
 echo "Rebuilding node access records."

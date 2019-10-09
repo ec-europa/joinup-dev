@@ -55,6 +55,17 @@ interface PipelineStepWithBatchInterface extends PipelineStepInterface {
   public function setBatchValue($key, $value);
 
   /**
+   * Checks if a value, identified by a key, exists in the batch sandbox.
+   *
+   * @param string $key
+   *   The key to be checked.
+   *
+   * @return bool
+   *   If the batch sandbox contains a value with $key key.
+   */
+  public function hasBatchValue($key);
+
+  /**
    * Returns a value from the batch process sandbox.
    *
    * @param string $key

@@ -1,0 +1,13 @@
+disabled: false
+field_template: true
+ft-default: default
+ft-show-colon: false
+classes:
+  region:
+    - listing__metadata
+    - listing__card
+    - mdl-card
+    - listing__field--image-wrapper
+  field: {  }
+_core:
+  default_config_hash: GLIo4aUJDpPtPJriI64cO66-s5R-zwHWKKed0RprncQ

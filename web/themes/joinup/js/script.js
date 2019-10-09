@@ -29,5 +29,14 @@
       Drupal.Ajax.prototype.setProgressIndicatorThrobber =
         Drupal.Ajax.prototype.setProgressIndicatorFullscreen;
     }
+
+    // Refreshes MDL checkbox classes after ajax callbacks.
+    $(document).ajaxComplete(function (event, xhr, settings) {
+      componentHandler.upgradeAllRegistered();
+      $('.mdl-js-checkbox').each(function (index, element) {
+        element.MaterialCheckbox.updateClasses_();
+      });
+    });
+
   });
 })(jQuery);

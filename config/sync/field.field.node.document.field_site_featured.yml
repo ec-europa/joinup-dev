@@ -1,0 +1,25 @@
+uuid: 73842eeb-f307-469d-a438-7d470009c08d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_site_featured
+    - node.type.document
+_core:
+  default_config_hash: 7H-Hj9sW7df4BV6RQqYF3-qoIrGSiwXWNVkQy6niOLg
+id: node.document.field_site_featured
+field_name: field_site_featured
+entity_type: node
+bundle: document
+label: 'Site featured'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

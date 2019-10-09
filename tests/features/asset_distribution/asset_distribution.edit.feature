@@ -9,14 +9,13 @@ Feature: Asset distribution editing.
       | Username     | E-mail                   | First name | Family name | Roles |
       | Gregg Hill   | Gregg.Hill@example.com   | Gregg      | Hill        |       |
       | Pedro Torres | Pedro.Torres@example.com | Pedro      | Torres      |       |
-    And the following solutions:
-      | title      | description        | state     |
-      | Solution A | Sample description | validated |
-      | Solution B | Sample description | validated |
     And the following collection:
-      | title      | Collection example     |
-      | affiliates | Solution A, Solution B |
-      | state      | validated              |
+      | title | Collection example |
+      | state | validated          |
+    And the following solutions:
+      | title      | collection         | description        | state     |
+      | Solution A | Collection example | Sample description | validated |
+      | Solution B | Collection example | Sample description | validated |
     And the following licence:
       | title       | LGPL                                |
       | description | The LGPL more permisssive than GPL. |
@@ -62,9 +61,9 @@ Feature: Asset distribution editing.
     And I click "Edit"
     Then I should see the heading "Edit Distribution Asset distribution example"
     And the following fields should not be present "Langcode, Translation"
-    But the following fields should be present "Description, Access URL, License, Format, Status, Representation technique"
+    But the following fields should be present "Description, Access URL, Licence, Format, Status, Representation technique"
     # Ensure that the current licence is available even if it is deprecated but a warning is shown.
-    And the "License" field should contain the "LGPL" option
+    And the "Licence" field should contain the "LGPL" option
     And I should see the warning message "The referenced licence LGPL is deprecated. You are advised to chose a different licence."
     When I fill in "Title" with "Asset distribution example revised"
     # Set a non-HTTP protocol remote URL.
