@@ -26,13 +26,13 @@ Feature: Homepage
       | Parliament          | deletion request |
       | Party structure     | archived         |
     And the following solutions:
-      | title             | state            |
-      | Economic theory   | draft            |
-      | Economic history  | proposed         |
-      | Laws of economics | validated        |
-      | Econometrics      | deletion request |
-      | Planned economy   | needs update     |
-      | Economic growth   | blacklisted      |
+      | title             | state            | collection     |
+      | Economic theory   | draft            | Social classes |
+      | Economic history  | proposed         | Social classes |
+      | Laws of economics | validated        | Social classes |
+      | Econometrics      | deletion request | Social classes |
+      | Planned economy   | needs update     | Social classes |
+      | Economic growth   | blacklisted      | Social classes |
     And custom_page content:
       | title                | collection     |
       | Developing economics | Social classes |
