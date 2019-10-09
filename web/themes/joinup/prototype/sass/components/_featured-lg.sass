@@ -8,7 +8,7 @@
   position: relative
   margin: 0 auto
   padding: 20px 0
-  background: $color-blue-default url('../images/featured-lg-bg.jpg') no-repeat center top
+  background: $color-blue-default url('../images/featured-lg-background.jpg') no-repeat center top
   -webkit-background-size: cover
   -moz-background-size: cover
   -o-background-size: cover
@@ -24,26 +24,36 @@
   color: #fff
   +z-index(highlight)
 
-.featured-lg__logo,
 .featured-lg__text,
 .featured-lg__search-bar
-  margin-bottom: 40px
+  margin-bottom: 30px
   +breakpoint(tablet)
-    margin-bottom: 80px
+    margin-bottom: 60px
 
 .featured-lg__logo
   margin-top: 40px
+  margin-bottom: 30px
   img
-    width: 150px
+    height: 60px
+  +breakpoint(tablet)
+    margin-bottom: 40px
+    img
+      height: 90px
+
+.featured-lg__stats
+  margin-bottom: 40px
 
 .featured-lg__text
+  margin-top: 0
   padding: 0 20px
   font-weight: $font-weight-thin
+  max-width: 540px
+  margin-left: auto
+  margin-right: auto
 
 // Dependiencies
 // --------------------------------------------------
 .featured-lg__stats
-  margin-bottom: 40px
   .stats__wrapper
     position: relative
     text-align: left

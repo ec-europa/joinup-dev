@@ -1,0 +1,19 @@
+uuid: 63f9e398-a84b-472f-b52a-135d56006318
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.sol_publish_backlisted
+id: message.sol_publish_backlisted.mail_subject
+targetEntityType: message
+bundle: sol_publish_backlisted
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

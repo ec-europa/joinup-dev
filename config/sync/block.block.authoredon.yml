@@ -1,0 +1,23 @@
+uuid: 46897a64-a4ff-41ae-a5c1-cd682deb84eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.authoredon
+  module:
+    - facets
+  theme:
+    - joinup_theme
+id: authoredon
+theme: joinup_theme
+region: sidebar_left
+weight: -16
+provider: null
+plugin: 'facet_block:authoredon'
+settings:
+  id: 'facet_block:authoredon'
+  label: 'Authored on'
+  provider: facets
+  label_display: visible
+  block_id: authoredon
+visibility: {  }

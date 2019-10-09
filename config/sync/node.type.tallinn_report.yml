@@ -1,0 +1,15 @@
+uuid: 0740f119-f638-4e1f-96d2-4c8be79bb575
+langcode: en
+status: true
+dependencies: {  }
+name: 'Tallinn report'
+type: tallinn_report
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false
+label_singular: 'Tallinn report'
+label_plural: 'Tallinn reports'
+label_count:
+  no_count_capitalize: !!binary VGFsbGlubiByZXBvcnQDVGFsbGlubiByZXBvcnRz

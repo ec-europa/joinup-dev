@@ -1,0 +1,35 @@
+uuid: 008811b7-b023-4bb6-b910-f3a7423486d9
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_subscription
+id: subscribe_discussions
+label: 'Subscribe discussions'
+bundles:
+  - discussion
+entity_type: node
+global: false
+weight: 0
+flag_short: Subscribe
+flag_long: ''
+flag_message: 'You have been subscribed to the discussion.'
+unflag_short: Unsubscribe
+unflag_long: ''
+unflag_message: 'You have been unsubscribed from the discussion.'
+unflag_denied_text: ''
+flag_type: 'entity:node'
+link_type: safe_unflag
+flagTypeConfig:
+  show_in_links: {  }
+  show_as_field: true
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions:
+    owner: '0'
+linkTypeConfig:
+  flag_confirmation: 'Subscribe to this discussion?'
+  unflag_confirmation: 'Unsubscribe from this discussion?'
+  flag_create_button: Subscribe
+  flag_delete_button: Unsubscribe
+  form_behavior: modal

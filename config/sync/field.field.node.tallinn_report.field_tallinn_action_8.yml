@@ -1,0 +1,19 @@
+uuid: 5a2604ce-a3b9-420c-aeb5-0695726302c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tallinn_action_8
+    - node.type.tallinn_report
+id: node.tallinn_report.field_tallinn_action_8
+field_name: field_tallinn_action_8
+entity_type: node
+bundle: tallinn_report
+label: 'Culture of re-use of data within PAs'
+description: 'Work to create a culture of re-use, including responsible and transparent re-use of data within our administrations.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: tallinn_entry

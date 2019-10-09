@@ -15,7 +15,7 @@ dependencies:
   - joinup:joinup_core
   - drupal:language
   - drupal:node
-  - oe_webtools_location:oe_webtools_geocoding
+  - oe_webtools:oe_webtools_geocoding
   - smart_trim:smart_trim
 
 config_devel:
@@ -59,4 +59,5 @@ config_devel:
   - field.storage.node.field_organisation
   - field.storage.node.field_organisation_type
   - field.storage.node.field_scope
+  - geocoder.geocoder_provider.webtools_geocoding
   - node.type.event
