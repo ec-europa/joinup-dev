@@ -4,6 +4,8 @@ node:pre_moderated:
   label: "Pre moderated"
   group: community_content
   states:
+    __new__:
+      label: New
     draft:
       label: Draft
     validated:
@@ -16,13 +18,17 @@ node:pre_moderated:
     deletion_request:
       label: 'Deletion request'
   transitions:
+    save_as_draft:
+      label: 'Save as draft'
+      from: [__new__]
+      to: draft
     save_new_draft:
       label: 'Save new draft'
       from: [validated]
       to: draft
     propose:
       label: 'Propose'
-      from: [draft]
+      from: [__new__, draft]
       to: proposed
     propose_from_reported:
       label: 'Propose'
@@ -30,7 +36,7 @@ node:pre_moderated:
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft]
+      from: [__new__, draft]
       to: validated
     approve_proposed:
       label: 'Publish'
@@ -58,6 +64,8 @@ node:post_moderated:
   label: "Post moderated"
   group: community_content
   states:
+    __new__:
+      label: New
     draft:
       label: Draft
     validated:
@@ -68,6 +76,10 @@ node:post_moderated:
     proposed:
       label: Proposed
   transitions:
+    save_as_draft:
+      label: 'Save as draft'
+      from: [__new__]
+      to: draft
     save_new_draft:
       label: 'Save new draft'
       from: [validated]
@@ -78,7 +90,7 @@ node:post_moderated:
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft]
+      from: [__new__, draft]
       to: validated
     approve_proposed:
       label: 'Publish'
@@ -99,6 +111,8 @@ node:discussion:post_moderated:
   label: "Discussion (Post moderated)"
   group: community_content
   states:
+    __new__:
+      label: New
     draft:
       label: Draft
     validated:
@@ -112,6 +126,10 @@ node:discussion:post_moderated:
       label: Archived
       published: true
   transitions:
+    save_as_draft:
+      label: 'Save as draft'
+      from: [__new__]
+      to: draft
     save_new_draft:
       label: 'Save new draft'
       from: [validated]
@@ -122,7 +140,7 @@ node:discussion:post_moderated:
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft]
+      from: [__new__, draft]
       to: validated
     approve_proposed:
       label: 'Publish'
