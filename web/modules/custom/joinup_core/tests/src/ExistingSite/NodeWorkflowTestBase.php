@@ -980,13 +980,24 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       'solution' => 'field_is_',
     ];
 
-    $parent = $this->createRdfEntity([
+    $values = [
       'label' => $this->randomMachineName(),
       'rid' => $bundle,
       $field_identifier[$bundle] . 'state' => $state,
       $field_identifier[$bundle] . 'moderation' => $moderation,
       $field_identifier[$bundle] . 'elibrary_creation' => $e_library === NULL ? ELibraryCreationOptions::REGISTERED_USERS : $e_library,
-    ]);
+    ];
+
+    // It's not possible to create orphan solutions.
+    if ($bundle === 'solution') {
+      $values['collection'] = $this->createRdfEntity([
+        'rid' => 'collection',
+        'label' => $this->randomString(),
+        'field_ar_state' => 'validated',
+      ]);
+    }
+
+    $parent = $this->createRdfEntity($values);
     $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
 
     $member_role = OgRole::getRole('rdf_entity', $bundle, 'member');
