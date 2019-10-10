@@ -3,7 +3,6 @@ status: true
 dependencies:
   module:
     - joinup_core
-    - joinup_search
   theme:
     - joinup_theme
 id: global_search
