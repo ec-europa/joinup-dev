@@ -98,6 +98,7 @@ Feature: As a site moderator I am able to import RDF files.
       | Spain - Center for Technology Transfer execution stopped with errors in Joinup compliance validation step. Please review the following errors: |
     And I should see the heading "Errors executing Spain - Center for Technology Transfer"
     And I should see the following lines of text:
+      | A solution titled Solution 1 already exists in this collection.                        |
       | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.   |
       | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist. |
       | This value should not be null.                                                         |
