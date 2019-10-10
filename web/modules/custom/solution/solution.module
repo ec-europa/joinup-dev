@@ -632,6 +632,9 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
  *     collections that are affiliated with this solution contain a solution
  *     with a duplicate title. Solutions that belong to unaffiliated colletions
  *     will be ignored.
+ * @param array $graphs
+ *   An array of graphs to be passed in the query. Defaults to an empty array.
+ *   The default graphs will be used.
  *
  * @return bool
  *   TRUE if the title is unique within all affiliated collections.
@@ -639,7 +642,7 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
  * @throws \Exception
  *   Thrown when anything but a solution entity is passed in.
  */
-function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_collections = FALSE) {
+function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_collections = FALSE, array $graphs = []): bool {
   if ($solution->bundle() !== 'solution') {
     throw new \Exception('Title uniqueness within a collection can only be checked for solutions.');
   }
@@ -648,6 +651,7 @@ function solution_title_is_unique(RdfInterface $solution, $check_unaffiliated_co
   // entity but on the parent. This means we cannot use a simple query.
   // Retrieve all solutions with the same title.
   $query = \Drupal::entityQuery('rdf_entity')
+    ->graphs($graphs)
     ->condition('label', $solution->label())
     ->condition('rid', 'solution');
   if (!empty($solution->id())) {
