@@ -66,6 +66,12 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
       'rid' => 'solution',
       'label' => $this->randomString(),
       'field_is_state' => 'validated',
+      // Ensure a parent collection.
+      'collection' => $this->createRdfEntity([
+        'rid' => 'collection',
+        'label' => $this->randomString(),
+        'field_ar_state' => 'validated',
+      ]),
     ]);
     $licence = $this->createRdfEntity([
       'rid' => 'licence',
