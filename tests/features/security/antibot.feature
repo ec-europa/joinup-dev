@@ -11,7 +11,6 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
       | path           |
       | /user/password |
       | /user/login    |
-      | /user/register |
       | /contact       |
 
   Scenario: Authenticated users.
