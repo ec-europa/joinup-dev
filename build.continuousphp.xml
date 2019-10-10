@@ -71,10 +71,10 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
         </if>
     </target>
 
-    <target name="build-continuousphp" >
+    <target name="build-continuousphp" depends="sass-compiler-requirements">
         <echo message="Install the SASS compiler" />
         <exec dir="${project.basedir}"
-              command="gem install sass"
+              command="sudo gem install sass"
               checkreturn="true"
               passthru="true" />
         <!-- Set environment variables as extra properties through cloudformation -->
@@ -85,6 +85,44 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
               command="sed -i 's/^cphp\.//' build.properties.local"
               checkreturn="true"
               passthru="true" />
+    </target>
+
+
+    <target name="sass-compiler-requirements">
+        <exec command="gem --version"
+              dir="${project.basedir}"
+              checkreturn="false"
+              returnProperty="rubygems.missed"
+        />
+
+        <if>
+            <not>
+                <equals arg1="${rubygems.missed}" arg2="0"/>
+            </not>
+            <then>
+                <exec command="sudo apt-get --version"
+                      returnProperty="check.is_debian"/>
+                <if>
+                    <not>
+                        <equals arg1="${check.is_debian}" arg2="0"/>
+                    </not>
+                    <then>
+                        <fail message="Automatic install of RubyGems is supported only for Debian systems. Install manually RubyGems and run again this Phing target."/>
+                    </then>
+                </if>
+
+                <echo message="Installing RubyGems"/>
+                <exec command="sudo apt-get update &amp;&amp; sudo apt-get install -y ruby-dev ruby"
+                      checkreturn="true"
+                      passthru="true"
+                />
+            </then>
+        </if>
+
+        <exec command="gem --version"
+              dir="${project.basedir}"
+              outputProperty="rubygems.version"
+        />
     </target>
 
     <!-- provision new demo/test stack on AWS -->
