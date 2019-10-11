@@ -25,7 +25,6 @@ config_devel:
   - core.entity_form_display.message.discussion_invite.default
   - core.entity_form_display.node.discussion.default
   - core.entity_view_display.comment.reply.default
-  - core.entity_view_display.comment.reply.default
   - core.entity_view_display.message.discussion_comment_new.mail_body
   - core.entity_view_display.message.discussion_comment_new.mail_subject
   - core.entity_view_display.message.discussion_delete.mail_body

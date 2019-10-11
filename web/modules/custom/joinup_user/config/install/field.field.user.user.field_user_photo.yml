@@ -30,8 +30,8 @@ settings:
     uuid: 2e24bbc5-dedf-42b0-85cf-35940274c2f8
     alt: ''
     title: ''
-    width: 640
-    height: 615
+    width: 400
+    height: 470
   handler: 'default:file'
   handler_settings: {  }
 field_type: image
