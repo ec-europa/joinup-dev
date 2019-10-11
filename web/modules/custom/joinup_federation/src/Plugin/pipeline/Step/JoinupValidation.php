@@ -9,12 +9,10 @@ use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\solution\Plugin\Validation\Constraint\UniqueSolutionTitleConstraint;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
@@ -210,20 +208,12 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
     $critical_violations = $non_critical_violations = [];
 
     $violations = $entity->validate();
-    // If the solution does not have a label, an invalid query will be
-    // constructed in the validation check. Avoid breaking the site for broken
-    // data.
-    if (!empty($entity->label()) && $constraint = $this->getUniqueTitleViolation($entity)) {
-      $violations->add($constraint);
-    }
-
     if (!$violations->count()) {
       return [];
     }
 
     // Process first the entity violations.
     $entity_violations = $violations->getEntityViolations();
-
     /** @var \Symfony\Component\Validator\ConstraintViolationInterface $violation */
     foreach ($entity_violations as $violation) {
       $critical_violations[] = [
@@ -296,45 +286,6 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
     }
 
     return $constraints_map[get_class($violation->getConstraint())];
-  }
-
-  /**
-   * Checks for the unique title constraint of solutions.
-   *
-   * Solutions have a unique title constraint set up for the label property.
-   * However, the default constraint only checks against the default and draft
-   * graphs and ignores the staging as a non active one. There is no point to
-   * change the constraint to also include the staging graph as there might be
-   * stale data of a broken import.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $entity
-   *   The entity to check for unique title.
-   *
-   * @return \Symfony\Component\Validator\ConstraintViolationInterface|null
-   *   The title violation or null if there is no validation.
-   */
-  protected function getUniqueTitleViolation(RdfInterface $entity): ?ConstraintViolationInterface {
-    // The $check_unaffiliated_collections in the following function is set
-    // to true to avoid trying to compute the 'collection' property which
-    // might not be computable yet. The query is run against the staging
-    // graph only so there should not be solutions from other collections
-    // there.
-    if ($entity->bundle() !== 'solution' || solution_title_is_unique($entity, TRUE, ['staging'])) {
-      return NULL;
-    }
-
-    $parameters = ['%value' => $entity->label()];
-    return new ConstraintViolation(
-      $this->t('A solution titled %value already exists in this collection. Please choose a different title.', $parameters),
-      '',
-      [],
-      '',
-      'label',
-      'invalid',
-      NULL,
-      NULL,
-      new UniqueSolutionTitleConstraint([])
-    );
   }
 
 }
