@@ -133,7 +133,7 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
     return;
   }
 
-  if (!solution_title_is_unique($form_state->getFormObject()->getEntity(), TRUE)) {
+  if (!\Drupal::service('solution.title_duplicate_helper')->titleIsUnique($form_state->getFormObject()->getEntity())) {
     drupal_set_message(t('A solution with the same name exists in a different collection.'), 'warning');
   }
 }
