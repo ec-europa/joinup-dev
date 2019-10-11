@@ -1,0 +1,23 @@
+uuid: cc49bf2d-ccba-423c-b39a-5e80889eb318
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+_core:
+  default_config_hash: 3gR3njmzy6kO4pRYiQWj7KPOyMK2ANhYf9_0eJyNXwg
+id: user.field_user_business_title
+field_name: field_user_business_title
+entity_type: user
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

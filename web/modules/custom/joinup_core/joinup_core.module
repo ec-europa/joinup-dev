@@ -907,7 +907,7 @@ function joinup_core_local_tasks_alter(&$local_tasks) {
 function joinup_core_user_predelete(EntityInterface $entity) {
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
-  foreach ($membership_manager->getMemberships($entity, []) as $membership) {
+  foreach ($membership_manager->getMemberships($entity->id(), []) as $membership) {
     $membership->skip_notification = TRUE;
     $membership->delete();
   }
@@ -932,7 +932,7 @@ function joinup_core_user_update(UserInterface $user) {
 
   /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
   $membership_manager = \Drupal::service('og.membership_manager');
-  $memberships = $membership_manager->getMemberships($user);
+  $memberships = $membership_manager->getMemberships($user->id());
 
   $tags = [];
   foreach ($memberships as $membership) {
@@ -1247,7 +1247,7 @@ function joinup_core_form_views_form_og_members_overview_default_alter(&$form, F
  *   The form state object.
  */
 function joinup_core_form_views_form_og_members_overview_default_validate(array &$form, FormStateInterface $form_state) {
-  if ($form_state->getValue('action') !== 'joinup_collection_og_membership_delete_action') {
+  if ($form_state->getValue('action') !== 'joinup_og_membership_delete_action') {
     return;
   }
 
@@ -1341,11 +1341,19 @@ function joinup_core_config_readonly_whitelist_patterns() {
  * Implements hook_module_implements_alter().
  */
 function joinup_core_module_implements_alter(array &$implementations, $hook) {
-  if ($hook === 'cron') {
-    // Use the custom hook_cron() implementation, provided by 'joinup_core'
-    // module, to trigger the Cached Computed Field cron tasks.
-    // @see joinup_core_cron()
-    unset($implementations['cached_computed_field']);
+  switch ($hook) {
+    case 'cron':
+      // Use the custom hook_cron() implementation, provided by 'joinup_core'
+      // module, to trigger the Cached Computed Field cron tasks.
+      // @see joinup_core_cron()
+      unset($implementations['cached_computed_field']);
+      break;
+
+    case 'block_view_system_menu_block_alter':
+      // Do not show the contextual links to edit menus. This functionality is
+      // used very rarely but the contextual links menu causes visual clutter.
+      unset($implementations['menu_ui']);
+      break;
   }
 }
 

@@ -54,9 +54,9 @@ class ThreeWayMergeStepTest extends StepTestBase {
     parent::setUp();
 
     // Create the 'default' and 'staging' graphs.
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/sparql_entity_storage.graph.default.yml'));
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../contrib/sparql_entity_storage/config/install/sparql_entity_storage.graph.default.yml'));
     SparqlGraph::create($graph)->save();
-    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../../profiles/joinup/config/install/sparql_entity_storage.graph.draft.yml'));
+    $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../../../contrib/rdf_entity/modules/rdf_draft/config/install/sparql_entity_storage.graph.draft.yml'));
     SparqlGraph::create($graph)->save();
     $graph = Yaml::decode(file_get_contents(__DIR__ . '/../../../config/install/sparql_entity_storage.graph.staging.yml'));
     SparqlGraph::create($graph)->save();
@@ -149,6 +149,10 @@ class ThreeWayMergeStepTest extends StepTestBase {
    * Test values assignment with an existing solution.
    */
   public function testExistingSolution() {
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => 'http://catalog',
+    ])->save();
     // Create a local entity whose values will be overwritten.
     Rdf::create([
       'rid' => 'solution',
@@ -157,11 +161,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
       'field_is_description' => 'Also this...',
       'field_status' => 'http://example.com/status',
       'field_is_textfield' => 'This value should not be empty after re-import.',
-    ])->save();
-    Rdf::create([
-      'rid' => 'collection',
-      'id' => 'http://catalog',
-      'field_ar_affiliates' => 'http://asset',
+      'collection' => 'http://catalog',
     ])->save();
 
     $graph = new Graph(static::getTestingGraphs()['sink']);
@@ -218,10 +218,6 @@ class ThreeWayMergeStepTest extends StepTestBase {
       ->setStepId('3_way_merge')
       ->setBatchValue('remaining_incoming_ids', ['http://asset' => FALSE]);
     $this->runPipelineStep('3_way_merge', $state);
-
-    // Check that the solution has been assigned to the configured collection.
-    $collection = Rdf::load('http://catalog');
-    $this->assertEquals('http://asset', $collection->field_ar_affiliates->target_id);
 
     // Check that, for an empty field, the default value is assigned.
     $solution = Rdf::load('http://asset', ['staging']);

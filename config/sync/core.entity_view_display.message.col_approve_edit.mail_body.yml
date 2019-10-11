@@ -1,0 +1,19 @@
+uuid: 78581b89-caba-4cbc-a21c-65e0091cd16d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.col_approve_edit
+id: message.col_approve_edit.mail_body
+targetEntityType: message
+bundle: col_approve_edit
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

@@ -1,0 +1,18 @@
+uuid: 29bed91e-0346-4070-891e-4f906c2a2fea
+langcode: en
+status: true
+dependencies:
+  config:
+    - rdf_entity.rdfentity.solution
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+_core:
+  default_config_hash: N8iP2wHyJJoQ1IIjpYwX8UJEc4fTvzn3JcurZlGgfJY
+id: rdf_entity.solution
+target_entity_type_id: rdf_entity
+target_bundle: solution
+default_langcode: site_default
+language_alterable: true

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Site\Settings;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\user\Entity\User;
@@ -88,6 +89,17 @@ function joinup_core_requirements($phase) {
   }
 
   return $requirements;
+}
+
+/**
+ * Implements hook_install().
+ */
+function joinup_core_install() {
+  // Disable the warning about rebuilding node access. This is needlessly set
+  // in the install hook of the View Unpublished module.
+  // @todo Remove this once the bug is fixed.
+  // @see https://www.drupal.org/node/2837685
+  node_access_needs_rebuild(FALSE);
 }
 
 /**
@@ -294,4 +306,41 @@ QUERY;
 function joinup_core_update_8109() {
   $entity_type = \Drupal::entityTypeManager()->getDefinition('solr_field_type');
   \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+}
+
+/**
+ * Install the 'Published on' field storage definition.
+ */
+function joinup_core_update_8110() {
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition(
+    'published_at',
+    'node',
+    'publication_date',
+    BaseFieldDefinition::create('published_at')
+      ->setLabel(t('Published on'))
+      ->setDescription(t('Keep the publication timestamp for each node.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', ['type' => 'hidden'])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'publication_date_timestamp',
+        'weight' => 10,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+  );
+}
+
+/**
+ * Fix 'default' graph UUID.
+ */
+function joinup_core_update_8111(): void {
+  // If a config have a different UUID in active store compared to staging, the
+  // config is deleted and recreated. But the 'default' graph cannot be deleted,
+  // so we avoid deletion by manually setting its UUID.
+  // @see \Drupal\Core\Config\StorageComparer::addChangelistUpdate()
+  // @see \Drupal\sparql_entity_storage\Entity\SparqlGraph::delete()
+  \Drupal::configFactory()->getEditable('sparql_entity_storage.graph.default')
+    ->set('uuid', 'adb4491f-7cbc-46d9-975d-41bf83b14637')
+    ->save();
 }

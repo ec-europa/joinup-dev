@@ -1,0 +1,19 @@
+uuid: 1be07d0d-909c-4bf7-be5c-9ff522b083f8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.cc_transition_publish
+id: message.cc_transition_publish.mail_subject
+targetEntityType: message
+bundle: cc_transition_publish
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

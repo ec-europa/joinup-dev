@@ -40,6 +40,7 @@ abstract class StepTestBase extends KernelTestBase {
   protected static $modules = [
     'joinup_federation',
     'joinup_federation_test',
+    'joinup_sparql',
     'pipeline',
     'rdf_entity',
     'sparql_entity_storage',

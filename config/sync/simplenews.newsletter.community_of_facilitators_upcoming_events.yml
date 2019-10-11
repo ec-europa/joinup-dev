@@ -1,0 +1,17 @@
+uuid: 98968aac-76b3-4ab2-a6a2-8f71062f7451
+langcode: en
+status: true
+dependencies: {  }
+name: 'Community of Facilitators - Upcoming Events'
+id: community_of_facilitators_upcoming_events
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

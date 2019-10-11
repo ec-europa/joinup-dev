@@ -156,7 +156,7 @@ abstract class ShareContentFormBase extends FormBase {
       return [];
     }
 
-    $groups = $this->membershipManager->getUserGroupsByRoleIds($this->currentUser, array_keys($roles));
+    $groups = $this->membershipManager->getUserGroupsByRoleIds($this->currentUser->id(), array_keys($roles));
     return empty($groups) ? [] : $groups['rdf_entity'];
   }
 
