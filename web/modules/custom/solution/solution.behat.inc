@@ -18,6 +18,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
@@ -33,22 +34,23 @@ use PHPUnit\Framework\Assert;
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use ConfigReadOnlyTrait;
-  use EntityTrait;
   use EntityReferenceTrait;
+  use EntityTrait;
   use FileTrait;
   use NodeTrait;
   use OgTrait;
-  use TraversingTrait;
   use RdfEntityTrait;
+  use SearchTrait;
+  use TraversingTrait;
   use UtilityTrait;
   use WorkflowTrait;
 
   /**
-   * Test solutions.
+   * Keep track of created entities.
    *
-   * @var \Drupal\rdf_entity\Entity\Rdf[]
+   * @var \Drupal\rdf_entity\RdfInterface[]
    */
-  protected $solutions = [];
+  protected $rdfEntities = [];
 
   /**
    * Navigates to the add solution form.
@@ -134,6 +136,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         }
       };
 
+      $this->ensureParentCollection($values);
       $values = $this->convertValueAliases($values);
 
       $this->createSolution($values);
@@ -195,9 +198,51 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     };
 
+    $this->ensureParentCollection($values);
     $values = $this->convertValueAliases($values);
 
     $this->createSolution($values);
+  }
+
+  /**
+   * Make sure that the solution being created has a parent collection.
+   *
+   * For some tests the solution's parent collection has no relevance. Such
+   * tests are allowed to omit an explicit collection creation. We're creating
+   * here a dummy parent collection just to satisfy the data integrity
+   * constraint.
+   *
+   * @param array $values
+   *   The solution creation values.
+   *
+   * @see \Drupal\solution\SolutionAffiliationFieldItemList::preSave()
+   */
+  protected function ensureParentCollection(array &$values): void {
+    if (empty($values['collection'])) {
+      $label = $this->getRandom()->sentences(3);
+      $collection = Rdf::create([
+        'rid' => 'collection',
+        'label' => $label,
+        'field_ar_state' => 'validated',
+      ]);
+      $collection->save();
+      $values['collection'] = $label;
+      // Track this collection.
+      $this->rdfEntities[$collection->id()] = $collection;
+
+      // Remove any links created by this collection because they might produce
+      // name collisions with the solution. E.g. the left sidebar link 'About'.
+      // @todo Remove this workaround in ISAICP-5597.
+      // @see tests/features/custom_page/navigation_menu.feature
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5597
+      $entity_type_manager = \Drupal::entityTypeManager();
+      $storage = $entity_type_manager->getStorage('ogmenu_instance');
+      $og_menu_instance_ids = $storage->getQuery()
+        ->condition('type', 'navigation')
+        ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $collection->id())
+        ->execute();
+      $storage->delete($storage->loadMultiple($og_menu_instance_ids));
+    }
   }
 
   /**
@@ -265,7 +310,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   A new solution entity.
    *
    * @throws \Exception
@@ -287,7 +332,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $solution = $this->createRdfEntity('solution', $values);
-    $this->solutions[$solution->id()] = $solution;
+    $this->rdfEntities[$solution->id()] = $solution;
 
     return $solution;
   }
@@ -412,27 +457,37 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Given the :solution solution will be deleted manually
    */
   public function skipCleaningOfSolution($solution) {
-    unset($this->solutions[$this->getSolutionByName($solution)->id()]);
+    unset($this->rdfEntities[$this->getSolutionByName($solution)->id()]);
   }
 
   /**
-   * Remove any created solutions.
+   * Remove any created entities.
    *
    * @AfterScenario
    */
-  public function cleanSolutions(AfterScenarioScope $event) {
+  public function clearEntities(AfterScenarioScope $event) {
+    if (empty($this->rdfEntities)) {
+      return;
+    }
+
+    // Since we might be cleaning up many solutions, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any solutions that were created.
-    foreach ($this->solutions as $solution) {
-      $name = $solution->getName();
+    foreach ($this->rdfEntities as $entity) {
+      $name = $entity->label();
       try {
-        $solution->skip_notification = TRUE;
-        $solution->delete();
+        $entity->skip_notification = TRUE;
+        $entity->delete();
       }
       catch (Throwable $e) {
         // Throw a more helpful error if something goes wrong during cleanup.
         throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
       }
     }
+    $this->rdfEntities = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**
@@ -599,13 +654,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a simple multilingual solution.
    *
-   * @Given the multilingual :title solution
+   * @Given the multilingual :title solution of :collection collection
    */
-  public function theMultilingualSolution($title) {
+  public function theMultilingualSolution(string $title, string $collection): void {
+    $collection = $this->getEntityByLabel('rdf_entity', $collection, 'collection');
     $values = [
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",
+      'collection' => $collection->id(),
     ];
     $solution = $this->createRdfEntity('solution', $values);
     // Fill with the specific content translation fields and fall-back to
@@ -620,8 +677,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution_values['field_is_description'] = "Catalan description";
     // Create the translation.
     $solution->addTranslation('ca', $solution_values)->save();
-    $this->solutions[$solution->id()] = $solution;
-
+    $this->rdfEntities[$solution->id()] = $solution;
   }
 
   /**

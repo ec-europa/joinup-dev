@@ -1,0 +1,20 @@
+uuid: 16b0a529-2713-4a98-9c0e-2b5581915f65
+langcode: en
+status: true
+dependencies: {  }
+template: discussion_invite
+label: 'Discussion invitation'
+description: 'Sent when a user is invited to subscribe to a discussion.'
+text:
+  -
+    value: '<p>You are invited to subscribe to a discussion.</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name invites you to participate in the discussion <a href="@entity:url">@entity:title</a>.</p><p>If you are interested please <a href="@invitation:accept_url">accept the invitation</a>.</p><p>By accepting the invitation you will be subscribed to the discussion and will be notified of updates. You can unsubscribe at any time by clicking the "Unsubscribe" button in the discussion page.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }

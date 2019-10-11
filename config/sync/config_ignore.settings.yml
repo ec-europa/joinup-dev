@@ -1,0 +1,3 @@
+ignored_config_entities:
+  - core.menu.static_menu_link_overrides
+  - stage_file_proxy.settings

@@ -1,0 +1,22 @@
+uuid: 2d8a3e61-1db8-4ffd-ae5a-d4a42995d5ab
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+_core:
+  default_config_hash: JtOMxQXPPCUuArTRi_y4sRZOI8O3l-FqDdtuoleOHK8
+id: node.field_document_spatial_coverage
+field_name: field_document_spatial_coverage
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

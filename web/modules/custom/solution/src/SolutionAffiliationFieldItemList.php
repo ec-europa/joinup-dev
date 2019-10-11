@@ -5,22 +5,32 @@ declare(strict_types = 1);
 namespace Drupal\solution;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\sparql_entity_storage\Entity\SparqlGraph;
 
 /**
  * Defines a field item list class for the solution 'collections' field.
  *
  * In ADMS-AP collections point to solutions. The reverse relation would have
  * been more logical, and this is quite inconvenient, especially for the search
- * index. This field computes the reverse relationship.
+ * index. This field computes the reverse relationship but is a read-write
+ * field, allowing also to set the parent collection.
  */
 class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
 
   use ComputedItemListTrait;
+
+  /**
+   * If the current solution is in one of the 'official' graphs.
+   *
+   * An 'official graph' is one of the graphs returned by
+   * SparqlEntityStorageGraphHandlerInterface::getEntityTypeDefaultGraphIds().
+   *
+   * @var bool
+   *
+   * @see \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface::getEntityTypeDefaultGraphIds()
+   */
+  protected $solutionInOfficialGraph;
 
   /**
    * {@inheritdoc}
@@ -36,55 +46,37 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   /**
    * {@inheritdoc}
    */
-  public function postSave($update) {
-    $solution_id = $this->getEntity()->id();
+  public function preSave(): void {
+    parent::preSave();
 
-    if (!empty($this->list)) {
-      $collection_ids = array_map(function (EntityReferenceItem $field_item): string {
-        return $field_item->target_id;
-      }, $this->list);
-      // Ensure no duplicates.
-      $collection_ids = array_values(array_unique($collection_ids));
-    }
-    else {
-      // It's possible we land here without the field being computed. If this is
-      // en existing entity, get affiliation from the backend.
-      $collection_ids = $solution_id ? $this->getAffiliation() : [];
-    }
-
-    // Optimize when the solution doesn't have yet an ID.
-    $existing_collection_ids = $solution_id ? $this->getAffiliation() : [];
-
-    // Update collections where this solution is no more affiliate.
-    if ($removed_collection_ids = array_diff($existing_collection_ids, $collection_ids)) {
-      /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($removed_collection_ids, [SparqlGraph::DEFAULT, 'draft']) as $collection) {
-        /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $affiliates */
-        $affiliates = $collection->get('field_ar_affiliates');
-        $this->removeFieldItemByTargetId($affiliates, $this->getEntity()->id());
-        $collection->skip_notification = TRUE;
-        $collection->save();
+    // A solution cannot be saved without having a parent collection.
+    if ($this->isEmpty()) {
+      // We enforce data integrity only for solutions from the 'official'
+      // graphs. Solutions stored in other graphs, can live temporary without a
+      // parent collection. The code that is handling such cases is responsible
+      // to ensure data integrity. A use case is the data federation, where the
+      // imported solutions are stored in a 'nonofficial' graph and, temporary,
+      // orphan solutions are allowed. See the 'joinup_federation' module for
+      // more details.
+      if ($this->solutionInOfficialGraph()) {
+        throw new \Exception("Solution '{$this->getEntity()->id()}' should have a parent collection.");
       }
     }
+  }
 
-    // Update collections where this solution is newly affiliated.
-    if ($new_collection_ids = array_diff($collection_ids, $existing_collection_ids)) {
-      $field_value = ['target_id' => $solution_id];
-      /** @var \Drupal\rdf_entity\RdfInterface $collection */
-      // @todo Remove the 2nd argument of ::loadMultiple() in ISAICP-4497.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4497
-      foreach (Rdf::loadMultiple($new_collection_ids, [SparqlGraph::DEFAULT, 'draft']) as $collection) {
-        if ($collection->bundle() !== 'collection') {
-          throw new \Exception('Only collections can be referenced in affiliation requests.');
-        }
-        $collection->get('field_ar_affiliates')->appendItem($field_value);
-        $collection->skip_notification = TRUE;
-        $collection->save();
-      }
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave($update): bool {
+    // This field can be also set when the solution in in one of the 'official'
+    // graphs. The code dealing with solutions stored in other graphs is
+    // responsible for establishing the relation between the solution and the
+    // parent collection. This is useful when solutions are allowed to be
+    // temporary stored without a parent collection. Such a case is data
+    // federation. See the 'joinup_federation' module for more details.
+    if ($this->solutionInOfficialGraph()) {
+      $this->updateAffiliation();
     }
-
     return parent::postSave($update);
   }
 
@@ -102,20 +94,79 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   }
 
   /**
-   * Removes a field item given a target ID.
+   * Updates the solution affiliation.
    *
-   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field_item_list
-   *   An entity reference field item list.
-   * @param string $target_id
-   *   The target ID for which the field item should be removed.
+   * Instead of using the Drupal Entity API we're operating on a lower level, in
+   * order the preserve the collection's changed time. We use direct SPARQL
+   * queries to update the solution affiliation, then we clear the affected
+   * collection cache in order to reflect the changes on Drupal API level.
    */
-  protected function removeFieldItemByTargetId(EntityReferenceFieldItemListInterface $field_item_list, string $target_id): void {
-    foreach ($field_item_list as $delta => $field_item) {
-      if ($field_item->target_id === $target_id) {
-        $field_item_list->removeItem($delta);
-        return;
-      }
+  protected function updateAffiliation(): void {
+    /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
+    $sparql = \Drupal::service('sparql.endpoint');
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    $solution = $this->getEntity();
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
+    $graph_handler = \Drupal::service('sparql.graph_handler');
+    $graph_uri = $graph_handler->getBundleGraphUri('rdf_entity', 'collection', $solution->get('graph')->target_id);
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface $field_handler */
+    $field_handler = \Drupal::service('sparql.field_handler');
+    $field_uri = $field_handler->getFieldPredicates('rdf_entity', 'field_ar_affiliates')['collection'];
+
+    // Get existing affiliation.
+    $select[] = 'SELECT ?id';
+    $select[] = "FROM <{$graph_uri}>";
+    $select[] = "WHERE { ?id <{$field_uri}> <{$solution->id()}> . }";
+    $select[] = "ORDER BY (?id)";
+    $existing_ids = [];
+    foreach ($sparql->query(implode("\n", $select)) as $item) {
+      $existing_ids[] = (string) $item->id;
     }
+
+    $new_ids = array_map(function (EntityReferenceItem $field_item): string {
+      return $field_item->target_id;
+    }, $this->list);
+    sort($new_ids);
+
+    // The affiliation has been preserved. Exit here.
+    if ($new_ids === $existing_ids) {
+      return;
+    }
+
+    // Delete existing affiliation.
+    $delete[] = "WITH <{$graph_uri}>";
+    $delete[] = "DELETE { ?id <{$field_uri}> <{$solution->id()}> . }";
+    $delete[] = "WHERE { ?id <{$field_uri}> <{$solution->id()}> . }";
+    $sparql->query(implode("\n", $delete));
+
+    // Insert new affiliation.
+    $insert[] = "WITH <{$graph_uri}>";
+    $insert[] = 'INSERT {';
+    foreach ($new_ids as $id) {
+      $insert[] = "  <{$id}> <{$field_uri}> <{$solution->id()}> .";
+    }
+    $insert[] = '}';
+    $sparql->query(implode("\n", $insert));
+
+    // Clear the cache of collections that were affected by changes.
+    $affected_ids = array_unique(array_merge($new_ids, $existing_ids));
+    \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache($affected_ids);
+  }
+
+  /**
+   * Checks if the solution belongs to one of the 'official' graphs.
+   *
+   * @return bool
+   *   If the solution belongs to one of the 'official' graphs.
+   */
+  protected function solutionInOfficialGraph(): bool {
+    if (!isset($this->solutionInOfficialGraph)) {
+      $graph_id = $this->getEntity()->get('graph')->target_id;
+      /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
+      $graph_handler = \Drupal::service('sparql.graph_handler');
+      $this->solutionInOfficialGraph = in_array($graph_id, $graph_handler->getEntityTypeDefaultGraphIds('rdf_entity'));
+    }
+    return $this->solutionInOfficialGraph;
   }
 
 }

@@ -1,0 +1,23 @@
+uuid: e9fb9213-278f-46da-9e07-784b109f6d89
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+_core:
+  default_config_hash: LyLAfMijgLJ8CcYxZkxoiVyXuvbTrqcWs3STv7vLY2g
+id: message.field_contact_subject
+field_name: field_contact_subject
+entity_type: message
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -20,11 +20,12 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
+use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
-use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -38,11 +39,12 @@ use WebDriver\Key;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use AntibotTrait;
   use BrowserCapabilityDetectionTrait;
-  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use PageCacheTrait;
+  use SearchTrait;
   use TagTrait;
   use TraversingTrait;
   use UserTrait;
@@ -626,7 +628,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I click the contextual link :text in the :region region
    */
-  public function iClickTheContextualLinkInTheRegion($text, $region) {
+  public function iClickTheContextualLinkInTheRegion(string $text, string $region): void {
     $this->clickContextualLink($this->getRegion($region), $text);
   }
 
@@ -643,7 +645,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I (should )see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionPresent($text, $region) {
+  public function assertContextualLinkInRegionPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
@@ -662,13 +664,32 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when the contextual link is found in the region.
    *
-   * @Then I (should )not see the contextual link :text in the :region region
+   * @Then I should not see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionNotPresent($text, $region) {
+  public function assertContextualLinkInRegionNotPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
       throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
+    }
+  }
+
+  /**
+   * Asserts that no contextual links are present in a region.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when any contextual link is found in the region.
+   *
+   * @Then I should not see any contextual links in the :region region
+   */
+  public function assertNoContextualLinksInRegion(string $region): void {
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
+
+    if (!empty($links)) {
+      throw new \Exception(sprintf('Unexpected contextual links found in the region %s', $region));
     }
   }
 
@@ -1402,12 +1423,29 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Commits the search index before starting the scenario.
+   *
+   * Use this in scenarios for which it is important that the search index is
+   * committed before any content is created in the scenario.
+   *
+   * Since most scenarios start with creating some test content and this will
+   * automatically commit the search index, this is only needed for tests that
+   * perform asserts before creating any content of their own, since the search
+   * index might still contain stale content from the previous scenario.
+   *
+   * @BeforeScenario @commitSearchIndex
+   */
+  public function commitSearchIndexBeforeScenario() {
+    $this->commitSearchIndex();
+  }
+
+  /**
    * Installs the testing module for scenarios tagged with @errorPage.
    *
    * @BeforeScenario @errorPage
    */
   public function installErrorPageTestingModule() {
-    $this->toggleErrorPageTestingModule('install');
+    static::toggleModule('install', 'error_page_test');
 
     // The test writes to the PHP error log because it's in its scope to test
     // fatal errors. But the testing bots might reject tests that are not ending
@@ -1426,7 +1464,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @AfterScenario @errorPage
    */
   public function uninstallErrorPageTestingModule(): void {
-    $this->toggleErrorPageTestingModule('uninstall');
+    static::toggleModule('uninstall', 'error_page_test');
 
     // Restore the log saved in @BeforeScenario.
     $error_log = ini_get('error_log');
@@ -1436,20 +1474,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     // Restore the original system logging error level.
     $this->setSiteErrorLevel();
-  }
-
-  /**
-   * Installs/uninstalls the testing module.
-   *
-   * @param string $method
-   *   Either 'install' or 'uninstall'.
-   */
-  protected function toggleErrorPageTestingModule(string $method): void {
-    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
-    new Settings($settings);
-    static::bypassReadOnlyConfig(10);
-    \Drupal::service('module_installer')->$method(['error_page_test']);
-    static::restoreReadOnlyConfig();
   }
 
   /**
@@ -1473,7 +1497,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     $error_level = $error_level ?: $original_error_level;
     if ($current_error_level !== $error_level) {
-      static::bypassReadOnlyConfig(5);
+      static::bypassReadOnlyConfig();
       $config->set('error_level', $error_level)->save();
       static::restoreReadOnlyConfig();
     }
@@ -1496,6 +1520,95 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $vocabulary = $this->getEntityByLabel('taxonomy_vocabulary', $vocabulary_name);
     $term = $this->getEntityByLabel('taxonomy_term', $term_name, $vocabulary->id());
     $this->visitPath($term->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
+  }
+
+  /**
+   * Disables the Antibot functionality during tests run.
+   *
+   * Antibot module blocks all form submissions the for browsers without
+   * JavaScript support or when there's no keyboard or mouse interaction before
+   * the form is submitted. This would make most of Behat tests to fail. We
+   * disable Antibot functionality during Behat tests run.
+   *
+   * @BeforeSuite
+   */
+  public static function disableAntibotForSuite(): void {
+    static::disableAntibot();
+  }
+
+  /**
+   * Restores the Antibot functionality after tests run.
+   *
+   * @AfterSuite
+   *
+   * @see self::disableAntibotForSuite()
+   */
+  public static function restoreAntibotForSuite(): void {
+    static::restoreAntibot();
+  }
+
+  /**
+   * Restores Antibot functionality in the scope of @antibot tagged scenarios.
+   *
+   * The Antibot functionality is disabled for the whole test suite run, in
+   * self::disableAntibotForSuite(). However, if a scenario wants run its test
+   * with Antibot functionality enabled, it should be tagged with @antibot.
+   *
+   * @BeforeScenario @antibot
+   *
+   * @see self::disableAntibotForSuite()
+   */
+  public function restoreAntibotForScenario(): void {
+    self::restoreAntibot();
+  }
+
+  /**
+   * Disables Antibot functionality after @antibot tagged scenarios.
+   *
+   * @AfterScenario @antibot
+   *
+   * @see self::restoreAntibotForScenario()
+   */
+  public function disableAntibotForScenario(): void {
+    static::disableAntibot();
+  }
+
+  /**
+   * Installs/uninstalls a module in tests.
+   *
+   * @param string $method
+   *   Either 'install' or 'uninstall'.
+   * @param string $module_name
+   *   The module to be installed/uninstalled.
+   */
+  protected static function toggleModule(string $method, string $module_name): void {
+    // Ensure that test modules are also discoverable.
+    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
+    new Settings($settings);
+
+    static::bypassReadOnlyConfig();
+    \Drupal::service('module_installer')->$method([$module_name]);
+    static::restoreReadOnlyConfig();
+  }
+
+  /**
+   * Checks if the current form is protected by Antibot.
+   *
+   * @throws \Exception
+   *   When the expectancy is not met.
+   *
+   * @Then the form is protected by Antibot
+   */
+  public function assertFormIsProtectedByAntibot(): void {
+    $session = $page = $this->getSession();
+
+    // Unlock the form by using the Antibot javascript API.
+    $session->executeScript('Drupal.antibot.unlockForms();');
+
+    $has_js_assigned_value = (bool) $session->getPage()->find('xpath', '//form[@data-action]//input[@data-drupal-selector="edit-antibot-key" and @name="antibot_key" and string(@value)]');
+    if (!$has_js_assigned_value) {
+      throw new \Exception("Not an Antibot protected form.");
+    }
   }
 
 }

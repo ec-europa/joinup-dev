@@ -1,0 +1,28 @@
+uuid: 38819ec6-9116-4d58-ad78-ae30f0d5fbb5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_distribution
+    - rdf_entity.rdfentity.asset_distribution
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: L3q0eTxceh9W_RlAx2L3Z2iO90rrO7ySKV-8FdpsM08
+id: rdf_entity.solution.field_is_distribution
+field_name: field_is_distribution
+entity_type: rdf_entity
+bundle: solution
+label: Distribution
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:rdf_entity'
+  handler_settings:
+    target_bundles:
+      asset_distribution: asset_distribution
+    sort:
+      field: _none
+field_type: entity_reference

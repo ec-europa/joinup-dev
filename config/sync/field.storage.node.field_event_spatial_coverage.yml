@@ -1,0 +1,22 @@
+uuid: 41b68b87-0cea-4947-a055-2efa9e7fbb2c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+_core:
+  default_config_hash: asgk0PbJMwxBOPEwizHvbOm9oW_hVbry3IaQ4VUjX3I
+id: node.field_event_spatial_coverage
+field_name: field_event_spatial_coverage
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

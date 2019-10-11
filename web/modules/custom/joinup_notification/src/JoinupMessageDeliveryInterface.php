@@ -139,6 +139,18 @@ interface JoinupMessageDeliveryInterface {
   public function setRecipientsAsEmails(array $mails): self;
 
   /**
+   * Sets the list of accounts that will be added to bcc.
+   *
+   * @param string[] $bcc_emails
+   *   A list of user emails.
+   *
+   * @return $this
+   *
+   * @see self::setRecipientsAsEmails()
+   */
+  public function addBccRecipients(array $bcc_emails): self;
+
+  /**
    * Sends the message to the recipients.
    *
    * @return bool

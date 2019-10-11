@@ -35,7 +35,7 @@ the module adds a new subscriber, `ErrorPageFinalExceptionSubscriber`, which
 acts just before the core `FinalExceptionSubscriber` by showing the output in
 its own way and stopping the propagation of the `KernelEvents::EXCEPTION` event.
 
-## Fatal and user errors
+### Fatal and user errors
 
 The module uses its own error/exception handlers, instead of
 `_drupal_error_handler()` and `_drupal_exception_handler()`. Because those
@@ -131,3 +131,25 @@ Three variables can be used:
 
 Don't forget to protect the templates location from public access or, even
 better, place them outside the web-tree.
+
+## Testing
+
+The package contains a module, `error_page_test`, that simulates different kind
+of exceptions, errors or notices. As this is a testing module, before enabling,
+make sure Drupal allows discovery of testing module by ensuring this line in
+`settings.local.php` or `settings.php`:
+
+```php
+$settings['extension_discovery_scan_tests'] = TRUE;
+```
+
+_Warning_: You should never enable `extension_discovery_scan_tests` setting in
+production. Discovering testing modules should be enabled only on development
+environments.
+  
+After installing `error_page_test`, you can test the following pages:
+
+* `/error_page_test/exception`: simulates an exception.
+* `/error_page_test/fatal_error`: simulates a fatal error.
+* `/error_page_test/user_error`: simulates a user error.
+* `/error_page_test/php_notice`: simulates a PHP notice.

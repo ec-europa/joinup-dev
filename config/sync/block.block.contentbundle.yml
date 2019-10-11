@@ -1,0 +1,31 @@
+uuid: 24e339f4-70b5-4c74-bd8b-bbe1744a9432
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.content_bundle
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+_core:
+  default_config_hash: maOU9192SGD0AVcjVb1fN8OjC-1lemKXWALBgJR0JCk
+id: contentbundle
+theme: joinup_theme
+region: filters
+weight: -11
+provider: null
+plugin: 'facet_block:content_bundle'
+settings:
+  id: 'facet_block:content_bundle'
+  label: 'Content overview - Content bundle'
+  provider: facets
+  label_display: '0'
+  block_id: contentbundle
+visibility:
+  request_route:
+    id: request_route
+    routes: view.content_overview.page_1
+    negate: false
+    context_mapping: {  }
