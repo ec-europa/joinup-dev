@@ -1,0 +1,30 @@
+uuid: 10bf1cec-a825-4d1f-bb90-7baabb3283bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ad_format
+    - rdf_entity.rdfentity.asset_distribution
+    - taxonomy.vocabulary.file_type
+_core:
+  default_config_hash: 7wyidk885n1ur3FSpQzQXrBEPmfHXX_2xHW0hb9vNg4
+id: rdf_entity.asset_distribution.field_ad_format
+field_name: field_ad_format
+entity_type: rdf_entity
+bundle: asset_distribution
+label: Format
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      file_type: file_type
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

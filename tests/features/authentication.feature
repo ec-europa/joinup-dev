@@ -74,11 +74,11 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                       |
-      | collections                |
-      | propose/collection         |
-      | user                       |
-      | user/subscriptions         |
+      | path               |
+      | collections        |
+      | propose/collection |
+      | user               |
+      | user/subscriptions |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration

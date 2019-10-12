@@ -1,0 +1,21 @@
+uuid: bcd9a9f8-1785-41ba-9908-84dbd99c93ba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_taxonomy_deprecated
+    - taxonomy.vocabulary.eira
+id: taxonomy_term.eira.field_taxonomy_deprecated
+field_name: field_taxonomy_deprecated
+entity_type: taxonomy_term
+bundle: eira
+label: Deprecated
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

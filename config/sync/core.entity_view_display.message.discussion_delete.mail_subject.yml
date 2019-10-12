@@ -1,0 +1,19 @@
+uuid: 8a049bbd-bb60-4574-95b7-ba4e90feaf3b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.discussion_delete
+id: message.discussion_delete.mail_subject
+targetEntityType: message
+bundle: discussion_delete
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
-use Drupal\Core\Config\ConfigImporter;
 use Drupal\Core\Site\Settings;
 
 /**
@@ -16,40 +17,68 @@ use Drupal\Core\Site\Settings;
 trait ConfigReadOnlyTrait {
 
   /**
+   * The initial state of config_readonly.
+   *
+   * @var bool
+   */
+  protected static $isConfigReadonlyEnabled;
+
+  /**
    * Temporarily disables read only configuration.
    *
    * Make sure to call restoreReadOnlyConfig() after making the necessary config
    * changes.
-   *
-   * @param int $timeout
-   *   The timeout in seconds. Defaults to 2 seconds.
    */
-  public static function bypassReadOnlyConfig($timeout = 2) {
-    // Skip this if the Read Only Config functionality is not active.
-    if (!Settings::get('config_readonly')) {
-      return;
+  public static function bypassReadOnlyConfig(): void {
+    static::checkConfigReadOnlyKillSwitch();
+
+    if (!isset(static::$isConfigReadonlyEnabled)) {
+      // Save the initial state of config_readonly kill-switch.
+      static::$isConfigReadonlyEnabled = !file_exists(getcwd() . '/../disable-config-readonly');
     }
 
-    // Pretend we are importing config by setting the semaphore of the
-    // configuration importer.
-    // @see \Drupal\config_readonly\Config\ConfigReadonlyStorage::checkLock()
-    /** @var \Drupal\Core\Lock\LockBackendInterface $lock */
-    $lock = \Drupal::service('lock');
-    $lock->acquire(ConfigImporter::LOCK_NAME, $timeout);
+    touch(DRUPAL_ROOT . '/../disable-config-readonly');
+    // Ensure the new value also for the current request.
+    new Settings(['config_readonly' => FALSE] + Settings::getAll());
   }
 
   /**
    * Restores the read only configuration functionality if available.
    */
-  public static function restoreReadOnlyConfig() {
-    // Skip this if the Read Only Config functionality is not active.
-    if (!Settings::get('config_readonly')) {
-      return;
+  public static function restoreReadOnlyConfig(): void {
+    // Restore as enabled only if initially has been enabled. This allows to
+    // keep config_readonly disabled on a local development environment (i.e.
+    // where the Phing property `config_readonly.enabled` was set to `FALSE`),
+    // after the tests had finished.
+    if (static::$isConfigReadonlyEnabled) {
+      /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+      $file_system = \Drupal::service('file_system');
+      $file_system->unlink(DRUPAL_ROOT . '/../disable-config-readonly');
+      // Ensure the new value also for the current request.
+      new Settings(['config_readonly' => TRUE] + Settings::getAll());
     }
+  }
 
-    /** @var \Drupal\Core\Lock\LockBackendInterface $lock */
-    $lock = \Drupal::service('lock');
-    $lock->release(ConfigImporter::LOCK_NAME);
+  /**
+   * Checks if the `$settings['config_readonly']` kill-switch exists.
+   *
+   * @throws \Exception
+   *   If the kill-switch is missed.
+   */
+  protected static function checkConfigReadOnlyKillSwitch(): void {
+    /** @var \Drupal\Core\DrupalKernelInterface $kernel */
+    $kernel = \Drupal::service('kernel');
+    $site_path = $kernel->getSitePath();
+    $needle = "\$settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');";
+    // Check first settings.php.
+    $settings_php = file_get_contents("{$site_path}/settings.php");
+    if (strpos($settings_php, $needle) === FALSE) {
+      // Fallback to settings.local.php.
+      $settings_local_php = file_get_contents("{$site_path}/settings.local.php");
+      if (strpos($settings_local_php, $needle) === FALSE) {
+        throw new \Exception("The following line is missing from web/sites/default/settings.php\n$needle");
+      }
+    }
   }
 
 }

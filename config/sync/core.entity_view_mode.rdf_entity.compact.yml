@@ -1,0 +1,12 @@
+uuid: 1dbbaac9-b7e4-4f9f-845f-d16d8f1bb868
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+_core:
+  default_config_hash: LodD1DtuQcpWCiJrZjvMoZi4wz9XHHpipASPKcwPG_0
+id: rdf_entity.compact
+label: Compact
+targetEntityType: rdf_entity
+cache: true
