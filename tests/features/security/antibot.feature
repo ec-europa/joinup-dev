@@ -35,11 +35,13 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
     And I go to the homepage of the "Family photos" collection
     Then the form is protected by Antibot
 
-    Given the following collection user membership:
-      | collection    | user    |
-      | Family photos | Günther |
+    When I press "Join this collection"
+    Then I should see the success message "You are now a member of Family photos."
+    And a modal should open
+    Then the form is protected by Antibot
 
-    When I go to the homepage of the "Family photos" collection
+    When I press "No thanks" in the "Modal buttons" region
+    And I go to the homepage of the "Family photos" collection
     And I click "Add discussion" in the plus button menu
     Then the form is protected by Antibot
 
