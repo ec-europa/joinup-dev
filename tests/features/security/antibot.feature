@@ -35,7 +35,14 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
     And I go to the homepage of the "Family photos" collection
     Then the form is protected by Antibot
 
-    When I press "Join this collection"
+    When I go to the homepage of the "Family photos" collection
+    Then the form is protected by Antibot
+
+    Given the following collection user membership:
+      | collection    | user    |
+      | Family photos | Günther |
+
+    When I go to the homepage of the "Family photos" collection
     And I click "Add discussion" in the plus button menu
     Then the form is protected by Antibot
 
