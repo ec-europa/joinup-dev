@@ -40,6 +40,7 @@ class ThreeWayMergeStepTest extends StepTestBase {
    */
   protected static $modules = [
     'field',
+    'joinup_sparql',
     'rdf_schema_field_validation',
     'rdf_taxonomy',
     'taxonomy',
