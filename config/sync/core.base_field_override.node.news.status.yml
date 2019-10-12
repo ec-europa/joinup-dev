@@ -1,0 +1,24 @@
+uuid: a4f8d2fb-4d6f-4dea-9432-13392f6d7001
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.news
+_core:
+  default_config_hash: LZ0sJMhpymcQpLm-EE7Ke4-1k4mG0ZWKLi2oB9XFSTE
+id: node.news.status
+field_name: status
+entity_type: node
+bundle: news
+label: 'Publishing status'
+description: 'A boolean indicating whether the node is published.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

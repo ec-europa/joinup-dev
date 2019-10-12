@@ -1,0 +1,19 @@
+form_ids:
+  - user_login_form
+  - user_pass
+  - user_register_form
+  - message_contact_form_submission_form
+  - comment_comment_form
+  - comment_reply_form
+  - node_discussion_form
+  - node_document_form
+  - node_event_form
+  - node_news_form
+  - node_newsletter_form
+  - node_video_form
+  - join_collection_form
+  - subscribe_to_collection_form
+  - share_content_form
+show_form_ids: false
+_core:
+  default_config_hash: 7QwhifH5gAzkdFMMDFV6XQRrcx4PAvtROZO8rs19nTo

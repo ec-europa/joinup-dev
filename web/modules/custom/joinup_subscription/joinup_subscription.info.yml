@@ -15,4 +15,5 @@ config_devel:
   - field.field.user.user.field_user_frequency
   - field.storage.user.field_user_frequency
   - flag.flag.subscribe_discussions
+  - joinup_subscription.settings
   - message_digest.interval.monthly

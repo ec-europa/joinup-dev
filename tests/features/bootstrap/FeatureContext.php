@@ -21,8 +21,8 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
+use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
-use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
@@ -40,8 +40,8 @@ use WebDriver\Key;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use AntibotTrait;
   use BrowserCapabilityDetectionTrait;
-  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use PageCacheTrait;
@@ -1472,7 +1472,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @BeforeScenario @errorPage
    */
   public function installErrorPageTestingModule() {
-    $this->toggleErrorPageTestingModule('install');
+    static::toggleModule('install', 'error_page_test');
 
     // The test writes to the PHP error log because it's in its scope to test
     // fatal errors. But the testing bots might reject tests that are not ending
@@ -1491,7 +1491,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @AfterScenario @errorPage
    */
   public function uninstallErrorPageTestingModule(): void {
-    $this->toggleErrorPageTestingModule('uninstall');
+    static::toggleModule('uninstall', 'error_page_test');
 
     // Restore the log saved in @BeforeScenario.
     $error_log = ini_get('error_log');
@@ -1501,20 +1501,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     // Restore the original system logging error level.
     $this->setSiteErrorLevel();
-  }
-
-  /**
-   * Installs/uninstalls the testing module.
-   *
-   * @param string $method
-   *   Either 'install' or 'uninstall'.
-   */
-  protected function toggleErrorPageTestingModule(string $method): void {
-    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
-    new Settings($settings);
-    static::bypassReadOnlyConfig(10);
-    \Drupal::service('module_installer')->$method(['error_page_test']);
-    static::restoreReadOnlyConfig();
   }
 
   /**
@@ -1538,7 +1524,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     $error_level = $error_level ?: $original_error_level;
     if ($current_error_level !== $error_level) {
-      static::bypassReadOnlyConfig(5);
+      static::bypassReadOnlyConfig();
       $config->set('error_level', $error_level)->save();
       static::restoreReadOnlyConfig();
     }
@@ -1561,6 +1547,95 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $vocabulary = $this->getEntityByLabel('taxonomy_vocabulary', $vocabulary_name);
     $term = $this->getEntityByLabel('taxonomy_term', $term_name, $vocabulary->id());
     $this->visitPath($term->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
+  }
+
+  /**
+   * Disables the Antibot functionality during tests run.
+   *
+   * Antibot module blocks all form submissions the for browsers without
+   * JavaScript support or when there's no keyboard or mouse interaction before
+   * the form is submitted. This would make most of Behat tests to fail. We
+   * disable Antibot functionality during Behat tests run.
+   *
+   * @BeforeSuite
+   */
+  public static function disableAntibotForSuite(): void {
+    static::disableAntibot();
+  }
+
+  /**
+   * Restores the Antibot functionality after tests run.
+   *
+   * @AfterSuite
+   *
+   * @see self::disableAntibotForSuite()
+   */
+  public static function restoreAntibotForSuite(): void {
+    static::restoreAntibot();
+  }
+
+  /**
+   * Restores Antibot functionality in the scope of @antibot tagged scenarios.
+   *
+   * The Antibot functionality is disabled for the whole test suite run, in
+   * self::disableAntibotForSuite(). However, if a scenario wants run its test
+   * with Antibot functionality enabled, it should be tagged with @antibot.
+   *
+   * @BeforeScenario @antibot
+   *
+   * @see self::disableAntibotForSuite()
+   */
+  public function restoreAntibotForScenario(): void {
+    self::restoreAntibot();
+  }
+
+  /**
+   * Disables Antibot functionality after @antibot tagged scenarios.
+   *
+   * @AfterScenario @antibot
+   *
+   * @see self::restoreAntibotForScenario()
+   */
+  public function disableAntibotForScenario(): void {
+    static::disableAntibot();
+  }
+
+  /**
+   * Installs/uninstalls a module in tests.
+   *
+   * @param string $method
+   *   Either 'install' or 'uninstall'.
+   * @param string $module_name
+   *   The module to be installed/uninstalled.
+   */
+  protected static function toggleModule(string $method, string $module_name): void {
+    // Ensure that test modules are also discoverable.
+    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
+    new Settings($settings);
+
+    static::bypassReadOnlyConfig();
+    \Drupal::service('module_installer')->$method([$module_name]);
+    static::restoreReadOnlyConfig();
+  }
+
+  /**
+   * Checks if the current form is protected by Antibot.
+   *
+   * @throws \Exception
+   *   When the expectancy is not met.
+   *
+   * @Then the form is protected by Antibot
+   */
+  public function assertFormIsProtectedByAntibot(): void {
+    $session = $page = $this->getSession();
+
+    // Unlock the form by using the Antibot javascript API.
+    $session->executeScript('Drupal.antibot.unlockForms();');
+
+    $has_js_assigned_value = (bool) $session->getPage()->find('xpath', '//form[@data-action]//input[@data-drupal-selector="edit-antibot-key" and @name="antibot_key" and string(@value)]');
+    if (!$has_js_assigned_value) {
+      throw new \Exception("Not an Antibot protected form.");
+    }
   }
 
 }

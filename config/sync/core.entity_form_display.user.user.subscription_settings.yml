@@ -1,0 +1,50 @@
+uuid: 0dc5876e-f196-4902-8917-0c32a7d8397e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.user.subscription_settings
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_social_media
+    - field.field.user.user.field_user_business_title
+    - field.field.user.user.field_user_content
+    - field.field.user.user.field_user_family_name
+    - field.field.user.user.field_user_first_name
+    - field.field.user.user.field_user_frequency
+    - field.field.user.user.field_user_nationality
+    - field.field.user.user.field_user_organisation
+    - field.field.user.user.field_user_photo
+    - field.field.user.user.field_user_professional_domain
+  module:
+    - user
+id: user.user.subscription_settings
+targetEntityType: user
+bundle: user
+mode: subscription_settings
+content:
+  field_user_frequency:
+    type: options_select
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  account: true
+  field_last_password_reset: true
+  field_password_expiration: true
+  field_social_media: true
+  field_user_business_title: true
+  field_user_content: true
+  field_user_family_name: true
+  field_user_first_name: true
+  field_user_nationality: true
+  field_user_organisation: true
+  field_user_photo: true
+  field_user_professional_domain: true
+  langcode: true
+  language: true
+  matomo: true
+  path: true
+  simplenews: true
+  timezone: true

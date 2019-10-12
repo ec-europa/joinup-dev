@@ -1,0 +1,31 @@
+uuid: 780b650a-2ce1-4186-95f0-43c2e68c960a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_abstract
+    - rdf_entity.rdfentity.collection
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
+_core:
+  default_config_hash: 1VOX4tmugcY6Vy3QcRmHxAkjRp7JR3DWZznLsDjPFRM
+id: rdf_entity.collection.field_ar_abstract
+field_name: field_ar_abstract
+entity_type: rdf_entity
+bundle: collection
+label: Abstract
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

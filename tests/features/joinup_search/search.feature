@@ -3,18 +3,17 @@ Feature: Global search
   As a user of the site I can find content through the global search.
 
   Scenario: Anonymous user can find items
-    Given the following solutions:
-      | title          | description                                                                                                                          | policy domain | spatial coverage | state     |
-      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography    | European Union   | validated |
-      | Foam           | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |               |                  | validated |
-    And the following collection:
+    Given the following collection:
       | title            | Molecular cooking collection |
       | logo             | logo.png                     |
       | moderation       | no                           |
-      | affiliates       | Spherification, Foam         |
       | policy domain    | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
+    And the following solutions:
+      | title          | collection                   | description                                                                                                                          | policy domain | spatial coverage | state     |
+      | Spherification | Molecular cooking collection | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography    | European Union   | validated |
+      | Foam           | Molecular cooking collection | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |               |                  | validated |
     And news content:
       | title                 | body             | collection                   | policy domain           | spatial coverage | state     |
       | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
@@ -195,14 +194,15 @@ Feature: Global search
     Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Collections and solutions are shown first in search results with the same relevance.
-    Given the following solution:
+    Given collections:
+      | title                           | description                         | state     |
+      | Ornithology: the study of birds | Ornithology is a branch of zoology. | validated |
+      | Husky Flying Xylophone          | A strange instrument.               | validated |
+    And the following solution:
       | title       | Bird outposts in the wild            |
+      | collection  | Ornithology: the study of birds      |
       | description | Exotic wings and where to find them. |
       | state       | validated                            |
-    And collections:
-      | title                           | description                         | state     | affiliates                |
-      | Ornithology: the study of birds | Ornithology is a branch of zoology. | validated | Bird outposts in the wild |
-      | Husky Flying Xylophone          | A strange instrument.               | validated |                           |
     And custom_page content:
       | title           | body                                  | collection                      |
       | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |

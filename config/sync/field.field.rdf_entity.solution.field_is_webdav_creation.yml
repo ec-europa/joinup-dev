@@ -1,0 +1,25 @@
+uuid: 82f09ea2-ffff-4d75-9e0a-b420aa7bf171
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_webdav_creation
+    - rdf_entity.rdfentity.solution
+_core:
+  default_config_hash: 8zrCban6xy9DGG2IuVhiDIoNqlASdmriEY9XU8rabHQ
+id: rdf_entity.solution.field_is_webdav_creation
+field_name: field_is_webdav_creation
+entity_type: rdf_entity
+bundle: solution
+label: 'WebDAV creation'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'Create WebDAV URL automatically'
+  off_label: 'Do not create WebDAV URL automatically'
+field_type: boolean

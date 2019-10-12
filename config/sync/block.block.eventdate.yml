@@ -1,0 +1,29 @@
+uuid: eea7d26b-8dfe-47f6-a80d-b359dc0bd99c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.event_date
+  module:
+    - facets
+    - joinup_core
+  theme:
+    - joinup_theme
+id: eventdate
+theme: joinup_theme
+region: filters
+weight: -9
+provider: null
+plugin: 'facet_block:event_date'
+settings:
+  id: 'facet_block:event_date'
+  label: 'Event date'
+  provider: facets
+  label_display: '0'
+  block_id: eventdate
+visibility:
+  request_route:
+    id: request_route
+    routes: view.content_overview.page_1
+    negate: false
+    context_mapping: {  }

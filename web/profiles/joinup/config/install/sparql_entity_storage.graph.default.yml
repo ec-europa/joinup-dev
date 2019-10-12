@@ -1,8 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: default
-weight: 0
-name: Published
-description: 'Default graph. This is available for all entity types and bundles.'
-entity_types: null

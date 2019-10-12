@@ -1,0 +1,665 @@
+diff --git a/core/lib/Drupal/Core/Action/ActionBase.php b/core/lib/Drupal/Core/Action/ActionBase.php
+index cb009c30ef..42c380ff19 100644
+--- a/core/lib/Drupal/Core/Action/ActionBase.php
++++ b/core/lib/Drupal/Core/Action/ActionBase.php
+@@ -14,6 +14,13 @@
+  */
+ abstract class ActionBase extends PluginBase implements ActionInterface {
+ 
++  /**
++   * The default weight for new actions.
++   *
++   * @var int
++   */
++  protected $weight = 0;
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -23,4 +30,11 @@ public function executeMultiple(array $entities) {
+     }
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getWeight() {
++    return $this->weight;
++  }
++
+ }
+diff --git a/core/lib/Drupal/Core/Action/ActionInterface.php b/core/lib/Drupal/Core/Action/ActionInterface.php
+index 5158f96a1f..8726675c15 100644
+--- a/core/lib/Drupal/Core/Action/ActionInterface.php
++++ b/core/lib/Drupal/Core/Action/ActionInterface.php
+@@ -58,4 +58,12 @@ public function executeMultiple(array $objects);
+    */
+   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE);
+ 
++  /**
++   * Returns the default weight of the action.
++   *
++   * @return int
++   *   The action weight.
++   */
++  public function getWeight();
++
+ }
+diff --git a/core/lib/Drupal/Core/Action/Plugin/Action/DeleteAction.php b/core/lib/Drupal/Core/Action/Plugin/Action/DeleteAction.php
+index fcf76a4fbe..c863c9f695 100644
+--- a/core/lib/Drupal/Core/Action/Plugin/Action/DeleteAction.php
++++ b/core/lib/Drupal/Core/Action/Plugin/Action/DeleteAction.php
+@@ -32,6 +32,11 @@ class DeleteAction extends EntityActionBase {
+    */
+   protected $currentUser;
+ 
++  /**
++   * {@inheritdoc}
++   */
++  protected $weight = 1;
++
+   /**
+    * Constructs a new DeleteAction object.
+    *
+diff --git a/core/lib/Drupal/Core/Annotation/Action.php b/core/lib/Drupal/Core/Annotation/Action.php
+index 94781c754a..78c273e5a3 100644
+--- a/core/lib/Drupal/Core/Annotation/Action.php
++++ b/core/lib/Drupal/Core/Annotation/Action.php
+@@ -63,4 +63,11 @@ class Action extends Plugin {
+    */
+   public $category;
+ 
++  /**
++   * The default weight the action will have in the UI.
++   *
++   * @var int
++   */
++  public $weight = 0;
++
+ }
+diff --git a/core/modules/comment/config/install/system.action.comment_delete_action.yml b/core/modules/comment/config/install/system.action.comment_delete_action.yml
+index 08f796667e..115e90f85e 100644
+--- a/core/modules/comment/config/install/system.action.comment_delete_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_delete_action.yml
+@@ -7,4 +7,5 @@ id: comment_delete_action
+ label: 'Delete comment'
+ type: comment
+ plugin: entity:delete_action:comment
++weight: 1
+ configuration: {  }
+diff --git a/core/modules/comment/config/install/system.action.comment_publish_action.yml b/core/modules/comment/config/install/system.action.comment_publish_action.yml
+index 7a47b2d9e6..35d61038a8 100644
+--- a/core/modules/comment/config/install/system.action.comment_publish_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_publish_action.yml
+@@ -7,4 +7,5 @@ id: comment_publish_action
+ label: 'Publish comment'
+ type: comment
+ plugin: entity:publish_action:comment
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/comment/config/install/system.action.comment_save_action.yml b/core/modules/comment/config/install/system.action.comment_save_action.yml
+index 614cf4b681..09cc92794c 100644
+--- a/core/modules/comment/config/install/system.action.comment_save_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_save_action.yml
+@@ -7,4 +7,5 @@ id: comment_save_action
+ label: 'Save comment'
+ type: comment
+ plugin: entity:save_action:comment
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/comment/config/install/system.action.comment_unpublish_action.yml b/core/modules/comment/config/install/system.action.comment_unpublish_action.yml
+index a1800b4a8c..fa251eeeb7 100644
+--- a/core/modules/comment/config/install/system.action.comment_unpublish_action.yml
++++ b/core/modules/comment/config/install/system.action.comment_unpublish_action.yml
+@@ -7,4 +7,5 @@ id: comment_unpublish_action
+ label: 'Unpublish comment'
+ type: comment
+ plugin: entity:unpublish_action:comment
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/jsonapi/tests/src/Functional/ActionTest.php b/core/modules/jsonapi/tests/src/Functional/ActionTest.php
+index 796494c21d..e7e1d6108a 100644
+--- a/core/modules/jsonapi/tests/src/Functional/ActionTest.php
++++ b/core/modules/jsonapi/tests/src/Functional/ActionTest.php
+@@ -54,6 +54,7 @@ protected function createEntity() {
+         'rid' => RoleInterface::ANONYMOUS_ID,
+       ],
+       'plugin' => 'user_add_role_action',
++      'weight' => 0,
+     ]);
+     $action->save();
+ 
+@@ -97,6 +98,7 @@ protected function getExpectedDocument() {
+           'status' => TRUE,
+           'action_type' => 'user',
+           'drupal_internal__id' => 'user_add_role_action.anonymous',
++          'weight' => 0,
+         ],
+       ],
+     ];
+diff --git a/core/modules/media/config/optional/system.action.media_delete_action.yml b/core/modules/media/config/optional/system.action.media_delete_action.yml
+index 7311917463..770176a90f 100644
+--- a/core/modules/media/config/optional/system.action.media_delete_action.yml
++++ b/core/modules/media/config/optional/system.action.media_delete_action.yml
+@@ -7,4 +7,5 @@ id: media_delete_action
+ label: 'Delete media'
+ type: media
+ plugin: entity:delete_action:media
++weight: 1
+ configuration: {  }
+diff --git a/core/modules/media/config/optional/system.action.media_publish_action.yml b/core/modules/media/config/optional/system.action.media_publish_action.yml
+index 0e5cf4f75b..9927902fe6 100644
+--- a/core/modules/media/config/optional/system.action.media_publish_action.yml
++++ b/core/modules/media/config/optional/system.action.media_publish_action.yml
+@@ -7,4 +7,5 @@ id: media_publish_action
+ label: 'Publish media'
+ type: media
+ plugin: entity:publish_action:media
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/media/config/optional/system.action.media_save_action.yml b/core/modules/media/config/optional/system.action.media_save_action.yml
+index ead7574087..edaadb0c73 100644
+--- a/core/modules/media/config/optional/system.action.media_save_action.yml
++++ b/core/modules/media/config/optional/system.action.media_save_action.yml
+@@ -7,4 +7,5 @@ id: media_save_action
+ label: 'Save media'
+ type: media
+ plugin: entity:save_action:media
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/media/config/optional/system.action.media_unpublish_action.yml b/core/modules/media/config/optional/system.action.media_unpublish_action.yml
+index 2d24d73d5c..c400787dfa 100644
+--- a/core/modules/media/config/optional/system.action.media_unpublish_action.yml
++++ b/core/modules/media/config/optional/system.action.media_unpublish_action.yml
+@@ -7,4 +7,5 @@ id: media_unpublish_action
+ label: 'Unpublish media'
+ type: media
+ plugin: entity:unpublish_action:media
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php b/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php
+index f740b33f1c..5d81f97299 100644
+--- a/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php
++++ b/core/modules/media_library/tests/src/FunctionalJavascript/MediaLibraryTest.php
+@@ -88,6 +88,21 @@ protected function setUp() {
+     $this->drupalPlaceBlock('local_actions_block');
+   }
+ 
++  /**
++   * Tests that actions are sorted first by weight and then by name.
++   */
++  public function testBulkFormActionOrder() {
++    $this->drupalGet('admin/content/media');
++    $order = TRUE;
++    $elements = $this->xpath('//select[@id="edit-action"]//option');
++
++    $order = $order && $elements[0]->getValue() == 'media_save_action';
++    $order = $order && $elements[1]->getValue() == 'media_publish_action';
++    $order = $order && $elements[2]->getValue() == 'media_unpublish_action';
++    $order = $order && $elements[3]->getValue() == 'media_delete_action';
++    $this->assertTrue($order, 'All actions related to media are ordered alphabetically by default due to equal weight apart from the delete action which has a bigger weight.');
++  }
++
+   /**
+    * Tests that the Media Library's administration page works as expected.
+    */
+@@ -124,6 +139,7 @@ public function testAdministrationPage() {
+     $assert_session->assertWaitOnAjaxRequest();
+     // This tests that anchor tags clicked inside the preview are suppressed.
+     $this->getSession()->executeScript('jQuery(".js-click-to-select-trigger a")[4].click()');
++    $this->getSession()->getPage()->selectFieldOption('Action', 'media_delete_action');
+     $this->submitForm([], 'Apply to selected items');
+     $assert_session->pageTextContains('Dog');
+     $assert_session->pageTextNotContains('Cat');
+diff --git a/core/modules/node/config/install/system.action.node_delete_action.yml b/core/modules/node/config/install/system.action.node_delete_action.yml
+index da2d886bf9..0ba312daad 100644
+--- a/core/modules/node/config/install/system.action.node_delete_action.yml
++++ b/core/modules/node/config/install/system.action.node_delete_action.yml
+@@ -7,4 +7,5 @@ id: node_delete_action
+ label: 'Delete content'
+ type: node
+ plugin: entity:delete_action:node
++weight: 1
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_make_sticky_action.yml b/core/modules/node/config/install/system.action.node_make_sticky_action.yml
+index 94a81bf860..b77afc73eb 100644
+--- a/core/modules/node/config/install/system.action.node_make_sticky_action.yml
++++ b/core/modules/node/config/install/system.action.node_make_sticky_action.yml
+@@ -7,4 +7,5 @@ id: node_make_sticky_action
+ label: 'Make content sticky'
+ type: node
+ plugin: node_make_sticky_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_make_unsticky_action.yml b/core/modules/node/config/install/system.action.node_make_unsticky_action.yml
+index 6572963566..84fe02297e 100644
+--- a/core/modules/node/config/install/system.action.node_make_unsticky_action.yml
++++ b/core/modules/node/config/install/system.action.node_make_unsticky_action.yml
+@@ -7,4 +7,5 @@ id: node_make_unsticky_action
+ label: 'Make content unsticky'
+ type: node
+ plugin: node_make_unsticky_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_promote_action.yml b/core/modules/node/config/install/system.action.node_promote_action.yml
+index 7c45a42db3..987648427c 100644
+--- a/core/modules/node/config/install/system.action.node_promote_action.yml
++++ b/core/modules/node/config/install/system.action.node_promote_action.yml
+@@ -7,4 +7,5 @@ id: node_promote_action
+ label: 'Promote content to front page'
+ type: node
+ plugin: node_promote_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_publish_action.yml b/core/modules/node/config/install/system.action.node_publish_action.yml
+index 3e139bbe6a..4446e622cc 100644
+--- a/core/modules/node/config/install/system.action.node_publish_action.yml
++++ b/core/modules/node/config/install/system.action.node_publish_action.yml
+@@ -7,4 +7,5 @@ id: node_publish_action
+ label: 'Publish content'
+ type: node
+ plugin: entity:publish_action:node
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_save_action.yml b/core/modules/node/config/install/system.action.node_save_action.yml
+index 1759c35ae2..8cf0eaadca 100644
+--- a/core/modules/node/config/install/system.action.node_save_action.yml
++++ b/core/modules/node/config/install/system.action.node_save_action.yml
+@@ -7,4 +7,5 @@ id: node_save_action
+ label: 'Save content'
+ type: node
+ plugin: entity:save_action:node
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_unpromote_action.yml b/core/modules/node/config/install/system.action.node_unpromote_action.yml
+index cb290ddcc4..eafc0b16ad 100644
+--- a/core/modules/node/config/install/system.action.node_unpromote_action.yml
++++ b/core/modules/node/config/install/system.action.node_unpromote_action.yml
+@@ -7,4 +7,5 @@ id: node_unpromote_action
+ label: 'Remove content from front page'
+ type: node
+ plugin: node_unpromote_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/config/install/system.action.node_unpublish_action.yml b/core/modules/node/config/install/system.action.node_unpublish_action.yml
+index 0d5e35e9c8..2ecbda25bc 100644
+--- a/core/modules/node/config/install/system.action.node_unpublish_action.yml
++++ b/core/modules/node/config/install/system.action.node_unpublish_action.yml
+@@ -7,4 +7,5 @@ id: node_unpublish_action
+ label: 'Unpublish content'
+ type: node
+ plugin: entity:unpublish_action:node
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/node/tests/src/Functional/Views/BulkFormTest.php b/core/modules/node/tests/src/Functional/Views/BulkFormTest.php
+index eded04530d..3fdcb65bf7 100644
+--- a/core/modules/node/tests/src/Functional/Views/BulkFormTest.php
++++ b/core/modules/node/tests/src/Functional/Views/BulkFormTest.php
+@@ -92,6 +92,24 @@ protected function setUp($import_test_views = TRUE) {
+     $this->assertIdentical(count($elements), 8, 'All node operations are found.');
+   }
+ 
++  /**
++   * Tests that actions are sorted first by weight and then by name.
++   */
++  public function testBulkFormActionOrder() {
++    $order = TRUE;
++    $elements = $this->xpath('//select[@id="edit-action"]//option');
++
++    $order = $order && $elements[0]->getValue() == 'node_make_sticky_action';
++    $order = $order && $elements[1]->getValue() == 'node_make_unsticky_action';
++    $order = $order && $elements[2]->getValue() == 'node_promote_action';
++    $order = $order && $elements[3]->getValue() == 'node_publish_action';
++    $order = $order && $elements[4]->getValue() == 'node_save_action';
++    $order = $order && $elements[5]->getValue() == 'node_unpromote_action';
++    $order = $order && $elements[6]->getValue() == 'node_unpublish_action';
++    $order = $order && $elements[7]->getValue() == 'node_delete_action';
++    $this->assertTrue($order, 'All node operations are ordered alphabetically by default due to equal weight apart from the delete action which has a bigger weight.');
++  }
++
+   /**
+    * Tests the node bulk form.
+    */
+diff --git a/core/modules/system/config/schema/system.schema.yml b/core/modules/system/config/schema/system.schema.yml
+index e68bbae5a8..31f5656438 100644
+--- a/core/modules/system/config/schema/system.schema.yml
++++ b/core/modules/system/config/schema/system.schema.yml
+@@ -258,6 +258,9 @@ system.action.*:
+     plugin:
+       type: string
+       label: 'Plugin'
++    weight:
++      type: integer
++      label: 'Weight'
+     configuration:
+       type: action.configuration.[%parent.plugin]
+ 
+diff --git a/core/modules/system/src/ActionConfigEntityInterface.php b/core/modules/system/src/ActionConfigEntityInterface.php
+index 32b6eef6ec..b1300036db 100644
+--- a/core/modules/system/src/ActionConfigEntityInterface.php
++++ b/core/modules/system/src/ActionConfigEntityInterface.php
+@@ -30,4 +30,11 @@ public function getType();
+    */
+   public function getPlugin();
+ 
++  /**
++   * Returns the action weight or null if the weight has not been set yet.
++   *
++   * @return int|null
++   */
++  public function getWeight();
++
+ }
+diff --git a/core/modules/system/src/Entity/Action.php b/core/modules/system/src/Entity/Action.php
+index 26c9c39bd3..8b422c5408 100644
+--- a/core/modules/system/src/Entity/Action.php
++++ b/core/modules/system/src/Entity/Action.php
+@@ -5,6 +5,7 @@
+ use Drupal\Component\Plugin\PluginHelper;
+ use Drupal\Core\Config\Entity\ConfigEntityBase;
+ use Drupal\Core\Config\Entity\ConfigEntityInterface;
++use Drupal\Core\Entity\EntityStorageInterface;
+ use Drupal\Core\Entity\EntityWithPluginCollectionInterface;
+ use Drupal\system\ActionConfigEntityInterface;
+ use Drupal\Core\Action\ActionPluginCollection;
+@@ -32,6 +33,7 @@
+  *     "label",
+  *     "type",
+  *     "plugin",
++ *     "weight",
+  *     "configuration",
+  *   }
+  * )
+@@ -73,6 +75,13 @@ class Action extends ConfigEntityBase implements ActionConfigEntityInterface, En
+    */
+   protected $plugin;
+ 
++  /**
++   * The action weight.
++   *
++   * @var int
++   */
++  protected $weight;
++
+   /**
+    * The plugin collection that stores action plugins.
+    *
+@@ -143,6 +152,23 @@ public function getType() {
+     return $this->type;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function preSave(EntityStorageInterface $storage) {
++    parent::preSave($storage);
++    if ($this->weight === NULL) {
++      $this->weight = $this->getPlugin()->getWeight();
++    }
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getWeight() {
++    return $this->weight;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/modules/system/system.post_update.php b/core/modules/system/system.post_update.php
+index 11f72ecfeb..4c3498db0e 100644
+--- a/core/modules/system/system.post_update.php
++++ b/core/modules/system/system.post_update.php
+@@ -206,3 +206,24 @@ function system_post_update_add_expand_all_items_key_in_system_menu_block(&$sand
+ function system_post_update_clear_menu_cache() {
+   // Empty post-update hook.
+ }
++
++/**
++ * Set the default weights to actions.
++ */
++function system_post_update_set_actions_default_weight(&$sandbox = NULL) {
++  // Only update actions that have not a weight value set to avoid overriding
++  // already fixed values.
++  $sandbox_key = 'config_entity_updater:action';
++  $entities = \Drupal::entityTypeManager()->getStorage('action')
++    ->getQuery()
++    ->notExists('weight')
++    ->accessCheck(FALSE)
++    ->execute();
++  $sandbox[$sandbox_key]['entities'] = $entities;
++  $sandbox[$sandbox_key]['count'] = count($sandbox[$sandbox_key]['entities']);
++
++  \Drupal::classResolver(ConfigEntityUpdater::class)->update($sandbox, 'action', function ($action) {
++      $action->set('weight', 0);
++      return TRUE;
++  });
++}
+diff --git a/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml b/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
+index 1186ec9472..84c4355445 100644
+--- a/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
++++ b/core/modules/system/tests/fixtures/update/system.action.goto_2815379.yml
+@@ -8,5 +8,6 @@ id: goto_2815379
+ label: 'Goto action'
+ type: system
+ plugin: action_goto_action
++weight: 0
+ configuration:
+   url: /user
+diff --git a/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml b/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml
+index 01b51cee70..cf6e7a4e33 100644
+--- a/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml
++++ b/core/modules/system/tests/fixtures/update/system.action.message_2815379.yml
+@@ -8,5 +8,6 @@ id: message_2815379
+ label: 'Display message'
+ type: system
+ plugin: action_message_action
++weight: 0
+ configuration:
+   message: 'Test message'
+diff --git a/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml b/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml
+index 7651bcafdd..3a02712760 100644
+--- a/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml
++++ b/core/modules/system/tests/fixtures/update/system.action.send_email_2815379.yml
+@@ -8,6 +8,7 @@ id: send_email_2815379
+ label: 'Send email'
+ type: system
+ plugin: action_send_email_action
++weight: 0
+ configuration:
+   recipient: drupal@example.com
+   subject: Subject
+diff --git a/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php b/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php
+index 5134e910a6..fd1c4bf950 100644
+--- a/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php
++++ b/core/modules/system/tests/src/Functional/Rest/ActionResourceTestBase.php
+@@ -67,6 +67,7 @@ protected function getExpectedNormalizedEntity() {
+       'status' => TRUE,
+       'type' => 'user',
+       'uuid' => $this->entity->uuid(),
++      'weight' => 0,
+     ];
+   }
+ 
+diff --git a/core/modules/system/tests/src/Functional/Update/ActionWeightUpdateTest.php b/core/modules/system/tests/src/Functional/Update/ActionWeightUpdateTest.php
+new file mode 100644
+index 0000000000..a57f13586b
+--- /dev/null
++++ b/core/modules/system/tests/src/Functional/Update/ActionWeightUpdateTest.php
+@@ -0,0 +1,42 @@
++<?php
++
++namespace Drupal\Tests\system\Functional\Update;
++
++use Drupal\FunctionalTests\Update\UpdatePathTestBase;
++
++/**
++ * Tests the post-update functions.
++ *
++ * @group Update
++ */
++class ActionWeightUpdateTest extends UpdatePathTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setDatabaseDumpFiles() {
++    $this->databaseDumpFiles = [
++      DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-8.6.0.bare.testing.php.gz',
++    ];
++  }
++
++  /**
++   * Tests that all actions retrieve a weight after the update.
++   *
++   * @see system_post_update_set_actions_default_weight()
++   */
++  public function testActionWeightSetup() {
++    $action_storage = \Drupal::entityTypeManager()->getStorage('action');
++    $total_count = $action_storage->getQuery()->count()->execute();
++
++    $count = $action_storage->getQuery()->condition('weight', NULL)->accessCheck(FALSE)->count()->execute();
++    $this->assertEquals(0, $count, 'No weight exists on actions before the update.');
++
++    // Run updates.
++    $this->runUpdates();
++
++    $count = $action_storage->getQuery()->condition('weight', NULL, '<>')->accessCheck(FALSE)->count()->execute();
++    $this->assertEquals($total_count, $count, 'All actions have a weight set after the update.');
++  }
++
++}
+diff --git a/core/modules/system/tests/src/Kernel/Action/ActionTest.php b/core/modules/system/tests/src/Kernel/Action/ActionTest.php
+index 6c381d7c80..27cde80f0f 100644
+--- a/core/modules/system/tests/src/Kernel/Action/ActionTest.php
++++ b/core/modules/system/tests/src/Kernel/Action/ActionTest.php
+@@ -98,4 +98,35 @@ public function testDependencies() {
+     $this->assertIdentical($expected, $action->calculateDependencies()->getDependencies());
+   }
+ 
++  /**
++   * Tests the action default and overridden weight.
++   */
++  public function testDefaultWeight() {
++    $action = Action::create([
++      'id' => 'user_add_role_action.' . RoleInterface::ANONYMOUS_ID,
++      'type' => 'user',
++      'label' => t('Add the anonymous role to the selected users'),
++      'configuration' => [
++        'rid' => RoleInterface::ANONYMOUS_ID,
++      ],
++      'plugin' => 'user_add_role_action',
++    ]);
++    $this->assertNull($action->getWeight(), 'Weight is not set during creation.');
++    $action->save();
++    $this->assertSame(0, $action->getWeight(), 'Weight is set to the plugin default value.');
++
++    $action = Action::create([
++      'id' => 'user_add_role_action.' . RoleInterface::AUTHENTICATED_ID,
++      'type' => 'user',
++      'label' => t('Add the authenticated role to the selected users'),
++      'configuration' => [
++        'rid' => RoleInterface::ANONYMOUS_ID,
++      ],
++      'plugin' => 'user_add_role_action',
++      'weight' => 4,
++    ]);
++    $action->save();
++    $this->assertSame(4, $action->getWeight(), 'Default value is overridden if explicitly set.');
++  }
++
+ }
+diff --git a/core/modules/user/config/install/system.action.user_block_user_action.yml b/core/modules/user/config/install/system.action.user_block_user_action.yml
+index d9753bc59b..1ef190f5d0 100644
+--- a/core/modules/user/config/install/system.action.user_block_user_action.yml
++++ b/core/modules/user/config/install/system.action.user_block_user_action.yml
+@@ -7,4 +7,5 @@ id: user_block_user_action
+ label: 'Block the selected user(s)'
+ type: user
+ plugin: user_block_user_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/user/config/install/system.action.user_cancel_user_action.yml b/core/modules/user/config/install/system.action.user_cancel_user_action.yml
+index cd90ff2ca1..fd4c4a206b 100644
+--- a/core/modules/user/config/install/system.action.user_cancel_user_action.yml
++++ b/core/modules/user/config/install/system.action.user_cancel_user_action.yml
+@@ -7,4 +7,5 @@ id: user_cancel_user_action
+ label: 'Cancel the selected user account(s)'
+ type: user
+ plugin: user_cancel_user_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/user/config/install/system.action.user_unblock_user_action.yml b/core/modules/user/config/install/system.action.user_unblock_user_action.yml
+index 406edb2066..1d11dd7856 100644
+--- a/core/modules/user/config/install/system.action.user_unblock_user_action.yml
++++ b/core/modules/user/config/install/system.action.user_unblock_user_action.yml
+@@ -7,4 +7,5 @@ id: user_unblock_user_action
+ label: 'Unblock the selected user(s)'
+ type: user
+ plugin: user_unblock_user_action
++weight: 0
+ configuration: {  }
+diff --git a/core/modules/views/src/Plugin/views/field/BulkForm.php b/core/modules/views/src/Plugin/views/field/BulkForm.php
+index 33b1afb015..cdb15a6518 100644
+--- a/core/modules/views/src/Plugin/views/field/BulkForm.php
++++ b/core/modules/views/src/Plugin/views/field/BulkForm.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\views\Plugin\views\field;
+ 
++use Drupal\Component\Utility\SortArray;
+ use Drupal\Core\Cache\CacheableDependencyInterface;
+ use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
+ use Drupal\Core\Entity\EntityInterface;
+@@ -376,9 +377,12 @@ protected function getBulkOptions($filtered = TRUE) {
+         }
+       }
+ 
+-      $options[$id] = $action->label();
++      $options[$id] = $action->toArray();
+     }
+ 
++    // Sort and get "label" indexed by the "id".
++    uasort($options, [SortArray::class, 'sortByWeightElement']);
++    $options = array_column($options, 'label', 'id');
+     return $options;
+   }
+ 
+diff --git a/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php b/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php
+index e3faa88405..09fafa8b3e 100644
+--- a/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php
++++ b/core/modules/views/tests/src/Functional/Plugin/ViewsBulkTest.php
+@@ -58,7 +58,8 @@ public function testBulkSelection() {
+ 
+     // Now click 'Apply to selected items' and assert the first node is selected
+     // on the confirm form.
+-    $this->drupalPostForm(NULL, ['node_bulk_form[0]' => TRUE], 'Apply to selected items');
++    $edit = ['node_bulk_form[0]' => TRUE, 'action' => 'node_delete_action'];
++    $this->drupalPostForm(NULL, $edit, 'Apply to selected items');
+     $this->assertText($node_1->getTitle());
+     $this->assertNoText($node_2->getTitle());
+ 
+@@ -76,7 +77,8 @@ public function testBulkSelection() {
+ 
+     // Now click 'Apply to selected items' and assert the second node is
+     // selected on the confirm form.
+-    $this->drupalPostForm(NULL, ['node_bulk_form[1]' => TRUE], 'Apply to selected items');
++    $edit = ['node_bulk_form[1]' => TRUE, 'action' => 'node_delete_action'];
++    $this->drupalPostForm(NULL, $edit, 'Apply to selected items');
+     $this->assertText($node_1->getTitle());
+     $this->assertNoText($node_3->getTitle());
+   }
+diff --git a/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml b/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml
+index f902ff1a68..99b35e1244 100644
+--- a/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml
++++ b/core/profiles/testing_config_overrides/config/install/system.action.user_block_user_action.yml
+@@ -4,6 +4,7 @@ status: true
+ langcode: en
+ type: user
+ plugin: user_block_user_action
++weight: 0
+ dependencies:
+   module:
+     - user
