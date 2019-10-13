@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
@@ -92,7 +93,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,
@@ -174,7 +175,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       }
 
       if ($needs_save) {
-        $this->handleAffiliation($incoming_entity, $entity_exists);
         $this->handleDistributionParent($incoming_entity, $entity_exists);
         $incoming_entity->skip_notification = TRUE;
         $incoming_entity->save();
@@ -275,53 +275,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
         $field->applyDefaultValue();
       }
     }
-  }
-
-  /**
-   * Handles the incoming solution affiliation.
-   *
-   * For existing solutions, we only check if the configured collection ID
-   * matches the solution affiliation. For new solutions, we affiliate the
-   * solution to the configured collection.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $incoming_solution
-   *   The incoming solution.
-   * @param bool $entity_exists
-   *   If the incoming entity already exits on the system.
-   *
-   * @throws \Exception
-   *   If the configured collection is different than the collection of the
-   *   local solution.
-   */
-  protected function handleAffiliation(RdfInterface $incoming_solution, bool $entity_exists): void {
-    // Check only solutions.
-    if ($incoming_solution->bundle() !== 'solution') {
-      return;
-    }
-
-    // If this plugin was not configured to assign a collection, exit early.
-    if (!$collection_id = $this->getPipeline()->getCollection()) {
-      return;
-    }
-
-    if (!$entity_exists) {
-      $incoming_solution->set('collection', $collection_id);
-      return;
-    }
-
-    // Check for collection mismatch when federating an existing solution.
-    $match = FALSE;
-    foreach ($incoming_solution->get('collection') as $item) {
-      if ($item->target_id === $collection_id) {
-        $match = TRUE;
-        break;
-      }
-    }
-
-    if (!$match) {
-      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
-    }
-    // For an existing solution we don't make any changes to its affiliation.
   }
 
   /**

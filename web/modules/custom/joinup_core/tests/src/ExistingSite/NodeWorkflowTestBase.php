@@ -132,10 +132,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ]);
 
           $non_allowed_roles = array_diff($test_roles, array_keys($allowed_roles));
-          foreach ($allowed_roles as $user_var => $expected_states) {
+          foreach ($allowed_roles as $user_var => $expected_target_states) {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, E-Library: {$elibrary}, User variable: {$user_var}, Operation: {$operation}";
-            $actual_states = $this->workflowHelper->getAvailableStates($content, $this->{$user_var});
-            $this->assertWorkflowStatesEqual($expected_states, $actual_states, $message);
+            $actual_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->{$user_var});
+            $this->assertWorkflowStatesEqual($expected_target_states, $actual_target_states, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, E-Library: {$elibrary}, User variable: {$user_var}, Operation: {$operation}";
@@ -210,9 +210,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           $own_access = isset($ownership_data['own']) && !empty($ownership_data['own']);
           if ($own_access) {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
-            $allowed_states = $this->workflowHelper->getAvailableStates($content, $this->userOwner);
-            $expected_states = $ownership_data['own'];
-            $this->assertWorkflowStatesEqual($expected_states, $allowed_states, $message);
+            $allowed_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->userOwner);
+            $expected_target_states = $ownership_data['own'];
+            $this->assertWorkflowStatesEqual($expected_target_states, $allowed_target_states, $message);
           }
           else {
             $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: own, User variable: userOwner, Operation: {$operation}";
@@ -222,10 +222,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
 
           $allowed_roles = array_keys($ownership_data['any']);
           $non_allowed_roles = array_diff($test_roles, $allowed_roles);
-          foreach ($ownership_data['any'] as $user_var => $expected_states) {
+          foreach ($ownership_data['any'] as $user_var => $expected_target_states) {
             $message = "Parent bundle: {$parent_bundle}, Moderation: {$moderation}, Content bundle: {$this->getEntityBundle()}, Content state: {$content_state}, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
-            $allowed_states = $this->workflowHelper->getAvailableStates($content, $this->{$user_var});
-            $this->assertWorkflowStatesEqual($expected_states, $allowed_states, $message);
+            $allowed_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->{$user_var});
+            $this->assertWorkflowStatesEqual($expected_target_states, $allowed_target_states, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
@@ -995,13 +995,24 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       'solution' => 'field_is_',
     ];
 
-    $parent = $this->createRdfEntity([
+    $values = [
       'label' => $this->randomMachineName(),
       'rid' => $bundle,
       $field_identifier[$bundle] . 'state' => $state,
       $field_identifier[$bundle] . 'moderation' => $moderation,
       $field_identifier[$bundle] . 'elibrary_creation' => $e_library === NULL ? ELibraryCreationOptions::REGISTERED_USERS : $e_library,
-    ]);
+    ];
+
+    // It's not possible to create orphan solutions.
+    if ($bundle === 'solution') {
+      $values['collection'] = $this->createRdfEntity([
+        'rid' => 'collection',
+        'label' => $this->randomString(),
+        'field_ar_state' => 'validated',
+      ]);
+    }
+
+    $parent = $this->createRdfEntity($values);
     $this->assertInstanceOf(RdfInterface::class, $parent, "The $bundle group was created.");
 
     $member_role = OgRole::getRole('rdf_entity', $bundle, 'member');

@@ -5,15 +5,15 @@ Feature:
   I need to have url aliases generated automatically.
 
   Scenario: Entities should have distinct pathauto aliases.
-    Given the following solution:
-      | title       | Pathauto solution |
-      | description | Pathauto solution |
-      | state       | validated         |
-    And the following collection:
-      | title      | Pathauto collection |
-      | logo       | logo.png            |
-      | affiliates | Pathauto solution   |
-      | state      | validated           |
+    Given the following collection:
+      | title | Pathauto collection |
+      | logo  | logo.png            |
+      | state | validated           |
+    And the following solution:
+      | title       | Pathauto solution   |
+      | description | Pathauto solution   |
+      | state       | validated           |
+      | collection  | Pathauto collection |
     And the following release:
       | title          | Pathauto release  |
       | release number | 23                |

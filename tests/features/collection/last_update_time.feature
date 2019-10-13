@@ -14,17 +14,16 @@ Feature: Tests the collection last update time.
     And the following owner:
       | name | type                  |
       | Sean | Private Individual(s) |
-    And the following solutions:
-      | title           | state     | modification date | creation date | author      | contact information   | owner | description                    |
-      | Roof Hole Cover | validated | 2010-07-05T23:03  | 2001-01-01    | The Cleaner | Your Cleaning Company | Sean  | Keep your roof in a good shape |
-      | Mosquito Killer | proposed  | 2017-05-03T11:45  | 2001-01-02    | The Cleaner | Your Cleaning Company | Sean  | Quiet nights                   |
     And the following collection:
-      | title             | Household Wizard                |
-      | state             | validated                       |
-      | modification date | 2011-05-06T21:56                |
-      | creation date     | 2001-01-03                      |
-      | affiliates        | Roof Hole Cover,Mosquito Killer |
-      | author            | The Cleaner                     |
+      | title             | Household Wizard |
+      | state             | validated        |
+      | modification date | 2011-05-06T21:56 |
+      | creation date     | 2001-01-03       |
+      | author            | The Cleaner      |
+    And the following solutions:
+      | title           | collection       | state     | modification date | creation date | author      | contact information   | owner | description                    |
+      | Roof Hole Cover | Household Wizard | validated | 2010-07-05T23:03  | 2001-01-01    | The Cleaner | Your Cleaning Company | Sean  | Keep your roof in a good shape |
+      | Mosquito Killer | Household Wizard | proposed  | 2017-05-03T11:45  | 2001-01-02    | The Cleaner | Your Cleaning Company | Sean  | Quiet nights                   |
     And I am logged in as "The Cleaner"
 
     Given I go to the homepage of the "Household Wizard" collection

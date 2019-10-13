@@ -28,6 +28,8 @@ dependencies:
   - state_machine:state_machine
 
 config_devel:
+  - collection.settings
+  - core.base_field_override.rdf_entity.collection.label
   - core.entity_form_display.rdf_entity.collection.default
   - core.entity_view_display.rdf_entity.collection.about
   - core.entity_view_display.rdf_entity.collection.compact
@@ -70,9 +72,10 @@ config_devel:
   - field.storage.rdf_entity.field_ar_owner
   - field.storage.rdf_entity.field_ar_state
   - field.storage.rdf_entity.field_collection_content
+  - image.style.image_style_collection_logo
   - og.og_role.rdf_entity-collection-administrator
   - og.og_role.rdf_entity-collection-facilitator
   - og.og_role.rdf_entity-collection-member
   - og.og_role.rdf_entity-collection-non-member
-  - sparql_entity_storage.mapping.rdf_entity.collection
   - rdf_entity.rdfentity.collection
+  - sparql_entity_storage.mapping.rdf_entity.collection
