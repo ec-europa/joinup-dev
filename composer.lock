@@ -3858,7 +3858,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.3",
-                    "datestamp": "1556645881",
+                    "datestamp": "1551291083",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6129,12 +6129,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ec-europa/sparql_entity_storage.git",
-                "reference": "8b66978f7d994e7a4fcd0878e193733acb7b32d1"
+                "reference": "65b3a8f1a8d768e90d7506b1a54f48264a667ef5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ec-europa/sparql_entity_storage/zipball/8b66978f7d994e7a4fcd0878e193733acb7b32d1",
-                "reference": "8b66978f7d994e7a4fcd0878e193733acb7b32d1",
+                "url": "https://api.github.com/repos/ec-europa/sparql_entity_storage/zipball/65b3a8f1a8d768e90d7506b1a54f48264a667ef5",
+                "reference": "65b3a8f1a8d768e90d7506b1a54f48264a667ef5",
                 "shasum": ""
             },
             "require": {
@@ -6160,7 +6160,7 @@
                 "issues": "https://drupal.org/project/issues/sparql_entity_storage",
                 "source": "https://cgit.drupalcode.org/sparql_entity_storage"
             },
-            "time": "2019-05-15T06:46:22+00:00"
+            "time": "2019-10-08T11:17:04+00:00"
         },
         {
             "name": "drupal/spdx",
@@ -6213,7 +6213,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6287,7 +6287,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "https://git.drupalcode.org/project/state_machine"
+                "source": "http://cgit.drupalcode.org/state_machine"
             }
         },
         {
@@ -6684,7 +6684,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta1",
-                    "datestamp": "1525280285",
+                    "datestamp": "1569361684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6727,7 +6727,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
+                "source": "https://git.drupalcode.org/project/views_data_export"
             }
         },
         {
@@ -7554,7 +7554,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10009,7 +10009,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-22T22:25:24+00:00"
         },
         {
             "name": "stack/builder",
@@ -13312,7 +13312,8 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/filecache",
                 "issues": "https://drupal.org/project/issues/filecache"
-            }
+            },
+            "time": "2019-09-19T12:07:17+00:00"
         },
         {
             "name": "drupal/renderviz",
@@ -15704,6 +15705,9 @@
                     "web/core": [
                         "type:drupal-core"
                     ]
+                },
+                "patches_applied": {
+                    "Extend createUser() method with 'values' argument @see https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73": "https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73.diff"
                 }
             },
             "autoload": {
