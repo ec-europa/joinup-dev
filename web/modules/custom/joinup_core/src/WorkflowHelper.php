@@ -82,7 +82,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+  public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
     // Placeholder for the method that will be added in ISAICP-4910. For now we
     // still take the state directly from the transitions. Once we update to the
     // newest version of State Machine the same state transitions will no longer

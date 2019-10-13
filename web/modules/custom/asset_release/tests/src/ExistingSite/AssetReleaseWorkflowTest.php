@@ -158,7 +158,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
     foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
       $parent = $this->createDefaultParent('validated');
 
-      foreach ($workflow_data as $user_var => $expected_states) {
+      foreach ($workflow_data as $user_var => $expected_target_states) {
         $content = Rdf::create([
           'rid' => 'asset_release',
           'label' => $this->randomMachineName(),
@@ -168,11 +168,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
-        $actual_states = $this->workflowHelper->getAvailableStates($content, $this->$user_var);
-        sort($actual_states);
-        sort($expected_states);
+        $actual_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->$user_var);
+        sort($actual_target_states);
+        sort($expected_target_states);
 
-        $this->assertEquals($expected_states, $actual_states, $this->t('Allowed transitions match with settings.'));
+        $this->assertEquals($expected_target_states, $actual_target_states, $this->t('Allowed transitions match with settings.'));
       }
     }
   }

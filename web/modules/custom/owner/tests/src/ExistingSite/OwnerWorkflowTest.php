@@ -138,7 +138,7 @@ class OwnerWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
    */
   public function testWorkflow(): void {
     foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
-      foreach ($workflow_data as $user_var => $expected_states) {
+      foreach ($workflow_data as $user_var => $expected_target_states) {
         $content = $this->createRdfEntity([
           'rid' => 'owner',
           'label' => $this->randomMachineName(),
@@ -150,12 +150,12 @@ class OwnerWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
-        $actual_states = $this->workflowHelper->getAvailableStates($content, $this->$user_var);
+        $actual_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->$user_var);
 
-        sort($actual_states);
-        sort($expected_states);
+        sort($actual_target_states);
+        sort($expected_target_states);
 
-        $this->assertEquals($expected_states, $actual_states, "Transitions do not match for user $user_var, state $entity_state.");
+        $this->assertEquals($expected_target_states, $actual_target_states, "Transitions do not match for user $user_var, state $entity_state.");
       }
     }
   }

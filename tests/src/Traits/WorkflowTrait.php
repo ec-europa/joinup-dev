@@ -60,7 +60,7 @@ trait WorkflowTrait {
    *   An array of available workflow states.
    */
   protected function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL): array {
-    return $this->getWorkflowHelper()->getAvailableStates($entity, $user);
+    return $this->getWorkflowHelper()->getAvailableTargetStates($entity, $user);
   }
 
   /**
