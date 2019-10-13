@@ -290,7 +290,7 @@ class NodeWorkflowAccessControlHandler {
    *   The access result check.
    */
   protected function entityUpdateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
-    $allowed_states = $this->workflowHelper->getAvailableStates($entity, $account);
+    $allowed_states = $this->workflowHelper->getAvailableTargetStates($entity, $account);
     if (empty($allowed_states)) {
       return AccessResult::forbidden();
     }

@@ -168,7 +168,7 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
 
   switch ($operation) {
     case 'edit':
-      $allowed_states = \Drupal::service('joinup_core.workflow.helper')->getAvailableStates($entity, $account);
+      $allowed_states = \Drupal::service('joinup_core.workflow.helper')->getAvailableTargetStates($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_states));
   }
   // Revoke access to canonical route for anonymous users.

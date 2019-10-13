@@ -13,13 +13,13 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 interface WorkflowHelperInterface {
 
   /**
-   * Returns the available workflow states of an entity for the given user.
+   * Returns the available target states of an entity for the given user.
    *
    * If no user is passed, the logged in user is checked. If no user is logged
    * in, an anonymous account is passed.
    *
-   * This will return all states that are available to the user, meaning the
-   * transition states and the current state if it is allowed to update the
+   * This will return all target states that are available to the user, meaning
+   * the transition states and the current state if it is allowed to update the
    * entity without changing the state.
    *
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
@@ -29,9 +29,9 @@ interface WorkflowHelperInterface {
    *   omitted the currently logged in user will be checked.
    *
    * @return string[]
-   *   An array of available workflow states.
+   *   An array of available target workflow states.
    */
-  public function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
+  public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
 
   /**
    * Returns the available transitions labels of an entity for the given user.
