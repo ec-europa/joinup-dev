@@ -82,6 +82,24 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
+  public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+    // Placeholder for the method that will be added in ISAICP-4910. For now we
+    // still take the state directly from the transitions. Once we update to the
+    // newest version of State Machine the same state transitions will no longer
+    // be returned and will instead be retrieved from a new service method
+    // `$this->workflowStatePermission->isStateUpdatePermitted()`.
+    $allowed_transitions = $this->getAvailableTransitions($entity, $account);
+
+    $allowed_states = array_map(function (WorkflowTransition $transition) {
+      return (string) $transition->getToState()->getId();
+    }, $allowed_transitions);
+
+    return $allowed_states;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
     // Set the current user so that states available are retrieved for the
     // specific account.

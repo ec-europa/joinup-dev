@@ -77,14 +77,14 @@ Feature: Solution moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following solution, the corresponding user should have the corresponding available state buttons:
-      | solution                   | user             | states                                                      |
+      | solution                   | user             | buttons                                                     |
 
       # The following solutions are tested as an owner. This is for debug
       # purposed. In reality, the owner is also a facilitator so the only
       # UATable part of the owner is that he has the ability to request deletion
       # when the solution is validated.
       | Azure Ship                 | Franklin Walker  | Save as draft, Propose                                      |
-      | The Last Illusion          | Franklin Walker  | Save as draft, Propose                                      |
+      | The Last Illusion          | Franklin Walker  | Propose, Save as draft                                      |
       | Rose of Doors              | Franklin Walker  | Save as draft, Propose, Request deletion                    |
       | The Ice's Secrets          | Franklin Walker  |                                                             |
       | The Guardian of the Stream | Franklin Walker  | Save as draft, Propose                                      |
@@ -93,7 +93,7 @@ Feature: Solution moderation
       # The following solutions do not follow the rule above and should be
       # testes as shown.
       | Azure Ship                 | William Curtis   | Save as draft, Propose                                      |
-      | The Last Illusion          | William Curtis   | Save as draft, Propose                                      |
+      | The Last Illusion          | William Curtis   | Propose, Save as draft                                      |
       | Rose of Doors              | William Curtis   | Save as draft, Propose                                      |
       | The Ice's Secrets          | William Curtis   |                                                             |
       | The Guardian of the Stream | William Curtis   | Save as draft, Propose                                      |
@@ -105,8 +105,8 @@ Feature: Solution moderation
       | The Guardian of the Stream | Isabel Banks     |                                                             |
       | Flames in the Swords       | Isabel Banks     |                                                             |
       | Azure Ship                 | Tyrone Underwood | Save as draft, Propose, Publish                             |
-      | The Last Illusion          | Tyrone Underwood | Save as draft, Propose, Publish, Request changes            |
-      | Rose of Doors              | Tyrone Underwood | Save as draft, Propose, Publish, Request changes, Blacklist |
+      | The Last Illusion          | Tyrone Underwood | Propose, Save as draft, Publish, Request changes            |
+      | Rose of Doors              | Tyrone Underwood | Publish, Save as draft, Propose, Request changes, Blacklist |
       | The Ice's Secrets          | Tyrone Underwood | Save as draft, Propose, Publish                             |
       | The Guardian of the Stream | Tyrone Underwood | Save as draft, Propose, Publish                             |
       | Flames in the Swords       | Tyrone Underwood | Save as draft, Propose, Publish                             |
