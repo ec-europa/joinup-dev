@@ -53,6 +53,7 @@ permissions:
   - 'moderate entity parents'
   - 'pin entity'
   - 'reset joinup_collection pipeline'
+  - 'reset nio pipeline'
   - 'reset spain pipeline'
   - 'unfeature entity'
   - 'unpin entity'

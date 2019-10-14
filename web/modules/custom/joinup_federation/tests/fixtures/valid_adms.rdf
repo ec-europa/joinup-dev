@@ -4,7 +4,8 @@
          xmlns:v="http://www.w3.org/2006/vcard/ns#"
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dcat="http://www.w3.org/ns/dcat#"
-         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:n1="http://example.com/predicate/solution/">
     <rdf:Description rdf:about="http://asset">
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
         <dct:title>Asset</dct:title>
@@ -12,6 +13,7 @@
         <dct:publisher rdf:resource="http://publisher"/>
         <dcat:contactPoint rdf:resource="http://contact"/>
         <dct:type rdf:resource="http://vocabulary/term"/>
+        <n1:is_solution>1</n1:is_solution>
     </rdf:Description>
 
     <rdf:Description rdf:about="http://publisher">

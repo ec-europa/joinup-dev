@@ -8,7 +8,7 @@ use Drupal\joinup\Traits\AntibotTrait;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
- * Base class for Joinup  ExistingSite tests.
+ * Base class for Joinup ExistingSite tests.
  */
 class JoinupExistingSiteTestBase extends ExistingSiteBase {
 
@@ -33,6 +33,8 @@ class JoinupExistingSiteTestBase extends ExistingSiteBase {
       $entity->skip_notification = TRUE;
     }
 
+    parent::tearDown();
+
     /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
     $delete_orphans_manager = \Drupal::service('plugin.manager.og.delete_orphans');
     /** @var \Drupal\og\OgDeleteOrphansInterface $delete_orphans_plugin */
@@ -43,8 +45,6 @@ class JoinupExistingSiteTestBase extends ExistingSiteBase {
 
     // Restores the Antibot functionality.
     static::restoreAntibot();
-
-    parent::tearDown();
   }
 
 }
