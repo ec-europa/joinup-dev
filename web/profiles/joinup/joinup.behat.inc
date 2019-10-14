@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -56,6 +57,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
@@ -1187,7 +1189,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Assert that the given form submission buttons are present on the page.
+   * Asserts that the given form submission buttons are present on the page.
    *
    * @param string $buttons
    *   A comma separated list of button labels.
@@ -1206,17 +1208,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
-    $page = $this->getSession()->getPage();
-    $not_found = [];
-    foreach ($buttons as $button) {
-      if (!$page->findButton($button)) {
-        $not_found[] = $button;
-      }
-    }
-
-    if (!empty($not_found)) {
-      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
-    }
+    $this->assertSubmitButtonsVisible($buttons, FALSE);
 
     if (!empty($count)) {
       // Only check the actual form submit buttons, ignore other buttons that
@@ -1525,6 +1517,19 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception('The current workflow state field is not present on the page.');
     }
     Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Checks that the given workflow buttons are visible.
+   *
+   * @param string $buttons
+   *   A comma separated list of workflow button labels.
+   *
+   * @Then I should see the workflow buttons :buttons
+   */
+  public function assertWorkflowButtons(string $buttons): void {
+    $labels = $this->explodeCommaSeparatedStepArgument($buttons);
+    $this->assertSubmitButtonsVisible($labels);
   }
 
   /**
