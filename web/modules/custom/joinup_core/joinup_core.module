@@ -706,17 +706,6 @@ function joinup_core_get_motivation_form_ids() {
  * Implements hook_form_alter().
  */
 function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Change title on rdf entity delete pages.
-  if (preg_match('/rdf_entity_[a-z_]+_delete_form/', $form_id)) {
-    $title_args = $form['#title']->getArguments();
-    if (empty($title_args['%name'])) {
-      $title_args['%name'] = '';
-    }
-    $form['#title'] = t('Are you sure you want to delete entity %name', [
-      '%name' => $title_args['%name'],
-    ]);
-  }
-
   if (!in_array($form_id, joinup_core_get_motivation_form_ids())) {
     return;
   }
