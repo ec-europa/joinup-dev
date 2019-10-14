@@ -111,7 +111,20 @@ Feature: My subscriptions
     And the "Save changes" button on the "Barnard's Star" subscription card should be disabled
     And the "Save changes" button on the "Wolf 359" subscription card should be enabled
 
-    Given I press "Save changes" on the "Alpha Centauri" subscription card
+    # Tests that the button gets disabled when the checkboxes are reverted to
+    # their initial state.
+    When I uncheck the "Discussion" checkbox of the "Alpha Centauri" subscription
+    Then the "Save changes" button on the "Alpha Centauri" subscription card should be disabled
+    When I check the "Event" checkbox of the "Alpha Centauri" subscription
+    Then the "Save changes" button on the "Alpha Centauri" subscription card should be enabled
+    When I check the "News" checkbox of the "Alpha Centauri" subscription
+    Then the "Save changes" button on the "Alpha Centauri" subscription card should be enabled
+    But I uncheck the "Event" checkbox of the "Alpha Centauri" subscription
+    And I uncheck the "News" checkbox of the "Alpha Centauri" subscription
+    Then the "Save changes" button on the "Alpha Centauri" subscription card should be disabled
+
+    Given I check the "Discussion" checkbox of the "Alpha Centauri" subscription
+    When I press "Save changes" on the "Alpha Centauri" subscription card
     And I wait for AJAX to finish
     Then I should not see the "Save changes" button on the "Alpha Centauri" subscription card
     But I should see the "Saved!" button on the "Alpha Centauri" subscription card
