@@ -48,6 +48,10 @@ base_fields_mapping:
     value:
       predicate: 'http://www.w3.org/ns/prov#wasAssociatedWith'
       format: resource
+  provenance_hash:
+    value:
+      predicate: 'http://joinup.eu/provenance_activity/entity_hash'
+      format: 'xsd:string'
   provenance_started:
     value:
       predicate: 'http://www.w3.org/ns/prov#startedAtTime'
