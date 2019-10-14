@@ -12,3 +12,6 @@ services:
   joinup_federation.staging_candidate_graphs:
     class: Drupal\joinup_federation\StagingCandidateGraphs
     arguments: ['@sparql.graph_handler']
+  joinup_federation.hash_generator:
+    class: Drupal\joinup_federation\JoinupFederationHashGenerator
+    arguments: ['@sparql.endpoint', '@sparql.field_handler', '@sparql.graph_handler']

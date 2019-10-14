@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb3d4d2cb50acbcd6b64aae7e3d31128",
+    "content-hash": "72fe8fdbb81c5d9063f7dafb0dd69755",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.18",
+            "version": "3.112.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "462398dcebaa4586089ce30d44750dcf7179b844"
+                "reference": "c84de8adf2b014124b0058013805caf2ae384137"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/462398dcebaa4586089ce30d44750dcf7179b844",
-                "reference": "462398dcebaa4586089ce30d44750dcf7179b844",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c84de8adf2b014124b0058013805caf2ae384137",
+                "reference": "c84de8adf2b014124b0058013805caf2ae384137",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-10-09T18:13:06+00:00"
+            "time": "2019-10-11T18:14:55+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2551,17 +2551,17 @@
         },
         {
             "name": "drupal/changed_fields",
-            "version": "2.0.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/changed_fields.git",
-                "reference": "8.x-2.0"
+                "reference": "8.x-3.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/changed_fields-8.x-2.0.zip",
-                "reference": "8.x-2.0",
-                "shasum": "bc8c910698ca0cc6938a49716fdac7893790ea91"
+                "url": "https://ftp.drupal.org/files/projects/changed_fields-8.x-3.2.zip",
+                "reference": "8.x-3.2",
+                "shasum": "d6bf6da4faa2d05e0da5881927ed2680d11dafaa"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2569,11 +2569,11 @@
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0",
-                    "datestamp": "1501324743",
+                    "version": "8.x-3.2",
+                    "datestamp": "1564724585",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2582,7 +2582,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2590,10 +2590,10 @@
                     "homepage": "https://www.drupal.org/user/3158841"
                 }
             ],
-            "description": "Allows developers to react on changed node fields",
+            "description": "Allows developers to react on changed entity fields.",
             "homepage": "https://www.drupal.org/project/changed_fields",
             "support": {
-                "source": "http://cgit.drupalcode.org/changed_fields"
+                "source": "https://git.drupalcode.org/project/changed_fields"
             }
         },
         {
@@ -5284,20 +5284,20 @@
         },
         {
             "name": "drupal/pathauto",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pathauto.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/pathauto-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "ddfb047ae04ca2ddf475d65f6c09bceb44169e25"
+                "url": "https://ftp.drupal.org/files/projects/pathauto-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "ae3c13f26d625e63da3b13dc64016888eca519c7"
             },
             "require": {
-                "drupal/core": "^8.5",
+                "drupal/core": "^8.6",
                 "drupal/ctools": "*",
                 "drupal/token": "*"
             },
@@ -5307,8 +5307,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1554239887",
+                    "version": "8.x-1.5",
+                    "datestamp": "1570828084",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6277,7 +6277,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6351,7 +6351,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "https://git.drupalcode.org/project/state_machine"
+                "source": "http://cgit.drupalcode.org/state_machine"
             }
         },
         {
