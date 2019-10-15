@@ -12,6 +12,7 @@ use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\ScenarioTagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\message\Entity\MessageTemplate;
 use PHPUnit\Framework\Assert;
 
@@ -22,6 +23,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
   use ScenarioTagTrait;
+  use UtilityTrait;
 
   /**
    * The mail system storage settings.
@@ -246,22 +248,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     $mails = $this->getEmailsBySubjectAndMail($subject, $recipient);
     $email_found = FALSE;
     foreach ($mails as $mail) {
-      // \Drupal\Core\Mail\Plugin\Mail\PhpMail::format() automatically wraps the
-      // mail body line to a certain amount of characters (77 by default).
-      // Spaces are also removed.
-      // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = str_replace("\r\n", "\n", $mail['body']);
-      $mail_body = preg_replace("/[\n\s\t]+/", ' ', $mail_body);
-      $mail_body = trim($mail_body);
-
-      // If the original mail body is markup, we need to:
-      // - undo the encoding done by Twig to quotes;
-      // - remove the HTML to simplify the matching on the body text.
-      // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
-      if ($mail['body'] instanceof MarkupInterface) {
-        $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
-        $mail_body = strip_tags($mail_body);
-      }
+      $mail_body = ($mail['body'] instanceof MarkupInterface) ?
+        $this->formatMailBodyMarkup($mail['body']) :
+        $this->formatMailBodyText($mail['body']);
 
       foreach ($lines_of_text as $line_of_text) {
         $text = $line_of_text['text'];
@@ -276,6 +265,43 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     }
 
     Assert::assertTrue($email_found, "Did not find expected email to '$recipient' with subject '$subject'.");
+  }
+
+  /**
+   * Asserts that no email of the relevant criteria have been sent.
+   *
+   * @param string $user
+   *   The user name.
+   * @param string $subject
+   *   The subject of the email.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The mail data table.
+   *
+   * @throws \Exception
+   *   Throws an exception when a parameter is not the expected one.
+   *
+   * @Then the email sent to :user with subject :subject should not contain the( following lines of) text:
+   */
+  public function assertEmailSentNotContainsText(string $user, string $subject, TableNode $table) {
+    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
+    // @see https://github.com/jhedstrom/drupalextension/pull/510
+    // $this->assertEmailTagPresent();
+    $lines_of_text = $table->getColumnsHash();
+    $user = user_load_by_name($user);
+    $recipient = $user->getEmail();
+    $mails = $this->getEmailsBySubjectAndMail($subject, $recipient);
+    foreach ($mails as $mail) {
+      $mail_body = ($mail['body'] instanceof MarkupInterface) ?
+        $this->formatMailBodyMarkup($mail['body']) :
+        $this->formatMailBodyText($mail['body']);
+
+      foreach ($lines_of_text as $line_of_text) {
+        $text = $line_of_text['text'];
+        if (strpos($mail_body, $text) !== FALSE) {
+          throw new Exception("Message with subject '$subject' sent to '$recipient' contains the text '$line_of_text'.");
+        }
+      }
+    }
   }
 
   /**
