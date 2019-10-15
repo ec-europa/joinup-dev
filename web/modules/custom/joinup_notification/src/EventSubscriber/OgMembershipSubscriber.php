@@ -20,7 +20,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
   const TEMPLATE_REQUEST_MEMBERSHIP = 'og_membership_request';
   const TEMPLATE_APPROVE_MEMBERSHIP = 'og_membership_approve';
   const TEMPLATE_REJECT_MEMBERSHIP = 'og_membership_reject';
-  const TEMPLATE_APPROVE_MEMBERSHIP_WITH_SUBSCRIPTION = 'og_membership_approve_with_subscription';
+  const TEMPLATE_APPROVE_MEMBERSHIP_WITH_SUBSCRIPTION = 'og_membership_subscribed_approve';
 
   /**
    * The membership object.

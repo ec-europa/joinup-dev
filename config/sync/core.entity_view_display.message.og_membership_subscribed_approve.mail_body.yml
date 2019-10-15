@@ -1,13 +1,12 @@
-uuid: 2d502f97-35ed-4153-a24f-40c868643695
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_body
-    - message.template.og_membership_approve_with_subscription
-id: message.og_membership_approve_with_subscription.mail_body
+    - message.template.og_membership_subscribed_approve
+id: message.og_membership_subscribed_approve.mail_body
 targetEntityType: message
-bundle: og_membership_approve_with_subscription
+bundle: og_membership_subscribed_approve
 mode: mail_body
 content:
   partial_1:

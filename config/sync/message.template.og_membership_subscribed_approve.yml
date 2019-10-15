@@ -1,8 +1,7 @@
-uuid: 39addb33-7c82-4706-9f91-ddc297108bd4
 langcode: en
 status: true
 dependencies: {  }
-template: og_membership_approve_with_subscription
+template: og_membership_subscribed_approve
 label: 'Group membership approval with subscription'
 description: 'Group privileged user accepts a membership request that is also subscribed.'
 text:
