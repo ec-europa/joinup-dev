@@ -1,0 +1,19 @@
+uuid: 36128993-7fff-4e2a-9b85-fe2382285f32
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.og_membership_approve_with_subscription
+id: message.og_membership_approve_with_subscription.mail_subject
+targetEntityType: message
+bundle: og_membership_approve_with_subscription
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true
