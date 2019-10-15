@@ -114,7 +114,7 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
     }
 
     $recipient_id = $this->membership->getOwnerId();
-    $template = $this->membership->get('subscriptions_bundles')->isEmpty() ?
+    $template = $this->membership->get('subscription_bundles')->isEmpty() ?
       self::TEMPLATE_APPROVE_MEMBERSHIP :
       self::TEMPLATE_APPROVE_MEMBERSHIP_WITH_SUBSCRIPTION;
 
