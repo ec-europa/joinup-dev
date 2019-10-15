@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\KeyboardInteractionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -56,6 +57,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use KeyboardInteractionTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
@@ -2311,20 +2313,23 @@ JS;
   }
 
   /**
-   * Press the enter key in the keyboard.
+   * Press a key in a field.
    *
    * Works only in JavaScript-enabled browsers.
    *
+   * @param string $key
+   *   The human readable name of the key to press.
    * @param string $field
-   *   The field where to press the enter key.
+   *   The field in which to press the key.
    *
    * @throws \Exception
    *   Thrown when the browser doesn't support JavaScript or when the field is
    *   not found.
    *
-   * @When I hit enter( in the keyboard) on the field :field
+   * @When I hit :key( in the keyboard) on the field :field
+   * @When I hit|press the :key key in the :field field
    */
-  public function hitEnterKeyboard($field) {
+  public function pressKeyInField(string $key, string $field): void {
     if (!$this->browserSupportsJavaScript()) {
       throw new \Exception('This step requires JavaScript to run.');
     }
@@ -2334,19 +2339,7 @@ JS;
       throw new \Exception("Could not find field '$field'");
     }
 
-    $element->keyDown("\r");
-    try {
-      $element->keyUp("\r");
-    }
-    catch (StaleElementReference $e) {
-      // Depending on the implementation of the user interaction we are trying
-      // to trigger by pressing the enter key, it is posssible the action is
-      // triggered on the keydown event or on the keyup event. If it is
-      // implemented on the keydown event then it might happen that the page
-      // refreshes immediately without waiting for the key to be released.
-      // Ignore the fact that the field might already be gone when performing
-      // the keyup event.
-    }
+    $this->pressKeyInElement($key, $element);
   }
 
   /**

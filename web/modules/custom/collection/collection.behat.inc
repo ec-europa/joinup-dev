@@ -142,6 +142,12 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Navigates to the collections overview page.
    *
+   * @todo This is currently dependent on the Joinup profile being installed,
+   *   since the view providing this overview page is exported in the profile.
+   *   Remove this todo when ISAICP-5176 is fixed.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
+   *
    * @When I visit the collection overview( page)
    */
   public function visitCollectionOverviewPage(): void {
@@ -729,6 +735,24 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     if ($failures) {
       throw new \Exception("User $user_name is not member of the next collections: '" . implode("', '", $failures) . "'");
     }
+  }
+
+  /**
+   * Updates the name of a collection.
+   *
+   * @param string $collection
+   *   The name of the collection to update.
+   * @param string $name
+   *   The new anem for the collection.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the updated collection cannot be saved.
+   *
+   * @When I change the name of the :collection collection to :name
+   */
+  public function updateCollectionName(string $collection, string $name): void {
+    $entity = $this->getCollectionByName($collection);
+    $entity->setName($name)->save();
   }
 
   /**

@@ -78,6 +78,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @When I go to (the homepage of )the :solution solution
    * @When I visit (the homepage of )the :solution solution
+   * @Given I am on (the homepage of )the :solution solution
    */
   public function visitSolution($solution) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
@@ -99,6 +100,21 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution = $this->getSolutionByName($solution);
     $path = $solution->url('edit-form');
     $this->visitPath($path);
+  }
+
+  /**
+   * Navigates to the solution overview page.
+   *
+   * @todo This is currently dependent on the Joinup profile being installed,
+   *   since the view providing this overview page is exported in the profile.
+   *   Remove this todo when ISAICP-5176 is fixed.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
+   *
+   * @When I visit the solution overview( page)
+   */
+  public function visitSolutionOverviewPage() {
+    $this->visitPath('/solutions');
   }
 
   /**
@@ -734,15 +750,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     if (!$ids) {
       throw new \Exception("The '$solution_label' solution is not affiliated with the '$collection_label' collection but it should be.");
     }
-  }
-
-  /**
-   * Navigates to the solutions overview page.
-   *
-   * @When I visit the solution overview( page)
-   */
-  public function visitSolutionOverviewPage() {
-    $this->visitPath('/solutions');
   }
 
   /**
