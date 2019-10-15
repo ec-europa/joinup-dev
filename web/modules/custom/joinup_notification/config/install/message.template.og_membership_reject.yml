@@ -6,10 +6,10 @@ label: 'Group membership approval/rejection'
 description: 'Group privileged user decides on a membership request.'
 text:
   -
-    value: "<p>Joinup: Your request to join the @entity:bundle @entity:title was @membership:decision:state</p>"
+    value: "<p>Joinup: Your request to join the @entity:bundle @entity:title was rejected</p>"
     format: full_html
   -
-    value: "<p>@actor:full_name has @membership:decision:state your request to join the \"@entity:title\" @entity:bundle.</p>"
+    value: "<p>@actor:full_name has rejected your request to join the \"@entity:title\" @entity:bundle.</p>"
     format: full_html
 settings:
   'token options':
