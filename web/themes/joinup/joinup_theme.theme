@@ -1150,6 +1150,19 @@ function joinup_theme_preprocess_menu_local_task(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for menu-local-tasks.html.twig.
+ */
+function joinup_theme_preprocess_menu_local_tasks(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  // Replace standard menu by edit user link.
+  if ($route_name == 'entity.user.canonical') {
+    $variables['user_page'] = TRUE;
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for node--moderation.html.twig.
  *
  * - Removes the contextual links.

@@ -1,0 +1,7 @@
+joinup_user.edit:
+  title: 'Edit'
+  weight: -9
+  description: 'Edit user account.'
+  route_name: 'entity.user.edit_form'
+  menu_name: account
+  class: Drupal\joinup_user\Plugin\Menu\UserEditMenuLink
