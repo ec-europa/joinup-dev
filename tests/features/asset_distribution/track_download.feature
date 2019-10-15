@@ -10,12 +10,12 @@ Feature: Asset distribution editing.
       | title       | Postcard licence                     |
       | description | Send a postcard from where you live. |
       | type        | Attribution                          |
-    And solution:
-      | title | OpenBSD   |
-      | state | validated |
     And collection:
-      | title      | Berkeley Software Distributions |
-      | affiliates | OpenBSD                         |
+      | title | Berkeley Software Distributions |
+      | state | validated                       |
+    And solution:
+      | title      | OpenBSD                         |
+      | collection | Berkeley Software Distributions |
       | state      | validated                       |
     And release:
       | title          | Winter of 95 |

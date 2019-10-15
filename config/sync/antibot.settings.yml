@@ -12,6 +12,7 @@ form_ids:
   - node_newsletter_form
   - node_video_form
   - join_collection_form
+  - subscribe_to_collection_form
   - share_content_form
 show_form_ids: false
 _core:

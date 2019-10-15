@@ -13,17 +13,6 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 class PipelineSubContext extends DrupalSubContextBase {
 
   /**
-   * Navigates to the pipeline orchestrator.
-   *
-   * @When I go to the pipeline orchestrator
-   * @When I visit the pipeline orchestrator
-   * @When I am on the pipeline orchestrator
-   */
-  public function visitPipelineOrchestrator() {
-    $this->visitPath('admin/content/pipeline');
-  }
-
-  /**
    * Reset the pipeline orchestrator through the API.
    *
    * @param string $pipeline
