@@ -16,6 +16,11 @@
       }
     });
 
+    // Add wrapper to tables.
+    $('.fieldset--textarea table').each(function () {
+      $(this).wrap('<div class="fieldset__table-wrapper"></div>');
+    });
+
     // Always use the fullscreen indicator for ajax throbbers in the frontend.
     if (typeof Drupal !== 'undefined' && Drupal.Ajax) {
       // Sets the fullscreen progress indicator.
