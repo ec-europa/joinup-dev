@@ -6,13 +6,6 @@ joinup_core.rdf_entity_uri_web_converter_page:
   parent: system.admin
   weight: 1
 
-joinup_core.adms_ap_importer:
-  title: 'ADMS-AP importer'
-  route_name: pipeline.pipeline_select
-  description: 'Imports federated data.'
-  parent: system.admin
-  weight: 2
-
 joinup_core.redirects:
   title: 'Redirects'
   route_name: redirect.list

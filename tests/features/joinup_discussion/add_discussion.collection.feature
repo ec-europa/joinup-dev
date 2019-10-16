@@ -67,13 +67,19 @@ Feature: Discussions added to collections
     When I fill in the following:
       | Title            | An amazing discussion                      |
       | Content          | This is going to be an amazing discussion. |
-      | File description | The content of this file is mind blowing.  |
+      | File description | The content of this file is mind blowing   |
     And I press "Publish"
     Then I should see the heading "An amazing discussion"
+
     # Verify that the author is visible on the page.
     And I should see the text "Kesha Pontecorvo"
     And I should see the success message "Discussion An amazing discussion has been created."
     And the "The World of the Waves" collection has a discussion titled "An amazing discussion"
+
+    # Attachments should be visible.
+    And I should see the text "Attachments"
+    And I should see the link "The content of this file is mind blowing"
+    And I should see the text "176 bytes"
 
     # Regression test: the workflow state should not be shown to the user.
     But I should not see the text "State" in the "Content" region
@@ -106,3 +112,15 @@ Feature: Discussions added to collections
     And the page should not be cached
     When I reload the page
     Then the page should be cached
+
+    # Check that an anonymous user can see the information.
+    Given I am an anonymous user
+    When I go to the "An amazing discussion" discussion
+    Then I should see the following headings:
+      | The World of the Waves |
+      | An amazing discussion  |
+    And I should see the following lines of text:
+      | This is going to be an amazing discussion. |
+      | Attachments                                |
+      | 176 bytes                                  |
+    And I should see the link "The content of this file is mind blowing"

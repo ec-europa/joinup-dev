@@ -98,13 +98,11 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events[NotificationEvents::COMMUNITY_CONTENT_CRUD] = [
-      ['onCreate'],
-      ['onUpdate'],
-      ['onDelete'],
+    return [
+      NotificationEvents::COMMUNITY_CONTENT_CREATE => ['onCreate'],
+      NotificationEvents::COMMUNITY_CONTENT_UPDATE => ['onUpdate'],
+      NotificationEvents::COMMUNITY_CONTENT_DELETE => ['onDelete'],
     ];
-
-    return $events;
   }
 
   /**
@@ -113,7 +111,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
 
-    $this->operation = $event->getOperation();
     $state_item = $this->workflowHelper->getEntityStateFieldDefinition($this->entity->getEntityTypeId(), $this->entity->bundle());
     if (!empty($state_item)) {
       $this->stateField = $state_item->getName();
@@ -153,10 +150,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnCreate() {
-    if ($this->operation !== 'create') {
-      return FALSE;
-    }
-
     if (!$this->appliesOnCommunityContent()) {
       return FALSE;
     }
@@ -201,10 +194,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnUpdate() {
-    if ($this->operation !== 'update') {
-      return FALSE;
-    }
-
     if (!$this->appliesOnCommunityContent()) {
       return FALSE;
     }
@@ -257,10 +246,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnDelete() {
-    if ($this->operation !== 'delete') {
-      return FALSE;
-    }
-
     if (!$this->appliesOnCommunityContent()) {
       return FALSE;
     }

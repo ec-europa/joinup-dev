@@ -13,6 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -37,6 +38,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use EntityReferenceTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use NodeTrait;
   use OgMenuTrait;
   use OgTrait;
@@ -608,14 +610,16 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Checks that a user has the available state options for the collection.
    *
    * The method also checks that these options are the only options available.
+   * This method will log in as each user in sequence, so take care to only use
+   * it when the currently logged in user can be discarded.
    *
    * Table format:
-   * | collection   | user | options          |
-   * | Collection A | John | Status1          |
-   * | Collection B | Jack | Status1, Status2 |
+   * | collection   | user | buttons         |
+   * | Collection A | John | Save as draft   |
+   * | Collection B | Jack | Update, Publish |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
-   *   The table with the triplets collection-user-options.
+   *   The table with the triplets collection-user-buttons.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
@@ -624,56 +628,24 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * following state buttons should be available for the user on the
    * collection'.
    *
-   * @Given for the following collection, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following collection, the corresponding user should have the corresponding (available )state buttons:
    */
-  public function verifyWorkflowTransitions(TableNode $check_table): void {
+  public function verifyStateButtons(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
-      // Load entity.
-      $collection = $this->getCollectionByName($values['collection']);
+      $username = $values['user'];
+      $user = $this->userManager->getUser($username);
 
-      // Load user.
-      $user = user_load_by_name($values['user']);
-      if (empty($user)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
+      // Check if we are already logged in as the user to test.
+      $current_username = $this->userManager->getCurrentUser()->name ?? NULL;
+      if ($username !== $current_username) {
+        $this->authenticationManager->logIn($user);
       }
 
-      // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(',', $values['states']);
-      $states = array_map('trim', $states);
-
-      $this->assertAvailableTransitions($collection, $states, $user);
+      // Go to the edit form and check that the expected buttons are visible.
+      $this->visitEditCollection($values['collection']);
+      $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
+      $this->assertSubmitButtonsVisible($buttons);
     }
-  }
-
-  /**
-   * Applies a transition to a collection.
-   *
-   * @param string $username
-   *   The username applying the transition.
-   * @param string $entity_name
-   *   The title of the collection.
-   * @param string $to_state
-   *   The state that the collection transits to.
-   *
-   * @throws \Exception
-   *    An exception is thrown if the user is not found or the transition is not
-   *    allowed for this user.
-   *
-   * @Given the user :username changes the state of the :entity_name collection to :to_state
-   */
-  public function applyCollectionWorkflowTransition(string $username, string $entity_name, string $to_state): void {
-    $user = user_load_by_name($username);
-    if (empty($user)) {
-      throw new \Exception("User {$username} was not found.");
-    }
-    $collection = $this->getCollectionByName($entity_name);
-    $available_states = $this->getAvailableStates($collection, $user);
-    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
-      throw new \Exception("The given user does not have permission to apply the specific transition.");
-    }
-    $transition = $collection->get('field_ar_state')->first()->getWorkflow()->getTransition($transition_id);
-    $collection->get('field_ar_state')->first()->applyTransition($transition);
-    $collection->save();
   }
 
   /**
