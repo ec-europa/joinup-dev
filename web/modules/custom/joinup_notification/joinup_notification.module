@@ -36,7 +36,7 @@ function joinup_notification_node_insert(EntityInterface $entity) {
  * @see: https://www.drupal.org/node/2833084
  */
 function joinup_notification_node_presave(EntityInterface $entity) {
-  if ($entity->isNew() || !in_array($entity->bundle(), CommunityContentHelper::getBundles())) {
+  if ($entity->isNew() || !in_array($entity->bundle(), CommunityContentHelper::BUNDLES)) {
     return;
   }
   $entity->field_state_initial_value = $entity->get('field_state')->first()->getInitialValue();
