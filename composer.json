@@ -13,7 +13,7 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
         "drupal/cached_computed_field": "^1.0-beta4",
-        "drupal/changed_fields": "^2.0",
+        "drupal/changed_fields": "^3.0",
         "drupal/config_exclude": "dev-1.x",
         "drupal/config_ignore": "dev-2.x",
         "drupal/config_provider": "~1.0",
@@ -268,7 +268,8 @@
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
             },
             "drush/drush": {
-                "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
+                "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch",
+                "Use the UpdateKernel for config:import @see https://github.com/drush-ops/drush/pull/4217": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4217.patch"
             },
             "openeuropa/oe_webtools": {
                 "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"

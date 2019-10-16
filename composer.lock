@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "257d356d630321099956c14451a44f85",
+    "content-hash": "b492ade70cd459341040b80bd087245e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.20",
+            "version": "3.112.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c84de8adf2b014124b0058013805caf2ae384137"
+                "reference": "bf9370f1b2833f2db7d1d051a79d71e71c5e6fb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c84de8adf2b014124b0058013805caf2ae384137",
-                "reference": "c84de8adf2b014124b0058013805caf2ae384137",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/bf9370f1b2833f2db7d1d051a79d71e71c5e6fb0",
+                "reference": "bf9370f1b2833f2db7d1d051a79d71e71c5e6fb0",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-10-11T18:14:55+00:00"
+            "time": "2019-10-15T18:12:28+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -2551,17 +2551,17 @@
         },
         {
             "name": "drupal/changed_fields",
-            "version": "2.0.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/changed_fields.git",
-                "reference": "8.x-2.0"
+                "reference": "8.x-3.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/changed_fields-8.x-2.0.zip",
-                "reference": "8.x-2.0",
-                "shasum": "bc8c910698ca0cc6938a49716fdac7893790ea91"
+                "url": "https://ftp.drupal.org/files/projects/changed_fields-8.x-3.2.zip",
+                "reference": "8.x-3.2",
+                "shasum": "d6bf6da4faa2d05e0da5881927ed2680d11dafaa"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2569,11 +2569,11 @@
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0",
-                    "datestamp": "1501324743",
+                    "version": "8.x-3.2",
+                    "datestamp": "1564724585",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2590,7 +2590,7 @@
                     "homepage": "https://www.drupal.org/user/3158841"
                 }
             ],
-            "description": "Allows developers to react on changed node fields",
+            "description": "Allows developers to react on changed entity fields.",
             "homepage": "https://www.drupal.org/project/changed_fields",
             "support": {
                 "source": "https://git.drupalcode.org/project/changed_fields"
@@ -6828,7 +6828,8 @@
                     "dev-master": "9.x-dev"
                 },
                 "patches_applied": {
-                    "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
+                    "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch",
+                    "Use the UpdateKernel for config:import @see https://github.com/drush-ops/drush/pull/4217": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4217.patch"
                 }
             },
             "autoload": {
@@ -7643,23 +7644,23 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.8",
+            "version": "5.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "dcb6e1006bb5fd1e392b4daa68932880f37550d4"
+                "reference": "44c6787311242a979fa15c704327c20e7221a0e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/dcb6e1006bb5fd1e392b4daa68932880f37550d4",
-                "reference": "dcb6e1006bb5fd1e392b4daa68932880f37550d4",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/44c6787311242a979fa15c704327c20e7221a0e4",
+                "reference": "44c6787311242a979fa15c704327c20e7221a0e4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.2.20",
+                "friendsofphp/php-cs-fixer": "~2.2.20||~2.15.1",
                 "json-schema/json-schema-test-suite": "1.2.0",
                 "phpunit/phpunit": "^4.8.35"
             },
@@ -7705,7 +7706,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2019-01-14T23:55:14+00:00"
+            "time": "2019-09-25T14:49:45+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",

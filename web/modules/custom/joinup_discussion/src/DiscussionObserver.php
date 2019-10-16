@@ -36,13 +36,15 @@ class DiscussionObserver implements ObserverInterface {
    */
   public function getInfo(): array {
     return [
-      'discussion' => [
-        'title',
-        'body',
-        'field_policy_domain',
-        'field_keywords',
-        'field_attachment',
-        'field_state',
+      'node' => [
+        'discussion' => [
+          'title',
+          'body',
+          'field_policy_domain',
+          'field_keywords',
+          'field_attachment',
+          'field_state',
+        ],
       ],
     ];
   }
@@ -50,10 +52,11 @@ class DiscussionObserver implements ObserverInterface {
   /**
    * {@inheritdoc}
    */
-  public function update(\SplSubject $node_subject): void {
-    /** @var \Drupal\changed_fields\NodeSubject $node_subject */
-    $discussion = $node_subject->getNode();
-    $changed_fields = $node_subject->getChangedFields();
+  public function update(\SplSubject $entity_subject): void {
+    /** @var \Drupal\changed_fields\EntitySubject $entity_subject */
+    /** @var \Drupal\node\NodeInterface $discussion */
+    $discussion = $entity_subject->getEntity();
+    $changed_fields = $entity_subject->getChangedFields();
     // Dispatch the update event only if there are changes of relevant fields
     // and the discussion is in the 'validated' state.
     if ($changed_fields && $discussion->get('field_state')->value === 'validated') {
