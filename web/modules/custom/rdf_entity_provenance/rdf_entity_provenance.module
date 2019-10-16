@@ -36,6 +36,12 @@ function rdf_entity_provenance_entity_bundle_field_info(EntityTypeInterface $ent
     ->setLabel(t('Provenance - Source'))
     ->setDescription(t('The source that this entity was derived from.'));
 
+  // A hash that will be used to compare versions when importing the entity
+  // again.
+  $fields['provenance_hash'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Provenance - Hash'))
+    ->setDescription(t('A computed hash representing the incoming values related to the entity.'));
+
   // A link towards the entity that the provenance record stores metadata about.
   // We are keeping a record for each entity available in a repository, whether
   // we import it or not - in order to keep a track of the federation status.

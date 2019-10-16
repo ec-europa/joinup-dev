@@ -16,7 +16,7 @@
         "drupal/cas": "dev-1.x",
         "drupal/cas_account_link": "dev-1.x",
         "drupal/cas_attributes": "dev-1.x",
-        "drupal/changed_fields": "^2.0",
+        "drupal/changed_fields": "^3.0",
         "drupal/config_exclude": "dev-1.x",
         "drupal/config_ignore": "dev-2.x",
         "drupal/config_provider": "~1.0",

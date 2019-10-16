@@ -329,7 +329,7 @@ class PipelineOrchestrator implements PipelineOrchestratorInterface {
     }
 
     // Update the state object with the new step ID and instruct the caller to
-    // save the any changes to the state.
+    // save any changes to the state.
     $state->setStepId($this->pipeline->key());
     return TRUE;
   }

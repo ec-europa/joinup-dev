@@ -278,6 +278,7 @@ class RdfEntityProvenanceSubContext extends DrupalSubContextBase {
       'enabled' => 'provenance_enabled',
       'author' => 'uid',
       'started' => 'provenance_started',
+      'hash' => 'provenance_hash',
     ];
   }
 

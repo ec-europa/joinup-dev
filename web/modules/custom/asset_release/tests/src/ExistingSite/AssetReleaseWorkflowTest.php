@@ -158,7 +158,7 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
     foreach ($this->workflowTransitionsProvider() as $entity_state => $workflow_data) {
       $parent = $this->createDefaultParent('validated');
 
-      foreach ($workflow_data as $user_var => $transitions) {
+      foreach ($workflow_data as $user_var => $expected_target_states) {
         $content = Rdf::create([
           'rid' => 'asset_release',
           'label' => $this->randomMachineName(),
@@ -168,14 +168,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         $content->save();
 
         // Override the user to be checked for the allowed transitions.
-        $actual_transitions = $this->workflowHelper->getAvailableTransitions($content, $this->$user_var);
-        $actual_transitions = array_map(function ($transition) {
-          return $transition->getId();
-        }, $actual_transitions);
-        sort($actual_transitions);
-        sort($transitions);
+        $actual_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->$user_var);
+        sort($actual_target_states);
+        sort($expected_target_states);
 
-        $this->assertEquals($transitions, $actual_transitions, $this->t('Allowed transitions match with settings.'));
+        $this->assertEquals($expected_target_states, $actual_target_states, $this->t('Allowed transitions match with settings.'));
       }
     }
   }
@@ -420,11 +417,11 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         'userAuthenticated' => [],
         'userModerator' => [
           'draft',
-          'validate',
+          'validated',
         ],
         'userOgFacilitator' => [
           'draft',
-          'validate',
+          'validated',
         ],
         'userOgAdministrator' => [],
       ],
@@ -432,23 +429,23 @@ class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
         'userAuthenticated' => [],
         'userModerator' => [
           'draft',
-          'update_published',
-          'request_changes',
+          'validated',
+          'needs_update',
         ],
         'userOgFacilitator' => [
           'draft',
-          'update_published',
+          'validated',
         ],
         'userOgAdministrator' => [],
       ],
       'needs_update' => [
         'userAuthenticated' => [],
         'userModerator' => [
-          'update_changes',
-          'validate',
+          'needs_update',
+          'validated',
         ],
         'userOgFacilitator' => [
-          'update_changes',
+          'needs_update',
         ],
         'userOgAdministrator' => [],
       ],
