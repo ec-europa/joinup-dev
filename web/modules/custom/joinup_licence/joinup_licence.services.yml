@@ -1,0 +1,6 @@
+services:
+  path_processor.spdx_ids:
+    class: Drupal\joinup_licence\PathProcessor\SpdxIdsPathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 400 }
+      - { name: path_processor_outbound, priority: 400 }
