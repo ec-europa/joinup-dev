@@ -145,7 +145,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
     $expected_status = $status === 'enabled';
     $card = $this->getCollectionSubscriptionCardByHeading($collection);
     $button = $this->findNamedElementInRegion($button, 'button', $card);
-    $disabled = !($button->getAttribute('disabled') === 'disabled');
+    $disabled = !$button->hasAttribute('disabled');
     Assert::assertEquals($expected_status, $disabled);
   }
 

@@ -18,6 +18,7 @@ use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Provides a Joinup subscription form.
@@ -173,7 +174,9 @@ class MySubscriptionsForm extends FormBase {
         '#extra_suggestion' => 'container__collection_subscription',
       ];
 
-      foreach (CommunityContentHelper::BUNDLES as $bundle_id) {
+      $subscription_status = [];
+
+      foreach (CommunityContentHelper::BUNDLES as $key => $bundle_id) {
         $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
         $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
@@ -190,6 +193,9 @@ class MySubscriptionsForm extends FormBase {
           // to restore a half submitted form when the user does a soft reload.
           '#attributes' => ['autocomplete' => 'off'],
         ];
+
+        // Store status of checkboxes.
+        $subscription_status[$key] = $value;
       }
 
       $form['collections'][$collection->id()]['bundles']['submit'] = [
@@ -211,6 +217,7 @@ class MySubscriptionsForm extends FormBase {
           // Make sure to turn autocomplete off so that the browser doesn't try
           // to restore a half submitted form when the user does a soft reload.
           'autocomplete' => 'off',
+          'data-drupal-subscriptions' => Json::encode($subscription_status),
         ],
       ];
     }
@@ -310,6 +317,14 @@ class MySubscriptionsForm extends FormBase {
   public function reloadCollection(array &$form, FormStateInterface $form_state): array {
     $submitted_collection_id = $this->getTriggeringElementCollectionId($form_state);
     $form['collections'][$submitted_collection_id]['bundles']['submit']['#value'] = $this->t('Saved!');
+
+    // Change status of checkboxes.
+    $subscription_status = [];
+    foreach (CommunityContentHelper::BUNDLES as $key => $bundle_id) {
+      $subscription_status[$key] = $form['collections'][$submitted_collection_id]['bundles'][$bundle_id]['#checked'];
+    }
+    $form['collections'][$submitted_collection_id]['bundles']['submit']['#attributes']['data-drupal-subscriptions'] = Json::encode($subscription_status);
+
     return $form['collections'][$submitted_collection_id];
   }
 
