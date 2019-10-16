@@ -52,6 +52,9 @@
 .fieldset__read-more
   display: inline
 
+.fieldset__table-wrapper
+  overflow-x: auto
+
 .fieldset--abstract-wrapper
   margin-bottom: 16px
   > p
@@ -120,9 +123,11 @@
       float: right
       margin-left: 20px
   table
-    table-layout: fixed
+    +breakpoint(md)
+      table-layout: fixed
     td
       vertical-align: top
+      min-width: 100px
 
 // Dependiencies
 // --------------------------------------------------
