@@ -1,10 +1,10 @@
-@api @javascript @eupl
+@api @eupl
 Feature:
   As the owner of the EUPL community
   in order to make it easier for users to find appropriate licences
   I need to be able to present them in a nice searchable way.
 
-  Scenario: Present and search the licences.
+  Background:
     Given SPDX licences:
       | uri                       | title            | ID       |
       | http://joinup.eu/spdx/foo | SPDX licence foo | SPDX_FOO |
@@ -13,6 +13,11 @@ Feature:
       | uri                             | title          | description                             | type | spdx licence     | legal type                                                            |
       | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    |      | SPDX licence foo | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
       | http://joinup.eu/licence/bar    | Bar Licence    | Licence details for the bar licence.    |      | SPDX licence bar | Distribute                                                            |
+
+  @javascript
+  Scenario: Present and search the licences.
+    Given licences:
+      | uri                             | title          | description                             | type | spdx licence     | legal type                                                            |
       | http://joinup.eu/licence/random | Random Licence | A licence that should not be available. |      |                  | Distribute                                                            |
 
     When I am not logged in
@@ -66,3 +71,154 @@ Feature:
     Then I should see the text "2 licences found"
     And I should see the text "Foo Licence"
     And I should see the text "Bar Licence"
+
+  Scenario: Test the licence comparer.
+
+    Given SPDX licences:
+      | uri                         | title              | ID         |
+      | http://joinup.eu/spdx/baz   | SPDX licence baz   | SPDX_BAZ   |
+      | http://joinup.eu/spdx/qux   | SPDX licence qux   | SPDX_QUX   |
+      | http://joinup.eu/spdx/quux  | SPDX licence quux  | SPDX_QUUX  |
+      | http://joinup.eu/spdx/waldo | SPDX licence waldo | SPDX_WALDO |
+
+    # Test the page when the comparision list is missed.
+    When I am on "/licence/compare"
+    Then I should get a 404 HTTP response
+
+    # Test the page when there's only one licence.
+    When I am on "/licence/compare/SPDX_FOO"
+    Then I should get a 404 HTTP response
+
+    # Test the page when there are too many licences.
+    When I am on "/licence/compare/SPDX_FOO/SPDX_BAR/SPDX_BAZ/SPDX_QUX/SPDX_QUUX/SPDX_WALDO"
+    Then I should get a 404 HTTP response
+
+    # Test the page when there are invalid SPDX IDs licences.
+    When I am on "/licence/compare/ARBITRARY/SPDX/LICENCES"
+    Then I should get a 404 HTTP response
+
+    # Test the page with SPDX IDs without a corresponding Joinup licence.
+    When I am on "/licence/compare/SPDX_FOO/SPDX_BAR/SPDX_BAZ/SPDX_QUX/SPDX_QUUX"
+    Then I should get a 404 HTTP response
+
+    When I visit "/licence/compare/SPDX_FOO/SPDX_BAR"
+    Then I should see the "licence comparer" table
+    And the "licence comparer" table should be:
+      | Can                | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Use/reproduce      | x          |          |  |  |  |
+      | Distribute         |            | x        |  |  |  |
+      | Modify/merge       |            |          |  |  |  |
+      | Sublicense         |            |          |  |  |  |
+      | Commercial use     |            |          |  |  |  |
+      | Use patents        |            |          |  |  |  |
+      | Place warranty     |            |          |  |  |  |
+      | Must               | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Incl. Copyright    |            |          |  |  |  |
+      | Royalty free       | x          |          |  |  |  |
+      | State changes      |            |          |  |  |  |
+      | Disclose source    |            |          |  |  |  |
+      | Copyleft/Share a.  |            |          |  |  |  |
+      | Lesser copyleft    |            |          |  |  |  |
+      | SaaS/network       |            |          |  |  |  |
+      | Include licence    |            |          |  |  |  |
+      | Rename modifs.     |            |          |  |  |  |
+      | Cannot             | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Hold liable        |            |          |  |  |  |
+      | Use trademark      |            |          |  |  |  |
+      | Commerce           |            |          |  |  |  |
+      | Modify             | x          |          |  |  |  |
+      | Ethical clauses    |            |          |  |  |  |
+      | Pub sector only    |            |          |  |  |  |
+      | Sublicence         |            |          |  |  |  |
+      | Compatible         | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | None N/A           |            |          |  |  |  |
+      | Permissive         |            |          |  |  |  |
+      | GPL                |            |          |  |  |  |
+      | Other copyleft     |            |          |  |  |  |
+      | Linking freedom    |            |          |  |  |  |
+      | Multilingual       |            |          |  |  |  |
+      | For data           |            |          |  |  |  |
+      | For software       |            |          |  |  |  |
+      | Law                | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | EU/MS law          |            |          |  |  |  |
+      | US law             |            |          |  |  |  |
+      | Licensor's law     |            |          |  |  |  |
+      | Other law          |            |          |  |  |  |
+      | Not fixed/local    |            |          |  |  |  |
+      | Venue fixed        |            |          |  |  |  |
+      | Support            | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Strong Community   | x          |          |  |  |  |
+      | Governments/EU     | x          |          |  |  |  |
+      | OSI approved       |            |          |  |  |  |
+      | FSF Free/Libre     |            |          |  |  |  |
+    And the page should not be cached
+
+    When I reload the page
+    Then the page should be cached
+
+    Given I am logged in as a "licence_manager"
+    And I am on the homepage
+    When I click "Dashboard"
+    And I click "Licences overview"
+    And I click "Foo Licence"
+    And I click "Edit"
+
+    # Test cache tags invalidation.
+    When I fill in "Title" with "Foo Licence changed"
+    And I select "Attribution" from "Type"
+    And I additionally select "Distribute" from "Licence legal type"
+    When I press "Save"
+    Then I should see the heading "Foo Licence changed"
+    Given I am an anonymous user
+    When I visit "/licence/compare/SPDX_FOO/SPDX_BAR"
+    Then the page should not be cached
+
+    # Test that SPDX_FOO "Can Distribute".
+    And the "licence comparer" table should be:
+      | Can                | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Use/reproduce      | x          |          |  |  |  |
+      | Distribute         | x          | x        |  |  |  |
+      | Modify/merge       |            |          |  |  |  |
+      | Sublicense         |            |          |  |  |  |
+      | Commercial use     |            |          |  |  |  |
+      | Use patents        |            |          |  |  |  |
+      | Place warranty     |            |          |  |  |  |
+      | Must               | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Incl. Copyright    |            |          |  |  |  |
+      | Royalty free       | x          |          |  |  |  |
+      | State changes      |            |          |  |  |  |
+      | Disclose source    |            |          |  |  |  |
+      | Copyleft/Share a.  |            |          |  |  |  |
+      | Lesser copyleft    |            |          |  |  |  |
+      | SaaS/network       |            |          |  |  |  |
+      | Include licence    |            |          |  |  |  |
+      | Rename modifs.     |            |          |  |  |  |
+      | Cannot             | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Hold liable        |            |          |  |  |  |
+      | Use trademark      |            |          |  |  |  |
+      | Commerce           |            |          |  |  |  |
+      | Modify             | x          |          |  |  |  |
+      | Ethical clauses    |            |          |  |  |  |
+      | Pub sector only    |            |          |  |  |  |
+      | Sublicence         |            |          |  |  |  |
+      | Compatible         | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | None N/A           |            |          |  |  |  |
+      | Permissive         |            |          |  |  |  |
+      | GPL                |            |          |  |  |  |
+      | Other copyleft     |            |          |  |  |  |
+      | Linking freedom    |            |          |  |  |  |
+      | Multilingual       |            |          |  |  |  |
+      | For data           |            |          |  |  |  |
+      | For software       |            |          |  |  |  |
+      | Law                | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | EU/MS law          |            |          |  |  |  |
+      | US law             |            |          |  |  |  |
+      | Licensor's law     |            |          |  |  |  |
+      | Other law          |            |          |  |  |  |
+      | Not fixed/local    |            |          |  |  |  |
+      | Venue fixed        |            |          |  |  |  |
+      | Support            | SPDX_FOO   | SPDX_BAR |  |  |  |
+      | Strong Community   | x          |          |  |  |  |
+      | Governments/EU     | x          |          |  |  |  |
+      | OSI approved       |            |          |  |  |  |
+      | FSF Free/Libre     |            |          |  |  |  |
