@@ -20,14 +20,13 @@ Feature: My subscriptions
     When I go to the public profile of "Auric Goldfinger"
     Then I should not see the link "Subscriptions"
 
-    # Authenticated users can manage their own subscriptions.
+    # Authenticated users can not access their own subscription settings through
+    # the entity actions, only through "My subscriptions".
     Given I am logged in as "Auric Goldfinger"
     When I go to the subscription settings of "Auric Goldfinger"
-    Then I should see the heading "Subscription settings"
+    Then I should get an access denied error
     When I go to the public profile of "Auric Goldfinger"
-    Then I should see the link "Subscriptions" in the "Entity actions" region
-    When I click "Subscriptions" in the "Entity actions" region
-    Then I should see the heading "Subscription settings"
+    Then I should not see the link "Subscriptions" in the "Entity actions" region
 
     # Moderators can manage subscriptions of any user.
     Given I am logged in as a moderator

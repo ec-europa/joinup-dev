@@ -7,7 +7,6 @@ namespace Drupal\joinup_subscription\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -58,27 +57,17 @@ class MySubscriptionsController extends ControllerBase {
   }
 
   /**
-   * Access control for the page that shows the My Subscriptions form.
+   * Access control for the page that shows the Subscription Settings form.
    *
-   * The user is checked for both global permissions and permissions to edit
-   * their own subscriptions.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $user
-   *   The user object from the route.
+   * This is only accessible by moderators since we consider this information to
+   * be private.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   An access result object carrying the result of the check.
    */
-  public function access(EntityInterface $user): AccessResultInterface {
+  public function access(): AccessResultInterface {
     // Users that can administer all users have access.
-    if ($this->currentUser->hasPermission('administer users')) {
-      return AccessResult::allowed();
-    }
-    // The logged in user can manage their own subscriptions.
-    elseif (!$this->currentUser->isAnonymous() && $this->currentUser->id() == $user->id()) {
-      return AccessResult::allowed();
-    }
-    return AccessResult::forbidden();
+    return AccessResult::allowedIfHasPermission($this->currentUser(), 'administer users');
   }
 
 }
