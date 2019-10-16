@@ -157,11 +157,21 @@ trait MaterialDesignTrait {
       }
 
       $last_li_xpath = $wrapper->find('xpath', "//ul/li[last()]")->getXpath();
+      $driver = $this->getSession()->getDriver();
+      if ($driver->isVisible($last_li_xpath)) {
+        // In some cases, depending on the environment and behat settings, the
+        // browser window size might vary so some elements that their visibility
+        // depends on the width might behave differently.
+        // In these cases, the press of the button would change the already
+        // proper visibility state of the menu items. Prevent this behavior by
+        // returning early if the menu items are already visible.
+        return;
+      }
+
       $button->click();
+      $end = microtime(TRUE) + 5;
 
       // Wait for the menu opening animation to end before continuing.
-      $end = microtime(TRUE) + 5;
-      $driver = $this->getSession()->getDriver();
       do {
         usleep(100000);
         // The plus button opening animation runs from the top right to the
