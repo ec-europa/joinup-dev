@@ -8,10 +8,8 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\flag\Entity\Flag;
-use Drupal\flag\Entity\Flagging;
 use Drupal\flag\FlagServiceInterface;
 use Drupal\joinup_subscription\Exception\UserAlreadySubscribedException;
-use Drupal\user\Entity\User;
 
 /**
  * Provides a service to handle subscriptions to discussions.
@@ -53,7 +51,8 @@ class JoinupDiscussionSubscription implements JoinupDiscussionSubscriptionInterf
       throw new \InvalidArgumentException("Flag with ID '$flag_id' doesn't exist");
     }
 
-    $flaggings = $this->entityTypeManager->getStorage('flagging')->getQuery()
+    $flagging_storage = $this->entityTypeManager->getStorage('flagging');
+    $flaggings = $flagging_storage->getQuery()
       ->condition('flag_id', $flag_id)
       ->condition('entity_type', $entity->getEntityTypeId())
       ->condition('entity_id', $entity->id())
@@ -64,11 +63,11 @@ class JoinupDiscussionSubscription implements JoinupDiscussionSubscriptionInterf
     if ($flaggings) {
       $uids = [];
       /** @var \Drupal\flag\FlaggingInterface $flagging */
-      foreach (Flagging::loadMultiple($flaggings) as $flagging) {
+      foreach ($flagging_storage->loadMultiple($flaggings) as $flagging) {
         $uids[] = $flagging->getOwnerId();
       }
       if ($uids) {
-        $subscribers = User::loadMultiple($uids);
+        $subscribers = $this->entityTypeManager->getStorage('user')->loadMultiple($uids);
 
         // Flaggings may be orphaned if the user has been deleted. Filter out
         // any non-existing users.
