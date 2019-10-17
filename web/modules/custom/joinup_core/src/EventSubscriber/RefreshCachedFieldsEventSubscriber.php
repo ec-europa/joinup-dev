@@ -108,7 +108,20 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       return;
     }
 
+    $errors = [];
     foreach ($items as $index => $expired_item) {
+      $response_item = $response[$index];
+      // If an error occurs, the response for the expired item is an object and
+      // not an array of objects.
+      if (is_object($response_item) && isset($response_item->result) && $response_item->result === 'error') {
+        $arguments = [
+          ':entity_id' => $expired_item->getEntityId(),
+          '@error' => $response_item->message,
+        ];
+        $errors[] = $this->t('Meta entity :entity_id, error: @error', $arguments);
+        continue;
+      }
+
       $bundle = $this->getEntity($expired_item)->bundle();
       $type = $this->getType($bundle);
       $response_item = $response[$index];
@@ -120,6 +133,10 @@ class RefreshCachedFieldsEventSubscriber extends RefreshExpiredFieldsSubscriberB
       }
 
       $this->updateFieldValue($expired_item, $count);
+    }
+
+    if (!empty($errors)) {
+      $this->loggerFactory->get('joinup_stats')->error(implode("\n", $errors));
     }
   }
 
