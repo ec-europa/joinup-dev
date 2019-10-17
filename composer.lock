@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6153a20ad7a9586f29c75c35e434375a",
+    "content-hash": "23679744000252cc184c4d50d5df444b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.20",
+            "version": "3.112.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c84de8adf2b014124b0058013805caf2ae384137"
+                "reference": "218d29c4729eb40a668242a53cbfde905fd94792"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c84de8adf2b014124b0058013805caf2ae384137",
-                "reference": "c84de8adf2b014124b0058013805caf2ae384137",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/218d29c4729eb40a668242a53cbfde905fd94792",
+                "reference": "218d29c4729eb40a668242a53cbfde905fd94792",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-10-11T18:14:55+00:00"
+            "time": "2019-10-14T18:08:52+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -6213,7 +6213,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta3",
-                    "datestamp": "1542122580",
+                    "datestamp": "1477868939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6287,7 +6287,7 @@
             "description": "Provides code-driven workflow functionality.",
             "homepage": "https://www.drupal.org/project/state_machine",
             "support": {
-                "source": "https://git.drupalcode.org/project/state_machine"
+                "source": "http://cgit.drupalcode.org/state_machine"
             }
         },
         {
@@ -6831,7 +6831,8 @@
                     "dev-master": "9.x-dev"
                 },
                 "patches_applied": {
-                    "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
+                    "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch",
+                    "Use the UpdateKernel for config:import @see https://github.com/drush-ops/drush/pull/4217": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4217.patch"
                 }
             },
             "autoload": {
