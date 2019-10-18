@@ -63,22 +63,22 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
+   * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $joinupMessageDelivery
    *   The Joinup message delivery service.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
+   *   The logger channel factory.
    * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $subscribe_service
    *   The Joinup subscribe service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
-   *   The logger channel factory.
    */
   //public function __construct(JoinupDiscussionSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger_factory) {
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupMessageDeliveryInterface $joinupMessageDelivery, LoggerChannelFactoryInterface $logger) {
     $this->entityTypeManager = $entityTypeManager;
-    $this->messageDelivery = $message_delivery;
+    $this->messageDelivery = $joinupMessageDelivery;
+    $this->loggerFactory = $logger;
     //$this->subscribeService = $subscribe_service;
     //$this->currentUser = $current_user;
-    //$this->loggerFactory = $logger_factory;
   }
 
   /**
@@ -164,72 +164,6 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
   }
 
   /**
-   * Returns the message arguments.
-   *
-   * @param \Drupal\node\NodeInterface $discussion
-   *   The discussion for which to return the arguments.
-   *
-   * @return array
-   *   An associative array of message arguments, keyed by argument ID.
-   *
-   * @throws \Exception
-   *   Thrown if one of the arguments could not be generated.
-   */
-  protected function getArguments(NodeInterface $discussion): array {
-    $arguments = [];
-
-    $arguments['@entity:title'] = $discussion->label();
-    try {
-      $entity_url = $discussion->toUrl('canonical', ['absolute' => TRUE])->toString();
-    }
-    catch (EntityMalformedException | UndefinedLinkTemplateException $e) {
-      // Retrieval of the URL might fail if the link template is not defined, or
-      // if the entity doesn't have an ID.
-      throw new \Exception('Could not retrieve URL for discussion.', NULL, $e);
-    }
-    $arguments['@entity:url'] = $entity_url;
-
-    $actor = $this->getCurrentUser();
-    $actor_first_name = !empty($actor->get('field_user_first_name')->value) ? $actor->get('field_user_first_name')->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->value) ? $actor->get('field_user_family_name')->value : '';
-
-    if ($actor->hasRole('moderator')) {
-      $arguments['@actor:full_name'] = 'The Joinup Support Team';
-    }
-    else {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ? $actor_first_name . ' ' . $actor_family_name : $actor->get('full_name')->value;
-    }
-
-    $group = $this->getDiscussionGroup($discussion);
-    if ($group) {
-      $arguments += MessageArgumentGenerator::getGroupArguments($group);
-    }
-
-    return $arguments;
-  }
-
-  /**
-   * Returns the fully loaded User entity for the current user.
-   *
-   * @return \Drupal\user\UserInterface
-   *   The current user.
-   */
-  protected function getCurrentUser(): UserInterface {
-    try {
-      /** @var \Drupal\user\UserInterface $user */
-      $user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-      return $user;
-    }
-    catch (InvalidPluginDefinitionException $e) {
-      // The storage for the 'user' entity type should exist. If it didn't
-      // Drupal would be completely broken. This code should never run but we
-      // are returning an anonymous user entity for completeness and to satisfy
-      // the inspections of the IDE.
-      return new User([], 'user');
-    }
-  }
-
-  /**
    * Sends the notification to the recipients.
    *
    * @param \Drupal\node\NodeInterface $community_content
@@ -250,7 +184,7 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
           'entity_type' => $community_content->getEntityTypeId(),
           'entity_id' => $community_content->id(),
         ];
-        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, $this->getArguments($community_content), $subscriber, $notifier_options) && $success;
+        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, [], $subscriber, $notifier_options) && $success;
       }
       return $success;
     }
