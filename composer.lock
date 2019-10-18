@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72fe8fdbb81c5d9063f7dafb0dd69755",
+    "content-hash": "ac3da3192d6c5c879fdb99b80c972f5d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.22",
+            "version": "3.112.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "bf9370f1b2833f2db7d1d051a79d71e71c5e6fb0"
+                "reference": "6997f23a47714d084cd2d40b6348b99e10439d64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/bf9370f1b2833f2db7d1d051a79d71e71c5e6fb0",
-                "reference": "bf9370f1b2833f2db7d1d051a79d71e71c5e6fb0",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6997f23a47714d084cd2d40b6348b99e10439d64",
+                "reference": "6997f23a47714d084cd2d40b6348b99e10439d64",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-10-15T18:12:28+00:00"
+            "time": "2019-10-17T18:10:45+00:00"
         },
         {
             "name": "brumann/polyfill-unserialize",
@@ -4808,6 +4808,9 @@
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8466,16 +8469,16 @@
         },
         {
             "name": "openeuropa/oe_webtools",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools.git",
-                "reference": "25401b054260b5b146b5ed44dbc152661aba19ba"
+                "reference": "fbb28c3112a041deca4fea5e5be42008ccbcdfbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/25401b054260b5b146b5ed44dbc152661aba19ba",
-                "reference": "25401b054260b5b146b5ed44dbc152661aba19ba",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/fbb28c3112a041deca4fea5e5be42008ccbcdfbf",
+                "reference": "fbb28c3112a041deca4fea5e5be42008ccbcdfbf",
                 "shasum": ""
             },
             "require": {
@@ -8488,10 +8491,13 @@
             },
             "require-dev": {
                 "composer/installers": "~1.5",
+                "consolidation/annotated-command": "^2.8.2",
+                "consolidation/robo": "~1.4",
                 "drupal-composer/drupal-scaffold": "^2.5.2",
                 "drupal/config_devel": "~1.2",
                 "drupal/drupal-extension": "^4.0",
                 "drupal/geocoder": "^3.0",
+                "drupal/geofield": "^1.0",
                 "drupal/json_field": "^1.0@RC",
                 "drush/drush": "~9.0",
                 "nikic/php-parser": "^3.1.5",
@@ -8536,7 +8542,7 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa Webtools integration.",
-            "time": "2019-09-24T12:53:58+00:00"
+            "time": "2019-10-16T12:23:05+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
@@ -15340,16 +15346,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "0afebf16a2e7f1e434920fa976253576151effe9"
+                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0afebf16a2e7f1e434920fa976253576151effe9",
-                "reference": "0afebf16a2e7f1e434920fa976253576151effe9",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/82cd0f854ceca17731d6d019c7098e3755c45060",
+                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060",
                 "shasum": ""
             },
             "require": {
@@ -15387,7 +15393,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-09-26T23:12:26+00:00"
+            "time": "2019-10-16T21:14:26+00:00"
         },
         {
             "name": "symfony/browser-kit",
