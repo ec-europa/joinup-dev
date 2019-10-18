@@ -63,7 +63,7 @@ Feature: "Add discussion" visibility options.
     When I fill in the following:
       | Title            | Flight of Girlfriend                       |
       | Content          | This is going to be an amazing discussion. |
-      | File description | A picture of a flying girlfriend.          |
+      | File description | A picture of a flying girlfriend           |
     And I press "Publish"
     Then I should see the heading "Flight of Girlfriend"
     And I should see the success message "Discussion Flight of Girlfriend has been created."
@@ -71,3 +71,15 @@ Feature: "Add discussion" visibility options.
     # Check that the link to the discussion is visible on the solution page.
     When I go to the homepage of the "Emerald in the Luck" solution
     Then I should see the link "Flight of Girlfriend"
+
+    # Check that an anonymous user can see the information.
+    Given I am an anonymous user
+    When I go to the "Flight of Girlfriend" discussion
+    Then I should see the following headings:
+      | Emerald in the Luck  |
+      | Flight of Girlfriend |
+    And I should see the following lines of text:
+      | This is going to be an amazing discussion. |
+      | Attachments                                |
+      | 176 bytes                                  |
+    And I should see the link "A picture of a flying girlfriend"

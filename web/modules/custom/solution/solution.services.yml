@@ -14,3 +14,6 @@ services:
     arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: solution }
+  solution.title_duplicate_helper:
+    class: 'Drupal\solution\SolutionTitleDuplicateHelper'
+    arguments: ['@entity_type.manager', '@sparql.graph_handler']
