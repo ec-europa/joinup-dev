@@ -152,7 +152,7 @@
         <dc:title xml:lang="en">MacOS</dc:title>
         <dc:description xml:lang="en">4th distro.</dc:description>
         <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Distribution"/>
-        <dc:license rdf:resource="http://example.com/license/1"/>
+        <dc:license rdf:resource="http://example.com/licence/1"/>
         <dc:format rdf:resource="http://publications.europa.eu/resource/authority/file-type/ZIP"/>
         <dcat:accessURL rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">http://example.com/files/distribution_4.zip</dcat:accessURL>
     </rdf:Description>
@@ -180,7 +180,7 @@
 
     <!-- #### Licences #### -->
 
-    <rdf:Description rdf:about="http://example.com/license/1">
+    <rdf:Description rdf:about="http://example.com/licence/1">
         <rdfs:label xml:lang="en">A federated licence</rdfs:label>
         <rdf:type rdf:resource="http://purl.org/dc/terms/LicenseDocument"/>
         <dc:description>Licence agreement details</dc:description>

@@ -10,4 +10,5 @@ id: comment_save_action
 label: 'Save comment'
 type: comment
 plugin: 'entity:save_action:comment'
+weight: 0
 configuration: {  }

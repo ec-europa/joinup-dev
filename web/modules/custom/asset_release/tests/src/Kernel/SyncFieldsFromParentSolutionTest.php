@@ -145,18 +145,26 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'field_owner_state' => 'validated',
     ])->save();
 
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => 'http://example.com/collection',
+      'label' => 'Collection',
+    ])->save();
+
     // Create two solutions to be related.
     Rdf::create([
       'rid' => 'solution',
       'id' => 'http://example.com/solution-related1',
       'label' => 'Related solution 1',
       'field_is_state' => 'proposed',
+      'collection' => 'http://example.com/collection',
     ])->save();
     Rdf::create([
       'rid' => 'solution',
       'id' => 'http://example.com/solution-related2',
       'label' => 'Related solution 2',
       'field_is_state' => 'proposed',
+      'collection' => 'http://example.com/collection',
     ])->save();
   }
 
@@ -179,6 +187,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'field_is_included_asset' => 'http://example.com/solution-related1',
       'field_is_translation' => 'http://example.com/solution-related1',
       'field_policy_domain' => 'http://example.com/policy-domain/d1',
+      'collection' => 'http://example.com/collection',
     ])->save();
 
     // Create a release.
@@ -240,6 +249,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'solution-related2',
       'solution',
       'release',
+      'collection',
     ];
     foreach ($rdf_entity_keys as $key) {
       if ($rdf = Rdf::load("http://example.com/$key")) {

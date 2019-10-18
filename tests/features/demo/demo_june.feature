@@ -4,18 +4,18 @@ Feature: June 2016 demo
   I should be able to interact with the website and manage content.
 
   Scenario: Manage collection and view collection scenarios.
-    Given solutions:
-      | title                     | description                                | documentation | moderation | state     |
-      | Avengers initiative       | Gather the strongest into a group.         | text.pdf      | no         | validated |
-      | Project Tahiti            | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | validated |
-      | Hellicarrier              | Provide a flying fortress as headquarters. | text.pdf      | no         | validated |
-      | Project 'Captain America' | Bring 'Captain america' back into action.  | text.pdf      | yes        | validated |
-    And collections:
-      | title          | description                          | logo     | moderation | affiliates                                                                   | state     |
-      | S.H.I.E.L.D.   | Well they are mostly flying around.  | logo.png | yes        | Avengers initiative, Project Tahiti, Hellicarrier, Project 'Captain America' | validated |
-      | x-Men          | Based on Professor Xavier's mansion. | logo.png | no         |                                                                              | validated |
-      | Avengers       | Based on Tony stark's tower.         | logo.png | yes        |                                                                              | validated |
-      | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        |                                                                              | validated |
+    Given collections:
+      | title          | description                          | logo     | moderation | state     |
+      | S.H.I.E.L.D.   | Well they are mostly flying around.  | logo.png | yes        | validated |
+      | x-Men          | Based on Professor Xavier's mansion. | logo.png | no         | validated |
+      | Avengers       | Based on Tony stark's tower.         | logo.png | yes        | validated |
+      | Fantastic four | Based on Reed Richard's tower.       | logo.png | yes        | validated |
+    And solutions:
+      | title                     | collection   | description                                | documentation | moderation | state     |
+      | Avengers initiative       | S.H.I.E.L.D. | Gather the strongest into a group.         | text.pdf      | no         | validated |
+      | Project Tahiti            | S.H.I.E.L.D. | Rejuvenate deadly wounds and erase memory. | text.pdf      | yes        | validated |
+      | Hellicarrier              | S.H.I.E.L.D. | Provide a flying fortress as headquarters. | text.pdf      | no         | validated |
+      | Project 'Captain America' | S.H.I.E.L.D. | Bring 'Captain america' back into action.  | text.pdf      | yes        | validated |
 
     And users:
       | Username  | Password             | E-mail                  | Roles     |

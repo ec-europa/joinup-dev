@@ -51,4 +51,14 @@ trait SparqlEntityStorageTrait {
     return $query;
   }
 
+  /**
+   * Returns a list of entity ids existing in the sink graph.
+   *
+   * @return string[]
+   *   An array of entity ids.
+   */
+  protected function getAllIncomingIds(): array {
+    return $this->getSparqlQuery()->graphs(['staging'])->execute();
+  }
+
 }
