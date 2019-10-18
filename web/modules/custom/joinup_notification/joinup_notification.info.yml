@@ -40,6 +40,7 @@ config_devel:
   - message.template.comment_create
   - message.template.comment_delete
   - message.template.comment_update
+  - message.template.community_content_subscription
   - message.template.distribution_delete
   - message.template.distribution_update
   - message.template.og_membership_decision

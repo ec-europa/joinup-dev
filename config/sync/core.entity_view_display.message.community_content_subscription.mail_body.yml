@@ -1,0 +1,17 @@
+uuid: 2db016a3-1ecc-4c8a-8250-6cfc78d5171b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.community_content_subscription
+id: message.community_content_subscription.mail_body
+targetEntityType: message
+bundle: community_content_subscription
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true

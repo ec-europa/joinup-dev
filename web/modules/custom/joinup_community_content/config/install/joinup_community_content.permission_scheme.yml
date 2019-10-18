@@ -1,6 +1,6 @@
 # View operation permission scheme.
 view:
-  node:pre_moderated:
+  'node:pre_moderated':
     draft:
       own:
         roles:
@@ -46,7 +46,7 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  node:post_moderated:
+  'node:post_moderated':
     draft:
       own:
         roles:
@@ -92,7 +92,7 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  node:discussion:post_moderated:
+  'node:discussion:post_moderated':
     draft:
       own:
         roles:
@@ -145,7 +145,7 @@ view:
           - authenticated
 # Create operation permission scheme.
 create:
-  node:pre_moderated:
+  'node:pre_moderated':
     # eLibrary value: Only collection facilitators can create new content.
     0:
       save_as_draft:
@@ -202,7 +202,7 @@ create:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  node:post_moderated:
+  'node:post_moderated':
     # eLibrary value: Only collection facilitators can create new content.
     0:
       save_as_draft:
@@ -241,7 +241,7 @@ create:
       publish:
         roles:
           - authenticated
-  node:discussion:post_moderated:
+  'node:discussion:post_moderated':
     # eLibrary value: Only collection facilitators can create new content.
     0:
       save_as_draft:
@@ -282,7 +282,7 @@ create:
           - authenticated
 # Update operation permission scheme.
 update:
-  node:pre_moderated:
+  'node:pre_moderated':
     save_as_draft:
       own:
         roles:
@@ -383,7 +383,7 @@ update:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  node:post_moderated:
+  'node:post_moderated':
     save_as_draft:
       own:
         roles:
@@ -476,7 +476,7 @@ update:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  node:discussion:post_moderated:
+  'node:discussion:post_moderated':
     save_as_draft:
       own:
         roles:
@@ -578,7 +578,7 @@ update:
           - rdf_entity-solution-facilitator
 # Delete operation permission scheme.
 delete:
-  node:pre_moderated:
+  'node:pre_moderated':
     draft:
       own:
         roles:
@@ -614,7 +614,7 @@ delete:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  node:post_moderated:
+  'node:post_moderated':
     draft:
       own:
         roles:
@@ -655,7 +655,7 @@ delete:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  node:discussion:post_moderated:
+  'node:discussion:post_moderated':
     draft:
       own:
         roles:
