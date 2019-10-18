@@ -1800,3 +1800,12 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function joinup_theme_theme_registry_alter(&$theme_registry) {
+  if (isset($theme_registry['oe_webtools_maps_map'])) {
+    $theme_registry['oe_webtools_maps_map']['path'] = drupal_get_path('theme', 'joinup_theme') . '/templates';
+  }
+}
