@@ -32,8 +32,8 @@ Feature: Subscribing to community content in collections
     # that is not yet published, or has been previously published.
     # See ISAICP-4980
     Given discussion content:
-      | title      | body                       | collection                  | state     | author |
-      | Duck liver | Rich, buttery and delicate | Famous products of Bulgaria | validated | hristo |
+      | title      | body                      | collection                  | state     | author |
+      | Duck liver | Rich buttery and delicate | Famous products of Bulgaria | validated | hristo |
     And document content:
       | title           | body                   | collection                  | state     | author |
       | Canned cherries | Sour cherries for pies | Famous products of Bulgaria | validated | bisera |
@@ -44,16 +44,34 @@ Feature: Subscribing to community content in collections
       | title    | body                        | collection                  | state     | author |
       | Rose oil | A widely used essential oil | Famous products of Bulgaria | validated | bisera |
 
-    Then the daily digest for hristo should not contain any messages
-    Then the weekly digest for hristo should not contain any messages
-    Then the monthly digest for hristo should not contain any messages
-    Then the daily digest for bisera should not contain any messages
-    Then the weekly digest for bisera should not contain any messages
-    Then the monthly digest for bisera should not contain any messages
-    Then the daily digest for kalin should not contain any messages
-    Then the weekly digest for kalin should not contain any messages
-    Then the monthly digest for kalin should not contain any messages
+    Then the daily digest for hristo should contain the following message:
+      | mail_subject | Duck liver                |
+      | mail_body    | Rich buttery and delicate |
+    And the daily digest for hristo should contain the following message:
+      | mail_subject | Sunflower seeds |
+      | mail_body    | A tasty snack   |
+    And the daily digest for hristo should contain the following message:
+      | mail_subject | Rose oil                    |
+      | mail_body    | A widely used essential oil |
+    And the weekly digest for bisera should contain the following message:
+      | mail_subject | Duck liver                |
+      | mail_body    | Rich buttery and delicate |
+    And the weekly digest for bisera should contain the following message:
+      | mail_subject | Canned cherries        |
+      | mail_body    | Sour cherries for pies |
+    And the weekly digest for bisera should contain the following message:
+      | mail_subject | Rose oil                    |
+      | mail_body    | A widely used essential oil |
+    And the monthly digest for kalin should contain the following message:
+      | mail_subject | Canned cherries        |
+      | mail_body    | Sour cherries for pies |
+    And the monthly digest for kalin should contain the following message:
+      | mail_subject | Sunflower seeds |
+      | mail_body    | A tasty snack   |
 
-    Then the weekly digest for "Dr. Hans Zarkov" should contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | mail_body    | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    But the weekly digest for hristo should not contain any messages
+    And the monthly digest for hristo should not contain any messages
+    And the daily digest for bisera should not contain any messages
+    And the monthly digest for bisera should not contain any messages
+    And the daily digest for kalin should not contain any messages
+    And the weekly digest for kalin should not contain any messages
