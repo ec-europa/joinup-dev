@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Plugin implementation of the 'search_api_field_custom_page' widget.
  *
  * Adds a checkbox to allow users to include content shared inside the
- * collection, improves labeling and hides unused fields.
+ * collection or search globally, improves labeling and hides unused fields.
  *
  * @FieldWidget(
  *   id = "search_api_field_custom_page",
@@ -106,6 +106,13 @@ class SearchWidget extends DefaultSearchWidget {
     $item = $items[$delta];
     $default_values = $item->get('value')->getValue();
 
+    $element['wrapper']['global_search'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Global search'),
+      '#description' => $this->t('If checked, the search will not be limited into the group content.'),
+      '#default_value' => $default_values['global_search'] ?? FALSE,
+    ];
+
     $element['wrapper']['show_shared'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show also content shared in the collection'),
@@ -130,6 +137,7 @@ class SearchWidget extends DefaultSearchWidget {
 
     foreach ($values as $delta => $value) {
       $cleaned_values[$delta]['value']['show_shared'] = $values[$delta]['wrapper']['show_shared'];
+      $cleaned_values[$delta]['value']['global_search'] = $values[$delta]['wrapper']['global_search'];
     }
 
     return $cleaned_values;
