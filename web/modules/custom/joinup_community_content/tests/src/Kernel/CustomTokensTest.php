@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_community_content\Kernel;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -23,10 +24,23 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
     'comment',
     'diff',
     'joinup_community_content',
+    'message_notify',
     'node',
     'og',
     'state_machine',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function register(ContainerBuilder $container) {
+    parent::register($container);
+
+    // Register a few services directly to avoid having to enable a long chain
+    // of module dependencies.
+    $this->container->register('joinup_core.workflow.helper', '\Drupal\joinup_core\WorkflowHelper');
+    $this->container->register('joinup_notification.message_delivery', '\Drupal\joinup_notification\JoinupMessageDelivery');
+  }
 
   /**
    * {@inheritdoc}
