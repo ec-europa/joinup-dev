@@ -11,10 +11,11 @@ mode: default
 content:
   field_community_content:
     weight: 0
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-hidden: {  }
+hidden:
+  partial_0: true

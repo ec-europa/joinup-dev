@@ -5,7 +5,10 @@ dependencies: {  }
 template: community_content_subscription
 label: 'Community content subscription'
 description: 'Digest message sent when new content is published in a user''s subscribed collections'
-text: {  }
+text:
+  -
+    value: '<p>[message:field_community_content:entity:body]</p>'
+    format: full_html
 settings:
   'token options':
     clear: false
