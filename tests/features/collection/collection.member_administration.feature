@@ -131,11 +131,11 @@ Feature: Collection membership administration
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
     And the email sent to "Cam Bridge" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
-      | text                                                                            |
-      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
-      | You will receive weekly notifications for newly created content on this collection. |
-      | To manage your notifications go to "My subscriptions" in the user menu.             |
-      | If you think this action is not clear or not due, please contact Joinup Support at  |
+      | text                                                                                             |
+      | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" collection |
+      | You will receive weekly notifications for newly created content on this collection.              |
+      | To manage your notifications go to "My subscriptions" in the user menu.                          |
+      | If you think this action is not clear or not due, please contact Joinup Support at               |
 
   @email
   Scenario: Reject a membership
