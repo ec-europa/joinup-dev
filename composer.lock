@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "869eb878fc65e0d9bdbbc95ba2e06322",
+    "content-hash": "7c0e756a9785331094cd100819bb941e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4857,7 +4857,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -7547,7 +7547,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -8395,16 +8395,16 @@
         },
         {
             "name": "openeuropa/oe_webtools",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openeuropa/oe_webtools.git",
-                "reference": "25401b054260b5b146b5ed44dbc152661aba19ba"
+                "reference": "fbb28c3112a041deca4fea5e5be42008ccbcdfbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/25401b054260b5b146b5ed44dbc152661aba19ba",
-                "reference": "25401b054260b5b146b5ed44dbc152661aba19ba",
+                "url": "https://api.github.com/repos/openeuropa/oe_webtools/zipball/fbb28c3112a041deca4fea5e5be42008ccbcdfbf",
+                "reference": "fbb28c3112a041deca4fea5e5be42008ccbcdfbf",
                 "shasum": ""
             },
             "require": {
@@ -8417,10 +8417,13 @@
             },
             "require-dev": {
                 "composer/installers": "~1.5",
+                "consolidation/annotated-command": "^2.8.2",
+                "consolidation/robo": "~1.4",
                 "drupal-composer/drupal-scaffold": "^2.5.2",
                 "drupal/config_devel": "~1.2",
                 "drupal/drupal-extension": "^4.0",
                 "drupal/geocoder": "^3.0",
+                "drupal/geofield": "^1.0",
                 "drupal/json_field": "^1.0@RC",
                 "drush/drush": "~9.0",
                 "nikic/php-parser": "^3.1.5",
@@ -8452,7 +8455,8 @@
                     ]
                 },
                 "patches_applied": {
-                    "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"
+                    "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
+                    "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff"
                 }
             },
             "autoload": {
@@ -8465,7 +8469,7 @@
                 "EUPL-1.2"
             ],
             "description": "OpenEuropa Webtools integration.",
-            "time": "2019-09-24T12:53:58+00:00"
+            "time": "2019-10-16T12:23:05+00:00"
         },
         {
             "name": "openeuropa/webtools-geocoding-provider",
@@ -10002,7 +10006,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
