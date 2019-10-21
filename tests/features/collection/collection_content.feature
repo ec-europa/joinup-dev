@@ -5,9 +5,10 @@ Feature: Collection content
   So that I can find the information I'm looking for.
 
   Background:
-    Given the following collection:
-      | title | Turin Egyptian Collection |
-      | state | validated                 |
+    Given the following collections:
+      | title                     | state     |
+      | Turin Egyptian Collection | validated |
+      | Turin Turkish Collection  | validated |
     And the following solution:
       | title      | Tomb Of Unknown Restoration |
       | collection | Turin Egyptian Collection   |

@@ -3,6 +3,7 @@ Feature: Collections Overview
 
   Scenario: Check visibility of "Collections" menu link.
     Given I am an anonymous user
+    When I am on the homepage
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the heading "Collections"
