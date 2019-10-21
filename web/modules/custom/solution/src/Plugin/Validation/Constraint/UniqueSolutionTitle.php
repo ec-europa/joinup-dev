@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\solution\Plugin\Validation\Constraint;
 
 use Symfony\Component\Validator\Constraint;
@@ -12,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
  *   label = @Translation("Unique solution title within collections", context = "Validation"),
  * )
  */
-class UniqueSolutionTitleConstraint extends Constraint {
+class UniqueSolutionTitle extends Constraint {
 
   /**
    * The message to show when validation fails.
@@ -20,26 +22,5 @@ class UniqueSolutionTitleConstraint extends Constraint {
    * @var string
    */
   public $message = 'A solution titled %value already exists in this collection. Please choose a different title.';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validatedBy() {
-    return '\Drupal\solution\Plugin\Validation\Constraint\UniqueSolutionTitleValidator';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDefaultOption() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getRequiredOptions() {
-    return [];
-  }
 
 }
