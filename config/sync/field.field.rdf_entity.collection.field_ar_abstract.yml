@@ -22,7 +22,7 @@ field_name: field_ar_abstract
 entity_type: rdf_entity
 bundle: collection
 label: Abstract
-description: ''
+description: 'Short description text of the collection. Appears on the Overview page. (Leave blank to use the trimmed value of the Description field.)'
 required: false
 translatable: false
 default_value: {  }
