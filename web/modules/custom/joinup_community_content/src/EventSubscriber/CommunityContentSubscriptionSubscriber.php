@@ -4,18 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\EventSubscriber;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
-use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgMembershipInterface;
-use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,11 +19,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface {
 
   /**
-   * The Joinup subscribe service.
+   * The entity type manager.
    *
-   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $subscribeService;
+  protected $entityTypeManager;
 
   /**
    * The Joinup message delivery service.
@@ -36,20 +31,6 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
    * @var \Drupal\joinup_notification\JoinupMessageDeliveryInterface
    */
   protected $messageDelivery;
-
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * The logger channel factory.
@@ -67,18 +48,11 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
    *   The Joinup message delivery service.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
    *   The logger channel factory.
-   * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $subscribe_service
-   *   The Joinup subscribe service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    */
-  //public function __construct(JoinupDiscussionSubscriptionInterface $subscribe_service, JoinupMessageDeliveryInterface $message_delivery, AccountProxyInterface $current_user, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger_factory) {
   public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupMessageDeliveryInterface $joinupMessageDelivery, LoggerChannelFactoryInterface $logger) {
     $this->entityTypeManager = $entityTypeManager;
     $this->messageDelivery = $joinupMessageDelivery;
     $this->loggerFactory = $logger;
-    //$this->subscribeService = $subscribe_service;
-    //$this->currentUser = $current_user;
   }
 
   /**
@@ -167,7 +141,7 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
    * Sends the notification to the recipients.
    *
    * @param \Drupal\node\NodeInterface $community_content
-   *   The discussion for which to send the notification.
+   *   The community content for which to send the notification.
    * @param string $message_template
    *   The ID of the message template to use.
    *
