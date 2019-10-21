@@ -111,6 +111,7 @@ class SearchWidget extends DefaultSearchWidget {
       '#title' => $this->t('Global search'),
       '#description' => $this->t('If checked, the search will not be limited into the group content.'),
       '#default_value' => $default_values['global_search'] ?? FALSE,
+      '#weight' => -11,
     ];
 
     $element['wrapper']['show_shared'] = [
