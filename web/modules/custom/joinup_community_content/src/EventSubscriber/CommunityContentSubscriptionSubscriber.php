@@ -180,11 +180,15 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
       // Create individual messages for each subscriber so that we can honor the
       // user's chosen digest frequency.
       foreach ($this->getSubscribers($community_content) as $subscriber) {
-        $notifier_options = [
-          'entity_type' => $community_content->getEntityTypeId(),
-          'entity_id' => $community_content->id(),
+        $message_values = [
+          'field_community_content' => [
+            0 => [
+              'target_type' => $community_content->getEntityTypeId(),
+              'target_id' => $community_content->id(),
+            ],
+          ],
         ];
-        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, [], $subscriber, $notifier_options) && $success;
+        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, [], $subscriber, [], $message_values) && $success;
       }
       return $success;
     }
