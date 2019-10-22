@@ -20,7 +20,7 @@ class RedisFlush extends \Task {
       $this->log('Redis cache flushed.');
     }
     catch (\Exception $e) {
-      $this->log('Error flushing redis cache: ' . $e->getMessage(),\Project::MSG_ERR);
+      $this->log('Error flushing redis cache: ' . $e->getMessage(),\Project::MSG_WARN);
     }
 
   }
