@@ -13,6 +13,7 @@ use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
  * Contains helper methods to retrieve workflow related data from entities.
@@ -48,6 +49,13 @@ class WorkflowHelper implements WorkflowHelperInterface {
   protected $membershipManager;
 
   /**
+   * The workflow state permission service.
+   *
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
+   */
+  protected $workflowStatePermission;
+
+  /**
    * Constructs a WorkflowHelper.
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
@@ -58,12 +66,15 @@ class WorkflowHelper implements WorkflowHelperInterface {
    *   The entity field manager.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The membership manager service.
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
+   *   The workflow state permission service.
    */
-  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher, EntityFieldManagerInterface $entityFieldManager, MembershipManagerInterface $membershipManager) {
+  public function __construct(AccountProxyInterface $currentUser, AccountSwitcherInterface $accountSwitcher, EntityFieldManagerInterface $entityFieldManager, MembershipManagerInterface $membershipManager, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->accountSwitcher = $accountSwitcher;
     $this->currentUser = $currentUser;
     $this->entityFieldManager = $entityFieldManager;
     $this->membershipManager = $membershipManager;
+    $this->workflowStatePermission = $workflowStatePermission;
   }
 
   /**
@@ -82,7 +93,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+  public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
     // Placeholder for the method that will be added in ISAICP-4910. For now we
     // still take the state directly from the transitions. Once we update to the
     // newest version of State Machine the same state transitions will no longer
@@ -93,6 +104,11 @@ class WorkflowHelper implements WorkflowHelperInterface {
     $allowed_states = array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getToState()->getId();
     }, $allowed_transitions);
+
+    $current_state = $this->getEntityStateField($entity)->value;
+    if ($this->workflowStatePermission->isStateUpdatePermitted($account, $entity, $current_state, $current_state)) {
+      $allowed_states[$current_state] = $current_state;
+    }
 
     return $allowed_states;
   }

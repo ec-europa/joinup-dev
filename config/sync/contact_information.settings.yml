@@ -1,26 +1,21 @@
 transitions:
-  validate:
+  validated:
     __new__:
       - authenticated
       - moderator
     deletion_request:
       - moderator
-  update_published:
+    needs_update:
+      - moderator
     validated:
       - authenticated
       - moderator
-  request_changes:
+  needs_update:
     validated:
       - moderator
-  update_changes:
     needs_update:
       - authenticated
       - moderator
-  approve_changes:
-    needs_update:
-      - moderator
-  request_deletion:
+  deletion_request:
     validated:
       - authenticated
-_core:
-  default_config_hash: dwHqI3Lryxt3ETKtdiYg1AO02QblW2fhmuvk9aS0r5Y

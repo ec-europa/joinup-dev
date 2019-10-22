@@ -57,9 +57,9 @@ trait WorkflowTrait {
    *   omitted the currently logged in user will be checked.
    *
    * @return string[]
-   *   An array of available workflow states.
+   *   An array of available target workflow states.
    */
-  protected function getAvailableStates(FieldableEntityInterface $entity, AccountInterface $user = NULL): array {
+  protected function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $user = NULL): array {
     return $this->getWorkflowHelper()->getAvailableTargetStates($entity, $user);
   }
 

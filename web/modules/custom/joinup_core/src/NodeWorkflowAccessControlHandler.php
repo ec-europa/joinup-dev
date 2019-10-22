@@ -15,7 +15,6 @@ use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Access handler for entities with a workflow.
@@ -291,19 +290,11 @@ class NodeWorkflowAccessControlHandler {
    *   The access result check.
    */
   protected function entityUpdateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
-    $update_scheme = $this->getPermissionScheme('update');
-    $workflow_id = $this->getEntityWorkflowId($entity);
-    $allowed_transitions = $this->workflowHelper->getAvailableTransitions($entity, $account);
-    $transition_ids = array_map(function (WorkflowTransition $transition) {
-      return $transition->getId();
-    }, $allowed_transitions);
-
-    foreach ($transition_ids as $transition_id) {
-      if ($this->userHasOwnAnyRoles($entity, $account, $update_scheme[$workflow_id][$transition_id])) {
-        return AccessResult::allowed();
-      }
+    $allowed_states = $this->workflowHelper->getAvailableTargetStates($entity, $account);
+    if (empty($allowed_states)) {
+      return AccessResult::forbidden();
     }
-    return AccessResult::forbidden();
+    return AccessResult::allowed();
   }
 
   /**
