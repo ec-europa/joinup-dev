@@ -8,7 +8,6 @@ Feature: Collection content
     Given the following collections:
       | title                     | state     |
       | Turin Egyptian Collection | validated |
-      | Turin Turkish Collection  | validated |
     And the following solution:
       | title      | Tomb Of Unknown Restoration |
       | collection | Turin Egyptian Collection   |
