@@ -31,15 +31,15 @@ solution_workflow:
   transitions:
     draft:
       label: Save as draft
-      from: [__new__, draft, proposed, validated, needs_update, blacklisted, deletion_request]
+      from: [__new__, proposed, validated, needs_update, blacklisted, deletion_request]
       to: draft
     propose:
       label: Propose
-      from: [__new__, draft, proposed, validated, needs_update, blacklisted, deletion_request]
+      from: [__new__, draft, validated, needs_update, blacklisted, deletion_request]
       to: proposed
     validate:
       label: Publish
-      from: [__new__, draft, proposed, validated, needs_update, blacklisted, deletion_request]
+      from: [__new__, draft, proposed, needs_update, blacklisted, deletion_request]
       to: validated
     needs_update:
       label: Request changes

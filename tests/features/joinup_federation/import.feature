@@ -168,8 +168,8 @@ Feature: As a site moderator I am able to import RDF files.
 
     Then I should see "Slovenian Interoperability Portal - NIO: User selection"
     # Solution 1 is checked because it is new.
-    And the row "Solution 1 [http://example.com/solution/1]" is checked
-    And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1]" row
+    And the row "Solution 1 [http://example.com/solution/1?query=4#]" is checked
+    And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1?query=4#]" row
     # Solution 2 is checked because there are changes detected (The title is different).
     And the row "Solution 2 [http://example.com/solution/2]" is checked
     And I should see the text "Federated on 07/07/2012 - 23:01 by Antoine Batiste" in the "Solution 2 [http://example.com/solution/2]" row
@@ -201,6 +201,15 @@ Feature: As a site moderator I am able to import RDF files.
 
     # Licence should be excluded from the import process.
     And the "Licence same as Apache 2" entity should not have a related provenance activity
+
+    # Regression test to ensure that solutions with complex urls still receive all menu items.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5608
+    When I visit the "Solution 1" solution
+    Then I should see the following group menu items in the specified order:
+      | text     |
+      | Overview |
+      | Members  |
+      | About    |
 
     # Check the affiliation of federated solutions.
     But the "Solution 1" solution should be affiliated with the "NIO" collection
@@ -294,7 +303,7 @@ Feature: As a site moderator I am able to import RDF files.
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
     # this is a good test to check that the entities were imported and exist.
-    And I delete the provenance activity of "http://example.com/solution/1" entity
+    And I delete the provenance activity of "http://example.com/solution/1?query=4#" entity
     And I delete the provenance activity of "http://example.com/solution/2" entity
     And I delete the provenance activity of "http://example.com/solution/3" entity
     And I delete the provenance activity of "http://example.com/release/1" entity

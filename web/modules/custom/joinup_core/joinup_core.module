@@ -560,7 +560,7 @@ function joinup_core_rdf_entity_insert(RdfInterface $entity) {
     $link = MenuLinkContent::create([
       'title' => t('Overview'),
       'menu_name' => $menu_name,
-      'link' => ['uri' => 'entity:rdf_entity/' . $entity->id()],
+      'link' => ['uri' => $entity->toUrl()->toUriString()],
       'weight' => -10,
     ]);
     $link->save();
@@ -743,6 +743,10 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
   $from_state = $entity->get($state_field)->first()->value;
 
   $transition = $workflow->findTransition($from_state, $to_state);
+  if (empty($transition)) {
+    return;
+  }
+
   $required = joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId());
   // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
   //   rdf_entities are separate transitions.
