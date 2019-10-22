@@ -14,7 +14,6 @@ Feature: Collections Overview
     When I click "Collections"
     Then I should see the heading "Collections"
 
-  # @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
   @terms
   Scenario: View collection overview as an anonymous user
     Given users:
