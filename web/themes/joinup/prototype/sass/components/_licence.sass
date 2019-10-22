@@ -92,17 +92,20 @@
   pointer-events: none
 
 .licence-tile__actions
-  +breakpoint(mobile)
+  +breakpoint(lg-desktop)
     position: absolute
     right: 20px
     bottom: 20px
 
-.licence-tile__button--compare
-  margin-right: $field-margin
-
-.licence-tile__compare-checkbox
+.licence-tile__actions-item
   display: inline-block
   margin-right: $field-margin
+  margin-bottom: $field-margin
+  &:last-child
+    margin-right: 0
+    margin-bottom: 0
+  +breakpoint(lg-desktop)
+    margin-bottom: 0
 
 .licence-counter
   font-weight: bold
