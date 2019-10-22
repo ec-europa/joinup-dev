@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+id: visit_count
+label: 'Visit count'
+description: 'Visit counts are used to determine which content is shown in the "Recommended content" block on the homepage. Shorter time periods will cause the recommended content to be more fresh and dynamic, while longer periods will cause them to be more stable.<br />The difference between "visits" and "hits" is that a "visit" is a special metric in Matomo which measures visitor engagement rather than simply counting the number of page requests. Repeated requests to the same page by the same user in a short time frame do not count as a "visit" but they do count as a "hit".'
+mapping:
+  node:
+    discussion: visit_count
+    document: visit_count
+    event: visit_count
+    news: visit_count
+
+third_party_settings:
+  joinup_stats:
+    matomo_method: 'Actions.getPageUrl'
+    parameter_name: pageUrl
+    parameter_method: getEntityUrl
+    period: 30
+    type: nb_visits
