@@ -279,7 +279,8 @@
                 "Use the UpdateKernel for config:import @see https://github.com/drush-ops/drush/pull/4217": "https://github.com/drush-ops/drush/compare/9f3574c...52e0ee224bcb16837291fde1407b8a1d0f394d6a.diff"
             },
             "openeuropa/oe_webtools": {
-                "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"
+                "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
+                "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff"
             },
             "weitzman/drupal-test-traits": {
                 "Extend createUser() method with 'values' argument @see https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73": "https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73.diff"

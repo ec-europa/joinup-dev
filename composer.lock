@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a314454eef4209b4f94155fcd52b19e",
+    "content-hash": "b0ee422d520fa0cdff8f8979fb7088f1",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -8530,7 +8530,8 @@
                     ]
                 },
                 "patches_applied": {
-                    "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"
+                    "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
+                    "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff"
                 }
             },
             "autoload": {
