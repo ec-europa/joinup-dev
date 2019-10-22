@@ -23,8 +23,8 @@
         "drupal/core": "^8.7.8",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
-        "drupal/drupal-driver": "dev-186-backend-auth",
-        "drupal/drupal-extension": "dev-488-backend-authentication",
+        "drupal/drupal-driver": "dev-master",
+        "drupal/drupal-extension": "dev-master",
         "drupal/ds": "^3.0",
         "drupal/editor_file": "~1.0",
         "drupal/email_registration": "^1.0-rc7",
@@ -205,6 +205,12 @@
                 "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
                 "Config import creates 'Undefined index: uuid' notice @see https://www.drupal.org/project/drupal/issues/2863785": "https://www.drupal.org/files/issues/config_import_creates-2863785-2.patch",
                 "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "resources/patch/2381293-D8-8.7.x-130.patch"
+            },
+            "drupal/drupal-driver": {
+                "186-backend-auth": "https://github.com/jhedstrom/DrupalDriver/compare/master...claudiu-cristea:186-backend-auth.diff"
+            },
+            "drupal/drupal-extension": {
+                "488-backend-authentication": "https://github.com/jhedstrom/drupalextension/compare/master...claudiu-cristea:488-backend-authentication.diff"
             },
             "drupal/email_registration": {
                 "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-05-13/2927109-11.patch"
