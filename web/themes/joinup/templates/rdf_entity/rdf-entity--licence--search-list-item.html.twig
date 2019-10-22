@@ -74,15 +74,19 @@
         {{ content.field_licence_description }}
       </div>
       <div class="licence-tile__actions">
-        <div class="licence-tile__compare-checkbox">
+        <div class="licence-tile__compare-checkbox licence-tile__actions-item">
           <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ url|clean_id }}">
             <span class="mdl-checkbox__label">{{ 'Add to compare list'|t }}</span>
             <input type="checkbox" id="{{ url|clean_id }}" class="mdl-checkbox__input" data-licence-name="{{ label|render|striptags|trim }}">
           </label>
         </div>
-        <a class="licence-tile__button licence-tile__button--compare licence-tile__button--disabled" href="/licence/compare">{{ 'Compare'|t }}</a>
+        <div class="licence-tile__actions-item">
+          <a class="licence-tile__button licence-tile__button--compare licence-tile__button--disabled" href="/licence/compare">{{ 'Compare'|t }}</a>
+        </div>
         {% if content.spdx_licence_external_url %}
-          {{ content.spdx_licence_external_url }}
+          <div class="licence-tile__actions-item">
+            {{ content.spdx_licence_external_url }}
+          </div>
         {% endif %}
       </div>
     </div>

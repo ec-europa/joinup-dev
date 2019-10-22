@@ -91,11 +91,11 @@
         licencesArray.push(licenceName);
         licencesString = JSON.stringify(licencesArray);
 
-        if (licencesArray.length === maxCompare) {
+        if (licencesArray.length >= maxCompare) {
           disableCheckboxes(true);
         }
 
-        if (licencesArray.length <= 2) {
+        if (licencesArray.length >= 2) {
           enableCompareButton(true);
         }
       }
