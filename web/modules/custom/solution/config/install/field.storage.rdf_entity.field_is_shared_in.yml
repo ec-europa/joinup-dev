@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+id: rdf_entity.field_is_shared_in
+field_name: field_is_shared_in
+entity_type: rdf_entity
+type: entity_reference
+settings:
+  target_type: rdf_entity
+module: core
+locked: false
+cardinality: -1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
