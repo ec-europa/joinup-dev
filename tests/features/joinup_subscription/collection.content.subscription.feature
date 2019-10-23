@@ -15,13 +15,13 @@ Feature: Subscribing to community content in collections
       | bisera   | bisera@example.bg | Bisera     | Kaloyancheva | weekly                 |
       | kalin    | kalin@primer.bg   | Kalin      | Antov        | monthly                |
     And the following collection user memberships:
-      | collection           | user   | roles |
-      | Products of Bulgaria | hristo |       |
-      | Products of Bulgaria | bisera |       |
-      | Products of Bulgaria | kalin  |       |
-      | Cities of Bulgaria   | hristo |       |
-      | Cities of Bulgaria   | bisera |       |
-      | Cities of Bulgaria   | kalin  |       |
+      | collection           | user   | roles       |
+      | Products of Bulgaria | hristo |             |
+      | Products of Bulgaria | bisera |             |
+      | Products of Bulgaria | kalin  |             |
+      | Cities of Bulgaria   | hristo |             |
+      | Cities of Bulgaria   | bisera |             |
+      | Cities of Bulgaria   | kalin  | facilitator |
     And the following collection content subscriptions:
       | collection           | user   | subscriptions              |
       | Products of Bulgaria | hristo | discussion, event, news    |
@@ -103,9 +103,48 @@ Feature: Subscribing to community content in collections
       | mail_subject | Burgas         |
       | mail_body    | City of dreams |
 
+    # Check that only the user's chosen frequency is digested.
     But the weekly digest for hristo should not contain any messages
     And the monthly digest for hristo should not contain any messages
     And the daily digest for bisera should not contain any messages
     And the monthly digest for bisera should not contain any messages
     And the daily digest for kalin should not contain any messages
     And the weekly digest for kalin should not contain any messages
+
+    # The digest should not include news about content that is not published.
+    And the weekly digest for bisera should not contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
+    And the monthly digest for kalin should not contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
+
+    # Publish an existing unpublished community content. It should be included
+    # in the next digest.
+    Given I am logged in as "kalin"
+    When I go to the discussion content "Ruse" edit screen
+    And I press "Publish"
+
+    Then the weekly digest for bisera should contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
+    And the monthly digest for kalin should contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
+
+    # Clean out the message queue for the next test.
+    Given all message digests have been delivered
+    And the mail collector cache is empty
+
+    # Check that if community content is published a second time it is not
+    # included in the next digest.
+    When I go to the discussion content "Ruse" edit screen
+    And I press "Save new draft"
+    And I go to the discussion content "Ruse" edit screen
+    And I press "Publish"
+    Then the weekly digest for bisera should not contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
+    And the monthly digest for kalin should not contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
