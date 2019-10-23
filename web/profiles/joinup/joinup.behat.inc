@@ -441,7 +441,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Navigates to the edit page display of a node entity.
+   * Navigates to the edit form of a node entity.
    *
    * @param string $bundle
    *   The type of the node entity.
