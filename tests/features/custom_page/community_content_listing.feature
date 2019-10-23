@@ -350,3 +350,59 @@ Feature:
         """
     And I press "Save"
     Then I should see the error message "Invalid search field specified: unknown_field."
+
+  Scenario: Global search setting allows for site-wide content in the content listing.
+    Given I am logged in as a moderator
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+    Then I should see the heading "Add custom page"
+    When I fill in the following:
+      | Title | All content     |
+      | Body  | Show EVERYTHING |
+    And I check "Display a community content listing"
+    And I check "Global search"
+    And I press "Save"
+    Then I should see the heading "All content"
+    # All tiles are available.
+    And I should see the following tiles in the correct order:
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
+      | NEC VR4300 CPU                        |
+      | 20 year anniversary                   |
+      | Rare Nintendo64 disk drive discovered |
+
+    # Ensure that when content is created or editted in another group,
+    # the page cache is invalidated.
+    Given I go to the homepage of the "Emulators" collection
+    And I click "Add news" in the plus button menu
+    When I fill in the following:
+      | Kicker   | Current wars                |
+      | Headline | Edisson vs Electro          |
+      | Content  | A new movie is comming out. |
+    And I press "Publish"
+    Then I should see the heading "Current wars"
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "All content" in the "Left sidebar" region
+    And I should see the following tiles in the correct order:
+      | Current wars                          |
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
+      | NEC VR4300 CPU                        |
+      | 20 year anniversary                   |
+      | Rare Nintendo64 disk drive discovered |
+
+    Given I go to the news content "Current wars" edit screen
+    And I fill in "Kicker" with "Current wars is over"
+    And I press "Update"
+    Then I should see the heading "Current wars is over"
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "All content" in the "Left sidebar" region
+    And I should see the following tiles in the correct order:
+      | Current wars is over                  |
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
+      | NEC VR4300 CPU                        |
+      | 20 year anniversary                   |
+      | Rare Nintendo64 disk drive discovered |
