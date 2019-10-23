@@ -234,7 +234,6 @@ class MySubscriptionsForm extends FormBase {
         'user' => $user->id(),
       ]),
       '#access' => $memberships_with_subscription,
-      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
     ];
 
     return $form;
