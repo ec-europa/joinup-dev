@@ -39,7 +39,6 @@ config_devel:
   - field.field.node.news.field_site_featured
   - field.field.node.news.field_site_pinned
   - field.field.node.news.field_state
-  - field.field.node.news.field_visit_count
   - field.field.node.news.og_audience
   - field.storage.node.field_news_headline
   - field.storage.node.field_news_logo

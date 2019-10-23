@@ -17,6 +17,7 @@ use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\file_url\FileUrlHandler;
 use Drupal\joinup\Traits\SearchTrait;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -47,10 +48,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I go to (the homepage of )the :asset_distribution asset distribution
    * @When I visit (the homepage of )the :asset_distribution asset distribution
    */
-  public function visitDistribution($asset_distribution): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-    $this->visitPath($asset_distribution->url());
+  public function visitDistribution(string $asset_distribution): void {
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetDistributionByName($asset_distribution);
+    $this->visitPath($entity->url());
   }
 
   /**
@@ -63,9 +64,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I visit the :asset_distribution asset distribution edit form
    */
   public function visitEditAssetDistribution(string $asset_distribution): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-    $path = $asset_distribution->url('edit-form');
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetDistributionByName($asset_distribution);
+    $path = $entity->url('edit-form');
     $this->visitPath($path);
   }
 
@@ -146,6 +147,15 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       }
     }
 
+    // Downloads are stored in a meta entity.
+    if (array_key_exists('downloads', $values)) {
+      $values['download_count'] = MetaEntity::create([
+        'type' => 'download_count',
+        'count' => (int) $values['downloads'],
+      ]);
+      unset($values['downloads']);
+    }
+
     $asset_distribution = $this->createRdfEntity('asset_distribution', $values);
     $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
 
@@ -195,10 +205,10 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I delete the :asset_distribution asset distribution
    */
   public function deleteAssetDistribution(string $asset_distribution): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_distribution */
-    $asset_distribution = $this->getAssetDistributionByName($asset_distribution);
-    $asset_distribution->skip_notification = TRUE;
-    $asset_distribution->delete();
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getAssetDistributionByName($asset_distribution);
+    $entity->skip_notification = TRUE;
+    $entity->delete();
   }
 
   /**
@@ -288,7 +298,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
       'access url' => 'field_ad_access_url',
       'creation date' => 'created',
       'description' => 'field_ad_description',
-      'downloads' => 'field_download_count',
+      'downloads' => 'downloads',
       'file size' => 'field_ad_file_size',
       'format' => 'field_ad_format',
       'licence' => 'field_ad_licence',

@@ -1,0 +1,6 @@
+joinup_stats.settings:
+  title: 'Matomo integration'
+  route_name: joinup_stats.settings
+  description: 'Configure when download and visit counts are refreshed.'
+  parent: system.admin
+  weight: 0

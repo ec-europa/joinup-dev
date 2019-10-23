@@ -2,15 +2,13 @@
 
 namespace Drupal\solution\Guard;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
  * Guard class for the transitions of the solution entity.
@@ -23,20 +21,6 @@ class SolutionFulfillmentGuard implements GuardInterface {
   const NON_STATE = '__new__';
 
   /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * The current logged in user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -44,19 +28,24 @@ class SolutionFulfillmentGuard implements GuardInterface {
   protected $currentUser;
 
   /**
+   * The service that determines the access to update workflow states.
+   *
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
+   */
+  protected $workflowStatePermission;
+
+  /**
    * Instantiates a SolutionFulfillmentGuard service.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflow_state_permission
+   *   The service that determines the permission to update the workflow state
+   *   for a given entity.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
-    $this->entityTypeManager = $entity_type_manager;
-    $this->configFactory = $config_factory;
+  public function __construct(AccountInterface $current_user, WorkflowStatePermissionInterface $workflow_state_permission) {
     $this->currentUser = $current_user;
+    $this->workflowStatePermission = $workflow_state_permission;
   }
 
   /**
@@ -71,25 +60,7 @@ class SolutionFulfillmentGuard implements GuardInterface {
 
     $from_state = $this->getState($entity);
 
-    // Allowed transitions are already filtered so we only need to check
-    // for the transitions defined in the settings if they include a role the
-    // user has.
-    // @see: solution.settings.yml
-    $allowed_conditions = $this->configFactory->get('solution.settings')->get('transitions');
-
-    if ($this->currentUser->hasPermission('bypass node access')) {
-      return TRUE;
-    }
-
-    // Check if the user has one of the allowed system roles.
-    $authorized_roles = isset($allowed_conditions[$to_state][$from_state]) ? $allowed_conditions[$to_state][$from_state] : [];
-    if (array_intersect($authorized_roles, $this->currentUser->getRoles())) {
-      return TRUE;
-    }
-
-    // Check if the user has one of the allowed group roles.
-    $membership = Og::getMembership($entity, $this->currentUser);
-    return $membership && array_intersect($authorized_roles, $membership->getRolesIds());
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
   }
 
   /**

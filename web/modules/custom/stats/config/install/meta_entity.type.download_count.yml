@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: download_count
+label: 'Download count'
+description: 'Download counts are for files and attachments. Typically the time period will be set to "All time" to get the complete download count since the site was launched.<br />The difference between "unique hits" and "hits" is that "unique hits" only count each download by a single visitor once. If a visitor downloads a file multiple times, it still only counts as 1 unique hit. This can be used to deter abuse by repeated downloads to artificially increase the download count.'
+mapping:
+  rdf_entity:
+    asset_distribution: download_count
+
+third_party_settings:
+  joinup_stats:
+    matomo_method: 'Actions.getDownload'
+    parameter_name: downloadUrl
+    parameter_method: getDistributionFileUrl
+    period: 0
+    type: nb_hits
