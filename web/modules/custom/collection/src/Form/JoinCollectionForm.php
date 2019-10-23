@@ -29,20 +29,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * A simple form with a button to join or leave a collection.
  */
 class JoinCollectionForm extends FormBase {
-
-  /**
-   * CSS classes that will make a link look like a button.
-   */
-  const LINK_BUTTON_CLASSES = [
-    'button',
-    'button--blue-light',
-    'mdl-button',
-    'mdl-js-button',
-    'mdl-button--raised',
-    'mdl-js-ripple-effect',
-    'mdl-button--accent',
-  ];
-
   /**
    * The entity type manager service.
    *
@@ -144,9 +130,6 @@ class JoinCollectionForm extends FormBase {
         '#ajax' => [
           'callback' => '::showSubscribeDialog',
         ],
-        '#attributes' => [
-          'class' => self::LINK_BUTTON_CLASSES,
-        ],
         '#type' => 'submit',
         '#value' => $this->t('Join this collection'),
       ];
@@ -186,9 +169,6 @@ class JoinCollectionForm extends FormBase {
         '#type' => 'link',
         '#title' => $this->t('Membership is pending'),
         '#url' => Url::fromRoute('<current>', [], ['fragment' => 'pending']),
-        '#attributes' => [
-          'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
-        ],
       ];
     }
 
