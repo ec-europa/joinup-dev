@@ -5,16 +5,15 @@ Feature: "Add discussion" visibility options.
   I need to be able to add "Discussion" content through UI.
 
   Scenario: "Add discussion" button should not be shown to normal members, authenticated users and anonymous users.
-    Given the following solutions:
-      | title              | logo     | banner     | state     |
-      | Eager Sliver       | logo.png | banner.jpg | validated |
-      | The Silent Bridges | logo.png | banner.jpg | validated |
-    And the following collection:
-      | title      | Collective Eager Sliver          |
-      | logo       | logo.png                         |
-      | banner     | banner.jpg                       |
-      | affiliates | Eager Sliver, The Silent Bridges |
-      | state      | validated                        |
+    Given the following collection:
+      | title  | Collective Eager Sliver |
+      | logo   | logo.png                |
+      | banner | banner.jpg              |
+      | state  | validated               |
+    And the following solutions:
+      | title              | collection              | logo     | banner     | state     |
+      | Eager Sliver       | Collective Eager Sliver | logo.png | banner.jpg | validated |
+      | The Silent Bridges | Collective Eager Sliver | logo.png | banner.jpg | validated |
 
     When I am logged in as an "authenticated user"
     And I go to the homepage of the "Eager Sliver" solution
@@ -36,15 +35,14 @@ Feature: "Add discussion" visibility options.
     Then I should see the link "Add discussion"
 
   Scenario: Add discussion as a facilitator.
-    Given solutions:
-      | title               | logo     | banner     | state     |
-      | Emerald in the Luck | logo.png | banner.jpg | validated |
-    And the following collection:
-      | title      | Collective Emerald in the Luck |
-      | logo       | logo.png                       |
-      | banner     | banner.jpg                     |
-      | affiliates | Emerald in the Luck            |
-      | state      | validated                      |
+    Given the following collection:
+      | title  | Collective Emerald in the Luck |
+      | logo   | logo.png                       |
+      | banner | banner.jpg                     |
+      | state  | validated                      |
+    And the following solutions:
+      | title               | collection                     | logo     | banner     | state     |
+      | Emerald in the Luck | Collective Emerald in the Luck | logo.png | banner.jpg | validated |
     And I am logged in as a facilitator of the "Emerald in the Luck" solution
 
     When I go to the homepage of the "Emerald in the Luck" solution
@@ -65,7 +63,7 @@ Feature: "Add discussion" visibility options.
     When I fill in the following:
       | Title            | Flight of Girlfriend                       |
       | Content          | This is going to be an amazing discussion. |
-      | File description | A picture of a flying girlfriend.          |
+      | File description | A picture of a flying girlfriend           |
     And I press "Publish"
     Then I should see the heading "Flight of Girlfriend"
     And I should see the success message "Discussion Flight of Girlfriend has been created."
@@ -73,3 +71,15 @@ Feature: "Add discussion" visibility options.
     # Check that the link to the discussion is visible on the solution page.
     When I go to the homepage of the "Emerald in the Luck" solution
     Then I should see the link "Flight of Girlfriend"
+
+    # Check that an anonymous user can see the information.
+    Given I am an anonymous user
+    When I go to the "Flight of Girlfriend" discussion
+    Then I should see the following headings:
+      | Emerald in the Luck  |
+      | Flight of Girlfriend |
+    And I should see the following lines of text:
+      | This is going to be an amazing discussion. |
+      | Attachments                                |
+      | 176 bytes                                  |
+    And I should see the link "A picture of a flying girlfriend"

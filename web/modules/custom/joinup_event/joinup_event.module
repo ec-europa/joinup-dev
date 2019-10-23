@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\joinup_event\Plugin\Field\FieldFormatter\WebtoolsMapFormatter;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
@@ -40,5 +41,14 @@ function joinup_event_preprocess_fieldset(array &$variables): void {
   // Add an "asterisk" to the Event Location Field Group.
   if ($variables['element']['#id'] == 'group-event-location') {
     $variables['legend_span']['attributes']->addClass('js-form-required form-required');
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function joinup_event_field_formatter_info_alter(array &$info) {
+  if (isset($info['oe_webtools_maps_map'])) {
+    $info['oe_webtools_maps_map']['class'] = WebtoolsMapFormatter::class;
   }
 }

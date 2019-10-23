@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -36,6 +37,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -56,6 +58,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
@@ -630,6 +633,13 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception('Please use "pinned" instead of "sticky".');
     }
 
+    if (property_exists($node, 'visit_count')) {
+      $node->visit_count = MetaEntity::create([
+        'type' => 'visit_count',
+        'count' => (int) $node->visit_count,
+      ]);
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -697,7 +707,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
-        'visits' => 'field_visit_count',
+        'visits' => 'visit_count',
         'featured' => 'field_site_featured',
         'pinned site-wide' => 'field_site_pinned',
       ],
@@ -1187,7 +1197,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Assert that the given form submission buttons are present on the page.
+   * Asserts that the given form submission buttons are present on the page.
    *
    * @param string $buttons
    *   A comma separated list of button labels.
@@ -1206,17 +1216,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
-    $page = $this->getSession()->getPage();
-    $not_found = [];
-    foreach ($buttons as $button) {
-      if (!$page->findButton($button)) {
-        $not_found[] = $button;
-      }
-    }
-
-    if (!empty($not_found)) {
-      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
-    }
+    $this->assertSubmitButtonsVisible($buttons, FALSE);
 
     if (!empty($count)) {
       // Only check the actual form submit buttons, ignore other buttons that
@@ -1525,6 +1525,19 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception('The current workflow state field is not present on the page.');
     }
     Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Checks that the given workflow buttons are visible.
+   *
+   * @param string $buttons
+   *   A comma separated list of workflow button labels.
+   *
+   * @Then I should see the workflow buttons :buttons
+   */
+  public function assertWorkflowButtons(string $buttons): void {
+    $labels = $this->explodeCommaSeparatedStepArgument($buttons);
+    $this->assertSubmitButtonsVisible($labels);
   }
 
   /**

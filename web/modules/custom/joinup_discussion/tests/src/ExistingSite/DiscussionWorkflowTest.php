@@ -66,7 +66,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
     foreach (['collection', 'solution'] as $bundle) {
       unset($data[$bundle][self::PRE_MODERATION]);
       foreach (['userModerator', 'userOgFacilitator'] as $user) {
-        $data[$bundle][self::POST_MODERATION]['validated']['any'][$user][] = 'disable';
+        $data[$bundle][self::POST_MODERATION]['validated']['any'][$user][] = 'archived';
       }
     }
 

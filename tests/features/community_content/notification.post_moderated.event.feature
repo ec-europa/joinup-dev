@@ -20,13 +20,13 @@ Feature: Notification test for the event transitions on a post moderated parent.
       | CC post collection | CC facilitator | facilitator |
       | CC post collection | CC member      |             |
     And event content:
-      | title                                | author    | body | location                             | collection         | field_state  |
-      | CC notify post publish               | CC member | body | CC notify post publish               | CC post collection | draft        |
-      | CC notify post request changes       | CC member | body | CC notify post request changes       | CC post collection | validated    |
-      | CC notify post report                | CC member | body | CC notify post report                | CC post collection | validated    |
-      | CC notify post propose from reported | CC member | body | CC notify post propose from reported | CC post collection | needs_update |
-      | CC notify post approve proposed      | CC member | body | CC notify post approve proposed      | CC post collection | proposed     |
-      | CC notify post delete                | CC member | body | CC notify post delete                | CC post collection | validated    |
+      | title                                | author    | body | location                       | collection         | field_state  |
+      | CC notify post publish               | CC member | body | Half Moon Street, London       | CC post collection | draft        |
+      | CC notify post request changes       | CC member | body | Quai d'Orleans, Paris          | CC post collection | validated    |
+      | CC notify post report                | CC member | body | Rue du Mont Thabor, Paris      | CC post collection | validated    |
+      | CC notify post propose from reported | CC member | body | Cort Adelers Gate, Oslo        | CC post collection | needs_update |
+      | CC notify post approve proposed      | CC member | body | Ferdinand Bolstraat, Amsterdam | CC post collection | proposed     |
+      | CC notify post delete                | CC member | body | Lychener Strasse, Berlin       | CC post collection | validated    |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -35,7 +35,7 @@ Feature: Notification test for the event transitions on a post moderated parent.
     And I click "Add event" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"
-    And I fill in "Physical location" with "CC notify create publish"
+    And I fill in "Physical location" with "Capel Street, Dublin"
     And I press "Publish"
     Then the following email should have been sent:
       | recipient | CC owner                                                                                                                                                              |

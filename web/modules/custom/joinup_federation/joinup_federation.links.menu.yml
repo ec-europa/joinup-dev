@@ -1,0 +1,6 @@
+joinup_federation.adms_ap_importer:
+  title: 'ADMS-AP importer'
+  route_name: pipeline.pipeline_select
+  description: 'Imports federated data.'
+  parent: system.admin
+  weight: 2

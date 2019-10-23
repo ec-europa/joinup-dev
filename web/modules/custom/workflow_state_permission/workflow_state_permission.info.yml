@@ -1,0 +1,5 @@
+name: workflow_state_permission
+type: module
+description: Provides a plugin type to determine access to workflow states.
+package: Custom
+core: 8.x
