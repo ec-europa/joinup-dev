@@ -4,6 +4,7 @@ namespace Drupal\joinup_community_content\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_core\Form\ShareContentFormBase;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 
