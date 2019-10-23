@@ -8,7 +8,6 @@
 use Drupal\Core\Database\Database;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Site\Settings;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\user\Entity\User;
@@ -460,16 +459,4 @@ function joinup_core_update_8113(array &$sandbox): ?string {
   }
 
   return "Finished collecting {$sandbox['progress']} node visit counts.";
-}
-
-/**
- * Stats #3: Uninstall stale fields.
- */
-function joinup_core_update_8114(): void {
-  // Delete 'field_download_count' field.
-  FieldConfig::loadByName('rdf_entity', 'asset_distribution', 'field_download_count')->delete();
-  // Delete 'field_visit_count' field.
-  foreach (['discussion', 'document', 'event', 'news'] as $bundle) {
-    FieldConfig::loadByName('node', $bundle, 'field_visit_count')->delete();
-  }
 }
