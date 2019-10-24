@@ -86,10 +86,7 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function getCacheTags(): array {
-    // Add the 'tallinn_dashboard' tag so that we can invalidate the cache in
-    // \Drupal\tallinn\Form\TallinnSettingsForm::submitForm().
-    // @see \Drupal\tallinn\Form\TallinnSettingsForm::submitForm()
-    $tags = Cache::mergeTags(parent::getCacheTags(), ['tallinn_dashboard']);
+    $tags = parent::getCacheTags();
 
     // Merge the tags of each report.
     $storage = $this->entityTypeManager->getStorage('node');
@@ -101,6 +98,14 @@ class DashboardBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $tallinn_collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID);
     $tallinn_collection_tags = !empty($tallinn_collection) ? $tallinn_collection->getCacheTags() : [];
     return Cache::mergeTags($tags, $tallinn_collection_tags);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    $cache_contexts = parent::getCacheContexts();
+    return Cache::mergeContexts($cache_contexts, ['tallinn_access_policy', 'url']);
   }
 
   /**

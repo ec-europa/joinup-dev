@@ -6,6 +6,7 @@ namespace Drupal\tallinn;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -58,13 +59,18 @@ class DashboardAccess implements DashboardAccessInterface {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account): AccessResultInterface {
-    $access_policy = $this->state->get('tallinn.access_policy', 'restricted');
+    // Access varies by the Tallinn access policy, and by whether we are
+    // determining access for the REST API or a page that displays the dashboard
+    // block.
+    $cacheable_metadata = (new CacheableMetadata())->addCacheContexts(['tallinn_access_policy', 'url']);
+
     $tallinn_collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID);
     // Deny access if the Tallinn collection does not exist.
     if (empty($tallinn_collection)) {
-      return AccessResult::forbidden();
+      return AccessResult::forbidden()->addCacheableDependency($cacheable_metadata);
     }
 
+    $access_policy = $this->state->get('tallinn.access_policy', 'restricted');
     return AccessResult::allowedIf(
       // Either the access is public.
       $access_policy === 'public' ||
@@ -74,7 +80,7 @@ class DashboardAccess implements DashboardAccessInterface {
       $account->hasPermission('administer tallinn settings') ||
       // Or the user has group access permission.
       $this->ogAccess->userAccess($tallinn_collection, 'administer tallinn settings')->isAllowed()
-    );
+    )->addCacheableDependency($cacheable_metadata);
   }
 
 }

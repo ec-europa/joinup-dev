@@ -79,8 +79,6 @@ class TallinnSettingsForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $this->state->set('tallinn.access_policy', $form_state->getValue('access_policy'));
-    // Invalidate 'tallinn_dashboard' cache.
-    Cache::invalidateTags(['tallinn_dashboard']);
     $this->messenger()->addStatus($this->t('Access policy successfully updated.'));
   }
 

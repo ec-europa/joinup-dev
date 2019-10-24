@@ -1,4 +1,9 @@
 services:
+  cache_context.tallinn_access_policy:
+    class: Drupal\tallinn\Cache\Context\TallinnAccessPolicyCacheContext
+    arguments: ['@state']
+    tags:
+      - { name: cache.context }
   tallinn.dashboard.access:
     class: 'Drupal\tallinn\DashboardAccess'
     arguments: ['@state', '@og.access', '@og.membership_manager']
