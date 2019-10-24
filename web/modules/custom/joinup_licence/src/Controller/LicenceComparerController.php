@@ -120,7 +120,16 @@ class LicenceComparerController extends ControllerBase {
       ],
     ];
 
-    $this->cacheMetadata->applyTo($build);
+    $this->cacheMetadata
+      // This page cache is properly tagged with cache tags and will be
+      // invalidated as soon as one of the dependencies are updated or deleted.
+      // However, the licence comparer permits a huge amount of licence
+      // combinations and that would flood the cache backend. As updating or
+      // deleting licences is a very rare event, the cached items may be stored
+      // for a long period of time. We ensure a life time for cached licence
+      // comparision of one month: 60 * 60 * 24 * 30 = 2,592,000.
+      ->setCacheMaxAge(2592000)
+      ->applyTo($build);
 
     return $build;
   }
