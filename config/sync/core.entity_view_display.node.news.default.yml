@@ -18,7 +18,6 @@ dependencies:
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
-    - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
     - image.style.image_style_news_logo
     - node.type.news
@@ -216,7 +215,6 @@ hidden:
   field_site_featured: true
   field_site_pinned: true
   field_state: true
-  field_visit_count: true
   langcode: true
   links: true
   og_audience: true

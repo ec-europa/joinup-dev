@@ -63,6 +63,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'text',
     'tour',
     'user',
+    'workflow_state_permission',
   ];
 
   /**

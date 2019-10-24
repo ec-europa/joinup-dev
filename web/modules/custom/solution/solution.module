@@ -23,10 +23,10 @@ use Drupal\og\Og;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -241,18 +241,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
       /** @var \Drupal\asset_distribution\AssetDistributionRelations $relationship_counselor */
       $relationship_counselor = \Drupal::service('asset_distribution.relations');
       foreach ($relationship_counselor->getSolutionDistributions($entity) as $distribution) {
-        foreach ($distribution->field_download_count->getValue() as $item) {
-          // @todo The support for fields with multiple properties has not yet
-          //   been implemented in RDF entity. These are currently returned as
-          //   multiple field items, each containing one of the properties.
-          //   Once this is fixed we no longer need to check whether the 'value'
-          //   parameter exists, it will always be there.
-          // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3576
-          // @see https://www.drupal.org/node/2892361
-          if (!empty($item['value'])) {
-            $total += (int) $item['value'];
-          }
-        }
+        $total += $distribution->download_count->entity->count->value;
       }
     }
 
@@ -262,10 +251,23 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     // @see joinup_theme_preprocess_container__stats_topic()
     $build['downloads'] = [
       '#type' => 'container',
-      '#stats_topic' => t('Downloads'),
-      0 => ['#markup' => (string) $total],
-      // Hide the download stats when there are no downloads.
-      '#access' => $total > 0,
+      'count' => [
+        '#type' => 'container',
+        '#stats_topic' => t('Downloads'),
+        [
+          '#markup' => $total,
+        ],
+        // Hide the download stats when there are no downloads.
+        '#access' => $total > 0,
+      ],
+      '#cache' => [
+        // Allow clearing the render cache of this element. By using a dedicated
+        // cache tag, we avoid invalidating the solution tag as that would
+        // result in clearing of too many cache entries. We're applying the
+        // cache tag to an outer wrapper so that, when the inner element is not
+        // rendered ($total === 0), the cache tag also bubbles up to the page.
+        'tags' => ['solution_download_count:' . md5($entity->id())],
+      ],
     ];
   }
 

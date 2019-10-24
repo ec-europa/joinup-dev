@@ -1,0 +1,28 @@
+uuid: 59eeb28d-3187-4238-b793-a2c81e01c5e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.meta_entity.count
+    - meta_entity.type.download_count
+  module:
+    - cached_computed_field
+_core:
+  default_config_hash: zCmHYIJnhZ3Ztik-3HgtOnUpVm1CDW8GxfrZlf41p_g
+id: meta_entity.download_count.count
+field_name: count
+entity_type: meta_entity
+bundle: download_count
+label: 'Download count'
+description: 'The number of times the file attached to the target entity of this metadata has been downloaded. This data is retrieved from the Matomo analytics platform and is updated on regular intervals, causing any manually entered data to be overwritten.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+  cache-max-age: 86400
+field_type: cached_computed_integer

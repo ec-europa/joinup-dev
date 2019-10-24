@@ -30,19 +30,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\collection\Form\JoinCollectionForm::showSubscribeDialog()
  */
 class SubscribeToCollectionForm extends FormBase {
-
-  /**
-   * CSS classes that will make a link look like a button.
-   */
-  const LINK_BUTTON_CLASSES = [
-    'button',
-    'mdl-button',
-    'mdl-js-button',
-    'mdl-button--raised',
-    'mdl-js-ripple-effect',
-    'mdl-button--accent',
-  ];
-
   /**
    * The entity type manager service.
    *
@@ -142,9 +129,6 @@ class SubscribeToCollectionForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('No thanks'),
       '#extra_suggestion' => 'light_blue',
-      '#attributes' => [
-        'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small', 'dialog-cancel']),
-      ],
     ];
 
     $form['actions']['confirm'] = [
@@ -167,9 +151,6 @@ class SubscribeToCollectionForm extends FormBase {
             FormBuilderInterface::AJAX_FORM_REQUEST => TRUE,
           ],
         ],
-      ],
-      '#attributes' => [
-        'class' => array_merge(self::LINK_BUTTON_CLASSES, ['button--small']),
       ],
     ];
 

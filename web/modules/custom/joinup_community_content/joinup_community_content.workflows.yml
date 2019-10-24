@@ -4,6 +4,8 @@ node:pre_moderated:
   label: "Pre moderated"
   group: community_content
   states:
+    __new__:
+      label: New
     draft:
       label: Draft
     validated:
@@ -18,7 +20,7 @@ node:pre_moderated:
   transitions:
     save_as_draft:
       label: 'Save as draft'
-      from: [draft]
+      from: [__new__]
       to: draft
     save_new_draft:
       label: 'Save new draft'
@@ -26,7 +28,7 @@ node:pre_moderated:
       to: draft
     propose:
       label: 'Propose'
-      from: [draft]
+      from: [__new__, draft]
       to: proposed
     propose_from_reported:
       label: 'Propose'
@@ -34,19 +36,11 @@ node:pre_moderated:
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft]
+      from: [__new__, draft]
       to: validated
     approve_proposed:
       label: 'Publish'
       from: [proposed]
-      to: validated
-    update_proposed:
-      label: 'Update'
-      from: [proposed]
-      to: proposed
-    update_published:
-      label: 'Update'
-      from: [validated]
       to: validated
     report:
       label: 'Report'
@@ -70,6 +64,8 @@ node:post_moderated:
   label: "Post moderated"
   group: community_content
   states:
+    __new__:
+      label: New
     draft:
       label: Draft
     validated:
@@ -82,7 +78,7 @@ node:post_moderated:
   transitions:
     save_as_draft:
       label: 'Save as draft'
-      from: [draft]
+      from: [__new__]
       to: draft
     save_new_draft:
       label: 'Save new draft'
@@ -94,19 +90,11 @@ node:post_moderated:
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft]
+      from: [__new__, draft]
       to: validated
     approve_proposed:
       label: 'Publish'
       from: [proposed]
-      to: validated
-    update_proposed:
-      label: 'Update'
-      from: [proposed]
-      to: proposed
-    update_published:
-      label: 'Update'
-      from: [validated]
       to: validated
     report:
       label: 'Report'
@@ -123,6 +111,8 @@ node:discussion:post_moderated:
   label: "Discussion (Post moderated)"
   group: community_content
   states:
+    __new__:
+      label: New
     draft:
       label: Draft
     validated:
@@ -138,7 +128,7 @@ node:discussion:post_moderated:
   transitions:
     save_as_draft:
       label: 'Save as draft'
-      from: [draft]
+      from: [__new__]
       to: draft
     save_new_draft:
       label: 'Save new draft'
@@ -150,19 +140,11 @@ node:discussion:post_moderated:
       to: proposed
     publish:
       label: 'Publish'
-      from: [draft]
+      from: [__new__, draft]
       to: validated
     approve_proposed:
       label: 'Publish'
       from: [proposed]
-      to: validated
-    update_proposed:
-      label: 'Update'
-      from: [proposed]
-      to: proposed
-    update_published:
-      label: 'Update'
-      from: [validated]
       to: validated
     report:
       label: 'Report'

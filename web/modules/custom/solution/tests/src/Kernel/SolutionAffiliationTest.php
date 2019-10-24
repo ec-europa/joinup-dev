@@ -62,6 +62,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     'text',
     'tour',
     'user',
+    'workflow_state_permission',
   ];
 
   /**

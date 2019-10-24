@@ -19,7 +19,7 @@ required: true
 translatable: false
 default_value:
   -
-    value: draft
+    value: __new__
 default_value_callback: ''
 settings:
   workflow: ''
