@@ -133,12 +133,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
 
           $non_allowed_roles = array_diff($test_roles, array_keys($allowed_roles));
           foreach ($allowed_roles as $user_var => $expected_target_states) {
-            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, E-Library: {$elibrary}, User variable: {$user_var}, Operation: {$operation}";
             $actual_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->{$user_var});
             $this->assertWorkflowStatesEqual($expected_target_states, $actual_target_states, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
-            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, User variable: {$user_var}, Operation: {$operation}";
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, E-Library: {$elibrary}, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
             $this->assertFalse($access, $message);
           }
@@ -334,6 +334,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'proposed',
               'validated',
             ],
+            'userOgAdministrator' => [
+              'draft',
+              'proposed',
+            ],
           ],
           ELibraryCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
@@ -381,6 +385,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
             'userOgFacilitator' => [
+              'draft',
+              'validated',
+            ],
+            'userOgAdministrator' => [
               'draft',
               'validated',
             ],
@@ -442,6 +450,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'proposed',
               'validated',
             ],
+            'userOgMember' => [
+              'draft',
+              'proposed',
+            ],
           ],
         ],
         self::POST_MODERATION => [
@@ -469,6 +481,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
             'userOgFacilitator' => [
+              'draft',
+              'validated',
+            ],
+            'userOgMember' => [
               'draft',
               'validated',
             ],

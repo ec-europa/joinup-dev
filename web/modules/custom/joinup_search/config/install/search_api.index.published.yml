@@ -11,7 +11,6 @@ dependencies:
     - field.storage.node.field_scope
     - field.storage.node.field_shared_in
     - field.storage.node.field_short_title
-    - field.storage.node.field_visit_count
     - field.storage.rdf_entity.field_ar_abstract
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_ci_name
@@ -281,11 +280,11 @@ field_settings:
   field_visit_count:
     label: 'Visit count'
     datasource_id: 'entity:node'
-    property_path: field_visit_count
+    property_path: 'visit_count:entity:count'
     type: integer
     dependencies:
       config:
-        - field.storage.node.field_visit_count
+        - field.storage.meta_entity.count
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'

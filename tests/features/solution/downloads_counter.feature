@@ -23,9 +23,6 @@ Feature:
     # Check the same thing on the homepage of the solutions.
     Then I should see the text "Downloads: 10"
     When I delete the "Sample distribution" asset distribution
-    # @todo The download counter should be invalidated when it changes.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
-    And the cache has been cleared
     And I reload the page
     # Check it again after the first distribution is deleted and cache has been cleared.
     Then I should not see the text "Downloads: 10"

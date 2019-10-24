@@ -97,7 +97,7 @@
     </target>
 
     <!-- Execute Drupal updates. -->
-    <target name="execute-updates" depends="disable-config-read-only">
+    <target name="execute-updates" depends="disable-config-read-only, redis-flush">
         <drush
                 command="updatedb"
                 assume="yes"

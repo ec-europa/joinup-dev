@@ -141,8 +141,11 @@ function custom_page_search_api_query_search_api_field_field_cp_content_listing_
   }
 
   $field_value = $query->getOption('search_api_field item')->value;
-
-  if (!empty($field_value['show_shared'])) {
+  /** @var \Drupal\search_api\Query\Query $query */
+  if ($field_value['global_search']) {
+    $query->addCondition('entity_groups', NULL, '<>');
+  }
+  elseif (!empty($field_value['show_shared'])) {
     $or = $query
       ->createConditionGroup('or')
       ->addCondition('field_shared_in', [$group->id()], 'IN')

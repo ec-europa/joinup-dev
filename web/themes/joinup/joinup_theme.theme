@@ -1488,6 +1488,42 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   if ($form_id == 'user_form' && isset($form['user_name'])) {
     $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
   }
+
+  $link_button_classes = [
+    'button',
+    'button--blue-light',
+    'mdl-button',
+    'mdl-js-button',
+    'mdl-button--raised',
+    'mdl-js-ripple-effect',
+    'mdl-button--accent',
+  ];
+
+  switch ($form_id) {
+    case 'join_collection_form':
+      // Add class for join collection button.
+      $form['join']['#attributes']['class'][] = 'button--blue-light';
+
+      if (isset($form['pending'])) {
+        // Add classes for pending membership link.
+        $form['pending']['#attributes']['class'] = array_merge($link_button_classes, ['button--small']);
+      }
+      break;
+
+    case 'subscribe_to_collection_form':
+      // Add classes in subscribe to collection form.
+      $form['actions']['cancel']['#attributes']['class'][] = 'button--small';
+      $form['actions']['cancel']['#attributes']['class'][] = 'dialog-cancel';
+      $form['actions']['confirm']['#attributes']['class'][] = 'button--small';
+      break;
+
+    case 'joinup_subscription_my_subscriptions':
+      // Add classes for unsubscribe all link.
+      if (isset($form['edit-actions']['unsubscribe_all'])) {
+        $form['edit-actions']['unsubscribe_all']['#attributes']['class'] = array_merge($link_button_classes, ['featured__form-button']);
+      }
+      break;
+  }
 }
 
 /**
@@ -1570,8 +1606,8 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
  */
 function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables) {
   // Add a flag to indicate if the download counter is visible.
-  if (isset($variables['elements']['downloads']['#access'])) {
-    $variables['show_download_counter'] = $variables['elements']['downloads']['#access'];
+  if (isset($variables['elements']['downloads']['count']['#access'])) {
+    $variables['show_download_counter'] = $variables['elements']['downloads']['count']['#access'];
   }
 }
 

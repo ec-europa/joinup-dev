@@ -1,0 +1,204 @@
+<?php
+
+/**
+ * @file
+ * Joinup Statistics module main file.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
+use Drupal\meta_entity\Entity\MetaEntity;
+use Drupal\meta_entity\Entity\MetaEntityInterface;
+use Drupal\rdf_entity\RdfInterface;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * Ensure that the meta entity is automatically created whenever a new content
+ * entity is created that is configured to have metadata attached to it. We need
+ * to have the meta entities available because we are tracking download counts
+ * in the meta entity using a cached computed field. This field has an
+ * expiration time after which it will be refreshed during a cron job. If we do
+ * not have the field, then we will not know when it expires, and it will never
+ * be updated.
+ */
+function joinup_stats_entity_insert(EntityInterface $entity): void {
+  if ($entity instanceof ContentEntityInterface) {
+    /** @var \Drupal\meta_entity\MetaEntityRepositoryInterface $repository */
+    $repository = \Drupal::service('meta_entity.repository');
+    foreach ($repository->getMetaEntityTypesForBundle($entity->getEntityTypeId(), $entity->bundle()) as $type) {
+      $meta_entity = MetaEntity::loadOrCreate($type, $entity);
+      if ($meta_entity->isNew()) {
+        $meta_entity->save();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function joinup_stats_rdf_entity_insert(RdfInterface $distribution): void {
+  // Invalidate the solution download count cache.
+  joinup_stats_invalidate_solution_download_count_cache_by_distribution($distribution);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_stats_meta_entity_update(MetaEntityInterface $meta_entity): void {
+  // Invalidate the solution download count cache.
+  joinup_stats_invalidate_solution_download_count_cache($meta_entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function joinup_stats_rdf_entity_delete(RdfInterface $distribution): void {
+  // Invalidate the solution download count cache.
+  joinup_stats_invalidate_solution_download_count_cache_by_distribution($distribution);
+}
+
+/**
+ * Invalidates the solution download count cache for a distribution meta entity.
+ *
+ * @param \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity
+ *   The distribution download count meta entity.
+ */
+function joinup_stats_invalidate_solution_download_count_cache(MetaEntityInterface $meta_entity): void {
+  if ($meta_entity->bundle() === 'download_count') {
+    /** @var \Drupal\rdf_entity\RdfInterface $distribution */
+    $distribution = $meta_entity->target->entity;
+    joinup_stats_invalidate_solution_download_count_cache_by_distribution($distribution);
+  }
+}
+
+/**
+ * Invalidates the solution download count cache when a distribution.
+ *
+ * This is called when a distribution is added or deleted.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $distribution
+ *   The asset distribution being added or deleted.
+ */
+function joinup_stats_invalidate_solution_download_count_cache_by_distribution(RdfInterface $distribution): void {
+  if ($distribution->bundle() === 'asset_distribution') {
+    /** @var \Drupal\rdf_entity\RdfInterface $solution */
+    if ($solution = $distribution->get('og_audience')->entity) {
+      // On solution page we show the sum of all compounded distributions
+      // download count. When a distribution download count changes, we need to
+      // recompute the value by invalidating the cached render array.
+      Cache::invalidateTags(['solution_download_count:' . md5($solution->id())]);
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function joinup_stats_module_implements_alter(array &$implementations, $hook): void {
+  if ($hook === 'cron') {
+    // Use the custom hook_cron() implementation, provided by 'joinup_stats'
+    // module, to trigger the Cached Computed Field cron tasks.
+    // @see joinup_stats_cron()
+    unset($implementations['cached_computed_field']);
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function joinup_stats_cron(): void {
+  // By adding this line in settings.php and rebuilding the cache the processing
+  // of cached computed fields can be suppressed:
+  // @code
+  // $settings['joinup.parse_cached_computed_field'] = FALSE;
+  // @endcode
+  if (Settings::get('joinup.parse_cached_computed_field', TRUE)) {
+    cached_computed_field_cron();
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_stats_form_meta_entity_type_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Other modules might have already set this wrapper.
+  if (!isset($form['third_party_settings'])) {
+    $form['third_party_settings'] = [
+      '#tree' => TRUE,
+    ];
+  }
+
+  /** @var \Drupal\meta_entity\Form\MetaEntityTypeForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\meta_entity\Entity\MetaEntityTypeInterface $meta_entity_type */
+  $meta_entity_type = $form_object->getEntity();
+
+  $form['third_party_settings']['joinup_stats'] = [
+    '#type' => 'details',
+    '#title' => t('Joinup Statistics'),
+    'matomo_method' => [
+      '#type' => 'textfield',
+      '#title' => t('Matomo method'),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'matomo_method'),
+    ],
+    'parameter_name' => [
+      '#type' => 'textfield',
+      '#title' => t('URL parameter name'),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'parameter_name'),
+    ],
+    'parameter_method' => [
+      '#type' => 'textfield',
+      '#title' => t('Parameter method'),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'parameter_method'),
+    ],
+    'period' => [
+      '#type' => 'select',
+      '#title' => t('Period'),
+      '#options' => joinup_stats_get_period_options(),
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'period'),
+    ],
+    'type' => [
+      '#type' => 'radios',
+      '#title' => t('Type'),
+      '#options' => [
+        'nb_visits' => t('Visits'),
+        'nb_hits' => t('Hits'),
+      ],
+      '#default_value' => $meta_entity_type->getThirdPartySetting('joinup_stats', 'type'),
+    ],
+  ];
+
+}
+
+/**
+ * Returns select options for the time period fields.
+ *
+ * @return array
+ *   An array of select options.
+ */
+function joinup_stats_get_period_options() {
+  // How long is a month? Somewhere between 30 and 31 days. To get a better
+  // answer we can say that an average month is 1/12th of a year. And a year is
+  // the time needed for the earth to orbit the sun, which is a bit more than
+  // 365 days. So an average month is 30 days, 10 hours, 30 minutes, and 45
+  // seconds.
+  // @see http://www.wolframalpha.com/input/?i=earth+orbital+period
+  $month_in_days = 365.25636 / 12;
+  return [
+    7 => t('1 week'),
+    14 => t('2 weeks'),
+    22 => t('3 weeks'),
+    (int) round($month_in_days) => t('1 month'),
+    (int) round(2 * $month_in_days) => t('2 months'),
+    (int) round(3 * $month_in_days) => t('3 months'),
+    (int) round(6 * $month_in_days) => t('6 months'),
+    0 => t('All time'),
+  ];
+}
