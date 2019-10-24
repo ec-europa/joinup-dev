@@ -16,16 +16,6 @@ joinup_licence.add:
   requirements:
     _entity_create_access: 'rdf_entity:licence'
 
-joinup_licence.comparer.spdx_ids:
-  path: '/licence/compare/{spdx_ids}'
-  defaults:
-    _controller: 'Drupal\joinup_licence\Controller\LicenceComparerController::compare'
-  requirements:
-    # Permissive regex to allow slashes in {spdx_ids}. See
-    # https://symfony.com/doc/current/routing.html#slash-characters-in-route-parameters
-    spdx_ids: .+
-    _access: 'TRUE'
-
 joinup_licence.comparer:
   path: '/licence/compare'
   defaults:

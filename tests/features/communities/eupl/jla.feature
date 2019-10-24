@@ -4,7 +4,8 @@ Feature:
   in order to make it easier for users to find appropriate licences
   I need to be able to present them in a nice searchable way.
 
-  Background:
+  @javascript
+  Scenario: Present and search the licences.
     Given SPDX licences:
       | uri                       | title            | ID       |
       | http://joinup.eu/spdx/foo | SPDX licence foo | SPDX_FOO |
@@ -13,11 +14,6 @@ Feature:
       | uri                             | title          | description                             | type | spdx licence     | legal type                                                            |
       | http://joinup.eu/licence/foo    | Foo Licence    | Licence details for the foo licence.    |      | SPDX licence foo | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
       | http://joinup.eu/licence/bar    | Bar Licence    | Licence details for the bar licence.    |      | SPDX licence bar | Distribute                                                            |
-
-  @javascript
-  Scenario: Present and search the licences.
-    Given licences:
-      | uri                             | title          | description                             | type | spdx licence     | legal type                                                            |
       | http://joinup.eu/licence/random | Random Licence | A licence that should not be available. |      |                  | Distribute                                                            |
 
     When I am not logged in
@@ -75,82 +71,96 @@ Feature:
   Scenario: Test the licence comparer.
 
     Given SPDX licences:
-      | uri                         | title              | ID         |
-      | http://joinup.eu/spdx/baz   | SPDX licence baz   | SPDX_BAZ   |
-      | http://joinup.eu/spdx/qux   | SPDX licence qux   | SPDX_QUX   |
-      | http://joinup.eu/spdx/quux  | SPDX licence quux  | SPDX_QUUX  |
-      | http://joinup.eu/spdx/waldo | SPDX licence waldo | SPDX_WALDO |
+      | uri                              | title      | ID         |
+      | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |
+      | http://joinup.eu/spdx/GPL-2.0+   | GPL-2.0+   | GPL-2.0+   |
+      | http://joinup.eu/spdx/BSL-1.0    | BSL-1.0    | BSL-1.0    |
+      | http://joinup.eu/spdx/0BSD       | 0BSD       | 0BSD       |
+      | http://joinup.eu/spdx/UPL-1.0    | UPL-1.0    | UPL-1.0    |
+      | http://joinup.eu/spdx/LGPL-2.1   | LGPL-2.1   | LGPL-2.1   |
+    And licences:
+      | uri                               | title                                    | spdx licence | legal type                                                            |
+      | http://joinup.eu/licence/apache20 | Apache License, Version 2.0              | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/gpl2plus | GNU General Public License v2.0 or later | GPL-2.0+     | Distribute                                                            |
 
     # Test the page when the comparision list is missed.
     When I am on "/licence/compare"
     Then I should get a 404 HTTP response
 
+    # Test the page when the parameter is not an array.
+    When I am on "/licence/compare?licence=Apache-2.0"
+    Then I should get a 404 HTTP response
+
     # Test the page when there's only one licence.
-    When I am on "/licence/compare/SPDX_FOO"
+    When I am on "/licence/compare?licence[]=Apache-2.0"
     Then I should get a 404 HTTP response
 
     # Test the page when there are too many licences.
-    When I am on "/licence/compare/SPDX_FOO/SPDX_BAR/SPDX_BAZ/SPDX_QUX/SPDX_QUUX/SPDX_WALDO"
+    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+&licence[]=BSL-1.0&licence[]=0BSD&licence[]=UPL-1.0&licence[]=LGPL-2.1"
+    Then I should get a 404 HTTP response
+
+    # Test the page when there are invalid characters in the SPDX licence ID.
+    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=G$^#@!PL-2.0"
     Then I should get a 404 HTTP response
 
     # Test the page when there are invalid SPDX IDs licences.
-    When I am on "/licence/compare/ARBITRARY/SPDX/LICENCES"
+    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+&licence[]=NOT-EXIST"
     Then I should get a 404 HTTP response
 
     # Test the page with SPDX IDs without a corresponding Joinup licence.
-    When I am on "/licence/compare/SPDX_FOO/SPDX_BAR/SPDX_BAZ/SPDX_QUX/SPDX_QUUX"
+    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+&licence[]=BSL-1.0"
     Then I should get a 404 HTTP response
 
-    When I visit "/licence/compare/SPDX_FOO/SPDX_BAR"
+    When I visit "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+"
     Then I should see the "licence comparer" table
     And the "licence comparer" table should be:
-      | Can                | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Use/reproduce      | x          |          |  |  |  |
-      | Distribute         |            | x        |  |  |  |
-      | Modify/merge       |            |          |  |  |  |
-      | Sublicense         |            |          |  |  |  |
-      | Commercial use     |            |          |  |  |  |
-      | Use patents        |            |          |  |  |  |
-      | Place warranty     |            |          |  |  |  |
-      | Must               | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Incl. Copyright    |            |          |  |  |  |
-      | Royalty free       | x          |          |  |  |  |
-      | State changes      |            |          |  |  |  |
-      | Disclose source    |            |          |  |  |  |
-      | Copyleft/Share a.  |            |          |  |  |  |
-      | Lesser copyleft    |            |          |  |  |  |
-      | SaaS/network       |            |          |  |  |  |
-      | Include licence    |            |          |  |  |  |
-      | Rename modifs.     |            |          |  |  |  |
-      | Cannot             | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Hold liable        |            |          |  |  |  |
-      | Use trademark      |            |          |  |  |  |
-      | Commerce           |            |          |  |  |  |
-      | Modify             | x          |          |  |  |  |
-      | Ethical clauses    |            |          |  |  |  |
-      | Pub sector only    |            |          |  |  |  |
-      | Sublicence         |            |          |  |  |  |
-      | Compatible         | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | None N/A           |            |          |  |  |  |
-      | Permissive         |            |          |  |  |  |
-      | GPL                |            |          |  |  |  |
-      | Other copyleft     |            |          |  |  |  |
-      | Linking freedom    |            |          |  |  |  |
-      | Multilingual       |            |          |  |  |  |
-      | For data           |            |          |  |  |  |
-      | For software       |            |          |  |  |  |
-      | Law                | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | EU/MS law          |            |          |  |  |  |
-      | US law             |            |          |  |  |  |
-      | Licensor's law     |            |          |  |  |  |
-      | Other law          |            |          |  |  |  |
-      | Not fixed/local    |            |          |  |  |  |
-      | Venue fixed        |            |          |  |  |  |
-      | Support            | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Strong Community   | x          |          |  |  |  |
-      | Governments/EU     | x          |          |  |  |  |
-      | OSI approved       |            |          |  |  |  |
-      | FSF Free/Libre     |            |          |  |  |  |
+      | Can               | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Use/reproduce     | x          |          |  |  |  |
+      | Distribute        |            | x        |  |  |  |
+      | Modify/merge      |            |          |  |  |  |
+      | Sublicense        |            |          |  |  |  |
+      | Commercial use    |            |          |  |  |  |
+      | Use patents       |            |          |  |  |  |
+      | Place warranty    |            |          |  |  |  |
+      | Must              | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Incl. Copyright   |            |          |  |  |  |
+      | Royalty free      | x          |          |  |  |  |
+      | State changes     |            |          |  |  |  |
+      | Disclose source   |            |          |  |  |  |
+      | Copyleft/Share a. |            |          |  |  |  |
+      | Lesser copyleft   |            |          |  |  |  |
+      | SaaS/network      |            |          |  |  |  |
+      | Include licence   |            |          |  |  |  |
+      | Rename modifs.    |            |          |  |  |  |
+      | Cannot            | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Hold liable       |            |          |  |  |  |
+      | Use trademark     |            |          |  |  |  |
+      | Commerce          |            |          |  |  |  |
+      | Modify            | x          |          |  |  |  |
+      | Ethical clauses   |            |          |  |  |  |
+      | Pub sector only   |            |          |  |  |  |
+      | Sublicence        |            |          |  |  |  |
+      | Compatible        | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | None N/A          |            |          |  |  |  |
+      | Permissive        |            |          |  |  |  |
+      | GPL               |            |          |  |  |  |
+      | Other copyleft    |            |          |  |  |  |
+      | Linking freedom   |            |          |  |  |  |
+      | Multilingual      |            |          |  |  |  |
+      | For data          |            |          |  |  |  |
+      | For software      |            |          |  |  |  |
+      | Law               | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | EU/MS law         |            |          |  |  |  |
+      | US law            |            |          |  |  |  |
+      | Licensor's law    |            |          |  |  |  |
+      | Other law         |            |          |  |  |  |
+      | Not fixed/local   |            |          |  |  |  |
+      | Venue fixed       |            |          |  |  |  |
+      | Support           | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Strong Community  | x          |          |  |  |  |
+      | Governments/EU    | x          |          |  |  |  |
+      | OSI approved      |            |          |  |  |  |
+      | FSF Free/Libre    |            |          |  |  |  |
     And the page should not be cached
 
     When I reload the page
@@ -160,65 +170,67 @@ Feature:
     And I am on the homepage
     When I click "Dashboard"
     And I click "Licences overview"
-    And I click "Foo Licence"
+    And I click "Apache License, Version 2.0"
     And I click "Edit"
 
     # Test cache tags invalidation.
-    When I fill in "Title" with "Foo Licence changed"
+    When I fill in "Title" with "Apache License, Version 2.0 changed"
+    And I fill in "Description" with "nothing"
     And I select "Attribution" from "Type"
     And I additionally select "Distribute" from "Licence legal type"
     When I press "Save"
-    Then I should see the heading "Foo Licence changed"
+    Then I should see the heading "Apache License, Version 2.0 changed"
+
     Given I am an anonymous user
-    When I visit "/licence/compare/SPDX_FOO/SPDX_BAR"
+    When I visit "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+"
     Then the page should not be cached
 
-    # Test that SPDX_FOO "Can Distribute".
+    # Test that Apache-2.0 "Can Distribute".
     And the "licence comparer" table should be:
-      | Can                | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Use/reproduce      | x          |          |  |  |  |
-      | Distribute         | x          | x        |  |  |  |
-      | Modify/merge       |            |          |  |  |  |
-      | Sublicense         |            |          |  |  |  |
-      | Commercial use     |            |          |  |  |  |
-      | Use patents        |            |          |  |  |  |
-      | Place warranty     |            |          |  |  |  |
-      | Must               | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Incl. Copyright    |            |          |  |  |  |
-      | Royalty free       | x          |          |  |  |  |
-      | State changes      |            |          |  |  |  |
-      | Disclose source    |            |          |  |  |  |
-      | Copyleft/Share a.  |            |          |  |  |  |
-      | Lesser copyleft    |            |          |  |  |  |
-      | SaaS/network       |            |          |  |  |  |
-      | Include licence    |            |          |  |  |  |
-      | Rename modifs.     |            |          |  |  |  |
-      | Cannot             | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Hold liable        |            |          |  |  |  |
-      | Use trademark      |            |          |  |  |  |
-      | Commerce           |            |          |  |  |  |
-      | Modify             | x          |          |  |  |  |
-      | Ethical clauses    |            |          |  |  |  |
-      | Pub sector only    |            |          |  |  |  |
-      | Sublicence         |            |          |  |  |  |
-      | Compatible         | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | None N/A           |            |          |  |  |  |
-      | Permissive         |            |          |  |  |  |
-      | GPL                |            |          |  |  |  |
-      | Other copyleft     |            |          |  |  |  |
-      | Linking freedom    |            |          |  |  |  |
-      | Multilingual       |            |          |  |  |  |
-      | For data           |            |          |  |  |  |
-      | For software       |            |          |  |  |  |
-      | Law                | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | EU/MS law          |            |          |  |  |  |
-      | US law             |            |          |  |  |  |
-      | Licensor's law     |            |          |  |  |  |
-      | Other law          |            |          |  |  |  |
-      | Not fixed/local    |            |          |  |  |  |
-      | Venue fixed        |            |          |  |  |  |
-      | Support            | SPDX_FOO   | SPDX_BAR |  |  |  |
-      | Strong Community   | x          |          |  |  |  |
-      | Governments/EU     | x          |          |  |  |  |
-      | OSI approved       |            |          |  |  |  |
-      | FSF Free/Libre     |            |          |  |  |  |
+      | Can               | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Use/reproduce     | x          |          |  |  |  |
+      | Distribute        | x          | x        |  |  |  |
+      | Modify/merge      |            |          |  |  |  |
+      | Sublicense        |            |          |  |  |  |
+      | Commercial use    |            |          |  |  |  |
+      | Use patents       |            |          |  |  |  |
+      | Place warranty    |            |          |  |  |  |
+      | Must              | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Incl. Copyright   |            |          |  |  |  |
+      | Royalty free      | x          |          |  |  |  |
+      | State changes     |            |          |  |  |  |
+      | Disclose source   |            |          |  |  |  |
+      | Copyleft/Share a. |            |          |  |  |  |
+      | Lesser copyleft   |            |          |  |  |  |
+      | SaaS/network      |            |          |  |  |  |
+      | Include licence   |            |          |  |  |  |
+      | Rename modifs.    |            |          |  |  |  |
+      | Cannot            | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Hold liable       |            |          |  |  |  |
+      | Use trademark     |            |          |  |  |  |
+      | Commerce          |            |          |  |  |  |
+      | Modify            | x          |          |  |  |  |
+      | Ethical clauses   |            |          |  |  |  |
+      | Pub sector only   |            |          |  |  |  |
+      | Sublicence        |            |          |  |  |  |
+      | Compatible        | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | None N/A          |            |          |  |  |  |
+      | Permissive        |            |          |  |  |  |
+      | GPL               |            |          |  |  |  |
+      | Other copyleft    |            |          |  |  |  |
+      | Linking freedom   |            |          |  |  |  |
+      | Multilingual      |            |          |  |  |  |
+      | For data          |            |          |  |  |  |
+      | For software      |            |          |  |  |  |
+      | Law               | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | EU/MS law         |            |          |  |  |  |
+      | US law            |            |          |  |  |  |
+      | Licensor's law    |            |          |  |  |  |
+      | Other law         |            |          |  |  |  |
+      | Not fixed/local   |            |          |  |  |  |
+      | Venue fixed       |            |          |  |  |  |
+      | Support           | Apache-2.0 | GPL-2.0+ |  |  |  |
+      | Strong Community  | x          |          |  |  |  |
+      | Governments/EU    | x          |          |  |  |  |
+      | OSI approved      |            |          |  |  |  |
+      | FSF Free/Libre    |            |          |  |  |  |

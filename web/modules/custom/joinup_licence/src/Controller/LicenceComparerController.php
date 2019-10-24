@@ -137,9 +137,26 @@ class LicenceComparerController extends ControllerBase {
   protected function validatePassedLicences(ParameterBag $query): array {
     // Need at least two but no more than static::ROW_COUNT SPDX IDs to be
     // passed along the request, in order to have a comparision.
-    if (!$query->has('spdx_ids') || !($this->spdxIds = $query->get('spdx_ids')) || !is_array($this->spdxIds) || count($this->spdxIds) < 2 || count($this->spdxIds) > static::COLUMN_COUNT) {
+    if (!$query->has('licence') || !($this->spdxIds = $query->get('licence')) || !is_array($this->spdxIds) || count($this->spdxIds) < 2 || count($this->spdxIds) > static::COLUMN_COUNT) {
       throw new NotFoundHttpException();
     }
+
+    array_walk($this->spdxIds, function (string &$spdx_id): void {
+      // If the plus character "+" has been passed in the query string param,
+      // it was already converted into space. Revert it.
+      $spdx_id = str_replace(' ', '+', $spdx_id);
+    });
+
+    // Do a regexp validation of SPDX IDs before checking the backend. The SPDX
+    // ID maps to http://spdx.org/rdf/terms#licenseId and it's a unique string
+    // containing letters, numbers, ".", "-" or "+".".
+    // @see https://spdx.org/rdf/terms/dataproperties/licenseId___-500276407.html
+    $pattern = '/^[a-zA-Z0-9][a-zA-Z0-9.+-]+$/';
+    array_walk($this->spdxIds, function (string $spdx_id) use ($pattern): void {
+      if (!preg_match($pattern, $spdx_id)) {
+        throw new NotFoundHttpException();
+      }
+    });
 
     $actual_spdx_uris = $this->getRdfStorage()->getQuery()
       ->condition('rid', 'spdx_licence')
