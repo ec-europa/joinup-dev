@@ -1,6 +1,6 @@
 services:
   contact_information.fulfillment_guard:
     class: Drupal\contact_information\Guard\ContactInformationFulfillmentGuard
-    arguments: ['@entity_type.manager', '@current_user', '@config.factory']
+    arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: contact_information }

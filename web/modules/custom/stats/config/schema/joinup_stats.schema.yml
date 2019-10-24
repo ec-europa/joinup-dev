@@ -1,0 +1,27 @@
+meta_entity.type.*.third_party.joinup_stats:
+  type: mapping
+  label: 'Joinup Statistics settings'
+  mapping:
+    matomo_method:
+      type: string
+      label: 'Matomo method'
+    parameter_name:
+      type: string
+      label: 'URL parameter name'
+    parameter_method:
+      type: string
+      label: 'Parameter method'
+    period:
+      type: integer
+      label: 'The time period in days or 0 to retrieve all data available.'
+    type:
+      type: string
+      label: 'The type of metric to use.'
+
+joinup_stats.settings:
+  type: config_object
+  label: 'Matomo integration settings'
+  mapping:
+    launch_date:
+      type: string
+      label: 'The date when the website was launched, in ISO-8601 extended format.'

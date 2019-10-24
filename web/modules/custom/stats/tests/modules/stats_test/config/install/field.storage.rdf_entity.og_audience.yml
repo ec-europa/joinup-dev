@@ -1,0 +1,11 @@
+dependencies:
+  module:
+    - og
+    - rdf_entity
+id: rdf_entity.og_audience
+field_name: og_audience
+entity_type: rdf_entity
+type: og_standard_reference
+settings:
+  target_type: rdf_entity
+module: og

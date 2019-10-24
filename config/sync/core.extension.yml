@@ -27,6 +27,7 @@ module:
   datetime_range: 0
   diff: 0
   digital_size_formatter: 0
+  dynamic_entity_reference: 0
   dynamic_page_cache: 0
   editor: 0
   editor_file: 0
@@ -69,6 +70,7 @@ module:
   joinup_rss: 0
   joinup_search: 0
   joinup_sparql: 0
+  joinup_stats: 0
   joinup_subscription: 0
   joinup_user: 0
   joinup_video: 0
@@ -83,6 +85,7 @@ module:
   message: 0
   message_digest: 0
   message_notify: 0
+  meta_entity: 0
   moderation: 0
   nio: 0
   node: 0
@@ -149,6 +152,7 @@ module:
   view_unpublished: 0
   views_bulk_operations: 0
   views_data_export: 0
+  workflow_state_permission: 0
   ds: 1
   menu_admin_per_menu: 1
   menu_link_content: 1
