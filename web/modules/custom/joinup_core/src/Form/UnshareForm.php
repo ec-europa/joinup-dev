@@ -109,7 +109,7 @@ class UnshareForm extends ShareContentFormBase {
       return $collections;
     }
 
-    if ($this->currentUser->hasPermission('administer shared content')) {
+    if ($this->currentUser->hasPermission('administer shared entities')) {
       return $this->sparqlStorage->loadMultiple($collections);
     }
     return array_intersect_key($this->getUserGroupsByPermission($this->getPermissionForAction('unshare')), array_flip($collections));
