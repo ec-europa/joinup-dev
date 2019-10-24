@@ -896,12 +896,37 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $state
    *   The expected state.
    *
+   * @throws \Exception
+   *   Thrown when the node doesn't exist or doesn't have a state field.
+   *
    * @Then the :title :type content should have the :state state
    */
-  public function assertNodeWorkflowState($title, $type, $state) {
+  public function assertNodeWorkflowState(string $title, string $type, string $state): void {
     $node = $this->getNodeByTitle($title, $type);
     $actual = $this->getEntityStateField($node)->get('value')->getString();
     Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+  }
+
+  /**
+   * Changes the workflow state of a given entity.
+   *
+   * @param string $title
+   *   The title of the entity to update.
+   * @param string $entity_type
+   *   The entity type.
+   * @param string $state
+   *   The workflow state.
+   *
+   * @throws \Exception
+   *   Thrown when the entity doesn't exist, doesn't have a state field, or
+   *   cannot be saved.
+   *
+   * @Given the workflow state of the :title :entity_type is changed to :state
+   */
+  public function updateNodeWorkflowState(string $title, string $entity_type, string $state): void {
+    $entity = $this->getEntityByLabel(self::translateEntityTypeAlias($entity_type), $title);
+    $this->getEntityStateField($entity)->set('value', $state);
+    $entity->save();
   }
 
   /**

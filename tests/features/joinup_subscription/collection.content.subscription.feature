@@ -121,9 +121,7 @@ Feature: Subscribing to community content in collections
 
     # Publish an existing unpublished community content. It should be included
     # in the next digest.
-    Given I am logged in as "kalin"
-    When I go to the discussion content "Ruse" edit screen
-    And I press "Publish"
+    When the workflow state of the "Ruse" content is changed to "validated"
 
     Then the weekly digest for bisera should contain the following message:
       | mail_subject | Ruse          |
@@ -138,10 +136,14 @@ Feature: Subscribing to community content in collections
 
     # Check that if community content is published a second time it is not
     # included in the next digest.
-    When I go to the discussion content "Ruse" edit screen
-    And I press "Save new draft"
-    And I go to the discussion content "Ruse" edit screen
-    And I press "Publish"
+    When the workflow state of the "Ruse" content is changed to "draft"
+    Then the weekly digest for bisera should not contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
+    And the monthly digest for kalin should not contain the following message:
+      | mail_subject | Ruse          |
+      | mail_body    | Little Vienna |
+    When the workflow state of the "Ruse" content is changed to "validated"
     Then the weekly digest for bisera should not contain the following message:
       | mail_subject | Ruse          |
       | mail_body    | Little Vienna |
