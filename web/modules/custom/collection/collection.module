@@ -507,7 +507,6 @@ function collection_solution_count(RdfInterface $entity) {
 function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
-
   $or = $query->createConditionGroup('OR');
   // Show content that is related to this collection through the aggregated
   // field. This makes sure that other related entities (such as the collection

@@ -30,16 +30,6 @@ joinup_core.not_found:
   requirements:
     _access: 'TRUE'
 
-joinup_core.matomo_integration_settings:
-  path: '/admin/statistics/matomo-settings'
-  defaults:
-    _form: '\Drupal\joinup_core\Form\MatomoIntegrationSettingsForm'
-    _title: 'Matomo integration'
-  requirements:
-    _permission: 'administer matomo integration'
-  options:
-    _admin_route: TRUE
-
 joinup_core.file_field_info:
   path: '/admin/reports/fields/file'
   defaults:

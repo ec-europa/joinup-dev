@@ -38,6 +38,7 @@ fi
 echo "Disabling config_readonly."
 touch disable-config-readonly
 
+./vendor/bin/phing redis-flush &&
 ./vendor/bin/drush updatedb --yes --no-post-updates &&
 ./vendor/bin/drush config:import --yes &&
 ./vendor/bin/drush updatedb --yes &&

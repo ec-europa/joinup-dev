@@ -1,0 +1,24 @@
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ad_access_url
+    - rdf_entity.rdfentity.asset_distribution
+  module:
+    - file_url
+id: rdf_entity.asset_distribution.field_ad_access_url
+field_name: field_ad_access_url
+entity_type: rdf_entity
+bundle: asset_distribution
+label: 'Access URL'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: ''
+  file_extensions: ''
+  max_filesize: ''
+  description_field: false
+  description_field_required: false
+  handler: 'file_url_default:file'
+  handler_settings: {  }
+field_type: file_url

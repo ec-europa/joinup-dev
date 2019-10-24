@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.meta_entity.visit_count.count
+    - meta_entity.type.visit_count
+  module:
+    - dynamic_entity_reference
+id: meta_entity.visit_count.default
+targetEntityType: meta_entity
+bundle: visit_count
+mode: default
+content:
+  count:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  target:
+    type: dynamic_entity_reference_default
+    weight: 0
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 40
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  label: true
