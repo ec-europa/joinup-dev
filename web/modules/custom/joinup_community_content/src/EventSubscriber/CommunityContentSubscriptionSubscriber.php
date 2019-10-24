@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_community_content\EventSubscriber;
 
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -93,11 +94,8 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
     /** @var \Drupal\node\NodeInterface $entity */
     $entity = $event->getEntity();
 
-    // Only notify if the content is being published.
-    // @todo We should also check if the content has been published in the past,
-    //   so we do not accidentally send notifications if content is republished.
-    // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4980
-    if (!$entity->isPublished() || empty($entity->original) || $entity->original->isPublished()) {
+    // Only notify if the content is being published for the first time.
+    if (!$entity->isPublished() || empty($entity->original) || $entity->original->isPublished() || !$this->isFirstPublishedRevision($entity)) {
       return;
     }
 
@@ -171,6 +169,44 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
       $this->loggerFactory->get('mail')->critical('Unexpected exception thrown when sending a community content subscription message.', $context);
       return FALSE;
     }
+  }
+
+  /**
+   * Returns whether the passed in entity is the first published revision.
+   *
+   * @param \Drupal\Core\Entity\EntityPublishedInterface $entity
+   *   The entity to check.
+   *
+   * @return bool
+   *   TRUE if the current revision of the entity is the first published
+   *   revision.
+   */
+  protected function isFirstPublishedRevision(EntityPublishedInterface $entity): bool {
+    return $entity->getRevisionId() == $this->getFirstPublishedRevisionId($entity);
+  }
+
+  /**
+   * Returns the ID of the first published revision of the given entity.
+   *
+   * @param \Drupal\Core\Entity\EntityPublishedInterface $entity
+   *   The entity for which to return the first published revision ID.
+   *
+   * @return mixed|null
+   *   The revision ID, or NULL if there is no published revision.
+   */
+  protected function getFirstPublishedRevisionId(EntityPublishedInterface $entity) {
+    $entity_type = $entity->getEntityTypeId();
+    $storage = $this->entityTypeManager->getStorage($entity_type);
+    $definition = $this->entityTypeManager->getDefinition($entity_type);
+
+    $revision_ids = $storage->getQuery()
+      ->allRevisions()
+      ->condition($definition->getKey('id'), $entity->id())
+      ->condition($definition->getKey('published'), 1)
+      ->sort($definition->getKey('revision'), 'ASC')
+      ->range(0, 1)
+      ->execute();
+    return !empty($revision_ids) ? array_key_first($revision_ids) : NULL;
   }
 
 }

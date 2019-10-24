@@ -15,6 +15,7 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -923,9 +924,14 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @Given the workflow state of the :title :entity_type is changed to :state
    */
-  public function updateNodeWorkflowState(string $title, string $entity_type, string $state): void {
-    $entity = $this->getEntityByLabel(self::translateEntityTypeAlias($entity_type), $title);
+  public function updateWorkflowState(string $title, string $entity_type, string $state): void {
+    $entity_type = self::translateEntityTypeAlias($entity_type);
+    \Drupal::entityTypeManager()->getStorage($entity_type)->resetCache();
+    $entity = $this->getEntityByLabel($entity_type, $title);
     $this->getEntityStateField($entity)->set('value', $state);
+    if ($entity instanceof RevisionableInterface) {
+      $entity->setNewRevision(TRUE);
+    }
     $entity->save();
   }
 
