@@ -10,3 +10,27 @@ solution.collection_solution.add:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+
+solution.share_form:
+  path: '/rdf_entity/{rdf_entity}/share'
+  defaults:
+    _form: '\Drupal\solution\Form\ShareForm'
+    _title_callback: '\Drupal\solution\Form\ShareForm::getTitle'
+  requirements:
+    _access: 'TRUE'
+  options:
+    parameters:
+      node:
+        type: entity:rdf_entity
+
+solution.unshare_form:
+  path: '/rdf_entity/{rdf_entity}/unshare'
+  defaults:
+    _form: '\Drupal\solution\Form\UnshareForm'
+    _title_callback: '\Drupal\solution\Form\UnshareForm::getTitle'
+  requirements:
+    _custom_access: '\Drupal\solution\Form\UnshareForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:rdf_entity

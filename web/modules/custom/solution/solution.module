@@ -200,6 +200,11 @@ function solution_entity_extra_field_info(): array {
       'description' => t('Shows a link to the about page of the solution.'),
       'visible' => FALSE,
     ];
+    $display['share_link'] = [
+      'label' => t('Share'),
+      'description' => t('A link to share the content'),
+      'visible' => FALSE,
+    ];
   }
 
   return $fields;
@@ -297,6 +302,16 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     catch (EntityMalformedException $e) {
       // Don't include a read more link that leads to a malformed entity.
     }
+  }
+
+  // Share link configuration.
+  if ($display->getComponent('share_link')) {
+    $build['share_link'] = joinup_core_generate_share_link($entity, 'solution.share_form');
+    $build['#cache'] = [
+      'contexts' => [
+        'og_role',
+      ],
+    ];
   }
 }
 
