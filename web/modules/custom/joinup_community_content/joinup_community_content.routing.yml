@@ -1,8 +1,8 @@
 joinup_community_content.share_content_form:
   path: '/node/{node}/share'
   defaults:
-    _form: '\Drupal\joinup_community_content\Form\ShareContentForm'
-    _title_callback: '\Drupal\joinup_community_content\Form\ShareContentForm::getTitle'
+    _form: '\Drupal\joinup_core\Form\ShareContentForm'
+    _title_callback: '\Drupal\joinup_core\Form\ShareForm::getTitle'
   requirements:
     _access: 'TRUE'
   options:
@@ -13,10 +13,10 @@ joinup_community_content.share_content_form:
 joinup_community_content.unshare_content_form:
   path: '/node/{node}/unshare'
   defaults:
-    _form: '\Drupal\joinup_community_content\Form\UnshareContentForm'
-    _title_callback: '\Drupal\joinup_community_content\Form\UnshareContentForm::getTitle'
+    _form: '\Drupal\joinup_core\Form\UnshareForm'
+    _title_callback: '\Drupal\joinup_core\Form\UnshareForm::getTitle'
   requirements:
-    _custom_access: '\Drupal\joinup_community_content\Form\UnshareContentForm::access'
+    _custom_access: '\Drupal\joinup_core\Form\UnshareForm::access'
   options:
     parameters:
       node:

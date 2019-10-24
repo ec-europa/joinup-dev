@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\joinup_community_content\Form;
+namespace Drupal\joinup_core\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\Form\ShareContentFormBase;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Form to share a community content inside collections.
  */
-class ShareContentForm extends ShareContentFormBase {
+class ShareForm extends ShareContentFormBase {
 
   /**
    * The Joinup relation manager.
@@ -80,12 +80,12 @@ class ShareContentForm extends ShareContentFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
-    $form = parent::buildForm($form, $form_state, $node);
+  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
+    $form = parent::buildForm($form, $form_state, $entity);
 
     $form['share'] = [
       '#theme' => 'social_share',
-      '#entity' => $this->node,
+      '#entity' => $this->entity,
     ];
 
     $collections = $this->getShareableCollections();
@@ -156,7 +156,7 @@ class ShareContentForm extends ShareContentFormBase {
       $this->messenger->addStatus('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
     }
 
-    $form_state->setRedirectUrl($this->node->toUrl());
+    $form_state->setRedirectUrl($this->entity->toUrl());
   }
 
   /**
@@ -172,7 +172,7 @@ class ShareContentForm extends ShareContentFormBase {
    */
   public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
-    $response->addCommand(new RedirectCommand((string) $this->node->toUrl()->toString()));
+    $response->addCommand(new RedirectCommand((string) $this->entity->toUrl()->toString()));
 
     return $response;
   }
@@ -203,17 +203,34 @@ class ShareContentForm extends ShareContentFormBase {
    */
   protected function getShareableCollections() {
     // If the node has no field, it's not shareable anywhere.
-    if (!$this->node->hasField('field_shared_in')) {
+    if (!$this->entity->hasField($this->getSharedInFieldName())) {
       return [];
     }
 
-    $user_collections = $this->getUserGroupsByPermission("share {$this->node->bundle()} content");
-    $node_parent = $this->relationManager->getParent($this->node);
-
-    // We cannot share in the parent collection.
-    unset($user_collections[$node_parent->id()]);
+    $user_collections = $this->getUserGroupsByPermission($this->getPermissionForAction('share'));
+    if ($parent = $this->getExcludedParent()) {
+      unset($user_collections[$parent->id()]);
+    }
 
     return array_diff_key($user_collections, array_flip($this->getAlreadySharedCollectionIds()));
+  }
+
+  /**
+   * Returns a list of groups that the entity cannot be shared in.
+   *
+   * For nodes, this is the parent group. For rdf entities, it is the affiliated
+   * collections of the solution.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface|null
+   *   The affiliated or parent collection, if one exists.
+   */
+  protected function getExcludedParent(): ?RdfInterface {
+    if ($this->entity->getEntityTypeId() === 'node') {
+      return $this->relationManager->getParent($this->entity);
+    }
+    else {
+      return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;
+    }
   }
 
   /**
@@ -229,8 +246,8 @@ class ShareContentForm extends ShareContentFormBase {
     // Entity references do not ensure uniqueness.
     $current_ids = array_unique($current_ids);
 
-    $this->node->get('field_shared_in')->setValue($current_ids);
-    $this->node->save();
+    $this->entity->get($this->getSharedInFieldName())->setValue($current_ids);
+    $this->entity->save();
   }
 
   /**

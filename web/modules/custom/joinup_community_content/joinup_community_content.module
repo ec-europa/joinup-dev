@@ -7,7 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -41,25 +40,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     return;
   }
 
-  $url = Url::fromRoute('joinup_community_content.share_content_form', [
-    'node' => $entity->id(),
-  ]);
-  $build['share_link'] = [
-    '#theme' => 'link_icon',
-    '#title' => t('Share'),
-    '#icon' => 'share',
-    '#url' => $url,
-    '#attributes' => [
-      'class' => ['use-ajax', 'action-link'],
-      'data-dialog-type' => 'modal',
-      'data-dialog-options' => Json::encode([
-        'width' => 'auto',
-        'height' => 'auto',
-      ]),
-    ],
-    '#access' => $url->access(),
-    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
-  ];
+  $build['share_link'] = joinup_core_generate_share_link($entity, 'joinup_community_content.share_content_form');
   $build['#cache'] = [
     'contexts' => [
       'og_role',

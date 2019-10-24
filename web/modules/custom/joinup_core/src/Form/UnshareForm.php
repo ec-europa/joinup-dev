@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\joinup_community_content\Form;
+namespace Drupal\joinup_core\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_core\Form\ShareContentFormBase;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Form to unshare a community content from within collections.
  */
-class UnshareContentForm extends ShareContentFormBase {
+class UnshareForm extends ShareContentFormBase {
 
   /**
    * {@inheritdoc}
@@ -23,8 +23,8 @@ class UnshareContentForm extends ShareContentFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
-    $form = parent::buildForm($form, $form_state, $node);
+  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
+    $form = parent::buildForm($form, $form_state, $entity);
 
     $options = array_map(function ($collection) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -65,7 +65,7 @@ class UnshareContentForm extends ShareContentFormBase {
     if (!empty($collections)) {
       $this->messenger->addStatus('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
     }
-    $form_state->setRedirectUrl($this->node->toUrl());
+    $form_state->setRedirectUrl($this->entity->toUrl());
   }
 
   /**
@@ -78,7 +78,7 @@ class UnshareContentForm extends ShareContentFormBase {
    *   Allowed if there is at least one collection where the node can be shared.
    */
   public function access(NodeInterface $node) {
-    $this->node = $node;
+    $this->entity = $node;
 
     return AccessResult::allowedIf(!empty($this->getCollections()));
   }
@@ -112,7 +112,7 @@ class UnshareContentForm extends ShareContentFormBase {
     if ($this->currentUser->hasPermission('administer shared content')) {
       return $this->sparqlStorage->loadMultiple($collections);
     }
-    return array_intersect_key($this->getUserGroupsByPermission("unshare {$this->node->bundle()} content"), array_flip($collections));
+    return array_intersect_key($this->getUserGroupsByPermission($this->getPermissionForAction('unshare')), array_flip($collections));
   }
 
   /**
@@ -125,8 +125,8 @@ class UnshareContentForm extends ShareContentFormBase {
     // Flipping is needed to easily unset the value.
     $current_ids = array_flip($this->getAlreadySharedCollectionIds());
     unset($current_ids[$collection->id()]);
-    $this->node->get('field_shared_in')->setValue(array_flip($current_ids));
-    $this->node->save();
+    $this->entity->get($this->getSharedInFieldName())->setValue(array_flip($current_ids));
+    $this->entity->save();
   }
 
 }
