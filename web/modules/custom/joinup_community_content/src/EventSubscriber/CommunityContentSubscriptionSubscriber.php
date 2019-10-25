@@ -206,7 +206,8 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
       ->sort($definition->getKey('revision'), 'ASC')
       ->range(0, 1)
       ->execute();
-    return !empty($revision_ids) ? array_key_first($revision_ids) : NULL;
+    reset($revision_ids);
+    return !empty($revision_ids) ? key($revision_ids) : NULL;
   }
 
 }
