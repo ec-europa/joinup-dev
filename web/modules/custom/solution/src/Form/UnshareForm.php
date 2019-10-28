@@ -12,6 +12,12 @@ use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Form to unshare a solution from within collections.
+ *
+ * The methods are different from the parent class because the route is a sub
+ * link of the `/rdf_entity/{rdf_entity}` route path. That means that we cannot
+ * have the `{rdf_entity}` parameter named differently and also, even if the
+ * rdf entity is implementing the EntityInterface, the ArgumentResolver would
+ * not automatically assign it to another entity of the same type.
  */
 class UnshareForm extends OriginalForm {
 
