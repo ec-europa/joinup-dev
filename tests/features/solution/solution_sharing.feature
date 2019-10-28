@@ -62,3 +62,56 @@ Feature: As a privileged user
     # It should not be shared in the other collection.
     When I go to the homepage of the "Collection share candidate 2" collection
     Then I should not see the "Solution to be shared" tile
+    
+    # Solutions can be un-shared only by facilitators of the collections they
+    # have been shared in.
+    When I am an anonymous user
+    And I go to the homepage of the "Collection share candidate 1" collection
+    Then I should see the "Solution to be shared" tile
+    And I should not see the contextual link "Unshare" in the "Solution to be shared" tile
+
+    When I am logged in as an "authenticated user"
+    And I go to the homepage of the "Collection share candidate 1" collection
+    Then I should see the "Solution to be shared" tile
+    And I should not see the contextual link "Unshare" in the "Solution to be shared" tile
+
+    When I am logged in as a facilitator of the "Collection share candidate 1" collection
+    And I go to the homepage of the "Collection share candidate 1" collection
+    Then I should see the "Solution to be shared" tile
+    And I should not see the contextual link "Unshare" in the "Solution to be shared" tile
+
+    When I am logged in as a facilitator of the "Collection share candidate 1" collection
+    And I go to the homepage of the "Collection share candidate 1" collection
+    Then I should see the "Solution to be shared" tile
+    And I should see the contextual link "Unshare" in the "Solution to be shared" tile
+    When I click the contextual link "Unshare" in the "Solution to be shared" tile
+    Then a modal will open
+    And I should see the text "Unshare Solution to be shared from"
+    Then the following fields should be present "Collection share candidate 1"
+    And the following fields should not be present "Collection share original, Collection share candidate 2"
+
+    # Unshare the content.
+    When I check "Collection share candidate 1"
+    And I press "Submit" in the "Modal buttons" region
+    And I wait for AJAX to finish
+
+    # I should still be on the same page, but the collection content should be
+    # changed. The "Solution to be shared" should no longer be visible.
+    Then I should see the success message "Item was unshared from the following collections: Collection share candidate 1."
+    And I should not see the "Solution to be shared" tile
+
+    # Verify that the content is again shareable.
+    And I go to the homepage of the "Collection share original" collection
+    # Verify that the unshare link is not present when the content is not
+    # shared anywhere.
+    Then I should not see the contextual link "Unshare" in the "Solution to be shared" tile
+
+    When I click the contextual link "Share" in the "Solution to be shared" tile
+    And I click "Share"
+    Then a modal should open
+    And the following fields should be present "Collection share candidate 1"
+    And the following fields should not be present "Collection share original, Collection share candidate 2"
+
+    # The content should obviously not shared in the other collection too.
+    When I go to the homepage of the "Collection share original" collection
+    Then I should not see the "Solution to be shared" tile
