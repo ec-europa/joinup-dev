@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-template: og_membership_decision
-label: 'Group membership approval/rejection'
+template: og_membership_reject
+label: 'Group membership rejection'
 description: 'Group privileged user decides on a membership request.'
 text:
   -
