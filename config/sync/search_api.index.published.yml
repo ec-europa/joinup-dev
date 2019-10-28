@@ -10,8 +10,8 @@ dependencies:
     - field.storage.node.field_location
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
-    - field.storage.node.field_shared_in
     - field.storage.node.field_short_title
+    - field.storage.meta_entity.count
     - field.storage.rdf_entity.field_ar_abstract
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_ci_name
@@ -35,6 +35,7 @@ dependencies:
   module:
     - node
     - publication_date
+    - meta_entity
     - rdf_entity
     - user
     - search_api
@@ -238,14 +239,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_scope
-  field_shared_in:
-    label: 'Shared in'
-    datasource_id: 'entity:node'
-    property_path: field_shared_in
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_shared_in
   field_short_title:
     label: 'Short title'
     datasource_id: 'entity:node'
@@ -284,6 +277,8 @@ field_settings:
     property_path: 'visit_count:entity:count'
     type: integer
     dependencies:
+      module:
+        - meta_entity
       config:
         - field.storage.meta_entity.count
   id:
@@ -405,6 +400,15 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  shared_in:
+    label: 'Shared in'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_shared_in'
+        - 'entity:rdf_entity/field_is_shared_in'
   site_featured:
     label: Featured
     property_path: aggregated_field

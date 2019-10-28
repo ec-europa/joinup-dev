@@ -459,6 +459,7 @@ hidden:
   field_is_logo: true
   field_is_pinned_in: true
   field_is_related_solutions: true
+  field_is_shared_in: true
   field_is_show_eira_related: true
   field_is_source_code_repository: true
   field_is_state: true
@@ -480,3 +481,4 @@ hidden:
   read_more: true
   related_solutions: true
   releases_overview: true
+  share_link: true
