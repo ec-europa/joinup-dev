@@ -10,6 +10,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
 use Drupal\redirect\Entity\Redirect;
+use Drupal\search_api\Entity\Index;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
@@ -793,6 +794,35 @@ SQL
   catch (Exception $e) {
     $transaction->rollBack();
     throw new Exception('Database error', 0, $e);
+  }
+}
+
+/**
+ * Stats #3: Repair Search API task.
+ */
+function joinup_core_post_update_stats3(): void {
+  $db = \Drupal::database();
+
+  $tasks = $db->select('search_api_task')
+    ->fields('search_api_task', ['id', 'data'])
+    ->condition('type', 'updateIndex')
+    ->condition('server_id', 'solr_published')
+    ->condition('index_id', 'published')
+    ->execute()
+    ->fetchAllKeyed();
+
+  $published_index_values = Index::load('published')->toArray();
+  foreach ($tasks as $id => $data) {
+    $data = unserialize($data);
+    // When a Search API index config entity is updated, a reindex is triggered
+    // but, for some reasons, the task uses the 'original' index config entity
+    // version.
+    // @see \Drupal\search_api\Entity\Server::updateIndex()
+    $data['#values'] = $published_index_values;
+    $db->update('search_api_task')
+      ->condition('id', $id)
+      ->fields(['data' => serialize($data)])
+      ->execute();
   }
 }
 
