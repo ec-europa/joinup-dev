@@ -12,7 +12,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
-use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleManagerInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorage;
@@ -22,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Form to share a community content inside collections.
  */
-class ShareForm extends ShareContentFormBase {
+abstract class ShareForm extends ShareFormBase {
 
   /**
    * The Joinup relation manager.
@@ -51,7 +50,6 @@ class ShareForm extends ShareContentFormBase {
    */
   public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, JoinupRelationManagerInterface $relation_manager) {
     parent::__construct($sparql_storage, $rdf_builder, $membership_manager, $role_manager, $current_user, $messenger);
-
     $this->relationManager = $relation_manager;
   }
 
@@ -78,10 +76,20 @@ class ShareForm extends ShareContentFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Form constructor.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being shared.
+   *
+   * @return array
+   *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
-    $form = parent::buildForm($form, $form_state, $entity);
+  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
+    $this->entity = $entity;
 
     $form['share'] = [
       '#theme' => 'social_share',
@@ -180,29 +188,31 @@ class ShareForm extends ShareContentFormBase {
   /**
    * Gets the title for the form route.
    *
-   * @param \Drupal\node\NodeInterface $node
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity being shared.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   The page/modal title.
    */
-  public function getTitle(NodeInterface $node) {
+  public function buildTitle(EntityInterface $entity) {
     if ($this->isModal() || $this->isAjaxForm()) {
       return $this->t('Share in');
     }
     else {
-      return $this->t('Share %title in', ['%title' => $node->label()]);
+      return $this->t('Share %title in', ['%title' => $entity->label()]);
     }
   }
 
   /**
-   * Retrieves a list of collections where the current node can be shared.
+   * Retrieves a list of collections where the entity can be shared in.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the current node can be shared.
+   *   A list of collections where the current entity can be shared in.
    */
   protected function getShareableCollections() {
-    // If the node has no field, it's not shareable anywhere.
+    // Being part also for the access check, do not allow the user to access
+    // this page for entities without a field to store collections it is shared
+    // in.
     if (!$this->entity->hasField($this->getSharedInFieldName())) {
       return [];
     }
@@ -234,10 +244,10 @@ class ShareForm extends ShareContentFormBase {
   }
 
   /**
-   * Shares the current node inside a collection.
+   * Shares the current entity inside a collection.
    *
    * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to share the node.
+   *   The collection where to share the entity in.
    */
   protected function shareInCollection(RdfInterface $collection) {
     $current_ids = $this->getAlreadySharedCollectionIds();

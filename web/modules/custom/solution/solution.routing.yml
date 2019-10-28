@@ -20,7 +20,7 @@ solution.share_form:
     _access: 'TRUE'
   options:
     parameters:
-      node:
+      rdf_entity:
         type: entity:rdf_entity
 
 solution.unshare_form:
@@ -32,5 +32,5 @@ solution.unshare_form:
     _custom_access: '\Drupal\solution\Form\UnshareForm::access'
   options:
     parameters:
-      node:
+      rdf_entity:
         type: entity:rdf_entity

@@ -10,6 +10,12 @@ entity_type: rdf_entity
 type: entity_reference
 settings:
   target_type: rdf_entity
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      target_id:
+        predicate: 'http://joinup.eu/solution/shared_in'
+        format: resource
 module: core
 locked: false
 cardinality: -1

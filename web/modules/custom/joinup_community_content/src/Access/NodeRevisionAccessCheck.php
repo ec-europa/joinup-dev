@@ -39,13 +39,6 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
   protected $ogAccess;
 
   /**
-   * A static cache of og access checks.
-   *
-   * @var array
-   */
-  protected $ogAccessCache = [];
-
-  /**
    * Constructs a new NodeRevisionAccessCheck.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager

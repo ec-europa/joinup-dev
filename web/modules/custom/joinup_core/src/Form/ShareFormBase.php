@@ -4,10 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core\Form;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Form\FormBase;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\MembershipManagerInterface;
@@ -19,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Base form class for share/unshare entity forms.
  */
-abstract class ShareContentFormBase extends FormBase {
+abstract class ShareFormBase extends FormBase {
 
   const SHARED_IN_FIELD_NAMES = [
     'rdf_entity' => [
@@ -122,25 +120,6 @@ abstract class ShareContentFormBase extends FormBase {
   }
 
   /**
-   * Form constructor.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity being shared.
-   *
-   * @return array
-   *   The form structure.
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
-    $this->entity = $entity;
-
-    return $form;
-  }
-
-  /**
    * Gets a list of collection ids where the current entity is already shared.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
@@ -196,7 +175,7 @@ abstract class ShareContentFormBase extends FormBase {
     if (!in_array($action, ['share', 'unshare'])) {
       throw new \InvalidArgumentException('Only "share" and "unshare" are allowed as an action name.');
     }
-    $type = $this->entity->getEntityTypeId() === 'node' ? 'content' : 'rdf entity';
+    $type = $this->entity->getEntityTypeId() === 'node' ? 'content' : $this->entity->getEntityTypeId();
     return "{$action} {$this->entity->bundle()} {$type}";
   }
 

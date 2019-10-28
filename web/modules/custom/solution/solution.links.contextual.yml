@@ -7,7 +7,7 @@ solution.share:
       class: ['use-ajax']
       data-dialog-type: 'modal'
 
-joinup_core.unshare:
+solution.unshare:
   route_name: solution.unshare_form
   title: Unshare
   group: rdf_entity

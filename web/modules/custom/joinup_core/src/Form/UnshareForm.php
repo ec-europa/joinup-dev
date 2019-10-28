@@ -2,16 +2,14 @@
 
 namespace Drupal\joinup_core\Form;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Form to unshare a community content from within collections.
  */
-class UnshareForm extends ShareContentFormBase {
+abstract class UnshareForm extends ShareFormBase {
 
   /**
    * {@inheritdoc}
@@ -21,10 +19,20 @@ class UnshareForm extends ShareContentFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Form constructor.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being unshared.
+   *
+   * @return array
+   *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
-    $form = parent::buildForm($form, $form_state, $entity);
+  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
+    $this->entity = $entity;
 
     $options = array_map(function ($collection) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -66,34 +74,6 @@ class UnshareForm extends ShareContentFormBase {
       $this->messenger->addStatus('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
     }
     $form_state->setRedirectUrl($this->entity->toUrl());
-  }
-
-  /**
-   * Access check for the form route.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The entity being shared.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   Allowed if there is at least one collection where the node can be shared.
-   */
-  public function access(NodeInterface $node) {
-    $this->entity = $node;
-
-    return AccessResult::allowedIf(!empty($this->getCollections()));
-  }
-
-  /**
-   * Gets the title for the form route.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The entity being shared.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The page/modal title.
-   */
-  public function getTitle(NodeInterface $node) {
-    return $this->t('Unshare %title from', ['%title' => $node->label()]);
   }
 
   /**
