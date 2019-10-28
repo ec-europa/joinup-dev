@@ -126,7 +126,7 @@ abstract class ShareFormBase extends FormBase {
    *   A list of collection ids where the current entity is already shared in.
    */
   protected function getAlreadySharedCollectionIds(): array {
-    if (!$this->entity->hasField($this->getSharedInFieldName())) {
+    if (!$this->getSharedInFieldName() || !$this->entity->hasField($this->getSharedInFieldName())) {
       return [];
     }
 
@@ -155,10 +155,10 @@ abstract class ShareFormBase extends FormBase {
   /**
    * Returns the name of the field that the entity uses for being shared.
    *
-   * @return string
-   *   The field name.
+   * @return string|null
+   *   The field name or null if not configured.
    */
-  protected function getSharedInFieldName(): string {
+  protected function getSharedInFieldName(): ?string {
     return self::SHARED_IN_FIELD_NAMES[$this->entity->getEntityTypeId()][$this->entity->bundle()];
   }
 
