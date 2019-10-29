@@ -16,6 +16,15 @@ Feature: Submit the contact form
     When I am on the homepage
     And I click "Contact Joinup Support" in the "Footer" region
     Then I should see the heading "Contact"
+    And the "Category" select should contain the following options:
+      | - Select a value -             |
+      | Technical problem / bug report |
+      | Question on usage              |
+      | Feature request                |
+      | Legal issue                    |
+      | Inappropriate content          |
+      | EU Login question              |
+      | Other                          |
     # The honeypot field that needs to be empty on submission.
     Then the following fields should be present "user_homepage"
 
