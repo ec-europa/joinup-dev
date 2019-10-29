@@ -6,7 +6,7 @@ services:
       - { name: 'cache.context'}
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
-    arguments: ['@entity_type.manager', '@joinup_core.relations_manager', '@og.membership_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper']
+    arguments: ['@joinup_core.relations_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: community_content }
   joinup_core.group_helper:
@@ -26,7 +26,7 @@ services:
     lazy: true
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
-    arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager']
+    arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager', '@workflow_state_permission.workflow_state_permission']
   joinup_core.transfer_ownership_subscriber:
     class: Drupal\joinup_core\EventSubscriber\TransferGroupOwnershipSubscriber
     arguments: ['@current_user', '@tempstore.private']

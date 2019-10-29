@@ -7,6 +7,7 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
@@ -83,20 +84,20 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
    *   The SPARQL database connection.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $constraint_manager
    *   The constraint plugin manager service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $sparql, PluginManagerInterface $constraint_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $connection, PluginManagerInterface $constraint_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $connection);
     $this->constraintManager = $constraint_manager;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,

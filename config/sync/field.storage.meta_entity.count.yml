@@ -1,0 +1,23 @@
+uuid: a64bcd5d-c230-4c66-be93-24e20766ef97
+langcode: en
+status: true
+dependencies:
+  module:
+    - cached_computed_field
+    - meta_entity
+_core:
+  default_config_hash: 3SDMKDyIUFMiNez3gzkJ4CdJT57n5asKLiU-mtMXTQ8
+id: meta_entity.count
+field_name: count
+entity_type: meta_entity
+type: cached_computed_integer
+settings:
+  unsigned: false
+  size: normal
+module: cached_computed_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

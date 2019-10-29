@@ -5,6 +5,8 @@
  * Contains Drupal\solution\solution.behat.inc.
  */
 
+declare(strict_types = 1);
+
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\Language\LanguageInterface;
@@ -15,6 +17,7 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -37,6 +40,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   use EntityReferenceTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
@@ -426,7 +430,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Then I should have :number solution(s)
    */
-  public function assertSolutionCount($number) {
+  public function assertSolutionCount(int $number): void {
     $this->assertRdfEntityCount($number, 'solution');
   }
 
@@ -614,39 +618,41 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * The method also checks that these options are the only options available.
    *
+   * This method will log in as each user in sequence, so take care to only use
+   * it when the currently logged in user can be discarded.
+   *
    * Table format:
-   * | solution   | user | options          |
-   * | Solution A | John | Status1          |
-   * | Solution B | Jack | Status1, Status2 |
+   * | solution   | user | buttons         |
+   * | Solution A | John | Save as draft   |
+   * | Solution B | Jack | Update, Publish |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
-   *   The table with the triplets solution-user-options.
+   *   The table with the triplets solution-user-buttons.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
    * @todo: Maybe there is a better definition available here like 'The
    * following state buttons should be available for the user on the
-   * collection'.
+   * solution'.
    *
-   * @Given for the following solution, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following solution, the corresponding user should have the corresponding (available )state buttons:
    */
-  public function verifyWorkflowStates(TableNode $check_table) {
+  public function verifyWorkflowStates(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
-      // Load entity.
-      $solution = $this->getSolutionByName($values['solution']);
+      $username = $values['user'];
+      $user = $this->userManager->getUser($username);
 
-      // Load user.
-      $user = user_load_by_name($values['user']);
-      if (empty($user)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
+      // Check if we are already logged in as the user to test.
+      $current_username = $this->userManager->getCurrentUser()->name ?? NULL;
+      if ($username !== $current_username) {
+        $this->authenticationManager->logIn($user);
       }
 
-      // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(',', $values['states']);
-      $states = array_map('trim', $states);
-
-      $this->assertAvailableTransitions($solution, $states, $user);
+      // Go to the edit form and check that the expected buttons are visible.
+      $this->visitEditSolution($values['solution']);
+      $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
+      $this->assertSubmitButtonsVisible($buttons);
     }
   }
 
@@ -694,37 +700,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     // Create the translation.
     $solution->addTranslation('ca', $solution_values)->save();
     $this->rdfEntities[$solution->id()] = $solution;
-  }
-
-  /**
-   * Applies a transition to a solution.
-   *
-   * @param string $username
-   *   The username applying the transition.
-   * @param string $entity_name
-   *   The title of the solution.
-   * @param string $to_state
-   *   The state that the solution transits to.
-   *
-   * @throws \Exception
-   *    An exception is thrown if the user is not found or the transition is not
-   *    allowed for this user.
-   *
-   * @Given the user :username changes the state of the :entity_name solution to :to_state
-   */
-  public function applySolutionWorkflowTransition($username, $entity_name, $to_state) {
-    $user = user_load_by_name($username);
-    if (empty($user)) {
-      throw new \Exception("User {$username} was not found.");
-    }
-    $solution = $this->getSolutionByName($entity_name);
-    $available_states = $this->getAvailableStates($solution, $user);
-    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
-      throw new \Exception("The given user does not have permission to apply the specific transition.");
-    }
-    $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
-    $solution->get('field_is_state')->first()->applyTransition($transition);
-    $solution->save();
   }
 
   /**
@@ -786,6 +761,43 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $tile = $this->getTileByHeading($heading);
     $elements = $tile->findAll('xpath', '//span[contains(@class, "icon--download")]');
     Assert::assertEmpty($elements);
+  }
+
+  /**
+   * Sets the visit or download count for a given entity to a certain value.
+   *
+   * @param string $type
+   *   The type of counter: 'download' or 'visit'.
+   * @param string $target_entity_label
+   *   The target entit label.
+   * @param string $count
+   *   The counter to be set.
+   *
+   * @throws \Exception
+   *   When:
+   *   - An invalid $type was specified.
+   *   - The entity with $target_entity_label doesn't exists.
+   *   - A related meta entity doesn't exist.
+   *
+   * @Given the :type count of :target_entity_label is :count
+   */
+  public function setDownloadCountForEntity(string $type, string $target_entity_label, string $count): void {
+    if (!in_array($type, ['download', 'visit'])) {
+      throw new \Exception("Type should be 'download' or 'visit' but '{$type}' was given.");
+    }
+
+    $target_entity_type_id = $type === 'visit' ? 'node' : 'rdf_entity';
+    $field_name = "{$type}_count";
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $target_entity */
+    $target_entity = $this->getEntityByLabel($target_entity_type_id, $target_entity_label);
+
+    /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+    $meta_entity = $target_entity->{$field_name}->entity;
+    if (!$meta_entity) {
+      throw new \Exception("The '{$target_entity_label}' doesn't have a related meta entity.");
+    }
+
+    $meta_entity->set('count', (int) $count)->save();
   }
 
 }

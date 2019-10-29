@@ -5,23 +5,25 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - joinup:asset_release
-  - joinup:contact_information
   - drupal:datetime
-  - file_url:file_url
   - drupal:image
-  - inline_entity_form:inline_entity_form
-  - joinup:joinup_core
   - drupal:link
   - drupal:options
+  - drupal:text
+  - file_url:file_url
+  - inline_entity_form:inline_entity_form
+  - joinup:asset_release
+  - joinup:contact_information
+  - joinup:joinup_core
   - joinup:owner
+  - joinup:workflow_state_permission
   - rdf_entity:rdf_entity
   - smart_trim:smart_trim
   - state_machine:state_machine
-  - drupal:text
   - token:token
 
 config_devel:
+  - core.base_field_override.rdf_entity.solution.label
   - core.entity_form_display.rdf_entity.solution.default
   - core.entity_view_display.rdf_entity.solution.about
   - core.entity_view_display.rdf_entity.solution.default
@@ -55,6 +57,7 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_pinned_in
   - field.field.rdf_entity.solution.field_is_product_type
   - field.field.rdf_entity.solution.field_is_related_solutions
+  - field.field.rdf_entity.solution.field_is_show_eira_related
   - field.field.rdf_entity.solution.field_is_solution_type
   - field.field.rdf_entity.solution.field_is_source_code_repository
   - field.field.rdf_entity.solution.field_is_standardization_level
@@ -62,6 +65,7 @@ config_devel:
   - field.field.rdf_entity.solution.field_is_test_resource_type
   - field.field.rdf_entity.solution.field_is_translation
   - field.field.rdf_entity.solution.field_is_version
+  - field.field.rdf_entity.solution.field_is_version_of
   - field.field.rdf_entity.solution.field_is_webdav_creation
   - field.field.rdf_entity.solution.field_is_webdav_url
   - field.field.rdf_entity.solution.field_is_wiki
@@ -93,6 +97,7 @@ config_devel:
   - field.storage.rdf_entity.field_is_pinned_in
   - field.storage.rdf_entity.field_is_product_type
   - field.storage.rdf_entity.field_is_related_solutions
+  - field.storage.rdf_entity.field_is_show_eira_related
   - field.storage.rdf_entity.field_is_solution_type
   - field.storage.rdf_entity.field_is_source_code_repository
   - field.storage.rdf_entity.field_is_standardization_level
@@ -108,4 +113,5 @@ config_devel:
   - og.og_role.rdf_entity-solution-member
   - og.og_role.rdf_entity-solution-non-member
   - rdf_entity.rdfentity.solution
+  - solution.settings
   - sparql_entity_storage.mapping.rdf_entity.solution

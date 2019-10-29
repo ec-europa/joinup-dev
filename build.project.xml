@@ -97,7 +97,7 @@
     </target>
 
     <!-- Execute Drupal updates. -->
-    <target name="execute-updates" depends="disable-config-read-only">
+    <target name="execute-updates" depends="disable-config-read-only, redis-flush">
         <drush
                 command="updatedb"
                 assume="yes"
@@ -206,7 +206,7 @@
                 password="${drupal.db.password}" />
     </target>
 
-    <target name="restore-databases" depends="restore-apache-solr, restore-mysql-dump, virtuoso-restore-backup, clear-cache" />
+    <target name="restore-databases" depends="restore-apache-solr, restore-mysql-dump, virtuoso-restore-backup" />
 
     <target name="rebuild-environment" depends="restore-databases, execute-updates" />
 

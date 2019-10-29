@@ -26,6 +26,7 @@ class RequestRouteConditionTest extends KernelTestBase {
     'rdf_entity',
     'sparql_entity_storage',
     'system',
+    'workflow_state_permission',
   ];
 
   /**
