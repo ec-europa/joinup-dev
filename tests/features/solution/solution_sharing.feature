@@ -75,10 +75,16 @@ Feature: As a privileged user
     Then I should see the "Solution to be shared" tile
     And I should not see the contextual link "Unshare" in the "Solution to be shared" tile
 
-    When I am logged in as a facilitator of the "Collection share candidate 1" collection
+    # Facilitators of other collections cannot unshare from the specific collection.
+    When I am logged in as a facilitator of the "Collection share candidate 2" collection
     And I go to the homepage of the "Collection share candidate 1" collection
     Then I should see the "Solution to be shared" tile
     And I should not see the contextual link "Unshare" in the "Solution to be shared" tile
+
+    When I am logged in as a moderator
+    And I go to the homepage of the "Collection share candidate 1" collection
+    Then I should see the "Solution to be shared" tile
+    And I should see the contextual link "Unshare" in the "Solution to be shared" tile
 
     When I am logged in as a facilitator of the "Collection share candidate 1" collection
     And I go to the homepage of the "Collection share candidate 1" collection
@@ -107,11 +113,10 @@ Feature: As a privileged user
     Then I should not see the contextual link "Unshare" in the "Solution to be shared" tile
 
     When I click the contextual link "Share" in the "Solution to be shared" tile
-    And I click "Share"
     Then a modal should open
     And the following fields should be present "Collection share candidate 1"
     And the following fields should not be present "Collection share original, Collection share candidate 2"
 
     # The content should obviously not shared in the other collection too.
-    When I go to the homepage of the "Collection share original" collection
+    When I go to the homepage of the "Collection share candidate 2" collection
     Then I should not see the "Solution to be shared" tile
