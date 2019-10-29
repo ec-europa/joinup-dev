@@ -133,7 +133,7 @@ function joinup_community_content_preprocess_node(&$variables) {
 
   // If the node is shared somewhere, attach the related library.
   if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
-    $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
+    $variables['#attached']['library'][] = 'joinup_core/shared_entity';
   }
 }
 

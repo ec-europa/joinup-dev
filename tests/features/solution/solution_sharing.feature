@@ -57,6 +57,7 @@ Feature: As a privileged user
     # The shared solution should be shown amongst the other content tiles.
     When I go to the homepage of the "Collection share candidate 1" collection
     Then I should see the "Solution to be shared" tile
+    And the "Solution to be shared" tile should be marked as shared from "Collection share candidate 1"
 
     # It should not be shared in the other collection.
     When I go to the homepage of the "Collection share candidate 2" collection
