@@ -3,15 +3,14 @@ Feature: As a privileged user
   I want to share solutions to my collections
   So that useful information has more visibility
 
-  Background:
+  @javascript
+  Scenario: Share link is visible for privileged users.
     Given collections:
       | title                        | logo     | state     |
       | Collection share original    | logo.png | validated |
       | Collection share candidate 1 | logo.png | validated |
       | Collection share candidate 2 | logo.png | validated |
 
-  @javascript
-  Scenario: Share link is visible for privileged users.
     Given the following solutions:
       | title                 | description         | logo     | banner     | state     | collection                |
       | Solution to be shared | Doesn't affect test | logo.png | banner.jpg | validated | Collection share original |
