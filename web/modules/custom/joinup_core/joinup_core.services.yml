@@ -9,17 +9,9 @@ services:
     arguments: ['@joinup_core.relations_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: community_content }
-  joinup_core.group_helper:
-    class: Drupal\joinup_core\GroupHelper
-    arguments: ['@entity_type.manager', '@logger.channel.joinup_core']
   joinup_core.node_workflow_access:
     class: Drupal\joinup_core\NodeWorkflowAccessControlHandler
     arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_core.relations_manager', '@current_user', '@config.factory', '@joinup_core.workflow.helper']
-  joinup_core.refresh_visit_count:
-    class: Drupal\joinup_core\EventSubscriber\RefreshCachedFieldsEventSubscriber
-    arguments: ['@entity_type.manager', '@datetime.time', '@matomo.query_factory', '@config.factory', '@logger.factory']
-    tags:
-      - { name: event_subscriber }
   joinup_core.relations_manager:
     class: Drupal\joinup_core\JoinupRelationManager
     arguments: ['@og.membership_manager', '@entity_type.manager']
