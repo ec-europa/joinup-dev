@@ -1,0 +1,25 @@
+uuid: 491e50f0-7de7-4da2-9c51-2ad8b19a0bb4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: community_content
+label: 'Community content'
+type: 'canonical_entities:node'
+pattern: '[node:og_audience:entity:rid:target_id]/[node:og_audience:entity:label]/[node:content-type]/[node:title]'
+selection_criteria:
+  68832b83-2ccd-45eb-ac1e-fce770ca3185:
+    id: node_type
+    bundles:
+      discussion: discussion
+      document: document
+      event: event
+      news: news
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 68832b83-2ccd-45eb-ac1e-fce770ca3185
+selection_logic: and
+weight: -5
+relationships: {  }

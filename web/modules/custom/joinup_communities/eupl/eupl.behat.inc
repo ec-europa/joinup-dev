@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
+use Drupal\eupl\Eupl;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -46,10 +47,18 @@ class EuplSubContext extends DrupalSubContextBase {
     // Create the EUPL entity.
     Rdf::create([
       'rid' => 'collection',
-      'id' => EUPL_COMMUNITY_ID,
+      'id' => Eupl::EUPL_COMMUNITY_ID,
       'label' => 'EUPL',
       'field_ar_state' => 'validated',
       'field_ar_owner' => 'http://example.com/owner',
+    ])->save();
+
+    Rdf::create([
+      'rid' => 'solution',
+      'collection' => Eupl::EUPL_COMMUNITY_ID,
+      'id' => Eupl::JLA_SOLUTION,
+      'label' => 'Joinup Licensing Assistant',
+      'field_is_state' => 'validated',
     ])->save();
 
     // The 'Implementation monitoring' standard custom page.
@@ -58,7 +67,7 @@ class EuplSubContext extends DrupalSubContextBase {
       'type' => 'custom_page',
       'uuid' => '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41',
       'title' => 'JLA',
-      'og_audience' => EUPL_COMMUNITY_ID,
+      'og_audience' => Eupl::JLA_SOLUTION,
     ])->save();
   }
 
@@ -121,9 +130,13 @@ class EuplSubContext extends DrupalSubContextBase {
     $entity_repository = \Drupal::service('entity.repository');
     $entity_repository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41')->delete();
 
-    $collection = Rdf::load(EUPL_COMMUNITY_ID);
+    $collection = Rdf::load(Eupl::EUPL_COMMUNITY_ID);
     $collection->skip_notification = TRUE;
     $collection->delete();
+
+    $solution = Rdf::load(Eupl::JLA_SOLUTION);
+    $solution->skip_notification = TRUE;
+    $solution->delete();
 
     Rdf::load('http://example.com/owner')->delete();
   }

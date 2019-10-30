@@ -5,6 +5,8 @@
  * Contains Drupal\solution\solution.behat.inc.
  */
 
+declare(strict_types = 1);
+
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\Language\LanguageInterface;
@@ -15,9 +17,11 @@ use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
@@ -33,22 +37,24 @@ use PHPUnit\Framework\Assert;
 class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use ConfigReadOnlyTrait;
-  use EntityTrait;
   use EntityReferenceTrait;
+  use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use NodeTrait;
   use OgTrait;
-  use TraversingTrait;
   use RdfEntityTrait;
+  use SearchTrait;
+  use TraversingTrait;
   use UtilityTrait;
   use WorkflowTrait;
 
   /**
-   * Test solutions.
+   * Keep track of created entities.
    *
-   * @var \Drupal\rdf_entity\Entity\Rdf[]
+   * @var \Drupal\rdf_entity\RdfInterface[]
    */
-  protected $solutions = [];
+  protected $rdfEntities = [];
 
   /**
    * Navigates to the add solution form.
@@ -134,6 +140,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
         }
       };
 
+      $this->ensureParentCollection($values);
       $values = $this->convertValueAliases($values);
 
       $this->createSolution($values);
@@ -195,9 +202,51 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       }
     };
 
+    $this->ensureParentCollection($values);
     $values = $this->convertValueAliases($values);
 
     $this->createSolution($values);
+  }
+
+  /**
+   * Make sure that the solution being created has a parent collection.
+   *
+   * For some tests the solution's parent collection has no relevance. Such
+   * tests are allowed to omit an explicit collection creation. We're creating
+   * here a dummy parent collection just to satisfy the data integrity
+   * constraint.
+   *
+   * @param array $values
+   *   The solution creation values.
+   *
+   * @see \Drupal\solution\SolutionAffiliationFieldItemList::preSave()
+   */
+  protected function ensureParentCollection(array &$values): void {
+    if (empty($values['collection'])) {
+      $label = $this->getRandom()->sentences(3);
+      $collection = Rdf::create([
+        'rid' => 'collection',
+        'label' => $label,
+        'field_ar_state' => 'validated',
+      ]);
+      $collection->save();
+      $values['collection'] = $label;
+      // Track this collection.
+      $this->rdfEntities[$collection->id()] = $collection;
+
+      // Remove any links created by this collection because they might produce
+      // name collisions with the solution. E.g. the left sidebar link 'About'.
+      // @todo Remove this workaround in ISAICP-5597.
+      // @see tests/features/custom_page/navigation_menu.feature
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5597
+      $entity_type_manager = \Drupal::entityTypeManager();
+      $storage = $entity_type_manager->getStorage('ogmenu_instance');
+      $og_menu_instance_ids = $storage->getQuery()
+        ->condition('type', 'navigation')
+        ->condition(OgGroupAudienceHelperInterface::DEFAULT_FIELD, $collection->id())
+        ->execute();
+      $storage->delete($storage->loadMultiple($og_menu_instance_ids));
+    }
   }
 
   /**
@@ -219,7 +268,6 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   public function givenContentMemberships($bundle, TableNode $membership_table) {
     // As each given step is executed in the same request
     // we need to reset the mapping.
-    $storage = \Drupal::entityManager()->getStorage('rdf_entity');
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['solution'], 'solution');
       /** @var \Drupal\node\NodeInterface $content */
@@ -266,7 +314,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   A new solution entity.
    *
    * @throws \Exception
@@ -288,7 +336,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     }
 
     $solution = $this->createRdfEntity('solution', $values);
-    $this->solutions[$solution->id()] = $solution;
+    $this->rdfEntities[$solution->id()] = $solution;
 
     return $solution;
   }
@@ -366,14 +414,8 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @Then I should have :number solution(s)
    */
-  public function assertSolutionCount($number) {
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'solution')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of solutions. Expected number: $number, actual number: $actual.");
-    }
+  public function assertSolutionCount(int $number): void {
+    $this->assertRdfEntityCount($number, 'solution');
   }
 
   /**
@@ -419,27 +461,37 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @Given the :solution solution will be deleted manually
    */
   public function skipCleaningOfSolution($solution) {
-    unset($this->solutions[$this->getSolutionByName($solution)->id()]);
+    unset($this->rdfEntities[$this->getSolutionByName($solution)->id()]);
   }
 
   /**
-   * Remove any created solutions.
+   * Remove any created entities.
    *
    * @AfterScenario
    */
-  public function cleanSolutions(AfterScenarioScope $event) {
+  public function clearEntities(AfterScenarioScope $event) {
+    if (empty($this->rdfEntities)) {
+      return;
+    }
+
+    // Since we might be cleaning up many solutions, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any solutions that were created.
-    foreach ($this->solutions as $solution) {
-      $name = $solution->getName();
+    foreach ($this->rdfEntities as $entity) {
+      $name = $entity->label();
       try {
-        $solution->skip_notification = TRUE;
-        $solution->delete();
+        $entity->skip_notification = TRUE;
+        $entity->delete();
       }
       catch (Throwable $e) {
         // Throw a more helpful error if something goes wrong during cleanup.
         throw new \Exception(sprintf('Error while cleaning up solution "%s" after completing scenario "%s" of feature "%s": "%s"', $name, $event->getFeature()->getTitle(), $event->getScenario()->getTitle(), $e->getMessage()));
       }
     }
+    $this->rdfEntities = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**
@@ -550,39 +602,41 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * The method also checks that these options are the only options available.
    *
+   * This method will log in as each user in sequence, so take care to only use
+   * it when the currently logged in user can be discarded.
+   *
    * Table format:
-   * | solution   | user | options          |
-   * | Solution A | John | Status1          |
-   * | Solution B | Jack | Status1, Status2 |
+   * | solution   | user | buttons         |
+   * | Solution A | John | Save as draft   |
+   * | Solution B | Jack | Update, Publish |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
-   *   The table with the triplets solution-user-options.
+   *   The table with the triplets solution-user-buttons.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
    *
    * @todo: Maybe there is a better definition available here like 'The
    * following state buttons should be available for the user on the
-   * collection'.
+   * solution'.
    *
-   * @Given for the following solution, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following solution, the corresponding user should have the corresponding (available )state buttons:
    */
-  public function verifyWorkflowStates(TableNode $check_table) {
+  public function verifyWorkflowStates(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
-      // Load entity.
-      $solution = $this->getSolutionByName($values['solution']);
+      $username = $values['user'];
+      $user = $this->userManager->getUser($username);
 
-      // Load user.
-      $user = user_load_by_name($values['user']);
-      if (empty($user)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
+      // Check if we are already logged in as the user to test.
+      $current_username = $this->userManager->getCurrentUser()->name ?? NULL;
+      if ($username !== $current_username) {
+        $this->authenticationManager->logIn($user);
       }
 
-      // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(',', $values['states']);
-      $states = array_map('trim', $states);
-
-      $this->assertAvailableTransitions($solution, $states, $user);
+      // Go to the edit form and check that the expected buttons are visible.
+      $this->visitEditSolution($values['solution']);
+      $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
+      $this->assertSubmitButtonsVisible($buttons);
     }
   }
 
@@ -606,13 +660,15 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   /**
    * Creates a simple multilingual solution.
    *
-   * @Given the multilingual :title solution
+   * @Given the multilingual :title solution of :collection collection
    */
-  public function theMultilingualSolution($title) {
+  public function theMultilingualSolution(string $title, string $collection): void {
+    $collection = $this->getEntityByLabel('rdf_entity', $collection, 'collection');
     $values = [
       'label' => $title,
       'field_is_state' => 'validated',
       'field_is_description' => "English description",
+      'collection' => $collection->id(),
     ];
     $solution = $this->createRdfEntity('solution', $values);
     // Fill with the specific content translation fields and fall-back to
@@ -627,39 +683,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $solution_values['field_is_description'] = "Catalan description";
     // Create the translation.
     $solution->addTranslation('ca', $solution_values)->save();
-    $this->solutions[$solution->id()] = $solution;
-
-  }
-
-  /**
-   * Applies a transition to a solution.
-   *
-   * @param string $username
-   *   The username applying the transition.
-   * @param string $entity_name
-   *   The title of the solution.
-   * @param string $to_state
-   *   The state that the solution transits to.
-   *
-   * @throws \Exception
-   *    An exception is thrown if the user is not found or the transition is not
-   *    allowed for this user.
-   *
-   * @Given the user :username changes the state of the :entity_name solution to :to_state
-   */
-  public function applySolutionWorkflowTransition($username, $entity_name, $to_state) {
-    $user = user_load_by_name($username);
-    if (empty($user)) {
-      throw new \Exception("User {$username} was not found.");
-    }
-    $solution = $this->getSolutionByName($entity_name);
-    $available_states = $this->getAvailableStates($solution, $user);
-    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
-      throw new \Exception("The given user does not have permission to apply the specific transition.");
-    }
-    $transition = $solution->get('field_is_state')->first()->getWorkflow()->getTransition($transition_id);
-    $solution->get('field_is_state')->first()->applyTransition($transition);
-    $solution->save();
+    $this->rdfEntities[$solution->id()] = $solution;
   }
 
   /**
@@ -730,6 +754,43 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
     $tile = $this->getTileByHeading($heading);
     $elements = $tile->findAll('xpath', '//span[contains(@class, "icon--download")]');
     Assert::assertEmpty($elements);
+  }
+
+  /**
+   * Sets the visit or download count for a given entity to a certain value.
+   *
+   * @param string $type
+   *   The type of counter: 'download' or 'visit'.
+   * @param string $target_entity_label
+   *   The target entit label.
+   * @param string $count
+   *   The counter to be set.
+   *
+   * @throws \Exception
+   *   When:
+   *   - An invalid $type was specified.
+   *   - The entity with $target_entity_label doesn't exists.
+   *   - A related meta entity doesn't exist.
+   *
+   * @Given the :type count of :target_entity_label is :count
+   */
+  public function setDownloadCountForEntity(string $type, string $target_entity_label, string $count): void {
+    if (!in_array($type, ['download', 'visit'])) {
+      throw new \Exception("Type should be 'download' or 'visit' but '{$type}' was given.");
+    }
+
+    $target_entity_type_id = $type === 'visit' ? 'node' : 'rdf_entity';
+    $field_name = "{$type}_count";
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $target_entity */
+    $target_entity = $this->getEntityByLabel($target_entity_type_id, $target_entity_label);
+
+    /** @var \Drupal\meta_entity\Entity\MetaEntityInterface $meta_entity */
+    $meta_entity = $target_entity->{$field_name}->entity;
+    if (!$meta_entity) {
+      throw new \Exception("The '{$target_entity_label}' doesn't have a related meta entity.");
+    }
+
+    $meta_entity->set('count', (int) $count)->save();
   }
 
 }

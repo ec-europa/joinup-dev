@@ -5,7 +5,7 @@ dependencies:
     - link
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     rdf_mapping: 'http://www.w3.org/ns/dcat#accessURL'
     mapping:
       uri: 'http://www.w3.org/ns/dcat#accessURL'

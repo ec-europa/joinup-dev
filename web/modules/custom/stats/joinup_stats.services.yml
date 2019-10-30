@@ -1,0 +1,6 @@
+services:
+  joinup_stats.refresh_cached_computed_fields:
+    class: Drupal\joinup_stats\Event\Subscriber\RefreshCachedFieldsEventSubscriber
+    arguments: ['@entity_type.manager', '@datetime.time', '@matomo.query_factory', '@config.factory', '@logger.factory']
+    tags:
+      - { name: 'event_subscriber' }

@@ -11,7 +11,6 @@ dependencies:
     - field.storage.node.field_scope
     - field.storage.node.field_shared_in
     - field.storage.node.field_short_title
-    - field.storage.node.field_visit_count
     - field.storage.rdf_entity.field_ar_abstract
     - field.storage.rdf_entity.field_isr_contact_information
     - field.storage.rdf_entity.field_ci_name
@@ -19,8 +18,8 @@ dependencies:
     - field.storage.rdf_entity.field_licence_spdx_licence
     - field.storage.rdf_entity.field_licence_description
     - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_is_description
+    - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
@@ -34,6 +33,7 @@ dependencies:
     - search_api.server.solr_published
   module:
     - node
+    - publication_date
     - rdf_entity
     - user
     - search_api
@@ -280,11 +280,11 @@ field_settings:
   field_visit_count:
     label: 'Visit count'
     datasource_id: 'entity:node'
-    property_path: field_visit_count
+    property_path: 'visit_count:entity:count'
     type: integer
     dependencies:
       config:
-        - field.storage.node.field_visit_count
+        - field.storage.meta_entity.count
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -372,6 +372,14 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  published_at:
+    label: 'Published on'
+    datasource_id: 'entity:node'
+    property_path: published_at
+    type: date
+    dependencies:
+      module:
+        - publication_date
   rdf_changed:
     label: Changed
     datasource_id: 'entity:rdf_entity'

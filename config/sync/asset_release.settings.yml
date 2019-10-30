@@ -1,0 +1,26 @@
+transitions:
+  draft:
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator
+  needs_update:
+    needs_update:
+      - moderator
+      - rdf_entity-solution-facilitator
+    validated:
+      - moderator
+  validated:
+    draft:
+      - moderator
+      - rdf_entity-solution-facilitator
+    needs_update:
+      - moderator
+    validated:
+      - moderator
+      - rdf_entity-solution-facilitator

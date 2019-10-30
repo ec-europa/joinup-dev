@@ -24,8 +24,9 @@ use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\rdf_entity\RdfEntityGraphInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Solarium\QueryType\Select\Query\Query;
@@ -276,7 +277,7 @@ function collection_rdf_entity_presave(RdfInterface $entity) {
     'deletion_request',
     'archived',
   ])) {
-    $entity->set('graph', RdfEntityGraphInterface::DEFAULT);
+    $entity->set('graph', SparqlGraphInterface::DEFAULT);
   }
   elseif (empty($state)) {
     throw new \Exception("State field not found while trying to get the appropriate graph.");
@@ -497,7 +498,6 @@ function collection_solution_count(RdfInterface $entity) {
 function collection_search_api_query_search_api_field_field_collection_content_alter(QueryInterface &$query) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $query->getOption('search_api_field entity');
-
   $or = $query->createConditionGroup('OR');
   // Show content that is related to this collection through the aggregated
   // field. This makes sure that other related entities (such as the collection
@@ -633,7 +633,7 @@ function collection_node_delete(NodeInterface $node) {
   }
 
   /** @var \Drupal\rdf_entity\RdfInterface $group */
-  if (($group = $node->og_audience->entity) && $group->bundle() === 'collection') {
+  if (!$node->get('og_audience')->isEmpty() && ($group = Rdf::load($node->get('og_audience')->target_id)) && $group->bundle() === 'collection') {
     // Touch the parent collection in order to update its changed timestamp.
     $group->skip_notification = TRUE;
     $group->setChangedTime(\Drupal::time()->getRequestTime())->save();

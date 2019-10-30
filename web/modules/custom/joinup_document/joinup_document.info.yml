@@ -1,16 +1,16 @@
 name: Joinup Document
 type: module
-description: A document content type
+description: The document content type used in Joinup.
 core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field
-  - file_url
-  - joinup_community_content
-  - joinup_licence
-  - language
-  - smart_trim
+  - cached_computed_field:cached_computed_field
+  - file_url:file_url
+  - joinup:joinup_community_content
+  - joinup:joinup_licence
+  - drupal:language
+  - smart_trim:smart_trim
 
 config_devel:
   - core.base_field_override.node.document.title
@@ -33,7 +33,6 @@ config_devel:
   - field.field.node.document.field_site_pinned
   - field.field.node.document.field_state
   - field.field.node.document.field_type
-  - field.field.node.document.field_visit_count
   - field.field.node.document.og_audience
   - field.storage.node.field_document_publication_date
   - field.storage.node.field_document_spatial_coverage

@@ -3,6 +3,7 @@
 namespace Drupal\joinup_migrate\EventSubscriber;
 
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigratePreEntitySaveEvent;
@@ -12,6 +13,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * A subscriber that acts before an entity is saved.
  */
 class TranslateFieldSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
+   * Constructs a TranslateFieldSubscriber.
+   *
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
+   *   The language manager.
+   */
+  public function __construct(LanguageManagerInterface $languageManager) {
+    $this->languageManager = $languageManager;
+  }
 
   /**
    * {@inheritdoc}
@@ -35,9 +53,8 @@ class TranslateFieldSubscriber implements EventSubscriberInterface {
     // Create first all needed languages. We do this before the iteration where
     // we save the translations, otherwise the entity language static cache is
     // initialized with the initial languages list and that cannot be changed.
-    $language_manager = \Drupal::languageManager();
     foreach (array_keys($i18n) as $langcode) {
-      if (!$language_manager->getLanguage($langcode)) {
+      if (!$this->languageManager->getLanguage($langcode)) {
         ConfigurableLanguage::createFromLangcode($langcode)->save();
       }
     }

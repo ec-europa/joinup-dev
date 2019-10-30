@@ -7,24 +7,32 @@ Feature: As a site moderator I am able to import RDF files.
       | Antoine Batiste | moderator |
     And I am logged in as "Antoine Batiste"
 
+  Scenario: Test available pipelines
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    Then the "Data pipeline" select should contain the following options:
+      | - Select -                              |
+      | Joinup collection                       |
+      | Slovenian Interoperability Portal - NIO |
+      | Spain - Center for Technology Transfer  |
+
   Scenario: Test the pipeline functionality
     Given collection:
-      | uri        | http://administracionelectronica.gob.es/ctt |
-      | title      | Spain                                       |
-      | state      | validated                                   |
+      | uri   | http://administracionelectronica.gob.es/ctt |
+      | title | Spain                                       |
+      | state | validated                                   |
     And users:
       | Username         | Roles     |
       | LaDonna          | moderator |
       | Janette Desautel |           |
 
-    Given I go to the pipeline orchestrator
-    When I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
     Then I should see "Spain - Center for Technology Transfer: Manual upload"
 
     # Go back to the pipeline selection. You should be redirected to the current
     # active/unfinished step.
-    And I go to the pipeline orchestrator
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
     Then I should see "Spain - Center for Technology Transfer: Manual upload"
 
     # Test the wizard reset.
@@ -34,8 +42,8 @@ Feature: As a site moderator I am able to import RDF files.
 
     # The pipeline should be locked for different user.
     Given I am logged in as LaDonna
-    And I go to the pipeline orchestrator
-    When I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
     Then I should see the following error messages:
       | error messages                                                                                                                                                                               |
@@ -57,7 +65,10 @@ Feature: As a site moderator I am able to import RDF files.
     Then the response status code should be 200
 
   Scenario: Test the import of a file that doesn't pass the ADMS-AP validation.
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I press "Execute"
+
     When I attach the file "invalid_adms.rdf" to "File"
     And I press "Upload"
 
@@ -71,8 +82,11 @@ Feature: As a site moderator I am able to import RDF files.
     And I should see "Imported data is not ADMS v2 compliant"
 
   Scenario: Test the import of a file that doesn't pass the Drupal validation.
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I press "Execute"
     When I attach the file "invalid_drupal.rdf" to "File"
+
     And I press "Upload"
 
     When I press "Next"
@@ -90,15 +104,29 @@ Feature: As a site moderator I am able to import RDF files.
       | Spain - Center for Technology Transfer execution stopped with errors in Joinup compliance validation step. Please review the following errors: |
     And I should see the heading "Errors executing Spain - Center for Technology Transfer"
     And I should see the following lines of text:
+      | A solution titled Solution 1 already exists in this collection.                        |
       | The referenced entity (rdf_entity: http://example.com/owner/invalid) does not exist.   |
       | The referenced entity (rdf_entity: http://example.com/contact/invalid) does not exist. |
       | This value should not be null.                                                         |
       | The distribution Windows is linked also by the Asset release 1 release.                |
 
+  @terms
   Scenario: Test a successful import.
-    Given solutions:
-      | uri                           | title                       | description         | state     | modification date |
-      | http://example.com/solution/2 | Local version of Solution 2 | Initial description | validated | 15-07-2018        |
+    Given user:
+      | Username    | CS Owner                |
+      | First name  | Collection and solution |
+      | Family name | Owner                   |
+      | E-mail      | csowner@example.com     |
+    And collection:
+      | uri   | http://nio.gov.si/nio/ |
+      | title | NIO                    |
+      | state | validated              |
+    And solutions:
+      | uri                           | title                       | collection | description         | state     | modification date |
+      | http://example.com/solution/2 | Local version of Solution 2 | NIO        | Initial description | validated | 15-07-2018        |
+    And the following solution user membership:
+      | solution                    | user     | roles                      | state  |
+      | Local version of Solution 2 | CS Owner | facilitator, administrator | active |
     And the following distribution:
       | uri               | http://example.com/distribution/3          |
       | title             | Local version of a standalone distribution |
@@ -107,36 +135,45 @@ Feature: As a site moderator I am able to import RDF files.
       | parent            | Local version of Solution 2                |
       | creation date     | 15-07-2018                                 |
       | modification date | 15-07-2018                                 |
-    And collection:
-      | uri        | http://administracionelectronica.gob.es/ctt |
-      | title      | Spain                                       |
-      | state      | validated                                   |
-      | affiliates | Local version of Solution 2                 |
+    And the following collection user membership:
+      | collection | user     | roles                      | state  |
+      | NIO        | CS Owner | facilitator, administrator | active |
+    # Hash for solution 2 includes the title 'Local version of solution 2' so
+    # that it will detect changes in the first attempt.
+    # Hash for solution 3 is the one matching to the values from valid_adms.rdf.
     And provenance activities:
-      | entity                        | enabled | associated with | author          | started          |
-      | Local version of Solution 2   | yes     | Spain           | Antoine Batiste | 2012-07-07 23:01 |
-      | http://example.com/solution/3 | no      | Spain           | Antoine Batiste | 2015-12-25 01:30 |
-    # The license contained in valid_adms.rdf is named "A federated license".
-    # However, the goal is to not import or update any values in the license entity so
-    # the following license has different details.
-    And the following licence:
-      | uri         | http://example.com/license/1 |
-      | title       | Federated open license       |
-      | description | Licence agreement details    |
-      | type        | Public domain                |
+      | entity                        | enabled | associated with | author          | started          | hash                             |
+      | Local version of Solution 2   | yes     | NIO             | Antoine Batiste | 2012-07-07 23:01 | 958c1834800217af62253353d0d4bdef |
+      | http://example.com/solution/3 | no      | NIO             | Antoine Batiste | 2015-12-25 01:30 | e5e7aceb15c50ab628c744673daf5ca1 |
+    Given SPDX licences:
+      | uri                                 | title       |
+      | http://spdx.org/licenses/Apache-2.0 | Apache 2    |
+      | http://spdx.org/licenses/MIT        | MIT License |
+    # The licence contained in valid_adms.rdf is named "A federated licence".
+    # However, the goal is to not import or update any values in the licence
+    # entity so the following licences have different details.
+    And the following licences:
+      | uri                          | title                    | description               | type          | spdx licence |
+      | http://example.com/licence/1 | Licence same as Apache 2 | Licence agreement details | Public domain | Apache 2     |
+      | http://example.com/licence/2 | Licence same as MIT      | So on...                  | Public domain | MIT License  |
 
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Slovenian Interoperability Portal - NIO" from "Data pipeline"
+    And I press "Execute"
     When I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
-    Then I should see "Spain - Center for Technology Transfer: User selection"
-    And the row "Solution 1 [http://example.com/solution/1]" is checked
-    And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1]" row
+    Then I should see "Slovenian Interoperability Portal - NIO: User selection"
+    # Solution 1 is checked because it is new.
+    And the row "Solution 1 [http://example.com/solution/1?query=4#]" is checked
+    And I should see the text "Not federated yet" in the "Solution 1 [http://example.com/solution/1?query=4#]" row
+    # Solution 2 is checked because there are changes detected (The title is different).
     And the row "Solution 2 [http://example.com/solution/2]" is checked
     And I should see the text "Federated on 07/07/2012 - 23:01 by Antoine Batiste" in the "Solution 2 [http://example.com/solution/2]" row
+    # Solution 3 is not checked because it is marked as blacklisted.
     And the row "Solution 3 [http://example.com/solution/3]" is not checked
     And I should see the text "Blacklisted on 25/12/2015 - 01:30 by Antoine Batiste" in the "Solution 3 [http://example.com/solution/3]" row
 
@@ -144,14 +181,9 @@ Feature: As a site moderator I am able to import RDF files.
     And I wait for the pipeline batch job to finish
 
     Then I should see the following success messages:
-      | success messages                                                                |
-      | The Spain - Center for Technology Transfer execution has finished with success. |
-    And I should see the heading "Successfully executed Spain - Center for Technology Transfer import pipeline"
-
-    # Check that the existing solution values were overridden.
-    Given I go to the "Solution 2" solution edit form
-    Then the "Title" field should contain "Solution 2"
-    And the "Description" field should contain "This solution has a standalone distribution."
+      | success messages                                                             |
+      | Slovenian Interoperability Portal - NIO execution has finished with success. |
+    And I should see the heading "Successfully executed Slovenian Interoperability Portal - NIO import pipeline"
 
     # Check how the provenance records were created/updated.
     Then the "Solution 1" entity is not blacklisted for federation
@@ -167,39 +199,74 @@ Feature: As a site moderator I am able to import RDF files.
     But the "http://example.com/solution/3" entity is blacklisted for federation
     And the "http://example.com/distribution/4" entity is blacklisted for federation
 
-    # License should be excluded from the import process.
-    And the "Federated open license" entity should not have a related provenance activity
+    # Licence should be excluded from the import process.
+    And the "Licence same as Apache 2" entity should not have a related provenance activity
+
+    # Regression test to ensure that solutions with complex urls still receive all menu items.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5608
+    When I visit the "Solution 1" solution
+    Then I should see the following group menu items in the specified order:
+      | text     |
+      | Overview |
+      | Members  |
+      | About    |
 
     # Check the affiliation of federated solutions.
-    But the "Solution 1" solution should be affiliated with the "Spain" collection
-    And the "Solution 2" solution should be affiliated with the "Spain" collection
+    But the "Solution 1" solution should be affiliated with the "NIO" collection
+    And the "Solution 2" solution should be affiliated with the "NIO" collection
+
+    # Check that the existing solution values were overridden.
+    Given I go to the "Solution 2" solution edit form
+    Then the "Title" field should contain "Solution 2"
+    And the "Description" field should contain "This solution has a standalone distribution."
+
+    # Verify the user can edit non federated values.
+    And I select "E-health" from "Policy domain"
+    And I press "Publish"
+    Then I should see the heading "Solution 2"
+
+    # Verify that the collection owner can edit the new solutions.
+    When I am logged in as "CS Owner"
+    And I go to the "Solution 1" solution edit form
+    Then the response status code should be 200
 
     # Ensure that the og relation is set between the distribution and the solution.
     When I go to the "Windows" asset distribution
     Then I should see the heading "Solution 1"
 
+    # And the SPDX licence IDs were converted to Joinup licence IDs.
+    And I should see "Licence same as Apache 2"
+    When I go to the "Linux" asset distribution
+    And I should see "Licence same as Apache 2"
+    When I go to the "A standalone distribution" asset distribution
+    And I should see "Licence same as MIT"
+
     # Re-import.
-    Given I visit "/admin/content/pipeline/spain/execute"
+    Given I am logged in as "Antoine Batiste"
+    And I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Slovenian Interoperability Portal - NIO" from "Data pipeline"
+    And I press "Execute"
     And I attach the file "valid_adms.rdf" to "File"
     And I press "Upload"
 
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
-    Then I should see "Spain - Center for Technology Transfer: User selection"
-    And the row "Solution 1" is checked
-    And the row "Solution 2" is checked
+    Then I should see "Slovenian Interoperability Portal - NIO: User selection"
+    # Solution 1 is unchecked because it is unchanged.
+    And the row "Solution 1" is not checked
+    # Solution 2 is unchecked because it is unchanged.
+    And the row "Solution 2" is not checked
+    # Solution 3 is unchecked because it is blacklisted.
     And the row "Solution 3" is not checked
 
-    # Swap 'Solution 1' with 'Solution 3'.
-    Given I uncheck the "Solution 1" row
-    And I check the "Solution 3" row
-
+    Given I check the "Solution 3" row
     When I press "Next"
     And I wait for the pipeline batch job to finish
 
     # Check how the provenance records were updated.
-    Then the "Solution 2" entity is not blacklisted for federation
+    Then I should see the heading "Successfully executed Slovenian Interoperability Portal - NIO import pipeline"
+    And the "Solution 2" entity is not blacklisted for federation
     And the "Solution 3" entity is not blacklisted for federation
     And the "MacOS" entity is not blacklisted for federation
     And the "A standalone distribution" entity is not blacklisted for federation
@@ -207,19 +274,27 @@ Feature: As a site moderator I am able to import RDF files.
     And the "A local authority" entity is not blacklisted for federation
     And the "Contact" entity is not blacklisted for federation
 
-    # Licenses should still be excluded from the import process.
-    And the "Federated open license" entity should not have a related provenance activity
+    # Licences should still be excluded from the import process.
+    And the "Licence same as Apache 2" entity should not have a related provenance activity
 
-    But the "Solution 1" entity is blacklisted for federation
-    And the "Asset release 1" entity is blacklisted for federation
-    And the "Asset release 2" entity is blacklisted for federation
-    And the "Windows" entity is blacklisted for federation
-    And the "Linux" entity is blacklisted for federation
+    # Unchanged solutions and dependencies do not become blacklisted if they are not federated.
+    And the "Solution 1" entity is not blacklisted for federation
+    And the "Asset release 1" entity is not blacklisted for federation
+    And the "Asset release 2" entity is not blacklisted for federation
+    And the "Windows" entity is not blacklisted for federation
+    And the "Linux" entity is not blacklisted for federation
 
     # Check the affiliation of federated solutions.
-    And the "Solution 1" solution should be affiliated with the "Spain" collection
-    And the "Solution 2" solution should be affiliated with the "Spain" collection
-    And the "Solution 3" solution should be affiliated with the "Spain" collection
+    And the "Solution 1" solution should be affiliated with the "NIO" collection
+    And the "Solution 2" solution should be affiliated with the "NIO" collection
+    And the "Solution 3" solution should be affiliated with the "NIO" collection
+
+    # Check that the Policy domain value was not overridden.
+    Given I go to the "Solution 2" solution edit form
+    # The text is '-E-health' because of the '-' prepended to children options.
+    And the option with text "-E-health" from select "Policy domain" is selected
+    And I press "Publish"
+    Then I should see the heading "Solution 2"
 
     # Check that provenance activity records are not indexed.
     When I am at "/search"
@@ -228,7 +303,7 @@ Feature: As a site moderator I am able to import RDF files.
     # We manually delete the imported entities as they are not tracked by Behat
     # and, as a consequence, will not be automatically deleted after test. Also
     # this is a good test to check that the entities were imported and exist.
-    And I delete the provenance activity of "http://example.com/solution/1" entity
+    And I delete the provenance activity of "http://example.com/solution/1?query=4#" entity
     And I delete the provenance activity of "http://example.com/solution/2" entity
     And I delete the provenance activity of "http://example.com/solution/3" entity
     And I delete the provenance activity of "http://example.com/release/1" entity
@@ -256,11 +331,13 @@ Feature: As a site moderator I am able to import RDF files.
   @joinup_collection
   Scenario: Test that solutions cannot be re-federated in a different collection.
     And collection:
-      | uri        | http://administracionelectronica.gob.es/ctt |
-      | title      | Spain                                       |
-      | state      | validated                                   |
+      | uri   | http://administracionelectronica.gob.es/ctt |
+      | title | Spain                                       |
+      | state | validated                                   |
 
-    Given I go to "/admin/content/pipeline/spain/execute"
+    Given I click "ADMS-AP importer" in the "Administration toolbar" region
+    And I select "Spain - Center for Technology Transfer" from "Data pipeline"
+    And I press "Execute"
     When I attach the file "single_solution_valid_adms.rdf" to "File"
     And I press "Upload"
 

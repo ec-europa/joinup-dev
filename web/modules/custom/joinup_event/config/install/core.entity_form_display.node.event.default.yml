@@ -24,7 +24,6 @@ dependencies:
     - field.field.node.event.field_site_featured
     - field.field.node.event.field_site_pinned
     - field.field.node.event.field_state
-    - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
     - image.style.thumbnail
     - node.type.event
@@ -37,6 +36,7 @@ dependencies:
     - image
     - joinup_core
     - link
+    - publication_date
     - text
 third_party_settings:
   field_group:
@@ -238,10 +238,10 @@ hidden:
   field_shared_in: true
   field_site_featured: true
   field_site_pinned: true
-  field_visit_count: true
   langcode: true
   og_audience: true
   path: true
+  published_at: true
   promote: true
   status: true
   sticky: true

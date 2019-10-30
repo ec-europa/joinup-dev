@@ -102,7 +102,7 @@ class OgUserRole extends SourcePluginBase {
       ->isNotNull('p.collection_owner');
     foreach ($query->execute()->fetchAllKeyed() as $collection_name => $collection_owner) {
       $uids = array_map('intval', explode(',', $collection_owner));
-      foreach ($uids as $delta => $uid) {
+      foreach ($uids as $uid) {
         $key = "$collection_name:$uid";
         // Membership already added.
         if (isset($rows[$key])) {

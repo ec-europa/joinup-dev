@@ -4,6 +4,7 @@ Feature: Homepage
   As a product owner
   I want to highlight the most important sections on the homepage
 
+  @commitSearchIndex
   Scenario: Statistics about important content types are shown to anonymous users
     Given I am not logged in
     And I am on the homepage
@@ -25,13 +26,13 @@ Feature: Homepage
       | Parliament          | deletion request |
       | Party structure     | archived         |
     And the following solutions:
-      | title             | state            |
-      | Economic theory   | draft            |
-      | Economic history  | proposed         |
-      | Laws of economics | validated        |
-      | Econometrics      | deletion request |
-      | Planned economy   | needs update     |
-      | Economic growth   | blacklisted      |
+      | title             | state            | collection     |
+      | Economic theory   | draft            | Social classes |
+      | Economic history  | proposed         | Social classes |
+      | Laws of economics | validated        | Social classes |
+      | Econometrics      | deletion request | Social classes |
+      | Planned economy   | needs update     | Social classes |
+      | Economic growth   | blacklisted      | Social classes |
     And custom_page content:
       | title                | collection     |
       | Developing economics | Social classes |
@@ -206,6 +207,9 @@ Feature: Homepage
     And I go to the homepage
     Then I should see the text "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme. It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
     And I should see the small header
+
+    # Homepage should also be cacheable for logged in users.
+    And the page should be cacheable
 
     # The header should still be shown in the other pages.
     When I click "Collections"

@@ -1,0 +1,13 @@
+uuid: 064849a3-d347-4b84-923d-78e694ac8b57
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_core
+    - og
+id: joinup_og_membership_delete_action
+label: 'Delete the selected membership(s)'
+type: og_membership
+plugin: joinup_og_membership_delete_action
+weight: 3
+configuration: {  }

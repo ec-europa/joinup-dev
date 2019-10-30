@@ -1,0 +1,25 @@
+uuid: 762bcd2a-e2ae-4c55-a3ad-1419b82fd250
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_contact_url
+    - message.template.contact_form_submission
+  module:
+    - link
+_core:
+  default_config_hash: J8NHrcHZV4XTZAlXPTnWkdOwYk-RWCPl-nQLCOl8SMg
+id: message.contact_form_submission.field_contact_url
+field_name: field_contact_url
+entity_type: message
+bundle: contact_form_submission
+label: 'Page URL'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 1
+  title: 0
+field_type: link

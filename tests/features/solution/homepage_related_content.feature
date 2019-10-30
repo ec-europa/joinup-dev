@@ -35,6 +35,7 @@ Feature: Solution homepage
       | title               | document type | short title | created           | body                    | spatial coverage | policy domain | solution                     | state     |
       | IS protocol draft 2 | Document      | IS draft 2  | 2018-10-04 8:08am | Next proposition draft. | European Union   | E-inclusion   | Information sharing protocol | validated |
 
+  @clearStaticCache
   Scenario: The solution homepage shows related content.
     When I go to the homepage of the "Information sharing protocol" solution
     # I should see only the related release.
@@ -60,7 +61,25 @@ Feature: Solution homepage
     # Nor the solution itself should be shown.
     And I should not see the "Information sharing protocol" tile
     # The total downloads of the 3 distributions should be shown.
-    And I should see the text "1667"
+    And I should see the text "Downloads: 1667"
+
+    # Test that the solution download counter is updating.
+    Given the download count of "PDF version" is 1589
+    When I reload the page
+    Then I should not see the text "Downloads: 1667"
+    But I should see the text "Downloads: 2667"
+    # Reset all compounded distribution download counters to 0.
+    Given the download count of "PDF version" is 0
+    And the download count of "ZIP version" is 0
+    And the download count of "Protocol draft" is 0
+    When I reload the page
+    Then I should not see the text "Downloads: 2667"
+    # Restore counters to their original values.
+    Given the download count of "PDF version" is 589
+    And the download count of "ZIP version" is 514
+    And the download count of "Protocol draft" is 564
+    When I reload the page
+    Then I should see the text "Downloads: 1667"
 
     # Test the filtering on the content type facet.
     When I click the Distribution content tab
@@ -83,7 +102,7 @@ Feature: Solution homepage
     But I should not see the "IS protocol paper 1" tile
     And I should not see the "Protocol draft" tile
     # The total downloads of the 2 distributions should be shown.
-    And I should see the text "1172"
+    And I should see the text "Downloads: 1172"
 
   Scenario: Forward search facets to the search page (Advanced search)
     When I go to the homepage of the "Information sharing protocol" solution

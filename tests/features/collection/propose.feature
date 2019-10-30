@@ -38,11 +38,11 @@ Feature: Proposing a collection
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3196
     And I should see the description "Web page for the external Repository." for the "Access URL" field
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
-    And I should see the description "For best result the image must be larger than 2400x770 pixels." for the "Banner" field
+    And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
     When I fill in the following:
       | Title            | Ancient and Classical Mythology                                                                      |
       | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
-      | Spatial coverage | Belgium                                                                                              |
+      | Geographical coverage | Belgium                                                                                              |
     When I select "HR" from "Policy domain"
     And I check "Closed collection"
     And I select "Only members can create new content." from "eLibrary creation"
@@ -157,14 +157,14 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
     When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
-    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Spatial coverage"
+    And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should be visible "Contact information"
 

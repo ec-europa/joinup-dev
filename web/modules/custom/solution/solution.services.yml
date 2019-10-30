@@ -4,8 +4,16 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  cache_context.solution_owner:
+    class: 'Drupal\solution\Cache\Context\SolutionOwnerCacheContext'
+    arguments: ['@current_user', '@entity_type.manager', '@og.membership_manager', '@database', '@private_key']
+    tags:
+      - { name: 'cache.context'}
   solution.fulfillment_guard:
     class: Drupal\solution\Guard\SolutionFulfillmentGuard
-    arguments: ['@entity_type.manager', '@config.factory', '@current_user']
+    arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: solution }
+  solution.title_duplicate_helper:
+    class: 'Drupal\solution\SolutionTitleDuplicateHelper'
+    arguments: ['@entity_type.manager', '@sparql.graph_handler']

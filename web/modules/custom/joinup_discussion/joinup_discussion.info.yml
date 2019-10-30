@@ -5,18 +5,18 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field
-  - changed_fields
-  - comment
-  - joinup_community_content
-  - joinup_core
-  - joinup_invite
-  - joinup_notification
-  - joinup_subscription
-  - joinup_user
-  - language
-  - message
-  - smart_trim
+  - cached_computed_field:cached_computed_field
+  - changed_fields:changed_fields
+  - drupal:comment
+  - joinup:joinup_community_content
+  - joinup:joinup_core
+  - joinup:joinup_invite
+  - joinup:joinup_notification
+  - joinup:joinup_subscription
+  - joinup:joinup_user
+  - drupal:language
+  - message:message
+  - smart_trim:smart_trim
 
 config_devel:
   - comment.type.reply
@@ -24,7 +24,6 @@ config_devel:
   - core.entity_form_display.comment.reply.default
   - core.entity_form_display.message.discussion_invite.default
   - core.entity_form_display.node.discussion.default
-  - core.entity_view_display.comment.reply.default
   - core.entity_view_display.comment.reply.default
   - core.entity_view_display.message.discussion_comment_new.mail_body
   - core.entity_view_display.message.discussion_comment_new.mail_subject
@@ -50,7 +49,6 @@ config_devel:
   - field.field.node.discussion.field_site_featured
   - field.field.node.discussion.field_site_pinned
   - field.field.node.discussion.field_state
-  - field.field.node.discussion.field_visit_count
   - field.field.node.discussion.og_audience
   - field.storage.comment.field_attachment
   - field.storage.node.field_replies

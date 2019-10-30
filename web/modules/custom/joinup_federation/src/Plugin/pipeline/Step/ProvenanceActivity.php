@@ -6,9 +6,10 @@ namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ProvenanceActivity extends JoinupFederationStepPluginBase implements PipelineStepWithBatchInterface {
 
   use PipelineStepWithBatchTrait;
+  use IncomingEntitiesDataHelperTrait;
 
   /**
    * The batch size.
@@ -54,7 +56,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $rdf_entity_provenance_helper
    *   The RDF entity provenance helper service.
@@ -70,7 +72,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,
@@ -85,10 +87,20 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    * {@inheritdoc}
    */
   public function initBatchProcess() {
-    $black_list = array_fill_keys($this->getPersistentDataValue('blacklist'), FALSE);
+    $not_selected = array_fill_keys($this->getPersistentDataValue('not_selected'), FALSE);
     $entities = array_fill_keys(array_keys($this->getPersistentDataValue('entities')), TRUE);
-    $remaining_ids = $black_list + $entities;
+    $remaining_ids = $not_selected + $entities;
     $this->setBatchValue('remaining_ids', $remaining_ids);
+
+    // Get all entities that are unchanged by fetching the dependencies of the
+    // unchanged solutions. That way, if any entity is a dependency to more than
+    // one solution (e.g. a contact information entity), out of which some
+    // solutions are unchanged and some are blacklisted, the entity itself
+    // should not be blacklisted as it is a dependency to some unchanged
+    // (federated) solutions.
+    $unchanged_solution_ids = $this->getUnchangedSolutionIds();
+    $this->setBatchValue('unchanged_ids', $this->getSolutionsWithDependenciesAsFlatList($unchanged_solution_ids));
+
     return ceil(count($remaining_ids) / static::BATCH_SIZE);
   }
 
@@ -103,7 +115,12 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    * {@inheritdoc}
    */
   public function execute() {
+    // The $ids is an array of booleans indexed by an entity id. The boolean
+    // represents whether the user has selected the entity - or its
+    // corresponding solution - for import. All entities are listed since even
+    // blacklisted entities have to have their provenance activity updated.
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
+
     $current_user_id = $this->currentUser->id();
     $activities = $this->provenanceHelper->loadOrCreateEntitiesActivity(array_keys($ids));
     $collection_id = $this->getPipeline()->getCollection();
@@ -112,10 +129,30 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
       $activity
         // Set the last user that federated this entity as owner.
         ->setOwnerId($current_user_id)
-        ->set('provenance_enabled', $ids[$id])
+        // The entity is marked as enabled if the user has selected it for
+        // import or has not been imported as unchanged. Otherwise, it is marked
+        // as disabled - blacklisted.
+        ->set('provenance_enabled', $ids[$id] || isset($this->getBatchValue('unchanged_ids')[$id]))
         ->set('provenance_associated_with', $collection_id)
+        ->set('provenance_hash', $this->getPersistentDataValue('entity_hashes')[$id])
         ->save();
     }
+  }
+
+  /**
+   * Returns a list of solutions that have been marked as unchanged.
+   *
+   * @return string[]
+   *   An array of solution IDs.
+   */
+  protected function getUnchangedSolutionIds(): array {
+    $return = [];
+    foreach ($this->getPersistentDataValue('solution_category') as $solution_id => $category) {
+      if ($category === 'federated_unchanged') {
+        $return[$solution_id] = $solution_id;
+      }
+    }
+    return $return;
   }
 
 }

@@ -15,7 +15,6 @@ use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Access handler for entities with a workflow.
@@ -77,7 +76,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * The membership manager.
    *
-   * @var \Drupal\og\MembershipManager
+   * @var \Drupal\og\MembershipManagerInterface
    */
   protected $membershipManager;
 
@@ -203,7 +202,7 @@ class NodeWorkflowAccessControlHandler {
           return AccessResult::forbidden();
         }
         $parent = $this->relationManager->getParent($entity);
-        $membership = $this->membershipManager->getMembership($parent, $account);
+        $membership = $this->membershipManager->getMembership($parent, $account->id());
         if ($membership instanceof OgMembership) {
           return AccessResult::allowedIf($membership->hasPermission($operation));
         }
@@ -269,7 +268,7 @@ class NodeWorkflowAccessControlHandler {
     $workflow_id = $this->getEntityWorkflowId($entity);
     $e_library = $this->getEntityElibrary($entity);
 
-    foreach ($create_scheme[$workflow_id][$e_library] as $transition_id => $ownership_data) {
+    foreach ($create_scheme[$workflow_id][$e_library] as $ownership_data) {
       // There is no check whether the transition is allowed as only allowed
       // transitions are mapped in the permission scheme configuration object.
       if ($this->userHasRoles($entity, $account, $ownership_data)) {
@@ -291,19 +290,11 @@ class NodeWorkflowAccessControlHandler {
    *   The access result check.
    */
   protected function entityUpdateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
-    $update_scheme = $this->getPermissionScheme('update');
-    $workflow_id = $this->getEntityWorkflowId($entity);
-    $allowed_transitions = $this->workflowHelper->getAvailableTransitions($entity, $account);
-    $transition_ids = array_map(function (WorkflowTransition $transition) {
-      return $transition->getId();
-    }, $allowed_transitions);
-
-    foreach ($transition_ids as $transition_id) {
-      if ($this->userHasOwnAnyRoles($entity, $account, $update_scheme[$workflow_id][$transition_id])) {
-        return AccessResult::allowed();
-      }
+    $allowed_states = $this->workflowHelper->getAvailableTargetStates($entity, $account);
+    if (empty($allowed_states)) {
+      return AccessResult::forbidden();
     }
-    return AccessResult::forbidden();
+    return AccessResult::allowed();
   }
 
   /**
@@ -372,7 +363,7 @@ class NodeWorkflowAccessControlHandler {
    */
   protected function userHasRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
     $parent = $this->getEntityParent($entity);
-    $membership = $this->membershipManager->getMembership($parent, $account);
+    $membership = $this->membershipManager->getMembership($parent, $account->id());
 
     // First check the 'any' permissions.
     if (isset($roles['roles'])) {

@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
-use Drupal\adms_validator\AdmsValidator;
 use Drupal\adms_validator\AdmsValidatorInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -51,7 +51,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The ADMS validator service.
@@ -64,7 +64,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,

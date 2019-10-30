@@ -205,9 +205,9 @@ class UserUnpublishedBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The loaded node.
    */
   protected function getDraftRdf($entity_id) {
-    /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $rdf_storage */
-    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
-    return $rdf_storage->load($entity_id, ['draft']);
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $sparql_storage */
+    $sparql_storage = $this->entityTypeManager->getStorage('rdf_entity');
+    return $sparql_storage->load($entity_id, ['draft']);
   }
 
   /**

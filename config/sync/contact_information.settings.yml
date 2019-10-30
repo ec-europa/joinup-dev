@@ -1,0 +1,21 @@
+transitions:
+  validated:
+    __new__:
+      - authenticated
+      - moderator
+    deletion_request:
+      - moderator
+    needs_update:
+      - moderator
+    validated:
+      - authenticated
+      - moderator
+  needs_update:
+    validated:
+      - moderator
+    needs_update:
+      - authenticated
+      - moderator
+  deletion_request:
+    validated:
+      - authenticated

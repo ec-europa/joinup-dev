@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
+namespace Drupal\Tests\joinup_community_content\Kernel;
+
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -16,12 +20,13 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'node',
+    'comment',
     'diff',
     'joinup_community_content',
+    'node',
     'og',
-    'comment',
     'state_machine',
+    'workflow_state_permission',
   ];
 
   /**

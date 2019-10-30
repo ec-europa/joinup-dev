@@ -120,9 +120,8 @@ class ContentModerationOverviewForm extends FormBase {
    *   The access result object.
    */
   public static function access(RdfInterface $rdf_entity) {
-    /** @var \Drupal\Core\Session\AccountProxyInterface $account_proxy */
-    $account_proxy = \Drupal::service('current_user');
-    $user = $account_proxy->getAccount();
+    /** @var \Drupal\Core\Session\AccountProxyInterface $user */
+    $user = \Drupal::service('current_user');
 
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
@@ -133,8 +132,8 @@ class ContentModerationOverviewForm extends FormBase {
     if (in_array('moderator', $user->getRoles())) {
       $access = TRUE;
     }
-    elseif ($membership_manager->isMember($rdf_entity, $user)) {
-      $membership = $membership_manager->getMembership($rdf_entity, $user);
+    elseif ($membership_manager->isMember($rdf_entity, $user->id())) {
+      $membership = $membership_manager->getMembership($rdf_entity, $user->id());
       $role = $rdf_entity->bundle() === 'collection' ? 'rdf_entity-collection-facilitator' : 'rdf_entity-solution-facilitator';
       if (in_array($role, $membership->getRolesIds())) {
         $access = TRUE;
@@ -166,7 +165,7 @@ class ContentModerationOverviewForm extends FormBase {
       $options[$type] = node_type_get_names()[$type] . " ($type_count)";
     }
 
-    return ['all' => t("All (@count)", ['@count' => $total_count])] + $options;
+    return ['all' => $this->t("All (@count)", ['@count' => $total_count])] + $options;
   }
 
   /**
@@ -206,7 +205,7 @@ class ContentModerationOverviewForm extends FormBase {
       $value = Unicode::ucfirst(strtr($state, ['_' => ' '])) . " ($value)";
     });
 
-    return ['all' => t("All (@count)", ['@count' => $total_count])] + $options;
+    return ['all' => $this->t("All (@count)", ['@count' => $total_count])] + $options;
   }
 
   /**

@@ -15,6 +15,7 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -24,6 +25,7 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -35,6 +37,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -55,10 +58,12 @@ class JoinupSubContext extends DrupalSubContextBase {
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use StringTranslationTrait;
   use TabledragTrait;
   use TraversingTrait;
   use UserTrait;
@@ -260,7 +265,12 @@ class JoinupSubContext extends DrupalSubContextBase {
         $username = $value;
       }
     };
-    // Submit form.
+
+    // Submit form, waiting for Honeypot protection delay to pass.
+    /** @var \HoneypotSubContext $honeypot */
+    $honeypot = $this->getContext('\HoneypotSubContext');
+    $honeypot->waitForTimeLimit();
+
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
@@ -323,6 +333,28 @@ class JoinupSubContext extends DrupalSubContextBase {
     if (!empty($intersection)) {
       throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
     }
+  }
+
+  /**
+   * Asserts the list of available options in a select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $field = $this->findSelect($select);
+    $available_options = array_values($this->getSelectOptions($field));
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
   }
 
   /**
@@ -601,6 +633,13 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception('Please use "pinned" instead of "sticky".');
     }
 
+    if (property_exists($node, 'visit_count')) {
+      $node->visit_count = MetaEntity::create([
+        'type' => 'visit_count',
+        'count' => (int) $node->visit_count,
+      ]);
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -668,7 +707,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
         'shared in' => 'field_shared_in',
-        'visits' => 'field_visit_count',
+        'visits' => 'visit_count',
         'featured' => 'field_site_featured',
         'pinned site-wide' => 'field_site_pinned',
       ],
@@ -1158,7 +1197,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Assert that the given form submission buttons are present on the page.
+   * Asserts that the given form submission buttons are present on the page.
    *
    * @param string $buttons
    *   A comma separated list of button labels.
@@ -1177,17 +1216,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
-    $page = $this->getSession()->getPage();
-    $not_found = [];
-    foreach ($buttons as $button) {
-      if (!$page->findButton($button)) {
-        $not_found[] = $button;
-      }
-    }
-
-    if (!empty($not_found)) {
-      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
-    }
+    $this->assertSubmitButtonsVisible($buttons, FALSE);
 
     if (!empty($count)) {
       // Only check the actual form submit buttons, ignore other buttons that
@@ -1305,7 +1334,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     $current_url = $this->getSession()->getCurrentUrl();
     $current_url = str_replace($this->getMinkParameter('base_url'), '', $current_url);
     if ($current_url !== $url) {
-      $message = t('Url "@current" does not match expected "@expected".', [
+      $message = $this->t('Url "@current" does not match expected "@expected".', [
         '@current' => $current_url,
         '@expected' => $url,
       ]);
@@ -1496,6 +1525,19 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception('The current workflow state field is not present on the page.');
     }
     Assert::assertEquals($state, trim($element->getText()));
+  }
+
+  /**
+   * Checks that the given workflow buttons are visible.
+   *
+   * @param string $buttons
+   *   A comma separated list of workflow button labels.
+   *
+   * @Then I should see the workflow buttons :buttons
+   */
+  public function assertWorkflowButtons(string $buttons): void {
+    $labels = $this->explodeCommaSeparatedStepArgument($buttons);
+    $this->assertSubmitButtonsVisible($labels);
   }
 
   /**
@@ -1896,22 +1938,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Waits for a few moments to bypass spam bot validation.
-   *
-   * The Honeypot module is intended to block spam bots and detect if actual
-   * humans are entering forms. One of its checks is that it assumes a human
-   * takes at least 5 seconds to fill in a form.
-   *
-   * Use this on forms that are protected by Honeypot before submitting the
-   * form.
-   *
-   * @Then I wait for the honeypot validation to pass
-   */
-  public function iWaitForHoneypot() {
-    sleep(5);
-  }
-
-  /**
    * Wait until a running batch job has finished.
    *
    * This will periodically check if the progress bar is still visible on the
@@ -1931,7 +1957,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Given I wait for the pipeline batch job to finish
    */
   public function iWaitForThePipelineBatchJobToFinish() {
-    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+    while ($this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
       $this->getSession()->reload();
     }
   }
@@ -2269,7 +2295,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
         '@found' => implode(', ', $invalid_tags),
       ]));
     }

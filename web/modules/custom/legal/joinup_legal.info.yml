@@ -1,0 +1,11 @@
+name: Legal
+type: module
+description: 'Deals with the legal aspects of using Joinup as an end-user.'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - entity_legal:entity_legal
+
+config_devel:
+  - entity_legal.document.legal_notice

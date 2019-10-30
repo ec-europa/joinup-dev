@@ -1,0 +1,19 @@
+uuid: 3c4b1a23-972e-42f9-8c2b-6f38c650b4e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.report_contact_form
+id: message.report_contact_form.mail_subject
+targetEntityType: message
+bundle: report_contact_form
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

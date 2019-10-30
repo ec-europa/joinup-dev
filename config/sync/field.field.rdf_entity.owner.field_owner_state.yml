@@ -1,0 +1,27 @@
+uuid: 15fe773b-cc8a-4f24-a108-af25f425d1fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_owner_state
+    - rdf_entity.rdfentity.owner
+  module:
+    - state_machine
+_core:
+  default_config_hash: JH-oHr3uxaM7rvgqxOnya3KMSZDdnsYDTqOpRXpeRjc
+id: rdf_entity.owner.field_owner_state
+field_name: field_owner_state
+entity_type: rdf_entity
+bundle: owner
+label: State
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: __new__
+default_value_callback: ''
+settings:
+  workflow: owner_workflow
+  workflow_callback: ''
+field_type: state

@@ -178,7 +178,7 @@ class JoinupValidReferenceConstraintValidator extends ValidReferenceConstraintVa
   protected function loadMultiple(string $target_type_id, array $ids, EntityInterface $entity): array {
     $storage = $this->entityTypeManager->getStorage($target_type_id);
     if ($target_type_id === 'rdf_entity' && $entity->getEntityTypeId() === 'rdf_entity' && $entity->get('graph')->target_id === 'staging') {
-      /** @var \Drupal\rdf_entity\RdfEntitySparqlStorageInterface $storage */
+      /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
       return $storage->loadMultiple($ids, $this->stagingCandidateGraphs->getCandidates());
     }
     return $storage->loadMultiple($ids);

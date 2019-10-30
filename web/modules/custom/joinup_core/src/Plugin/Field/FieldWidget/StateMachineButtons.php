@@ -1,11 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Plugin implementation of the 'state_machine_buttons' widget.
@@ -19,7 +28,49 @@ use Drupal\Core\Form\FormStateInterface;
  *   multiple_values = TRUE
  * )
  */
-class StateMachineButtons extends OptionsSelectWidget {
+class StateMachineButtons extends OptionsSelectWidget implements ContainerFactoryPluginInterface {
+
+  /**
+   * The event dispatcher.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $eventDispatcher;
+
+  /**
+   * Constructs a StateMachineButtons widget.
+   *
+   * @param string $plugin_id
+   *   The plugin_id for the widget.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the widget is associated.
+   * @param array $settings
+   *   The widget settings.
+   * @param array $third_party_settings
+   *   Any third party settings.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   *   The event dispatcher.
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EventDispatcherInterface $event_dispatcher) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+    $this->eventDispatcher = $event_dispatcher;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('event_dispatcher')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -54,7 +105,7 @@ class StateMachineButtons extends OptionsSelectWidget {
 
     $use_transition_label = $this->getSetting('use_transition_label');
     if ($use_transition_label) {
-      $summary[] = t('Use transition labels');
+      $summary[] = $this->t('Use transition labels');
     }
 
     return $summary;
@@ -69,6 +120,27 @@ class StateMachineButtons extends OptionsSelectWidget {
     if ($this->getSetting('use_transition_label')) {
       $element['#options'] = $this->replaceStateLabelsWithTransitionLabels($element['#options'], $items);
     }
+
+    // Allow modules to decide whether it is allowed to update the entity
+    // without changing the workflow state. If none of the listeners forbid
+    // access, we will add a submit button for the same state update.
+    $state = $items->value;
+    $event = new UnchangedWorkflowStateUpdateEvent($items->getEntity(), $state, $this->getDefaultSameStateUpdateLabel($state), -20);
+    $this->eventDispatcher->dispatch(UnchangedWorkflowStateUpdateEvent::EVENT_NAME, $event);
+
+    if (!$event->getAccess()->isForbidden()) {
+      $element['#same_state_button'] = [
+        'label' => $event->getLabel(),
+        'weight' => $event->getWeight(),
+        'state_id' => $state,
+      ];
+    }
+
+    // Merge in the cacheable metadata from the access result.
+    $cacheable_metadata = CacheableMetadata::createFromRenderArray($element);
+    $cacheable_metadata
+      ->merge(CacheableMetadata::createFromObject($event->getAccess()))
+      ->applyTo($element);
 
     // Pass the label settings to the process callback.
     $element['#use_transition_label'] = $this->getSetting('use_transition_label');
@@ -94,6 +166,19 @@ class StateMachineButtons extends OptionsSelectWidget {
     // its own, too), so we have to restore it.
     $default_button = $form['actions']['submit'];
     $default_button['#access'] = TRUE;
+
+    // Add the button to update the entity without changing the workflow state,
+    // if this is allowed.
+    if (!empty($element['#same_state_button'])) {
+      $button = [
+        '#weight' => $element['#same_state_button']['weight'],
+        '#value' => $element['#same_state_button']['label'],
+        '#state_id' => $element['#same_state_button']['state_id'],
+        '#state_field' => $element['#field_name'],
+      ];
+
+      $form['actions']['update'] = $button + $default_button;
+    }
 
     // Add a custom button for each state we're allowing.
     $options = $element['#options'];
@@ -158,26 +243,11 @@ class StateMachineButtons extends OptionsSelectWidget {
     $workflow = $state_item->getWorkflow();
     $transitions = $workflow->getAllowedTransitions($current_value, $entity);
 
-    // The current state is always allowed by state_machine, but a transition
-    // to that state might not be available. When looping the transitions keep
-    // track if a transition is available.
-    $loopback_transition = FALSE;
     // Replace "to state" labels with the label associated to that transition.
     foreach ($transitions as $transition) {
       $state = $transition->getToState();
       $state_id = $state->getId();
       $options[$state_id] = $transition->getLabel();
-
-      if ($state_id === $current_value) {
-        // A transition that allows to keep the same state is available.
-        $loopback_transition = TRUE;
-      }
-    }
-
-    // If a transition to the current state is not available, prefix the state
-    // label for better readability.
-    if (!$loopback_transition) {
-      $options[$current_value] = $this->t('Save as @transition', ['@transition' => $options[$current_value]]);
     }
 
     // Sanitize again the labels.
@@ -185,6 +255,28 @@ class StateMachineButtons extends OptionsSelectWidget {
     array_walk_recursive($options, [$this, 'sanitizeLabel']);
 
     return $options;
+  }
+
+  /**
+   * Returns the default label for the submit button that doesn't change state.
+   *
+   * @param string $state
+   *   The state value.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The button label.
+   */
+  protected function getDefaultSameStateUpdateLabel(string $state): TranslatableMarkup {
+    switch ($state) {
+      case 'draft':
+        return $this->t('Save as draft');
+
+      case 'proposed':
+        return $this->t('Propose');
+
+      default:
+        return $this->t('Update');
+    }
   }
 
 }

@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -21,6 +22,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Class CommunityContentSubscriber.
  */
 class CommunityContentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The transition object.
@@ -95,13 +98,11 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events[NotificationEvents::COMMUNITY_CONTENT_CRUD] = [
-      ['onCreate'],
-      ['onUpdate'],
-      ['onDelete'],
+    return [
+      NotificationEvents::COMMUNITY_CONTENT_CREATE => ['onCreate'],
+      NotificationEvents::COMMUNITY_CONTENT_UPDATE => ['onUpdate'],
+      NotificationEvents::COMMUNITY_CONTENT_DELETE => ['onDelete'],
     ];
-
-    return $events;
   }
 
   /**
@@ -110,7 +111,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
   protected function initialize(NotificationEvent $event) {
     parent::initialize($event);
 
-    $this->operation = $event->getOperation();
     $state_item = $this->workflowHelper->getEntityStateFieldDefinition($this->entity->getEntityTypeId(), $this->entity->bundle());
     if (!empty($state_item)) {
       $this->stateField = $state_item->getName();
@@ -150,10 +150,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnCreate() {
-    if ($this->operation !== 'create') {
-      return FALSE;
-    }
-
     if (!$this->appliesOnCommunityContent()) {
       return FALSE;
     }
@@ -198,10 +194,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnUpdate() {
-    if ($this->operation !== 'update') {
-      return FALSE;
-    }
-
     if (!$this->appliesOnCommunityContent()) {
       return FALSE;
     }
@@ -240,7 +232,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
         return;
       }
 
-      $transition_action = $state === 'deletion_request' ? t('approved your request of deletion for') : t('deleted');
+      $transition_action = $state === 'deletion_request' ? $this->t('approved your request of deletion for') : $this->t('deleted');
       $user_data = $this->getUsersMessages($this->config[$this->workflow->getId()][$state]);
       $arguments = ['@transition:request_action:past' => $transition_action];
       $this->sendUserDataMessages($user_data, $arguments);
@@ -254,10 +246,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnDelete() {
-    if ($this->operation !== 'delete') {
-      return FALSE;
-    }
-
     if (!$this->appliesOnCommunityContent()) {
       return FALSE;
     }
@@ -318,17 +306,17 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
 
       // If the role is not yet set, get it from the parent collection|solution.
       if (empty($arguments['@actor:role'])) {
-        $membership = $this->membershipManager->getMembership($parent, $actor);
+        $membership = $this->membershipManager->getMembership($parent, $actor->id());
         if (!empty($membership)) {
           $role_names = array_map(function (OgRoleInterface $og_role) {
             return $og_role->getName();
           }, $membership->getRoles());
 
           if (in_array('administrator', $role_names)) {
-            $arguments['@actor:role'] = t('Owner');
+            $arguments['@actor:role'] = $this->t('Owner');
           }
           elseif (in_array('facilitator', $role_names)) {
-            $arguments['@actor:role'] = t('Facilitator');
+            $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
       }

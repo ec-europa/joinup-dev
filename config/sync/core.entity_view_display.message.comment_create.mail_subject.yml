@@ -1,0 +1,19 @@
+uuid: ece64b0c-08b9-4aa5-b163-ef1a8c042a92
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.comment_create
+id: message.comment_create.mail_subject
+targetEntityType: message
+bundle: comment_create
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

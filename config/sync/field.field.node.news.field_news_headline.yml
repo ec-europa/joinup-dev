@@ -1,0 +1,21 @@
+uuid: 4f9178b7-6b1d-478b-8ec7-eb2fdd80e3cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_news_headline
+    - node.type.news
+_core:
+  default_config_hash: L_DD2lmFpTz0rYwyZzAbJIEzDioxWpgw_y4zPuf-iVs
+id: node.news.field_news_headline
+field_name: field_news_headline
+entity_type: node
+bundle: news
+label: Headline
+description: 'Headline of the news.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -2,7 +2,7 @@
 
 namespace Drupal\joinup_core\Plugin\views\argument_validator;
 
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\views\Plugin\views\argument_validator\Entity;
 
 /**

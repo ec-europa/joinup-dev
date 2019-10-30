@@ -5,8 +5,15 @@ Feature: Solution API
   I need to be able to use the Solution API
 
   Scenario: Programmatically create a solution
-    Given the following solution:
+    Given the following collection:
+      | title             | Solution API foo |
+      | logo              | logo.png         |
+      | moderation        | yes              |
+      | elibrary creation | facilitators     |
+      | state             | validated        |
+    And the following solution:
       | title             | My first solution                    |
+      | collection        | Solution API foo                     |
       | description       | A sample solution                    |
       | logo              | logo.png                             |
       | banner            | banner.jpg                           |
@@ -17,27 +24,20 @@ Feature: Solution API
       | webdav url        | http://joinup.eu/solution/foo/webdav |
       | wiki              | http://example.wiki/foobar/wiki      |
       | state             | validated                            |
-    And the following collection:
-      | title             | Solution API foo  |
-      | logo              | logo.png          |
-      | moderation        | yes               |
-      | elibrary creation | facilitators      |
-      | affiliates        | My first solution |
-      | state             | validated         |
     Then I should have 1 solution
 
   Scenario: Programmatically create a solution using only the mandatory fields
-    Given the following solution:
+    Given the following collection:
+      | title             | Solution API bar |
+      | logo              | logo.png         |
+      | moderation        | yes              |
+      | elibrary creation | facilitators     |
+      | state             | validated        |
+    And the following solution:
       | title             | My first solution mandatory |
+      | collection        | Solution API bar            |
       | description       | Another sample solution     |
       | elibrary creation | members                     |
-      | state             | validated                   |
-    And the following collection:
-      | title             | Solution API bar            |
-      | logo              | logo.png                    |
-      | moderation        | yes                         |
-      | elibrary creation | facilitators                |
-      | affiliates        | My first solution mandatory |
       | state             | validated                   |
     Then I should have 1 solution
 

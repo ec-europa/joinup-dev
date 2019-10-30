@@ -1,0 +1,14 @@
+maxAnalyzedChars: 51200
+fragmenter: gap
+usePhraseHighlighter: true
+highlightMultiTerm: true
+preserveMulti: false
+regex:
+  slop: 0.5
+  pattern: blank
+  maxAnalyzedChars: 10000
+highlight:
+  mergeContiguous: false
+  requireFieldMatch: false
+  snippets: 3
+  fragsize: 0

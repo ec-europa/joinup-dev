@@ -16,7 +16,7 @@ Feature: Collection moderation
     Then the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
 
-  Scenario: Test the moderation workflow available states.
+  Scenario: Test the available buttons in every stage of the editorial workflow
     Given the following owner:
       | name           |
       | Simon Sandoval |
@@ -66,13 +66,13 @@ Feature: Collection moderation
     # When I click the "Edit" link
     # Then the state field should have only the given states available.
     Then for the following collection, the corresponding user should have the corresponding available state buttons:
-      | collection              | user            | states                                                     |
+      | collection              | user            | buttons                                                    |
 
       # The owner is also a facilitator so the only
       # UATable part of the owner is that he has the ability to request deletion
       # or archival when the collection is validated.
       | Deep Past               | Erika Reid      | Save as draft, Propose                                     |
-      | The Licking Silence     | Erika Reid      | Save as draft, Propose                                     |
+      | The Licking Silence     | Erika Reid      | Propose, Save as draft                                     |
       | Person of Wizards       | Erika Reid      | Save as draft, Propose, Request archival, Request deletion |
       | The Shard's Hunter      | Erika Reid      |                                                            |
       | The Dreams of the Mists | Erika Reid      |                                                            |
@@ -81,7 +81,7 @@ Feature: Collection moderation
       # The following collections do not follow the rule above and should be
       # testes as shown.
       | Deep Past               | Carole James    | Save as draft, Propose                                     |
-      | The Licking Silence     | Carole James    | Save as draft, Propose                                     |
+      | The Licking Silence     | Carole James    | Propose, Save as draft                                     |
       | Person of Wizards       | Carole James    | Save as draft, Propose                                     |
       | The Shard's Hunter      | Carole James    |                                                            |
       | The Dreams of the Mists | Carole James    |                                                            |
@@ -93,8 +93,8 @@ Feature: Collection moderation
       | The Dreams of the Mists | Velma Smith     |                                                            |
       | Luck in the Abyss       | Velma Smith     |                                                            |
       | Deep Past               | Lena Richardson | Save as draft, Propose, Publish                            |
-      | The Licking Silence     | Lena Richardson | Save as draft, Propose, Publish                            |
-      | Person of Wizards       | Lena Richardson | Save as draft, Propose, Publish                            |
+      | The Licking Silence     | Lena Richardson | Propose, Save as draft, Publish                            |
+      | Person of Wizards       | Lena Richardson | Publish, Save as draft, Propose                            |
       | The Shard's Hunter      | Lena Richardson | Publish, Archive                                           |
       | The Dreams of the Mists | Lena Richardson | Publish                                                    |
       | Luck in the Abyss       | Lena Richardson |                                                            |
@@ -127,6 +127,8 @@ Feature: Collection moderation
     Then I should not see the heading "Access denied"
     And the following buttons should be present "Save as draft, Propose, Publish"
     And the following buttons should not be present "Request archival, Request deletion, Archive"
+    # The delete button is actually a link that is styled to look like a button.
+    And I should see the link "Delete"
 
   @terms
   Scenario: Published collections should be shown in the collections overview page.
@@ -194,7 +196,7 @@ Feature: Collection moderation
 
     # Regression test for a bug that caused the eLibrary creation setting to be
     # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
-    When I press "Add another item" at the "Spatial coverage" field
+    When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
     Then the option "Any registered user can create new content." should be selected
 
@@ -318,7 +320,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-    When I press "Add another item" at the "Spatial coverage" field
+    When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
 
     When I check "Closed collection"
@@ -369,7 +371,7 @@ Feature: Collection moderation
     When I move the "eLibrary creation" slider to the right
     Then the option "Only collection facilitators can create new content." should be selected
 
-    When I press "Add another item" at the "Spatial coverage" field
+    When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
 
     # Save the collection.

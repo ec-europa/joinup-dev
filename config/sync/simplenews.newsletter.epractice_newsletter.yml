@@ -1,0 +1,17 @@
+uuid: cd278622-0c2a-424f-95a0-ddcf6675cf45
+langcode: en
+status: true
+dependencies: {  }
+name: 'ePractice Newsletter'
+id: epractice_newsletter
+description: ''
+format: plain
+priority: 0
+receipt: true
+from_name: Joinup
+subject: '[[simplenews-newsletter:name]] [node:title]'
+from_address: admin@example.com
+hyperlinks: true
+new_account: none
+opt_inout: double
+weight: 0

@@ -3,19 +3,20 @@ type: module
 description: An asset distribution RDF entity
 core: 8.x
 package: Joinup
+
 dependencies:
-  - datetime
-  - digital_size_formatter
-  - field_group
-  - file_url
-  - joinup_core
-  - joinup_user
-  - language
-  - link
-  - rdf_entity
-  - rdf_schema_field_validation
-  - text
-  - views
+  - drupal:datetime
+  - digital_size_formatter:digital_size_formatter
+  - field_group:field_group
+  - file_url:file_url
+  - joinup:joinup_core
+  - joinup:joinup_user
+  - drupal:language
+  - drupal:link
+  - rdf_entity:rdf_entity
+  - joinup:rdf_schema_field_validation
+  - drupal:text
+  - drupal:views
 
 config_devel:
   - core.entity_form_display.rdf_entity.asset_distribution.default
@@ -30,7 +31,6 @@ config_devel:
   - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
   - field.field.rdf_entity.asset_distribution.field_ad_licence
   - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
-  - field.field.rdf_entity.asset_distribution.field_download_count
   - field.field.rdf_entity.asset_distribution.field_status
   - field.field.rdf_entity.asset_distribution.og_audience
   - field.storage.rdf_entity.field_ad_access_url
@@ -40,6 +40,6 @@ config_devel:
   - field.storage.rdf_entity.field_ad_gitb_compliant
   - field.storage.rdf_entity.field_ad_licence
   - field.storage.rdf_entity.field_ad_repr_technique
-  - rdf_entity.mapping.rdf_entity.asset_distribution
+  - sparql_entity_storage.mapping.rdf_entity.asset_distribution
   - rdf_entity.rdfentity.asset_distribution
   - views.view.asset_distribution_downloads

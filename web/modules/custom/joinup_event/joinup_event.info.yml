@@ -5,18 +5,18 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field
-  - datetime_range
-  - geocoder
-  - geocoder_field
-  - geocoder_geofield
-  - geofield
-  - joinup_community_content
-  - joinup_core
-  - language
-  - node
-  - oe_webtools_geocoding
-  - smart_trim
+  - cached_computed_field:cached_computed_field
+  - drupal:datetime_range
+  - geocoder:geocoder
+  - geocoder:geocoder_field
+  - geocoder:geocoder_geofield
+  - geofield:geofield
+  - joinup:joinup_community_content
+  - joinup:joinup_core
+  - drupal:language
+  - drupal:node
+  - oe_webtools:oe_webtools_geocoding
+  - smart_trim:smart_trim
 
 config_devel:
   - core.entity_form_display.node.event.default
@@ -45,7 +45,6 @@ config_devel:
   - field.field.node.event.field_site_featured
   - field.field.node.event.field_site_pinned
   - field.field.node.event.field_state
-  - field.field.node.event.field_visit_count
   - field.field.node.event.og_audience
   - field.storage.node.field_event_agenda
   - field.storage.node.field_event_contact_email
@@ -59,4 +58,5 @@ config_devel:
   - field.storage.node.field_organisation
   - field.storage.node.field_organisation_type
   - field.storage.node.field_scope
+  - geocoder.geocoder_provider.webtools_geocoding
   - node.type.event

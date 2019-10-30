@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -15,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @codingStandardsIgnoreStart
  * Template 18: release_update
  *   Operation: update
- *   Transition: update_published
+ *   Source state: published
  *   Recipients: solution owners, solution facilitators, moderators
  * Template 19: release_delete
  *   Operation: delete
@@ -33,6 +37,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @codingStandardsIgnoreEnd
  */
 class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   const TEMPLATE_UPDATE_PUBLISHED = 'release_update';
   const TEMPLATE_DELETE = 'release_delete';
@@ -82,6 +88,13 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
   protected $fromState;
 
   /**
+   * The new state of the solution.
+   *
+   * @var string
+   */
+  protected $toState;
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
@@ -106,8 +119,8 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     $this->stateField = 'field_isr_state';
     $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
     $this->fromState = isset($this->entity->original) ? $this->entity->original->get($this->stateField)->first()->value : '__new__';
-    $to_state = $this->entity->get($this->stateField)->first()->value;
-    $this->transition = $this->workflow->findTransition($this->fromState, $to_state);
+    $this->toState = $this->entity->get($this->stateField)->first()->value;
+    $this->transition = $this->workflow->findTransition($this->fromState, $this->toState);
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
   }
 
@@ -125,26 +138,28 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
       return;
     }
 
-    switch ($this->transition->getId()) {
-      case 'update_published':
-        $user_data = [
-          'roles' => [
-            'moderator' => [
-              self::TEMPLATE_UPDATE_PUBLISHED,
-            ],
+    // Send notifications when a published release is updated.
+    if ($this->fromState === $this->toState && $this->fromState === 'validated') {
+      $user_data = [
+        'roles' => [
+          'moderator' => [
+            self::TEMPLATE_UPDATE_PUBLISHED,
           ],
-          'og_roles' => [
-            'rdf_entity-solution-administrator' => [
-              self::TEMPLATE_UPDATE_PUBLISHED,
-            ],
-            'rdf_entity-solution-facilitator' => [
-              self::TEMPLATE_UPDATE_PUBLISHED,
-            ],
+        ],
+        'og_roles' => [
+          'rdf_entity-solution-administrator' => [
+            self::TEMPLATE_UPDATE_PUBLISHED,
           ],
-        ];
-        $this->getUsersAndSend($user_data);
-        break;
+          'rdf_entity-solution-facilitator' => [
+            self::TEMPLATE_UPDATE_PUBLISHED,
+          ],
+        ],
+      ];
+      $this->getUsersAndSend($user_data);
+    }
 
+    $transition_id = $this->transition instanceof WorkflowTransition ? $this->transition->getId() : NULL;
+    switch ($transition_id) {
       case 'validate':
         if ($this->fromState === 'needs_update') {
           $user_data = [
@@ -189,6 +204,12 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
 
     if ($this->operation !== 'update') {
       return FALSE;
+    }
+
+    // Notifications can be sent for asset releases that are updated without
+    // changing the workflow state.
+    if ($this->fromState === $this->toState) {
+      return TRUE;
     }
 
     if (empty($this->transition)) {
@@ -291,17 +312,17 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
       $arguments['@group:title'] = $parent->label();
       $arguments['@group:bundle'] = $parent->bundle();
       if (empty($arguments['@actor:role'])) {
-        $membership = $this->membershipManager->getMembership($parent, $actor);
+        $membership = $this->membershipManager->getMembership($parent, $actor->id());
         if (!empty($membership)) {
           $role_names = array_map(function (OgRoleInterface $og_role) {
             return $og_role->getName();
           }, $membership->getRoles());
 
           if (in_array('administrator', $role_names)) {
-            $arguments['@actor:role'] = t('Owner');
+            $arguments['@actor:role'] = $this->t('Owner');
           }
           elseif (in_array('facilitator', $role_names)) {
-            $arguments['@actor:role'] = t('Facilitator');
+            $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
         $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;

@@ -21,4 +21,10 @@
 
 
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal" />
+    <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice">
+        <exclude name="DrupalPractice.CodeAnalysis.VariableAnalysis.UndefinedVariable" />
+        <exclude name="DrupalPractice.FunctionDefinitions" />
+        <exclude name="DrupalPractice.Objects.GlobalClass.GlobalClass" />
+        <exclude name="DrupalPractice.Yaml" />
+    </rule>
 </ruleset>

@@ -6,8 +6,9 @@ namespace Drupal\joinup_federation;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\pipeline\Exception\PipelineStepPrepareLogicException;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepPluginBase;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,7 +19,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   /**
    * The SPARQL connection.
    *
-   * @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface
+   * @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface
    */
   protected $sparql;
 
@@ -40,7 +41,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql) {
@@ -51,7 +52,7 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,

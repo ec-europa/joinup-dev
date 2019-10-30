@@ -7,8 +7,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\UriEncoder;
 use Drupal\rdf_taxonomy\Entity\RdfTerm;
+use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
  * Simple form that redirects to a RDF entity page.
@@ -38,7 +38,7 @@ class RdfEntityUriWebConverterForm extends FormBase {
     global $base_url;
     parent::validateForm($form, $form_state);
 
-    $id = $path = trim($form_state->getValue('entity_id'), " /");
+    $id = $path = trim($form_state->getValue('entity_id'), " ");
 
     // An absolute URL.
     if (UrlHelper::isExternal($id)) {
@@ -87,7 +87,7 @@ class RdfEntityUriWebConverterForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $passed_as = $form_state->get('passed_as');
-    $id = trim($form_state->getValue('entity_id'), " /");
+    $id = trim($form_state->getValue('entity_id'), " ");
     $entity_type = $form_state->get('entity_type');
     if ($passed_as === 'id') {
       $form_state->setRedirect("entity.${entity_type}.canonical", [$entity_type => $id]);

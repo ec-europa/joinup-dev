@@ -16,7 +16,6 @@ dependencies:
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
-    - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
     - image.style.thumbnail
     - node.type.news
@@ -27,6 +26,7 @@ dependencies:
     - image
     - joinup_core
     - link
+    - publication_date
     - text
 id: node.news.default
 targetEntityType: node
@@ -169,9 +169,9 @@ hidden:
   field_shared_in: true
   field_site_featured: true
   field_site_pinned: true
-  field_visit_count: true
   og_audience: true
   path: true
   promote: true
+  published_at: true
   status: true
   sticky: true

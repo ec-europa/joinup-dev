@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - sparql_entity_storage.graph.default
+    - taxonomy.vocabulary.licence_type
+id: taxonomy_term.licence_type
+entity_type_id: taxonomy_term
+bundle: licence_type
+rdf_type: 'http://purl.org/adms/licencetype/1.1'
+graph:
+  default: 'http://adms-sw-v1.00'
+base_fields_mapping:
+  vid:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#inScheme'
+      format: resource
+  name:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+      format: t_literal
+  description:
+    value:
+      predicate: 'http://www.w3.org/2004/02/skos/core#definition'
+      format: t_literal
+  parent:
+    target_id:
+      predicate: 'http://www.w3.org/2004/02/skos/core#broader'
+      format: resource

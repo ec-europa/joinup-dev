@@ -17,6 +17,7 @@ use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * A base class for the notification subscribers.
@@ -205,6 +206,51 @@ abstract class NotificationSubscriberBase {
   }
 
   /**
+   * Retrieves a list of emails from a given list of roles.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group entity.
+   * @param array $bcc_data
+   *   An associative array of roles indexed by the 'roles' key or the
+   *   'og_roles' key depending on whether it is a site wide role or an og role.
+   * @param int[] $uids_to_skip
+   *   (optional) An array of ids to skip.
+   *
+   * @return string[]
+   *   An array of emails.
+   */
+  protected function getBccEmails(EntityInterface $entity, array $bcc_data, array $uids_to_skip = []): array {
+    $user_storage = $this->entityTypeManager->getStorage('user');
+    $return = [];
+    foreach ($bcc_data['roles'] as $role_id) {
+      $uids = $this->getRecipientIdsByRole($role_id);
+      if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
+        $emails = array_map(function (UserInterface $user): string {
+          return $user->getEmail();
+        }, $user_storage->loadMultiple($uids));
+        $return += $emails;
+      }
+    }
+
+    if (isset($bcc_data['og_roles'])) {
+      $og_role_storage = $this->entityTypeManager->getStorage('og_role');
+      /** @var \Drupal\og\OgRoleInterface[] $roles */
+      $roles = $og_role_storage->loadMultiple(array_keys($bcc_data['og_roles']));
+      foreach ($bcc_data['og_roles'] as $role_id => $messages) {
+        $uids = $this->getRecipientIdsByOgRole($entity, $roles[$role_id]);
+        if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
+          $emails = array_map(function (UserInterface $user): string {
+            return $user->getEmail();
+          }, $user_storage->loadMultiple($uids));
+          $return += $emails;
+        }
+      }
+    }
+
+    return $return;
+  }
+
+  /**
    * Returns the users with a given role.
    *
    * @param string $role_id
@@ -302,7 +348,7 @@ abstract class NotificationSubscriberBase {
         $actor->get('full_name')->value;
     }
     $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page', [], ['absolute' => TRUE])->toString();
-    $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
+    $arguments['@site:legal_notice_url'] = Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString();
 
     return $arguments;
   }
@@ -313,12 +359,14 @@ abstract class NotificationSubscriberBase {
    * @param array $user_data
    *   An array of user ids and their corresponding messages.
    * @param array $arguments
-   *   Optionally pass additional arguments.
+   *   (optional) Additional arguments to be passed to the message.
+   * @param string[] $bcc_emails
+   *   (optional) A list of emails to be passed as Bcc.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $bcc_emails = []): bool {
     $arguments += $this->generateArguments($this->entity);
 
     $success = TRUE;
@@ -327,6 +375,7 @@ abstract class NotificationSubscriberBase {
         ->createMessage($template_id)
         ->setArguments($arguments)
         ->setRecipients(User::loadMultiple($user_ids))
+        ->addBccRecipients($bcc_emails)
         ->sendMail();
     }
     return $success;

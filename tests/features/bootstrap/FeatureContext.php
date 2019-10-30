@@ -20,11 +20,12 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
+use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
-use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
@@ -38,11 +39,12 @@ use WebDriver\Key;
  */
 class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
 
+  use AntibotTrait;
   use BrowserCapabilityDetectionTrait;
-  use ConfigReadOnlyTrait;
   use ContextualLinksTrait;
   use EntityTrait;
   use PageCacheTrait;
+  use SearchTrait;
   use TagTrait;
   use TraversingTrait;
   use UserTrait;
@@ -626,7 +628,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I click the contextual link :text in the :region region
    */
-  public function iClickTheContextualLinkInTheRegion($text, $region) {
+  public function iClickTheContextualLinkInTheRegion(string $text, string $region): void {
     $this->clickContextualLink($this->getRegion($region), $text);
   }
 
@@ -643,7 +645,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I (should )see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionPresent($text, $region) {
+  public function assertContextualLinkInRegionPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (!isset($links[$text])) {
@@ -662,13 +664,32 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when the contextual link is found in the region.
    *
-   * @Then I (should )not see the contextual link :text in the :region region
+   * @Then I should not see the contextual link :text in the :region region
    */
-  public function assertContextualLinkInRegionNotPresent($text, $region) {
+  public function assertContextualLinkInRegionNotPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
 
     if (isset($links[$text])) {
       throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
+    }
+  }
+
+  /**
+   * Asserts that no contextual links are present in a region.
+   *
+   * @param string $region
+   *   The name of the region.
+   *
+   * @throws \Exception
+   *   Thrown when any contextual link is found in the region.
+   *
+   * @Then I should not see any contextual links in the :region region
+   */
+  public function assertNoContextualLinksInRegion(string $region): void {
+    $links = $this->findContextualLinkPaths($this->getRegion($region));
+
+    if (!empty($links)) {
+      throw new \Exception(sprintf('Unexpected contextual links found in the region %s', $region));
     }
   }
 
@@ -1148,79 +1169,91 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Checks if a checkbox in a row with a given text is checked.
+   * Checks if a checkbox or a radio in a row with a given text is checked.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    * @throws \Behat\Mink\Exception\ExpectationException
    *   If the checkbox is unchecked.
    *
    * @Then the row :text is selected/checked
    */
   public function assertRowIsChecked($text) {
-    if (!$this->getRowCheckboxByText($text)->isChecked()) {
-      throw new ExpectationException("Check box in '$text' row is unchecked but it should be checked.", $this->getSession()->getDriver());
+    if (!$this->getCheckboxOrRadioByRowText($text)->isChecked()) {
+      throw new ExpectationException("Checkbox/radio-button in '$text' row is unchecked/unselected but it should be checked/selected.", $this->getSession()->getDriver());
     }
   }
 
   /**
-   * Checks if a checkbox in a row with a given text is not checked.
+   * Checks if a checkbox or a radio in a row with a given text is not checked.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    * @throws \Behat\Mink\Exception\ExpectationException
    *   If the checkbox is checked.
    *
    * @Then the row :text is not selected/checked
    */
   public function assertRowIsNotChecked($text) {
-    if ($this->getRowCheckboxByText($text)->isChecked()) {
-      throw new ExpectationException("Check box in '$text' row is checked but it should be unchecked.", $this->getSession()->getDriver());
+    if ($this->getCheckboxOrRadioByRowText($text)->isChecked()) {
+      throw new ExpectationException("Checkbox/radio-button in '$text' row is checked/selected but it should be unchecked/unselected.", $this->getSession()->getDriver());
     }
   }
 
   /**
-   * Attempts to check a checkbox in a table row containing a given text.
+   * Checks a checkbox or a radio button in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    *
    * @Given I select/check the :text row
    */
   public function checkTableselectRow(string $text): void {
-    $this->getRowCheckboxByText($text)->check();
+    $element = $this->getCheckboxOrRadioByRowText($text);
+    if ($element->getAttribute('type') === 'checkbox') {
+      $element->check();
+    }
+    else {
+      $element->getParent()->selectFieldOption($element->getAttribute('name'), $element->getAttribute('value'));
+    }
   }
 
   /**
-   * Attempts to uncheck a checkbox in a table row containing a given text.
+   * Unchecks a checkbox or a radio in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
+   * @throws \InvalidArgumentException
+   *   If this step definition was used on a radio button.
    *
    * @Given I deselect/uncheck the :text row
    */
   public function uncheckTableselectRow(string $text): void {
-    $this->getRowCheckboxByText($text)->uncheck();
+    $element = $this->getCheckboxOrRadioByRowText($text);
+    if ($element->getAttribute('type') === 'radio') {
+      throw new \InvalidArgumentException("A radio button cannot be unselected.");
+    }
+    $element->uncheck();
   }
 
   /**
-   * Attempts to fetch a checkbox in a table row containing a given text.
+   * Finds a checkbox or a radio button in a table row containing a given text.
    *
    * @param string $text
    *   Text in the row.
@@ -1230,9 +1263,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
-   *   contains no checkbox.
+   *   contains no checkbox or radio button.
    */
-  protected function getRowCheckboxByText(string $text): NodeElement {
+  protected function getCheckboxOrRadioByRowText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1249,11 +1282,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$found) {
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
-    if (!$checkbox = $row->find('css', 'input[type="checkbox"]')) {
-      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkboxes', $text, $this->getSession()->getCurrentUrl()));
+    if (!$element = $row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
+      throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkbox or radio button', $text, $this->getSession()->getCurrentUrl()));
     }
 
-    return $checkbox;
+    return $element;
   }
 
   /**
@@ -1390,12 +1423,29 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Commits the search index before starting the scenario.
+   *
+   * Use this in scenarios for which it is important that the search index is
+   * committed before any content is created in the scenario.
+   *
+   * Since most scenarios start with creating some test content and this will
+   * automatically commit the search index, this is only needed for tests that
+   * perform asserts before creating any content of their own, since the search
+   * index might still contain stale content from the previous scenario.
+   *
+   * @BeforeScenario @commitSearchIndex
+   */
+  public function commitSearchIndexBeforeScenario() {
+    $this->commitSearchIndex();
+  }
+
+  /**
    * Installs the testing module for scenarios tagged with @errorPage.
    *
    * @BeforeScenario @errorPage
    */
   public function installErrorPageTestingModule() {
-    $this->toggleErrorPageTestingModule('install');
+    static::toggleModule('install', 'error_page_test');
 
     // The test writes to the PHP error log because it's in its scope to test
     // fatal errors. But the testing bots might reject tests that are not ending
@@ -1414,7 +1464,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @AfterScenario @errorPage
    */
   public function uninstallErrorPageTestingModule(): void {
-    $this->toggleErrorPageTestingModule('uninstall');
+    static::toggleModule('uninstall', 'error_page_test');
 
     // Restore the log saved in @BeforeScenario.
     $error_log = ini_get('error_log');
@@ -1424,20 +1474,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     // Restore the original system logging error level.
     $this->setSiteErrorLevel();
-  }
-
-  /**
-   * Installs/uninstalls the testing module.
-   *
-   * @param string $method
-   *   Either 'install' or 'uninstall'.
-   */
-  protected function toggleErrorPageTestingModule(string $method): void {
-    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
-    new Settings($settings);
-    static::bypassReadOnlyConfig(10);
-    \Drupal::service('module_installer')->$method(['error_page_test']);
-    static::restoreReadOnlyConfig();
   }
 
   /**
@@ -1461,7 +1497,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     $error_level = $error_level ?: $original_error_level;
     if ($current_error_level !== $error_level) {
-      static::bypassReadOnlyConfig(5);
+      static::bypassReadOnlyConfig();
       $config->set('error_level', $error_level)->save();
       static::restoreReadOnlyConfig();
     }
@@ -1484,6 +1520,95 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $vocabulary = $this->getEntityByLabel('taxonomy_vocabulary', $vocabulary_name);
     $term = $this->getEntityByLabel('taxonomy_term', $term_name, $vocabulary->id());
     $this->visitPath($term->toUrl('canonical', ['query' => ['_format' => $format]])->toString());
+  }
+
+  /**
+   * Disables the Antibot functionality during tests run.
+   *
+   * Antibot module blocks all form submissions the for browsers without
+   * JavaScript support or when there's no keyboard or mouse interaction before
+   * the form is submitted. This would make most of Behat tests to fail. We
+   * disable Antibot functionality during Behat tests run.
+   *
+   * @BeforeSuite
+   */
+  public static function disableAntibotForSuite(): void {
+    static::disableAntibot();
+  }
+
+  /**
+   * Restores the Antibot functionality after tests run.
+   *
+   * @AfterSuite
+   *
+   * @see self::disableAntibotForSuite()
+   */
+  public static function restoreAntibotForSuite(): void {
+    static::restoreAntibot();
+  }
+
+  /**
+   * Restores Antibot functionality in the scope of @antibot tagged scenarios.
+   *
+   * The Antibot functionality is disabled for the whole test suite run, in
+   * self::disableAntibotForSuite(). However, if a scenario wants run its test
+   * with Antibot functionality enabled, it should be tagged with @antibot.
+   *
+   * @BeforeScenario @antibot
+   *
+   * @see self::disableAntibotForSuite()
+   */
+  public function restoreAntibotForScenario(): void {
+    self::restoreAntibot();
+  }
+
+  /**
+   * Disables Antibot functionality after @antibot tagged scenarios.
+   *
+   * @AfterScenario @antibot
+   *
+   * @see self::restoreAntibotForScenario()
+   */
+  public function disableAntibotForScenario(): void {
+    static::disableAntibot();
+  }
+
+  /**
+   * Installs/uninstalls a module in tests.
+   *
+   * @param string $method
+   *   Either 'install' or 'uninstall'.
+   * @param string $module_name
+   *   The module to be installed/uninstalled.
+   */
+  protected static function toggleModule(string $method, string $module_name): void {
+    // Ensure that test modules are also discoverable.
+    $settings = ['extension_discovery_scan_tests' => TRUE] + Settings::getAll();
+    new Settings($settings);
+
+    static::bypassReadOnlyConfig();
+    \Drupal::service('module_installer')->$method([$module_name]);
+    static::restoreReadOnlyConfig();
+  }
+
+  /**
+   * Checks if the current form is protected by Antibot.
+   *
+   * @throws \Exception
+   *   When the expectancy is not met.
+   *
+   * @Then the form is protected by Antibot
+   */
+  public function assertFormIsProtectedByAntibot(): void {
+    $session = $page = $this->getSession();
+
+    // Unlock the form by using the Antibot javascript API.
+    $session->executeScript('Drupal.antibot.unlockForms();');
+
+    $has_js_assigned_value = (bool) $session->getPage()->find('xpath', '//form[@data-action]//input[@data-drupal-selector="edit-antibot-key" and @name="antibot_key" and string(@value)]');
+    if (!$has_js_assigned_value) {
+      throw new \Exception("Not an Antibot protected form.");
+    }
   }
 
 }

@@ -14,9 +14,8 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\tallinn\Tallinn;
 use Drupal\user\Entity\User;
-
-define('TALLINN_COMMUNITY_ID', 'http://data.europa.eu/w21/5f4c0dae-f521-4d00-a0cf-e1dce0a128a3');
 
 /**
  * Implements hook_theme().
@@ -62,10 +61,10 @@ function tallinn_form_node_tallinn_report_edit_form_alter(array &$form, FormStat
   if ($current_user->hasPermission('administer nodes')) {
     $access = TRUE;
   }
-  elseif ($tallinn_collection = Rdf::load(TALLINN_COMMUNITY_ID)) {
+  elseif ($tallinn_collection = Rdf::load(Tallinn::TALLINN_COMMUNITY_ID)) {
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
-    $membership = $membership_manager->getMembership($tallinn_collection, $current_user);
+    $membership = $membership_manager->getMembership($tallinn_collection, $current_user->id());
     $access = $membership && $membership->hasRole('rdf_entity-collection-facilitator');
   }
 
@@ -144,7 +143,7 @@ function tallinn_node_access(NodeInterface $node, $op, AccountInterface $account
     if ($collection = $node->og_audience->entity) {
       /** @var \Drupal\og\MembershipManagerInterface $og_membership_manager */
       $og_membership_manager = \Drupal::service('og.membership_manager');
-      if ($og_membership_manager->isMember($collection, $account)) {
+      if ($og_membership_manager->isMember($collection, $account->id())) {
         return AccessResult::allowed();
       }
     }
@@ -171,7 +170,7 @@ function tallinn_entity_view_alter(array &$build, EntityInterface $entity, Entit
   if ($entity->bundle() !== 'custom_page') {
     return;
   }
-  if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== TALLINN_COMMUNITY_ID) {
+  if (empty($entity->og_audience) || $entity->og_audience->first()->target_id !== Tallinn::TALLINN_COMMUNITY_ID) {
     return;
   }
 
