@@ -126,6 +126,7 @@
                 verbose="${drush.verbose}">
             <param>solr_${solr.core}</param>
             <param>${solr.config.archive}.zip</param>
+            <param>${solr.version}</param>
         </drush>
         <unzip file="${solr.config.archive}.zip" todir="${solr.config.archive}"/>
 
