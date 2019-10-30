@@ -65,6 +65,24 @@
 
 // Modifiers
 // --------------------------------------------------
+.vertical-tabs--bottom
+  .vertical-tabs__menu
+    display: block
+  .vertical-tabs__menu-item
+    border-bottom: none
+    padding: $field-margin
+    &.first.last
+      padding: 0
+    a
+      padding: 0
+    &.last
+      margin-bottom: $field-margin
+      +breakpoint(tablet)
+        margin-bottom: 0
+  .vertical-tabs__pane
+    padding: 0
+    +breakpoint(tablet)
+      padding-left: $field-margin
 
 // States
 // --------------------------------------------------
