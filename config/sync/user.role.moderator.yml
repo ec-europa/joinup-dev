@@ -51,6 +51,7 @@ permissions:
   - 'filter membership overview'
   - 'manage newsroom newsletter subscriptions'
   - 'moderate entity parents'
+  - 'overview messages'
   - 'pin entity'
   - 'reset joinup_collection pipeline'
   - 'reset nio pipeline'
