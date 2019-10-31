@@ -265,6 +265,9 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
+    'social_share' => [
+      'variables' => ['entity' => NULL],
+    ],
   ];
 }
 

@@ -1367,8 +1367,8 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
  *   A link icon theme array.
  */
 function joinup_core_generate_share_link(EntityInterface $entity, string $route): array {
-  $url = Url::fromRoute('joinup_community_content.share_content_form', [
-    'node' => $entity->id(),
+  $url = Url::fromRoute($route, [
+    $entity->getEntityTypeId() => $entity->id(),
   ]);
 
   return [

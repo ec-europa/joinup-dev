@@ -153,9 +153,6 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
         'url' => NULL,
       ],
     ],
-    'social_share' => [
-      'variables' => ['entity' => NULL],
-    ],
   ];
 }
 
