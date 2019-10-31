@@ -15,8 +15,9 @@ Feature: Solutions message overview
     And I click "Messages overview"
     Then the response status code should be 200
 
-  Scenario: Find messages that have been sent through the contact form.
-    Given I am not logged in
+  @messageCleanup
+  Scenario: Contact form messages are available in the message overview.
+    And I am not logged in
     When I am on the homepage
     And I click "Contact Joinup Support" in the "Footer" region
     Then I should see the heading "Contact"
@@ -45,3 +46,35 @@ Feature: Solutions message overview
       | l.papastamatak@example.com              |
       | Ran out of gas                          |
       | Do you have 1 euro to buy a cheese pie? |
+
+  @messageCleanup @terms
+  Scenario: Workflow messages are available in the message overview.
+    Given owner:
+      | name                 | type    |
+      | Organisation example | Company |
+    And I am logged in as an "authenticated user"
+    When I go to the propose collection form
+    When I fill in the following:
+      | Title                 | Message overview proposal |
+      | Description           | Doesn't matter.           |
+      | Geographical coverage | Belgium                   |
+    When I select "HR" from "Policy domain"
+    And I press "Add existing" at the "Owner" field
+    And I fill in "Owner" with "Organisation example"
+    And I press "Propose"
+    And I should see the heading "Message overview proposal"
+
+    # Verify the message as a moderator.
+    When I am logged in as a moderator
+    And I click "Reporting" in the "Administration toolbar" region
+    And I click "Messages overview"
+    Then I should see the following lines of text:
+      | User proposed collection Test collection                                           |
+      | has proposed collection "Test collection".                                         |
+      | To approve or reject this proposal, please go to                                   |
+      | You'll be able to provide feedback.                                                |
+      | The requestor will be notified of your decision and feedback.                      |
+      | If you think this action is not clear or not due, please contact Joinup Support at |
+
+    # Clean up the collection that was created.
+    Then I delete the "Message overview proposal" collection
