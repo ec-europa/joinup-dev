@@ -267,6 +267,7 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
     ],
     'social_share' => [
       'variables' => ['entity' => NULL],
+      'path' => $path . '/templates/parts',
     ],
   ];
 }
