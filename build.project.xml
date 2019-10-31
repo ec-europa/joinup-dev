@@ -206,7 +206,7 @@
                 password="${drupal.db.password}" />
     </target>
 
-    <target name="restore-databases" depends="restore-apache-solr, restore-mysql-dump, virtuoso-restore-backup" />
+    <target name="restore-databases" depends="restore-mysql-dump, virtuoso-restore-backup" />
 
     <target name="rebuild-environment" depends="restore-databases, execute-updates" />
 
