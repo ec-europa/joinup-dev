@@ -93,9 +93,61 @@
         name="stop-apache-solr"
         description="Stop the Apache Solr server.">
         <exec dir="${solr.dir}"
-              command="./bin/solr stop"
-              checkreturn="true"
+              command="./bin/solr status"
+              returnProperty="solr.status"
               passthru="true" />
+
+        <if>
+            <equals arg1="${solr.status}" arg2="0" />
+            <then>
+                <exec dir="${solr.dir}"
+                      command="./bin/solr stop"
+                      checkreturn="true"
+                      passthru="true" />
+            </then>
+            <else>
+                <echo message="Apache Solr is already stopped." />
+            </else>
+        </if>
+    </target>
+
+    <target name="install-apache-solr-config">
+        <foreach list="published,unpublished" target="install-apache-solr-core-config" param="solr.core"/>
+        <phingcall target="restart-apache-solr" />
+    </target>
+
+    <target name="install-apache-solr-core-config" hidden="true">
+        <if>
+            <not>
+                <isset property="solr.core"/>
+            </not>
+            <then>
+                <fail message="Cannot run 'install-apache-solr-core-config' as a standalone target. Use 'install-apache-solr-config' instead."/>
+            </then>
+        </if>
+
+        <property name="solr.config.archive" value="${tmp.dir}/solr/config.${solr.core}"/>
+        <property name="solr.core.conf.dir" value="${solr.dir}/server/solr/drupal_${solr.core}/conf"/>
+
+        <delete dir="${solr.config.archive}" quiet="true"/>
+        <delete file="${solr.config.archive}.zip" quiet="true"/>
+        <drush
+                command="search-api-solr:get-server-config"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}"
+                verbose="${drush.verbose}">
+            <param>solr_${solr.core}</param>
+            <param>${solr.config.archive}.zip</param>
+            <param>${solr.version}</param>
+        </drush>
+        <unzip file="${solr.config.archive}.zip" todir="${solr.config.archive}"/>
+
+        <delete dir="${solr.core.conf.dir}" quiet="true"/>
+        <mkdir dir="${solr.core.conf.dir}"/>
+        <copy todir="${solr.core.conf.dir}">
+            <fileset dir="${solr.config.archive}"/>
+        </copy>
     </target>
 
     <target name="configure-apache-solr">
@@ -118,10 +170,6 @@
                       command="./bin/solr create_core -c ${solr.core.published.name}"
                       checkreturn="true"
                       passthru="true"/>
-                <!-- Copy the configuration. -->
-                <copy todir="${solr.core.published.dir}/conf" overwrite="true">
-                    <fileset dir="${solr.config.dir}" />
-                </copy>
             </else>
         </if>
         <if>
@@ -135,14 +183,10 @@
                       command="./bin/solr create_core -c ${solr.core.unpublished.name}"
                       checkreturn="true"
                       passthru="true"/>
-                <!-- Copy the configuration. -->
-                <copy todir="${solr.core.unpublished.dir}/conf" overwrite="true">
-                    <fileset dir="${solr.config.dir}" />
-                </copy>
             </else>
         </if>
-        <!-- Restart Solr so our configuration changes are picked up. -->
-        <phingcall target="restart-apache-solr" />
+        <!-- Install the configuration and restart the Solr server. -->
+        <phingcall target="install-apache-solr-config" />
     </target>
 
     <!-- Override Solr server connection information in the settings.local.php file. -->
@@ -201,11 +245,12 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
         </drush>
     </target>
 
-    <target name="purge-solr-backend" description="Empty Solr cores">
-        <exec command="curl --verbose '${solr.core.published.url}/${solr.core.published.name}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
-              passthru="true"/>
-        <exec command="curl --verbose '${solr.core.unpublished.url}/${solr.core.unpublished.name}/update?stream.body=&lt;delete&gt;&lt;query&gt;*:*&lt;/query&gt;&lt;/delete&gt;&amp;commit=true'"
-              passthru="true"/>
+    <target name="purge-solr-backend" description="Empty Solr cores" depends="stop-apache-solr">
+        <delete dir="${solr.core.published.dir}/data"/>
+        <mkdir dir="${solr.core.unpublished.dir}/data"/>
+        <delete dir="${solr.core.unpublished.dir}/data"/>
+        <mkdir dir="${solr.core.published.dir}/data"/>
+        <phingcall target="start-apache-solr"/>
     </target>
 
     <target name="backup-apache-solr">

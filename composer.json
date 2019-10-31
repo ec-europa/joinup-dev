@@ -57,7 +57,8 @@
         "drupal/redirect": "^1.0",
         "drupal/redis": "^1.1",
         "drupal/search_api": "1.13",
-        "drupal/search_api_solr": "2.2",
+        "drupal/search_api_solr": "dev-3.x",
+        "drupal/search_api_spellcheck": "^3.0",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
@@ -249,6 +250,9 @@
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
+            },
+            "drupal/search_api_solr": {
+                "aa": "https://www.drupal.org/files/issues/2019-05-22/3056038-11.patch"
             },
             "drupal/smart_trim": {
                 "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
