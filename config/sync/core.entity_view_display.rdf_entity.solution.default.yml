@@ -110,6 +110,25 @@ content:
             classes: {  }
       joinup:
         template_suggestion: p_wrapper
+  field_is_shared_in:
+    type: entity_reference_entity_view
+    weight: 5
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tile
   rdf_entity_field_is_content_inline_facets:
     weight: 2
     region: content
@@ -155,7 +174,6 @@ hidden:
   field_is_pinned_in: true
   field_is_product_type: true
   field_is_related_solutions: true
-  field_is_shared_in: true
   field_is_show_eira_related: true
   field_is_solution_type: true
   field_is_source_code_repository: true
