@@ -130,11 +130,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  share_link:
-    weight: 5
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   changed: true
   collections: true
@@ -182,3 +177,4 @@ hidden:
   langcode: true
   og_group: true
   releases_overview: true
+  share_link: true
