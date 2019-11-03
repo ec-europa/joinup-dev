@@ -18,10 +18,10 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = parent::viewElements($items, $langcode);
-    // The only difference with the parent method is that we add the `render`
-    // property to force the map to render.
+
+    // Set the render property to true and add a marker to the map.
     foreach ($items as $delta => $item) {
-      $element[$delta]['#value'] = new JsonEncoded([
+      $data_array = [
         'service' => 'map',
         'version' => '2.0',
         'render' => TRUE,
@@ -29,7 +29,35 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
           'zoom' => $this->getSetting('zoom_level'),
           'center' => [$item->get('lat')->getValue(), $item->get('lon')->getValue()],
         ],
-      ]);
+      ];
+
+      if (!empty($item->get('lat')->getValue()) && !empty($item->get('lon')->getValue())) {
+        $data_array['layers'] = [
+          'markers' => [
+            'features' => [
+              'geometry' => [
+                'coordinates' => [
+                  $item->get('lat')->getValue(),
+                  $item->get('lon')->getValue(),
+                ],
+              ],
+              'type' => 'Feature',
+              'properties' => [],
+            ],
+            'type' => 'FeatureCollection',
+          ],
+          'options' => [
+            'color' => 'red',
+          ],
+        ];
+      }
+
+      $element[$delta] = [
+        '#type' => 'html_tag',
+        '#tag' => 'script',
+        '#value' => new JsonEncoded($data_array),
+        '#attributes' => ['type' => 'application/json'],
+      ];
     }
     return $element;
   }
