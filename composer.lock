@@ -4862,6 +4862,9 @@
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

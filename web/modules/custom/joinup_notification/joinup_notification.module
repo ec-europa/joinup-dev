@@ -15,8 +15,13 @@ use Drupal\joinup_notification\NotificationEvents;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
+ *
+ * Sends notifications when community content is updated.
  */
 function joinup_notification_node_insert(EntityInterface $entity) {
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
+    return;
+  }
   joinup_notification_dispatch_notification('create', NotificationEvents::COMMUNITY_CONTENT_CREATE, $entity);
 }
 
@@ -36,7 +41,7 @@ function joinup_notification_node_insert(EntityInterface $entity) {
  * @see: https://www.drupal.org/node/2833084
  */
 function joinup_notification_node_presave(EntityInterface $entity) {
-  if ($entity->isNew() || !in_array($entity->bundle(), CommunityContentHelper::BUNDLES)) {
+  if ($entity->isNew() || !CommunityContentHelper::isCommunityContent($entity)) {
     return;
   }
   $entity->field_state_initial_value = $entity->get('field_state')->first()->getOriginalId();
@@ -44,8 +49,13 @@ function joinup_notification_node_presave(EntityInterface $entity) {
 
 /**
  * Implements hook_ENTITY_TYPE_update().
+ *
+ * Sends notifications when community content is updated.
  */
 function joinup_notification_node_update(EntityInterface $entity) {
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
+    return;
+  }
   joinup_notification_dispatch_notification('update', NotificationEvents::COMMUNITY_CONTENT_UPDATE, $entity);
 }
 
@@ -58,6 +68,9 @@ function joinup_notification_node_update(EntityInterface $entity) {
  * into the delete hooks which can lead into false data e.g. wrong state.
  */
 function joinup_notification_node_predelete(EntityInterface $entity) {
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
+    return;
+  }
   joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_DELETE, $entity);
 }
 
