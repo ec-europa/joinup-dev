@@ -32,22 +32,30 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
       ];
 
       if (!empty($item->get('lat')->getValue()) && !empty($item->get('lon')->getValue())) {
+        $entity = $item->getEntity();
+        // Normally, this should always has a value since the coordinated derive
+        // from the field_location. However, to protect from a site break on
+        // possible future updates, we perform a check.
+        $name = $entity->hasField('field_location') && !empty($entity->field_location->value) ? $entity->field_location->value : '';
+
         $data_array['layers'] = [
           'markers' => [
+            'type' => 'FeatureCollection',
             'features' => [
-              'geometry' => [
-                'coordinates' => [
-                  $item->get('lat')->getValue(),
-                  $item->get('lon')->getValue(),
+              [
+                'type' => 'Feature',
+                'properties' => [
+                  'name' => $name,
+                ],
+                'geometry' => [
+                  'type' => 'Point',
+                  'coordinates' => [
+                    $item->get('lat')->getValue(),
+                    $item->get('lon')->getValue(),
+                  ],
                 ],
               ],
-              'type' => 'Feature',
-              'properties' => [],
             ],
-            'type' => 'FeatureCollection',
-          ],
-          'options' => [
-            'color' => 'red',
           ],
         ];
       }
