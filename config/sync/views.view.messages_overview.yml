@@ -26,7 +26,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'overview messages'
+          perm: 'access messages overview'
       cache:
         type: tag
         options: {  }
