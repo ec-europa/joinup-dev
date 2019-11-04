@@ -21,6 +21,15 @@
       $(this).wrap('<div class="fieldset__table-wrapper"></div>');
     });
 
+    // Fix keydown event for mdl menu items.
+    $('.mdl-menu__item').each(function () {
+      $(this).on('keydown', function (event) {
+        if (event.which === 13) {
+          window.location.href = $(this).find('a').attr('href');
+        }
+      });
+    });
+
     // Always use the fullscreen indicator for ajax throbbers in the frontend.
     if (typeof Drupal !== 'undefined' && Drupal.Ajax) {
       // Sets the fullscreen progress indicator.

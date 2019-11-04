@@ -153,10 +153,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnCreate() {
-    if (!$this->appliesOnCommunityContent()) {
-      return FALSE;
-    }
-
     // If there is no original version, then it is not an update.
     if (isset($this->entity->original)) {
       return FALSE;
@@ -197,10 +193,6 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnUpdate() {
-    if (!$this->appliesOnCommunityContent()) {
-      return FALSE;
-    }
-
     // If there is no original version, then it is not an update.
     if ($this->entity->isNew()) {
       return FALSE;
@@ -249,31 +241,8 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   Whether the event applies.
    */
   protected function appliesOnDelete() {
-    if (!$this->appliesOnCommunityContent()) {
-      return FALSE;
-    }
-
     // If any of the workflow related properties are empty, return early.
     if (empty($this->stateField)) {
-      return FALSE;
-    }
-
-    return TRUE;
-  }
-
-  /**
-   * Checks if the event applies for the update operation.
-   *
-   * @return bool
-   *   Whether the event applies.
-   */
-  protected function appliesOnCommunityContent() {
-    if ($this->entity->getEntityTypeId() !== 'node') {
-      return FALSE;
-    }
-
-    $community_bundles = ['discussion', 'document', 'event', 'news'];
-    if (!in_array($this->entity->bundle(), $community_bundles)) {
       return FALSE;
     }
 

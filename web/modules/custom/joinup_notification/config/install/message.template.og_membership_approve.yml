@@ -9,7 +9,7 @@ text:
     value: "<p>Joinup: Your request to join the @entity:bundle @entity:title was approved</p>"
     format: full_html
   -
-    value: "<p>@actor:full_name has approved your request to join the \"@entity:title\" @entity:bundle.</p>"
+    value: '<p>@actor:full_name has approved your request to join the "@entity:title" @entity:bundle.</p>'
     format: full_html
 settings:
   'token options':

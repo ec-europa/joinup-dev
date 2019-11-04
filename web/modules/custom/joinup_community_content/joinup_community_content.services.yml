@@ -4,3 +4,8 @@ services:
     arguments: ['@entity_type.bundle.info', '@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: 'event_subscriber' }
+  joinup_community_content.community_content_subscription_subscriber:
+    class: Drupal\joinup_community_content\EventSubscriber\CommunityContentSubscriptionSubscriber
+    arguments: ['@entity_type.manager', '@joinup_notification.message_delivery', '@logger.factory']
+    tags:
+      - { name: 'event_subscriber' }
