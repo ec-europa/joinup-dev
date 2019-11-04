@@ -69,8 +69,8 @@ Feature: Solutions message overview
     And I click "Reporting" in the "Administration toolbar" region
     And I click "Messages overview"
     Then I should see the following lines of text:
-      | User proposed collection Test collection                                           |
-      | has proposed collection "Test collection".                                         |
+      | User proposed collection Message overview proposal                                 |
+      | has proposed collection "Message overview proposal".                               |
       | To approve or reject this proposal, please go to                                   |
       | You'll be able to provide feedback.                                                |
       | The requestor will be notified of your decision and feedback.                      |
