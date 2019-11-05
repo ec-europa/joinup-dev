@@ -4,6 +4,7 @@ Feature: Solutions message overview
   In order to be able to manage incoming requests
   I need to be able to list messages that are sent throughout the website.
 
+  @messageCleanup
   Scenario: Only privileged users can access the report.
     When I am logged in as a user with the "authenticated" role
     And I go to "/admin/content/messages"
