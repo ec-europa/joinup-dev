@@ -51,8 +51,8 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
                   'geometry' => [
                     'type' => 'Point',
                     'coordinates' => [
-                      $item->get('lat')->getValue(),
                       $item->get('lon')->getValue(),
+                      $item->get('lat')->getValue(),
                     ],
                   ],
                 ],
