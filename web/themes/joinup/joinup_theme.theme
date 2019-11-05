@@ -134,6 +134,7 @@ function _joinup_vertical_tabs_routes() {
 function _joinup_blue_header_routes() {
   return [
     'adms_validator.adms_validator_form',
+    'cas_account_link.form',
     'collection.propose_form',
     'contact_form.contact_page',
     'entity.node.edit_form',
@@ -481,6 +482,14 @@ function joinup_theme_preprocess_menu(&$variables) {
     }
   }
   $variables['#cache']['contexts'][] = 'user.photo';
+
+  // Set login text instead of image.
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  if ($route_name == 'homepage.content' && $user->isAnonymous()) {
+    $variables['has_sign_in_text'] = TRUE;
+  }
 }
 
 /**

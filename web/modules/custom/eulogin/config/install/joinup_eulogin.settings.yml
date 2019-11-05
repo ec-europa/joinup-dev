@@ -1,0 +1,8 @@
+ticket_validation:
+  path: TicketValidationService
+  # LOW allow users also from the "External" EU Login organization.
+  assurance_level: LOW
+  ticket_types:
+    - SERVICE
+  user_details: TRUE
+register_url: https://ecas.ec.europa.eu/cas/eim/external/register.cgi
