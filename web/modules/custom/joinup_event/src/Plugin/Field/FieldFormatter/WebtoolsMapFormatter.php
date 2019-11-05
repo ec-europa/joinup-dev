@@ -36,7 +36,7 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
         // Normally, this should always has a value since the coordinated derive
         // from the field_location. However, to protect from a site break on
         // possible future updates, we perform a check.
-        $name = $entity->hasField('field_location') && !empty($entity->field_location->value) ? $entity->field_location->value : '';
+        $description = $entity->hasField('field_location') && !empty($entity->field_location->value) ? $entity->field_location->value : '';
 
         $data_array['layers'] = [
           [
@@ -46,7 +46,8 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
                 [
                   'type' => 'Feature',
                   'properties' => [
-                    'name' => $name,
+                    'name' => $entity->label(),
+                    'description' => $description,
                   ],
                   'geometry' => [
                     'type' => 'Point',
