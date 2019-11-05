@@ -18,10 +18,25 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = parent::viewElements($items, $langcode);
 
-    /** @var \Drupal\oe_webtools_maps\Component\Render\JsonEncoded $json */
+    foreach ($items as $delta => $item) {
+      /** @var \Drupal\oe_webtools_maps\Component\Render\JsonEncoded $json */
+      $json = $element[$delta]['#value'];
+      $json_data = $json->getJson();
+      // The render property forces the map to appear on page load and not on
+      // scroll.
+      $json_data['render'] = TRUE;
+
+      $entity = $item->getEntity();
+      // Normally, this should always has a value since the coordinated derive
+      // from the field_location. However, to protect from a site break on
+      // possible future updates, we perform a check.
+      $description = $entity->hasField('field_location') && !empty($entity->field_location->value) ? $entity->field_location->value : '';
+      $json_data['layers'][0]['markers']['features'][0]['properties']['name'] = $entity->label();
+      $json_data['layers'][0]['markers']['features'][0]['properties']['description'] = $description;
+      $json->setJson($json_data);
+    }
+
     $json = $element[0]['#value'];
-    // The render property forces the map to appear on page load and not on
-    // scroll.
     $json->setJson($json->getJson() + ['render' => TRUE]);
 
     return $element;
