@@ -52,6 +52,13 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
                   'geometry' => [
                     'type' => 'Point',
                     'coordinates' => [
+                      // According to OE team, while every instance of longitude
+                      // (lon) and latitude (lat) values are lat first and lon
+                      // second, for the marker coordinates we need to set them
+                      // in a reverse way as the normal way is the US standard
+                      // and in our API it translates the values wrongly making
+                      // the marker appear in the middle of the full map
+                      // (apparently the default values apply).
                       $item->get('lon')->getValue(),
                       $item->get('lat')->getValue(),
                     ],
