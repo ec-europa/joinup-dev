@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Menu;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\Plugin\Menu\LoginLogoutMenuLink as CoreLoginLogoutMenuLink;
 
 /**
@@ -14,12 +17,12 @@ class LoginLogoutMenuLink extends CoreLoginLogoutMenuLink {
    *
    * Override the default behaviour to change the default 'Log' term.
    */
-  public function getTitle() {
+  public function getTitle(): TranslatableMarkup {
     if ($this->currentUser->isAuthenticated()) {
       return $this->t('Sign out');
     }
     else {
-      return $this->t('Sign in');
+      return $this->t('Sign in (legacy)');
     }
   }
 

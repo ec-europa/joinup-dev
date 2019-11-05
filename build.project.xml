@@ -23,6 +23,9 @@
     <!-- Import Phing targets related to Virtuoso. -->
     <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
 
+    <!-- Import Phing targets related to EU Login. -->
+    <import file="${project.basedir}/build.eulogin.xml" optional="true" />
+
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
 
@@ -50,8 +53,7 @@
             command="site-install"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="${website.site.name}" />
             <option name="account-name" value="${drupal.admin.username}" />
@@ -109,8 +111,7 @@
                 command="config:import"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
         </drush>
         <drush
                 command="updatedb"
@@ -180,8 +181,7 @@
                 command="sql-query"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="file" value="${tmp.dir}/dump.sql" />
         </drush>
         <!-- Make sure to truncate the cache tables immediately after importing.
@@ -266,8 +266,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>${drupal.modules.uat}</param>
         </drush>
     </target>
@@ -277,8 +276,7 @@
                 command="cr"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
         </drush>
     </target>
 
@@ -410,8 +408,7 @@
                 command="php:eval"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>'\Drupal\search_api_solr\Utility\Utility::getSiteHash();'</param>
         </drush>
     </target>
@@ -424,8 +421,7 @@
                 command="user-create"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="mail" value="user@example.com" />
             <option name="password" value="user" />
             <param>user</param>
@@ -435,8 +431,7 @@
                 command="user-add-role"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>moderator</param>
             <param>administrator</param>
         </drush>
@@ -448,8 +443,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>stage_file_proxy</param>
         </drush>
         <phingcall target="configure-stage-file-proxy"/>
@@ -551,7 +545,12 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-sass" />
+
+    <target
+        name="rebuild-dev"
+        description="Build a development environment based on the production database."
+        depends="build-dev, rebuild-environment, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
 
     <target
         name="setup-acceptance"
@@ -561,6 +560,6 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, enable-config-read-only" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server, enable-config-read-only" />
 
 </project>

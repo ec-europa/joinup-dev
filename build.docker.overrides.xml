@@ -14,6 +14,6 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush" />
 
 </project>
