@@ -20,7 +20,7 @@ class RedisFlush extends \Task {
     // Find Drupal root directory.
     $drupalFinder = new DrupalFinder();
     if (!$drupalFinder->locateRoot(getcwd())) {
-      throw new \Exception('Cannot locate Drupal path.');
+      throw new \BuildException('Cannot locate Drupal path.');
     }
     $drupalRootDir = $drupalFinder->getDrupalRoot();
 
@@ -40,7 +40,7 @@ class RedisFlush extends \Task {
       $this->log('Redis cache flushed.');
     }
     catch (\Exception $e) {
-      $this->log('Error flushing Redis cache: ' . $e->getMessage(), \Project::MSG_WARN);
+      throw new \BuildException('Error flushing Redis cache.', $e);
     }
   }
 
