@@ -32,10 +32,6 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
       ];
 
       if (!empty($item->get('lat')->getValue()) && !empty($item->get('lon')->getValue())) {
-        $coordinates = new \stdClass();
-        $coordinates->lat = $item->get('lat')->getValue();
-        $coordinates->lon = $item->get('lon')->getValue();
-
         $entity = $item->getEntity();
         // Normally, this should always has a value since the coordinated derive
         // from the field_location. However, to protect from a site break on
@@ -54,7 +50,10 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
                   ],
                   'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => $coordinates,
+                    'coordinates' => [
+                      $item->get('lat')->getValue(),
+                      $item->get('lon')->getValue(),
+                    ],
                   ],
                 ],
               ],
