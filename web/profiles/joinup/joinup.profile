@@ -188,6 +188,7 @@ function joinup_entity_access(EntityInterface $entity, $operation, AccountInterf
   if ($entity->getEntityTypeId() === 'ogmenu_instance' && $operation !== 'update') {
     return AccessResult::forbidden();
   }
+  return AccessResult::neutral();
 }
 
 /**

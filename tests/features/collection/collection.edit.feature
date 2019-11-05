@@ -15,9 +15,11 @@ Scenario: Edit a collection
   Given I am logged in as a facilitator of the "Überwaldean Land Eels" collection
   When I go to the homepage of the "Überwaldean Land Eels" collection
   When I click "Edit" in the "Entity actions" region
-  Then the following fields should be present "Title, Description, Abstract, Policy domain, Spatial coverage, Closed collection, eLibrary creation, Moderated, Motivation"
+  Then the following fields should be present "Title, Description, Abstract, Policy domain, Geographical coverage, Closed collection, eLibrary creation, Moderated, Motivation"
   And the following field widgets should be present "Contact information, Owner"
   And the following fields should not be present "Langcode, Translation, Affiliates, Enable the search field, Query presets, Limit"
+  And I should see "Short description text of the collection. Appears on the Overview page. (Leave blank to use the trimmed value of the Description field.)"
+  And I should see "Add a country name relevant to the content of this collection."
   # Query builder is disabled in collections.
   And I should not see the button "Add and configure filter"
   When I fill in "Title" with "Überwaldean Sea Eels"

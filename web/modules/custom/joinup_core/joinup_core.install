@@ -8,6 +8,7 @@
 use Drupal\Core\Database\Database;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Site\Settings;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\user\Entity\User;
 
@@ -343,4 +344,119 @@ function joinup_core_update_8111(): void {
   \Drupal::configFactory()->getEditable('sparql_entity_storage.graph.default')
     ->set('uuid', 'adb4491f-7cbc-46d9-975d-41bf83b14637')
     ->save();
+}
+
+/**
+ * Stats #1: Collect download counts.
+ */
+function joinup_core_update_8112(array &$sandbox): ?string {
+  $db = \Drupal::database();
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
+  $sparql = \Drupal::service('sparql.endpoint');
+
+  if (!isset($sandbox['current'])) {
+    // Create a temporary table to store the collected count values in order to
+    // be retrieved after 'meta_entity' module is installed. Storing all the
+    // values in a state variable could exhaust the memory.
+    $schema = $db->schema();
+    if ($schema->tableExists('joinup_core_stats_update_temp')) {
+      $schema->dropTable('joinup_core_stats_update_temp');
+    }
+    $schema->createTable('joinup_core_stats_update_temp', [
+      'fields' => [
+        'id' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+        'entity_type_id' => ['type' => 'varchar_ascii', 'length' => 20],
+        'entity_id' => ['type' => 'varchar_ascii', 'length' => 2048],
+        'counter' => ['type' => 'int', 'unsigned' => TRUE],
+      ],
+      'primary key' => ['id'],
+    ]);
+
+    $sandbox['current'] = '';
+    $sandbox['progress'] = 0;
+    $sandbox['ids'] = array_values(\Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_distribution')
+      ->execute());
+  }
+
+  $ids = array_splice($sandbox['ids'], 0, 500);
+  $sandbox['#finished'] = (int) empty($ids);
+
+  if (!$sandbox['#finished']) {
+    $uris = SparqlArg::serializeUris($ids, ' ');
+    // We're using a direct SPARQL query for performance considerations.
+    $results = $sparql->query("SELECT ?entity_id ?counter
+FROM <http://joinup.eu/asset_distribution/published>
+WHERE {
+  ?entity_id <http://schema.org/userInteractionCount> ?counter .
+  VALUES ?entity_id { {$uris} }
+}");
+    $items = [];
+    foreach ($results as $result) {
+      $items[(string) $result->entity_id] = (int) (string) $result->counter;
+    }
+
+    $insert = $db->insert('joinup_core_stats_update_temp')
+      ->fields(['entity_type_id', 'entity_id', 'counter']);
+    foreach ($ids as $id) {
+      $counter = $items[$id] ?? 0;
+      $insert->values([
+        'entity_type_id' => 'rdf_entity',
+        'entity_id' => $id,
+        'counter' => $counter,
+      ]);
+      $sandbox['current'] = $id;
+      $sandbox['progress']++;
+    }
+    $insert->execute();
+
+    return "Collected {$sandbox['progress']} distribution download counts.";
+  }
+
+  return "Finished collecting {$sandbox['progress']} distribution download counts.";
+}
+
+/**
+ * Stats #2: Collect visit counts.
+ */
+function joinup_core_update_8113(array &$sandbox): ?string {
+  $db = \Drupal::database();
+
+  if (!isset($sandbox['current'])) {
+    $sandbox['current'] = 0;
+    $sandbox['progress'] = 0;
+    $sandbox['nids'] = array_values(\Drupal::entityQuery('node')
+      ->condition('type', ['discussion', 'document', 'event', 'news'], 'IN')
+      ->execute());
+  }
+
+  $nids = array_splice($sandbox['nids'], 0, 500);
+  $sandbox['#finished'] = (int) empty($nids);
+
+  if (!$sandbox['#finished']) {
+    // We're using a direct SQL query for performance considerations.
+    $items = $db->select('node__field_visit_count')
+      ->fields('node__field_visit_count', ['entity_id', 'field_visit_count_value'])
+      ->condition('entity_id', $nids, 'IN')
+      ->execute()
+      ->fetchAllKeyed();
+
+    $insert = $db->insert('joinup_core_stats_update_temp')
+      ->fields(['entity_type_id', 'entity_id', 'counter']);
+    foreach ($nids as $nid) {
+      $counter = $items[$nid] ?? 0;
+      $insert->values([
+        'entity_type_id' => 'node',
+        'entity_id' => $nid,
+        'counter' => (int) $counter,
+      ]);
+      $sandbox['current'] = $nid;
+      $sandbox['progress']++;
+    }
+    $insert->execute();
+
+    return "Collected {$sandbox['progress']} node visit counts.";
+  }
+
+  return "Finished collecting {$sandbox['progress']} node visit counts.";
 }
