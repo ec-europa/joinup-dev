@@ -168,13 +168,13 @@
                 authScheme="basic"
                 dir="${tmp.dir}"
         />
-        <!-- Restore the original memory limit. -->
-        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
         <copy file="${tmp.dir}/JOINUP_PRD_LATEST.sql.gz" tofile="${exports.sql.destination}" overwrite="true"/>
         <delete file="${tmp.dir}/dump.sql" failonerror="false" />
         <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />
         <!-- Remove the MySQL trigger definer -->
-        <exec command="perl -i -pe 's/DEFINER=&quot;joinup2&quot;@&quot;%&quot;//g' ${tmp.dir}/dump.sql" passthru="true" checkreturn="true"/>
+        <exec command="perl -i -pe 's/DEFINER=&quot;[^&quot;]+&quot;@&quot;[^&quot;]+&quot;//g' ${tmp.dir}/dump.sql" passthru="true" checkreturn="true"/>
+        <!-- Restore the original memory limit. -->
+        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
     </target>
 
     <target name="restore-mysql-dump" depends="disable-webtools-geocoding-cache, empty-mysql-database">
