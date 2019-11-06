@@ -27,17 +27,15 @@ class WebtoolsMapFormatter extends OriginalWebtoolsMapFormatter {
       $json_data['render'] = TRUE;
 
       $entity = $item->getEntity();
-      // Normally, this should always has a value since the coordinated derive
-      // from the field_location. However, to protect from a site break on
-      // possible future updates, we perform a check.
-      $description = $entity->hasField('field_location') && !empty($entity->field_location->value) ? $entity->field_location->value : '';
+      // Normally, this should always has a value since the coordinates are
+      // derived from the `field_location` field.
+      if (!$entity->hasField('field_location')) {
+        throw new \InvalidArgumentException('Can only display map for fields that are linked to a location.');
+      }
       $json_data['layers'][0]['markers']['features'][0]['properties']['name'] = $entity->label();
-      $json_data['layers'][0]['markers']['features'][0]['properties']['description'] = $description;
+      $json_data['layers'][0]['markers']['features'][0]['properties']['description'] = $entity->field_location->value ?? '';
       $json->setJson($json_data);
     }
-
-    $json = $element[0]['#value'];
-    $json->setJson($json->getJson() + ['render' => TRUE]);
 
     return $element;
   }
