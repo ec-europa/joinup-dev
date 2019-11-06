@@ -13,6 +13,9 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
         "drupal/cached_computed_field": "^1.0-beta4",
+        "drupal/cas": "dev-1.x",
+        "drupal/cas_account_link": "dev-1.x",
+        "drupal/cas_attributes": "dev-1.x",
         "drupal/changed_fields": "^3.0",
         "drupal/config_exclude": "dev-1.x",
         "drupal/config_ignore": "dev-2.x",
@@ -99,6 +102,7 @@
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "drupal/admin_toolbar": "^1.23",
+        "drupal/cas_mock_server": "dev-1.x",
         "drupal/coder": "^8.3.6",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
@@ -134,7 +138,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\joinup\\": "tests/src",
             "DrupalProject\\": "src"
         },
         "classmap": [
@@ -144,6 +147,12 @@
             "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
             "web/modules/custom/error_page/src/ErrorPageErrorHandler.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Drupal\\joinup\\": "tests/src",
+            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
+        }
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
@@ -167,20 +176,33 @@
     },
     "extra": {
         "installer-paths": {
+            "drush/Commands/{$name}": ["type:drupal-drush"],
+            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/modules/custom/joinup_communities/tallinn/lib": ["ec-europa/joinup-tallinn-dashboard"],
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
+        "drupal-scaffold": {
+            "initial": {
+                ".editorconfig": "../.editorconfig",
+                ".gitattributes": "../.gitattributes"
+            }
+        },
         "enable-patching": true,
-        "composer-exit-on-patch-failure": 1,
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
         "patches": {
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
+            },
+            "drupal/cas_account_link": {
+                "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-09-11/3070744-12-reroll.patch"
             },
             "drupal/cached_computed_field": {
                 "Expiry items should be computed against current time rather than request time @see https://www.drupal.org/project/cached_computed_field/issues/3079368": "https://www.drupal.org/files/issues/2019-09-05/3079368-3.patch"
