@@ -1868,7 +1868,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^"]+)(?:| entity)$/
    */
-  public function assertLinkContainsNodeUnaliasedUrl($link, $title, $type) {
+  public function assertLinkContainsEntityUnaliasedUrl($link, $title, $type) {
     if (!in_array($type, ['content', 'rdf'])) {
       throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
     }
