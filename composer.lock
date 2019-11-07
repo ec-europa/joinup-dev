@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ee034c4601dbc7f65d731d91adc6337",
+    "content-hash": "a5bde3026abbf4ef6b3b74d13e50401e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7953,7 +7953,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -10413,7 +10413,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-22T22:25:24+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -12680,6 +12680,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "4.4-dev"
+                },
+                "patches_applied": {
+                    "Correctly filter features, now that the base path is correctly set": "https://github.com/Behat/Gherkin/compare/v4.6.0...a7d84eb6ba245ea268a304312d14660788bf6c29.patch"
                 }
             },
             "autoload": {
@@ -13239,6 +13242,9 @@
                     "../cas_mock_server_build/themes/contrib/{$name}": [
                         "type:drupal-theme"
                     ]
+                },
+                "patches_applied": {
+                    "Cleanup also Drupal users whose names have been changed during creation @see https://github.com/pfrenssen/cas_mock_server/pull/16": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/16.diff"
                 }
             },
             "autoload-dev": {

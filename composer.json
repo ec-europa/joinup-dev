@@ -204,6 +204,9 @@
             "drupal/cas_account_link": {
                 "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-09-11/3070744-12-reroll.patch"
             },
+            "drupal/cas_mock_server": {
+                "Cleanup also Drupal users whose names have been changed during creation @see https://github.com/pfrenssen/cas_mock_server/pull/16": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/16.diff"
+            },
             "drupal/cached_computed_field": {
                 "Expiry items should be computed against current time rather than request time @see https://www.drupal.org/project/cached_computed_field/issues/3079368": "https://www.drupal.org/files/issues/2019-09-05/3079368-3.patch"
             },
