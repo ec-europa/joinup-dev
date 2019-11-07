@@ -1842,3 +1842,25 @@ function joinup_theme_preprocess_node(&$variables) {
     $variables['attributes']['data-drupal-parent-label'] = $parent->label();
   }
 }
+
+/**
+ * Preprocess function for the "social_share" theme hook.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - entity: the entity being shared.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ *   Thrown when the entity being shared does not support generating a URL.
+ */
+function joinup_theme_preprocess_social_share(array &$variables) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $variables['entity'];
+  // Generate an absolute, un-aliased URL.
+  $variables['url'] = $entity->toUrl('canonical', [
+    'language' => $entity->language(),
+  ])->setAbsolute()->setOption('alias', TRUE);
+
+  $variables['encoded_url'] = urlencode($variables['url']->toString());
+  $variables['encoded_title'] = urlencode($entity->label());
+}
