@@ -9,6 +9,9 @@ Feature: Cookie consent
     Given user:
       | Username | test_cck |
       | Password | test_cck |
+    And CAS users:
+      | Username | E-mail               | Password |
+      | test_cck | test_cck@example.com | test_cck |
 
     When I am an anonymous user
     And I am on the homepage
@@ -21,10 +24,11 @@ Feature: Cookie consent
 
     # Logging in does not require re-sign in.
     When I am on the homepage
+    And I open the account menu
     And I click "Sign in"
-    And I fill in "Email or username" with "test_cck"
+    And I fill in "E-mail address" with "test_cck@example.com"
     And I fill in "Password" with "test_cck"
-    And I press "Sign in"
+    And I press "Log in"
     Then I should not see the "Cookie consent banner" region
 
     Examples:
