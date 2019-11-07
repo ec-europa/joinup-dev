@@ -1866,7 +1866,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when the link is not in the page.
    *
-   * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^"]+)(?:| entity)$/
+   * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
    */
   public function assertLinkContainsEntityUnaliasedUrl($link, $title, $type) {
     if (!in_array($type, ['content', 'rdf'])) {
