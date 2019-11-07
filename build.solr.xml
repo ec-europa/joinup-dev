@@ -188,15 +188,13 @@ ${line.separator}$config['search_api.server.solr_unpublished']['backend_config']
                 command="sapi-c"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
         </drush>
         <drush
                 command="sapi-i"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="batch-size" value="250" />
         </drush>
     </target>

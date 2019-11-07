@@ -24,13 +24,17 @@
   We call a macro which calls itself to render the full tree.
   @see http://twig.sensiolabs.org/doc/tags/macro.html
 #}
-{{ menus.menu_links(items, attributes, 0, profile_icon) }}
+{{ menus.menu_links(items, attributes, 0, profile_icon, has_sign_in_text) }}
 
-{% macro menu_links(items, attributes, menu_level, profile_icon) %}
+{% macro menu_links(items, attributes, menu_level, profile_icon, has_sign_in_text) %}
   {% if items %}
     <div class="login-menu">
-      <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button">
-        <img style="border-radius: 20px; margin: 10px 0; padding: 0;" src="{{ profile_icon }}" />
+      <div id="login-menu__button" class="login-menu__button mdl-button mdl-js-button{{ has_sign_in_text ? ' login-menu__button--text' : '' }}">
+        {% if has_sign_in_text %}
+          <span>{{ 'Sign in'|t }}</span>
+        {% else %}
+          <img src="{{ profile_icon }}" />
+        {% endif %}
       </div>
       <ul class="login-menu__dropdown mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu__button">
         {% for item in items %}
