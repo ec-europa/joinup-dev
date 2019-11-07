@@ -5,9 +5,14 @@
  * Contains joinup_subscription.module..
  */
 
+declare(strict_types = 1);
+
 use Drupal\field\FieldStorageConfigInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\message\MessageInterface;
+use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_entity_type_build().
@@ -40,4 +45,29 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
   }
 
   return $fields;
+}
+
+/**
+ * Implements hook_message_digest_aggregate_alter().
+ *
+ * Reorders the messages in the collection content subscription digest to be
+ * grouped by collection.
+ */
+function joinup_subscription_message_digest_aggregate_alter(array &$context, UserInterface $account, MessageNotifierInterface $notifier): void {
+  // Only act on the collection community content digest. This can be recognized
+  // because it is not linked to any entity type or entity ID.
+  if (!empty($context['entity_type']) || !empty($context['entity_id'])) {
+    return;
+  }
+
+  $messages = &$context['messages'];
+  uasort($messages, function (MessageInterface $a, MessageInterface $b) {
+    // Find the collections by following the entity references from the message
+    // to the community content to the collection.
+    $a_content = $a->field_community_content->first()->entity;
+    $b_content = $b->field_community_content->first()->entity;
+    $a_collection = $a_content->og_audience->first()->entity;
+    $b_collection = $b_content->og_audience->first()->entity;
+    return $a_collection->id() <=> $b_collection->id();
+  });
 }
