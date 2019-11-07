@@ -1854,20 +1854,28 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Asserts that a certain link contains the unaliased path of a node.
+   * Asserts that a certain link contains the unaliased path of an entity.
    *
    * @param string $link
    *   The link text.
    * @param string $title
-   *   The node title.
+   *   The entity title.
+   * @param string $type
+   *   The entity type. Either 'content' or 'rdf'.
    *
    * @throws \Exception
    *   Thrown when the link is not in the page.
    *
-   * @Then the share link :link should point to the :title content
+   * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^"]+)(?:| entity)$/
    */
-  public function assertLinkContainsNodeUnaliasedUrl($link, $title) {
-    $node = $this->getNodeByTitle($title);
+  public function assertLinkContainsNodeUnaliasedUrl($link, $title, $type) {
+    if (!in_array($type, ['content', 'rdf'])) {
+      throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
+    }
+    $function = $type === 'content' ? 'getNodeByTitle' : 'getRdfEntityByLabel';
+
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
+    $entity = $this->$function($title);
     $link_element = $this->getSession()->getPage()->findLink($link);
 
     if (!$link_element) {
@@ -1875,9 +1883,10 @@ class JoinupSubContext extends DrupalSubContextBase {
     }
 
     $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
+    $entity_url = $entity->toUrl()->setAbsolute()->getInternalPath();
     $href = $link_element->getAttribute('href');
 
-    Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
+    Assert::assertContains(urlencode("{$base_url}/{$entity_url}"), $href);
   }
 
   /**
