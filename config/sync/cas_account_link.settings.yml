@@ -1,0 +1,20 @@
+form:
+  path: /user/eu-login/account-link
+  title: 'Already a Joinup user?'
+  help:
+    value: "<p>Since you have signed in for the first time using <em>EU Login</em>, you need to take one extra step.&nbsp;</p>\n\n<p>Before you make your selection below, please note this important information:</p>\n\n<ul>\n  <li>If you are an <strong>existing user</strong> on Joinup, and would like to keep all your account data (collection/solution memberships, published events, news, documents, discussions etc.), we suggest you select the first option to pair your existing account with your EU Login account;</li>\n  <li>If you are a <strong>new user</strong> on Joinup, the second option is the right one for you.</li>\n</ul>\n"
+    format: content_editor
+  question:
+    title: 'Please make your selection:'
+    description: ''
+    answers:
+      'yes':
+        label: 'I am an existing user (pair my existing account with my EU Login account)'
+        description: 'You will be asked to login with your site credentials.'
+        button: 'Sign in'
+      'no':
+        label: 'I am a new user (create a new account)'
+        description: 'No action is required on your side. A new account, linked to your EU Login account, will be created.'
+        button: Next
+_core:
+  default_config_hash: wDPJbNOvGdD3P1j-Fqz4o_XlkqkQYeszXBfDYggIG-E

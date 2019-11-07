@@ -2,12 +2,12 @@ default:
   suites:
     default:
       contexts:
-        - FeatureContext
-        - Drupal\joinup\Context\DrupalContext
-        - Drupal\joinup\Context\MinkContext
         - Drupal\DrupalExtension\Context\DrushContext
         - Drupal\DrupalExtension\Context\MarkupContext
         - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\joinup\Context\DrupalContext
+        - Drupal\joinup\Context\MinkContext
+        - Drupal\joinup\Context\RssContext
         - Drupal\joinup\Context\ScreenshotContext:
             localDir: '${behat.screenshots.local.dir}'
             s3Dir: '${behat.screenshots.s3.dir}'
@@ -15,8 +15,12 @@ default:
             s3Bucket: '${exports.s3.bucket}'
             s3Key: '${exports.s3.key}'
             s3Secret: '${exports.s3.secret}'
+        - Drupal\Tests\cas_mock_server\Context\CasMockServerContext:
+            attributes_map:
+              firstName: First name
+              lastName: Last name
+        - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
-        - Drupal\joinup\Context\RssContext
       filters:
         tags: '~@wip'
   extensions:
