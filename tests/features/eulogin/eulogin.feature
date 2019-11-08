@@ -295,6 +295,27 @@ Feature: Log in through EU Login
       | The email address joe@example.com is already taken.                                                        |
       | If you are the owner of this account please select the first option, otherwise contact the Joinup support. |
 
+  Scenario: A new user tries to register with an existing username.
+    Given users:
+      | Username | E-mail          |
+      | joe      | joe@example.com |
+
+    And CAS users:
+      | Username | E-mail          | Password |
+      | joe  | joe.cas@example.com | 123      |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    When I fill in "E-mail address" with "joe.cas@example.com"
+    When I fill in "Password" with "123"
+    And I press the "Log in" button
+
+    When I select the radio button "I am a new user (create a new account)"
+    When I press "Next"
+
+    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+
   Scenario: The Drupal registration tab has been removed and the /user/register
     route redirects to EU Login registration form.
     When I visit "/user/login"
