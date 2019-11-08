@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5bde3026abbf4ef6b3b74d13e50401e",
+    "content-hash": "53bd7c124b788ebc9ba6fe01f4f56100",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2704,7 +2704,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Exception thrown when accounts with the same name exists @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-09-11/3070744-12-reroll.patch"
+                    "Exception thrown when registering an account with the same username @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-11-08/3070744-24.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
