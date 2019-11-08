@@ -21,9 +21,9 @@
    * @type {Drupal~behavior}
    *
    * @prop {Drupal~behaviorAttach} attach
-   *   Attaches pinned content behaviors.
+   *   Attaches pinned entities behaviors.
    */
-  Drupal.behaviors.pinnedContent = {
+  Drupal.behaviors.pinnedEntities = {
     attach: function (context) {
       var collection = $('[data-drupal-collection-context]').data('drupal-collection-context');
 
