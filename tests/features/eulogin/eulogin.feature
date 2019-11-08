@@ -42,6 +42,10 @@ Feature: Log in through EU Login
     # The user has been redirected to its user account edit form.
     Then the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
     And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
+    But I should not see "Fail - Password length must be at least 8 characters."
+    And I should not see "Password character length of at least 8"
+    And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
+    And I should not see "Minimum password character types: 3"
 
     And the user chucknorris should have the following data in their user profile:
       | First name  | Chuck  |
@@ -222,6 +226,10 @@ Feature: Log in through EU Login
     But I should not see "Username"
     And I should not see "partial_cas_profile"
     And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    But I should not see "Fail - Password length must be at least 8 characters."
+    And I should not see "Password character length of at least 8"
+    And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
+    And I should not see "Minimum password character types: 3"
 
     When I press "Save"
     Then I should see the error message "First name field is required."
@@ -245,6 +253,10 @@ Feature: Log in through EU Login
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
     And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    But I should not see "Fail - Password length must be at least 8 characters."
+    And I should not see "Password character length of at least 8"
+    And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
+    And I should not see "Minimum password character types: 3"
 
     When I press "Save"
     Then I should see the error message "First name field is required."
@@ -261,6 +273,10 @@ Feature: Log in through EU Login
     And I should see "Username"
     And I should see "without_cas"
     And I should see "A valid email address. All emails from the system will be sent to this address. The email address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by email."
+    And I should see "Fail - Password length must be at least 8 characters."
+    And I should see "Password character length of at least 8"
+    And I should see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
+    And I should see "Minimum password character types: 3"
 
     When I press "Save"
     Then I should see the error message "First name field is required."
