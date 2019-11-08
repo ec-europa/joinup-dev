@@ -5,15 +5,23 @@ Feature: As a privileged user
 
   @javascript
   Scenario: Share link is visible for privileged users.
-    Given collections:
+    Given users:
+      | User        | Email                   | First name | Family name | Roles     |
+      | joe_dare    | joe_dare@example.com    | Joe        | Dare        |           |
+      | kleev_elant | kleev_elant@example.com | Kleev      | Elant       |           |
+      | sand_beach  | sand_beach@example.com  | Sand       | Beach       | moderator |
+    And collections:
       | title                        | logo     | state     |
       | Collection share original    | logo.png | validated |
       | Collection share candidate 1 | logo.png | validated |
       | Collection share candidate 2 | logo.png | validated |
-
-    Given the following solutions:
+    And the following solutions:
       | title                 | description         | logo     | banner     | state     | collection                |
       | Solution to be shared | Doesn't affect test | logo.png | banner.jpg | validated | Collection share original |
+    And the following solution user memberships:
+      | solution              | user        | roles       |
+      | Solution to be shared | joe_dare    | owner       |
+      | Solution to be shared | kleev_elant | facilitator |
 
     Given I am an anonymous user
     And I go to the homepage of the "Collection share original" collection
@@ -46,6 +54,19 @@ Feature: As a privileged user
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
     Then I should see the success message "Item was shared in the following collections: Collection share candidate 1."
+
+    And the following email should not have been sent:
+      | recipient_mail | joe_dare@example.com                                                                                                   |
+      | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
+      | body           | Your solution: "Solution to be shared" has been shared inside the following collection: "Collection share candidate 1" |
+    And the following email should not have been sent:
+      | recipient_mail | kleev_elant@example.com                                                                                                |
+      | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
+      | body           | Your solution: "Solution to be shared" has been shared inside the following collection: "Collection share candidate 1" |
+    And the following email should not have been sent:
+      | recipient_mail | sand_beach@example.com                                                                                                 |
+      | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
+      | body           | Your solution: "Solution to be shared" has been shared inside the following collection: "Collection share candidate 1" |
 
     # Verify that the collections where the solution has already been shared are
     # not shown anymore in the list.
