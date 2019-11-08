@@ -986,3 +986,10 @@ function joinup_core_post_update_stats6(array &$sandbox): ?string {
 
   return "Finished processing {$sandbox['processed']} items from queue.";
 }
+
+/**
+ * Correct the faulty revisions after the storage changes on the counters.
+ */
+function joinup_core_post_update_post_count_storage_node_revisions() {
+  joinup_core_post_update_set_news_default_version();
+}
