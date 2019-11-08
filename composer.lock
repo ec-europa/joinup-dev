@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53bd7c124b788ebc9ba6fe01f4f56100",
+    "content-hash": "0e8ab455cf3aa175ee389f781608352d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2680,15 +2680,14 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "c8d2d6808ad56935e38fc46a2163e4bb356454ae"
+                "reference": "2bf1a8484d17dcdbc67039ecc43086172734a948"
             },
             "require": {
                 "drupal/cas": "dev-1.x",
-                "drupal/core": "*",
-                "drupal/externalauth": "^1.2"
+                "drupal/core": "*"
             },
             "require-dev": {
-                "drupal/cas_mock_server": "*"
+                "drupal/cas_mock_server": "dev-1.x"
             },
             "type": "drupal-module",
             "extra": {
@@ -2697,14 +2696,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1569266288",
+                    "datestamp": "1573229284",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
-                },
-                "patches_applied": {
-                    "Exception thrown when registering an account with the same username @see https://www.drupal.org/project/cas_account_link/issues/3070744": "https://www.drupal.org/files/issues/2019-11-08/3070744-24.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2737,7 +2733,7 @@
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
             },
-            "time": "2019-09-23T19:36:12+00:00"
+            "time": "2019-11-11T09:07:47+00:00"
         },
         {
             "name": "drupal/cas_attributes",
@@ -5606,7 +5602,8 @@
                 },
                 "patches_applied": {
                     "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
-                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch"
+                    "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
+                    "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
