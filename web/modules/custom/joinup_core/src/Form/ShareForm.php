@@ -151,7 +151,7 @@ abstract class ShareForm extends ShareFormBase {
     // Keep only the checked entries.
     $collections = array_filter($form_state->getValue('collections'));
     $collection_labels = [];
-    // We can safely loop through these ids, as unvalid options are handled
+    // We can safely loop through these ids, as invalid options are handled
     // already by Drupal.
     foreach ($collections as $id => $value) {
       $collection = $this->sparqlStorage->load($id);

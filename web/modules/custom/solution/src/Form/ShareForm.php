@@ -7,6 +7,7 @@ namespace Drupal\solution\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_core\Form\ShareForm as OriginalForm;
+use Drupal\joinup_notification\NotificationEvents;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -48,6 +49,33 @@ class ShareForm extends OriginalForm {
    */
   public function getTitle(RdfInterface $rdf_entity): TranslatableMarkup {
     return parent::buildTitle($rdf_entity);
+  }
+
+  /**
+   * Send notifications after for submission.
+   *
+   * @param array $form
+   *   The form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state object.
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+
+    $collections = array_filter($form_state->getValue('collections'));
+    if (empty($collections)) {
+      return;
+    }
+
+    $collection_labels = [];
+    foreach ($collections as $id => $value) {
+      $collection = $this->sparqlStorage->load($id);
+      $collection_labels[] = $collection->label();
+    }
+
+    $this->entity->set('collections_shared', array_keys($collections));
+    $this->entity->set('collections_shared_labels', $collection_labels);
+    joinup_notification_dispatch_notification('share', NotificationEvents::SOLUTION_SHARING, $this->entity);
   }
 
 }
