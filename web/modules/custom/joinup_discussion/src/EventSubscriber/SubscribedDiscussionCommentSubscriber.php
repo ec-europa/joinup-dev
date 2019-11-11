@@ -205,18 +205,10 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    */
   protected function sendMessage(): bool {
     $success = TRUE;
-    // Create individual messages for each subscriber so that we can honor the
-    // user's chosen digest frequency.
-    foreach ($this->getRecipients() as $recipient) {
-      if ($recipient->isAnonymous()) {
-        continue;
-      }
-      $notifier_options = [
-        'entity_type' => $this->discussion->getEntityTypeId(),
-        'entity_id' => $this->discussion->id(),
-      ];
-      $success = $this->messageDelivery->sendMessageTemplateToUser('discussion_comment_new', $this->getArguments(), $recipient, $notifier_options) && $success;
+    if ($recipients = $this->getRecipients()) {
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers('discussion_comment_new', $this->getArguments(), $recipients) && $success;
     }
+
     return $success;
   }
 
