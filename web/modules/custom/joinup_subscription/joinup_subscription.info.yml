@@ -12,6 +12,8 @@ dependencies:
 
 config_devel:
   - core.entity_form_mode.user.subscription_settings
+  - core.entity_view_display.rdf_entity.collection.digest_message_header
+  - core.entity_view_mode.rdf_entity.digest_message_header
   - field.field.user.user.field_user_frequency
   - field.storage.user.field_user_frequency
   - flag.flag.subscribe_discussions
