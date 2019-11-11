@@ -1210,7 +1210,7 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   if (!empty($variables['element']['#is_button'])) {
 
     // Skip dropbuttons since we have no custom styling for them. These can be
-    // recognized by not having an '#array_parents' property .
+    // recognized by not having an '#array_parents' property.
     // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
     if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
       return;
