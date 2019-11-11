@@ -11,7 +11,6 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
       | path           |
       | /user/password |
       | /user/login    |
-      | /user/register |
       | /contact       |
 
   Scenario: Authenticated users.
@@ -25,10 +24,10 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
       | title      | collection    | state     |
       | Let's talk | Family photos | validated |
     And event content:
-      | title      | collection    | state     |
+      | title    | collection    | state     |
       | Birthday | Family photos | validated |
     And news content:
-      | title      | collection    | state     |
+      | title       | collection    | state     |
       | Got married | Family photos | validated |
 
     Given I am logged in as "Günther"
