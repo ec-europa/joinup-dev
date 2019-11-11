@@ -137,6 +137,10 @@ Feature: Collection membership administration
       | To manage your notifications go to "My subscriptions" in the user menu.                          |
       | If you think this action is not clear or not due, please contact Joinup Support at               |
 
+    When I am logged in as "Cam Bridge"
+    When I click the "My subscriptions" link from the email sent to "Cam Bridge"
+    Then I should see the heading "My subscriptions"
+
   @email
   Scenario: Reject a membership
     When I am logged in as "Lisa Cuddy"

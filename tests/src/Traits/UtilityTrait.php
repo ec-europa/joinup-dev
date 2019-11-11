@@ -50,6 +50,36 @@ trait UtilityTrait {
   }
 
   /**
+   * Retrieves emails sent to the user from the email collection.
+   *
+   * @param string $user
+   *   The user name.
+   *
+   * @return array
+   *   An array of mails as stored in the email collector.
+   *
+   * @throws \Exception
+   *   Thrown if the user is not found or no emails have been sent.
+   */
+  protected function getUserMails(string $user): array {
+    $user = $this->getUserByName($user);
+    if (empty($user)) {
+      throw new \Exception("User {$user->getAccountName()} was not found.");
+    }
+
+    $user_email = $user->getEmail();
+    \Drupal::state()->resetCache();
+    $mails = \Drupal::state()->get('system.test_mail_collector');
+    if (empty($mails)) {
+      throw new \Exception('No mail was sent.');
+    }
+
+    return array_filter($mails, function (array $mail) use ($user_email) {
+      return $mail['to'] === $user_email;
+    });
+  }
+
+  /**
    * Explodes and sanitizes a comma separated step argument.
    *
    * @param string $argument
