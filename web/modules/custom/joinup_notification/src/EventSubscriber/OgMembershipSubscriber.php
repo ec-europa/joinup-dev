@@ -9,7 +9,6 @@ use Drupal\Core\Url;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgMembershipInterface;
-use Drupal\user\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -242,24 +241,6 @@ class OgMembershipSubscriber extends NotificationSubscriberBase implements Event
     ];
     $url = Url::fromRoute($route_name, $route_parameters, ['absolute' => TRUE])->toString();
     return $url;
-  }
-
-  /**
-   * Returns a set of arguments related to user subscriptions.
-   *
-   * @param \Drupal\user\UserInterface $user
-   *   The user related to the subscription variables.
-   *
-   * @return array
-   *   An associative array of actor data, with the following keys:
-   *   - '@user:my_subscriptions': The url of the user's subscription
-   *     settings.
-   */
-  public function getSubscriptionArguments(UserInterface $user): array {
-    $parameters = ['user' => $this->currentUser];
-    return [
-      '@user:my_subscriptions' => Url::fromRoute('joinup_subscription.my_subscriptions', $parameters, ['absolute' => TRUE])->toString(),
-    ];
   }
 
 }

@@ -327,7 +327,8 @@ abstract class NotificationSubscriberBase {
 
     $arguments['@entity:title'] = $entity->label();
     $arguments['@entity:bundle'] = $entity->bundle();
-    $arguments['@entity:url'] = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+    $arguments['@entity:url'] = $entity->toUrl('canonical')->setAbsolute()->toString();
+    $arguments['@user:my_subscriptions'] = Url::fromRoute('joinup_subscription.my_subscriptions')->setAbsolute()->toString();
 
     $arguments += MessageArgumentGenerator::getActorArguments();
     $arguments += MessageArgumentGenerator::getContactFormUrlArgument();
