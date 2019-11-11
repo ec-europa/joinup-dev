@@ -82,13 +82,15 @@ Feature: Subscribing to discussions
       | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # The user 'debater' is also a discussion subscriber but because he's the
     # author of the comment, he will not receive the notification.
-    And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | mail_body    | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient_mail | flash@example.com                                                                             |
+      | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
-    And the weekly digest for "Dr. Hans Zarkov" should contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
-      | mail_body    | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
+    And the following email should have been sent:
+      | recipient_mail | hans@example.com                                                                              |
+      | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
+      | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
@@ -100,8 +102,9 @@ Feature: Subscribing to discussions
     Then 0 e-mails should have been sent
 
     # When relevant fields of a discussion are changed, the subscribers are
-    # receiving a notifications.
-    Given I go to the discussion content "Rare Butter" edit screen
+    # receiving a notification.
+    Given I am logged in as "Dr. Hans Zarkov"
+    And I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
     And the following email should have been sent:
