@@ -6,8 +6,8 @@ joinup_licence.overview:
   requirements:
     _permission: 'view licence overview page'
 
-# We have dissallowed all access to rdf_entity.add so we are creating a new
-# route to allow a licence to be created outside the scope of a group.
+# We have disallowed all access to rdf_entity.add so we are creating a new route
+# to allow a licence to be created outside the scope of a group.
 joinup_licence.add:
   path: 'licence/add'
   defaults:
