@@ -58,6 +58,36 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
       $entity->setPublished($is_published_state);
     }
 
+    if ($entity->hasField('published_at')) {
+      // The publication date field applies its value depending on the status
+      // of the entity on the `::preSave` method on the field item class.
+      // However, the publication date field is a base property and we are
+      // handling the publication status of the entity on this subscriber
+      // launched by the state item field. The state item field is an extra
+      // field and its definition comes always after all base field definitions
+      // when the field item `::preSave` methods are called.
+      // Furthermore, the only hook that can be used here is the
+      // `hook_entity_bundle_field_info_alter` which does not include the base
+      // fields so we cannot reorder it there.
+      // And last, the field hooks are fired before the entity hooks, so we
+      // also cannot use a `hook_entity_presave` or a `hook_ENTITY_TYPE_presave`
+      // to properly set the publication status before calculating the
+      // publication date. Thus, we call the `::applyDefaultValue` to clear the
+      // value of the field and then the `::preSave` to force the field to re-
+      // calculate the value.
+      // @see: \Drupal\Core\Entity\ContentEntityStorageBase::invokeHook
+      // @see: \Drupal\Core\Entity\EntityFieldManager::getFieldDefinitions
+      // @see: \Drupal\publication_date\Plugin\Field\FieldType\PublicationDateItem::preSave
+      // @see:https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5544
+      if ($entity->isNew()) {
+        // In case it is a new entity, apply the default value (clear out the
+        // the values) because it might have already been set with the wrong
+        // status set.
+        $entity->get('published_at')->applyDefaultValue();
+      }
+      $entity->get('published_at')->preSave();
+    }
+
     // Bail out if this entity doesn't implement revisions. We do not limit
     // strictly to content entities.
     if (!$entity instanceof RevisionableInterface) {
