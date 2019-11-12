@@ -87,31 +87,43 @@ Feature:
     When I am on "/licence/compare"
     Then I should get a 404 HTTP response
 
-    # Test the page when the parameter is not an array.
-    When I am on "/licence/compare?licence=Apache-2.0"
-    Then I should get a 404 HTTP response
-
     # Test the page when there's only one licence.
-    When I am on "/licence/compare?licence[]=Apache-2.0"
+    When I am on "/licence/compare/Apache-2.0"
     Then I should get a 404 HTTP response
 
     # Test the page when there are too many licences.
-    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+&licence[]=BSL-1.0&licence[]=0BSD&licence[]=UPL-1.0&licence[]=LGPL-2.1"
+    When I am on "/licence/compare/Apache-2.0;GPL-2.0+;BSL-1.0;0BSD;UPL-1.0;=LGPL-2.1"
     Then I should get a 404 HTTP response
 
     # Test the page when there are invalid characters in the SPDX licence ID.
-    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=G$^#@!PL-2.0"
+    When I am on "/licence/compare/Apache-2.0;G$^#@!PL-2.0"
     Then I should get a 404 HTTP response
 
     # Test the page when there are invalid SPDX IDs licences.
-    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+&licence[]=NOT-EXIST"
+    When I am on "/licence/compare/Apache-2.0;GPL-2.0+;NOT-EXIST"
     Then I should get a 404 HTTP response
 
     # Test the page with SPDX IDs without a corresponding Joinup licence.
-    When I am on "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+&licence[]=BSL-1.0"
+    When I am on "/licence/compare/Apache-2.0;GPL-2.0+;BSL-1.0"
     Then I should get a 404 HTTP response
 
-    When I visit "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+"
+    # Test the page with SPDX IDs with a leading separator.
+    When I am on "/licence/compare/;Apache-2.0;GPL-2.0+"
+    Then I should get a 404 HTTP response
+
+    # Test the page with SPDX IDs with a trailing separator.
+    When I am on "/licence/compare/Apache-2.0;GPL-2.0+;"
+    Then I should get a 404 HTTP response
+
+    # Test the page with SPDX IDs with both, a leading and a trailing separator.
+    When I am on "/licence/compare/;Apache-2.0;GPL-2.0+;"
+    Then I should get a 404 HTTP response
+
+    # Test the page with SPDX IDs with consecutive separators.
+    When I am on "/licence/compare/Apache-2.0;;GPL-2.0+"
+    Then I should get a 404 HTTP response
+
+    When I visit "/licence/compare/Apache-2.0;GPL-2.0+"
     Then I should see the "licence comparer" table
     And the "licence comparer" table should be:
       | Can               | Apache-2.0 | GPL-2.0+ |  |  |  |
@@ -182,10 +194,9 @@ Feature:
     Then I should see the heading "Apache License, Version 2.0 changed"
 
     Given I am an anonymous user
-    When I visit "/licence/compare?licence[]=Apache-2.0&licence[]=GPL-2.0+"
+    When I visit "/licence/compare/Apache-2.0;GPL-2.0+"
     Then the page should not be cached
 
-    # Test that Apache-2.0 "Can Distribute".
     And the "licence comparer" table should be:
       | Can               | Apache-2.0 | GPL-2.0+ |  |  |  |
       | Use/reproduce     | x          |          |  |  |  |
@@ -234,3 +245,57 @@ Feature:
       | Governments/EU    | x          |          |  |  |  |
       | OSI approved      |            |          |  |  |  |
       | FSF Free/Libre    |            |          |  |  |  |
+
+    # Swap the order but add a duplicate. The duplicate should be ignored and
+    # the page should not be extracted from the cache.
+    When I visit "/licence/compare/GPL-2.0+;Apache-2.0;GPL-2.0+"
+    Then the page should not be cached
+
+    And the "licence comparer" table should be:
+      | Can               | GPL-2.0+ | Apache-2.0 |  |  |  |
+      | Use/reproduce     |          | x          |  |  |  |
+      | Distribute        | x        | x          |  |  |  |
+      | Modify/merge      |          |            |  |  |  |
+      | Sublicense        |          |            |  |  |  |
+      | Commercial use    |          |            |  |  |  |
+      | Use patents       |          |            |  |  |  |
+      | Place warranty    |          |            |  |  |  |
+      | Must              | GPL-2.0+ | Apache-2.0 |  |  |  |
+      | Incl. Copyright   |          |            |  |  |  |
+      | Royalty free      |          | x          |  |  |  |
+      | State changes     |          |            |  |  |  |
+      | Disclose source   |          |            |  |  |  |
+      | Copyleft/Share a. |          |            |  |  |  |
+      | Lesser copyleft   |          |            |  |  |  |
+      | SaaS/network      |          |            |  |  |  |
+      | Include licence   |          |            |  |  |  |
+      | Rename modifs.    |          |            |  |  |  |
+      | Cannot            | GPL-2.0+ | Apache-2.0 |  |  |  |
+      | Hold liable       |          |            |  |  |  |
+      | Use trademark     |          |            |  |  |  |
+      | Commerce          |          |            |  |  |  |
+      | Modify            |          | x          |  |  |  |
+      | Ethical clauses   |          |            |  |  |  |
+      | Pub sector only   |          |            |  |  |  |
+      | Sublicence        |          |            |  |  |  |
+      | Compatible        | GPL-2.0+ | Apache-2.0 |  |  |  |
+      | None N/A          |          |            |  |  |  |
+      | Permissive        |          |            |  |  |  |
+      | GPL               |          |            |  |  |  |
+      | Other copyleft    |          |            |  |  |  |
+      | Linking freedom   |          |            |  |  |  |
+      | Multilingual      |          |            |  |  |  |
+      | For data          |          |            |  |  |  |
+      | For software      |          |            |  |  |  |
+      | Law               | GPL-2.0+ | Apache-2.0 |  |  |  |
+      | EU/MS law         |          |            |  |  |  |
+      | US law            |          |            |  |  |  |
+      | Licensor's law    |          |            |  |  |  |
+      | Other law         |          |            |  |  |  |
+      | Not fixed/local   |          |            |  |  |  |
+      | Venue fixed       |          |            |  |  |  |
+      | Support           | GPL-2.0+ | Apache-2.0 |  |  |  |
+      | Strong Community  |          | x          |  |  |  |
+      | Governments/EU    |          | x          |  |  |  |
+      | OSI approved      |          |            |  |  |  |
+      | FSF Free/Libre    |          |            |  |  |  |

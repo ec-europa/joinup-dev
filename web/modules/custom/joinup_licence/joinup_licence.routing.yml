@@ -17,9 +17,14 @@ joinup_licence.add:
     _entity_create_access: 'rdf_entity:licence'
 
 joinup_licence.comparer:
-  path: '/licence/compare'
+  path: '/licence/compare/{licences}'
   defaults:
     _controller: 'Drupal\joinup_licence\Controller\LicenceComparerController::compare'
     _title: 'Joinup Licensing Assistant (JLA)'
   requirements:
     _access: 'TRUE'
+    licences: '([a-zA-Z0-9][a-zA-Z0-9. -]+;)+[a-zA-Z0-9][a-zA-Z0-9. -]+'
+  options:
+    parameters:
+      licences:
+        type: spdx_ids_list

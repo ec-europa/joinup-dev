@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence;
 
+/**
+ * Licence comparer helper class.
+ */
 class LicenceComparerHelper {
 
   /**

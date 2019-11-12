@@ -11,9 +11,6 @@ use Drupal\Core\Url;
 use Drupal\joinup_licence\LicenceComparerHelper;
 use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides a page controller callbacks.
@@ -35,18 +32,11 @@ class LicenceComparerController extends ControllerBase {
   protected $rdfStorage;
 
   /**
-   * The IDs of the SPDX licences to be compared.
+   * An ordered list of Joinup licence entities keyed by their SPDX ID.
    *
-   * @var array
+   * @var \Drupal\rdf_entity\RdfInterface[]
    */
-  protected $spdxIds = [];
-
-  /**
-   * The cacheable metadata to be applied to the build.
-   *
-   * @var \Drupal\Core\Cache\CacheableMetadata
-   */
-  protected $cacheMetadata;
+  protected $licences = [];
 
   /**
    * Constructs a new controller instance.
@@ -66,23 +56,21 @@ class LicenceComparerController extends ControllerBase {
   }
 
   /**
-   * Respond to a request made to 'joinup_licence.comparer' route.
+   * Responds to a request made to 'joinup_licence.comparer' route.
    *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The current request.
+   * @param \Drupal\rdf_entity\RdfInterface[] $licences
+   *   An ordered list of Joinup licence entities keyed by their SPDX ID.
    *
    * @return array
    *   A render array.
    *
-   * @throws \Http\Discovery\Exception\NotFoundException
-   *   When the passed SPDX IDs is not valid.
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function compare(Request $request): array {
-    // Ensure that valid licence IDs were passed along with the request.
-    $licence_ids = $this->validatePassedLicences($request->query);
+  public function compare(array $licences): array {
+    $this->licences = $licences;
 
     // Build the raw data structure.
-    $data = $this->getComparisionData($licence_ids);
+    $data = $this->getComparisionData();
 
     // Populate the table rows.
     $rows = [];
@@ -92,6 +80,14 @@ class LicenceComparerController extends ControllerBase {
       foreach ($terms as $label => $items) {
         $rows[] = $this->buildRow($legal_type_category, $label, $items);
       }
+    }
+
+    // Collect cache metadata from dependencies.
+    $cache_metadata = new CacheableMetadata();
+    foreach ($this->licences as $licence) {
+      $cache_metadata
+        ->addCacheableDependency($licence)
+        ->addCacheableDependency($licence->field_licence_spdx_licence->entity);
     }
 
     $build = [];
@@ -119,85 +115,22 @@ class LicenceComparerController extends ControllerBase {
       ],
     ];
 
-    $this->cacheMetadata
+    $cache_metadata
       // This page cache is properly tagged with cache tags and will be
       // invalidated as soon as one of the dependencies are updated or deleted.
       // However, the licence comparer permits a huge amount of licence
       // combinations and that would flood the cache backend. As updating or
       // deleting licences is a very rare event, the cached items may be stored
       // for a long period of time. We ensure a life time for cached licence
-      // comparision of one month: 60 * 60 * 24 * 30 = 2,592,000.
-      ->setCacheMaxAge(2592000)
+      // comparision of two months: 2 * 60s * 60m * 24h * 30d = 5184000s.
+      ->setCacheMaxAge(5184000)
       ->applyTo($build);
 
     return $build;
   }
 
   /**
-   * Validates the passed SPDX IDs and returns the corresponding Joinup IDs.
-   *
-   * @param \Symfony\Component\HttpFoundation\ParameterBag $query
-   *   The request query parameter bag.
-   *
-   * @return array
-   *   A list of Joinup licence IDs.
-   */
-  protected function validatePassedLicences(ParameterBag $query): array {
-    // Need at least two but no more than static::ROW_COUNT SPDX IDs to be
-    // passed along the request, in order to have a comparision.
-    if (!$query->has('licence') || !($this->spdxIds = $query->get('licence')) || !is_array($this->spdxIds) || count($this->spdxIds) < 2 || count($this->spdxIds) > static::COLUMN_COUNT) {
-      throw new NotFoundHttpException();
-    }
-
-    array_walk($this->spdxIds, function (string &$spdx_id): void {
-      // If the plus character "+" has been passed in the query string param,
-      // it was already converted into space. Revert it.
-      $spdx_id = str_replace(' ', '+', $spdx_id);
-    });
-
-    // Do a regexp validation of SPDX IDs before checking the backend. The SPDX
-    // ID maps to http://spdx.org/rdf/terms#licenseId and it's a unique string
-    // containing letters, numbers, ".", "-" or "+".".
-    // @see https://spdx.org/rdf/terms/dataproperties/licenseId___-500276407.html
-    $pattern = '/^[a-zA-Z0-9][a-zA-Z0-9.+-]+$/';
-    array_walk($this->spdxIds, function (string $spdx_id) use ($pattern): void {
-      if (!preg_match($pattern, $spdx_id)) {
-        throw new NotFoundHttpException();
-      }
-    });
-
-    $actual_spdx_uris = $this->getRdfStorage()->getQuery()
-      ->condition('rid', 'spdx_licence')
-      ->condition('field_spdx_licence_id', $this->spdxIds, 'IN')
-      ->execute();
-
-    // Some of passed SPDX IDs were not retrieved from the database. This is
-    // just another 'page not found'.
-    if (count($this->spdxIds) > count($actual_spdx_uris)) {
-      throw new NotFoundHttpException();
-    }
-
-    $actual_licence_ids = $this->getRdfStorage()->getQuery()
-      ->condition('rid', 'licence')
-      ->condition('field_licence_spdx_licence', $actual_spdx_uris, 'IN')
-      ->execute();
-
-    // Some of passed SPDX IDs don't have a related Joinup licence.
-    if (count($this->spdxIds) > count($actual_licence_ids)) {
-      throw new NotFoundHttpException();
-    }
-
-    return $actual_licence_ids;
-  }
-
-  /**
    * Normalizes and returns the data to be compared.
-   *
-   * As this method iterates over all licences, is used also to gather the
-   * cacheable metadata from entities.
-   *
-   * @param array $licence_ids
-   *   The list of Joinup licence IDs to be compared.
    *
    * @return array
    *   An associative array keyed by legal type top-level term label and having
@@ -219,29 +152,15 @@ class LicenceComparerController extends ControllerBase {
    *   ]
    *   @endcode
    */
-  protected function getComparisionData(array $licence_ids): array {
-    $this->cacheMetadata = new CacheableMetadata();
-
+  protected function getComparisionData(): array {
     $legal_types = $this->getLegalTypeStructure();
-    $licence_data = [];
-    foreach ($this->getRdfStorage()->loadMultiple($licence_ids) as $licence) {
-      /** @var \Drupal\rdf_entity\RdfInterface $spdx_licence */
-      $spdx_licence = $licence->field_licence_spdx_licence->entity;
-
-      // Add both, Joinup and SPDX licences as cache dependencies.
-      $this->cacheMetadata
-        ->addCacheableDependency($licence)
-        ->addCacheableDependency($spdx_licence);
-
-      $licence_data[$spdx_licence->get('field_spdx_licence_id')->value] = $licence;
-    }
 
     $data = [];
     foreach ($legal_types as $parent_label => $terms) {
       $data[$parent_label] = [];
       foreach ($terms as $tid => $label) {
         $data[$parent_label][$label] = [];
-        foreach ($licence_data as $spdx_id => $licence) {
+        foreach ($this->licences as $spdx_id => $licence) {
           $has_term = FALSE;
           /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $type_item */
           foreach ($licence->get('field_licence_legal_type') as $type_item) {
@@ -321,7 +240,7 @@ class LicenceComparerController extends ControllerBase {
       ],
     ];
 
-    foreach ($this->spdxIds as $spdx_id) {
+    foreach (array_keys($this->licences) as $spdx_id) {
       $row[] = [
         'data' => $spdx_id,
         'class' => [
@@ -384,8 +303,8 @@ class LicenceComparerController extends ControllerBase {
    * @param array $class
    *   A list of classes to be added to the empty cell.
    */
-    $amount = static::COLUMN_COUNT - count($this->spdxIds);
   protected function padWithEmptyCells(array &$row, array $class): void {
+    $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
     for ($i = 0; $i < $amount; $i++) {
       $row[] = [
         'data' => '',
