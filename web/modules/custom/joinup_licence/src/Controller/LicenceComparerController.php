@@ -331,7 +331,7 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->fillWithEmptyCells($row, ['licence-header', 'licence-empty']);
+    $this->padWithEmptyCells($row, ['licence-header', 'licence-empty']);
 
     return $row;
   }
@@ -372,21 +372,21 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->fillWithEmptyCells($row, ['licence-cell', 'licence-empty']);
+    $this->padWithEmptyCells($row, ['licence-cell', 'licence-empty']);
 
     return $row;
   }
 
   /**
-   * Fills the given row with empty cells until reaches static::ROW_COUNT cells.
+   * Pads the given row with empty cells until reaches static::ROW_COUNT cells.
    *
    * @param array $row
    *   A row array.
    * @param array $class
    *   A list of classes to be added to the empty cell.
    */
-  protected function fillWithEmptyCells(array &$row, array $class): void {
     $amount = static::COLUMN_COUNT - count($this->spdxIds);
+  protected function padWithEmptyCells(array &$row, array $class): void {
     for ($i = 0; $i < $amount; $i++) {
       $row[] = [
         'data' => '',
