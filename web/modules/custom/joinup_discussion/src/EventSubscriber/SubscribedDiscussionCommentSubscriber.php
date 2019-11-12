@@ -9,6 +9,7 @@ use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
+use Drupal\user\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -168,9 +169,7 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
   protected function getRecipients(): array {
     if (is_null($this->recipients)) {
       $this->recipients = [
-        // The discussion owner is added to the list of subscribers. We don't
-        // check if the author is anonymous as this is handled by the message
-        // delivery service.
+        // The entity owner is added to the list of subscribers.
         $this->discussion->getOwnerId() => $this->discussion->getOwner(),
       ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
 
@@ -179,6 +178,9 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
       if (!$this->comment->getOwner()->isAnonymous()) {
         unset($this->recipients[$this->comment->getOwnerId()]);
       }
+      $this->recipients = array_filter($this->recipients, function (UserInterface $recipient) {
+        return !$recipient->isAnonymous();
+      });
     }
     return $this->recipients;
   }
