@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Url;
+use Drupal\joinup_licence\LicenceComparerHelper;
 use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -18,8 +19,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Provides a page controller callbacks.
  */
 class LicenceComparerController extends ControllerBase {
-
-  const COLUMN_COUNT = 5;
 
   /**
    * The entity repository service.
