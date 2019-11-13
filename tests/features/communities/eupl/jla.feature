@@ -92,7 +92,7 @@ Feature:
     Then I should get a 404 HTTP response
 
     # Test the page when there are too many licences.
-    When I am on "/licence/compare/Apache-2.0;GPL-2.0+;BSL-1.0;0BSD;UPL-1.0;=LGPL-2.1"
+    When I am on "/licence/compare/Apache-2.0;GPL-2.0+;BSL-1.0;0BSD;UPL-1.0;LGPL-2.1"
     Then I should get a 404 HTTP response
 
     # Test the page when there are invalid characters in the SPDX licence ID.
