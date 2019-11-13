@@ -3,7 +3,7 @@
  * Licence filter functionality.
  */
 
-(function ($) {
+(function ($, drupalSettings) {
   "use strict";
   function checkLicenceCategories() {
     var $licenceTile = $('.licence-tile');
@@ -145,7 +145,7 @@
       var licenceName = $(this).attr('data-licence-name');
       var licencesString = "";
       var licencesArray = [];
-      var maxCompare = 5;
+      var maxCompare = drupalSettings.licenceComparer.maxLicenceCount;
       if (licences.length > 0) {
         licencesArray = JSON.parse(licences);
       }
@@ -208,4 +208,4 @@
     checkCompareStatus();
   });
 
-})(jQuery);
+})(jQuery, drupalSettings);
