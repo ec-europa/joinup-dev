@@ -13,6 +13,9 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
         "drupal/cached_computed_field": "^1.0-beta4",
+        "drupal/cas": "dev-1.x",
+        "drupal/cas_account_link": "dev-1.x",
+        "drupal/cas_attributes": "dev-1.x",
         "drupal/changed_fields": "^3.0",
         "drupal/config_exclude": "dev-1.x",
         "drupal/config_ignore": "dev-2.x",
@@ -40,7 +43,8 @@
         "drupal/matomo_reporting_api": "dev-8.x-2.x",
         "drupal/menu_admin_per_menu": "^1.0",
         "drupal/message": "^1.0-rc2",
-        "drupal/message_notify": "~1.1",
+        "drupal/message_notify": "~1.0",
+        "drupal/meta_entity": "dev-1.x",
         "drupal/migrate_drush": "~1.1",
         "drupal/migrate_run": "^1.0@beta",
         "drupal/migrate_spreadsheet": "~1.0",
@@ -49,7 +53,7 @@
         "drupal/password_policy": "^3.0-alpha5",
         "drupal/pathauto": "~1.4",
         "drupal/persistent_login": "~1.0",
-        "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
+        "drupal/phingdrushtask": "dev-7.x-2.x#4bf56b4a4907a3658a77aa8fc9b5832e6568e7c9",
         "drupal/publication_date": "^2.0-beta1",
         "drupal/r4032login": "~1.1",
         "drupal/rdf_entity": "dev-1.x",
@@ -61,7 +65,7 @@
         "drupal/smart_trim": "^1.0",
         "drupal/social_media_links": "^2.5",
         "drupal/spdx": "^1.0.0-alpha5",
-        "drupal/state_machine": "1.0-beta3",
+        "drupal/state_machine": "^1.0-rc1",
         "drupal/subpathauto": "^1.0@rc",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
         "drupal/token": "~1.0",
@@ -69,7 +73,7 @@
         "drupal/view_unpublished": "~1.0@alpha",
         "drupal/views_bulk_operations": "^2.0",
         "drupal/views_data_export": "1.0-beta1",
-        "drush/drush": "~9.7",
+        "drush/drush": "~10",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
@@ -93,11 +97,12 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "behat/behat": "~3.4",
-        "behat/gherkin": "^4.5.1",
+        "behat/gherkin": "~4.6",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "drupal/admin_toolbar": "^1.23",
+        "drupal/cas_mock_server": "dev-1.x",
         "drupal/coder": "^8.3.6",
         "drupal/config_devel": "~1.2",
         "drupal/config_inspector": "^1.0@beta",
@@ -133,7 +138,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\joinup\\": "tests/src",
             "DrupalProject\\": "src"
         },
         "classmap": [
@@ -143,6 +147,12 @@
             "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
             "web/modules/custom/error_page/src/ErrorPageErrorHandler.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Drupal\\joinup\\": "tests/src",
+            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
+        }
     },
     "scripts": {
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
@@ -166,20 +176,36 @@
     },
     "extra": {
         "installer-paths": {
+            "drush/Commands/{$name}": ["type:drupal-drush"],
+            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/modules/custom/joinup_communities/tallinn/lib": ["ec-europa/joinup-tallinn-dashboard"],
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
+        "drupal-scaffold": {
+            "initial": {
+                ".editorconfig": "../.editorconfig",
+                ".gitattributes": "../.gitattributes"
+            }
+        },
         "enable-patching": true,
-        "composer-exit-on-patch-failure": 1,
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
         "patches": {
             "behat/gherkin": {
-                "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
+                "Correctly filter features, now that the base path is correctly set": "https://github.com/Behat/Gherkin/compare/v4.6.0...a7d84eb6ba245ea268a304312d14660788bf6c29.patch"
+            },
+            "drupal/cas_mock_server": {
+                "Cleanup also Drupal users whose names have been changed during creation @see https://github.com/pfrenssen/cas_mock_server/pull/16": "https://patch-diff.githubusercontent.com/raw/pfrenssen/cas_mock_server/pull/16.diff"
+            },
+            "drupal/cached_computed_field": {
+                "Expiry items should be computed against current time rather than request time @see https://www.drupal.org/project/cached_computed_field/issues/3079368": "https://www.drupal.org/files/issues/2019-09-05/3079368-3.patch"
             },
             "drupal/config_sync": {
                 "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
@@ -231,7 +257,8 @@
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
-                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch"
+                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
+                "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
             },
             "drupal/publication_date": {
                 "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-08-16/2983348-39.patch",
@@ -254,10 +281,7 @@
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
             "drupal/state_machine": {
-                "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
-                "Move static cache to the loading of the workflow. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/state_machine-fixing_the_issue_with_static_cache-2846986-10-D8.patch",
-                "Allow access to the initialValue protected property. @see https://www.drupal.org/node/2896479": "https://www.drupal.org/files/issues/allow_access_to_initial_value-2896479-2-D8.patch"
+                "StateItem cache is leaking @see https://www.drupal.org/project/state_machine/issues/3086207": "https://www.drupal.org/files/issues/2019-10-08/3086207-5.patch"
             },
             "drupal/swiftmailer": {
                 "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
@@ -270,11 +294,10 @@
             "drupal/views_data_export": {
                 "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
             },
-            "drush/drush": {
-                "Entity type provided by a module installed via update hook not available @see https://github.com/drush-ops/drush/pull/4103": "resources/patch/drush-4103.patch"
-            },
             "openeuropa/oe_webtools": {
-                "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff"
+                "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
+                "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
+                "Add the possibility to display a marker in the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff"
             },
             "weitzman/drupal-test-traits": {
                 "Extend createUser() method with 'values' argument @see https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73": "https://gitlab.com/weitzman/drupal-test-traits/merge_requests/73.diff"

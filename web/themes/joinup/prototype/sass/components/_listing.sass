@@ -176,6 +176,7 @@
     +breakpoint(mobile)
       flex: 0 0 40%
       padding-right: 0
+      -ms-flex-preferred-size: calc(40% - 20px)
   .listing__inner-tile--shifted
     padding-bottom: 0
     .listing__field
@@ -195,6 +196,7 @@
         word-break: break-all
     +breakpoint(mobile)
       flex: 0 0 60%
+      -ms-flex-preferred-size: calc(60% - 40px)
     +breakpoint(lg-desktop)
       padding-bottom: 70px
 
@@ -308,6 +310,11 @@
     margin-right: 10px
     text-align: right
     display: inline-block
+
+.listing__licence
+  .value
+    a
+      color: $color-orange
 
 // Modifiers
 // --------------------------------------------------

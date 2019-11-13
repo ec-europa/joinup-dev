@@ -134,6 +134,7 @@ function _joinup_vertical_tabs_routes() {
 function _joinup_blue_header_routes() {
   return [
     'adms_validator.adms_validator_form',
+    'cas_account_link.form',
     'collection.propose_form',
     'contact_form.contact_page',
     'entity.node.edit_form',
@@ -481,6 +482,14 @@ function joinup_theme_preprocess_menu(&$variables) {
     }
   }
   $variables['#cache']['contexts'][] = 'user.photo';
+
+  // Set login text instead of image.
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  if ($route_name == 'homepage.content' && $user->isAnonymous()) {
+    $variables['has_sign_in_text'] = TRUE;
+  }
 }
 
 /**
@@ -1200,7 +1209,7 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   if (!empty($variables['element']['#is_button'])) {
 
     // Skip dropbuttons since we have no custom styling for them. These can be
-    // recognized by not having an '#array_parents' property .
+    // recognized by not having an '#array_parents' property.
     // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
     if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
       return;
@@ -1578,8 +1587,8 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
  */
 function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables) {
   // Add a flag to indicate if the download counter is visible.
-  if (isset($variables['elements']['downloads']['#access'])) {
-    $variables['show_download_counter'] = $variables['elements']['downloads']['#access'];
+  if (isset($variables['elements']['downloads']['count']['#access'])) {
+    $variables['show_download_counter'] = $variables['elements']['downloads']['count']['#access'];
   }
 }
 

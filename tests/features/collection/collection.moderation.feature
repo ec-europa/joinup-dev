@@ -196,7 +196,7 @@ Feature: Collection moderation
 
     # Regression test for a bug that caused the eLibrary creation setting to be
     # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
-    When I press "Add another item" at the "Spatial coverage" field
+    When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
     Then the option "Any registered user can create new content." should be selected
 
@@ -320,7 +320,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-    When I press "Add another item" at the "Spatial coverage" field
+    When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
 
     When I check "Closed collection"
@@ -371,7 +371,7 @@ Feature: Collection moderation
     When I move the "eLibrary creation" slider to the right
     Then the option "Only collection facilitators can create new content." should be selected
 
-    When I press "Add another item" at the "Spatial coverage" field
+    When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
 
     # Save the collection.

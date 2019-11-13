@@ -1,0 +1,28 @@
+uuid: d02acca8-ea26-4391-a0ed-078bbb8f4876
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.meta_entity.count
+    - meta_entity.type.visit_count
+  module:
+    - cached_computed_field
+_core:
+  default_config_hash: yw5xHL2W2WGzMAJmpjqiflu2592pZrh2wA4gJ24lSx0
+id: meta_entity.visit_count.count
+field_name: count
+entity_type: meta_entity
+bundle: visit_count
+label: 'Visit count'
+description: 'The number of visits this page has had. This is updated periodically with data from the Matomo web analytics platform.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+  cache-max-age: 86400
+field_type: cached_computed_integer

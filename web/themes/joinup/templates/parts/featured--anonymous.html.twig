@@ -1,11 +1,7 @@
 <div class="section section--featured section--featured-lg">
   {{ page.featured.support_homepage }}
   <div class="anonymous-menu">
-    <ul class="anonymous-menu__list">
-      <li class="anonymous-menu__item">
-        <a class="anonymous-menu__link" href="{{ path("user.login") }}">{{ 'Sign in'|t }}</a>
-      </li>
-    </ul>
+    {{ page.header_profile_menu }}
   </div>
   <div class="featured-lg">
     <div class="featured-lg__wrapper">

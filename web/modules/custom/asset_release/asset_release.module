@@ -200,8 +200,10 @@ function asset_release_rdf_entity_access(EntityInterface $entity, $operation, Ac
       break;
 
     case 'edit':
-      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
-      return AccessResult::forbiddenIf(empty($allowed_transitions));
+      /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+      $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+      $allowed_states = $workflow_helper->getAvailableTargetStates($entity, $account);
+      return AccessResult::forbiddenIf(empty($allowed_states));
   }
 
   return AccessResult::neutral();

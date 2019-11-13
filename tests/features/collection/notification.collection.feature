@@ -66,7 +66,7 @@ Feature: Notification test for the collection transitions.
     When I fill in the following:
       | Title            | NC proposed new |
       | Description      | No one cares.   |
-      | Spatial coverage | Belgium         |
+      | Geographical coverage | Belgium         |
     When I select "HR" from "Policy domain"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NC for all"

@@ -3,6 +3,7 @@ Feature: Collections Overview
 
   Scenario: Check visibility of "Collections" menu link.
     Given I am an anonymous user
+    When I am on the homepage
     Then I should see the link "Collections"
     When I click "Collections"
     Then I should see the heading "Collections"
@@ -13,7 +14,6 @@ Feature: Collections Overview
     When I click "Collections"
     Then I should see the heading "Collections"
 
-  # @todo The small header, which contains collections link, should be removed for anonymous users on the homepage - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2639.
   @terms
   Scenario: View collection overview as an anonymous user
     Given users:

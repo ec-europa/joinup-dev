@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <project name="Redis" default="help">
+
+    <taskdef name="redisflush" classname="\DrupalProject\Phing\RedisFlush" />
+
     <target
             name="clean-redis-settings"
             description="Remove redis settings from the settings file. Ideal to facilitate re-installs.">
@@ -30,4 +33,10 @@
             </else>
         </if>
     </target>
+
+    <target name="redis-flush">
+        <echo msg="Flushing Redis backend." />
+        <redisflush />
+    </target>
+
 </project>

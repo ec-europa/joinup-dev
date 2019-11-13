@@ -26,6 +26,7 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
     'node',
     'og',
     'state_machine',
+    'workflow_state_permission',
   ];
 
   /**
