@@ -188,16 +188,10 @@
     $(this).on('click', function (event) {
       event.preventDefault();
       var licences = $('.listing--licences').attr('data-licence-compare');
-      var hrefCompare = $(this).attr('href');
       if (licences.length > 0) {
         var licencesArray = JSON.parse(licences);
-
-        licencesArray.forEach(function (item) {
-          hrefCompare = hrefCompare + '/' + item;
-        });
+        window.location.href = drupalSettings.licenceComparer.path + '/' + licencesArray.join(';');
       }
-
-      window.location.href = hrefCompare;
     });
   });
 
