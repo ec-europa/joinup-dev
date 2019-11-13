@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
@@ -88,7 +90,7 @@ trait UtilityTrait {
    * @return array
    *   The argument as array, with trimmed non-empty values.
    */
-  protected function explodeCommaSeparatedStepArgument($argument) {
+  protected function explodeCommaSeparatedStepArgument(string $argument): array {
     $argument = explode(',', $argument);
     $argument = array_map('trim', $argument);
     $argument = array_filter($argument);
@@ -109,8 +111,11 @@ trait UtilityTrait {
    *
    * @param \Behat\Mink\Element\NodeElement $element
    *   The element to check for visibility.
+   *
+   * @throws \Exception
+   *   Thrown if the element is not visible.
    */
-  protected function assertVisuallyVisible(NodeElement $element) {
+  protected function assertVisuallyVisible(NodeElement $element): void {
     Assert::assertTrue($this->isVisuallyVisible($element), 'The element is visually visible');
   }
 
@@ -128,8 +133,11 @@ trait UtilityTrait {
    *
    * @param \Behat\Mink\Element\NodeElement $element
    *   The element to check for visibility.
+   *
+   * @throws \Exception
+   *   Thrown if the element is visible.
    */
-  protected function assertNotVisuallyVisible(NodeElement $element) {
+  protected function assertNotVisuallyVisible(NodeElement $element): void {
     Assert::assertFalse($this->isVisuallyVisible($element), 'The element is not visually visible');
   }
 
@@ -144,11 +152,18 @@ trait UtilityTrait {
    * This method will check both that the browser reports this element to be
    * visible, and that the 'visually-hidden' class is absent.
    *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The element to check.
+   *
    * @return bool
    *   True if human optical receptors will be able to detect this particular
    *   element.
+   *
+   * @throws \Exception
+   *   Thrown if the browser does not support JavaScript or if the passed in
+   *   element is no longer present on the page.
    */
-  protected function isVisuallyVisible(NodeElement $element) {
+  protected function isVisuallyVisible(NodeElement $element): bool {
     \assert(method_exists($this, 'assertJavaScriptEnabledBrowser'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
     // This only works on JS-enabled browsers.
     $this->assertJavaScriptEnabledBrowser();
@@ -189,7 +204,7 @@ trait UtilityTrait {
    *   be reused. When specified, the source property gets unset from the
    *   object.
    */
-  protected static function convertObjectPropertyValues($object, $property, array $mapping, $destination = NULL) {
+  protected static function convertObjectPropertyValues($object, string $property, array $mapping, string $destination = NULL): void {
     if (!property_exists($object, $property)) {
       return;
     }
@@ -225,7 +240,7 @@ trait UtilityTrait {
    * @return mixed
    *   The result of the last invocation of the callback.
    */
-  protected function waitUntil(callable $callback, $timeout = 5) {
+  protected function waitUntil(callable $callback, int $timeout = 5) {
     $end = microtime(TRUE) + $timeout;
     do {
       usleep(100000);
