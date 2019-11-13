@@ -130,8 +130,39 @@ Feature: Subscribing to community content in collections
       | mail_subject | Ruse          |
       | mail_body    | Little Vienna |
 
-    # Clean out the message queue for the next test.
+    # Check that the messages are formatted correctly.
     Given all message digests have been delivered
+    Then the collection content subscription digest email sent to hristo contains the following sections:
+      | title                |
+      | Cities of Bulgaria   |
+      | Plovdiv              |
+      | Stara Zagora         |
+      | Products of Bulgaria |
+      | Duck liver           |
+      | Rose oil             |
+      | Sunflower seeds      |
+
+    And the collection content subscription digest email sent to bisera contains the following sections:
+      | title                |
+      | Cities of Bulgaria   |
+      | Burgas               |
+      | Sofia                |
+      | Stara Zagora         |
+      | Products of Bulgaria |
+      | Canned cherries      |
+      | Rose oil             |
+
+    And the collection content subscription digest email sent to kalin contains the following sections:
+      | title                |
+      | Cities of Bulgaria   |
+      | Burgas               |
+      | Plovdiv              |
+      | Sofia                |
+      | Products of Bulgaria |
+      | Canned cherries      |
+      | Sunflower seeds      |
+
+    # Clean out the message queue for the next test.
     And the mail collector cache is empty
 
     # Check that if community content is published a second time it is not
