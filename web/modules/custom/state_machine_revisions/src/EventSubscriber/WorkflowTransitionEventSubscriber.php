@@ -46,6 +46,10 @@ class WorkflowTransitionEventSubscriber implements EventSubscriberInterface {
   /**
    * Sets an entity revision to be the default based on the workflow.
    *
+   * This event fires only on a transition i.e. state change. Same from-to
+   * states will not fire the event so do not include changes that might take
+   * place during a simple update.
+   *
    * @param \Drupal\state_machine\Event\WorkflowTransitionEvent $event
    *   The state change event.
    */
