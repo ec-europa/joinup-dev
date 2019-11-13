@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription;
 
+use Drupal\message\MessageInterface;
 use Drupal\message_digest\DigestFormatter as OriginalFormatter;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -39,7 +41,16 @@ class DigestFormatter extends OriginalFormatter {
       '#theme' => 'message_digest',
       '#messages' => [],
     ];
+    $current_collection_id = NULL;
     foreach ($digest as $message) {
+      // Output a collection header if the community content we're rendering
+      // belongs to a new collection.
+      $collection = $this->getCollection($message);
+      if ($collection->id() !== $current_collection_id) {
+        $current_collection_id = $collection->id();
+        $output[] = $this->entityTypeManager->getViewBuilder('rdf_entity')->view($collection, 'digest_message_header');
+      }
+
       // Set the user to the recipient. This is similar to how message_subscribe
       // works when sending a message to many different users.
       $message->setOwner($recipient);
@@ -76,6 +87,23 @@ class DigestFormatter extends OriginalFormatter {
       }
     }
     return TRUE;
+  }
+
+  /**
+   * Returns the collection related to the community content in the message.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message that contains the community content for which to return the
+   *   collection.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface
+   *   The collection.
+   */
+  protected function getCollection(MessageInterface $message): RdfInterface {
+    // Find the collections by resolving the entity references from the message
+    // to the community content to the collection.
+    $content = $message->field_community_content->first()->entity;
+    return $content->og_audience->first()->entity;
   }
 
 }

@@ -1546,6 +1546,18 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  *
+ * Adapts the output of the collection header in collection content subscription
+ * digest messages:
+ * - Changes the link to the collection page to an absolute URL so this can be
+ *   opened in email messages.
+ */
+function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&$variables) {
+  $variables['url'] = $variables['rdf_entity']->toUrl('canonical', ['absolute' => TRUE])->toString();
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
  * Provides variables needed for the search_list_item view mode of licences.
  */
 function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variables) {
