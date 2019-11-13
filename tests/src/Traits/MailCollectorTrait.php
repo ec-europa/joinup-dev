@@ -63,16 +63,26 @@ trait MailCollectorTrait {
    *   Thrown if no emails have been sent.
    */
   protected function getUserMails(UserInterface $user): array {
-    $user_email = $user->getEmail();
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
+    $mails = $this->getMails();
     if (empty($mails)) {
       throw new \Exception('No mail was sent.');
     }
 
+    $user_email = $user->getEmail();
     return array_filter($mails, function (array $mail) use ($user_email) {
       return $mail['to'] === $user_email;
     });
+  }
+
+  /**
+   * Returns all collected emails.
+   *
+   * @return array
+   *   All the mails stored in the mail collector.
+   */
+  protected function getMails(): array {
+    \Drupal::state()->resetCache();
+    return \Drupal::state()->get('system.test_mail_collector', []);
   }
 
 }

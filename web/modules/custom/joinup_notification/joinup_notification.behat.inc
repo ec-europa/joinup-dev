@@ -318,8 +318,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
     $this->assertEmailTagPresent();
 
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
+    $mails = $this->getMails();
     if (empty($mails)) {
       throw new \Exception('No mail was sent.');
     }
@@ -374,7 +373,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   public function assertNumberOfEmailSent($count) {
     $this->assertEmailTagPresent();
 
-    $mails = \Drupal::state()->get('system.test_mail_collector');
+    $mails = $this->getMails();
 
     if (count($mails) != $count) {
       throw new \Exception("Invalid number of e-mail sent. Expected $count, sent " . count($mails));
@@ -464,7 +463,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     $this->assertEmailTagPresent();
 
     $found = FALSE;
-    foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
+    foreach ($this->getMails() as $mail_sent) {
       // Optionally filter by mail template.
       if (!empty($template) && $mail_sent['key'] !== $template) {
         continue;
