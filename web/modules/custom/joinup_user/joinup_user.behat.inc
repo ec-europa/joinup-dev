@@ -59,14 +59,14 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Clicks an html link in the last email matching its title.
+   * Clicks an HTML link in the last email matching its title.
    *
    * @param string $title
    *   The link title.
    * @param string $user
    *   The user that the email was sent to.
    *
-   * @Given /^I click the "(?P<title>[^"]+)" link from the email sent to "(?P<user>[^"]+)"$/
+   * @Given I click the :title link from the email sent to :user
    */
   public function clickNamedLinkInEmail(string $title, string $user): void {
     $mails = $this->getUserMails($user);
