@@ -491,17 +491,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Checks if the current scenario or feature has the @email tag.
-   *
-   * Call this in steps that use the test mail collector so that the developer
-   * is alerted if this tag is not present.
-   */
-  protected function assertEmailTagPresent(): void {
-    $tags = $this->getTags();
-    Assert::assertTrue(in_array('email', $tags));
-  }
-
-  /**
    * Swaps the mailing system settings with a test one.
    *
    * @BeforeScenario @email

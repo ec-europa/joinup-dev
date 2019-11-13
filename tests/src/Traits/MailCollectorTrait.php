@@ -6,6 +6,7 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\user\UserInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * Contains utility methods.
@@ -72,6 +73,18 @@ trait MailCollectorTrait {
     return array_filter($mails, function (array $mail) use ($user_email) {
       return $mail['to'] === $user_email;
     });
+  }
+
+  /**
+   * Checks if the current scenario or feature has the @email tag.
+   *
+   * Call this in steps that use the test mail collector so that the developer
+   * is alerted if this tag is not present.
+   */
+  protected function assertEmailTagPresent(): void {
+    \assert(method_exists($this, 'getTags'), __METHOD__ . ' depends on TagTrait. Please include it in your class.');
+    $tags = $this->getTags();
+    Assert::assertTrue(in_array('email', $tags));
   }
 
   /**
