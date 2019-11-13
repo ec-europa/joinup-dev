@@ -103,8 +103,7 @@ Feature: Subscribing to discussions
 
     # When relevant fields of a discussion are changed, the subscribers are
     # receiving a notification.
-    Given I am logged in as "Dr. Hans Zarkov"
-    And I go to the discussion content "Rare Butter" edit screen
+    Given I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
     And the following email should have been sent:
