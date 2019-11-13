@@ -1369,7 +1369,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         '@current' => $current_url,
         '@expected' => $url,
       ]);
-      throw new Exception($message);
+      throw new Exception((string) $message);
     }
   }
 
