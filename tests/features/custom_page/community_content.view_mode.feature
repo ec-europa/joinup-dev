@@ -43,7 +43,7 @@ Feature:
     When I fill in the following:
       | Title | Tile custom page |
       | Body  | Meh...           |
-    And I check the box "Display a community content listing"
+    And I check the box "Add related content"
     When I press "Save"
 
     Then I should see the "Tile release" tile
@@ -84,7 +84,7 @@ Feature:
     When I fill in the following:
       | Title | Tile custom page |
       | Body  | Meh...           |
-    And I check the box "Display a community content listing"
+    And I check the box "Add related content"
     When I press "Save"
 
     And I should see the "Tile news" tile

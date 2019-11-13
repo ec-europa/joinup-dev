@@ -16,6 +16,7 @@ Feature: Add community content
     But I should not see the following lines of text:
       | Authored by                  |
       | Authored on                  |
+
       | Create new revision          |
       | Generate automatic URL alias |
       | Groups audience              |
