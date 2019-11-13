@@ -93,12 +93,12 @@ Feature: Add community content
     When I click "Revisions" in the "Entity actions" region
     And I click the last "Revert" link
     And I press "Revert"
-    And I go to the "Sample <content type>" <content type>
+    Then the publication date of the "Sample <content type>" <content type> should be equal to the last unpublished version's
 
+    And I go to the "Sample <content type>" <content type>
     When I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    Then the publication date of the "Sample <content type>" <content type> should be equal to the last unpublished version's
     Then the publication date of the "Sample <content type>" <content type> should be equal to the last published version's
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
