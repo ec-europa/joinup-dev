@@ -8,6 +8,7 @@
  * - spdx_title: The spdx licence title.
  * - spdx_url: The spdx licence url.
  * - spdx_licence_id: The spdx licence code.
+ * - spdx_licence_id_plain: The plain spdx licence code.
  * - legal_categories: a concatenated string of lowercase characters of the legal type categories related to the
  * licence.
  * - category_lists: An array of variables with details on the category lists. Contains variables:
@@ -28,7 +29,7 @@
   ]
 %}
 {% set spdx_licence_id = render_var(content.spdx_licence_id) %}
-<div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id|striptags|trim }}" data-licence-category="{{ legal_categories }}">
+<div {{ attributes.addClass(classes) }} data-spdx="{{ spdx_licence_id_plain }}" data-licence-category="{{ legal_categories }}">
   {{ title_prefix }}
   <div class="listing__card listing__card--inline-container mdl-card">
     <div class="listing__inner-tile listing__inner-tile--shifted">
@@ -77,11 +78,11 @@
         <div class="licence-tile__compare-checkbox licence-tile__actions-item">
           <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ url|clean_id }}">
             <span class="mdl-checkbox__label">{{ 'Add to compare list'|t }}</span>
-            <input type="checkbox" id="{{ url|clean_id }}" class="mdl-checkbox__input" data-licence-name="{{ label|render|striptags|trim }}">
+            <input type="checkbox" id="{{ url|clean_id }}" class="mdl-checkbox__input" data-licence-name="{{ spdx_licence_id_plain }}">
           </label>
         </div>
         <div class="licence-tile__actions-item">
-          <a class="licence-tile__button licence-tile__button--compare licence-tile__button--disabled" href="/licence/compare">{{ 'Compare'|t }}</a>
+          <a class="licence-tile__button licence-tile__button--compare licence-tile__button--disabled">{{ 'Compare'|t }}</a>
         </div>
         {% if content.spdx_licence_external_url %}
           <div class="licence-tile__actions-item">
