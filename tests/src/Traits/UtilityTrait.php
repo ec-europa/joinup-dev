@@ -5,81 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
-use Drupal\Component\Render\MarkupInterface;
 use PHPUnit\Framework\Assert;
 
 /**
  * Contains utility methods.
  */
 trait UtilityTrait {
-
-  /**
-   * Formats a mail body to a simple string.
-   *
-   * @param \Drupal\Component\Render\MarkupInterface $markup
-   *   The mail body markup.
-   *
-   * @return string
-   *   The simplified mail body.
-   */
-  protected function formatMailBodyMarkup(MarkupInterface $markup): string {
-    $mail_body = $this->formatMailBodyText((string) $markup);
-    // For formattable markups, we also need to:
-    // - undo the encoding done by Twig to quotes;
-    // - remove the HTML to simplify the matching on the body text.
-    // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
-    $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
-    return strip_tags($mail_body);
-  }
-
-  /**
-   * Strips and formats a mail body to a format used in tests.
-   *
-   * @param string $mail_body
-   *   The mail body.
-   *
-   * @return string
-   *   The formatted.
-   */
-  protected function formatMailBodyText(string $mail_body): string {
-    // \Drupal\Core\Mail\Plugin\Mail\PhpMail::format() automatically wraps the
-    // mail body line to a certain amount of characters (77 by default).
-    // Spaces are also removed.
-    // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-    $mail_body = str_replace("\r\n", "\n", $mail_body);
-    $mail_body = preg_replace("/[\n\s\t]+/", ' ', $mail_body);
-    return trim($mail_body);
-  }
-
-  /**
-   * Retrieves emails sent to the user from the email collection.
-   *
-   * @param string $user
-   *   The user name.
-   *
-   * @return array
-   *   An array of mails as stored in the email collector.
-   *
-   * @throws \Exception
-   *   Thrown if the user is not found or no emails have been sent.
-   */
-  protected function getUserMails(string $user): array {
-    $user = $this->getUserByName($user);
-    if (empty($user)) {
-      throw new \Exception("User {$user->getAccountName()} was not found.");
-    }
-
-    $user_email = $user->getEmail();
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
-    if (empty($mails)) {
-      throw new \Exception('No mail was sent.');
-    }
-
-    return array_filter($mails, function (array $mail) use ($user_email) {
-      return $mail['to'] === $user_email;
-    });
-  }
 
   /**
    * Explodes and sanitizes a comma separated step argument.

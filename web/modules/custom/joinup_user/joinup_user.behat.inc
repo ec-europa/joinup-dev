@@ -12,6 +12,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
+use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\Assert;
  */
 class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use MailCollectorTrait;
   use UserTrait;
   use UtilityTrait;
   use StringTranslationTrait;
@@ -66,10 +68,13 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $user
    *   The user that the email was sent to.
    *
+   * @throws \Exception
+   *   Thrown when the user or the link was not found.
+   *
    * @Given I click the :title link from the email sent to :user
    */
   public function clickNamedLinkInEmail(string $title, string $user): void {
-    $mails = $this->getUserMails($user);
+    $mails = $this->getUserMails($this->getUserByName($user));
     $matches = [];
     foreach ($mails as $mail) {
       $pattern = '#href="([^"]*?)"[^>]*?>' . $title . '#';
@@ -105,12 +110,12 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I click the delete confirmation link for (the user ):user from the last email
    */
   public function clickDeleteConfirmationLink($user) {
+    $user = $this->getUserByName($user);
     $mails = $this->getUserMails($user);
     if (empty($mails)) {
-      throw new \Exception("No emails have been sent to the user {$user}.");
+      throw new \Exception("No emails have been sent to the user {$user->getAccountName()}.");
     }
 
-    $user = $this->getUserByName($user);
     $matches = [];
     foreach ($mails as $mail) {
       $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';

@@ -12,6 +12,7 @@ use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
+use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\message\Entity\MessageTemplate;
 use PHPUnit\Framework\Assert;
@@ -22,6 +23,7 @@ use PHPUnit\Framework\Assert;
 class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
+  use MailCollectorTrait;
   use TagTrait;
   use UtilityTrait;
 
