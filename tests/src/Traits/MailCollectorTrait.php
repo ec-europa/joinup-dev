@@ -76,6 +76,48 @@ trait MailCollectorTrait {
   }
 
   /**
+   * Fetches the emails sent given criteria.
+   *
+   * @param string $subject
+   *   The subject of the email sent.
+   * @param string $recipient_mail
+   *   The email of the recipient.
+   *
+   * @return array
+   *   An array of emails found.
+   *
+   * @throws \Exception
+   *   Thrown if no emails are found or no user exists with the given data.
+   */
+  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
+    $this->assertEmailTagPresent();
+
+    $mails = $this->getMails();
+    if (empty($mails)) {
+      throw new \Exception('No mail was sent.');
+    }
+
+    $emails_found = [];
+    foreach ($mails as $mail) {
+      if ($mail['to'] !== $recipient_mail) {
+        continue;
+      }
+
+      if ($subject !== trim($mail['subject'])) {
+        continue;
+      }
+
+      $emails_found[] = $mail;
+    }
+
+    if (empty($emails_found)) {
+      throw new \Exception("No emails found sent to {$recipient_mail} with subject '{$subject}'.");
+    }
+
+    return $emails_found;
+  }
+
+  /**
    * Checks if the current scenario or feature has the @email tag.
    *
    * Call this in steps that use the test mail collector so that the developer

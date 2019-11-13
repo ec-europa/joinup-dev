@@ -302,48 +302,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Fetches the emails sent given criteria.
-   *
-   * @param string $subject
-   *   The subject of the email sent.
-   * @param string $recipient_mail
-   *   The email of the recipient.
-   *
-   * @return array
-   *   An array of emails found.
-   *
-   * @throws \Exception
-   *   Thrown if no emails are found or no user exists with the given data.
-   */
-  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
-    $this->assertEmailTagPresent();
-
-    $mails = $this->getMails();
-    if (empty($mails)) {
-      throw new \Exception('No mail was sent.');
-    }
-
-    $emails_found = [];
-    foreach ($mails as $mail) {
-      if ($mail['to'] !== $recipient_mail) {
-        continue;
-      }
-
-      if ($subject !== trim($mail['subject'])) {
-        continue;
-      }
-
-      $emails_found[] = $mail;
-    }
-
-    if (empty($emails_found)) {
-      throw new Exception("No emails found sent to {$recipient_mail} with subject '{$subject}'.");
-    }
-
-    return $emails_found;
-  }
-
-  /**
    * Clears the cache of the mail collector.
    *
    * Use this if you don't want to match on emails that have been sent earlier
