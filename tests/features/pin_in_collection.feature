@@ -1,8 +1,8 @@
 @api @email
-Feature: Pinning content entities inside collections
+Feature: Pinning entities inside collections
   As a facilitator of a collection
-  I want to pin content at the top of the collection homepage
-  So that important content has more visibility
+  I want to pin entities at the top of the collection homepage
+  So that important entities has more visibility
 
   Background:
     Given the following collections:
