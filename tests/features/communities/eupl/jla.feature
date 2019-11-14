@@ -68,6 +68,67 @@ Feature:
     And I should see the text "Foo Licence"
     And I should see the text "Bar Licence"
 
+  @javascript
+  Scenario: Test the licence comparer trigger.
+
+    Given SPDX licences:
+      | uri                              | title      | ID         |
+      | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |
+      | http://joinup.eu/spdx/GPL-2.0+   | GPL-2.0+   | GPL-2.0+   |
+      | http://joinup.eu/spdx/BSL-1.0    | BSL-1.0    | BSL-1.0    |
+      | http://joinup.eu/spdx/0BSD       | 0BSD       | 0BSD       |
+      | http://joinup.eu/spdx/UPL-1.0    | UPL-1.0    | UPL-1.0    |
+      | http://joinup.eu/spdx/LGPL-2.1   | LGPL-2.1   | LGPL-2.1   |
+    And licences:
+      | uri                               | title             | spdx licence | legal type                                                            |
+      | http://joinup.eu/licence/apache20 | Joinup Apache-2.0 | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/gpl2plus | Joinup GPL-2.0+   | GPL-2.0+     | Distribute                                                            |
+      | http://joinup.eu/licence/bsl1     | Joinup BSL-1.0    | BSL-1.0      | Distribute, Modify                                                    |
+      | http://joinup.eu/licence/0bsd     | Joinup 0BSD       | 0BSD         | Distribute, Royalty free                                              |
+      | http://joinup.eu/licence/upl1     | Joinup UPL-1.0    | UPL-1.0      | Distribute, Royalty free, Governments/EU                              |
+      | http://joinup.eu/licence/lgpl21   | Joinup LGPL-2.1   | LGPL-2.1     | Distribute, Royalty free, Governments/EU, Place warranty              |
+
+    Given I am an anonymous user
+    When I visit the "JLA" custom page
+    Then the Compare buttons are disabled
+
+    When I add the "Apache-2.0" licence to the compare list
+    # Cannot compare a single item.
+    Then the Compare buttons are disabled
+    And I add the "GPL-2.0+" licence to the compare list
+    Then the Compare buttons are enabled
+    And I add the "BSL-1.0" licence to the compare list
+    And I add the "0BSD" licence to the compare list
+    And the "UPL-1.0" can be added to the compare list
+    And I add the "LGPL-2.1" licence to the compare list
+    Then the Compare buttons are enabled
+    # Can't compare more than five licences.
+    But the "UPL-1.0" cannot be added to the compare list
+
+    # Uncheck all to test the reverse.
+    When I remove the "LGPL-2.1" licence from the compare list
+    Then the "UPL-1.0" can be added to the compare list
+    When I remove the "0BSD" licence from the compare list
+    And I remove the "BSL-1.0" licence from the compare list
+    Then the Compare buttons are enabled
+    When I remove the "GPL-2.0+" licence from the compare list
+    Then the Compare buttons are disabled
+
+    When I add the "GPL-2.0+" licence to the compare list
+    And I click on element ".licence-tile__button--compare"
+    Then I should see the link "Back to licence filter"
+    And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+"
+
+    When I click "Back to licence filter"
+    And I add the "Apache-2.0" licence to the compare list
+    And I add the "GPL-2.0+" licence to the compare list
+    And I add the "BSL-1.0" licence to the compare list
+    And I add the "0BSD" licence to the compare list
+    And I add the "LGPL-2.1" licence to the compare list
+    And I click on element ".licence-tile__button--compare"
+    Then I should see the link "Back to licence filter"
+    And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+;BSL-1.0;0BSD;LGPL-2.1"
+
   Scenario: Test the licence comparer.
 
     Given SPDX licences:

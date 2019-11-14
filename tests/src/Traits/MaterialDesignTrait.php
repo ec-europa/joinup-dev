@@ -89,14 +89,14 @@ trait MaterialDesignTrait {
   protected function toggleMaterialDesignCheckbox($label, TraversableElement $element) {
     \assert(method_exists($this, 'browserSupportsJavaScript'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
     if (!$this->browserSupportsJavaScript()) {
-      throw new \Exception("The animated checkbox with label $label cannot be toggled in a browser that doesn't support JavaScript.");
+      throw new \Exception("The animated checkbox with label '$label' cannot be toggled in a browser that doesn't support JavaScript.");
     }
 
     // Locate the "fancy" checkbox and click it.
-    $checkbox_xpath = '//label[text()="' . $label . '"]/../../span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
+    $checkbox_xpath = '//label/span[text()="' . $label . '"]/../span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
     $checkbox_element = $element->find('xpath', $checkbox_xpath);
     if (empty($checkbox_element)) {
-      throw new \Exception("The animated checkbox for the $label field was not found in the page.");
+      throw new \Exception("The animated checkbox for the '$label'' field was not found in the page.");
     }
     $checkbox_element->click();
   }
@@ -122,13 +122,13 @@ trait MaterialDesignTrait {
   protected function findMaterialDesignCheckbox($label, TraversableElement $element) {
     \assert(method_exists($this, 'browserSupportsJavaScript'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');
     if (!$this->browserSupportsJavaScript()) {
-      throw new \Exception("The hidden input field for the $label checkbox cannot be found in a browser that doesn't support JavaScript.");
+      throw new \Exception("The hidden input field for the '$label' checkbox cannot be found in a browser that doesn't support JavaScript.");
     }
 
-    $input_xpath = '//label[text()="' . $label . '"]/../../input[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__input ")]';
+    $input_xpath = '//label/span[text()="' . $label . '"]/../input[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__input ")]';
     $input_element = $element->find('xpath', $input_xpath);
     if (empty($input_element)) {
-      throw new \Exception("The hidden input field for the $label checkbox was not found in the page.");
+      throw new \Exception("The hidden input field for the '$label' checkbox was not found in the page.");
     }
 
     return $input_element;
