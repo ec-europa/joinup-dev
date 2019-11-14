@@ -10,6 +10,7 @@ permissions:
   - 'access dashboard'
   - 'access draft community content'
   - 'access joinup reports'
+  - 'access messages overview'
   - 'access pipeline selector'
   - 'access release create field'
   - 'access toolbar'

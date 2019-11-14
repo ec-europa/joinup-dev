@@ -1611,4 +1611,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
   }
 
+  /**
+   * Cleans up the existing list of entities before the scenario starts.
+   *
+   * @BeforeScenario @messageCleanup
+   */
+  public function cleanupMessageEntities(): void {
+    $message_storage = \Drupal::entityTypeManager()->getStorage('message');
+    $mids = $message_storage->getQuery()->execute();
+    $message_storage->delete($message_storage->loadMultiple($mids));
+  }
+
 }

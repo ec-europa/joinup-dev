@@ -10,6 +10,7 @@ entity.rdf_entity.member_overview:
       rdf_entity:
         type: entity:rdf_entity
     _og_entity_type_id: rdf_entity
+
 entity.rdf_entity.about_page:
   path: 'rdf_entity/{rdf_entity}/about'
   defaults:
@@ -22,6 +23,7 @@ entity.rdf_entity.about_page:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+
 joinup_core.not_found:
   path: '/not-found'
   defaults:
