@@ -82,6 +82,8 @@ class JoinupDiscussionSubscription implements JoinupDiscussionSubscriptionInterf
    * {@inheritdoc}
    */
   public function subscribe(AccountInterface $account, ContentEntityInterface $entity, string $flag_id): bool {
+    assert(!$account->isAnonymous(), 'Only authenticated users can subscribe to discussions.');
+
     $flag = $this->flagService->getFlagById($flag_id);
     // Throw an exception when the user is already subscribed, so the calling
     // code can generate an appropriate response.
