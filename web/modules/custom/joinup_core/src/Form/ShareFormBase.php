@@ -55,7 +55,7 @@ abstract class ShareFormBase extends FormBase {
   /**
    * The entity being shared.
    *
-   * @var \Drupal\Core\Entity\EntityInterface
+   * @var \Drupal\Core\Entity\FieldableEntityInterface
    */
   protected $entity;
 

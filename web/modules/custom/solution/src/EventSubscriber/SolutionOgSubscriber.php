@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup_core\EventSubscriber;
+namespace Drupal\solution\EventSubscriber;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;

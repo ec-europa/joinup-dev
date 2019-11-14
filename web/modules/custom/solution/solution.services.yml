@@ -1,4 +1,8 @@
 services:
+  solution.og_subscriber:
+    class: Drupal\solution\EventSubscriber\SolutionOgSubscriber
+    tags:
+      - name: event_subscriber
   cache_context.solution:
     class: Drupal\solution\Cache\SolutionCacheContext
     arguments: ['@request_stack']
