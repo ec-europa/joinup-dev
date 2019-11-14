@@ -6,7 +6,7 @@ Feature: As a privileged user
   @javascript
   Scenario: Share link is visible for privileged users.
     Given users:
-      | User        | Email                   | First name | Family name | Roles     |
+      | Username    | E-mail                  | First name | Family name | Roles     |
       | joe_dare    | joe_dare@example.com    | Joe        | Dare        |           |
       | kleev_elant | kleev_elant@example.com | Kleev      | Elant       |           |
       | sand_beach  | sand_beach@example.com  | Sand       | Beach       | moderator |
@@ -83,7 +83,7 @@ Feature: As a privileged user
     # It should not be shared in the other collection.
     When I go to the homepage of the "Collection share candidate 2" collection
     Then I should not see the "Solution to be shared" tile
-    
+
     # Solutions can be un-shared only by facilitators of the collections they
     # have been shared in.
     When I am an anonymous user
