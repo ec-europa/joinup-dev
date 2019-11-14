@@ -278,19 +278,3 @@ Feature: Pinning entities inside collections
     Then the "Fast lightning" tile should not be marked as pinned
     When I go to the homepage of the "Orange Wrench" collection
     Then the "Fast lightning" tile should be marked as pinned
-
-  Scenario Outline: Content cannot be pinned inside solutions.
-    Given <content type> content:
-      | title        | solution     | state     |
-      | To be pinned | Space Silver | validated |
-
-    When I am logged in as a facilitator of the "Space Silver" solution
-    And I go to the homepage of the "Space Silver" solution
-    Then I should not see the contextual link "Pin" in the "To be pinned" tile
-
-    Examples:
-      | content type |
-      | event        |
-      | document     |
-      | discussion   |
-      | news         |
