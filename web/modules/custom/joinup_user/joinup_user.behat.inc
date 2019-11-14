@@ -12,6 +12,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
+use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\Assert;
  */
 class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use MailCollectorTrait;
   use UserTrait;
   use UtilityTrait;
   use StringTranslationTrait;
@@ -59,6 +61,44 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Clicks an HTML link in the last email matching its title.
+   *
+   * @param string $title
+   *   The link title.
+   * @param string $user
+   *   The user that the email was sent to.
+   *
+   * @throws \Exception
+   *   Thrown when the user or the link was not found.
+   *
+   * @Given I click the :title link from the email sent to :user
+   */
+  public function clickNamedLinkInEmail(string $title, string $user): void {
+    $mails = $this->getUserMails($this->getUserByName($user));
+    $matches = [];
+    foreach ($mails as $mail) {
+      $pattern = '#href="([^"]*?)"[^>]*?>' . $title . '#';
+      $body = (string) $mail['body'];
+      preg_match_all($pattern, $body, $matches);
+      $matches = array_filter($matches);
+      // $matches[0] are urls with the characters outside the matching
+      // parenthesis. $matches[1] are the matches restricted by the parenthesis
+      // tags in the regex. $matches[1] contain the clean urls.
+      if (empty($matches[1])) {
+        continue;
+      }
+      break;
+    }
+
+    if (empty($matches)) {
+      $message = "No link with named {$title} was found in any of the emails sent to {$user}";
+      throw new Exception($message);
+    }
+    $url = reset($matches[1]);
+    $this->visitPath($url);
+  }
+
+  /**
    * Searches the delete confirmation link from an email and navigates to it.
    *
    * @param string $user
@@ -71,23 +111,13 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   public function clickDeleteConfirmationLink($user) {
     $user = $this->getUserByName($user);
-    if (empty($user)) {
-      throw new \Exception("User {$user->getAccountName()} was not found.");
-    }
-
-    $user_email = $user->getEmail();
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
+    $mails = $this->getUserMails($user);
     if (empty($mails)) {
-      throw new Exception('No mail was sent.');
+      throw new \Exception("No emails have been sent to the user {$user->getAccountName()}.");
     }
 
     $matches = [];
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $user_email) {
-        continue;
-      }
-
       $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
