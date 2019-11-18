@@ -250,6 +250,43 @@ function _joinup_theme_get_author(NodeInterface $node) {
 }
 
 /**
+ * Get a file extension.
+ *
+ * @param \Drupal\file\Entity\File $file
+ *   The file, where we get an extension.
+ *
+ * @return string
+ *   Extension of the file.
+ */
+function _joinup_theme_get_file_extension(File $file) {
+  $file_icon = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+
+  // List of available icons.
+  $available_icons = [
+    'doc',
+    'docx',
+    'exe',
+    'gif',
+    'jpg',
+    'pdf',
+    'png',
+    'ppt',
+    'rar',
+    'xls',
+    'xlsx',
+    'zip',
+  ];
+
+  // Check if icon exist, otherwise set default icon.
+  if (in_array($file_icon, $available_icons)) {
+    return $file_icon;
+  }
+  else {
+    return 'default';
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function joinup_theme_theme($existing, $type, $theme, $path) {
@@ -562,6 +599,12 @@ function joinup_theme_preprocess_block(&$variables) {
       }
       break;
 
+    // Add special classes for dropdown menus in header.
+    case 'support':
+    case 'joinup_theme_account_menu':
+      $variables['attributes']['class'][] = 'block--small-nav';
+      break;
+
   }
 
   // Set default title tag.
@@ -765,6 +808,16 @@ function joinup_theme_preprocess_field(&$variables) {
       $variables['attributes']['class'][] = 'fieldset';
       $variables['attributes']['class'][] = 'fieldset--textarea';
     }
+  }
+
+  // Add special class for file field on document, solution and release pages.
+  $file_field_names = [
+    'field_file',
+    'field_isr_documentation',
+    'field_is_documentation',
+  ];
+  if (in_array($variables['element']['#field_name'], $file_field_names)) {
+    $variables['attributes']['class'] = ['fieldset__field--files'];
   }
 }
 
@@ -1033,6 +1086,42 @@ function joinup_theme_preprocess_image(&$variables) {
     $variables['attributes']['class'][] = 'details__avatar';
     $variables['attributes']['class'][] = 'avatar';
     $variables['attributes']['class'][] = 'avatar--25';
+  }
+}
+
+/**
+ * Implements hook_preprocess_file_link().
+ */
+function joinup_theme_preprocess_file_link(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  // Set additional file variables on document, solution and release pages.
+  $rdf_entity_pages = [
+    'entity.rdf_entity.canonical',
+    'entity.rdf_entity.about_page',
+  ];
+
+  if (in_array($route_name, $rdf_entity_pages)) {
+    $entity = $route_match->getParameter('rdf_entity');
+  }
+  elseif ($route_name == 'entity.node.canonical') {
+    $entity = $route_match->getParameter('node');
+  }
+
+  $file_field_bundles = [
+    'document',
+    'asset_release',
+    'solution',
+  ];
+
+  if (isset($entity) && in_array($entity->bundle(), $file_field_bundles)) {
+    $size = $variables['file']->getSize();
+    if (!empty($size)) {
+      $variables['size'] = format_size($size);
+    }
+
+    $variables['extension'] = _joinup_theme_get_file_extension($variables['file']);
   }
 }
 
@@ -1657,29 +1746,7 @@ function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
     foreach ($variables['rows'] as $index => $row) {
       /** @var \Drupal\file\Entity\File $file */
       $file = $variables['rows'][$index]['cells'][0]['content']['#file'];
-      $file_icon = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-
-      // List of available icons.
-      $available_icons = [
-        'doc',
-        'exe',
-        'gif',
-        'jpg',
-        'pdf',
-        'png',
-        'ppt',
-        'rar',
-        'xls',
-        'zip',
-      ];
-
-      // Check if icon exist, otherwise set default icon.
-      if (in_array($file_icon, $available_icons)) {
-        $variables['rows'][$index]['#file_extension'] = $file_icon;
-      }
-      else {
-        $variables['rows'][$index]['#file_extension'] = 'default';
-      }
+      $variables['rows'][$index]['#file_extension'] = _joinup_theme_get_file_extension($file);
     }
   }
 }

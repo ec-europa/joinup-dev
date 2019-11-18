@@ -53,7 +53,7 @@ content:
     third_party_settings: {  }
     region: content
   field_attachment:
-    type: file_default
+    type: file_table
     weight: 13
     region: content
     label: hidden
@@ -69,7 +69,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: with_label
   field_comments:
     weight: 9
     label: above
@@ -116,6 +116,7 @@ content:
     weight: 14
     label: hidden
     settings:
+      show_marker: true
       zoom_level: 16
     third_party_settings:
       ds:
