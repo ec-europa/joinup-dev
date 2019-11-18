@@ -167,12 +167,11 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    */
   protected function getRecipients(): array {
     if (is_null($this->recipients)) {
-      $this->recipients = [
-        // The discussion owner is added to the list of subscribers. We don't
-        // check if the author is anonymous as this is handled by the message
-        // delivery service.
+      // The non-anonymous entity owner is added to the list of subscribers.
+      $this->recipients = $this->discussion->getOwner()->isAnonymous() ? [] : [
         $this->discussion->getOwnerId() => $this->discussion->getOwner(),
-      ] + $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
+      ];
+      $this->recipients += $this->subscribeService->getSubscribers($this->discussion, 'subscribe_discussions');
 
       // The non-anonymous author of the comment should not be notified, if
       // eventually they are in the subscribers list.
@@ -205,18 +204,10 @@ class SubscribedDiscussionCommentSubscriber implements EventSubscriberInterface 
    */
   protected function sendMessage(): bool {
     $success = TRUE;
-    // Create individual messages for each subscriber so that we can honor the
-    // user's chosen digest frequency.
-    foreach ($this->getRecipients() as $recipient) {
-      if ($recipient->isAnonymous()) {
-        continue;
-      }
-      $notifier_options = [
-        'entity_type' => $this->discussion->getEntityTypeId(),
-        'entity_id' => $this->discussion->id(),
-      ];
-      $success = $this->messageDelivery->sendMessageTemplateToUser('discussion_comment_new', $this->getArguments(), $recipient, $notifier_options) && $success;
+    if ($recipients = $this->getRecipients()) {
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers('discussion_comment_new', $this->getArguments(), $recipients) && $success;
     }
+
     return $success;
   }
 

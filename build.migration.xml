@@ -7,8 +7,7 @@
                 command="cset"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>search_api.index.published</param>
             <param>options.index_directly 0</param>
         </drush>
@@ -16,8 +15,7 @@
                 command="cset"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>search_api.index.unpublished</param>
             <param>options.index_directly 0</param>
         </drush>
@@ -32,8 +30,7 @@
                 command="sql-query"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="database" value="migrate" />
             <param>"UPDATE users SET status = 1 WHERE uid = 6364"</param>
         </drush>
@@ -42,8 +39,7 @@
             command="migrate-import"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <option name="all" />
             <option name="feedback" value="1000" />
             <option name="force" />
@@ -56,8 +52,7 @@
             command="cset"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <param>system.mail</param>
             <param>interface.default</param>
             <param>php_mail</param>
@@ -66,8 +61,7 @@
             command="cset"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <param>mailsystem.settings</param>
             <param>defaults.sender</param>
             <param>swiftmailer</param>
@@ -76,8 +70,7 @@
                 command="cset"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>search_api.index.published</param>
             <param>options.index_directly 1</param>
         </drush>
@@ -85,8 +78,7 @@
                 command="cset"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>search_api.index.unpublished</param>
             <param>options.index_directly 1</param>
         </drush>
@@ -94,8 +86,7 @@
                 command="sapi-i"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="batch-size" value="50" />
         </drush>
     </target>
@@ -163,8 +154,7 @@
             command="pm-enable"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <param>${migration.modules}</param>
         </drush>
     </target>

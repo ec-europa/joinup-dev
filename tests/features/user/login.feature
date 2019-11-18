@@ -11,7 +11,7 @@ Feature: User login
 
     # Login without keeping the session open.
     When I go to the homepage
-    And I click "Sign in"
+    And I click "Sign in (legacy)"
     Then I should not see the text "Log in"
     And I fill in "Email or username" with "Garnett Tyrell"
     And I fill in "Password" with "tyrellg"
@@ -22,7 +22,7 @@ Feature: User login
     Then I should see the link "Sign in"
 
     # Login keeping the session open.
-    When I click "Sign in"
+    When I click "Sign in (legacy)"
     And I fill in "Email or username" with "Garnett Tyrell"
     And I fill in "Password" with "tyrellg"
     And I check the box "Remember me"
@@ -36,7 +36,7 @@ Feature: User login
     # Login using an e-mail for username.
     When I am not logged in
     And I go to the homepage
-    And I click "Sign in"
+    And I click "Sign in (legacy)"
     Then I should not see the text "Log in"
     And I fill in "Email or username" with "garnett.tyrell@example.com"
     And I fill in "Password" with "tyrellg"

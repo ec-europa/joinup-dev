@@ -1334,6 +1334,15 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Opens the sidebar menu on JS-enabled browsers.
+   *
+   * @When I open the group sidebar menu
+   */
+  public function openGroupMenu() {
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.sidebar-menu'));
+  }
+
+  /**
    * Opens a specific MDL dropdown menu on JS-enabled browsers.
    *
    * @When I open the header local tasks menu
@@ -1369,7 +1378,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         '@current' => $current_url,
         '@expected' => $url,
       ]);
-      throw new Exception($message);
+      throw new Exception((string) $message);
     }
   }
 

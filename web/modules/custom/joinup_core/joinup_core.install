@@ -460,3 +460,30 @@ function joinup_core_update_8113(array &$sandbox): ?string {
 
   return "Finished collecting {$sandbox['progress']} node visit counts.";
 }
+
+/**
+ * Convert message entities of the obsolete type.
+ */
+function joinup_core_update_8114(&$sandbox) {
+  $database = \Drupal::database();
+  $mids_approved = $database->query("SELECT mid FROM message_field_data as m where m.template = 'og_membership_decision' AND m.arguments LIKE '%s:8:\"approved\"%'")->fetchCol();
+  $mids_rejected = $database->query("SELECT mid FROM message_field_data as m where m.template = 'og_membership_decision' AND m.arguments NOT LIKE '%s:8:\"approved\"%'")->fetchCol();
+
+  $database->update('message')
+    ->fields(['template' => 'og_membership_approve'])
+    ->condition('mid', $mids_approved, 'IN')
+    ->execute();
+  $database->update('message')
+    ->fields(['template' => 'og_membership_reject'])
+    ->condition('mid', $mids_rejected, 'IN')
+    ->execute();
+
+  $database->update('message_field_data')
+    ->fields(['template' => 'og_membership_approve'])
+    ->condition('mid', $mids_approved, 'IN')
+    ->execute();
+  $database->update('message_field_data')
+    ->fields(['template' => 'og_membership_reject'])
+    ->condition('mid', $mids_rejected, 'IN')
+    ->execute();
+}
