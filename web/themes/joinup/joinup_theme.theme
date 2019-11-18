@@ -599,6 +599,12 @@ function joinup_theme_preprocess_block(&$variables) {
       }
       break;
 
+    // Add special classes for dropdown menus in header.
+    case 'support':
+    case 'joinup_theme_account_menu':
+      $variables['attributes']['class'][] = 'block--small-nav';
+      break;
+
   }
 
   // Set default title tag.
