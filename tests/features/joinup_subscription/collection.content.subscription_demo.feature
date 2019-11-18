@@ -54,4 +54,3 @@ Feature: Collection content subscription DEMO
     When the workflow state of the "Ruse" content is changed to "validated"
 
     Given all message digests have been delivered
-    Then I break
