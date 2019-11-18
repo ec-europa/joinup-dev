@@ -108,6 +108,22 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   }
 
   /**
+   * Checks that a content's publication date same as the created date.
+   *
+   * @param string $title
+   *   The title of the content.
+   * @param string $type
+   *   The type of the content.
+   *
+   * @Then the publication date of the :title :type should be equal to the created date
+   */
+  public function assertSamePublishedCreatedTime(string $title, string $type): void {
+    $node = $this->getNodeByTitle($title, $type);
+    Assert::assertNotEmpty($node->published_at->value);
+    Assert::assertEquals($node->created->value, $node->published_at->value);
+  }
+
+  /**
    * Checks that a content has the same publication date with another version.
    *
    * @param string $title
