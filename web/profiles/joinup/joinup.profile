@@ -416,8 +416,6 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     // Used by the contextual links for pinning/unpinning entity in group.
     // @see: joinup.pin_entity, joinup.unpin_entity routes.
     $build['#contextual_links']['group_context']['route_parameters']['group'] = $group->id();
-    $build['#contextual_links']['collection_context']['route_parameters']['collection'] = $group->id();
-    $build['#contextual_links']['collection_context']['metadata']['collection_changed'] = $group->getChangedTime();
   }
 }
 
