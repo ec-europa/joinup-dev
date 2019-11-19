@@ -1040,12 +1040,8 @@ function joinup_core_preprocess_page(&$variables) {
   if (!empty($context['og'])) {
     $group = $context['og']->getContextValue();
 
-    if (
-      $group &&
-      $group->getEntityTypeId() === 'rdf_entity' &&
-      $group->bundle() === 'collection'
-    ) {
-      $variables['attributes']['data-drupal-collection-context'] = $group->id();
+    if ($group && $group->getEntityTypeId() === 'rdf_entity') {
+      $variables['attributes']['data-drupal-group-context'] = $group->id();
     }
   }
 }

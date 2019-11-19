@@ -457,26 +457,23 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
   }
 
   $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
-  $collection = NULL;
+  $group = NULL;
   if (!empty($context['og'])) {
     $group = $context['og']->getContextValue();
-    if ($group && $group->getEntityTypeId() === 'rdf_entity' && $group->bundle() === 'collection') {
-      $collection = $group;
-    }
   }
 
   /** @var \Drupal\joinup\PinServiceInterface $pin_service */
   $pin_service = \Drupal::service('joinup.pin_service');
-  if ($pin_service->isEntityPinned($entity, $collection)) {
+  if ($pin_service->isEntityPinned($entity, $group)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
-    if (JoinupHelper::isSolution($entity)) {
-      $collection_ids = [];
-      foreach ($pin_service->getCollectionsWherePinned($entity) as $collection) {
-        $collection_ids[] = $collection->id();
+    if (JoinupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
+      $group_ids = [];
+      foreach ($pin_service->getGroupsWherePinned($entity) as $group) {
+        $group_ids[] = $group->id();
       }
-      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $collection_ids);
+      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
     }
   }
 }
