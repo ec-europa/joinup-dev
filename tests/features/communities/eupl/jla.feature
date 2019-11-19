@@ -115,7 +115,7 @@ Feature:
     Then the Compare buttons are disabled
 
     When I add the "GPL-2.0+" licence to the compare list
-    And I click on element ".licence-tile__button--compare"
+    And I click "Compare"
     Then I should see the link "Back to licence filter"
     And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+"
 
@@ -125,7 +125,7 @@ Feature:
     And I add the "BSL-1.0" licence to the compare list
     And I add the "0BSD" licence to the compare list
     And I add the "LGPL-2.1" licence to the compare list
-    And I click on element ".licence-tile__button--compare"
+    And I click "Compare"
     Then I should see the link "Back to licence filter"
     And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+;BSL-1.0;0BSD;LGPL-2.1"
 
