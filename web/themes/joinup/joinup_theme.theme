@@ -1812,8 +1812,14 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_input__checkbox().
+ * Implements hook_preprocess_form_element__checkbox().
  */
 function joinup_theme_preprocess_form_element__checkbox(&$variables) {
-  $variables['label_plain'] = $variables['element']['#title'];
+  // The 'label' variable is already wrapped in the <label> tag but we need the
+  // effective label markup to be used in the template. We are using markup
+  // because some labels, such as links, may contain markup.
+  // @see web/themes/joinup/templates/form/form-element--checkbox.html.twig
+  $variables['label_markup'] = [
+    '#markup' => $variables['element']['#title'],
+  ];
 }

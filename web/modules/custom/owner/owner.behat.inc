@@ -158,7 +158,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
     $owner_fieldset = $this->getSession()->getPage()->find('named', ['fieldset', 'Type']);
 
     /** @var \Behat\Mink\Element\NodeElement[] $labels */
-    $labels = $owner_fieldset->findAll('xpath', '//label//label');
+    $labels = $owner_fieldset->findAll('xpath', '//label/span');
 
     if (empty($labels)) {
       throw new \Exception('No options found in the owner field.');
