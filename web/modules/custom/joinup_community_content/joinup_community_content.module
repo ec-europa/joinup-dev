@@ -7,7 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -41,25 +40,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     return;
   }
 
-  $url = Url::fromRoute('joinup_community_content.share_content_form', [
-    'node' => $entity->id(),
-  ]);
-  $build['share_link'] = [
-    '#theme' => 'link_icon',
-    '#title' => t('Share'),
-    '#icon' => 'share',
-    '#url' => $url,
-    '#attributes' => [
-      'class' => ['use-ajax', 'action-link'],
-      'data-dialog-type' => 'modal',
-      'data-dialog-options' => Json::encode([
-        'width' => 'auto',
-        'height' => 'auto',
-      ]),
-    ],
-    '#access' => $url->access(),
-    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
-  ];
+  $build['share_link'] = joinup_core_generate_share_link($entity, 'joinup_community_content.share_content_form');
   $build['#cache'] = [
     'contexts' => [
       'og_role',
@@ -152,7 +133,7 @@ function joinup_community_content_preprocess_node(&$variables) {
 
   // If the node is shared somewhere, attach the related library.
   if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
-    $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
+    $variables['#attached']['library'][] = 'joinup_core/shared_entity';
   }
 }
 
@@ -172,32 +153,7 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
         'url' => NULL,
       ],
     ],
-    'social_share' => [
-      'variables' => ['entity' => NULL],
-    ],
   ];
-}
-
-/**
- * Preprocess function for the "social_share" theme hook.
- *
- * @param array $variables
- *   An associative array containing:
- *   - entity: the entity being shared.
- *
- * @throws \Drupal\Core\Entity\EntityMalformedException
- *   Thrown when the entity being shared does not support generating a URL.
- */
-function template_preprocess_social_share(array &$variables) {
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
-  $entity = $variables['entity'];
-  // Generate an absolute, un-aliased URL.
-  $variables['url'] = $entity->toUrl('canonical', [
-    'language' => $entity->language(),
-  ])->setAbsolute()->setOption('alias', TRUE);
-
-  $variables['encoded_url'] = urlencode($variables['url']->toString());
-  $variables['encoded_title'] = urlencode($entity->label());
 }
 
 /**

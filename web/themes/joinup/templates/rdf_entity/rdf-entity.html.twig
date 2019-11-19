@@ -13,5 +13,10 @@
     </h2>
   {% endif %}
   {{ title_suffix }}
-  {{ content }}
+  {{ content|without('share_link') }}
+  {% if content.share_link|render %}
+    <div class="action-link__wrapper right">
+      {{ content.share_link }}
+    </div>
+  {% endif %}
 </article>

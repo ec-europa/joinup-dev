@@ -2,23 +2,34 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_community_content\Form;
+namespace Drupal\joinup_core\Form;
 
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Form\FormBase;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\node\NodeInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleManagerInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Base form class for share/unshare content forms.
+ * Base form class for share/unshare entity forms.
  */
-abstract class ShareContentFormBase extends FormBase {
+abstract class ShareFormBase extends FormBase {
+
+  const SHARED_IN_FIELD_NAMES = [
+    'rdf_entity' => [
+      'solution' => 'field_is_shared_in',
+    ],
+    'node' => [
+      'discussion' => 'field_shared_in',
+      'document' => 'field_shared_in',
+      'event' => 'field_shared_in',
+      'news' => 'field_shared_in',
+    ],
+  ];
 
   /**
    * The current user account.
@@ -42,11 +53,11 @@ abstract class ShareContentFormBase extends FormBase {
   protected $roleManager;
 
   /**
-   * The node being shared.
+   * The entity being shared.
    *
-   * @var \Drupal\node\NodeInterface
+   * @var \Drupal\Core\Entity\FieldableEntityInterface
    */
-  protected $node;
+  protected $entity;
 
   /**
    * The RDF view builder.
@@ -109,36 +120,17 @@ abstract class ShareContentFormBase extends FormBase {
   }
 
   /**
-   * Form constructor.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   * @param \Drupal\node\NodeInterface $node
-   *   The node being shared.
-   *
-   * @return array
-   *   The form structure.
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
-    $this->node = $node;
-
-    return $form;
-  }
-
-  /**
-   * Gets a list of collection ids where the current node is already shared.
+   * Gets a list of collection ids where the current entity is already shared.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collection ids where the current node is already shared in.
+   *   A list of collection ids where the current entity is already shared in.
    */
   protected function getAlreadySharedCollectionIds(): array {
-    if (!$this->node->hasField('field_shared_in')) {
+    if (!$this->getSharedInFieldName() || !$this->entity->hasField($this->getSharedInFieldName())) {
       return [];
     }
 
-    return array_column($this->node->get('field_shared_in')->getValue(), 'target_id');
+    return array_column($this->entity->get($this->getSharedInFieldName())->getValue(), 'target_id');
   }
 
   /**
@@ -158,6 +150,51 @@ abstract class ShareContentFormBase extends FormBase {
 
     $groups = $this->membershipManager->getUserGroupsByRoleIds($this->currentUser->id(), array_keys($roles));
     return empty($groups) ? [] : $groups['rdf_entity'];
+  }
+
+  /**
+   * Returns the name of the field that the entity uses for being shared.
+   *
+   * @return string|null
+   *   The field name or null if not configured.
+   */
+  protected function getSharedInFieldName(): ?string {
+    return self::SHARED_IN_FIELD_NAMES[$this->entity->getEntityTypeId()][$this->entity->bundle()];
+  }
+
+  /**
+   * Returns the name of the permission needed for the given action.
+   *
+   * @param string $action
+   *   The action name. Can be either 'share' or 'unshare'.
+   *
+   * @return string
+   *   The permission name.
+   */
+  protected function getPermissionForAction(string $action): string {
+    if (!in_array($action, ['share', 'unshare'])) {
+      throw new \InvalidArgumentException('Only "share" and "unshare" are allowed as an action name.');
+    }
+    $type = $this->entity->getEntityTypeId() === 'node' ? 'content' : $this->entity->getEntityTypeId();
+    return "{$action} {$this->entity->bundle()} {$type}";
+  }
+
+  /**
+   * Returns a list of groups that the entity cannot be shared in.
+   *
+   * For nodes, this is the parent group. For rdf entities, it is the affiliated
+   * collection of the solution.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface|null
+   *   The affiliated or parent collection, if one exists.
+   */
+  protected function getExcludedParent(): ?RdfInterface {
+    if ($this->entity->getEntityTypeId() === 'node') {
+      return $this->relationManager->getParent($this->entity);
+    }
+    else {
+      return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;
+    }
   }
 
 }

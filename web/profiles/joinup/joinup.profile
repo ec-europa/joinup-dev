@@ -416,8 +416,8 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     // Used by the contextual links for pinning/unpinning entity in group.
     // @see: joinup.pin_entity, joinup.unpin_entity routes.
     $build['#contextual_links']['group_context']['route_parameters']['group'] = $group->id();
-//    $build['#contextual_links']['collection_context']['route_parameters']['collection'] = $group->id();
-//    $build['#contextual_links']['collection_context']['metadata']['collection_changed'] = $group->getChangedTime();
+    $build['#contextual_links']['collection_context']['route_parameters']['collection'] = $group->id();
+    $build['#contextual_links']['collection_context']['metadata']['collection_changed'] = $group->getChangedTime();
   }
 }
 
@@ -456,9 +456,18 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }
 
+  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
+  $collection = NULL;
+  if (!empty($context['og'])) {
+    $group = $context['og']->getContextValue();
+    if ($group && $group->getEntityTypeId() === 'rdf_entity' && $group->bundle() === 'collection') {
+      $collection = $group;
+    }
+  }
+
   /** @var \Drupal\joinup\PinServiceInterface $pin_service */
   $pin_service = \Drupal::service('joinup.pin_service');
-  if ($pin_service->isEntityPinned($entity)) {
+  if ($pin_service->isEntityPinned($entity, $collection)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 

@@ -29,7 +29,6 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
-use Solarium\QueryType\Select\Query\Query;
 
 /**
  * Implements hook_theme().
@@ -504,7 +503,7 @@ function collection_search_api_query_search_api_field_field_collection_content_a
   // owner) do not show up as collection content tiles.
   $or->addCondition('entity_groups', [$entity->id()], 'IN');
   // Or show content that has been shared in this collection.
-  $or->addCondition('field_shared_in', [$entity->id()], 'IN');
+  $or->addCondition('shared_in', [$entity->id()], 'IN');
   $query->addConditionGroup($or);
 
   // Remove the collection itself from the results.

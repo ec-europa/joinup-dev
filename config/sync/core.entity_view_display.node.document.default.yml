@@ -109,7 +109,7 @@ content:
     region: content
   field_file:
     weight: 5
-    label: above
+    label: hidden
     settings:
       mode: link
     third_party_settings:
