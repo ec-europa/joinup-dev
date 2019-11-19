@@ -1810,3 +1810,10 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_input__checkbox().
+ */
+function joinup_theme_preprocess_form_element__checkbox(&$variables) {
+  $variables['label_plain'] = $variables['element']['#title'];
+}

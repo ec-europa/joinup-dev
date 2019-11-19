@@ -28,6 +28,7 @@
  *     It is used where a visual label is not needed, such as a table of
  *     checkboxes where the row and column provide the context. The tooltip will
  *     include the title and required marker.
+ * - label_plain: The checkbox's plain label.
  * - description: (optional) A list of description properties containing:
  *    - content: A description of the form element, may not be set.
  *    - attributes: (optional) A list of HTML attributes to apply to the
@@ -75,7 +76,7 @@
     </div>
   {% endif %}
   <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-    <span class="mdl-checkbox__label form__label"> {{ label }} </span>
+    <span class="mdl-checkbox__label form__label">{{ label_plain }}</span>
     {{ children }}
   </label>
   {% if suffix is not empty %}
