@@ -76,8 +76,8 @@
       </div>
       <div class="licence-tile__actions">
         <div class="licence-tile__compare-checkbox licence-tile__actions-item">
-          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ url|clean_id }}">
-            <span class="mdl-checkbox__label">{{ 'Add to compare list'|t }}</span>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+            <span class="mdl-checkbox__label"><label for="{{ url|clean_id }}">{{ 'Add to compare list'|t }}</label></span>
             <input type="checkbox" id="{{ url|clean_id }}" class="mdl-checkbox__input" data-licence-name="{{ spdx_licence_id_plain }}">
           </label>
         </div>
