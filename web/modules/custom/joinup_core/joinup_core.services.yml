@@ -1,4 +1,8 @@
 services:
+  joinup_core.og_subscriber:
+    class: Drupal\joinup_core\EventSubscriber\JoinupCoreOgSubscriber
+    tags:
+      - name: event_subscriber
   cache_context.joinup_core_group_owner:
     class: 'Drupal\joinup_core\Cache\Context\GroupOwnerCacheContext'
     arguments: ['@current_user', '@entity_type.manager', '@og.membership_manager', '@database', '@private_key']

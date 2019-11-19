@@ -148,7 +148,7 @@ function custom_page_search_api_query_search_api_field_field_cp_content_listing_
   elseif (!empty($field_value['show_shared'])) {
     $or = $query
       ->createConditionGroup('or')
-      ->addCondition('field_shared_in', [$group->id()], 'IN')
+      ->addCondition('shared_in', [$group->id()], 'IN')
       ->addCondition('entity_groups', [$group->id()], 'IN');
     $query->addConditionGroup($or);
   }
