@@ -4,33 +4,12 @@ namespace Drupal\joinup_core\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides route responses for joinup_core module.
  */
 class CoreController extends ControllerBase {
-
-  /**
-   * Instantiates a CoreController instance.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager service.
-   */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
-    $this->entityTypeManager = $entityTypeManager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager')
-    );
-  }
 
   /**
    * Renders the "about" view mode of a rdf entity.
@@ -47,7 +26,7 @@ class CoreController extends ControllerBase {
    * @see \Drupal\Core\Entity\Controller\EntityViewController::buildTitle()
    */
   public function aboutPage(RdfInterface $rdf_entity) {
-    $page = $this->entityTypeManager->getViewBuilder('rdf_entity')->view($rdf_entity, 'about');
+    $page = $this->entityTypeManager()->getViewBuilder('rdf_entity')->view($rdf_entity, 'about');
 
     $page['#entity_type'] = 'rdf_entity';
 

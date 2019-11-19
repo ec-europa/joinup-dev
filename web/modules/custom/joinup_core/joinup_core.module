@@ -5,6 +5,7 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
@@ -20,6 +21,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\Element\Datetime;
@@ -505,7 +507,14 @@ function joinup_core_field_formatter_info_alter(array &$info) {
  * Implements hook_entity_create().
  */
 function joinup_core_entity_create(EntityInterface $entity) {
-  // Set the publication state when creating an entity that uses workflow.
+  // Since the state_machine module does not support same from-to state
+  // transitions, the transition events also don't fire. Normally, the
+  // transition event would be the one to decide whether the entity would be
+  // published or not, this is not happening for new entities.
+  // In Joinup, we do not create any entity with an initial state but for
+  // testing, it is necessary to setup the initial status automatically
+  // depending on the initial state that is passed into the entity.
+  // @see: \Drupal\state_machine\Plugin\Field\FieldType\StateItem::preSave
   if ($entity instanceof EntityPublishedInterface) {
     /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
     $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
@@ -1040,27 +1049,6 @@ function joinup_core_preprocess_page(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_node().
- *
- * Adds the group ID and label as data attributes in tiles.
- */
-function joinup_core_preprocess_node(&$variables) {
-  if ($variables['view_mode'] !== 'view_mode_tile') {
-    return;
-  }
-
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-
-  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
-  if ($parent) {
-    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
-    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
-  }
-}
-
-/**
  * Implements hook_editor_js_settings_alter().
  *
  * Strip off the h1, h5, h6 tag format options from the 'Format' dropdown.
@@ -1351,4 +1339,36 @@ function joinup_core_module_implements_alter(array &$implementations, $hook) {
       unset($implementations['menu_ui']);
       break;
   }
+}
+
+/**
+ * Generates and returns a shared link.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity related to the share link.
+ * @param string $route
+ *   The route to pass the share link in.
+ *
+ * @return array
+ *   A link icon theme array.
+ */
+function joinup_core_generate_share_link(EntityInterface $entity, string $route): array {
+  $url = Url::fromRoute($route, [$entity->getEntityTypeId() => $entity->id()]);
+
+  return [
+    '#theme' => 'link_icon',
+    '#title' => t('Share'),
+    '#icon' => 'share',
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['use-ajax', 'action-link'],
+      'data-dialog-type' => 'modal',
+      'data-dialog-options' => Json::encode([
+        'width' => 'auto',
+        'height' => 'auto',
+      ]),
+    ],
+    '#access' => $url->access(),
+    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
+  ];
 }

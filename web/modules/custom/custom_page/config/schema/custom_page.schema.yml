@@ -43,7 +43,7 @@ field.field.node.custom_page.field_cp_content_listing:
                 label: 'Show shared'
               query_builder:
                 type: mapping
-                label: 'Query builder'
+                label: 'Content filter'
                 mapping:
                   filters:
                     type: sequence

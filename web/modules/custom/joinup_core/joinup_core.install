@@ -460,3 +460,11 @@ function joinup_core_update_8113(array &$sandbox): ?string {
 
   return "Finished collecting {$sandbox['progress']} node visit counts.";
 }
+
+/**
+ * Fix entities with a single published revision.
+ */
+function joinup_core_update_8114(&$sandbox) {
+  module_load_include('install', 'publication_date');
+  _publication_date_populate_database_field();
+}
