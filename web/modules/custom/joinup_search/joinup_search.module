@@ -165,6 +165,7 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
 function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index, array &$fields) {
   $mappings = [
     'entity_created' => 'ds_entity_created',
+    'published_on' => 'ds_published_on',
     'site_pinned' => 'bs_site_pinned',
   ];
 

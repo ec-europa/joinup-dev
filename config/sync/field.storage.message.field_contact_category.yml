@@ -29,11 +29,8 @@ settings:
       value: report
       label: 'Inappropriate content'
     -
-      value: eira
-      label: 'Comments on EIRA'
-    -
-      value: version
-      label: 'New version of Joinup'
+      value: eu_login
+      label: 'EU Login question'
     -
       value: other
       label: Other

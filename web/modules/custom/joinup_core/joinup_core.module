@@ -505,7 +505,14 @@ function joinup_core_field_formatter_info_alter(array &$info) {
  * Implements hook_entity_create().
  */
 function joinup_core_entity_create(EntityInterface $entity) {
-  // Set the publication state when creating an entity that uses workflow.
+  // Since the state_machine module does not support same from-to state
+  // transitions, the transition events also don't fire. Normally, the
+  // transition event would be the one to decide whether the entity would be
+  // published or not, this is not happening for new entities.
+  // In Joinup, we do not create any entity with an initial state but for
+  // testing, it is necessary to setup the initial status automatically
+  // depending on the initial state that is passed into the entity.
+  // @see: \Drupal\state_machine\Plugin\Field\FieldType\StateItem::preSave
   if ($entity instanceof EntityPublishedInterface) {
     /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
     $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
