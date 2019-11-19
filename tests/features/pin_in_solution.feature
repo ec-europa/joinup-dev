@@ -103,17 +103,13 @@ Feature: Pinning content entities inside solutions
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their solution homepage.
     Given <content type> content:
-      | title       | solution    | state     | pinned | shared in  |
-      | Lantern FAQ | Blue Wrench | validated | yes    | Sunny Beam |
-      | Lantern TCA | Blue Wrench | validated | no     |            |
+      | title       | solution    | state     | pinned |
+      | Lantern FAQ | Blue Wrench | validated | yes    |
+      | Lantern TCA | Blue Wrench | validated | no     |
 
     When I go to the homepage of the "Blue Wrench" solution
     Then the "Lantern FAQ" tile should be marked as pinned
     But the "Lantern TCA" tile should not be marked as pinned
-
-    # When shared in other solution, content shouldn't show the pin icon.
-    When I go to the homepage of the "Sunny Beam" solution
-    Then the "Lantern FAQ" tile should not be marked as pinned
 
     When I am at "/search"
     Then the "Lantern FAQ" tile should not be marked as pinned
