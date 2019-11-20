@@ -25,6 +25,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
     - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
@@ -109,6 +110,25 @@ content:
             classes: {  }
       joinup:
         template_suggestion: p_wrapper
+  field_is_shared_in:
+    type: entity_reference_entity_view
+    weight: 5
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: entity_reference__listing_tile
   rdf_entity_field_is_content_inline_facets:
     weight: 2
     region: content
@@ -175,3 +195,4 @@ hidden:
   langcode: true
   og_group: true
   releases_overview: true
+  share_link: true

@@ -1,16 +1,15 @@
 <?php
 
-namespace Drupal\joinup_community_content\Form;
+namespace Drupal\joinup_core\Form;
 
-use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Form to unshare a community content from within collections.
  */
-class UnshareContentForm extends ShareContentFormBase {
+abstract class UnshareForm extends ShareFormBase {
 
   /**
    * {@inheritdoc}
@@ -20,10 +19,20 @@ class UnshareContentForm extends ShareContentFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Form constructor.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being unshared.
+   *
+   * @return array
+   *   The form structure.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
-    $form = parent::buildForm($form, $form_state, $node);
+  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
+    $this->entity = $entity;
 
     $options = array_map(function ($collection) {
       /** @var \Drupal\rdf_entity\RdfInterface $collection */
@@ -64,35 +73,7 @@ class UnshareContentForm extends ShareContentFormBase {
     if (!empty($collections)) {
       $this->messenger->addStatus('Item was unshared from the following collections: ' . implode(', ', $collections) . '.');
     }
-    $form_state->setRedirectUrl($this->node->toUrl());
-  }
-
-  /**
-   * Access check for the form route.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The entity being shared.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   Allowed if there is at least one collection where the node can be shared.
-   */
-  public function access(NodeInterface $node) {
-    $this->node = $node;
-
-    return AccessResult::allowedIf(!empty($this->getCollections()));
-  }
-
-  /**
-   * Gets the title for the form route.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The entity being shared.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The page/modal title.
-   */
-  public function getTitle(NodeInterface $node) {
-    return $this->t('Unshare %title from', ['%title' => $node->label()]);
+    $form_state->setRedirectUrl($this->entity->toUrl());
   }
 
   /**
@@ -108,10 +89,10 @@ class UnshareContentForm extends ShareContentFormBase {
       return $collections;
     }
 
-    if ($this->currentUser->hasPermission('administer shared content')) {
+    if ($this->currentUser->hasPermission('administer shared entities')) {
       return $this->sparqlStorage->loadMultiple($collections);
     }
-    return array_intersect_key($this->getUserGroupsByPermission("unshare {$this->node->bundle()} content"), array_flip($collections));
+    return array_intersect_key($this->getUserGroupsByPermission($this->getPermissionForAction('unshare')), array_flip($collections));
   }
 
   /**
@@ -124,8 +105,8 @@ class UnshareContentForm extends ShareContentFormBase {
     // Flipping is needed to easily unset the value.
     $current_ids = array_flip($this->getAlreadySharedCollectionIds());
     unset($current_ids[$collection->id()]);
-    $this->node->get('field_shared_in')->setValue(array_flip($current_ids));
-    $this->node->save();
+    $this->entity->get($this->getSharedInFieldName())->setValue(array_flip($current_ids));
+    $this->entity->save();
   }
 
 }

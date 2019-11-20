@@ -97,8 +97,8 @@ class EventSubscriber implements EventSubscriberInterface {
           'restrict access' => TRUE,
         ]),
         new GroupPermission([
-          'name' => 'administer shared content',
-          'title' => $this->t('Administer shared content'),
+          'name' => 'administer shared entities',
+          'title' => $this->t('Administer shared entities'),
           'restrict access' => TRUE,
         ]),
       ]);

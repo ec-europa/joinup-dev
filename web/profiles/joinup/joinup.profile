@@ -447,9 +447,18 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }
 
+  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
+  $collection = NULL;
+  if (!empty($context['og'])) {
+    $group = $context['og']->getContextValue();
+    if ($group && $group->getEntityTypeId() === 'rdf_entity' && $group->bundle() === 'collection') {
+      $collection = $group;
+    }
+  }
+
   /** @var \Drupal\joinup\PinServiceInterface $pin_service */
   $pin_service = \Drupal::service('joinup.pin_service');
-  if ($pin_service->isEntityPinned($entity)) {
+  if ($pin_service->isEntityPinned($entity, $collection)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 

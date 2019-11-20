@@ -504,7 +504,7 @@ function collection_search_api_query_search_api_field_field_collection_content_a
   // owner) do not show up as collection content tiles.
   $or->addCondition('entity_groups', [$entity->id()], 'IN');
   // Or show content that has been shared in this collection.
-  $or->addCondition('field_shared_in', [$entity->id()], 'IN');
+  $or->addCondition('shared_in', [$entity->id()], 'IN');
   $query->addConditionGroup($or);
 
   // Remove the collection itself from the results.

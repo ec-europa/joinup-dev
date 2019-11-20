@@ -295,6 +295,10 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
+    'social_share' => [
+      'variables' => ['entity' => NULL],
+      'path' => $path . '/templates/parts',
+    ],
   ];
 }
 
@@ -1684,6 +1688,14 @@ function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables)
   if (isset($variables['elements']['downloads']['count']['#access'])) {
     $variables['show_download_counter'] = $variables['elements']['downloads']['count']['#access'];
   }
+
+  $rdf_entity = $variables['rdf_entity'];
+  if (!$rdf_entity->get('collection')->isEmpty()) {
+    /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+    $parent = $rdf_entity->get('collection')->first()->entity;
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
 }
 
 /**
@@ -1867,4 +1879,47 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
       $variables['classes'] .= ' ' . str_replace('_', '-', $width);
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds the group ID and label as data attributes in tiles.
+ */
+function joinup_theme_preprocess_node(&$variables) {
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+  if ($parent) {
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+}
+
+/**
+ * Preprocess function for the "social_share" theme hook.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - entity: the entity being shared.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ *   Thrown when the entity being shared does not support generating a URL.
+ */
+function joinup_theme_preprocess_social_share(array &$variables) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $variables['entity'];
+  // Generate an absolute, un-aliased URL.
+  $variables['url'] = $entity->toUrl('canonical', [
+    'language' => $entity->language(),
+  ])->setAbsolute()->setOption('alias', TRUE);
+
+  $variables['encoded_url'] = urlencode($variables['url']->toString());
+  $variables['encoded_title'] = urlencode($entity->label());
 }
