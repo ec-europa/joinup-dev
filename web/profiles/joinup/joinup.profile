@@ -392,27 +392,31 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
   /** @var \Drupal\rdf_entity\RdfInterface $group */
   $group = \Drupal::service('og.context')->getGroup();
 
+  // The existence of the group context contextual links helps with enforcing
+  // the og_context to the entity because otherwise there is nothing in the view
+  // itself that would invalidate the tile and make it really `og_role`
+  // dependant.
+  $build['#contextual_links']['group_context'] = [
+    'route_parameters' => [
+      'entity_type' => $entity->getEntityTypeId(),
+      'entity' => $entity->id(),
+      // The group parameter is a required parameter in the pin/unpin
+      // routes. If the parameter is left empty, a critical exception will
+      // occur and the contextual links generation will break. By passing an
+      // empty value, an upcast exception will be catched and the access
+      // checks will correctly return an access denied.
+      'group' => NULL,
+    ],
+    'metadata' => [
+      'changed' => $entity->getChangedTime(),
+      'og_roles_hash' => $roles_hash,
+    ],
+  ];
+
   // The next check asserts that the group is either a collection or a solution
   // but for solutions, only community content are allowed to be pinned, not
   // related solutions.
   if ($group && (JoinupHelper::isCollection($group) || CommunityContentHelper::isCommunityContent($entity) && JoinupHelper::isSolution($group))) {
-    $build['#contextual_links']['group_context'] = [
-      'route_parameters' => [
-        'entity_type' => $entity->getEntityTypeId(),
-        'entity' => $entity->id(),
-        // The collection parameter is a required parameter in the pin/unpin
-        // routes. If the parameter is left empty, a critical exception will
-        // occur and the contextual links generation will break. By passing an
-        // empty value, an upcast exception will be catched and the access
-        // checks will correctly return an access denied.
-        'group' => NULL,
-      ],
-      'metadata' => [
-        'changed' => $entity->getChangedTime(),
-        'og_roles_hash' => $roles_hash,
-      ],
-    ];
-
     // Used by the contextual links for pinning/unpinning entity in group.
     // @see: joinup.pin_entity, joinup.unpin_entity routes.
     $build['#contextual_links']['group_context']['route_parameters']['group'] = $group->id();
