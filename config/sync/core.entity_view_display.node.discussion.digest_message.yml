@@ -1,0 +1,51 @@
+uuid: c6f2ecb0-ec82-41b2-a1ce-e2da3eeb873c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.digest_message
+    - field.field.node.discussion.body
+    - field.field.node.discussion.field_attachment
+    - field.field.node.discussion.field_keywords
+    - field.field.node.discussion.field_policy_domain
+    - field.field.node.discussion.field_replies
+    - field.field.node.discussion.field_shared_in
+    - field.field.node.discussion.field_site_featured
+    - field.field.node.discussion.field_site_pinned
+    - field.field.node.discussion.field_state
+    - field.field.node.discussion.og_audience
+    - node.type.discussion
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: MH5IsqzkjyHQwMAIhBMkvdrrpJeonD3UC7kQpOvXJX0
+id: node.discussion.digest_message
+targetEntityType: node
+bundle: discussion
+mode: digest_message
+content:
+  body:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  field_attachment: true
+  field_keywords: true
+  field_policy_domain: true
+  field_replies: true
+  field_shared_in: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_state: true
+  flag_subscribe_discussions: true
+  invite_link: true
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  report: true
+  share_link: true

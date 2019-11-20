@@ -6,18 +6,33 @@ dependencies:
     - core.entity_view_mode.message.mail_body
     - field.field.message.community_content_subscription.field_community_content
     - message.template.community_content_subscription
+  module:
+    - ds
 id: message.community_content_subscription.mail_body
 targetEntityType: message
 bundle: community_content_subscription
 mode: mail_body
 content:
-  partial_0:
+  field_community_content:
+    type: entity_reference_entity_view
     weight: 0
     region: content
-    settings: {  }
-    third_party_settings: {  }
+    label: hidden
+    settings:
+      view_mode: digest_message
+      link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: ''
   partial_1:
     weight: 0
     region: content
 hidden:
-  field_community_content: true
+  partial_0: true

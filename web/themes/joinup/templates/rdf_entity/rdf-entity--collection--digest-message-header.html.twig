@@ -4,7 +4,29 @@
  * Collection header used in collection content subscription digest messages.
  */
 #}
-
-<div class="collection">
-  <span>{{ 'New content published in'|t }}</span> <a href="{{ url }}">{{ rdf_entity.label.value }}</a>
-</div>
+<tr>
+  <td align="left" valign="top" bgcolor="#ffffff"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+      <tr>
+        <td width="30" height="25" align="left" valign="top">&nbsp;</td>
+        <td align="left" valign="top">&nbsp;</td>
+        <td width="30" align="left" valign="top">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td align="left" valign="top">
+          <span>{{ 'New content published in'|t }}</span> <a href="{{ url }}">{{ rdf_entity.label.value }}</a>
+        </td>
+        <td align="left" valign="top">&nbsp;</td>
+      </tr>
+      <tr>
+        <td height="25" align="left" valign="top">&nbsp;</td>
+        <td align="left" valign="top">&nbsp;</td>
+        <td align="left" valign="top">&nbsp;</td>
+      </tr>
+      </tbody>
+    </table></td>
+</tr>
+<tr>
+  <td align="left" valign="top" class="separator">&nbsp;</td>
+</tr>

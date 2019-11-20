@@ -1,0 +1,15 @@
+uuid: b8937ff4-4e59-4629-b5d9-ca142b7d202d
+langcode: en
+status: true
+dependencies: {  }
+name: digest_image
+label: 'Digest image'
+effects:
+  43bfeafd-7c8c-4312-9322-24e860f93fef:
+    uuid: 43bfeafd-7c8c-4312-9322-24e860f93fef
+    id: image_scale
+    weight: 1
+    data:
+      width: 500
+      height: 500
+      upscale: false

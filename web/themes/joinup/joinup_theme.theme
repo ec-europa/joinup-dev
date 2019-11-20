@@ -1910,3 +1910,24 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_swiftmailer().
+ */
+function joinup_theme_preprocess_swiftmailer(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+}
+
+/**
+ * Implements hook_preprocess_message_digest().
+ */
+function joinup_theme_preprocess_message_digest(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function joinup_theme_preprocess_node(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+}
