@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup\Form;
+declare(strict_types = 1);
+
+namespace Drupal\collection\Form;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;

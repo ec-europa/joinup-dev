@@ -10,6 +10,7 @@ dependencies:
   - drupal:link
   - drupal:options
   - drupal:text
+  - drupal:user
   - ds:ds
   - facets:facets
   - field_group:field_group
