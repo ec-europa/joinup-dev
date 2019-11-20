@@ -5,6 +5,8 @@
  * Main functions and hook implementations of the Joinup core module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;

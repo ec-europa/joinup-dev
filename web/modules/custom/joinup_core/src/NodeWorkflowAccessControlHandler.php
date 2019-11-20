@@ -109,13 +109,6 @@ class NodeWorkflowAccessControlHandler {
   protected $workflowHelper;
 
   /**
-   * The permission scheme stored in configuration.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  protected $permissionScheme;
-
-  /**
    * Constructs a JoinupDocumentRelationManager object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager

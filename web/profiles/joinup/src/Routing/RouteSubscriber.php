@@ -43,7 +43,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     // that prevents deletion of users that are sole owners of collections.
     if ($route = $collection->get('user.multiple_cancel_confirm')) {
       $route->addDefaults([
-        '_form' => '\Drupal\joinup\Form\UserMultipleCancelConfirm',
+        '_form' => '\Drupal\collection\Form\UserMultipleCancelConfirm',
       ]);
     }
   }
