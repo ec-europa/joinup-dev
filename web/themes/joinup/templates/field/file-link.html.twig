@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Theme override for a link to a file.
+ *
+ * Available variables:
+ * - attributes: The HTML attributes for the containing element.
+ * - link: A link to the file.
+ *
+ * @see template_preprocess_file_link()
+ */
+#}
+{% if extension and size %}
+  <span class="form-table_link-icon icon icon--mime-{{ extension }}"></span>
+  <div class="fieldset__file-wrapper">
+    <span{{ attributes }}>{{ link }}</span>
+      <span class="fieldset__file-size">
+        {{ size }}
+      </span>
+  </div>
+{% else %}
+  <span{{ attributes }}>{{ link }}</span>
+{% endif %}

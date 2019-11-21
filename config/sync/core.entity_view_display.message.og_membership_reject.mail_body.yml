@@ -1,13 +1,13 @@
-uuid: 38b3dc97-94c4-4e1e-8cff-2524d4102b73
+uuid: 8a6cb4bb-1214-4748-b6d4-222e60722fe6
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_body
-    - message.template.og_membership_decision
-id: message.og_membership_decision.mail_body
+    - message.template.og_membership_reject
+id: message.og_membership_reject.mail_body
 targetEntityType: message
-bundle: og_membership_decision
+bundle: og_membership_reject
 mode: mail_body
 content:
   partial_1:

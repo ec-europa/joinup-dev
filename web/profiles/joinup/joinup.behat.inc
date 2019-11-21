@@ -15,6 +15,7 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
@@ -442,7 +443,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Navigates to the edit page display of a node entity.
+   * Navigates to the edit form of a node entity.
    *
    * @param string $bundle
    *   The type of the node entity.
@@ -904,12 +905,42 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $state
    *   The expected state.
    *
+   * @throws \Exception
+   *   Thrown when the node doesn't exist or doesn't have a state field.
+   *
    * @Then the :title :type content should have the :state state
    */
-  public function assertNodeWorkflowState($title, $type, $state) {
+  public function assertNodeWorkflowState(string $title, string $type, string $state): void {
     $node = $this->getNodeByTitle($title, $type);
     $actual = $this->getEntityStateField($node)->get('value')->getString();
     Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+  }
+
+  /**
+   * Changes the workflow state of a given entity.
+   *
+   * @param string $title
+   *   The title of the entity to update.
+   * @param string $entity_type
+   *   The entity type.
+   * @param string $state
+   *   The workflow state.
+   *
+   * @throws \Exception
+   *   Thrown when the entity doesn't exist, doesn't have a state field, or
+   *   cannot be saved.
+   *
+   * @Given the workflow state of the :title :entity_type is changed to :state
+   */
+  public function updateWorkflowState(string $title, string $entity_type, string $state): void {
+    $entity_type = self::translateEntityTypeAlias($entity_type);
+    \Drupal::entityTypeManager()->getStorage($entity_type)->resetCache();
+    $entity = $this->getEntityByLabel($entity_type, $title);
+    $this->getEntityStateField($entity)->set('value', $state);
+    if ($entity instanceof RevisionableInterface) {
+      $entity->setNewRevision(TRUE);
+    }
+    $entity->save();
   }
 
   /**
@@ -1303,6 +1334,15 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Opens the sidebar menu on JS-enabled browsers.
+   *
+   * @When I open the group sidebar menu
+   */
+  public function openGroupMenu() {
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.sidebar-menu'));
+  }
+
+  /**
    * Opens a specific MDL dropdown menu on JS-enabled browsers.
    *
    * @When I open the header local tasks menu
@@ -1338,7 +1378,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         '@current' => $current_url,
         '@expected' => $url,
       ]);
-      throw new Exception($message);
+      throw new Exception((string) $message);
     }
   }
 

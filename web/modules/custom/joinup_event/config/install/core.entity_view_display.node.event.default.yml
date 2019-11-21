@@ -114,6 +114,7 @@ content:
     weight: 14
     label: hidden
     settings:
+      show_marker: true
       zoom_level: 16
     third_party_settings:
       ds:
