@@ -77,10 +77,14 @@
       flex-grow: 1
       flex-shrink: 0
 
-.filters
+.filter
   .mdl-menu__container
     max-height: 400px
+    margin-top: 5px
     &.is-upgraded
+      // Align drop down menu to the left on smaller devices.
+      +breakpoint(sm-mobile, mobile)
+        left: 0 !important
       .mdl-menu
         position: relative
   .mdl-menu

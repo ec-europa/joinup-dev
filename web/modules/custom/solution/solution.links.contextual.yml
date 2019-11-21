@@ -1,0 +1,17 @@
+solution.share:
+  route_name: solution.share_form
+  title: Share
+  group: rdf_entity
+  options:
+    attributes:
+      class: ['use-ajax']
+      data-dialog-type: 'modal'
+
+solution.unshare:
+  route_name: solution.unshare_form
+  title: Unshare
+  group: rdf_entity
+  options:
+    attributes:
+      class: ['use-ajax']
+      data-dialog-type: 'modal'

@@ -145,6 +145,7 @@ hidden:
   field_is_pinned_in: true
   field_is_product_type: true
   field_is_related_solutions: true
+  field_is_shared_in: true
   field_is_show_eira_related: true
   field_is_solution_type: true
   field_is_source_code_repository: true
@@ -168,3 +169,4 @@ hidden:
   rdf_entity_field_is_content_top: true
   read_more: true
   related_solutions: true
+  share_link: true
