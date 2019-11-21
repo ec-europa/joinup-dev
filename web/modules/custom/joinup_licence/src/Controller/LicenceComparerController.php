@@ -280,9 +280,10 @@ class LicenceComparerController extends ControllerBase {
       ],
     ];
 
+    $checked_markup = '<span class="icon icon--check-2"></span><span class="visually-hidden">x</span>';
     foreach ($items as $enabled) {
       $row[] = [
-        'data' => $enabled ? ['#markup' => '<span class="icon icon--check-2"></span>'] : '',
+        'data' => $enabled ? ['#markup' => $checked_markup] : '',
         'class' => [
           'licence-comparer__cell',
           'licence-comparer__cell-' . ($enabled ? 'on' : 'off'),
@@ -290,7 +291,11 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-comparer__cell', 'licence-comparer__empty']);
+    $this->padWithEmptyCells($row, [
+      'licence-comparer__cell',
+      'licence-comparer__empty',
+      'licence-comparer__empty-cell',
+    ]);
 
     return $row;
   }
