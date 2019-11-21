@@ -68,6 +68,8 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     'entity_test',
     'flag',
     'joinup_subscription',
+    'message_digest',
+    'message_notify',
     'system',
     'user',
   ];

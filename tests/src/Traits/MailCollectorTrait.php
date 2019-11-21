@@ -6,6 +6,7 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\user\UserInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * Contains utility methods.
@@ -63,16 +64,80 @@ trait MailCollectorTrait {
    *   Thrown if no emails have been sent.
    */
   protected function getUserMails(UserInterface $user): array {
-    $user_email = $user->getEmail();
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
+    $mails = $this->getMails();
     if (empty($mails)) {
       throw new \Exception('No mail was sent.');
     }
 
+    $user_email = $user->getEmail();
     return array_filter($mails, function (array $mail) use ($user_email) {
       return $mail['to'] === $user_email;
     });
+  }
+
+  /**
+   * Fetches the emails sent given criteria.
+   *
+   * @param string $subject
+   *   The subject of the email sent.
+   * @param string $recipient_mail
+   *   The email of the recipient.
+   *
+   * @return array
+   *   An array of emails found.
+   *
+   * @throws \Exception
+   *   Thrown if no emails are found or no user exists with the given data.
+   */
+  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
+    $this->assertEmailTagPresent();
+
+    $mails = $this->getMails();
+    if (empty($mails)) {
+      throw new \Exception('No mail was sent.');
+    }
+
+    $emails_found = [];
+    foreach ($mails as $mail) {
+      if ($mail['to'] !== $recipient_mail) {
+        continue;
+      }
+
+      if ($subject !== trim($mail['subject'])) {
+        continue;
+      }
+
+      $emails_found[] = $mail;
+    }
+
+    if (empty($emails_found)) {
+      throw new \Exception("No emails found sent to {$recipient_mail} with subject '{$subject}'.");
+    }
+
+    return $emails_found;
+  }
+
+  /**
+   * Checks if the current scenario or feature has the @email tag.
+   *
+   * Call this in steps that use the test mail collector so that the developer
+   * is alerted if this tag is not present.
+   */
+  protected function assertEmailTagPresent(): void {
+    \assert(method_exists($this, 'getTags'), __METHOD__ . ' depends on TagTrait. Please include it in your class.');
+    $tags = $this->getTags();
+    Assert::assertTrue(in_array('email', $tags));
+  }
+
+  /**
+   * Returns all collected emails.
+   *
+   * @return array
+   *   All the mails stored in the mail collector.
+   */
+  protected function getMails(): array {
+    \Drupal::state()->resetCache();
+    return \Drupal::state()->get('system.test_mail_collector', []);
   }
 
 }

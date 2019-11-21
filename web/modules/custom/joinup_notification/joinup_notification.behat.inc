@@ -302,49 +302,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Fetches the emails sent given criteria.
-   *
-   * @param string $subject
-   *   The subject of the email sent.
-   * @param string $recipient_mail
-   *   The email of the recipient.
-   *
-   * @return array
-   *   An array of emails found.
-   *
-   * @throws \Exception
-   *   Thrown if no emails are found or no user exists with the given data.
-   */
-  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
-    $this->assertEmailTagPresent();
-
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
-    if (empty($mails)) {
-      throw new \Exception('No mail was sent.');
-    }
-
-    $emails_found = [];
-    foreach ($mails as $mail) {
-      if ($mail['to'] !== $recipient_mail) {
-        continue;
-      }
-
-      if ($subject !== trim($mail['subject'])) {
-        continue;
-      }
-
-      $emails_found[] = $mail;
-    }
-
-    if (empty($emails_found)) {
-      throw new Exception("No emails found sent to {$recipient_mail} with subject '{$subject}'.");
-    }
-
-    return $emails_found;
-  }
-
-  /**
    * Clears the cache of the mail collector.
    *
    * Use this if you don't want to match on emails that have been sent earlier
@@ -374,7 +331,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   public function assertNumberOfEmailSent($count) {
     $this->assertEmailTagPresent();
 
-    $mails = \Drupal::state()->get('system.test_mail_collector');
+    $mails = $this->getMails();
 
     if (count($mails) != $count) {
       throw new \Exception("Invalid number of e-mail sent. Expected $count, sent " . count($mails));
@@ -464,7 +421,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     $this->assertEmailTagPresent();
 
     $found = FALSE;
-    foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
+    foreach ($this->getMails() as $mail_sent) {
       // Optionally filter by mail template.
       if (!empty($template) && $mail_sent['key'] !== $template) {
         continue;
@@ -489,17 +446,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       throw new \Exception($no_match_message);
     }
     throw new \Exception($no_mail_message);
-  }
-
-  /**
-   * Checks if the current scenario or feature has the @email tag.
-   *
-   * Call this in steps that use the test mail collector so that the developer
-   * is alerted if this tag is not present.
-   */
-  protected function assertEmailTagPresent(): void {
-    $tags = $this->getTags();
-    Assert::assertTrue(in_array('email', $tags));
   }
 
   /**

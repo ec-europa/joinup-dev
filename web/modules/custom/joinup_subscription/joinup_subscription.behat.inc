@@ -12,8 +12,10 @@ use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
@@ -34,10 +36,12 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
   use BrowserCapabilityDetectionTrait;
   use EntityTrait;
   use MaterialDesignTrait;
+  use MailCollectorTrait;
   use OgTrait;
   use RdfEntityTrait;
   use UserTrait;
   use UtilityTrait;
+  use TagTrait;
   use TraversingTrait;
 
   /**
@@ -395,6 +399,60 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    */
   protected function getCollectionSubscriptionCardByHeading(string $heading): NodeElement {
     return $this->getListingByHeading('collection-subscription', $heading);
+  }
+
+  /**
+   * Checks that the digest mail sent to the given user contains the right data.
+   *
+   * This will check that there is exactly 1 digest mail in the collector for
+   * the given user, and that the mail will contain the expected sections (both
+   * collection headers and community content) in the expected order.
+   *
+   * Table format:
+   * | title   |
+   * | Arctic  |
+   * | Sea ice |
+   *
+   * @param string $username
+   *   The name of the user to whom the digest mail is sent.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The table that contains the expected sections, in the expected order.
+   *
+   * @throws \Exception
+   *   Throws an exception when a parameter is not the expected one.
+   *
+   * @Then the collection content subscription digest email sent to :username contains the following sections:
+   */
+  public function assertCollectionContentSubscriptionEmailSections(string $username, TableNode $table) {
+    $this->assertEmailTagPresent();
+
+    // Remove the table header from the array.
+    $expected_sections = $table->getColumn(0);
+    array_shift($expected_sections);
+
+    $user = user_load_by_name($username);
+    $email_address = $user->getEmail();
+    $emails = $this->getEmailsBySubjectAndMail('Joinup message digest', $email_address);
+
+    Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
+
+    $email = reset($emails);
+
+    // Since this is a HTML formatted email it is difficult to parse. We will
+    // split the body text in lines, and check every line until we find one that
+    // matches the expected section, discarding all non-matching lines. This way
+    // we can ascertain that every section is in the right order.
+    $email_lines = explode("\n", (string) $email['body']);
+    foreach ($expected_sections as $expected_section) {
+      do {
+        $line = array_shift($email_lines);
+        // If we reach the end before finding the section, the section does not
+        // exist or is not in the correct order.
+        if (empty($email_lines)) {
+          throw new \Exception("The digest message for user $username does not contain '$expected_section' or is not in the correct order.");
+        }
+      } while (strpos($line, $expected_section) === FALSE);
+    }
   }
 
 }
