@@ -1,12 +1,20 @@
 {% set image_url = site_url ~ '/' ~ directory ~ '/images/digest-message' %}
 
+{% set online_version_url = site_url %}
+
 <tbody>
 <!-- LOGO -->
 <tr>
   <td align="center" valign="top" bgcolor="#FFFFFF"><table width="640" border="0" cellspacing="0" cellpadding="0" class="mobile-logo">
       <tbody>
       <tr>
-        <td height="40" align="center" valign="middle"><p class="web-link">If you can not read this newsletter correctly, <a href="#">click here</a> for the online version</p></td>
+        <td height="40" align="center" valign="middle">
+          <p class="web-link">
+            {% trans %}
+              If you can not read this newsletter correctly, <a href="{{ online_version_url }}">click here</a> for the online version
+            {% endtrans %}
+          </p>
+        </td>
       </tr>
       </tbody>
     </table></td>
