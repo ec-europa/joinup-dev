@@ -94,15 +94,16 @@ class LicenceComparerController extends ControllerBase {
 
     // Add the 'back to filter' link.
     $jla_filter = $this->entityRepository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41');
+
     if ($jla_filter) {
       $build[] = [
         '#type' => 'link',
-        '#title' => $this->t('Back to licence filter'),
+        '#title' => ['#markup' => '<span class="icon icon--previous"></span> ' . $this->t('Back to licence filter')],
         '#url' => Url::fromRoute('entity.node.canonical', [
           'node' => $jla_filter->id(),
         ]),
         '#attributes' => [
-          'class' => ['licence-back'],
+          'class' => ['licence-comparer__back'],
         ],
       ];
     }
@@ -112,6 +113,7 @@ class LicenceComparerController extends ControllerBase {
       '#rows' => $rows,
       '#attributes' => [
         'data-drupal-selector' => 'licence-comparer',
+        'class' => ['licence-comparer'],
       ],
     ];
 
@@ -233,8 +235,7 @@ class LicenceComparerController extends ControllerBase {
       [
         'data' => $category,
         'class' => [
-          'licence-sidebar',
-          'licence-header',
+          'licence-comparer__sidebar-header',
           'licence-filter--' . strtolower($category),
         ],
       ],
@@ -244,12 +245,12 @@ class LicenceComparerController extends ControllerBase {
       $row[] = [
         'data' => $spdx_id,
         'class' => [
-          'licence-header',
+          'licence-comparer__header',
         ],
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-header', 'licence-empty']);
+    $this->padWithEmptyCells($row, ['licence-comparer__header', 'licence-comparer__empty']);
 
     return $row;
   }
@@ -273,24 +274,28 @@ class LicenceComparerController extends ControllerBase {
       [
         'data' => $label,
         'class' => [
-          'licence-sidebar',
-          'licence-cell',
+          'licence-comparer__sidebar-cell',
           'licence-filter--' . strtolower($category),
         ],
       ],
     ];
 
+    $checked_markup = '<span class="icon icon--check-2"></span>';
     foreach ($items as $enabled) {
       $row[] = [
-        'data' => $enabled ? 'x' : '',
+        'data' => $enabled ? ['#markup' => $checked_markup] : '',
         'class' => [
-          'licence-cell',
-          'licence-cell-' . ($enabled ? 'on' : 'off'),
+          'licence-comparer__cell',
+          'licence-comparer__cell-' . ($enabled ? 'on' : 'off'),
         ],
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-cell', 'licence-empty']);
+    $this->padWithEmptyCells($row, [
+      'licence-comparer__cell',
+      'licence-comparer__empty',
+      'licence-comparer__empty-cell',
+    ]);
 
     return $row;
   }
