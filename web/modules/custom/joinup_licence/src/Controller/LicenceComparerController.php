@@ -280,7 +280,7 @@ class LicenceComparerController extends ControllerBase {
       ],
     ];
 
-    $checked_markup = '<span class="icon icon--check-2"></span><span class="is-hidden">x</span>';
+    $checked_markup = '<span class="icon icon--check-2"></span>';
     foreach ($items as $enabled) {
       $row[] = [
         'data' => $enabled ? ['#markup' => $checked_markup] : '',
