@@ -15,6 +15,7 @@ dependencies:
   - joinup:asset_release
   - joinup:contact_information
   - joinup:joinup_core
+  - joinup:joinup_group
   - joinup:owner
   - joinup:workflow_state_permission
   - rdf_entity:rdf_entity
