@@ -14,6 +14,7 @@ use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -34,6 +35,13 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
+  /**
+   * The sparql entity storage.
+   *
+   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
+   */
+  protected $sparqlStorage;
 
   /**
    * The OG membership manager service.
@@ -164,7 +172,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * {@inheritdoc}
    */
   public function getUserMembershipsByRole(AccountInterface $user, string $role, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $storage = $this->entityTypeManager->getStorage('og_membership');
+    $storage = $this->getRdfStorage();
 
     // Fetch all the memberships of the user, filtered by role and state.
     $query = $storage->getQuery();
@@ -219,25 +227,53 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    *   An array of entity IDs.
    */
   protected function getRdfEntityIdsByBundle(string $bundle): array {
-    try {
-      // Since the Joinup Core module depends on the RDF Entity module we can
-      // reasonably assume that the entity storage is defined and is valid. If
-      // it is not this is due to exceptional circumstances occuring at runtime.
-      $storage = $this->entityTypeManager->getStorage('rdf_entity');
-      $definition = $this->entityTypeManager->getDefinition('rdf_entity');
-    }
-    catch (InvalidPluginDefinitionException $e) {
-      throw new \RuntimeException('The RDF entity storage is not valid.');
-    }
-    catch (PluginNotFoundException $e) {
-      throw new \RuntimeException('The RDF entity storage is not defined.');
-    }
-
+    $storage = $this->getRdfStorage();
+    $definition = $this->entityTypeManager->getDefinition('rdf_entity');
     $bundle_key = $definition->getKey('bundle');
 
     $query = $storage->getQuery();
     $query->condition($bundle_key, $bundle);
     return $query->execute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getContactInformationRelatedGroups(RdfInterface $entity): array {
+    $query = $this->getRdfStorage()->getQuery();
+    $condition_or = $query->orConditionGroup();
+    // Contact entities are also referenced by releases but this value is
+    // inherited by the solution directly so there is no need to check them.
+    $condition_or->condition('field_ar_contact_information', $entity->id());
+    $condition_or->condition('field_is_contact_information', $entity->id());
+    $query->condition($condition_or);
+    $ids = $query->execute();
+
+    return empty($ids) ? [] : $this->getRdfStorage()->loadMultiple($ids);
+  }
+
+  /**
+   * Returns the rdf storage class.
+   *
+   * @return \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
+   *   The rdf storage class.
+   */
+  protected function getRdfStorage(): SparqlEntityStorageInterface {
+    if (empty($this->sparqlStorage)) {
+      try {
+        // Since the Joinup Core module depends on the RDF Entity module we can
+        // reasonably assume that the entity storage is defined and is valid. If
+        // it is not this is due to exceptional circumstances occuring at runtime.
+        $this->sparqlStorage = $this->entityTypeManager->getStorage('rdf_entity');
+      }
+      catch (InvalidPluginDefinitionException $e) {
+        throw new \RuntimeException('The RDF entity storage is not valid.');
+      }
+      catch (PluginNotFoundException $e) {
+        throw new \RuntimeException('The RDF entity storage is not defined.');
+      }
+    }
+    return $this->sparqlStorage;
   }
 
 }
