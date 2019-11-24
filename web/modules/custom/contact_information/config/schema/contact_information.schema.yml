@@ -9,8 +9,34 @@ contact_information.settings:
         type: sequence
         label: 'Transition ID'
         sequence:
-          type: sequence
+          type: contact_information.workflow_ownership_settings
           label: 'Source state'
-          sequence:
-            type: string
-            label: 'Roles'
+
+contact_information.workflow_ownership_settings:
+  label: 'Ownership settings'
+  type: mapping
+  mapping:
+    own:
+      label: 'Own content'
+      type: joinup_community_content.workflow_role_settings
+    any:
+      label: 'Any content'
+      type: joinup_community_content.workflow_role_settings
+
+contact_information.workflow_role_settings:
+  label: 'Role settings'
+  type: mapping
+  mapping:
+    roles:
+      label: 'System roles'
+      type: sequence
+      sequence:
+        label: 'Role id'
+        type: string
+    og_roles:
+      label: 'Og roles'
+      type: sequence
+      sequence:
+        label: 'Role id'
+        type: string
+
