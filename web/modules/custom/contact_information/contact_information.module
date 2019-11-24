@@ -125,9 +125,7 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
   }
   elseif ($operation == 'edit') {
     $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTargetStates($entity, $account);
-    if (empty($allowed_transitions)) {
-      return AccessResult::forbidden();
-    }
+    return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
   }
   // Use an elseif to avoid checking memberships for anonymous users.
   elseif ($operation === 'delete') {
