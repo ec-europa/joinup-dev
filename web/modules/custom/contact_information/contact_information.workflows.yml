@@ -12,10 +12,12 @@ contact_information_workflow:
     # State used to flag content that is being reviewed.
     needs_update:
       label: Needs update
+    deletion_request:
+      label: Deletion request
   transitions:
     validate:
       label: Publish
-      from: [__new__]
+      from: [__new__, deletion_request]
       to: validated
     request_changes:
       label: Request changes
@@ -25,3 +27,7 @@ contact_information_workflow:
       label: Approve changes
       from: [needs_update]
       to: validated
+    request_deletion:
+      label: Request deletion
+      from: [validated]
+      to: deletion_request

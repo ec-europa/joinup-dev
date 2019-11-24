@@ -6,9 +6,8 @@ Feature: Contact Information moderation
 
   Scenario: Publish, update, request changes, publish again and ask to delete contact information.
     Given users:
-      | Username              |
-      | Sæwine Cynebald       |
-      | Secondary facilitator |
+      | Username        |
+      | Sæwine Cynebald |
     And owner:
       | type                          | name               |
       | Non-Governmental Organisation | Anglo-Saxon Museum |
@@ -21,9 +20,8 @@ Feature: Contact Information moderation
       | policy domain | E-inclusion                                   |
       | state         | draft                                         |
     And collection user membership:
-      | collection                   | user                  | roles       |
-      | Games of the Anglo-Saxon age | Sæwine Cynebald       | facilitator |
-      | Games of the Anglo-Saxon age | Secondary facilitator | facilitator |
+      | collection                   | user            | roles       |
+      | Games of the Anglo-Saxon age | Sæwine Cynebald | facilitator |
 
     # Add contact information to the collection as a facilitator.
     When I am logged in as "Sæwine Cynebald"
@@ -42,20 +40,12 @@ Feature: Contact Information moderation
     When I go to the "Mildþryð Mildgyð" contact information page
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Contact information Mildþryð Mildgyð"
-    And the following 1 button should be present "Update"
+    And the following 2 buttons should be present "Update, Request deletion"
     And the current workflow state should be "Validated"
-    And I should see the link "Delete"
+    And I should not see the link "Delete"
     When I fill in "Name" with "Ceolwulf II of Mercia"
     And I press "Update"
     Then I should see the heading "Ceolwulf II of Mercia"
-
-    # Another facilitator should be able to edit the contact entity.
-    When I am logged in as "Secondary facilitator"
-    And I go to the "Ceolwulf II of Mercia" contact information page
-    And I click "Edit" in the "Entity actions" region
-    Then I should see the heading "Edit Contact information Ceolwulf II of Mercia"
-    And the following 1 button should be present "Update"
-    And I should see the link "Delete"
 
     # Request an update as moderator: Ceolwulf II is deceased.
     When I am logged in as a moderator
@@ -85,7 +75,7 @@ Feature: Contact Information moderation
     Then I should see the heading "Edit Contact information Ceolwulf II of Mercia"
     And the following 1 button should be present "Update"
     And the current workflow state should be "Needs update"
-    And I should see the link "Delete"
+    And I should not see the link "Delete"
     # Do the changes.
     When I fill in "Name" with "Æthelred, Lord of the Mercians"
     And I press "Update"
@@ -104,9 +94,16 @@ Feature: Contact Information moderation
     Given I am logged in as "Sæwine Cynebald"
     And I go to the "Æthelred, Lord of the Mercians" contact information page
     And I click "Edit" in the "Entity actions" region
-    And the following 1 buttons should be present "Update"
+    And the following 2 buttons should be present "Update, Request deletion"
     And the current workflow state should be "Validated"
-    And I should see the link "Delete"
+    And I press "Request deletion"
+    Then I should see the heading "Æthelred, Lord of the Mercians"
+
+    # A moderator is able to approve the deletion.
+    Given I am logged in as a moderator
+    And I go to the "Æthelred, Lord of the Mercians" contact information page
+    When I click "Edit" in the "Entity actions" region
+    Then I should see the link "Delete"
     When I click "Delete"
     # Confirm the deletion.
     And I press "Delete"

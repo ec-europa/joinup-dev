@@ -8,6 +8,13 @@ transitions:
       any:
         roles:
           - moderator
+    deletion_request:
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
     needs_update:
       any:
         roles:
@@ -37,3 +44,8 @@ transitions:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
+  deletion_request:
+    validated:
+      own:
+        roles:
+          - authenticated

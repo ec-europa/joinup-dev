@@ -128,10 +128,12 @@ class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase 
       'validated' => [
         'userAuthenticated' => [
           'validated',
+          'deletion_request',
         ],
         'userModerator' => [
           'validated',
           'needs_update',
+          'deletion_request',
         ],
       ],
       'needs_update' => [
