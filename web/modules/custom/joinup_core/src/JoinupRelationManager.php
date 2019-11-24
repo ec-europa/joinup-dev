@@ -263,7 +263,8 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
       try {
         // Since the Joinup Core module depends on the RDF Entity module we can
         // reasonably assume that the entity storage is defined and is valid. If
-        // it is not this is due to exceptional circumstances occuring at runtime.
+        // it is not this is due to exceptional circumstances occurring at
+        // runtime.
         $this->sparqlStorage = $this->entityTypeManager->getStorage('rdf_entity');
       }
       catch (InvalidPluginDefinitionException $e) {

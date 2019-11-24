@@ -39,4 +39,3 @@ contact_information.workflow_role_settings:
       sequence:
         label: 'Role id'
         type: string
-

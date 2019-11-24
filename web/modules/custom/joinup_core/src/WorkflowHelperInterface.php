@@ -219,6 +219,6 @@ interface WorkflowHelperInterface {
    * @return bool
    *   True if the user has at least one of the roles provided.
    */
-  public function userHasRolesInGroup(EntityInterface $entity, AccountInterface $account, array  $roles): bool ;
+  public function userHasRolesInGroup(EntityInterface $entity, AccountInterface $account, array $roles): bool;
 
 }

@@ -146,8 +146,6 @@ interface JoinupRelationManagerInterface {
    */
   public function getSolutionIds(): array;
 
-
-
   /**
    * Returns the groups that relate to a contact information entity.
    *
