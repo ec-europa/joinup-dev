@@ -111,3 +111,43 @@ Feature: Contact Information moderation
     # Confirm the deletion.
     And I press "Delete"
     Then I should not see the link "EU healthy group"
+
+  Scenario: Owners can request deletion when they are not facilitators and facilitators can delete.
+    Given the following owner:
+      | name        | type    |
+      | Saint Louis | Company |
+    Given users:
+      | Username        | First name | Family name |
+      | Sown Carnberry  | Sown       | Carnberry   |
+      | Saint Louis CEO | George     | McLouis     |
+    And the following contact:
+      | name   | Secreteriat      |
+      | email  | info@example.com |
+      | author | Sown Carnberry   |
+    And collection:
+      | title               | Saint Louis solutions |
+      | description         | A software company    |
+      | logo                | logo.png              |
+      | banner              | banner.jpg            |
+      | owner               | Saint Louis           |
+      | contact information | Secreteriat           |
+      | state               | validated             |
+    And the following collection user memberships:
+      | collection            | user            | roles       |
+      | Saint Louis solutions | Sown Carnberry  |             |
+      | Saint Louis solutions | Saint Louis CEO | facilitator |
+
+    When I am logged in as "Sown Carnberry"
+    And I go to the "Secreteriat" contact information page
+    And I click "Edit" in the "Entity actions"
+    And the following 2 button should be present "Update, Request deletion"
+    And I should not see the link "Delete"
+
+    When I am logged in as "Saint Louis CEO"
+    And I go to the "Secreteriat" contact information page
+    And I click "Edit" in the "Entity actions"
+    And the following 1 button should be present "Update"
+    And I should see the link "Delete"
+    When I go to the "Saint Louis solutions" collection edit form
+    Then I should see the button "Edit" in the "Contact information inline form" region
+    Then I should see the button "Remove" in the "Contact information inline form" region
