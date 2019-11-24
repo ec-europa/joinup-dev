@@ -27,6 +27,7 @@ permissions:
   - 'delete any document content'
   - 'delete any news content'
   - 'delete asset_distribution rdf entity'
+  - 'delete contact_information rdf entity'
   - 'edit any custom_page content'
   - 'edit any discussion content'
   - 'edit any news content'
