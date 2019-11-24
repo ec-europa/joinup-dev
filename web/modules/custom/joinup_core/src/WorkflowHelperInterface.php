@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
+use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Interface for services that provide workflow related helper methods.
@@ -47,7 +52,7 @@ interface WorkflowHelperInterface {
    * @return array
    *   An array of transition labels.
    */
-  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL);
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
 
   /**
    * Returns the available transition states of an entity for the given user.
@@ -60,7 +65,7 @@ interface WorkflowHelperInterface {
    * @return \Drupal\state_machine\Plugin\Workflow\WorkflowTransition[]
    *   An array of transition objects.
    */
-  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL);
+  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
 
   /**
    * Returns the state field definitions of an entity.
@@ -73,7 +78,7 @@ interface WorkflowHelperInterface {
    * @return \Drupal\Core\Field\FieldDefinitionInterface[]
    *   Returns an array of state field definitions.
    */
-  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
+  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id): array;
 
   /**
    * Returns the state field definition of an entity.
@@ -91,7 +96,7 @@ interface WorkflowHelperInterface {
    *   Returns the state field definition of the entity or NULL if none is
    *   found.
    */
-  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id);
+  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id): ?FieldDefinitionInterface;
 
   /**
    * Returns the StateItem field for a given entity.
@@ -109,7 +114,7 @@ interface WorkflowHelperInterface {
    * @throws \Exception
    *   Thrown when the entity does not have a state field.
    */
-  public function getEntityStateField(FieldableEntityInterface $entity);
+  public function getEntityStateField(FieldableEntityInterface $entity): StateItemInterface;
 
   /**
    * Returns whether the entity has a state field and supports workflow.
@@ -122,7 +127,7 @@ interface WorkflowHelperInterface {
    * @return bool
    *   TRUE if the entity has a state field. FALSE otherwise.
    */
-  public function hasEntityStateField($entity_type_id, $bundle_id);
+  public function hasEntityStateField($entity_type_id, $bundle_id): bool;
 
   /**
    * Checks if a state is set as published in a certain workflow.
@@ -139,7 +144,7 @@ interface WorkflowHelperInterface {
    *   Thrown when the workflow is not plugin based, because this is required to
    *   retrieve the publication state from the workflow states.
    */
-  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow);
+  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow): bool;
 
   /**
    * Returns the workflow related to an entity.
@@ -152,7 +157,7 @@ interface WorkflowHelperInterface {
    * @return \Drupal\workflows\WorkflowInterface|null
    *   The workflow object or null if it was not found.
    */
-  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL);
+  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL): ?WorkflowInterface;
 
   /**
    * Finds the transition given an entity that is being updated.
@@ -162,10 +167,10 @@ interface WorkflowHelperInterface {
    * @param string $state_field_name
    *   The state field name. If not passed, it will be searched.
    *
-   * @return \Drupal\workflows\TransitionInterface|null
+   * @return \Drupal\state_machine\Plugin\Workflow\WorkflowTransition|null
    *   The transition object or null if it was not found.
    */
-  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL);
+  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL): ?WorkflowTransition;
 
   /**
    * Checks whether the user has at least one of the provided roles.
@@ -182,10 +187,10 @@ interface WorkflowHelperInterface {
    * @return bool
    *   True if the user has at least one of the roles provided.
    */
-  public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles);
+  public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles): bool;
 
   /**
-   * Checks whether the user has at least one of the provided roles.
+   * Checks if the user has at least one required role in the entity's group.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The group content entity.
@@ -198,6 +203,22 @@ interface WorkflowHelperInterface {
    * @return bool
    *   True if the user has at least one of the roles provided.
    */
-  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles);
+  public function userHasRolesInParentGroup(EntityInterface $entity, AccountInterface $account, array $roles): bool;
+
+  /**
+   * Checks if the user has at least one required role in the group.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group content entity.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param array $roles
+   *   A list of role ids indexed by 'roles' for system roles and
+   *   'og_roles' for og roles.
+   *
+   * @return bool
+   *   True if the user has at least one of the roles provided.
+   */
+  public function userHasRolesInGroup(EntityInterface $entity, AccountInterface $account, array  $roles): bool ;
 
 }

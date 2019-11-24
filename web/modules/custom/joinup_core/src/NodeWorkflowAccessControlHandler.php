@@ -249,7 +249,7 @@ class NodeWorkflowAccessControlHandler {
     $view_scheme = $this->getPermissionScheme('view');
     $workflow_id = $this->getEntityWorkflowId($entity);
     $state = $this->getEntityState($entity);
-    return $this->userHasOwnAnyRoles($entity, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
+    return $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
@@ -271,7 +271,7 @@ class NodeWorkflowAccessControlHandler {
     foreach ($create_scheme[$workflow_id][$e_library] as $ownership_data) {
       // There is no check whether the transition is allowed as only allowed
       // transitions are mapped in the permission scheme configuration object.
-      if ($this->userHasRoles($entity, $account, $ownership_data)) {
+      if ($this->workflowHelper->userHasRolesInParentGroup($entity, $account, $ownership_data)) {
         return AccessResult::allowed();
       }
     }
@@ -313,71 +313,11 @@ class NodeWorkflowAccessControlHandler {
     $workflow_id = $this->getEntityWorkflowId($entity);
     $state = $this->getEntityState($entity);
 
-    if (isset($delete_scheme[$workflow_id][$state]) && $this->userHasOwnAnyRoles($entity, $account, $delete_scheme[$workflow_id][$state])) {
+    if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $delete_scheme[$workflow_id][$state])) {
       return AccessResult::allowed();
     }
 
     return AccessResult::forbidden();
-  }
-
-  /**
-   * Checks whether the user has at least one of the provided roles.
-   *
-   * @param \Drupal\node\NodeInterface $entity
-   *   The group content entity.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
-   * @param array $roles
-   *   A list of role ids indexed by keys 'own' and 'any' which represents
-   *   ownership and a second level of 'roles' for system roles and
-   *   'og_roles' for og roles.
-   *
-   * @return bool
-   *   True if the user has at least one of the roles provided.
-   */
-  protected function userHasOwnAnyRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
-    $own = $entity->getOwnerId() === $account->id();
-    if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {
-      return TRUE;
-    }
-    if ($own && isset($roles['own']) && $this->userHasRoles($entity, $account, $roles['own'])) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Checks whether the user has at least one of the provided roles.
-   *
-   * @param \Drupal\node\NodeInterface $entity
-   *   The group content entity.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
-   * @param array $roles
-   *   A list of role ids indexed by 'roles' for system roles and
-   *   'og_roles' for og roles.
-   *
-   * @return bool
-   *   True if the user has at least one of the roles provided.
-   */
-  protected function userHasRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
-    $parent = $this->getEntityParent($entity);
-    $membership = $this->membershipManager->getMembership($parent, $account->id());
-
-    // First check the 'any' permissions.
-    if (isset($roles['roles'])) {
-      if (array_intersect($account->getRoles(), $roles['roles'])) {
-        return TRUE;
-      }
-    }
-    if (isset($roles['og_roles']) && !empty($membership)) {
-      if (array_intersect($membership->getRolesIds(), $roles['og_roles'])) {
-        return TRUE;
-      }
-    }
-
-    return FALSE;
   }
 
   /**

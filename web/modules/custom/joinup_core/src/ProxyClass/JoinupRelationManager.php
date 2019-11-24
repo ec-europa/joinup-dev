@@ -178,7 +178,15 @@ namespace Drupal\joinup_core\ProxyClass {
          */
         public function getSolutionIds() : array
         {
-            return $this->lazyLoadItself()->getSolutionIds();
+          return $this->lazyLoadItself()->getSolutionIds();
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getContactInformationRelatedGroups(\Drupal\rdf_entity\RdfInterface $entity) : array
+        {
+          return $this->lazyLoadItself()->getContactInformationRelatedGroups($entity);
         }
 
     }
