@@ -53,7 +53,7 @@ Feature: Contact Information moderation
     And I click "Edit" in the "Entity actions" region
     Then I should see the heading "Edit Contact information Ceolwulf II of Mercia"
     And the following fields should not be present "Langcode, Translation"
-    And the following 3 buttons should be present "Update, Request changes, Request deletion"
+    And the following 2 buttons should be present "Update, Request changes"
     And the current workflow state should be "Validated"
     # A moderator has the right to delete contact information directly, so this
     # action should be shown.
