@@ -69,10 +69,12 @@ class RdfEntityReference extends EntityReference {
     if (
       // Has a non-empty root.
       !$root->isEmpty()
-      // And the root object is an entity adapter.
-      && $root->getPluginDefinition()['id'] === 'entity'
       // And points to a non-empty entity.
       && ($host_entity = $root->getValue())
+      // Which is not new.
+      && !$host_entity->isNew()
+      // And the root object is an entity adapter.
+      && $root->getPluginDefinition()['id'] === 'entity'
       // And the entity type is 'rdf_entity'.
       && $host_entity->getEntityTypeId() === 'rdf_entity'
       // And the RDF entity is in 'staging' graph.

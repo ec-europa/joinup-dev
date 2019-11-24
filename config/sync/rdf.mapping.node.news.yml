@@ -1,0 +1,62 @@
+uuid: a59d7a1c-19a0-42fa-a3e3-2766fe0863b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.news
+  module:
+    - node
+id: node.news
+targetEntityType: node
+bundle: news
+types:
+  - 'schema:NewsArticle'
+fieldMappings:
+  title:
+    properties:
+      - 'schema:name'
+  body:
+    properties:
+      - 'schema:articleBody'
+  field_attachment:
+    properties:
+      - 'schema:hasPart'
+  field_comments:
+    properties:
+      - ''
+  field_keywords:
+    properties:
+      - 'schema:keywords'
+  field_news_headline:
+    properties:
+      - 'schema:headline'
+  field_news_logo:
+    properties:
+      - 'schema:image'
+  field_news_referenced_solution:
+    properties:
+      - ''
+  field_news_source_url:
+    properties:
+      - 'schema:isBasedOn'
+  field_news_spatial_coverage:
+    properties:
+      - 'schema:spatialCoverage'
+  field_policy_domain:
+    properties:
+      - ''
+  field_shared_in:
+    properties:
+      - ''
+  field_site_featured:
+    properties:
+      - ''
+  field_site_pinned:
+    properties:
+      - ''
+  field_state:
+    properties:
+      - ''
+  og_audience:
+    properties:
+      - ''
