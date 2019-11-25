@@ -11,6 +11,7 @@ use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -41,6 +42,13 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   protected $relationManager;
 
   /**
+   * The membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
    * The workflow helper class.
    *
    * @var \Drupal\joinup_core\WorkflowHelperInterface
@@ -60,13 +68,16 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    *   The config factory.
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The relation manager service.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, JoinupRelationManagerInterface $relation_manager, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, JoinupRelationManagerInterface $relation_manager, MembershipManagerInterface $membership_manager, WorkflowHelperInterface $workflow_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
     $this->relationManager = $relation_manager;
+    $this->membershipManager = $membership_manager;
     $this->workflowHelper = $workflow_helper;
   }
 
@@ -80,6 +91,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       $plugin_definition,
       $container->get('config.factory'),
       $container->get('joinup_core.relations_manager'),
+      $container->get('og.membership_manager'),
       $container->get('joinup_core.workflow.helper')
     );
   }
@@ -134,12 +146,34 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   protected function userHasOwnAnyRoles(RdfInterface $entity, AccountInterface $account, array $roles): bool {
     $own = $entity->getOwnerId() === $account->id();
 
-    foreach ($this->relationManager->getContactInformationRelatedGroups($entity) as $group) {
-      if (isset($roles['any']) && $this->workflowHelper->userHasRolesInGroup($group, $account, $roles['any'])) {
+    if (isset($roles['any']['roles'])) {
+      if (array_intersect($account->getRoles(), $roles['any']['roles'])) {
         return TRUE;
       }
-      if ($own && isset($roles['own']) && $this->workflowHelper->userHasRolesInGroup($group, $account, $roles['own'])) {
+    }
+
+    if ($own && isset($roles['own']['roles'])) {
+      if (array_intersect($account->getRoles(), $roles['own']['roles'])) {
         return TRUE;
+      }
+    }
+
+    foreach ($this->relationManager->getContactInformationRelatedGroups($entity) as $group) {
+      $membership = $this->membershipManager->getMembership($group, $account->id());
+      if (empty($membership)) {
+        continue;
+      }
+
+      $role_ids = $membership->getRolesIds();
+      if (isset($roles['any']['og_roles'])) {
+        if (array_intersect($role_ids, $roles['any']['og_roles'])) {
+          return TRUE;
+        }
+      }
+      if ($own && isset($roles['own']['og_roles'])) {
+        if (array_intersect($membership->getRolesIds(), $roles['own']['og_roles'])) {
+          return TRUE;
+        }
       }
     }
 
