@@ -75,7 +75,13 @@
   {% set image_url = site_url ~ '/' ~ directory ~ '/images/digest-message/' ~ node.bundle ~ '_icon.png'%}
 {% endif %}
 
-{% set publication_date = node.getCreatedTime()|format_date('date_only') %}
+{% if content.field_document_publication_date|render %}
+  {% set publication_date = content.field_document_publication_date|render %}
+{% elseif content.field_event_date|render %}
+  {% set publication_date = content.field_event_date|render %}
+{% else %}
+  {% set publication_date = node.getCreatedTime()|format_date('date_only') %}
+{% endif %}
 
 {% if content.field_short_title|render %}
   {% set node_title = content.field_short_title|render %}

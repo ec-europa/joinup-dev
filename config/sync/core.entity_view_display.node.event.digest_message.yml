@@ -54,10 +54,10 @@ content:
     settings:
       timezone_override: ''
       separator: to
+      default_format: 'd m Y'
       day_diff_format: d
       month_diff_format: 'd F'
       year_diff_format: 'd F Y'
-      default_format: 'd m Y'
     third_party_settings:
       ds:
         ft:
@@ -67,7 +67,7 @@ content:
             lb-col: false
             classes: {  }
       joinup:
-        template_suggestion: ''
+        template_suggestion: no_wrappers
     type: daterange_condensed
     region: content
   field_event_logo:

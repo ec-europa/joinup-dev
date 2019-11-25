@@ -1923,6 +1923,18 @@ function joinup_theme_preprocess_swiftmailer(&$variables) {
  */
 function joinup_theme_preprocess_message_digest(&$variables) {
   $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+
+  // TODO: Set online version url.
+  $variables['online_version_url'] = $variables['site_url'];
+
+  // TODO: Set the receiver name version url.
+  $variables['receiver_name'] = 'Receiver name';
+
+  // TODO: Set the issue date.
+  $variables['issue_date'] = '20/11/2019';
+
+  // TODO: Set the frequency.
+  $variables['frequency'] = 'Frequency';
 }
 
 /**

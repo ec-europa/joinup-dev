@@ -32,8 +32,208 @@
 #}
 <html>
 <head>
-{# TODO: Change url #}
-<link rel="stylesheet" type="text/css" href="{{ site_url ~ '/' ~ directory }}/css/email.css">
+<style type="text/css">
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #484848;
+    padding: 0;
+    margin: 0;
+    line-height: 1.75em;
+  }
+  a {
+    color: #F5A623;
+  }
+  p {
+    text-align: left;
+    margin: 0 auto;
+  }
+  .img-container, .node--img {
+    font-size: 0;
+    line-height: 0;
+  }
+  .separator {
+    background: #E9EDEE;
+    height: 30px;
+  }
+  .node--container {
+    border-bottom: 3px solid #EEEEEE;
+  }
+  .node {
+    border-bottom: 20px solid #E9EDEE;
+  }
+  .claim {
+    font-size: 10px;
+    color: #223044;
+    line-height: 1.5em;
+  }
+  .web-link {
+    text-align: center;
+    font-size: 10px;
+    color: #B5B5B5;
+    line-height: 1.5em;
+  }
+  .issue, .lang {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+  .lang a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  .H-small {
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 300;
+    line-height: normal
+  }
+  .H-large {
+    font-size: 48px;
+    color: #ffffff;
+    font-weight: bold;
+    line-height: normal
+  }
+  .font-20px {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .node--date span {
+    background: #2C4163;
+    border: 3px solid #2C4163;
+    font-weight: bold;
+    font-size: 12px;
+    color: white;
+    text-transform: uppercase;
+    line-height: normal !important;
+  }
+  .node--separator {
+    height: 20px;
+    background: #E9EDEE;
+    font-size: 0;
+    line-height: 0;
+  }
+  .node--separator-small {
+    height: 10px;
+    background: #E9EDEE;
+    font-size: 0;
+    line-height: 0;
+  }
+  .node--end-separator {
+    border-bottom: 2px solid #F5A623;
+  }
+  .node--title, .node--title a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2C4163;
+    line-height: 1.25em;
+    text-decoration: none;
+  }
+  .node--button-container {
+    color: #ffffff;
+    font-size: 12px;
+    background: #F5A623;
+  }
+  .node--button-link {
+    width: 100%;
+    height: 30px;
+    vertical-align: middle;
+  }
+  .node--button-link a {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: .5px;
+    line-height: 130%;
+    padding-top: 10px;
+    padding-right: 25px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    text-transform: uppercase;
+    min-width: 110px;
+    text-decoration: none;
+    vertical-align: middle;
+    display: block;
+    width: auto;
+    background: #F5A623;
+  }
+  .footer {
+    color: #BAC1CC;
+    font-size: 12px;
+  }
+  .footer--separator-left {
+    border-left: 1px solid #2C4163;
+  }
+  .footer--separator-left-right {
+    border-left: 1px solid #2C4163;
+    border-right: 1px solid #2C4163;
+  }
+  .footer--red {
+    color: #ffffff;
+    line-height: 1.5em;
+    font-size: 12px;
+  }
+  .desktop-hidden {
+    display: none;
+    font-size: 0;
+    line-height: 0;
+  }
+  .orange {
+    color: #F5A623;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .hidden {
+      display: none !important;
+    }
+    .hidden--img {
+      width: 30px !important;
+    }
+    .hidden--img img {
+      display: none !important;
+    }
+    .block {
+      display: block !important;
+      width: 100% !important;
+    }
+    .desktop-hidden {
+      display: block;
+    }
+    .mobile-logo {
+      width: 100%;
+      border-bottom: 2px solid #ffffff;
+    }
+    .mobile-container {
+      width: 100%;
+    }
+    .node--container {
+      text-align: center;
+    }
+    .node {
+      max-width: 96%;
+      margin: 0 auto;
+      padding-left: 2%;
+      padding-right: 2%;
+    }
+    .footer--social-icons {
+      width: 100%;
+    }
+    .footer--social-icons td {
+      width: 10%;
+    }
+    .footer--social-icons td img {
+      width: 100% !important;
+      height: auto !important;
+    }
+    .mobile--img-contaier img {
+      object-fit: cover;
+      width: 100% !important;
+      height: 200px !important;
+      margin-bottom: 10px;
+    }
+  }
+</style>
 </head>
 <body style="margin:0; padding:0;">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
