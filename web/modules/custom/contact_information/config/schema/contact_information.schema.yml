@@ -3,14 +3,14 @@ contact_information.settings:
   label: 'Contact information workflow permission settings'
   mapping:
     transitions:
-      type: sequence
       label: 'Allowed transitions'
+      type: sequence
       sequence:
+        label: 'Target state'
         type: sequence
-        label: 'Transition ID'
         sequence:
-          type: contact_information.workflow_ownership_settings
           label: 'Source state'
+          type: contact_information.workflow_ownership_settings
 
 contact_information.workflow_ownership_settings:
   label: 'Ownership settings'
@@ -18,10 +18,10 @@ contact_information.workflow_ownership_settings:
   mapping:
     own:
       label: 'Own content'
-      type: joinup_community_content.workflow_role_settings
+      type: contact_information.workflow_role_settings
     any:
       label: 'Any content'
-      type: joinup_community_content.workflow_role_settings
+      type: contact_information.workflow_role_settings
 
 contact_information.workflow_role_settings:
   label: 'Role settings'
