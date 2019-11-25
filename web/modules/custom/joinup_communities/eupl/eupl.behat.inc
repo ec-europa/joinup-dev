@@ -11,6 +11,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\eupl\Eupl;
+use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\EntityTrait;
@@ -18,6 +19,7 @@ use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
 use Drupal\node\Entity\Node;
 use Drupal\rdf_entity\Entity\Rdf;
+use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -273,6 +275,37 @@ class EuplSubContext extends DrupalSubContextBase {
     $solution->delete();
 
     Rdf::load('http://example.com/owner')->delete();
+  }
+
+  /**
+   * Inserts an 'x' character in the licence comparer checked cells.
+   *
+   * There's no way to identify the checked cells in tests as the licence
+   * comparer table cells are all empty. Visually, a human is able to identify
+   * them as they are CSS styled. For the purpose of the test we insert an 'x'
+   * character so that the test is able to identify the checked cells.
+   *
+   * @param \LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope $scope
+   *   The "after table fetch" scope object.
+   *
+   * @AfterTableFetch
+   */
+  public static function markLicenceComparerCheckedCells(AfterTableFetchScope $scope): void {
+    $html_manipulator = new HtmlManipulator($scope->getHtml());
+
+    if (!$html_manipulator->filter('table[data-drupal-selector="licence-comparer"]')->getNode(0)) {
+      // We're only interested in the licence comparer table.
+      return;
+    }
+
+    /** @var \DOMNode $node */
+    foreach ($html_manipulator->filter('.icon--check-2') as $node) {
+      // Insert an 'x' character the licence comparer table checked cells so
+      // that the tests are able to identify them.
+      // @see tests/features/communities/eupl/jla.feature
+      $node->textContent = 'x';
+    }
+    $scope->setHtml($html_manipulator->html());
   }
 
 }

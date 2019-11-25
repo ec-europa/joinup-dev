@@ -11,7 +11,7 @@
   color: #fff
   text-align: center
   span
-    font-weight: bold
+    font-weight: $font-weight-medium
     vertical-align: middle
     line-height: 45px
 
@@ -142,6 +142,10 @@
   .licence-filter__item
     a
       color: $color-green-warm
+  &.licence-comparer__sidebar-header
+    background-color: $color-green-warm
+  &.licence-comparer__sidebar-cell
+    color: $color-green-warm
 
 .licence-filter--must
   .licence-filter__header
@@ -149,6 +153,10 @@
   .licence-filter__item
     a
       color: $color-beige-warm
+  &.licence-comparer__sidebar-header
+    background-color: $color-beige-warm
+  &.licence-comparer__sidebar-cell
+    color: $color-beige-warm
 
 .licence-filter--cannot
   .licence-filter__header
@@ -156,6 +164,10 @@
   .licence-filter__item
     a
       color: $color-red-warm
+  &.licence-comparer__sidebar-header
+    background-color: $color-red-warm
+  &.licence-comparer__sidebar-cell
+    color: $color-red-warm
 
 .licence-filter--compatible
   .licence-filter__header
@@ -163,6 +175,10 @@
   .licence-filter__item
     a
       color: $color-blue-warm
+  &.licence-comparer__sidebar-header
+    background-color: $color-blue-warm
+  &.licence-comparer__sidebar-cell
+    color: $color-blue-warm
 
 .licence-filter--law
   .licence-filter__header
@@ -170,6 +186,10 @@
   .licence-filter__item
     a
       color: $color-grey-warm
+  &.licence-comparer__sidebar-header
+    background-color: $color-grey-warm
+  &.licence-comparer__sidebar-cell
+    color: $color-grey-warm
 
 .licence-filter--support
   .licence-filter__header
@@ -177,6 +197,10 @@
   .licence-filter__item
     a
       color: $color-orange-warm
+  &.licence-comparer__sidebar-header
+    background-color: $color-orange-warm
+  &.licence-comparer__sidebar-cell
+    color: $color-orange-warm
 
 .licence-tile__line--can
   .licence-tile__label
@@ -213,6 +237,51 @@
     background-color: $color-orange-warm
   .licence-tile__value
     color: $color-orange-warm
+
+.licence-comparer
+  border-spacing: 0
+  width: 100%
+  +breakpoint(tablet)
+    table-layout: fixed
+  td
+    padding: 5px
+  .icon
+    font-size: $font-size-xsmall
+    color: #fff
+    background: $color-orange
+    border-radius: 50%
+    padding: 5px
+  &__wrapper
+    overflow-x: auto
+  &__cell, &__header
+    background: #fff
+    padding: 5px
+    border: 5px solid $color-grey-bg
+    text-align: center
+    &:nth-child(2)
+      border-left-width: 10px
+  &__header
+    font-weight: $font-weight-bold
+    padding: 10px
+  &__sidebar-header
+    color: #fff
+    padding: 5px
+    height: 45px
+    text-align: center
+    font-weight: $font-weight-medium
+    font-size: $font-size-base
+  &__sidebar-cell
+    border: 5px solid #fff
+    background: #fff
+  &__empty-cell
+    background: $color-grey-filler
+  &__back
+    color: $color-base
+    margin-bottom: $table-margin
+    text-decoration: none
+    display: block
+    font-weight: $font-weight-medium
+    font-size: $font-size-base
 
 // Dependiencies
 // --------------------------------------------------
