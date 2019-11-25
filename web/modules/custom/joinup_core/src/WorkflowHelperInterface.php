@@ -203,22 +203,6 @@ interface WorkflowHelperInterface {
    * @return bool
    *   True if the user has at least one of the roles provided.
    */
-  public function userHasRolesInParentGroup(EntityInterface $entity, AccountInterface $account, array $roles): bool;
-
-  /**
-   * Checks if the user has at least one required role in the group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
-   * @param array $roles
-   *   A list of role ids indexed by 'roles' for system roles and
-   *   'og_roles' for og roles.
-   *
-   * @return bool
-   *   True if the user has at least one of the roles provided.
-   */
-  public function userHasRolesInGroup(EntityInterface $entity, AccountInterface $account, array $roles): bool;
+  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles): bool;
 
 }

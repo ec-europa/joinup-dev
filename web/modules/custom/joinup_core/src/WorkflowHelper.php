@@ -247,10 +247,10 @@ class WorkflowHelper implements WorkflowHelperInterface {
    */
   public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles): bool {
     $own = $entity->getOwnerId() === $account->id();
-    if (isset($roles['any']) && $this->userHasRolesInParentGroup($entity, $account, $roles['any'])) {
+    if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {
       return TRUE;
     }
-    if ($own && isset($roles['own']) && $this->userHasRolesInParentGroup($entity, $account, $roles['own'])) {
+    if ($own && isset($roles['own']) && $this->userHasRoles($entity, $account, $roles['own'])) {
       return TRUE;
     }
 
@@ -260,20 +260,13 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function userHasRolesInParentGroup(EntityInterface $entity, AccountInterface $account, array $roles): bool {
+  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles): bool {
     $parent = $this->getEntityParent($entity);
     if (empty($parent)) {
       return FALSE;
     }
 
-    return $this->userHasRolesInGroup($parent, $account, $roles);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function userHasRolesInGroup(EntityInterface $entity, AccountInterface $account, array $roles): bool {
-    $membership = $this->membershipManager->getMembership($entity, $account->id());
+    $membership = $this->membershipManager->getMembership($parent, $account->id());
 
     // First check the 'any' permissions.
     if (isset($roles['roles'])) {
