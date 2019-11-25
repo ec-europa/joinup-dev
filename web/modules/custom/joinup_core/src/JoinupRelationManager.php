@@ -172,7 +172,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    * {@inheritdoc}
    */
   public function getUserMembershipsByRole(AccountInterface $user, string $role, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $storage = $this->getRdfStorage();
+    $storage = $this->entityTypeManager->getStorage('og_membership');
 
     // Fetch all the memberships of the user, filtered by role and state.
     $query = $storage->getQuery();
