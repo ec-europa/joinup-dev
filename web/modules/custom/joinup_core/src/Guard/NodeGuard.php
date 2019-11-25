@@ -109,7 +109,7 @@ class NodeGuard implements GuardInterface {
     if (!isset($permission_scheme[$workflow_id][$e_library][$transition->getId()])) {
       return FALSE;
     }
-    return $this->workflowHelper->userHasOwnAnyRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$e_library][$transition->getId()]);
+    return $this->workflowHelper->userHasRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$e_library][$transition->getId()]);
   }
 
   /**
