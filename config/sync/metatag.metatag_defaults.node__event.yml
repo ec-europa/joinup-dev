@@ -1,0 +1,22 @@
+uuid: 3e219c80-9174-48a7-863d-ba27e35da2a2
+langcode: en
+status: true
+dependencies: {  }
+id: node__event
+label: 'Content: Event'
+tags:
+  abstract: uyioyuio
+  geo_placename: yuio
+  description: yuio
+  title: yuio
+  schema_event_is_accessible_for_free: 'False'
+  schema_event_door_time: 'h,jk,hj'
+  schema_event_end_date: 'yjk,nnbhukt'
+  schema_event_url: yuioyuiouyioyuio
+  schema_event_image: 'a:5:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:4:"True";s:3:"url";s:8:"nm,.nm,.";s:5:"width";s:15:"m,.nm,.jh,jhkmu";s:6:"height";s:10:"hjkluyiku,";}'
+  schema_event_location: 'a:4:{s:5:"pivot";s:1:"1";s:5:"@type";s:18:"AdministrativeArea";s:4:"name";s:8:"hjklhjkl";s:3:"url";s:11:"hjkljhklhjk";}'
+  schema_event_id: 'hj,jkjk'
+  schema_event_type: Event
+  schema_event_description: hjklhjklhjklhjklhjkl
+  schema_event_name: yuioyuioyiuo
+  schema_event_start_date: 'muiymu,'

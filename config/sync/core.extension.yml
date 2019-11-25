@@ -11,6 +11,7 @@ module:
   cas_account_link: 0
   cas_attributes: 0
   changed_fields: 0
+  checklistapi: 0
   ckeditor: 0
   collection: 0
   comment: 0
@@ -89,6 +90,7 @@ module:
   message: 0
   message_notify: 0
   meta_entity: 0
+  metatag: 0
   moderation: 0
   nio: 0
   node: 0
@@ -112,7 +114,6 @@ module:
   persistent_login: 0
   pipeline: 0
   r4032login: 0
-  rdf: 0
   rdf_draft: 0
   rdf_entity: 0
   rdf_entity_provenance: 0
@@ -122,12 +123,19 @@ module:
   redirect: 0
   redis: 0
   rest: 0
+  schema_article: 0
+  schema_book: 0
+  schema_course: 0
+  schema_event: 0
+  schema_metatag: 0
+  schema_person: 0
   search_api: 0
   search_api_arbitrary_facet: 0
   search_api_db: 0
   search_api_field: 0
   search_api_solr: 0
   semic: 0
+  seo_checklist: 0
   serialization: 0
   simplenews: 0
   smart_trim: 0

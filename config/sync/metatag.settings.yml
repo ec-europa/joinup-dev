@@ -1,0 +1,5 @@
+entity_type_groups:
+  node:
+    news:
+      basic: basic
+      advanced: advanced
