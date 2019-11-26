@@ -23,7 +23,6 @@ dependencies:
   module:
     - datetime
     - ds
-    - joinup
     - smart_trim
     - user
 _core:

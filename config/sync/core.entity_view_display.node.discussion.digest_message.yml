@@ -16,7 +16,8 @@ dependencies:
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - text
+    - ds
+    - smart_trim
     - user
 _core:
   default_config_hash: MH5IsqzkjyHQwMAIhBMkvdrrpJeonD3UC7kQpOvXJX0
@@ -28,9 +29,30 @@ content:
   body:
     weight: 0
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+      joinup:
+        template_suggestion: no_wrappers
+    type: smart_trim
     region: content
 hidden:
   field_attachment: true

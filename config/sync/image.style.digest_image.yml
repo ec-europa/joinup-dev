@@ -5,11 +5,11 @@ dependencies: {  }
 name: digest_image
 label: 'Digest image'
 effects:
-  43bfeafd-7c8c-4312-9322-24e860f93fef:
-    uuid: 43bfeafd-7c8c-4312-9322-24e860f93fef
-    id: image_scale
+  2ec1eedc-9ca7-4a6e-822b-b45f733d731a:
+    uuid: 2ec1eedc-9ca7-4a6e-822b-b45f733d731a
+    id: image_scale_and_crop
     weight: 1
     data:
-      width: 500
-      height: 500
-      upscale: false
+      width: 400
+      height: 400
+      anchor: center-center
