@@ -16,7 +16,7 @@
   };
 
   /**
-   * Adds a class to featured tiles when not in scope of a collection.
+   * Adds a class to featured tiles when not in scope of a group.
    *
    * @type {Drupal~behavior}
    *
@@ -25,12 +25,12 @@
    */
   Drupal.behaviors.siteWideFeatured = {
     attach: function (context) {
-      var collection = $('[data-drupal-collection-context]').data('drupal-collection-context');
+      var group = $('[data-drupal-group-context]').data('drupal-group-context');
 
-      // If there is a global collection context, bail out. We mark tiles as
+      // If there is a global group context, bail out. We mark tiles as
       // globally featured only when we have no context, meaning we are in a
       // "global" page (search, collections, solutions, content).
-      if (collection) {
+      if (group) {
         return;
       }
 

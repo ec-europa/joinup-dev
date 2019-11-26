@@ -1908,6 +1908,11 @@ function joinup_theme_preprocess_node(&$variables) {
     $variables['attributes']['data-drupal-parent-id'] = $parent->id();
     $variables['attributes']['data-drupal-parent-label'] = $parent->label();
   }
+
+  // If the node is shared somewhere, attach the related library.
+  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
+    $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
+  }
 }
 
 /**
