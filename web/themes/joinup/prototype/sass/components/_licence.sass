@@ -76,17 +76,36 @@
   display: inline-block
   text-decoration: none
   padding: 10px 30px
-  color: $color-base
   border: 2px solid $color-blue-warm
   font-size: $font-size-small
   border-radius: 5px
+  background: $color-blue-warm
+  color: #fff
   &:hover
-    color: #fff
-    background: $color-blue-warm
-  +breakpoint(mobile)
+    color: $color-base
+    background: transparent
+
+.licence-tile__button--disabled
+  background: transparent
+  color: $color-base
+  border-color: $color-orange-warm
+  pointer-events: none
+
+.licence-tile__actions
+  +breakpoint(lg-desktop)
     position: absolute
     right: 20px
     bottom: 20px
+
+.licence-tile__actions-item
+  display: inline-block
+  margin-right: $field-margin
+  margin-bottom: $field-margin
+  &:last-child
+    margin-right: 0
+    margin-bottom: 0
+  +breakpoint(lg-desktop)
+    margin-bottom: 0
 
 .licence-counter
   font-weight: bold
