@@ -45,10 +45,10 @@ Feature: Subscribing to community content in collections
       | Canned cherries | Sour cherries for pies | Products of Bulgaria | validated | bisera |
       | Plovdiv         | Seven hills            | Cities of Bulgaria   | validated | hristo |
     And event content:
-      | title           | body           | collection           | state     | author |
-      | Sunflower seeds | A tasty snack  | Products of Bulgaria | validated | bisera |
-      | Varna           | Summer capital | Cities of Bulgaria   | draft     | kalin  |
-      | Stara Zagora    | Historic       | Cities of Bulgaria   | validated | hristo |
+      | title           | body           | collection           | state     | author | start date          | end date            |
+      | Sunflower seeds | A tasty snack  | Products of Bulgaria | validated | bisera | 2019-11-28T11:12:13 | 2019-11-28T11:12:13 |
+      | Varna           | Summer capital | Cities of Bulgaria   | draft     | kalin  | 2019-12-05T12:00:00 | 2019-12-15T12:00:00 |
+      | Stara Zagora    | Historic       | Cities of Bulgaria   | validated | hristo | 2020-01-18T18:30:00 | 2020-01-19T00:00:00 |
     And news content:
       | title    | body                        | collection           | state     | author |
       | Rose oil | A widely used essential oil | Products of Bulgaria | validated | bisera |
