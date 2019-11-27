@@ -211,3 +211,36 @@ Feature: Search inside groups
     Then the page should show the following chip:
       | Chalet destruction |
     And the page should be cached
+
+  @javascript
+  Scenario: Group filters remain active in the search bar when viewing search results
+    When I go to the homepage of the "Chalet construction" collection
+    And I open the search bar by clicking on the search icon
+    Then the page should show the following chip:
+      | Chalet construction |
+    When I enter "ground" in the search bar and press enter
+    Then "Chalet construction (2)" should be selected in the "from" inline facet
+    And the page should show the tiles "Ground plan, Natural materials"
+    And the page should show the following chip:
+      | Chalet construction |
+    When I press the remove button on the chip "Chalet construction"
+    And I submit the search by pressing enter
+    Then the page should not contain any chips
+    And the page should show the tiles "Ground plan, Pre-alpha, Natural materials, Presenting DrillMaster X88"
+
+  @javascript
+  Scenario: Group filter chips appear in search bar after selecting them in facets
+    When I visit the search page
+    Then "All" should be selected in the "from" inline facet
+    And I should see 12 tiles
+
+    When I open the search bar by clicking on the search icon
+    Then the page should not contain any chips
+
+    When I click "Inclined foundations (7)" in the "from" inline facet in the "Left sidebar" region
+    Then "Inclined foundations (7)" should be selected in the "from" inline facet
+    And I should see 7 tiles
+
+    When I open the search bar by clicking on the search icon
+    Then the page should show the following chip:
+      | Inclined foundations |

@@ -244,7 +244,47 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   public function iClickAnInlineFacetItemLinkInRegion(string $link, string $facet, string $region): void {
     $region = $this->getRegion($region);
-    $this->findFacetByAlias($facet, $region)->clickLink($link);
+    $facet = $this->findFacetByAlias($facet, $region);
+    $this->openFacetDropdown($facet);
+    $facet->clickLink($link);
+  }
+
+  /**
+   * Opens the dropdown for the given facet element.
+   *
+   * @param \Behat\Mink\Element\NodeElement $facet
+   *   The facet element, as returned by `TraversingTrait::findFacetByAlias()`.
+   */
+  protected function openFacetDropdown(NodeElement $facet): void {
+    // Only needed when running in a JS enabled browser.
+    if ($this->browserSupportsJavaScript()) {
+      // Only open the dropdown if it is not already open.
+      if (!$this->isFacetDropdownVisible($facet)) {
+        // Click the arrow down button and wait for the animation to finish.
+        $facet->find('css', '.filter__icon.icon--arrow-down')->click();
+        $this->waitUntil(function () use ($facet): bool {
+          $is_visible = (bool) $facet->find('css', 'div.mdl-menu__container.is-visible');
+          $is_animating = (bool) $facet->find('css', 'ul.filter__menu.is-animating');
+          return $is_visible && !$is_animating;
+        });
+      }
+    }
+  }
+
+  /**
+   * Checks whether the dropdown for the given facet element is visible.
+   *
+   * @param \Behat\Mink\Element\NodeElement $facet
+   *   The facet element, as returned by `TraversingTrait::findFacetByAlias()`.
+   *
+   * @return bool
+   *   TRUE if the dropdown is visible.
+   */
+  protected function isFacetDropdownVisible(NodeElement $facet): bool {
+    // There is no point calling this method when JS is not enabled, since in
+    // this case it will always return FALSE.
+    $this->assertJavaScriptEnabledBrowser();
+    return (bool) $facet->find('css', 'div.mdl-menu__container.is-visible');
   }
 
   /**
