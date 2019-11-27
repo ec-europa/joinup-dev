@@ -9,7 +9,7 @@ third_party_settings:
     mapping:
       value:
         predicate: 'http://spdx.org/rdf/terms#licenseId'
-        format: 'xsd:string'
+        format: literal
 id: rdf_entity.field_spdx_licence_id
 field_name: field_spdx_licence_id
 entity_type: rdf_entity
