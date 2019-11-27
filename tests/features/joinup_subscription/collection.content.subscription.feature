@@ -55,53 +55,37 @@ Feature: Subscribing to community content in collections
       | Burgas   | City of dreams              | Cities of Bulgaria   | validated | hristo |
 
     Then the daily digest for hristo should contain the following message:
-      | mail_subject | Duck liver                |
-      | mail_body    | Rich buttery and delicate |
+      | mail_body | Duck liver |
     And the daily digest for hristo should contain the following message:
-      | mail_subject | Sunflower seeds |
-      | mail_body    | A tasty snack   |
+      | mail_body | Sunflower seeds |
     And the daily digest for hristo should contain the following message:
-      | mail_subject | Rose oil                    |
-      | mail_body    | A widely used essential oil |
+      | mail_body | Rose oil |
     And the daily digest for hristo should contain the following message:
-      | mail_subject | Plovdiv     |
-      | mail_body    | Seven hills |
+      | mail_body | Plovdiv |
     And the daily digest for hristo should contain the following message:
-      | mail_subject | Stara Zagora |
-      | mail_body    | Historic     |
+      | mail_body | Stara Zagora |
     And the weekly digest for bisera should contain the following message:
-      | mail_subject | Duck liver                |
-      | mail_body    | Rich buttery and delicate |
+      | mail_body | Duck liver |
     And the weekly digest for bisera should contain the following message:
-      | mail_subject | Canned cherries        |
-      | mail_body    | Sour cherries for pies |
+      | mail_body | Canned cherries |
     And the weekly digest for bisera should contain the following message:
-      | mail_subject | Rose oil                    |
-      | mail_body    | A widely used essential oil |
+      | mail_body | Rose oil |
     And the weekly digest for bisera should contain the following message:
-      | mail_subject | Sofia               |
-      | mail_body    | Grows without aging |
+      | mail_body | Sofia |
     And the weekly digest for bisera should contain the following message:
-      | mail_subject | Stara Zagora |
-      | mail_body    | Historic     |
+      | mail_body | Stara Zagora |
     And the weekly digest for bisera should contain the following message:
-      | mail_subject | Burgas         |
-      | mail_body    | City of dreams |
+      | mail_body | Burgas |
     And the monthly digest for kalin should contain the following message:
-      | mail_subject | Canned cherries        |
-      | mail_body    | Sour cherries for pies |
+      | mail_body | Canned cherries |
     And the monthly digest for kalin should contain the following message:
-      | mail_subject | Sunflower seeds |
-      | mail_body    | A tasty snack   |
+      | mail_body | Sunflower seeds |
     And the monthly digest for kalin should contain the following message:
-      | mail_subject | Sofia               |
-      | mail_body    | Grows without aging |
+      | mail_body | Sofia |
     And the monthly digest for kalin should contain the following message:
-      | mail_subject | Plovdiv     |
-      | mail_body    | Seven hills |
+      | mail_body | Plovdiv |
     And the monthly digest for kalin should contain the following message:
-      | mail_subject | Burgas         |
-      | mail_body    | City of dreams |
+      | mail_body | Burgas |
 
     # Check that only the user's chosen frequency is digested.
     But the weekly digest for hristo should not contain any messages
@@ -113,22 +97,18 @@ Feature: Subscribing to community content in collections
 
     # The digest should not include news about content that is not published.
     And the weekly digest for bisera should not contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
     And the monthly digest for kalin should not contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
 
     # Publish an existing unpublished community content. It should be included
     # in the next digest.
     When the workflow state of the "Ruse" content is changed to "validated"
 
     Then the weekly digest for bisera should contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
     And the monthly digest for kalin should contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
 
     # Check that the messages are formatted correctly.
     Given all message digests have been delivered
@@ -169,15 +149,11 @@ Feature: Subscribing to community content in collections
     # included in the next digest.
     When the workflow state of the "Ruse" content is changed to "draft"
     Then the weekly digest for bisera should not contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
     And the monthly digest for kalin should not contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
     When the workflow state of the "Ruse" content is changed to "validated"
     Then the weekly digest for bisera should not contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
     And the monthly digest for kalin should not contain the following message:
-      | mail_subject | Ruse          |
-      | mail_body    | Little Vienna |
+      | mail_body | Ruse |
