@@ -1930,7 +1930,7 @@ function joinup_theme_preprocess_message_digest(&$variables) {
   $current_time = \Drupal::time()->getCurrentTime();
   $variables['issue_date'] = date('d/m/Y', $current_time);
 
-  $variables['frequency'] = $user->field_user_frequency->value;
+  $variables['frequency'] = Unicode::ucfirst($user->field_user_frequency->value);
 }
 
 /**
