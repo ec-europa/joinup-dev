@@ -85,6 +85,15 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
               command="sed -i 's/^cphp\.//' build.properties.local"
               checkreturn="true"
               passthru="true" />
+        <echo message="Create the Behat configuration files to run in parallel." />
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-only-selenium-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-only-selenium-cphp.yml.dist" />
+        </phingcall>
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-no-selenium-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-no-selenium-cphp.yml.dist" />
+        </phingcall>
     </target>
 
     <!-- provision new demo/test stack on AWS -->
