@@ -80,8 +80,8 @@ Feature:
     And I should not see the text "Restless Burst"
     # Verify that the CSV link is present.
     # Note: the link is rendered as icon in a real browser.
-    And I should see the link "Subscribe to Moderator: Solutions by type"
-    When I click "Subscribe to Moderator: Solutions by type"
+    And I should see the link "Download CSV"
+    When I click "Download CSV"
     Then I should get a valid web page
 
     # Verify that access to the CSV endpoint is forbidden for anonymous and normal users.
