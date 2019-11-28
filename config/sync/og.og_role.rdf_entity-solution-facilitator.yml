@@ -38,6 +38,8 @@ permissions:
   - 'invite facilitators'
   - 'invite users to discussions'
   - 'manage members'
+  - 'pin group content'
+  - 'unpin group content'
   - 'update any asset_distribution rdf_entity'
   - 'update any asset_release rdf_entity'
   - 'update any navigation ogmenu_instance'
