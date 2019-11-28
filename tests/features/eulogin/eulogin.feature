@@ -366,7 +366,7 @@ Feature: Log in through EU Login
     When I press "Save"
     Then I should see the following success messages:
       | success messages                                                                |
-      | An e-mail has been send to the user to notify him on the change to his account. |
+      | An e-mail has been sent to the user to notify him on the change to his account. |
       | The changes have been saved.                                                    |
 
     When I click "Edit" in the "Joe Doe" row
