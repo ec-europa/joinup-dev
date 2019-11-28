@@ -934,7 +934,6 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function updateWorkflowState(string $title, string $entity_type, string $state): void {
     $entity_type = self::translateEntityTypeAlias($entity_type);
-    \Drupal::entityTypeManager()->getStorage($entity_type)->resetCache();
     $entity = $this->getEntityByLabel($entity_type, $title);
     $this->getEntityStateField($entity)->set('value', $state);
     if ($entity instanceof RevisionableInterface) {

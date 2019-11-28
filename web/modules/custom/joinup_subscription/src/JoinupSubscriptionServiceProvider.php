@@ -21,8 +21,10 @@ class JoinupSubscriptionServiceProvider extends ServiceProviderBase {
    * {@inheritdoc}
    */
   public function alter(ContainerBuilder $container) {
-    $definition = $container->getDefinition('message_digest.formatter');
-    $definition->setClass('Drupal\joinup_subscription\DigestFormatter');
+    if ($container->hasDefinition('message_digest.formatter')) {
+      $definition = $container->getDefinition('message_digest.formatter');
+      $definition->setClass('Drupal\joinup_subscription\DigestFormatter');
+    }
   }
 
 }
