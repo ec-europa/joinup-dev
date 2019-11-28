@@ -350,6 +350,11 @@
             "url": "https://packages.drupal.org/8"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/idimopoulos/sparql_entity_storage.git",
+            "no-api": true
+        },
+        {
             "type": "package",
             "package": {
                 "name": "typhonius/behattask",
