@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
@@ -43,6 +44,22 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
   use UtilityTrait;
   use TagTrait;
   use TraversingTrait;
+
+  /**
+   * Reports the scenario being tested in the log.
+   *
+   * @param \Behat\Behat\Hook\Scope\BeforeScenarioScope $scope
+   *   The scenario scope.
+   *
+   * @beforeScenario
+   */
+  public function reportScenario(BeforeScenarioScope $scope): void {
+    print $scope->getScenario()->getTitle();
+    // Depending on the output formatter used, Behat will suppress any output
+    // generated during the test. Flush the output buffers so out message will
+    // show up in the test logs.
+    ob_flush();
+  }
 
   /**
    * Navigates to the My subscriptions form of the given user.
