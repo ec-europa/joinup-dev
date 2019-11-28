@@ -571,6 +571,7 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.content_overview.page_1':
       case 'entity.rdf_entity.member_overview':
       case 'entity.user.canonical':
+      case 'joinup_licence.comparer':
         $is_listing = TRUE;
         break;
     }
@@ -666,6 +667,17 @@ function joinup_preprocess_file_managed_file(array &$variables) {
 function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#extra_suggestion']) && $variables['element']['#extra_suggestion'] == 'comment_plain') {
     $suggestions[] = 'textarea__comment_plain';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_table_alter(array &$suggestions, array $variables) {
+  // Add custom table template for the licence comparer.
+  if (isset($variables['attributes']['data-drupal-selector'])
+    && $variables['attributes']['data-drupal-selector'] == 'licence-comparer') {
+    $suggestions[] = 'table__licence_comparer';
   }
 }
 
@@ -1671,6 +1683,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       $variables['category_lists'] = $category_lists;
     }
   }
+  $variables['spdx_licence_id_plain'] = $entity->field_licence_spdx_licence->entity->field_spdx_licence_id->value;
 }
 
 /**
@@ -1907,6 +1920,11 @@ function joinup_theme_preprocess_node(&$variables) {
   if ($parent) {
     $variables['attributes']['data-drupal-parent-id'] = $parent->id();
     $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+
+  // If the node is shared somewhere, attach the related library.
+  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
+    $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
   }
 }
 

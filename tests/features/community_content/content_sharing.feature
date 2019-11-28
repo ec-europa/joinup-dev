@@ -158,7 +158,7 @@ Feature: Sharing content between collections
       | news         |
 
   @javascript
-  Scenario Outline: Share/Unshare contextual link should only be visible to facilitators
+  Scenario Outline: Share/Unshare should be visible according to the group permissions.
     Given collections:
       | title      | state     |
       | Westeros   | validated |
@@ -203,9 +203,8 @@ Feature: Sharing content between collections
 
     When I am logged in as "Arya Stark"
     And I click "Keep up to date"
-    Then I should see the contextual link "Share" in the "Iron throne" tile
-    # Link vary by user og role since the 2 users up to now have the same permissions outside og.
-    And I should see the contextual link "Unshare" in the "Iron throne" tile
+    # Link 'Unshare' vary by user og role since the 2 users up to now have the same permissions outside og.
+    Then I should see the contextual links "Share, Unshare" in the "Iron throne" tile
     When I click the contextual link "Unshare" in the "Iron throne" tile
     Then a modal should open
     And the following fields should be present "Essos city"
