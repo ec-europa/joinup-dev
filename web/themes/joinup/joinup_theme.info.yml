@@ -11,6 +11,8 @@ libraries:
 libraries-extend:
   core/drupal.tableselect:
     - joinup_theme/tableselect
+  facets/drupal.facets.checkbox-widget:
+    - joinup_theme/facets-extend
 
 stylesheets-remove:
   - core/themes/stable/css/core/vertical-tabs.css

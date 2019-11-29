@@ -6,5 +6,6 @@
 // --------------------------------------------------
 .section--sidebar-left
   +hidden-print
-  +breakpoint(xxs, sm)
-    margin: 0
+  &:not(.section--sidebar-left--search)
+    +breakpoint(xxs, sm)
+      margin: 0

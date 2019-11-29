@@ -54,3 +54,8 @@ tableselect:
   version: VERSION
   js:
     js/tableselect.js: {}
+
+facets-extend:
+  version: VERSION
+  js:
+    js/facets-extend.js: {}
