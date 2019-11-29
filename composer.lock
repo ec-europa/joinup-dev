@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a867d7ae8e839b6276a2d1a192920c7b",
+    "content-hash": "28bc03e270c3a1f1dca496945f81b2f4",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2692,11 +2692,17 @@
         },
         {
             "name": "drupal/cas_account_link",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas_account_link.git",
-                "reference": "2bf1a8484d17dcdbc67039ecc43086172734a948"
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cas_account_link-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "45cf908461b8041e39da314ad7e179d221bef62c"
             },
             "require": {
                 "drupal/cas": "dev-1.x",
@@ -2711,8 +2717,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1573229284",
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1575030785",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2748,8 +2754,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/cas_account_link",
                 "issues": "https://www.drupal.org/project/issues/cas_account_link"
-            },
-            "time": "2019-11-11T09:07:47+00:00"
+            }
         },
         {
             "name": "drupal/cas_attributes",
@@ -3942,11 +3947,17 @@
         },
         {
             "name": "drupal/entity_legal",
-            "version": "dev-2.x",
+            "version": "2.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_legal.git",
-                "reference": "b51706028523d065d04f022d6414f706c973d5ff"
+                "reference": "8.x-2.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/entity_legal-8.x-2.0-beta2.zip",
+                "reference": "8.x-2.0-beta2",
+                "shasum": "6b34291eb12439b93994c2c091b78da26d52bf8b"
             },
             "require": {
                 "drupal/core": "*",
@@ -3958,11 +3969,11 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta1+14-dev",
-                    "datestamp": "1568017091",
+                    "version": "8.x-2.0-beta2",
+                    "datestamp": "1575029887",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4004,8 +4015,7 @@
             "homepage": "https://www.drupal.org/project/entity_legal",
             "support": {
                 "source": "https://git.drupalcode.org/project/entity_legal"
-            },
-            "time": "2019-09-10T10:34:30+00:00"
+            }
         },
         {
             "name": "drupal/externalauth",
@@ -5074,11 +5084,17 @@
         },
         {
             "name": "drupal/meta_entity",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/meta_entity.git",
-                "reference": "a071d46da0190ae65389ef0f719e715f319f4339"
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/meta_entity-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "707a3b306367ebcc5d4c1e8b6fc95750e0460490"
             },
             "require": {
                 "drupal/core": "~8.0",
@@ -5091,8 +5107,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1568357584",
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1575031684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5127,8 +5143,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/meta_entity",
                 "issues": "https://www.drupal.org/project/issues/meta_entity"
-            },
-            "time": "2019-09-13T16:46:29+00:00"
+            }
         },
         {
             "name": "drupal/og",
@@ -15680,16 +15695,16 @@
         },
         {
             "name": "weitzman/drupal-test-traits",
-            "version": "dev-incorrect-version",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.com/claudiu_cristea/drupal-test-traits.git",
-                "reference": "6db3083a06135ee216e273f2b06c3d3dfbd53b7d"
+                "url": "https://gitlab.com/weitzman/drupal-test-traits.git",
+                "reference": "d3d69f8822d609e2953fbef47f5c04ce1f3c3ba6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/claudiu_cristea%2Fdrupal-test-traits/repository/archive.zip?sha=6db3083a06135ee216e273f2b06c3d3dfbd53b7d",
-                "reference": "6db3083a06135ee216e273f2b06c3d3dfbd53b7d",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Fdrupal-test-traits/repository/archive.zip?sha=d3d69f8822d609e2953fbef47f5c04ce1f3c3ba6",
+                "reference": "d3d69f8822d609e2953fbef47f5c04ce1f3c3ba6",
                 "shasum": ""
             },
             "require": {
@@ -15723,28 +15738,7 @@
                     "weitzman\\DrupalTestTraits\\": "src"
                 }
             },
-            "scripts": {
-                "si": [
-                    "drush si -yv --db-url=mysql://circle:circle@db/circle --account-name=admin --account-pass=password standard"
-                ],
-                "cs": [
-                    "phpcs -n --report-full"
-                ],
-                "cbf": [
-                    "phpcbf --standard=PSR2 -n src tests"
-                ],
-                "lint": [
-                    "parallel-lint src tests"
-                ],
-                "unit": [
-                    "phpunit --debug --colors --bootstrap=src/bootstrap-fast.php --printer '\\Drupal\\Tests\\Listeners\\HtmlOutputPrinter' --log-junit web/sites/simpletest/browser_output/junit.xml tests"
-                ],
-                "test": [
-                    "@lint",
-                    "@cs",
-                    "@unit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -15755,7 +15749,7 @@
                 }
             ],
             "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
-            "time": "2019-11-28T12:59:50+00:00"
+            "time": "2019-11-29T09:34:00+00:00"
         }
     ],
     "aliases": [
@@ -15770,16 +15764,12 @@
     "stability-flags": {
         "drupal/antibot": 20,
         "drupal/cas": 20,
-        "drupal/cas_account_link": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_exclude": 20,
         "drupal/config_ignore": 20,
         "drupal/config_update": 20,
         "drupal/diff": 5,
-        "drupal/entity_legal": 20,
-        "drupal/flag": 15,
         "drupal/matomo_reporting_api": 20,
-        "drupal/meta_entity": 20,
         "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
@@ -15792,9 +15782,7 @@
         "jacklmoore/autosize": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
-        "drupal/config_inspector": 10,
-        "jcalderonzumba/gastonjs": 20,
-        "weitzman/drupal-test-traits": 20
+        "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
