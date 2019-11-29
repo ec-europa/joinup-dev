@@ -108,7 +108,22 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
     return;
   }
 
-  $form['account']['mail']['#description'] = t('The email address is not made public and will only be used if you wish to receive certain news or notifications by email.');
+  $form['header'] = [
+    '#weight' => -100,
+    '#type' => 'html_tag',
+    '#tag' => 'h3',
+    '#value' => t('EU Login Account information'),
+  ];
+  $form['header_description'] = [
+    '#weight' => -99,
+    '#type' => 'html_tag',
+    '#tag' => 'span',
+    '#value' => t('Your name and E-mail data is inherited from EU Login. To update this information, you can visit your EU Login account page <a href="https://webgate.ec.europa.eu/cas/eim/external/restricted/edit.cgi" rel="nofollow" target="_blank">here</a>. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup.'),
+  ];
+
+  $form['account']['mail']['#description'] = t('Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.');
+  $form['field_user_first_name']['widget'][0]['value']['#description'] = t('Your first name is publicly visible.');
+  $form['field_user_family_name']['widget'][0]['value']['#description'] = t('Your last name is publicly visible.');
 
   $mapping = \Drupal::configFactory()
     ->get('cas_attributes.settings')
@@ -133,7 +148,6 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
       $attribute_name = substr(substr($token, 15), 0, -1);
       if (!empty($attributes[$attribute_name])) {
         $form[$field_name]['#disabled'] = TRUE;
-        $form[$field_name]['widget'][0]['value']['#description'] = t('This field can be edited only from the EU Login account.');
         // Prevent submission of an empty, required and disabled field. That
         // would cause the validation to fail.
         $form[$field_name]['widget'][0]['value']['#required'] = FALSE;
