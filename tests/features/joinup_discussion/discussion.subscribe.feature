@@ -56,7 +56,7 @@ Feature: Subscribing to discussions
   Scenario: Receive E-mail notifications when actions are taken in discussions.
     Given users:
       | Username    | E-mail            | First name | Family name | Notification frequency |
-      | follower    | dale@example.com  | Dale       | Arden       | immediate              |
+      | follower    | dale@example.com  | Dale       | Arden       | monthly                |
       | debater     | flash@example.com | Flash      | Gordon      | daily                  |
       | facilitator | ming@example.com  | Ming       | Merciless   | weekly                 |
     And the following collection user membership:
@@ -106,10 +106,9 @@ Feature: Subscribing to discussions
     Given I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
-    And the following email should have been sent:
-      | recipient_mail | dale@example.com                                                                  |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    Then the monthly digest for "follower" should contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the daily digest for "debater" should contain the following message for the "Rare Butter" node:
       | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
@@ -118,6 +117,12 @@ Feature: Subscribing to discussions
     # @todo Send the mail as HTML and provide a signature.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4254
     Then the following email should have been sent:
+      | recipient_mail     | dale@example.com                                                             |
+      | subject            | Rare Butter message digest                                                   |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection. |
+      | html               | no                                                                           |
+      | signature_required | no                                                                           |
+    And the following email should have been sent:
       | recipient_mail     | flash@example.com                                                            |
       | subject            | Rare Butter message digest                                                   |
       | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection. |
@@ -137,10 +142,9 @@ Feature: Subscribing to discussions
     And I fill in "Content" with "Is this change triggering notifications?"
     And I fill in "Motivation" with "Reporting this content..."
     And I press "Report"
-    Then the following email should not have been sent:
-      | recipient_mail | dale@example.com                                                                  |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    Then the monthly digest for "follower" should not contain the following message for the "Rare Butter" node:
+      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
       | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
       | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
@@ -151,10 +155,9 @@ Feature: Subscribing to discussions
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
-    Then the following email should not have been sent:
-      | recipient_mail | dale@example.com                                                                                     |
-      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+    Then the monthly digest for "follower" should not contain the following message:
+      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
     And the daily digest for "debater" should not contain the following message:
       | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
       | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
@@ -177,10 +180,9 @@ Feature: Subscribing to discussions
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
-    Then the following email should have been sent:
-      | recipient_mail | dale@example.com                                                                                   |
-      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+    Then the monthly digest for "follower" should contain the following message:
+      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
     And the weekly digest for "Dr. Hans Zarkov" should contain the following message:
       | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
