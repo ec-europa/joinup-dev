@@ -36,9 +36,9 @@ joinup.site_unpin:
 joinup.pin_entity:
   route_name: joinup.pin_entity
   title: Pin
-  group: collection_context
+  group: group_context
 
 joinup.unpin_entity:
   route_name: joinup.unpin_entity
   title: Unpin
-  group: collection_context
+  group: group_context

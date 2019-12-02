@@ -200,6 +200,11 @@ function solution_entity_extra_field_info(): array {
       'description' => t('Shows a link to the about page of the solution.'),
       'visible' => FALSE,
     ];
+    $display['share_link'] = [
+      'label' => t('Share'),
+      'description' => t('A link to share the content'),
+      'visible' => FALSE,
+    ];
   }
 
   return $fields;
@@ -297,6 +302,16 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
     catch (EntityMalformedException $e) {
       // Don't include a read more link that leads to a malformed entity.
     }
+  }
+
+  // Share link configuration.
+  if ($display->getComponent('share_link')) {
+    $build['share_link'] = joinup_core_generate_share_link($entity, 'solution.share_form');
+    $build['#cache'] = [
+      'contexts' => [
+        'og_role',
+      ],
+    ];
   }
 }
 
@@ -612,5 +627,22 @@ function solution_search_api_query_search_api_field_field_is_content_alter(Query
   else {
     // Exclude all the distributions.
     $query->addCondition('entity_bundle', 'asset_distribution', '<>');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function solution_preprocess_rdf_entity(&$variables) {
+  $rdf_entity = $variables['rdf_entity'];
+
+  // Apply the visual cue only on the tile view mode.
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  // If the solution is shared somewhere, attach the related library.
+  if ($rdf_entity->hasField('field_is_shared_in') && !$rdf_entity->get('field_is_shared_in')->isEmpty()) {
+    $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
   }
 }
