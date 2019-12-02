@@ -16,7 +16,7 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Controller to pin/unpin entities inside collections.
+ * Controller to pin/unpin entities inside groups.
  */
 class PinEntityController extends ControllerBase {
 
@@ -69,49 +69,51 @@ class PinEntityController extends ControllerBase {
   }
 
   /**
-   * Pins a group content entity inside a collection.
+   * Pins a group content entity inside a group.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The content entity being pinned.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to pin the content.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group where to pin the content.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function pin(ContentEntityInterface $entity, RdfInterface $collection) {
-    $this->pinService->setEntityPinned($entity, $collection, TRUE);
+  public function pin(ContentEntityInterface $entity, RdfInterface $group) {
+    $this->pinService->setEntityPinned($entity, $group, TRUE);
 
-    drupal_set_message($this->t('@bundle %title has been pinned in the collection %collection.', [
+    drupal_set_message($this->t('@bundle %title has been pinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
-      '%collection' => $collection->label(),
+      '@group_bundle' => $group->bundle(),
+      '%group' => $group->label(),
     ]));
 
-    return $this->getRedirect($collection);
+    return $this->getRedirect($group);
   }
 
   /**
-   * Unpins a group content entity inside a collection.
+   * Unpins a group content entity inside a group.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The content entity being unpinned.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to unpin the content.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group where to unpin the content.
    *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function unpin(ContentEntityInterface $entity, RdfInterface $collection) {
-    $this->pinService->setEntityPinned($entity, $collection, FALSE);
+  public function unpin(ContentEntityInterface $entity, RdfInterface $group) {
+    $this->pinService->setEntityPinned($entity, $group, FALSE);
 
-    drupal_set_message($this->t('@bundle %title has been unpinned in the collection %collection.', [
+    drupal_set_message($this->t('@bundle %title has been unpinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
-      '%collection' => $collection->label(),
+      '@group_bundle' => $group->bundle(),
+      '%group' => $group->label(),
     ]));
 
-    return $this->getRedirect($collection);
+    return $this->getRedirect($group);
   }
 
   /**
@@ -121,25 +123,25 @@ class PinEntityController extends ControllerBase {
    *   The content entity being pinned.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account to check access for.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to pin the content.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group where to pin the content.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function pinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $collection) {
-    if (!$this->validEntityParameters($entity, $collection)) {
+  public function pinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $group) {
+    if (!$this->validEntityParameters($entity, $group)) {
       return AccessResult::forbidden();
     }
 
     if (
-      !array_key_exists($collection->id(), $this->getCollections($entity)) ||
-      $this->pinService->isEntityPinned($entity, $collection)
+      !array_key_exists($group->id(), $this->getGroups($entity)) ||
+      $this->pinService->isEntityPinned($entity, $group)
     ) {
-      return AccessResult::forbidden()->addCacheableDependency($collection)->addCacheableDependency($entity);
+      return AccessResult::forbidden()->addCacheableDependency($group)->addCacheableDependency($entity);
     }
 
-    return $this->ogAccess->userAccess($collection, 'pin group content', $account);
+    return $this->ogAccess->userAccess($group, 'pin group content', $account);
   }
 
   /**
@@ -149,49 +151,49 @@ class PinEntityController extends ControllerBase {
    *   The content entity being unpinned.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account to check access for.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to pin the content.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group where to pin the content.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function unpinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $collection) {
-    if (!$this->validEntityParameters($entity, $collection)) {
+  public function unpinAccess(ContentEntityInterface $entity, AccountInterface $account, RdfInterface $group) {
+    if (!$this->validEntityParameters($entity, $group)) {
       return AccessResult::forbidden();
     }
 
     if (
-      !array_key_exists($collection->id(), $this->getCollections($entity)) ||
-      !$this->pinService->isEntityPinned($entity, $collection)
+      !array_key_exists($group->id(), $this->getGroups($entity)) ||
+      !$this->pinService->isEntityPinned($entity, $group)
     ) {
-      return AccessResult::forbidden()->addCacheableDependency($collection)->addCacheableDependency($entity);
+      return AccessResult::forbidden()->addCacheableDependency($group)->addCacheableDependency($entity);
     }
 
-    return $this->ogAccess->userAccess($collection, 'unpin group content', $account);
+    return $this->ogAccess->userAccess($group, 'unpin group content', $account);
   }
 
   /**
-   * Gets the collections an entity is related to.
+   * Gets the groups an entity is related to.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The content entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections the entity is related, keyed by collection id.
+   *   A list of groups the entity is related, keyed by group id.
    */
-  protected function getCollections(ContentEntityInterface $entity) {
-    $collections = [];
+  protected function getGroups(ContentEntityInterface $entity) {
+    $groups = [];
 
     if (JoinupHelper::isSolution($entity)) {
-      $collections = $entity->get('collection')->referencedEntities();
+      $groups = $entity->get('collection')->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      $collections = [$this->relationManager->getParent($entity)];
+      $groups = [$this->relationManager->getParent($entity)];
     }
 
     $list = [];
-    foreach ($collections as $collection) {
-      $list[$collection->id()] = $collection;
+    foreach ($groups as $group) {
+      $list[$group->id()] = $group;
     }
 
     return $list;
@@ -202,14 +204,23 @@ class PinEntityController extends ControllerBase {
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity that is going to be pinned.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to pin the entity.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The group where to pin the entity.
    *
    * @return bool
    *   True if the entities are of the expected types, false otherwise.
    */
-  protected function validEntityParameters(ContentEntityInterface $entity, RdfInterface $collection) {
-    return (JoinupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) && JoinupHelper::isCollection($collection);
+  protected function validEntityParameters(ContentEntityInterface $entity, RdfInterface $group) {
+    // Do not make this generic because we don't want any solution appearing
+    // in the solution overview - as related solutions - to retrieve the
+    // pin/unpin contextual link.
+    if (JoinupHelper::isSolution($entity)) {
+      return JoinupHelper::isCollection($group);
+    }
+    elseif (CommunityContentHelper::isCommunityContent($entity)) {
+      return JoinupHelper::isCollection($group) || JoinupHelper::isSolution($group);
+    }
+    return FALSE;
   }
 
   /**

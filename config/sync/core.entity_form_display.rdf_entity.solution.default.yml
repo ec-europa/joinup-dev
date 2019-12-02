@@ -353,6 +353,7 @@ hidden:
   field_is_included_asset: true
   field_is_issue_tracker: true
   field_is_pinned_in: true
+  field_is_shared_in: true
   field_is_source_code_repository: true
   field_is_translation: true
   field_is_version: true

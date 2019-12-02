@@ -1,0 +1,6 @@
+services:
+  joinup_licence.spdx_ids.param_converter:
+    class: Drupal\joinup_licence\ParamConverter\SpdxIdsParamConverter
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: paramconverter }
