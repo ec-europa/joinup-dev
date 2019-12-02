@@ -21,11 +21,3 @@ timestamp_timeago:
   dependencies:
     - core/jquery
     - core/drupalSettings
-
-shared_entity:
-  js:
-    js/shared_entity.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - core/drupal

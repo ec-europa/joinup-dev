@@ -643,6 +643,6 @@ function solution_preprocess_rdf_entity(&$variables) {
 
   // If the solution is shared somewhere, attach the related library.
   if ($rdf_entity->hasField('field_is_shared_in') && !$rdf_entity->get('field_is_shared_in')->isEmpty()) {
-    $variables['#attached']['library'][] = 'joinup_core/shared_entity';
+    $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
   }
 }

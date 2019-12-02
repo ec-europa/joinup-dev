@@ -11,41 +11,41 @@ use Drupal\rdf_entity\RdfInterface;
 interface PinServiceInterface {
 
   /**
-   * Checks if an entity is pinned inside any collection or a specific one.
+   * Checks if an entity is pinned inside any group or a specific one.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity to check.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The rdf collection where the entity should be pinned. Defaults to NULL,
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The rdf group where the entity should be pinned. Defaults to NULL,
    *   so the function will return TRUE if the entity is pinned in any
-   *   collection.
+   *   group.
    *
    * @return bool
    *   True if the entity is pinned, false otherwise.
    */
-  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $collection = NULL);
+  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $group = NULL);
 
   /**
-   * Sets the entity pinned status inside a certain collection.
+   * Sets the entity pinned status inside a certain group.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity itself.
-   * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The rdf collection.
+   * @param \Drupal\rdf_entity\RdfInterface $group
+   *   The rdf group.
    * @param bool $pinned
    *   TRUE to set the entity as pinned, FALSE otherwise.
    */
-  public function setEntityPinned(ContentEntityInterface $entity, RdfInterface $collection, bool $pinned);
+  public function setEntityPinned(ContentEntityInterface $entity, RdfInterface $group, bool $pinned);
 
   /**
-   * Retrieves a list of collections where an entity is pinned.
+   * Retrieves a list of groups where an entity is pinned.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity itself.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the content is pinned.
+   *   A list of groups where the content is pinned.
    */
-  public function getCollectionsWherePinned(ContentEntityInterface $entity);
+  public function getGroupsWherePinned(ContentEntityInterface $entity);
 
 }
