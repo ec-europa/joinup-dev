@@ -8,7 +8,7 @@
         "composer/composer": "^1.9.1",
         "composer/installers": "^1.7",
         "continuousphp/aws-sdk-phing": "~0.5",
-        "cweagans/composer-patches": "^1.6",
+        "cweagans/composer-patches": "^1.6.4",
         "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/allowed_formats": "^1.2",
         "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
