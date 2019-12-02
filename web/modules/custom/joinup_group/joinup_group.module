@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains the main functionality of Joinup Group module.
+ */
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds the current og group context as attribute on the page wrapper.
+ */
+function joinup_group_preprocess_page(&$variables) {
+  /** @var \Drupal\Core\Plugin\Context\ContextInterface[] $context */
+  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
+
+  if (!empty($context['og'])) {
+    $group = $context['og']->getContextValue();
+
+    if ($group && $group->getEntityTypeId() === 'rdf_entity') {
+      $variables['attributes']['data-drupal-group-context'] = $group->id();
+    }
+  }
+}

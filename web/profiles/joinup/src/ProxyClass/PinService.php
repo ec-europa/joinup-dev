@@ -78,25 +78,25 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function isEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $collection = NULL)
+        public function isEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group = NULL)
         {
-            return $this->lazyLoadItself()->isEntityPinned($entity, $collection);
+            return $this->lazyLoadItself()->isEntityPinned($entity, $group);
         }
 
         /**
          * {@inheritdoc}
          */
-        public function setEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $collection, bool $pinned)
+        public function setEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group, bool $pinned)
         {
-            return $this->lazyLoadItself()->setEntityPinned($entity, $collection, $pinned);
+            return $this->lazyLoadItself()->setEntityPinned($entity, $group, $pinned);
         }
 
         /**
          * {@inheritdoc}
          */
-        public function getCollectionsWherePinned(\Drupal\Core\Entity\ContentEntityInterface $entity)
+        public function getGroupsWherePinned(\Drupal\Core\Entity\ContentEntityInterface $entity)
         {
-            return $this->lazyLoadItself()->getCollectionsWherePinned($entity);
+            return $this->lazyLoadItself()->getGroupsWherePinned($entity);
         }
 
     }

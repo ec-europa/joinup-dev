@@ -55,6 +55,14 @@ tableselect:
   js:
     js/tableselect.js: {}
 
+shared_entity:
+  js:
+    js/shared_entity.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+
 facets-extend:
   version: VERSION
   js:
