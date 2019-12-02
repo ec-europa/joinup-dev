@@ -3,6 +3,7 @@ field:
   sync_frequency: 2
   overwrite: true
   mappings:
+    mail: '[cas:attribute:email]'
     field_user_family_name: '[cas:attribute:lastname]'
     field_user_first_name: '[cas:attribute:firstname]'
 role:
