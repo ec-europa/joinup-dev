@@ -154,7 +154,7 @@ Feature: Log in through EU Login
     And I click "Sign in"
     When I click "EU Login"
     Then I should see the heading "Sign in to continue"
-    When I fill in "E-mail address" with "007@mi6.eu"
+    And I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
     And I press the "Log in" button
 
@@ -172,20 +172,41 @@ Feature: Log in through EU Login
     And CAS users:
       | Username | E-mail             | Password           | First name | Last name | Local username |
       | jb007    | 007.changed@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
+    # We want to test the case when a user is changing their email upstream, on
+    # EU Login, with one that collides with other user's email. These are very
+    # rare and unlikely edge cases where we only throw an exception.
+    And users:
+      | Username   | E-mail             |
+      | other_user | 007.changed@mi6.eu |
 
     Given I am on the homepage
     And I click "Sign in"
     When I click "EU Login"
     Then I should see the heading "Sign in to continue"
     When I fill in "E-mail address" with "007.changed@mi6.eu"
-    When I fill in "Password" with "shaken_not_stirred"
-    And I press the "Log in" button
+    And I fill in "Password" with "shaken_not_stirred"
+    When I press the "Log in" button
+    Then I should see "You've recently changed your EU Login account but that email is already used in Joinup by other. Please contact support."
+    And the response status code should be 500
+
+    # Change the EU Login account email to a unique value.
+    Given CAS users:
+      | Username | E-mail           | Password           | First name | Last name | Local username |
+      | jb007    | uniq@example.com | shaken_not_stirred | James      | Bond      | jb007_local    |
+
+    When I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    Then I should see the heading "Sign in to continue"
+    When I fill in "E-mail address" with "uniq@example.com"
+    And I fill in "Password" with "shaken_not_stirred"
+    When I press the "Log in" button
 
     And the user jb007_local should have the following data in their user profile:
-      | Username    | jb007_local        |
-      | E-mail      | 007.changed@mi6.eu |
-      | First name  | James              |
-      | Family name | Bond               |
+      | Username    | jb007_local      |
+      | E-mail      | uniq@example.com |
+      | First name  | James            |
+      | Family name | Bond             |
 
     # Test the customized message as logged in user.
     Given I visit "/user/password"
