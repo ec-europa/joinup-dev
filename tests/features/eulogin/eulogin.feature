@@ -186,7 +186,9 @@ Feature: Log in through EU Login
     When I fill in "E-mail address" with "007.changed@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
     When I press the "Log in" button
-    Then I should see "You've recently changed your EU Login account but that email is already used in Joinup by other. Please contact support."
+    # We cannot assert here the exception message as on some environments that
+    # can be disabled on the screen, depending on PHP settings. We're only
+    # asserting the response HTTP code.
     And the response status code should be 500
 
     # Change the EU Login account email to a unique value.
