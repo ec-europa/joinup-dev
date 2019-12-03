@@ -5,6 +5,8 @@
  * Contains the main functionality of Joinup Group module.
  */
 
+use Drupal\joinup_group\Form\RdfDeleteForm;
+
 /**
  * Implements hook_preprocess_page().
  *
@@ -21,4 +23,13 @@ function joinup_group_preprocess_page(&$variables) {
       $variables['attributes']['data-drupal-group-context'] = $group->id();
     }
   }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function joinup_group_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $rdf_entity */
+  $rdf_entity = $entity_types['rdf_entity'];
+  $rdf_entity->setFormClass('delete', RdfDeleteForm::class);
 }
