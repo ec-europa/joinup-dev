@@ -55,15 +55,15 @@ Feature: As a privileged user
     And I wait for AJAX to finish
     Then I should see the success message "Item was shared in the following collections: Collection share candidate 1."
 
-    And the following email should not have been sent:
+    And the following email should have been sent:
       | recipient_mail | joe_dare@example.com                                                                                                   |
       | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
       | body           | Your solution: "Solution to be shared" has been shared inside the following collection: "Collection share candidate 1" |
-    And the following email should not have been sent:
+    And the following email should have been sent:
       | recipient_mail | kleev_elant@example.com                                                                                                |
       | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
       | body           | Your solution: "Solution to be shared" has been shared inside the following collection: "Collection share candidate 1" |
-    And the following email should not have been sent:
+    And the following email should have been sent:
       | recipient_mail | sand_beach@example.com                                                                                                 |
       | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
       | body           | Your solution: "Solution to be shared" has been shared inside the following collection: "Collection share candidate 1" |
