@@ -94,7 +94,6 @@ Feature: Subscribing to discussions
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
-    Given all message digests have been delivered
     And the mail collector cache is empty
     And I am logged in as "Dr. Hans Zarkov"
     When I go to the discussion content "Rare Butter" edit screen
@@ -106,64 +105,73 @@ Feature: Subscribing to discussions
     Given I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
-    Then the monthly digest for "follower" should contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the daily digest for "debater" should contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    # Let's also check that the actual digest mail is successfully delivered.
-    When all message digests have been delivered
-    # @todo Send the mail as HTML and provide a signature.
-    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4254
     Then the following email should have been sent:
-      | recipient_mail     | dale@example.com                                                             |
-      | subject            | Rare Butter message digest                                                   |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection. |
-      | html               | no                                                                           |
-      | signature_required | no                                                                           |
+      | recipient_mail     | dale@example.com                                                                  |
+      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the following email should have been sent:
-      | recipient_mail     | flash@example.com                                                            |
-      | subject            | Rare Butter message digest                                                   |
-      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection. |
-      | html               | no                                                                           |
-      | signature_required | no                                                                           |
+      | recipient_mail     | flash@example.com                                                                 |
+      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The author of the discussion update doesn't receive any notification.
-    But the weekly digest for "Dr. Hans Zarkov" should not contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    But the following email should not have been sent:
+      | recipient_mail     | hans@example.com                                                                  |
+      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    # Check that no other mails have been unexpectedly sent.
     Then 2 e-mails should have been sent
 
     # If the discussion is moved from 'validated' to any other state, no
-    # notification will be send, regardless if a relevant field is changed.
+    # notification will be sent, regardless if a relevant field is changed.
     Given the mail collector cache is empty
     And I am logged in as a moderator
     When I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "Is this change triggering notifications?"
     And I fill in "Motivation" with "Reporting this content..."
     And I press "Report"
-    Then the monthly digest for "follower" should not contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the daily digest for "debater" should not contain the following message for the "Rare Butter" node:
-      | mail_subject | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | mail_body    | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    Then the following email should not have been sent:
+      | recipient_mail | dale@example.com                                                                  |
+      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the following email should not have been sent:
+      | recipient_mail | flash@example.com                                                                 |
+      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the following email should not have been sent:
+      | recipient_mail | ming@example.com                                                                 |
+      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    # The notification that a moderator requests a modification should still be
+    # sent to the content author.
+    But the following email should have been sent:
+      | recipient_mail | hans@example.com                                                          |
+      | subject        | Joinup: Content has been updated                                          |
+      | body           | the Moderator, has requested you to modify the discussion - "Rare Butter" |
+    And 1 e-mail should have been sent
 
     # Delete the discussion and check that no notifications are sent. Since the
     # discussion is not published nobody should be notified.
-    When I go to the "Rare butter" discussion
+    Given the mail collector cache is empty
+    When I go to the "Rare Butter" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
-    Then the monthly digest for "follower" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
-    And the daily digest for "debater" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
-    And the weekly digest for "Dr. Hans Zarkov" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | mail_body    | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+    Then the following email should not have been sent:
+      | recipient_mail | dale@example.com                                                                                     |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient_mail | flash@example.com                                                                                    |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient_mail | hans@example.com                                                                                     |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient_mail | ming@example.com                                                                                     |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
 
     # Now try to delete a published discussion. The notifications should be sent
     # in this case.
@@ -180,20 +188,24 @@ Feature: Subscribing to discussions
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
-    Then the monthly digest for "follower" should contain the following message:
-      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+    Then the following email should have been sent:
+      | recipient_mail | dale@example.com                                                                                   |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Discussion author is receiving the notifications too.
-    And the weekly digest for "Dr. Hans Zarkov" should contain the following message:
-      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+    And the following email should have been sent:
+      | recipient_mail | hans@example.com                                                                                   |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # The user 'facilitator' is also a discussion subscriber but because she's
     # the person who has deleted the comment, she will not receive the
     # notification.
-    But the weekly digest for "facilitator" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+    But the following email should not have been sent:
+      | recipient_mail | ming@example.com                                                                                   |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
     # Flash Gordon is not subscribed. He should not retrieve the message.
-    And the daily digest for "debater" should not contain the following message:
-      | mail_subject | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
-      | mail_body    | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient_mail | flash@example.com                                                                                  |
+      | subject        | Joinup: The discussion "Rare feta" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare feta" was deleted from the "Dairy products" collection. |
