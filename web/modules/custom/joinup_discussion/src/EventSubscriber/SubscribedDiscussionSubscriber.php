@@ -121,6 +121,12 @@ class SubscribedDiscussionSubscriber implements EventSubscriberInterface {
    */
   public function notifyOnDiscussionDeletion(DiscussionDeleteEvent $event): void {
     $discussion = $event->getNode();
+
+    // Don't send out notifications if unpublished discussions are deleted.
+    if (!$discussion->isPublished()) {
+      return;
+    }
+
     $this->sendMessage($discussion, 'discussion_delete');
   }
 
