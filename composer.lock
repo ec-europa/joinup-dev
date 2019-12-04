@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0e0ce41ac27e176a3e7f3623c6f27bc",
+    "content-hash": "f8353a3fb827b7848012b6475cb53517",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5769,7 +5769,7 @@
                 },
                 "patches_applied": {
                     "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/107": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/107.diff"
+                    "Fix permission scheme @see https://github.com/ec-europa/rdf_entity/pull/107": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/107.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7686,7 +7686,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-10-31T20:10:45+00:00"
+            "time": "2018-05-01T01:48:25+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9842,7 +9842,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-22T22:25:24+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
