@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "141f950dbdb91d49c92b2720fba6563f",
+    "content-hash": "5960e27b62afa794770e19145edeb3cf",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5122,7 +5122,8 @@
                     }
                 },
                 "patches_applied": {
-                    "MembershipManager should support UpdateBackend as cache backend during updates @see https://github.com/Gizra/og/pull/573": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/573.diff"
+                    "MembershipManager should support UpdateBackend as cache backend during updates @see https://github.com/Gizra/og/pull/573": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/573.diff",
+                    "Schema error with og_complex widget settings @see https://github.com/Gizra/og/issues/574": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/575.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

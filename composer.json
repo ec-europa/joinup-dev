@@ -234,7 +234,8 @@
                 "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
             },
             "drupal/og": {
-                "MembershipManager should support UpdateBackend as cache backend during updates @see https://github.com/Gizra/og/pull/573": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/573.diff"
+                "MembershipManager should support UpdateBackend as cache backend during updates @see https://github.com/Gizra/og/pull/573": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/573.diff",
+                "Schema error with og_complex widget settings @see https://github.com/Gizra/og/issues/574": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/575.diff"
             },
             "drupal/og_menu": {
                 "Passing the full account object is deprecated in OG 8.x-1.0-alpha4 @see https://www.drupal.org/project/og_menu/issues/3069870": "https://www.drupal.org/files/issues/2019-07-24/3069870-2.patch"
