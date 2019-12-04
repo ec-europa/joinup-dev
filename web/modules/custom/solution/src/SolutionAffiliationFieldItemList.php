@@ -111,7 +111,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    *   A list of collection IDs where the solution host entity is affiliated.
    */
   protected function getAffiliation(): array {
-    return array_values($this->entityTypeManager->getStorage('rdf_entity')
+    return array_values($this->getSparqlStorage()
       ->getQuery()
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $this->getEntity()->id())
