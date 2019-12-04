@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7166c7a44c89646d2c8a25457da1d60",
+    "content-hash": "141f950dbdb91d49c92b2720fba6563f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5120,6 +5120,9 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "MembershipManager should support UpdateBackend as cache backend during updates @see https://github.com/Gizra/og/pull/573": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/573.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
