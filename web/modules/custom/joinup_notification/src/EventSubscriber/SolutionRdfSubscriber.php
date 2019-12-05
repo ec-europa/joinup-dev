@@ -533,6 +533,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       }, $collections);
 
       $arguments['@solution:shared_in:new:links'] = implode(', ', $urls);
+      $arguments['@solution:shared_in:bundle'] = $this->formatPlural(count($collection_ids), 'collection', 'collections');
     }
 
     return $arguments;

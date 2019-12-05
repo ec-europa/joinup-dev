@@ -58,15 +58,15 @@ Feature: As a privileged user
     And the following email should have been sent:
       | recipient_mail | joe_dare@example.com                                                                                                   |
       | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
-      | body           | Your solution: "Solution to be shared" has been shared inside the following collection(s): Collection share candidate 1 |
+      | body           | Your solution: "Solution to be shared" has been shared inside the following collection: Collection share candidate 1 |
     And the following email should have been sent:
       | recipient_mail | kleev_elant@example.com                                                                                                |
       | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
-      | body           | Your solution: "Solution to be shared" has been shared inside the following collection(s): Collection share candidate 1 |
+      | body           | Your solution: "Solution to be shared" has been shared inside the following collection: Collection share candidate 1 |
     And the following email should have been sent:
       | recipient_mail | sand_beach@example.com                                                                                                 |
       | subject        | Joinup: The solution "Solution to be shared" was just shared.                                                          |
-      | body           | Your solution: "Solution to be shared" has been shared inside the following collection(s): Collection share candidate 1 |
+      | body           | Your solution: "Solution to be shared" has been shared inside the following collection: Collection share candidate 1 |
 
     # Verify that the collections where the solution has already been shared are
     # not shown anymore in the list.
