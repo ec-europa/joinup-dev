@@ -61,4 +61,13 @@ final class NotificationEvents {
    */
   const OG_MEMBERSHIP_MANAGEMENT = 'joinup_notification.og_membership.management';
 
+  /**
+   * An event that sends notifications when a solution is shared.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const SOLUTION_SHARING = 'joinup_notification.solution_sharing';
+
 }

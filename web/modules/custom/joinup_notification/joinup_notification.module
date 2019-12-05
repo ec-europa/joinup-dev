@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
@@ -209,4 +210,25 @@ function joinup_notification_og_membership_presave(EntityInterface $entity) {
  */
 function joinup_notification_og_membership_predelete(EntityInterface $entity) {
   joinup_notification_dispatch_notification('delete', NotificationEvents::OG_MEMBERSHIP_MANAGEMENT, $entity);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function joinup_notification_form_share_solution_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#submit'][] = 'joinup_notification_share_solution_form_submit';
+}
+
+/**
+ * Sends notifications when a solution is shared.
+ */
+function joinup_notification_share_solution_form_submit(&$form, FormStateInterface $form_state) {
+  $collection_ids = array_keys(array_filter($form_state->getValue('collections')));
+  if (empty($collection_ids)) {
+    return;
+  }
+
+  $solution = $form_state->getFormObject()->getEntity();
+  $solution->set('new_collections', $collection_ids);
+  joinup_notification_dispatch_notification('share', NotificationEvents::SOLUTION_SHARING, $solution);
 }

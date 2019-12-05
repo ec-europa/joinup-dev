@@ -86,6 +86,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   const TEMPLATE_PUBLISH_BLACKLISTED = 'sol_publish_backlisted';
   const TEMPLATE_REQUEST_CHANGES = 'sol_request_changes';
   const TEMPLATE_REQUEST_DELETION = 'sol_request_deletion';
+  const TEMPLATE_SOLUTION_SHARING = 'solution_sharing';
 
   /**
    * The transition object.
@@ -145,6 +146,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       ['onUpdate'],
       ['onDelete'],
     ];
+    $events[NotificationEvents::SOLUTION_SHARING] = [['onSolutionSharing']];
 
     return $events;
   }
@@ -432,6 +434,32 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   }
 
   /**
+   * Sends a notification when a solution is shared.
+   *
+   * @param \Drupal\joinup_notification\Event\NotificationEvent $event
+   *   The notification event.
+   */
+  public function onSolutionSharing(NotificationEvent $event) {
+    $this->initialize($event);
+    $user_data = [
+      'og_roles' => [
+        'rdf_entity-solution-administrator' => [
+          self::TEMPLATE_SOLUTION_SHARING,
+        ],
+        'rdf_entity-solution-facilitator' => [
+          self::TEMPLATE_SOLUTION_SHARING,
+        ],
+      ],
+      'roles' => [
+        'moderator' => [
+          self::TEMPLATE_SOLUTION_SHARING,
+        ],
+      ],
+    ];
+    $this->getUsersAndSend($user_data);
+  }
+
+  /**
    * Checks if the event applies for solutions.
    *
    * @return bool
@@ -461,6 +489,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    */
   protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
+    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
     $actor_last_name = $arguments['@actor:field_user_family_name'];
@@ -488,10 +517,20 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
     // provided.
     if (!empty($this->transition) && $this->transition->getId() === 'request_deletion') {
       $collection_ids = solution_get_collection_ids($this->entity);
-      $collections = $this->entityTypeManager->getStorage('rdf_entity')->loadMultiple($collection_ids);
+      $collections = $rdf_storage->loadMultiple($collection_ids);
       $arguments['@solution:parents:title'] = implode(', ', array_map(function (RdfInterface $collection) {
         return $collection->label();
       }, $collections));
+    }
+
+    if (!empty($this->entity->get('new_collections'))) {
+      $collection_ids = $this->entity->get('new_collections');
+      $collections = $rdf_storage->loadMultiple($collection_ids);
+      $urls = array_map(function(RdfInterface $entity): string {
+        return $entity->toLink($entity->label())->toString()->getGeneratedLink();
+      }, $collections);
+
+      $arguments['@solution:shared_in:new:links'] = implode(', ', $urls);
     }
 
     return $arguments;
