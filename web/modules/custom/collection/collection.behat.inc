@@ -131,6 +131,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @param string $collection
    *   The title of the collection.
+   * @param string $form
+   *   The entity form. Either 'edit' or 'delete'.
    *
    * @When I go to the :collection collection :form form
    * @When I visit the :collection collection :form form
