@@ -116,15 +116,6 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     return AccessResult::neutral();
   }
 
-  // Inline entity form module is using the 'update' as a name for the edit
-  // operation as it is with all entities apart from nodes that retained the
-  // 'edit' permission for legacy reasons. However, rdf entities also use this
-  // naming convention. Rename 'update' to 'edit' when inline_entity_form checks
-  // for the update permission.
-  if ($operation === 'update') {
-    $operation = 'edit';
-  }
-
   // For anonymous users, deny access to the canonical route.
   if ($account->isAnonymous()) {
     $route_name = \Drupal::routeMatch()->getRouteName();

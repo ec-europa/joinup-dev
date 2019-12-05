@@ -113,11 +113,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
 
     $allowed_conditions = $this->configFactory->get('contact_information.settings')->get('transitions');
     $matrix = $allowed_conditions[$to_state][$from_state];
-    $access = FALSE;
-
-    if (!empty($matrix) && $this->userHasOwnAnyRoles($entity, $account, $matrix)) {
-      $access = TRUE;
-    }
+    $access = !empty($matrix) && $this->userHasOwnAnyRoles($entity, $account, $matrix);
 
     // If the user has access to the 'request_deletion' transition but also has
     // delete permission to the entity, revoke the permission to request

@@ -37,13 +37,6 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
   protected $entityTypeManager;
 
   /**
-   * The sparql entity storage.
-   *
-   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
-   */
-  protected $sparqlStorage;
-
-  /**
    * The OG membership manager service.
    *
    * @var \Drupal\og\MembershipManagerInterface
@@ -227,7 +220,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
    *   An array of entity IDs.
    */
   protected function getRdfEntityIdsByBundle(string $bundle): array {
-    $storage = $this->getRdfStorage();
+    $storage = $this->entityTypeManager->getStorage('rdf_entity');
     $definition = $this->entityTypeManager->getDefinition('rdf_entity');
     $bundle_key = $definition->getKey('bundle');
 
@@ -246,7 +239,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
       return [];
     }
 
-    $query = $this->getRdfStorage()->getQuery();
+    $query = $this->entityTypeManager->getStorage('rdf_entity')->getQuery();
     $condition_or = $query->orConditionGroup();
     // Contact entities are also referenced by releases but this value is
     // inherited by the solution directly so there is no need to check them.
@@ -255,32 +248,7 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
     $query->condition($condition_or);
     $ids = $query->execute();
 
-    return empty($ids) ? [] : $this->getRdfStorage()->loadMultiple($ids);
-  }
-
-  /**
-   * Returns the rdf storage class.
-   *
-   * @return \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
-   *   The rdf storage class.
-   */
-  protected function getRdfStorage(): SparqlEntityStorageInterface {
-    if (empty($this->sparqlStorage)) {
-      try {
-        // Since the Joinup Core module depends on the RDF Entity module we can
-        // reasonably assume that the entity storage is defined and is valid. If
-        // it is not this is due to exceptional circumstances occurring at
-        // runtime.
-        $this->sparqlStorage = $this->entityTypeManager->getStorage('rdf_entity');
-      }
-      catch (InvalidPluginDefinitionException $e) {
-        throw new \RuntimeException('The RDF entity storage is not valid.');
-      }
-      catch (PluginNotFoundException $e) {
-        throw new \RuntimeException('The RDF entity storage is not defined.');
-      }
-    }
-    return $this->sparqlStorage;
+    return empty($ids) ? [] : $this->entityTypeManager->getStorage('rdf_entity')->loadMultiple($ids);
   }
 
 }
