@@ -123,7 +123,7 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
       return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
     }
   }
-  elseif ($operation == 'update') {
+  elseif ($operation == 'edit') {
     $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTargetStates($entity, $account);
     return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
   }
