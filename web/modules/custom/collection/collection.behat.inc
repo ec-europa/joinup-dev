@@ -132,12 +132,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $collection
    *   The title of the collection.
    *
-   * @When I go to the :collection collection edit form
-   * @When I visit the :collection collection edit form
+   * @When I go to the :collection collection :form form
+   * @When I visit the :collection collection :form form
    */
-  public function visitEditCollection(string $collection): void {
+  public function visitEditCollection(string $collection, string $form): void {
+    if (!in_array($form, ['edit', 'delete'])) {
+      throw new InvalidArgumentException('Only "edit" and "delete" are allowed for the $form variable.');
+    }
     $collection = $this->getCollectionByName($collection);
-    $path = $collection->toUrl('edit-form')->getInternalPath();
+    $path = $collection->toUrl("{$form}-form")->getInternalPath();
     $this->visitPath($path);
   }
 
