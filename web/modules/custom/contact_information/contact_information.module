@@ -116,6 +116,14 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     return AccessResult::neutral();
   }
 
+  // Inline entity form module is using the 'update' but rdf_entity is still
+  // using 'edit' for the edit operation. Rename the operation until it is
+  // fixed in rdf_entity.
+  // @see https://github.com/ec-europa/rdf_entity/issues/110
+  if ($operation === 'update') {
+    $operation = 'edit';
+  }
+
   // For anonymous users, deny access to the canonical route.
   if ($account->isAnonymous()) {
     $route_name = \Drupal::routeMatch()->getRouteName();
