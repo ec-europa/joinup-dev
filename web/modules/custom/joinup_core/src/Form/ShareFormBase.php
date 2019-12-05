@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core\Form;
 
 use Drupal\Core\Entity\EntityViewBuilderInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;

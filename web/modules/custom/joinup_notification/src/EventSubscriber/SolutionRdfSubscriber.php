@@ -523,11 +523,13 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
       }, $collections));
     }
 
-    if (!empty($this->entity->get('new_collections'))) {
-      $collection_ids = $this->entity->get('new_collections');
+    if (!empty($this->entity->new_collections)) {
+      $collection_ids = $this->entity->new_collections;
       $collections = $rdf_storage->loadMultiple($collection_ids);
-      $urls = array_map(function(RdfInterface $entity): string {
-        return $entity->toLink($entity->label())->toString()->getGeneratedLink();
+      $urls = array_map(function (RdfInterface $entity): string {
+        return $entity->toLink($entity->label(), 'canonical', [
+          'absolute' => TRUE,
+        ])->toString()->getGeneratedLink();
       }, $collections);
 
       $arguments['@solution:shared_in:new:links'] = implode(', ', $urls);
