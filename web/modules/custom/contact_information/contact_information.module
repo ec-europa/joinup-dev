@@ -129,8 +129,8 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
   }
   // Use an elseif to avoid checking memberships for anonymous users.
   elseif ($operation === 'delete') {
-    // The contact information is not a group content rather than it is simply
-    // referenced by a collection or a solution.
+    // The contact information is not a group content. It is tied to other
+    // entities by a simple reference field.
     // To grant access to group owner/facilitators, we need to identify first
     // which groups reference the contact information.
     /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
