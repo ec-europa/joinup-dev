@@ -1,0 +1,17 @@
+uuid: 01018347-69bf-427a-8035-f93a639a917f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.solution_sharing
+id: message.solution_sharing.mail_body
+targetEntityType: message
+bundle: solution_sharing
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true

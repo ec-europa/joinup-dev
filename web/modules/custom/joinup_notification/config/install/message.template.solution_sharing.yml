@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+template: solution_sharing
+label: 'Solution sharing'
+description: 'Sent when a solution is shared.'
+text:
+  -
+    value: '<p>Your solution: @entity:title has been shared inside the following collection(s): @solution:shared_in:new:links.</p><p>You can see all the collection that are sharing your solution in the following link <a href="@entity:url">@entity:url</a>.<br />In case you think this action is not due, please contact the Joinup Support Team <a href="@site:contact_url">@site:contact_url</a>.</p>.'
+    format: content_editor
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
