@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_core;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -14,7 +12,6 @@ use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
