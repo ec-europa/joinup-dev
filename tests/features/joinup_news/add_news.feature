@@ -32,9 +32,10 @@ Feature: Creation of news through the UI.
     When I am logged in as isotopedancer
     And I go to the homepage of the "Density catalogue project" solution
     And I click "Add news" in the plus button menu
+    Then I should see the text "5 MB limit."
 
     # Check required fields.
-    And I attach the file "test.zip" to "Add a new file"
+    When I attach the file "test.zip" to "Add a new file"
     And I attach the file "logo.png" to "Logo"
     And I press "Upload"
     And I press "Publish"
