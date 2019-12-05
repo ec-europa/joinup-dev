@@ -120,6 +120,16 @@ abstract class ShareFormBase extends FormBase {
   }
 
   /**
+   * Returns the entity to be shared.
+   *
+   * @return \Drupal\Core\Entity\FieldableEntityInterface
+   *   The entity to be shared.
+   */
+  public function getEntity(): FieldableEntityInterface {
+    return $this->entity;
+  }
+
+  /**
    * Gets a list of collection ids where the current entity is already shared.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
