@@ -43,7 +43,7 @@
         "drupal/message": "^1.0",
         "drupal/message_notify": "~1.1",
         "drupal/meta_entity": "^1.0",
-        "drupal/og": "dev-1.x",
+        "drupal/og": "^1.0",
         "drupal/og_menu": "dev-1.x",
         "drupal/password_policy": "^3.0-alpha5",
         "drupal/pathauto": "~1.5",

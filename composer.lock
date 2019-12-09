@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e066ed201ef854df2f12560a2430eaa0",
+    "content-hash": "e4ddbbaf46017c952455c49ee3cc0e96",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5095,11 +5095,17 @@
         },
         {
             "name": "drupal/og",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og.git",
-                "reference": "c4c7f921773839df42726e2d806fac6c2f1ab285"
+                "reference": "8.x-1.0-alpha4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/og-8.x-1.0-alpha4.zip",
+                "reference": "8.x-1.0-alpha4",
+                "shasum": "4c49a23c77eb71694a21698bf5515d4310a85973"
             },
             "require": {
                 "drupal/core": "~8.7",
@@ -5114,11 +5120,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+69-dev",
-                    "datestamp": "1565330285",
+                    "version": "8.x-1.0-alpha4",
+                    "datestamp": "1575878585",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -5183,8 +5189,7 @@
                 "issues": "https://drupal.org/project/issues/og",
                 "irc": "irc://irc.freenode.org/drupal-og",
                 "slack": "https://drupal.slack.com/messages/CELR48EA0"
-            },
-            "time": "2019-12-05T09:01:20+00:00"
+            }
         },
         {
             "name": "drupal/og_menu",
@@ -15758,7 +15763,6 @@
         "drupal/config_update": 20,
         "drupal/diff": 5,
         "drupal/matomo_reporting_api": 20,
-        "drupal/og": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
         "drupal/subpathauto": 5,
