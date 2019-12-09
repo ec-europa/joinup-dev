@@ -46,10 +46,9 @@ Feature: "Add event" visibility options.
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
     And the following fields should not be present "Shared in"
-    And I should see the text "5 MB limit."
 
     # Check required fields.
-    When I attach the file "test.zip" to "Add a new file"
+    And I attach the file "test.zip" to "Add a new file"
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
