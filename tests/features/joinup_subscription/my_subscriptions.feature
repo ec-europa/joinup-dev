@@ -211,6 +211,9 @@ Feature: My subscriptions
     Given I am logged in as a moderator
     When I go to the discussion content "Water supply" edit screen
     And I press "Publish"
+    # @todo: a caching issue is causing the message to have empty fields when
+    # rendered.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5723
     And the cache has been cleared
     Then the <frequency> digest for "Auric Goldfinger" should contain the following message:
       | mail_body | Water supply |
