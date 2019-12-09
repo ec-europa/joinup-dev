@@ -21,6 +21,13 @@ use Drupal\rdf_entity\RdfInterface;
 class ShareForm extends OriginalForm {
 
   /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'share_solution_form';
+  }
+
+  /**
    * Form constructor.
    *
    * @param array $form

@@ -21,6 +21,13 @@ use Drupal\node\NodeInterface;
 class ShareForm extends OriginalForm {
 
   /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'share_content_form';
+  }
+
+  /**
    * Form constructor.
    *
    * @param array $form

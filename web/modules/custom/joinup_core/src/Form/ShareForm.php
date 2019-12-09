@@ -71,9 +71,7 @@ abstract class ShareForm extends ShareFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'share_content_form';
-  }
+  abstract public function getFormId();
 
   /**
    * Form constructor.
