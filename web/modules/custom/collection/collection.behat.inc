@@ -137,7 +137,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I go to the :collection collection :form form
    * @When I visit the :collection collection :form form
    */
-  public function visitEditCollection(string $collection, string $form): void {
+  public function visitCollectionForm(string $collection, string $form): void {
     if (!in_array($form, ['edit', 'delete'])) {
       throw new InvalidArgumentException('Only "edit" and "delete" are allowed for the $form variable.');
     }
@@ -647,7 +647,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
 
       // Go to the edit form and check that the expected buttons are visible.
-      $this->visitEditCollection($values['collection']);
+      $this->visitCollectionForm($values['collection'], 'edit');
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
     }
