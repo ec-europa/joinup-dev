@@ -5,10 +5,12 @@ declare(strict_types = 1);
 namespace Drupal\isa2_analytics\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\oe_webtools_analytics\AnalyticsEventInterface;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\oe_webtools_analytics\Event\AnalyticsEvent;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Subscriber that acts on visitor analytics being collected for reporting.
@@ -23,6 +25,20 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
+   * The current request.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected $currentRequest;
+
+  /**
+   * The current route match.
+   *
+   * @var \Drupal\Core\Routing\CurrentRouteMatch
+   */
+  protected $routeMatch;
+
+  /**
    * The OG context service.
    *
    * @var \Drupal\og\OgContextInterface
@@ -34,11 +50,17 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The http request stack.
+   * @param \Drupal\Core\Routing\CurrentRouteMatch $routeMatch
+   *   The current route match.
    * @param \Drupal\og\OgContextInterface $ogContext
    *   The OG context service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, OgContextInterface $ogContext) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, RequestStack $requestStack, CurrentRouteMatch $routeMatch, OgContextInterface $ogContext) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->currentRequest = $requestStack->getCurrentRequest();
+    $this->routeMatch = $routeMatch;
     $this->ogContext = $ogContext;
   }
 
@@ -87,10 +109,28 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
   }
 
   /**
+   * Sets the webtools search data in the MATOMO json.
+   *
+   * @param \Drupal\oe_webtools_analytics\AnalyticsEventInterface $event
+   *   Response event.
+   */
+  public function setSearchData(AnalyticsEventInterface $event) {
+    if ($this->routeMatch->getRouteName() !== 'view.search.page_1') {
+      return;
+    }
+
+    if ($keys = $this->currentRequest->get('keys')) {
+      $search_data = $event->getSearch();
+      $search_data->setKeyword($keys);
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
     $events[AnalyticsEvent::NAME][] = ['setSiteSection'];
+    $events[AnalyticsEvent::NAME][] = ['setSearchData'];
 
     return $events;
   }
