@@ -2,7 +2,6 @@
 
 namespace Drupal\joinup\Form;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
@@ -64,7 +63,7 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
     $form = parent::buildForm($form, $form_state);
 
     // Loop through all the accounts that are going to be deleted and check
-    // if they are sole owners of collections.
+    // if they are sole owners of groups.
     $build = [];
     foreach (Element::children($form['accounts']) as $user_id) {
       /** @var \Drupal\user\Entity\User $account */
@@ -72,22 +71,32 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       if (empty($account)) {
         throw new \RuntimeException("User with id {$user_id} was not found.");
       }
-      $collections = $this->relationManager->getCollectionsWhereSoleOwner($account);
+      $groups = $this->relationManager->getGroupsWhereSoleOwner($account);
 
-      if ($collections) {
+      if ($groups) {
         $build[$account->id()] = [
           'warning' => [
-            '#markup' => $this->t('User @name cannot be deleted as it is currently the sole owner of these collections:', [
+            '#markup' => $this->t('User @name cannot be deleted as it is currently the sole owner of these groups:', [
               '@name' => $account->getAccountName(),
             ]),
           ],
-          'collections' => [
-            '#theme' => 'item_list',
-            '#items' => array_map(function (EntityInterface $collection) {
-              return $collection->toLink($collection->label());
-            }, $collections),
-          ],
         ];
+
+        foreach ($groups as $group) {
+          $group_data[$group->bundle()][] = $group->toLink($group->label());
+        }
+
+        $rdf_storage = $this->entityManager->getStorage('rdf_type');
+        foreach (['collection', 'solution'] as $bundle) {
+          $bundle_type = $rdf_storage->load($bundle);
+          if (!empty($group_data[$bundle])) {
+            $build[$account->id()][$bundle] = [
+              '#theme' => 'item_list',
+              '#title' => $bundle_type->getCountLabel(count($group_data[$bundle])),
+              '#items' => $group_data[$bundle],
+            ];
+          }
+        }
       }
     }
 

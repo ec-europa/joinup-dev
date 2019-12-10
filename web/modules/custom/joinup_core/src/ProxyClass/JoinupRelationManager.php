@@ -150,9 +150,9 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getCollectionsWhereSoleOwner(\Drupal\Core\Session\AccountInterface $user) : array
+        public function getGroupsWhereSoleOwner(\Drupal\Core\Session\AccountInterface $user) : array
         {
-            return $this->lazyLoadItself()->getCollectionsWhereSoleOwner($user);
+            return $this->lazyLoadItself()->getGroupsWhereSoleOwner($user);
         }
 
         /**

@@ -128,7 +128,7 @@ interface JoinupRelationManagerInterface {
    * @return \Drupal\rdf_entity\Entity\Rdf[]
    *   An array of collections.
    */
-  public function getCollectionsWhereSoleOwner(AccountInterface $user): array;
+  public function getGroupsWhereSoleOwner(AccountInterface $user): array;
 
   /**
    * Returns the entity IDs of all collections.

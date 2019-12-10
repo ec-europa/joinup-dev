@@ -179,20 +179,22 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
   /**
    * {@inheritdoc}
    */
-  public function getCollectionsWhereSoleOwner(AccountInterface $user): array {
-    $memberships = $this->getUserMembershipsByRole($user, 'rdf_entity-collection-administrator');
+  public function getGroupsWhereSoleOwner(AccountInterface $user): array {
+    $groups = [];
+    foreach (['collection', 'solution'] as $bundle) {
+      $memberships = $this->getUserMembershipsByRole($user, "rdf_entity-{$bundle}-administrator");
 
-    // Prepare a list of collections where the user is the sole owner.
-    $collections = [];
-    foreach ($memberships as $membership) {
-      $group = $membership->getGroup();
-      $owners = $this->getGroupOwners($group);
-      if (count($owners) === 1 && array_key_exists($user->id(), $owners)) {
-        $collections[$group->id()] = $group;
+      // Prepare a list of groups where the user is the sole owner.
+      foreach ($memberships as $membership) {
+        $group = $membership->getGroup();
+        $owners = $this->getGroupOwners($group);
+        if (count($owners) === 1 && array_key_exists($user->id(), $owners)) {
+          $groups[$group->id()] = $group;
+        }
       }
     }
 
-    return $collections;
+    return $groups;
   }
 
   /**
