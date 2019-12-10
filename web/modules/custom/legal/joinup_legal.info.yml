@@ -9,3 +9,4 @@ dependencies:
 
 config_devel:
   - entity_legal.document.legal_notice
+  - field.field.entity_legal_document_version.legal_notice.entity_legal_document_text
