@@ -136,6 +136,19 @@ For extra configuration, the folder `resources/docker/local` is excluded in git 
 You can use the volumes section above to add your own preferences to the containers. A good example is provided in the
 XDEBUG section below.
 
+## Running tests
+### Behat
+
+```
+docker-compose exec --user www-data web ./vendor/bin/behat -c tests/behat.yml
+```
+
+### PHPUnit
+
+```
+docker-compose exec --user www-data web ./vendor/bin/phpunit -c web/phpunit.xml
+```
+
 ## XDEBUG
 ### PhpStorm
 For PhpStorm, the procedure to create a debug environment is the same as with local servers with the only difference
