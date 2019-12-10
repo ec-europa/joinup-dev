@@ -19,7 +19,6 @@ description: ''
 tag: ''
 base_table: joinup_download_event
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default
