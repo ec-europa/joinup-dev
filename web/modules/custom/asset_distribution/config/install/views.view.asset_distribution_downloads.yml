@@ -16,7 +16,6 @@ description: ''
 tag: ''
 base_table: joinup_download_event
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -549,7 +548,7 @@ display:
       display_extenders: {  }
       css_class: distribution-download-table
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -578,8 +577,9 @@ display:
         title: Statistics
         description: Stuff
         weight: 0
+      always_use_admin_theme: false
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
