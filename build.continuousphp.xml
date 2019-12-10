@@ -101,4 +101,13 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
             description="Provision a stack on AWS"
             depends="setup-aws, run-stack, setup-deployment-group" />
 
+    <!-- Sleeps to allow services to get up and be ready -->
+    <target name="sleep">
+        <echo message="Sleeping ${sleep.hours} hours, ${sleep.minutes} minutes, ${sleep.seconds} seconds, ${sleep.milliseconds} milliseconds"/>
+        <sleep hours="${sleep.hours}"
+               minutes="${sleep.minutes}"
+               seconds="${sleep.seconds}"
+               milliseconds="${sleep.milliseconds}"/>
+    </target>
+
 </project>

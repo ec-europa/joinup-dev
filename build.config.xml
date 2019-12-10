@@ -13,14 +13,20 @@
             </fileset>
             <filterchain>
                 <replaceregexp>
+                    <!-- Remove deprecated global variable. See https://www.drupal.org/node/3018145. -->
                     <regexp
                             pattern="^\s*\$config_directories\s*\[\s*('sync'|\&quot;sync\&quot;|CONFIG_SYNC_DIRECTORY)\s*\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                    <!-- Remove existing $settings['config_sync_directory'] setting -->
+                    <regexp
+                            pattern="^\s*\$settings\s*\[\s*('config_sync_directory'|\&quot;config_sync_directory\&quot;)\s*\].*$\n"
                             replace=""
                             modifiers="m" />
                 </replaceregexp>
             </filterchain>
         </reflexive>
-        <append destFile="${website.settings.php}" text="${line.separator}$config_directories[CONFIG_SYNC_DIRECTORY] = '${drupal.config.dir}';${line.separator}" />
+        <append destFile="${website.settings.php}" text="${line.separator}$settings['config_sync_directory'] = '${drupal.config.dir}';${line.separator}" />
     </target>
 
 

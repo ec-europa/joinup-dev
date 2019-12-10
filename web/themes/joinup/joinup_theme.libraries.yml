@@ -49,3 +49,10 @@ shared_entity:
     - core/jquery
     - core/jquery.once
     - core/drupal
+
+cookie-extend:
+  version: VERSION
+  js:
+    js/cookie-extend.js: {}
+  dependencies:
+    - core/jquery
