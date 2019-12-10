@@ -42,11 +42,11 @@ Feature:
       | Require email confirmation to cancel account |
       | Notify user when account is canceled         |
     But I should see the following lines of text:
-      | User Hazel Olson cannot be deleted as it is currently the sole owner of these groups:   |
-      | User Amelia Barker cannot be deleted as it is currently the sole owner of these groups: |
-      | Collection                                                                              |
-      | Collections                                                                             |
-      | Solution                                                                                |
+      | User Hazel Olson cannot be deleted as they are currently the sole owner of these groups:   |
+      | User Amelia Barker cannot be deleted as they are currently the sole owner of these groups: |
+      | Collection                                                                                 |
+      | Collections                                                                                |
+      | Solution                                                                                   |
     And I should see the following links:
       | Lugia was just released      |
       | Articuno is hunted           |
@@ -65,7 +65,7 @@ Feature:
       | When cancelling these accounts               |
       | Require email confirmation to cancel account |
       | Notify user when account is canceled         |
-    But I should see the text "User Hazel Olson cannot be deleted as it is currently the sole owner of these groups:"
+    But I should see the text "User Hazel Olson cannot be deleted as they are currently the sole owner of these groups:"
     And I should see the following links:
       | Lugia was just released      |
       | Random chat machine learning |

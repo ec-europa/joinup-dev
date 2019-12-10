@@ -76,7 +76,7 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       if ($groups) {
         $build[$account->id()] = [
           'warning' => [
-            '#markup' => $this->t('User @name cannot be deleted as it is currently the sole owner of these groups:', [
+            '#markup' => $this->t('User @name cannot be deleted as they are currently the sole owner of these groups:', [
               '@name' => $account->getAccountName(),
             ]),
           ],

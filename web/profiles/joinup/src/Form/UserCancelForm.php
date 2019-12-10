@@ -107,7 +107,7 @@ class UserCancelForm extends CoreUserCancelForm {
       }
       else {
         $form['warning'] = [
-          '#markup' => $this->t('User @name cannot be deleted as it is currently the sole owner of these groups:', [
+          '#markup' => $this->t('User @name cannot be deleted as they are currently the sole owner of these groups:', [
             '@name' => $this->entity->getAccountName(),
           ]),
           '#weight' => -10,
