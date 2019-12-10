@@ -405,7 +405,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
     $mail = $user->getEmail();
     // In plain text, the urls are encapsulated in "[]" or are plain into the
     // text. The end character is either the "]" or a space.
-    $pattern = '#https?://[^/].*/' . $user->id() . '/cancel/confirm/\d+[^ \]]*#';
+    $pattern = '#https?://[^/].*/' . $user->id() . '/cancel/confirm/\d+[^\s\[\]]*#';
     $no_mail_message = "No email was sent to $mail containing the delete confirmation link.";
     $no_match_message = "The email sent to $mail did not contain a valid delete confirmation link.";
     $this->assertMailLinkMatchingPattern($pattern, $mail, $no_mail_message, $no_match_message, NULL);
