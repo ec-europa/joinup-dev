@@ -12,6 +12,7 @@ use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\ScenarioTagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
+use Drupal\joinup\Traits\UserTrait;
 use Drupal\message\Entity\MessageTemplate;
 use PHPUnit\Framework\Assert;
 
@@ -22,6 +23,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
   use ScenarioTagTrait;
+  use UserTrait;
 
   /**
    * The mail system storage settings.
@@ -384,6 +386,56 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Searches the delete confirmation link from an email and navigates to it.
+   *
+   * @param string $user
+   *   The user name.
+   *
+   * @throws \Exception
+   *   Thrown when a user is not found.
+   *
+   * @When I click the delete confirmation link for (the user ):user from the last email
+   */
+  public function clickDeleteConfirmationLink($user) {
+    $user = $this->getUserByName($user);
+    if (empty($user)) {
+      throw new \Exception("User {$user->getAccountName()} was not found.");
+    }
+
+    $mail = $user->getEmail();
+    // In plain text, the urls are encapsulated in "[]" or are plain into the
+    // text. The end character is either the "]" or a space.
+    $pattern = '#https?://[^/].*/' . $user->id() . '/cancel/confirm/\d+[^ \]]*#';
+    $no_mail_message = "No email was sent to $mail containing the delete confirmation link.";
+    $no_match_message = "The email sent to $mail did not contain a valid delete confirmation link.";
+    $this->assertMailLinkMatchingPattern($pattern, $mail, $no_mail_message, $no_match_message, NULL);
+  }
+
+  /**
+   * Clicks the comment link found in an email.
+   *
+   * @param string $user
+   *   The user name the email was sent to.
+   *
+   * @throws \Exception
+   *   Thrown when a user is not found.
+   *
+   * @When I click the comment link from the last email sent to :user
+   */
+  public function clickCommentLinkInEmail($user) {
+    $user = $this->getUserByName($user);
+    if (empty($user)) {
+      throw new \Exception("User {$user->getAccountName()} was not found.");
+    }
+
+    $mail = $user->getEmail();
+    $pattern = '!https?://[^ \"\]]*?#comment-\d+[^ \"\]]*?!';
+    $no_mail_message = "No email was sent to $mail containing a comment anchored link.";
+    $no_match_message = "The email sent to $mail did not contain a valid comment anchored link.";
+    $this->assertMailLinkMatchingPattern($pattern, $mail, $no_mail_message, $no_match_message, NULL);
+  }
+
+  /**
    * Clicks on a link for an attachment in a contact form confirmation mail.
    *
    * Note that if multiple messages have been sent to the same user, all of them
@@ -435,7 +487,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *   The exception message to show when the given pattern was not found in the
    *   messages sent to the given e-mail address.
    * @param string|null $template
-   *   Optional message template to filter the messages by.
+   *   (optional) Message template to filter the messages by.
    *
    * @throws \Exception
    *   If no mail was found linked to the given email or if the pattern did not
