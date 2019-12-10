@@ -54,7 +54,7 @@ Feature: Collection RSS feed.
     And the RSS feed channel elements should be:
       | title       | Latest updates from the Indigo Monkey collection                                                                   |
       | description | This feed contains the latest published content from the Indigo Monkey collection, including the newest solutions. |
-      | link        | /collection/indigo-monkey/feed.xml                                                                                 |
+      | link        | /collection/indigo-monkey                                                                                          |
     And the RSS feed should have 7 items
     And the RSS feed items should be:
       | title                                                      | link                                                                     | description                                                                            | publication date                | author          |
@@ -74,7 +74,7 @@ Feature: Collection RSS feed.
     And the RSS feed channel elements should be:
       | title       | Latest updates from the Dreaded Scissors collection                                                                   |
       | description | This feed contains the latest published content from the Dreaded Scissors collection, including the newest solutions. |
-      | link        | /collection/dreaded-scissors/feed.xml                                                                                 |
+      | link        | /collection/dreaded-scissors                                                                                          |
     And the RSS feed items should be:
       | title                                   | link                                                                | description                                                                                                                                                                                             | publication date                | author     |
       | Solution: Shiny Ray                     | /solution/shiny-ray                                                 |                                                                                                                                                                                                         | Tue, 14 Aug 2018 17:36:00 +0200 | Otto Drake |
