@@ -3,7 +3,7 @@
 namespace Drupal\joinup\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
@@ -29,7 +29,7 @@ class UserCancelForm extends CoreUserCancelForm {
   /**
    * Instantiates a new UserCancelForm class.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity type bundle service.
@@ -38,7 +38,7 @@ class UserCancelForm extends CoreUserCancelForm {
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The Joinup relation manager.
    */
-  public function __construct(EntityInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupRelationManagerInterface $relation_manager) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupRelationManagerInterface $relation_manager) {
     parent::__construct($entity_manager, $entity_type_bundle_info, $time);
 
     $this->relationManager = $relation_manager;
