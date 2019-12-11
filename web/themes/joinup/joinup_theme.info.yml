@@ -11,6 +11,8 @@ libraries:
 libraries-extend:
   core/drupal.tableselect:
     - joinup_theme/tableselect
+  oe_webtools_cookie_consent/oe_webtools_cookie_consent.cck:
+    - joinup_theme/cookie-extend
 
 stylesheets-remove:
   - core/themes/stable/css/core/vertical-tabs.css
