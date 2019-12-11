@@ -66,6 +66,10 @@ QUERY;
 
       // Directly delete the previous value and insert the new to avoid updating
       // the parent entity.
+      // Also, include the release graphs. Releases automatically share the
+      // same contact entities referenced as their solutions. The link is
+      // automatic and we don't consider them as parents but we still need to
+      // update them.
       $graphs = [
         'http://joinup.eu/collection/published',
         'http://joinup.eu/collection/draft',
