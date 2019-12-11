@@ -144,14 +144,10 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
     $relation_manager = \Drupal::service('joinup_core.relations_manager');
     if ($groups = $relation_manager->getContactInformationRelatedGroups($entity)) {
-      /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-      $membership_manager = \Drupal::service('og.membership_manager');
-      foreach ($groups as $group) {
-        /** @var \Drupal\og\Entity\OgMembership $membership */
-        $membership = $membership_manager->getMembership($group, $account->id());
-        if ($membership && $membership->hasPermission("delete contact_information rdf entity")) {
-          return AccessResult::allowed();
-        }
+      $group = reset($groups);
+      $membership = \Drupal::service('og.membership_manager')->getMembership($group, $account->id());
+      if ($membership && $membership->hasPermission("delete contact_information rdf entity")) {
+        return AccessResult::allowed();
       }
     }
   }
