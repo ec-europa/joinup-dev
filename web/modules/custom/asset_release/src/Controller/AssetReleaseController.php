@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_release\Controller;
 
+use Drupal\Component\Render\MarkupInterface;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -50,7 +54,7 @@ class AssetReleaseController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('og.access'),
       $container->get('entity.query')
@@ -70,7 +74,7 @@ class AssetReleaseController extends ControllerBase {
    * @return array
    *   Return the form array to be rendered.
    */
-  public function add(RdfInterface $rdf_entity) {
+  public function add(RdfInterface $rdf_entity): array {
     return $this->entityFormBuilder()->getForm($this->createNewAssetRelease($rdf_entity));
   }
 
@@ -82,10 +86,10 @@ class AssetReleaseController extends ControllerBase {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The RDF entity for which the custom page is created.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
    */
-  public function createAssetReleaseAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL) {
+  public function createAssetReleaseAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResultInterface {
     if ($rdf_entity->bundle() !== 'solution') {
       throw new NotFoundHttpException();
     }
@@ -102,7 +106,7 @@ class AssetReleaseController extends ControllerBase {
    * @return array
    *   The build array for the page.
    */
-  public function overview(RdfInterface $rdf_entity) {
+  public function overview(RdfInterface $rdf_entity): array {
     // Retrieve all releases for this solution.
     $ids = $this->queryFactory->get('rdf_entity')
       ->condition('rid', 'asset_release')
@@ -152,10 +156,10 @@ class AssetReleaseController extends ControllerBase {
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The solution rdf entity.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return \Drupal\Component\Render\MarkupInterface
    *   The page title.
    */
-  public function overviewPageTitle(RdfInterface $rdf_entity) {
+  public function overviewPageTitle(RdfInterface $rdf_entity): MarkupInterface {
     return $this->t('Releases for %solution solution', ['%solution' => $rdf_entity->label()]);
   }
 
@@ -175,7 +179,7 @@ class AssetReleaseController extends ControllerBase {
    * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
    *   Thrown when the rdf entity is not a solution.
    */
-  public function overviewAccess(RdfInterface $rdf_entity, RouteMatchInterface $route_match, AccountInterface $account) {
+  public function overviewAccess(RdfInterface $rdf_entity, RouteMatchInterface $route_match, AccountInterface $account): AccessResultInterface {
     if ($rdf_entity->bundle() !== 'solution') {
       throw new NotFoundHttpException();
     }
@@ -189,32 +193,32 @@ class AssetReleaseController extends ControllerBase {
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The solution that the asset_release is version of.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The unsaved asset_release entity.
    */
-  protected function createNewAssetRelease(RdfInterface $rdf_entity) {
-    return $this->entityTypeManager()->getStorage('rdf_entity')->create([
+  protected function createNewAssetRelease(RdfInterface $rdf_entity): RdfInterface {
+    /** @var \Drupal\rdf_entity\RdfInterface $release */
+    $release = $this->entityTypeManager()->getStorage('rdf_entity')->create([
       'rid' => 'asset_release',
       'field_isr_is_version_of' => $rdf_entity->id(),
     ]);
+    return $release;
   }
 
   /**
    * Sorts a list of releases and distributions by date.
    *
-   * @param \Drupal\rdf_entity\Entity\Rdf[] $entities
+   * @param \Drupal\rdf_entity\RdfInterface[] $entities
    *   The RDF entities to sort.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf[]
+   * @return \Drupal\rdf_entity\RdfInterface[]
    *   The sorted RDF entities.
    */
-  protected function sortEntitiesByCreationDate(array $entities) {
-    usort($entities, function ($entity1, $entity2) {
-      // Sort entries without a creation date on the bottom so they don't
-      // stick to the top for all eternity.
-      /** @var \Drupal\rdf_entity\Entity\Rdf $entity1 */
+  protected function sortEntitiesByCreationDate(array $entities): array {
+    usort($entities, function (RdfInterface $entity1, RdfInterface $entity2): int {
+      // Sort entries without a creation date on the bottom so they don't stick
+      // to the top for all eternity.
       $ct1 = $entity1->getCreatedTime() ?: 0;
-      /** @var \Drupal\rdf_entity\Entity\Rdf $entity2 */
       $ct2 = $entity2->getCreatedTime() ?: 0;
       if ($ct1 == $ct2) {
         return 0;
