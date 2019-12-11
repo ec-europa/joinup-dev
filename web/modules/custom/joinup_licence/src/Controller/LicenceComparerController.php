@@ -6,23 +6,13 @@ namespace Drupal\joinup_licence\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityRepositoryInterface;
-use Drupal\Core\Url;
 use Drupal\joinup_licence\LicenceComparerHelper;
 use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a page controller callbacks.
  */
 class LicenceComparerController extends ControllerBase {
-
-  /**
-   * The entity repository service.
-   *
-   * @var \Drupal\Core\Entity\EntityRepositoryInterface
-   */
-  protected $entityRepository;
 
   /**
    * The RDF entity storage.
@@ -39,23 +29,6 @@ class LicenceComparerController extends ControllerBase {
   protected $licences = [];
 
   /**
-   * Constructs a new controller instance.
-   *
-   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
-   *   The entity repository service.
-   */
-  public function __construct(EntityRepositoryInterface $entity_repository) {
-    $this->entityRepository = $entity_repository;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): self {
-    return new static($container->get('entity.repository'));
-  }
-
-  /**
    * Responds to a request made to 'joinup_licence.comparer' route.
    *
    * @param \Drupal\rdf_entity\RdfInterface[] $licences
@@ -63,8 +36,6 @@ class LicenceComparerController extends ControllerBase {
    *
    * @return array
    *   A render array.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function compare(array $licences): array {
     $this->licences = $licences;
@@ -90,30 +61,14 @@ class LicenceComparerController extends ControllerBase {
         ->addCacheableDependency($licence->field_licence_spdx_licence->entity);
     }
 
-    $build = [];
-
-    // Add the 'back to filter' link.
-    $jla_filter = $this->entityRepository->loadEntityByUuid('node', '3bee8b04-75fd-46a8-94b3-af0d8f5a4c41');
-
-    if ($jla_filter) {
-      $build[] = [
-        '#type' => 'link',
-        '#title' => ['#markup' => '<span class="icon icon--previous"></span> ' . $this->t('Back to licence filter')],
-        '#url' => Url::fromRoute('entity.node.canonical', [
-          'node' => $jla_filter->id(),
-        ]),
+    $build = [
+      [
+        '#theme' => 'table',
+        '#rows' => $rows,
         '#attributes' => [
-          'class' => ['licence-comparer__back'],
+          'data-drupal-selector' => 'licence-comparer',
+          'class' => ['licence-comparer'],
         ],
-      ];
-    }
-
-    $build[] = [
-      '#theme' => 'table',
-      '#rows' => $rows,
-      '#attributes' => [
-        'data-drupal-selector' => 'licence-comparer',
-        'class' => ['licence-comparer'],
       ],
     ];
 
