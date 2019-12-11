@@ -57,7 +57,6 @@ QUERY;
     // rest will retrieve a copy.
     array_shift($parent_ids);
 
-    // @todo: Skip the first parent as they already have the original contact.
     foreach ($parent_ids as $parent_id) {
       $new_contact = clone $contact;
       $new_contact->set('id', NULL);
