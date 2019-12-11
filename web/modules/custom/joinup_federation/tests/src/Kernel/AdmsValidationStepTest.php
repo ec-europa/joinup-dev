@@ -6,6 +6,7 @@ use Drupal\adms_validator\AdmsValidator;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\PipelineState;
 use EasyRdf\Graph;
+use PHPUnit\Framework\Assert;
 
 /**
  * Tests the 'adms_validation' pipeline step plugin.
@@ -57,6 +58,8 @@ class AdmsValidationStepTest extends StepTestBase {
       ->setStepId('adms_validation')
       ->setBatchValue('queries', $sub_queries);
     $this->runPipelineStep('adms_validation', $state);
+    // Avoid test skip due to no assertion performed.
+    Assert::assertTrue(TRUE);
   }
 
   /**

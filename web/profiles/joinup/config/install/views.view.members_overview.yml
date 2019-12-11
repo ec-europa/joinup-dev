@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-  - field.storage.user.field_user_family_name
-  - field.storage.user.field_user_first_name
+    - field.storage.user.field_user_family_name
+    - field.storage.user.field_user_first_name
   module:
-  - joinup_core
-  - og
-  - user
+    - joinup_core
+    - og
+    - user
 id: members_overview
 label: 'Members overview (public)'
 module: views
@@ -15,7 +15,6 @@ description: 'The public list of members of a collection'
 tag: ''
 base_table: og_membership
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -350,6 +349,8 @@ display:
               moderator: '0'
               administrator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: 'Combine fields filter'
@@ -393,6 +394,8 @@ display:
             remember_roles:
               authenticated: authenticated
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: true
           group_info:
             label: Roles
@@ -447,6 +450,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -485,6 +490,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -632,11 +639,11 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-      - 'languages:language_content'
-      - 'languages:language_interface'
-      - url
-      - url.query_args
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
       tags:
-      - 'config:core.entity_view_display.og_membership.default.default'
-      - 'config:field.storage.user.field_user_family_name'
-      - 'config:field.storage.user.field_user_first_name'
+        - 'config:core.entity_view_display.og_membership.default.default'
+        - 'config:field.storage.user.field_user_family_name'
+        - 'config:field.storage.user.field_user_first_name'
