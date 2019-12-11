@@ -7,19 +7,11 @@ namespace Drupal\joinup_licence\Controller;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\joinup_licence\LicenceComparerHelper;
-use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 
 /**
  * Provides a page controller callbacks.
  */
 class LicenceComparerController extends ControllerBase {
-
-  /**
-   * The RDF entity storage.
-   *
-   * @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
-   */
-  protected $rdfStorage;
 
   /**
    * An ordered list of Joinup licence entities keyed by their SPDX ID.
@@ -271,19 +263,6 @@ class LicenceComparerController extends ControllerBase {
         'class' => $class,
       ];
     }
-  }
-
-  /**
-   * Returns the RDF entity storage.
-   *
-   * @return \Drupal\sparql_entity_storage\SparqlEntityStorageInterface
-   *   The RDF entity storage.
-   */
-  protected function getRdfStorage(): SparqlEntityStorageInterface {
-    if (!isset($this->rdfStorage)) {
-      $this->rdfStorage = $this->entityTypeManager()->getStorage('rdf_entity');
-    }
-    return $this->rdfStorage;
   }
 
 }
