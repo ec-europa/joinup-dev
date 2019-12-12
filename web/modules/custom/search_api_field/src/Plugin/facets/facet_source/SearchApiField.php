@@ -70,7 +70,6 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
     // Load facet plugin definition and depending on those settings; load the
     // corresponding search api page and load its index.
     $field_id = $plugin_definition['search_api_field'];
-    /* @var $page \Drupal\search_api\Utility\QueryHelper */
     $field = FieldStorageConfig::load($field_id);
     $index = $field->getSetting('index');
     $this->index = Index::load($index);
@@ -111,7 +110,7 @@ class SearchApiField extends SearchApiBaseFacetSource implements SearchApiFacetS
         'parse_mode' => 'direct',
         // @Todo Fix limit, get it from field settings.
         'limit' => 10,
-        'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
+        'offset' => $this->requestStack->getCurrentRequest()->get('page', 0),
       ];
       $query = $search_api_index->query($options);
       $query->setSearchId($plugin_definition_id);
