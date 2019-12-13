@@ -420,6 +420,7 @@ Feature: Log in through EU Login
     When I click "Edit" in the "Joe Doe" row
     Then the "Allow user to log in via CAS" checkbox should be checked
     And the "CAS Username" field should contain "joe"
+    And the following fields should be disabled "Email"
 
     Given I am an anonymous user
     And I am on the homepage

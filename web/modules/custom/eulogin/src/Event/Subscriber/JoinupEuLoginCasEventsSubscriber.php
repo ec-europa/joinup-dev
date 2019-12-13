@@ -107,7 +107,7 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
     // A new email has been configured upstream, on the EU Login account.
     if ($account->getEmail() !== $eulogin_email) {
       if (user_load_by_mail($eulogin_email)) {
-        throw new \Exception("You've recently changed your EU Login account but that email is already used in Joinup by other. Please contact support.");
+        throw new \Exception("You've recently changed your EU Login account email but that email is already used in Joinup by other user. Please contact support.");
       }
     }
   }
