@@ -116,17 +116,15 @@ Feature:
 
     When I add the "GPL-2.0+" licence to the compare list
     And I click "Compare"
-    Then I should see the link "Back to licence filter"
-    And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+"
+    Then the url should match "/licence/compare/Apache-2.0;GPL-2.0\+"
 
-    When I click "Back to licence filter"
+    When I visit the "JLA" custom page
     And I add the "Apache-2.0" licence to the compare list
     And I add the "GPL-2.0+" licence to the compare list
     And I add the "BSL-1.0" licence to the compare list
     And I add the "0BSD" licence to the compare list
     And I add the "LGPL-2.1" licence to the compare list
     And I click "Compare"
-    Then I should see the link "Back to licence filter"
     And the url should match "/licence/compare/Apache-2.0;GPL-2.0\+;BSL-1.0;0BSD;LGPL-2.1"
 
   Scenario: Test the licence comparer.

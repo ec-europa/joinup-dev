@@ -13,8 +13,8 @@
       $(this).removeClass('is-hidden');
     });
 
-    // Check every active filter item
-    // and hide tiles which don't contain proper data-licence-category
+    // Check every active filter item and hide tiles which don't contain proper
+    // data-licence-category.
     $('.licence-filter__item a.is-active').each(function () {
       var currentlicenceCategory = $(this).attr('data-licence-category');
       if (typeof currentlicenceCategory !== 'undefined') {
@@ -30,8 +30,8 @@
       }
     });
 
-    // Check licence search field value
-    // and hide tiles which don't contain proper data-spdx
+    // Check licence search field value and hide tiles which don't contain
+    // proper data-spdx.
     var licenceTiles = 0;
     var currentSpdxId = $('#licence-search').val().toLowerCase();
     $licenceTile.each(function () {
@@ -48,7 +48,7 @@
       }
     });
 
-    // Show calculated number of tiles
+    // Show calculated number of tiles.
     $('.licence-counter__number').text(licenceTiles);
   }
 
@@ -115,8 +115,8 @@
     });
   });
 
-  // Cancel the 'Enter' key of the filter input.
-  // Entered key is cancelled on keypress, not on keyup.
+  // Cancel the 'Enter' key of the filter input. Entered key is cancelled on
+  // keypress, not on keyup.
   $('#licence-search').on('keypress', function (event) {
     var keyCode = event.keyCode || event.which;
     if (keyCode === 13) {
@@ -129,7 +129,7 @@
     checkLicenceCategories();
   });
 
-  // Reset licence listing
+  // Reset licence listing.
   $('#licence-reset').on('click', function (event) {
     $('.licence-filter__item a.is-active').removeClass('is-active');
     $('.licence-search__input input').val('');
@@ -165,7 +165,7 @@
       else {
         if (licencesArray.length > 0) {
           licencesArray = JSON.parse(licences);
-          licencesArray = licencesArray.filter(function(value){
+          licencesArray = licencesArray.filter(function (value) {
             return value !== licenceName;
           });
           licencesString = JSON.stringify(licencesArray);
@@ -195,9 +195,8 @@
     });
   });
 
-  // Filter on window load
-  // Needed for licence search filter.
-  $(window).on('load', function() {
+  // Filter on window load. Needed for licence search filter.
+  $(window).on('load', function () {
     checkLicenceCategories();
     checkCompareStatus();
   });
