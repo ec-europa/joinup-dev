@@ -6,6 +6,7 @@ namespace Drupal\joinup_eulogin\Event\Subscriber;
 
 use Drupal\cas\Event\CasPostLoginEvent;
 use Drupal\cas\Event\CasPostValidateEvent;
+use Drupal\cas\Event\CasPreLoginEvent;
 use Drupal\cas\Event\CasPreValidateEvent;
 use Drupal\cas\Service\CasHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -50,6 +51,9 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       CasHelper::EVENT_PRE_VALIDATE => 'alterValidationUrl',
+      // This runs just before CasAttributesSubscriber::onPreLogin().
+      // @see \Drupal\cas_attributes\Subscriber\CasAttributesSubscriber::onPreLogin()
+      CasHelper::EVENT_PRE_LOGIN => ['handlePotentialMailCollision', 21],
       CasHelper::EVENT_POST_LOGIN => 'storeAttributes',
       CasHelper::EVENT_POST_VALIDATE => 'prepareAttributes',
     ];
@@ -76,6 +80,36 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
 
     $event->setValidationPath($this->settings->get('ticket_validation.path'));
     $event->addParameters($parameters);
+  }
+
+  /**
+   * Handles the case when a use changes its mail upstream with an existing one.
+   *
+   * When users are changing their EU Login account email, upstream, it might
+   * happen that another user is registered with the same email address on
+   * Joinup. This would lead to duplicate emails on Joinup which is unacceptable
+   * with respect to data integrity. Note that Drupal allows email duplicates at
+   * API level but not when using the UI. However, Joinup is enforcing email
+   * uniqueness across users. As this edge case is very rare and unlikely, we
+   * only throw an exception.
+   *
+   * @param \Drupal\cas\Event\CasPreLoginEvent $event
+   *   The CAS pre-login event.
+   *
+   * @throws \Exception
+   *   When a user changes its EU Login email to a value that is already taken
+   *   by other Joinup user.
+   */
+  public function handlePotentialMailCollision(CasPreLoginEvent $event): void {
+    $account = $event->getAccount();
+    $eulogin_email = $event->getCasPropertyBag()->getAttribute('email');
+
+    // A new email has been configured upstream, on the EU Login account.
+    if ($account->getEmail() !== $eulogin_email) {
+      if (user_load_by_mail($eulogin_email)) {
+        throw new \Exception("You've recently changed your EU Login account email but that email is already used in Joinup by other user. Please contact support.");
+      }
+    }
   }
 
   /**
