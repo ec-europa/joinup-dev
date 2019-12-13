@@ -6,12 +6,13 @@ namespace Drupal\asset_release\Controller;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgAccessInterface;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -103,37 +104,26 @@ class AssetReleaseController extends ControllerBase {
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The solution rdf entity.
    *
-   * @return array
-   *   The build array for the page.
+   * @return array|\Drupal\Core\Routing\TrustedRedirectResponse
+   *   The build array for the page or a 404 response.
    */
-  public function overview(RdfInterface $rdf_entity): array {
-    // Retrieve all releases for this solution.
-    $ids = $this->queryFactory->get('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->condition('field_isr_is_version_of', $rdf_entity->id())
-      // @todo: This is a temporary fix. We need to implement the sort in the
-      // rdf entity module in order to be able to handle paging.
-      // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2788
-      // ->sort('created', 'DESC')
-      ->execute();
-
-    /** @var \Drupal\rdf_entity\Entity\Rdf[] $releases */
-    $releases = Rdf::loadMultiple($ids);
-
-    // Filter out any release that the current user cannot access.
-    // @todo Filter out any unpublished release. See ISAICP-3393.
-    $releases = array_filter($releases, function ($release) {
-      return $release->access('view');
-    });
-    $standalone_distributions = $rdf_entity->get('field_is_distribution')->referencedEntities();
+  public function overview(RdfInterface $rdf_entity) {
+    /** @var \Drupal\solution\SolutionReleasesAndDistributionsFieldItemList $field */
+    $field = $rdf_entity->get('releases_and_distributions');
+    if ($field->isEmpty()) {
+      return (new TrustedRedirectResponse('/not-found'))
+        ->setStatusCode(404)
+        ->addCacheableDependency($rdf_entity);
+    }
+    $entities = $this->sortEntitiesByCreationDate($field->referencedEntities());
 
     // Put a flag on the standalone distributions so they can be identified for
     // theming purposes.
-    foreach ($standalone_distributions as $standalone_distribution) {
-      $standalone_distribution->standalone = TRUE;
+    foreach ($entities as $entity) {
+      if ($entity->bundle() === 'asset_distribution') {
+        $entity->standalone = TRUE;
+      }
     }
-
-    $entities = $this->sortEntitiesByCreationDate(array_merge($releases, $standalone_distributions));
 
     // Mark the first release as the latest.
     // @see asset_release_preprocess_rdf_entity()
@@ -144,10 +134,18 @@ class AssetReleaseController extends ControllerBase {
       }
     }
 
-    return [
-      '#theme' => 'asset_release_releases_download',
-      '#releases' => $entities,
+    $build = [
+      [
+        '#theme' => 'asset_release_releases_download',
+        '#releases' => $entities,
+      ],
     ];
+
+    (new CacheableMetadata())
+      ->addCacheableDependency($rdf_entity)
+      ->applyTo($build);
+
+    return $build;
   }
 
   /**
