@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -26,6 +27,7 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
+use Drupal\solution\SolutionReleasesAndDistributionsFieldItemList;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\user\Entity\User;
 
@@ -70,6 +72,18 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setSetting('target_type', 'rdf_entity')
     ->setComputed(TRUE)
     ->setClass(SolutionAffiliationFieldItemList::class);
+  // References the solution releases and standalone distributions.
+  $fields['releases_and_distributions'] = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Releases and standalone distributions'))
+    ->setName('releases_and_distributions')
+    ->setDescription(t('The Releases and standalone distributions of this solution.'))
+    ->setTargetEntityTypeId('rdf_entity')
+    ->setTargetBundle('solution')
+    ->setSetting('target_type', 'rdf_entity')
+    ->setComputed(TRUE)
+    ->setReadOnly(TRUE)
+    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+    ->setClass(SolutionReleasesAndDistributionsFieldItemList::class);
 
   // Make sure a solution's title is unique among the collections it belongs to.
   if (!empty($fields['label'])) {
