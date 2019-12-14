@@ -105,6 +105,9 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
       '#access' => !$form['account']['name']['#access'],
       '#weight' => -100,
     ];
+
+    $form['field_user_first_name']['widget'][0]['value']['#description'] = '';
+    $form['field_user_family_name']['widget'][0]['value']['#description'] = '';
     return;
   }
 
@@ -132,9 +135,6 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
   if (isset($form['account']['mail']) && \Drupal::config('cas.settings')->get('user_accounts.restrict_email_management')) {
     $form['account']['mail']['#disabled'] = TRUE;
   }
-  $form['field_user_first_name']['widget'][0]['value']['#description'] = t('Your first name is publicly visible.');
-  $form['field_user_family_name']['widget'][0]['value']['#description'] = t('Your last name is publicly visible.');
-
   $mapping = \Drupal::configFactory()
     ->get('cas_attributes.settings')
     ->get('field.mappings');
