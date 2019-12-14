@@ -92,12 +92,12 @@ Feature: Log in through EU Login
     When I press "Sign in"
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
-    # The profile entries are overwritten, except the username & the email.
+    # The profile entries are overwritten, except the username.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username    | chuck_the_local_hero             |
-      | E-mail      | chuck_the_local_hero@example.com |
-      | First name  | Chuck                            |
-      | Family name | Norris                           |
+      | Username    | chuck_the_local_hero           |
+      | E-mail      | texasranger@chucknorris.com.eu |
+      | First name  | Chuck                          |
+      | Family name | Norris                         |
 
   Scenario: An existing local account can be linked by the user using the email.
     Given CAS users:
@@ -119,12 +119,12 @@ Feature: Log in through EU Login
     When I press "Sign in"
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
-    # The profile entries are overwritten, except the username & the email.
+    # The profile entries are overwritten, except the username.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username    | chuck_the_local_hero             |
-      | E-mail      | chuck_the_local_hero@example.com |
-      | First name  | Chuck                            |
-      | Family name | Norris                           |
+      | Username    | chuck_the_local_hero           |
+      | E-mail      | texasranger@chucknorris.com.eu |
+      | First name  | Chuck                          |
+      | Family name | Norris                         |
 
   Scenario: An existing user can log in through EU Login
     Given users:
@@ -154,16 +154,59 @@ Feature: Log in through EU Login
     And I click "Sign in"
     When I click "EU Login"
     Then I should see the heading "Sign in to continue"
-    When I fill in "E-mail address" with "007@mi6.eu"
+    And I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
     And I press the "Log in" button
 
     Then I should see the success message "You have been logged in."
 
-    # The profile entries are overwritten, except the username & the email.
+    # The profile entries are overwritten, except the username.
+    And the user jb007_local should have the following data in their user profile:
+      | Username    | jb007_local |
+      | E-mail      | 007@mi6.eu  |
+      | First name  | James       |
+      | Family name | Bond        |
+
+    # Check that the email gets synced from the EU Login server.
+    Given I click "Sign out"
+    And CAS users:
+      | Username | E-mail             | Password           | First name | Last name | Local username |
+      | jb007    | 007.changed@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
+    # We want to test the case when a user is changing their email upstream, on
+    # EU Login, with one that collides with other user's email. These are very
+    # rare and unlikely edge cases where we only throw an exception.
+    And users:
+      | Username   | E-mail             |
+      | other_user | 007.changed@mi6.eu |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    Then I should see the heading "Sign in to continue"
+    When I fill in "E-mail address" with "007.changed@mi6.eu"
+    And I fill in "Password" with "shaken_not_stirred"
+    When I press the "Log in" button
+    # We cannot assert here the exception message as on some environments that
+    # can be disabled on the screen, depending on PHP settings. We're only
+    # asserting the response HTTP code.
+    And the response status code should be 500
+
+    # Change the EU Login account email to a unique value.
+    Given CAS users:
+      | Username | E-mail           | Password           | First name | Last name | Local username |
+      | jb007    | uniq@example.com | shaken_not_stirred | James      | Bond      | jb007_local    |
+
+    When I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    Then I should see the heading "Sign in to continue"
+    When I fill in "E-mail address" with "uniq@example.com"
+    And I fill in "Password" with "shaken_not_stirred"
+    When I press the "Log in" button
+
     And the user jb007_local should have the following data in their user profile:
       | Username    | jb007_local      |
-      | E-mail      | 007-local@mi6.eu |
+      | E-mail      | uniq@example.com |
       | First name  | James            |
       | Family name | Bond             |
 
@@ -317,8 +360,8 @@ Feature: Log in through EU Login
       | joe      | joe@example.com |
 
     And CAS users:
-      | Username | E-mail          | Password |
-      | joe  | joe.cas@example.com | 123      |
+      | Username | E-mail              | Password |
+      | joe      | joe.cas@example.com | 123      |
 
     Given I am on the homepage
     And I click "Sign in"
@@ -372,6 +415,7 @@ Feature: Log in through EU Login
     When I click "Edit" in the "Joe Doe" row
     Then the "Allow user to log in via CAS" checkbox should be checked
     And the "CAS Username" field should contain "joe"
+    And the following fields should be disabled "Email"
 
     Given I am an anonymous user
     And I am on the homepage
