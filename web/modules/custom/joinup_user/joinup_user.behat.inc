@@ -9,7 +9,6 @@ declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Test\AssertMailTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
@@ -24,10 +23,9 @@ use PHPUnit\Framework\Assert;
 class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use MailCollectorTrait;
+  use StringTranslationTrait;
   use UserTrait;
   use UtilityTrait;
-  use StringTranslationTrait;
-  use AssertMailTrait;
 
   /**
    * Navigates to the canonical page display of a collection.
