@@ -43,6 +43,8 @@ Feature: Asset distribution overview on solution.
     And I should be on "/solution/lovely-butterfly/releases"
 
     And I should see the heading "Lovely Butterfly" in the Header region
+    # The general link "Download releases" should not be shown on the releases
+    # page itself, since it references the page we are already on.
     But I should not see the link "Download releases"
 
     # Only the published releases should be shown.
@@ -96,6 +98,8 @@ Feature: Asset distribution overview on solution.
     And the "The Child of the Past" release should be marked as the latest release
 
     # Publish the release as a solution facilitator.
+    # @todo Unpublished releases are no longer visible for facilitators.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5736
     When I am logged in as a facilitator of the "Lovely Butterfly" solution
     And I go to the homepage of the "The Deep Doors" release
     When I click "Edit" in the "Entity actions" region

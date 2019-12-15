@@ -12,6 +12,13 @@ use Drupal\Core\TypedData\ComputedItemListTrait;
  *
  * This computed field returns a list references to solution's releases and
  * standalone distributions. It's a read-only field.
+ *
+ * @todo This currently reuses the storage graph of the solution. This works
+ *   only as intended for published solutions. In case the solution is not
+ *   published, only the unpublished releases and distributions will be
+ *   returned.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5736
  */
 class SolutionReleasesAndDistributionsFieldItemList extends EntityReferenceFieldItemList {
 
