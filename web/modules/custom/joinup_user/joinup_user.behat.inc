@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Test\AssertMailTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
@@ -26,6 +27,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   use UserTrait;
   use UtilityTrait;
   use StringTranslationTrait;
+  use AssertMailTrait;
 
   /**
    * Navigates to the canonical page display of a collection.
@@ -92,49 +94,6 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
 
     if (empty($matches)) {
       $message = "No link with named {$title} was found in any of the emails sent to {$user}";
-      throw new Exception($message);
-    }
-    $url = reset($matches[1]);
-    $this->visitPath($url);
-  }
-
-  /**
-   * Searches the delete confirmation link from an email and navigates to it.
-   *
-   * @param string $user
-   *   The user name.
-   *
-   * @throws \Exception
-   *   Thrown when a user is not found.
-   *
-   * @When I click the delete confirmation link for (the user ):user from the last email
-   */
-  public function clickDeleteConfirmationLink($user) {
-    $user = $this->getUserByName($user);
-    $mails = $this->getUserMails($user);
-    if (empty($mails)) {
-      throw new \Exception("No emails have been sent to the user {$user->getAccountName()}.");
-    }
-
-    $matches = [];
-    foreach ($mails as $mail) {
-      $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
-      $body = (string) $mail['body'];
-      preg_match_all($pattern, $body, $matches);
-      $matches = array_filter($matches);
-      // $matches[0] are urls with the characters outside the matching
-      // parenthesis. $matches[1] are the matches restricted by the parenthesis
-      // tags in the regex. $matches[1] contain the clean urls.
-      if (empty($matches[1])) {
-        continue;
-      }
-      break;
-    }
-
-    if (empty($matches)) {
-      $message = $this->t("Deletion confirmation url was not found in the mail body: \n@body", [
-        '@body' => $body,
-      ]);
       throw new Exception($message);
     }
     $url = reset($matches[1]);
