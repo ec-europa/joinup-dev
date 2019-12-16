@@ -95,6 +95,10 @@ interface JoinupMessageDeliveryInterface {
    *   that is used (either Email or Digest).
    * @param array $message_values
    *   Optional array of field values to send on the message entity.
+   * @param bool $digest
+   *   Optional flag indicating whether the message should be included in a
+   *   digest. If set to FALSE the message will be sent immediately. Defaults to
+   *   FALSE.
    *
    * @return bool
    *   Whether or not the message was sent successfully.
@@ -103,7 +107,7 @@ interface JoinupMessageDeliveryInterface {
    *   Thrown when a message is attempted to be sent to a user which doesn't
    *   have an e-mail address.
    */
-  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], array $message_values = []): bool;
+  public function sendMessageTemplateToUser(string $message_template, array $arguments, UserInterface $account, array $notifier_options = [], array $message_values = [], bool $digest = FALSE): bool;
 
   /**
    * Sends a Message based on the given message template to multiple users.

@@ -160,7 +160,7 @@ class CommunityContentSubscriptionSubscriber implements EventSubscriberInterface
             ],
           ],
         ];
-        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, [], $subscriber, [], $message_values) && $success;
+        $success = $this->messageDelivery->sendMessageTemplateToUser($message_template, [], $subscriber, [], $message_values, TRUE) && $success;
       }
       return $success;
     }

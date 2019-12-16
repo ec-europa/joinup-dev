@@ -25,7 +25,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
   use MailCollectorTrait;
-  use ScenarioTagTrait;
   use TagTrait;
   use UserTrait;
   use UtilityTrait;
