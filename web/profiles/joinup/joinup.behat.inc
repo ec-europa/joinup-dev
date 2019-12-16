@@ -2767,4 +2767,27 @@ JS;
     Assert::assertNotEmpty($element);
   }
 
+  /**
+   * Asserts that the anchor from the url has a correct id to track in the page.
+   *
+   * There is no good way to track if the page has navigated to the anchor
+   * requested as this is a browser side functionality. What we _can_ assert is
+   * that the anchor that is requested from the URL exists as an element id in
+   * the page.
+   *
+   * @throws \Exception
+   *   Thrown when the url does not include an anchor or the anchor is not found
+   *   in the page.
+   *
+   * @When the page should point to the anchor from the URL
+   */
+  public function assertCorrectAnchor(): void {
+    $current_url = $this->getSession()->getCurrentUrl();
+    $url_parts = UrlHelper::parse($current_url);
+    if (empty($url_parts['fragment'])) {
+      throw new Exception("The {$current_url} does not contain an anchor.");
+    }
+    $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
+  }
+
 }

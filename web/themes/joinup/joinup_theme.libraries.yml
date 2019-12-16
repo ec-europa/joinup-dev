@@ -67,3 +67,10 @@ facets-extend:
   version: VERSION
   js:
     js/facets-extend.js: {}
+
+cookie-extend:
+  version: VERSION
+  js:
+    js/cookie-extend.js: {}
+  dependencies:
+    - core/jquery

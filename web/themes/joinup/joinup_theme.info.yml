@@ -13,6 +13,8 @@ libraries-extend:
     - joinup_theme/tableselect
   facets/drupal.facets.checkbox-widget:
     - joinup_theme/facets-extend
+  oe_webtools_cookie_consent/oe_webtools_cookie_consent.cck:
+    - joinup_theme/cookie-extend
 
 stylesheets-remove:
   - core/themes/stable/css/core/vertical-tabs.css

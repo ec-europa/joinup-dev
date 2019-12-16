@@ -33,4 +33,4 @@ $settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_pag
 set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']);
 set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']);
 
-$config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/../config/sync';
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/../config/sync';
