@@ -6,5 +6,5 @@ Feature: Site search
 
   Scenario: Search keywords are tracked in analytics.
     When I am on the homepage
-    And I enter "sample text 1" in the header search bar and hit enter
+    When I enter "sample text 1" in the search bar and press enter
     Then the response should contain "\"search\":{\"keyword\":\"sample text 1\"}"
