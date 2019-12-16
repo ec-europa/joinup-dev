@@ -1,3 +1,8 @@
+/**
+ * @file
+ * JavaScript behaviors for the global search bar.
+ */
+
 (function ($, Drupal, drupalSettings) {
   'use strict';
 
