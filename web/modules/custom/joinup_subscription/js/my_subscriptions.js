@@ -1,3 +1,8 @@
+/**
+ * @file
+ * JavaScript code for the My Subscriptions form.
+ */
+
 (function ($, Drupal) {
   Drupal.behaviors.joinupSubscriptionMySubscriptionsBehavior = {
     attach: function (context, settings) {
@@ -20,7 +25,7 @@
             var subscription_status = [];
 
             // Get current status of checkboxes.
-            $(this).closest('.form__subscribe-types-inner').find('input.form-checkbox').each(function() {
+            $(this).closest('.form__subscribe-types-inner').find('input.form-checkbox').each(function () {
               subscription_status.push($(this).prop('checked'));
             });
 
