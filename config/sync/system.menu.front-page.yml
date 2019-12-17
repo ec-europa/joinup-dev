@@ -1,0 +1,8 @@
+uuid: 4f3996b1-ce66-4ae3-8ea4-87f108a5f718
+langcode: en
+status: true
+dependencies: {  }
+id: front-page
+label: 'Front page'
+description: 'Contains links to entities presented in the front page.'
+locked: false
