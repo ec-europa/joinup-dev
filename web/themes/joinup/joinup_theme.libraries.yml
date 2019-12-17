@@ -63,6 +63,11 @@ shared_entity:
     - core/jquery.once
     - core/drupal
 
+facets-extend:
+  version: VERSION
+  js:
+    js/facets-extend.js: {}
+
 cookie-extend:
   version: VERSION
   js:

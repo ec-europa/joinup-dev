@@ -405,6 +405,11 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Set title back in the global page variables.
   $variables['title'] = $title;
+
+  // Set special variable for the search page.
+  if ($route_name == 'view.search.page_1') {
+    $variables['is_search_page'] = TRUE;
+  }
 }
 
 /**
