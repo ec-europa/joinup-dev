@@ -8,6 +8,10 @@ services:
     class: Drupal\joinup\PinService
     arguments: ['@joinup_core.relations_manager']
     lazy: true
+  joinup.front_page_helper:
+    class: Drupal\joinup\FrontPageMenuHelper
+    arguments: ['@entity_type.manager', '@plugin.manager.menu.link']
+    lazy: true
   joinup.route_subscriber:
     class: Drupal\joinup\Routing\RouteSubscriber
     arguments: ['@entity.manager']

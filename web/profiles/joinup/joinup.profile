@@ -360,13 +360,17 @@ function joinup_preprocess_menu__main(&$variables) {
  */
 function joinup_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
+    $front_page_helper = \Drupal::service('joinup.front_page_helper');
+    $menu_item = $front_page_helper->getFrontPageMenuItem($entity);
+    $timestamp = empty($menu_item) ? \Drupal::service('datetime.time')->getRequestTime() : $menu_item->getChangedTime();
+
     // Add the "entity" contextual links group.
     $build['#contextual_links']['entity'] = [
       'route_parameters' => [
         'entity_type' => $entity->getEntityTypeId(),
         'entity' => $entity->id(),
       ],
-      'metadata' => ['changed' => $entity->getChangedTime()],
+      'metadata' => ['changed' => $timestamp],
     ];
   }
 

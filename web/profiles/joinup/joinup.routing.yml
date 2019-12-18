@@ -116,14 +116,12 @@ joinup.site_unfeature:
 joinup.site_pin:
   path: '/pin/{entity_type}/{entity}/add'
   defaults:
-    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _controller: '\Drupal\joinup\Controller\FrontPageMenuController::pinSiteWide'
     _title: 'Pin'
-    field_name: field_site_pinned
     value: true
-    message: '@bundle %title has been set as pinned content.'
   requirements:
     _permission: 'pin entity'
-    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _custom_access: '\Drupal\joinup\Controller\FrontPageMenuController::routeAccess'
     _csrf_token: 'TRUE'
   options:
     parameters:
@@ -133,14 +131,12 @@ joinup.site_pin:
 joinup.site_unpin:
   path: '/pin/{entity_type}/{entity}/remove'
   defaults:
-    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
+    _controller: '\Drupal\joinup\Controller\FrontPageMenuController::unpinSiteWide'
     _title: 'Remove from pinned'
-    field_name: field_site_pinned
     value: false
-    message: '@bundle %title has been removed from the pinned contents.'
   requirements:
     _permission: 'unpin entity'
-    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
+    _custom_access: '\Drupal\joinup\Controller\FrontPageMenuController::routeAccess'
     _csrf_token: 'TRUE'
   options:
     parameters:
