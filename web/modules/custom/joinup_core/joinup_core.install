@@ -468,3 +468,34 @@ function joinup_core_update_8114(&$sandbox) {
   module_load_include('install', 'publication_date');
   _publication_date_populate_database_field();
 }
+
+/**
+ * Adds site-wide pinned entities to the front page menu.
+ */
+function joinup_core_update_8116(&$sandbox) {
+  if (empty($sandbox['entities'])) {
+    foreach (['node', 'rdf_entity'] as $type) {
+      $query = \Drupal::entityTypeManager()->getStorage($type)->getQuery();
+      $sandbox['entities'][$type] = $query->condition('field_site_pinned', 1)->execute();
+    }
+    $sandbox['count'] = 0;
+    $sandbox['max'] = count($sandbox['entities']['node']) + count($sandbox['entities']['rdf_entity']);
+  }
+
+  $type = empty($sandbox['entities']['node']) ? 'rdf_entity' : 'node';
+  $ids = empty($sandbox['entities']['node'])
+    ? array_splice($sandbox['entities']['rdf_entity'], 0, 10)
+    : array_splice($sandbox['entities']['node'], 0, 10);
+
+  /** @var \Drupal\joinup\FrontPageMenuHelper $front_page_helper */
+  $front_page_helper = \Drupal::service('joinup.front_page_helper');
+  foreach (\Drupal::entityTypeManager()->getStorage($type)->loadMultiple($ids) as $entity) {
+    if (empty($front_page_helper->getFrontPageMenuItem($entity))) {
+      $front_page_helper->pinSiteWide($entity);
+    }
+    $sandbox['count']++;
+  }
+
+  $sandbox['#finished'] = (int) (empty($sandbox['entities']['node']) && empty($sandbox['entities']['rdf_entity']));
+  return "Processed {$sandbox['count']} out of {$sandbox['max']} site wide entities.";
+}
