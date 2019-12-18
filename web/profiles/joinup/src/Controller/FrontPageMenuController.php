@@ -5,11 +5,9 @@ namespace Drupal\joinup\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\joinup\FrontPageMenuHelper;
-use Drupal\menu_link_content\Plugin\Menu\MenuLinkContent;
+use Drupal\joinup\FrontPageMenuHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -20,7 +18,7 @@ class FrontPageMenuController extends ControllerBase {
   /**
    * The front page helper service.
    *
-   * @var \Drupal\joinup\FrontPageMenuHelper
+   * @var \Drupal\joinup\FrontPageMenuHelperInterface
    */
   protected $frontPageHelper;
 
@@ -36,10 +34,10 @@ class FrontPageMenuController extends ControllerBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\joinup\FrontPageMenuHelper $front_page_helper
+   * @param \Drupal\joinup\FrontPageMenuHelperInterface $front_page_helper
    *   The menu link manager service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelper $front_page_helper) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper) {
     $this->menuLinkContentStorage = $entity_type_manager->getStorage('menu_link_content');
     $this->frontPageHelper = $front_page_helper;
   }

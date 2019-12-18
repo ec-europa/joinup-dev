@@ -487,7 +487,7 @@ function joinup_core_update_8116(&$sandbox) {
     ? array_splice($sandbox['entities']['rdf_entity'], 0, 10)
     : array_splice($sandbox['entities']['node'], 0, 10);
 
-  /** @var \Drupal\joinup\FrontPageMenuHelper $front_page_helper */
+  /** @var \Drupal\joinup\FrontPageMenuHelperInterface $front_page_helper */
   $front_page_helper = \Drupal::service('joinup.front_page_helper');
   foreach (\Drupal::entityTypeManager()->getStorage($type)->loadMultiple($ids) as $entity) {
     if (empty($front_page_helper->getFrontPageMenuItem($entity))) {

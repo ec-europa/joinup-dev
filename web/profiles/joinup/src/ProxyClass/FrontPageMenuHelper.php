@@ -7,12 +7,14 @@
 
 namespace Drupal\joinup\ProxyClass {
 
-    /**
+  use Drupal\joinup\FrontPageMenuHelperInterface;
+
+  /**
      * Provides a proxy class for \Drupal\joinup\FrontPageMenuHelper.
      *
      * @see \Drupal\Component\ProxyBuilder
      */
-    class FrontPageMenuHelper
+    class FrontPageMenuHelper implements FrontPageMenuHelperInterface
     {
 
         use \Drupal\Core\DependencyInjection\DependencySerializationTrait;
@@ -27,7 +29,7 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * The real proxied service, after it was lazy loaded.
          *
-         * @var \Drupal\joinup\FrontPageMenuHelper
+         * @var \Drupal\joinup\FrontPageMenuHelperInterface
          */
         protected $service;
 
