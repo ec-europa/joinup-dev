@@ -1,11 +1,14 @@
 name: 'Joinup EU Login'
 description: 'Provides integration with EU Login.'
 package: Joinup
-
 core: 8.x
 type: module
 
 dependencies:
-  - cas:cas
-  - cas_account_link:cas_account_link
-  - cas_attributes:cas_attributes
+  - 'cas:cas'
+  - 'cas_account_link:cas_account_link'
+  - 'cas_attributes:cas_attributes'
+
+config_devel:
+  install:
+    - joinup_eulogin.settings
