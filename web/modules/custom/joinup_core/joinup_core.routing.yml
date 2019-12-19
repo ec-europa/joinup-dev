@@ -11,19 +11,6 @@ entity.rdf_entity.member_overview:
         type: entity:rdf_entity
     _og_entity_type_id: rdf_entity
 
-entity.rdf_entity.about_page:
-  path: 'rdf_entity/{rdf_entity}/about'
-  defaults:
-    _controller: '\Drupal\joinup_core\Controller\CoreController::aboutPage'
-    _title_callback: '\Drupal\joinup_core\Controller\CoreController::aboutPageTitle'
-  requirements:
-    _entity_access: 'rdf_entity.view'
-    _custom_access: '\Drupal\joinup_core\Controller\CoreController::aboutPageAccess'
-  options:
-    parameters:
-      rdf_entity:
-        type: entity:rdf_entity
-
 joinup_core.not_found:
   path: '/not-found'
   defaults:

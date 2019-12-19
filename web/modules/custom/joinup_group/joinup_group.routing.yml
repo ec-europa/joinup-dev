@@ -1,0 +1,12 @@
+entity.rdf_entity.about_page:
+  path: 'rdf_entity/{rdf_entity}/about'
+  defaults:
+    _controller: '\Drupal\joinup_group\Controller\AboutPageController::aboutPage'
+    _title_callback: '\Drupal\joinup_group\Controller\AboutPageController::aboutPageTitle'
+  requirements:
+    _entity_access: 'rdf_entity.view'
+    _custom_access: '\Drupal\joinup_group\Controller\AboutPageController::aboutPageAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
