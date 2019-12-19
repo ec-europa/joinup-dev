@@ -1,45 +1,47 @@
-name: Asset distribution
+name: 'Asset distribution'
 type: module
-description: An asset distribution RDF entity
+description: 'An asset distribution RDF entity'
 core: 8.x
 package: Joinup
 
 dependencies:
-  - drupal:datetime
-  - digital_size_formatter:digital_size_formatter
-  - field_group:field_group
-  - file_url:file_url
-  - joinup:joinup_core
-  - joinup:joinup_user
-  - drupal:language
-  - drupal:link
-  - rdf_entity:rdf_entity
-  - joinup:rdf_schema_field_validation
-  - drupal:text
-  - drupal:views
+  - 'digital_size_formatter:digital_size_formatter'
+  - 'drupal:datetime'
+  - 'drupal:language'
+  - 'drupal:link'
+  - 'drupal:text'
+  - 'drupal:views'
+  - 'field_group:field_group'
+  - 'file_url:file_url'
+  - 'joinup:joinup_core'
+  - 'joinup:joinup_user'
+  - 'joinup:rdf_schema_field_validation'
+  - 'rdf_entity:rdf_entity'
 
 config_devel:
-  - core.entity_form_display.rdf_entity.asset_distribution.default
-  - core.entity_view_display.rdf_entity.asset_distribution.compact
-  - core.entity_view_display.rdf_entity.asset_distribution.default
-  - core.entity_view_display.rdf_entity.asset_distribution.view_mode_featured
-  - core.entity_view_display.rdf_entity.asset_distribution.view_mode_tile
-  - field.field.rdf_entity.asset_distribution.field_ad_access_url
-  - field.field.rdf_entity.asset_distribution.field_ad_description
-  - field.field.rdf_entity.asset_distribution.field_ad_file_size
-  - field.field.rdf_entity.asset_distribution.field_ad_format
-  - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
-  - field.field.rdf_entity.asset_distribution.field_ad_licence
-  - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
-  - field.field.rdf_entity.asset_distribution.field_status
-  - field.field.rdf_entity.asset_distribution.og_audience
-  - field.storage.rdf_entity.field_ad_access_url
-  - field.storage.rdf_entity.field_ad_description
-  - field.storage.rdf_entity.field_ad_file_size
-  - field.storage.rdf_entity.field_ad_format
-  - field.storage.rdf_entity.field_ad_gitb_compliant
-  - field.storage.rdf_entity.field_ad_licence
-  - field.storage.rdf_entity.field_ad_repr_technique
-  - sparql_entity_storage.mapping.rdf_entity.asset_distribution
-  - rdf_entity.rdfentity.asset_distribution
-  - views.view.asset_distribution_downloads
+  install:
+    - core.base_field_override.rdf_entity.asset_distribution.label
+    - core.entity_form_display.rdf_entity.asset_distribution.default
+    - core.entity_view_display.rdf_entity.asset_distribution.compact
+    - core.entity_view_display.rdf_entity.asset_distribution.default
+    - core.entity_view_display.rdf_entity.asset_distribution.view_mode_featured
+    - core.entity_view_display.rdf_entity.asset_distribution.view_mode_tile
+    - field.field.rdf_entity.asset_distribution.field_ad_access_url
+    - field.field.rdf_entity.asset_distribution.field_ad_description
+    - field.field.rdf_entity.asset_distribution.field_ad_file_size
+    - field.field.rdf_entity.asset_distribution.field_ad_format
+    - field.field.rdf_entity.asset_distribution.field_ad_gitb_compliant
+    - field.field.rdf_entity.asset_distribution.field_ad_licence
+    - field.field.rdf_entity.asset_distribution.field_ad_repr_technique
+    - field.field.rdf_entity.asset_distribution.field_status
+    - field.field.rdf_entity.asset_distribution.og_audience
+    - field.storage.rdf_entity.field_ad_access_url
+    - field.storage.rdf_entity.field_ad_description
+    - field.storage.rdf_entity.field_ad_file_size
+    - field.storage.rdf_entity.field_ad_format
+    - field.storage.rdf_entity.field_ad_gitb_compliant
+    - field.storage.rdf_entity.field_ad_licence
+    - field.storage.rdf_entity.field_ad_repr_technique
+    - rdf_entity.rdfentity.asset_distribution
+    - sparql_entity_storage.mapping.rdf_entity.asset_distribution
+    - views.view.asset_distribution_downloads
