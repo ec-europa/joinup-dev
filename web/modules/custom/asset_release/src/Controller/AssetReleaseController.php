@@ -8,7 +8,6 @@ use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
@@ -33,23 +32,13 @@ class AssetReleaseController extends ControllerBase {
   protected $ogAccess;
 
   /**
-   * The entity query factory service.
-   *
-   * @var \Drupal\Core\Entity\Query\QueryInterface
-   */
-  protected $queryFactory;
-
-  /**
    * Constructs a AssetReleaseController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
-   * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
-   *   The entity query factory service.
    */
-  public function __construct(OgAccessInterface $og_access, QueryFactory $query_factory) {
+  public function __construct(OgAccessInterface $og_access) {
     $this->ogAccess = $og_access;
-    $this->queryFactory = $query_factory;
   }
 
   /**
@@ -57,8 +46,7 @@ class AssetReleaseController extends ControllerBase {
    */
   public static function create(ContainerInterface $container): self {
     return new static(
-      $container->get('og.access'),
-      $container->get('entity.query')
+      $container->get('og.access')
     );
   }
 
