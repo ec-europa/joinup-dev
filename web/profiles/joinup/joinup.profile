@@ -362,7 +362,6 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
     $front_page_helper = \Drupal::service('joinup.front_page_helper');
     $menu_item = $front_page_helper->getFrontPageMenuItem($entity);
-    $timestamp = empty($menu_item) ? \Drupal::service('datetime.time')->getRequestTime() : $menu_item->getChangedTime();
 
     // Add the "entity" contextual links group.
     $build['#contextual_links']['entity'] = [
@@ -370,8 +369,10 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
         'entity_type' => $entity->getEntityTypeId(),
         'entity' => $entity->id(),
       ],
-      'metadata' => ['changed' => $timestamp],
+      'metadata' => ['changed' => $entity->getChangedTime()],
     ];
+
+    $build['#contextual_links']['entity']['metadata']['is_site_wide_pinned'] = (int) !empty($menu_item);
   }
 
   if (!JoinupHelper::isSolution($entity) && !CommunityContentHelper::isCommunityContent($entity)) {

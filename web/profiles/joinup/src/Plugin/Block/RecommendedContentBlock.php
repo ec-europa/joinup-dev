@@ -168,13 +168,26 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       return [];
     }
 
-    $query = $this->getPublishedIndex()->query();
-    $query->addCondition('site_pinned', TRUE);
-    $query->sort('entity_created', 'DESC');
-    $query->range(0, $limit);
-    $results = $query->execute();
+    $menu_storage = $this->entityTypeManager->getStorage('menu_link_content');
+    $menu_items = $menu_storage->loadByProperties([
+      'menu_name' => 'front-page',
+    ]);
 
-    return $this->getResultEntities($results);
+    $items = [];
+    $node_storage = $this->entityTypeManager->getStorage('node');
+    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
+
+    foreach ($menu_items as $menu_item) {
+      $url_parameters = $menu_item->getUrlObject()->getRouteParameters();
+      if (isset($url_parameters['node'])) {
+        $items[] = $node_storage->load($url_parameters['node']);
+      }
+      else {
+        $items[] = $rdf_storage->load($url_parameters['rdf_entity']);
+      }
+    }
+
+    return $items;
   }
 
   /**

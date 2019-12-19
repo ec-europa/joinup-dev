@@ -10,7 +10,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
 
 /**
- * Interface FrontPageMenuHelperInterface
+ * Interface FrontPageMenuHelperInterface.
  *
  * @package Drupal\joinup
  */
@@ -34,4 +34,5 @@ interface FrontPageMenuHelperInterface {
    *   The entity to add in the front page menu.
    */
   public function pinSiteWide(FieldableEntityInterface $entity): void;
+
 }
