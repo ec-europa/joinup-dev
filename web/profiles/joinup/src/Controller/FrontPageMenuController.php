@@ -76,7 +76,7 @@ class FrontPageMenuController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function pinSiteWide(ContentEntityInterface $entity): void {
+  public function pinSiteWide(ContentEntityInterface $entity): RedirectResponse {
     $this->frontPageHelper->pinSiteWide($entity);
     $this->invalidateEntityTags($entity);
 
@@ -96,7 +96,7 @@ class FrontPageMenuController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function unpinSiteWide(ContentEntityInterface $entity): void {
+  public function unpinSiteWide(ContentEntityInterface $entity): RedirectResponse {
     /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $result */
     $this->frontPageHelper->getFrontPageMenuItem($entity)->delete();
     $this->invalidateEntityTags($entity);
