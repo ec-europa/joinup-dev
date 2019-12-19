@@ -263,10 +263,10 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
           ],
         ],
         '#cache' => [
-          // Vary by route so that the 'group_header_block' will have different
-          // versions for 'asset_release.solution_asset_release.overview' and
-          // the canonical solution routes.
-          'contexts' => ['route'],
+          // The 'group_header_block' block cache will have different versions
+          // for the 'asset_release.solution_asset_release.overview' route
+          // compared to the canonical solution route.
+          'contexts' => ['route.name.is_download_releases_route'],
         ],
       ];
     }
