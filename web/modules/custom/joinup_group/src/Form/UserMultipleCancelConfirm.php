@@ -1,14 +1,13 @@
 <?php
 
-namespace Drupal\joinup\Form;
+namespace Drupal\joinup_group\Form;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupManagerInterface;
 use Drupal\user\Form\UserMultipleCancelConfirm as CoreUserMultipleCancelConfirm;
 use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,11 +21,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
 
   /**
-   * The relation manager service.
+   * The group manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupManagerInterface
    */
-  protected $relationManager;
+  protected $groupManager;
 
   /**
    * Constructs a new UserMultipleCancelConfirm.
@@ -37,12 +36,12 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
    *   The user storage.
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
-   *   The Joinup relation manager.
+   * @param \Drupal\joinup_group\JoinupGroupManagerInterface $joinup_group_manager
+   *   The Joinup group manager.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityManagerInterface $entity_manager, JoinupRelationManagerInterface $relation_manager) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, UserStorageInterface $user_storage, EntityManagerInterface $entity_manager, JoinupGroupManagerInterface $joinup_group_manager) {
     parent::__construct($temp_store_factory, $user_storage, $entity_manager);
-    $this->relationManager = $relation_manager;
+    $this->groupManager = $joinup_group_manager;
   }
 
   /**
@@ -53,7 +52,7 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       $container->get('tempstore.private'),
       $container->get('entity.manager')->getStorage('user'),
       $container->get('entity.manager'),
-      $container->get('joinup_core.relations_manager')
+      $container->get('joinup_group.group_manager')
     );
   }
 
@@ -64,7 +63,7 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
     $form = parent::buildForm($form, $form_state);
 
     // Loop through all the accounts that are going to be deleted and check
-    // if they are sole owners of collections.
+    // if they are sole owners of groups.
     $build = [];
     foreach (Element::children($form['accounts']) as $user_id) {
       /** @var \Drupal\user\Entity\User $account */
@@ -72,22 +71,32 @@ class UserMultipleCancelConfirm extends CoreUserMultipleCancelConfirm {
       if (empty($account)) {
         throw new \RuntimeException("User with id {$user_id} was not found.");
       }
-      $collections = $this->relationManager->getCollectionsWhereSoleOwner($account);
+      $groups = $this->groupManager->getGroupsWhereSoleOwner($account);
 
-      if ($collections) {
+      if ($groups) {
         $build[$account->id()] = [
           'warning' => [
-            '#markup' => $this->t('User @name cannot be deleted as it is currently the sole owner of these collections:', [
-              '@name' => $account->getAccountName(),
+            '#markup' => $this->t('User @name cannot be deleted as they are currently the sole owner of these groups:', [
+              '@name' => $account->getDisplayName(),
             ]),
           ],
-          'collections' => [
-            '#theme' => 'item_list',
-            '#items' => array_map(function (EntityInterface $collection) {
-              return $collection->toLink($collection->label());
-            }, $collections),
-          ],
         ];
+
+        foreach ($groups as $group) {
+          $group_data[$group->bundle()][] = $group->toLink($group->label());
+        }
+
+        $rdf_storage = $this->entityTypeManager->getStorage('rdf_type');
+        foreach (['collection', 'solution'] as $bundle) {
+          $bundle_type = $rdf_storage->load($bundle);
+          if (!empty($group_data[$bundle])) {
+            $build[$account->id()][$bundle] = [
+              '#theme' => 'item_list',
+              '#title' => $bundle_type->getCountLabel(count($group_data[$bundle])),
+              '#items' => $group_data[$bundle],
+            ];
+          }
+        }
       }
     }
 
