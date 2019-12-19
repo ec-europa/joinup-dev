@@ -10,3 +10,10 @@ entity.rdf_entity.about_page:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+
+joinup_group.membership_delete_action.confirm:
+  path: '/group/delete/membership'
+  defaults:
+    _form: 'Drupal\joinup_group\Form\DeleteGroupMembershipConfirmForm'
+  requirements:
+    _custom_access: 'Drupal\joinup_group\Form\DeleteGroupMembershipConfirmForm::access'

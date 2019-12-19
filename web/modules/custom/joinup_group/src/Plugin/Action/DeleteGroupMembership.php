@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Action;
+namespace Drupal\joinup_group\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "joinup_og_membership_delete_action",
  *   label = @Translation("Delete the selected membership(s) from solution/collection"),
  *   type = "og_membership",
- *   confirm_form_route_name = "joinup_core.membership_delete_action.confirm",
+ *   confirm_form_route_name = "joinup_group.membership_delete_action.confirm",
  * )
  */
 class DeleteGroupMembership extends DeleteOgMembership {
@@ -48,7 +48,7 @@ class DeleteGroupMembership extends DeleteOgMembership {
    */
   public function __construct(array $configuration, string $plugin_id, array $plugin_definition, OgAccessInterface $og_access, PrivateTempStoreFactory $private_temp_store_factory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $og_access);
-    $this->privateTempStore = $private_temp_store_factory->get('joinup_core.og_membership_delete_action');
+    $this->privateTempStore = $private_temp_store_factory->get('joinup_group.og_membership_delete_action');
   }
 
   /**
