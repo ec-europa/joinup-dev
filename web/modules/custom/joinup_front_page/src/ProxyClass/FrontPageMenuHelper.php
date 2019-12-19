@@ -2,15 +2,15 @@
 // @codingStandardsIgnoreFile
 
 /**
- * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup\FrontPageMenuHelper' "profiles/joinup/src".
+ * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_front_page\FrontPageMenuHelper' "profiles/joinup_front_page/src".
  */
 
-namespace Drupal\joinup\ProxyClass {
+namespace Drupal\joinup_front_page\ProxyClass {
 
-  use Drupal\joinup\FrontPageMenuHelperInterface;
+  use Drupal\joinup_front_page\FrontPageMenuHelperInterface;
 
   /**
-     * Provides a proxy class for \Drupal\joinup\FrontPageMenuHelper.
+     * Provides a proxy class for \Drupal\joinup_front_page\FrontPageMenuHelper.
      *
      * @see \Drupal\Component\ProxyBuilder
      */
@@ -29,7 +29,7 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * The real proxied service, after it was lazy loaded.
          *
-         * @var \Drupal\joinup\FrontPageMenuHelperInterface
+         * @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface
          */
         protected $service;
 

@@ -1,0 +1,70 @@
+joinup_front_page.site_feature:
+  path: '/feature/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup_front_page\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Feature'
+    field_name: field_site_featured
+    value: true
+    message: '@bundle %title has been set as featured content.'
+  requirements:
+    _permission: 'feature entity'
+    _custom_access: '\Drupal\joinup_front_page\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup_front_page.site_unfeature:
+  path: '/feature/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup_front_page\Controller\BooleanFieldToggleController::doToggle'
+    _title: 'Remove from featured'
+    field_name: field_site_featured
+    value: false
+    message: '@bundle %title has been removed from the featured contents.'
+  requirements:
+    _permission: 'unfeature entity'
+    _custom_access: '\Drupal\joinup_front_page\Controller\BooleanFieldToggleController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup_front_page.site_pin:
+  path: '/pin/{entity_type}/{entity}/add'
+  defaults:
+    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::pinSiteWide'
+    _title: 'Pin'
+    value: true
+  requirements:
+    _permission: 'pin entity'
+    _custom_access: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup_front_page.site_unpin:
+  path: '/pin/{entity_type}/{entity}/remove'
+  defaults:
+    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::unpinSiteWide'
+    _title: 'Remove from pinned'
+    value: false
+  requirements:
+    _permission: 'unpin entity'
+    _custom_access: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::routeAccess'
+    _csrf_token: 'TRUE'
+  options:
+    parameters:
+      entity:
+        type: entity:{entity_type}
+
+joinup_front_page.homepage:
+  path: '/homepage'
+  defaults:
+    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::homepageContent'
+  requirements:
+    _permission: 'access content'

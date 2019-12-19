@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup\Controller;
+namespace Drupal\joinup_front_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
@@ -10,7 +10,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\joinup\FrontPageMenuHelperInterface;
+use Drupal\Core\Menu\MenuLinkTreeInterface;
+use Drupal\joinup_front_page\FrontPageMenuHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -22,7 +23,7 @@ class FrontPageMenuController extends ControllerBase {
   /**
    * The front page helper service.
    *
-   * @var \Drupal\joinup\FrontPageMenuHelperInterface
+   * @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface
    */
   protected $frontPageHelper;
 
@@ -41,19 +42,29 @@ class FrontPageMenuController extends ControllerBase {
   protected $cacheTagsInvalidator;
 
   /**
+   * The menu link tree service.
+   *
+   * @var \Drupal\Core\Menu\MenuLinkTreeInterface
+   */
+  protected $menuLinkTree;
+
+  /**
    * Builds a new custom page OG menu links updater service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\joinup\FrontPageMenuHelperInterface $front_page_helper
+   * @param \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper
    *   The menu link manager service.
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator
    *   The cache tags invalidator service.
+   * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree
+   *   The menu link tree service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper, CacheTagsInvalidatorInterface $cache_tags_invalidator, MenuLinkTreeInterface $menu_link_tree) {
     $this->menuLinkContentStorage = $entity_type_manager->getStorage('menu_link_content');
     $this->frontPageHelper = $front_page_helper;
     $this->cacheTagsInvalidator = $cache_tags_invalidator;
+    $this->menuLinkTree = $menu_link_tree;
   }
 
   /**
@@ -62,9 +73,20 @@ class FrontPageMenuController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('joinup.front_page_helper'),
-      $container->get('cache_tags.invalidator')
+      $container->get('joinup_front_page.front_page_helper'),
+      $container->get('cache_tags.invalidator'),
+      $container->get('menu.link_tree')
     );
+  }
+
+  /**
+   * Provides empty homepage.
+   *
+   * @return array
+   *   A render array for the homepage.
+   */
+  public function homepageContent() {
+    return [];
   }
 
   /**

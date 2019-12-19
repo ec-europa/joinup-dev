@@ -14,13 +14,6 @@ rdf_entity.propose_form:
       rdf_type:
         type: entity:rdf_type
 
-homepage.content:
-  path: '/homepage'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\JoinupController::homepageContent'
-  requirements:
-    _permission: 'access content'
-
 joinup.collection_tca_form:
   path: '/joinup/tca/collection'
   defaults:
@@ -78,70 +71,6 @@ joinup.solutions_by_licences_report:
     _permission: 'access joinup reports'
   options:
     _admin_route: TRUE
-
-joinup.site_feature:
-  path: '/feature/{entity_type}/{entity}/add'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
-    _title: 'Feature'
-    field_name: field_site_featured
-    value: true
-    message: '@bundle %title has been set as featured content.'
-  requirements:
-    _permission: 'feature entity'
-    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
-    _csrf_token: 'TRUE'
-  options:
-    parameters:
-      entity:
-        type: entity:{entity_type}
-
-joinup.site_unfeature:
-  path: '/feature/{entity_type}/{entity}/remove'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\BooleanFieldToggleController::doToggle'
-    _title: 'Remove from featured'
-    field_name: field_site_featured
-    value: false
-    message: '@bundle %title has been removed from the featured contents.'
-  requirements:
-    _permission: 'unfeature entity'
-    _custom_access: '\Drupal\joinup\Controller\BooleanFieldToggleController::routeAccess'
-    _csrf_token: 'TRUE'
-  options:
-    parameters:
-      entity:
-        type: entity:{entity_type}
-
-joinup.site_pin:
-  path: '/pin/{entity_type}/{entity}/add'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\FrontPageMenuController::pinSiteWide'
-    _title: 'Pin'
-    value: true
-  requirements:
-    _permission: 'pin entity'
-    _custom_access: '\Drupal\joinup\Controller\FrontPageMenuController::routeAccess'
-    _csrf_token: 'TRUE'
-  options:
-    parameters:
-      entity:
-        type: entity:{entity_type}
-
-joinup.site_unpin:
-  path: '/pin/{entity_type}/{entity}/remove'
-  defaults:
-    _controller: '\Drupal\joinup\Controller\FrontPageMenuController::unpinSiteWide'
-    _title: 'Remove from pinned'
-    value: false
-  requirements:
-    _permission: 'unpin entity'
-    _custom_access: '\Drupal\joinup\Controller\FrontPageMenuController::routeAccess'
-    _csrf_token: 'TRUE'
-  options:
-    parameters:
-      entity:
-        type: entity:{entity_type}
 
 joinup.pin_entity:
   path: '/pin/group/{entity_type}/{entity}/add/{group}'

@@ -1,0 +1,8 @@
+type: module
+name: Joinup front page
+description: Contains functionality related to the Joinup front page.
+core: 8.x
+package: Joinup
+dependencies:
+  - joinup:joinup_core
+  - joinup:joinup_group

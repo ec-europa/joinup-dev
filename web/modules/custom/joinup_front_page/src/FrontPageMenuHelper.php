@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_front_page;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;

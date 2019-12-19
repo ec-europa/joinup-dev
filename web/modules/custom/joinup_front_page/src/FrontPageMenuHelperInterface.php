@@ -2,8 +2,7 @@
 
 declare(strict_types = 1);
 
-
-namespace Drupal\joinup;
+namespace Drupal\joinup_front_page;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -12,7 +11,7 @@ use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
 /**
  * Interface FrontPageMenuHelperInterface.
  *
- * @package Drupal\joinup
+ * @package Drupal\joinup_front_page
  */
 interface FrontPageMenuHelperInterface {
 

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup\Plugin\Block;
+namespace Drupal\joinup_front_page\Plugin\Block;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
@@ -147,6 +147,14 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       ];
     }
 
+    // Add the "front_page" contextual links group.
+    $build['#contextual_links']['front_page'] = [
+      'route_parameters' => [
+        'menu' => 'front-page',
+      ],
+      'metadata' => [],
+    ];
+
     return $build;
   }
 
@@ -172,6 +180,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $menu_items = $menu_storage->loadByProperties([
       'menu_name' => 'front-page',
     ]);
+    $menu_items = array_splice($menu_items, 0, $this->configuration['count']);
 
     $items = [];
     $node_storage = $this->entityTypeManager->getStorage('node');
