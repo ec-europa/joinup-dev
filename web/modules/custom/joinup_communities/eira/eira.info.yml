@@ -2,6 +2,11 @@ name: EIRA
 type: module
 description: 'Customizations for the EIRA community.'
 core: 8.x
-package: Joinup communities
+package: 'Joinup communities'
+
 dependencies:
-  - filter:filter
+  - 'filter:filter'
+
+config_devel:
+  install:
+    - filter.format.eira_format
