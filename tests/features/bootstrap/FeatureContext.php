@@ -654,6 +654,26 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that a certain contextual link is present in the page.
+   *
+   * @param string $text
+   *   The text of the link.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is not found in the page.
+   *
+   * @Then I (should )see the contextual link :text
+   */
+  public function assertContextualLinkInPagePresent(string $text): void {
+    $region = $this->getSession()->getPage();
+    $links = $this->findContextualLinkPaths($region);
+
+    if (!isset($links[$text])) {
+      throw new \Exception(sprintf('Contextual link %s expected but not found in the region %s', $text, $region));
+    }
+  }
+
+  /**
    * Asserts that a certain contextual link is not present in a region.
    *
    * @param string $text
@@ -668,6 +688,26 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertContextualLinkInRegionNotPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
+
+    if (isset($links[$text])) {
+      throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
+    }
+  }
+
+  /**
+   * Asserts that a certain contextual link is not present in the page.
+   *
+   * @param string $text
+   *   The text of the link.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is found in the page.
+   *
+   * @Then I should not see the contextual link :text
+   */
+  public function assertContextualLinkInPageNotPresent(string $text): void {
+    $region = $this->getSession()->getPage();
+    $links = $this->findContextualLinkPaths($region);
 
     if (isset($links[$text])) {
       throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
