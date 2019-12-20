@@ -184,3 +184,50 @@ Feature: Pinning content site-wide
       | header link | pinned      | unpinned         | label      |
       | Collections | Risky Sound | Tuna Moving      | Collection |
       | Solutions   | D minor     | Migration routes | Solution   |
+
+  Scenario: Front page menu access.
+    Given I am logged in as a user with the "authenticated" role
+    When I am on the homepage
+    Then I should not see the contextual link "Edit pinned entities"
+
+    Given I am logged in as a user with the "moderator" role
+    When I am on the homepage
+    Then I should see the contextual link "Edit pinned entities"
+
+  @javascript
+  Scenario: Front page menu re-ordering.
+    Given news content:
+      | title                | collection  | state     | visits | created    |
+      | Entry to be disabled | Risky Sound | validated | 0   | 2017-03-29 |
+      | Some low visit news  | Risky Sound | validated | 948    | 2017-04-25 |
+    And site pinned "content" entities:
+      | title                |
+      | Some low visit news  |
+      | Entry to be disabled |
+
+    When I am logged in as a moderator
+    And I am on the homepage
+    Then I should see the following tiles in the correct order:
+      | D minor              |
+      | Risky Sound          |
+      | Some low visit news  |
+      | Entry to be disabled |
+
+    When I click the contextual link "Edit pinned entities" in the "Content" region
+    Then I should see the heading "Front page pinned entities"
+
+    # Disable the 'Entry to be disabled' menu entry.
+    Given I uncheck the material checkbox in the "Entry to be disabled" table row
+    And I drag the "D minor" table row down
+    # Move it to the top.
+    And I drag the "Some low visit news" table row up
+    And I drag the "Some low visit news" table row up
+    And I drag the "Some low visit news" table row up
+    And I press "Save"
+
+    Then I should see the following tiles in the correct order:
+      | Some low visit news  |
+      | D minor              |
+      | Risky Sound          |
+      # The next item is still shown due to popularity but not according to the pinned order.
+      | Entry to be disabled |

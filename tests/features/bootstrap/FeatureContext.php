@@ -24,6 +24,7 @@ use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -43,6 +44,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use MaterialDesignTrait;
   use PageCacheTrait;
   use SearchTrait;
   use TagTrait;
@@ -989,7 +991,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
-    list($title, $site_name) = explode(' | ', $page_title->getText());
+    [$title, $site_name] = explode(' | ', $page_title->getText());
 
     $title = trim($title);
     if ($title !== $text) {
@@ -1293,19 +1295,34 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds a checkbox or a radio button in a table row containing a given text.
+   * Unchecks a material checkbox in a row that contains some text.
    *
    * @param string $text
    *   Text in the row.
    *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The checkbox element.
-   *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox or radio button.
+   * @throws \InvalidArgumentException
+   *   If this step definition was used on a radio button.
+   *
+   * @Given I uncheck the material checkbox in the :text table row
    */
-  protected function getCheckboxOrRadioByRowText(string $text): NodeElement {
+  public function uncheckMaterialCheckboxInTableRow(string $text): void {
+    $row = $this->getRowByRowText($text);
+    $this->toggleMaterialDesignCheckbox('', $row);
+  }
+
+  /**
+   * Searches the page for a row that includes the given text.
+   *
+   * @param string $text
+   *   The text to search for.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The row element.
+   */
+  protected function getRowByRowText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1322,6 +1339,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$found) {
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
+
+    return $row;
+  }
+
+  /**
+   * Finds a checkbox or a radio button in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The checkbox element.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   */
+  protected function getCheckboxOrRadioByRowText(string $text): NodeElement {
+    $row = $this->getRowByRowText($text);
     if (!$element = $row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
       throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkbox or radio button', $text, $this->getSession()->getCurrentUrl()));
     }
