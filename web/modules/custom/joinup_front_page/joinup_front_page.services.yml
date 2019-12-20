@@ -3,3 +3,9 @@ services:
     class: Drupal\joinup_front_page\FrontPageMenuHelper
     arguments: ['@entity_type.manager', '@plugin.manager.menu.link']
     lazy: true
+  joinup_front_page.route_subscriber:
+    class: Drupal\joinup_front_page\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  joinup_front_page.menu_access:
+    class: Drupal\joinup_front_page\Access\MenuAccess

@@ -179,7 +179,9 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     $menu_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $menu_items = $menu_storage->loadByProperties([
       'menu_name' => 'front-page',
+      'enabled' => 1,
     ]);
+    uasort($menu_items, 'Drupal\Component\Utility\SortArray::sortByWeightProperty');
     $menu_items = array_splice($menu_items, 0, $this->configuration['count']);
 
     $items = [];
@@ -392,8 +394,10 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    * {@inheritdoc}
    */
   public function getCacheTags() {
+    $menu = $this->entityTypeManager->getStorage('menu')->load('front-page');
+    $cache_tags = Cache::mergeTags(parent::getCacheTags(), ['node_list', 'rdf_entity_list']);
     // The block should be invalidated whenever any node changes.
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list', 'rdf_entity_list']);
+    return Cache::mergeTags($cache_tags, $menu->getCacheTags());
   }
 
 }
