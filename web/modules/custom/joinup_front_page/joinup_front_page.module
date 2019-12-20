@@ -26,8 +26,10 @@ function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface 
     return;
   }
 
-  foreach ($form['links']['links'] as $plugin_id => $link_data) {
-    if (is_array($form['links']['links'][$plugin_id]) && isset($form['links']['links'][$plugin_id]['operations']['#links']['edit'])) {
+  $form['#title'] = t('Front page pinned entities');
+
+  foreach ($form['links']['links'] as &$link_data) {
+    if (is_array($link_data) && isset($link_data['#item'])) {
       // The user does not have access to the edit form anyway.
       unset($form['links']['links'][$plugin_id]['operations']['#links']['edit']);
     }

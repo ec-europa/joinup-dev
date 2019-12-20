@@ -3,6 +3,6 @@ langcode: en
 status: true
 dependencies: {  }
 id: front-page
-label: 'Front page'
+label: 'Pinned entities'
 description: 'Contains links to entities presented in the front page.'
 locked: false
