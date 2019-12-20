@@ -993,3 +993,25 @@ function joinup_core_post_update_stats6(array &$sandbox): ?string {
 function joinup_core_post_update_post_count_storage_node_revisions() {
   joinup_core_post_update_set_news_default_version();
 }
+
+/**
+ * Adds site-wide pinned entities to the front page menu.
+ */
+function joinup_core_post_update_assign_menu_pinned_values(): void {
+  // This runs as a post update becaue the front page menu needs to be imported
+  // into active configuration in order to assign the menu items.
+  // It is not part of the joinup_front_page_install to avoid having to depend
+  // the module even for now, to all modules that have a `field_site_pinned`
+  // declared.
+  /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */
+  $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
+  foreach (['node', 'rdf_entity'] as $type) {
+    $storage = \Drupal::entityTypeManager()->getStorage($type);
+    $ids = $storage->getQuery()->condition('field_site_pinned', 1)->execute();
+    foreach ($storage->loadMultiple($ids) as $entity) {
+      if (empty($front_page_helper->getFrontPageMenuItem($entity))) {
+        $front_page_helper->pinSiteWide($entity);
+      }
+    }
+  }
+}
