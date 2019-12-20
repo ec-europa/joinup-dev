@@ -246,7 +246,12 @@ Feature: Log in through EU Login
     And the following fields should be disabled "First name,Family name"
     But I should not see "Username"
     And I should not see "full_cas_profile"
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see the following lines of text:
+      | Eu Login Account information                                                                                                                                                                                                       |
+      | Your name and E-mail data is inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup. |
+      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                         |
+      | Your first name is publicly visible.                                                                                                                                                                                               |
+      | Your last name is publicly visible.                                                                                                                                                                                                |
 
     When I press "Save"
     Then I should see the success message "The changes have been saved."
@@ -268,7 +273,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "Family name"
     But I should not see "Username"
     And I should not see "partial_cas_profile"
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see "Your name and E-mail data is inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -295,7 +300,7 @@ Feature: Log in through EU Login
     But I should not see "Username"
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see "Your name and E-mail data is inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -376,7 +381,7 @@ Feature: Log in through EU Login
     Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
 
   Scenario: The Drupal registration tab has been removed and the /user/register
-    route redirects to EU Login registration form.
+  route redirects to EU Login registration form.
     When I visit "/user/login"
     Then I should not see the link "Create new account"
     When I visit "/user/register"
@@ -409,7 +414,7 @@ Feature: Log in through EU Login
     When I press "Save"
     Then I should see the following success messages:
       | success messages                                                                |
-      | An e-mail has been send to the user to notify him on the change to his account. |
+      | An e-mail has been sent to the user to notify him on the change to his account. |
       | The changes have been saved.                                                    |
 
     When I click "Edit" in the "Joe Doe" row
