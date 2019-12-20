@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\MembershipManager;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
@@ -181,7 +182,9 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       'menu_name' => 'front-page',
       'enabled' => 1,
     ]);
-    uasort($menu_items, 'Drupal\Component\Utility\SortArray::sortByWeightProperty');
+    uasort($menu_items, function (MenuLinkContent $a, MenuLinkContent $b) {
+      return $a->getWeight() <=> $b->getWeight();
+    });
     $menu_items = array_splice($menu_items, 0, $this->configuration['count']);
 
     $items = [];
