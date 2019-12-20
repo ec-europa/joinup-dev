@@ -180,6 +180,9 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    */
   public function deleteAssetRelease(string $asset_release): void {
     $asset_release = $this->getAssetReleaseByName($asset_release);
+    if (isset($this->assetReleases[$asset_release->id()])) {
+      unset($this->assetReleases[$asset_release->id()]);
+    }
     $asset_release->skip_notification = TRUE;
     $asset_release->delete();
   }
