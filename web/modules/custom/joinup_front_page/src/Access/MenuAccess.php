@@ -10,11 +10,34 @@ use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\menu_admin_per_menu\Access\MenuAdminPerMenuAccess;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\system\Entity\Menu;
 
 /**
  * Checks access for displaying administer menu pages.
  */
 class MenuAccess extends MenuAdminPerMenuAccess {
+
+  /**
+   * Access callback for the menu access check.
+   *
+   * Overrides to disallow adding new links through the UI to the front page
+   * menu.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account to check the access for.
+   * @param \Drupal\system\Entity\Menu $menu
+   *   The menu to check access for.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
+   */
+  public function menuLinkAddAccess(AccountInterface $account, Menu $menu): AccessResultInterface {
+    if ($menu->id() === 'front-page') {
+      // Disallow editing and adding new links for the front-page menu.
+      return AccessResult::forbidden();
+    }
+    return parent::menuAccess($account, $menu);
+  }
 
   /**
    * Provides access control for the menu content entity edit link.

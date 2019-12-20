@@ -18,6 +18,10 @@ class RouteSubscriber extends RouteSubscriberBase {
     $routes = $collection->all();
     foreach ($routes as $route_name => $route) {
       switch ($route_name) {
+        case 'entity.menu.add_link_form':
+          $route->setRequirements(['_custom_access' => '\Drupal\joinup_front_page\Access\MenuAccess::menuLinkAddAccess']);
+          break;
+
         case 'menu_ui.link_edit':
           $route->setRequirements(['_custom_access' => '\Drupal\joinup_front_page\Access\MenuAccess::menuLinkItemEditAccess']);
           break;
