@@ -5,6 +5,8 @@
  * Contains \DiscussionSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
@@ -27,7 +29,7 @@ class JoinupDiscussionSubContext extends DrupalSubContextBase implements DrupalS
    * @When I go to the :title discussion
    * @When I visit the :title discussion
    */
-  public function visitDiscussion($title) {
+  public function visitDiscussion(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'discussion');
     $this->visitPath($node->url());
@@ -43,7 +45,7 @@ class JoinupDiscussionSubContext extends DrupalSubContextBase implements DrupalS
    *
    * @Then the :title discussion should have :count subscriber(s)
    */
-  public function assertSubscribers($title, $count) {
+  public function assertSubscribers(string $title, int $count): void {
     $discussion = $this->getNodeByTitle($title, 'discussion');
     $subscribers = $this->getDiscussionSubscriptionService()->getSubscribers($discussion, 'subscribe_discussions');
     Assert::assertEquals($count, count($subscribers));

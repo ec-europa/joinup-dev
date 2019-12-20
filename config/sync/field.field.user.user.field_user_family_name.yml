@@ -13,7 +13,7 @@ field_name: field_user_family_name
 entity_type: user
 bundle: user
 label: 'Family name'
-description: ''
+description: 'Your last name is publicly visible.'
 required: true
 translatable: false
 default_value: {  }

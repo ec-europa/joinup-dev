@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -26,6 +27,7 @@ use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\solution\SolutionAffiliationFieldItemList;
+use Drupal\solution\SolutionReleasesAndDistributionsFieldItemList;
 use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\user\Entity\User;
 
@@ -70,6 +72,18 @@ function solution_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
     ->setSetting('target_type', 'rdf_entity')
     ->setComputed(TRUE)
     ->setClass(SolutionAffiliationFieldItemList::class);
+  // References the solution releases and standalone distributions.
+  $fields['releases_and_distributions'] = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Releases and standalone distributions'))
+    ->setName('releases_and_distributions')
+    ->setDescription(t('The Releases and standalone distributions of this solution.'))
+    ->setTargetEntityTypeId('rdf_entity')
+    ->setTargetBundle('solution')
+    ->setSetting('target_type', 'rdf_entity')
+    ->setComputed(TRUE)
+    ->setReadOnly(TRUE)
+    ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+    ->setClass(SolutionReleasesAndDistributionsFieldItemList::class);
 
   // Make sure a solution's title is unique among the collections it belongs to.
   if (!empty($fields['label'])) {
@@ -213,26 +227,54 @@ function solution_entity_extra_field_info(): array {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function solution_rdf_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
-  if ($entity->bundle() != 'solution') {
+function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityViewDisplayInterface $display, string $view_mode): void {
+  if ($solution->bundle() != 'solution') {
     return;
   }
 
   /** @var \Drupal\rdf_entity\RdfInterface $entity */
   if ($display->getComponent('releases_overview')) {
-    $build['releases_overview'] = [
-      '#type' => 'link',
-      '#title' => t('Download releases'),
-      '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
-        'rdf_entity' => $entity->id(),
-      ]),
-      '#attributes' => ['class' => 'featured__form-button button button--blue-light mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'],
-    ];
+    $show_button =
+      // Don't show it on the release overview page.
+      \Drupal::routeMatch()->getRouteName() !== 'asset_release.solution_asset_release.overview'
+      // Don't show if the solution has no releases or standalone distributions.
+      && !$solution->get('releases_and_distributions')->isEmpty();
+
+    if ($show_button) {
+      $build['releases_overview'] = [
+        '#type' => 'link',
+        '#title' => t('Download releases'),
+        '#url' => Url::fromRoute('asset_release.solution_asset_release.overview', [
+          'rdf_entity' => $solution->id(),
+        ]),
+        '#attributes' => [
+          'role' => 'button',
+          'class' => [
+            // @todo Move the Material Design classes in the theme layer.
+            // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5731
+            'featured__form-button',
+            'button',
+            'button--blue-light',
+            'mdl-button',
+            'mdl-js-button',
+            'mdl-button--raised',
+            'mdl-js-ripple-effect',
+            'mdl-button--accent',
+          ],
+        ],
+        '#cache' => [
+          // The 'group_header_block' block cache will have different versions
+          // for the 'asset_release.solution_asset_release.overview' route
+          // compared to the canonical solution route.
+          'contexts' => ['route.name.is_download_releases_route'],
+        ],
+      ];
+    }
   }
 
   // Attach the related solutions component.
   if ($display->getComponent('related_solutions')) {
-    $ids = solution_get_related_solutions_ids($entity);
+    $ids = solution_get_related_solutions_ids($solution);
     $build['related_solutions'] = solution_build_related_solutions_list($ids);
   }
 
@@ -242,10 +284,10 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5200
   if ($display->getComponent('download_total')) {
     $total = 0;
-    if (!$entity->isNew()) {
+    if (!$solution->isNew()) {
       /** @var \Drupal\asset_distribution\AssetDistributionRelations $relationship_counselor */
       $relationship_counselor = \Drupal::service('asset_distribution.relations');
-      foreach ($relationship_counselor->getSolutionDistributions($entity) as $distribution) {
+      foreach ($relationship_counselor->getSolutionDistributions($solution) as $distribution) {
         $total += $distribution->download_count->entity->count->value;
       }
     }
@@ -271,7 +313,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
         // result in clearing of too many cache entries. We're applying the
         // cache tag to an outer wrapper so that, when the inner element is not
         // rendered ($total === 0), the cache tag also bubbles up to the page.
-        'tags' => ['solution_download_count:' . md5($entity->id())],
+        'tags' => ['solution_download_count:' . md5($solution->id())],
       ],
     ];
   }
@@ -279,9 +321,9 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   // Show the collection the solution belongs to. A solution can be affiliated
   // to multiple collections, but for now we show only the first one.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3635
-  if ($display->getComponent('collections') && !$entity->get('collection')->isEmpty()) {
+  if ($display->getComponent('collections') && !$solution->get('collection')->isEmpty()) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $collection = $entity->get('collection')->first()->entity;
+    $collection = $solution->get('collection')->first()->entity;
     $build['collections'] = [
       '#theme_wrappers' => ['container__stats_no_label'],
       'prefix' => ['#markup' => '<span class="stats__icon icon icon--collections"></span>'],
@@ -292,7 +334,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
   // Read more link to the about page.
   if ($display->getComponent('read_more')) {
     try {
-      $link = $entity->toLink(t('Read more'), 'about-page', [
+      $link = $solution->toLink(t('Read more'), 'about-page', [
         'attributes' => [
           'class' => ['about-page', 'read-more', 'fieldset__read-more'],
         ],
@@ -306,7 +348,7 @@ function solution_rdf_entity_view(array &$build, EntityInterface $entity, Entity
 
   // Share link configuration.
   if ($display->getComponent('share_link')) {
-    $build['share_link'] = joinup_core_generate_share_link($entity, 'solution.share_form');
+    $build['share_link'] = joinup_core_generate_share_link($solution, 'solution.share_form');
     $build['#cache'] = [
       'contexts' => [
         'og_role',

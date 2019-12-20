@@ -1,14 +1,13 @@
 <?php
 
-namespace Drupal\joinup\Form;
+namespace Drupal\joinup_group\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\ConfirmFormHelper;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupManagerInterface;
 use Drupal\user\Form\UserCancelForm as CoreUserCancelForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -21,11 +20,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UserCancelForm extends CoreUserCancelForm {
 
   /**
-   * The relation manager service.
+   * The group manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupManagerInterface
    */
-  protected $relationManager;
+  protected $groupManager;
 
   /**
    * Instantiates a new UserCancelForm class.
@@ -36,13 +35,13 @@ class UserCancelForm extends CoreUserCancelForm {
    *   The entity type bundle service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
-   *   The Joinup relation manager.
+   * @param \Drupal\joinup_group\JoinupGroupManagerInterface $group_manager
+   *   The Joinup group manager.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupRelationManagerInterface $relation_manager) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, JoinupGroupManagerInterface $group_manager) {
     parent::__construct($entity_manager, $entity_type_bundle_info, $time);
 
-    $this->relationManager = $relation_manager;
+    $this->groupManager = $group_manager;
   }
 
   /**
@@ -53,7 +52,7 @@ class UserCancelForm extends CoreUserCancelForm {
       $container->get('entity.manager'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
-      $container->get('joinup_core.relations_manager')
+      $container->get('joinup_group.group_manager')
     );
   }
 
@@ -61,46 +60,54 @@ class UserCancelForm extends CoreUserCancelForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // Prepare a list of collections where the user is the sole owner.
-    $collections = $this->relationManager->getCollectionsWhereSoleOwner($this->entity);
+    // Prepare a list of groups where the user is the sole owner.
+    $groups = $this->groupManager->getGroupsWhereSoleOwner($this->entity);
+    $group_data = [];
 
-    if (!empty($collections)) {
+    if (!empty($groups)) {
+      foreach ($groups as $group) {
+        $group_data[$group->bundle()][] = $group->toLink($group->label());
+      }
+
+      $rdf_storage = $this->entityTypeManager->getStorage('rdf_type');
+      foreach (['collection', 'solution'] as $bundle) {
+        $bundle_type = $rdf_storage->load($bundle);
+        if (!empty($group_data[$bundle])) {
+          $form[$bundle] = [
+            '#theme' => 'item_list',
+            '#items' => $group_data[$bundle],
+            '#title' => $bundle_type->getCountLabel(count($group_data[$bundle])),
+          ];
+        }
+      }
+
       // No access to the 'Cancel' button should be given if the user is the
-      // sole owner of a collection.
+      // sole owner of a group.
       $form['actions']['submit']['#access'] = FALSE;
-      $form = [
-        'collections' => [
-          '#theme' => 'item_list',
-          '#items' => array_map(function (EntityInterface $collection) {
-            return $collection->toLink($collection->label());
-          }, $collections),
-          '#weight' => 0,
-        ],
-        'actions' => [
-          '#type' => 'actions',
-          // @see \Drupal\Core\Entity\ContentEntityConfirmFormBase::actions()
-          'cancel' => ConfirmFormHelper::buildCancelLink($this, $this->getRequest()),
-          '#weight' => 10,
-        ],
+      $form['actions'] = [
+        '#type' => 'actions',
+        // @see \Drupal\Core\Entity\ContentEntityConfirmFormBase::actions()
+        'cancel' => ConfirmFormHelper::buildCancelLink($this, $this->getRequest()),
+        '#weight' => 10,
       ];
 
       // Show a nicer message when the user is trying to delete its own account.
       if ($this->currentUser()->id() === $this->entity->id()) {
         $form['pre_warning'] = [
-          '#markup' => $this->t('Dear @name,<br />when processing your request to delete your account, we noticed that you are the sole owner of these collections:', [
+          '#markup' => $this->t('Dear @name,<br />when processing your request to delete your account, we noticed that you are the sole owner of these groups:', [
             '@name' => $this->entity->get('field_user_first_name')->value,
           ]),
           '#weight' => -5,
         ];
         $form['post_warning'] = [
-          '#markup' => $this->t('Before removing this account, please verify and take action to modify the owner of the collections mentioned above.'),
+          '#markup' => $this->t('Before removing this account, please verify and take action to modify the owner of the groups mentioned above.'),
           '#weight' => 5,
         ];
       }
       else {
         $form['warning'] = [
-          '#markup' => $this->t('User @name cannot be deleted as it is currently the sole owner of these collections:', [
-            '@name' => $this->entity->getAccountName(),
+          '#markup' => $this->t('User @name cannot be deleted as they are currently the sole owner of these groups:', [
+            '@name' => $this->entity->getDisplayName(),
           ]),
           '#weight' => -10,
         ];

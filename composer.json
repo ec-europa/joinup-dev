@@ -21,7 +21,7 @@
         "drupal/config_ignore": "dev-2.x",
         "drupal/config_readonly": "^1.0",
         "drupal/config_update": "dev-1.x",
-        "drupal/core": "^8.8.0",
+        "drupal/core": "^8.8.1",
         "drupal/diff": "^1.0@RC",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.5",
@@ -196,6 +196,9 @@
         "patches": {
             "behat/gherkin": {
                 "Correctly filter features, now that the base path is correctly set": "https://github.com/Behat/Gherkin/compare/v4.6.0...a7d84eb6ba245ea268a304312d14660788bf6c29.patch"
+            },
+            "drupal/config_devel": {
+                "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
             },
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2019-12-03/85494-287-8.8.x.patch",
