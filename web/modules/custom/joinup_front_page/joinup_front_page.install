@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains installation hooks and functions for the joinup_front_page module.
+ */
+
 declare(strict_types = 1);
 
 /**
