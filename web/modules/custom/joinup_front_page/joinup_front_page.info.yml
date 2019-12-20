@@ -6,3 +6,4 @@ package: Joinup
 dependencies:
   - joinup:joinup_core
   - joinup:joinup_group
+  - menu_admin_per_menu:menu_admin_per_menu

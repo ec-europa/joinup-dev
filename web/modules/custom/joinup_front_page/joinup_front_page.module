@@ -19,7 +19,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   /** @var \Drupal\system\Entity\Menu $menu */
   $menu = $form_state->getFormObject()->getEntity();
   if ($menu->id() !== 'front-page') {
@@ -37,7 +37,7 @@ function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface 
 /**
  * Implements hook_entity_view_alter().
  */
-function joinup_front_page_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+function joinup_front_page_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display): void {
   if (in_array($entity->getEntityTypeId(), ['node', 'rdf_entity'])) {
     $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
     $menu_item = $front_page_helper->getFrontPageMenuItem($entity);
