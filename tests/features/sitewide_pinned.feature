@@ -6,13 +6,13 @@ Feature: Pinning content site-wide
 
   Background:
     Given the following collections:
-      | title       | state     | pinned site-wide | creation date |
-      | Risky Sound | validated | yes              | 2017-12-21    |
-      | Tuna Moving | validated | no               | 2018-02-28    |
+      | title       | state     | creation date |
+      | Risky Sound | validated | 2017-12-21    |
+      | Tuna Moving | validated | 2018-02-28    |
     And the following solutions:
-      | title            | collection  | state     | pinned site-wide | creation date |
-      | D minor          | Risky Sound | validated | yes              | 2017-12-22    |
-      | Migration routes | Tuna Moving | validated | no               | 2018-01-31    |
+      | title            | collection  | state     | creation date |
+      | D minor          | Risky Sound | validated | 2017-12-22    |
+      | Migration routes | Tuna Moving | validated | 2018-01-31    |
     And users:
       | Username      | E-mail                    |
       | Burke Abraham | burke.abraham@example.com |
@@ -24,12 +24,19 @@ Feature: Pinning content site-wide
       | solution         | user          | roles       |
       | D minor          | Burke Abraham | facilitator |
       | Migration routes | Burke Abraham | facilitator |
+    And site pinned "rdf" entities:
+      | title       |
+      | D minor     |
+      | Risky Sound |
 
   Scenario Outline: Moderators can pin and unpin content site-wide.
     Given <content type> content:
-      | title               | collection  | state     | pinned site-wide | visits | created    |
-      | Loudest instruments | Risky Sound | validated | no               | 4390   | 2017-03-29 |
-      | Handmade oboes      | Risky Sound | validated | yes              | 948    | 2017-04-25 |
+      | title               | collection  | state     | visits | created    |
+      | Loudest instruments | Risky Sound | validated | 4390   | 2017-03-29 |
+      | Handmade oboes      | Risky Sound | validated | 948    | 2017-04-25 |
+    And site pinned "content" entities:
+      | title          |
+      | Handmade oboes |
 
     When I am an anonymous user
     And I go to the homepage
