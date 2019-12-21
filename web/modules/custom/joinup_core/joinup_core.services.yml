@@ -3,11 +3,6 @@ services:
     class: Drupal\joinup_core\EventSubscriber\JoinupCoreOgSubscriber
     tags:
       - name: event_subscriber
-  cache_context.joinup_core_group_owner:
-    class: 'Drupal\joinup_core\Cache\Context\GroupOwnerCacheContext'
-    arguments: ['@current_user', '@entity_type.manager', '@og.membership_manager', '@database', '@private_key']
-    tags:
-      - { name: 'cache.context'}
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
     arguments: ['@joinup_core.relations_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']

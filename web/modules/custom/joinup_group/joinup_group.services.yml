@@ -1,4 +1,9 @@
 services:
+  cache_context.joinup_group_owner:
+    class: 'Drupal\joinup_group\Cache\Context\GroupOwnerCacheContext'
+    arguments: ['@current_user', '@entity_type.manager', '@og.membership_manager', '@database', '@private_key']
+    tags:
+      - { name: 'cache.context'}
   joinup_group.group_manager:
     class: Drupal\joinup_group\JoinupGroupManager
     arguments: ['@og.membership_manager', '@entity_type.manager']
