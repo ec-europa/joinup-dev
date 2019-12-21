@@ -110,7 +110,6 @@ config_devel:
     - views.view.group_content_management
     - views.view.legal_notice_report
     - views.view.licence_list
-    - views.view.members_overview
     - views.view.messages_overview
     - views.view.moderator_solutions_by_type
     - views.view.solutions
