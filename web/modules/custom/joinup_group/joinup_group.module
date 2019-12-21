@@ -5,6 +5,11 @@
  * Contains the main functionality of Joinup Group module.
  */
 
+declare(strict_types=1);
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
+
 /**
  * Implements hook_preprocess_page().
  *
@@ -30,4 +35,40 @@ function joinup_group_entity_type_alter(array &$entity_types) {
   // Swap the default user cancel form implementation with a custom one that
   // prevents deleting users when they are the sole owner of a group.
   $entity_types['user']->setFormClass('cancel', 'Drupal\joinup_group\Form\UserCancelForm');
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Adds a submit handler that will show a message to the user after proposing a
+ * collection or solution.
+ */
+function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\rdf_entity\RdfInterface $rdf */
+  $rdf = $form_object->getEntity();
+
+  // Add submit callback when the current bundle is in the list and when we are
+  // in an affected operation type.
+  $operation_types = ['add', 'default', 'propose'];
+  if (JoinupGroupHelper::isGroup($rdf) && in_array($form_object->getOperation(), $operation_types)) {
+    $form['actions']['submit']['#submit'][] = 'joinup_core_propose_message_submit';
+  }
+}
+
+/**
+ * Submit callback for the propose form of a collection or solution.
+ *
+ * Informs the user that a newly proposed collection or solution needs approval.
+ */
+function joinup_group_propose_message_submit(&$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  $fields = ['collection' => 'field_ar_state', 'solution' => 'field_is_state'];
+  $entity = $form_object->getEntity();
+  $state = $entity->get($fields[$entity->bundle()])->value;
+
+  if ($state === 'proposed') {
+    \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
+  }
 }

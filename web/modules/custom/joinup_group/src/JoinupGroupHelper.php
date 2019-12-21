@@ -13,6 +13,20 @@ use Drupal\rdf_entity\RdfInterface;
 class JoinupGroupHelper {
 
   /**
+   * Returns whether the entity is one of the rdf groups.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to check.
+   *
+   * @return bool
+   *   True if the entity is an rdf of bundle collection or solution, false
+   *   otherwise.
+   */
+  public static function isGroup(EntityInterface $entity): bool {
+    return self::isCollection($entity) || self::isSolution($entity);
+  }
+
+  /**
    * Returns whether the entity is an rdf collection.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
