@@ -64,7 +64,7 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
   // in an affected operation type.
   $operation_types = ['add', 'default', 'propose'];
   if (JoinupGroupHelper::isGroup($rdf) && in_array($form_object->getOperation(), $operation_types)) {
-    $form['actions']['submit']['#submit'][] = 'joinup_core_propose_message_submit';
+    $form['actions']['submit']['#submit'][] = 'joinup_group_propose_message_submit';
   }
 }
 
