@@ -115,13 +115,13 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
     '#weight' => -100,
     '#type' => 'html_tag',
     '#tag' => 'h3',
-    '#value' => t('EU Login Account information'),
+    '#value' => t('Account information'),
   ];
   $form['header_description'] = [
     '#weight' => -99,
     '#type' => 'html_tag',
     '#tag' => 'span',
-    '#value' => t('Your name and E-mail data is inherited from EU Login. To update this information, you can visit your EU Login account page <a href="https://webgate.ec.europa.eu/cas/eim/external/restricted/edit.cgi" rel="nofollow" target="_blank">here</a>. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup.'),
+    '#value' => t('Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page <a href="https://webgate.ec.europa.eu/cas/eim/external/restricted/edit.cgi" rel="nofollow" target="_blank">here</a>. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup.'),
   ];
 
   $form['account']['mail']['#description'] = t('Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.');
