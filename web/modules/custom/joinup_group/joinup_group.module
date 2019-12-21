@@ -28,6 +28,6 @@ function joinup_group_preprocess_page(&$variables) {
  */
 function joinup_group_entity_type_alter(array &$entity_types) {
   // Swap the default user cancel form implementation with a custom one that
-  // prevents deleting users when they are the sole owner of a collection.
+  // prevents deleting users when they are the sole owner of a group.
   $entity_types['user']->setFormClass('cancel', 'Drupal\joinup_group\Form\UserCancelForm');
 }
