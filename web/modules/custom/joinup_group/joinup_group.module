@@ -7,8 +7,12 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\og\Og;
 
 /**
  * Implements hook_preprocess_page().
@@ -71,4 +75,37 @@ function joinup_group_propose_message_submit(&$form, FormStateInterface $form_st
   if ($state === 'proposed') {
     \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
   }
+}
+
+/**
+ * Implements hook_entity_graph_access().
+ *
+ * The same procedure as the global access check is followed here. The purpose
+ * is to override the results of the global access check if the user has the
+ * appropriate OG permissions.
+ *
+ * @todo: hook api definition is needed.
+ */
+function joinup_group_entity_graph_access(EntityInterface $entity, string $operation, AccountInterface $account, string $graph_name): AccessResult {
+  if (!$entity || !JoinupGroupHelper::isGroup($entity) || $operation != 'view' || $graph_name == 'default') {
+    return AccessResult::neutral();
+  }
+
+  $membership = Og::getMembership($entity, $account);
+  if (empty($membership)) {
+    return AccessResult::neutral();
+  }
+
+  // Following the same logic as the global access check.
+  $map = ['view' => 'view all graphs'];
+  $entity_type_id = $entity->getEntityTypeId();
+  $type_map = ['view' => "view $entity_type_id $graph_name graph"];
+
+  // If the operation is not supported, do not allow access.
+  if (!isset($map[$operation]) || !isset($type_map[$operation])) {
+    return AccessResult::forbidden();
+  }
+
+  $has_permission = $membership->hasPermission($map[$operation]) || $membership->hasPermission($type_map[$operation]);
+  return $has_permission ? AccessResult::allowed() : AccessResult::neutral();
 }
