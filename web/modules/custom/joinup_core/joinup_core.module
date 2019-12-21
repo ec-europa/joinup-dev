@@ -28,13 +28,8 @@ use Drupal\file\Entity\File;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
-use Drupal\og\Og;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgMembershipInterface;
-use Drupal\og_menu\Entity\OgMenuInstance;
-use Drupal\rdf_entity\RdfInterface;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\Utility;
@@ -481,53 +476,6 @@ function joinup_core_element_info_alter(array &$info) {
       ],
     ];
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_insert() for RDF entities.
- */
-function joinup_core_rdf_entity_insert(RdfInterface $entity) {
-  // When a collection or solution is created, create a new navigation menu and
-  // associate it with the new collection or solution. This menu can be used to
-  // link to custom pages, member overviews, an about page etc.
-  if (Og::isGroup($entity->getEntityTypeId(), $entity->bundle()) && in_array($entity->bundle(), ['collection', 'solution'])) {
-    $values = [
-      'type' => 'navigation',
-      OgGroupAudienceHelperInterface::DEFAULT_FIELD => $entity->id(),
-    ];
-    $og_menu_instance = OgMenuInstance::create($values);
-    $og_menu_instance->save();
-
-    // Automatically add a link to the overview and about pages of the
-    // collection entity.
-    $menu_name = 'ogmenu-' . $og_menu_instance->id();
-    $link = MenuLinkContent::create([
-      'title' => t('Overview'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl()->toUriString()],
-      'weight' => -10,
-    ]);
-    $link->save();
-
-    $link = MenuLinkContent::create([
-      'title' => t('Members'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl('member-overview')->toUriString()],
-      'weight' => -9,
-    ]);
-    $link->save();
-
-    $link = MenuLinkContent::create([
-      'title' => t('About'),
-      'menu_name' => $menu_name,
-      'link' => ['uri' => $entity->toUrl('about-page')->toUriString()],
-      'weight' => -8,
-    ]);
-    $link->save();
-  }
-
-  // Invalidate all caches tagged with rdf_entity_list:{$entity->bundle()}.
-  joinup_core_invalidate_rdf_entity_bundle_list_cache($entity);
 }
 
 /**
@@ -1209,16 +1157,6 @@ function joinup_core_extract_bulk_form_entity_id(string $bulk_form_key): string 
   // The first two items will always be langcode and ID.
   $id = array_pop($key_parts);
   return $id;
-}
-
-/**
- * Invalidates the cache tags of the list of entities having the same bundle.
- *
- * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
- *   The RDF entity.
- */
-function joinup_core_invalidate_rdf_entity_bundle_list_cache(RdfInterface $rdf_entity) {
-  Cache::invalidateTags(["rdf_entity_list:{$rdf_entity->bundle()}"]);
 }
 
 /**
