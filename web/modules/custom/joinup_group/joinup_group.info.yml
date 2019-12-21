@@ -11,3 +11,4 @@ dependencies:
 config_devel:
   install:
     - system.action.joinup_og_membership_delete_action
+    - views.view.members_overview
