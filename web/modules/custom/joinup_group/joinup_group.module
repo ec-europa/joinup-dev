@@ -12,6 +12,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\file\Entity\File;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\Og;
@@ -161,4 +162,50 @@ function joinup_group_rdf_entity_insert(RdfInterface $entity): void {
   // Invalidate all list caches tagged with the affected bundle so the that
   // they will be regenerated.
   Cache::invalidateTags(["rdf_entity_list:{$entity->bundle()}"]);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * During the hook_update, the entity is already saved. This renders impossible
+ * to determine whether there was a published version before. Yet, the email
+ * cannot be sent during the presave because the save action has not completed
+ * yet and anything could go wrong. Thus, a property is set to define whether
+ * the entity had a published version previously.
+ *
+ * Also, provide default images for collections and solutions in case they are
+ * empty.
+ */
+function joinup_group_rdf_entity_presave(EntityInterface $entity) {
+  if (!JoinupGroupHelper::isGroup($entity)) {
+    return;
+  }
+
+  if ($entity->isNew()) {
+    $entity->hasPublished = FALSE;
+  }
+  else {
+    $entity->hasPublished = $entity->hasGraph('default');
+  }
+
+  $field_data = [
+    'logo' => ['field_ar_logo', 'field_is_logo'],
+    'banner' => ['field_ar_banner', 'field_is_banner'],
+  ];
+
+  $fixtures_path = drupal_get_path('module', 'joinup_core') . '/fixtures/images/';
+  foreach ($field_data as $field_type => $fields) {
+    foreach ($fields as $field) {
+      if ($entity->hasField($field) && empty($entity->get($field)->getValue())) {
+        // Get files without the . and .. directories.
+        $files = array_slice(scandir($fixtures_path . $field_type), 2);
+        $random = array_rand($files);
+        $file_path = \Drupal::service('file_system')->realpath($fixtures_path . $field_type . '/' . $files[$random]);
+        $file_path = file_unmanaged_copy($file_path, 'public://');
+        $file = File::create(['uri' => $file_path]);
+        $file->save();
+        $entity->set($field, $file->id());
+      }
+    }
+  }
 }
