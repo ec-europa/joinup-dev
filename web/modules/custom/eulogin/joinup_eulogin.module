@@ -120,7 +120,7 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
   $form['header_description'] = [
     '#weight' => -99,
     '#type' => 'html_tag',
-    '#tag' => 'span',
+    '#tag' => 'p',
     '#value' => t('Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page <a href="https://webgate.ec.europa.eu/cas/eim/external/restricted/edit.cgi" rel="nofollow" target="_blank">here</a>. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup.'),
   ];
 
