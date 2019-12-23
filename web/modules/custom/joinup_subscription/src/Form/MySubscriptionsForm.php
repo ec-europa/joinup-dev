@@ -13,8 +13,8 @@ use Drupal\Core\Form\SubformState;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\Plugin\Field\FieldType\EntityBundlePairItem;
+use Drupal\joinup_group\JoinupGroupManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -40,11 +40,11 @@ class MySubscriptionsForm extends FormBase {
   protected $entityTypeBundleInfo;
 
   /**
-   * The Joinup relation manager service.
+   * The Joinup group manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupManagerInterface
    */
-  protected $relationManager;
+  protected $groupManager;
 
   /**
    * The OG membership manager.
@@ -60,15 +60,15 @@ class MySubscriptionsForm extends FormBase {
    *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
    *   The entity type bundle info service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
-   *   The Joinup relation manager service.
+   * @param \Drupal\joinup_group\JoinupGroupManagerInterface $groupManager
+   *   The Joinup group manager service.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The OG membership manager.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, JoinupRelationManagerInterface $relationManager, MembershipManagerInterface $membershipManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, JoinupGroupManagerInterface $groupManager, MembershipManagerInterface $membershipManager) {
     $this->entityTypeManager = $entityTypeManager;
     $this->entityTypeBundleInfo = $entityTypeBundleInfo;
-    $this->relationManager = $relationManager;
+    $this->groupManager = $groupManager;
     $this->membershipManager = $membershipManager;
   }
 
@@ -79,7 +79,7 @@ class MySubscriptionsForm extends FormBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('entity_type.bundle.info'),
-      $container->get('joinup_core.relations_manager'),
+      $container->get('joinup_group.group_manager'),
       $container->get('og.membership_manager')
     );
   }
@@ -99,6 +99,7 @@ class MySubscriptionsForm extends FormBase {
     if (empty($user)) {
       throw new \InvalidArgumentException('No user account supplied.');
     }
+    /** @var \Drupal\user\UserInterface $user */
     $user = $this->entityTypeManager->getStorage('user')->load($user->id());
 
     $form['description'] = [
@@ -109,7 +110,7 @@ class MySubscriptionsForm extends FormBase {
 
     $this->loadUserSubscriptionFrequencyWidget($form, $form_state, $user);
 
-    $memberships = $this->relationManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
+    $memberships = $this->groupManager->getUserGroupMembershipsByBundle($user, 'rdf_entity', 'collection');
 
     // Add a JS behavior to enable the buttons when the checkboxes or the
     // dropdown on the form are toggled.

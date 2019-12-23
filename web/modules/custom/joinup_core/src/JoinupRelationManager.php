@@ -8,7 +8,6 @@ use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
@@ -186,31 +185,6 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
     $query = $storage->getQuery();
     $query->condition($bundle_key, $bundle);
     return $query->execute();
-  }
-
-  /**
-   * Returns the entity storage for OgMembership entities.
-   *
-   * @return \Drupal\Core\Entity\EntityStorageInterface
-   *   The entity storage.
-   */
-  protected function getOgMembershipStorage(): EntityStorageInterface {
-    // Since entities can be dynamically defined in Drupal the generic entity
-    // type manager service can throw exceptions in case entities are not
-    // available. However these circumstances do not apply to us since we are
-    // requesting the OgMembership entities which are defined in code in the OG
-    // module on which we correctly depend. Transform these exceptions to
-    // unchecked runtime exceptions so we don't need to document these all the
-    // way up the call stack.
-    try {
-      return $this->entityTypeManager->getStorage('og_membership');
-    }
-    catch (InvalidPluginDefinitionException $e) {
-      throw new \RuntimeException('The OgMembership entity has an invalid plugin definition.', NULL, $e);
-    }
-    catch (PluginNotFoundException $e) {
-      throw new \RuntimeException('The OgMembership entity storage does not exist.', NULL, $e);
-    }
   }
 
 }
