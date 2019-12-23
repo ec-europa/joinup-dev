@@ -140,34 +140,6 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, string $role, array $states = array (
-          0 => 'active',
-        )) : array
-        {
-            return $this->lazyLoadItself()->getUserMembershipsByRole($user, $role, $states);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        public function getCollectionsWhereSoleOwner(\Drupal\Core\Session\AccountInterface $user) : array
-        {
-            return $this->lazyLoadItself()->getCollectionsWhereSoleOwner($user);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        public function getGroupMembershipsByRoles(\Drupal\Core\Entity\EntityInterface $entity, array $role_names, array $states = array (
-          0 => 'active',
-        )) : array
-        {
-            return $this->lazyLoadItself()->getGroupMembershipsByRoles($entity, $role_names, $states);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
         public function getCollectionIds() : array
         {
             return $this->lazyLoadItself()->getCollectionIds();

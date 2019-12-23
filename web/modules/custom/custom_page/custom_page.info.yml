@@ -1,34 +1,36 @@
-name: Custom page
+name: 'Custom page'
 type: module
-description: Custom content that belongs to a collection.
+description: 'Custom content that belongs to a collection.'
 core: 8.x
 package: Joinup
 
 dependencies:
-  - ds:ds
-  - joinup:joinup_community_content
-  - joinup:joinup_core
-  - drupal:menu_ui
-  - og:og
-  - drupal:path
-  - joinup:search_api_field
-  - smart_trim:smart_trim
-  - drupal:user
+  - 'drupal:menu_ui'
+  - 'drupal:path'
+  - 'drupal:user'
+  - 'ds:ds'
+  - 'joinup:joinup_community_content'
+  - 'joinup:joinup_core'
+  - 'joinup:search_api_field'
+  - 'og:og'
+  - 'smart_trim:smart_trim'
 
 config_devel:
-  - core.base_field_override.node.custom_page.promote
-  - core.base_field_override.node.custom_page.status
-  - core.entity_form_display.node.custom_page.default
-  - core.entity_view_display.node.custom_page.default
-  - core.entity_view_display.node.custom_page.view_mode_featured
-  - core.entity_view_display.node.custom_page.view_mode_tile
-  - facets.facet.field_cp_content_listing_content_type
-  - facets.facet_source.search_api_field__node.field_cp_content_listing
-  - field.field.node.custom_page.body
-  - field.field.node.custom_page.field_attachment
-  - field.field.node.custom_page.field_custom_page_logo
-  - field.field.node.custom_page.field_cp_content_listing
-  - field.field.node.custom_page.og_audience
-  - field.storage.node.field_custom_page_logo
-  - field.storage.node.field_cp_content_listing
-  - node.type.custom_page
+  install:
+    - core.base_field_override.node.custom_page.promote
+    - core.base_field_override.node.custom_page.status
+    - core.base_field_override.node.custom_page.title
+    - core.entity_form_display.node.custom_page.default
+    - core.entity_view_display.node.custom_page.default
+    - core.entity_view_display.node.custom_page.view_mode_featured
+    - core.entity_view_display.node.custom_page.view_mode_tile
+    - facets.facet.field_cp_content_listing_content_type
+    - facets.facet_source.search_api_field__node.field_cp_content_listing
+    - field.field.node.custom_page.body
+    - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_cp_content_listing
+    - field.field.node.custom_page.field_custom_page_logo
+    - field.field.node.custom_page.og_audience
+    - field.storage.node.field_cp_content_listing
+    - field.storage.node.field_custom_page_logo
+    - node.type.custom_page

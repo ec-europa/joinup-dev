@@ -54,7 +54,7 @@ Feature: About page
     And I press "Publish"
     Then I should see the heading "Fitness at work"
     And the page should contain the html text "This collection is intended to show ways of being fit while working"
-    And I should see the text "In consequat sapien risus a…"
+    And I should see the text "In consequat sapien risus a malesuada…"
     But I should not see the text "malesuada eros auctor eget. Curabitur at"
     When I click "Read more" in the "Content" region
     Then I should see the heading "About Fitness at work"
