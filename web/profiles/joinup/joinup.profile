@@ -15,6 +15,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\JoinupHelper;
 use Drupal\joinup_community_content\CommunityContentHelper;
@@ -107,13 +108,9 @@ function joinup_entity_type_alter(array &$entity_types) {
   // add propose form displays to them.
   // Skip this during installation, since the RDF entity will not yet be
   // registered.
-  if (!drupal_installation_attempted()) {
+  if (!InstallerKernel::installationAttempted()) {
     /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
     $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
-
-    // Swap the default user cancel form implementation with a custom one that
-    // prevents deleting users when they are the sole owner of a collection.
-    $entity_types['user']->setFormClass('cancel', 'Drupal\joinup\Form\UserCancelForm');
   }
 }
 
