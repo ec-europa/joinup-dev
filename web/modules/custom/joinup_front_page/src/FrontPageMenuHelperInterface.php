@@ -34,4 +34,12 @@ interface FrontPageMenuHelperInterface {
    */
   public function pinSiteWide(FieldableEntityInterface $entity): void;
 
+  /**
+   * Removes an entity from the front page menu.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity to remove from the front page menu.
+   */
+  public function unpinSiteWide(FieldableEntityInterface $entity): void;
+
 }

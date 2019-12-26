@@ -82,7 +82,15 @@ namespace Drupal\joinup_front_page\ProxyClass {
          */
         public function pinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
         {
-            $this->lazyLoadItself()->pinSiteWide($entity);
+          $this->lazyLoadItself()->pinSiteWide($entity);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function unpinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
+        {
+          $this->lazyLoadItself()->unpinSiteWide($entity);
         }
 
     }

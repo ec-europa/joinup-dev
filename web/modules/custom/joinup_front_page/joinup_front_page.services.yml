@@ -1,7 +1,7 @@
 services:
   joinup_front_page.front_page_helper:
     class: Drupal\joinup_front_page\FrontPageMenuHelper
-    arguments: ['@entity_type.manager', '@plugin.manager.menu.link']
+    arguments: ['@entity_type.manager', '@plugin.manager.menu.link', '@module_handler', '@cache_tags.invalidator']
     lazy: true
   joinup_front_page.route_subscriber:
     class: Drupal\joinup_front_page\Routing\RouteSubscriber

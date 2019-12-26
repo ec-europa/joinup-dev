@@ -132,13 +132,17 @@ function _joinup_search_search_api_has_condition($conditions, $field, $value, $o
  * boolean and "s" for single value, as they are used for sorting.
  */
 function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterface $index, array $items) {
+  /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */
+  $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
   /** @var \Solarium\QueryType\Update\Query\Document\Document[] $documents */
   foreach ($documents as $document) {
     if (empty($document->getFields()['bs_sticky'])) {
       $document->setField('bs_sticky', FALSE);
     }
-    if (!isset($document->getFields()['bs_site_pinned'])) {
-      $document->setField('bs_site_pinned', FALSE);
+    if (!empty($document->getFields()['ss_search_api_id'])) {
+      /** @var \Drupal\search_api\Item\Item[] $items */
+      $id = $document->getFields()['ss_search_api_id'];
+      $document->setField('bs_site_pinned', (bool) $front_page_helper->getFrontPageMenuItem($items[$id]->getOriginalObject()->getValue()));
     }
   }
 }

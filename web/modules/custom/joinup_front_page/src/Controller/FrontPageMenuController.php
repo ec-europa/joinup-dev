@@ -4,12 +4,9 @@ namespace Drupal\joinup_front_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\joinup_front_page\FrontPageMenuHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,13 +32,6 @@ class FrontPageMenuController extends ControllerBase {
   protected $menuLinkContentStorage;
 
   /**
-   * The cache tags invalidator service.
-   *
-   * @var \Drupal\Core\Cache\CacheTagsInvalidator|\Drupal\Core\Cache\CacheTagsInvalidatorInterface
-   */
-  protected $cacheTagsInvalidator;
-
-  /**
    * The menu link tree service.
    *
    * @var \Drupal\Core\Menu\MenuLinkTreeInterface
@@ -55,15 +45,12 @@ class FrontPageMenuController extends ControllerBase {
    *   The entity type manager service.
    * @param \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper
    *   The menu link manager service.
-   * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator
-   *   The cache tags invalidator service.
    * @param \Drupal\Core\Menu\MenuLinkTreeInterface $menu_link_tree
    *   The menu link tree service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper, CacheTagsInvalidatorInterface $cache_tags_invalidator, MenuLinkTreeInterface $menu_link_tree) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper, MenuLinkTreeInterface $menu_link_tree) {
     $this->menuLinkContentStorage = $entity_type_manager->getStorage('menu_link_content');
     $this->frontPageHelper = $front_page_helper;
-    $this->cacheTagsInvalidator = $cache_tags_invalidator;
     $this->menuLinkTree = $menu_link_tree;
   }
 
@@ -74,7 +61,6 @@ class FrontPageMenuController extends ControllerBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('joinup_front_page.front_page_helper'),
-      $container->get('cache_tags.invalidator'),
       $container->get('menu.link_tree')
     );
   }
@@ -100,7 +86,6 @@ class FrontPageMenuController extends ControllerBase {
    */
   public function pinSiteWide(ContentEntityInterface $entity): RedirectResponse {
     $this->frontPageHelper->pinSiteWide($entity);
-    $this->invalidateEntityTags($entity);
 
     $this->messenger()->addStatus($this->t('@bundle %title has been set as pinned content.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -120,8 +105,7 @@ class FrontPageMenuController extends ControllerBase {
    */
   public function unpinSiteWide(ContentEntityInterface $entity): RedirectResponse {
     /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $result */
-    $this->frontPageHelper->getFrontPageMenuItem($entity)->delete();
-    $this->invalidateEntityTags($entity);
+    $this->frontPageHelper->unpinSiteWide($entity);
 
     $this->messenger()->addStatus($this->t('@bundle %title has been removed from the pinned contents.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -167,17 +151,6 @@ class FrontPageMenuController extends ControllerBase {
   protected function getRedirect(ContentEntityInterface $entity): RedirectResponse {
     $redirect = $entity->toUrl();
     return $this->redirect($redirect->getRouteName(), $redirect->getRouteParameters());
-  }
-
-  /**
-   * Helper method to gather and invalidate tags for an entity.
-   *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity to invalidate tags for.
-   */
-  protected function invalidateEntityTags(FieldableEntityInterface $entity): void {
-    $cache_tags_to_invalidate = Cache::mergeTags($entity->getEntityType()->getListCacheTags(), $entity->getCacheTagsToInvalidate());
-    $this->cacheTagsInvalidator->invalidateTags($cache_tags_to_invalidate);
   }
 
 }
