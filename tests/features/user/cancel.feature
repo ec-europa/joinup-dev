@@ -15,6 +15,9 @@ Feature:
       | title                   | state     |
       | Lugia was just released | validated |
       | Articuno is hunted      | validated |
+    And solutions:
+      | title                        | state     |
+      | Random chat machine learning | validated |
     # Assign facilitator role in order to allow creation of a solution.
     # In UAT this can be done by creating the collection through the UI
     # with the related user.
@@ -22,8 +25,11 @@ Feature:
       | collection              | user          | roles                      |
       | Lugia was just released | Hazel Olson   | administrator, facilitator |
       | Articuno is hunted      | Amelia Barker | administrator, facilitator |
+    And the following solution user membership:
+      | solution                     | user        | roles                      |
+      | Random chat machine learning | Hazel Olson | administrator, facilitator |
 
-  Scenario: Canceling users that are the sole owners of collections cannot be done.
+  Scenario: Canceling users that are the sole owners of groups cannot be done.
     When I am logged in as a moderator
     And I click "People"
     And I check "Hazel Olson"
@@ -34,15 +40,21 @@ Feature:
       | This action cannot be undone.                |
       | When cancelling these accounts               |
       | Require email confirmation to cancel account |
-      | Notify user when account is canceled        |
-    But I should see the text "User Hazel Olson cannot be deleted as it is currently the sole owner of these collections:"
-    And I should see the text "User Amelia Barker cannot be deleted as it is currently the sole owner of these collections:"
-    And I should see the link "Lugia was just released"
-    And I should see the link "Articuno is hunted"
-    And I should see the link "Go back"
+      | Notify user when account is canceled         |
+    But I should see the following lines of text:
+      | User Hazel Olson cannot be deleted as they are currently the sole owner of these groups:   |
+      | User Amelia Barker cannot be deleted as they are currently the sole owner of these groups: |
+      | Collection                                                                                 |
+      | Collections                                                                                |
+      | Solution                                                                                   |
+    And I should see the following links:
+      | Lugia was just released      |
+      | Articuno is hunted           |
+      | Random chat machine learning |
+      | Go back                      |
     And I should not see the button "Cancel accounts"
 
-  Scenario: Canceling a user directly from the profile when he is the sole owner of a collection, cannot be done.
+  Scenario: Canceling a user directly from the profile when he is the sole owner of a group, cannot be done.
     When I am logged in as a moderator
     And I click "People"
     And I click "Hazel Olson"
@@ -52,8 +64,11 @@ Feature:
       | This action cannot be undone.                |
       | When cancelling these accounts               |
       | Require email confirmation to cancel account |
-      | Notify user when account is canceled        |
-    But I should see the text "User Hazel Olson cannot be deleted as it is currently the sole owner of these collections:"
+      | Notify user when account is canceled         |
+    But I should see the text "User Hazel Olson cannot be deleted as they are currently the sole owner of these groups:"
+    And I should see the following links:
+      | Lugia was just released      |
+      | Random chat machine learning |
     And I should see the link "Go back"
     And I should not see the button "Cancel account"
 
