@@ -231,3 +231,23 @@ Feature: Pinning content site-wide
       | Risky Sound          |
       # The next item is still shown due to popularity but not according to the pinned order.
       | Entry to be disabled |
+
+    # Delete the first item.
+    When I click the contextual link "Edit pinned entities" in the "Content" region
+    And I click "Delete"
+    And I press "Delete"
+    # Delete the first item.
+    And I click the contextual link "Edit pinned entities" in the "Content" region
+    And I click "Delete"
+    And I press "Delete"
+    # Delete the first item.
+    And I click the contextual link "Edit pinned entities" in the "Content" region
+    And I click "Delete"
+    And I press "Delete"
+    # Delete the first item.
+    And I click the contextual link "Edit pinned entities" in the "Content" region
+    And I click "Delete"
+    And I press "Delete"
+
+    When I click the contextual link "Edit pinned entities" in the "Content" region
+    Then I should see the text "There are no pinned entities. Start by pinning an entity site wide."
