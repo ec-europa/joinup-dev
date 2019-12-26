@@ -7,3 +7,7 @@ dependencies:
   - joinup:joinup_core
   - joinup:joinup_group
   - menu_admin_per_menu:menu_admin_per_menu
+
+config_devel:
+  - block.block.recommended_content
+  - system.menu.front-page
