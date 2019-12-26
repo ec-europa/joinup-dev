@@ -7,7 +7,7 @@ dependencies:
   module:
     - joinup_core
 routes:
-  - route_name: 'homepage.content'
+  - route_name: 'joinup_front_page.homepage'
 tips:
   welcome:
     id: welcome
