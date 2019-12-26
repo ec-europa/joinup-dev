@@ -1,13 +1,13 @@
 type: module
-name: Joinup front page
-description: Contains functionality related to the Joinup front page.
+name: 'Joinup front page'
+description: 'Contains functionality related to the Joinup front page.'
 core: 8.x
 package: Joinup
 dependencies:
-  - joinup:joinup_core
-  - joinup:joinup_group
-  - menu_admin_per_menu:menu_admin_per_menu
-
+  - 'joinup:joinup_core'
+  - 'joinup:joinup_group'
+  - 'menu_admin_per_menu:menu_admin_per_menu'
 config_devel:
-  - block.block.recommended_content
-  - system.menu.front-page
+  install:
+    - block.block.recommended_content
+    - system.menu.front-page
