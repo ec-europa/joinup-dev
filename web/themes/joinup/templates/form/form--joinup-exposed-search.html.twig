@@ -17,7 +17,7 @@
   </label>
   <form{{ attributes.addClass('search-bar__input-container mdl-textfield__expandable-holder') }}>
     {% for id, filter in filters %}
-      <input type="hidden" class="mdl-chipfield__input" name="f[]" value="{{ id }}" data-description="{{ filter }}">
+      <input type="hidden" class="mdl-chipfield__input" name="f[]" value="group:{{ id }}" data-description="{{ filter }}">
     {% endfor %}
     {{ children }}
   </form>

@@ -244,3 +244,11 @@ Feature: Search inside groups
     When I open the search bar by clicking on the search icon
     Then the page should show the following chip:
       | Inclined foundations |
+
+    # The filter chip should remain active when doing another search.
+    When I enter "ground" in the search bar and press enter
+    Then "Inclined foundations (2)" should be selected in the "from" inline facet
+    And I should see 2 tiles
+    When I open the search bar by clicking on the search icon
+    Then the page should show the following chip:
+      | Inclined foundations |
