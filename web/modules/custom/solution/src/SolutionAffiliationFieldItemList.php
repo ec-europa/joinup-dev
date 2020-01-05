@@ -8,9 +8,6 @@ use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
-use Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface;
-use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 
 /**
  * Defines a field item list class for the solution 'collections' field.
@@ -124,36 +121,35 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
     sort($new_ids);
 
     $affected_ids = [];
-    $affected_graphs_uris = [];
+    $existing_ids = [];
+
+    // Get existing affiliation.
+    $select = [];
+    $select[] = 'SELECT ?id';
     foreach ($graph_uris as $graph_uri) {
-      // Get existing affiliation.
-      $select = [];
-      $select[] = 'SELECT ?id';
       $select[] = "FROM <{$graph_uri}>";
-      $select[] = 'WHERE {';
-      $select[] = "?id <{$field_uri}> <{$solution->id()}> .";
-      // Ensure the entity exists in the graph.
-      $select[] = "?id a ?type .";
-      $select[] = '}';
-      $select[] = "ORDER BY (?id)";
+    }
+    $select[] = 'WHERE {';
+    $select[] = "?id <{$field_uri}> <{$solution->id()}> .";
+    // Ensure the entity exists in the graph.
+    $select[] = "?id a ?type .";
+    $select[] = '}';
+    $select[] = "ORDER BY (?id)";
 
-      $existing_ids = [];
-      foreach ($connection->query(implode("\n", $select)) as $item) {
-        $existing_ids[] = (string) $item->id;
-      }
-
-      // The affiliation has been preserved. Continue to the rest of the graphs.
-      if ($new_ids === $existing_ids) {
-        continue;
-      }
-
-      $affected_graphs_uris[] = $graph_uri;
-      // Collect the ids of the collections that were affected by changes.
-      $affected_ids += array_unique(array_merge($new_ids, $existing_ids));
+    foreach ($connection->query(implode("\n", $select)) as $item) {
+      $existing_ids[(string) $item->id] = (string) $item->id;
     }
 
-    $update_query = $this->getUpdateQuery($affected_graphs_uris, $field_uri, $solution, $new_ids);
-    $connection->query($update_query);
+    // The affiliation has been preserved. Continue to the rest of the graphs.
+    if ($new_ids === array_values($existing_ids)) {
+      return;
+    }
+
+    // Collect the ids of the collections that were affected by changes.
+    $affected_ids += array_unique(array_merge($new_ids, $existing_ids));
+
+    $connection->query($this->getDeleteQuery($graph_uris, $field_uri, $solution, $new_ids));
+    $connection->query($this->getInsertQuery($graph_uris, $field_uri, $solution, $new_ids));
 
     if ($affected_ids) {
       // Clear the cache of collections that were affected by changes.
@@ -195,7 +191,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
   }
 
   /**
-   * Retrieves the update query.
+   * Retrieves the delete query.
    *
    * The following method will produce a query in the following form.
    *
@@ -206,14 +202,6 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    *   }
    *   GRAPH <g2> {
    *     a b c
-   *   }
-   * }
-   * INSERT {
-   *   GRAPH <g1> {
-   *     x y z
-   *   }
-   *   GRAPH <g2> {
-   *     x y z
    *   }
    * }
    * USING <g1>
@@ -233,7 +221,7 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    * @return string
    *   The query string that updates the values.
    */
-  protected function getUpdateQuery(array $graph_uris, string $field_predicate, RdfInterface $solution, array $new_ids): string {
+  protected function getDeleteQuery(array $graph_uris, string $field_predicate, RdfInterface $solution, array $new_ids): string {
     $query_parts = [];
     $query_parts[] = "DELETE {";
     foreach ($graph_uris as $uri) {
@@ -242,6 +230,44 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       $query_parts[] = '}';
     }
     $query_parts[] = '}';
+    foreach ($graph_uris as $uri) {
+      $query_parts[] = "USING <{$uri}>";
+    }
+    $query_parts[] = "WHERE { ?id <{$field_predicate}> <{$solution->id()}> }";
+
+    return implode("\n", $query_parts);
+  }
+
+  /**
+   * Retrieves the insert query.
+   *
+   * The following method will produce a query in the following form.
+   *
+   * @codingStandardsIgnoreStart
+   * INSERT {
+   *   GRAPH <g1> {
+   *     x y z
+   *   }
+   *   GRAPH <g2> {
+   *     x y z
+   *   }
+   * }
+   * @codingStandardsIgnoreEnd
+   *
+   * @param array $graph_uris
+   *   A list of graph uris.
+   * @param string $field_predicate
+   *   The field predicate.
+   * @param \Drupal\rdf_entity\RdfInterface $solution
+   *   The solution entity.
+   * @param array $new_ids
+   *   The new affiliates list.
+   *
+   * @return string
+   *   The query string that updates the values.
+   */
+  protected function getInsertQuery(array $graph_uris, string $field_predicate, RdfInterface $solution, array $new_ids): string {
+    $query_parts = [];
     $query_parts[] = 'INSERT {';
     foreach ($graph_uris as $uri) {
       $query_parts[] = "GRAPH <{$uri}> {";
@@ -251,11 +277,6 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       $query_parts[] = '}';
     }
     $query_parts[] = '}';
-    foreach ($graph_uris as $uri) {
-      $query_parts[] = "USING <{$uri}>";
-    }
-    $query_parts[] = "WHERE { ?id <{$field_predicate}> <{$solution->id()}> }";
-
     return implode("\n", $query_parts);
   }
 
