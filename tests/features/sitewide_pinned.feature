@@ -198,7 +198,7 @@ Feature: Pinning content site-wide
   Scenario: Front page menu re-ordering.
     Given news content:
       | title                | collection  | state     | visits | created    |
-      | Entry to be disabled | Risky Sound | validated | 0   | 2017-03-29 |
+      | Entry to be disabled | Risky Sound | validated | 0      | 2017-03-29 |
       | Some low visit news  | Risky Sound | validated | 948    | 2017-04-25 |
     And site pinned "content" entities:
       | title                |
@@ -223,7 +223,14 @@ Feature: Pinning content site-wide
     And I drag the "Some low visit news" table row up
     And I drag the "Some low visit news" table row up
     And I drag the "Some low visit news" table row up
-    And I press "Save"
+    Then the draggable menu table should be:
+      | title                |
+      | Some low visit news  |
+      | Entry to be disabled |
+      | D minor              |
+      | Risky Sound          |
+
+    When I press "Save"
     And I am on the homepage
 
     Then I should see the following tiles in the correct order:

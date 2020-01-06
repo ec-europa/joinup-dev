@@ -2509,7 +2509,7 @@ JS;
       // indentation elements to assert later on based on the parent value.
       $indentation = $current_row->findAll('css', 'div.indentation');
 
-      if ($data['parent'] === '') {
+      if (!isset($data['parent']) || $data['parent'] === '') {
         Assert::assertEmpty($parent_input->getValue());
         Assert::assertCount(0, $indentation, "The menu link '{$data['title']}' should not be indented but it is.");
       }
