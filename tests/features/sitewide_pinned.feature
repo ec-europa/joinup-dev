@@ -194,7 +194,7 @@ Feature: Pinning content site-wide
     When I am on the homepage
     Then I should see the contextual link "Edit pinned entities"
 
-  @javascript
+  @javascript @clearStaticCache
   Scenario: Front page menu re-ordering.
     Given news content:
       | title                | collection  | state     | visits | created    |
