@@ -317,7 +317,7 @@ function joinup_group_views_query_alter(ViewExecutable $view, QueryPluginBase $q
   // using the arguments to build the page route and will fail. For this reason,
   // we have to decode just before the query is about to run.
   // @see \Drupal\views\Plugin\views\display\PathPluginBase
-  // @see \Drupal\joinup_core\Plugin\views\argument_default\RdfEntity
+  // @see \Drupal\joinup_group\Plugin\views\argument_default\RdfEntity
   $displays = ['manage', 'csv_export'];
   if ($view->id() === 'group_content_management' && in_array($view->current_display, $displays)) {
     foreach ($query->where as &$group) {
