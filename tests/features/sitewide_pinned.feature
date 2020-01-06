@@ -231,6 +231,7 @@ Feature: Pinning content site-wide
       | Risky Sound          |
 
     When I press "Save"
+    And the cache has been cleared
     And I am on the homepage
 
     Then I should see the following tiles in the correct order:
