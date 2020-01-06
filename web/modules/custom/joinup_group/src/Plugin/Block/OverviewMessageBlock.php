@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\Block;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -9,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 
 /**
- * Provides a 'OverviewMessageBlock' block.
+ * A block showing the introduction text on collection and solution overviews.
  *
  * @Block(
  *  id = "overview_message_block",
@@ -57,7 +59,7 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $route_name = $this->currentRouteMatch->getRouteName();
     $build = [];
     if ($route_name === 'view.solutions.page_1') {
@@ -79,7 +81,7 @@ class OverviewMessageBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     $cache_contexts = parent::getCacheContexts();
     return Cache::mergeContexts($cache_contexts, ['route']);
   }
