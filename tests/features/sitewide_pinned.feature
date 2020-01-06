@@ -1,4 +1,4 @@
-@api @email
+@api @email @debug
 Feature: Pinning content site-wide
   As a moderator of Joinup
   I want to pin content in the website

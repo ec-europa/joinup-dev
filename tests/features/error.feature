@@ -1,4 +1,4 @@
-@errorPage
+@errorPage @debug
 Feature: On errors I want to see a friendly page and be able to report an
   incident number/code.
 
