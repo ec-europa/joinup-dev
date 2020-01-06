@@ -233,10 +233,6 @@ Feature: Pinning content site-wide
     When I press "Save"
     And the cache has been cleared
     And I am on the homepage
-    And the page should not be cached
-
-    When I reload the page
-    Then the page should be cached
 
     And I should see the following tiles in the correct order:
       | Some low visit news  |
