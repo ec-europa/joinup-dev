@@ -198,7 +198,7 @@ function joinup_group_rdf_entity_presave(EntityInterface $entity) {
     'banner' => ['field_ar_banner', 'field_is_banner'],
   ];
 
-  $fixtures_path = drupal_get_path('module', 'joinup_core') . '/fixtures/images/';
+  $fixtures_path = drupal_get_path('module', 'joinup_group') . '/fixtures/images/';
   foreach ($field_data as $field_type => $fields) {
     foreach ($fields as $field) {
       if ($entity->hasField($field) && empty($entity->get($field)->getValue())) {
