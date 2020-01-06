@@ -224,6 +224,7 @@ Feature: Pinning content site-wide
     And I drag the "Some low visit news" table row up
     And I drag the "Some low visit news" table row up
     And I press "Save"
+    And I am on the homepage
 
     Then I should see the following tiles in the correct order:
       | Some low visit news  |
