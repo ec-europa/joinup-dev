@@ -7,11 +7,13 @@
 
 declare(strict_types = 1);
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -525,4 +527,36 @@ function joinup_group_extract_bulk_form_entity_id(string $bulk_form_key): string
 
   // The first two items will always be langcode and ID.
   return array_pop($key_parts);
+}
+
+/**
+ * Generates and returns a shared link.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity related to the share link.
+ * @param string $route
+ *   The route to pass the share link in.
+ *
+ * @return array
+ *   A link icon theme array.
+ */
+function joinup_group_generate_share_link(EntityInterface $entity, string $route): array {
+  $url = Url::fromRoute($route, [$entity->getEntityTypeId() => $entity->id()]);
+
+  return [
+    '#theme' => 'link_icon',
+    '#title' => t('Share'),
+    '#icon' => 'share',
+    '#url' => $url,
+    '#attributes' => [
+      'class' => ['use-ajax', 'action-link'],
+      'data-dialog-type' => 'modal',
+      'data-dialog-options' => Json::encode([
+        'width' => 'auto',
+        'height' => 'auto',
+      ]),
+    ],
+    '#access' => $url->access(),
+    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
+  ];
 }

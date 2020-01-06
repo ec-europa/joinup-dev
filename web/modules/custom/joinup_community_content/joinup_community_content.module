@@ -40,7 +40,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     return;
   }
 
-  $build['share_link'] = joinup_core_generate_share_link($entity, 'joinup_community_content.share_content_form');
+  $build['share_link'] = joinup_group_generate_share_link($entity, 'joinup_community_content.share_content_form');
   $build['#cache'] = [
     'contexts' => [
       'og_role',
