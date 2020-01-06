@@ -107,7 +107,6 @@ config_devel:
     - views.view.collection_content
     - views.view.collections
     - views.view.content_overview
-    - views.view.group_content_management
     - views.view.legal_notice_report
     - views.view.licence_list
     - views.view.messages_overview
