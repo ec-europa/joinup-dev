@@ -236,7 +236,7 @@ class ErrorPageErrorHandler {
           $error_report = new FormattableMarkup('%type: @message in %function (line %line of %file). <pre class="backtrace">@backtrace</pre>', $error);
         }
 
-        if (!$fatal && !empty($original_exception)) {
+        if (!$fatal) {
           // Require explicitly the renderer class, as the container might not
           // be available yet and, as a consequence, the auto-loading might not
           // work for extensions such as modules.
