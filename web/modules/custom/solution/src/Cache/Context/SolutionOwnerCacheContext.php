@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\solution\Cache\Context;
 
-use Drupal\joinup_core\Cache\Context\GroupOwnerCacheContext;
+use Drupal\joinup_group\Cache\Context\GroupOwnerCacheContext;
 
 /**
  * Defines a cache context service for solution owners.

@@ -1,8 +1,11 @@
 <?php
 
-namespace Drupal\joinup_core\Form;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Action\ActionManager;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -196,13 +199,12 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-
   }
 
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     // Cleanup the bulk form selection.
     $this->tempStore->delete($this->currentUser->id());
 
@@ -263,22 +265,26 @@ class TransferGroupOwnershipConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'joinup_transfer_group_ownership_confirm';
   }
 
   /**
    * Provide the access policy for the route that shows this form.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result object.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
+   *   Thrown when the group ownership transfer action plugin instance cannot be
+   *   created.
    */
-  public function access() {
+  public function access(): AccessResultInterface {
     // Probably we try to reuse a form that has been already used.
     if (!$this->membership) {
       return AccessResult::forbidden();
     }
-    /** @var \Drupal\joinup_core\Plugin\Action\TransferGroupOwnershipAction $action */
+    /** @var \Drupal\joinup_group\Plugin\Action\TransferGroupOwnershipAction $action */
     $action = $this->actionPluginManager->createInstance('joinup_transfer_group_ownership');
     return $action->access($this->membership, $this->currentUser, TRUE);
   }
