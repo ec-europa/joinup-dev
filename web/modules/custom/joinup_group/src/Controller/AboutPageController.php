@@ -1,15 +1,19 @@
 <?php
 
-namespace Drupal\joinup_core\Controller;
+declare(strict_types=1);
+
+namespace Drupal\joinup_group\Controller;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Provides route responses for joinup_core module.
+ * Route controller for the about page of a collection or solution.
  */
-class CoreController extends ControllerBase {
+class AboutPageController extends ControllerBase {
 
   /**
    * Renders the "about" view mode of a rdf entity.
@@ -25,7 +29,7 @@ class CoreController extends ControllerBase {
    *
    * @see \Drupal\Core\Entity\Controller\EntityViewController::buildTitle()
    */
-  public function aboutPage(RdfInterface $rdf_entity) {
+  public function aboutPage(RdfInterface $rdf_entity): array {
     $page = $this->entityTypeManager()->getViewBuilder('rdf_entity')->view($rdf_entity, 'about');
 
     $page['#entity_type'] = 'rdf_entity';
@@ -42,7 +46,7 @@ class CoreController extends ControllerBase {
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   The translated title.
    */
-  public function aboutPageTitle(RdfInterface $rdf_entity) {
+  public function aboutPageTitle(RdfInterface $rdf_entity): TranslatableMarkup {
     return $this->t('About @entity', ['@entity' => $rdf_entity->getName()]);
   }
 
@@ -52,10 +56,10 @@ class CoreController extends ControllerBase {
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The rdf entity being checked.
    *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function aboutPageAccess(RdfInterface $rdf_entity) {
+  public function aboutPageAccess(RdfInterface $rdf_entity): AccessResultInterface {
     return AccessResult::allowedIf(in_array($rdf_entity->bundle(), ['collection', 'solution']));
   }
 

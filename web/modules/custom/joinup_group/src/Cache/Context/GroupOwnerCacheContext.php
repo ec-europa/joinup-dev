@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Cache\Context;
+declare(strict_types=1);
+
+namespace Drupal\joinup_group\Cache\Context;
 
 use Drupal\og\Cache\Context\OgRoleCacheContext;
 
@@ -10,7 +12,7 @@ use Drupal\og\Cache\Context\OgRoleCacheContext;
  * This cache context should be used in any render elements that have different
  * content when shown to a group owner.
  *
- * Cache context ID: 'joinup_core_group_owner'
+ * Cache context ID: 'joinup_group_owner'
  */
 class GroupOwnerCacheContext extends OgRoleCacheContext {
 

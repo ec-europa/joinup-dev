@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Overrides the default implementation of the form to delete a user account.
  *
  * Deletion of a user account will be denied when the user is the sole owner of
- * a collection.
+ * a group.
  */
 class UserCancelForm extends CoreUserCancelForm {
 
