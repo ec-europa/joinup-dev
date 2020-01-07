@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "97f22af9a053baa375f7bcf00b8457ac",
+    "content-hash": "e77c4fbaca8e08a0202ec25c27d859e6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15771,7 +15771,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "ext-json": "*"
     },
     "platform-dev": {
         "ext-dom": "*",
