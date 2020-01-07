@@ -2,12 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Block;
+namespace Drupal\joinup_group\Plugin\Block;
 
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
+use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\og_menu\Plugin\Block\OgMenuBlock;
 
 /**
@@ -28,7 +29,7 @@ class GroupMenuBlock extends OgMenuBlock {
   /**
    * The OG menu instance.
    *
-   * @var \Drupal\og_menu\OgMenuInstanceInterface
+   * @var \Drupal\og_menu\OgMenuInstanceInterface|null
    */
   protected $ogMenuInstance;
 
@@ -190,7 +191,7 @@ class GroupMenuBlock extends OgMenuBlock {
   /**
    * {@inheritdoc}
    */
-  public function getOgMenuInstance() {
+  public function getOgMenuInstance(): ?OgMenuInstanceInterface {
     // Wraps the parent method only for caching reasons.
     if (!isset($this->ogMenuInstance)) {
       $this->ogMenuInstance = parent::getOgMenuInstance();

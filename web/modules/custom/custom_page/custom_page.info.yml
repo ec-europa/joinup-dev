@@ -11,6 +11,7 @@ dependencies:
   - 'ds:ds'
   - 'joinup:joinup_community_content'
   - 'joinup:joinup_core'
+  - 'joinup:joinup_group'
   - 'joinup:search_api_field'
   - 'og:og'
   - 'smart_trim:smart_trim'
