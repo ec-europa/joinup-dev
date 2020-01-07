@@ -1,0 +1,7 @@
+action.configuration.joinup_og_membership_delete_action:
+  type: action_configuration_default
+  label: 'Delete the selected membership(s) config'
+
+action.configuration.joinup_transfer_group_ownership:
+  type: action_configuration_default
+  label: 'Transfer the ownership of the group to the selected member'

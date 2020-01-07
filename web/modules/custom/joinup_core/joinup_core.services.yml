@@ -18,11 +18,6 @@ services:
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
     arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager', '@workflow_state_permission.workflow_state_permission']
-  joinup_core.transfer_ownership_subscriber:
-    class: Drupal\joinup_core\EventSubscriber\TransferGroupOwnershipSubscriber
-    arguments: ['@current_user', '@tempstore.private']
-    tags:
-    - name: event_subscriber
   joinup_core.vocabulary_fixtures.helper:
     class: Drupal\joinup_core\VocabularyFixturesHelper
     arguments: ['@sparql_endpoint']
