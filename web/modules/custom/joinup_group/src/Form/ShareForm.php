@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Form;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
@@ -11,6 +13,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleManagerInterface;
@@ -71,7 +74,7 @@ abstract class ShareForm extends ShareFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'share_content_form';
   }
 
@@ -87,8 +90,11 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @return array
    *   The form structure.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the group reference is not populated.
    */
-  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
+  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL): array {
     $this->entity = $entity;
 
     $form['share'] = [
@@ -147,7 +153,7 @@ abstract class ShareForm extends ShareFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     // Keep only the checked entries.
     $collections = array_filter($form_state->getValue('collections'));
     $collection_labels = [];
@@ -177,8 +183,11 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   An ajax response that will close the modal.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the canonical URL cannot be generated for the shared entity.
    */
-  public function ajaxSubmit(array &$form, FormStateInterface $form_state) {
+  public function ajaxSubmit(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $response->addCommand(new RedirectCommand((string) $this->entity->toUrl()->toString()));
 
@@ -194,7 +203,7 @@ abstract class ShareForm extends ShareFormBase {
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
    *   The page/modal title.
    */
-  public function buildTitle(EntityInterface $entity) {
+  public function buildTitle(EntityInterface $entity): TranslatableMarkup {
     if ($this->isModal() || $this->isAjaxForm()) {
       return $this->t('Share in');
     }
@@ -208,8 +217,11 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   A list of collections where the current entity can be shared in.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the group reference is not populated.
    */
-  protected function getShareableCollections() {
+  protected function getShareableCollections(): array {
     // Being part also for the access check, do not allow the user to access
     // this page for entities without a field to store collections it is shared
     // in.
@@ -233,6 +245,9 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @return \Drupal\rdf_entity\RdfInterface|null
    *   The affiliated or parent collection, if one exists.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the group reference is not populated.
    */
   protected function getExcludedParent(): ?RdfInterface {
     if ($this->entity->getEntityTypeId() === 'node') {
@@ -248,8 +263,13 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $collection
    *   The collection where to share the entity in.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the current entity cannot be retrieved from the database.
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
+   *   Thrown when the entity storage is read only.
    */
-  protected function shareInCollection(RdfInterface $collection) {
+  protected function shareInCollection(RdfInterface $collection): void {
     $current_ids = $this->getAlreadySharedCollectionIds();
     $current_ids[] = $collection->id();
 
@@ -270,7 +290,7 @@ abstract class ShareForm extends ShareFormBase {
    *
    * @see https://www.drupal.org/node/2661046
    */
-  protected function isModal() {
+  protected function isModal(): bool {
     return $this->getRequest()->query->get(MainContentViewSubscriber::WRAPPER_FORMAT) === 'drupal_modal';
   }
 
@@ -280,7 +300,7 @@ abstract class ShareForm extends ShareFormBase {
    * @return bool
    *   TRUE if the form is being handled through an AJAX request.
    */
-  protected function isAjaxForm() {
+  protected function isAjaxForm(): bool {
     return $this->getRequest()->query->has(FormBuilderInterface::AJAX_FORM_REQUEST);
   }
 
