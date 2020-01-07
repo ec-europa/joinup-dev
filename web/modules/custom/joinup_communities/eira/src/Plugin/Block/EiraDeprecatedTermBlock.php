@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\eira\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
@@ -10,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 
 /**
- * Provides a 'EiraDeprecatedTermBlock' block.
+ * Provides a block showing information about deprecated EIRA building blocks.
  *
  * @Block(
  *  id = "eira_derprecated_term_block",
@@ -34,7 +36,7 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
   protected $entityTypeManager;
 
   /**
-   * Constructs a new OverviewMessageBlock object.
+   * Constructs a new EiraDeprecatedTermBlock.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

@@ -5,13 +5,13 @@ dependencies:
     - field.storage.user.field_user_family_name
     - field.storage.user.field_user_first_name
   module:
-    - joinup_core
+    - joinup_group
     - og
     - user
 id: members_overview
 label: 'Members overview (public)'
 module: views
-description: 'The public list of members of a collection'
+description: 'The public list of members of a collection or solution'
 tag: ''
 base_table: og_membership
 base_field: id

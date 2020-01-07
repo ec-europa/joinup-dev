@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup_core
+    - joinup_group
     - og
 id: joinup_transfer_group_ownership
 label: 'Transfer the ownership of the group to the selected member'

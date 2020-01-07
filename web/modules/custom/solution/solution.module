@@ -348,7 +348,7 @@ function solution_rdf_entity_view(array &$build, RdfInterface $solution, EntityV
 
   // Share link configuration.
   if ($display->getComponent('share_link')) {
-    $build['share_link'] = joinup_core_generate_share_link($solution, 'solution.share_form');
+    $build['share_link'] = joinup_group_generate_share_link($solution, 'solution.share_form');
     $build['#cache'] = [
       'contexts' => [
         'og_role',
