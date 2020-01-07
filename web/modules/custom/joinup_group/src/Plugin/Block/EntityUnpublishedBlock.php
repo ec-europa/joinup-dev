@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\Block;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -28,7 +30,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The community content bundle ids.
+   * The community content bundle IDs.
    *
    * @var array
    */
@@ -112,7 +114,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $group = $this->getContext('og')->getContextValue();
     if (empty($group)) {
       return [];
@@ -146,8 +148,15 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *
    * @return array
    *   An array of rows to render.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown when the Search API Index entity type definition is invalid.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown when the Search API Index entity type is not defined.
+   * @throws \Drupal\search_api\SearchApiException
+   *   Thrown when a problem occurs during execution of the search query.
    */
-  protected function getRows(RdfInterface $group) {
+  protected function getRows(RdfInterface $group): array {
     $index = $this->entityTypeManager->getStorage('search_api_index')->load('unpublished');
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $index->query();
@@ -179,7 +188,7 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    * @return array
    *   The render array for the search results.
    */
-  protected function getResultEntities(ResultSetInterface $result) {
+  protected function getResultEntities(ResultSetInterface $result): array {
     $results = [];
     /* @var $item \Drupal\search_api\Item\ItemInterface */
     foreach ($result->getResultItems() as $item) {
@@ -215,14 +224,14 @@ class EntityUnpublishedBlock extends BlockBase implements ContainerFactoryPlugin
    *
    * The page should be dependent on the user's groups.
    */
-  public function getCacheContexts() {
+  public function getCacheContexts(): array {
     return Cache::mergeContexts(parent::getCacheContexts(), ['user', 'og_role']);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     $node_type = $this->entityTypeManager->getStorage('node')->getEntityType();
     return Cache::mergeTags(parent::getCacheTags(), $node_type->getListCacheTags());
   }
