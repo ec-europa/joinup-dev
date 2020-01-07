@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\EventSubscriber;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\EventSubscriber;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
@@ -12,7 +14,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Alters the redirect to 'joinup_core.transfer_group_ownership_confirm' route.
+ * Alters the redirect to 'joinup_group.transfer_group_ownership_confirm' route.
  *
  * In case the action has registered errors, we cancel the redirection to the
  * confirmation form. Instead, we redirect back to the main view and we show
@@ -50,12 +52,12 @@ class TransferGroupOwnershipSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     return [KernelEvents::RESPONSE => ['alterRedirection']];
   }
 
   /**
-   * Alters the redirection to 'joinup_core.transfer_group_ownership_confirm'.
+   * Alters the redirection to 'joinup_group.transfer_group_ownership_confirm'.
    *
    * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The response event.
@@ -63,13 +65,13 @@ class TransferGroupOwnershipSubscriber implements EventSubscriberInterface {
    * @throws \Drupal\Core\TempStore\TempStoreException
    *   If the tempstore couldn't acquire the lock.
    */
-  public function alterRedirection(FilterResponseEvent $event) {
+  public function alterRedirection(FilterResponseEvent $event): void {
     $response = $event->getResponse();
     if ($response->isRedirect() && $response instanceof RedirectResponse) {
       $path = trim(parse_url($response->getTargetUrl(), PHP_URL_PATH), '/');
       /** @var \Symfony\Component\HttpFoundation\RedirectResponse $response */
       $url = Url::fromUri("internal:/$path");
-      if ($url->isRouted() && ($url->getRouteName() === 'joinup_core.transfer_group_ownership_confirm')) {
+      if ($url->isRouted() && ($url->getRouteName() === 'joinup_group.transfer_group_ownership_confirm')) {
         $data = $this->tempStore->get($this->currentUser->id());
         // If warning or error messages were recorded, we alter the redirect to
         // reload the view but we want to show the messages to the user.

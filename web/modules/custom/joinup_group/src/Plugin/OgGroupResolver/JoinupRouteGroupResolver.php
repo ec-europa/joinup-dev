@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\OgGroupResolver;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Plugin\OgGroupResolver;
 
 use Drupal\og\Plugin\OgGroupResolver\RouteGroupResolver;
 

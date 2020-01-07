@@ -6,7 +6,7 @@ namespace Drupal\solution\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_core\Form\ShareForm as OriginalForm;
+use Drupal\joinup_group\Form\ShareForm as OriginalForm;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
