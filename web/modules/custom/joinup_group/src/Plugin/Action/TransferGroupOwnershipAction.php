@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Action;
+namespace Drupal\joinup_group\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "joinup_transfer_group_ownership",
  *   label = @Translation("Transfer group ownership"),
  *   type = "og_membership",
- *   confirm_form_route_name = "joinup_core.transfer_group_ownership_confirm",
+ *   confirm_form_route_name = "joinup_group.transfer_group_ownership_confirm",
  * )
  */
 class TransferGroupOwnershipAction extends ActionBase implements ContainerFactoryPluginInterface {
@@ -86,7 +86,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function executeMultiple(array $memberships) {
+  public function executeMultiple(array $memberships): void {
     // We only allow one user to pickup the membership.
     if (count($memberships) > 1) {
       $membership = reset($memberships);
@@ -100,7 +100,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function execute(OgMembership $membership = NULL) {
+  public function execute(OgMembership $membership = NULL): void {
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $membership->getGroup();
 
@@ -116,8 +116,8 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
     // After validating, store the data in the user private tempstore. We'll
     // retrieve the information later, in the confirm form submit callback or in
     // the redirect alter event subscriber.
-    // @see \Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm
-    // @see \Drupal\joinup_core\EventSubscriber\TransferGroupOwnershipSubscriber
+    // @see \Drupal\joinup_group\Form\TransferGroupOwnershipConfirmForm
+    // @see \Drupal\joinup_group\EventSubscriber\TransferGroupOwnershipSubscriber
     $this->tempStore->set($this->currentUser->id(), [
       'membership' => $membership->id(),
       'messages' => $this->messages,

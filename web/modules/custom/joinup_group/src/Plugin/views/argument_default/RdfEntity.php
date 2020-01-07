@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\views\argument_default;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Plugin\views\argument_default;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;

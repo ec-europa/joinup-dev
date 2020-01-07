@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Form;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,7 +16,7 @@ abstract class UnshareForm extends ShareFormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'unshare_content_form';
   }
 
@@ -31,7 +33,7 @@ abstract class UnshareForm extends ShareFormBase {
    * @return array
    *   The form structure.
    */
-  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL) {
+  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL): array {
     $this->entity = $entity;
 
     $options = array_map(function ($collection) {
@@ -58,7 +60,7 @@ abstract class UnshareForm extends ShareFormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $collections = [];
     // We can safely loop through these ids, as invalid options are handled
     // already by Drupal.
@@ -83,7 +85,7 @@ abstract class UnshareForm extends ShareFormBase {
    *   A list of collections where the user is a facilitator and the content is
    *   shared.
    */
-  protected function getCollections() {
+  protected function getCollections(): array {
     $collections = $this->getAlreadySharedCollectionIds();
     if (empty($collections)) {
       return $collections;
@@ -100,8 +102,14 @@ abstract class UnshareForm extends ShareFormBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $collection
    *   The collection where to remove the node.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the unshared entity cannot be saved after the collection is
+   *   removed from it.
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
+   *   Thrown when the entity storage is read only.
    */
-  protected function removeFromCollection(RdfInterface $collection) {
+  protected function removeFromCollection(RdfInterface $collection): void {
     // Flipping is needed to easily unset the value.
     $current_ids = array_flip($this->getAlreadySharedCollectionIds());
     unset($current_ids[$collection->id()]);

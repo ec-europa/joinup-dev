@@ -11,19 +11,6 @@ entity.rdf_entity.member_overview:
         type: entity:rdf_entity
     _og_entity_type_id: rdf_entity
 
-entity.rdf_entity.about_page:
-  path: 'rdf_entity/{rdf_entity}/about'
-  defaults:
-    _controller: '\Drupal\joinup_core\Controller\CoreController::aboutPage'
-    _title_callback: '\Drupal\joinup_core\Controller\CoreController::aboutPageTitle'
-  requirements:
-    _entity_access: 'rdf_entity.view'
-    _custom_access: '\Drupal\joinup_core\Controller\CoreController::aboutPageAccess'
-  options:
-    parameters:
-      rdf_entity:
-        type: entity:rdf_entity
-
 joinup_core.not_found:
   path: '/not-found'
   defaults:
@@ -65,18 +52,3 @@ joinup_core.rdf_entity_uri_web_converter_page:
     _permission: 'access uri converter'
   options:
     _admin_route: TRUE
-
-joinup_core.transfer_group_ownership_confirm:
-  path: '/group/transfer/ownership'
-  defaults:
-    _form: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm'
-    _title: Transfer
-  requirements:
-    _custom_access: 'Drupal\joinup_core\Form\TransferGroupOwnershipConfirmForm::access'
-
-joinup_core.membership_delete_action.confirm:
-  path: '/group/delete/membership'
-  defaults:
-    _form: 'Drupal\joinup_core\Form\DeleteGroupMembershipConfirmForm'
-  requirements:
-    _custom_access: 'Drupal\joinup_core\Form\DeleteGroupMembershipConfirmForm::access'
