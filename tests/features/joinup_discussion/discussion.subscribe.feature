@@ -1,8 +1,8 @@
 @api
-Feature: Subscribing to discussions
+Feature: Following discussions
   As a member of Joinup
-  I want to subscribe to interesting discussions
-  So that I can stay up to date with its evolvements.
+  I want to follow interesting discussions
+  So that I can stay up to date with its evolvement
 
   Background:
     Given the following collection:
@@ -18,38 +18,38 @@ Feature: Subscribing to discussions
     Then the "Rare butter" discussion should have 0 subscribers
 
   @javascript
-  Scenario: Subscribe to a discussion.
+  Scenario: Follow a discussion.
     When I am an anonymous user
     And I go to the "Rare Butter" discussion
-    Then I should not see the link "Subscribe"
-    And I should not see the link "Unsubscribe"
+    Then I should not see the link "Follow"
+    And I should not see the link "Unfollow"
     # The subscribe links should never be shown for a discussion which is not
     # published.
     When I go to the "Rare Whey" discussion
-    Then I should not see the link "Subscribe"
-    And I should not see the link "Unsubscribe"
+    Then I should not see the link "Follow"
+    And I should not see the link "Unfollow"
 
     When I am logged in as an "authenticated user"
     # The subscribe links should never be shown for a discussion which is not
     # published.
     When I go to the "Rare Whey" discussion
-    Then I should not see the link "Subscribe"
-    And I should not see the link "Unsubscribe"
+    Then I should not see the link "Follow"
+    And I should not see the link "Unfollow"
     And I go to the "Rare Butter" discussion
-    Then I should see the link "Subscribe"
-    And I should not see the link "Unsubscribe"
+    Then I should see the link "Follow"
+    And I should not see the link "Unfollow"
 
-    When I click "Subscribe"
-    Then I should see the link "Unsubscribe"
-    And I should not see the link "Subscribe"
+    When I click "Follow"
+    Then I should see the link "Unfollow"
+    And I should not see the link "Follow"
     And the "Rare butter" discussion should have 1 subscriber
 
-    When I click "Unsubscribe"
+    When I click "Unfollow"
     Then a modal should open
-    And I should see "Unsubscribe from this discussion?" in the "Modal title" region
-    When I press "Unsubscribe" in the "Modal buttons" region
+    And I should see "Stop following this discussion?" in the "Modal title" region
+    When I press "Unfollow" in the "Modal buttons" region
     Then I should see the heading "Rare Butter"
-    And I should see the link "Subscribe"
+    And I should see the link "Follow"
     And the "Rare butter" discussion should have 0 subscribers
 
   @email
@@ -71,7 +71,7 @@ Feature: Subscribing to discussions
     And I go to the "Rare Butter" discussion
     # User 'debater' is also subscribing. We check later if, as being the author
     # of the comment, he will not receive notification.
-    And I click "Subscribe"
+    And I click "Follow"
     And I fill in "Create comment" with "I'm the moderator of this discussion. Let's talk."
     But I wait for the spam protection time limit to pass
     Then I press "Post comment"
@@ -100,8 +100,8 @@ Feature: Subscribing to discussions
     And I press "Update"
     Then 0 e-mails should have been sent
 
-    # When relevant fields of a discussion are changed, the subscribers are
-    # receiving a notifications.
+    # When relevant fields of a discussion are changed, the followers are
+    # receiving a notification.
     Given I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"

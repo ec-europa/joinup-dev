@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\joinup\Controller;
 
 use Drupal\Core\Access\AccessResult;
@@ -7,10 +9,10 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup\JoinupHelper;
 use Drupal\joinup\PinServiceInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -184,7 +186,7 @@ class PinEntityController extends ControllerBase {
   protected function getGroups(ContentEntityInterface $entity) {
     $groups = [];
 
-    if (JoinupHelper::isSolution($entity)) {
+    if (JoinupGroupHelper::isSolution($entity)) {
       $groups = $entity->get('collection')->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
@@ -214,11 +216,11 @@ class PinEntityController extends ControllerBase {
     // Do not make this generic because we don't want any solution appearing
     // in the solution overview - as related solutions - to retrieve the
     // pin/unpin contextual link.
-    if (JoinupHelper::isSolution($entity)) {
-      return JoinupHelper::isCollection($group);
+    if (JoinupGroupHelper::isSolution($entity)) {
+      return JoinupGroupHelper::isCollection($group);
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      return JoinupHelper::isCollection($group) || JoinupHelper::isSolution($group);
+      return JoinupGroupHelper::isCollection($group) || JoinupGroupHelper::isSolution($group);
     }
     return FALSE;
   }

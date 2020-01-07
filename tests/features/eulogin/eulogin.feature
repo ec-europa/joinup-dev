@@ -92,12 +92,12 @@ Feature: Log in through EU Login
     When I press "Sign in"
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
-    # The profile entries are overwritten, except the username & the email.
+    # The profile entries are overwritten, except the username.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username    | chuck_the_local_hero             |
-      | E-mail      | chuck_the_local_hero@example.com |
-      | First name  | Chuck                            |
-      | Family name | Norris                           |
+      | Username    | chuck_the_local_hero           |
+      | E-mail      | texasranger@chucknorris.com.eu |
+      | First name  | Chuck                          |
+      | Family name | Norris                         |
 
   Scenario: An existing local account can be linked by the user using the email.
     Given CAS users:
@@ -119,12 +119,12 @@ Feature: Log in through EU Login
     When I press "Sign in"
     Then I should see the success message "Your EU Login account chucknorris has been successfully linked to your local account Chuck Norris."
 
-    # The profile entries are overwritten, except the username & the email.
+    # The profile entries are overwritten, except the username.
     And the user chuck_the_local_hero should have the following data in their user profile:
-      | Username    | chuck_the_local_hero             |
-      | E-mail      | chuck_the_local_hero@example.com |
-      | First name  | Chuck                            |
-      | Family name | Norris                           |
+      | Username    | chuck_the_local_hero           |
+      | E-mail      | texasranger@chucknorris.com.eu |
+      | First name  | Chuck                          |
+      | Family name | Norris                         |
 
   Scenario: An existing user can log in through EU Login
     Given users:
@@ -154,16 +154,59 @@ Feature: Log in through EU Login
     And I click "Sign in"
     When I click "EU Login"
     Then I should see the heading "Sign in to continue"
-    When I fill in "E-mail address" with "007@mi6.eu"
+    And I fill in "E-mail address" with "007@mi6.eu"
     When I fill in "Password" with "shaken_not_stirred"
     And I press the "Log in" button
 
     Then I should see the success message "You have been logged in."
 
-    # The profile entries are overwritten, except the username & the email.
+    # The profile entries are overwritten, except the username.
+    And the user jb007_local should have the following data in their user profile:
+      | Username    | jb007_local |
+      | E-mail      | 007@mi6.eu  |
+      | First name  | James       |
+      | Family name | Bond        |
+
+    # Check that the email gets synced from the EU Login server.
+    Given I click "Sign out"
+    And CAS users:
+      | Username | E-mail             | Password           | First name | Last name | Local username |
+      | jb007    | 007.changed@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
+    # We want to test the case when a user is changing their email upstream, on
+    # EU Login, with one that collides with other user's email. These are very
+    # rare and unlikely edge cases where we only throw an exception.
+    And users:
+      | Username   | E-mail             |
+      | other_user | 007.changed@mi6.eu |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    Then I should see the heading "Sign in to continue"
+    When I fill in "E-mail address" with "007.changed@mi6.eu"
+    And I fill in "Password" with "shaken_not_stirred"
+    When I press the "Log in" button
+    # We cannot assert here the exception message as on some environments that
+    # can be disabled on the screen, depending on PHP settings. We're only
+    # asserting the response HTTP code.
+    And the response status code should be 500
+
+    # Change the EU Login account email to a unique value.
+    Given CAS users:
+      | Username | E-mail           | Password           | First name | Last name | Local username |
+      | jb007    | uniq@example.com | shaken_not_stirred | James      | Bond      | jb007_local    |
+
+    When I am on the homepage
+    And I click "Sign in"
+    When I click "EU Login"
+    Then I should see the heading "Sign in to continue"
+    When I fill in "E-mail address" with "uniq@example.com"
+    And I fill in "Password" with "shaken_not_stirred"
+    When I press the "Log in" button
+
     And the user jb007_local should have the following data in their user profile:
       | Username    | jb007_local      |
-      | E-mail      | 007-local@mi6.eu |
+      | E-mail      | uniq@example.com |
       | First name  | James            |
       | Family name | Bond             |
 
@@ -203,7 +246,12 @@ Feature: Log in through EU Login
     And the following fields should be disabled "First name,Family name"
     But I should not see "Username"
     And I should not see "full_cas_profile"
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see the following lines of text:
+      | Account information                                                                                                                                                                                                       |
+      | Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup. |
+      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                         |
+      | Your first name is publicly visible.                                                                                                                                                                                               |
+      | Your last name is publicly visible.                                                                                                                                                                                                |
 
     When I press "Save"
     Then I should see the success message "The changes have been saved."
@@ -225,7 +273,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "Family name"
     But I should not see "Username"
     And I should not see "partial_cas_profile"
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -252,7 +300,7 @@ Feature: Log in through EU Login
     But I should not see "Username"
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -317,8 +365,8 @@ Feature: Log in through EU Login
       | joe      | joe@example.com |
 
     And CAS users:
-      | Username | E-mail          | Password |
-      | joe  | joe.cas@example.com | 123      |
+      | Username | E-mail              | Password |
+      | joe      | joe.cas@example.com | 123      |
 
     Given I am on the homepage
     And I click "Sign in"
@@ -333,7 +381,7 @@ Feature: Log in through EU Login
     Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
 
   Scenario: The Drupal registration tab has been removed and the /user/register
-    route redirects to EU Login registration form.
+  route redirects to EU Login registration form.
     When I visit "/user/login"
     Then I should not see the link "Create new account"
     When I visit "/user/register"
@@ -366,12 +414,13 @@ Feature: Log in through EU Login
     When I press "Save"
     Then I should see the following success messages:
       | success messages                                                                |
-      | An e-mail has been send to the user to notify him on the change to his account. |
+      | An e-mail has been sent to the user to notify him on the change to his account. |
       | The changes have been saved.                                                    |
 
     When I click "Edit" in the "Joe Doe" row
     Then the "Allow user to log in via CAS" checkbox should be checked
     And the "CAS Username" field should contain "joe"
+    And the following fields should be disabled "Email"
 
     Given I am an anonymous user
     And I am on the homepage

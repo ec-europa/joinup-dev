@@ -105,11 +105,36 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
       '#access' => !$form['account']['name']['#access'],
       '#weight' => -100,
     ];
+
+    $form['field_user_first_name']['widget'][0]['value']['#description'] = '';
+    $form['field_user_family_name']['widget'][0]['value']['#description'] = '';
     return;
   }
 
-  $form['account']['mail']['#description'] = t('The email address is not made public and will only be used if you wish to receive certain news or notifications by email.');
+  $form['header'] = [
+    '#weight' => -100,
+    '#type' => 'html_tag',
+    '#tag' => 'h3',
+    '#value' => t('Account information'),
+  ];
+  $form['header_description'] = [
+    '#weight' => -99,
+    '#type' => 'html_tag',
+    '#tag' => 'p',
+    '#value' => t('Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page <a href="https://webgate.ec.europa.eu/cas/eim/external/restricted/edit.cgi" rel="nofollow" target="_blank">here</a>. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup.'),
+  ];
 
+  $form['account']['mail']['#description'] = t('Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.');
+  // This hook implementation runs after cas_form_user_form_alter() because the
+  // two modules have the same weight but the module list is sorted by weight
+  // and then alphabetically, making the CAS module to be placed before 'Joinup
+  // EU Login'. For this reason, it's safe to use the form alter to overwrite
+  // the behavior of CAS module hook implementation.
+  // @see module_config_sort()
+  // @see cas_form_user_form_alter()
+  if (isset($form['account']['mail']) && \Drupal::config('cas.settings')->get('user_accounts.restrict_email_management')) {
+    $form['account']['mail']['#disabled'] = TRUE;
+  }
   $mapping = \Drupal::configFactory()
     ->get('cas_attributes.settings')
     ->get('field.mappings');
@@ -133,7 +158,6 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
       $attribute_name = substr(substr($token, 15), 0, -1);
       if (!empty($attributes[$attribute_name])) {
         $form[$field_name]['#disabled'] = TRUE;
-        $form[$field_name]['widget'][0]['value']['#description'] = t('This field can be edited only from the EU Login account.');
         // Prevent submission of an empty, required and disabled field. That
         // would cause the validation to fail.
         $form[$field_name]['widget'][0]['value']['#required'] = FALSE;
