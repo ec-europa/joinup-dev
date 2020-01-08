@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Form;
+namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Form\FormBase;
@@ -142,7 +142,7 @@ abstract class ShareFormBase extends FormBase {
    * @return \Drupal\rdf_entity\RdfInterface[]
    *   An array of groups.
    */
-  protected function getUserGroupsByPermission($permission) {
+  protected function getUserGroupsByPermission($permission): array {
     $roles = $this->roleManager->getRolesByPermissions([$permission], 'rdf_entity', 'collection');
     if (empty($roles)) {
       return [];
@@ -187,6 +187,9 @@ abstract class ShareFormBase extends FormBase {
    *
    * @return \Drupal\rdf_entity\RdfInterface|null
    *   The affiliated or parent collection, if one exists.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the group reference is not populated on the entity.
    */
   protected function getExcludedParent(): ?RdfInterface {
     if ($this->entity->getEntityTypeId() === 'node') {

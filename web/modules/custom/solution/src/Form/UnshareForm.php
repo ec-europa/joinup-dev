@@ -7,7 +7,7 @@ namespace Drupal\solution\Form;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\joinup_core\Form\UnshareForm as OriginalForm;
+use Drupal\joinup_group\Form\UnshareForm as OriginalForm;
 use Drupal\rdf_entity\RdfInterface;
 
 /**

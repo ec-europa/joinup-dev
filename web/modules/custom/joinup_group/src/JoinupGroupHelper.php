@@ -1,14 +1,30 @@
 <?php
 
-namespace Drupal\joinup;
+declare(strict_types=1);
+
+namespace Drupal\joinup_group;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Helper class for Joinup.
+ * Helper methods for dealing with groups in Joinup.
  */
-class JoinupHelper {
+class JoinupGroupHelper {
+
+  /**
+   * Returns whether the entity is one of the rdf groups.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to check.
+   *
+   * @return bool
+   *   True if the entity is an rdf of bundle collection or solution, false
+   *   otherwise.
+   */
+  public static function isGroup(EntityInterface $entity): bool {
+    return self::isCollection($entity) || self::isSolution($entity);
+  }
 
   /**
    * Returns whether the entity is an rdf collection.
@@ -19,7 +35,7 @@ class JoinupHelper {
    * @return bool
    *   True if the entity is an rdf of bundle collection, false otherwise.
    */
-  public static function isCollection(EntityInterface $entity) {
+  public static function isCollection(EntityInterface $entity): bool {
     return self::isRdfEntityOfBundle($entity, 'collection');
   }
 
@@ -32,7 +48,7 @@ class JoinupHelper {
    * @return bool
    *   True if the entity is an rdf of bundle solution, false otherwise.
    */
-  public static function isSolution(EntityInterface $entity) {
+  public static function isSolution(EntityInterface $entity): bool {
     return self::isRdfEntityOfBundle($entity, 'solution');
   }
 
@@ -47,7 +63,7 @@ class JoinupHelper {
    * @return bool
    *   True if the entity is an rdf of bundle collection, false otherwise.
    */
-  protected static function isRdfEntityOfBundle(EntityInterface $entity, $bundle) {
+  protected static function isRdfEntityOfBundle(EntityInterface $entity, $bundle): bool {
     return $entity instanceof RdfInterface && $entity->bundle() === $bundle;
   }
 

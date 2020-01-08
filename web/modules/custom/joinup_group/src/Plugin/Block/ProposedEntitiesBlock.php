@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\Block;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_group\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -57,7 +59,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     $rows = $this->getRows();
     if (empty($rows)) {
       return [];
@@ -82,6 +84,11 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
    *
    * @return array
    *   An array of rows to render.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the RDF Entity entity type definition is invalid.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown if the RDF Entity entity type is not defined.
    */
   protected function getRows() {
     /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $storage */
@@ -114,7 +121,7 @@ class ProposedEntitiesBlock extends BlockBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
+  public function getCacheTags(): array {
     $rdf_type = $this->entityTypeManager->getStorage('rdf_entity')->getEntityType();
     return Cache::mergeTags(parent::getCacheTags(), $rdf_type->getListCacheTags());
   }

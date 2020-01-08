@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Form;
+namespace Drupal\joinup_group\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -68,7 +68,7 @@ class DeleteGroupMembershipConfirmForm extends ConfirmFormBase {
    */
   public function __construct(OgAccessInterface $og_access, PrivateTempStoreFactory $private_temp_store_factory, EntityTypeManagerInterface $entity_type_manager) {
     $this->ogAccess = $og_access;
-    $this->privateTempStore = $private_temp_store_factory->get('joinup_core.og_membership_delete_action');
+    $this->privateTempStore = $private_temp_store_factory->get('joinup_group.og_membership_delete_action');
     $this->entityTypeManager = $entity_type_manager;
   }
 
