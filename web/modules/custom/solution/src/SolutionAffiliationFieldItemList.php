@@ -180,10 +180,11 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    *   An array of graph URIs that the collection exists in indexed by graph id.
    */
   protected function getAvailableGraphs(): array {
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
     $graph_handler = \Drupal::service('sparql.graph_handler');
     $return = [];
 
-    foreach (['default', 'draft'] as $graph_id) {
+    foreach ($graph_handler->getEntityTypeDefaultGraphIds('rdf_entity') as $graph_id) {
       $return[$graph_id] = $graph_handler->getBundleGraphUri('rdf_entity', 'collection', $graph_id);
     }
 
