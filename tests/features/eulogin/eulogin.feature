@@ -210,12 +210,9 @@ Feature: Log in through EU Login
       | First name  | James            |
       | Family name | Bond             |
 
-    # Test the customized message as logged in user.
-    Given I visit "/user/password"
-    And I wait for the honeypot time limit to pass
-    And I press "Submit"
-    Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
-    And I should see the link "EU Login"
+    # A logged in user cannot access the reset password form.
+    When I go to "/user/password"
+    Then I should get an access denied error
 
   Scenario: Fields imported from EU Login cannot be edited locally.
     Given users:
