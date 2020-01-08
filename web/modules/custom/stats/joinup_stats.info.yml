@@ -5,16 +5,17 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - cached_computed_field:cached_computed_field
-  - matomo_reporting_api:matomo_reporting_api
-  - meta_entity:meta_entity
+  - 'cached_computed_field:cached_computed_field'
+  - 'matomo_reporting_api:matomo_reporting_api'
+  - 'meta_entity:meta_entity'
 
 config_devel:
-  - core.entity_form_display.meta_entity.visit_count.default
-  - core.entity_view_display.meta_entity.visit_count.default
-  - field.field.meta_entity.download_count.count
-  - field.field.meta_entity.visit_count.count
-  - field.storage.meta_entity.count
-  - joinup_stats.matomo_settings
-  - meta_entity.type.download_count
-  - meta_entity.type.visit_count
+  install:
+    - core.entity_form_display.meta_entity.visit_count.default
+    - core.entity_view_display.meta_entity.visit_count.default
+    - field.field.meta_entity.download_count.count
+    - field.field.meta_entity.visit_count.count
+    - field.storage.meta_entity.count
+    - joinup_stats.settings
+    - meta_entity.type.download_count
+    - meta_entity.type.visit_count

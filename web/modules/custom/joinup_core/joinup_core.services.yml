@@ -1,9 +1,8 @@
 services:
-  cache_context.joinup_core_group_owner:
-    class: 'Drupal\joinup_core\Cache\Context\GroupOwnerCacheContext'
-    arguments: ['@current_user', '@entity_type.manager', '@og.membership_manager', '@database', '@private_key']
+  joinup_core.og_subscriber:
+    class: Drupal\joinup_core\EventSubscriber\JoinupCoreOgSubscriber
     tags:
-      - { name: 'cache.context'}
+      - name: event_subscriber
   joinup_core.fulfillment_guard:
     class: Drupal\joinup_core\Guard\NodeGuard
     arguments: ['@joinup_core.relations_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']
@@ -19,11 +18,6 @@ services:
   joinup_core.workflow.helper:
     class: Drupal\joinup_core\WorkflowHelper
     arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager', '@workflow_state_permission.workflow_state_permission']
-  joinup_core.transfer_ownership_subscriber:
-    class: Drupal\joinup_core\EventSubscriber\TransferGroupOwnershipSubscriber
-    arguments: ['@current_user', '@tempstore.private']
-    tags:
-    - name: event_subscriber
   joinup_core.vocabulary_fixtures.helper:
     class: Drupal\joinup_core\VocabularyFixturesHelper
     arguments: ['@sparql_endpoint']

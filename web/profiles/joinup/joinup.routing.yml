@@ -148,7 +148,7 @@ joinup.site_unpin:
         type: entity:{entity_type}
 
 joinup.pin_entity:
-  path: '/pin/group/{entity_type}/{entity}/add/{collection}'
+  path: '/pin/group/{entity_type}/{entity}/add/{group}'
   defaults:
     _controller: '\Drupal\joinup\Controller\PinEntityController::pin'
     _title: 'Pin'
@@ -159,11 +159,11 @@ joinup.pin_entity:
     parameters:
       entity:
         type: entity:{entity_type}
-      collection:
+      group:
         type: entity:rdf_entity
 
 joinup.unpin_entity:
-  path: '/pin/group/{entity_type}/{entity}/remove/{collection}'
+  path: '/pin/group/{entity_type}/{entity}/remove/{group}'
   defaults:
     _controller: '\Drupal\joinup\Controller\PinEntityController::unpin'
     _title: 'Unpin'
@@ -174,7 +174,7 @@ joinup.unpin_entity:
     parameters:
       entity:
         type: entity:{entity_type}
-      collection:
+      group:
         type: entity:rdf_entity
 
 joinup.admin_reporting:

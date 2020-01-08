@@ -1338,7 +1338,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         '@current' => $current_url,
         '@expected' => $url,
       ]);
-      throw new Exception($message);
+      throw new Exception((string) $message);
     }
   }
 
@@ -1854,20 +1854,28 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Asserts that a certain link contains the unaliased path of a node.
+   * Asserts that a certain link contains the unaliased path of an entity.
    *
    * @param string $link
    *   The link text.
    * @param string $title
-   *   The node title.
+   *   The entity title.
+   * @param string $type
+   *   The entity type. Either 'content' or 'rdf'.
    *
    * @throws \Exception
    *   Thrown when the link is not in the page.
    *
-   * @Then the share link :link should point to the :title content
+   * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
    */
-  public function assertLinkContainsNodeUnaliasedUrl($link, $title) {
-    $node = $this->getNodeByTitle($title);
+  public function assertLinkContainsEntityUnaliasedUrl($link, $title, $type) {
+    if (!in_array($type, ['content', 'rdf'])) {
+      throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
+    }
+    $function = $type === 'content' ? 'getNodeByTitle' : 'getRdfEntityByLabel';
+
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
+    $entity = $this->$function($title);
     $link_element = $this->getSession()->getPage()->findLink($link);
 
     if (!$link_element) {
@@ -1875,9 +1883,10 @@ class JoinupSubContext extends DrupalSubContextBase {
     }
 
     $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
+    $entity_url = $entity->toUrl()->setAbsolute()->getInternalPath();
     $href = $link_element->getAttribute('href');
 
-    Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
+    Assert::assertContains(urlencode("{$base_url}/{$entity_url}"), $href);
   }
 
   /**
@@ -2778,6 +2787,29 @@ JS;
     else {
       Assert::assertNotContains($expected, $response);
     }
+  }
+
+  /**
+   * Asserts that the anchor from the url has a correct id to track in the page.
+   *
+   * There is no good way to track if the page has navigated to the anchor
+   * requested as this is a browser side functionality. What we _can_ assert is
+   * that the anchor that is requested from the URL exists as an element id in
+   * the page.
+   *
+   * @throws \Exception
+   *   Thrown when the url does not include an anchor or the anchor is not found
+   *   in the page.
+   *
+   * @When the page should point to the anchor from the URL
+   */
+  public function assertCorrectAnchor(): void {
+    $current_url = $this->getSession()->getCurrentUrl();
+    $url_parts = UrlHelper::parse($current_url);
+    if (empty($url_parts['fragment'])) {
+      throw new Exception("The {$current_url} does not contain an anchor.");
+    }
+    $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
   }
 
 }

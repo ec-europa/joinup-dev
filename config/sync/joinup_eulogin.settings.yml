@@ -1,0 +1,9 @@
+ticket_validation:
+  path: TicketValidationService
+  assurance_level: LOW
+  ticket_types:
+    - SERVICE
+  user_details: true
+register_url: 'https://ecas.ec.europa.eu/cas/eim/external/register.cgi'
+_core:
+  default_config_hash: vT793M1HTSPvPlFLvKjMB-u8w-QI9-isqQFBcT_OqEA

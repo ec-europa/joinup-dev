@@ -209,5 +209,16 @@
     border-width: 1px
     border-color: $color-error
 
+// Add red asterisk in a cas form.
+.cas-account-link-form.form__with-asterisk
+  .mdl-textfield
+    label
+      position: relative
+      &:before
+        position: absolute
+        right: -15px
+        content: '*'
+        color: $color-error
+
 // States
 // --------------------------------------------------

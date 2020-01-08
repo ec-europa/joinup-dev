@@ -1,0 +1,15 @@
+sitewide_token_support: true
+field:
+  sync_frequency: 2
+  overwrite: true
+  mappings:
+    mail: '[cas:attribute:email]'
+    field_user_family_name: '[cas:attribute:lastname]'
+    field_user_first_name: '[cas:attribute:firstname]'
+role:
+  sync_frequency: 0
+  deny_login_no_match: false
+  deny_registration_no_match: false
+  mappings: {  }
+_core:
+  default_config_hash: 1Ipw0F9YNfPUvW0q63zjIRwxB8mxPTUpgPz2pT1IoE0

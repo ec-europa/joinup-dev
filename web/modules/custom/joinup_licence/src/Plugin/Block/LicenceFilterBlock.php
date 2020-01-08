@@ -7,6 +7,7 @@ namespace Drupal\joinup_licence\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\joinup_licence\LicenceComparerHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -92,6 +93,11 @@ class LicenceFilterBlock extends BlockBase implements ContainerFactoryPluginInte
       '#theme' => 'licence_filter_search_input',
     ];
     $build['#cache']['max-age'] = 0;
+
+    $build['#attached']['drupalSettings']['licenceComparer'] = [
+      'path' => '/licence/compare',
+      'maxLicenceCount' => LicenceComparerHelper::MAX_LICENCE_COUNT,
+    ];
     $build['#attached']['library'][] = 'joinup_licence/licence-filter';
 
     return $build;

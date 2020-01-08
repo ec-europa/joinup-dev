@@ -85,6 +85,11 @@ Feature: "Add event" visibility options.
     But I should see the success message "Event An amazing event has been created."
     And I should see the text "29 to 30 August 2018"
     And I should see a map centered on latitude 4.370375 and longitude 50.842156
+    And I should see the following marker on the map:
+      | name        | An amazing event                   |
+      | description | Rue Belliard 28, Brussels, Belgium |
+      | latitude    | 50.842156                          |
+      | longitude   | 4.370375                           |
     And I should see the link "Joinup homepage"
     And I should see the link "https://drupal.org"
     And the "Stream of Dreams" collection has a event titled "An amazing event"

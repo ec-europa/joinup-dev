@@ -134,6 +134,7 @@ function _joinup_vertical_tabs_routes() {
 function _joinup_blue_header_routes() {
   return [
     'adms_validator.adms_validator_form',
+    'cas_account_link.form',
     'collection.propose_form',
     'contact_form.contact_page',
     'entity.node.edit_form',
@@ -249,6 +250,43 @@ function _joinup_theme_get_author(NodeInterface $node) {
 }
 
 /**
+ * Get a file extension.
+ *
+ * @param \Drupal\file\Entity\File $file
+ *   The file, where we get an extension.
+ *
+ * @return string
+ *   Extension of the file.
+ */
+function _joinup_theme_get_file_extension(File $file) {
+  $file_icon = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+
+  // List of available icons.
+  $available_icons = [
+    'doc',
+    'docx',
+    'exe',
+    'gif',
+    'jpg',
+    'pdf',
+    'png',
+    'ppt',
+    'rar',
+    'xls',
+    'xlsx',
+    'zip',
+  ];
+
+  // Check if icon exist, otherwise set default icon.
+  if (in_array($file_icon, $available_icons)) {
+    return $file_icon;
+  }
+  else {
+    return 'default';
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function joinup_theme_theme($existing, $type, $theme, $path) {
@@ -264,6 +302,10 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
     'buttons_separated_form' => [
       'render element' => 'form',
       'path' => $path . '/templates/form',
+    ],
+    'social_share' => [
+      'variables' => ['entity' => NULL],
+      'path' => $path . '/templates/parts',
     ],
   ];
 }
@@ -481,6 +523,14 @@ function joinup_theme_preprocess_menu(&$variables) {
     }
   }
   $variables['#cache']['contexts'][] = 'user.photo';
+
+  // Set login text instead of image.
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  if ($route_name == 'homepage.content' && $user->isAnonymous()) {
+    $variables['has_sign_in_text'] = TRUE;
+  }
 }
 
 /**
@@ -521,6 +571,7 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.content_overview.page_1':
       case 'entity.rdf_entity.member_overview':
       case 'entity.user.canonical':
+      case 'joinup_licence.comparer':
         $is_listing = TRUE;
         break;
     }
@@ -551,6 +602,12 @@ function joinup_theme_preprocess_block(&$variables) {
       if (isset($variables['content']['#links']) && count($variables['content']['#links']) == 1) {
         $variables['content']['#attributes']['class'][] = 'navigation-bottom__links--only-next';
       }
+      break;
+
+    // Add special classes for dropdown menus in header.
+    case 'support':
+    case 'joinup_theme_account_menu':
+      $variables['attributes']['class'][] = 'block--small-nav';
       break;
 
   }
@@ -610,6 +667,17 @@ function joinup_preprocess_file_managed_file(array &$variables) {
 function joinup_theme_theme_suggestions_textarea_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#extra_suggestion']) && $variables['element']['#extra_suggestion'] == 'comment_plain') {
     $suggestions[] = 'textarea__comment_plain';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function joinup_theme_theme_suggestions_table_alter(array &$suggestions, array $variables) {
+  // Add custom table template for the licence comparer.
+  if (isset($variables['attributes']['data-drupal-selector'])
+    && $variables['attributes']['data-drupal-selector'] == 'licence-comparer') {
+    $suggestions[] = 'table__licence_comparer';
   }
 }
 
@@ -756,6 +824,16 @@ function joinup_theme_preprocess_field(&$variables) {
       $variables['attributes']['class'][] = 'fieldset';
       $variables['attributes']['class'][] = 'fieldset--textarea';
     }
+  }
+
+  // Add special class for file field on document, solution and release pages.
+  $file_field_names = [
+    'field_file',
+    'field_isr_documentation',
+    'field_is_documentation',
+  ];
+  if (in_array($variables['element']['#field_name'], $file_field_names)) {
+    $variables['attributes']['class'] = ['fieldset__field--files'];
   }
 }
 
@@ -1028,6 +1106,42 @@ function joinup_theme_preprocess_image(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_file_link().
+ */
+function joinup_theme_preprocess_file_link(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+
+  // Set additional file variables on document, solution and release pages.
+  $rdf_entity_pages = [
+    'entity.rdf_entity.canonical',
+    'entity.rdf_entity.about_page',
+  ];
+
+  if (in_array($route_name, $rdf_entity_pages)) {
+    $entity = $route_match->getParameter('rdf_entity');
+  }
+  elseif ($route_name == 'entity.node.canonical') {
+    $entity = $route_match->getParameter('node');
+  }
+
+  $file_field_bundles = [
+    'document',
+    'asset_release',
+    'solution',
+  ];
+
+  if (isset($entity) && in_array($entity->bundle(), $file_field_bundles)) {
+    $size = $variables['file']->getSize();
+    if (!empty($size)) {
+      $variables['size'] = format_size($size);
+    }
+
+    $variables['extension'] = _joinup_theme_get_file_extension($variables['file']);
+  }
+}
+
+/**
  * Implements hook_preprocess_user().
  */
 function joinup_theme_preprocess_user(&$variables) {
@@ -1200,7 +1314,7 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   if (!empty($variables['element']['#is_button'])) {
 
     // Skip dropbuttons since we have no custom styling for them. These can be
-    // recognized by not having an '#array_parents' property .
+    // recognized by not having an '#array_parents' property.
     // @see \Drupal\Core\Render\Element\Actions::preRenderActionsDropbutton()
     if (empty($variables['element']['#array_parents']) || !is_array($variables['element']['#array_parents'])) {
       return;
@@ -1569,6 +1683,7 @@ function joinup_theme_preprocess_rdf_entity__licence__search_list_item(&$variabl
       $variables['category_lists'] = $category_lists;
     }
   }
+  $variables['spdx_licence_id_plain'] = $entity->field_licence_spdx_licence->entity->field_spdx_licence_id->value;
 }
 
 /**
@@ -1580,6 +1695,14 @@ function joinup_theme_preprocess_rdf_entity__solution__listing_item(&$variables)
   // Add a flag to indicate if the download counter is visible.
   if (isset($variables['elements']['downloads']['count']['#access'])) {
     $variables['show_download_counter'] = $variables['elements']['downloads']['count']['#access'];
+  }
+
+  $rdf_entity = $variables['rdf_entity'];
+  if (!$rdf_entity->get('collection')->isEmpty()) {
+    /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+    $parent = $rdf_entity->get('collection')->first()->entity;
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
   }
 }
 
@@ -1648,29 +1771,7 @@ function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
     foreach ($variables['rows'] as $index => $row) {
       /** @var \Drupal\file\Entity\File $file */
       $file = $variables['rows'][$index]['cells'][0]['content']['#file'];
-      $file_icon = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-
-      // List of available icons.
-      $available_icons = [
-        'doc',
-        'exe',
-        'gif',
-        'jpg',
-        'pdf',
-        'png',
-        'ppt',
-        'rar',
-        'xls',
-        'zip',
-      ];
-
-      // Check if icon exist, otherwise set default icon.
-      if (in_array($file_icon, $available_icons)) {
-        $variables['rows'][$index]['#file_extension'] = $file_icon;
-      }
-      else {
-        $variables['rows'][$index]['#file_extension'] = 'default';
-      }
+      $variables['rows'][$index]['#file_extension'] = _joinup_theme_get_file_extension($file);
     }
   }
 }
@@ -1799,4 +1900,52 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
       $variables['classes'] .= ' ' . str_replace('_', '-', $width);
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Adds the group ID and label as data attributes in tiles.
+ */
+function joinup_theme_preprocess_node(&$variables) {
+  if ($variables['view_mode'] !== 'view_mode_tile') {
+    return;
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+  if ($parent) {
+    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  }
+
+  // If the node is shared somewhere, attach the related library.
+  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
+    $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
+  }
+}
+
+/**
+ * Preprocess function for the "social_share" theme hook.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - entity: the entity being shared.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ *   Thrown when the entity being shared does not support generating a URL.
+ */
+function joinup_theme_preprocess_social_share(array &$variables) {
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  $entity = $variables['entity'];
+  // Generate an absolute, un-aliased URL.
+  $variables['url'] = $entity->toUrl('canonical', [
+    'language' => $entity->language(),
+  ])->setAbsolute()->setOption('alias', TRUE);
+
+  $variables['encoded_url'] = urlencode($variables['url']->toString());
+  $variables['encoded_title'] = urlencode($entity->label());
 }

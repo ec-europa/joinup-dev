@@ -18,7 +18,7 @@ use Drupal\views\ViewExecutable;
  *
  * Decodes RDF entity ID before running the query.
  *
- * @see joinup_core_views_query_alter()
+ * @see joinup_group_views_query_alter()
  */
 function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void {
   if ($view->id() !== 'collection_feed') {
@@ -52,6 +52,13 @@ function joinup_rss_preprocess_views_view_rss__collection_feed__rss_feed(&$varia
   $variables['description'] = t('This feed contains the latest published content from the @collection collection, including the newest solutions.', [
     '@collection' => $collection->label(),
   ]);
+
+  // According to the RSS specifications this should be the URL of the website's
+  // front page. But for the collection feeds the homepage is the collection's
+  // canonical URL.
+  // @see https://validator.w3.org/feed/docs/rss2.html#requiredChannelElements
+  // @see https://www.drupal.org/project/drupal/issues/3070620
+  $variables['link'] = $collection->toUrl()->setAbsolute()->toString();
 }
 
 /**

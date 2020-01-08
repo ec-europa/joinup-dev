@@ -207,6 +207,9 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function deleteAssetDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getAssetDistributionByName($asset_distribution);
+    if (isset($this->assetDistributions[$entity->id()])) {
+      unset($this->assetDistributions[$entity->id()]);
+    }
     $entity->skip_notification = TRUE;
     $entity->delete();
   }

@@ -21,14 +21,14 @@
    * @type {Drupal~behavior}
    *
    * @prop {Drupal~behaviorAttach} attach
-   *   Attaches pinned content behaviors.
+   *   Attaches pinned entities behaviors.
    */
-  Drupal.behaviors.pinnedContent = {
+  Drupal.behaviors.pinnedEntities = {
     attach: function (context) {
-      var collection = $('[data-drupal-collection-context]').data('drupal-collection-context');
+      var group = $('[data-drupal-group-context]').data('drupal-group-context');
 
       // If there is no global collection context, bail out.
-      if (!collection) {
+      if (!group) {
         return;
       }
 
@@ -39,7 +39,7 @@
 
         // Show the cue only when the global collection context is the same
         // as the parent of the tile.
-        if (parent !== collection && affiliated.split(',').indexOf(collection) === -1) {
+        if (parent !== group && affiliated.split(',').indexOf(group) === -1) {
           return;
         }
 
