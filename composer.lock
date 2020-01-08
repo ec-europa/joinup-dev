@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "243c8479f0142683fb413dd9234a0b58",
+    "content-hash": "e7b8c364b3c24c6068ea7743de6cf5ee",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3512,20 +3512,20 @@
         },
         {
             "name": "drupal/diff",
-            "version": "1.0.0-rc2",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/diff.git",
-                "reference": "8.x-1.0-rc2"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/diff-8.x-1.0-rc2.zip",
-                "reference": "8.x-1.0-rc2",
-                "shasum": "2e8f4efe6e7d355a3d07d33531f077348b13f68d"
+                "url": "https://ftp.drupal.org/files/projects/diff-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "7106ca30b7b10343fbf79a0c42fc7981b109095f"
             },
             "require": {
-                "drupal/core": "~8.0",
+                "drupal/core": "^8.7.7 || ^9",
                 "mkalkbrenner/php-htmldiff-advanced": "~0.0.8"
             },
             "type": "drupal-module",
@@ -3534,11 +3534,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc2",
-                    "datestamp": "1530178424",
+                    "version": "8.x-1.0",
+                    "datestamp": "1578322688",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -3575,6 +3575,10 @@
                 {
                     "name": "miro_dietiker",
                     "homepage": "https://www.drupal.org/user/227761"
+                },
+                {
+                    "name": "phenaproxima",
+                    "homepage": "https://www.drupal.org/user/205645"
                 },
                 {
                     "name": "realityloop",
@@ -6403,17 +6407,17 @@
         },
         {
             "name": "drupal/subpathauto",
-            "version": "1.0.0-rc1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/subpathauto.git",
-                "reference": "8.x-1.0-rc1"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/subpathauto-8.x-1.0-rc1.zip",
-                "reference": "8.x-1.0-rc1",
-                "shasum": "41256ef7913da2606fa027adfd229a7346d48b1b"
+                "url": "https://ftp.drupal.org/files/projects/subpathauto-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "1c3c834435520f89388cf3c486fddcc984d31c4f"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -6424,11 +6428,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
-                    "datestamp": "1538584980",
+                    "version": "8.x-1.0",
+                    "datestamp": "1576842184",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -6449,7 +6453,7 @@
             "description": "Provides support for extending sub-paths of URL aliases.",
             "homepage": "https://www.drupal.org/project/subpathauto",
             "support": {
-                "source": "http://cgit.drupalcode.org/subpathauto"
+                "source": "https://git.drupalcode.org/project/subpathauto"
             }
         },
         {
@@ -9797,7 +9801,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
@@ -11910,6 +11914,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2019-08-06T17:53:53+00:00"
         },
         {
@@ -11955,6 +11960,7 @@
                 "escaper",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-escaper",
             "time": "2019-09-05T20:03:20+00:00"
         },
         {
@@ -12018,6 +12024,7 @@
                 "feed",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-feed",
             "time": "2019-03-05T20:08:49+00:00"
         },
         {
@@ -12064,6 +12071,7 @@
                 "stdlib",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-stdlib",
             "time": "2018-08-28T21:34:05+00:00"
         }
     ],
@@ -12841,6 +12849,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -13096,10 +13107,6 @@
                 {
                     "name": "See contributors",
                     "homepage": "https://www.drupal.org/node/3236/committers"
-                },
-                {
-                    "name": "pcambra",
-                    "homepage": "https://www.drupal.org/user/122101"
                 },
                 {
                     "name": "salvis",
@@ -15740,11 +15747,9 @@
         "drupal/config_exclude": 20,
         "drupal/config_ignore": 20,
         "drupal/config_update": 20,
-        "drupal/diff": 5,
         "drupal/matomo_reporting_api": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
-        "drupal/subpathauto": 5,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
@@ -15758,7 +15763,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "ext-json": "*"
     },
     "platform-dev": {
         "ext-dom": "*",
