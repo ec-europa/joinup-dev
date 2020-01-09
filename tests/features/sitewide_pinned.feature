@@ -24,7 +24,7 @@ Feature: Pinning content site-wide
       | solution         | user          | roles       |
       | D minor          | Burke Abraham | facilitator |
       | Migration routes | Burke Abraham | facilitator |
-    And site pinned "rdf" entities:
+    And the following "rdf" entities are pinned to the front page:
       | title       |
       | D minor     |
       | Risky Sound |
@@ -34,7 +34,7 @@ Feature: Pinning content site-wide
       | title               | collection  | state     | visits | created    |
       | Loudest instruments | Risky Sound | validated | 4390   | 2017-03-29 |
       | Handmade oboes      | Risky Sound | validated | 948    | 2017-04-25 |
-    And site pinned "content" entities:
+    And the following "content" entities are pinned to the front page:
       | title          |
       | Handmade oboes |
 
@@ -200,7 +200,7 @@ Feature: Pinning content site-wide
       | title                | collection  | state     | visits | created    |
       | Entry to be disabled | Risky Sound | validated | 0      | 2017-03-29 |
       | Some low visit news  | Risky Sound | validated | 948    | 2017-04-25 |
-    And site pinned "content" entities:
+    And the following "content" entities are pinned to the front page:
       | title                |
       | Some low visit news  |
       | Entry to be disabled |

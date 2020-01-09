@@ -30,7 +30,7 @@ class JoinupFrontPageSubContext extends DrupalSubContextBase implements DrupalSu
    * @throws \InvalidArgumentException
    *   Thrown when the user has entered an invalid type.
    *
-   * @Given site pinned :type entities:
+   * @Given the following :type entities are pinned to the front page:
    */
   public function givenPinnedEntities(string $type, TableNode $table): void {
     if (!in_array($type, ['rdf', 'content'])) {
