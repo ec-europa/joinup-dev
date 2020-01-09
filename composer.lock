@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7b8c364b3c24c6068ea7743de6cf5ee",
+    "content-hash": "28586042c31340b7e2a1b1a7e668a231",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2592,11 +2592,11 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cas.git",
-                "reference": "07f89069c6e251573c5ed3a998273ff6350f4a2b"
+                "reference": "2d0dc1c6b83c9335e53650a11e67502f00059409"
             },
             "require": {
                 "drupal/core": "~8.0",
-                "drupal/externalauth": "^1.1"
+                "drupal/externalauth": "^1.2"
             },
             "require-dev": {
                 "drupal/cas_mock_server": "dev-0.x"
@@ -2607,8 +2607,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5+10-dev",
-                    "datestamp": "1566072481",
+                    "version": "8.x-1.5+14-dev",
+                    "datestamp": "1578260283",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -2653,7 +2653,7 @@
                 "issues": "http://drupal.org/project/issues/cas",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2019-10-11T00:10:22+00:00"
+            "time": "2020-01-05T21:34:01+00:00"
         },
         {
             "name": "drupal/cas_account_link",
@@ -3998,11 +3998,14 @@
                 },
                 "drupal": {
                     "version": "8.x-1.2",
-                    "datestamp": "1569251888",
+                    "datestamp": "1569916976",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Clean up linkExistingAccount method so it doesn't needless prefix username with provider name @see https://www.drupal.org/project/externalauth/issues/3104478": "https://www.drupal.org/files/issues/2020-01-08/3104478-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9801,7 +9804,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -13109,6 +13112,10 @@
                     "homepage": "https://www.drupal.org/node/3236/committers"
                 },
                 {
+                    "name": "pcambra",
+                    "homepage": "https://www.drupal.org/user/122101"
+                },
+                {
                     "name": "salvis",
                     "homepage": "https://www.drupal.org/user/82964"
                 },
@@ -15742,7 +15749,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/antibot": 20,
-        "drupal/cas": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_exclude": 20,
         "drupal/config_ignore": 20,
