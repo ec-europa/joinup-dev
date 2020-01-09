@@ -231,8 +231,9 @@ Feature: Pinning content site-wide
       | Risky Sound          |
 
     When I press "Save"
-    And the cache has been cleared
     And I am on the homepage
+    And the cache has been cleared
+    And I reload the page
 
     And I should see the following tiles in the correct order:
       | Some low visit news  |
