@@ -2,15 +2,10 @@
 
 /**
  * @file
- * Contains functions for the Joinup front page module.
+ * Hook implementations for the Joinup front page module.
  */
 
 declare(strict_types = 1);
-
-/**
- * @file
- * Contains the main functionality of Joinup front page module.
- */
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
