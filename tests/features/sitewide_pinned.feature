@@ -1,4 +1,4 @@
-@api @email @debug
+@api @email
 Feature: Pinning content site-wide
   As a moderator of Joinup
   I want to pin content in the website
@@ -194,7 +194,7 @@ Feature: Pinning content site-wide
     When I am on the homepage
     Then I should see the contextual link "Edit pinned entities"
 
-  @javascript @clearStaticCache
+  @javascript
   Scenario: Front page menu re-ordering.
     Given news content:
       | title                | collection  | state     | visits | created    |
@@ -231,11 +231,7 @@ Feature: Pinning content site-wide
       | Risky Sound          |
 
     When I press "Save"
-    And I am on the homepage
-    And the cache has been cleared
-    And I reload the page
-
-    And I should see the following tiles in the correct order:
+    Then I should see the following tiles in the correct order:
       | Some low visit news  |
       | D minor              |
       | Risky Sound          |

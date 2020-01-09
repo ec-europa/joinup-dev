@@ -22,7 +22,7 @@ default:
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
-        tags: '~@wip&&@javascript&&@debug'
+        tags: '~@wip&&@javascript'
   extensions:
     Drupal\MinkExtension:
       base_url: '${behat.base_url}'
