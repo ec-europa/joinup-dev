@@ -13,7 +13,7 @@ field_name: field_video_spatial_coverage
 entity_type: node
 bundle: video
 label: 'Geographical coverage'
-description: ''
+description: 'Add a country name relevant to this video.'
 required: false
 translatable: false
 default_value: {  }
