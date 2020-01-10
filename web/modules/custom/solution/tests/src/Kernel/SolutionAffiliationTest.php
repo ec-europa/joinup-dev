@@ -112,13 +112,16 @@ class SolutionAffiliationTest extends KernelTestBase {
 
   /**
    * Tests orphan solutions.
+   *
+   * @dataProvider affiliationProvider
    */
-  public function testAffiliation(): void {
+  public function testAffiliation(string $collection_state, string $solution_state): void {
     foreach (range(1, 3) as $delta) {
       Rdf::create([
         'rid' => 'collection',
         'id' => "http://example.com/collection/{$delta}",
         'label' => "Collection {$delta}",
+        'field_ar_state' => $collection_state,
       ])->save();
       // Warm the cache.
       Rdf::load("http://example.com/collection/{$delta}");
@@ -133,7 +136,7 @@ class SolutionAffiliationTest extends KernelTestBase {
         'http://example.com/collection/1',
         'http://example.com/collection/2',
       ],
-      'field_is_state' => 'validated',
+      'field_is_state' => $solution_state,
     ]);
     $solution->save();
 
@@ -189,6 +192,21 @@ class SolutionAffiliationTest extends KernelTestBase {
     $this->assertSame('http://example.com/solution', $affiliates->target_id);
     $affiliates = Rdf::load('http://example.com/collection/3')->get('field_ar_affiliates');
     $this->assertTrue($affiliates->isEmpty());
+  }
+
+  /**
+   * Data provider for the testAffiliation test.
+   *
+   * @return array
+   *   A list of tests for the testAffiliation test.
+   */
+  public function affiliationProvider(): array {
+    return [
+      ['validated', 'validated'],
+      ['validated', 'draft'],
+      ['draft', 'validated'],
+      ['draft', 'draft'],
+    ];
   }
 
   /**
