@@ -12,7 +12,7 @@ id: rdf_entity.solution.field_spatial_coverage
 field_name: field_spatial_coverage
 entity_type: rdf_entity
 bundle: solution
-label: 'Spatial coverage'
+label: 'Geographical coverage'
 description: ''
 required: false
 translatable: false

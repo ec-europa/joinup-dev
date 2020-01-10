@@ -9,7 +9,7 @@ id: node.document.field_document_spatial_coverage
 field_name: field_document_spatial_coverage
 entity_type: node
 bundle: document
-label: 'Spatial coverage'
+label: 'Geographical coverage'
 description: ''
 required: false
 translatable: false
