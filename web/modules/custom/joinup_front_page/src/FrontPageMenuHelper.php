@@ -69,7 +69,7 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
    * {@inheritdoc}
    */
   public function getFrontPageMenuItem(EntityInterface $entity): ?MenuLinkContentEntity {
-    if ($entity->isNew()) {
+    if ($entity->isNew() || empty($entity->id())) {
       return NULL;
     }
 
