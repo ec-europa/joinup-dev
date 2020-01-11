@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_front_page\FrontPageMenuHelperInterface;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\MembershipManager;
 use Drupal\search_api\Query\QueryInterface;
@@ -62,6 +63,13 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   protected $entityTypeManager;
 
   /**
+   * The front page menu helper service.
+   *
+   * @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface
+   */
+  protected $frontPageHelper;
+
+  /**
    * Constructs a new RecommendedContentBlock object.
    *
    * @param array $configuration
@@ -76,12 +84,15 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *   The og membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper
+   *   The front page menu helper service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, MembershipManager $og_membership_manager, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, MembershipManager $og_membership_manager, EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
     $this->ogMembershipManager = $og_membership_manager;
     $this->entityTypeManager = $entity_type_manager;
+    $this->frontPageHelper = $front_page_helper;
   }
 
   /**
@@ -94,7 +105,8 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       $plugin_definition,
       $container->get('current_user'),
       $container->get('og.membership_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('joinup_front_page.front_page_helper')
     );
   }
 
@@ -187,21 +199,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
     });
     $menu_items = array_splice($menu_items, 0, $this->configuration['count']);
 
-    $items = [];
-    $node_storage = $this->entityTypeManager->getStorage('node');
-    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
-
-    foreach ($menu_items as $menu_item) {
-      $url_parameters = $menu_item->getUrlObject()->getRouteParameters();
-      if (isset($url_parameters['node'])) {
-        $items[] = $node_storage->load($url_parameters['node']);
-      }
-      else {
-        $items[] = $rdf_storage->load($url_parameters['rdf_entity']);
-      }
-    }
-
-    return $items;
+    return $this->frontPageHelper->loadEntitiesFromMenuItems($menu_items);
   }
 
   /**
