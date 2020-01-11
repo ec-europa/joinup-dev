@@ -6,7 +6,6 @@ namespace Drupal\joinup_core;
 
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\TypedData\ComputedItemListTrait;
-use Drupal\user\UserInterface;
 
 /**
  * Computed field that returns if the entity is pinned on the front page.

@@ -141,7 +141,7 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
       /** @var \Drupal\search_api\Item\Item[] $items */
       $id = $document->getFields()['ss_search_api_id'];
       $entity = $items[$id]->getOriginalObject()->getValue();
-      $document->setField('bs_site_pinned',$entity->hasField('front_page_pinned') ? $entity->get('front_page_pinned') : 0);
+      $document->setField('bs_site_pinned', $entity->hasField('front_page_pinned') ? $entity->get('front_page_pinned') : 0);
     }
   }
 }
