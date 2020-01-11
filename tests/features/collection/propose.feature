@@ -13,15 +13,18 @@ Feature: Proposing a collection
   # though you need to sign in to do so.
   Scenario: Anonymous user needs to sign in before creating a collection
     Given users:
-      | Username      | Password |
-      | Cecil Clapman | claps    |
+      | Username      | E-mail           | Password |
+      | Cecil Clapman | cecil@example.eu | claps    |
+    Given CAS users:
+      | Username | E-mail                | Password  | First name | Last name | Local username |
+      | cclapman | clapman@ec.example.eu | abc123!#$ | Cecil J    | Clapman   | Cecil Clapman  |
     Given I am an anonymous user
     When I go to the propose collection form
     Then I should see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
-      | Email or username | Cecil Clapman |
-      | Password          | claps         |
-    And I press "Sign in"
+      | E-mail address | clapman@ec.example.eu |
+      | Password       | abc123!#$             |
+    And I press "Log in"
     Then I should see the heading "Propose collection"
 
   @terms

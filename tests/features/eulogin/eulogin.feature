@@ -427,3 +427,21 @@ Feature: Log in through EU Login
     And I fill in "Password" with "123"
     When I press the "Log in" button
     Then I should see the success message "You have been logged in."
+
+  Scenario: Anonymous user is asked to log in when accessing a protected page
+    Given users:
+      | Username | E-mail         | Password | First name | Family name | Roles     |
+      | jonbon   | jon@example.eu | bonbonbo | Jon        | Bon         | moderator |
+    Given CAS users:
+      | Username | E-mail              | Password  | First name | Last name | Local username |
+      | jbon     | j.bon@ec.example.eu | abc123!#$ | John       | Bonn      | jonbon         |
+    Given I am an anonymous user
+    When I visit "admin/people"
+    Then I should see the error message "Access denied. You must sign in to view this page."
+    And I should see the heading "Sign in to continue"
+    When I fill in the following:
+      | E-mail address | j.bon@ec.example.eu |
+      | Password       | abc123!#$           |
+    And I press "Log in"
+    # The user should be redirected to the original page after logging in.
+    Then I should see the heading "People"
