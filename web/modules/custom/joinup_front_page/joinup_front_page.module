@@ -9,8 +9,25 @@ declare(strict_types = 1);
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\joinup_front_page\FrontPagePinnedFieldItemList;
 use Drupal\menu_link_content\MenuLinkContentInterface;
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function joinup_front_page_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
+    $fields = [];
+    $fields['front_page_pinned'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Pinned in the front page'))
+      ->setComputed(TRUE)
+      ->setClass(FrontPagePinnedFieldItemList::class);
+    return $fields;
+  }
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().

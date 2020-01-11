@@ -25,7 +25,6 @@ use Drupal\Core\Template\Attribute;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
-use Drupal\joinup_core\FrontPagePinnedFieldItemList;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\IndexInterface;
@@ -224,11 +223,6 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
       ->setDisplayOptions('form', ['type' => 'hidden'])
       ->setDisplayConfigurable('form', TRUE)
       ->setComputed(TRUE);
-
-    $fields['front_page_pinned'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('Pinned in the front page'))
-      ->setComputed(TRUE)
-      ->setClass(FrontPagePinnedFieldItemList::class);
   }
 
   // Add a 'report' field to community content entities. Currently all node
