@@ -10,6 +10,7 @@ declare(strict_types = 1);
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -55,4 +56,19 @@ function joinup_front_page_entity_view_alter(array &$build, EntityInterface $ent
 
     $build['#contextual_links']['entity']['metadata']['is_site_wide_pinned'] = (int) !empty($menu_item);
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $entity) {
+  if ($entity->getMenuName() !== 'front-page') {
+    return;
+  }
+
+  /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */
+  $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
+  $entities = $front_page_helper->loadEntitiesFromMenuItems([$entity]);
+  $entity = reset($entities);
+  $front_page_helper->updateSearchApiEntry($entity);
 }
