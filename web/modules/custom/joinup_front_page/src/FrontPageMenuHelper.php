@@ -26,11 +26,11 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
   protected $menuLinkManager;
 
   /**
-   * The menu link content storage.
+   * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\Sql\SqlContentEntityStorage
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $menuLinkContentStorage;
+  protected $entityTypeManager;
 
   /**
    * The module handler service.
@@ -59,7 +59,7 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
    *   The cache tags invalidator service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, MenuLinkManagerInterface $menu_link_manager, ModuleHandlerInterface $module_handler, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
-    $this->menuLinkContentStorage = $entity_type_manager->getStorage('menu_link_content');
+    $this->entityTypeManager = $entity_type_manager;
     $this->menuLinkManager = $menu_link_manager;
     $this->moduleHandler = $module_handler;
     $this->cacheTagsInvalidator = $cache_tags_invalidator;
@@ -73,7 +73,7 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
       return NULL;
     }
 
-    $menu_items = $this->menuLinkContentStorage->loadByProperties([
+    $menu_items = $this->entityTypeManager->getStorage('menu_link_content')->loadByProperties([
       'bundle' => 'menu_link_content',
       'menu_name' => 'front-page',
       'link__uri' => $entity->toUrl()->toUriString(),
@@ -85,13 +85,40 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
    * {@inheritdoc}
    */
   public function pinSiteWide(FieldableEntityInterface $entity): void {
-    $this->menuLinkContentStorage->create([
+    $this->entityTypeManager->getStorage('menu_link_content')->create([
       'title' => $entity->label(),
       'menu_name' => 'front-page',
       'link' => ['uri' => $entity->toUrl()->toUriString()],
       'enabled' => TRUE,
     ])->save();
     $this->invalidateEntityTags($entity);
+    $this->updateSearchApiEntry($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unpinSiteWide(FieldableEntityInterface $entity): void {
+    $this->getFrontPageMenuItem($entity)->delete();
+    $this->invalidateEntityTags($entity);
+    $this->updateSearchApiEntry($entity);
+  }
+
+  /**
+   * Helper method to gather and invalidate tags for an entity.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity to invalidate tags for.
+   */
+  protected function invalidateEntityTags(FieldableEntityInterface $entity): void {
+    $cache_tags_to_invalidate = Cache::mergeTags($entity->getEntityType()->getListCacheTags(), $entity->getCacheTagsToInvalidate());
+    $this->cacheTagsInvalidator->invalidateTags($cache_tags_to_invalidate);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function updateSearchApiEntry(EntityInterface $entity): void {
     // Check the existence of the `search_api` module in order to relax the
     // dependency chain since the `search_api` part is secondary functionality
     // here.
@@ -104,24 +131,22 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function unpinSiteWide(FieldableEntityInterface $entity): void {
-    $this->getFrontPageMenuItem($entity)->delete();
-    $this->invalidateEntityTags($entity);
-    if ($this->moduleHandler->moduleExists('search_api')) {
-      $entity->original = $entity;
-      search_api_entity_update($entity);
-    }
-  }
+  public function loadEntitiesFromMenuItems(array $menu_items): array {
+    $items = [];
+    $node_storage = $this->entityTypeManager->getStorage('node');
+    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
 
-  /**
-   * Helper method to gather and invalidate tags for an entity.
-   *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity to invalidate tags for.
-   */
-  protected function invalidateEntityTags(FieldableEntityInterface $entity): void {
-    $cache_tags_to_invalidate = Cache::mergeTags($entity->getEntityType()->getListCacheTags(), $entity->getCacheTagsToInvalidate());
-    $this->cacheTagsInvalidator->invalidateTags($cache_tags_to_invalidate);
+    foreach ($menu_items as $menu_item) {
+      $url_parameters = $menu_item->getUrlObject()->getRouteParameters();
+      if (isset($url_parameters['node'])) {
+        $items[] = $node_storage->load($url_parameters['node']);
+      }
+      else {
+        $items[] = $rdf_storage->load($url_parameters['rdf_entity']);
+      }
+    }
+
+    return $items;
   }
 
 }
