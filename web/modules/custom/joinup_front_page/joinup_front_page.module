@@ -39,8 +39,8 @@ function joinup_front_page_form_menu_edit_form_alter(&$form, FormStateInterface 
     return;
   }
 
-  $form['#title'] = t('Front page pinned entities');
-  $form['links']['links']['#empty'] = t('There are no pinned entities. Start by pinning an entity site wide.');
+  $form['#title'] = t('Front page pinned items');
+  $form['links']['links']['#empty'] = t('There are no pinned items. Start by pinning an entity to the front page.');
 
   foreach ($form['links']['links'] as &$link_data) {
     if (is_array($link_data) && isset($link_data['#item'])) {

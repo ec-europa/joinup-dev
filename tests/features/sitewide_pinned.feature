@@ -261,4 +261,4 @@ Feature: Pinning content site-wide
     And I press "Delete"
 
     When I click the contextual link "Edit pinned entities" in the "Content" region
-    Then I should see the text "There are no pinned entities. Start by pinning an entity site wide."
+    Then I should see the text "There are no pinned items. Start by pinning an entity to the front page."

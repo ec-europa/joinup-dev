@@ -7,7 +7,7 @@
 
 'pin entity':
   title: 'Pin entity'
-  description: 'Promote an entity as pinned in the website.'
+  description: 'Pins an entity to the front page.'
 'unpin entity':
   title: 'Unpin entity'
-  description: 'Removes an entity from the pinned ones in the website.'
+  description: 'Removes a pinned entity from the front page.'
