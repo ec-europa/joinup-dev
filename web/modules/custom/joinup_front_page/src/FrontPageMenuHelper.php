@@ -113,6 +113,7 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
   protected function invalidateEntityTags(FieldableEntityInterface $entity): void {
     $cache_tags_to_invalidate = Cache::mergeTags($entity->getEntityType()->getListCacheTags(), $entity->getCacheTagsToInvalidate());
     $this->cacheTagsInvalidator->invalidateTags($cache_tags_to_invalidate);
+    $this->entityTypeManager->getStorage('rdf_entity')->resetCache([$entity->id()]);
   }
 
   /**
