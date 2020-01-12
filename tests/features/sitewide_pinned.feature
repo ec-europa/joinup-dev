@@ -188,11 +188,11 @@ Feature: Pinning content site-wide
   Scenario: Front page menu access.
     Given I am logged in as a user with the "authenticated" role
     When I am on the homepage
-    Then I should not see the contextual link "Edit pinned entities"
+    Then I should not see the contextual link "Edit pinned items"
 
     Given I am logged in as a user with the "moderator" role
     When I am on the homepage
-    Then I should see the contextual link "Edit pinned entities"
+    Then I should see the contextual link "Edit pinned items"
 
   @javascript
   Scenario: Front page menu re-ordering.
@@ -213,8 +213,8 @@ Feature: Pinning content site-wide
       | Some low visit news  |
       | Entry to be disabled |
 
-    When I click the contextual link "Edit pinned entities" in the "Content" region
-    Then I should see the heading "Front page pinned entities"
+    When I click the contextual link "Edit pinned items" in the "Content" region
+    Then I should see the heading "Front page pinned items"
 
     # Disable the 'Entry to be disabled' menu entry.
     Given I uncheck the material checkbox in the "Entry to be disabled" table row
@@ -244,21 +244,21 @@ Feature: Pinning content site-wide
        | Entry to be disabled |
 
     # Delete the first item.
-    When I click the contextual link "Edit pinned entities" in the "Content" region
+    When I click the contextual link "Edit pinned items" in the "Content" region
     And I click "Delete"
     And I press "Delete"
     # Delete the first item.
-    And I click the contextual link "Edit pinned entities" in the "Content" region
+    And I click the contextual link "Edit pinned items" in the "Content" region
     And I click "Delete"
     And I press "Delete"
     # Delete the first item.
-    And I click the contextual link "Edit pinned entities" in the "Content" region
+    And I click the contextual link "Edit pinned items" in the "Content" region
     And I click "Delete"
     And I press "Delete"
     # Delete the first item.
-    And I click the contextual link "Edit pinned entities" in the "Content" region
+    And I click the contextual link "Edit pinned items" in the "Content" region
     And I click "Delete"
     And I press "Delete"
 
-    When I click the contextual link "Edit pinned entities" in the "Content" region
+    When I click the contextual link "Edit pinned items" in the "Content" region
     Then I should see the text "There are no pinned items. Start by pinning an entity to the front page."
