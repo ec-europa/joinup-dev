@@ -159,7 +159,7 @@ abstract class ShareFormBase extends FormBase {
    *   The field name or null if not configured.
    */
   protected function getSharedInFieldName(): ?string {
-    return self::SHARED_IN_FIELD_NAMES[$this->entity->getEntityTypeId()][$this->entity->bundle()];
+    return self::SHARED_IN_FIELD_NAMES[$this->entity->getEntityTypeId()][$this->entity->bundle()] ?? NULL;
   }
 
   /**
