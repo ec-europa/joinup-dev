@@ -46,12 +46,15 @@ class ErrorPageTest extends BrowserTestBase {
     // Adds custom error handlers.
     $settings_php_file = $this->siteDirectory . '/settings.php';
     $settings_php = file_get_contents($settings_php_file);
+
+    // Save the original settings.php content.
+    $this->settingsPhp = $settings_php;
+
     $settings_php .= "\nset_error_handler(['Drupal\\error_page\\ErrorPageErrorHandler', 'handleError']);\n";
     $settings_php .= "set_exception_handler(['Drupal\\error_page\\ErrorPageErrorHandler', 'handleException']);\n";
     $settings_php .= "\$config['system.logging']['error_level'] = 'verbose';\n";
     chmod($settings_php_file, 0666);
     file_put_contents($settings_php_file, $settings_php);
-    $this->settingsPhp = $settings_php;
   }
 
   /**

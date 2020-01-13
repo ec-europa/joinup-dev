@@ -1452,10 +1452,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // with an empty log. We create a copy of the error log just before running
     // this scenario to be restored in @AfterScenario phase. In this way the log
     // will not be affected by errors logged by this scenario.
-    $error_log = ini_get('error_log');
-    if (file_exists($error_log)) {
-      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
-    }
+//    $error_log = ini_get('error_log');
+//
+//    if (file_exists($error_log)) {
+//      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
+//    }
   }
 
   /**
@@ -1467,10 +1468,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     static::toggleModule('uninstall', 'error_page_test');
 
     // Restore the log saved in @BeforeScenario.
-    $error_log = ini_get('error_log');
-    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
-      file_unmanaged_move('temporary://php.log', $error_log, 1);
-    }
+//    $error_log = ini_get('error_log');
+//    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
+//      file_unmanaged_move('temporary://php.log', $error_log, 1);
+//    }
 
     // Restore the original system logging error level.
     $this->setSiteErrorLevel();
