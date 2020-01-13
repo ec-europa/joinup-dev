@@ -20,7 +20,7 @@ Feature: Proposing a collection
       | cclapman | clapman@ec.example.eu | abc123!#$ | Cecil J    | Clapman   | Cecil Clapman  |
     Given I am an anonymous user
     When I go to the propose collection form
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
     When I fill in the following:
       | E-mail address | clapman@ec.example.eu |
       | Password       | abc123!#$             |
