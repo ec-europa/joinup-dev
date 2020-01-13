@@ -1458,7 +1458,7 @@ protected $logErrors;
 //      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
 //    }
 
-    $this->logErrors = ini_set('log_errors', 0);
+    $this->logErrors = ini_set('log_errors', '0');
 
   }
 
