@@ -427,7 +427,7 @@ field_settings:
         - 'entity:node/field_site_pinned'
         - 'entity:rdf_entity/field_site_pinned'
   spatial_coverage:
-    label: 'Spatial coverage'
+    label: 'Geographical coverage'
     property_path: aggregated_field
     type: string
     configuration:

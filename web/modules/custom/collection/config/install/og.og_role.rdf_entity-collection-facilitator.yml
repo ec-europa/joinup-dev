@@ -30,6 +30,7 @@ permissions:
   - 'delete any document content'
   - 'delete any event content'
   - 'delete any news content'
+  - 'delete contact_information rdf entity'
   - 'edit any custom_page content'
   - 'edit any discussion content'
   - 'edit any document content'

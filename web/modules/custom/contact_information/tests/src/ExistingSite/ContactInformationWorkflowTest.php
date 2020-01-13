@@ -82,6 +82,7 @@ class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase 
           'rid' => 'contact_information',
           'label' => $this->randomMachineName(),
           'field_ci_state' => $entity_state,
+          'uid' => $this->$user_var->id(),
         ]);
 
         // Override the user to be checked for the allowed transitions.
@@ -133,7 +134,6 @@ class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase 
         'userModerator' => [
           'validated',
           'needs_update',
-          'deletion_request',
         ],
       ],
       'needs_update' => [

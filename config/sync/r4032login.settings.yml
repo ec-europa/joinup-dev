@@ -1,4 +1,4 @@
-display_denied_message: true
+display_denied_message: false
 access_denied_message: 'Access denied. You must sign in to view this page.'
 access_denied_message_type: error
 redirect_authenticated_users_to: ''
