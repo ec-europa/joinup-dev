@@ -1438,7 +1438,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function commitSearchIndexBeforeScenario() {
     $this->commitSearchIndex();
   }
-
+protected $logErrors;
   /**
    * Installs the testing module for scenarios tagged with @errorPage.
    *
@@ -1457,6 +1457,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 //    if (file_exists($error_log)) {
 //      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
 //    }
+
+    $this->logErrors = ini_set('log_errors', 0);
+
   }
 
   /**
@@ -1473,6 +1476,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 //      file_unmanaged_move('temporary://php.log', $error_log, 1);
 //    }
 
+    ini_set('log_errors', $this->logErrors);
     // Restore the original system logging error level.
     $this->setSiteErrorLevel();
   }
