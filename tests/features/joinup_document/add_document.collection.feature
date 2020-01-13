@@ -51,7 +51,7 @@ Feature: "Add document" visibility options.
     When I go to the homepage of the "Hunter in the Swords" collection
     And I click "Add document" in the plus button menu
     Then I should see the heading "Add document"
-    And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Spatial coverage, Licence, Description, Upload a new file or enter a URL"
+    And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Geographical coverage, Licence, Description, Upload a new file or enter a URL"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
     And the following fields should not be present "Shared in"
