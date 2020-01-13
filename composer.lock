@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28586042c31340b7e2a1b1a7e668a231",
+    "content-hash": "86a03a2c3bc000ecc1a7af87f1edc114",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -9809,7 +9809,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-04-02T18:33:21+00:00"
         },
         {
             "name": "stack/builder",
@@ -13117,10 +13117,6 @@
                     "homepage": "https://www.drupal.org/node/3236/committers"
                 },
                 {
-                    "name": "pcambra",
-                    "homepage": "https://www.drupal.org/user/122101"
-                },
-                {
                     "name": "salvis",
                     "homepage": "https://www.drupal.org/user/82964"
                 },
@@ -13523,6 +13519,42 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/stage_file_proxy"
             }
+        },
+        {
+            "name": "drupaltest/behat-one-time-login",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupaltest/behat-one-time-login.git",
+                "reference": "073134a5fa990e888ce385a97bebbb9e6360ac85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/073134a5fa990e888ce385a97bebbb9e6360ac85",
+                "reference": "073134a5fa990e888ce385a97bebbb9e6360ac85",
+                "shasum": ""
+            },
+            "require-dev": {
+                "drupal/coder": "~8.3",
+                "drupal/drupal-extension": "~4.0",
+                "drush/drush": "~10.0",
+                "friends-of-behat/service-container-extension": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DrupalTest\\BehatOneTimeLogin\\": "src"
+                }
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Authenticates users through the Drupal one time login mechanism.",
+            "support": {
+                "source": "https://github.com/drupaltest/behat-one-time-login/tree/master",
+                "issues": "https://github.com/drupaltest/behat-one-time-login/issues"
+            },
+            "time": "2020-01-13T12:40:24+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -15769,6 +15801,7 @@
         "jacklmoore/autosize": 20,
         "semiceu/adms-ap_validator": 20,
         "behat/mink-selenium2-driver": 20,
+        "drupaltest/behat-one-time-login": 20,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,

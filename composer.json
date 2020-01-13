@@ -109,6 +109,7 @@
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.17",
         "drupal/stage_file_proxy": "^1.0",
+        "drupaltest/behat-one-time-login": "dev-master",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.3",
         "lovers-of-behat/table-extension": "^1.2.0",
@@ -281,6 +282,10 @@
         }
     },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/drupaltest/behat-one-time-login.git"
+        },
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/matomo_reporting_api.git"
