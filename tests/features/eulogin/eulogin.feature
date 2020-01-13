@@ -441,8 +441,14 @@ Feature: Log in through EU Login
       | jbon     | j.bon@ec.example.eu | abc123!#$ | John       | Bonn      | jonbon         |
     Given I am an anonymous user
     When I visit "admin/people"
-    Then I should see the error message "Access denied. You must sign in to view this page."
-    And I should see the heading "Sign in to continue"
+    Then I should see the heading "Sign in to continue"
+    # The warning that the user is not authenticated should not be shown since
+    # if we are using an external CAS authentication service the first Drupal
+    # page that would be presented to the user would receive this message and at
+    # that moment the user has successfully logged in. In this case we are using
+    # a mocked CAS server which is written in Drupal and receives this message.
+    # It needs to be suppressed.
+    But I should not see the error message "Access denied. You must sign in to view this page."
     When I fill in the following:
       | E-mail address | j.bon@ec.example.eu |
       | Password       | abc123!#$           |
