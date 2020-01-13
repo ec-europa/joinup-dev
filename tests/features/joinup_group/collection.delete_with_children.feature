@@ -4,7 +4,6 @@ Feature:
   As a collection owner
   I need to be unable to delete collections that have children entities.
 
-  @terms
   Scenario Outline: Delete a collection with a child solution
     Given collection:
       | title | Collection with child |

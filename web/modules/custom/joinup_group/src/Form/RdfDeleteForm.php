@@ -21,13 +21,14 @@ class RdfDeleteForm extends OriginalForm {
   public function getQuestion(): TranslatableMarkup {
     $entity = $this->getEntity();
     if ($entity->bundle() !== 'collection' || $entity->get('field_ar_affiliates')->isEmpty()) {
-      return $this->t('Are you sure you want to delete entity %name?', [
+      return $this->t('Are you sure you want to delete @type %name?', [
+        '@type' => $entity->get('rid')->entity->getSingularLabel(),
         '%name' => $entity->label(),
       ]);
     }
 
-    return $this->t('The collection @collection cannot be deleted because it contains the following solutions:', [
-      '@collection' => $entity->label(),
+    return $this->t('The collection %collection cannot be deleted because it contains the following solutions:', [
+      '%collection' => $entity->label(),
     ]);
   }
 
@@ -55,14 +56,13 @@ class RdfDeleteForm extends OriginalForm {
       return $form;
     }
 
-    $affiliates = $entity->get('field_ar_affiliates')->referencedEntities();
-    if (empty($affiliates)) {
+    if ($entity->get('field_ar_affiliates')->isEmpty()) {
       return $form;
     }
 
     $list = array_map(function (RdfInterface $solution): Link {
       return $solution->toLink($solution->label());
-    }, $affiliates);
+    }, $entity->get('field_ar_affiliates')->referencedEntities());
 
     $form['solutions'] = [
       '#theme' => 'item_list',

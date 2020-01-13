@@ -55,9 +55,9 @@ function joinup_group_entity_type_alter(array &$entity_types) {
   $entity_types['user']->setFormClass('cancel', 'Drupal\joinup_group\Form\UserCancelForm');
 
   // Override the delete form to disallow deletion of groups with children.
-  /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $rdf_entity */
-  $rdf_entity = $entity_types['rdf_entity'];
-  $rdf_entity->setFormClass('delete', RdfDeleteForm::class);
+  /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $rdf_entity_type */
+  $rdf_entity_type = $entity_types['rdf_entity'];
+  $rdf_entity_type->setFormClass('delete', RdfDeleteForm::class);
 }
 
 /**
