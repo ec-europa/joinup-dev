@@ -18,11 +18,31 @@ use PHPUnit\Framework\Assert;
 class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   /**
+   * Assert a meta tag value in the page.
+   *
+   * @param string $meta_name
+   *   The meta tag name.
+   * @param string $meta_value
+   *   The meta tag value.
+   *
+   * @throws \Exception
+   *   Thrown when an tag is not found or the value is not correct.
+   *
+   * @Given the :meta_name metatag should be set to :meta_value
+   */
+  public function assertMetatagInPage(string $meta_name, string $meta_value): void {
+    $xpath = "//head/meta[@name=\"{$meta_name}\" and @content=\"{$meta_value}\"]";
+    if (empty($this->getSession()->getPage()->find('xpath', $xpath))) {
+      throw new Exception("The meta property '{$meta_name}' was either not found or the value is not set to '{$meta_value}'");
+    }
+  }
+
+  /**
    * Asserts that the schema.org metatags are attached in page.
    *
    * @Given the metatag json should be attached in the page
    */
-  public function assertMetatagsInPage(): void {
+  public function assertJsonMetatagsInPage(): void {
     $json = $this->getMetatagsAsJson();
     Assert::assertNotEmpty($json, 'Entity metadata are found in the table.');
     // Assert that the context of the metatag is 'schema.org' to ensure that the
