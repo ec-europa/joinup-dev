@@ -4369,7 +4369,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0-beta3",
-                    "datestamp": "1575970981",
+                    "datestamp": "1576963683",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -4461,7 +4461,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.7",
-                    "datestamp": "1575405480",
+                    "datestamp": "1576963383",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6545,7 +6545,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.5",
-                    "datestamp": "1537557481",
+                    "datestamp": "1577708583",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6585,7 +6585,7 @@
             "description": "Provides a user interface for the Token API and some missing core tokens.",
             "homepage": "https://www.drupal.org/project/token",
             "support": {
-                "source": "http://cgit.drupalcode.org/token"
+                "source": "https://git.drupalcode.org/project/token"
             }
         },
         {
@@ -13526,35 +13526,55 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupaltest/behat-one-time-login.git",
-                "reference": "073134a5fa990e888ce385a97bebbb9e6360ac85"
+                "reference": "265bc68277734404d61d2728b6cba862459dbbb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/073134a5fa990e888ce385a97bebbb9e6360ac85",
-                "reference": "073134a5fa990e888ce385a97bebbb9e6360ac85",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/265bc68277734404d61d2728b6cba862459dbbb6",
+                "reference": "265bc68277734404d61d2728b6cba862459dbbb6",
                 "shasum": ""
             },
-            "require-dev": {
-                "drupal/coder": "~8.3",
+            "require": {
                 "drupal/drupal-extension": "~4.0",
-                "drush/drush": "~10.0",
                 "friends-of-behat/service-container-extension": "~1.0"
             },
+            "require-dev": {
+                "composer/installers": "~1.2",
+                "drupal/core-composer-scaffold": "~8.8",
+                "drupal/core-project-message": "~8.8",
+                "drupal/core-recommended": "~8.8",
+                "drush/drush": "~10.0",
+                "squizlabs/php_codesniffer": "~3.5",
+                "zaporylie/composer-drupal-optimizations": "~1.1"
+            },
             "type": "library",
+            "extra": {
+                "drupal-scaffold": {
+                    "locations": {
+                        "web-root": "web/"
+                    }
+                },
+                "installer-paths": {
+                    "web/core": [
+                        "type:drupal-core"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "DrupalTest\\BehatOneTimeLogin\\": "src"
                 }
             },
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "description": "Authenticates users through the Drupal one time login mechanism.",
+            "homepage": "https://github.com/drupaltest/behat-one-time-login",
             "support": {
                 "source": "https://github.com/drupaltest/behat-one-time-login/tree/master",
                 "issues": "https://github.com/drupaltest/behat-one-time-login/issues"
             },
-            "time": "2020-01-13T12:40:24+00:00"
+            "time": "2020-01-14T23:01:02+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -13610,6 +13630,51 @@
                 "scraper"
             ],
             "time": "2018-06-29T15:13:57+00:00"
+        },
+        {
+            "name": "friends-of-behat/service-container-extension",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfBehat/ServiceContainerExtension.git",
+                "reference": "5c8ab1bc3e45a37e01da8601aa2aa3a547981586"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfBehat/ServiceContainerExtension/zipball/5c8ab1bc3e45a37e01da8601aa2aa3a547981586",
+                "reference": "5c8ab1bc3e45a37e01da8601aa2aa3a547981586",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.1",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "friends-of-behat/cross-container-extension": "^1.0",
+                "friends-of-behat/test-context": "^1.0"
+            },
+            "suggest": {
+                "friends-of-behat/cross-container-extension": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FriendsOfBehat\\ServiceContainerExtension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kamil Kokot",
+                    "email": "kamil@kokot.me",
+                    "homepage": "http://kamil.kokot.me"
+                }
+            ],
+            "description": "Allows to declare own services inside Behat container without writing an extension.",
+            "time": "2018-02-13T17:50:03+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
