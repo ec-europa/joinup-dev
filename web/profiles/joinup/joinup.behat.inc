@@ -640,6 +640,10 @@ class JoinupSubContext extends DrupalSubContextBase {
       ]);
     }
 
+    if (property_exists($node, 'published_at') && !is_numeric($node->published_at)) {
+      $node->published_at = strtotime($node->published_at);
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -701,6 +705,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'keywords' => 'field_keywords',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,

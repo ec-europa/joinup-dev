@@ -125,7 +125,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
         $error_messages[] = "The property '{$property}' had an expected value '{$data['expected']}' but '{$data['found']}' was found.";
       }
 
-      throw new Exception(implode('\n', $error_messages));
+      throw new Exception(implode("\n", $error_messages));
     }
   }
 
