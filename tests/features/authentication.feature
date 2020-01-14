@@ -3,16 +3,6 @@ Feature: User authentication
   As a product owner
   I want to make sure users with various roles can only access pages they are authorized to
 
-  Scenario: Anonymous user can see the user login page
-    Given I am not logged in
-    When I visit "user"
-    Then I should see the text "Sign in"
-    And I should see the text "Reset your password"
-    And I should see the text "Email or username"
-    And I should see the text "Password"
-    But I should not see the text "Sign out"
-    And I should not see the text "My account"
-
   Scenario Outline: Anonymous user can access public pages
     Given I am not logged in
     Then I visit "<path>"

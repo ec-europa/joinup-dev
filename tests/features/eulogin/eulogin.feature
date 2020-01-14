@@ -455,3 +455,8 @@ Feature: Log in through EU Login
     And I press "Log in"
     # The user should be redirected to the original page after logging in.
     Then I should see the heading "People"
+
+  Scenario: Anonymous user is redirected from the Drupal login to EU Login
+    Given I am not logged in
+    When I visit "user"
+    Then I should see the heading "Sign in to continue"
