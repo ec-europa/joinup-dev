@@ -8,7 +8,7 @@ Feature:
     Given I am <user type>
     When I am on the homepage
     Then the "description" metatag should be set to "Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme."
-    And the "abstract" metatag should be set to "It offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
+    And the "abstract" metatag should be set to "Joinup offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions."
     And the HTML title of the page should be "Joinup"
 
     Examples:
