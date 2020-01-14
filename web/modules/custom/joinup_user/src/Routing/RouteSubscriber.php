@@ -19,6 +19,12 @@ class RouteSubscriber extends RouteSubscriberBase {
         '_title_callback' => 'joinup_user_canonical_title',
       ]);
     }
+
+    if ($route = $collection->get('user.login')) {
+      $route->addDefaults([
+        '_title' => 'Sign in',
+      ]);
+    }
   }
 
 }
