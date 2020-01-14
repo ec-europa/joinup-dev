@@ -55,7 +55,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I should get a valid web page
    */
-  public function assertSuccessfulResponse() {
+  public function assertSuccessfulResponse(): void {
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -64,7 +64,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I should get an access denied error
    */
-  public function assertAccessDenied() {
+  public function assertAccessDenied(): void {
     $this->assertSession()->statusCodeEquals(403);
   }
 
@@ -79,7 +79,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then (the following )field(s) should be present :fields
    */
-  public function assertFieldsPresent($fields) {
+  public function assertFieldsPresent(string $fields): void {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -110,7 +110,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then (the following )field(s) should not be present :fields
    */
-  public function assertFieldsNotPresent($fields) {
+  public function assertFieldsNotPresent(string $fields): void {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
     $page = $this->getSession()->getPage();
     foreach ($fields as $field) {
@@ -132,7 +132,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then (the following )field(s) should be visible :fields
    */
-  public function assertFieldsVisible($fields) {
+  public function assertFieldsVisible(string $fields): void {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -174,7 +174,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then (the following )field(s) should not be visible :fields
    */
-  public function assertFieldsNotVisible($fields) {
+  public function assertFieldsNotVisible(string $fields): void {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -216,7 +216,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then (the following )field widgets should be present :fieldsets
    * @Then (the following )fieldsets should be present :fieldsets
    */
-  public function assertFieldsetsPresent($fieldsets) {
+  public function assertFieldsetsPresent(string $fieldsets): void {
     $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -243,7 +243,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then (the following )field widgets should be visible :fieldsets
    * @Then (the following )fieldsets should be visible :fieldsets
    */
-  public function assertFieldsetsVisible($fieldsets) {
+  public function assertFieldsetsVisible(string $fieldsets): void {
     $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -279,7 +279,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then (the following )field widgets should not be visible :fieldsets
    * @Then (the following )fieldsets should not be visible :fieldsets
    */
-  public function assertFieldsetsNotVisible($fieldsets) {
+  public function assertFieldsetsNotVisible(string $fieldsets): void {
     $fieldsets = $this->explodeCommaSeparatedStepArgument($fieldsets);
     $page = $this->getSession()->getPage();
     $not_found = [];
@@ -306,27 +306,38 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Checks that a given image is present in the page.
    *
+   * @param string $filename
+   *   The file name.
+   *
    * @Then I (should )see the image :filename
    */
-  public function assertImagePresent($filename) {
+  public function assertImagePresent(string $filename): void {
     Assert::assertTrue($this->findImageInRegion($filename));
   }
 
   /**
    * Checks that a given image is not present in the page.
    *
+   * @param string $filename
+   *   The filename.
+   *
    * @Then I should not see the image :filename
    */
-  public function assertImageNotPresent($filename) {
+  public function assertImageNotPresent(string $filename): void {
     Assert::assertFalse($this->findImageInRegion($filename));
   }
 
   /**
    * Checks that a given image is present in a given tile.
    *
+   * @param string $filename
+   *   The filename.
+   * @param string $tile
+   *   The tile title.
+   *
    * @Then I (should )see the image ":filename" in the :tile tile
    */
-  public function assertImagePresentInRegion($filename, $tile) {
+  public function assertImagePresentInRegion(string $filename, string $tile): void {
     $tile = $this->getTileByHeading($tile);
     Assert::assertTrue($this->findImageInRegion($filename, $tile));
   }
@@ -334,9 +345,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Checks that a given image is not present in a given tile.
    *
+   * @param string $filename
+   *   The filename.
+   * @param string $tile
+   *   The tile title.
+   *
    * @Then I should not see the image :filename in the :tile tile
    */
-  public function assertImageNotPresentInRegion($filename, $tile) {
+  public function assertImageNotPresentInRegion(string $filename, string $tile): void {
     $tile = $this->getTileByHeading($tile);
     Assert::assertFalse($this->findImageInRegion($filename, $tile));
   }
@@ -346,7 +362,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I maximize the browser window
    */
-  public function maximizeBrowserWindow() {
+  public function maximizeBrowserWindow(): void {
     $this->getSession()->getDriver()->maximizeWindow();
   }
 
@@ -362,7 +378,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the option :option should be selected
    */
-  public function assertOptionSelected($text) {
+  public function assertOptionSelected(string $text): void {
     $option = $this->getSession()->getPage()->find('xpath', '//option[text()="' . $text . '"]');
 
     if (!$option) {
@@ -386,7 +402,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the option :option should not be selected
    */
-  public function assertOptionNotSelected($text) {
+  public function assertOptionNotSelected(string $text): void {
     $option = $this->getSession()->getPage()->find('xpath', '//option[text()="' . $text . '"]');
 
     if (!$option) {
@@ -410,7 +426,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the option with text :option from select :select is selected
    */
-  public function assertFieldOptionSelected($option, $select) {
+  public function assertFieldOptionSelected(string $option, string $select): void {
     $element = $this->findSelect($select);
     if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
@@ -440,7 +456,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the radio button :radio from field :field should be selected
    */
-  public function assertFieldRadioSelected($radio, $field) {
+  public function assertFieldRadioSelected(string $radio, string $field): void {
     // Find the grouping fieldset that contains the radios field.
     $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
 
@@ -465,9 +481,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Asserts that the radio button option should be selected.
    *
+   * @param string $radio
+   *   The radio button title.
+   *
    * @Then the :radio radio button should not be selected
    */
-  public function assertRadioButtonNotChecked($radio) {
+  public function assertRadioButtonNotChecked(string $radio): void {
     $session = $this->getSession();
     $page = $session->getPage();
     $radio = $page->find('named', ['radio', $radio]);
@@ -488,7 +507,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the option with text :option from select :select is not selected
    */
-  public function assertFieldOptionNotSelected($option, $select) {
+  public function assertFieldOptionNotSelected(string $option, string $select): void {
     $selectField = $this->getSession()->getPage()->find('css', $select);
     if ($selectField === NULL) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
@@ -512,7 +531,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I should have a :type (content )page titled :title
    */
-  public function assertContentPageByTitle($type, $title) {
+  public function assertContentPageByTitle(string $type, string $title): void {
     $type = $this->getEntityByLabel('node_type', $type);
     // If the node doesn't exist, the exception will be thrown here.
     $this->getEntityByLabel('node', $title, $type->id());
@@ -604,9 +623,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Click on an element by css class.
    *
+   * @param string $element
+   *   The element label to click.
+   *
    * @Then /^I click on element "([^"]*)"$/
    */
-  public function iClickOn($element) {
+  public function iClickOn(string $element): void {
     $page = $this->getSession()->getPage();
     $findName = $page->find('css', $element);
     if (!$findName) {
@@ -708,7 +730,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I move the :label slider to the :direction
    */
-  public function moveSlider($label, $direction) {
+  public function moveSlider(string $label, string $direction): void {
     // Check that the direction is either 'left' or 'right'.
     if (!in_array($direction, ['left', 'right'])) {
       throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
@@ -775,9 +797,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * This is intended for verifying things like hover states.
    *
+   * @param string $locator
+   *   The xpath locator.
+   * @param string $element
+   *   The element tag.
+   * @param string $region
+   *   The region selector.
+   *
    * @Then the :locator :element in the :region( region) should not be visible
    */
-  public function assertElementNotVisibleInRegion($locator, $element, $region) {
+  public function assertElementNotVisibleInRegion(string $locator, string $element, string $region): void {
     $element = $this->findNamedElementInRegion($locator, $element, $region);
     $this->assertNotVisuallyVisible($element);
   }
@@ -791,9 +820,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * This is intended for verifying things like hover states.
    *
+   * @param string $locator
+   *   The xpath locator.
+   * @param string $element
+   *   The element tag.
+   * @param string $region
+   *   The region selector.
+   *
    * @Then the :locator :element in the :region( region) should be visible
    */
-  public function assertElementVisibleInRegion($locator, $element, $region) {
+  public function assertElementVisibleInRegion(string $locator, string $element, string $region): void {
     $element = $this->findNamedElementInRegion($locator, $element, $region);
     $this->assertVisuallyVisible($element);
   }
@@ -809,7 +845,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I click( the) :tab tab
    */
-  public function clickVerticalTabLink($tab) {
+  public function clickVerticalTabLink(string $tab): void {
     // When this is running in a browser without JavaScript the vertical tabs
     // are rendered as a details element.
     if (!$this->browserSupportsJavaScript()) {
@@ -830,7 +866,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the :tab tab should be active
    */
-  public function assertVerticalTabActive($tab) {
+  public function assertVerticalTabActive(string $tab): void {
     $element = $this->findVerticalTab($tab);
 
     if (!$element->hasClass('is-selected')) {
@@ -845,7 +881,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @beforeScenario @terms
    */
-  public function provideTestingTerms() {
+  public function provideTestingTerms(): void {
     $fixture = file_get_contents(__DIR__ . '/../../fixtures/testing_terms.yml');
     $hierarchy = Yaml::decode($fixture);
     foreach ($hierarchy as $vid => $terms) {
@@ -893,7 +929,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @When I fill in :field with values :values
    */
-  public function fillFieldWithValues($field, $values) {
+  public function fillFieldWithValues(string $field, string $values): void {
     $values = $this->explodeCommaSeparatedStepArgument($values);
 
     /** @var \Behat\Mink\Element\NodeElement[] $items */
@@ -923,7 +959,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then I should not see the :region region
    */
-  public function assertRegionNotPresent($region) {
+  public function assertRegionNotPresent(string $region): void {
     $session = $this->getSession();
     $element = $session->getPage()->find('region', $region);
     if ($element) {
@@ -944,7 +980,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the HTML title of the page should be :text
    */
-  public function assertPageTitleTagContainsText(string $text) {
+  public function assertPageTitleTagContainsText(string $text): void {
     $session = $this->getSession();
     $page_title = $session->getPage()->find('xpath', '//head/title');
     if (!$page_title) {
@@ -965,9 +1001,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Asserts that the page contains a certain capitalised heading.
    *
+   * @param string $heading
+   *   The heading to search for.
+   *
    * @Then I (should )see the capitalised heading :heading
    */
-  public function assertCapitalisedHeading($heading) {
+  public function assertCapitalisedHeading(string $heading): void {
     $heading = strtoupper($heading);
     $element = $this->getSession()->getPage();
     foreach (array('h1', 'h2', 'h3', 'h4', 'h5', 'h6') as $tag) {
@@ -989,9 +1028,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * | Heading 2 |
    * | ...       |
    *
+   * @param \Behat\Gherkin\Node\TableNode $headingsTable
+   *   A list of headings.
+   *
    * @Then I (should )see the following headings:
    */
-  public function assertHeadings(TableNode $headingsTable) {
+  public function assertHeadings(TableNode $headingsTable): void {
     $page = $this->getSession()->getPage();
     $headings = $headingsTable->getColumn(0);
     foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
@@ -1017,9 +1059,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * | Heading 2 |
    * | ...       |
    *
+   * @param \Behat\Gherkin\Node\TableNode $headingsTable
+   *   A list of headings.
+   *
    * @Then I should not see the following headings:
    */
-  public function assertNoHeadings(TableNode $headingsTable) {
+  public function assertNoHeadings(TableNode $headingsTable): void {
     $page = $this->getSession()->getPage();
     $headings = $headingsTable->getColumn(0);
     $found_headings = [];
@@ -1045,9 +1090,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * | Text 2 |
    * | ...    |
    *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A list of texts.
+   *
    * @Then I (should )see the following lines of text:
    */
-  public function assertTexts(TableNode $table) {
+  public function assertTexts(TableNode $table): void {
     $lines = $table->getColumn(0);
     $errors = [];
     foreach ($lines as $line) {
@@ -1071,9 +1119,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * | Text 2 |
    * | ...    |
    *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A list of texts.
+   *
    * @Then I should not see the following lines of text:
    */
-  public function assertNoTexts(TableNode $table) {
+  public function assertNoTexts(TableNode $table): void {
     $lines = $table->getColumn(0);
     $errors = [];
     foreach ($lines as $line) {
@@ -1097,9 +1148,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * | Link text 2 |
    * | ...         |
    *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A list of links.
+   *
    * @Then I (should )see the following links:
    */
-  public function assertLinks(TableNode $table) {
+  public function assertLinks(TableNode $table): void {
     $links = $table->getColumn(0);
     $errors = [];
     foreach ($links as $link) {
@@ -1121,9 +1175,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * | Link text 2 |
    * | ...         |
    *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   A list of links.
+   *
    * @Then I should not see the following links:
    */
-  public function assertNoLinks(TableNode $table) {
+  public function assertNoLinks(TableNode $table): void {
     $links = $table->getColumn(0);
     $errors = [];
     foreach ($links as $link) {
@@ -1142,7 +1199,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the page should be cacheable
    */
-  public function assertPageCacheable() {
+  public function assertPageCacheable(): void {
     Assert::assertTrue($this->isPageCacheable());
   }
 
@@ -1151,7 +1208,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the page should not be cacheable
    */
-  public function assertPageNotCacheable() {
+  public function assertPageNotCacheable(): void {
     Assert::assertFalse($this->isPageCacheable());
   }
 
@@ -1160,7 +1217,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the page should be cached
    */
-  public function assertPageCached() {
+  public function assertPageCached(): void {
     Assert::assertTrue($this->isPageCached());
   }
 
@@ -1169,7 +1226,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the page should not be cached
    */
-  public function assertPageNotCached() {
+  public function assertPageNotCached(): void {
     Assert::assertFalse($this->isPageCached());
   }
 
@@ -1187,7 +1244,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the row :text is selected/checked
    */
-  public function assertRowIsChecked($text) {
+  public function assertRowIsChecked(string $text): void {
     if (!$this->getCheckboxOrRadioByRowText($text)->isChecked()) {
       throw new ExpectationException("Checkbox/radio-button in '$text' row is unchecked/unselected but it should be checked/selected.", $this->getSession()->getDriver());
     }
@@ -1207,7 +1264,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Then the row :text is not selected/checked
    */
-  public function assertRowIsNotChecked($text) {
+  public function assertRowIsNotChecked(string $text): void {
     if ($this->getCheckboxOrRadioByRowText($text)->isChecked()) {
       throw new ExpectationException("Checkbox/radio-button in '$text' row is checked/selected but it should be unchecked/unselected.", $this->getSession()->getDriver());
     }
@@ -1299,7 +1356,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given I wait for the batch process to finish
    */
-  public function waitForBatchProcess() {
+  public function waitForBatchProcess(): void {
     while ($refresh = $this->getSession()
       ->getPage()
       ->find('css', 'meta[http-equiv="Refresh"]')) {
@@ -1336,6 +1393,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @see \Drupal\Core\Cache\DatabaseCacheTagsChecksum
    * @see https://github.com/jhedstrom/drupalextension/issues/133
    *
+   * @param \Behat\Behat\Hook\Scope\AfterStepScope $event
+   *   The after step scope event.
+   *
    * @AfterStep
    */
   public function clearCacheTagsStaticCache(AfterStepScope $event): void {
@@ -1360,16 +1420,19 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @AfterStep
    */
-  public function indexEntities() {
+  public function indexEntities(): void {
     \Drupal::service('search_api.post_request_indexing')->destruct();
   }
 
   /**
    * Waits until a text is dynamically added to the page.
    *
+   * @param string $text
+   *   The text to search for.
+   *
    * @Given I wait until the page contains the text :text
    */
-  public function iWaitUntilPageContains($text) {
+  public function iWaitUntilPageContains(string $text): void {
     $text = addslashes($text);
     $this->getSession()->wait(60000,
       "jQuery(':contains(\"$text\")').length > 0"
@@ -1379,9 +1442,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * Strips elements from tables that are only readable by screen readers.
    *
+   * @param \LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope $scope
+   *   The scope class.
+   *
    * @AfterTableFetch
    */
-  public static function stripScreenReaderElements(AfterTableFetchScope $scope) {
+  public static function stripScreenReaderElements(AfterTableFetchScope $scope): void {
     $html_manipulator = new HtmlManipulator($scope->getHtml());
     $scope->setHtml($html_manipulator->removeElements('.visually-hidden')->html());
   }
@@ -1440,7 +1506,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeScenario @commitSearchIndex
    */
-  public function commitSearchIndexBeforeScenario() {
+  public function commitSearchIndexBeforeScenario(): void {
     $this->commitSearchIndex();
   }
 
@@ -1449,7 +1515,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeScenario @errorPage
    */
-  public function installErrorPageTestingModule() {
+  public function installErrorPageTestingModule(): void {
     static::toggleModule('install', 'error_page_test');
 
     // The test writes to the PHP error log because it's in its scope to test
@@ -1490,7 +1556,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @Given the site error reporting verbosity is( set to) :error_level
    */
-  public function setSiteErrorLevel(string $error_level = NULL) {
+  public function setSiteErrorLevel(string $error_level = NULL): void {
     static $original_error_level;
 
     $config = \Drupal::configFactory()->getEditable('system.logging');
@@ -1513,7 +1579,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @param string $vocabulary_name
    *   The name of the vocabulary.
-   * @param string $terme_name
+   * @param string $term_name
    *   The term name.
    * @param string $format
    *   The RDF serialization format.
