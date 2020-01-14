@@ -431,3 +431,27 @@ Feature: Log in through EU Login
     # The email ends up getting the upstream email so that correct character casing is applied.
     And the user joe should have the following data in their user profile:
       | E-mail      | Joe_Case_Insensitive@example.com |
+
+  Scenario: Anonymous user is asked to log in when accessing a protected page
+    Given users:
+      | Username | E-mail         | Password | First name | Family name | Roles     |
+      | jonbon   | jon@example.eu | bonbonbo | Jon        | Bon         | moderator |
+    Given CAS users:
+      | Username | E-mail              | Password  | First name | Last name | Local username |
+      | jbon     | j.bon@ec.example.eu | abc123!#$ | John       | Bonn      | jonbon         |
+    Given I am an anonymous user
+    When I visit "admin/people"
+    Then I should see the heading "Sign in to continue"
+    # The warning that the user is not authenticated should not be shown since
+    # if we are using an external CAS authentication service the first Drupal
+    # page that would be presented to the user would receive this message and at
+    # that moment the user has successfully logged in. In this case we are using
+    # a mocked CAS server which is written in Drupal and receives this message.
+    # It needs to be suppressed.
+    But I should not see the error message "Access denied. You must sign in to view this page."
+    When I fill in the following:
+      | E-mail address | j.bon@ec.example.eu |
+      | Password       | abc123!#$           |
+    And I press "Log in"
+    # The user should be redirected to the original page after logging in.
+    Then I should see the heading "People"
