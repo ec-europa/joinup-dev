@@ -10,7 +10,7 @@ element_name: user_homepage
 time_limit: 5
 expire: 300
 form_settings:
-  user_register_form: true
+  user_register_form: false
   user_pass: true
   node_custom_page_form: false
   node_discussion_form: false
@@ -18,6 +18,7 @@ form_settings:
   node_event_form: false
   node_news_form: false
   node_newsletter_form: false
+  node_tallinn_report_form: false
   node_video_form: false
   comment_comment_form: true
   comment_reply_form: true
