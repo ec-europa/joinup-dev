@@ -932,7 +932,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Asserts that the page title tag contains text.
+   * Asserts that the page title tag equals to some text.
+   *
+   * The assertion strips off the possible suffix "| Joinup".
    *
    * @param string $text
    *   The text to search for.
@@ -940,20 +942,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @throws \Exception
    *   Thrown when the title tag is not found or the text doesn't match.
    *
-   * @Then the HTML title tag should contain the text :text
+   * @Then the HTML title of the page should be :text
    */
-  public function assertPageTitleTagContainsText($text) {
+  public function assertPageTitleTagContainsText(string $text) {
     $session = $this->getSession();
     $page_title = $session->getPage()->find('xpath', '//head/title');
     if (!$page_title) {
       throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
-    list($title, $site_name) = explode(' | ', $page_title->getText());
+    $page_title = $page_title->getText();
+    if (strpos($page_title, '|') !== FALSE) {
+      list($page_title, $site_name) = explode(' | ', $page_title->getText());
+    }
 
-    $title = trim($title);
-    if ($title !== $text) {
-      throw new \Exception(sprintf('Expected page title is "%s", but "%s" found.', $text, $title));
+    $page_title = trim($page_title);
+    if ($page_title !== $text) {
+      throw new \Exception(sprintf('Expected page title is "%s", but "%s" found.', $text, $page_title));
     }
   }
 
