@@ -591,7 +591,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @BeforeNodeCreate
    */
-  public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     // Replace field label aliases with the actual field names.
@@ -642,6 +642,14 @@ class JoinupSubContext extends DrupalSubContextBase {
 
     if (property_exists($node, 'published_at') && !is_numeric($node->published_at)) {
       $node->published_at = strtotime($node->published_at);
+    }
+
+    $image_fields = ['field_news_logo'];
+    foreach ($image_fields as $image_field) {
+      if (!empty($node->$image_field)) {
+        $file = $this->createFile($node->$image_field);
+        $node->$image_field = $file->getFileUri();
+      }
     }
 
     // Replace the human-readable values for multiple fields.
@@ -705,6 +713,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'keywords' => 'field_keywords',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
+        'logo' => 'field_news_logo',
         'publication date' => 'published_at',
       ],
       'shared' => [

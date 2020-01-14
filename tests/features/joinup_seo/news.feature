@@ -11,8 +11,8 @@ Feature: As an owner of the website
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Kurk       | Smith       |
     And "news" content:
-      | title           | headline                    | body                    | created                         | publication date                | changed                         | state     | author            | collection                 |
-      | Joinup SEO news | Headline of Joinup SEO news | Body of Joinup SEO news | Sun, 01 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | validated | Joinup SEO author | Joinup SEO news collection |
+      | title           | headline                    | logo     | body                    | created                         | publication date                | changed                         | state     | author            | collection                 |
+      | Joinup SEO news | Headline of Joinup SEO news | logo.png | Body of Joinup SEO news | Sun, 01 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | validated | Joinup SEO author | Joinup SEO news collection |
 
     When I visit the "Joinup SEO news" news
     Then the metatag json should be attached in the page
@@ -26,6 +26,15 @@ Feature: As an owner of the website
       | dateModified     | Wed, 01/01/2020 - 13:00                                               |
       # $base_url$ will be replaced with the base url of the website.
       | mainEntityOfPage | $base_url$/collection/joinup-seo-news-collection/news/joinup-seo-news |
+    And the metatag graph of the item with "name" "Joinup SEO news" should have the following "image" properties:
+      | property             | value       |
+      | @type                | ImageObject |
+      | representativeOfPage | True        |
+      # The test files are assigned a random name so it is very hard to assert the real url. However, when the file is
+      # found and added to the page, the dimensions are added as well. Asserting the dimensions also asserts the url in
+      # a way.
+      | width                | 377         |
+      | height               | 139         |
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following "author" properties:
       | property | value      |
       | @type    | Person     |
