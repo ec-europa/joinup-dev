@@ -353,10 +353,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function assertSelectOptionsAsList($select, TableNode $table) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
-
-    $rows = $table->getColumn(0);
-    Assert::assertEquals($rows, $available_options);
+    $this->assertSelectAvailableOptions($field, $table);
   }
 
   /**

@@ -7,6 +7,7 @@
 
 declare(strict_types = 1);
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -247,6 +248,79 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
     $facet = $this->findFacetByAlias($facet, $region);
     $this->openFacetDropdown($facet);
     $facet->clickLink($link);
+  }
+
+  /**
+   * Clicks a facet item in an inline facet.
+   *
+   * @param string $select
+   *   The option to select.
+   * @param string $facet
+   *   The facet alias.
+   *
+   * @throws \Exception
+   *   Thrown when the facet or the link inside the facet is not found.
+   *
+   * @When I select :option from the :facet select facet
+   */
+  public function iSelectAnOptionFromFacet(string $select, string $facet): void {
+    $this->findFacetByAlias($facet)->selectOption($select);
+  }
+
+  /**
+   * Asserts a selected option in the .
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   CSS selector of the select field.
+   *
+   * @throws \Exception
+   *
+   * @Then the option with text :option from select facet :select is selected
+   */
+  public function assertSelectFacetOptionSelected($option, $select) {
+    $element = $this->findFacetByAlias($select);
+    if (!$element) {
+      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
+    }
+    $this->assertSelectedOption($element, $option);
+  }
+
+  /**
+   * Asserts the list of available options in a select facet.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   */
+  public function assertSelectFacetOptionsAsList($select, TableNode $table) {
+    $element = $this->findFacetByAlias($select);
+    $this->assertSelectAvailableOptions($element, $table);
+  }
+
+  /**
+   * Asserts the list of available options in a facet select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select facet should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $element = $this->findFacetByAlias($select);
+    $this->assertSelectAvailableOptions($element, $table);
   }
 
   /**

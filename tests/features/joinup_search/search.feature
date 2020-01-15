@@ -29,12 +29,12 @@ Feature: Global search
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
     # Facets should be in place.
-    And the option with text "Any policy domain" from select "Policy domain" is selected
-    And the "Policy domain" select should contain the following options:
+    And the option with text "Any policy domain" from select facet "policy domain" is selected
+    And the "policy domain" select facet should contain the following options:
       | Demography (2)              |
       | Statistics and Analysis (1) |
-    And the option with text "Any location" from select "Geographic coverage" is selected
-    And the "Geographic coverage" select should contain the following options:
+    And the option with text "Any location" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
       | Belgium (1)        |
       | European Union (1) |
       | Luxembourg (1)     |
@@ -43,13 +43,13 @@ Feature: Global search
     And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
-    When I select "Demography (2)" from "Policy domain"
-    Then the option with text "Demography (2)" from select "Policy domain" is selected
-    And the "Policy domain" select should contain the following options:
+    When I select "Demography (2)" from the "policy domain" select facet
+    Then the option with text "Demography (2)" from select facet "policy domain" is selected
+    And the "policy domain" select facet should contain the following options:
       | Demography (2)              |
       | Statistics and Analysis (1) |
-    Then the option with text "Any location" from select "Geographic coverage" is selected
-    And the "CounGeographic coveragetry" select should contain the following options:
+    Then the option with text "Any location" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
       | Belgium (1)        |
       | European Union (1) |
     And I should see the "Molecular cooking collection" tile
@@ -58,14 +58,14 @@ Feature: Global search
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I select "Belgium (1)" from "Geographic coverage"
-    Then the option with text "Belgium (1)" from select "Geographic coverage" is selected
-    And the "Geographic coverage" select should contain the following options:
+    When I select "Belgium (1)" from "spatial coverage"
+    Then the option with text "Belgium (1)" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
       | Any location        |
       | Belgium (1)        |
       | European Union (1) |
-    Then the option with text "Demography (1)" from select "Policy domain" is selected
-    And the "Policy domain" select should contain the following options:
+    Then the option with text "Demography (1)" from select facet "policy domain" is selected
+    And the "policy domain" select facet should contain the following options:
       | Any policy domain |
       | Demography (2)    |
     And I should see the "Molecular cooking collection" tile
@@ -86,11 +86,11 @@ Feature: Global search
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
-    And the "Policy domain" select should contain the following options:
+    And the "policy domain" select facet should contain the following options:
       | Any policy domain           |
       | Demography (1)              |
       | Statistics and Analysis (1) |
-    And the "Geographic coverage" select should contain the following options:
+    And the "spatial coverage" select facet should contain the following options:
       | Any location        |
       | Belgium (1)        |
       | European Union (1) |

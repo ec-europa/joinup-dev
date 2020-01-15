@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use PHPUnit\Framework\Assert;
 
 /**
  * Helper methods to deal with traversing of page elements.
@@ -31,6 +35,48 @@ trait TraversingTrait {
     }
 
     return $element;
+  }
+
+  /**
+   * Helper method that asserts a selected option of a select element.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The select node element.
+   * @param string $option
+   *   The select option.
+   *
+   * @throws \Exception
+   *   Thrown if there is no selected option or the selected option is not the
+   *   correct one.
+   */
+  protected function assertSelectedOption(NodeElement $element, array $option): void {
+    $option_element = $element->find('xpath', '//option[@selected="selected"]');
+    if (!$option_element) {
+      throw new \Exception('No option is selected in the requested select');
+    }
+
+    if ($option_element->getText() !== $option) {
+      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+    }
+  }
+
+  /**
+   * Helper method that asserts the available options of select fields.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The select element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws \Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   */
+  protected function assertSelectAvailableOptions(NodeElement $element, TableNode $table): void {
+    $available_options = array_values($this->getSelectOptions($element));
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
   }
 
   /**
@@ -438,7 +484,7 @@ trait TraversingTrait {
     $elements = [];
 
     foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
-      list ($selector, $locator) = $selector_tuple;
+      [$selector, $locator] = $selector_tuple;
       $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
     }
 
