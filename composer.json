@@ -119,7 +119,8 @@
         "phpunit/phpunit": "~6.5",
         "symfony/css-selector": "~2.8|~3.0|~4.0",
         "symfony/phpunit-bridge": "^4.2",
-        "weitzman/drupal-test-traits": "~1.3.1"
+        "weitzman/drupal-test-traits": "~1.3.1",
+        "weitzman/logintrait": "^1.1"
     },
     "conflict": {
         "drupal/drupal": "*",

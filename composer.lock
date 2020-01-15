@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86a03a2c3bc000ecc1a7af87f1edc114",
+    "content-hash": "00bcbf475c0a51345d5b9571a08cd95b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -15838,6 +15838,43 @@
             ],
             "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
             "time": "2019-11-29T09:34:00+00:00"
+        },
+        {
+            "name": "weitzman/logintrait",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/weitzman/logintrait.git",
+                "reference": "56fc9f9719c5bde1ce9770f27c0732c11a96a479"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Flogintrait/repository/archive.zip?sha=56fc9f9719c5bde1ce9770f27c0732c11a96a479",
+                "reference": "56fc9f9719c5bde1ce9770f27c0732c11a96a479",
+                "shasum": ""
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "drupal-dtt",
+            "autoload": {
+                "psr-4": {
+                    "weitzman\\LoginTrait\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                }
+            ],
+            "description": "Provides login/logout via user reset URL instead of forms.",
+            "time": "2019-04-19T11:52:16+00:00"
         }
     ],
     "aliases": [
