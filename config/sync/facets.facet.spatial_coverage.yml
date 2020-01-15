@@ -8,7 +8,7 @@ dependencies:
   module:
     - search_api
 id: spatial_coverage
-name: Country
+name: 'Geographic coverage'
 url_alias: spatial_coverage
 weight: 0
 min_count: 1
@@ -19,7 +19,7 @@ widget:
   type: dropdown
   config:
     show_numbers: true
-    default_option_label: 'Any country'
+    default_option_label: 'Any location'
     arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false

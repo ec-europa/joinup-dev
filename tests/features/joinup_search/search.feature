@@ -28,32 +28,46 @@ Feature: Global search
     And I should see the "El Celler de Can Roca" tile
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
-    # Inline facets should be in place.
-    And "all policy domains" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "Demography (2), Statistics and Analysis (1)"
-    And "everywhere" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1), Luxembourg (1)"
+    # Facets should be in place.
+    And the option with text "Any policy domain" from select "Policy domain" is selected
+    And the "Policy domain" select should contain the following options:
+      | Demography (2)              |
+      | Statistics and Analysis (1) |
+    And the option with text "Any location" from select "Geographic coverage" is selected
+    And the "Geographic coverage" select should contain the following options:
+      | Belgium (1)        |
+      | European Union (1) |
+      | Luxembourg (1)     |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
-    When I click "Demography" in the "policy domain" inline facet in the "Left sidebar" region
-    Then "Demography (2)" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "Statistics and Analysis (1), all policy domains"
-    And "everywhere" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1)"
+    When I select "Demography (2)" from "Policy domain"
+    Then the option with text "Demography (2)" from select "Policy domain" is selected
+    And the "Policy domain" select should contain the following options:
+      | Demography (2)              |
+      | Statistics and Analysis (1) |
+    Then the option with text "Any location" from select "Geographic coverage" is selected
+    And the "CounGeographic coveragetry" select should contain the following options:
+      | Belgium (1)        |
+      | European Union (1) |
     And I should see the "Molecular cooking collection" tile
     And I should see the "Spherification" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I click "Belgium" in the "spatial coverage" inline facet in the "Left sidebar" region
-    Then "Belgium (1)" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), everywhere"
-    And "Demography (1)" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "all policy domains"
+    When I select "Belgium (1)" from "Geographic coverage"
+    Then the option with text "Belgium (1)" from select "Geographic coverage" is selected
+    And the "Geographic coverage" select should contain the following options:
+      | Any location        |
+      | Belgium (1)        |
+      | European Union (1) |
+    Then the option with text "Demography (1)" from select "Policy domain" is selected
+    And the "Policy domain" select should contain the following options:
+      | Any policy domain |
+      | Demography (2)    |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -72,8 +86,15 @@ Feature: Global search
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
-    And the "policy domain" inline facet should allow selecting the following values "Demography (1), Statistics and Analysis (1)"
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), Luxembourg (1)"
+    And the "Policy domain" select should contain the following options:
+      | Any policy domain           |
+      | Demography (1)              |
+      | Statistics and Analysis (1) |
+    And the "Geographic coverage" select should contain the following options:
+      | Any location        |
+      | Belgium (1)        |
+      | European Union (1) |
+      | Luxembourg (1)     |
     And I should not see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
