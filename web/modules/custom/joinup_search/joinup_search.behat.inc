@@ -264,7 +264,8 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @When I select :option from the :facet select facet
    */
   public function iSelectAnOptionFromFacet(string $select, string $facet): void {
-    $this->findFacetByAlias($facet)->selectOption($select);
+    $facet = $this->findFacetByAlias($facet, NULL, 'select');
+    $facet->selectOption($select);
   }
 
   /**
@@ -280,7 +281,7 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @Then the option with text :option from select facet :select is selected
    */
   public function assertSelectFacetOptionSelected($option, $select) {
-    $element = $this->findFacetByAlias($select);
+    $element = $this->findFacetByAlias($select, NULL, 'select');
     if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
@@ -319,7 +320,7 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @Then the :select select facet should contain the following options:
    */
   public function assertSelectOptionsAsList($select, TableNode $table) {
-    $element = $this->findFacetByAlias($select);
+    $element = $this->findFacetByAlias($select, NULL, 'select');
     $this->assertSelectAvailableOptions($element, $table);
   }
 

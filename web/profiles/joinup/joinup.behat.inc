@@ -304,7 +304,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -327,7 +327,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
