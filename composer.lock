@@ -13526,12 +13526,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupaltest/behat-one-time-login.git",
-                "reference": "265bc68277734404d61d2728b6cba862459dbbb6"
+                "reference": "63bd781029cb927047c50f2d74610ba84465e25b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/265bc68277734404d61d2728b6cba862459dbbb6",
-                "reference": "265bc68277734404d61d2728b6cba862459dbbb6",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/63bd781029cb927047c50f2d74610ba84465e25b",
+                "reference": "63bd781029cb927047c50f2d74610ba84465e25b",
                 "shasum": ""
             },
             "require": {
@@ -13574,7 +13574,7 @@
                 "source": "https://github.com/drupaltest/behat-one-time-login/tree/master",
                 "issues": "https://github.com/drupaltest/behat-one-time-login/issues"
             },
-            "time": "2020-01-14T23:01:02+00:00"
+            "time": "2020-01-15T12:14:12+00:00"
         },
         {
             "name": "fabpot/goutte",
