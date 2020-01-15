@@ -13,6 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\KeyboardInteractionTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
@@ -24,6 +25,7 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use BrowserCapabilityDetectionTrait;
   use KeyboardInteractionTrait;
+  use MaterialDesignTrait;
   use TraversingTrait;
   use UtilityTrait;
 
@@ -322,6 +324,33 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
   public function assertSelectOptionsAsList($select, TableNode $table) {
     $element = $this->findFacetByAlias($select, NULL, 'select');
     $this->assertSelectAvailableOptions($element, $table);
+  }
+
+  /**
+   * Checks a checkbox link in a facet.
+   *
+   * @param string $option
+   *   The label of the checkbox.
+   * @param string $facet_type
+   *   The label of the facet.
+   *
+   * @throws \Exception
+   *   Thrown when the checkbox is not found.
+   *
+   * @Given I check the :option checkbox from the :facet_type facet
+   */
+  public function checkCheckboxFacet(string $option, string $facet_type): void {
+    $facet = $this->findFacetByAlias($facet_type);
+    /** @var \Behat\Mink\Element\NodeElement[] $node_elements */
+    $node_elements = $facet->findAll('xpath', '//li[@class="facet-item"]');
+    foreach ($node_elements as $node_element) {
+      if ($node_element->getText() === $option) {
+        $node_element->click();
+        return;
+      }
+    }
+
+    throw new \Exception("The option '{$option}' was not found in the '{$facet_type}' facet.");
   }
 
   /**

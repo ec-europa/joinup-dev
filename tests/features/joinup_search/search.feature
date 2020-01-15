@@ -2,6 +2,9 @@
 Feature: Global search
   As a user of the site I can find content through the global search.
 
+  # This test runs with javascript enabled because in a non-javascript environment, the dropdown facet is simply a list
+  # of links.
+  @javascript
   Scenario: Anonymous user can find items
     Given the following collection:
       | title            | Molecular cooking collection |
@@ -31,43 +34,48 @@ Feature: Global search
     # Facets should be in place.
     And the option with text "Any policy domain" from select facet "policy domain" is selected
     And the "policy domain" select facet should contain the following options:
-      | Demography (2)              |
-      | Statistics and Analysis (1) |
+      | Any policy domain             |
+      | Demography   (2)              |
+      | Statistics and Analysis   (1) |
     And the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
-      | Belgium (1)        |
-      | European Union (1) |
-      | Luxembourg (1)     |
+      | Any location         |
+      | Belgium   (1)        |
+      | European Union   (1) |
+      | Luxembourg   (1)     |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
-    When I select "Demography (2)" from the "policy domain" select facet
-    Then the option with text "Demography (2)" from select facet "policy domain" is selected
+    When I select "Demography" from the "policy domain" select facet
+    Then the option with text "Demography   (2)" from select facet "policy domain" is selected
+    # The selected option moves to the last position by default.
     And the "policy domain" select facet should contain the following options:
-      | Demography (2)              |
-      | Statistics and Analysis (1) |
+      | Any policy domain             |
+      | Statistics and Analysis   (1) |
+      | Demography   (2)              |
     Then the option with text "Any location" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
-      | Belgium (1)        |
-      | European Union (1) |
+      | Any location         |
+      | Belgium   (1)        |
+      | European Union   (1) |
     And I should see the "Molecular cooking collection" tile
     And I should see the "Spherification" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I select "Belgium (1)" from "spatial coverage"
-    Then the option with text "Belgium (1)" from select facet "spatial coverage" is selected
+    When I select "Belgium" from the "spatial coverage" select facet
+    Then the option with text "Belgium   (1)" from select facet "spatial coverage" is selected
     And the "spatial coverage" select facet should contain the following options:
-      | Any location        |
-      | Belgium (1)        |
-      | European Union (1) |
-    Then the option with text "Demography (1)" from select facet "policy domain" is selected
+      | Any location         |
+      | European Union   (1) |
+      | Belgium   (1)        |
+    Then the option with text "Demography   (1)" from select facet "policy domain" is selected
     And the "policy domain" select facet should contain the following options:
       | Any policy domain |
-      | Demography (2)    |
+      | Demography   (1)  |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -78,30 +86,31 @@ Feature: Global search
     Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I click "News" in the "Left sidebar"
+
+    When I check the "News (1)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
     And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
 
-    When I click "Solutions" in the "Left sidebar"
+    When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
     And the "policy domain" select facet should contain the following options:
-      | Any policy domain           |
-      | Demography (1)              |
-      | Statistics and Analysis (1) |
+      | Any policy domain             |
+      | Demography   (1)              |
+      | Statistics and Analysis   (1) |
     And the "spatial coverage" select facet should contain the following options:
-      | Any location        |
-      | Belgium (1)        |
-      | European Union (1) |
-      | Luxembourg (1)     |
+      | Any location         |
+      | European Union   (1) |
+      | Luxembourg   (1)     |
     And I should not see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
     And I should see the "Foam" tile
 
     # Launch a text search.
-    When I enter "Cooking" in the search bar and press enter
+    When I open the search bar by clicking on the search icon
+    And I enter "Cooking" in the search bar and press enter
     Then I should see the "Molecular cooking collection" tile
     And I should see the "Foam" tile
     But I should not see the "Spherification" tile
