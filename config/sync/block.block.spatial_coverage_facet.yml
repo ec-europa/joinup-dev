@@ -17,7 +17,7 @@ provider: null
 plugin: 'facet_block:spatial_coverage'
 settings:
   id: 'facet_block:spatial_coverage'
-  label: 'Search page - Spatial coverage facet'
+  label: 'Search page - Geographical coverage facet'
   provider: facets
   label_display: '0'
 visibility:

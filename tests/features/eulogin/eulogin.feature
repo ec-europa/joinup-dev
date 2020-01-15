@@ -210,12 +210,9 @@ Feature: Log in through EU Login
       | First name  | James            |
       | Family name | Bond             |
 
-    # Test the customized message as logged in user.
-    Given I visit "/user/password"
-    And I wait for the honeypot time limit to pass
-    And I press "Submit"
-    Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
-    And I should see the link "EU Login"
+    # A logged in user cannot access the reset password form.
+    When I go to "/user/password"
+    Then I should get an access denied error
 
   Scenario: Fields imported from EU Login cannot be edited locally.
     Given users:
@@ -246,7 +243,12 @@ Feature: Log in through EU Login
     And the following fields should be disabled "First name,Family name"
     But I should not see "Username"
     And I should not see "full_cas_profile"
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see the following lines of text:
+      | Account information                                                                                                                                                                                                       |
+      | Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup. |
+      | Your e-mail address is not made public. We will only send you necessary system notifications and you can opt in later if you wish to receive additional notifications about content you are subscribed to.                         |
+      | Your first name is publicly visible.                                                                                                                                                                                               |
+      | Your last name is publicly visible.                                                                                                                                                                                                |
 
     When I press "Save"
     Then I should see the success message "The changes have been saved."
@@ -268,7 +270,7 @@ Feature: Log in through EU Login
     And the following fields should be disabled "Family name"
     But I should not see "Username"
     And I should not see "partial_cas_profile"
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -295,7 +297,7 @@ Feature: Log in through EU Login
     But I should not see "Username"
     # The username appears in the page header because this use has no first and
     # last name. But we check the absence of "Username" and this is enough.
-    And I should see "The email address is not made public and will only be used if you wish to receive certain news or notifications by email."
+    And I should see "Your name and E-mail data are inherited from EU Login. To update this information, you can visit your EU Login account page here. Synchronisation will take a few minutes and it will be visible the next time you login on Joinup."
     But I should not see "Fail - Password length must be at least 8 characters."
     And I should not see "Password character length of at least 8"
     And I should not see "Fail - Password must contain at least 3 types of characters from the following character types: lowercase letters, uppercase letters, digits, special characters."
@@ -376,7 +378,7 @@ Feature: Log in through EU Login
     Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
 
   Scenario: The Drupal registration tab has been removed and the /user/register
-    route redirects to EU Login registration form.
+  route redirects to EU Login registration form.
     When I visit "/user/login"
     Then I should not see the link "Create new account"
     When I visit "/user/register"
@@ -391,13 +393,14 @@ Feature: Log in through EU Login
 
   Scenario: A moderator is able to manually link a local user to its EU Login.
     Given user:
-      | Username    | joe |
-      | First name  | Joe |
-      | Family name | Doe |
+      | Username    | joe                              |
+      | E-mail      | joe_case_insensitive@example.com |
+      | First name  | Joe                              |
+      | Family name | Doe                              |
 
     And CAS users:
-      | Username | E-mail          | Password | First name | Last name |
-      | joe      | joe@example.com | 123      | Joe        | Doe       |
+      | Username | E-mail                           | Password | First name | Last name |
+      | joe      | Joe_Case_Insensitive@example.com | 123      | Joe        | Doe       |
 
     Given I am logged in as a moderator
     And I click "People"
@@ -409,7 +412,7 @@ Feature: Log in through EU Login
     When I press "Save"
     Then I should see the following success messages:
       | success messages                                                                |
-      | An e-mail has been send to the user to notify him on the change to his account. |
+      | An e-mail has been sent to the user to notify him on the change to his account. |
       | The changes have been saved.                                                    |
 
     When I click "Edit" in the "Joe Doe" row
@@ -421,7 +424,10 @@ Feature: Log in through EU Login
     And I am on the homepage
     And I click "Sign in"
     And I click "EU Login"
-    And I fill in "E-mail address" with "joe@example.com"
+    And I fill in "E-mail address" with "Joe_Case_Insensitive@example.com"
     And I fill in "Password" with "123"
     When I press the "Log in" button
     Then I should see the success message "You have been logged in."
+    # The email ends up getting the upstream email so that correct character casing is applied.
+    And the user joe should have the following data in their user profile:
+      | E-mail      | Joe_Case_Insensitive@example.com |

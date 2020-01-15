@@ -18,7 +18,7 @@ use Drupal\views\ViewExecutable;
  *
  * Decodes RDF entity ID before running the query.
  *
- * @see joinup_core_views_query_alter()
+ * @see joinup_group_views_query_alter()
  */
 function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void {
   if ($view->id() !== 'collection_feed') {

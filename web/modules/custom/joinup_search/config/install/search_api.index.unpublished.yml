@@ -80,7 +80,7 @@ field_settings:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
   spatial_coverage:
-    label: 'Spatial coverage'
+    label: 'Geographical coverage'
     property_path: aggregated_field
     type: string
     configuration:

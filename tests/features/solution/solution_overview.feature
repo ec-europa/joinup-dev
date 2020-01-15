@@ -134,12 +134,12 @@ Feature: Solutions Overview
     When I go to the add solution form of the "Pikachu, I choose you" collection
     Then I should see the heading "Add Solution"
     When I fill in the following:
-      | Title            | Colonies in Earth                                                      |
-      | Description      | Some space mumbo jumbo description.                                    |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
-      | Name             | Ambrosio Morison                                                       |
-      | E-mail address   | ambrosio.morison@example.com                                           |
+      | Title                 | Colonies in Earth                                                      |
+      | Description           | Some space mumbo jumbo description.                                    |
+      | Geographical coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
+      | Language              | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Name                  | Ambrosio Morison                                                       |
+      | E-mail address        | ambrosio.morison@example.com                                           |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"

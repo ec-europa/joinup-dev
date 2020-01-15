@@ -9,6 +9,10 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\og\MembershipManagerInterface;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,6 +35,27 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   protected $configFactory;
 
   /**
+   * The relation manager service.
+   *
+   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   */
+  protected $relationManager;
+
+  /**
+   * The membership manager service.
+   *
+   * @var \Drupal\og\MembershipManagerInterface
+   */
+  protected $membershipManager;
+
+  /**
+   * The workflow helper class.
+   *
+   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   */
+  protected $workflowHelper;
+
+  /**
    * Constructs a CollectionWorkflowStatePermissions object.
    *
    * @param array $configuration
@@ -41,10 +66,19 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    *   The plugin implementation definition.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
+   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
+   *   The relation manager service.
+   * @param \Drupal\og\MembershipManagerInterface $membership_manager
+   *   The membership manager service.
+   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   *   The workflow helper class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, JoinupRelationManagerInterface $relation_manager, MembershipManagerInterface $membership_manager, WorkflowHelperInterface $workflow_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
+    $this->relationManager = $relation_manager;
+    $this->membershipManager = $membership_manager;
+    $this->workflowHelper = $workflow_helper;
   }
 
   /**
@@ -55,7 +89,10 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('joinup_core.relations_manager'),
+      $container->get('og.membership_manager'),
+      $container->get('joinup_core.workflow.helper')
     );
   }
 
@@ -75,10 +112,68 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
     }
 
     $allowed_conditions = $this->configFactory->get('contact_information.settings')->get('transitions');
+    $matrix = $allowed_conditions[$to_state][$from_state];
+    $access = !empty($matrix) && $this->userHasOwnAnyRoles($entity, $account, $matrix);
 
-    // Check if the user has one of the allowed system roles.
-    $authorized_roles = $allowed_conditions[$to_state][$from_state] ?? [];
-    return (bool) array_intersect($authorized_roles, $account->getRoles());
+    // If the user has access to the 'request_deletion' transition but also has
+    // delete permission to the entity, revoke the permission to request
+    // deletion.
+    if ($access && $to_state === 'deletion_request') {
+      $access = !$entity->access('delete');
+    }
+
+    return $access;
+  }
+
+  /**
+   * Checks if the user has any required roles globally or in the parents.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $entity
+   *   The contact information entity.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account object.
+   * @param array $roles
+   *   A list of roles keyed by 'any' and 'own' and with the type 'roles' or
+   *   'og_roles'.
+   *
+   * @return bool
+   *   The access result as boolean.
+   */
+  protected function userHasOwnAnyRoles(RdfInterface $entity, AccountInterface $account, array $roles): bool {
+    $own = $entity->getOwnerId() === $account->id();
+
+    if (isset($roles['any']['roles'])) {
+      if (array_intersect($account->getRoles(), $roles['any']['roles'])) {
+        return TRUE;
+      }
+    }
+
+    if ($own && isset($roles['own']['roles'])) {
+      if (array_intersect($account->getRoles(), $roles['own']['roles'])) {
+        return TRUE;
+      }
+    }
+
+    foreach ($this->relationManager->getContactInformationRelatedGroups($entity) as $group) {
+      $membership = $this->membershipManager->getMembership($group, $account->id());
+      if (empty($membership)) {
+        continue;
+      }
+
+      $role_ids = $membership->getRolesIds();
+      if (isset($roles['any']['og_roles'])) {
+        if (array_intersect($role_ids, $roles['any']['og_roles'])) {
+          return TRUE;
+        }
+      }
+      if ($own && isset($roles['own']['og_roles'])) {
+        if (array_intersect($membership->getRolesIds(), $roles['own']['og_roles'])) {
+          return TRUE;
+        }
+      }
+    }
+
+    return FALSE;
   }
 
 }

@@ -62,12 +62,12 @@ Feature: "Add solution" visibility options.
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
     And the "Solution type" field should contain the "IOP specification underpinning View, Legal View, Organisational View, deprecated" option groups
     When I fill in the following:
-      | Title            | Espresso is the solution                                      |
-      | Description      | This is a test text                                           |
-      | Spatial coverage | Belgium                                                       |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS |
-      | Name             | Ernst Brice                                                   |
-      | E-mail address   | ernsy1999@gmail.com                                           |
+      | Title                 | Espresso is the solution                                      |
+      | Description           | This is a test text                                           |
+      | Geographical coverage | Belgium                                                       |
+      | Language              | http://publications.europa.eu/resource/authority/language/VLS |
+      | Name                  | Ernst Brice                                                   |
+      | E-mail address        | ernsy1999@gmail.com                                           |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     # Attach a PDF to the documentation.
@@ -120,12 +120,12 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Belgian barista's" collection
     And I click "Add solution"
     When I fill in the following:
-      | Title            | V60 filter coffee solution                                             |
-      | Description      | This is a test text                                                    |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
-      | Name             | Ajit Tamboli                                                           |
-      | E-mail address   | tambotamboli@gocloud.in                                                |
+      | Title                 | V60 filter coffee solution                                             |
+      | Description           | This is a test text                                                    |
+      | Geographical coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
+      | Language              | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Name                  | Ajit Tamboli                                                           |
+      | E-mail address        | tambotamboli@gocloud.in                                                |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "E-inclusion" from "Policy domain"
     # Attach a PDF to the documentation.
@@ -219,11 +219,11 @@ Feature: "Add solution" visibility options.
     When I go to the homepage of the "Glacier monitoring" collection
     And I click "Add solution" in the plus button menu
     And I fill in the following:
-      | Title            | Climate change tracker                      |
-      | Description      | Logs retreat of 40 glaciers in Switzerland. |
-      | Spatial coverage | Switzerland                                 |
-      | Name             | Angela Crespi                               |
-      | E-mail address   | angela_crespi@glacmon.basel-uni.ch          |
+      | Title                 | Climate change tracker                      |
+      | Description           | Logs retreat of 40 glaciers in Switzerland. |
+      | Geographical coverage | Switzerland                                 |
+      | Name                  | Angela Crespi                               |
+      | E-mail address        | angela_crespi@glacmon.basel-uni.ch          |
     And I select "Data gathering, data processing" from "Policy domain"
     And I select "Logging Service" from "Solution type"
     And I press "Add existing" at the "Owner" field

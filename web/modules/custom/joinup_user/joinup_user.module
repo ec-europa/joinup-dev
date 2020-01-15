@@ -69,7 +69,7 @@ function joinup_user_user_update(UserInterface $account) {
     $account->getPreferredLangcode(),
     $params
   );
-  drupal_set_message(t('An e-mail has been send to the user to notify him on the change to his account.'));
+  \Drupal::messenger()->addStatus('An e-mail has been sent to the user to notify him on the change to his account.');
 }
 
 /**

@@ -1,25 +1,34 @@
 name: Licence
 type: module
-description: Licence entity for Joinup
+description: 'Licence entity for Joinup'
 core: 8.x
 package: Joinup
 
 dependencies:
-  - field_group:field_group
-  - smart_trim:smart_trim
-  - spdx:spdx
+  - 'field_group:field_group'
+  - 'smart_trim:smart_trim'
+  - 'spdx:spdx'
 
 config_devel:
-  - core.base_field_override.rdf_entity.licence.label
-  - core.entity_form_display.rdf_entity.licence.default
-  - core.entity_view_display.rdf_entity.licence.default
-  - core.entity_view_display.rdf_entity.licence.view_mode_tile
-  - field.field.rdf_entity.licence.field_licence_description
-  - field.field.rdf_entity.licence.field_licence_type
-  - field.storage.rdf_entity.field_licence_description
-  - field.storage.rdf_entity.field_licence_type
-  - filter.format.licence
-  - rdf_entity.rdfentity.licence
-  - sparql_entity_storage.mapping.rdf_entity.licence
-  - sparql_entity_storage.mapping.taxonomy_term.licence_type
-  - taxonomy.vocabulary.licence_type
+  install:
+    - core.base_field_override.rdf_entity.licence.label
+    - core.entity_form_display.rdf_entity.licence.default
+    - core.entity_view_display.rdf_entity.licence.default
+    - core.entity_view_display.rdf_entity.licence.view_mode_search_list_item
+    - core.entity_view_display.rdf_entity.licence.view_mode_tile
+    - core.entity_view_mode.rdf_entity.view_mode_search_list_item
+    - field.field.rdf_entity.licence.field_licence_deprecated
+    - field.field.rdf_entity.licence.field_licence_description
+    - field.field.rdf_entity.licence.field_licence_legal_type
+    - field.field.rdf_entity.licence.field_licence_spdx_licence
+    - field.field.rdf_entity.licence.field_licence_type
+    - field.storage.rdf_entity.field_licence_deprecated
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_licence_legal_type
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_licence_type
+    - filter.format.licence
+    - rdf_entity.rdfentity.licence
+    - sparql_entity_storage.mapping.rdf_entity.licence
+    - sparql_entity_storage.mapping.taxonomy_term.licence_type
+    - taxonomy.vocabulary.licence_type
