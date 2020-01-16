@@ -30,10 +30,15 @@ class JoinupEuLoginRouteSubscriber extends RouteSubscriberBase {
         ->setRequirements(['_user_is_logged_in' => 'FALSE']);
     }
 
-    // Always deny access to '/user/login'. Users are expected to log in through
-    // EU Login.
-    if ($route = $collection->get('user.login')) {
-      $route->setRequirement('_access', 'FALSE');
+    // Always deny access to the user login forms. Users are expected to log in
+    // through EU Login. The actual login form is excluded from this; for the
+    // time being we are showing a warning to people who might have missed the
+    // news about the move to EU Login.
+    // @see joinup_eulogin_form_user_login_form_alter()
+    foreach (['user.register', 'user.pass'] as $route_name) {
+      if ($route = $collection->get($route_name)) {
+        $route->setRequirement('_access', 'FALSE');
+      }
     }
   }
 
