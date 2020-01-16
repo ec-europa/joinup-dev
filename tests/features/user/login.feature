@@ -9,30 +9,6 @@ Feature: User login
       | Username       | Password | E-mail                     |
       | Garnett Tyrell | tyrellg  | garnett.tyrell@example.com |
 
-    # Login without keeping the session open.
-    When I go to the homepage
-    And I click "Sign in (legacy)"
-    Then I should not see the text "Log in"
-    And I fill in "Email or username" with "Garnett Tyrell"
-    And I fill in "Password" with "tyrellg"
-    And I press "Sign in"
-    Then I should see the heading "Garnett Tyrell"
-    When I close and reopen the browser
-    And I go to the homepage
-    Then I should see the link "Sign in"
-
-    # Login keeping the session open.
-    When I click "Sign in (legacy)"
-    And I fill in "Email or username" with "Garnett Tyrell"
-    And I fill in "Password" with "tyrellg"
-    And I check the box "Remember me"
-    And I press "Sign in"
-    Then I should see the heading "Garnett Tyrell"
-    When I close and reopen the browser
-    And I go to the homepage
-    Then I should not see the link "Sign in"
-    But I should see the link "My account"
-
     # Login using an e-mail for username.
     When I am not logged in
     And I go to the homepage
