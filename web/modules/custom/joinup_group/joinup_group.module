@@ -15,6 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
+use Drupal\joinup_group\Form\RdfDeleteForm;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\Og;
@@ -52,6 +53,11 @@ function joinup_group_entity_type_alter(array &$entity_types) {
   // Swap the default user cancel form implementation with a custom one that
   // prevents deleting users when they are the sole owner of a group.
   $entity_types['user']->setFormClass('cancel', 'Drupal\joinup_group\Form\UserCancelForm');
+
+  // Override the delete form to disallow deletion of groups with children.
+  /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $rdf_entity_type */
+  $rdf_entity_type = $entity_types['rdf_entity'];
+  $rdf_entity_type->setFormClass('delete', RdfDeleteForm::class);
 }
 
 /**
