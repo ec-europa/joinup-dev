@@ -128,7 +128,7 @@ Feature: Global search
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
@@ -139,7 +139,7 @@ Feature: Global search
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
