@@ -136,6 +136,8 @@ Feature: Log in through EU Login
 
     # Try to login using the Drupal login form. The user should be redirected to
     # EU Login.
+    # Todo: remove this in ISAICP-5760, it is temporary. The end result is to
+    # show a message and a disabled form until EU Login is well established.
     Given I go to "/user/login"
     Then I should see the heading "Sign in to continue"
     # Also the "user" page which in a normal Drupal installation redirects to

@@ -32,6 +32,8 @@ class JoinupEuLoginRouteSubscriber extends RouteSubscriberBase {
 
     // Always deny access to '/user/login'. Users are expected to log in through
     // EU Login.
+    // @todo This is temporary to prove that no tests will be able to log in
+    //   through the old login form. It will be removed in ISAICP-5760.
     if ($route = $collection->get('user.login')) {
       $route->setRequirement('_access', 'FALSE');
     }
