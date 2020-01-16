@@ -3,6 +3,15 @@ Feature: User registration
   As a user I must be able to register to the site and complete my user profile
   and receive appropriate notifications.
 
+  # Todo: this needs to be enabled again in ISAICP-5760 and a check should be
+  # added to verify that the warning message is available.
+  @wip
+  Scenario: User can find the register page
+    Given I am an anonymous user
+    When I am on the homepage
+    And I click "Sign in (legacy)"
+    Then I should see the heading "Sign in"
+
   @email
   Scenario: A moderator can register a user
     Given users:

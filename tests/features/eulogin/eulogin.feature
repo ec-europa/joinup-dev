@@ -330,6 +330,13 @@ Feature: Log in through EU Login
     Then I should see the error message "First name field is required."
     And I should see the error message "Family name field is required."
 
+  @wip
+  # Todo: Enable this test again in ISAICP-5760 and update the warning message.
+  Scenario: The Drupal login form shows a warning message.
+    When I visit "/user/login"
+    Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
+    And I should see the link "EU Login"
+
   Scenario: A new user tries to register with an existing Email.
     Given users:
       | Username | E-mail          |
