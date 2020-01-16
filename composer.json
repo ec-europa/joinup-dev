@@ -96,7 +96,7 @@
         "behat/gherkin": "~4.6",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
-        "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
+        "behat/mink-selenium2-driver": "~1.4",
         "drupal/admin_toolbar": "^1.27",
         "drupal/cas_mock_server": "^1.0",
         "drupal/coder": "^8.3.6",
