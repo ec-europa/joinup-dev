@@ -76,7 +76,6 @@ Feature: Global search
     But I should not see the "Spherification" tile
     And I should not see the "El Celler de Can Roca" tile
 
-  @terms
   Scenario: Content can be found with a full-text search.
     Given the following owner:
       | name              | type    |
