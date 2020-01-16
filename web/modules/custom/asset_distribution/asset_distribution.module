@@ -292,20 +292,11 @@ function asset_distribution_rdf_entity_delete(RdfInterface $distribution) {
 
   /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  /** @var \Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface $query */
-  $query = $storage->getQuery();
 
-  $ids = array_values($query
-    ->condition('rid', 'solution')
+  $ids = $storage->getQuery('OR')
     ->condition('field_is_distribution', $distribution->id())
-    ->execute());
-
-  $ids = array_merge($ids, array_values(
-    $query
-      ->condition('rid', 'asset_release')
-      ->condition('field_isr_distribution', $distribution->id())
-      ->execute()
-  ));
+    ->condition('field_isr_distribution', $distribution->id())
+    ->execute();
 
   foreach ($storage->loadMultiple($ids) as $entity) {
     $field_name = $entity->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
