@@ -3,5 +3,5 @@ status: true
 dependencies: {  }
 id: front-page
 label: 'Pinned entities'
-description: 'Contains links to entities presented in the front page.'
+description: 'Contains links to entities that are pinned to the front page.'
 locked: false
