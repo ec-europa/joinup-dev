@@ -109,7 +109,7 @@
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.17",
         "drupal/stage_file_proxy": "^1.0",
-        "drupaltest/behat-one-time-login": "dev-master",
+        "drupaltest/behat-one-time-login": "^1.0",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.3",
         "lovers-of-behat/table-extension": "^1.2.0",

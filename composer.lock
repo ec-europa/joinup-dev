@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7329392b0abc7b2eb7dd81100a1251ac",
+    "content-hash": "6c79a24ba425a639fd7e5fef2c09aa5d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13534,16 +13534,16 @@
         },
         {
             "name": "drupaltest/behat-one-time-login",
-            "version": "dev-master",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupaltest/behat-one-time-login.git",
-                "reference": "38c76a777fd87fa9a3bb4cb2a3d9af2c2040c5c9"
+                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/38c76a777fd87fa9a3bb4cb2a3d9af2c2040c5c9",
-                "reference": "38c76a777fd87fa9a3bb4cb2a3d9af2c2040c5c9",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
+                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
                 "shasum": ""
             },
             "require": {
@@ -13580,13 +13580,19 @@
             "license": [
                 "GPL-2.0-or-later"
             ],
+            "authors": [
+                {
+                    "name": "Pieter Frenssen",
+                    "role": "Maintainer"
+                }
+            ],
             "description": "Authenticates users through the Drupal one time login mechanism.",
             "homepage": "https://github.com/drupaltest/behat-one-time-login",
             "support": {
-                "source": "https://github.com/drupaltest/behat-one-time-login/tree/master",
+                "source": "https://github.com/drupaltest/behat-one-time-login/tree/1.0.0-beta1",
                 "issues": "https://github.com/drupaltest/behat-one-time-login/issues"
             },
-            "time": "2020-01-15T15:58:52+00:00"
+            "time": "2020-01-17T09:12:53+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -15915,7 +15921,6 @@
         "ec-europa/material-design-lite": 20,
         "jacklmoore/autosize": 20,
         "semiceu/adms-ap_validator": 20,
-        "drupaltest/behat-one-time-login": 20,
         "jcalderonzumba/gastonjs": 20
     },
     "prefer-stable": true,
