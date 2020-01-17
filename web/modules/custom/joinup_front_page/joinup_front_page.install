@@ -18,7 +18,7 @@ function joinup_front_page_install() {
   /** @var \Drupal\Core\KeyValueStore\DatabaseStorage $key_value_store */
   $key_value_store = \Drupal::service('keyvalue')->get('post_update');
   $existing_updates = $key_value_store->get('existing_updates');
-  if (($key = array_search('joinup_front_page_post_update_assign_menu_pinned_values', $existing_updates)) !== false) {
+  if (($key = array_search('joinup_front_page_post_update_assign_menu_pinned_values', $existing_updates)) !== FALSE) {
     unset($existing_updates[$key]);
     $key_value_store->set('existing_updates', $existing_updates);
   }

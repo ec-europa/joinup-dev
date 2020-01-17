@@ -13,7 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityTrait;
 
 /**
- * Behat step definitions for testing invitations.
+ * Behat step definitions for interacting with the Joinup front page.
  */
 class JoinupFrontPageSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
@@ -23,7 +23,7 @@ class JoinupFrontPageSubContext extends DrupalSubContextBase implements DrupalSu
    * Loads and pins entities in the front page.
    *
    * @param string $type
-   *   The entity type id.
+   *   The entity type ID.
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A list of titles.
    *
