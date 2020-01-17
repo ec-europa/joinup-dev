@@ -4,6 +4,8 @@ Feature: User login
   As a user of the website
   I need to be able to login with my credentials.
 
+  # Todo: needs to be adapted to use EU Login in ISAICP-5760.
+  @wip
   Scenario: Users can choose to keep their session open when they login.
     Given users:
       | Username       | Password | E-mail                     |

@@ -1,4 +1,6 @@
-@api
+@api @wip
+# Todo: this should be adapted when moving to EU Login in ISAICP-5760. Possibly
+# this needs to be removed entirely.
 Feature: Password management
   As a registered user of the website
   I want to be able to manage and restore my password

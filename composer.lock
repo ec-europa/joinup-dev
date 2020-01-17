@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e465660d4ff85461990e930edad1595a",
+    "content-hash": "6c79a24ba425a639fd7e5fef2c09aa5d",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4371,7 +4371,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0-beta4",
-                    "datestamp": "1576964234",
+                    "datestamp": "1579063087",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -9817,7 +9817,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -13125,6 +13125,10 @@
                     "homepage": "https://www.drupal.org/node/3236/committers"
                 },
                 {
+                    "name": "pcambra",
+                    "homepage": "https://www.drupal.org/user/122101"
+                },
+                {
                     "name": "salvis",
                     "homepage": "https://www.drupal.org/user/82964"
                 },
@@ -13529,6 +13533,68 @@
             }
         },
         {
+            "name": "drupaltest/behat-one-time-login",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupaltest/behat-one-time-login.git",
+                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
+                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/drupal-extension": "~4.0",
+                "friends-of-behat/service-container-extension": "~1.0"
+            },
+            "require-dev": {
+                "composer/installers": "~1.2",
+                "drupal/core-composer-scaffold": "~8.8",
+                "drupal/core-project-message": "~8.8",
+                "drupal/core-recommended": "~8.8",
+                "drush/drush": "~10.0",
+                "squizlabs/php_codesniffer": "~3.5",
+                "zaporylie/composer-drupal-optimizations": "~1.1"
+            },
+            "type": "library",
+            "extra": {
+                "drupal-scaffold": {
+                    "locations": {
+                        "web-root": "web/"
+                    }
+                },
+                "installer-paths": {
+                    "web/core": [
+                        "type:drupal-core"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DrupalTest\\BehatOneTimeLogin\\": "src"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Pieter Frenssen",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Authenticates users through the Drupal one time login mechanism.",
+            "homepage": "https://github.com/drupaltest/behat-one-time-login",
+            "support": {
+                "source": "https://github.com/drupaltest/behat-one-time-login/tree/1.0.0-beta1",
+                "issues": "https://github.com/drupaltest/behat-one-time-login/issues"
+            },
+            "time": "2020-01-17T09:12:53+00:00"
+        },
+        {
             "name": "fabpot/goutte",
             "version": "v3.2.3",
             "source": {
@@ -13582,6 +13648,51 @@
                 "scraper"
             ],
             "time": "2018-06-29T15:13:57+00:00"
+        },
+        {
+            "name": "friends-of-behat/service-container-extension",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfBehat/ServiceContainerExtension.git",
+                "reference": "5c8ab1bc3e45a37e01da8601aa2aa3a547981586"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfBehat/ServiceContainerExtension/zipball/5c8ab1bc3e45a37e01da8601aa2aa3a547981586",
+                "reference": "5c8ab1bc3e45a37e01da8601aa2aa3a547981586",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.1",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "friends-of-behat/cross-container-extension": "^1.0",
+                "friends-of-behat/test-context": "^1.0"
+            },
+            "suggest": {
+                "friends-of-behat/cross-container-extension": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FriendsOfBehat\\ServiceContainerExtension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kamil Kokot",
+                    "email": "kamil@kokot.me",
+                    "homepage": "http://kamil.kokot.me"
+                }
+            ],
+            "description": "Allows to declare own services inside Behat container without writing an extension.",
+            "time": "2018-02-13T17:50:03+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
@@ -15746,6 +15857,43 @@
             ],
             "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
             "time": "2019-11-29T09:34:00+00:00"
+        },
+        {
+            "name": "weitzman/logintrait",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/weitzman/logintrait.git",
+                "reference": "56fc9f9719c5bde1ce9770f27c0732c11a96a479"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Flogintrait/repository/archive.zip?sha=56fc9f9719c5bde1ce9770f27c0732c11a96a479",
+                "reference": "56fc9f9719c5bde1ce9770f27c0732c11a96a479",
+                "shasum": ""
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "drupal-dtt",
+            "autoload": {
+                "psr-4": {
+                    "weitzman\\LoginTrait\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                }
+            ],
+            "description": "Provides login/logout via user reset URL instead of forms.",
+            "time": "2019-04-19T11:52:16+00:00"
         }
     ],
     "aliases": [

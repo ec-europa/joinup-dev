@@ -21,19 +21,29 @@ Feature:
     Then I should see the heading "Legal notice"
     And I should see "The information on this site is subject to a disclaimer..."
 
+  # Todo: this needs to be adapted to use EU Login in ISAICP-5760. The first
+  # couple of steps have already been done.
+  @wip
   Scenario: User login when a new 'Legal notice' version is released.
     Given user:
       | Username | Rick    |
-      | Password | secretz |
+    And CAS users:
+      | Username | E-mail           | Password |
+      | Rick     | rick@example.com | secretz  |
 
     And I am on the homepage
-    And I click "Sign in (legacy)"
-
-    And I fill in "Email or username" with "Rick"
+    And I click "Sign in"
+    When I click "EU Login"
+    And I fill in "E-mail address" with "rick@example.com"
     And I fill in "Password" with "secretz"
+    And I press "Log in"
 
-    When I press "Sign in"
-    Then I should see the warning message "You must accept this agreement before continuing."
+    And I select the radio button "I am a new user (create a new account)"
+    Then I should see "I have read and accept the Legal notice"
+
+    # Submit without accepting the 'Legal notice'.
+    When I press "Next"
+    Then I should see the error message "You must accept the Legal notice in order to use our platform."
     And I should see the heading "Legal notice"
     And I should see "The information on this site is subject to a disclaimer..."
 
@@ -157,6 +167,9 @@ Feature:
     When I am on "/contact"
     Then I should not see "I have read and accept the Legal notice"
 
+  # Todo: in ISAICP-5760 this scenario can be removed, since this is already
+  # described above in "User login when a new 'Legal notice' version is
+  # released".
   @casMockServer
   Scenario: A user registers its account via EU Login.
     Given CAS users:

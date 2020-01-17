@@ -3,6 +3,9 @@ Feature: User registration
   As a user I must be able to register to the site and complete my user profile
   and receive appropriate notifications.
 
+  # Todo: this needs to be enabled again in ISAICP-5760 and a check should be
+  # added to verify that the warning message is available.
+  @wip
   Scenario: User can find the register page
     Given I am an anonymous user
     When I am on the homepage
@@ -35,7 +38,9 @@ Feature: User registration
       | body      | The Joinup Support Team created your account on Joinup. Please log in through the following link in order to set your password. |
     And the account for SuperUser should be active
 
-  @email
+  # This test should be converted for EU Login but seems incomplete and is
+  # probably no longer applicable and can be removed in ISAICP-5760.
+  @email @wip
   Scenario: A user account whose first and last names are identical is
     deleted after creation but the user is receiving all notification as if the
     account would have been created.

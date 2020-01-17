@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_eulogin\Event\Subscriber;
+namespace Drupal\joinup_eulogin\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\joinup_eulogin\Controller\UserRegisterRedirectController;
@@ -28,6 +28,14 @@ class JoinupEuLoginRouteSubscriber extends RouteSubscriberBase {
       $route
         ->setDefaults(['_controller' => UserRegisterRedirectController::class . '::redirectUserRegister'])
         ->setRequirements(['_user_is_logged_in' => 'FALSE']);
+    }
+
+    // Always deny access to '/user/login'. Users are expected to log in through
+    // EU Login.
+    // @todo This is temporary to prove that no tests will be able to log in
+    //   through the old login form. It will be removed in ISAICP-5760.
+    if ($route = $collection->get('user.login')) {
+      $route->setRequirement('_access', 'FALSE');
     }
   }
 
