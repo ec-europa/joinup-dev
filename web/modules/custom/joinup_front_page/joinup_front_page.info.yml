@@ -13,3 +13,4 @@ config_devel:
   install:
     - block.block.recommended_content
     - system.menu.front-page
+    - tour.tour.joinup_homepage
