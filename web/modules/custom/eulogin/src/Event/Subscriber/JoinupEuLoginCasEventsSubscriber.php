@@ -105,7 +105,11 @@ class JoinupEuLoginCasEventsSubscriber implements EventSubscriberInterface {
     $eulogin_email = $event->getCasPropertyBag()->getAttribute('email');
 
     // A new email has been configured upstream, on the EU Login account.
-    if ($account->getEmail() !== $eulogin_email) {
+    // If the account was linked manually, there is a chance that the email
+    // stored locally does not share the same case sensitivity as the upstream
+    // account. In these cases, allow to proceed so that the local account can
+    // retrieve the correct case sensitivity email.
+    if (strtolower($account->getEmail()) !== strtolower($eulogin_email)) {
       if (user_load_by_mail($eulogin_email)) {
         throw new \Exception("You've recently changed your EU Login account email but that email is already used in Joinup by other user. Please contact support.");
       }

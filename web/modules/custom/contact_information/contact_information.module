@@ -112,29 +112,45 @@ function contact_information_entity_auto_label(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_access().
  */
 function contact_information_rdf_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // Access being checked for a contact information.
-  if ($entity->getEntityTypeId() != 'rdf_entity') {
+  if ($entity->bundle() !== 'contact_information') {
     return AccessResult::neutral();
   }
-  if ($entity->bundle() != 'contact_information') {
-    return AccessResult::neutral();
+
+  // Inline entity form module is using the 'update' but rdf_entity is still
+  // using 'edit' for the edit operation. Rename the operation until it is
+  // fixed in rdf_entity.
+  // @see https://github.com/ec-europa/rdf_entity/issues/110
+  if ($operation === 'update') {
+    $operation = 'edit';
   }
-  // Only revoke access for anonymous users.
-  if ($account->isAuthenticated()) {
-    return AccessResult::neutral();
+
+  // For anonymous users, deny access to the canonical route.
+  if ($account->isAnonymous()) {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if ($route_name === 'entity.rdf_entity.canonical') {
+      return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
+    }
   }
-  // Get entity from route.
-  $route = \Drupal::routeMatch();
-  $route_name = $route->getRouteName();
-  if ($route_name != 'entity.rdf_entity.canonical') {
-    return AccessResult::neutral();
+  elseif ($operation == 'edit') {
+    $available_target_states = \Drupal::service('joinup_core.workflow.helper')->getAvailableTargetStates($entity, $account);
+    return empty($available_target_states) ? AccessResult::forbidden() : AccessResult::allowed();
   }
-  $route_entity = $route->getParameter('rdf_entity');
-  if (empty($route_entity)) {
-    return AccessResult::neutral();
+  // Use an elseif to avoid checking memberships for anonymous users.
+  elseif ($operation === 'delete') {
+    // The contact information is not a group content. It is tied to other
+    // entities by a simple reference field.
+    // To grant access to group owner/facilitators, we need to identify first
+    // which groups reference the contact information.
+    /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
+    $relation_manager = \Drupal::service('joinup_core.relations_manager');
+    if ($groups = $relation_manager->getContactInformationRelatedGroups($entity)) {
+      $group = reset($groups);
+      $membership = \Drupal::service('og.membership_manager')->getMembership($group, $account->id());
+      if ($membership && $membership->hasPermission("delete contact_information rdf entity")) {
+        return AccessResult::allowed();
+      }
+    }
   }
-  if ($entity->id() == $route_entity->id()) {
-    return AccessResult::forbidden('Anonymous users should not see contact information on the canonical route.');
-  }
+
   return AccessResult::neutral();
 }
