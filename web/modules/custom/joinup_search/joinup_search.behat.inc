@@ -230,29 +230,6 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Clicks a facet item in an inline facet found in a designated region.
-   *
-   * @param string $link
-   *   The link text of the link to click.
-   * @param string $facet
-   *   The facet alias.
-   * @param string $region
-   *   The region alias.
-   *
-   * @throws \Exception
-   *   Thrown when the region, the facet or the link inside the facet is not
-   *   found.
-   *
-   * @When I click :link in the :facet inline facet in the :region region
-   */
-  public function iClickAnInlineFacetItemLinkInRegion(string $link, string $facet, string $region): void {
-    $region = $this->getRegion($region);
-    $facet = $this->findFacetByAlias($facet, $region);
-    $this->openFacetDropdown($facet);
-    $facet->clickLink($link);
-  }
-
-  /**
    * Clicks a facet item in an inline facet.
    *
    * @param string $select
