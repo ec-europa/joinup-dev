@@ -22,7 +22,7 @@ function joinup_front_page_entity_base_field_info(EntityTypeInterface $entity_ty
   if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
     $fields = [];
     $fields['front_page_pinned'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('Pinned in the front page'))
+      ->setLabel(t('Pinned to the front page'))
       ->setComputed(TRUE)
       ->setClass(FrontPagePinnedFieldItemList::class);
     return $fields;
