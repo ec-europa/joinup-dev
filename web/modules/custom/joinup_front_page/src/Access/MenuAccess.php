@@ -51,9 +51,18 @@ class MenuAccess extends MenuAdminPerMenuAccess {
    *   The access result.
    */
   public function menuLinkItemEditAccess(AccountInterface $account, MenuLinkContent $menu_link_content = NULL): AccessResultInterface {
-    if (!empty($menu_link_content) && $menu_link_content->getMenuName() === 'front-page') {
+    // Workaround for a fatal error that is thrown in the parent method in case
+    // the $menu_link_plugin parameter is empty.
+    // @todo Remove this once issue #3107478 is fixed.
+    // @see https://www.drupal.org/project/menu_admin_per_menu/issues/3107478
+    if (empty($menu_link_content)) {
+      return AccessResult::neutral();
+    }
+
+    if ($menu_link_content->getMenuName() === 'front-page') {
       return AccessResult::forbidden();
     }
+
     return parent::menuItemAccess($account, $menu_link_content);
   }
 
@@ -69,12 +78,18 @@ class MenuAccess extends MenuAdminPerMenuAccess {
    *   The access result.
    */
   public function menuLinkPluginEditAccess(AccountInterface $account, MenuLinkInterface $menu_link_plugin = NULL): AccessResultInterface {
+    // Workaround for a fatal error that is thrown in the parent method in case
+    // the $menu_link_plugin parameter is empty.
+    // @todo Remove this once issue #3107478 is fixed.
+    // @see https://www.drupal.org/project/menu_admin_per_menu/issues/3107478
     if (empty($menu_link_plugin)) {
       return AccessResult::neutral();
     }
+
     if ($menu_link_plugin->getMenuName() === 'front-page') {
       return AccessResult::forbidden();
     }
+
     return parent::menuLinkAccess($account, $menu_link_plugin);
   }
 
