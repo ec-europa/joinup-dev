@@ -71,7 +71,7 @@ function joinup_front_page_entity_view_alter(array &$build, EntityInterface $ent
       'metadata' => ['changed' => $entity->getChangedTime()],
     ];
 
-    $build['#contextual_links']['entity']['metadata']['is_site_wide_pinned'] = (int) !empty($menu_item);
+    $build['#contextual_links']['entity']['metadata']['is_pinned_to_front_page'] = (int) !empty($menu_item);
   }
 }
 
