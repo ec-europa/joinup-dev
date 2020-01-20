@@ -1,6 +1,6 @@
-index: true
-priority: '0.5'
-changefreq: weekly
+index: false
+priority: '1.0'
+changefreq: daily
 include_images: false
 _core:
   default_config_hash: C1qobnpweWVmXjlRDpRDIa6ulqsasAUvlpjeOjyF_HQ

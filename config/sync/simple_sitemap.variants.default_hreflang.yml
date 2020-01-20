@@ -2,5 +2,8 @@ variants:
   default:
     label: Default
     weight: 0
+  news:
+    label: News
+    weight: 1
 _core:
   default_config_hash: nQAXscP-SDpsmqHlQ6u0iBvcuJPrAikb09c3cP2_n0k
