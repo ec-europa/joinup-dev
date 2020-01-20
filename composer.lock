@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96ee7b411e6e9571cc0c5cbccde501c3",
+    "content-hash": "a789663cb435626ca666e4f6f8ea4d59",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4785,6 +4785,180 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/mailsystem"
             }
+        },
+        {
+            "name": "drupal/masquerade",
+            "version": "2.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/masquerade.git",
+                "reference": "8.x-2.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/masquerade-8.x-2.0-beta3.zip",
+                "reference": "8.x-2.0-beta3",
+                "shasum": "125c53931a0658b4ef9f66abb696db7c98d43985"
+            },
+            "require": {
+                "drupal/core": "^8.7.7 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-beta3",
+                    "datestamp": "1579041783",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Postnikov (andypost)",
+                    "homepage": "https://www.drupal.org/u/andypost",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "David Norman (deekayen)",
+                    "homepage": "https://www.drupal.org/u/deekayen",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Mark Shropshire (shrop)",
+                    "homepage": "https://www.drupal.org/u/shrop",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Daniel Kudwien (sun)",
+                    "homepage": "https://www.drupal.org/u/sun",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Andrew Berry (deviantintegral)",
+                    "homepage": "https://www.drupal.org/u/deviantintegral",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "sun",
+                    "homepage": "https://www.drupal.org/user/54136"
+                }
+            ],
+            "description": "Allows privileged users to masquerade as another user.",
+            "homepage": "https://www.drupal.org/project/masquerade",
+            "support": {
+                "source": "https://git.drupal.org/project/masquerade.git",
+                "issues": "https://www.drupal.org/project/issues/masquerade",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/masquerade_field",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/masquerade_field.git",
+                "reference": "ce8c53e076f572149a1c39f601717ca9de5d4cc5"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/masquerade": "^2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1579697287",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/user/56348",
+                    "email": "clau.cristea@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
+                }
+            ],
+            "description": "Allows a user to masquerade as other users, using a user account field.",
+            "homepage": "https://www.drupal.org/project/masquerade_field",
+            "support": {
+                "source": "https://git.drupalcode.org/project/masquerade_field",
+                "issues": "https://www.drupal.org/project/issues/masquerade_field"
+            },
+            "time": "2020-01-23T10:44:07+00:00"
+        },
+        {
+            "name": "drupal/masquerade_log",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/masquerade_log.git",
+                "reference": "c2eb9a3c56e2eaa4004ae17c5577749b217dea52"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "drupal/masquerade": "^2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1579510092",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Claudiu Cristea",
+                    "homepage": "https://www.drupal.org/user/56348",
+                    "email": "clau.cristea@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Allows to record also the original user in logger event.",
+            "homepage": "https://www.drupal.org/project/masquerade_log",
+            "support": {
+                "source": "https://git.drupalcode.org/project/masquerade_log",
+                "issues": "https://www.drupal.org/project/issues/masquerade_log"
+            },
+            "time": "2020-01-20T08:40:52+00:00"
         },
         {
             "name": "drupal/matomo",
