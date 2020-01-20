@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "15c6130f3c84b9e7f2f13c449c2a5e65",
+    "content-hash": "0b20a6413c044eaa4aa1c0de5424c33e",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3350,7 +3350,8 @@
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
                     "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
                     "Config import creates 'Undefined index: uuid' notice @see https://www.drupal.org/project/drupal/issues/2863785": "https://www.drupal.org/files/issues/config_import_creates-2863785-2.patch",
-                    "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "https://www.drupal.org/files/issues/2019-12-04/2381293-134.patch"
+                    "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "https://www.drupal.org/files/issues/2019-12-04/2381293-134.patch",
+                    "Do not bypass route access with 'link to any page' permissions for menu links @see https://www.drupal.org/project/drupal/issues/2463753": "https://www.drupal.org/files/issues/2020-01-21/2463753-59.patch"
                 }
             },
             "autoload": {
