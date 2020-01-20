@@ -72,7 +72,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getFrontPageMenuItem(\Drupal\Core\Entity\EntityInterface $entity) : ?\Drupal\menu_link_content\Entity\MenuLinkContent
+        public function getFrontPageMenuItem(\Drupal\Core\Entity\EntityInterface $entity) : ?\Drupal\menu_link_content\MenuLinkContentInterface
         {
             return $this->lazyLoadItself()->getFrontPageMenuItem($entity);
         }

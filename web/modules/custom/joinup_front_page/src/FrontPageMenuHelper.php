@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
-use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Controller that assigns to or removes entities from the front page menu.
@@ -68,7 +68,7 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFrontPageMenuItem(EntityInterface $entity): ?MenuLinkContentEntity {
+  public function getFrontPageMenuItem(EntityInterface $entity): ?MenuLinkContentInterface {
     if ($entity->isNew() || empty($entity->id())) {
       return NULL;
     }

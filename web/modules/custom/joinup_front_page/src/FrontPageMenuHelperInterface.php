@@ -6,7 +6,7 @@ namespace Drupal\joinup_front_page;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\menu_link_content\Entity\MenuLinkContent as MenuLinkContentEntity;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Interface FrontPageMenuHelperInterface.
@@ -21,10 +21,10 @@ interface FrontPageMenuHelperInterface {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to fetch the menu item content entity for.
    *
-   * @return \Drupal\menu_link_content\Entity\MenuLinkContent|null
-   *   The menu link content interface.
+   * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
+   *   The menu link content entity.
    */
-  public function getFrontPageMenuItem(EntityInterface $entity): ?MenuLinkContentEntity;
+  public function getFrontPageMenuItem(EntityInterface $entity): ?MenuLinkContentInterface;
 
   /**
    * Adds an entity to the front page menu.
