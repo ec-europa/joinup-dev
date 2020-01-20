@@ -28,7 +28,7 @@ function joinup_front_page_post_update_assign_menu_pinned_values(): string {
       $ids = $storage->getQuery()->condition('field_site_pinned', 1)->execute();
       foreach ($storage->loadMultiple($ids) as $entity) {
         if (empty($front_page_helper->getFrontPageMenuItem($entity))) {
-          $front_page_helper->pinSiteWide($entity);
+          $front_page_helper->pinToFrontPage($entity);
           $updated[] = $entity->label();
         }
       }

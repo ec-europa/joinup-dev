@@ -78,17 +78,17 @@ namespace Drupal\joinup_front_page\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function pinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
+        public function pinToFrontPage(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
         {
-            $this->lazyLoadItself()->pinSiteWide($entity);
+            $this->lazyLoadItself()->pinToFrontPage($entity);
         }
 
         /**
          * {@inheritdoc}
          */
-        public function unpinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
+        public function unpinFromFrontPage(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
         {
-            $this->lazyLoadItself()->unpinSiteWide($entity);
+            $this->lazyLoadItself()->unpinFromFrontPage($entity);
         }
 
         /**

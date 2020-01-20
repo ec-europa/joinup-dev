@@ -84,7 +84,7 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function pinSiteWide(FieldableEntityInterface $entity): void {
+  public function pinToFrontPage(FieldableEntityInterface $entity): void {
     $this->entityTypeManager->getStorage('menu_link_content')->create([
       'title' => $entity->label(),
       'menu_name' => 'front-page',
@@ -98,7 +98,7 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function unpinSiteWide(FieldableEntityInterface $entity): void {
+  public function unpinFromFrontPage(FieldableEntityInterface $entity): void {
     $this->getFrontPageMenuItem($entity)->delete();
     $this->invalidateEntityTags($entity);
     $this->updateSearchApiEntry($entity);

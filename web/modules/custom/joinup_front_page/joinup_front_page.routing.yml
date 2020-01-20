@@ -35,7 +35,7 @@ joinup_front_page.site_unfeature:
 joinup_front_page.site_pin:
   path: '/pin/{entity_type}/{entity}/add'
   defaults:
-    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::pinSiteWide'
+    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::pinToFrontPage'
     _title: 'Pin'
     value: true
   requirements:
@@ -50,7 +50,7 @@ joinup_front_page.site_pin:
 joinup_front_page.site_unpin:
   path: '/pin/{entity_type}/{entity}/remove'
   defaults:
-    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::unpinSiteWide'
+    _controller: '\Drupal\joinup_front_page\Controller\FrontPageMenuController::unpinFromFrontPage'
     _title: 'Remove from pinned'
     value: false
   requirements:

@@ -84,8 +84,8 @@ class FrontPageMenuController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function pinSiteWide(ContentEntityInterface $entity): RedirectResponse {
-    $this->frontPageHelper->pinSiteWide($entity);
+  public function pinToFrontPage(ContentEntityInterface $entity): RedirectResponse {
+    $this->frontPageHelper->pinToFrontPage($entity);
 
     $this->messenger()->addStatus($this->t('@bundle %title has been set as pinned content.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
@@ -103,9 +103,9 @@ class FrontPageMenuController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   The redirect response.
    */
-  public function unpinSiteWide(ContentEntityInterface $entity): RedirectResponse {
+  public function unpinFromFrontPage(ContentEntityInterface $entity): RedirectResponse {
     /** @var \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent $result */
-    $this->frontPageHelper->unpinSiteWide($entity);
+    $this->frontPageHelper->unpinFromFrontPage($entity);
 
     $this->messenger()->addStatus($this->t('@bundle %title has been removed from the pinned contents.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),

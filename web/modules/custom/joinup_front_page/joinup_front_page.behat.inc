@@ -42,7 +42,7 @@ class JoinupFrontPageSubContext extends DrupalSubContextBase implements DrupalSu
     $type = $type === 'content' ? 'node' : 'rdf_entity';
     foreach ($table->getColumnsHash() as $row) {
       $entity = $this->getEntityByLabel($type, $row['title']);
-      $front_page_helper->pinSiteWide($entity);
+      $front_page_helper->pinToFrontPage($entity);
     }
   }
 
