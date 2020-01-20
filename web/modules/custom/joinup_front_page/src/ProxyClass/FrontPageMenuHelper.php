@@ -2,19 +2,17 @@
 // @codingStandardsIgnoreFile
 
 /**
- * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_front_page\FrontPageMenuHelper' "profiles/joinup_front_page/src".
+ * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_front_page\FrontPageMenuHelper' "modules/custom/joinup_front_page/src".
  */
 
 namespace Drupal\joinup_front_page\ProxyClass {
 
-  use Drupal\joinup_front_page\FrontPageMenuHelperInterface;
-
-  /**
+    /**
      * Provides a proxy class for \Drupal\joinup_front_page\FrontPageMenuHelper.
      *
      * @see \Drupal\Component\ProxyBuilder
      */
-    class FrontPageMenuHelper implements FrontPageMenuHelperInterface
+    class FrontPageMenuHelper implements \Drupal\joinup_front_page\FrontPageMenuHelperInterface
     {
 
         use \Drupal\Core\DependencyInjection\DependencySerializationTrait;
@@ -29,7 +27,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
         /**
          * The real proxied service, after it was lazy loaded.
          *
-         * @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface
+         * @var \Drupal\joinup_front_page\FrontPageMenuHelper
          */
         protected $service;
 
@@ -82,7 +80,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
          */
         public function pinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
         {
-            $this->lazyLoadItself()->pinSiteWide($entity);
+            return $this->lazyLoadItself()->pinSiteWide($entity);
         }
 
         /**
@@ -90,7 +88,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
          */
         public function unpinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
         {
-            $this->lazyLoadItself()->unpinSiteWide($entity);
+            return $this->lazyLoadItself()->unpinSiteWide($entity);
         }
 
         /**
@@ -98,7 +96,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
          */
         public function updateSearchApiEntry(\Drupal\Core\Entity\EntityInterface $entity) : void
         {
-            $this->lazyLoadItself()->updateSearchApiEntry($entity);
+            return $this->lazyLoadItself()->updateSearchApiEntry($entity);
         }
 
         /**
