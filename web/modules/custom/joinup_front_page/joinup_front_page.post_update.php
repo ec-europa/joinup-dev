@@ -10,7 +10,7 @@ declare(strict_types = 1);
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 
 /**
- * Adds site-wide pinned entities to the front page menu.
+ * Pins entities to the front page.
  */
 function joinup_front_page_post_update_assign_menu_pinned_values(): string {
   // This runs as a post update because the front page menu needs to be imported

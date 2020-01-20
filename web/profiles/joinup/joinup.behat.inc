@@ -709,7 +709,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'shared in' => 'field_shared_in',
         'visits' => 'visit_count',
         'featured' => 'field_site_featured',
-        'pinned site-wide' => 'field_site_pinned',
+        'pinned to front page' => 'field_site_pinned',
       ],
     ];
 

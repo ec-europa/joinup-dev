@@ -9,12 +9,12 @@ joinup_front_page.site_unfeature:
   group: entity
 
 joinup_front_page.site_pin:
-  title: 'Pin site-wide'
+  title: 'Pin to front page'
   route_name: joinup_front_page.site_pin
   group: entity
 
 joinup_front_page.site_unpin:
-  title: 'Unpin site-wide'
+  title: 'Unpin from front page'
   route_name: joinup_front_page.site_unpin
   group: entity
 

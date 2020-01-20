@@ -1,5 +1,5 @@
 @api @email
-Feature: Pinning content site-wide
+Feature: Pinning content to the front page
   As a moderator of Joinup
   I want to pin content in the website
   So that important content has more visibility
@@ -29,7 +29,7 @@ Feature: Pinning content site-wide
       | D minor     |
       | Risky Sound |
 
-  Scenario Outline: Moderators can pin and unpin content site-wide.
+  Scenario Outline: Moderators can pin and unpin content to the front page.
     Given <content type> content:
       | title               | collection  | state     | visits | created    |
       | Loudest instruments | Risky Sound | validated | 4390   | 2017-03-29 |
@@ -46,10 +46,10 @@ Feature: Pinning content site-wide
       | Risky Sound         |
       | Handmade oboes      |
       | Loudest instruments |
-    And I should not see the contextual link "Pin site-wide" in the "Loudest instruments" tile
-    And I should not see the contextual link "Pin site-wide" in the "Handmade oboes" tile
-    And I should not see the contextual link "Unpin site-wide" in the "Loudest instruments" tile
-    And I should not see the contextual link "Unpin site-wide" in the "Handmade oboes" tile
+    And I should not see the contextual link "Pin to front page" in the "Loudest instruments" tile
+    And I should not see the contextual link "Pin to front page" in the "Handmade oboes" tile
+    And I should not see the contextual link "Unpin from front page" in the "Loudest instruments" tile
+    And I should not see the contextual link "Unpin from front page" in the "Handmade oboes" tile
 
     When I am logged in as an "authenticated user"
     And I go to the homepage
@@ -58,12 +58,12 @@ Feature: Pinning content site-wide
       | Risky Sound         |
       | Handmade oboes      |
       | Loudest instruments |
-    And I should not see the contextual link "Pin site-wide" in the "Loudest instruments" tile
-    And I should not see the contextual link "Pin site-wide" in the "Handmade oboes" tile
-    And I should not see the contextual link "Unpin site-wide" in the "Loudest instruments" tile
-    And I should not see the contextual link "Unpin site-wide" in the "Handmade oboes" tile
+    And I should not see the contextual link "Pin to front page" in the "Loudest instruments" tile
+    And I should not see the contextual link "Pin to front page" in the "Handmade oboes" tile
+    And I should not see the contextual link "Unpin from front page" in the "Loudest instruments" tile
+    And I should not see the contextual link "Unpin from front page" in the "Handmade oboes" tile
 
-    # Facilitators cannot use the site-wide pin functionality.
+    # Facilitators cannot use the pin to front page functionality.
     When I am logged in as "Burke Abraham"
     And I go to the homepage
     Then I should see the following tiles in the correct order:
@@ -71,10 +71,10 @@ Feature: Pinning content site-wide
       | Risky Sound         |
       | Handmade oboes      |
       | Loudest instruments |
-    And I should not see the contextual link "Pin site-wide" in the "Loudest instruments" tile
-    And I should not see the contextual link "Pin site-wide" in the "Handmade oboes" tile
-    And I should not see the contextual link "Unpin site-wide" in the "Loudest instruments" tile
-    And I should not see the contextual link "Unpin site-wide" in the "Handmade oboes" tile
+    And I should not see the contextual link "Pin to front page" in the "Loudest instruments" tile
+    And I should not see the contextual link "Pin to front page" in the "Handmade oboes" tile
+    And I should not see the contextual link "Unpin from front page" in the "Loudest instruments" tile
+    And I should not see the contextual link "Unpin from front page" in the "Handmade oboes" tile
 
     When I am logged in as a moderator
     # Wait for contextual links to be generated. There is a session race condition that happens when a contextual link
@@ -87,12 +87,12 @@ Feature: Pinning content site-wide
       | Risky Sound         |
       | Handmade oboes      |
       | Loudest instruments |
-    And I should see the contextual link "Pin site-wide" in the "Loudest instruments" tile
-    And I should see the contextual link "Unpin site-wide" in the "Handmade oboes" tile
-    But I should not see the contextual link "Unpin site-wide" in the "Loudest instruments" tile
-    And I should not see the contextual link "Pin site-wide" in the "Handmade oboes" tile
+    And I should see the contextual link "Pin to front page" in the "Loudest instruments" tile
+    And I should see the contextual link "Unpin from front page" in the "Handmade oboes" tile
+    But I should not see the contextual link "Unpin from front page" in the "Loudest instruments" tile
+    And I should not see the contextual link "Pin to front page" in the "Handmade oboes" tile
 
-    When I click the contextual link "Pin site-wide" in the "Loudest instruments" tile
+    When I click the contextual link "Pin to front page" in the "Loudest instruments" tile
     Then I should see the success message "<label> Loudest instruments has been set as pinned content."
     When I go to the homepage
     # Pinned entities are sorted by creation date.
@@ -102,7 +102,7 @@ Feature: Pinning content site-wide
       | Handmade oboes      |
       | Loudest instruments |
 
-    When I click the contextual link "Unpin site-wide" in the "Loudest instruments" tile
+    When I click the contextual link "Unpin from front page" in the "Loudest instruments" tile
     Then I should see the success message "<label> Loudest instruments has been removed from the pinned contents."
     When I go to the homepage
     Then I should see the following tiles in the correct order:
@@ -111,7 +111,7 @@ Feature: Pinning content site-wide
       | Handmade oboes      |
       | Loudest instruments |
 
-    When I click the contextual link "Unpin site-wide" in the "Handmade oboes" tile
+    When I click the contextual link "Unpin from front page" in the "Handmade oboes" tile
     Then I should see the success message "<label> Handmade oboes has been removed from the pinned contents."
     When I go to the homepage
     # The two nodes are now sorted by their number of visits.
@@ -128,44 +128,44 @@ Feature: Pinning content site-wide
       | discussion   | Discussion |
       | news         | News       |
 
-  Scenario Outline: Moderators can pin and unpin collections and solutions site-wide.
+  Scenario Outline: Moderators can pin and unpin collections and solutions to the front page.
     When I am an anonymous user
     And I am on the homepage
     And I click "<header link>" in the "Header" region
     Then I should see the following tiles in the correct order:
       | <pinned>   |
       | <unpinned> |
-    And I should not see the contextual link "Pin site-wide" in the "<pinned>" tile
-    And I should not see the contextual link "Unpin site-wide" in the "<unpinned>" tile
+    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
+    And I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
 
     When I am logged in as an "authenticated user"
     And I click "<header link>"
     Then I should see the following tiles in the correct order:
       | <pinned>   |
       | <unpinned> |
-    And I should not see the contextual link "Pin site-wide" in the "<pinned>" tile
-    And I should not see the contextual link "Unpin site-wide" in the "<unpinned>" tile
+    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
+    And I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
 
-    # Facilitators cannot use the site-wide pin functionality.
+    # Facilitators cannot use the pin to front page functionality.
     When I am logged in as "Burke Abraham"
     And I click "<header link>"
     Then I should see the following tiles in the correct order:
       | <pinned>   |
       | <unpinned> |
-    And I should not see the contextual link "Pin site-wide" in the "<pinned>" tile
-    And I should not see the contextual link "Unpin site-wide" in the "<unpinned>" tile
+    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
+    And I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
 
     When I am logged in as a moderator
     And I click "<header link>"
     Then I should see the following tiles in the correct order:
       | <pinned>   |
       | <unpinned> |
-    And I should see the contextual link "Pin site-wide" in the "<unpinned>" tile
-    And I should see the contextual link "Unpin site-wide" in the "<pinned>" tile
-    But I should not see the contextual link "Unpin site-wide" in the "<unpinned>" tile
-    And I should not see the contextual link "Pin site-wide" in the "<pinned>" tile
+    And I should see the contextual link "Pin to front page" in the "<unpinned>" tile
+    And I should see the contextual link "Unpin from front page" in the "<pinned>" tile
+    But I should not see the contextual link "Unpin from front page" in the "<unpinned>" tile
+    And I should not see the contextual link "Pin to front page" in the "<pinned>" tile
 
-    When I click the contextual link "Unpin site-wide" in the "<pinned>" tile
+    When I click the contextual link "Unpin from front page" in the "<pinned>" tile
     Then I should see the success message "<label> <pinned> has been removed from the pinned contents."
     When I click "<header link>"
     # Both the contents are unpinned now, so they are sorted by creation date descending.
@@ -173,7 +173,7 @@ Feature: Pinning content site-wide
       | <unpinned> |
       | <pinned>   |
 
-    When I click the contextual link "Pin site-wide" in the "<unpinned>" tile
+    When I click the contextual link "Pin to front page" in the "<unpinned>" tile
     Then I should see the success message "<label> <unpinned> has been set as pinned content."
     When I click "<header link>"
     Then I should see the following tiles in the correct order:

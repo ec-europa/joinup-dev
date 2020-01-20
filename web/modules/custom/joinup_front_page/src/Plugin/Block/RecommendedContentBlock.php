@@ -172,7 +172,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   }
 
   /**
-   * Retrieves the entities that are pinned site-wide.
+   * Retrieves the entities that are pinned to the front page.
    *
    * @param int $limit
    *   The number of results to fetch.
@@ -180,8 +180,10 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    * @return \Drupal\Core\Entity\ContentEntityInterface[]
    *   An array of pinned entities to render.
    *
-   * @throws \Drupal\search_api\SearchApiException
-   *   Thrown if an error occurred during the search.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the Menu Link Content entity type definition is invalid.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown if the Menu Link Content entity type is not defined.
    */
   protected function getPinnedEntities(int $limit): array {
     // Early exit if we do not need to retrieve any data.
