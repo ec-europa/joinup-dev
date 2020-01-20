@@ -80,7 +80,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
          */
         public function pinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
         {
-            return $this->lazyLoadItself()->pinSiteWide($entity);
+            $this->lazyLoadItself()->pinSiteWide($entity);
         }
 
         /**
@@ -88,7 +88,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
          */
         public function unpinSiteWide(\Drupal\Core\Entity\FieldableEntityInterface $entity) : void
         {
-            return $this->lazyLoadItself()->unpinSiteWide($entity);
+            $this->lazyLoadItself()->unpinSiteWide($entity);
         }
 
         /**
@@ -96,7 +96,7 @@ namespace Drupal\joinup_front_page\ProxyClass {
          */
         public function updateSearchApiEntry(\Drupal\Core\Entity\EntityInterface $entity) : void
         {
-            return $this->lazyLoadItself()->updateSearchApiEntry($entity);
+            $this->lazyLoadItself()->updateSearchApiEntry($entity);
         }
 
         /**
