@@ -34,10 +34,11 @@ Feature:
       | Sitemap custom page of draft     | Sitemap collection draft     | N/A  | logo.png |
       | Sitemap custom page of validated | Sitemap collection validated | N/A  | logo.png |
     And news content:
-      | title                                    | headline     | body              | solution                   | state     |
-      | Sitemap news draft                       | Sitemap news | Sitemap news body | Sitemap solution validated | draft     |
-      | Sitemap news validated                   | Sitemap news | Sitemap news body | Sitemap solution validated | validated |
-      | Sitemap news validated but parent is not | Sitemap news | Sitemap news body | Sitemap solution draft     | validated |
+      | title                                    | headline     | body              | solution                   | state     | publication date                |
+      | Sitemap news draft                       | Sitemap news | Sitemap news body | Sitemap solution validated | draft     |                                 |
+      | Sitemap news validated and recent        | Sitemap news | Sitemap news body | Sitemap solution validated | validated | 1 day ago                       |
+      | Sitemap news validated but old           | Sitemap news | Sitemap news body | Sitemap solution validated | validated | 2 months ago                    |
+      | Sitemap news validated but parent is not | Sitemap news | Sitemap news body | Sitemap solution draft     | validated | Sun, 01 Dec 2019 13:00:00 +0100 |
     And event content:
       | title                                     | short title             | body                      | agenda        | location   | organisation        | scope         | solution                   | state     |
       | Sitemap event draft                       | Sitemap event draft     | It will include fireworks | Event agenda. | Some place | European Commission | International | Sitemap solution validated | draft     |
@@ -65,6 +66,7 @@ Feature:
       | Sitemap discussion validated     |
       | Sitemap document validated       |
       | Sitemap event validated          |
+      | Sitemap news validated but old   |
 
     But I should not see the absolute urls of the following RDF entities:
       | Sitemap collection draft |
@@ -83,12 +85,12 @@ Feature:
       | Sitemap event draft                            |
       | Sitemap event validated but parent is not      |
       | Sitemap news draft                             |
-      | Sitemap news validated                         |
+      | Sitemap news validated and recent              |
       | Sitemap news validated but parent is not       |
 
     When I visit "/news/sitemap.xml"
     And I should see the absolute urls of the following content entities:
-      | Sitemap news validated |
+      | Sitemap news validated and recent |
 
     But I should not see the absolute urls of the following RDF entities:
       | Sitemap collection draft     |
@@ -113,4 +115,5 @@ Feature:
       | Sitemap event validated                        |
       | Sitemap event validated but parent is not      |
       | Sitemap news draft                             |
+      | Sitemap news validated but old                 |
       | Sitemap news validated but parent is not       |
