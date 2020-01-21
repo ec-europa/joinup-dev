@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96ee7b411e6e9571cc0c5cbccde501c3",
+    "content-hash": "e44b9bedeb9a408cbd4610c498855979",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4371,7 +4371,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.0-beta4",
-                    "datestamp": "1579063087",
+                    "datestamp": "1576964234",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -9818,7 +9818,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2019-03-22T22:25:24+00:00"
         },
         {
             "name": "stack/builder",
@@ -13124,10 +13124,6 @@
                 {
                     "name": "See contributors",
                     "homepage": "https://www.drupal.org/node/3236/committers"
-                },
-                {
-                    "name": "pcambra",
-                    "homepage": "https://www.drupal.org/user/122101"
                 },
                 {
                     "name": "salvis",
