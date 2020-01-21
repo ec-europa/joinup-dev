@@ -22,6 +22,7 @@ use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
@@ -244,8 +245,7 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
     $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
     $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
     foreach ($entities as $entity_item) {
-      $entity_item->original = $entity_item;
-      search_api_entity_update($entity_item);
+      ContentEntity::indexEntity($entity_item);
     }
   }
 }
