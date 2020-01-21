@@ -640,6 +640,17 @@ class JoinupSubContext extends DrupalSubContextBase {
       ]);
     }
 
+    if (property_exists($node, 'published_at') && !empty($node->published_at)) {
+      // If the entry is not numeric, then it means that the user has provided a
+      // human readable version of the timestamp.
+      // Example: Sun, 01 Dec 2019 13:00:00 +0100.
+      // This will allow dynamic tests as well. `strtotime` will also be able to
+      // receive entries like "1 day ago" or "+1 month".
+      if (!is_numeric($node->published_at)) {
+        $node->published_at = strtotime($node->published_at);
+      }
+    }
+
     // Replace the human-readable values for multiple fields.
     self::convertObjectPropertyValues($node, 'pinned', [
       'yes' => 1,
@@ -701,6 +712,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'keywords' => 'field_keywords',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
