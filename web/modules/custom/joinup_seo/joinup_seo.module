@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Contains functions and hooks for the joinup_seo module.
+ */
+
+/**
+ * Implements hook_simple_sitemap_sitemap_types_alter().
+ */
+function joinup_seo_simple_sitemap_sitemap_types_alter(array &$sitemap_types) {
+  if (!isset($sitemap_types['default_hreflang'])) {
+    return;
+  }
+
+  // Replace the default entity generator entry to allow to skip recent news
+  // entries.
+  if ($index = array_search('entity', $sitemap_types['default_hreflang']['urlGenerators'])) {
+    $sitemap_types['default_hreflang']['urlGenerators'][$index] = 'joinup_entity';
+  }
+}
