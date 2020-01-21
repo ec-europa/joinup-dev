@@ -65,14 +65,13 @@ Feature:
       | Sitemap discussion validated     |
       | Sitemap document validated       |
       | Sitemap event validated          |
-      | Sitemap news validated           |
 
     But I should not see the absolute urls of the following RDF entities:
       | Sitemap collection draft |
       | Sitemap solution draft   |
       | Sitemap release 2        |
-      | Sitemap distribution         |
-      | Sitemap licence              |
+      | Sitemap distribution     |
+      | Sitemap licence          |
       | Sitemap owner            |
       | Sitemap secreteriat      |
     And I should not see the absolute urls of the following content entities:
@@ -82,6 +81,36 @@ Feature:
       | Sitemap document draft                         |
       | Sitemap document validated but parent is not   |
       | Sitemap event draft                            |
+      | Sitemap event validated but parent is not      |
+      | Sitemap news draft                             |
+      | Sitemap news validated                         |
+      | Sitemap news validated but parent is not       |
+
+    When I visit "/news/sitemap.xml"
+    And I should see the absolute urls of the following content entities:
+      | Sitemap news validated |
+
+    But I should not see the absolute urls of the following RDF entities:
+      | Sitemap collection draft     |
+      | Sitemap collection validated |
+      | Sitemap distribution         |
+      | Sitemap solution draft       |
+      | Sitemap solution validated   |
+      | Sitemap release 1            |
+      | Sitemap release 2            |
+      | Sitemap licence              |
+      | Sitemap owner                |
+      | Sitemap secreteriat          |
+    And I should not see the absolute urls of the following content entities:
+      | Sitemap custom page of draft                   |
+      | Sitemap discussion draft                       |
+      | Sitemap discussion validated                   |
+      | Sitemap discussion validated but parent is not |
+      | Sitemap document draft                         |
+      | Sitemap document validated                     |
+      | Sitemap document validated but parent is not   |
+      | Sitemap event draft                            |
+      | Sitemap event validated                        |
       | Sitemap event validated but parent is not      |
       | Sitemap news draft                             |
       | Sitemap news validated but parent is not       |
