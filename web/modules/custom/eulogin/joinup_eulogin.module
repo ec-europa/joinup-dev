@@ -7,10 +7,12 @@
 
 declare(strict_types = 1);
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_eulogin\JoinupEuLoginAuthnameItemList;
 
@@ -167,43 +169,38 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
 }
 
 /**
- * Show a warning on the Drupal logon form.
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disables the Drupal user login form and shows a warning message that users
+ * should log in with EU Login instead.
  */
 function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  $weight = ($form['name']['#weight'] ?? 0) - 1;
-  $form['warning'] = [
-    '#theme' => 'status_messages',
-    '#message_list' => [
-      'warning' => [
-        '#markup' => t(
-          // @codingStandardsIgnoreStart
-<<<HTML
-  <p>Starting from 01/02/2020, signing in to Joinup is handled by <a href=":eulogin-url">EU Login</a>, the European Commission Authentication Service.</p>
-  <p>After you sign in using EU Login, you will be able to synchronise your existing Joinup account.</p>
-  <p>Lost your Joinup password? You can reset it <a href=":passreset-url">here</a>.
-HTML
-          ,
-          // @codingStandardsIgnoreEnd
-          [
-            ':eulogin-url' => Url::fromRoute('cas.login')->toString(),
-            ':passreset-url' => Url::fromRoute('user.pass')->toString(),
-          ]
-        ),
-      ],
-    ],
-    '#status_headings' => [
-      'warning' => t('Warning message'),
-    ],
-    '#weight' => $weight,
+  // Disable the form completely.
+  $form['#access'] = FALSE;
+
+  $text = <<<HTML
+    <p>Starting from 01/02/2020, signing in to Joinup is handled by <a href=":eulogin-url">EU Login</a>, the European Commission Authentication Service.</p>
+    <p>After you sign in using EU Login, you will be able to synchronise your existing Joinup account.</p>
+    <p>Lost your Joinup password? You can reset it <a href=":passreset-url">here</a>.
+HTML;
+  $arguments = [
+    ':eulogin-url' => Url::fromRoute('cas.login')->toString(),
+    ':passreset-url' => Url::fromRoute('user.pass')->toString(),
   ];
+  $message = new FormattableMarkup($text, $arguments);
+  $messenger = \Drupal::messenger();
+  $messenger->addMessage($message, MessengerInterface::TYPE_WARNING);
 }
 
 /**
  * Implements hook_local_tasks_alter().
  */
 function joinup_eulogin_local_tasks_alter(&$local_tasks): void {
-  // Remove the 'Create new account' local task.
-  unset($local_tasks['user.register']);
+  // Remove the local tasks related to Drupal login. Users should authenticate
+  // through EU Login.
+  foreach (['user.login', 'user.pass', 'user.register'] as $task) {
+    unset($local_tasks[$task]);
+  }
 }
 
 /**
