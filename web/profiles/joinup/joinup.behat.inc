@@ -2758,6 +2758,38 @@ JS;
   }
 
   /**
+   * Changes the publication date of an entity.
+   *
+   * @param string $title
+   *   The title of the entity.
+   * @param string $bundle
+   *   The bundle of the entity.
+   * @param string $entity_type_id
+   *   The entity type id. Either 'content' or 'rdf entity' is accepted.
+   * @param string $new_publication_date
+   *   The new publication date.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when one of the parameters is not correct.
+   *
+   * @Given the publication date of the :title :bundle :entity_type_id is changed to :new_value
+   */
+  public function givenPublicationDateChanged(string $title, string $bundle, string $entity_type_id, string $new_publication_date): void {
+    if (!in_array($entity_type_id, ['content', 'rdf entity'])) {
+      throw new \InvalidArgumentException('Only "content" and "rdf entity" are allowed for the $entity_type_id parameter.');
+    }
+    $entity_type_id = $entity_type_id === 'content' ? 'node' : 'rdf_entity';
+    $entity = $this->getEntityByLabel($entity_type_id, $title, $bundle);
+    $publication_date = is_numeric($new_publication_date) ? ((int) $new_publication_date) : strtotime($new_publication_date);
+    if (empty($new_publication_date)) {
+      throw new \InvalidArgumentException("'{$new_publication_date}' could not be converted to a proper timestamp.");
+    }
+
+    $entity->set('published_at', $publication_date);
+    $entity->save();
+  }
+
+  /**
    * Asserts that the absolute url of an rdf entity exists as a link.
    *
    * @param \Behat\Gherkin\Node\TableNode $titles
