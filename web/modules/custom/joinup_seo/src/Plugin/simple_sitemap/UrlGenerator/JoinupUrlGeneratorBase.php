@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator;
 
-use Drupal\Component\Plugin\Definition\PluginDefinitionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
