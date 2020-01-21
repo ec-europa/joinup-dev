@@ -177,11 +177,12 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
       'warning' => [
         '#markup' => t(
           // @codingStandardsIgnoreStart
-          <<<HTML
-            <p>Starting from 01/02/2020, signing in to Joinup is handled by <a href=":eulogin-url">EU Login</a>, the European Commission Authentication Service.</p>
-            <p>After you sign in using EU Login, you will be able to synchronise your existing Joinup account.</p>
-            <p>Lost your Joinup password? You can reset it <a href=":passreset-url">here</a>.
-          HTML,
+<<<HTML
+  <p>Starting from 01/02/2020, signing in to Joinup is handled by <a href=":eulogin-url">EU Login</a>, the European Commission Authentication Service.</p>
+  <p>After you sign in using EU Login, you will be able to synchronise your existing Joinup account.</p>
+  <p>Lost your Joinup password? You can reset it <a href=":passreset-url">here</a>.
+HTML
+          ,
           // @codingStandardsIgnoreEnd
           [
             ':eulogin-url' => Url::fromRoute('cas.login')->toString(),
