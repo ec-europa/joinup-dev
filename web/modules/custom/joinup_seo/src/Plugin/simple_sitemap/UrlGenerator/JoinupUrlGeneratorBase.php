@@ -44,8 +44,8 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    *   The configuration array.
    * @param string $plugin_id
    *   The plugin id.
-   * @param \Drupal\Component\Plugin\Definition\PluginDefinitionInterface $plugin_definition
-   *   The plugin definition.
+   * @param array $plugin_definition
+   *   The plugin definition array.
    * @param \Drupal\simple_sitemap\Simplesitemap $generator
    *   The sitemap generator service.
    * @param \Drupal\simple_sitemap\Logger $logger
@@ -61,8 +61,8 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
    *   The joinup relation manager service.
    */
-  public function __construct(array $configuration, string $plugin_id, PluginDefinitionInterface $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupRelationManagerInterface $relation_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $generator, $logger, $language_manager, $entity_type_manager, $entityHelper);
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupRelationManagerInterface $relation_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $generator, $logger, $language_manager, $entity_type_manager, $entityHelper, $url_generator_manager);
     $this->urlGeneratorManager = $url_generator_manager;
     $this->relationManager = $relation_manager;
   }
