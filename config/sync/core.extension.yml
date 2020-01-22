@@ -59,7 +59,6 @@ module:
   joinup_comment: 0
   joinup_community_content: 0
   joinup_core: 0
-  joinup_debug: 0
   joinup_discussion: 0
   joinup_document: 0
   joinup_eulogin: 0
@@ -167,6 +166,7 @@ module:
   views: 10
   publication_date: 99
   joinup: 1000
+  joinup_debug: 1001
 theme:
   stable: 0
   classy: 0
