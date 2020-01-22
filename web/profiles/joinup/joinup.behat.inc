@@ -641,7 +641,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     }
 
     if (property_exists($node, 'published_at') && !empty($node->published_at)) {
-      // If the entry is not numeric, then it means that the user has provided a
+      // If the entry is not numeric, then it means that the scenario is using a
       // human readable version of the timestamp.
       // Example: Sun, 01 Dec 2019 13:00:00 +0100.
       // This will allow dynamic tests as well. `strtotime` will also be able to

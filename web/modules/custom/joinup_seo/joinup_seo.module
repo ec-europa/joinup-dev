@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains functions and hooks for the joinup_seo module.
+ * Contains hook implementations for the Joinup SEO module.
  */
 
 /**
