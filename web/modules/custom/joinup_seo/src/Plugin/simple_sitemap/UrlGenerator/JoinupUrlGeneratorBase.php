@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for Joinup Url Generators.
- *
- * @package Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator
  */
 abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
 
@@ -37,7 +35,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
   protected $relationManager;
 
   /**
-   * JoinupUrlGeneratorBase constructor.
+   * Constructs a JoinupUrlGeneratorBase object.
    *
    * @param array $configuration
    *   The configuration array.

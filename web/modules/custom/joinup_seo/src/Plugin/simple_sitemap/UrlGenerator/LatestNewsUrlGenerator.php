@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator;
 
 use Drupal\Core\Entity\Query\QueryInterface;
 
 /**
  * Class LatestNewsUrlGenerator.
- *
- * @package Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator
  *
  * @UrlGenerator(
  *   id = "latest_news",
