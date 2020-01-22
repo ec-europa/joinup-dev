@@ -285,7 +285,7 @@ Feature: Global search
       | title | Zzolution |
       | state | validated |
 
-    When I enter "ZzoluDistro" in the header search bar and press enter
+    When I enter "ZzoluDistro" in the search bar and press enter
     Then I should see "No content found for your search."
 
     # Add distribution, child of solution.
