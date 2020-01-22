@@ -64,19 +64,40 @@ Feature:
 
     # While Rick navigates on the site a new version is created and published.
     Given the following legal document versions:
-      | Document     | Label | Published | Acceptance label    | Content     |
-      | Legal notice | 2.0   | no        | Accept Version 2.0! | Version 2.0 |
+      | Document     | Label | Published | Acceptance label    | Content             |
+      | Legal notice | 2.0   | no        | Accept Version 2.0! | Version 2.0 content |
     And the version "2.0" of "Legal notice" legal document is published
 
     When I go to homepage
     Then I should see the warning message "You must accept this agreement before continuing."
     And I should see the heading "Legal notice"
-    And I should see "Version 2.0"
+    And I should see "Version 2.0 content"
     And I should see "Accept Version 2.0!"
+
+    # Try to navigate.
+    When I click "My account"
+    Then I should see the warning message "You must accept this agreement before continuing."
+
+    # Sign-out is allowed.
+    When I click "Sign out"
+    Then I should not see the warning message "You must accept this agreement before continuing."
+    And I should see the link "Sign in"
+
+    And I click "Sign in"
+    When I click "EU Login"
+    And I fill in "E-mail address" with "rick@example.com"
+    And I fill in "Password" with "secretz"
+
+    When I press "Log in"
+
+    Then I should see the warning message "You must accept this agreement before continuing."
+    And I should see the heading "Legal notice"
+    And I should see "Version 2.0 content"
 
     When I check "Accept Version 2.0!"
     And I press "Submit"
     Then I should not see the warning message "You must accept this agreement before continuing."
+
     # Clean up the user that was created manually during the scenario.
     Then I delete the "Rick" user
 
