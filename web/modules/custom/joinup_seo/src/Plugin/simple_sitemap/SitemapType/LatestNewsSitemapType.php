@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_seo\Plugin\simple_sitemap\SitemapType;
 
 use Drupal\simple_sitemap\Plugin\simple_sitemap\SitemapType\SitemapTypeBase;
