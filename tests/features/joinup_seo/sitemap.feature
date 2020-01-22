@@ -9,20 +9,20 @@ Feature:
       | name          | type    |
       | Sitemap owner | Company |
     And the following contact:
-      | name  | Sitemap secreteriat             |
-      | email | sitemap.secreteriat@example.com |
+      | name  | Sitemap secretariat             |
+      | email | sitemap.secretariat@example.com |
     And the following collections:
       | title                        | state     |
       | Sitemap collection draft     | draft     |
       | Sitemap collection validated | validated |
     And the following solutions:
       | title                      | description                 | owner         | contact information | collection                   | state     |
-      | Sitemap solution draft     | Sitemap keywords everywhere | Sitemap owner | Sitemap secreteriat | Sitemap collection validated | draft     |
-      | Sitemap solution validated | Sitemap keywords everywhere | Sitemap owner | Sitemap secreteriat | Sitemap collection validated | validated |
+      | Sitemap solution draft     | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap collection validated | draft     |
+      | Sitemap solution validated | Sitemap keywords everywhere | Sitemap owner | Sitemap secretariat | Sitemap collection validated | validated |
     And the following releases:
       | title             | release number | release notes | is version of              | owner         | contact information | state     |
-      | Sitemap release 1 | 1              | New release   | Sitemap solution validated | Sitemap owner | Sitemap secreteriat | validated |
-      | Sitemap release 2 | 2              | Newer release | Sitemap solution validated | Sitemap owner | Sitemap secreteriat | draft     |
+      | Sitemap release 1 | 1              | New release   | Sitemap solution validated | Sitemap owner | Sitemap secretariat | validated |
+      | Sitemap release 2 | 2              | Newer release | Sitemap solution validated | Sitemap owner | Sitemap secretariat | draft     |
     And the following distributions:
       | title                | description           | parent            | access url |
       | Sitemap distribution | Some kind of download | Sitemap release 1 | test.zip   |
@@ -75,7 +75,7 @@ Feature:
       | Sitemap distribution     |
       | Sitemap licence          |
       | Sitemap owner            |
-      | Sitemap secreteriat      |
+      | Sitemap secretariat      |
     And I should not see the absolute urls of the following content entities:
       | Sitemap custom page of draft                   |
       | Sitemap discussion draft                       |
@@ -102,7 +102,7 @@ Feature:
       | Sitemap release 2            |
       | Sitemap licence              |
       | Sitemap owner                |
-      | Sitemap secreteriat          |
+      | Sitemap secretariat          |
     And I should not see the absolute urls of the following content entities:
       | Sitemap custom page of draft                   |
       | Sitemap discussion draft                       |
@@ -142,7 +142,7 @@ Feature:
       | Sitemap distribution     |
       | Sitemap licence          |
       | Sitemap owner            |
-      | Sitemap secreteriat      |
+      | Sitemap secretariat      |
     And I should not see the absolute urls of the following content entities:
       | Sitemap custom page of draft                   |
       | Sitemap discussion draft                       |
