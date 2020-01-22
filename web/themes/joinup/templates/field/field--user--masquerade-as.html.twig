@@ -1,0 +1,10 @@
+{% if label_hidden %}
+  {% for item in items %}
+    <span class="tag">{{ item.content }}</span>{% if not loop.last %}, {% endif %}
+  {% endfor %}
+{% else %}
+  <span{{ title_attributes }}>{{ label }}</span>
+  {% for item in items %}
+    <span class="tag">{{ item.content }}</span>{% if not loop.last %}, {% endif %}
+  {% endfor %}
+{% endif %}
