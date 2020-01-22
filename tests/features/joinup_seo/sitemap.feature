@@ -88,6 +88,8 @@ Feature:
       | Sitemap news validated and recent              |
       | Sitemap news validated but parent is not       |
 
+    # Check the dedicated sitemap for news articles that only contains hot news
+    # topics published in the last 2 days.
     When I visit "/news/sitemap.xml"
     And I should see the absolute urls of the following content entities:
       | Sitemap news validated and recent |
@@ -121,7 +123,8 @@ Feature:
     # Simulate that 2 days have passed since last time the sitemaps have been created.
     When the publication date of the "Sitemap news validated and recent" news content is changed to "3 days ago"
     And I run cron
-    # Assert that the "Sitemap news validated and recent" is now part of the generic
+    # Assert that the "Sitemap news validated and recent" news article is no
+    # longer considered as a hot topic and has moved to the standard sitemap.
     And I visit "/sitemap.xml"
     Then I should see the absolute urls of the following RDF entities:
       | Sitemap collection validated |
@@ -154,6 +157,7 @@ Feature:
       | Sitemap news draft                             |
       | Sitemap news validated but parent is not       |
 
-    # The sitemap has been removed and the page is invalid since no entries are in there.
+    # The hot news article is now removed from the news sitemap, and the page
+    # should no longer be present since it doesn't contain any more entries.
     When I go to "/news/sitemap.xml"
     Then the response status code should be 404
