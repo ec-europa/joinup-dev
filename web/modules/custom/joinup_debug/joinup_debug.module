@@ -8,42 +8,29 @@
 declare(strict_types = 1);
 
 use Drupal\node\NodeInterface;
+use Drupal\Core\Utility\Error;
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
  */
-function joinup_debug_node_presave(NodeInterface $entity) {
+function joinup_debug_node_presave(NodeInterface $node) {
   // At this point, if the entity is not new, the original is already loaded and
   // stored in the ::original property of the entity.
   // @see: \Drupal\Core\Entity\EntityStorageBase::doPreSave.
-  $last_revision_id = _joinup_debug_get_last_published_node_revision_id($entity);
-  // The entity prior to saving should be the latest revision id.
-  if (!empty($last_revision_id) && $entity->original->getRevisionId() !== $last_revision_id) {
-    $message = t("Problem with saving @entity_type (@bundle) with id @id, vid @vid, when attempting to save a revision which is not the latest published. Stack trace:\n%trace", [
-      '@entity_type' => $entity->getEntityTypeId(),
-      '@bundle' => $entity->bundle(),
-      '@id' => $entity->id(),
-      '@vid' => $entity->getRevisionId(),
-      '%trace' => debug_backtrace(),
-    ]);
-    \Drupal::logger('joinup_debug')->critical($message);
+  $last_revision_id = _joinup_debug_get_last_published_node_revision_id($node);
+  // The node prior to saving should be the latest revision id.
+  if (!empty($last_revision_id) && $node->getRevisionId() !== NULL && $node->getRevisionId() < $last_revision_id) {
+    _joinup_debug_log_wrong_revision_error($node);
   }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
-function joinup_debug_node_update(NodeInterface $entity) {
-  $last_revision_id = _joinup_debug_get_last_published_node_revision_id($entity);
-  if (!empty($last_revision_id) && $entity->getRevisionId() < $last_revision_id) {
-    $message = t("Problem with updating @entity_type (@bundle) with id @id, vid @vid, when attempting to save a revision which is not the latest published. Stack trace:\n%trace", [
-      '@entity_type' => $entity->getEntityTypeId(),
-      '@bundle' => $entity->bundle(),
-      '@id' => $entity->id(),
-      '@vid' => $entity->getRevisionId(),
-      '%trace' => debug_backtrace(),
-    ]);
-    \Drupal::logger('joinup_debug')->critical($message);
+function joinup_debug_node_update(NodeInterface $node) {
+  $last_revision_id = _joinup_debug_get_last_published_node_revision_id($node);
+  if (!empty($last_revision_id) && $node->getRevisionId() < $last_revision_id) {
+    _joinup_debug_log_wrong_revision_error($node);
   }
 }
 
@@ -62,4 +49,23 @@ function _joinup_debug_get_last_published_node_revision_id(NodeInterface $node):
   ])->fetchCol();
 
   return empty($vids) ? NULL : end($vids);
+}
+
+/**
+ * Logs the wrong revision error to the logger as a critical issue.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The related node.
+ */
+function _joinup_debug_log_wrong_revision_error(NodeInterface $node): void {
+  $backtrace = debug_backtrace();
+  $backtrace = Error::formatBacktrace($backtrace);
+  $message = 'Wrong revision issue: @entity_type (@bundle) with id @id, vid @vid. Stack trace:\n@trace';
+  \Drupal::logger('joinup_debug')->critical($message, [
+    '@entity_type' => $node->getEntityTypeId(),
+    '@bundle' => $node->bundle(),
+    '@id' => $node->id(),
+    '@vid' => $node->getRevisionId(),
+    '@trace' => $backtrace,
+  ]);
 }
