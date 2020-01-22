@@ -117,8 +117,8 @@ Feature: Search inside groups
     # as a chip in the search field the search results should be filtered and
     # only show the content of the solution.
     When I submit the search by pressing enter
-    Then the option with text "Inclined foundations   (7)" from select facet "collection/solution" is selected
-    Then the page should show the tiles "Pre-alpha, Presenting DrillMaster X88, Rock types, Still frozen, Geography, Terrace?, Zip archive"
+    Then the option with text "Inclined foundations   (6)" from select facet "collection/solution" is selected
+    Then the page should show the tiles "Pre-alpha, Presenting DrillMaster X88, Rock types, Still frozen, Geography, Terrace?"
 
     # Do a search with a keyword. The chip for the solution should be present
     # so the results are filtered by keyword and solution.
@@ -238,8 +238,8 @@ Feature: Search inside groups
     Then the page should not contain any chips
 
     When I select "Inclined foundations" from the "collection/solution" select facet
-    Then the option with text "Inclined foundations   (7)" from select facet "collection/solution" is selected
-    And I should see 7 tiles
+    Then the option with text "Inclined foundations   (6)" from select facet "collection/solution" is selected
+    And I should see 6 tiles
 
     When I open the search bar by clicking on the search icon
     Then the page should show the following chip:
