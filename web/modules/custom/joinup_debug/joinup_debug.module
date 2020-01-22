@@ -1,0 +1,65 @@
+<?php
+
+declare(strict_types = 1);
+
+/**
+ * @file
+ * Basic file for the Joinup Debug module.
+ */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function joinup_debug_node_presave(NodeInterface $entity) {
+  // At this point, if the entity is not new, the original is already loaded and
+  // stored in the ::original property of the entity.
+  // @see: \Drupal\Core\Entity\EntityStorageBase::doPreSave.
+  $last_revision_id = _joinup_debug_get_last_published_node_revision_id($entity);
+  // The entity prior to saving should be the latest revision id.
+  if (!$entity->isNew() && $entity->original->getRevisionId() !== $last_revision_id) {
+    $message = t("Problem with saving @entity_type (@bundle) with id @id, vid @vid, when attempting to save a revision which is not the latest published. Stack trace:\n%trace", [
+      '@entity_type' => $entity->getEntityTypeId(),
+      '@bundle' => $entity->bundle(),
+      '@id' => $entity->id(),
+      '@vid' => $entity->getRevisionId(),
+      '%trace' => debug_backtrace(),
+    ]);
+    \Drupal::logger('joinup_debug')->critical($message);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function joinup_debug_node_update(NodeInterface $entity) {
+  $last_revision_id = _joinup_debug_get_last_published_node_revision_id($entity);
+  if ($entity->getRevisionId() < $last_revision_id) {
+    $message = t("Problem with updating @entity_type (@bundle) with id @id, vid @vid, when attempting to save a revision which is not the latest published. Stack trace:\n%trace", [
+      '@entity_type' => $entity->getEntityTypeId(),
+      '@bundle' => $entity->bundle(),
+      '@id' => $entity->id(),
+      '@vid' => $entity->getRevisionId(),
+      '%trace' => debug_backtrace(),
+    ]);
+    \Drupal::logger('joinup_debug')->critical($message);
+  }
+}
+
+/**
+ * Return the latest published revision id for a given node.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The published node.
+ *
+ * @return string|null
+ *   The revision id.
+ */
+function _joinup_debug_get_last_published_node_revision_id(NodeInterface $node): ?string {
+  $vids = \Drupal::database()->query('SELECT vid FROM {node_field_revision} WHERE nid=:nid AND status=1 ORDER BY vid', [
+    ':nid' => $node->id(),
+  ])->fetchCol();
+
+  return empty($vids) ? NULL : end($vids);
+}

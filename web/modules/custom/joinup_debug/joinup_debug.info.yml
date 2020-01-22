@@ -1,0 +1,5 @@
+name: 'Joinup debug'
+type: module
+description: 'Debug module for the Joinup platform.'
+core: 8.x
+package: Joinup
