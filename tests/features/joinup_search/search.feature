@@ -2,8 +2,11 @@
 Feature: Global search
   As a user of the site I can find content through the global search.
 
-  # This test runs with javascript enabled because in a non-javascript environment, the dropdown facet is simply a list
-  # of links.
+  # Todo: This test runs with javascript enabled because in a non-javascript
+  # environment, the dropdown facet is simply a list of links. Remove the
+  # `@javascript` tag when the upstream issue in the Facets module is fixed.
+  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
+  # Ref. https://www.drupal.org/project/facets/issues/2937191
   @javascript
   Scenario: Anonymous user can find items
     Given the following collection:
