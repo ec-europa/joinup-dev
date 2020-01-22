@@ -207,6 +207,54 @@ display:
           min_length: 3
           fields: {  }
           plugin_id: search_api_fulltext
+        entity_bundle:
+          id: entity_bundle
+          table: search_api_index_published
+          field: entity_bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '!='
+          value:
+            min: ''
+            max: ''
+            value: asset_distribution
+          group: 1
+          exposed: false
+          expose:
+            operator_id: entity_bundle_op
+            label: Bundle
+            description: ''
+            use_operator: false
+            operator: entity_bundle_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: entity_bundle
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              licence_manager: '0'
+              anonymous: '0'
+              moderator: '0'
+              administrator: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: search_api_string
       sorts:
         search_api_relevance:
           id: search_api_relevance
@@ -258,7 +306,10 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
   page_1:
     display_plugin: page
     id: page_1
@@ -279,4 +330,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
+        - 'search_api_list:published'
