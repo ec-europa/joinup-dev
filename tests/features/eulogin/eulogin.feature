@@ -210,12 +210,9 @@ Feature: Log in through EU Login
       | First name  | James            |
       | Family name | Bond             |
 
-    # Test the customized message as logged in user.
-    Given I visit "/user/password"
-    And I wait for the honeypot time limit to pass
-    And I press "Submit"
-    Then I should see the error message "The requested account is associated with EU Login and its password cannot be managed from this website."
-    And I should see the link "EU Login"
+    # A logged in user cannot access the reset password form.
+    When I go to "/user/password"
+    Then I should get an access denied error
 
   Scenario: Fields imported from EU Login cannot be edited locally.
     Given users:
@@ -396,13 +393,14 @@ Feature: Log in through EU Login
 
   Scenario: A moderator is able to manually link a local user to its EU Login.
     Given user:
-      | Username    | joe |
-      | First name  | Joe |
-      | Family name | Doe |
+      | Username    | joe                              |
+      | E-mail      | joe_case_insensitive@example.com |
+      | First name  | Joe                              |
+      | Family name | Doe                              |
 
     And CAS users:
-      | Username | E-mail          | Password | First name | Last name |
-      | joe      | joe@example.com | 123      | Joe        | Doe       |
+      | Username | E-mail                           | Password | First name | Last name |
+      | joe      | Joe_Case_Insensitive@example.com | 123      | Joe        | Doe       |
 
     Given I am logged in as a moderator
     And I click "People"
@@ -426,7 +424,10 @@ Feature: Log in through EU Login
     And I am on the homepage
     And I click "Sign in"
     And I click "EU Login"
-    And I fill in "E-mail address" with "joe@example.com"
+    And I fill in "E-mail address" with "Joe_Case_Insensitive@example.com"
     And I fill in "Password" with "123"
     When I press the "Log in" button
     Then I should see the success message "You have been logged in."
+    # The email ends up getting the upstream email so that correct character casing is applied.
+    And the user joe should have the following data in their user profile:
+      | E-mail      | Joe_Case_Insensitive@example.com |

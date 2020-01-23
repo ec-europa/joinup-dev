@@ -14,7 +14,7 @@
         "drupal/allowed_formats": "^1.2",
         "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
         "drupal/cached_computed_field": "^1.0-beta5",
-        "drupal/cas": "dev-1.x",
+        "drupal/cas": "^1.6",
         "drupal/cas_account_link": "^1.0",
         "drupal/cas_attributes": "dev-1.x",
         "drupal/changed_fields": "^3.2",
@@ -23,7 +23,7 @@
         "drupal/config_readonly": "^1.0",
         "drupal/config_update": "dev-1.x",
         "drupal/core": "^8.8.1",
-        "drupal/diff": "^1.0@RC",
+        "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "^1.0-alpha1",
         "drupal/ds": "^3.5",
         "drupal/editor_file": "~1.4",
@@ -63,7 +63,7 @@
         "drupal/social_media_links": "^2.6",
         "drupal/spdx": "^1.0.0-alpha5",
         "drupal/state_machine": "^1.0-rc1",
-        "drupal/subpathauto": "^1.0@rc",
+        "drupal/subpathauto": "~1.0",
         "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
         "drupal/token": "~1.5",
         "drupal/video_embed_field": "~1.6",
@@ -97,7 +97,7 @@
         "behat/gherkin": "~4.6",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
-        "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
+        "behat/mink-selenium2-driver": "~1.4",
         "drupal/admin_toolbar": "^1.27",
         "drupal/cas_mock_server": "^1.0",
         "drupal/coder": "^8.3.6",
@@ -223,6 +223,9 @@
             "drupal/email_registration": {
                 "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-05-13/2927109-11.patch"
             },
+            "drupal/externalauth": {
+                "Clean up linkExistingAccount method so it doesn't needless prefix username with provider name @see https://www.drupal.org/project/externalauth/issues/3104478": "https://www.drupal.org/files/issues/2020-01-08/3104478-3.patch"
+            },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
@@ -258,7 +261,8 @@
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",
-                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
+                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
+                "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",

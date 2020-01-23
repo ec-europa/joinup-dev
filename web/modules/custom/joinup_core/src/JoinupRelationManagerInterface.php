@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
@@ -91,6 +92,26 @@ interface JoinupRelationManagerInterface {
   public function getGroupMemberships(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
 
   /**
+   * Returns the memberships of a user for a given bundle.
+   *
+   * Use this to retrieve for example all the user's collection or solution
+   * memberships.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user for which to retrieve the memberships.
+   * @param string $entity_type_id
+   *   The entity type for which to retrieve the memberships.
+   * @param string $bundle_id
+   *   The bundle for which to retrieve the memberships.
+   * @param array $states
+   *   The membership states. Defaults to active memberships.
+   *
+   * @return \Drupal\og\OgMembershipInterface[]
+   *   The memberships.
+   */
+  public function getUserGroupMembershipsByBundle(AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
+
+  /**
    * Returns the entity IDs of all collections.
    *
    * @return string[]
@@ -105,5 +126,17 @@ interface JoinupRelationManagerInterface {
    *   An array of entity IDs.
    */
   public function getSolutionIds(): array;
+
+  /**
+   * Returns the groups that relate to a contact information entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $entity
+   *   The contact information entity.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface[]
+   *   A list of rdf entities that reference the given contact information
+   *   entity.
+   */
+  public function getContactInformationRelatedGroups(RdfInterface $entity): array;
 
 }

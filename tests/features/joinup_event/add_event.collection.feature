@@ -42,7 +42,7 @@ Feature: "Add event" visibility options.
     When I go to the homepage of the "Stream of Dreams" collection
     And I click "Add event" in the plus button menu
     Then I should see the heading "Add event"
-    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Physical location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Spatial coverage"
+    And the following fields should be present "Title, Short title, Description, Agenda, Logo, Contact email, Website, Physical location, Organisation, Organisation type, Policy domain, Add a new file, Keywords, Scope, Geographical coverage"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
     And the following fields should not be present "Shared in"
@@ -57,11 +57,11 @@ Feature: "Add event" visibility options.
       | File description field is required. |
 
     When I fill in the following:
-      | Title             | An amazing event                      |
-      | Short title       | Amazing event                         |
-      | Description       | This is going to be an amazing event. |
-      | File description  | Taxi discount voucher.                |
-      | Spatial coverage  | France                                |
+      | Title                  | An amazing event                      |
+      | Short title            | Amazing event                         |
+      | Description            | This is going to be an amazing event. |
+      | File description       | Taxi discount voucher.                |
+      | Geographical coverage  | France                                |
     And I press "Add another item" at the "Virtual location" field
     And I fill the start date of the Date widget with "2018-08-29"
     And I fill the start time of the Date widget with "23:59:59"

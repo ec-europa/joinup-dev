@@ -100,7 +100,7 @@ Feature: Following discussions
     And I press "Update"
     Then 0 e-mails should have been sent
 
-    # When relevant fields of a discussion are changed, the followers are
+    # When relevant fields of a discussion are changed, the subscribers are
     # receiving a notification.
     Given I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "The old content was wrong."
