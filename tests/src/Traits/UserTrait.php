@@ -33,6 +33,7 @@ trait UserTrait {
       'Organisation' => 'field_user_organisation',
       'Nationality' => 'field_user_nationality',
       'Professional domain' => 'field_user_professional_domain',
+      'Masquerade as' => 'masquerade_as',
       // @todo Social network
     ];
   }
@@ -84,6 +85,19 @@ trait UserTrait {
       $roles = explode(',', $values['roles']);
       $roles = array_filter(array_map('trim', $roles));
       unset($values['roles']);
+    }
+
+    if (!empty($values['masquerade_as'])) {
+      $masquerade_as = [];
+      $masquerade_as_labels = array_map('trim', explode(',', $values['masquerade_as']));
+      foreach ($masquerade_as_labels as $masquerade_as_label) {
+        $target_account = $this->getUserByName($masquerade_as_label);
+        $masquerade_as[] = $target_account->id();
+      }
+      $values['masquerade_as'] = $masquerade_as;
+    }
+    else {
+      unset($values['masquerade_as']);
     }
 
     // Provide defaults for required fields.
