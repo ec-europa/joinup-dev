@@ -24,7 +24,10 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
   public static function getSubscribedEvents(): array {
     return [
       CasAccountLinkEvents::EMAIL_COLLISION => 'setEmailCollisionMessage',
-      CasAccountLinkEvents::POST_LINK => 'setMessageAndRedirect',
+      CasAccountLinkEvents::POST_LINK => [
+        ['setFakePassword'],
+        ['setMessageAndRedirect'],
+      ],
     ];
   }
 
@@ -51,6 +54,23 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
         '#suffix' => '</p>',
       ],
     ]);
+  }
+
+  /**
+   * Sets a random password on the account..
+   *
+   * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent $event
+   *   The CAS Account Link post-linking event object.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown if the bundle does not exist or was needed but not specified.
+   */
+  public function setFakePassword(CasAccountLinkPostLinkEvent $event): void {
+    if ($event->isLocalAccountSelected()) {
+      // Using the same password length as for new users.
+      // @see \Drupal\cas\Service\CasUserManager::randomPassword()
+      $event->getAccount()->setPassword(\user_password(30))->save();
+    }
   }
 
   /**
