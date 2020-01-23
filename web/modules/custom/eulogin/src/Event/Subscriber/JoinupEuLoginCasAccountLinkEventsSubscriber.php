@@ -58,6 +58,9 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
    *
    * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent $event
    *   The CAS Account Link post-linking event object.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown if the bundle does not exist or was needed but not specified.
    */
   public function setMessageAndRedirect(CasAccountLinkPostLinkEvent $event): void {
     if ($event->isLocalAccountSelected()) {
