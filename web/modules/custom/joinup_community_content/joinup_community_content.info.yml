@@ -12,6 +12,7 @@ dependencies:
   - drupal:taxonomy
   - drupal:text
   - joinup:joinup_core
+  - joinup:joinup_group
   - joinup:workflow_state_permission
   - state_machine:state_machine
 

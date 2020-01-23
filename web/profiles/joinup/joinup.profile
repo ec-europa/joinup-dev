@@ -15,9 +15,10 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup\JoinupHelper;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
 
@@ -107,13 +108,9 @@ function joinup_entity_type_alter(array &$entity_types) {
   // add propose form displays to them.
   // Skip this during installation, since the RDF entity will not yet be
   // registered.
-  if (!drupal_installation_attempted()) {
+  if (!InstallerKernel::installationAttempted()) {
     /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
     $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
-
-    // Swap the default user cancel form implementation with a custom one that
-    // prevents deleting users when they are the sole owner of a collection.
-    $entity_types['user']->setFormClass('cancel', 'Drupal\joinup\Form\UserCancelForm');
   }
 }
 
@@ -370,7 +367,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     ];
   }
 
-  if (!JoinupHelper::isSolution($entity) && !CommunityContentHelper::isCommunityContent($entity)) {
+  if (!JoinupGroupHelper::isSolution($entity) && !CommunityContentHelper::isCommunityContent($entity)) {
     return;
   }
 
@@ -416,7 +413,7 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
   // The next check asserts that the group is either a collection or a solution
   // but for solutions, only community content are allowed to be pinned, not
   // related solutions.
-  if ($group && (JoinupHelper::isCollection($group) || CommunityContentHelper::isCommunityContent($entity) && JoinupHelper::isSolution($group))) {
+  if ($group && (JoinupGroupHelper::isCollection($group) || CommunityContentHelper::isCommunityContent($entity) && JoinupGroupHelper::isSolution($group))) {
     // Used by the contextual links for pinning/unpinning entity in group.
     // @see: joinup.pin_entity, joinup.unpin_entity routes.
     $build['#contextual_links']['group_context']['route_parameters']['group'] = $group->id();
@@ -470,7 +467,7 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
-    if (JoinupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
+    if (JoinupGroupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
       $group_ids = [];
       foreach ($pin_service->getGroupsWherePinned($entity) as $group) {
         $group_ids[] = $group->id();

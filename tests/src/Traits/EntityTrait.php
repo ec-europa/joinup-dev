@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Traits;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 
 /**
  * Helper methods to deal with entities.
@@ -125,22 +127,19 @@ trait EntityTrait {
   /**
    * Forces a reindex of the entity in search_api.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity to reindex.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the entity type doesn't exist.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    *   Thrown when an entity with a non-existing storage is passed.
    */
-  protected function forceSearchApiReindex(EntityInterface $entity): void {
+  protected function forceSearchApiReindex(ContentEntityInterface $entity): void {
     // Invalidate any static cache, so that all computed fields are calculated
-    // with updated values.
-    // For example, the "collection" computed field of solutions.
+    // with updated values (e.g. the "collection" computed field of solutions).
     \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->resetCache([$entity->id()]);
-    // In order to avoid copying code from search_api_entity_update(), we
-    // need to fake an update event. Said function requires the "original"
-    // property to be populated, so just fill it with the entity itself.
-    $entity->original = $entity;
-    search_api_entity_update($entity);
+    ContentEntity::indexEntity($entity);
   }
 
 }

@@ -46,11 +46,11 @@ Feature: Collection content
 
     When I click "Add solution" in the plus button menu
     And I fill in the following:
-      | Title            | Solution from draft to validated                                    |
-      | Description      | Testing that publishing a solution, updates the collection content. |
-      | Spatial coverage | Switzerland                                                         |
-      | Name             | Costas Papazoglou                                                   |
-      | E-mail address   | CostasPapazoglou@example.com                                        |
+      | Title                 | Solution from draft to validated                                    |
+      | Description           | Testing that publishing a solution, updates the collection content. |
+      | Geographical coverage | Switzerland                                                         |
+      | Name                  | Costas Papazoglou                                                   |
+      | E-mail address        | CostasPapazoglou@example.com                                        |
     And I select "Data gathering, data processing" from "Policy domain"
     And I select "Logging Service" from "Solution type"
     And I press "Add existing" at the "Owner" field

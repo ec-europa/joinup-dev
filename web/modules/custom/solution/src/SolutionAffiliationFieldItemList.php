@@ -7,6 +7,7 @@ namespace Drupal\solution;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
+use Drupal\rdf_entity\RdfInterface;
 
 /**
  * Defines a field item list class for the solution 'collections' field.
@@ -87,7 +88,9 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    *   A list of collection IDs where the solution host entity is affiliated.
    */
   protected function getAffiliation(): array {
-    return array_values(\Drupal::entityQuery('rdf_entity')
+    return array_values(\Drupal::service('entity_type.manager')
+      ->getStorage('rdf_entity')
+      ->getQuery()
       ->condition('rid', 'collection')
       ->condition('field_ar_affiliates', $this->getEntity()->id())
       ->execute());
@@ -102,55 +105,56 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
    * collection cache in order to reflect the changes on Drupal API level.
    */
   protected function updateAffiliation(): void {
-    /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
-    $sparql = \Drupal::service('sparql.endpoint');
     /** @var \Drupal\rdf_entity\RdfInterface $solution */
     $solution = $this->getEntity();
-    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
-    $graph_handler = \Drupal::service('sparql.graph_handler');
-    $graph_uri = $graph_handler->getBundleGraphUri('rdf_entity', 'collection', $solution->get('graph')->target_id);
+    $connection = \Drupal::service('sparql.endpoint');
+    $graph_uris = $this->getAvailableGraphs();
+
     /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageFieldHandlerInterface $field_handler */
     $field_handler = \Drupal::service('sparql.field_handler');
     $field_uri = $field_handler->getFieldPredicates('rdf_entity', 'field_ar_affiliates')['collection'];
 
-    // Get existing affiliation.
-    $select[] = 'SELECT ?id';
-    $select[] = "FROM <{$graph_uri}>";
-    $select[] = "WHERE { ?id <{$field_uri}> <{$solution->id()}> . }";
-    $select[] = "ORDER BY (?id)";
-    $existing_ids = [];
-    foreach ($sparql->query(implode("\n", $select)) as $item) {
-      $existing_ids[] = (string) $item->id;
-    }
-
+    // Generate a list of new ids that the solution references as an affiliate.
     $new_ids = array_map(function (EntityReferenceItem $field_item): string {
       return $field_item->target_id;
     }, $this->list);
     sort($new_ids);
 
-    // The affiliation has been preserved. Exit here.
-    if ($new_ids === $existing_ids) {
+    $affected_ids = [];
+    $existing_ids = [];
+
+    // Get existing affiliation.
+    $select = [];
+    $select[] = 'SELECT ?id';
+    foreach ($graph_uris as $graph_uri) {
+      $select[] = "FROM <{$graph_uri}>";
+    }
+    $select[] = 'WHERE {';
+    $select[] = "?id <{$field_uri}> <{$solution->id()}> .";
+    // Ensure the entity exists in the graph.
+    $select[] = "?id a ?type .";
+    $select[] = '}';
+    $select[] = "ORDER BY (?id)";
+
+    foreach ($connection->query(implode("\n", $select)) as $item) {
+      $existing_ids[(string) $item->id] = (string) $item->id;
+    }
+
+    // The affiliation has been preserved. Continue to the rest of the graphs.
+    if ($new_ids === array_values($existing_ids)) {
       return;
     }
 
-    // Delete existing affiliation.
-    $delete[] = "WITH <{$graph_uri}>";
-    $delete[] = "DELETE { ?id <{$field_uri}> <{$solution->id()}> . }";
-    $delete[] = "WHERE { ?id <{$field_uri}> <{$solution->id()}> . }";
-    $sparql->query(implode("\n", $delete));
+    // Collect the ids of the collections that were affected by changes.
+    $affected_ids += array_unique(array_merge($new_ids, $existing_ids));
 
-    // Insert new affiliation.
-    $insert[] = "WITH <{$graph_uri}>";
-    $insert[] = 'INSERT {';
-    foreach ($new_ids as $id) {
-      $insert[] = "  <{$id}> <{$field_uri}> <{$solution->id()}> .";
+    $connection->query($this->getDeleteQuery($graph_uris, $field_uri, $solution, $new_ids));
+    $connection->query($this->getInsertQuery($graph_uris, $field_uri, $solution, $new_ids));
+
+    if ($affected_ids) {
+      // Clear the cache of collections that were affected by changes.
+      \Drupal::service('entity_type.manager')->getStorage('rdf_entity')->resetCache($affected_ids);
     }
-    $insert[] = '}';
-    $sparql->query(implode("\n", $insert));
-
-    // Clear the cache of collections that were affected by changes.
-    $affected_ids = array_unique(array_merge($new_ids, $existing_ids));
-    \Drupal::entityTypeManager()->getStorage('rdf_entity')->resetCache($affected_ids);
   }
 
   /**
@@ -167,6 +171,114 @@ class SolutionAffiliationFieldItemList extends EntityReferenceFieldItemList {
       $this->solutionInOfficialGraph = in_array($graph_id, $graph_handler->getEntityTypeDefaultGraphIds('rdf_entity'));
     }
     return $this->solutionInOfficialGraph;
+  }
+
+  /**
+   * Returns the graph ids that the collection exists in.
+   *
+   * @return array
+   *   An array of graph URIs that the collection exists in indexed by graph id.
+   */
+  protected function getAvailableGraphs(): array {
+    /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler */
+    $graph_handler = \Drupal::service('sparql.graph_handler');
+    $return = [];
+
+    foreach ($graph_handler->getEntityTypeDefaultGraphIds('rdf_entity') as $graph_id) {
+      $return[$graph_id] = $graph_handler->getBundleGraphUri('rdf_entity', 'collection', $graph_id);
+    }
+
+    return $return;
+  }
+
+  /**
+   * Retrieves the delete query.
+   *
+   * The following method will produce a query in the following form.
+   *
+   * @codingStandardsIgnoreStart
+   * DELETE {
+   *   GRAPH <g1> {
+   *     a b c
+   *   }
+   *   GRAPH <g2> {
+   *     a b c
+   *   }
+   * }
+   * USING <g1>
+   * USING <g2>
+   * WHERE { ... }
+   * @codingStandardsIgnoreEnd
+   *
+   * @param array $graph_uris
+   *   A list of graph uris.
+   * @param string $field_predicate
+   *   The field predicate.
+   * @param \Drupal\rdf_entity\RdfInterface $solution
+   *   The solution entity.
+   * @param array $new_ids
+   *   The new affiliates list.
+   *
+   * @return string
+   *   The query string that updates the values.
+   */
+  protected function getDeleteQuery(array $graph_uris, string $field_predicate, RdfInterface $solution, array $new_ids): string {
+    $query_parts = [];
+    $query_parts[] = "DELETE {";
+    foreach ($graph_uris as $uri) {
+      $query_parts[] = "GRAPH <{$uri}> {";
+      $query_parts[] = "?id <{$field_predicate}> <{$solution->id()}> .";
+      $query_parts[] = '}';
+    }
+    $query_parts[] = '}';
+    foreach ($graph_uris as $uri) {
+      $query_parts[] = "USING <{$uri}>";
+    }
+    $query_parts[] = "WHERE { ?id <{$field_predicate}> <{$solution->id()}> }";
+
+    return implode("\n", $query_parts);
+  }
+
+  /**
+   * Retrieves the insert query.
+   *
+   * The following method will produce a query in the following form.
+   *
+   * @codingStandardsIgnoreStart
+   * INSERT {
+   *   GRAPH <g1> {
+   *     x y z
+   *   }
+   *   GRAPH <g2> {
+   *     x y z
+   *   }
+   * }
+   * @codingStandardsIgnoreEnd
+   *
+   * @param array $graph_uris
+   *   A list of graph uris.
+   * @param string $field_predicate
+   *   The field predicate.
+   * @param \Drupal\rdf_entity\RdfInterface $solution
+   *   The solution entity.
+   * @param array $new_ids
+   *   The new affiliates list.
+   *
+   * @return string
+   *   The query string that updates the values.
+   */
+  protected function getInsertQuery(array $graph_uris, string $field_predicate, RdfInterface $solution, array $new_ids): string {
+    $query_parts = [];
+    $query_parts[] = 'INSERT {';
+    foreach ($graph_uris as $uri) {
+      $query_parts[] = "GRAPH <{$uri}> {";
+      foreach ($new_ids as $id) {
+        $query_parts[] = "<{$id}> <{$field_predicate}> <{$solution->id()}> .";
+      }
+      $query_parts[] = '}';
+    }
+    $query_parts[] = '}';
+    return implode("\n", $query_parts);
   }
 
 }

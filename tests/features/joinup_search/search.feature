@@ -76,7 +76,6 @@ Feature: Global search
     But I should not see the "Spherification" tile
     And I should not see the "El Celler de Can Roca" tile
 
-  @terms
   Scenario: Content can be found with a full-text search.
     Given the following owner:
       | name              | type    |
@@ -128,7 +127,7 @@ Feature: Global search
 
     # "Alpha" is used in all the rdf entities titles.
     When I enter "Alpha" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
@@ -139,7 +138,7 @@ Feature: Global search
 
     # "Beta" is used in all the rdf entities body fields.
     When I enter "beta" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
@@ -231,3 +230,189 @@ Feature: Global search
       | Bird spotting                     |
       | Best place to find an exotic bird |
       | Bird Birdman                      |
+
+  @clearStaticCache
+  Scenario: Solutions and/or releases are find by their distribution keyword.
+
+    Given the following licences:
+      | title      |
+      | Apache-2.0 |
+      | LGPL       |
+    And the following solution:
+      | title | Zzolution |
+      | state | validated |
+
+    When I enter "ZzoluDistro" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+
+    # Add distribution, child of solution.
+    Given the following distribution:
+      | title                    | ZzoluDistro                     |
+      | parent                   | Zzolution                       |
+      | description              | Übermensch foot size            |
+      | access url               | http://example.com/zzolu-distro |
+      | licence                  | Apache-2.0                      |
+      | format                   | HTML                            |
+      | representation technique | Datalog                         |
+
+    When I enter "zzoludistro" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "ubermensch" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "zzolu-distro" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "apache" in the header search bar and hit enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "Apache-2.0,Zzolution"
+    When I enter "HTML" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "Datalog" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+
+    Given I am logged in as a moderator
+    When I visit the "ZzoluDistro" asset distribution edit form
+    And I fill in "Title" with "DistroZzolu"
+    And I fill in "Description" with "Nietzsche's"
+    And I press the "Remove" button
+    And I set a remote URL "http://example.com/guzzle" to "Access URL"
+    And I select "LGPL" from "Licence"
+    And I select "CSV" from "Format"
+    And I select "Human Language" from "Representation technique"
+    And I press "Save"
+
+    # Repeat the previous searches to prove that the initial keywords were
+    # removed from the Search API index.
+    Given I am an anonymous user
+    When I enter "zzoludistro" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "ubermensch" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "zzolu-distro" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "apache" in the header search bar and hit enter
+    Then the page should show only the tiles "Apache-2.0"
+    When I enter "HTML" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "Datalog" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+
+    # Search now with the new keywords.
+    When I enter "distrozzolu" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "nietzsche" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "guzzle" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "lGPL" in the header search bar and hit enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "LGPL,Zzolution"
+    When I enter "CSV" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "Human Language" in the header search bar and hit enter
+    Then the page should show only the tiles "Zzolution"
+
+    Given I delete the "DistroZzolu" asset distribution
+
+    # The parent solution has been re-indexed without distribution data.
+    When I enter "distrozzolu" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "nietzsche" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "guzzle" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "lGPL" in the header search bar and hit enter
+    Then the page should show only the tiles "LGPL"
+    When I enter "CSV" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "Human Language" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+
+    # Add a new distribution, child of a release.
+    Given the following release:
+      | title         | Releazz   |
+      | state         | validated |
+      | is version of | Zzolution |
+
+    When I enter "ReleazzDistro" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+
+    And the following distribution:
+      | title                    | ReleazzDistro                     |
+      | parent                   | Releazz                           |
+      | description              | Dracula                           |
+      | access url               | http://example.com/releazz-distro |
+      | licence                  | Apache-2.0                        |
+      | format                   | HTML                              |
+      | representation technique | Datalog                           |
+
+    When I enter "releazzDistro" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "dracula" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "releazz-distro" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "apache" in the header search bar and hit enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "Apache-2.0,Releazz"
+    When I enter "HTML" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "Datalog" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+
+    Given I am logged in as a moderator
+    When I visit the "ReleazzDistro" asset distribution edit form
+    And I fill in "Title" with "DistroReleazz"
+    And I fill in "Description" with "Zorro"
+    And I press the "Remove" button
+    And I set a remote URL "http://example.com/mishmash" to "Access URL"
+    And I select "LGPL" from "Licence"
+    And I select "CSV" from "Format"
+    And I select "Human Language" from "Representation technique"
+    And I press "Save"
+
+    # Repeat the previous searches to prove that the initial keywords were
+    # removed from the Search API index.
+    Given I am an anonymous user
+    When I enter "releazzDistro" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "dracula" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "releazz-distro" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "apache" in the header search bar and hit enter
+    Then the page should show only the tiles "Apache-2.0"
+    When I enter "HTML" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "Datalog" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+
+    # Search now with the new keywords.
+    When I enter "dIstrOreleazz" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "zoRRo" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "mishMash" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "LGpl" in the header search bar and hit enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "LGPL,Releazz"
+    When I enter "CSV" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "Human Language" in the header search bar and hit enter
+    Then the page should show only the tiles "Releazz"
+
+    Given I delete the "DistroReleazz" asset distribution
+
+    # The parent release has been re-indexed without distribution data.
+    When I enter "dIstrOreleazz" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "zoRRo" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "mishMash" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "lGPL" in the header search bar and hit enter
+    Then the page should show only the tiles "LGPL"
+    When I enter "CSV" in the header search bar and hit enter
+    Then I should see "No content found for your search."
+    When I enter "Human Language" in the header search bar and hit enter
+    Then I should see "No content found for your search."

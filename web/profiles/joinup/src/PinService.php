@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\joinup;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -51,7 +54,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $group = NULL) {
-    if (JoinupHelper::isSolution($entity)) {
+    if (JoinupGroupHelper::isSolution($entity)) {
       if (empty($group)) {
         return !$entity->get(self::SOLUTION_PIN_FIELD)->isEmpty();
       }
@@ -76,7 +79,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public function setEntityPinned(ContentEntityInterface $entity, RdfInterface $group, bool $pinned) {
-    if (JoinupHelper::isSolution($entity)) {
+    if (JoinupGroupHelper::isSolution($entity)) {
       $field = $entity->get(self::SOLUTION_PIN_FIELD);
       if ($pinned) {
         $field->appendItem($group->id());
@@ -102,7 +105,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
    * {@inheritdoc}
    */
   public function getGroupsWherePinned(ContentEntityInterface $entity) {
-    if (JoinupHelper::isSolution($entity)) {
+    if (JoinupGroupHelper::isSolution($entity)) {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {
