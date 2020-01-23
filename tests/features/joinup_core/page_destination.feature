@@ -7,7 +7,6 @@ Feature:
   Background:
     Given user:
       | Username    | Mr Redirect             |
-      | Password    | Mr Redirect             |
       | First name  | Mr                      |
       | Family name | Redirect                |
       | E-mail      | mr.redirect@example.com |

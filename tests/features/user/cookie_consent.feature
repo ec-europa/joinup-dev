@@ -8,7 +8,6 @@ Feature: Cookie consent
   Scenario Outline: Accept or refuse cookies
     Given user:
       | Username | test_cck |
-      | Password | test_cck |
     And CAS users:
       | Username | E-mail               | Password |
       | test_cck | test_cck@example.com | test_cck |
