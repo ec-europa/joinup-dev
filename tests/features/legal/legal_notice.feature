@@ -21,13 +21,8 @@ Feature:
     Then I should see the heading "Legal notice"
     And I should see "The information on this site is subject to a disclaimer..."
 
-  # Todo: this needs to be adapted to use EU Login in ISAICP-5760. The first
-  # couple of steps have already been done.
-  @wip
   Scenario: User login when a new 'Legal notice' version is released.
-    Given user:
-      | Username | Rick    |
-    And CAS users:
+    Given CAS users:
       | Username | E-mail           | Password |
       | Rick     | rick@example.com | secretz  |
 
@@ -44,8 +39,40 @@ Feature:
     # Submit without accepting the 'Legal notice'.
     When I press "Next"
     Then I should see the error message "You must accept the Legal notice in order to use our platform."
+
+    # After accepting the agreement the user can continue.
+    Given I check "I have read and accept the Legal notice"
+    And I press "Sign in"
+    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
+
+    # The user has been redirected to its user account edit form.
+    And the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
+    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
+
+    # Login again to check that the acceptance enforcement has gone.
+    Given I click "Sign out"
+    And I go to homepage
+    And I click "Sign in"
+    And I click "EU Login"
+
+    When I fill in "E-mail address" with "rick@example.com"
+    And I fill in "Password" with "secretz"
+    And I press "Log in"
+    Then I should not see the warning message "You must accept this agreement before continuing."
+    When I click "My account"
+    Then I should see the heading "Rick"
+
+    # While Rick navigates on the site a new version is created and published.
+    Given the following legal document versions:
+      | Document     | Label | Published | Acceptance label    | Content             |
+      | Legal notice | 2.0   | no        | Accept Version 2.0! | Version 2.0 content |
+    And the version "2.0" of "Legal notice" legal document is published
+
+    When I go to homepage
+    Then I should see the warning message "You must accept this agreement before continuing."
     And I should see the heading "Legal notice"
-    And I should see "The information on this site is subject to a disclaimer..."
+    And I should see "Version 2.0 content"
+    And I should see "Accept Version 2.0!"
 
     # Try to navigate.
     When I click "My account"
@@ -56,47 +83,23 @@ Feature:
     Then I should not see the warning message "You must accept this agreement before continuing."
     And I should see the link "Sign in"
 
-    And I click "Sign in (legacy)"
-
-    And I fill in "Email or username" with "Rick"
+    And I click "Sign in"
+    When I click "EU Login"
+    And I fill in "E-mail address" with "rick@example.com"
     And I fill in "Password" with "secretz"
 
-    When I press "Sign in"
+    When I press "Log in"
+
     Then I should see the warning message "You must accept this agreement before continuing."
     And I should see the heading "Legal notice"
-    And I should see "The information on this site is subject to a disclaimer..."
-
-    Given I check "I have read and accept the Legal notice"
-    And I press "Submit"
-    Then I should see the heading "Rick"
-
-    # Login again to check that the acceptance enforcement has gone.
-    Given I click "Sign out"
-    And I go to homepage
-    And I click "Sign in (legacy)"
-    And I fill in "Email or username" with "Rick"
-    And I fill in "Password" with "secretz"
-
-    When I press "Sign in"
-    Then I should not see the warning message "You must accept this agreement before continuing."
-    When I click "My account"
-    Then I should see the heading "Rick"
-
-    # While Rick navigates on the site a new version is created and published.
-    Given the following legal document versions:
-      | Document     | Label | Published | Acceptance label    | Content     |
-      | Legal notice | 2.0   | no        | Accept Version 2.0! | Version 2.0 |
-    And the version "2.0" of "Legal notice" legal document is published
-
-    When I go to homepage
-    Then I should see the warning message "You must accept this agreement before continuing."
-    And I should see the heading "Legal notice"
-    And I should see "Version 2.0"
-    And I should see "Accept Version 2.0!"
+    And I should see "Version 2.0 content"
 
     When I check "Accept Version 2.0!"
     And I press "Submit"
     Then I should not see the warning message "You must accept this agreement before continuing."
+
+    # Clean up the user that was created manually during the scenario.
+    Then I delete the "Rick" user
 
   Scenario: Moderator tasks.
     Given I am logged in as a moderator
@@ -166,33 +169,3 @@ Feature:
 
     When I am on "/contact"
     Then I should not see "I have read and accept the Legal notice"
-
-  # Todo: in ISAICP-5760 this scenario can be removed, since this is already
-  # described above in "User login when a new 'Legal notice' version is
-  # released".
-  @casMockServer
-  Scenario: A user registers its account via EU Login.
-    Given CAS users:
-      | Username | E-mail          | Password | First name | Last name |
-      | joe      | joe@example.com | 123      | Joe        | Doe       |
-
-    When I am on the homepage
-    And I click "Sign in"
-    And I click "EU Login"
-    And I fill in "E-mail address" with "joe@example.com"
-    And I fill in "Password" with "123"
-    And I press the "Log in" button
-
-    When I select the radio button "I am a new user (create a new account)"
-    Then I should see "I have read and accept the Legal notice"
-
-    # Submit without accepting the 'Legal notice'.
-    When I press "Next"
-    Then I should see the error message "You must accept the Legal notice in order to use our platform."
-
-    When I check "I have read and accept the Legal notice"
-    And I press "Next"
-    Then I should see the success message "Fill in the fields below to let the Joinup community learn more about you!"
-    # The user has been redirected to its user account edit form.
-    And the following fields should be present "Email, First name, Family name, Photo, Country of origin, Professional domain, Business title"
-    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
