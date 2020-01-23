@@ -16,6 +16,7 @@ use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Behat step definitions for testing users.
@@ -115,6 +116,27 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
         $actual_value = $user->get($field)->get($key)->value;
         Assert::assertSame($expected_value, $actual_value);
       }
+    }
+  }
+
+  /**
+   * Asserts that the current user in on the $username profile page.
+   *
+   * @param string $username
+   *   The user name.
+   *
+   * @throws \PHPUnit\Framework\ExpectationFailedException
+   *   When The current user is not on the $username profile page.
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   If there's something wrong with the user entity storage.
+   *
+   * @Then I should be on the :username user profile page
+   */
+  public function assertUserProfilePage(string $username): void {
+    $account = $this->getUserByName($username);
+    $current_url = $this->getSession()->getCurrentUrl();
+    if ($current_url !== $account->toUrl()->setAbsolute()->toString()) {
+      throw new ExpectationFailedException("The current uset should be on the '{$username}' profile page but it's on {$current_url}.");
     }
   }
 
