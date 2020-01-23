@@ -488,9 +488,6 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
-  index_distribution_data:
-    weights:
-      preprocess_index: -50
   html_filter:
     all_fields: false
     fields:
@@ -540,6 +537,9 @@ processor_settings:
     weights:
       preprocess_index: -49
       preprocess_query: -50
+  index_distribution_data:
+    weights:
+      preprocess_index: -50
   joinup_entity_published_revision: {  }
   joinup_entity_status:
     inverse: false
