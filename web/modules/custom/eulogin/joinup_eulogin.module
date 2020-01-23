@@ -225,11 +225,9 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
  * Implements hook_local_tasks_alter().
  */
 function joinup_eulogin_local_tasks_alter(&$local_tasks): void {
-  // Remove the local tasks related to Drupal login. Users should authenticate
-  // through EU Login.
-  foreach (['user.login', 'user.pass', 'user.register'] as $task) {
-    unset($local_tasks[$task]);
-  }
+  // Remove the local task linking to the Drupal registration form. Users are no
+  // longer allowed to register in Drupal and should use EU Login instead.
+  unset($local_tasks['user.register']);
 }
 
 /**
