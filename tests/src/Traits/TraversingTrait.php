@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use PHPUnit\Framework\Assert;
 
 /**
  * Helper methods to deal with traversing of page elements.
@@ -34,6 +38,48 @@ trait TraversingTrait {
   }
 
   /**
+   * Helper method that asserts a selected option of a select element.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The select node element.
+   * @param string $option
+   *   The select option.
+   *
+   * @throws \Exception
+   *   Thrown if there is no selected option or the selected option is not the
+   *   correct one.
+   */
+  protected function assertSelectedOption(NodeElement $element, string $option): void {
+    $option_element = $element->find('xpath', '//option[@selected="selected"]');
+    if (!$option_element) {
+      throw new \Exception('No option is selected in the requested select');
+    }
+
+    if (trim($option_element->getText()) !== $option) {
+      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+    }
+  }
+
+  /**
+   * Helper method that asserts the available options of select fields.
+   *
+   * @param \Behat\Mink\Element\NodeElement $element
+   *   The select element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws \Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   */
+  protected function assertSelectAvailableOptions(NodeElement $element, TableNode $table): void {
+    $available_options = $this->getSelectOptions($element);
+
+    $rows = $table->getColumn(0);
+    Assert::assertEquals($rows, $available_options);
+  }
+
+  /**
    * Retrieves the options of a select field.
    *
    * @param \Behat\Mink\Element\NodeElement $select
@@ -46,7 +92,7 @@ trait TraversingTrait {
     $options = [];
     foreach ($select->findAll('xpath', '//option') as $element) {
       /** @var \Behat\Mink\Element\NodeElement $element */
-      $options[$element->getValue()] = trim($element->getText());
+      $options[] = trim($element->getText());
     }
 
     return $options;
@@ -189,6 +235,11 @@ trait TraversingTrait {
    * @param \Behat\Mink\Element\NodeElement $region
    *   (optional) Limit the search to a specific region. If empty, the whole
    *   page will be used. Defaults to NULL.
+   * @param string $html_tag
+   *   (optional) Limit to a specific html tag when searching for an element.
+   *   This can be useful in cases where the data drupal facet id is placed in
+   *   more than one html tag e.g. the dropdown has the id placed in both the
+   *   <li> tag of links as well as the <select> element.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The facet node element.
@@ -196,12 +247,12 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the facet is not found in the designated area.
    */
-  protected function findFacetByAlias($alias, NodeElement $region = NULL) {
+  protected function findFacetByAlias(string $alias, NodeElement $region = NULL, string $html_tag = '*'): NodeElement {
     if ($region === NULL) {
       $region = $this->getSession()->getPage();
     }
     $facet_id = self::getFacetIdFromAlias($alias);
-    $element = $region->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
+    $element = $region->find('xpath', "//{$html_tag}[@data-drupal-facet-id='{$facet_id}']");
 
     if (!$element) {
       throw new \Exception("The facet '$alias' was not found in the page.");
@@ -228,7 +279,7 @@ trait TraversingTrait {
     $mappings = [
       'collection type' => 'collection_type',
       'collection policy domain' => 'collection_policy_domain',
-      'from' => 'group',
+      'collection/solution' => 'group',
       'policy domain' => 'policy_domain',
       'solution policy domain' => 'solution_policy_domain',
       'solution spatial coverage' => 'solution_spatial_coverage',
@@ -438,7 +489,7 @@ trait TraversingTrait {
     $elements = [];
 
     foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
-      list ($selector, $locator) = $selector_tuple;
+      [$selector, $locator] = $selector_tuple;
       $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
     }
 

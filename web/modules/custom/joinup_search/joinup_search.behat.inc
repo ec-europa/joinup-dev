@@ -7,11 +7,13 @@
 
 declare(strict_types = 1);
 
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\KeyboardInteractionTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use PHPUnit\Framework\Assert;
@@ -23,6 +25,7 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use BrowserCapabilityDetectionTrait;
   use KeyboardInteractionTrait;
+  use MaterialDesignTrait;
   use TraversingTrait;
   use UtilityTrait;
 
@@ -227,26 +230,104 @@ class JoinupSearchSubContext extends DrupalSubContextBase implements DrupalSubCo
   }
 
   /**
-   * Clicks a facet item in an inline facet found in a designated region.
+   * Clicks a facet item in an inline facet.
    *
-   * @param string $link
-   *   The link text of the link to click.
+   * @param string $select
+   *   The option to select.
    * @param string $facet
    *   The facet alias.
-   * @param string $region
-   *   The region alias.
    *
    * @throws \Exception
-   *   Thrown when the region, the facet or the link inside the facet is not
-   *   found.
+   *   Thrown when the facet or the link inside the facet is not found.
    *
-   * @When I click :link in the :facet inline facet in the :region region
+   * @When I select :option from the :facet select facet
    */
-  public function iClickAnInlineFacetItemLinkInRegion(string $link, string $facet, string $region): void {
-    $region = $this->getRegion($region);
-    $facet = $this->findFacetByAlias($facet, $region);
-    $this->openFacetDropdown($facet);
-    $facet->clickLink($link);
+  public function iSelectAnOptionFromFacet(string $select, string $facet): void {
+    $facet = $this->findFacetByAlias($facet, NULL, 'select');
+    $facet->selectOption($select);
+  }
+
+  /**
+   * Asserts a selected option in the .
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   CSS selector of the select field.
+   *
+   * @throws \Exception
+   *
+   * @Then the option with text :option from select facet :select is selected
+   */
+  public function assertSelectFacetOptionSelected($option, $select) {
+    $element = $this->findFacetByAlias($select, NULL, 'select');
+    if (!$element) {
+      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
+    }
+    $this->assertSelectedOption($element, $option);
+  }
+
+  /**
+   * Asserts the list of available options in a select facet.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   */
+  public function assertSelectFacetOptionsAsList($select, TableNode $table) {
+    $element = $this->findFacetByAlias($select);
+    $this->assertSelectAvailableOptions($element, $table);
+  }
+
+  /**
+   * Asserts the list of available options in a facet select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select facet should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $element = $this->findFacetByAlias($select, NULL, 'select');
+    $this->assertSelectAvailableOptions($element, $table);
+  }
+
+  /**
+   * Checks a checkbox link in a facet.
+   *
+   * @param string $option
+   *   The label of the checkbox.
+   * @param string $facet_type
+   *   The label of the facet.
+   *
+   * @throws \Exception
+   *   Thrown when the checkbox is not found.
+   *
+   * @Given I check the :option checkbox from the :facet_type facet
+   */
+  public function checkCheckboxFacet(string $option, string $facet_type): void {
+    $facet = $this->findFacetByAlias($facet_type);
+    /** @var \Behat\Mink\Element\NodeElement[] $node_elements */
+    $node_elements = $facet->findAll('xpath', '//li[@class="facet-item"]');
+    foreach ($node_elements as $node_element) {
+      if ($node_element->getText() === $option) {
+        $node_element->click();
+        return;
+      }
+    }
+
+    throw new \Exception("The option '{$option}' was not found in the '{$facet_type}' facet.");
   }
 
   /**

@@ -2,6 +2,12 @@
 Feature: Global search
   As a user of the site I can find content through the global search.
 
+  # Todo: This test runs with javascript enabled because in a non-javascript
+  # environment, the dropdown facet is simply a list of links. Remove the
+  # `@javascript` tag when the upstream issue in the Facets module is fixed.
+  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
+  # Ref. https://www.drupal.org/project/facets/issues/2937191
+  @javascript
   Scenario: Anonymous user can find items
     Given the following collection:
       | title            | Molecular cooking collection |
@@ -28,32 +34,51 @@ Feature: Global search
     And I should see the "El Celler de Can Roca" tile
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
-    # Inline facets should be in place.
-    And "all policy domains" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "Demography (2), Statistics and Analysis (1)"
-    And "everywhere" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1), Luxembourg (1)"
+    # Facets should be in place.
+    And the option with text "Any policy domain" from select facet "policy domain" is selected
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain             |
+      | Demography   (2)              |
+      | Statistics and Analysis   (1) |
+    And the option with text "Any location" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | Belgium   (1)        |
+      | European Union   (1) |
+      | Luxembourg   (1)     |
     # Check that only one search field is available. In an earlier version of
     # Joinup there were two search fields, but this was confusing users.
     And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
-    When I click "Demography" in the "policy domain" inline facet in the "Left sidebar" region
-    Then "Demography (2)" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "Statistics and Analysis (1), all policy domains"
-    And "everywhere" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1)"
+    When I select "Demography" from the "policy domain" select facet
+    Then the option with text "Demography   (2)" from select facet "policy domain" is selected
+    # The selected option moves to the last position by default.
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain             |
+      | Statistics and Analysis   (1) |
+      | Demography   (2)              |
+    Then the option with text "Any location" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | Belgium   (1)        |
+      | European Union   (1) |
     And I should see the "Molecular cooking collection" tile
     And I should see the "Spherification" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I click "Belgium" in the "spatial coverage" inline facet in the "Left sidebar" region
-    Then "Belgium (1)" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), everywhere"
-    And "Demography (1)" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "all policy domains"
+    When I select "Belgium" from the "spatial coverage" select facet
+    Then the option with text "Belgium   (1)" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | European Union   (1) |
+      | Belgium   (1)        |
+    Then the option with text "Demography   (1)" from select facet "policy domain" is selected
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain |
+      | Demography   (1)  |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
@@ -64,23 +89,31 @@ Feature: Global search
     Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I click "News" in the "Left sidebar"
+
+    When I check the "News (1)" checkbox from the "Content types" facet
     Then the "News" content checkbox item should be selected
     And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
 
-    When I click "Solutions" in the "Left sidebar"
+    When I check the "Solutions (2)" checkbox from the "Content types" facet
     Then the "Solutions" content checkbox item should be selected
     And the "News" content checkbox item should be selected
     Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
-    And the "policy domain" inline facet should allow selecting the following values "Demography (1), Statistics and Analysis (1)"
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), Luxembourg (1)"
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain             |
+      | Demography   (1)              |
+      | Statistics and Analysis   (1) |
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | European Union   (1) |
+      | Luxembourg   (1)     |
     And I should not see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
     And I should see the "Foam" tile
 
     # Launch a text search.
-    When I enter "Cooking" in the search bar and press enter
+    When I open the search bar by clicking on the search icon
+    And I enter "Cooking" in the search bar and press enter
     Then I should see the "Molecular cooking collection" tile
     And I should see the "Foam" tile
     But I should not see the "Spherification" tile
@@ -252,7 +285,7 @@ Feature: Global search
       | title | Zzolution |
       | state | validated |
 
-    When I enter "ZzoluDistro" in the header search bar and hit enter
+    When I enter "ZzoluDistro" in the search bar and press enter
     Then I should see "No content found for your search."
 
     # Add distribution, child of solution.
@@ -265,18 +298,18 @@ Feature: Global search
       | format                   | HTML                            |
       | representation technique | Datalog                         |
 
-    When I enter "zzoludistro" in the header search bar and hit enter
+    When I enter "zzoludistro" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "ubermensch" in the header search bar and hit enter
+    When I enter "ubermensch" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "zzolu-distro" in the header search bar and hit enter
+    When I enter "zzolu-distro" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "apache" in the header search bar and hit enter
+    When I enter "apache" in the search bar and press enter
     # Also the licence itself is retrieved.
     Then the page should show only the tiles "Apache-2.0,Zzolution"
-    When I enter "HTML" in the header search bar and hit enter
+    When I enter "HTML" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "Datalog" in the header search bar and hit enter
+    When I enter "Datalog" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
 
     Given I am logged in as a moderator
@@ -293,48 +326,48 @@ Feature: Global search
     # Repeat the previous searches to prove that the initial keywords were
     # removed from the Search API index.
     Given I am an anonymous user
-    When I enter "zzoludistro" in the header search bar and hit enter
+    When I enter "zzoludistro" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "ubermensch" in the header search bar and hit enter
+    When I enter "ubermensch" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "zzolu-distro" in the header search bar and hit enter
+    When I enter "zzolu-distro" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "apache" in the header search bar and hit enter
+    When I enter "apache" in the search bar and press enter
     Then the page should show only the tiles "Apache-2.0"
-    When I enter "HTML" in the header search bar and hit enter
+    When I enter "HTML" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "Datalog" in the header search bar and hit enter
+    When I enter "Datalog" in the search bar and press enter
     Then I should see "No content found for your search."
 
     # Search now with the new keywords.
-    When I enter "distrozzolu" in the header search bar and hit enter
+    When I enter "distrozzolu" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "nietzsche" in the header search bar and hit enter
+    When I enter "nietzsche" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "guzzle" in the header search bar and hit enter
+    When I enter "guzzle" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "lGPL" in the header search bar and hit enter
+    When I enter "lGPL" in the search bar and press enter
     # Also the licence itself is retrieved.
     Then the page should show only the tiles "LGPL,Zzolution"
-    When I enter "CSV" in the header search bar and hit enter
+    When I enter "CSV" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
-    When I enter "Human Language" in the header search bar and hit enter
+    When I enter "Human Language" in the search bar and press enter
     Then the page should show only the tiles "Zzolution"
 
     Given I delete the "DistroZzolu" asset distribution
 
     # The parent solution has been re-indexed without distribution data.
-    When I enter "distrozzolu" in the header search bar and hit enter
+    When I enter "distrozzolu" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "nietzsche" in the header search bar and hit enter
+    When I enter "nietzsche" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "guzzle" in the header search bar and hit enter
+    When I enter "guzzle" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "lGPL" in the header search bar and hit enter
+    When I enter "lGPL" in the search bar and press enter
     Then the page should show only the tiles "LGPL"
-    When I enter "CSV" in the header search bar and hit enter
+    When I enter "CSV" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "Human Language" in the header search bar and hit enter
+    When I enter "Human Language" in the search bar and press enter
     Then I should see "No content found for your search."
 
     # Add a new distribution, child of a release.
@@ -343,7 +376,7 @@ Feature: Global search
       | state         | validated |
       | is version of | Zzolution |
 
-    When I enter "ReleazzDistro" in the header search bar and hit enter
+    When I enter "ReleazzDistro" in the search bar and press enter
     Then I should see "No content found for your search."
 
     And the following distribution:
@@ -355,18 +388,18 @@ Feature: Global search
       | format                   | HTML                              |
       | representation technique | Datalog                           |
 
-    When I enter "releazzDistro" in the header search bar and hit enter
+    When I enter "releazzDistro" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "dracula" in the header search bar and hit enter
+    When I enter "dracula" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "releazz-distro" in the header search bar and hit enter
+    When I enter "releazz-distro" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "apache" in the header search bar and hit enter
+    When I enter "apache" in the search bar and press enter
     # Also the licence itself is retrieved.
     Then the page should show only the tiles "Apache-2.0,Releazz"
-    When I enter "HTML" in the header search bar and hit enter
+    When I enter "HTML" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "Datalog" in the header search bar and hit enter
+    When I enter "Datalog" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
 
     Given I am logged in as a moderator
@@ -383,46 +416,46 @@ Feature: Global search
     # Repeat the previous searches to prove that the initial keywords were
     # removed from the Search API index.
     Given I am an anonymous user
-    When I enter "releazzDistro" in the header search bar and hit enter
+    When I enter "releazzDistro" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "dracula" in the header search bar and hit enter
+    When I enter "dracula" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "releazz-distro" in the header search bar and hit enter
+    When I enter "releazz-distro" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "apache" in the header search bar and hit enter
+    When I enter "apache" in the search bar and press enter
     Then the page should show only the tiles "Apache-2.0"
-    When I enter "HTML" in the header search bar and hit enter
+    When I enter "HTML" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "Datalog" in the header search bar and hit enter
+    When I enter "Datalog" in the search bar and press enter
     Then I should see "No content found for your search."
 
     # Search now with the new keywords.
-    When I enter "dIstrOreleazz" in the header search bar and hit enter
+    When I enter "dIstrOreleazz" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "zoRRo" in the header search bar and hit enter
+    When I enter "zoRRo" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "mishMash" in the header search bar and hit enter
+    When I enter "mishMash" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "LGpl" in the header search bar and hit enter
+    When I enter "LGpl" in the search bar and press enter
     # Also the licence itself is retrieved.
     Then the page should show only the tiles "LGPL,Releazz"
-    When I enter "CSV" in the header search bar and hit enter
+    When I enter "CSV" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
-    When I enter "Human Language" in the header search bar and hit enter
+    When I enter "Human Language" in the search bar and press enter
     Then the page should show only the tiles "Releazz"
 
     Given I delete the "DistroReleazz" asset distribution
 
     # The parent release has been re-indexed without distribution data.
-    When I enter "dIstrOreleazz" in the header search bar and hit enter
+    When I enter "dIstrOreleazz" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "zoRRo" in the header search bar and hit enter
+    When I enter "zoRRo" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "mishMash" in the header search bar and hit enter
+    When I enter "mishMash" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "lGPL" in the header search bar and hit enter
+    When I enter "lGPL" in the search bar and press enter
     Then the page should show only the tiles "LGPL"
-    When I enter "CSV" in the header search bar and hit enter
+    When I enter "CSV" in the search bar and press enter
     Then I should see "No content found for your search."
-    When I enter "Human Language" in the header search bar and hit enter
+    When I enter "Human Language" in the search bar and press enter
     Then I should see "No content found for your search."
