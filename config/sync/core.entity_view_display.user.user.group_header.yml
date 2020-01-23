@@ -168,5 +168,7 @@ hidden:
   field_user_group_types: true
   field_user_subscription_events: true
   langcode: true
+  masquerade: true
+  masquerade_as: true
   simplenews: true
   user_field_user_content_top: true

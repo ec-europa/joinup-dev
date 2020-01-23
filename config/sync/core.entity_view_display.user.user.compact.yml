@@ -62,6 +62,8 @@ hidden:
   field_user_professional_domain: true
   field_user_subscription_events: true
   langcode: true
+  masquerade: true
+  masquerade_as: true
   member_for: true
   simplenews: true
   user_field_user_content_top: true

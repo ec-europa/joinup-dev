@@ -103,6 +103,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  masquerade_as:
+    type: entity_reference_autocomplete
+    region: content
+    weight: 11
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   path:
     type: path
     weight: 9

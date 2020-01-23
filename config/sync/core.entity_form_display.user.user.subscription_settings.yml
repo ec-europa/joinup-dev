@@ -49,12 +49,12 @@ content:
     region: content
   matomo:
     weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   path:
     type: path
-    weight: 30
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -62,7 +62,7 @@ content:
     weight: 3
     region: content
   simplenews:
-    weight: 5
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -81,4 +81,5 @@ hidden:
   field_user_professional_domain: true
   langcode: true
   language: true
+  masquerade_as: true
   timezone: true
