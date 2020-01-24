@@ -1971,6 +1971,7 @@ function joinup_theme_preprocess_message_digest(&$variables) {
   }, User::getAnonymousUser());
 
   $variables['receiver_name'] = $user->isAuthenticated() ? $user->field_user_first_name->value : t('Anonymous');
+  $variables['receiver_id'] = $user->id();
 
   $current_time = \Drupal::time()->getCurrentTime();
   $variables['issue_date'] = date('d/m/Y', $current_time);

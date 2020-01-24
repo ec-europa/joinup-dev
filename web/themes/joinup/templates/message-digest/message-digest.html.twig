@@ -2,7 +2,7 @@
 
 {% set subscription_url = site_url ~ path('joinup_subscription.my_subscriptions') %}
 
-{% set unsubscription_url = site_url ~ path('joinup_subscription.unsubscribe_all') %}
+{% set unsubscription_url = site_url ~ path('joinup_subscription.unsubscribe_all', {'user': receiver_id}) %}
 
 {% set contact_url = site_url ~ path('contact_form.contact_page') %}
 
