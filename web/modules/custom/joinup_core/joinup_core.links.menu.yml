@@ -44,3 +44,10 @@ joinup_core.eulogin:
   route_name: cas.login
   class: Drupal\joinup_core\Plugin\Menu\EuLoginMenuLink
   weight: -21
+
+joinup_core.manage_media:
+  title: 'Library'
+  route_name: view.media.media_page_list
+  description: 'Allows to manage of the image library.'
+  parent: system.admin
+  weight: 0
