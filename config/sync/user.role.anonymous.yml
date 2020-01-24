@@ -17,4 +17,5 @@ permissions:
   - 'subscribe to newsletters'
   - 'use text format basic_html'
   - 'use text format simple_text'
+  - 'view media'
   - 'view rdf entity'
