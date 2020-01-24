@@ -1,9 +1,10 @@
 @api
-Feature: As an owner of the website
+Feature: SEO for news article.
+  As an owner of the website
   in order for my news to be better visible on the web
   I need proper metatag to be encapsulated in the html code.
 
-  Scenario: Basic metatags are attached as json schema on the page.
+  Scenario: Basic metatags are attached as JSON schema on the page.
     Given collections:
       | title                      | state     |
       | Joinup SEO news collection | validated |
@@ -15,7 +16,7 @@ Feature: As an owner of the website
       | Joinup SEO news | Headline of Joinup SEO news | logo.png | Body of Joinup SEO news | Sun, 01 Dec 2019 13:00:00 +0100 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | validated | Joinup SEO author | Joinup SEO news collection |
 
     When I visit the "Joinup SEO news" news
-    Then the metatag json should be attached in the page
+    Then the metatag JSON should be attached in the page
     And 1 metatag graph of type "NewsArticle" should exist in the page
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following properties:
       | property         | value                                                                 |
@@ -50,4 +51,4 @@ Feature: As an owner of the website
     # No metatags are defined for the keep up to date page.
     # No metatags JSON in general means also that the entity metatags of the news item
     # is also not attached when the tile is present.
-    And the metatag json should not be attached in the page
+    And the metatag JSON should not be attached in the page

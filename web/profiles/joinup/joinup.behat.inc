@@ -711,10 +711,10 @@ class JoinupSubContext extends DrupalSubContextBase {
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
-        'spatial coverage' => 'field_news_spatial_coverage',
-        'state' => 'field_state',
         'logo' => 'field_news_logo',
         'publication date' => 'published_at',
+        'spatial coverage' => 'field_news_spatial_coverage',
+        'state' => 'field_state',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
