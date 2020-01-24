@@ -64,6 +64,7 @@ module:
   joinup_eulogin: 0
   joinup_event: 0
   joinup_federation: 0
+  joinup_front_page: 0
   joinup_group: 0
   joinup_invite: 0
   joinup_legal: 0

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac440a828526b093f9e692bbb19adf05",
+    "content-hash": "44827de3b59f38851569183ca67817c9",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13753,6 +13753,7 @@
                     "DrupalTest\\BehatOneTimeLogin\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -13764,10 +13765,6 @@
             ],
             "description": "Authenticates users through the Drupal one time login mechanism.",
             "homepage": "https://github.com/drupaltest/behat-one-time-login",
-            "support": {
-                "source": "https://github.com/drupaltest/behat-one-time-login/tree/1.0.0-beta1",
-                "issues": "https://github.com/drupaltest/behat-one-time-login/issues"
-            },
             "time": "2020-01-17T09:12:53+00:00"
         },
         {

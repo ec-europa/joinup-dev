@@ -1,6 +1,4 @@
-@api @wip
-# Todo: this should be adapted when moving to EU Login in ISAICP-5760. Possibly
-# this needs to be removed entirely.
+@api
 Feature: Password management
   As a registered user of the website
   I want to be able to manage and restore my password
@@ -53,7 +51,7 @@ Feature: Password management
     And all e-mails have been sent
     And I am on the homepage
     And I click "Sign in (legacy)"
-    And I click "Reset your password"
+    And I click "reset your password"
     And I fill in "Email" with "charlie.change@example.com"
     And I wait for the spam protection time limit to pass
     And I press the "Submit" button

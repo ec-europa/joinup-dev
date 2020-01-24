@@ -289,10 +289,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/drupaltest/behat-one-time-login.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://git.drupal.org/project/matomo_reporting_api.git"
         },
         {
