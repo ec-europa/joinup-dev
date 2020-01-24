@@ -18,6 +18,7 @@ permissions:
   - 'use text format basic_html'
   - 'use text format simple_text'
   - 'view compatibility documents'
+  - 'view media'
   - 'view paragraph content accordion'
   - 'view paragraph content accordion_item'
   - 'view paragraph content json_map'
