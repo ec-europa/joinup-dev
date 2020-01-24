@@ -39,6 +39,7 @@
         "drupal/geocoder": "^3.0",
         "drupal/geofield": "~1.6",
         "drupal/honeypot": "^1.29",
+        "drupal/image_library_widget": "^1.0",
         "drupal/inline_entity_form": "^1.0",
         "drupal/linkit": "^5.0-beta10",
         "drupal/matomo": "^1.9",
