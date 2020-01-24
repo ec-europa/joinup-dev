@@ -2,6 +2,8 @@
 
 {% set subscription_url = site_url ~ path('joinup_subscription.my_subscriptions') %}
 
+{% set unsubscription_url = site_url ~ path('joinup_subscription.unsubscribe_all') %}
+
 {% set contact_url = site_url ~ path('contact_form.contact_page') %}
 
 <tbody>
@@ -120,8 +122,9 @@
       <tr>
         <td height="100" align="center" valign="middle" bgcolor="#ffffff">
           {% trans %}
-            To change your subscription preferences please visit the following <a href="{{ subscription_url }}">link</a>.<br/>
-            If you think this action is not clear or not due, please contact Joinup Support at <a href="{{ contact_url }}">link</a>.
+            You received this email because you opted in for Joinup digest messages.<br/>
+            <a href="{{ subscription_url }}">Manage</a> your subscription notifications or <a href="{{ unsubscription_url }}">unsubscribe</a> from all.<br/>
+            <a href="{{ contact_url }}">Contact us</a>.
           {% endtrans %}
         </td>
       </tr>
