@@ -82,6 +82,9 @@ trait MailCollectorTrait {
    *   The subject of the email sent.
    * @param string $recipient_mail
    *   The email of the recipient.
+   * @param bool $strict
+   *   When set to TRUE will throw an exception if no mails are found with the
+   *   given subject and mail. Defaults to TRUE.
    *
    * @return array
    *   An array of emails found.
@@ -89,7 +92,7 @@ trait MailCollectorTrait {
    * @throws \Exception
    *   Thrown if no emails are found or no user exists with the given data.
    */
-  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
+  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail, bool $strict = TRUE): array {
     $this->assertEmailTagPresent();
 
     $mails = $this->getMails();
@@ -110,7 +113,7 @@ trait MailCollectorTrait {
       $emails_found[] = $mail;
     }
 
-    if (empty($emails_found)) {
+    if (empty($emails_found) && $strict) {
       throw new \Exception("No emails found sent to {$recipient_mail} with subject '{$subject}'.");
     }
 

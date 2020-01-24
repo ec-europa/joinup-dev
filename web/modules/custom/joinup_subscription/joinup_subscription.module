@@ -86,9 +86,17 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
  *
  * Performs the following alterations:
  * - Sends digest mails as HTML.
+ * - Changes the mail subject.
  */
 function joinup_subscription_mail_alter(array &$message): void {
   if ($message['key'] === 'digest') {
     $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+    $notifier = $message['params']['notifier'] ?? NULL;
+    if ($notifier instanceof MessageNotifierInterface) {
+      $interval = $notifier->getPluginDefinition()['id'];
+      $message['subject'] = t('Joinup: @interval digest message', [
+        '@interval' => $interval,
+      ]);
+    }
   }
 }
