@@ -36,6 +36,7 @@ Feature: User authentication
       | admin/config                                                   |
       | admin/config/search/redirect                                   |
       | admin/content                                                  |
+      | admin/content/media                                            |
       | admin/content/rdf                                              |
       | admin/legal-notice                                             |
       | admin/legal-notice/add                                         |
@@ -90,6 +91,7 @@ Feature: User authentication
       | admin                                                          |
       | admin/config                                                   |
       | admin/content                                                  |
+      | admin/content/media                                            |
       | admin/content/rdf                                              |
       | admin/legal-notice                                             |
       | admin/legal-notice/add                                         |
@@ -130,6 +132,7 @@ Feature: User authentication
       | path                                                           |
       | admin/people                                                   |
       | admin/content/rdf                                              |
+      | admin/content/media                                            |
       | admin/legal-notice                                             |
       | admin/legal-notice/add                                         |
       | admin/reporting/export-user-list                               |
@@ -194,6 +197,7 @@ Feature: User authentication
       | admin                              |
       | admin/config                       |
       | admin/content                      |
+      | admin/content/media                |
       | admin/content/rdf                  |
       | admin/legal-notice                 |
       | admin/legal-notice/add             |
