@@ -18,7 +18,7 @@ use PHPUnit\Framework\Assert;
 class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   /**
-   * Assert a meta tag value in the page.
+   * Asserts a meta tag value in the page.
    *
    * @param string $meta_name
    *   The meta tag name.
@@ -40,7 +40,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
   /**
    * Asserts that the schema.org metatags are attached in page.
    *
-   * @Given the metatag json should be attached in the page
+   * @Given the metatag JSON should be attached in the page
    */
   public function assertJsonMetatagsInPage(): void {
     $json = $this->getMetatagsAsJson();
@@ -54,7 +54,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
   /**
    * Asserts that the schema.org metatags are attached in page.
    *
-   * @Given the metatag json should not be attached in the page
+   * @Given the metatag JSON should not be attached in the page
    */
   public function assertMetatagsNotInPage(): void {
     $json = $this->getMetatagsAsJson();
@@ -62,16 +62,16 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
   }
 
   /**
-   * Assert the amount of entity graphs of a certain type.
+   * Asserts the amount of entity graphs of a certain type.
    *
-   * @param string $count
+   * @param int $count
    *   The number of graphs of the given type.
    * @param string $type
    *   The type of graph which is the schema class.
    *
    * @Given :count metatag graph of type :type should exist in the page
    */
-  public function assertNumberOfEntityGraphsExist(string $count, string $type): void {
+  public function assertNumberOfEntityGraphsExist(int $count, string $type): void {
     $json = $this->getMetatagsAsJson();
     $found = 0;
     foreach ($json['@graph'] as $graph) {
