@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - joinup
+    - joinup_front_page
     - system
   theme:
     - joinup_theme
@@ -15,7 +15,7 @@ plugin: recommended_content
 settings:
   id: recommended_content
   label: 'Recommended content'
-  provider: joinup
+  provider: joinup_front_page
   label_display: '0'
   count: 12
 visibility:
