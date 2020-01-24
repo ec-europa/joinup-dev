@@ -1,0 +1,30 @@
+uuid: d1b44bbf-93de-457b-b03a-971ddaf3e3bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.event_logo.image_library_widget_image
+    - image.style.large
+    - media.type.event_logo
+  module:
+    - image
+id: media.event_logo.default
+targetEntityType: media
+bundle: event_logo
+mode: default
+content:
+  image_library_widget_image:
+    label: visually_hidden
+    weight: 0
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true
