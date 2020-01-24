@@ -1,0 +1,32 @@
+uuid: 6f1ac3f6-fc34-4a8c-b060-bac90d23cf71
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - image
+    - media
+_core:
+  default_config_hash: zFy_mUdkPGt6EEY_7QncjoNI2wTQQkncfbqRacEDRXw
+id: media.image_library_widget_image
+field_name: image_library_widget_image
+entity_type: media
+type: image
+settings:
+  default_image:
+    uuid: null
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+module: image
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

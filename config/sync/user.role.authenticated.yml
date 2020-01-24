@@ -37,6 +37,7 @@ permissions:
   - 'use text format basic_html'
   - 'use text format content_editor'
   - 'use text format simple_html'
+  - 'view media'
   - 'view own unpublished content'
   - 'view published og menu instance entities'
   - 'view rdf entity'
