@@ -9,6 +9,14 @@ dependencies:
 
 config_devel:
   install:
+    - metatag.metatag_defaults.403
+    - metatag.metatag_defaults.404
+    - metatag.metatag_defaults.front
+    - metatag.metatag_defaults.global
+    - metatag.metatag_defaults.node
+    - metatag.metatag_defaults.node__news
+    - metatag.metatag_defaults.taxonomy_term
+    - metatag.metatag_defaults.user
     - simple_sitemap.bundle_settings.default.node.custom_page
     - simple_sitemap.bundle_settings.default.node.discussion
     - simple_sitemap.bundle_settings.default.node.document
