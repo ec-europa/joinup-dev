@@ -1,0 +1,30 @@
+uuid: 8eea072c-7fad-4968-a14d-e2d64e4bcf2a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.solution_banner.image_library_widget_image
+    - image.style.large
+    - media.type.solution_banner
+  module:
+    - image
+id: media.solution_banner.default
+targetEntityType: media
+bundle: solution_banner
+mode: default
+content:
+  image_library_widget_image:
+    label: visually_hidden
+    weight: 0
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

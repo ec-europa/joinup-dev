@@ -1,0 +1,30 @@
+uuid: b7cf1d8d-433e-4c9d-b9e1-fe857d8865f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.news_logo.image_library_widget_image
+    - image.style.large
+    - media.type.news_logo
+  module:
+    - image
+id: media.news_logo.default
+targetEntityType: media
+bundle: news_logo
+mode: default
+content:
+  image_library_widget_image:
+    label: visually_hidden
+    weight: 0
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

@@ -1,0 +1,13 @@
+uuid: 67cf6a5a-7d75-4384-b754-93f23c246eda
+langcode: en
+status: true
+dependencies: {  }
+id: event_logo
+label: 'Event logo'
+description: 'Pre-uploaded images to be used as logo for events.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: image_library_widget_image
+field_map: {  }

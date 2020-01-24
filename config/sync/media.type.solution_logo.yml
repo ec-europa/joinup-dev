@@ -1,0 +1,13 @@
+uuid: ecfdf26c-ddd3-4848-a7fc-e8b57e231e68
+langcode: en
+status: true
+dependencies: {  }
+id: solution_logo
+label: 'Solution logo'
+description: 'Pre-uploaded images to be used as logo for solutions.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: image_library_widget_image
+field_map: {  }

@@ -1,0 +1,30 @@
+uuid: 3ff22bd5-b97e-4e7c-ba93-1560c29bc710
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.solution_logo.image_library_widget_image
+    - image.style.large
+    - media.type.solution_logo
+  module:
+    - image
+id: media.solution_logo.default
+targetEntityType: media
+bundle: solution_logo
+mode: default
+content:
+  image_library_widget_image:
+    label: visually_hidden
+    weight: 0
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  langcode: true
+  name: true
+  thumbnail: true
+  uid: true

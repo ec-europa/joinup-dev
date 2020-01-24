@@ -1,0 +1,37 @@
+uuid: 82e01efb-e926-4df8-afed-efcfca24d799
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.solution_banner.image_library_widget_image
+    - image.style.thumbnail
+    - media.type.solution_banner
+  module:
+    - image
+id: media.solution_banner.default
+targetEntityType: media
+bundle: solution_banner
+mode: default
+content:
+  image_library_widget_image:
+    weight: 1
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  status: true
+  uid: true

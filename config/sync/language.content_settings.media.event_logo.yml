@@ -1,0 +1,11 @@
+uuid: d1270a11-0ef5-429b-85f4-8ce321463c5c
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.event_logo
+id: media.event_logo
+target_entity_type_id: media
+target_bundle: event_logo
+default_langcode: site_default
+language_alterable: false
