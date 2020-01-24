@@ -895,6 +895,7 @@ display:
         context: '0'
         menu_name: main
       display_description: ''
+      enabled: true
     cache_metadata:
       max-age: 0
       contexts:
