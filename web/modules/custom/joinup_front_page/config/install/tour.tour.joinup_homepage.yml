@@ -1,13 +1,13 @@
 id: joinup_homepage
-module: joinup_core
+module: joinup_front_page
 label: 'Joinup homepage tour.'
 langcode: en
 status: true
 dependencies:
   module:
-    - joinup_core
+    - joinup_front_page
 routes:
-  - route_name: 'homepage.content'
+  - route_name: 'joinup_front_page.homepage'
 tips:
   welcome:
     id: welcome
