@@ -12,7 +12,7 @@ use Drupal\user\Entity\User;
  *
  * @group joinup_eulogin
  */
-class JoinupEuLoginFakePasswordTest extends JoinupExistingSiteTestBase {
+class JoinupEuLoginRandomPasswordTest extends JoinupExistingSiteTestBase {
 
   /**
    * Tests the replacement of password on a successful account linking.
@@ -50,9 +50,9 @@ class JoinupEuLoginFakePasswordTest extends JoinupExistingSiteTestBase {
 
     $final_hashed_pass = User::load($local_account->id())->getPassword();
 
-    // Check that a fake password has been set. As we cannot intercept the fake
-    // password, neither can we reverse engineer the hash, we only compare the
-    // original and the final local account password hashes.
+    // Check that a random password has been set. As we cannot intercept the
+    // generated random password, and neither can we reverse engineer the hash,
+    // we only compare the original and the final local account password hashes.
     $this->assertNotSame($final_hashed_pass, $original_hashed_pass);
   }
 

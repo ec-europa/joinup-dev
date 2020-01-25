@@ -12,7 +12,7 @@ use Drupal\user\Entity\User;
 /**
  * Replace the password with a random hash for existing EU Login linked users.
  */
-function joinup_eulogin_post_update_fake_passwords(array &$sandbox): string {
+function joinup_eulogin_post_update_set_random_passwords(array &$sandbox): string {
   if (!isset($sandbox['uids'])) {
     $sandbox['uids'] = \Drupal::database()
       ->select('authmap')
