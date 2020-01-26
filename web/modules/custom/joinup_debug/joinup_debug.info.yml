@@ -1,5 +1,5 @@
 name: 'Joinup debug'
 type: module
-description: 'Debug module for the Joinup platform.'
+description: 'Provides additional logging when unexpected behavior occurs.'
 core: 8.x
 package: Joinup

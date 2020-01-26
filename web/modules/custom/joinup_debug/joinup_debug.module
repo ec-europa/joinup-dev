@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Basic file for the Joinup Debug module.
+ * Hook implementations for the Joinup Debug module.
  */
 
 declare(strict_types = 1);
@@ -12,6 +12,14 @@ use Drupal\Core\Utility\Error;
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Due to a but in production, it seems that some entities are having a revision
+ * which is not the latest published, somehow be updated and retrieve the latest
+ * changed date. That causes issues during the update attempts.
+ * The following debug function, as well as the hook_entity_update below, will
+ * give us more clues on which part of the code is causing this.
+ *
+ * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5740
  */
 function joinup_debug_node_presave(NodeInterface $node) {
   // At this point, if the entity is not new, the original is already loaded and
@@ -44,11 +52,11 @@ function joinup_debug_node_update(NodeInterface $node) {
  *   The revision id.
  */
 function _joinup_debug_get_last_published_node_revision_id(NodeInterface $node): ?string {
-  $vids = \Drupal::database()->query('SELECT vid FROM {node_field_revision} WHERE nid=:nid AND status=1 ORDER BY vid', [
+  $vids = \Drupal::database()->query('SELECT vid FROM {node_field_revision} WHERE nid=:nid AND status=1 ORDER BY vid DESC LIMIT 1', [
     ':nid' => $node->id(),
   ])->fetchCol();
 
-  return empty($vids) ? NULL : end($vids);
+  return empty($vids) ? NULL : reset($vids);
 }
 
 /**
@@ -58,7 +66,7 @@ function _joinup_debug_get_last_published_node_revision_id(NodeInterface $node):
  *   The related node.
  */
 function _joinup_debug_log_wrong_revision_error(NodeInterface $node): void {
-  $backtrace = debug_backtrace();
+  $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50);
   $backtrace = Error::formatBacktrace($backtrace);
   $message = 'Wrong revision issue: @entity_type (@bundle) with id @id, vid @vid. Stack trace:\n@trace';
   \Drupal::logger('joinup_debug')->critical($message, [
