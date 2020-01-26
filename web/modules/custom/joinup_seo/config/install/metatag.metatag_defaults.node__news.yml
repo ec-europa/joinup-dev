@@ -13,5 +13,5 @@ tags:
   schema_article_headline: '[node:field_news_headline]'
   schema_article_date_modified: '[node:changed]'
   schema_article_publisher: 'a:3:{s:5:"@type";s:12:"Organization";s:4:"name";s:11:"[site:name]";s:3:"url";s:10:"[site:url]";}'
-  schema_article_description: '[node:body]'
+  schema_article_description: '[node:summary]'
   schema_article_image: 'a:5:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:4:"True";s:3:"url";s:33:"[node:field_news_logo:entity:url]";s:5:"width";s:28:"[node:field_news_logo:width]";s:6:"height";s:29:"[node:field_news_logo:height]";}'
