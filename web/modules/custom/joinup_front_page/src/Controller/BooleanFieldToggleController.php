@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\joinup\Controller;
+namespace Drupal\joinup_front_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
