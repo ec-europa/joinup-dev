@@ -51,7 +51,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    * that our tests will detect it if one of these intervals would unexpectedly
    * be removed from the code base.
    */
-  const MESSAGE_INTERVALS = ['daily', 'weekly', 'monthly'];
+  const MESSAGE_INTERVALS = ['Daily', 'Weekly', 'Monthly'];
 
   /**
    * Navigates to the My subscriptions form of the given user.

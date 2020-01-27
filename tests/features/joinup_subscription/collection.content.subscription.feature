@@ -121,7 +121,7 @@ Feature: Subscribing to community content in collections
       | Duck liver           |
       | Rose oil             |
       | Sunflower seeds      |
-    And the collection content subscription digest email sent to hristo should have the subject "Joinup: daily digest message"
+    And the collection content subscription digest email sent to hristo should have the subject "Joinup: Daily digest message"
 
     And the collection content subscription digest email sent to bisera contains the following sections:
       | title                |
@@ -132,7 +132,7 @@ Feature: Subscribing to community content in collections
       | Products of Bulgaria |
       | Canned cherries      |
       | Rose oil             |
-    And the collection content subscription digest email sent to bisera should have the subject "Joinup: weekly digest message"
+    And the collection content subscription digest email sent to bisera should have the subject "Joinup: Weekly digest message"
 
     And the collection content subscription digest email sent to kalin contains the following sections:
       | title                |
@@ -143,7 +143,7 @@ Feature: Subscribing to community content in collections
       | Products of Bulgaria |
       | Canned cherries      |
       | Sunflower seeds      |
-    And the collection content subscription digest email sent to kalin should have the subject "Joinup: monthly digest message"
+    And the collection content subscription digest email sent to kalin should have the subject "Joinup: Monthly digest message"
 
     # Clean out the message queue for the next test.
     And the mail collector cache is empty

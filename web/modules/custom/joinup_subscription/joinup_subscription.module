@@ -93,7 +93,7 @@ function joinup_subscription_mail_alter(array &$message): void {
     $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
     $notifier = $message['params']['notifier'] ?? NULL;
     if ($notifier instanceof MessageNotifierInterface) {
-      $interval = $notifier->getPluginDefinition()['id'];
+      $interval = $notifier->getPluginDefinition()['title'];
       $message['subject'] = t('Joinup: @interval digest message', [
         '@interval' => $interval,
       ]);
