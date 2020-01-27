@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.event.field_state
     - field.field.node.event.og_audience
     - image.style.thumbnail
+    - media.type.event_logo
     - node.type.event
   module:
     - allowed_formats
@@ -34,10 +35,9 @@ dependencies:
     - datetime_range
     - field_group
     - file
-    - image
+    - image_library_widget
     - joinup_core
     - link
-    - publication_date
     - text
 third_party_settings:
   field_group:
@@ -67,6 +67,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
@@ -119,10 +120,12 @@ content:
   field_event_logo:
     weight: 4
     settings:
-      progress_indicator: throbber
+      media_type_id: event_logo
+      library_label: 'Alternatively, choose a pre-uploaded image'
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: image_image
+    type: image_library_widget
     region: content
   field_event_online_location:
     weight: 7
