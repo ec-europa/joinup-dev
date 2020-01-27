@@ -136,6 +136,10 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
   if (isset($form['account']['mail']) && \Drupal::config('cas.settings')->get('user_accounts.restrict_email_management')) {
     $form['account']['mail']['#disabled'] = TRUE;
   }
+  if (isset($form['account']['pass']) && \Drupal::config('cas.settings')->get('user_accounts.restrict_password_management')) {
+    $form['account']['pass']['#access'] = FALSE;
+  }
+
   $mapping = \Drupal::configFactory()
     ->get('cas_attributes.settings')
     ->get('field.mappings');

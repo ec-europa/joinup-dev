@@ -128,8 +128,8 @@ Feature: Log in through EU Login
 
   Scenario: An existing user can log in through EU Login
     Given users:
-      | Username    | E-mail           | Password | First name | Family name |
-      | jb007_local | 007-local@mi6.eu | 123      | JJaammeess | BBoonndd    |
+      | Username    | E-mail           | First name | Family name |
+      | jb007_local | 007-local@mi6.eu | JJaammeess | BBoonndd    |
     Given CAS users:
       | Username | E-mail     | Password           | First name | Last name | Local username |
       | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
@@ -400,6 +400,7 @@ Feature: Log in through EU Login
     And I click "People"
     When I click "Edit" in the "Joe Doe" row
     Then the "Allow user to log in via CAS" checkbox should not be checked
+    And the following field should be present "Password"
 
     Given I check "Allow user to log in via CAS"
     And I fill in "CAS Username" with "joe"
@@ -413,6 +414,7 @@ Feature: Log in through EU Login
     Then the "Allow user to log in via CAS" checkbox should be checked
     And the "CAS Username" field should contain "joe"
     And the following fields should be disabled "Email"
+    And the following field should not be present "Password"
 
     Given I am an anonymous user
     And I am on the homepage
@@ -428,8 +430,8 @@ Feature: Log in through EU Login
 
   Scenario: Anonymous user is asked to log in when accessing a protected page
     Given users:
-      | Username | E-mail         | Password | First name | Family name | Roles     |
-      | jonbon   | jon@example.eu | bonbonbo | Jon        | Bon         | moderator |
+      | Username | E-mail         | First name | Family name | Roles     |
+      | jonbon   | jon@example.eu | Jon        | Bon         | moderator |
     Given CAS users:
       | Username | E-mail              | Password  | First name | Last name | Local username |
       | jbon     | j.bon@ec.example.eu | abc123!#$ | John       | Bonn      | jonbon         |

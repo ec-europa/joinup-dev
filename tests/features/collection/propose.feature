@@ -13,8 +13,8 @@ Feature: Proposing a collection
   # though you need to sign in to do so.
   Scenario: Anonymous user needs to sign in before creating a collection
     Given users:
-      | Username      | E-mail           | Password |
-      | Cecil Clapman | cecil@example.eu | claps    |
+      | Username      | E-mail           |
+      | Cecil Clapman | cecil@example.eu |
     Given CAS users:
       | Username | E-mail                | Password  | First name | Last name | Local username |
       | cclapman | clapman@ec.example.eu | abc123!#$ | Cecil J    | Clapman   | Cecil Clapman  |

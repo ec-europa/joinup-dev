@@ -7,7 +7,6 @@ Feature: User API
   Scenario: Programmatically create a user
     Given the following user:
       | Username       | Leonardo Da Vinci                            |
-      | Password       | Mona Lisa                                    |
       | E-mail         |                                              |
       | Status         | active                                       |
       | First name     | Leonardo                                     |
