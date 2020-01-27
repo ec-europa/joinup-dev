@@ -10,7 +10,6 @@
         "composer/installers": "^1.7",
         "continuousphp/aws-sdk-phing": "~0.5",
         "cweagans/composer-patches": "^1.6.4",
-        "drupal-composer/drupal-scaffold": "^2.6",
         "drupal/allowed_formats": "^1.2",
         "drupal/antibot": "dev-1.x#77bb7c076d3360fba0d78014e0fc62fab1f16ce4",
         "drupal/cached_computed_field": "^1.0-beta5",
@@ -22,6 +21,7 @@
         "drupal/config_ignore": "dev-2.x",
         "drupal/config_readonly": "^1.0",
         "drupal/config_update": "dev-1.x",
+        "drupal/core-composer-scaffold": "^8.8.1",
         "drupal/core": "^8.8.1",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "^1.0-alpha1",
@@ -150,26 +150,6 @@
             "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
         }
     },
-    "scripts": {
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-        "post-drupal-scaffold-cmd": [
-            "cd web && cat ../resources/patch/robots.txt.patch | git apply"
-        ],
-        "pre-install-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
-        ],
-        "pre-update-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
-        ],
-        "post-install-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
-        ],
-        "post-update-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
-        ]
-    },
     "extra": {
         "installer-paths": {
             "drush/Commands/{$name}": ["type:drupal-drush"],
@@ -183,9 +163,8 @@
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
         "drupal-scaffold": {
-            "initial": {
-                ".editorconfig": "../.editorconfig",
-                ".gitattributes": "../.gitattributes"
+            "locations": {
+                "web-root": "web/"
             }
         },
         "enable-patching": true,
