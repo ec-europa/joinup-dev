@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup\Plugin\Block;
+namespace Drupal\joinup_front_page\Plugin\Block;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
@@ -13,6 +13,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_front_page\FrontPageMenuHelperInterface;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\og\MembershipManager;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api\Query\ResultSetInterface;
@@ -61,6 +63,13 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
   protected $entityTypeManager;
 
   /**
+   * The front page menu helper service.
+   *
+   * @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface
+   */
+  protected $frontPageHelper;
+
+  /**
    * Constructs a new RecommendedContentBlock object.
    *
    * @param array $configuration
@@ -75,12 +84,15 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    *   The og membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper
+   *   The front page menu helper service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, MembershipManager $og_membership_manager, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, MembershipManager $og_membership_manager, EntityTypeManagerInterface $entity_type_manager, FrontPageMenuHelperInterface $front_page_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
     $this->ogMembershipManager = $og_membership_manager;
     $this->entityTypeManager = $entity_type_manager;
+    $this->frontPageHelper = $front_page_helper;
   }
 
   /**
@@ -93,7 +105,8 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       $plugin_definition,
       $container->get('current_user'),
       $container->get('og.membership_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('joinup_front_page.front_page_helper')
     );
   }
 
@@ -147,11 +160,19 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       ];
     }
 
+    // Add the "front_page" contextual links group.
+    $build['#contextual_links']['front_page'] = [
+      'route_parameters' => [
+        'menu' => 'front-page',
+      ],
+      'metadata' => [],
+    ];
+
     return $build;
   }
 
   /**
-   * Retrieves the entities that are pinned site-wide.
+   * Retrieves the entities that are pinned to the front page.
    *
    * @param int $limit
    *   The number of results to fetch.
@@ -159,8 +180,10 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    * @return \Drupal\Core\Entity\ContentEntityInterface[]
    *   An array of pinned entities to render.
    *
-   * @throws \Drupal\search_api\SearchApiException
-   *   Thrown if an error occurred during the search.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the Menu Link Content entity type definition is invalid.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown if the Menu Link Content entity type is not defined.
    */
   protected function getPinnedEntities(int $limit): array {
     // Early exit if we do not need to retrieve any data.
@@ -168,13 +191,17 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
       return [];
     }
 
-    $query = $this->getPublishedIndex()->query();
-    $query->addCondition('site_pinned', TRUE);
-    $query->sort('entity_created', 'DESC');
-    $query->range(0, $limit);
-    $results = $query->execute();
+    $menu_storage = $this->entityTypeManager->getStorage('menu_link_content');
+    $menu_items = $menu_storage->loadByProperties([
+      'menu_name' => 'front-page',
+      'enabled' => 1,
+    ]);
+    uasort($menu_items, function (MenuLinkContent $a, MenuLinkContent $b) {
+      return $a->getWeight() <=> $b->getWeight();
+    });
+    $menu_items = array_splice($menu_items, 0, $this->configuration['count']);
 
-    return $this->getResultEntities($results);
+    return $this->frontPageHelper->loadEntitiesFromMenuItems($menu_items);
   }
 
   /**
@@ -370,8 +397,10 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
    * {@inheritdoc}
    */
   public function getCacheTags() {
+    $menu = $this->entityTypeManager->getStorage('menu')->load('front-page');
+    $cache_tags = Cache::mergeTags(parent::getCacheTags(), ['node_list', 'rdf_entity_list']);
     // The block should be invalidated whenever any node changes.
-    return Cache::mergeTags(parent::getCacheTags(), ['node_list', 'rdf_entity_list']);
+    return Cache::mergeTags($cache_tags, $menu->getCacheTags());
   }
 
 }

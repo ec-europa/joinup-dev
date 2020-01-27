@@ -92,8 +92,13 @@ trait MaterialDesignTrait {
       throw new \Exception("The animated checkbox with label $label cannot be toggled in a browser that doesn't support JavaScript.");
     }
 
+    if (empty($label)) {
+      $checkbox_xpath = '//span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
+    }
+    else {
+      $checkbox_xpath = '//label[text()="' . $label . '"]/../../span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
+    }
     // Locate the "fancy" checkbox and click it.
-    $checkbox_xpath = '//label[text()="' . $label . '"]/../../span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
     $checkbox_element = $element->find('xpath', $checkbox_xpath);
     if (empty($checkbox_element)) {
       throw new \Exception("The animated checkbox for the $label field was not found in the page.");
