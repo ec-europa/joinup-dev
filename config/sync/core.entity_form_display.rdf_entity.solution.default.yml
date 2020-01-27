@@ -44,12 +44,13 @@ dependencies:
     - field.field.rdf_entity.solution.field_spatial_coverage
     - field.field.rdf_entity.solution.field_status
     - image.style.thumbnail
+    - media.type.solution_logo
     - rdf_entity.rdfentity.solution
   module:
     - allowed_formats
     - field_group
     - file_url
-    - image
+    - image_library_widget
     - inline_entity_form
     - joinup_core
     - link
@@ -144,10 +145,12 @@ content:
   field_is_banner:
     weight: 5
     settings:
-      progress_indicator: throbber
+      media_type_id: solution_banner
+      library_label: 'Alternatively, choose a pre-uploaded image'
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: image_image
+    type: image_library_widget
     region: content
   field_is_business_process:
     type: entity_reference_autocomplete
@@ -217,10 +220,12 @@ content:
   field_is_logo:
     weight: 4
     settings:
-      progress_indicator: throbber
+      media_type_id: solution_logo
+      library_label: 'Alternatively, choose a pre-uploaded image'
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: image_image
+    type: image_library_widget
     region: content
   field_is_metrics_page:
     weight: 14
