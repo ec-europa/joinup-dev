@@ -167,6 +167,7 @@ module:
   views: 10
   publication_date: 99
   joinup: 1000
+  joinup_debug: 1001
 theme:
   stable: 0
   classy: 0
