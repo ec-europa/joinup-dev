@@ -20,6 +20,11 @@ class RouteSubscriber extends RouteSubscriberBase {
       ]);
     }
 
+    // Update the route of the user login form. This needs to be done here
+    // instead of in a form alter so that this change is picked up by the
+    // Metatag module.
+    // @todo Remove this when the Drupal login page has been removed and we are
+    //   fully migrated to EU Login.
     if ($route = $collection->get('user.login')) {
       $route->addDefaults([
         '_title' => 'Sign in',
