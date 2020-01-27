@@ -18,6 +18,7 @@ permissions:
   - 'administer collection ownership'
   - 'administer comments'
   - 'administer entity legal'
+  - 'administer front-page menu items'
   - 'administer group'
   - 'administer matomo integration'
   - 'administer nodes'

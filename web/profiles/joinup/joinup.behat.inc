@@ -723,7 +723,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'shared in' => 'field_shared_in',
         'visits' => 'visit_count',
         'featured' => 'field_site_featured',
-        'pinned site-wide' => 'field_site_pinned',
+        'pinned to front page' => 'field_site_pinned',
       ],
     ];
 
@@ -2523,7 +2523,7 @@ JS;
       // indentation elements to assert later on based on the parent value.
       $indentation = $current_row->findAll('css', 'div.indentation');
 
-      if ($data['parent'] === '') {
+      if (!isset($data['parent']) || $data['parent'] === '') {
         Assert::assertEmpty($parent_input->getValue());
         Assert::assertCount(0, $indentation, "The menu link '{$data['title']}' should not be indented but it is.");
       }

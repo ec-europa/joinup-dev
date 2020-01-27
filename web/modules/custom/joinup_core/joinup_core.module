@@ -812,6 +812,7 @@ function joinup_core_config_readonly_whitelist_patterns() {
   return [
     // The 'support' menu is editable by moderators. This includes the menu
     // links static overrides config.
+    'system.menu.front-page',
     'system.menu.support',
     'core.menu.static_menu_link_overrides',
   ];
