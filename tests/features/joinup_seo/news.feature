@@ -1,5 +1,5 @@
 @api
-Feature: SEO for news article.
+Feature: SEO for news articles.
   As an owner of the website
   in order for my news to be better visible on the web
   I need proper metatag to be encapsulated in the html code.
@@ -23,7 +23,7 @@ Feature: SEO for news article.
       | @type            | NewsArticle                                                           |
       | headline         | Headline of Joinup SEO news                                           |
       # Summary is preferred over the body of the entity.
-      | description      | Summary of news                                                       |
+      | description      | Summary of news.                                                      |
       | datePublished    | Wed, 25/12/2019 - 13:00                                               |
       | dateModified     | Wed, 01/01/2020 - 13:00                                               |
       # $base_url$ will be replaced with the base url of the website.
