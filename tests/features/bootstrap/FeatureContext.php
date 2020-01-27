@@ -1030,8 +1030,12 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     $page_title = $page_title->getText();
-    if (strpos($page_title, '|') !== FALSE) {
-      [$page_title, $site_name] = implode(' | ', explode(' | ', $page_title, -1));
+    if (!$page_title) {
+      throw new \Exception(sprintf('Page title tag is found but contains no text on page "%s".', $session->getCurrentUrl()));
+    }
+
+    if (strpos($page_title, ' | ') !== FALSE) {
+      $page_title = implode(' | ', explode(' | ', $page_title, -1));
     }
 
     $page_title = trim($page_title);
