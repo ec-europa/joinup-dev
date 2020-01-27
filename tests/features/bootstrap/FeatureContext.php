@@ -1031,7 +1031,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
     $page_title = $page_title->getText();
     if (strpos($page_title, '|') !== FALSE) {
-      [$page_title, $site_name] = explode(' | ', $page_title);
+      [$page_title, $site_name] = implode(' | ', explode(' | ', $page_title, -1));
     }
 
     $page_title = trim($page_title);
