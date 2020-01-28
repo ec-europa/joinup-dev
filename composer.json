@@ -150,6 +150,16 @@
             "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
         }
     },
+    "scripts": {
+        "post-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
+        ],
+        "post-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
+        ]
+    },
     "extra": {
         "installer-paths": {
             "drush/Commands/{$name}": ["type:drupal-drush"],
