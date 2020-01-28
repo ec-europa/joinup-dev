@@ -165,6 +165,11 @@
         "drupal-scaffold": {
             "locations": {
                 "web-root": "web/"
+            },
+            "file-mapping": {
+                "[web-root]/robots.txt": {
+                    "append": "resources/drupal-scaffold/robots.txt.append"
+                }
             }
         },
         "enable-patching": true,
