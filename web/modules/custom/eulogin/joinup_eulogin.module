@@ -52,6 +52,14 @@ function joinup_eulogin_form_cas_account_link_form_alter(array &$form, FormState
       unset($form['login']['name']['#element_validate']);
     }
     $form['login']['name']['#element_validate'][] = 'joinup_eulogin_email_registration_validation';
+
+    // Provide a link to the Drupal password reset form so that users that have
+    // not yet moved to EU Login can still reset their password if they forgot
+    // it.
+    $arguments = [
+      ':passreset-url' => Url::fromRoute('user.pass')->toString(),
+    ];
+    $form['login']['pass']['#description'] = t('Enter the password that accompanies your email address. Lost your Joinup password? You can still <a href=":passreset-url">reset your password</a>.', $arguments);
   }
 }
 
@@ -221,11 +229,9 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
  * Implements hook_local_tasks_alter().
  */
 function joinup_eulogin_local_tasks_alter(&$local_tasks): void {
-  // Remove the local tasks related to Drupal login. Users should authenticate
-  // through EU Login.
-  foreach (['user.login', 'user.pass', 'user.register'] as $task) {
-    unset($local_tasks[$task]);
-  }
+  // Remove the local task linking to the Drupal registration form. Users are no
+  // longer allowed to register in Drupal and should use EU Login instead.
+  unset($local_tasks['user.register']);
 }
 
 /**

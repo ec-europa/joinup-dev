@@ -206,6 +206,50 @@ Feature: Log in through EU Login
     When I go to "/user/password"
     Then I should get an access denied error
 
+  @email
+  Scenario: An existing local user wants to link their EU Login account but forgot their Drupal password.
+    Given CAS users:
+      | Username   | E-mail              | Password | First name  | Last name |
+      | jeanclaude | muscles@brussels.be | dragon12 | Jean-Claude | Van Damme |
+    And users:
+      | Username | Password | E-mail         | First name | Family name |
+      | jclocal  | dragonne | jcvd@gmail.com | JC         | VD          |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    And I click "EU Login"
+    And I fill in "E-mail address" with "muscles@brussels.be"
+    And I fill in "Password" with "dragon12"
+    And I press the "Log in" button
+    And I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
+
+    When I click "reset your password"
+    And I fill in "Email" with "jcvd@gmail.com"
+    And I wait for the spam protection time limit to pass
+    And I press the "Submit" button
+    Then I should see the success message "Further instructions have been sent to your email address."
+
+    When I go to the one time sign in page of the user "jclocal"
+    And I fill in "Password" with "Cœur-de-lion-123!"
+    And I fill in "Confirm password" with "Cœur-de-lion-123!"
+    And I press "Save"
+    Then I should see the success message "The changes have been saved."
+    # The user is logged in at this point which is a loophole that allows users
+    # to bypass EU Login for as long as we keep the old password reset form.
+    And I click "Sign out"
+
+    Given I am on the homepage
+    And I click "Sign in"
+    And I click "EU Login"
+    And I fill in "E-mail address" with "muscles@brussels.be"
+    And I fill in "Password" with "dragon12"
+    And I press the "Log in" button
+    And I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
+    And I fill in "Email or username" with "jcvd@gmail.com"
+    And I fill in "Password" with "Cœur-de-lion-123!"
+    And I press "Sign in"
+    Then I should see the success message "Your EU Login account jeanclaude has been successfully linked to your local account Jean-Claude Van Damme."
+
   Scenario: Fields imported from EU Login cannot be edited locally.
     Given users:
       | Username            | E-mail        |
