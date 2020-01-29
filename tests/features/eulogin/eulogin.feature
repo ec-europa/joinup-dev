@@ -159,6 +159,8 @@ Feature: Log in through EU Login
     And I press the "Log in" button
 
     Then I should see the success message "You have been logged in."
+    And I should not see the link "Sign in"
+    But the response should contain "user-profile-icon.png"
 
     # The profile entries are overwritten, except the username.
     And the user jb007_local should have the following data in their user profile:
