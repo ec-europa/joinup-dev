@@ -14,6 +14,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
+use Behat\Mink\Selector\Xpath\Escaper;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
@@ -178,11 +179,16 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsNotVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
+    $escaper = new Escaper();
     $page = $this->getSession()->getPage();
     $not_found = [];
     $visible = [];
     foreach ($fields as $field) {
-      $element = $page->findField($field);
+      if (!$element = $page->findField($field)) {
+        // Radio buttons require special handling to be matched as fields.
+        // @see \Drupal\DrupalExtension\Context\MinkContext::assertSelectRadioById
+        $element = $page->find('named', ['radio', $escaper->escapeLiteral($field)]);
+      }
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -733,49 +739,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!empty($links)) {
       throw new \Exception(sprintf('Unexpected contextual links found in the region %s', $region));
     }
-  }
-
-  /**
-   * Moves a slider to the next or previous option.
-   *
-   * @param string $label
-   *   The label of the slider that will be fingered.
-   * @param string $direction
-   *   The direction in which the slider will be moved. Can be either 'left' or
-   *   'right'.
-   *
-   * @throws \Exception
-   *   Thrown when the slider could not be found in the page, or when an invalid
-   *   direction is passed.
-   *
-   * @When I move the :label slider to the :direction
-   */
-  public function moveSlider($label, $direction) {
-    // Check that the direction is either 'left' or 'right'.
-    if (!in_array($direction, ['left', 'right'])) {
-      throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
-    }
-    $key = $direction === 'left' ? BrowserKey::LEFT_ARROW : BrowserKey::RIGHT_ARROW;
-
-    // Locate the slider starting from the label:
-    // - Find the label with the given label text.
-    // - Move up the DOM to the wrapper div of the select element. This is
-    //   identified by the class 'form-type-select'.
-    // - In this wrapper, find the slider handle, this is a span with class
-    //   'ui-slider-handle'.
-    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-type-select ")]//span[contains(concat(" ", normalize-space(@class), " "), " ui-slider-handle ")]';
-    $slider = $this->getSession()->getPage()->find('xpath', $xpath);
-
-    if (!$slider) {
-      throw new \Exception("Slider with label $label not found in the page.");
-    }
-
-    // Focus the slider handle, and move it. Note that we are using the keyboard
-    // to move the slider instead of the mouse. This ensures that this works
-    // fine at all slider widths and screen sizes.
-    $slider->focus();
-    $slider->keyDown($key);
-    $slider->keyUp($key);
   }
 
   /**

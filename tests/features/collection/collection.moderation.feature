@@ -189,16 +189,13 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Any registered user can create new content." should be selected
+    And I select the radio button "Any registered user can create new content."
 
     # Regression test for a bug that caused the eLibrary creation setting to be
     # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
-    Then the option "Any registered user can create new content." should be selected
+    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
 
     # Submit the form and approve it as a moderator. This should not cause the
     # eLibrary creation option to change.
@@ -209,14 +206,14 @@ Feature: Collection moderation
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Any registered user can create new content." should be selected
+    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
     # Also when saving and reopening the edit form the eLibrary creation option
     # should remain unchanged.
     When I press "Publish"
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Any registered user can create new content." should be selected
+    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Spectres in fog" collection
@@ -241,10 +238,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Any registered user can create new content." should be selected
+    And I select the radio button "Any registered user can create new content."
 
     # Save the collection.
     When I press "Propose"
@@ -253,7 +247,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Any registered user can create new content." should be selected
+    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Domestic bovins" collection
@@ -281,10 +275,7 @@ Feature: Collection moderation
 
     When I check "Closed collection"
     And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
+    And I select the radio button "Only collection facilitators can create new content."
 
     # Save the collection.
     When I press "Propose"
@@ -293,7 +284,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Only collection facilitators can create new content." should be selected
+    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Theft of Body" collection
@@ -325,10 +316,7 @@ Feature: Collection moderation
 
     When I check "Closed collection"
     And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
+    And I select the radio button "Only collection facilitators can create new content."
 
     # Save the collection.
     When I press "Propose"
@@ -337,7 +325,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Only collection facilitators can create new content." should be selected
+    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Silken Emperor" collection
@@ -366,10 +354,7 @@ Feature: Collection moderation
 
     When I check "Closed collection"
     And I wait for AJAX to finish
-
-    # Configure eLibrary creation for all registered users.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
+    And I select the radio button "Only collection facilitators can create new content."
 
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
@@ -381,7 +366,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the option "Only collection facilitators can create new content." should be selected
+    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "The blue ships" collection

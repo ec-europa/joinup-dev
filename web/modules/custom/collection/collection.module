@@ -147,7 +147,7 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   // can target it with AJAX.
   $form['field_ar_elibrary_creation']['#id'] = 'field-ar-elibrary-creation-wrapper';
   $form['field_ar_elibrary_creation']['widget']['#options'] = $elibrary_creation_options;
-  $form['field_ar_elibrary_creation']['widget']['#default_value'][0] = $elibrary_creation_default_value;
+  $form['field_ar_elibrary_creation']['widget']['#default_value'] = $elibrary_creation_default_value;
 
   // Add an AJAX callback that refreshes the eLibrary field when the Closed
   // collection field changes.
