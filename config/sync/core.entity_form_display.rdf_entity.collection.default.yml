@@ -151,6 +151,7 @@ content:
       collapsible: false
       collapsed: false
       allow_existing: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -169,7 +170,7 @@ content:
     weight: 17
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: options_buttons
     region: content
   field_ar_logo:
     weight: 12
@@ -198,6 +199,7 @@ content:
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
