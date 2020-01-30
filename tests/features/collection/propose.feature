@@ -4,10 +4,6 @@ Feature: Proposing a collection
   As the product owner of a collection of software solutions
   I need to be able to propose a collection for inclusion on Joinup
 
-  # Todo: It still needs to be decided on which pages the "Propose collection"
-  # button will be shown. It might be removed from the homepage in the future.
-  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2298
-
   # An anonymous user should be shown the option to add a collection, so that
   # the user will be aware that collections can be added by the public, even
   # though you need to sign in to do so.
