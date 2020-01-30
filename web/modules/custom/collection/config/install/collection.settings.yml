@@ -49,15 +49,20 @@ transitions:
     validated:
       - moderator
       - rdf_entity-collection-facilitator
+  # In the following to-state, the facilitator will not actually have permission to execute the transition if there is
+  # not already a published version of the collection.
   validated:
     __new__:
       - moderator
     draft:
       - moderator
+      - rdf_entity-collection-facilitator
     proposed:
       - moderator
+      - rdf_entity-collection-facilitator
     validated:
       - moderator
+      - rdf_entity-collection-facilitator
     archival_request:
       - moderator
     deletion_request:

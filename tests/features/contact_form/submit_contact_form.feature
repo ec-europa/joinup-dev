@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Submit the contact form
   In order to gather feedback from the users
   As a moderator

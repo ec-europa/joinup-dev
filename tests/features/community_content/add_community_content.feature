@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Add community content
   In order to introduce my wisdom in my collections
   As a member of a collection
