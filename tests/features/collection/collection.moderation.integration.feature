@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: As a user of the website
   I want to be able to perform available transitions
   according to the state of the entity and the graph they are stored in.

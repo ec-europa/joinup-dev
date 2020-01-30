@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Collection membership overview
   In order to foster my community and create a sense of belonging
   As a collection member
