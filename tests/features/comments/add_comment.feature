@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Add comments
   As a visitor of the website I can leave a comment on community content.
 

@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Report inappropriate content
   In order to outsource the discovery of inappropriate content on the site
   As a moderator

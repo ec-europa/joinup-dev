@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Tours
   In order to understand complex concepts and user interfaces
   As a new user of the website

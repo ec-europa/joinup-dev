@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Collection homepage
   In order to have the users properly informed
   As an owner of the website
