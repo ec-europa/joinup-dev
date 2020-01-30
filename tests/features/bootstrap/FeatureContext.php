@@ -87,12 +87,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      // Complex fields in Drupal might not be directly linked to actual field
-      // elements such as 'select' and 'input', so try both the standard
-      // findField() as well as an XPath expression that finds the given label
-      // inside any element marked as a form item.
-      $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " form-item ") and .//label[text() = "' . $field . '"]]';
-      $is_found = (bool) $page->findField($field) || (bool) $page->find('xpath', $xpath);
+      $is_found = (bool) $this->findAnyFormField($field, $page);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -141,7 +136,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $not_found = [];
     $not_visible = [];
     foreach ($fields as $field) {
-      $element = $page->findField($field);
+      $element = $this->findAnyFormField($field, $page);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -152,7 +147,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
         // their label and container are not.
         $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
 
-        if (!$wrapper->isVisible()) {
+        if ($wrapper && !$wrapper->isVisible()) {
           $not_visible[] = $field;
         }
       }
@@ -179,16 +174,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertFieldsNotVisible($fields) {
     $fields = $this->explodeCommaSeparatedStepArgument($fields);
-    $escaper = new Escaper();
     $page = $this->getSession()->getPage();
     $not_found = [];
     $visible = [];
     foreach ($fields as $field) {
-      if (!$element = $page->findField($field)) {
-        // Radio buttons require special handling to be matched as fields.
-        // @see \Drupal\DrupalExtension\Context\MinkContext::assertSelectRadioById
-        $element = $page->find('named', ['radio', $escaper->escapeLiteral($field)]);
-      }
+      $element = $this->findAnyFormField($field, $page);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -199,7 +189,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       // their label and container are not.
       $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
       // Neither the field or its wrapper should be visible at all.
-      if ($element->isVisible() || $wrapper->isVisible()) {
+      if ($element->isVisible() || !empty($wrapper) && $wrapper->isVisible()) {
         $visible[] = $field;
       }
     }
