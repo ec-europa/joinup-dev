@@ -126,15 +126,12 @@ Feature: Proposing a collection
     # and the option for facilitators should appear.
     When I check "Closed collection"
     And I wait for AJAX to finish
-    Then the option "Only members can create new content." should be selected
-    And the option "Only collection facilitators can create new content." should not be selected
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Only collection facilitators can create new content." radio button should not be selected
     And I should not see the text "Any registered user can create new content."
-
-    # Check if moving the slider selects the correct option. Visually the handle
-    # of the slider moves underneath the other option.
     When I select the radio button "Only collection facilitators can create new content."
     Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
-    And the option "Only members can create new content." should not be selected
+    And the "Only members can create new content." radio button should not be selected
 
     # This is a regression test for a bug in which the both the previous option
     # and the default option were selected after cycling the collection
@@ -145,7 +142,7 @@ Feature: Proposing a collection
     And I check "Closed collection"
     And I wait for AJAX to finish
     Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
-    And the option "Only collection facilitators can create new content." should not be selected
+    And the "Only collection facilitators can create new content." radio button should not be selected
 
   @javascript
   Scenario: Propose collection form fields should be organized in tabs.

@@ -135,7 +135,7 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   $option_transitions = [
     // If the option 'Only collection facilitators' was selected before, then
     // take the option 'Only members'.
-    ELibraryCreationOptions::MEMBERS => ELibraryCreationOptions::MEMBERS,
+    ELibraryCreationOptions::FACILITATORS => ELibraryCreationOptions::MEMBERS,
     // If the option 'Any registered user' was selected before, then take the
     // option 'Only members'.
     ELibraryCreationOptions::REGISTERED_USERS => ELibraryCreationOptions::MEMBERS,
@@ -148,6 +148,10 @@ function collection_form_rdf_entity_form_alter(&$form, FormStateInterface $form_
   $form['field_ar_elibrary_creation']['#id'] = 'field-ar-elibrary-creation-wrapper';
   $form['field_ar_elibrary_creation']['widget']['#options'] = $elibrary_creation_options;
   $form['field_ar_elibrary_creation']['widget']['#default_value'] = $elibrary_creation_default_value;
+
+  $user_input = $form_state->getUserInput();
+  $user_input['field_ar_elibrary_creation'] = $elibrary_creation_default_value;
+  $form_state->setUserInput($user_input);
 
   // Add an AJAX callback that refreshes the eLibrary field when the Closed
   // collection field changes.
