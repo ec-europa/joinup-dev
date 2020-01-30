@@ -320,22 +320,31 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * The compact view is used for example in the "Downloads" page.
    * This currently only checks the first download link.
    *
+   * @param string $link_type
+   *   Whether to look for the "Download" button or the "External" link button.
+   *   'download' and 'external' are allowed.
    * @param string $distribution
    *   The name of the distribution.
    *
    * @throws \Exception
    *   Thrown if the download link cannot be found.
+   * @throws \InvalidArgumentException
+   *   Thrown if the link type parameter does not receive a valid value.
    *
-   * @Then I should see the download link in the :distribution( asset) distribution
+   * @Then I should see the :link_type link in the :distribution( asset) distribution
    */
-  public function assertLinkPresentInCompactDistributionTile(string $distribution): void {
+  public function assertLinkPresentInCompactDistributionTile(string $link_type, string $distribution): void {
+    if (!in_array($link_type, ['download', 'external'])) {
+      throw new \InvalidArgumentException('Only "download" and "external" values are allowed for $link_type.');
+    }
+    $link_type = ucfirst($link_type);
     $distribution = $this->getAssetDistributionByName($distribution);
     if (empty($distribution->field_ad_access_url->first())) {
       throw new \Exception(sprintf('Asset distribution "%s" does not contain any download links.', $distribution->label()));
     }
     $file = FileUrlHandler::urlToFile($distribution->field_ad_access_url->target_id);
     $link = FileUrlHandler::isRemote($file) ? $distribution->field_ad_access_url->target_id : file_create_url($file->getFileUri());
-    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$link}']");
+    $result = $this->getSession()->getPage()->find('xpath', "//a[contains(., '{$distribution->label()}')]/ancestor::div[contains(concat(' ', @class, ' '), ' timeline__listing-item ')]//a[@href='{$link}' and contains(text(), '{$link_type}')]");
     if (empty($result)) {
       throw new \Exception(sprintf('No link was found in the "%s" distribution on the page %s', $distribution->label(), $this->getSession()->getCurrentUrl()));
     }
