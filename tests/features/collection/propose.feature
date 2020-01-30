@@ -111,6 +111,46 @@ Feature: Proposing a collection
     And I should see the text "Any registered user can create new content."
 
   @javascript
+  Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the propose collection form
+    And I click the "Additional fields" tab
+
+    # Initially the collection is open, check if the eLibrary options are OK.
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Any registered user can create new content." radio button should not be selected
+    And I should not see the text "Only collection facilitators can create new content."
+
+    When I select the radio button "Any registered user can create new content."
+    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
+    And the "Only members can create new content." radio button should not be selected
+
+    # When toggling to closed, the option 'any registered user' should disappear
+    # and the option for facilitators should appear.
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+    Then the option "Only members can create new content." should be selected
+    And the option "Only collection facilitators can create new content." should not be selected
+    And I should not see the text "Any registered user can create new content."
+
+    # Check if moving the slider selects the correct option. Visually the handle
+    # of the slider moves underneath the other option.
+    When I select the radio button "Only collection facilitators can create new content."
+    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
+    And the option "Only members can create new content." should not be selected
+
+    # This is a regression test for a bug in which the both the previous option
+    # and the default option were selected after cycling the collection
+    # checkbox status open-closed-open-closed.
+    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+    When I uncheck "Closed collection"
+    And I wait for AJAX to finish
+    And I check "Closed collection"
+    And I wait for AJAX to finish
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the option "Only collection facilitators can create new content." should not be selected
+
+  @javascript
   Scenario: Propose collection form fields should be organized in tabs.
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
