@@ -1,4 +1,4 @@
-@api @casMockServer
+@api @casMockServer @group-b
 Feature: Log in through EU Login
   In order to access all website of the European Commission with the same credentials
   As a user with an existing EU Login account

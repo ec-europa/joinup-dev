@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Collection moderation
   In order to manage collections programmatically
   As a user of the website

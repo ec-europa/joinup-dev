@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Homepage
   In order to present a good introduction of the website to a new visitor
   As a product owner

@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Pinning content entities inside solutions
   As a facilitator of a solution
   I want to pin content at the top of the solution homepage
