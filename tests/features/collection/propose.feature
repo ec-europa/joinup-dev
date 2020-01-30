@@ -103,10 +103,7 @@ Feature: Proposing a collection
     And I click the "Additional fields" tab
     And I attach the file "banner1.jpg" to "Banner"
     And I wait for AJAX to finish
-    # The actual link should be banner1.jpg. However, if tests run multiple times or banners for that field are created
-    # multiple times, the link would end up having a suffix in the name, e.g. banner1_5.jpg. Use a partial string to
-    # assert the link since there is no other link titled "banner" in the page.
-    Then I should see the link "banner"
+    Then I should see the link "banner1.jpg"
     And I should see the text "Only members can create new content."
     And I should see the text "Any registered user can create new content."
 
