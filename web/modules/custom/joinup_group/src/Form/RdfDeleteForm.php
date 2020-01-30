@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\Form;
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -20,7 +21,7 @@ class RdfDeleteForm extends OriginalForm {
    */
   public function getQuestion(): TranslatableMarkup {
     $entity = $this->getEntity();
-    if ($entity->bundle() !== 'collection' || $entity->get('field_ar_affiliates')->isEmpty()) {
+    if ($entity->bundle() !== 'collection' || empty($this->getAffiliates($entity))) {
       return $this->t('Are you sure you want to delete @type %name?', [
         '@type' => $entity->get('rid')->entity->getSingularLabel(),
         '%name' => $entity->label(),
@@ -37,7 +38,7 @@ class RdfDeleteForm extends OriginalForm {
    */
   public function getDescription(): TranslatableMarkup {
     $entity = $this->getEntity();
-    if ($entity->bundle() !== 'collection' || $entity->get('field_ar_affiliates')->isEmpty()) {
+    if ($entity->bundle() !== 'collection' || empty($this->getAffiliates($entity))) {
       return parent::getDescription();
     }
 
@@ -56,13 +57,14 @@ class RdfDeleteForm extends OriginalForm {
       return $form;
     }
 
-    if ($entity->get('field_ar_affiliates')->isEmpty()) {
+    $affiliates = $this->getAffiliates($entity);
+    if (empty($affiliates)) {
       return $form;
     }
 
     $list = array_map(function (RdfInterface $solution): Link {
       return $solution->toLink($solution->label());
-    }, $entity->get('field_ar_affiliates')->referencedEntities());
+    }, $affiliates);
 
     $form['solutions'] = [
       '#theme' => 'item_list',
@@ -72,6 +74,19 @@ class RdfDeleteForm extends OriginalForm {
     unset($form['actions']['submit']);
 
     return $form;
+  }
+
+  /**
+   * Returns the entities that are affiliated with the given entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity for which to return the affiliates.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   The list of affiliated entities.
+   */
+  protected function getAffiliates(ContentEntityInterface $entity): array {
+    return $entity->get('field_ar_affiliates')->referencedEntities();
   }
 
 }

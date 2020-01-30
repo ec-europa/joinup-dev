@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a moderator of the website
   in order to better manage all content
