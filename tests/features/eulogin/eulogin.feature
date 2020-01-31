@@ -331,7 +331,7 @@ Feature: Log in through EU Login
 
   Scenario: The Drupal login form shows a warning message.
     When I visit "/user/login"
-    Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
+    Then I should see the warning message "As of 2nd March 2020, EU Login will be the only authentication method available on Joinup. We strongly recommend you to choose EU Login as your sign-in method before this date!"
     And I should see the link "EU Login"
 
   Scenario: A new user tries to register with an existing Email.
