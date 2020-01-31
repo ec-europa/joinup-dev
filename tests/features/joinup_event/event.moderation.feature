@@ -93,7 +93,7 @@ Feature: Event moderation
     And I fill the end time of the Date widget with "00:30:00"
     And I press "Save as draft"
     Then I should see the success message "Event Rainbow of Worlds has been created"
-    And I should see the text "30 August to 01 September 2018"
+    And I should see the text "30/08 to 01/09/2018"
 
     # Publish the content.
     When I open the header local tasks menu
