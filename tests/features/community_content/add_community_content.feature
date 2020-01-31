@@ -84,7 +84,7 @@ Feature: Add community content
     When I am logged in as "Publisher"
     And I go to the "Sample <content type>" <content type>
     Then the "Sample <content type>" <content type> should not have a publication date
-    And I should see the text "01/01/2010"
+    And I should see the text "Published on: 01/01/2010"
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
