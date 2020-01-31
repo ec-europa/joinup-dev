@@ -6,9 +6,11 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
+use Drupal\og\Entity\OgRole;
 use Drupal\redirect\Entity\Redirect;
 use Drupal\search_api\Entity\Index;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
@@ -992,4 +994,101 @@ function joinup_core_post_update_stats6(array &$sandbox): ?string {
  */
 function joinup_core_post_update_post_count_storage_node_revisions() {
   joinup_core_post_update_set_news_default_version();
+}
+
+/**
+ * Update memberships of the Joinup support and editor and other accounts.
+ */
+function joinup_core_post_update_update_support_memberships(&$sandbox) {
+  // Update/remove memberships from various users and assign new memberships
+  // according to the request.
+  // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5656
+  if (empty($sandbox['collections'])) {
+    $sandbox['collections'] = [
+      // For the owner value, the new owner of the solutions will be the owner
+      // of the relevant collection. The Joinup Federation Support will be
+      // removed as a facilitator.
+      "https://www.xrepository.deutschland-online.de" => 'owner',
+      "https://riha.eesti.ee" => 'owner',
+      "http://www.belgif.be/specifications/" => 'owner',
+      "http://digitaliser.dk" => 'owner',
+      "http://dox.gs1.eu/documents" => 'owner',
+      "http://www.e-gif.gov.gr" => 'owner',
+      "http://publications.europa.eu/mdr/" => 'owner',
+      "http://vocabulary.wolterskluwer.de" => 'owner',
+      "http://standards.esd.org.uk" => 'owner',
+      "http://data.europa.eu/w21/33598e9e-2654-4639-9528-d70772837ce4" => 'owner',
+      "http://administracionelectronica.gob.es/ctt" => 'owner',
+      // The joinup-editor value will have the same actions as above but the new
+      // owner of the solutions will be Joinup Editor.
+      "http://dublincore.org/specifications" => 'joinup-editor',
+      "http://webapp.etsi.org/WorkProgram/" => 'joinup-editor',
+      "http://data.europa.eu/w21/b1e19fbc-f96e-478a-a449-fdaaeed17e3a" => 'joinup-editor',
+      "http://www.cen.eu/cen/pages/default.aspx" => 'joinup-editor',
+      "http://data.europa.eu/w21/01b52000-c0ba-4e64-a32c-79557a743462" => 'joinup-editor',
+      "https://www.ciec-platform.org/CIECPublicEnvironment" => 'joinup-editor',
+      "http://lov.okfn.org/dataset/lov" => 'joinup-editor',
+      "http://www.metadataregistry.org/" => 'joinup-editor',
+      "http://www.w3.org/TR/" => 'joinup-editor',
+    ];
+    $sandbox['collection_ids'] = array_keys($sandbox['collections']);
+    $sandbox['joinup_editor_uid'] = user_load_by_name('joinup-editor')->id();
+    $sandbox['joinup_support_uid'] = user_load_by_name('Joinup_Federation_Support')->id();
+    $sandbox['count'] = 0;
+    $sandbox['max'] = count($sandbox['collections']);
+  }
+
+  $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  $collection_id = array_shift($sandbox['collection_ids']);
+  $collection = $rdf_storage->load($collection_id);
+
+  if ($sandbox['collections'][$collection_id] === 'owner') {
+    $memberships = $membership_manager->getGroupMembershipsByRoleNames($collection, ['administrator']);
+    // Normally, there should only be one $memberhsip which is an administrator.
+    if (count($memberships) > 1) {
+      throw new \Exception("More than one owners were found for {$collection->label()}");
+    }
+    /** @var \Drupal\og\OgMembershipInterface $owner_membership */
+    $owner_membership = reset($memberships);
+    $new_owner = $owner_membership->getOwner();
+  }
+  elseif ($sandbox['collections'][$collection_id] === 'joinup-editor') {
+    $new_owner = \Drupal::entityTypeManager()->getStorage('user')->load($sandbox['joinup_editor_uid']);
+  }
+
+  if (empty($new_owner)) {
+    throw new \Exception("Owner not found for the {$collection->label()} collection");
+  }
+
+  // Anonymous function that creates an owner for the group and removes the
+  // membership of the Joinup Federation Support user.
+  $cleanup = function(EntityInterface $group) use ($membership_manager, $new_owner, $sandbox): void {
+    if (!$new_owner_membership = $membership_manager->getMembership($group, $new_owner->id())) {
+      $new_owner_membership = $membership_manager->createMembership($group, $new_owner);
+    }
+
+    $collection_admin_role = OgRole::loadByGroupAndName($group, 'administrator');
+    $new_owner_membership->addRole($collection_admin_role);
+    $new_owner_membership->save();
+
+    // Cleanup the Joinup Federation Support membership.
+    if ($support_membership = $membership_manager->getMembership($group, $sandbox['joinup_support_uid'])) {
+      $support_membership->delete();
+    }
+  };
+
+  // Handle the group itself.
+  $cleanup($collection);
+
+  // Handle child solutions.
+  $related_solutions = $collection->get('field_ar_affiliates')->referencedEntities();
+  foreach ($related_solutions as $solution) {
+    $cleanup($solution);
+  }
+
+  $sandbox['count']++;
+  $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
+  return "Processed {$sandbox['count']} out of {$sandbox['max']} collections";
 }
