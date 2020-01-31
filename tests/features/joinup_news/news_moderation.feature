@@ -140,7 +140,7 @@ Feature: News moderation.
     And I go to the homepage of the "Justice League" collection
     And I click "Add news"
     Then I should see the heading "Add news"
-    And the following fields should be present "Headline, Kicker, Logo, Content, Policy domain, Keywords, Geographical coverage"
+    And the following fields should be present "Headline, Short title, Logo, Content, Policy domain, Keywords, Geographical coverage"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state"
 
@@ -151,9 +151,9 @@ Feature: News moderation.
     And the following buttons should be present "Save as draft, Publish"
     And the following buttons should not be present "Propose, Request changes, Request deletion, Preview"
     When I fill in the following:
-      | Kicker   | Eagle joins the JL                   |
-      | Headline | Eagle from WWII                      |
-      | Content  | Specialized in close combat training |
+      | Short title | Eagle joins the JL                   |
+      | Headline    | Eagle from WWII                      |
+      | Content     | Specialized in close combat training |
     And I press "Save as draft"
     # Check reference to news page.
     Then I should see the success message "News Eagle joins the JL has been created."
@@ -180,9 +180,9 @@ Feature: News moderation.
     And the following buttons should be present "Save as draft, Propose"
     And the following buttons should not be present "Publish, Request changes, Request deletion, Preview"
     When I fill in the following:
-      | Kicker   | Cheetah kills WonderWoman                             |
-      | Headline | Scarch of poison                                      |
-      | Content  | A specific poison could expose Wonder-womans weakness |
+      | Short title | Cheetah kills WonderWoman                             |
+      | Headline    | Scarch of poison                                      |
+      | Content     | A specific poison could expose Wonder-womans weakness |
     And I press "Propose"
     # Check reference to news page.
     # Todo: Why should we not see a success message after creating a news article? See ISAICP-2761
@@ -308,8 +308,8 @@ Feature: News moderation.
     And the "Hawkgirl is a spy" "news" content should have 2 revisions
     And I should see the link "Edit"
     When I click "Edit"
-    And for "Kicker" I enter "Hawkgirl saves the planet"
-    And I fill in "Motivation" with "Let's change the kicker."
+    And for "Short title" I enter "Hawkgirl saves the planet"
+    And I fill in "Motivation" with "Let's change the short title."
     And I press "Request changes"
     Then I should see the success message "News Hawkgirl saves the planet has been updated."
     # A new draft has been created with a new title. The previously validated

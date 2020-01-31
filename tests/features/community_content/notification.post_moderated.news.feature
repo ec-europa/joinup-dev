@@ -33,7 +33,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     And I am logged in as "CC member"
     And I go to the "CC post collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CCN create publish"
+    And I fill in "Short title" with "CCN create publish"
     And I fill in "Headline" with "CCN create publish"
     And I fill in "Content" with "CCN create publish"
     And I press "Publish"

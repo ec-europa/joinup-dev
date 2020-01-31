@@ -143,8 +143,8 @@ Feature: June 2016 demo
     When I click "Add news" in the plus button menu
     Then I should see the heading "Add news"
     And I fill in the following:
-      | Kicker   | New York under attack          |
-      | Headline | S.H.I.E.L.D. to nuke New York? |
+      | Short title | New York under attack          |
+      | Headline    | S.H.I.E.L.D. to nuke New York? |
     And I enter "In a desperate attempt to stop the nuke, Nick fury shot down an airplane of S.H.I.E.L.D." in the "Content" wysiwyg editor
     And I press "Save as draft"
     Then I should see the heading "New York under attack"
