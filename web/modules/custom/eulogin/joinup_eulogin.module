@@ -175,7 +175,7 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
     '#theme' => 'status_messages',
     '#message_list' => [
       'warning' => [
-        '#markup' => t('As of 01/02/2020, <a href=":url">EU Login</a> will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!', [
+        '#markup' => t('As of 2nd March 2020, <a href=":url">EU Login</a> will be the only authentication method available on Joinup. We strongly recommend you to choose EU Login as your sign-in method before this date!', [
           ':url' => Url::fromRoute('cas.login')->toString(),
         ]),
       ],
