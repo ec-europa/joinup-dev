@@ -22,11 +22,12 @@ dependencies:
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
     - image.style.thumbnail
+    - media.type.collection_logo
     - rdf_entity.rdfentity.collection
   module:
     - allowed_formats
     - field_group
-    - image
+    - image_library_widget
     - inline_entity_form
     - joinup_core
     - link
@@ -126,10 +127,12 @@ content:
   field_ar_banner:
     weight: 13
     settings:
-      progress_indicator: throbber
+      media_type_id: collection_banner
+      library_label: 'Alternatively, choose a pre-uploaded image'
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: image_image
+    type: image_library_widget
     region: content
   field_ar_closed:
     weight: 16
@@ -174,10 +177,12 @@ content:
   field_ar_logo:
     weight: 12
     settings:
-      progress_indicator: throbber
+      media_type_id: collection_logo
+      library_label: 'Alternatively, choose a pre-uploaded image'
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: image_image
+    type: image_library_widget
     region: content
   field_ar_moderation:
     weight: 18
