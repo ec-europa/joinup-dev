@@ -1064,13 +1064,15 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
 
   // Anonymous function that creates an owner for the group and removes the
   // membership of the Joinup Federation Support user.
-  $cleanup = function(EntityInterface $group) use ($membership_manager, $new_owner, $sandbox): void {
+  $handle_memberhips = function (EntityInterface $group) use ($membership_manager, $new_owner, $sandbox): void {
     if (!$new_owner_membership = $membership_manager->getMembership($group, $new_owner->id())) {
       $new_owner_membership = $membership_manager->createMembership($group, $new_owner);
     }
 
-    $collection_admin_role = OgRole::loadByGroupAndName($group, 'administrator');
-    $new_owner_membership->addRole($collection_admin_role);
+    $group_admin_role = OgRole::loadByGroupAndName($group, 'administrator');
+    $group_facilitator_role = OgRole::loadByGroupAndName($group, 'facilitator');
+    $new_owner_membership->addRole($group_admin_role);
+    $new_owner_membership->addRole($group_facilitator_role);
     $new_owner_membership->save();
 
     // Cleanup the Joinup Federation Support membership.
@@ -1080,12 +1082,12 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
   };
 
   // Handle the group itself.
-  $cleanup($collection);
+  $handle_memberhips($collection);
 
   // Handle child solutions.
   $related_solutions = $collection->get('field_ar_affiliates')->referencedEntities();
   foreach ($related_solutions as $solution) {
-    $cleanup($solution);
+    $handle_memberhips($solution);
   }
 
   $sandbox['count']++;
