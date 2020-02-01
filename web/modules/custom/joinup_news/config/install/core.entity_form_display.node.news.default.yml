@@ -18,15 +18,15 @@ dependencies:
     - field.field.node.news.field_state
     - field.field.node.news.og_audience
     - image.style.thumbnail
+    - media.type.news_logo
     - node.type.news
   module:
     - allowed_formats
     - comment
     - file
-    - image
+    - image_library_widget
     - joinup_core
     - link
-    - publication_date
     - text
 id: node.news.default
 targetEntityType: node
@@ -40,6 +40,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
@@ -84,12 +85,14 @@ content:
     type: string_textfield
     region: content
   field_news_logo:
-    type: image_image
+    type: image_library_widget
     weight: 3
     region: content
     settings:
-      progress_indicator: throbber
+      media_type_id: news_logo
+      library_label: 'Alternatively, choose a pre-uploaded image'
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
   field_news_referenced_solution:
     weight: 10
