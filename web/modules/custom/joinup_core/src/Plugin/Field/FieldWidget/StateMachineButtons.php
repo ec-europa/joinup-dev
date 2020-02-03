@@ -182,7 +182,7 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
     // Add a custom button for each state we're allowing.
     foreach ($element['#options'] as $state_id => $label) {
       if ($element['#original_state_id'] === $state_id) {
-        // The 'same state' button was already added, if it was requested.
+        // The 'same state' button was already added, just a few lines earlier.
         continue;
       }
 

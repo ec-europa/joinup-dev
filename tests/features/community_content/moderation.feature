@@ -370,8 +370,8 @@ Feature: Moderate community content
       | High frequency              |
       | Cluster                     |
 
-  Scenario: The logo image can be replaced for an  event or news item that's in
-    the proposed state. See ISAICP-5818.
+  Scenario: The logo image can be replaced for an event or news item that's in
+    the "proposed" state. See ISAICP-5818.
 
     Given user:
       | Username | leo |
