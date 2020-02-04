@@ -1034,7 +1034,6 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
       "http://www.metadataregistry.org/" => 'joinup-editor',
       "http://www.w3.org/TR/" => 'joinup-editor',
     ];
-    $sandbox['joinup_editor'] = user_load_by_name('joinup-editor');
     $sandbox['joinup_support_uid'] = user_load_by_name('Joinup_Federation_Support')->id();
     $sandbox['count'] = 0;
     $sandbox['max'] = count($sandbox['collections']);
@@ -1076,7 +1075,7 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
     $new_owner = $owner_membership->getOwner();
   }
   elseif ($value === 'joinup-editor') {
-    $new_owner = $sandbox['joinup_editor'];
+    $new_owner = user_load_by_name('joinup-editor');
   }
 
   if (empty($new_owner)) {
