@@ -97,6 +97,9 @@ Feature: Proposing a collection
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
+      # Contact information data.
+      | Name        | Some contact                                                      |
+      | E-mail      | some.contact@example.com                                          |
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
@@ -163,14 +166,14 @@ Feature: Proposing a collection
     And the following field widgets should be visible "Owner"
     And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
-    And the following field widgets should not be visible "Contact information"
+    And the following field widgets should be visible "Contact information"
 
     When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
-    And the following field widgets should be visible "Contact information"
+    And the following field widgets should not be visible "Contact information"
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when

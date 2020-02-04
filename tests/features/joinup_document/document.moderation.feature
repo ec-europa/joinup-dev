@@ -13,16 +13,20 @@ Feature: Document moderation
     And the following owner:
       | name          |
       | thisisanowner |
+    And the following contact:
+      | name  | Dis contact             |
+      | email | dis.contact@example.com |
     And the following collection:
-      | title             | The Naked Ashes                 |
-      | description       | The wolverine is a Marvel hero. |
-      | logo              | logo.png                        |
-      | banner            | banner.jpg                      |
-      | elibrary creation | registered users                |
-      | moderation        | no                              |
-      | state             | validated                       |
-      | owner             | thisisanowner                   |
-      | policy domain     | E-inclusion                     |
+      | title               | The Naked Ashes                 |
+      | description         | The wolverine is a Marvel hero. |
+      | logo                | logo.png                        |
+      | banner              | banner.jpg                      |
+      | elibrary creation   | registered users                |
+      | moderation          | no                              |
+      | state               | validated                       |
+      | owner               | thisisanowner                   |
+      | contact information | Dis contact                     |
+      | policy domain       | E-inclusion                     |
     And the following collection user membership:
       | collection      | user            | roles       |
       | The Naked Ashes | Gretchen Greene | member      |
@@ -83,8 +87,8 @@ Feature: Document moderation
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
     When I fill in the following:
-      | Title       | An amazing document                      |
-      | Short title | Amazing document                         |
+      | Title       | An amazing document |
+      | Short title | Amazing document    |
     And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
