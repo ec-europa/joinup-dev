@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e40eb023716a42cce546ae39819db7a",
+    "content-hash": "b8ef4038644a545fe93fc07885810485",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2587,6 +2587,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Allow a pre-login subscriber to set the reason for cancelling the login @see https://www.drupal.org/project/cas/issues/3111073": "https://www.drupal.org/files/issues/2020-02-04/3111073-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
