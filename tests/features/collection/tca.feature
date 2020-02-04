@@ -30,7 +30,7 @@ Feature: Collection TCA agreement
     And I press "Yes"
     # No javascript test.
     Then I should see the error message "You have to agree that you will manage your collection on a regular basis."
-    When I check the box "I understand and I commit to manage my collection on a regular basis."
+    When I check the box "I have read and accept the legal notice and I commit to manage my collection on a regular basis."
     And I press "Yes"
     Then I should see the heading "Propose collection"
 
