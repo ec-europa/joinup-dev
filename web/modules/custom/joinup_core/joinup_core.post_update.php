@@ -6,11 +6,12 @@
  */
 
 use Drupal\Core\Database\Database;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
 use Drupal\og\Entity\OgRole;
+use Drupal\rdf_entity\RdfInterface;
 use Drupal\redirect\Entity\Redirect;
 use Drupal\search_api\Entity\Index;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
@@ -1003,6 +1004,8 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
   // Update/remove memberships from various users and assign new memberships
   // according to the request.
   // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5656
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
   if (empty($sandbox['collections'])) {
     $sandbox['collections'] = [
       // For the owner value, the new owner of the solutions will be the owner
@@ -1031,22 +1034,40 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
       "http://www.metadataregistry.org/" => 'joinup-editor',
       "http://www.w3.org/TR/" => 'joinup-editor',
     ];
-    $sandbox['collection_ids'] = array_keys($sandbox['collections']);
-    $sandbox['joinup_editor_uid'] = user_load_by_name('joinup-editor')->id();
+    $sandbox['joinup_editor'] = user_load_by_name('joinup-editor');
     $sandbox['joinup_support_uid'] = user_load_by_name('Joinup_Federation_Support')->id();
     $sandbox['count'] = 0;
     $sandbox['max'] = count($sandbox['collections']);
+
+    // Anonymous function that creates an owner for the group and removes the
+    // membership of the Joinup Federation Support user.
+    $sandbox['handle_memberships'] = function (RdfInterface $group, AccountInterface $new_owner) use ($membership_manager, $sandbox): void {
+      if (!$new_owner_membership = $membership_manager->getMembership($group, $new_owner->id())) {
+        $new_owner_membership = $membership_manager->createMembership($group, $new_owner);
+      }
+
+      $group_admin_role = OgRole::loadByGroupAndName($group, 'administrator');
+      $group_facilitator_role = OgRole::loadByGroupAndName($group, 'facilitator');
+      $new_owner_membership->addRole($group_admin_role);
+      $new_owner_membership->addRole($group_facilitator_role);
+      $new_owner_membership->save();
+
+      // Cleanup the Joinup Federation Support membership.
+      if ($support_membership = $membership_manager->getMembership($group, $sandbox['joinup_support_uid'])) {
+        $support_membership->delete();
+      }
+    };
   }
 
   $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
-  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
-  $membership_manager = \Drupal::service('og.membership_manager');
-  $collection_id = array_shift($sandbox['collection_ids']);
+  $collection_id = key($sandbox['collections']);
+  /** @var \Drupal\rdf_entity\RdfInterface $collection */
   $collection = $rdf_storage->load($collection_id);
+  $value = array_shift($sandbox['collections']);
 
-  if ($sandbox['collections'][$collection_id] === 'owner') {
+  if ($value === 'owner') {
     $memberships = $membership_manager->getGroupMembershipsByRoleNames($collection, ['administrator']);
-    // Normally, there should only be one $memberhsip which is an administrator.
+    // Normally, there should only be one $membership which is an administrator.
     if (count($memberships) > 1) {
       throw new \Exception("More than one owners were found for {$collection->label()}");
     }
@@ -1054,40 +1075,21 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
     $owner_membership = reset($memberships);
     $new_owner = $owner_membership->getOwner();
   }
-  elseif ($sandbox['collections'][$collection_id] === 'joinup-editor') {
-    $new_owner = \Drupal::entityTypeManager()->getStorage('user')->load($sandbox['joinup_editor_uid']);
+  elseif ($value === 'joinup-editor') {
+    $new_owner = $sandbox['joinup_editor'];
   }
 
   if (empty($new_owner)) {
     throw new \Exception("Owner not found for the {$collection->label()} collection");
   }
 
-  // Anonymous function that creates an owner for the group and removes the
-  // membership of the Joinup Federation Support user.
-  $handle_memberhips = function (EntityInterface $group) use ($membership_manager, $new_owner, $sandbox): void {
-    if (!$new_owner_membership = $membership_manager->getMembership($group, $new_owner->id())) {
-      $new_owner_membership = $membership_manager->createMembership($group, $new_owner);
-    }
-
-    $group_admin_role = OgRole::loadByGroupAndName($group, 'administrator');
-    $group_facilitator_role = OgRole::loadByGroupAndName($group, 'facilitator');
-    $new_owner_membership->addRole($group_admin_role);
-    $new_owner_membership->addRole($group_facilitator_role);
-    $new_owner_membership->save();
-
-    // Cleanup the Joinup Federation Support membership.
-    if ($support_membership = $membership_manager->getMembership($group, $sandbox['joinup_support_uid'])) {
-      $support_membership->delete();
-    }
-  };
-
   // Handle the group itself.
-  $handle_memberhips($collection);
+  $sandbox['handle_memberships']($collection, $new_owner);
 
   // Handle child solutions.
   $related_solutions = $collection->get('field_ar_affiliates')->referencedEntities();
   foreach ($related_solutions as $solution) {
-    $handle_memberhips($solution);
+    $sandbox['handle_memberships']($solution, $new_owner);
   }
 
   $sandbox['count']++;
