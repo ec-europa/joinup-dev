@@ -126,6 +126,7 @@ module:
   redis: 0
   rest: 0
   schema_article: 0
+  schema_event: 0
   schema_metatag: 0
   search_api: 0
   search_api_arbitrary_facet: 0
