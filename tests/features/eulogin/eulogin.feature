@@ -1,4 +1,4 @@
-@api @casMockServer
+@api @casMockServer @group-b
 Feature: Log in through EU Login
   In order to access all website of the European Commission with the same credentials
   As a user with an existing EU Login account
@@ -159,6 +159,8 @@ Feature: Log in through EU Login
     And I press the "Log in" button
 
     Then I should see the success message "You have been logged in."
+    And I should not see the link "Sign in"
+    But the response should contain "user-profile-icon.png"
 
     # The profile entries are overwritten, except the username.
     And the user jb007_local should have the following data in their user profile:
@@ -329,7 +331,7 @@ Feature: Log in through EU Login
 
   Scenario: The Drupal login form shows a warning message.
     When I visit "/user/login"
-    Then I should see the warning message "As of 01/02/2020, EU Login will be the only authentication method available on Joinup. So, we strongly recommend you to choose EU Login as your preferred sign-in method!"
+    Then I should see the warning message "As of 2nd March 2020, EU Login will be the only authentication method available on Joinup. We strongly recommend you to choose EU Login as your sign-in method before this date!"
     And I should see the link "EU Login"
 
   Scenario: A new user tries to register with an existing Email.

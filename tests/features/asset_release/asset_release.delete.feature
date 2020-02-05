@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Asset release "delete" functionality.
   In order to manage releases
   As a solution facilitator
