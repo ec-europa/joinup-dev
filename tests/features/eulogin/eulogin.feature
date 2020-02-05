@@ -191,7 +191,6 @@ Feature: Log in through EU Login
     Then I should see the error message "You've recently changed your EU Login account email but that email is already used in Joinup by another user. You cannot login until, either you change your EU Login email or you contact support to fix the issue."
     And I should see the link "contact support"
 
-    And I take a screenshot
     # Change the EU Login account email to a unique value.
     Given CAS users:
       | Username | E-mail           | Password           | First name | Last name | Local username |
