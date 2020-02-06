@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Revision permissions support in OG
   As a privileged user
   In order to be able to see changes between revisions of my groups content

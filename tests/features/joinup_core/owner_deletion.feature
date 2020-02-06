@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Deletion of collection and solution owners
   As a site owner
   In order to avoid my groups becoming orphaned

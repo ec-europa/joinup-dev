@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Add document" visibility options.
   In order to manage documents
   As a solution member

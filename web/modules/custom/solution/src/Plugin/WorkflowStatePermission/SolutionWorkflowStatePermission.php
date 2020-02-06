@@ -99,6 +99,12 @@ class SolutionWorkflowStatePermission extends PluginBase implements WorkflowStat
       return TRUE;
     }
 
+    // Do not allow the facilitator to publish changes if the solution has not
+    // already been published in the past.
+    if ($to_state === 'validated' && $from_state !== 'validated' && $found = array_search('rdf_entity-solution-facilitator', $authorized_roles) && !$entity->hasGraph('default')) {
+      unset($authorized_roles[$found]);
+    }
+
     // Check if the user has one of the allowed group roles.
     $membership = $this->membershipManager->getMembership($entity, $account->id());
     return $membership && array_intersect($authorized_roles, $membership->getRolesIds());

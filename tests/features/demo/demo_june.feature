@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: June 2016 demo
   As users of the website
   I should be able to interact with the website and manage content.
