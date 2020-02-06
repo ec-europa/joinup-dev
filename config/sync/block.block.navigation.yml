@@ -5,8 +5,7 @@ dependencies:
   config:
     - og_menu.ogmenu.navigation
   module:
-    - collection
-    - solution
+    - joinup_group
     - og
   theme:
     - joinup_theme

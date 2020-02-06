@@ -2,13 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
+    - joinup_core
     - joinup_licence
   theme:
     - joinup_theme
 id: licencedeprecatedmessage
 theme: joinup_theme
 region: content_top
-weight: 0
+weight: -18
 provider: null
 plugin: licence_deprecated_message_block
 settings:

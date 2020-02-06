@@ -9,7 +9,7 @@ dependencies:
 id: eiradeprecatedtermmessage
 theme: joinup_theme
 region: content_top
-weight: 0
+weight: -19
 provider: null
 plugin: eira_derprecated_term_block
 settings:

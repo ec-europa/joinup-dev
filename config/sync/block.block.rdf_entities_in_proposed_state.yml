@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - joinup_core
+    - joinup_group
     - user
   theme:
     - joinup_theme

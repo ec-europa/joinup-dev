@@ -4,6 +4,7 @@ dependencies:
   module:
     - ctools
     - joinup_core
+    - joinup_group
   theme:
     - joinup_theme
 id: unpublished_content_of_group
