@@ -92,7 +92,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The value of the property of which to identify the graph by.
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A table of properties for the given graph.
-   * @param string|NULL $sub_property
+   * @param string|null $sub_property
    *   A sub property to look into.
    *
    * @throws \Exception
@@ -155,9 +155,8 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The property of which to identify the graph by.
    * @param string $value
    *   The value of the property of which to identify the graph by.
-   * @param string|NULL $sub_graph
+   * @param string|null $sub_graph
    *   (optional) Fetch a subgraph of the graphs instead of the graph itself.
-   *
    *
    * @return array|null
    *   The first graph that matches the criteria as an array or null if no match
@@ -187,7 +186,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The parent graph.
    * @param string $identifier
    *   The property name to identify the graph with.
-   * @param string|NULL $identifier_value
+   * @param string|null $identifier_value
    *   (optional) The identifier value. Should not be used along with $property
    *   filter as the $identifier_value requires $identifier to have a string
    *   value, while $property requires it to have an array as a value.
@@ -205,7 +204,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
     if ($reset) {
       $graphs_found = [];
     }
-    foreach ($graph as $graph_identifier => $sub_graph_or_value) {
+    foreach ($graph as $sub_graph_or_value) {
       if (is_array($sub_graph_or_value)) {
         if (array_key_exists($identifier, $sub_graph_or_value)) {
           if (is_array($sub_graph_or_value[$identifier])) {
