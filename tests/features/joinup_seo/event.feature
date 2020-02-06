@@ -4,7 +4,7 @@ Feature: SEO for news articles.
   in order for my news to be better visible on the web
   I need proper metatag to be encapsulated in the html code.
 
-  Scenario: Basic metatags are attached as JSON schema on the page.
+  Scenario Outline: Basic metatags are attached as JSON schema on the page.
     Given collections:
       | title                       | state     |
       | Joinup SEO event collection | validated |
@@ -12,22 +12,26 @@ Feature: SEO for news articles.
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Patrick    | Stewart     |
     And "event" content:
-      | title            | short title   | start date                      | end date                        | body                                               | logo     | agenda        | location                           | organisation        | scope         | keywords | collection                  | state     |
-      | Joinup SEO event | JOINUPSEO2020 | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | summary: Summary of event. - value: Body of event. | logo.png | Event agenda. | Rue Belliard 28, Brussels, Belgium | European Commission | International | Alphabet | Joinup SEO event collection | validated |
+      | title            | short title   | web url   | start date                      | end date                        | body                                               | logo     | agenda        | location                           | organisation        | scope         | keywords | collection                  | state     |
+      | Joinup SEO event | JOINUPSEO2020 | <web url> | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | summary: Summary of event. - value: Body of event. | logo.png | Event agenda. | Rue Belliard 28, Brussels, Belgium | European Commission | International | Alphabet | Joinup SEO event collection | validated |
 
     When I visit the "Joinup SEO event" event
     Then the metatag JSON should be attached in the page
     And 1 metatag graph of type "Event" should exist in the page
     And the metatag graph of the item with "name" "Joinup SEO event" should have the following properties:
-      | property    | value                                                                    |
-      | @type       | Event                                                                    |
-      | name        | Joinup SEO event                                                         |
+      | property    | value                    |
+      | @type       | Event                    |
+      | name        | Joinup SEO event         |
+      # Though it would be nice to have this to the Joinup URL, Search Engines expect this to be the URL of the event.
+      # If a website is provided, then that means that the entity in Joinup is simply a promotion, and all the handling
+      # of registrations etc, already has a website, thus we point to that location.
+      | url         | <expected url>           |
       # Summary is preferred over the body of the entity.
-      | description | Summary of event.                                                        |
-      | startDate   | 2019-12-25T15:00:00+0100                                                 |
-      | endDate     | 2020-01-01T15:00:00+0100                                                 |
+      | description | Summary of event.        |
+      | startDate   | 2019-12-25T15:00:00+0100 |
+      | endDate     | 2020-01-01T15:00:00+0100 |
       # $base_url$ will be replaced with the base url of the website.
-      | @id         | $base_url$/collection/joinup-seo-event-collection/event/joinup-seo-event |
+      | @id         | <expected url>           |
     And the metatag graph of the item with "name" "Joinup SEO event" should have the following "image" properties:
       | property             | value       |
       | @type                | ImageObject |
@@ -59,3 +63,11 @@ Feature: SEO for news articles.
     # No metatags JSON in general means also that the entity metatags of the news item
     # is also not attached when the tile is present.
     And the metatag JSON should not be attached in the page
+
+    Examples:
+      | web url                                       | expected url                                                             |
+      |                                               | $base_url$/collection/joinup-seo-event-collection/event/joinup-seo-event |
+      # Urls need a title value in the 0 index and a url in the 1 index of the value to work, otherwise it is parsed
+      # wrongly.
+      # @see: \Drupal\Driver\Fields\Drupal8\LinkHandler::expand
+      | 0: Some url - 1: http://some-random-event-url | http://some-random-event-url                                             |
