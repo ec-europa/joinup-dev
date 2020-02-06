@@ -1595,18 +1595,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeScenario @errorPage
    */
-  public function installErrorPageTestingModule(): void {
+  public function beforeErrorPageTesting(): void  {
     static::toggleModule('install', 'error_page_test');
 
-    // The test writes to the PHP error log because it's in its scope to test
-    // fatal errors. But the testing bots might reject tests that are not ending
-    // with an empty log. We create a copy of the error log just before running
-    // this scenario to be restored in @AfterScenario phase. In this way the log
-    // will not be affected by errors logged by this scenario.
-    $error_log = ini_get('error_log');
-    if (file_exists($error_log)) {
-      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
-    }
+    // Pipe error log entries to a file rather than to standard PHP log.
+    $settings = Settings::getAll();
+    $settings['error_page']['log']['method'] = 3;
+    $settings['error_page']['log']['destination'] = 'temporary://testing.log';
+    new Settings($settings);
   }
 
   /**
@@ -1614,16 +1610,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @AfterScenario @errorPage
    */
-  public function uninstallErrorPageTestingModule(): void {
+  public function afterErrorPageTesting(): void {
     static::toggleModule('uninstall', 'error_page_test');
 
-    // Restore the log saved in @BeforeScenario.
-    $error_log = ini_get('error_log');
-    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
-      file_unmanaged_move('temporary://php.log', $error_log, 1);
-    }
+    // Restore piping error log entries to the standard PHP log.
+    $settings = Settings::getAll();
+    unset($settings['error_page']);
+    new Settings($settings);
 
-    // Restore the original system logging error level.
+    // Restore the site's error logging verbosity.
     $this->setSiteErrorLevel();
   }
 
