@@ -22,7 +22,7 @@ default:
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
-        tags: '~@wip&&~@javascript'
+        tags: '~@wip&&~@javascript&&~@group-a&&~@group-b'
   extensions:
     Drupal\MinkExtension:
       base_url: '${behat.base_url}'
@@ -85,8 +85,5 @@ default:
         log_in: 'Sign in'
         log_out: 'Sign out'
         username_field: 'Email or username'
-    FriendsOfBehat\ServiceContainerExtension:
-      imports:
-        - "../vendor/drupaltest/behat-one-time-login/behat.services.yml"
   formatters:
     ${behat.formatter.name}: ~

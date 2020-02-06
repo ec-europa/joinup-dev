@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Proposing a collection
   In order to create a new collection on Joinup
   As the product owner of a collection of software solutions

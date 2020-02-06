@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Contact information access
   In order to see contextualized information
   As a visitor

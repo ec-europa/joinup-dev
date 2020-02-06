@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Validate an ADMS-AP file through the UI
   In order to be sure that my ADMS data is compliant
   As a user

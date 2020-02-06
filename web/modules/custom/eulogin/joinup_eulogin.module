@@ -202,7 +202,7 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
       'warning' => [
         [
           [
-            '#markup' => t('Starting from 01/02/2020, signing in to Joinup is handled by <a href=":eulogin-url">EU Login</a>, the European Commission Authentication Service.', $arguments),
+            '#markup' => t('Starting from 02/03/2020, signing in to Joinup is handled by <a href=":eulogin-url">EU Login</a>, the European Commission Authentication Service.', $arguments),
             '#prefix' => '<p>',
             '#suffix' => '</p>',
           ],

@@ -1,4 +1,4 @@
-@api @casMockServer
+@api @casMockServer @group-b
 Feature: Log in through EU Login
   In order to access all website of the European Commission with the same credentials
   As a user with an existing EU Login account
@@ -151,6 +151,8 @@ Feature: Log in through EU Login
     And I press the "Log in" button
 
     Then I should see the success message "You have been logged in."
+    And I should not see the link "Sign in"
+    But the response should contain "user-profile-icon.png"
 
     # The profile entries are overwritten, except the username.
     And the user jb007_local should have the following data in their user profile:
@@ -178,10 +180,8 @@ Feature: Log in through EU Login
     When I fill in "E-mail address" with "007.changed@mi6.eu"
     And I fill in "Password" with "shaken_not_stirred"
     When I press the "Log in" button
-    # We cannot assert here the exception message as on some environments that
-    # can be disabled on the screen, depending on PHP settings. We're only
-    # asserting the response HTTP code.
-    And the response status code should be 500
+    Then I should see the error message "You've recently changed your EU Login account email but that email is already used in Joinup by another user. You cannot login until, either you change your EU Login email or you contact support to fix the issue."
+    And I should see the link "contact support"
 
     # Change the EU Login account email to a unique value.
     Given CAS users:
@@ -365,7 +365,7 @@ Feature: Log in through EU Login
 
   Scenario: The Drupal login form shows a warning message.
     When I visit "/user/login"
-    Then I should see the warning message "Starting from 01/02/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service."
+    Then I should see the warning message "Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service."
     And I should see the link "EU Login"
     But the following fields should not be present "Email or username, Password"
     And I should not see the "Sign in" button
