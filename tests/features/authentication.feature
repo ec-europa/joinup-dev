@@ -37,10 +37,18 @@ Feature: User authentication
       | admin/reporting/solutions-by-licences                          |
       | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
+      | admin/structure/media                                          |
       | admin/structure/views                                          |
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
+      | media/add                                                      |
+      | media/add/collection_banner                                    |
+      | media/add/collection_logo                                      |
+      | media/add/solution_banner                                      |
+      | media/add/solution_logo                                        |
+      | media/add/event_logo                                           |
+      | media/add/news_logo                                            |
       | node                                                           |
       | node/add                                                       |
       | node/add/custom_page                                           |
@@ -94,11 +102,19 @@ Feature: User authentication
       | admin/reporting/solutions-by-licences                          |
       | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
+      | admin/structure/media                                          |
       | admin/structure/views                                          |
       | dashboard                                                      |
       | propose/solution                                               |
       | licence                                                        |
       | licence/add                                                    |
+      | media/add                                                      |
+      | media/add/collection_banner                                    |
+      | media/add/collection_logo                                      |
+      | media/add/solution_banner                                      |
+      | media/add/solution_logo                                        |
+      | media/add/event_logo                                           |
+      | media/add/news_logo                                            |
       | node                                                           |
       | node/add                                                       |
       | node/add/custom_page                                           |
@@ -135,6 +151,13 @@ Feature: User authentication
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
+      | media/add                                                      |
+      | media/add/collection_banner                                    |
+      | media/add/collection_logo                                      |
+      | media/add/solution_banner                                      |
+      | media/add/solution_logo                                        |
+      | media/add/event_logo                                           |
+      | media/add/news_logo                                            |
       | propose/collection                                             |
 
   @api
@@ -151,6 +174,7 @@ Feature: User authentication
       | admin/content                      |
       | admin/structure                    |
       | admin/structure/views              |
+      | admin/structure/media              |
       | propose/solution                   |
       | node                               |
       | node/add                           |
