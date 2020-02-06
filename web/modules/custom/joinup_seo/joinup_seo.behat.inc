@@ -114,22 +114,46 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
     $base_url = \Drupal::request()->getSchemeAndHttpHost();
 
     $hash = $table->getColumnsHash();
-    foreach ($graphs as $graph) {
+    $missing_properties = [];
+    $wrong_value = [];
+    foreach ($graphs as $index => $graph) {
+      $found = TRUE;
       foreach ($hash as $row) {
         if (!isset($graph[$row['property']])) {
-          continue 2;
+          $missing_properties[$index][] = $row['property'];
+          $found = FALSE;
+          continue;
         }
 
         $row['value'] = str_replace('$base_url$', $base_url, $row['value']);
         if ($graph[$row['property']] !== $row['value']) {
-          continue 2;
+          $wrong_value[$index][] = [
+            'property' => $row['property'],
+            'expected' => $row['value'],
+            'found' => $graph[$row['property']],
+          ];
         }
       }
-      // Graph was found.
-      return;
+
+      if ($found === TRUE) {
+        return;
+      }
     }
 
-    throw new Exception('None of the found graphs meet the criteria.');
+    // Construct the error messages for each graph found.
+    $error_messages = [];
+    foreach ($graphs as $index => $graph) {
+      if (!empty($missing_properties[$index])) {
+        $properties = implode(', ', $missing_properties[$index]);
+        $error_messages[] = "Index {$index}: The graph is missing the following properties: {$properties}";
+      }
+      if (isset($wrong_value[$index])) {
+        foreach ($wrong_value[$index] as $data) {
+          $error_messages[] = "Index {$index}: Wrong property '{$data['property']}' value: Expected '{$data['expected']}' but '{$data['found']}' was found.";
+        }
+      }
+    }
+    throw new Exception(implode("\n", $error_messages));
   }
 
   /**
