@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0fe3d5cec4e012d1a9f7f3116520e361",
+    "content-hash": "40844eec30c7b8795caae39cdbb16b78",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2868,7 +2868,7 @@
                 "shasum": "81210684c378dab856b3c2bce5eeaa58992d2efc"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "~8.0"
             },
             "suggest": {
                 "drupal/config_split": "Split site configuration for different environments."
@@ -2940,8 +2940,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.1+9-dev",
-                    "datestamp": "1575758886",
+                    "version": "8.x-2.1+8-dev",
+                    "datestamp": "1575757684",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3005,7 +3005,7 @@
                     "datestamp": "1519398184",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Project has not opted into security advisory coverage!"
                     }
                 }
             },
@@ -3042,7 +3042,7 @@
             "description": "Enables making the active configuration store read-only to prevent configuration changes on a Drupal site.",
             "homepage": "https://www.drupal.org/project/config_readonly",
             "support": {
-                "source": "https://git.drupalcode.org/project/config_readonly"
+                "source": "http://cgit.drupalcode.org/config_readonly"
             }
         },
         {
@@ -3432,7 +3432,7 @@
             "description": "Provides CSV as a serialization format.",
             "homepage": "https://www.drupal.org/project/csv_serialization",
             "support": {
-                "source": "https://git.drupalcode.org/project/csv_serialization"
+                "source": "http://cgit.drupalcode.org/csv_serialization"
             }
         },
         {
@@ -3762,7 +3762,7 @@
                 "shasum": "109047e07a7e77528747d41044b6cf13f2671ac7"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -4224,18 +4224,18 @@
                     "homepage": "https://www.drupal.org/user/591438"
                 },
                 {
-                    "name": "nils.destoop",
-                    "homepage": "https://www.drupal.org/user/361625"
-                },
-                {
                     "name": "swentel",
                     "homepage": "https://www.drupal.org/user/107403"
+                },
+                {
+                    "name": "zuuperman",
+                    "homepage": "https://www.drupal.org/user/361625"
                 }
             ],
             "description": "Provides the field_group module.",
             "homepage": "https://www.drupal.org/project/field_group",
             "support": {
-                "source": "https://git.drupalcode.org/project/field_group"
+                "source": "http://cgit.drupalcode.org/field_group"
             }
         },
         {
@@ -4712,24 +4712,12 @@
                     "homepage": "https://www.drupal.org/user/99340"
                 },
                 {
-                    "name": "geek-merlin",
-                    "homepage": "https://www.drupal.org/user/229048"
-                },
-                {
                     "name": "joachim",
                     "homepage": "https://www.drupal.org/user/107701"
                 },
                 {
-                    "name": "jsacksick",
-                    "homepage": "https://www.drupal.org/user/972218"
-                },
-                {
                     "name": "kaythay",
                     "homepage": "https://www.drupal.org/user/2182186"
-                },
-                {
-                    "name": "oknate",
-                    "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
                     "name": "rszrama",
@@ -5009,7 +4997,7 @@
             "description": "Allows to give roles per menu admin permissions without giving them full administer menu permission.",
             "homepage": "https://www.drupal.org/project/menu_admin_per_menu",
             "support": {
-                "source": "https://git.drupalcode.org/project/menu_admin_per_menu"
+                "source": "http://cgit.drupalcode.org/menu_admin_per_menu"
             }
         },
         {
@@ -6335,7 +6323,7 @@
             "description": "The module provides a block that display links (icons) to your profiles on various social networking sites.",
             "homepage": "https://www.drupal.org/project/social_media_links",
             "support": {
-                "source": "https://git.drupalcode.org/project/social_media_links",
+                "source": "http://cgit.drupalcode.org/social_media_links",
                 "issues": "https://www.drupal.org/project/issues/social_media_links"
             }
         },
@@ -6803,7 +6791,7 @@
             "description": "Select which roles should be able to see unpublished nodes.",
             "homepage": "https://www.drupal.org/project/view_unpublished",
             "support": {
-                "source": "https://git.drupalcode.org/project/view_unpublished"
+                "source": "http://cgit.drupalcode.org/view_unpublished"
             }
         },
         {
@@ -9911,7 +9899,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-22T22:25:24+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -12804,7 +12792,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.27",
-                    "datestamp": "1558553350",
+                    "datestamp": "1558552081",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13084,7 +13072,7 @@
                 "shasum": "dc92ceb8fd3e289f9e5c058692346e4b9ef3fa74"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -13123,12 +13111,12 @@
                     "homepage": "https://www.drupal.org/user/172527"
                 },
                 {
-                    "name": "vijaycs85",
-                    "homepage": "https://www.drupal.org/user/93488"
+                    "name": "ilchovuchkov",
+                    "homepage": "https://www.drupal.org/user/3568458"
                 },
                 {
-                    "name": "vuil",
-                    "homepage": "https://www.drupal.org/user/3568458"
+                    "name": "vijaycs85",
+                    "homepage": "https://www.drupal.org/user/93488"
                 }
             ],
             "description": "Provides a configuration data and structure inspector tool",
@@ -13536,10 +13524,6 @@
                     "homepage": "https://www.drupal.org/user/1009760"
                 },
                 {
-                    "name": "Sam152",
-                    "homepage": "https://www.drupal.org/user/1485048"
-                },
-                {
                     "name": "Wim Leers",
                     "homepage": "https://www.drupal.org/user/99777"
                 },
@@ -13558,7 +13542,7 @@
             ],
             "homepage": "https://www.drupal.org/project/renderviz",
             "support": {
-                "source": "https://git.drupalcode.org/project/renderviz"
+                "source": "http://cgit.drupalcode.org/renderviz"
             }
         },
         {
@@ -13696,6 +13680,65 @@
             }
         },
         {
+            "name": "drupaltest/behat-one-time-login",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupaltest/behat-one-time-login.git",
+                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupaltest/behat-one-time-login/zipball/92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
+                "reference": "92c0c9a71d2bf699a98d17ef4a4e8a437908038b",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/drupal-extension": "~4.0",
+                "friends-of-behat/service-container-extension": "~1.0"
+            },
+            "require-dev": {
+                "composer/installers": "~1.2",
+                "drupal/core-composer-scaffold": "~8.8",
+                "drupal/core-project-message": "~8.8",
+                "drupal/core-recommended": "~8.8",
+                "drush/drush": "~10.0",
+                "squizlabs/php_codesniffer": "~3.5",
+                "zaporylie/composer-drupal-optimizations": "~1.1"
+            },
+            "type": "library",
+            "extra": {
+                "drupal-scaffold": {
+                    "locations": {
+                        "web-root": "web/"
+                    }
+                },
+                "installer-paths": {
+                    "web/core": [
+                        "type:drupal-core"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DrupalTest\\BehatOneTimeLogin\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Pieter Frenssen",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Authenticates users through the Drupal one time login mechanism.",
+            "homepage": "https://github.com/drupaltest/behat-one-time-login",
+            "time": "2020-01-17T09:12:53+00:00"
+        },
+        {
             "name": "fabpot/goutte",
             "version": "v3.2.3",
             "source": {
@@ -13749,6 +13792,51 @@
                 "scraper"
             ],
             "time": "2018-06-29T15:13:57+00:00"
+        },
+        {
+            "name": "friends-of-behat/service-container-extension",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfBehat/ServiceContainerExtension.git",
+                "reference": "5c8ab1bc3e45a37e01da8601aa2aa3a547981586"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfBehat/ServiceContainerExtension/zipball/5c8ab1bc3e45a37e01da8601aa2aa3a547981586",
+                "reference": "5c8ab1bc3e45a37e01da8601aa2aa3a547981586",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.1",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "friends-of-behat/cross-container-extension": "^1.0",
+                "friends-of-behat/test-context": "^1.0"
+            },
+            "suggest": {
+                "friends-of-behat/cross-container-extension": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FriendsOfBehat\\ServiceContainerExtension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kamil Kokot",
+                    "email": "kamil@kokot.me",
+                    "homepage": "http://kamil.kokot.me"
+                }
+            ],
+            "description": "Allows to declare own services inside Behat container without writing an extension.",
+            "time": "2018-02-13T17:50:03+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
@@ -15913,6 +16001,43 @@
             ],
             "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
             "time": "2019-11-29T09:34:00+00:00"
+        },
+        {
+            "name": "weitzman/logintrait",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/weitzman/logintrait.git",
+                "reference": "56fc9f9719c5bde1ce9770f27c0732c11a96a479"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/weitzman%2Flogintrait/repository/archive.zip?sha=56fc9f9719c5bde1ce9770f27c0732c11a96a479",
+                "reference": "56fc9f9719c5bde1ce9770f27c0732c11a96a479",
+                "shasum": ""
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "drupal-dtt",
+            "autoload": {
+                "psr-4": {
+                    "weitzman\\LoginTrait\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                }
+            ],
+            "description": "Provides login/logout via user reset URL instead of forms.",
+            "time": "2019-04-19T11:52:16+00:00"
         }
     ],
     "aliases": [
