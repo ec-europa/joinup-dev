@@ -9,6 +9,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\file\Entity\File;
+use Drupal\pathauto\PathautoState;
 use Drupal\redirect\Entity\Redirect;
 use Drupal\search_api\Entity\Index;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
@@ -992,4 +993,48 @@ function joinup_core_post_update_stats6(array &$sandbox): ?string {
  */
 function joinup_core_post_update_post_count_storage_node_revisions() {
   joinup_core_post_update_set_news_default_version();
+}
+
+/**
+ * Updates rdf entities without an alias.
+ */
+function joinup_core_post_update_unaliased_entities(&$sandbox) {
+  if (empty($sandbox['ids'])) {
+    $bundles_with_pattern = [
+      'collection',
+      'solution',
+      'asset_release',
+      'asset_distribution',
+      'licence',
+    ];
+    $sandbox['ids'] = array_values(\Drupal::entityQuery('rdf_entity')
+      ->condition('rid', $bundles_with_pattern, 'IN')
+      ->execute());
+    $sandbox['max'] = count($sandbox['ids']);
+    $sandbox['missing'] = [];
+    $sandbox['count'] = 0;
+  }
+
+  /** @var \Drupal\sparql_entity_storage\SparqlEntityStorage $storage */
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\path_alias\AliasManagerInterface $alias_manager */
+  $alias_manager = \Drupal::service('path_alias.manager');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $ids = array_splice($sandbox['ids'], 0, 100);
+
+  foreach ($storage->loadMultiple($ids) as $rdf_entity) {
+    $internal_path = '/' . $rdf_entity->toUrl()->getInternalPath();
+    $alias = $alias_manager->getAliasByPath($internal_path);
+    if ($alias === $internal_path) {
+      $sandbox['missing'][$rdf_entity->id()] = $rdf_entity->id();
+      $pathauto_generator->createEntityAlias($rdf_entity, PathautoState::CREATE);
+    }
+    $sandbox['count']++;
+  }
+
+  $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
+  $total = count($sandbox['missing']);
+  return "Completed {$sandbox['count']} out of {$sandbox['max']}. Total issues found: {$total}.";
 }
