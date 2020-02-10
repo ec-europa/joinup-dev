@@ -16,7 +16,6 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
@@ -1839,7 +1838,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
    */
-  public function assertLinkContainsEntityUnaliasedUrl($link, $title, $type) {
+  public function assertLinkContainsEntityUnaliasedUrl(string $link, string $title, string $type): void {
     if (!in_array($type, ['content', 'rdf'])) {
       throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
     }
@@ -1853,11 +1852,11 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
-    $entity_url = $entity->toUrl()->setAbsolute()->getInternalPath();
+    // The absolute string is the aliased url of the entity.
+    $entity_url = $entity->toUrl('canonical')->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
-    Assert::assertContains(urlencode("{$base_url}/{$entity_url}"), $href);
+    Assert::assertContains(urlencode("{$entity_url}"), $href);
   }
 
   /**
