@@ -1,0 +1,7 @@
+joinup_eulogin.limited_access:
+  path: '/user/limited-access'
+  defaults:
+    _controller: Drupal\joinup_eulogin\Controller\LimitedAccessController::page
+    _title: 'Limited access'
+  requirements:
+    _access: 'TRUE'
