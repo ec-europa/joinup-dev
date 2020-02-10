@@ -1,0 +1,65 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Drupal\joinup\Traits;
+
+/**
+ * Reusable code for inspecting and preparing mail collector configuration.
+ */
+trait MailConfigTrait {
+
+  /**
+   * A list of overridable mail configurations.
+   *
+   * @var string[]
+   */
+  protected static $mailConfig = [
+    'system.mail' => 'interface.default',
+    'mailsystem.settings' => 'defaults.sender',
+  ];
+
+  /**
+   * Checks is mail configs are overridden in settings.php, settings.local.php.
+   *
+   * @throws \Exception
+   *   When mail configurations were overridden.
+   */
+  protected function checkMailConfigOverride(): void {
+    $config_factory = \Drupal::configFactory();
+    foreach (static::$mailConfig as $config_name => $config_path) {
+      if ($config_factory->get($config_name)->hasOverrides($config_path)) {
+        throw new \Exception("Cannot inspect emails since the '{$config_name}:{$config_path}' is overridden in settings.php or settings.local.php.");
+      }
+    }
+  }
+
+  /**
+   * Checks if the test mail collector is currently used.
+   *
+   * @return bool
+   *   TRUE if the testing mail collector is used.
+   */
+  protected function isTestMailCollectorUsed(): bool {
+    $config_factory = \Drupal::configFactory();
+    $is_test_mail_collector_used = TRUE;
+    foreach (static::$mailConfig as $config_name => $config_path) {
+      if ($config_factory->get($config_name)->get($config_path) !== 'test_mail_collector') {
+        $is_test_mail_collector_used = FALSE;
+        break;
+      }
+    }
+    return $is_test_mail_collector_used;
+  }
+
+  /**
+   * Resets the mail collector by wiping-out any leftovers from a previous test.
+   */
+  protected function resetTestMailCollector(): void {
+    $state = \Drupal::state();
+    // Clear out any mails from previous tests.
+    $state->set('system.test_mail_collector', []);
+    $state->resetCache();
+  }
+
+}
