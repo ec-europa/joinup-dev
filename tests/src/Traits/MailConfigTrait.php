@@ -14,7 +14,7 @@ trait MailConfigTrait {
    *
    * @var string[]
    */
-  protected static $mailConfig = [
+  protected static $mailOverridableConfigurations = [
     'system.mail' => 'interface.default',
     'mailsystem.settings' => 'defaults.sender',
   ];
@@ -27,7 +27,7 @@ trait MailConfigTrait {
    */
   protected function checkMailConfigOverride(): void {
     $config_factory = \Drupal::configFactory();
-    foreach (static::$mailConfig as $config_name => $config_path) {
+    foreach (static::$mailOverridableConfigurations as $config_name => $config_path) {
       if ($config_factory->get($config_name)->hasOverrides($config_path)) {
         throw new \Exception("Cannot inspect emails since the '{$config_name}:{$config_path}' is overridden in settings.php or settings.local.php.");
       }
@@ -43,7 +43,7 @@ trait MailConfigTrait {
   protected function isTestMailCollectorUsed(): bool {
     $config_factory = \Drupal::configFactory();
     $is_test_mail_collector_used = TRUE;
-    foreach (static::$mailConfig as $config_name => $config_path) {
+    foreach (static::$mailOverridableConfigurations as $config_name => $config_path) {
       if ($config_factory->get($config_name)->get($config_path) !== 'test_mail_collector') {
         $is_test_mail_collector_used = FALSE;
         break;
