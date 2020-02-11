@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Asset release moderation
   In order to manage releases
   As a user of the website

@@ -1,3 +1,4 @@
+@group-a
 Feature: Site menus
   In order to navigate through the sections of the site
   As a user
