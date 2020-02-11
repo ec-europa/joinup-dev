@@ -85,5 +85,8 @@ default:
         log_in: 'Sign in'
         log_out: 'Sign out'
         username_field: 'Email or username'
+    FriendsOfBehat\ServiceContainerExtension:
+      imports:
+        - "../vendor/drupaltest/behat-one-time-login/behat.services.yml"
   formatters:
     ${behat.formatter.name}: ~

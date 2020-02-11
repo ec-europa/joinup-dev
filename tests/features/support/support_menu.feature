@@ -10,7 +10,7 @@ Feature:
 
     Given I am an anonymous user
     When I go to "/admin/structure/menu/manage/<menu>"
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
 
     Given I am logged in as an "authenticated user"
     When I go to "/admin/structure/menu/manage/<menu>"
