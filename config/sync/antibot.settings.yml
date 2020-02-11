@@ -1,5 +1,4 @@
 form_ids:
-  - user_login_form
   - user_pass
   - message_contact_form_submission_form
   - comment_comment_form

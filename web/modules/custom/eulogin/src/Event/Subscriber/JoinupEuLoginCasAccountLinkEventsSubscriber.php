@@ -24,7 +24,10 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
   public static function getSubscribedEvents(): array {
     return [
       CasAccountLinkEvents::EMAIL_COLLISION => 'setEmailCollisionMessage',
-      CasAccountLinkEvents::POST_LINK => 'setMessageAndRedirect',
+      CasAccountLinkEvents::POST_LINK => [
+        ['setRandomPassword'],
+        ['setMessageAndRedirect'],
+      ],
     ];
   }
 
@@ -54,10 +57,34 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
   }
 
   /**
+   * Sets a random password on the account.
+   *
+   * This is an additional security measure to prevent the user's original
+   * password staying behind in hashed form in the database when we no longer
+   * need it.
+   *
+   * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent $event
+   *   The CAS Account Link post-linking event object.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown if the bundle does not exist or was needed but not specified.
+   */
+  public function setRandomPassword(CasAccountLinkPostLinkEvent $event): void {
+    if ($event->isLocalAccountSelected()) {
+      // Using the same password length as for new users.
+      // @see \Drupal\cas\Service\CasUserManager::randomPassword()
+      $event->getAccount()->setPassword(\user_password(30))->save();
+    }
+  }
+
+  /**
    * Sets the success status message and the redirect after account linking.
    *
    * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent $event
    *   The CAS Account Link post-linking event object.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown if the bundle does not exist or was needed but not specified.
    */
   public function setMessageAndRedirect(CasAccountLinkPostLinkEvent $event): void {
     if ($event->isLocalAccountSelected()) {
