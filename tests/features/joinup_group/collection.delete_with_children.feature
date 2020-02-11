@@ -20,6 +20,14 @@ Feature:
     But I should see the link "Child of collection with child"
     And I should see the text "You can delete your solutions or transfer them to another collection."
 
+    Given I delete the "Child of collection with child" solution
+    And I go to the "Collection with child" collection delete form
+    Then I should see the heading "Are you sure you want to delete collection Collection with child?"
+    And I should see the text "This action cannot be undone."
+    When I press "Delete"
+    Then I should be on the homepage
+    And I should have 0 collections
+
     Examples:
       | collection state | solution state |
       | validated        | validated      |

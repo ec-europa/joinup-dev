@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Collections Overview
 
   Scenario: Check visibility of "Collections" menu link.

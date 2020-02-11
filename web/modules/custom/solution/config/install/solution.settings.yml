@@ -72,15 +72,20 @@ transitions:
       - rdf_entity-solution-facilitator
     deletion_request:
       - moderator
+  # In the following to-state, the facilitator will not actually have permission to execute the transition if there is
+  # not already a published version of the solution.
   validated:
     __new__:
       - moderator
     draft:
       - moderator
+      - rdf_entity-solution-facilitator
     proposed:
       - moderator
+      - rdf_entity-solution-facilitator
     validated:
       - moderator
+      - rdf_entity-solution-facilitator
     blacklisted:
       - moderator
     needs_update:

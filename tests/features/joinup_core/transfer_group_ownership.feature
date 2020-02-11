@@ -1,17 +1,17 @@
-@api
+@api @group-b
 Feature: As a group (collection or solution) owner or site moderator
   In order to manage my group
   I should be able to transfer the group ownership.
 
   Background:
     Given users:
-      | Username | Roles                   | Password | First name | Family name   |
-      | loner    |                         | Pass     | Freyja     | Stefánsdóttir |
-      | happy    | administrator,moderator | Pass     | Saga       | Þórirsdóttir  |
-      | cruel    |                         | Pass     | Finnur     | Robertsson    |
-      | shy      |                         | Pass     | Ásdís      | Sigurðsdóttir |
-      | light    | moderator               | Pass     | Bjartur    | Jóhannsson    |
-      | frozen   |                         | Pass     | Edda       | Agnarsdóttir  |
+      | Username | Roles                   | First name | Family name   |
+      | loner    |                         | Freyja     | Stefánsdóttir |
+      | happy    | administrator,moderator | Saga       | Þórirsdóttir  |
+      | cruel    |                         | Finnur     | Robertsson    |
+      | shy      |                         | Ásdís      | Sigurðsdóttir |
+      | light    | moderator               | Bjartur    | Jóhannsson    |
+      | frozen   |                         | Edda       | Agnarsdóttir  |
     And the following collection:
       | title | Intensive Language Learning |
       | state | validated                   |

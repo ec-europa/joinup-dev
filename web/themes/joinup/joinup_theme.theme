@@ -533,7 +533,7 @@ function joinup_theme_preprocess_menu(&$variables) {
   $route_match = \Drupal::routeMatch();
   $route_name = $route_match->getRouteName();
 
-  if ($route_name == 'homepage.content' && $user->isAnonymous()) {
+  if ($route_name === 'joinup_front_page.homepage' && $user->isAnonymous()) {
     $variables['has_sign_in_text'] = TRUE;
   }
 }
