@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_eulogin\Event\Subscriber;
+namespace Drupal\joinup_eulogin\Routing;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\joinup_eulogin\Controller\UserRegisterRedirectController;

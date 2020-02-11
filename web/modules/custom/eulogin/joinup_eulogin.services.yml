@@ -9,6 +9,6 @@ services:
     tags:
       - { name: 'event_subscriber' }
   joinup_eulogin.route.subscriber:
-    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginRouteSubscriber
+    class: Drupal\joinup_eulogin\Routing\JoinupEuLoginRouteSubscriber
     tags:
       - { name: 'event_subscriber' }

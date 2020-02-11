@@ -59,8 +59,8 @@ Feature: Solution API
       | name      | type            |
       | Leechidna | Local Authority |
     And users:
-      | Username          | Password |
-      | Solution API user | pass     |
+      | Username          |
+      | Solution API user |
     And the following collection:
       | title             | This is a klm collection |
       | logo              | logo.png                 |
