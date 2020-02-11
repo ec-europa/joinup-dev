@@ -111,7 +111,6 @@ module:
   password_policy_length: 0
   path: 0
   path_alias: 0
-  persistent_login: 0
   pipeline: 0
   r4032login: 0
   rdf_draft: 0
