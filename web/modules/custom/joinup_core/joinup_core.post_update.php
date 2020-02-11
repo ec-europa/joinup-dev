@@ -993,3 +993,18 @@ function joinup_core_post_update_stats6(array &$sandbox): ?string {
 function joinup_core_post_update_post_count_storage_node_revisions() {
   joinup_core_post_update_set_news_default_version();
 }
+
+/**
+ * Clean up the migration tables.
+ */
+function joinup_core_post_update_remove_migrate_tables(&$sandbox) {
+  $tables = \Drupal::database()->query('SHOW TABLES;')->fetchCol();
+  $tables_deleted = [];
+  foreach ($tables as $table) {
+    if (preg_match('/^migrate*/', $table)) {
+      Database::getConnection()->schema()->dropTable($table);
+      $tables_deleted[] = $table;
+    }
+  }
+  return 'Deleted tables: ' . implode(', ', $tables_deleted) . '.';
+}
