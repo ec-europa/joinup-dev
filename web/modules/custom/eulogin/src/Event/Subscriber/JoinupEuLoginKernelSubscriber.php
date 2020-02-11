@@ -9,6 +9,7 @@ use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\Routing\LocalRedirectResponse;
 use Drupal\Core\Routing\ResettableStackedRouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\externalauth\AuthmapInterface;
@@ -49,6 +50,13 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
   protected $authmap;
 
   /**
+   * The state service.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  protected $state;
+
+  /**
    * Constructs a new event subscriber instance.
    *
    * @param \Drupal\Core\Routing\ResettableStackedRouteMatchInterface $route_match
@@ -57,11 +65,14 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
    *   The current user.
    * @param \Drupal\externalauth\AuthmapInterface $authmap
    *   The external authentication map service.
+   * @param \Drupal\Core\State\StateInterface $state
+   *   The state service.
    */
-  public function __construct(ResettableStackedRouteMatchInterface $route_match, AccountProxyInterface $current_user, AuthmapInterface $authmap) {
+  public function __construct(ResettableStackedRouteMatchInterface $route_match, AccountProxyInterface $current_user, AuthmapInterface $authmap, StateInterface $state) {
     $this->routeMatch = $route_match;
     $this->currentUser = $current_user;
     $this->authmap = $authmap;
+    $this->state = $state;
   }
 
   /**
@@ -86,6 +97,10 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
    *   The response event object.
    */
   public function setAccessDeniedCode(FilterResponseEvent $event): void {
+    if (!$this->limitedAccessIsEnabled()) {
+      return;
+    }
+
     $route_match = $this->routeMatch->getRouteMatchFromRequest($event->getRequest());
     if ($route_match->getRouteName() === 'joinup_eulogin.limited_access') {
       // For anonymous or EU Login users this page doesn't exist.
@@ -103,6 +118,10 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
    *   The request event.
    */
   public function redirectWhenNoAccess(GetResponseEvent $event): void {
+    if (!$this->limitedAccessIsEnabled()) {
+      return;
+    }
+
     // Allow anonymous or EU Login users.
     if ($this->isAnonymousOrEuLoginUser()) {
       return;
@@ -184,6 +203,16 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
    */
   protected function isAnonymousOrEuLoginUser(): bool {
     return $this->currentUser->isAnonymous() || $this->authmap->get($this->currentUser->id(), 'cas');
+  }
+
+  /**
+   * Checks if limiting access is enabled.
+   *
+   * @return bool
+   *   If limiting access is enabled.
+   */
+  protected function limitedAccessIsEnabled(): bool {
+    return $this->state->get('joinup_eulogin.limited_access', TRUE);
   }
 
 }
