@@ -19,16 +19,16 @@ Feature: News moderation.
     # The complete permission matrix is stored in configuration.
     # @see: modules/custom/joinup_news/config/install/joinup_news.settings.yml.
     Given users:
-      | Username      | Password         | E-mail                            | Roles     |
-      | Batman        | BatsEverywhere   | adminOfWayneINC@example.com       | moderator |
-      | Superman      | PutYourGlassesOn | dailyPlanetEmployee23@example.com |           |
-      | Hawkgirl      | IHaveWings       | hawkSounds@example.com            |           |
-      | Eagle         | Ilovemycostume   | WolrdWarVeteran@example.com       |           |
-      | Question      | secretsSecrets   | WhoAmI@example.com                |           |
-      | Vandal Savage | IliveForever     | voldemort@example.com             |           |
-      | Cheetah       | meowmeow         | ihatewonderwoman@example.com      |           |
-      | Mirror Master | hideinmirrors    | mirrormirroronthewall@example.com |           |
-      | Metallo       | checkMyHeart     | kryptoniteEverywhere@example.com  |           |
+      | Username      | E-mail                            | Roles     |
+      | Batman        | adminOfWayneINC@example.com       | moderator |
+      | Superman      | dailyPlanetEmployee23@example.com |           |
+      | Hawkgirl      | hawkSounds@example.com            |           |
+      | Eagle         | WolrdWarVeteran@example.com       |           |
+      | Question      | WhoAmI@example.com                |           |
+      | Vandal Savage | voldemort@example.com             |           |
+      | Cheetah       | ihatewonderwoman@example.com      |           |
+      | Mirror Master | mirrormirroronthewall@example.com |           |
+      | Metallo       | kryptoniteEverywhere@example.com  |           |
     Given collections:
       | title          | moderation | state     | elibrary creation |
       | Justice League | no         | validated | members           |

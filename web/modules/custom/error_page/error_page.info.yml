@@ -1,4 +1,0 @@
-type: module
-core: 8.x
-name: 'Error custom pages'
-description: 'Show a user-friendly page when a fatal error or an exception occurs.'
