@@ -56,8 +56,8 @@
         "drupal/rdf_entity": "^1.0-alpha18",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
-        "drupal/search_api": "1.13",
-        "drupal/search_api_solr": "2.2",
+        "drupal/search_api": "1.15",
+        "drupal/search_api_solr": "^3.8",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.6",
@@ -77,6 +77,7 @@
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
+        "maennchen/zipstream-php": "1.2.0",
         "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.1",
         "openeuropa/oe_webtools": "~1.0",
@@ -85,6 +86,7 @@
         "phing/phing": "^2.16",
         "predis/predis": "~1.1",
         "semiceu/adms-ap_validator": "dev-master",
+        "solarium/solarium": "5.0.3",
         "typhonius/behattask": "1.0",
         "webflo/drupal-finder": "~1.2",
         "webmozart/path-util": "~2.3",
@@ -253,8 +255,6 @@
                 "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
             },
             "drupal/search_api": {
-                "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",
-                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                 "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch"
             },
             "drupal/social_media_links": {
