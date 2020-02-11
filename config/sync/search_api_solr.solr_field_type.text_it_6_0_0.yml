@@ -9,7 +9,6 @@ dependencies:
     - language.entity.it
 id: text_it_6_0_0
 label: 'Italian Text Field'
-managed_schema: false
 minimum_solr_version: 6.0.0
 custom_code: ''
 field_type_language_code: it
@@ -86,6 +85,9 @@ field_type:
           protected: protwords_it.txt
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
 solr_configs:
   searchComponents:
     -

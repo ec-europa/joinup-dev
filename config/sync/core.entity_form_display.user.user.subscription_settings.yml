@@ -47,6 +47,11 @@ content:
       display_label: false
     third_party_settings: {  }
     region: content
+  legal_legal_notice:
+    weight: -4
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   matomo:
     weight: 3
     settings: {  }

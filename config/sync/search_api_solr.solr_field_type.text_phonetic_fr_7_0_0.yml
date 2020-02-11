@@ -9,7 +9,6 @@ dependencies:
     - language.entity.fr
 id: text_phonetic_fr_7_0_0
 label: 'Fulltext Phonetic French'
-managed_schema: false
 minimum_solr_version: 7.0.0
 custom_code: phonetic
 field_type_language_code: fr
@@ -79,6 +78,9 @@ field_type:
           concat: true
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
 solr_configs: {  }
 text_files:
   stopwords: "au\naux\navec\nce\nces\ndans\nde\ndes\ndu\nelle\nen\net\neux\nil\nje\nla\nle\nleur\nlui\nma\nmais\nme\nmême\nmes\nmoi\nmon\nne\nnos\nnotre\nnous\non\nou\npar\npas\npour\nqu\nque\nqui\nsa\nse\nses\nson\nsur\nta\nte\ntes\ntoi\nton\ntu\nun\nune\nvos\nvotre\nvous\nc\nd\nj\nl\nà\nm\nn\ns\nt\ny\nété\nétée\nétées\nétés\nétant\nsuis\nes\nest\nsommes\nêtes\nsont\nserai\nseras\nsera\nserons\nserez\nseront\nserais\nserait\nserions\nseriez\nseraient\nétais\nétait\nétions\nétiez\nétaient\nfus\nfut\nfûmes\nfûtes\nfurent\nsois\nsoit\nsoyons\nsoyez\nsoient\nfusse\nfusses\nfût\nfussions\nfussiez\nfussent\nayant\neu\neue\neues\neus\nai\nas\navons\navez\nont\naurai\nauras\naura\naurons\naurez\nauront\naurais\naurait\naurions\nauriez\nauraient\navais\navait\navions\naviez\navaient\neut\neûmes\neûtes\neurent\naie\naies\nait\nayons\nayez\naient\neusse\neusses\neût\neussions\neussiez\neussent\nceci\ncelà\ncet\ncette\nici\nils\nles\nleurs\nquel\nquels\nquelle\nquelles\nsans\nsoi\n"
