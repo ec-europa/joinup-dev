@@ -6,9 +6,9 @@ Feature: As a user of the website
   @terms
   Scenario: Check availability of actions depending on the state and the graph.
     Given users:
-      | Username        | Password        | Roles     |
-      | Hulk            | big_green_puppy |           |
-      | Captain America | star_shield     | moderator |
+      | Username        | Roles     |
+      | Hulk            |           |
+      | Captain America | moderator |
     And the following contact:
       | email | crabbypatties@bar.com |
       | name  | Crusty crab           |
