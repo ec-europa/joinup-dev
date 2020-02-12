@@ -14,6 +14,36 @@ use Behat\Mink\Exception\ElementNotFoundException;
 trait TraversingTrait {
 
   /**
+   * Searches for any kind of field in a form by label.
+   *
+   * @param string $field
+   *   The field label.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (Optional) The region to search in. If a region is not provided, the
+   *   whole page will be used.
+   *
+   * @return \Behat\Mink\Element\TraversableElement|null
+   *   The field element or NULL if not found.
+   */
+  protected function findAnyFormField(string $field, TraversableElement $region = NULL): ?TraversableElement {
+    if (!$region) {
+      $region = $this->getSession()->getPage();
+    }
+
+    $element = NULL;
+    if (!$element = $region->findField($field)) {
+      // Complex fields in Drupal might not be directly linked to actual field
+      // elements such as 'select' and 'input', so try both the standard
+      // findField() as well as an XPath expression that finds the given label
+      // inside any element marked as a form item.
+      $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " form-item ") and .//label[text() = "' . $field . '"]]';
+      $element = $region->find('xpath', $xpath);
+    }
+
+    return $element;
+  }
+
+  /**
    * Retrieves a select field by label.
    *
    * @param string $select
