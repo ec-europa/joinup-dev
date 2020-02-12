@@ -7,7 +7,7 @@ label: 'Community content subscription'
 description: 'Digest message sent when new content is published in a user''s subscribed collections'
 text:
   -
-    value: '<p>[message:field_community_content:entity:body]</p>'
+    value: '<p>[message:field_community_content:entity]</p>'
     format: full_html
 settings:
   'token options':

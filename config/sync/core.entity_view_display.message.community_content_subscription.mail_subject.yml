@@ -10,15 +10,8 @@ id: message.community_content_subscription.mail_subject
 targetEntityType: message
 bundle: community_content_subscription
 mode: mail_subject
-content:
-  field_community_content:
-    type: entity_reference_label
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
+content: {  }
 hidden:
+  field_community_content: true
   partial_0: true
   partial_1: true

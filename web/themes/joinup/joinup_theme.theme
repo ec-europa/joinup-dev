@@ -11,6 +11,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -19,6 +20,7 @@ use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
+use Drupal\message\MessageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
 use Drupal\user\Entity\User;
@@ -1943,11 +1945,49 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_swiftmailer().
+ */
+function joinup_theme_preprocess_swiftmailer(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+}
+
+/**
+ * Implements hook_preprocess_message_digest().
+ */
+function joinup_theme_preprocess_message_digest(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+
+  // Retrieve the recipient from the message list. The recipient is the owner of
+  // the message.
+  $user = array_reduce($variables['messages'], function (AccountInterface $user, array $message_render_array): AccountInterface {
+    // Continue to the next message if we already found a user, or cannot find a
+    // message.
+    $message = $message_render_array['#message'] ?? NULL;
+    if ($user->isAuthenticated() || !$message instanceof MessageInterface) {
+      return $user;
+    }
+
+    return $message->getOwner();
+  }, User::getAnonymousUser());
+
+  $variables['receiver_name'] = $user->isAuthenticated() ? $user->field_user_first_name->value : t('Anonymous');
+  $variables['receiver_id'] = $user->id();
+
+  $current_time = \Drupal::time()->getCurrentTime();
+  $variables['issue_date'] = date('d/m/Y', $current_time);
+
+  $variables['frequency'] = Unicode::ucfirst($user->field_user_frequency->value);
+}
+
+/**
  * Implements hook_preprocess_node().
  *
- * Adds the group ID and label as data attributes in tiles.
+ * - Adds the site URL to use in nodes.
+ * - Adds the group ID and label as data attributes in tiles.
  */
 function joinup_theme_preprocess_node(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+
   if ($variables['view_mode'] !== 'view_mode_tile') {
     return;
   }

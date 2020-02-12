@@ -4,9 +4,11 @@ Feature: My subscriptions
 
   Background:
     Given user:
-      | Username | Auric Goldfinger  |
-      | Password | oddjob            |
-      | E-mail   | auric@example.com |
+      | Username    | Auric Goldfinger  |
+      | Password    | oddjob            |
+      | E-mail      | auric@example.com |
+      | First name  | Auric             |
+      | Family name | Goldfinger        |
 
   Scenario: Check access to the subscription management pages
     Given user:
@@ -173,12 +175,18 @@ Feature: My subscriptions
     Given collection:
       | title | Malicious plans |
       | state | validated       |
+    And the following collection user memberships:
+      | collection      | user             |
+      | Malicious plans | Auric Goldfinger |
+    And the following collection content subscriptions:
+      | collection      | user             | subscriptions |
+      | Malicious plans | Auric Goldfinger | discussion    |
     And discussion content:
-      | title        | body                   | collection      | state     | author           |
-      | Water supply | Contaminate it with GB | Malicious plans | validated | Auric Goldfinger |
+      | title        | body                   | collection      | state | author           |
+      | Water supply | Contaminate it with GB | Malicious plans | draft | Auric Goldfinger |
 
     Given I am logged in as "Auric Goldfinger"
-    And I open the account menu
+    When I open the account menu
     And I click "My subscriptions"
 
     Then I should see the heading "My subscriptions"
@@ -202,11 +210,13 @@ Feature: My subscriptions
 
     Given I am logged in as a moderator
     When I go to the discussion content "Water supply" edit screen
-    And I fill in "Title" with "Contaminate it with Sarin"
-    And I press "Update"
-    Then the <frequency> digest for "Auric Goldfinger" should contain the following message for the "Contaminate it with Sarin" node:
-      | mail_subject | Joinup: The discussion "Contaminate it with Sarin" was updated in the space of "Malicious plans" |
-      | mail_body    | The discussion "Contaminate it with Sarin" was updated in the "Malicious plans" collection.      |
+    And I press "Publish"
+    # @todo: a caching issue is causing the message to have empty fields when
+    # rendered.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5723
+    And the cache has been cleared
+    Then the <frequency> digest for "Auric Goldfinger" should contain the following message:
+      | mail_body | Water supply |
 
     Examples:
       | option  | frequency |

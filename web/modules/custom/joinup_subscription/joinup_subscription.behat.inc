@@ -45,6 +45,15 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
   use TraversingTrait;
 
   /**
+   * A list of the available digest message intervals.
+   *
+   * This is hardcoded instead of being retrieved dynamically from the config so
+   * that our tests will detect it if one of these intervals would unexpectedly
+   * be removed from the code base.
+   */
+  const MESSAGE_INTERVALS = ['Daily', 'Weekly', 'Monthly'];
+
+  /**
    * Navigates to the My subscriptions form of the given user.
    *
    * @param string $username
@@ -423,7 +432,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
    *
    * @Then the collection content subscription digest email sent to :username contains the following sections:
    */
-  public function assertCollectionContentSubscriptionEmailSections(string $username, TableNode $table) {
+  public function assertCollectionContentSubscriptionEmailSections(string $username, TableNode $table): void {
     $this->assertEmailTagPresent();
 
     // Remove the table header from the array.
@@ -432,7 +441,7 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
 
     $user = user_load_by_name($username);
     $email_address = $user->getEmail();
-    $emails = $this->getEmailsBySubjectAndMail('Joinup message digest', $email_address);
+    $emails = $this->getCollectionSubscriptionEmailsByEmail($email_address);
 
     Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
 
@@ -453,6 +462,61 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
         }
       } while (strpos($line, $expected_section) === FALSE);
     }
+  }
+
+  /**
+   * Checks that the digest mail sent to the given user has the right title.
+   *
+   * This will check that there is exactly 1 digest mail in the collector for
+   * the given user, and that the mail has the expected title. The title follows
+   * a predefined pattern so we could automate this check without requiring a
+   * separate step definition but this is provided for the benefit of the
+   * business stakeholders who can validate that their chosen format is present.
+   *
+   * @param string $username
+   *   The name of the user to whom the digest mail is sent.
+   * @param string $subject
+   *   The expected subject for the digest mail.
+   *
+   * @throws \Exception
+   *   Throws an exception when the user doesn't exist, has no digest message or
+   *   the message subject is incorrect.
+   *
+   * @Then the collection content subscription digest email sent to :username should have the subject :subject
+   */
+  public function assertCollectionContentSubscriptionEmailSubject(string $username, string $subject): void {
+    $this->assertEmailTagPresent();
+
+    $user = user_load_by_name($username);
+    $email_address = $user->getEmail();
+    $emails = $this->getCollectionSubscriptionEmailsByEmail($email_address);
+
+    Assert::assertCount(1, $emails, "Expected 1 digest message for user $username, found " . count($emails) . ' messages.');
+
+    $email = reset($emails);
+    Assert::assertEquals($subject, $email['subject']);
+  }
+
+  /**
+   * Returns the sent collection subscription digest messages for the user.
+   *
+   * @param string $email_address
+   *   The email of the recipient.
+   *
+   * @return array
+   *   An array of emails found.
+   *
+   * @throws \Exception
+   *   Thrown if no emails are found or no user exists with the given data.
+   */
+  protected function getCollectionSubscriptionEmailsByEmail(string $email_address): array {
+    $emails = [];
+
+    foreach (self::MESSAGE_INTERVALS as $interval) {
+      $emails = array_merge($emails, $this->getEmailsBySubjectAndMail("Joinup: $interval digest message", $email_address, FALSE));
+    }
+
+    return $emails;
   }
 
 }

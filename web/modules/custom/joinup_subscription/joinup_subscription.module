@@ -80,3 +80,23 @@ function joinup_subscription_message_digest_aggregate_alter(array &$context, Use
     return $a_collection->label() <=> $b_collection->label();
   });
 }
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Performs the following alterations:
+ * - Sends digest mails as HTML.
+ * - Changes the mail subject.
+ */
+function joinup_subscription_mail_alter(array &$message): void {
+  if ($message['key'] === 'digest') {
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+    $notifier = $message['params']['notifier'] ?? NULL;
+    if ($notifier instanceof MessageNotifierInterface) {
+      $interval = $notifier->getPluginDefinition()['title'];
+      $message['subject'] = t('Joinup: @interval digest message', [
+        '@interval' => $interval,
+      ]);
+    }
+  }
+}
