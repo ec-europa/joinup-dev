@@ -12,8 +12,8 @@ backend_config:
   connector_config:
     scheme: http
     host: solr_unpublished
-    port: '8983'
-    path: /solr
+    port: 8983
+    path: /
     core: drupal_unpublished
     timeout: 5
     index_timeout: 5

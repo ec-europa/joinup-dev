@@ -9,7 +9,6 @@ dependencies:
     - language.entity.fr
 id: text_fr_6_0_0
 label: 'French Text Field'
-managed_schema: false
 minimum_solr_version: 6.0.0
 custom_code: ''
 field_type_language_code: fr
@@ -88,6 +87,9 @@ field_type:
           protected: protwords_fr.txt
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
 solr_configs:
   searchComponents:
     -

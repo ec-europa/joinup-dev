@@ -9,7 +9,6 @@ dependencies:
     - language.entity.el
 id: text_phonetic_el_7_0_0
 label: 'Fulltext Phonetic Greek'
-managed_schema: false
 minimum_solr_version: 7.0.0
 custom_code: phonetic
 field_type_language_code: el
@@ -77,6 +76,9 @@ field_type:
           concat: true
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
 solr_configs: {  }
 text_files:
   stopwords: "ο\nη\nτο\nοι\nτα\nτου\nτησ\nτων\nτον\nτην\nκαι\nκι\nκ\nειμαι\nεισαι\nειναι\nειμαστε\nειστε\nστο\nστον\nστη\nστην\nμα\nαλλα\nαπο\nγια\nπροσ\nμε\nσε\nωσ\nπαρα\nαντι\nκατα\nμετα\nθα\nνα\nδε\nδεν\nμη\nμην\nεπι\nενω\nεαν\nαν\nτοτε\nπου\nπωσ\nποιοσ\nποια\nποιο\nποιοι\nποιεσ\nποιων\nποιουσ\nαυτοσ\nαυτη\nαυτο\nαυτοι\nαυτων\nαυτουσ\nαυτεσ\nαυτα\nεκεινοσ\nεκεινη\nεκεινο\nεκεινοι\nεκεινεσ\nεκεινα\nεκεινων\nεκεινουσ\nοπωσ\nομωσ\nισωσ\nοσο\nοτι\n"
