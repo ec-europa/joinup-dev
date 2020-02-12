@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40844eec30c7b8795caae39cdbb16b78",
+    "content-hash": "750502b29081f46ba78f949610312c75",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5069,6 +5069,73 @@
             }
         },
         {
+            "name": "drupal/message_digest",
+            "version": "1.0.0-rc3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/message_digest.git",
+                "reference": "8.x-1.0-rc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message_digest-8.x-1.0-rc3.zip",
+                "reference": "8.x-1.0-rc3",
+                "shasum": "81974e7465f2d6b39cdc6209633985100c3c402c"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/message_notify": "*"
+            },
+            "require-dev": {
+                "drupal/message_subscribe_email": "*",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-rc3",
+                    "datestamp": "1558111386",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "febbraro",
+                    "homepage": "https://www.drupal.org/user/43670"
+                },
+                {
+                    "name": "jhedstrom",
+                    "homepage": "https://www.drupal.org/user/208732"
+                },
+                {
+                    "name": "mcrittenden",
+                    "homepage": "https://www.drupal.org/user/420631"
+                },
+                {
+                    "name": "mpotter",
+                    "homepage": "https://www.drupal.org/user/616192"
+                }
+            ],
+            "description": "Message digest",
+            "homepage": "https://www.drupal.org/project/message_digest",
+            "support": {
+                "source": "https://git.drupalcode.org/project/message_digest"
+            }
+        },
+        {
             "name": "drupal/message_notify",
             "version": "1.1.0",
             "source": {
@@ -7741,7 +7808,7 @@
                 "reference": "master"
             },
             "type": "drupal-theme-library",
-            "time": "2018-05-01T01:48:25+00:00"
+            "time": "2018-10-31T20:10:45+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -9900,7 +9967,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
@@ -11647,16 +11714,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.42.4",
+            "version": "v1.42.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "e587180584c3d2d6cb864a0454e777bb6dcb6152"
+                "reference": "87b2ea9d8f6fd014d0621ca089bb1b3769ea3f8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/e587180584c3d2d6cb864a0454e777bb6dcb6152",
-                "reference": "e587180584c3d2d6cb864a0454e777bb6dcb6152",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/87b2ea9d8f6fd014d0621ca089bb1b3769ea3f8e",
+                "reference": "87b2ea9d8f6fd014d0621ca089bb1b3769ea3f8e",
                 "shasum": ""
             },
             "require": {
@@ -11665,8 +11732,7 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "^3.4|^4.2",
-                "symfony/phpunit-bridge": "^4.4@dev|^5.0"
+                "symfony/phpunit-bridge": "^4.4|^5.0"
             },
             "type": "library",
             "extra": {
@@ -11695,7 +11761,6 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://twig.symfony.com/contributors",
                     "role": "Contributors"
                 },
                 {
@@ -11709,7 +11774,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-11-11T16:49:32+00:00"
+            "time": "2020-02-11T05:59:23+00:00"
         },
         {
             "name": "typhonius/behattask",

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - message_digest
+id: monthly
+label: Monthly
+interval: '1 month'
+description: ''

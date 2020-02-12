@@ -30,8 +30,9 @@ class TcaForm extends FormBase {
 
     $form['collection_tca'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('I understand and I commit to manage my collection on a regular basis.'),
-      '#default_value' => FALSE,
+      '#title' => $this->t('I have read and accept <a href=":legal_notice_url">the legal notice</a> and I commit to manage my collection on a regular basis.', [
+        ':legal_notice_url' => Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString(),
+      ]),
     ];
 
     $form['cancel'] = [
@@ -73,7 +74,8 @@ class TcaForm extends FormBase {
    *   The form state object.
    */
   public function cancelSubmit(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirect(Url::fromUri('internal:/collections')->getRouteName());
+    $form_state->setRedirect(Url::fromUri('internal:/collections')
+      ->getRouteName());
   }
 
   /**

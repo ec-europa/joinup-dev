@@ -14,7 +14,7 @@ entity_type: rdf_entity
 bundle: collection
 label: 'Contact information'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
