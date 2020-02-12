@@ -11,6 +11,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -19,6 +20,7 @@ use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
+use Drupal\message\MessageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
 use Drupal\user\Entity\User;
@@ -155,7 +157,6 @@ function _joinup_blue_header_routes() {
  */
 function _joinup_non_blue_header_routes() {
   return [
-    'joinup_subscription.subscription_settings',
     'entity.user.edit_form',
     'simplenews.newsletter_subscriptions_user',
   ];
@@ -295,10 +296,6 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
-    'join_collection_form' => [
-      'render element' => 'form',
-      'path' => $path . '/templates/form',
-    ],
     'buttons_separated_form' => [
       'render element' => 'form',
       'path' => $path . '/templates/form',
@@ -418,6 +415,14 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Set title back in the global page variables.
   $variables['title'] = $title;
+
+  // Move title on batch pages from header to content.
+  if ($route_name == 'system.batch_page.html') {
+    unset($variables['page']['header']['#type']);
+    unset($variables['page']['header']['#title']);
+
+    $variables['custom_content_title'] = $title;
+  }
 }
 
 /**
@@ -571,6 +576,7 @@ function joinup_theme_preprocess_block(&$variables) {
       case 'view.content_overview.page_1':
       case 'entity.rdf_entity.member_overview':
       case 'entity.user.canonical':
+      case 'joinup_subscription.my_subscriptions':
       case 'joinup_licence.comparer':
         $is_listing = TRUE;
         break;
@@ -727,11 +733,8 @@ function joinup_theme_preprocess_container(&$variables) {
   }
 
   // Remove margin for subscribe button in tile.
-  if (isset($variables['element']['submit']) && is_object($variables['element']['submit']['#value'])) {
-    $input_value = $variables['element']['submit']['#value'];
-    if ($input_value->getUntranslatedString() == 'Subscribe') {
-      $variables['no_margin'] = TRUE;
-    }
+  if (isset($variables['element']['submit']['#extra_suggestion']) && $variables['element']['submit']['#extra_suggestion'] === 'subscribe') {
+    $variables['no_margin'] = TRUE;
   }
 }
 
@@ -1371,14 +1374,6 @@ function joinup_theme_theme_suggestions_input_alter(array &$suggestions, array $
   if (isset($variables['element']['#id']) && strpos($variables['element']['#id'], 'edit-submit-search') !== FALSE) {
     $suggestions[] = 'input__submit__search_bar';
   }
-  // Remove margin for subscribe button in tile.
-  // Add proper classes for subscribe button.
-  if (isset($variables['element']['#value']) && is_object($variables['element']['#value'])) {
-    $input_value = $variables['element']['#value'];
-    if ($input_value->getUntranslatedString() == 'Subscribe') {
-      $suggestions[] = 'input__submit__subscribe';
-    }
-  }
 }
 
 /**
@@ -1397,8 +1392,6 @@ function joinup_theme_theme_suggestions_form_element_alter(array &$suggestions, 
  * Implements hook_theme_suggestions_HOOK_alter() for container.html.twig.
  */
 function joinup_theme_theme_suggestions_container_alter(array &$suggestions, array $variables) {
-  $has_extra_suggestions = isset($variables['element']['#extra_suggestion']);
-
   if (isset($variables['element']['#id'])) {
     $suggestions[] = 'container__' . str_replace('-', '_', $variables['element']['#id']);
 
@@ -1414,6 +1407,7 @@ function joinup_theme_theme_suggestions_container_alter(array &$suggestions, arr
   }
 
   // Add extra suggestion for grid elements.
+  $has_extra_suggestions = isset($variables['element']['#extra_suggestion']);
   if ($has_extra_suggestions) {
     $suggestions[] = $variables['element']['#extra_suggestion'];
   }
@@ -1594,6 +1588,42 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
   if ($form_id == 'user_form' && isset($form['user_name'])) {
     $form['user_name']['#template'] = '<div class="form-wrapper"><div class="form__label">{{ "Username"|t }}</div><div class="form__text">{{ name }}</div></div>';
   }
+
+  $link_button_classes = [
+    'button',
+    'button--blue-light',
+    'mdl-button',
+    'mdl-js-button',
+    'mdl-button--raised',
+    'mdl-js-ripple-effect',
+    'mdl-button--accent',
+  ];
+
+  switch ($form_id) {
+    case 'join_collection_form':
+      // Add class for join collection button.
+      $form['join']['#attributes']['class'][] = 'button--blue-light';
+
+      if (isset($form['pending'])) {
+        // Add classes for pending membership link.
+        $form['pending']['#attributes']['class'] = array_merge($link_button_classes, ['button--small']);
+      }
+      break;
+
+    case 'subscribe_to_collection_form':
+      // Add classes in subscribe to collection form.
+      $form['actions']['cancel']['#attributes']['class'][] = 'button--small';
+      $form['actions']['cancel']['#attributes']['class'][] = 'dialog-cancel';
+      $form['actions']['confirm']['#attributes']['class'][] = 'button--small';
+      break;
+
+    case 'joinup_subscription_my_subscriptions':
+      // Add classes for unsubscribe all link.
+      if (isset($form['edit-actions']['unsubscribe_all'])) {
+        $form['edit-actions']['unsubscribe_all']['#attributes']['class'] = array_merge($link_button_classes, ['featured__form-button']);
+      }
+      break;
+  }
 }
 
 /**
@@ -1611,6 +1641,18 @@ function joinup_theme_preprocess_rdf_entity(&$variables) {
     $bundle_class = 'listing__card--' . str_replace('_', '-', $variables['rdf_entity']->bundle());
     $variables['attributes']['class'][] = $bundle_class;
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Adapts the output of the collection header in collection content subscription
+ * digest messages:
+ * - Changes the link to the collection page to an absolute URL so this can be
+ *   opened in email messages.
+ */
+function joinup_theme_preprocess_rdf_entity__collection__digest_message_header(&$variables) {
+  $variables['url'] = $variables['rdf_entity']->toUrl('canonical', ['absolute' => TRUE])->toString();
 }
 
 /**
@@ -1887,11 +1929,49 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_swiftmailer().
+ */
+function joinup_theme_preprocess_swiftmailer(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+}
+
+/**
+ * Implements hook_preprocess_message_digest().
+ */
+function joinup_theme_preprocess_message_digest(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+
+  // Retrieve the recipient from the message list. The recipient is the owner of
+  // the message.
+  $user = array_reduce($variables['messages'], function (AccountInterface $user, array $message_render_array): AccountInterface {
+    // Continue to the next message if we already found a user, or cannot find a
+    // message.
+    $message = $message_render_array['#message'] ?? NULL;
+    if ($user->isAuthenticated() || !$message instanceof MessageInterface) {
+      return $user;
+    }
+
+    return $message->getOwner();
+  }, User::getAnonymousUser());
+
+  $variables['receiver_name'] = $user->isAuthenticated() ? $user->field_user_first_name->value : t('Anonymous');
+  $variables['receiver_id'] = $user->id();
+
+  $current_time = \Drupal::time()->getCurrentTime();
+  $variables['issue_date'] = date('d/m/Y', $current_time);
+
+  $variables['frequency'] = Unicode::ucfirst($user->field_user_frequency->value);
+}
+
+/**
  * Implements hook_preprocess_node().
  *
- * Adds the group ID and label as data attributes in tiles.
+ * - Adds the site URL to use in nodes.
+ * - Adds the group ID and label as data attributes in tiles.
  */
 function joinup_theme_preprocess_node(&$variables) {
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+
   if ($variables['view_mode'] !== 'view_mode_tile') {
     return;
   }
