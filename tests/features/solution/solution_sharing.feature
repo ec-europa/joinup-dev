@@ -53,7 +53,7 @@ Feature: As a privileged user
     When I check "Collection share candidate 1"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Item was shared in the following collections: Collection share candidate 1."
+    Then I should see the success message "Item was shared on the following collections: Collection share candidate 1."
 
     And the following email should not have been sent:
       | recipient_mail | joe_dare@example.com                                                                                                   |
@@ -80,12 +80,12 @@ Feature: As a privileged user
     Then I should see the "Solution to be shared" tile
     And the "Solution to be shared" tile should be marked as shared from "Collection share original"
 
-    # It should not be shared in the other collection.
+    # It should not be shared on the other collection.
     When I go to the homepage of the "Collection share candidate 2" collection
     Then I should not see the "Solution to be shared" tile
 
     # Solutions can be un-shared only by facilitators of the collections they
-    # have been shared in.
+    # have been shared on.
     When I am an anonymous user
     And I go to the homepage of the "Collection share candidate 1" collection
     Then I should see the "Solution to be shared" tile
@@ -138,6 +138,6 @@ Feature: As a privileged user
     And the following fields should be present "Collection share candidate 1"
     And the following fields should not be present "Collection share original, Collection share candidate 2"
 
-    # The content should obviously not shared in the other collection too.
+    # The content should obviously not shared on the other collection too.
     When I go to the homepage of the "Collection share candidate 2" collection
     Then I should not see the "Solution to be shared" tile

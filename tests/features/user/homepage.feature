@@ -57,7 +57,7 @@ Feature: Homepage feature
     When I am logged in as a facilitator of the "The Sacred Future" collection
     And I go to the homepage of the "The Sacred Future" collection
     And I click "Add document" in the plus button menu
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared on"
     And I fill in the following:
       | Title       | The Sacred Future documentation |
       | Short title | The Sacred Future documentation |

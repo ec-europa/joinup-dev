@@ -15,7 +15,7 @@ Feature: Sharing content on social networks
     When I am an anonymous user
     And I go to the content page of the type "<content type>" with the title "Important information"
     And I click "Share"
-    Then I should see the heading "Share Important information in"
+    Then I should see the heading "Share Important information on"
     And I should see the link "Facebook"
     And the share link "Facebook" should point to the "Important information" content
     And I should see the link "Twitter"

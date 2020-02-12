@@ -86,7 +86,7 @@ Feature:
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share"
-    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following collections: Nintendo64"
 
     When I go to the "Latest news" custom page
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -170,12 +170,12 @@ Feature:
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
-    # Content shared in the collection will be shown.
+    # Content shared on the collection will be shown.
     When I go to the "NEC VR4300 CPU" news
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share" in the "Modal buttons" region
-    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following collections: Nintendo64"
     When I go to the "Chosen content" custom page
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
