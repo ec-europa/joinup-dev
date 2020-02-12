@@ -14,7 +14,7 @@ backend_config:
     scheme: http
     host: solr_published
     port: 8983
-    path: /solr
+    path: /
     core: drupal_published
     timeout: 5
     index_timeout: 5
