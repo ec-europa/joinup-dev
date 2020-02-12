@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: My subscriptions
   As a user I must be able to manage my subscriptions and related settings.
 
@@ -18,7 +18,7 @@ Feature: My subscriptions
     # No access for anonymous users.
     Given I am an anonymous user
     When I go to the subscription settings of "Auric Goldfinger"
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
     When I go to the public profile of "Auric Goldfinger"
     Then I should not see the link "Subscriptions"
 
