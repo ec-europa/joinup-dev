@@ -706,7 +706,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
-        'shared in' => 'field_shared_in',
+        'shared on' => 'field_shared_in',
         'visits' => 'visit_count',
         'featured' => 'field_site_featured',
         'pinned to front page' => 'field_site_pinned',
