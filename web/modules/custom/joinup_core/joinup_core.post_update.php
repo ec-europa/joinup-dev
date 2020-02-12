@@ -997,14 +997,14 @@ function joinup_core_post_update_post_count_storage_node_revisions() {
 /**
  * Clean up the migration tables.
  */
-function joinup_core_post_update_remove_migrate_tables(&$sandbox) {
-  $tables = \Drupal::database()->query('SHOW TABLES;')->fetchCol();
+function joinup_core_post_update_remove_mdigrate_tables(array &$sandbox): string {
+  $connection = Database::getConnection();
+  $tables = $connection->query("SHOW TABLES LIKE 'migrate_%';")->fetchCol();
   $tables_deleted = [];
+  $schema = $connection->schema();
   foreach ($tables as $table) {
-    if (preg_match('/^migrate*/', $table)) {
-      Database::getConnection()->schema()->dropTable($table);
-      $tables_deleted[] = $table;
-    }
+    $schema->dropTable($table);
+    $tables_deleted[] = $table;
   }
   return 'Deleted tables: ' . implode(', ', $tables_deleted) . '.';
 }
