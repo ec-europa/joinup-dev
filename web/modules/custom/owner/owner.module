@@ -112,7 +112,6 @@ function owner_form_alter_validate(&$form, FormStateInterface $form_state) {
   $element = $form_state->getTriggeringElement();
   if (
     // Check if the form was submitted using one of the workflow buttons.
-    !empty($element['#state_field']) &&
     !empty($element['#state_id']) &&
     // Check if we are transitioning to "Request deletion".
     $element['#state_id'] === 'deletion_request' &&
