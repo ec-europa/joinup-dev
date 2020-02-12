@@ -161,9 +161,9 @@ Feature: Add community content
     When I go to the homepage of the "CC container" collection
     And I click "Add news" in the plus button menu
     And I fill in the following:
-      | Kicker   | Published community news |
-      | Headline | Published community news |
-      | Content  | Published community news |
+      | Short title | Published community news |
+      | Headline    | Published community news |
+      | Content     | Published community news |
     And I press "Publish"
     Then I should see the heading "Published community news"
     And the publication date of the "Published community news" news should be equal to the created date
