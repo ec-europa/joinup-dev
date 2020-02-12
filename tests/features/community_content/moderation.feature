@@ -407,9 +407,9 @@ Feature: Moderate community content
     And I go to the homepage of the "Black hole research" collection
     When I click "Add news" in the plus button menu
     And I fill in the following:
-      | Kicker   | Declared the ultimate metal                                                                   |
-      | Headline | Strong request for this rare metal that is on the mouth of everybody                          |
-      | Content  | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
+      | Short title | Declared the ultimate metal                                                                   |
+      | Headline    | Strong request for this rare metal that is on the mouth of everybody                          |
+      | Content     | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
 
     And I attach the file "logo.png" to "Logo"
     And I press "Upload"
