@@ -19,6 +19,8 @@ function joinup_group_token_info() {
         'parent_collection' => [
           'name' => t('Parent collection'),
           'description' => t('Returns the parent collection for any solution, release or distribution.'),
+          'module' => 'joinup_group',
+          'type' => 'rdf_entity',
         ],
       ],
     ],
@@ -41,19 +43,28 @@ function joinup_group_tokens($type, $tokens, array $data, array $options, Bubble
     return $replacements;
   }
 
+  $token_service = \Drupal::token();
   /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  foreach ($tokens as $name => $original) {
-    if ($name === 'parent_collection') {
-      $parent_solution = $rdf_entity;
-      if ($rdf_entity->bundle() !== 'solution') {
-        $parent_solution = $relation_manager->getParent($rdf_entity);
-      }
+  if (isset($tokens['parent_collection'])) {
+    $original = $tokens['parent_collection'];
+    $parent_solution = $rdf_entity;
+    if ($rdf_entity->bundle() !== 'solution') {
+      $parent_solution = $relation_manager->getParent($rdf_entity);
+    }
 
-      if (empty($parent_solution) || $parent_solution->collection->isEmpty()) {
-        return $replacements;
+    if (empty($parent_solution) || $parent_solution->collection->isEmpty()) {
+      return $replacements;
+    }
+    $bubbleable_metadata->addCacheableDependency($parent_solution);
+    /** @var \Drupal\rdf_entity\RdfInterface $collection */
+    if ($collection = $parent_solution->collection->first()->entity) {
+      $bubbleable_metadata->addCacheableDependency($collection);
+      $replacements[$original] = $collection->label();
+      // Allow to descend further into the solution's parent collection.
+      if ($collection_tokens = $token_service->findwithPrefix($tokens, 'parent_collection')) {
+        $replacements += $token_service->generate('rdf_entity', $collection_tokens, ['rdf_entity' => $collection], $options, $bubbleable_metadata);
       }
-      $replacements['[rdf_entity:parent_collection]'] = $parent_solution->collection->first()->target_id;
     }
   }
 

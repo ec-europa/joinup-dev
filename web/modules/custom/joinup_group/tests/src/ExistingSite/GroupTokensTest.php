@@ -31,7 +31,7 @@ class GroupTokensTest extends JoinupExistingSiteTestBase {
     $solution = $this->createRdfEntity([
       'rid' => 'solution',
       'field_is_state' => 'validated',
-      'label' => $this->randomMachineName(),
+      'label' => $this->randomString(),
       'collection' => $collection->id(),
     ]);
 
@@ -60,9 +60,17 @@ class GroupTokensTest extends JoinupExistingSiteTestBase {
       $standalone_distribution,
     ];
 
+    $tokens = [
+      'parent_collection' => $collection->label(),
+      'parent_collection:id:value' => $collection->id(),
+      'parent_collection:label:value' => $collection->label(),
+      // URL::toString generates an aliased path.
+      'parent_collection:url' => $collection->toUrl('canonical')->toString(),
+    ];
+
     foreach ($entities_to_test as $entity) {
       $data = ['rdf_entity' => $entity];
-      $this->assertToken('rdf_entity', $data, 'parent_collection', $collection->id());
+      $this->assertTokens('rdf_entity', $data, $tokens);
     }
   }
 
