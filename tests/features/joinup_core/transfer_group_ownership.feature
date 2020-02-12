@@ -1,17 +1,17 @@
-@api
+@api @group-b
 Feature: As a group (collection or solution) owner or site moderator
   In order to manage my group
   I should be able to transfer the group ownership.
 
   Background:
     Given users:
-      | Username | Roles                   | Password |
-      | loner    |                         | Pass     |
-      | happy    | administrator,moderator | Pass     |
-      | cruel    |                         | Pass     |
-      | shy      |                         | Pass     |
-      | light    | moderator               | Pass     |
-      | frozen   |                         | Pass     |
+      | Username | Roles                   |
+      | loner    |                         |
+      | happy    | administrator,moderator |
+      | cruel    |                         |
+      | shy      |                         |
+      | light    | moderator               |
+      | frozen   |                         |
     And the following collection:
       | title | Intensive Language Learning |
       | state | validated                   |

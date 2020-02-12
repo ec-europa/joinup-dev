@@ -85,7 +85,7 @@ Feature: Solution moderation
       # when the solution is validated.
       | Azure Ship                 | Franklin Walker  | Save as draft, Propose                                      |
       | The Last Illusion          | Franklin Walker  | Propose, Save as draft                                      |
-      | Rose of Doors              | Franklin Walker  | Save as draft, Propose, Request deletion                    |
+      | Rose of Doors              | Franklin Walker  | Publish, Save as draft, Propose, Request deletion                    |
       | The Ice's Secrets          | Franklin Walker  |                                                             |
       | The Guardian of the Stream | Franklin Walker  | Save as draft, Propose                                      |
       | Flames in the Swords       | Franklin Walker  | Save as draft, Propose                                      |
@@ -94,7 +94,7 @@ Feature: Solution moderation
       # testes as shown.
       | Azure Ship                 | William Curtis   | Save as draft, Propose                                      |
       | The Last Illusion          | William Curtis   | Propose, Save as draft                                      |
-      | Rose of Doors              | William Curtis   | Save as draft, Propose                                      |
+      | Rose of Doors              | William Curtis   | Publish, Save as draft, Propose                                      |
       | The Ice's Secrets          | William Curtis   |                                                             |
       | The Guardian of the Stream | William Curtis   | Save as draft, Propose                                      |
       | Flames in the Swords       | William Curtis   | Save as draft, Propose                                      |

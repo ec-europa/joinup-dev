@@ -64,6 +64,7 @@ module:
   joinup_eulogin: 0
   joinup_event: 0
   joinup_federation: 0
+  joinup_front_page: 0
   joinup_group: 0
   joinup_invite: 0
   joinup_legal: 0
@@ -110,7 +111,6 @@ module:
   password_policy_length: 0
   path: 0
   path_alias: 0
-  persistent_login: 0
   pipeline: 0
   r4032login: 0
   rdf_draft: 0
@@ -166,6 +166,7 @@ module:
   views: 10
   publication_date: 99
   joinup: 1000
+  joinup_debug: 1001
 theme:
   stable: 0
   classy: 0

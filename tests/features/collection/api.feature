@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Collection API
   In order to manage collections programmatically
   As a backend developer
@@ -32,6 +32,9 @@ Feature: Collection API
     When I fill in the following:
       | Title       | Collection API example                       |
       | Description | We do not care that much about descriptions. |
+      # Contact information data.
+      | Name        | BasicCollectionAPI Contact                   |
+      | E-mail      | basic.collection.api@example.com             |
     When I select "Data gathering, data processing" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
@@ -45,3 +48,4 @@ Feature: Collection API
     And I should own the "Collection API example" collection
     # Cleanup step.
     Then I delete the "Collection API example" collection
+    And I delete the "BasicCollectionAPI Contact" contact information

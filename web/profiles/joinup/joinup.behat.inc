@@ -711,7 +711,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'shared in' => 'field_shared_in',
         'visits' => 'visit_count',
         'featured' => 'field_site_featured',
-        'pinned site-wide' => 'field_site_pinned',
+        'pinned to front page' => 'field_site_pinned',
       ],
     ];
 
@@ -1540,35 +1540,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function assertWorkflowButtons(string $buttons): void {
     $labels = $this->explodeCommaSeparatedStepArgument($buttons);
     $this->assertSubmitButtonsVisible($labels);
-  }
-
-  /**
-   * Emulates closing and re-opening of the browser.
-   *
-   * @When I close and reopen the browser
-   */
-  public function restartSession() {
-    /** @var \Symfony\Component\BrowserKit\CookieJar $cookie_jar */
-    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
-
-    // We are going to keep all the cookies with a valid expire time. The
-    // \Symfony\Component\BrowserKit\CookieJar::all() method already removes
-    // expired cookies, so we need to strip the ones with a null expire time.
-    // A null expire time means that the cookie is going to be deleted when the
-    // browser is closed.
-    $persistent = [];
-    foreach ($cookie_jar->all() as $cookie) {
-      if (!is_null($cookie->getExpiresTime())) {
-        $persistent[] = $cookie;
-      }
-    }
-
-    $this->getSession()->restart();
-    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
-
-    foreach ($persistent as $cookie) {
-      $cookie_jar->set($cookie);
-    }
   }
 
   /**
@@ -2502,7 +2473,7 @@ JS;
       // indentation elements to assert later on based on the parent value.
       $indentation = $current_row->findAll('css', 'div.indentation');
 
-      if ($data['parent'] === '') {
+      if (!isset($data['parent']) || $data['parent'] === '') {
         Assert::assertEmpty($parent_input->getValue());
         Assert::assertCount(0, $indentation, "The menu link '{$data['title']}' should not be indented but it is.");
       }
