@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_group\ExistingSite;
 
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Tests\joinup_core\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\token\Functional\TokenTestTrait;
@@ -14,12 +13,11 @@ use Drupal\Tests\token\Functional\TokenTestTrait;
  */
 class GroupTokensTest extends JoinupExistingSiteTestBase {
 
-  use StringTranslationTrait;
   use RdfEntityCreationTrait;
   use TokenTestTrait;
 
   /**
-   * Tests tokens defined by joinup group.
+   * Tests tokens defined by joinup_group.
    */
   public function testGroupDefinedTokens() {
     $collection = $this->createRdfEntity([
