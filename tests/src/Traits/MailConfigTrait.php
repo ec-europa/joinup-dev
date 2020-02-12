@@ -52,14 +52,4 @@ trait MailConfigTrait {
     return $is_test_mail_collector_used;
   }
 
-  /**
-   * Resets the mail collector by wiping-out any leftovers from a previous test.
-   */
-  protected function resetTestMailCollector(): void {
-    $state = \Drupal::state();
-    // Clear out any mails from previous tests.
-    $state->set('system.test_mail_collector', []);
-    $state->resetCache();
-  }
-
 }

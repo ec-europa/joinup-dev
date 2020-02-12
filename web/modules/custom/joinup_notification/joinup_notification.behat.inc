@@ -557,7 +557,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
       self::restoreReadOnlyConfig();
     }
-    $this->resetTestMailCollector();
+    \Drupal::state()->delete('system.test_mail_collector');
   }
 
   /**
