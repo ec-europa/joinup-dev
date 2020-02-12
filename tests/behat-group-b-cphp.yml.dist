@@ -22,7 +22,10 @@ default:
         - FeatureContext
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
-        tags: '~@wip&&~@javascript&&@group-b'
+        tags: '~@wip'
+      paths:
+        - features/pin_in_collection.feature
+        - features/eulogin/eulogin.feature
   extensions:
     Drupal\MinkExtension:
       base_url: '${behat.base_url}'
