@@ -4,10 +4,6 @@ Feature: Proposing a collection
   As the product owner of a collection of software solutions
   I need to be able to propose a collection for inclusion on Joinup
 
-  # Todo: It still needs to be decided on which pages the "Propose collection"
-  # button will be shown. It might be removed from the homepage in the future.
-  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2298
-
   # An anonymous user should be shown the option to add a collection, so that
   # the user will be aware that collections can be added by the public, even
   # though you need to sign in to do so.
@@ -48,7 +44,7 @@ Feature: Proposing a collection
       | Geographical coverage | Belgium                                                                                              |
     When I select "HR" from "Policy domain"
     And I check "Closed collection"
-    And I select "Only members can create new content." from "eLibrary creation"
+    And I select the radio button "Only members can create new content."
     And I check "Moderated"
     # The owner field should have a help text.
     And I should see the text "The Owner is the organisation that owns this entity and is the only responsible for it."
@@ -121,27 +117,24 @@ Feature: Proposing a collection
     And I click the "Additional fields" tab
 
     # Initially the collection is open, check if the eLibrary options are OK.
-    Then the option "Only members can create new content." should be selected
-    And the option "Any registered user can create new content." should not be selected
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Any registered user can create new content." radio button should not be selected
     And I should not see the text "Only collection facilitators can create new content."
 
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Any registered user can create new content." should be selected
-    And the option "Only members can create new content." should not be selected
+    When I select the radio button "Any registered user can create new content."
+    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
+    And the "Only members can create new content." radio button should not be selected
 
     # When toggling to closed, the option 'any registered user' should disappear
     # and the option for facilitators should appear.
     When I check "Closed collection"
     And I wait for AJAX to finish
-    Then the option "Only members can create new content." should be selected
-    And the option "Only collection facilitators can create new content." should not be selected
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Only collection facilitators can create new content." radio button should not be selected
     And I should not see the text "Any registered user can create new content."
-
-    # Check if moving the slider selects the correct option. Visually the handle
-    # of the slider moves underneath the other option.
-    When I move the "eLibrary creation" slider to the right
-    Then the option "Only collection facilitators can create new content." should be selected
-    And the option "Only members can create new content." should not be selected
+    When I select the radio button "Only collection facilitators can create new content."
+    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
+    And the "Only members can create new content." radio button should not be selected
 
     # This is a regression test for a bug in which the both the previous option
     # and the default option were selected after cycling the collection
@@ -151,8 +144,8 @@ Feature: Proposing a collection
     And I wait for AJAX to finish
     And I check "Closed collection"
     And I wait for AJAX to finish
-    Then the option "Only members can create new content." should be selected
-    And the option "Only collection facilitators can create new content." should not be selected
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Only collection facilitators can create new content." radio button should not be selected
 
   @javascript
   Scenario: Propose collection form fields should be organized in tabs.
@@ -160,7 +153,7 @@ Feature: Proposing a collection
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
     And the following field widgets should be visible "Owner"
-    And the following fields should not be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
+    And the following fields should not be visible "Closed collection, Moderated, Abstract, eLibrary creation, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
 
