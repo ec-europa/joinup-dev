@@ -39,9 +39,12 @@ Feature: Proposing a collection
     And I should see the description "This must be an external URL such as http://example.com." for the "Access URL" field
     And I should see the description "For best result the image must be larger than 2400x345 pixels." for the "Banner" field
     When I fill in the following:
-      | Title            | Ancient and Classical Mythology                                                                      |
-      | Description      | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+      | Title                 | Ancient and Classical Mythology                                                                      |
+      | Description           | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
       | Geographical coverage | Belgium                                                                                              |
+      # Contact information data.
+      | Name                  | Contact person                                                                                       |
+      | E-mail                | contact_person@example.com                                                                           |
     When I select "HR" from "Policy domain"
     And I check "Closed collection"
     And I select the radio button "Only members can create new content."
@@ -82,6 +85,7 @@ Feature: Proposing a collection
 
     # Clean up the collection that was created.
     Then I delete the "Ancient and Classical Mythology" collection
+    And I delete the "Contact person" contact information
 
   Scenario: Propose a collection with a duplicate name
     Given the following collection:
@@ -92,6 +96,9 @@ Feature: Proposing a collection
     And I fill in the following:
       | Title       | The Ratcatcher's Guild                                            |
       | Description | A guild of serious men with sacks in which things are struggling. |
+      # Contact information data.
+      | Name        | Some contact                                                      |
+      | E-mail      | some.contact@example.com                                          |
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
@@ -155,14 +162,14 @@ Feature: Proposing a collection
     And the following field widgets should be visible "Owner"
     And the following fields should not be visible "Closed collection, Moderated, Abstract, eLibrary creation, Geographical coverage"
     And the following fields should not be present "Affiliates"
-    And the following field widgets should not be visible "Contact information"
+    And the following field widgets should be visible "Contact information"
 
     When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
-    And the following field widgets should be visible "Contact information"
+    And the following field widgets should not be visible "Contact information"
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when
@@ -181,8 +188,11 @@ Feature: Proposing a collection
     # Our code should have changed the active tab now. A browser message will
     # be shown to the user.
     Then the "Main fields" tab should be active
-    # Fill the required field.
+    # Fill the required fields.
     When I select "HR" from "Policy domain"
+    And I fill in the following:
+      | Name                  | Contact person                                                                                       |
+      | E-mail                | contact_person@example.com                                                                           |
     And I press "Propose"
     # The backend-side validation will kick in now.
     Then I should see the error message "Description field is required."

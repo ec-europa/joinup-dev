@@ -13,16 +13,20 @@ Feature: Event moderation
     And the following owner:
       | name     |
       | Alma Lee |
+    And the following contact:
+      | name  | Evs contact             |
+      | email | evs.contact@example.com |
     And the following collection:
-      | title             | Wet Lords             |
-      | description       | The Forgotten Female. |
-      | logo              | logo.png              |
-      | banner            | banner.jpg            |
-      | elibrary creation | registered users      |
-      | moderation        | no                    |
-      | state             | validated             |
-      | owner             | Alma Lee              |
-      | policy domain     | E-inclusion           |
+      | title               | Wet Lords             |
+      | description         | The Forgotten Female. |
+      | logo                | logo.png              |
+      | banner              | banner.jpg            |
+      | elibrary creation   | registered users      |
+      | moderation          | no                    |
+      | state               | validated             |
+      | owner               | Alma Lee              |
+      | contact information | Evs contact           |
+      | policy domain       | E-inclusion           |
     And the following collection user membership:
       | collection | user           | roles       |
       | Wet Lords  | Rosa Vaughn    | member      |
