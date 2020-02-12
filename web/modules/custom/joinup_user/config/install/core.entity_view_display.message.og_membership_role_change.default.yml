@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.og_membership_role_change.field_membership
+    - message.template.og_membership_role_change
+id: message.og_membership_role_change.default
+targetEntityType: message
+bundle: og_membership_role_change
+mode: default
+content:
+  field_membership:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+  partial_1:
+    weight: 0
+    region: content
+hidden: {  }

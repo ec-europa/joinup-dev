@@ -30,9 +30,7 @@ Feature:
     When I go to "/api/v1/communities/tallinn/report"
     Then I should get an access denied error
     When I go to "/admin/config/content/tallinn"
-    Then I should see the following error message:
-      | error messages                                     |
-      | Access denied. You must sign in to view this page. |
+    Then I should see the heading "Sign in to continue"
 
     Given I am logged in as Dinesh
     When I go to "/api/v1/communities/tallinn/report"

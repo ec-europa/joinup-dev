@@ -64,12 +64,7 @@
     ],
     "field_user_frequency": [
         {
-            "value": "next_cron"
-        }
-    ],
-    "field_user_subscription_events": [
-        {
-            "value": "1"
+            "value": "daily"
         }
     ]
 }

@@ -1,4 +1,5 @@
-entity.user.subscription_settings:
-  route_name: joinup_subscription.subscription_settings
+joinup_subscription.subscriptions:
+  title: 'Subscriptions'
+  route_name: joinup_subscription.subscriptions
   base_route: entity.user.canonical
-  title: Subscription Settings
+  weight: 0

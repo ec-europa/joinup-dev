@@ -10,8 +10,10 @@ declare(strict_types = 1);
 use Behat\Gherkin\Node\TableNode;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\ScenarioTagTrait;
+use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
+use Drupal\joinup\Traits\MailCollectorTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\message\Entity\MessageTemplate;
 use PHPUnit\Framework\Assert;
@@ -22,8 +24,10 @@ use PHPUnit\Framework\Assert;
 class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
-  use ScenarioTagTrait;
+  use MailCollectorTrait;
+  use TagTrait;
   use UserTrait;
+  use UtilityTrait;
 
   /**
    * The mail system storage settings.
@@ -71,9 +75,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @Then the following email should have been sent:
    */
   public function assertEmailSent(TableNode $table) {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
+    $this->assertEmailTagPresent();
+
     /** @var string $template */
     /** @var string $recipient */
     /** @var string $recipient_mail */
@@ -136,7 +139,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
 
       // Ensure that there are no un-replaced arguments in the mail subject and
       // body.
-      if (preg_match('/\B@[^\B]+/', $mail_body) || preg_match('/\B@[^\B]+/', $mail['subject'])) {
+      if (preg_match('/\B@\S/', $mail_body) || preg_match('/\B@\S/', $mail['subject'])) {
         throw new \Exception('There were arguments found in the subject or the body of the email that were not replaced.');
       }
 
@@ -170,7 +173,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       }
 
       if (isset($bcc)) {
-        Assert::assertContains($bcc, $mail['headers']['Bcc'], 'Bcc is properly set to the email.');
+        Assert::assertContains($bcc, $mail['headers']['Bcc'] ?? "", 'Bcc is properly set to the email.');
       }
 
       // We found a match. Stop searching.
@@ -207,9 +210,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @Then the following email should not have been sent:
    */
   public function assertEmailNotSent(TableNode $table) {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
+    $this->assertEmailTagPresent();
+
     try {
       // Reusing ::assertEmailSent().
       $this->assertEmailSent($table);
@@ -239,31 +241,17 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @Then the email sent to :user with subject :subject contains the( following lines of) text:
    */
   public function assertEmailSentAndContainsText(string $user, string $subject, TableNode $table) {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
+    $this->assertEmailTagPresent();
+
     $lines_of_text = $table->getColumnsHash();
     $user = user_load_by_name($user);
     $recipient = $user->getEmail();
     $mails = $this->getEmailsBySubjectAndMail($subject, $recipient);
     $email_found = FALSE;
     foreach ($mails as $mail) {
-      // \Drupal\Core\Mail\Plugin\Mail\PhpMail::format() automatically wraps the
-      // mail body line to a certain amount of characters (77 by default).
-      // Spaces are also removed.
-      // @see \Drupal\Core\Mail\Plugin\Mail\PhpMail::format()
-      $mail_body = str_replace("\r\n", "\n", $mail['body']);
-      $mail_body = preg_replace("/[\n\s\t]+/", ' ', $mail_body);
-      $mail_body = trim($mail_body);
-
-      // If the original mail body is markup, we need to:
-      // - undo the encoding done by Twig to quotes;
-      // - remove the HTML to simplify the matching on the body text.
-      // @see vendor/twig/twig/lib/Twig/Extension/Core.php:1034
-      if ($mail['body'] instanceof MarkupInterface) {
-        $mail_body = htmlspecialchars_decode($mail_body, ENT_QUOTES | ENT_SUBSTITUTE);
-        $mail_body = strip_tags($mail_body);
-      }
+      $mail_body = ($mail['body'] instanceof MarkupInterface) ?
+        $this->formatMailBodyMarkup($mail['body']) :
+        $this->formatMailBodyText($mail['body']);
 
       foreach ($lines_of_text as $line_of_text) {
         $text = $line_of_text['text'];
@@ -281,47 +269,38 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Fetches the emails sent given criteria.
+   * Asserts that no email of the relevant criteria have been sent.
    *
+   * @param string $user
+   *   The user name.
    * @param string $subject
-   *   The subject of the email sent.
-   * @param string $recipient_mail
-   *   The email of the recipient.
-   *
-   * @return array
-   *   An array of emails found.
+   *   The subject of the email.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The mail data table.
    *
    * @throws \Exception
-   *   Thrown if no emails are found or no user exists with the given data.
+   *   Throws an exception when a parameter is not the expected one.
+   *
+   * @Then the email sent to :user with subject :subject should not contain the( following lines of) text:
    */
-  protected function getEmailsBySubjectAndMail(string $subject, string $recipient_mail): array {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
-    if (empty($mails)) {
-      throw new \Exception('No mail was sent.');
-    }
-
-    $emails_found = [];
+  public function assertEmailSentNotContainsText(string $user, string $subject, TableNode $table) {
+    $this->assertEmailTagPresent();
+    $lines_of_text = $table->getColumnsHash();
+    $user = user_load_by_name($user);
+    $recipient = $user->getEmail();
+    $mails = $this->getEmailsBySubjectAndMail($subject, $recipient);
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $recipient_mail) {
-        continue;
+      $mail_body = ($mail['body'] instanceof MarkupInterface) ?
+        $this->formatMailBodyMarkup($mail['body']) :
+        $this->formatMailBodyText($mail['body']);
+
+      foreach ($lines_of_text as $line_of_text) {
+        $text = $line_of_text['text'];
+        if (strpos($mail_body, $text) !== FALSE) {
+          throw new Exception("Message with subject '$subject' sent to '$recipient' contains the text '$line_of_text'.");
+        }
       }
-
-      if ($subject !== trim($mail['subject'])) {
-        continue;
-      }
-
-      $emails_found[] = $mail;
     }
-
-    if (empty($emails_found)) {
-      throw new Exception("No emails found sent to {$recipient_mail} with subject '{$subject}'.");
-    }
-
-    return $emails_found;
   }
 
   /**
@@ -334,9 +313,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @Given all (the )e-mails have been sent
    */
   public function clearMailCollectorCache() {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
+    $this->assertEmailTagPresent();
+
     \Drupal::state()->set('system.test_mail_collector', []);
     \Drupal::state()->resetCache();
   }
@@ -353,10 +331,9 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @Then :count e-mail(s) should have been sent
    */
   public function assertNumberOfEmailSent($count) {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
+    $this->assertEmailTagPresent();
+
+    $mails = $this->getMails();
 
     if (count($mails) != $count) {
       throw new \Exception("Invalid number of e-mail sent. Expected $count, sent " . count($mails));
@@ -376,9 +353,8 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @Given I click the mail change link from the email sent to :mail
    */
   public function clickMailChangeLinkFromMail(string $mail): void {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
+    $this->assertEmailTagPresent();
+
     $pattern = '#https?://[^/].*/user/mail-change/[^/].*/[^/].*/[^/].*/.*#';
     $no_mail_message = "No mail change verification E-mail has been sent to $mail.";
     $no_match_message = "The mail change verification E-mail doesn't contain a valid verification link.";
@@ -494,11 +470,10 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    *   find any matches.
    */
   protected function assertMailLinkMatchingPattern(string $pattern, string $mail, string $no_mail_message, string $no_match_message, ?string $template = NULL): void {
-    // @todo Uncomment this line when TagTrait is available in DrupalExtension.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    // $this->assertEmailTagPresent();
+    $this->assertEmailTagPresent();
+
     $found = FALSE;
-    foreach (\Drupal::state()->get('system.test_mail_collector', []) as $mail_sent) {
+    foreach ($this->getMails() as $mail_sent) {
       // Optionally filter by mail template.
       if (!empty($template) && $mail_sent['key'] !== $template) {
         continue;
@@ -523,19 +498,6 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
       throw new \Exception($no_match_message);
     }
     throw new \Exception($no_mail_message);
-  }
-
-  /**
-   * Checks if the current scenario or feature has the @email tag.
-   *
-   * Call this in steps that use the test mail collector so that the developer
-   * is alerted if this tag is not present.
-   */
-  protected function assertEmailTagPresent(): void {
-    // @todo Change this to use TagTrait once ScenarioTagTrait is deprecated.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    $tags = $this->getScenario()->getTags();
-    Assert::assertTrue(in_array('email', $tags));
   }
 
   /**

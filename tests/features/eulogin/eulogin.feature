@@ -128,19 +128,11 @@ Feature: Log in through EU Login
 
   Scenario: An existing user can log in through EU Login
     Given users:
-      | Username    | E-mail           | Password | First name | Family name |
-      | jb007_local | 007-local@mi6.eu | 123      | JJaammeess | BBoonndd    |
+      | Username    | E-mail           | First name | Family name |
+      | jb007_local | 007-local@mi6.eu | JJaammeess | BBoonndd    |
     Given CAS users:
       | Username | E-mail     | Password           | First name | Last name | Local username |
       | jb007    | 007@mi6.eu | shaken_not_stirred | James      | Bond      | jb007_local    |
-
-    # Try to login using the Drupal login form.
-    Given I go to "/user/login"
-    And I fill in "Email or username" with "jb007_local"
-    And I fill in "Password" with "123"
-    And I wait for the honeypot time limit to pass
-    When I press "Sign in"
-    Then I should see the error message "Please sign in with your EU Login account."
 
     # Test the password reset customized message as anonymous.
     Given I visit "/user/password"
@@ -213,6 +205,50 @@ Feature: Log in through EU Login
     # A logged in user cannot access the reset password form.
     When I go to "/user/password"
     Then I should get an access denied error
+
+  @email
+  Scenario: An existing local user wants to link their EU Login account but forgot their Drupal password.
+    Given CAS users:
+      | Username   | E-mail              | Password | First name  | Last name |
+      | jeanclaude | muscles@brussels.be | dragon12 | Jean-Claude | Van Damme |
+    And users:
+      | Username | Password | E-mail         | First name | Family name |
+      | jclocal  | dragonne | jcvd@gmail.com | JC         | VD          |
+
+    Given I am on the homepage
+    And I click "Sign in"
+    And I click "EU Login"
+    And I fill in "E-mail address" with "muscles@brussels.be"
+    And I fill in "Password" with "dragon12"
+    And I press the "Log in" button
+    And I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
+
+    When I click "reset your password"
+    And I fill in "Email" with "jcvd@gmail.com"
+    And I wait for the spam protection time limit to pass
+    And I press the "Submit" button
+    Then I should see the success message "Further instructions have been sent to your email address."
+
+    When I go to the one time sign in page of the user "jclocal"
+    And I fill in "Password" with "Cœur-de-lion-123!"
+    And I fill in "Confirm password" with "Cœur-de-lion-123!"
+    And I press "Save"
+    Then I should see the success message "The changes have been saved."
+    # The user is logged in at this point which is a loophole that allows users
+    # to bypass EU Login for as long as we keep the old password reset form.
+    And I click "Sign out"
+
+    Given I am on the homepage
+    And I click "Sign in"
+    And I click "EU Login"
+    And I fill in "E-mail address" with "muscles@brussels.be"
+    And I fill in "Password" with "dragon12"
+    And I press the "Log in" button
+    And I select the radio button "I am an existing user (pair my existing account with my EU Login account)"
+    And I fill in "Email or username" with "jcvd@gmail.com"
+    And I fill in "Password" with "Cœur-de-lion-123!"
+    And I press "Sign in"
+    Then I should see the success message "Your EU Login account jeanclaude has been successfully linked to your local account Jean-Claude Van Damme."
 
   Scenario: Fields imported from EU Login cannot be edited locally.
     Given users:
@@ -329,8 +365,10 @@ Feature: Log in through EU Login
 
   Scenario: The Drupal login form shows a warning message.
     When I visit "/user/login"
-    Then I should see the warning message "As of 2nd March 2020, EU Login will be the only authentication method available on Joinup. We strongly recommend you to choose EU Login as your sign-in method before this date!"
+    Then I should see the warning message "Starting from 02/03/2020, signing in to Joinup is handled by EU Login, the European Commission Authentication Service."
     And I should see the link "EU Login"
+    But the following fields should not be present "Email or username, Password"
+    And I should not see the "Sign in" button
 
   Scenario: A new user tries to register with an existing Email.
     Given users:
@@ -406,6 +444,7 @@ Feature: Log in through EU Login
     And I click "People"
     When I click "Edit" in the "Joe Doe" row
     Then the "Allow user to log in via CAS" checkbox should not be checked
+    And the following field should be present "Password"
 
     Given I check "Allow user to log in via CAS"
     And I fill in "CAS Username" with "joe"
@@ -419,6 +458,7 @@ Feature: Log in through EU Login
     Then the "Allow user to log in via CAS" checkbox should be checked
     And the "CAS Username" field should contain "joe"
     And the following fields should be disabled "Email"
+    And the following field should not be present "Password"
 
     Given I am an anonymous user
     And I am on the homepage
@@ -431,3 +471,27 @@ Feature: Log in through EU Login
     # The email ends up getting the upstream email so that correct character casing is applied.
     And the user joe should have the following data in their user profile:
       | E-mail      | Joe_Case_Insensitive@example.com |
+
+  Scenario: Anonymous user is asked to log in when accessing a protected page
+    Given users:
+      | Username | E-mail         | First name | Family name | Roles     |
+      | jonbon   | jon@example.eu | Jon        | Bon         | moderator |
+    Given CAS users:
+      | Username | E-mail              | Password  | First name | Last name | Local username |
+      | jbon     | j.bon@ec.example.eu | abc123!#$ | John       | Bonn      | jonbon         |
+    Given I am an anonymous user
+    When I visit "admin/people"
+    Then I should see the heading "Sign in to continue"
+    # The warning that the user is not authenticated should not be shown since
+    # if we are using an external CAS authentication service the first Drupal
+    # page that would be presented to the user would receive this message and at
+    # that moment the user has successfully logged in. In this case we are using
+    # a mocked CAS server which is written in Drupal and receives this message.
+    # It needs to be suppressed.
+    But I should not see the error message "Access denied. You must sign in to view this page."
+    When I fill in the following:
+      | E-mail address | j.bon@ec.example.eu |
+      | Password       | abc123!#$           |
+    And I press "Log in"
+    # The user should be redirected to the original page after logging in.
+    Then I should see the heading "People"
