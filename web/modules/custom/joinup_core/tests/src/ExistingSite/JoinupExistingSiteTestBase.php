@@ -90,8 +90,6 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     static::bypassReadOnlyConfig();
     $this->traitStartMailCollection();
     static::restoreReadOnlyConfig();
-
-    $this->resetTestMailCollector();
   }
 
   /**
