@@ -1575,7 +1575,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeScenario @errorPage
    */
-  public function beforeErrorPageTesting(): void  {
+  public function beforeErrorPageTesting(): void {
     static::toggleModule('install', 'error_page_test');
 
     // Pipe error log entries to a file rather than to standard PHP log.
