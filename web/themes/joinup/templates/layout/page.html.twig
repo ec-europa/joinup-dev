@@ -71,7 +71,11 @@
           <div class="mdl-grid {{ main_classes|join(' ') }}">
             {% if page.sidebar_left and not has_vertical_tabs %}
               <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--8-col-phone{{ is_search_page ? ' section--sidebar-left--search' : '' }}" role="complementary">
-                {{ page.sidebar_left }}
+                {% if is_search_page %}
+                  <div class="section--sidebar-left--search-wrapper">{{ page.sidebar_left }}</div>
+                {% else %}
+                  {{ page.sidebar_left }}
+                {% endif %}
               </aside>
             {% endif %}
 
