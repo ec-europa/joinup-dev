@@ -237,7 +237,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
 
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $this->getPublishedIndex()->query();
-    $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
+    $query->addCondition('entity_bundle', CommunityContentHelper::BUNDLES, 'IN');
     $query->addCondition('entity_groups', $rdf_entity_ids, 'IN');
     $query->sort('entity_created', 'DESC');
     $query->range(0, $limit);
@@ -267,7 +267,7 @@ class RecommendedContentBlock extends BlockBase implements ContainerFactoryPlugi
 
     /** @var \Drupal\search_api\Query\QueryInterface $query */
     $query = $this->getPublishedIndex()->query();
-    $query->addCondition('entity_bundle', CommunityContentHelper::getBundles(), 'IN');
+    $query->addCondition('entity_bundle', CommunityContentHelper::BUNDLES, 'IN');
     $query->sort('field_visit_count', 'DESC');
     $query->sort('entity_created', 'DESC');
     $query->range(0, $limit);

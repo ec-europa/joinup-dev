@@ -12,8 +12,10 @@ use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
+use Behat\Mink\Selector\Xpath\Escaper;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
@@ -86,12 +88,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      // Complex fields in Drupal might not be directly linked to actual field
-      // elements such as 'select' and 'input', so try both the standard
-      // findField() as well as an XPath expression that finds the given label
-      // inside any element marked as a form item.
-      $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " form-item ") and .//label[text() = "' . $field . '"]]';
-      $is_found = (bool) $page->findField($field) || (bool) $page->find('xpath', $xpath);
+      $is_found = (bool) $this->findAnyFormField($field, $page);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -140,7 +137,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $not_found = [];
     $not_visible = [];
     foreach ($fields as $field) {
-      $element = $page->findField($field);
+      $element = $this->findAnyFormField($field, $page);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -151,7 +148,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
         // their label and container are not.
         $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
 
-        if (!$wrapper->isVisible()) {
+        if ($wrapper && !$wrapper->isVisible()) {
           $not_visible[] = $field;
         }
       }
@@ -182,7 +179,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $not_found = [];
     $visible = [];
     foreach ($fields as $field) {
-      $element = $page->findField($field);
+      $element = $this->findAnyFormField($field, $page);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -193,7 +190,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       // their label and container are not.
       $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
       // Neither the field or its wrapper should be visible at all.
-      if ($element->isVisible() || $wrapper->isVisible()) {
+      if ($element->isVisible() || !empty($wrapper) && $wrapper->isVisible()) {
         $visible[] = $field;
       }
     }
@@ -425,22 +422,46 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   CSS selector of the select field.
    *
    * @throws \Exception
+   *   Thrown when the select is not found in the page or the selected option is
+   *   not the expected one.
    *
    * @Then the option with text :option from select :select is selected
    */
   public function assertFieldOptionSelected(string $option, string $select): void {
-    $element = $this->findSelect($select);
+    $this->assertFieldOptionSelectedInRegion($option, $select);
+  }
+
+  /**
+   * Checks if an option is selected in a specific select element in a region.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   CSS selector of the select field.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (optional) The region to search in. Defaults to the whole page.
+   *
+   * @throws \Exception
+   *   Thrown when the select is not found in the page or the selected option is
+   *   not the expected one.
+   */
+  protected function assertFieldOptionSelectedInRegion(string $option, string $select, TraversableElement $region = NULL): void {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
+
+    $element = $this->findSelect($select, $region);
     if (!$element) {
-      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
+      throw new \Exception(sprintf('The select "%s" was not found.', $select));
     }
 
     $option_element = $element->find('xpath', '//option[@selected="selected"]');
     if (!$option_element) {
-      throw new \Exception(sprintf('No option is selected in the %s select in the page %s', $select, $this->getSession()->getCurrentUrl()));
+      throw new \Exception(sprintf('No option is selected in the %s select', $select));
     }
 
     if ($option_element->getText() !== $option) {
-      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+      throw new \Exception(sprintf('The option "%s" was expected to be selected, but %s was selected instead.', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
     }
   }
 
@@ -498,7 +519,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Find the selected option of the select and check the text.
+   * Checks that a select element does not have the given text option selected.
    *
    * @param string $option
    *   Text value of the option to find.
@@ -758,49 +779,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Moves a slider to the next or previous option.
-   *
-   * @param string $label
-   *   The label of the slider that will be fingered.
-   * @param string $direction
-   *   The direction in which the slider will be moved. Can be either 'left' or
-   *   'right'.
-   *
-   * @throws \Exception
-   *   Thrown when the slider could not be found in the page, or when an invalid
-   *   direction is passed.
-   *
-   * @When I move the :label slider to the :direction
-   */
-  public function moveSlider(string $label, string $direction): void {
-    // Check that the direction is either 'left' or 'right'.
-    if (!in_array($direction, ['left', 'right'])) {
-      throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
-    }
-    $key = $direction === 'left' ? BrowserKey::LEFT_ARROW : BrowserKey::RIGHT_ARROW;
-
-    // Locate the slider starting from the label:
-    // - Find the label with the given label text.
-    // - Move up the DOM to the wrapper div of the select element. This is
-    //   identified by the class 'form-type-select'.
-    // - In this wrapper, find the slider handle, this is a span with class
-    //   'ui-slider-handle'.
-    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-type-select ")]//span[contains(concat(" ", normalize-space(@class), " "), " ui-slider-handle ")]';
-    $slider = $this->getSession()->getPage()->find('xpath', $xpath);
-
-    if (!$slider) {
-      throw new \Exception("Slider with label $label not found in the page.");
-    }
-
-    // Focus the slider handle, and move it. Note that we are using the keyboard
-    // to move the slider instead of the mouse. This ensures that this works
-    // fine at all slider widths and screen sizes.
-    $slider->focus();
-    $slider->keyDown($key);
-    $slider->keyUp($key);
-  }
-
-  /**
    * Checks that the contextual links button is visible in the browser.
    *
    * This checks actual visibility in the browser, so this needs the
@@ -849,6 +827,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the :locator :element in the :region( region) should not be visible
    */
   public function assertElementNotVisibleInRegion(string $locator, string $element, string $region): void {
+    $region = $this->getRegion($region);
     $element = $this->findNamedElementInRegion($locator, $element, $region);
     $this->assertNotVisuallyVisible($element);
   }
@@ -872,6 +851,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the :locator :element in the :region( region) should be visible
    */
   public function assertElementVisibleInRegion(string $locator, string $element, string $region): void {
+    $region = $this->getRegion($region);
     $element = $this->findNamedElementInRegion($locator, $element, $region);
     $this->assertVisuallyVisible($element);
   }
@@ -975,7 +955,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $values = $this->explodeCommaSeparatedStepArgument($values);
 
     /** @var \Behat\Mink\Element\NodeElement[] $items */
-    $items = $this->getSession()->getPage()->findAll('named', array('field', $field));
+    $items = $this->getSession()->getPage()->findAll('named', ['field', $field]);
 
     if (empty($items)) {
       throw new \Exception("Cannot find field $field.");
@@ -1055,7 +1035,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function assertCapitalisedHeading(string $heading): void {
     $heading = strtoupper($heading);
     $element = $this->getSession()->getPage();
-    foreach (array('h1', 'h2', 'h3', 'h4', 'h5', 'h6') as $tag) {
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
       $results = $element->findAll('css', $tag);
       foreach ($results as $result) {
         if ($result->getText() == $heading) {

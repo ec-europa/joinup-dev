@@ -11,7 +11,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
@@ -140,55 +139,6 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
       // We are questioning only multi-value fields.
       $form[$field_name]['#attributes']['class'][] = 'joinup-nodrag';
     }
-  }
-}
-
-/**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
- *
- * The state_machine forces the current value to be available in the options.
- * However, there are cases where the user cannot keep the node in the same
- * state when editing it.
- * Since we are already checking for the allowed states and we are blocking the
- * access if there are no available transitions, it is safe to simply remove
- * the default value if it is not included in the allowed transitions.
- *
- * @see \Drupal\state_machine\Plugin\Field\FieldType\StateItem::getAllowedStates
- * @see https://www.drupal.org/node/2746091
- */
-function joinup_core_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  $fieldType = $context['items']->getFieldDefinition()->getType();
-  if ($fieldType != 'state' || empty($form_state->getBuildInfo()['callback_object'])) {
-    return;
-  }
-
-  $form = $context['form'];
-  // Inline entity forms have the related entity directly in the form, as the
-  // form state is the one of the main form.
-  if (isset($form['#type']) && $form['#type'] === 'inline_entity_form') {
-    $entity = $form['#entity'];
-  }
-  else {
-    $entity = $form_state->getBuildInfo()['callback_object']->getEntity();
-  }
-
-  if (!($entity instanceof ContentEntityInterface)) {
-    return;
-  }
-
-  // Get the field name.
-  $field_name = $context['items']->getFieldDefinition()->getName();
-  $default_value = reset($element['#default_value']);
-  $allowed_transitions = $entity->get($field_name)->first()->getTransitions();
-  $allowed_states = array_map(function ($transition) {
-    return $transition->getToState()->getId();
-  }, $allowed_transitions);
-
-  if (!in_array($default_value, $allowed_states)) {
-    unset($element['#options'][$default_value], $element['#default_value']);
-    // Re-set a default because otherwise the 'empty' value will be available.
-    $default_value = array_keys($allowed_transitions);
-    $element['#default_value'] = reset($default_value);
   }
 }
 
@@ -564,14 +514,17 @@ function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id
  *   The form state object.
  */
 function joinup_core_motivation_form_validate(array &$form, FormStateInterface $form_state) {
-  /** @var \Drupal\node\NodeForm $test */
+  /** @var \Drupal\node\NodeInterface $entity */
   $entity = $form_state->getFormObject()->getEntity();
-  $to_state = $form_state->getTriggeringElement()['#state_id'];
-  // If $to_state is empty, it means that another button was clicked, like
+
+  $triggering_element = $form_state->getTriggeringElement();
+  // If '#state_id' is empty, it means that no transition has been triggered.
+  // @see \Drupal\joinup_core\Plugin\Field\FieldWidget\StateMachineButtons::processActions()
   // "Add new" in the contact information field.
-  if (empty($to_state)) {
+  if (empty($triggering_element['#state_id'])) {
     return;
   }
+  $to_state = $triggering_element['#state_id'];
 
   /** @var \Drupal\joinup_core\WorkflowHelper $workflow_helper */
   $workflow_helper = \Drupal::service('joinup_core.workflow.helper');

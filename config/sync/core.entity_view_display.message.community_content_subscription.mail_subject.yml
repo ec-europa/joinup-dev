@@ -1,0 +1,17 @@
+uuid: 6b107793-a973-4839-b84a-f047c1199747
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.community_content_subscription.field_community_content
+    - message.template.community_content_subscription
+id: message.community_content_subscription.mail_subject
+targetEntityType: message
+bundle: community_content_subscription
+mode: mail_subject
+content: {  }
+hidden:
+  field_community_content: true
+  partial_0: true
+  partial_1: true
