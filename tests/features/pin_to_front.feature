@@ -215,6 +215,10 @@ Feature: Pinning content to the front page
 
     When I click the contextual link "Edit pinned items" in the "Content" region
     Then I should see the heading "Front page pinned items"
+    And I should not see "Edit" in the "D minor" row
+    And I should not see "Edit" in the "Risky Sound" row
+    And I should not see "Edit" in the "Some low visit news" row
+    And I should not see "Edit" in the "Entry to be disabled" row
 
     # Disable the 'Entry to be disabled' menu entry.
     Given I uncheck the material checkbox in the "Entry to be disabled" table row

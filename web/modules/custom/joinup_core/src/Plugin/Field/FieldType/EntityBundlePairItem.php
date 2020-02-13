@@ -38,6 +38,32 @@ class EntityBundlePairItem extends FieldItemBase {
   }
 
   /**
+   * Returns the entity type ID of this entity bundle pair.
+   *
+   * @return string
+   *   The entity type ID.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the data is not yet set.
+   */
+  public function getEntityTypeId(): string {
+    return $this->get('entity_type')->getValue();
+  }
+
+  /**
+   * Returns the bundle ID of this entity bundle pair.
+   *
+   * @return string
+   *   The bundle ID.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the data is not yet set.
+   */
+  public function getBundleId(): string {
+    return $this->get('bundle')->getValue();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {

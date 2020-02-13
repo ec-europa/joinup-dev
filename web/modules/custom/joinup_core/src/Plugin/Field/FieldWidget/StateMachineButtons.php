@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
@@ -23,9 +22,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *   id = "state_machine_buttons",
  *   label = @Translation("State machine buttons"),
  *   field_types = {
- *     "state"
+ *     "state",
  *   },
- *   multiple_values = TRUE
+ *   multiple_values = TRUE,
  * )
  */
 class StateMachineButtons extends OptionsSelectWidget implements ContainerFactoryPluginInterface {
@@ -130,9 +129,8 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
 
     if (!$event->getAccess()->isForbidden()) {
       $element['#same_state_button'] = [
-        'label' => $event->getLabel(),
-        'weight' => $event->getWeight(),
-        'state_id' => $state,
+        '#value' => $event->getLabel(),
+        '#weight' => $event->getWeight(),
       ];
     }
 
@@ -150,7 +148,15 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
 
     // Add a process callback to add the buttons in the form actions.
     // @see \Drupal\content_moderation\Plugin\Field\FieldWidget\ModerationStateWidget::formElement()
-    $element['#process'][] = [get_called_class(), 'processActions'];
+    $element['#process'][] = [static::class, 'processActions'];
+    // Let ::processActions() know the original state ID.
+    $element['#original_state_id'] = $state;
+    // As the '#element_validate' callbacks are running before field constraint
+    // validators, we use this element validator to set the $element new value
+    // in case of a transition. In this way, the state field new value will be
+    // correctly validated in StateConstraintValidator::validate().
+    // @see \Drupal\state_machine\Plugin\Validation\Constraint\StateConstraintValidator::validate()
+    $element['#element_validate'][] = [static::class, 'setToState'];
 
     return $element;
   }
@@ -170,22 +176,18 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
     // Add the button to update the entity without changing the workflow state,
     // if this is allowed.
     if (!empty($element['#same_state_button'])) {
-      $button = [
-        '#weight' => $element['#same_state_button']['weight'],
-        '#value' => $element['#same_state_button']['label'],
-        '#state_id' => $element['#same_state_button']['state_id'],
-        '#state_field' => $element['#field_name'],
-      ];
-
-      $form['actions']['update'] = $button + $default_button;
+      $form['actions']['update'] = $element['#same_state_button'] + $default_button;
     }
 
     // Add a custom button for each state we're allowing.
-    $options = $element['#options'];
-    foreach ($options as $state_id => $label) {
+    foreach ($element['#options'] as $state_id => $label) {
+      if ($element['#original_state_id'] === $state_id) {
+        // The 'same state' button was already added, just a few lines earlier.
+        continue;
+      }
+
       $button = [
         '#state_id' => $state_id,
-        '#state_field' => $element['#field_name'],
         '#weight' => -10,
       ];
 
@@ -204,20 +206,24 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
       unset($form['actions'][$key]['#dropbutton']);
     }
 
-    // Setup a callback to translate the button selection back into field
-    // widget, so that it will get saved properly.
-    $form['#entity_builders']['update_state'] = [get_called_class(), 'updateState'];
-
     return $element;
   }
 
   /**
-   * Entity builder callback to set the state based on the button clicked.
+   * Sets the new value of the state field in case of a transition.
+   *
+   * @param array $element
+   *   The form element render array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form API form state object.
+   * @param array $complete_form
+   *   The complete form render array.
    */
-  public static function updateState($entity_type, EntityInterface $entity, &$form, FormStateInterface $form_state) {
-    $element = $form_state->getTriggeringElement();
-    if (isset($element['#state_field']) && isset($element['#state_id'])) {
-      $entity->set($element['#state_field'], $element['#state_id']);
+  public static function setToState(array &$element, FormStateInterface $form_state, array &$complete_form) {
+    $triggering_element = $form_state->getTriggeringElement();
+    // This is a transition button, set the state field value.
+    if (!empty($triggering_element['#state_id'])) {
+      $form_state->setValueForElement($element, ['value' => $triggering_element['#state_id']]);
     }
   }
 

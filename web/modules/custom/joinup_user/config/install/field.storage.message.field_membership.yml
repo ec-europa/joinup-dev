@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - joinup_user
+    - message
+id: message.field_membership
+field_name: field_membership
+entity_type: message
+type: entity_reference
+settings:
+  target_type: og_membership
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
