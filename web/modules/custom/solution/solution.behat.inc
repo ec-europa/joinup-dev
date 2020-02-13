@@ -554,7 +554,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'collection' => 'collection',
       'collections' => 'collection',
       'featured' => 'field_site_featured',
-      'pinned site-wide' => 'field_site_pinned',
+      'pinned to front page' => 'field_site_pinned',
       'pinned in' => 'field_is_pinned_in',
       'shared in' => 'field_is_shared_in',
     ];

@@ -46,10 +46,13 @@ transitions:
       - moderator
     draft:
       - moderator
+      - rdf_entity-solution-facilitator
     proposed:
       - moderator
+      - rdf_entity-solution-facilitator
     validated:
       - moderator
+      - rdf_entity-solution-facilitator
     blacklisted:
       - moderator
     needs_update:

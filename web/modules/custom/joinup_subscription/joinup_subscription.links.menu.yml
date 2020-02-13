@@ -1,0 +1,5 @@
+joinup_subscription.my_subscriptions:
+  title: 'My subscriptions'
+  route_name: joinup_subscription.my_subscriptions
+  menu_name: account
+  weight: 0

@@ -92,8 +92,13 @@ trait MaterialDesignTrait {
       throw new \Exception("The animated checkbox with label $label cannot be toggled in a browser that doesn't support JavaScript.");
     }
 
+    if (empty($label)) {
+      $checkbox_xpath = '//span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
+    }
+    else {
+      $checkbox_xpath = '//label[text()="' . $label . '"]/../../span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
+    }
     // Locate the "fancy" checkbox and click it.
-    $checkbox_xpath = '//label[text()="' . $label . '"]/../../span[contains(concat(" ", normalize-space(@class), " "), " mdl-checkbox__ripple-container ")]';
     $checkbox_element = $element->find('xpath', $checkbox_xpath);
     if (empty($checkbox_element)) {
       throw new \Exception("The animated checkbox for the $label field was not found in the page.");
@@ -156,16 +161,22 @@ trait MaterialDesignTrait {
         throw new \Exception('The MDL menu button was not found in the page.');
       }
 
-      // The button ID is used in the "for" attribute of the related menu.
-      // Create the xpath that targets the last direct child "li" element, as
-      // that will be the last one appearing with the MDL animation.
-      $button_id = $button->getAttribute('id');
-      $last_li_xpath = $wrapper->find('xpath', "//ul[@for and @for='{$button_id}']/li[last()]")->getXpath();
+      $last_li_xpath = $wrapper->find('xpath', "//ul/li[last()]")->getXpath();
+      $driver = $this->getSession()->getDriver();
+      if ($driver->isVisible($last_li_xpath)) {
+        // Since the browser window size can vary in different test environments
+        // and some menus have a different behavior depending on the browser
+        // width, the menu might already be open.
+        // In these cases, the press of the button would change the already
+        // proper visibility state of the menu items. Prevent this behavior by
+        // returning early if the menu items are already visible.
+        return;
+      }
+
       $button->click();
 
       // Wait for the menu opening animation to end before continuing.
       $end = microtime(TRUE) + 5;
-      $driver = $this->getSession()->getDriver();
       do {
         usleep(100000);
         // The plus button opening animation runs from the top right to the

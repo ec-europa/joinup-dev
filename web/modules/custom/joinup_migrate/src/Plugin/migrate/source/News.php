@@ -27,7 +27,7 @@ class News extends NodeBase {
       'keywords' => $this->t('Keywords'),
       'country' => $this->t('Spatial coverage'),
       'state' => $this->t('State'),
-      'kicker' => $this->t('Kicker'),
+      'short_title' => $this->t('Short title'),
     ] + parent::fields();
   }
 
@@ -65,11 +65,11 @@ class News extends NodeBase {
       ->fetchCol();
     $row->setSourceProperty('fids', $fids);
 
-    $kicker = trim($row->getSourceProperty('title'));
-    if (Unicode::strlen($kicker) > 30) {
-      $kicker = trim(Unicode::substr($kicker, 0, 29)) . '…';
+    $short_title = trim($row->getSourceProperty('title'));
+    if (Unicode::strlen($short_title) > 30) {
+      $short_title = trim(Unicode::substr($short_title, 0, 29)) . '…';
     }
-    $row->setSourceProperty('kicker', $kicker);
+    $row->setSourceProperty('short_title', $short_title);
 
     // Source URL.
     if ($source_url = $row->getSourceProperty('source_url')) {

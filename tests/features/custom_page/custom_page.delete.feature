@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Custom page" deleteing.
   In order to manage custom pages
   As a moderator or group facilitator

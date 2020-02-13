@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - joinup_subscription
+    - node
 id: subscribe_discussions
 label: 'Follow discussions'
 bundles:

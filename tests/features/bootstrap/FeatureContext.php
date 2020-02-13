@@ -12,8 +12,10 @@ use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
+use Behat\Mink\Selector\Xpath\Escaper;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
@@ -24,6 +26,7 @@ use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
+use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\PageCacheTrait;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
@@ -43,6 +46,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use BrowserCapabilityDetectionTrait;
   use ContextualLinksTrait;
   use EntityTrait;
+  use MaterialDesignTrait;
   use PageCacheTrait;
   use SearchTrait;
   use TagTrait;
@@ -84,12 +88,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $page = $this->getSession()->getPage();
     $not_found = [];
     foreach ($fields as $field) {
-      // Complex fields in Drupal might not be directly linked to actual field
-      // elements such as 'select' and 'input', so try both the standard
-      // findField() as well as an XPath expression that finds the given label
-      // inside any element marked as a form item.
-      $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " form-item ") and .//label[text() = "' . $field . '"]]';
-      $is_found = (bool) $page->findField($field) || (bool) $page->find('xpath', $xpath);
+      $is_found = (bool) $this->findAnyFormField($field, $page);
       if (!$is_found) {
         $not_found[] = $field;
       }
@@ -138,7 +137,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $not_found = [];
     $not_visible = [];
     foreach ($fields as $field) {
-      $element = $page->findField($field);
+      $element = $this->findAnyFormField($field, $page);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -149,7 +148,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
         // their label and container are not.
         $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
 
-        if (!$wrapper->isVisible()) {
+        if ($wrapper && !$wrapper->isVisible()) {
           $not_visible[] = $field;
         }
       }
@@ -180,7 +179,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $not_found = [];
     $visible = [];
     foreach ($fields as $field) {
-      $element = $page->findField($field);
+      $element = $this->findAnyFormField($field, $page);
       if (!$element) {
         $not_found[] = $field;
         continue;
@@ -191,7 +190,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       // their label and container are not.
       $wrapper = $element->find('xpath', "ancestor-or-self::div[@class and contains(concat(' ', normalize-space(@class), ' '), ' form-item ')][1]");
       // Neither the field or its wrapper should be visible at all.
-      if ($element->isVisible() || $wrapper->isVisible()) {
+      if ($element->isVisible() || !empty($wrapper) && $wrapper->isVisible()) {
         $visible[] = $field;
       }
     }
@@ -407,15 +406,47 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *   CSS selector of the select field.
    *
    * @throws \Exception
+   *   Thrown when the select is not found in the page or the selected option is
+   *   not the expected one.
    *
    * @Then the option with text :option from select :select is selected
    */
   public function assertFieldOptionSelected($option, $select) {
-    $element = $this->findSelect($select);
-    if (!$element) {
-      throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
+    $this->assertFieldOptionSelectedInRegion($option, $select);
+  }
+
+  /**
+   * Checks if an option is selected in a specific select element in a region.
+   *
+   * @param string $option
+   *   Text value of the option to find.
+   * @param string $select
+   *   CSS selector of the select field.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (optional) The region to search in. Defaults to the whole page.
+   *
+   * @throws \Exception
+   *   Thrown when the select is not found in the page or the selected option is
+   *   not the expected one.
+   */
+  protected function assertFieldOptionSelectedInRegion(string $option, string $select, TraversableElement $region = NULL): void {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
     }
-    $this->assertSelectedOption($element, $option);
+
+    $element = $this->findSelect($select, $region);
+    if (!$element) {
+      throw new \Exception(sprintf('The select "%s" was not found.', $select));
+    }
+
+    $option_element = $element->find('xpath', '//option[@selected="selected"]');
+    if (!$option_element) {
+      throw new \Exception(sprintf('No option is selected in the %s select', $select));
+    }
+
+    if ($option_element->getText() !== $option) {
+      throw new \Exception(sprintf('The option "%s" was expected to be selected, but %s was selected instead.', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+    }
   }
 
   /**
@@ -469,7 +500,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Find the selected option of the select and check the text.
+   * Checks that a select element does not have the given text option selected.
    *
    * @param string $option
    *   Text value of the option to find.
@@ -646,6 +677,26 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
+   * Asserts that a certain contextual link is present in the page.
+   *
+   * @param string $text
+   *   The text of the link.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is not found in the page.
+   *
+   * @Then I (should )see the contextual link :text
+   */
+  public function assertContextualLinkInPagePresent(string $text): void {
+    $region = $this->getSession()->getPage();
+    $links = $this->findContextualLinkPaths($region);
+
+    if (!isset($links[$text])) {
+      throw new \Exception(sprintf('Contextual link %s expected but not found in the region %s', $text, $region));
+    }
+  }
+
+  /**
    * Asserts that a certain contextual link is not present in a region.
    *
    * @param string $text
@@ -660,6 +711,26 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    */
   public function assertContextualLinkInRegionNotPresent(string $text, string $region): void {
     $links = $this->findContextualLinkPaths($this->getRegion($region));
+
+    if (isset($links[$text])) {
+      throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
+    }
+  }
+
+  /**
+   * Asserts that a certain contextual link is not present in the page.
+   *
+   * @param string $text
+   *   The text of the link.
+   *
+   * @throws \Exception
+   *   Thrown when the contextual link is found in the page.
+   *
+   * @Then I should not see the contextual link :text
+   */
+  public function assertContextualLinkInPageNotPresent(string $text): void {
+    $region = $this->getSession()->getPage();
+    $links = $this->findContextualLinkPaths($region);
 
     if (isset($links[$text])) {
       throw new \Exception(sprintf('Unexpected contextual link %s found in the region %s', $text, $region));
@@ -683,49 +754,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!empty($links)) {
       throw new \Exception(sprintf('Unexpected contextual links found in the region %s', $region));
     }
-  }
-
-  /**
-   * Moves a slider to the next or previous option.
-   *
-   * @param string $label
-   *   The label of the slider that will be fingered.
-   * @param string $direction
-   *   The direction in which the slider will be moved. Can be either 'left' or
-   *   'right'.
-   *
-   * @throws \Exception
-   *   Thrown when the slider could not be found in the page, or when an invalid
-   *   direction is passed.
-   *
-   * @When I move the :label slider to the :direction
-   */
-  public function moveSlider($label, $direction) {
-    // Check that the direction is either 'left' or 'right'.
-    if (!in_array($direction, ['left', 'right'])) {
-      throw new \Exception("The direction $direction is currently not supported. Use either 'left' or 'right'.");
-    }
-    $key = $direction === 'left' ? BrowserKey::LEFT_ARROW : BrowserKey::RIGHT_ARROW;
-
-    // Locate the slider starting from the label:
-    // - Find the label with the given label text.
-    // - Move up the DOM to the wrapper div of the select element. This is
-    //   identified by the class 'form-type-select'.
-    // - In this wrapper, find the slider handle, this is a span with class
-    //   'ui-slider-handle'.
-    $xpath = '//label[text()="' . $label . '"]/ancestor::div[contains(concat(" ", normalize-space(@class), " "), " form-type-select ")]//span[contains(concat(" ", normalize-space(@class), " "), " ui-slider-handle ")]';
-    $slider = $this->getSession()->getPage()->find('xpath', $xpath);
-
-    if (!$slider) {
-      throw new \Exception("Slider with label $label not found in the page.");
-    }
-
-    // Focus the slider handle, and move it. Note that we are using the keyboard
-    // to move the slider instead of the mouse. This ensures that this works
-    // fine at all slider widths and screen sizes.
-    $slider->focus();
-    $slider->keyDown($key);
-    $slider->keyUp($key);
   }
 
   /**
@@ -770,6 +798,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the :locator :element in the :region( region) should not be visible
    */
   public function assertElementNotVisibleInRegion($locator, $element, $region) {
+    $region = $this->getRegion($region);
     $element = $this->findNamedElementInRegion($locator, $element, $region);
     $this->assertNotVisuallyVisible($element);
   }
@@ -786,6 +815,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the :locator :element in the :region( region) should be visible
    */
   public function assertElementVisibleInRegion($locator, $element, $region) {
+    $region = $this->getRegion($region);
     $element = $this->findNamedElementInRegion($locator, $element, $region);
     $this->assertVisuallyVisible($element);
   }
@@ -889,7 +919,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $values = $this->explodeCommaSeparatedStepArgument($values);
 
     /** @var \Behat\Mink\Element\NodeElement[] $items */
-    $items = $this->getSession()->getPage()->findAll('named', array('field', $field));
+    $items = $this->getSession()->getPage()->findAll('named', ['field', $field]);
 
     if (empty($items)) {
       throw new \Exception("Cannot find field $field.");
@@ -941,7 +971,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception(sprintf('Page title tag not found on the page "%s".', $session->getCurrentUrl()));
     }
 
-    list($title, $site_name) = explode(' | ', $page_title->getText());
+    [$title, $site_name] = explode(' | ', $page_title->getText());
 
     $title = trim($title);
     if ($title !== $text) {
@@ -957,7 +987,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public function assertCapitalisedHeading($heading) {
     $heading = strtoupper($heading);
     $element = $this->getSession()->getPage();
-    foreach (array('h1', 'h2', 'h3', 'h4', 'h5', 'h6') as $tag) {
+    foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
       $results = $element->findAll('css', $tag);
       foreach ($results as $result) {
         if ($result->getText() == $heading) {
@@ -1245,19 +1275,34 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   }
 
   /**
-   * Finds a checkbox or a radio button in a table row containing a given text.
+   * Unchecks a material checkbox in a row that contains some text.
    *
    * @param string $text
    *   Text in the row.
    *
-   * @return \Behat\Mink\Element\NodeElement
-   *   The checkbox element.
-   *
    * @throws \Exception
    *   If the page contains no rows, no row contains the text or the row
    *   contains no checkbox or radio button.
+   * @throws \InvalidArgumentException
+   *   If this step definition was used on a radio button.
+   *
+   * @Given I uncheck the material checkbox in the :text table row
    */
-  protected function getCheckboxOrRadioByRowText(string $text): NodeElement {
+  public function uncheckMaterialCheckboxInTableRow(string $text): void {
+    $row = $this->getRowByRowText($text);
+    $this->toggleMaterialDesignCheckbox('', $row);
+  }
+
+  /**
+   * Searches the page for a row that includes the given text.
+   *
+   * @param string $text
+   *   The text to search for.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The row element.
+   */
+  protected function getRowByRowText(string $text): NodeElement {
     $page = $this->getSession()->getPage();
     $rows = $page->findAll('css', 'tr');
     if (empty($rows)) {
@@ -1274,6 +1319,25 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$found) {
       throw new \Exception(sprintf('Failed to find a row containing "%s" on the page %s', $text, $this->getSession()->getCurrentUrl()));
     }
+
+    return $row;
+  }
+
+  /**
+   * Finds a checkbox or a radio button in a table row containing a given text.
+   *
+   * @param string $text
+   *   Text in the row.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The checkbox element.
+   *
+   * @throws \Exception
+   *   If the page contains no rows, no row contains the text or the row
+   *   contains no checkbox or radio button.
+   */
+  protected function getCheckboxOrRadioByRowText(string $text): NodeElement {
+    $row = $this->getRowByRowText($text);
     if (!$element = $row->find('css', 'input[type="checkbox"],input[type="radio"]')) {
       throw new \Exception(sprintf('The row "%s" on the page "%s" contains no checkbox or radio button', $text, $this->getSession()->getCurrentUrl()));
     }
@@ -1436,18 +1500,14 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @BeforeScenario @errorPage
    */
-  public function installErrorPageTestingModule() {
+  public function beforeErrorPageTesting() {
     static::toggleModule('install', 'error_page_test');
 
-    // The test writes to the PHP error log because it's in its scope to test
-    // fatal errors. But the testing bots might reject tests that are not ending
-    // with an empty log. We create a copy of the error log just before running
-    // this scenario to be restored in @AfterScenario phase. In this way the log
-    // will not be affected by errors logged by this scenario.
-    $error_log = ini_get('error_log');
-    if (file_exists($error_log)) {
-      file_unmanaged_copy($error_log, 'temporary://php.log', 1);
-    }
+    // Pipe error log entries to a file rather than to standard PHP log.
+    $settings = Settings::getAll();
+    $settings['error_page']['log']['method'] = 3;
+    $settings['error_page']['log']['destination'] = 'temporary://testing.log';
+    new Settings($settings);
   }
 
   /**
@@ -1455,16 +1515,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @AfterScenario @errorPage
    */
-  public function uninstallErrorPageTestingModule(): void {
+  public function afterErrorPageTesting(): void {
     static::toggleModule('uninstall', 'error_page_test');
 
-    // Restore the log saved in @BeforeScenario.
-    $error_log = ini_get('error_log');
-    if (file_exists($error_log) && file_exists('temporary://php.log') ) {
-      file_unmanaged_move('temporary://php.log', $error_log, 1);
-    }
+    // Restore piping error log entries to the standard PHP log.
+    $settings = Settings::getAll();
+    unset($settings['error_page']);
+    new Settings($settings);
 
-    // Restore the original system logging error level.
+    // Restore the site's error logging verbosity.
     $this->setSiteErrorLevel();
   }
 
@@ -1500,7 +1559,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    *
    * @param string $vocabulary_name
    *   The name of the vocabulary.
-   * @param string $terme_name
+   * @param string $term_name
    *   The term name.
    * @param string $format
    *   The RDF serialization format.

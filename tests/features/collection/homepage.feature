@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Collection homepage
   In order find content around a topic
   As a user of the website
@@ -12,18 +12,22 @@ Feature: Collection homepage
       | Legoloas | active |           |
       | Gimli    | active |           |
       | Samwise  | active | moderator |
-    Given the following owner:
+    And the following owner:
       | name          |
       | Bilbo Baggins |
-    Given the following collection:
-      | title             | Middle earth daily               |
-      | description       | Middle earth daily               |
-      | owner             | Bilbo Baggins                    |
-      | logo              | logo.png                         |
-      | moderation        | yes                              |
-      | elibrary creation | members                          |
-      | state             | validated                        |
-      | policy domain     | Employment and Support Allowance |
+    And the following contact:
+      | name  | Kalikatoura             |
+      | email | kalikatoura@example.com |
+    And the following collection:
+      | title               | Middle earth daily               |
+      | description         | Middle earth daily               |
+      | owner               | Bilbo Baggins                    |
+      | contact information | Kalikatoura                      |
+      | logo                | logo.png                         |
+      | moderation          | yes                              |
+      | elibrary creation   | members                          |
+      | state               | validated                        |
+      | policy domain       | Employment and Support Allowance |
     And the following solution:
       | title             | Bilbo's book          |
       | collection        | Middle earth daily    |

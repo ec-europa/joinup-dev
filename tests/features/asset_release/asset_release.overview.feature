@@ -1,4 +1,4 @@
-@api @clearStaticCache
+@api @clearStaticCache @group-a
 Feature: Asset distribution overview on solution.
   In order to view an overview of a solution's releases and download them
   As a user of the website
@@ -61,8 +61,7 @@ Feature: Asset distribution overview on solution.
 
     And I should see the download link in the "Linux" asset distribution
     And I should see the download link in the "User manual" asset distribution
-    # When the distribution file is remote, the download link should not be shown.
-    And the "Windows" asset distribution should not have any download urls
+    And I should see the external link in the "Windows" asset distribution
 
     And the "The Child of the Past" release should be marked as the latest release
 
