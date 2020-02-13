@@ -28,7 +28,7 @@ function joinup_eulogin_post_update_set_random_passwords(array &$sandbox): strin
   $uids_to_process = \array_splice($sandbox['uids'], 0, 50);
   /** @var \Drupal\user\UserInterface $account */
   foreach (User::loadMultiple($uids_to_process) as $account) {
-    $account->setPassword(\user_password(30))->save();
+    $account->setPassword(\user_password())->save();
     $sandbox['progress']++;
   }
   $sandbox['#finished'] = (int) empty($sandbox['uids']);
