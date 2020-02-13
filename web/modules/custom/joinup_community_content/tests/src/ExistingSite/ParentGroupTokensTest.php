@@ -10,18 +10,18 @@ use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\token\Functional\TokenTestTrait;
 
 /**
- * Tests the community content parent url tokens.
+ * Tests the community content parent URL tokens.
  */
 class ParentGroupTokensTest extends JoinupExistingSiteTestBase {
 
+  use NodeCreationTrait;
   use RdfEntityCreationTrait;
   use TokenTestTrait;
-  use NodeCreationTrait;
 
   /**
    * Tests tokens defined by joinup_community_content.
    */
-  public function testParentGroupDefinedTokens() {
+  public function testParentGroupDefinedTokens(): void {
     $collection = $this->createRdfEntity([
       'rid' => 'collection',
       'label' => $this->randomString(),

@@ -20,7 +20,7 @@ function joinup_community_content_token_info_alter(&$info) {
   // Token to generate a path tracking back to the parent collection.
   $info['tokens']['node']['path-to-community-content'] = [
     'name' => t('Path to community content'),
-    'description' => t('An aliased url containing all parents of the community content.'),
+    'description' => t('An aliased URL containing all parents of the community content.'),
   ];
 }
 
@@ -61,6 +61,7 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
 
           if ($parent = $relation_manager->getParent($node)) {
             $bubbleable_metadata->addCacheableDependency($parent);
+            /** @var \Drupal\rdf_entity\RdfInterface $collection */
             if ($parent->bundle() === 'solution' && $collection = $parent->collection->first()->entity) {
               $bubbleable_metadata->addCacheableDependency($collection);
               $path_parts[] = $collection->toUrl()->toString();

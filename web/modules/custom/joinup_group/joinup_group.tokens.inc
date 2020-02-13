@@ -12,7 +12,7 @@ use Drupal\Core\Render\BubbleableMetadata;
 /**
  * Implements hook_token_info().
  */
-function joinup_group_token_info() {
+function joinup_group_token_info(): array {
   return [
     'tokens' => [
       'rdf_entity' => [
@@ -30,7 +30,7 @@ function joinup_group_token_info() {
 /**
  * Implements hook_tokens().
  */
-function joinup_group_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+function joinup_group_tokens(string $type, array $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array {
   $replacements = [];
   if ($type !== 'rdf_entity' || empty($data['rdf_entity'])) {
     return $replacements;
