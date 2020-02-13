@@ -1040,7 +1040,17 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
 
     // Anonymous function that creates an owner for the group and removes the
     // membership of the Joinup Federation Support user.
+    // Does not assign a new owner if there is already an owner after all.
     $sandbox['handle_memberships'] = function (RdfInterface $group, AccountInterface $new_owner) use ($membership_manager, $sandbox): void {
+      // Cleanup the Joinup Federation Support membership.
+      if ($support_membership = $membership_manager->getMembership($group, $sandbox['joinup_support_uid'])) {
+        $support_membership->delete();
+      }
+
+      if (!empty($membership_manager->getGroupMembershipsByRoleNames($group, ['administrator']))) {
+        return;
+      };
+
       if (!$new_owner_membership = $membership_manager->getMembership($group, $new_owner->id())) {
         $new_owner_membership = $membership_manager->createMembership($group, $new_owner);
       }
@@ -1050,11 +1060,6 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
       $new_owner_membership->addRole($group_admin_role);
       $new_owner_membership->addRole($group_facilitator_role);
       $new_owner_membership->save();
-
-      // Cleanup the Joinup Federation Support membership.
-      if ($support_membership = $membership_manager->getMembership($group, $sandbox['joinup_support_uid'])) {
-        $support_membership->delete();
-      }
     };
   }
 
