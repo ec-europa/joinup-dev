@@ -50,10 +50,10 @@
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
-            command="site-install"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="site-install"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="${website.site.name}" />
             <option name="account-name" value="${drupal.admin.username}" />
@@ -84,18 +84,18 @@
 
     <target name="import-rdf-fixtures">
         <rdf-import-fixtures
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            Port="${sparql.port}" />
+                IsqlPath="${isql.bin}"
+                DataSourceName="${sparql.dsn}"
+                Username="${sparql.user}"
+                Password="${sparql.password}"
+                Port="${sparql.port}" />
 
         <afterrdffixturesimport
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            Port="${sparql.port}" />
+                IsqlPath="${isql.bin}"
+                DataSourceName="${sparql.dsn}"
+                Username="${sparql.user}"
+                Password="${sparql.password}"
+                Port="${sparql.port}" />
     </target>
 
     <!-- Execute Drupal updates. -->
@@ -288,11 +288,11 @@
         <!-- Make sure the CSS directory exists. -->
         <mkdir dir="${sass.output.dir}" />
         <sass
-            executable="${sass.bin}"
-            flags="--sourcemap=${sass.sourcemap}"
-            style="${sass.style}"
-            input="${sass.input}"
-            output="${sass.output.dir}/${sass.output.file}" />
+                executable="${sass.bin}"
+                flags="--sourcemap=${sass.sourcemap}"
+                style="${sass.style}"
+                input="${sass.input}"
+                output="${sass.output.dir}/${sass.output.file}" />
     </target>
 
     <!-- Set the transaction type to READ-COMMITTED. -->
@@ -348,8 +348,8 @@
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
     <target name="disable-persistent-session-cookies"
-        description="Disable persistent session cookies"
-        depends="writable-settings-folder, writable-services-yml">
+            description="Disable persistent session cookies"
+            depends="writable-settings-folder, writable-services-yml">
 
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -366,10 +366,9 @@
         </reflexive>
     </target>
 
-    <target
-        name="enable-config-read-only"
-        depends="writable-settings-folder, writable-settings-php"
-        description="Enables config_readonly.">
+    <target name="enable-config-read-only"
+            depends="writable-settings-folder, writable-settings-php"
+            description="Enables config_readonly.">
 
         <!-- Remove any existing setting. -->
         <reflexive>
@@ -398,10 +397,9 @@
         </if>
     </target>
 
-    <target
-        name="disable-config-read-only"
-        depends="writable-settings-folder, writable-settings-php"
-        description="Disables config_readonly.">
+    <target name="disable-config-read-only"
+            depends="writable-settings-folder, writable-settings-php"
+            description="Disables config_readonly.">
         <touch file="${project.basedir}/disable-config-readonly" />
     </target>
 
@@ -417,34 +415,34 @@
 
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
-      <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter=","/>
-      <!-- Create a user with only "authenticated user" role assigned. -->
-      <drush
-        command="user-create"
-        assume="yes"
-        root="${website.drupal.dir}"
-        bin="${drush.bin}">
-        <option name="mail" value="user@example.com"/>
-        <option name="password" value="user"/>
-        <param>user</param>
-      </drush>
-      <drush
-        command="cas-mock-server:user-create"
-        assume="yes"
-        root="${website.drupal.dir}"
-        bin="${drush.bin}">
-        <param>user</param>
-        <option name="email" value="user@example.com"/>
-        <option name="password" value="user"/>
-      </drush>
-      <drush
-        command="cas:set-cas-username"
-        assume="yes"
-        root="${website.drupal.dir}"
-        bin="${drush.bin}">
-        <param>user</param>
-        <param>user</param>
-      </drush>
+        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter=","/>
+        <!-- Create a user with only "authenticated user" role assigned. -->
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <option name="mail" value="user@example.com"/>
+            <option name="password" value="user"/>
+            <param>user</param>
+        </drush>
+        <drush
+                command="cas-mock-server:user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>user</param>
+            <option name="email" value="user@example.com"/>
+            <option name="password" value="user"/>
+        </drush>
+        <drush
+                command="cas:set-cas-username"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>user</param>
+            <param>user</param>
+        </drush>
         <!-- Grant the moderator role also to the administrator. -->
         <drush
                 command="user-add-role"
