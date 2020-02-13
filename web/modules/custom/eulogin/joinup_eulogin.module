@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\joinup_eulogin\JoinupEuLoginAuthnameItemList;
 
@@ -51,6 +52,14 @@ function joinup_eulogin_form_cas_account_link_form_alter(array &$form, FormState
       unset($form['login']['name']['#element_validate']);
     }
     $form['login']['name']['#element_validate'][] = 'joinup_eulogin_email_registration_validation';
+
+    // Provide a link to the Drupal password reset form so that users that have
+    // not yet moved to EU Login can still reset their password if they forgot
+    // it.
+    $arguments = [
+      ':passreset-url' => Url::fromRoute('user.pass')->toString(),
+    ];
+    $form['login']['pass']['#description'] = t('Enter the password that accompanies your email address. Lost your Joinup password? You can still <a href=":passreset-url">reset your password</a>.', $arguments);
   }
 }
 
@@ -135,6 +144,10 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
   if (isset($form['account']['mail']) && \Drupal::config('cas.settings')->get('user_accounts.restrict_email_management')) {
     $form['account']['mail']['#disabled'] = TRUE;
   }
+  if (isset($form['account']['pass']) && \Drupal::config('cas.settings')->get('user_accounts.restrict_password_management')) {
+    $form['account']['pass']['#access'] = FALSE;
+  }
+
   $mapping = \Drupal::configFactory()
     ->get('cas_attributes.settings')
     ->get('field.mappings');
@@ -167,23 +180,48 @@ function joinup_eulogin_form_user_form_alter(array &$form, FormStateInterface $f
 }
 
 /**
- * Show a warning on the Drupal logon form.
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Disables the Drupal user login form and shows a warning message that users
+ * should log in with EU Login instead.
  */
 function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  $weight = ($form['name']['#weight'] ?? 0) - 1;
+  // Disable the form completely.
+  foreach (Element::children($form) as $key) {
+    unset($form[$key]);
+  }
+
+  $arguments = [
+    ':eulogin-url' => Url::fromRoute('cas.login')->toString(),
+    ':passreset-url' => Url::fromRoute('user.pass')->toString(),
+  ];
+
   $form['warning'] = [
     '#theme' => 'status_messages',
     '#message_list' => [
       'warning' => [
-        '#markup' => t('As of 2nd March 2020, <a href=":url">EU Login</a> will be the only authentication method available on Joinup. We strongly recommend you to choose EU Login as your sign-in method before this date!', [
-          ':url' => Url::fromRoute('cas.login')->toString(),
-        ]),
+        [
+          [
+            '#markup' => t('Starting from 02/03/2020, signing in to Joinup is handled by <a href=":eulogin-url">EU Login</a>, the European Commission Authentication Service.', $arguments),
+            '#prefix' => '<p>',
+            '#suffix' => '</p>',
+          ],
+          [
+            '#markup' => t('After you sign in using EU Login, you will be able to synchronise your existing Joinup account.'),
+            '#prefix' => '<p>',
+            '#suffix' => '</p>',
+          ],
+          [
+            '#markup' => t('Lost your Joinup password? You can still <a href=":passreset-url">reset your password.', $arguments),
+            '#prefix' => '<p>',
+            '#suffix' => '</p>',
+          ],
+        ],
       ],
     ],
     '#status_headings' => [
       'warning' => t('Warning message'),
     ],
-    '#weight' => $weight,
   ];
 }
 
@@ -191,7 +229,8 @@ function joinup_eulogin_form_user_login_form_alter(array &$form, FormStateInterf
  * Implements hook_local_tasks_alter().
  */
 function joinup_eulogin_local_tasks_alter(&$local_tasks): void {
-  // Remove the 'Create new account' local task.
+  // Remove the local task linking to the Drupal registration form. Users are no
+  // longer allowed to register in Drupal and should use EU Login instead.
   unset($local_tasks['user.register']);
 }
 

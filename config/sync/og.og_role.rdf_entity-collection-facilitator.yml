@@ -48,6 +48,7 @@ permissions:
   - 'manage members'
   - 'pin group content'
   - 'request collection archival'
+  - 'unpin group content'
   - 'unshare discussion content'
   - 'unshare document content'
   - 'unshare event content'

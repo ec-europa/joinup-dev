@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
@@ -11,20 +14,56 @@ use Behat\Mink\Exception\ElementNotFoundException;
 trait TraversingTrait {
 
   /**
+   * Searches for any kind of field in a form by label.
+   *
+   * @param string $field
+   *   The field label.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (Optional) The region to search in. If a region is not provided, the
+   *   whole page will be used.
+   *
+   * @return \Behat\Mink\Element\TraversableElement|null
+   *   The field element or NULL if not found.
+   */
+  protected function findAnyFormField(string $field, TraversableElement $region = NULL): ?TraversableElement {
+    if (!$region) {
+      $region = $this->getSession()->getPage();
+    }
+
+    $element = NULL;
+    if (!$element = $region->findField($field)) {
+      // Complex fields in Drupal might not be directly linked to actual field
+      // elements such as 'select' and 'input', so try both the standard
+      // findField() as well as an XPath expression that finds the given label
+      // inside any element marked as a form item.
+      $xpath = '//*[contains(concat(" ", normalize-space(@class), " "), " form-item ") and .//label[text() = "' . $field . '"]]';
+      $element = $region->find('xpath', $xpath);
+    }
+
+    return $element;
+  }
+
+  /**
    * Retrieves a select field by label.
    *
    * @param string $select
    *   The name of the select element.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (optional) The region in which to search for the select. Defaults to the
+   *   whole page.
    *
-   * @return \Behat\Mink\Element\NodeElement
+   * @return \Behat\Mink\Element\TraversableElement
    *   The select element.
    *
    * @throws \Exception
    *   Thrown when no select field is found.
    */
-  protected function findSelect($select) {
+  protected function findSelect(string $select, TraversableElement $region = NULL): TraversableElement {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
+    }
     /** @var \Behat\Mink\Element\NodeElement $element */
-    $element = $this->getSession()->getPage()->find('named', ['select', $select]);
+    $element = $region->find('named', ['select', $select]);
 
     if (empty($element)) {
       throw new \Exception("Select field '{$select}' not found.");
@@ -42,7 +81,7 @@ trait TraversingTrait {
    * @return array
    *   The options text keyed by option value.
    */
-  protected function getSelectOptions(NodeElement $select) {
+  protected function getSelectOptions(NodeElement $select): array {
     $options = [];
     foreach ($select->findAll('xpath', '//option') as $element) {
       /** @var \Behat\Mink\Element\NodeElement $element */
@@ -61,7 +100,7 @@ trait TraversingTrait {
    * @return array
    *   The optgroups labels.
    */
-  protected function getSelectOptgroups(NodeElement $select) {
+  protected function getSelectOptgroups(NodeElement $select): array {
     $optgroups = [];
     foreach ($select->findAll('xpath', '//optgroup') as $element) {
       /** @var \Behat\Mink\Element\NodeElement $element */
@@ -83,7 +122,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when no tab element is found.
    */
-  protected function findVerticalTab($tab) {
+  protected function findVerticalTab(string $tab): NodeElement {
     // Xpath to find the vertical tabs.
     $xpath = "//li[@class and contains(concat(' ', normalize-space(@class), ' '), ' vertical-tabs__menu-item ')]";
     // Filter down to the tab containing a link with the provided text.
@@ -110,7 +149,7 @@ trait TraversingTrait {
    * @throws \Exception
    *    Thrown when the region is not found.
    */
-  protected function getRegion($region) {
+  protected function getRegion(string $region): NodeElement {
     $session = $this->getSession();
     $regionObj = $session->getPage()->find('region', $region);
     if (!$regionObj) {
@@ -129,7 +168,7 @@ trait TraversingTrait {
    * @return \Behat\Mink\Element\NodeElement[]
    *   An array of tiles elements, keyed by tile title.
    */
-  protected function getTiles($region = NULL) {
+  protected function getTiles($region = NULL): array {
     /** @var \Behat\Mink\Element\DocumentElement $regionObj */
     if ($region === NULL) {
       $regionObj = $this->getSession()->getPage();
@@ -158,27 +197,45 @@ trait TraversingTrait {
    * @param string $heading
    *   The heading of the tile to find.
    *
-   * @return \Behat\Mink\Element\NodeElement|null
-   *   The tile element, or null if not found.
+   * @return \Behat\Mink\Element\NodeElement
+   *   The element found.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
-   *   Thrown when the tile is not found.
+   *   Thrown when the element is not found.
    */
-  protected function getTileByHeading($heading) {
-    // Locate all the tiles.
-    $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__item--tile ")]';
+  protected function getTileByHeading(string $heading): NodeElement {
+    return $this->getListingByHeading('listing__item--tile', $heading);
+  }
+
+  /**
+   * Finds a list item element by its heading.
+   *
+   * @param string $type
+   *   The class of the element that is searched for.
+   * @param string $heading
+   *   The heading on the item.
+   *
+   * @return \Behat\Mink\Element\NodeElement
+   *   The found node element.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the element is not found.
+   */
+  protected function getListingByHeading(string $type, string $heading): NodeElement {
+    // Locate all the items.
+    $xpath = '//*[@class and contains(concat(" ", normalize-space(@class), " "), " ' . $type . ' ")]';
     // That have a heading with the specified text.
     $xpath .= '[.//*[@class and contains(concat(" ", normalize-space(@class), " "), " listing__title ")][normalize-space()="' . $heading . '"]]';
 
-    $tile = $this->getSession()->getPage()->find('xpath', $xpath);
+    $item = $this->getSession()->getPage()->find('xpath', $xpath);
 
-    if (!$tile) {
+    if (!$item) {
       // Throw a specific exception, so it can be catched by steps that need to
       // assert that a tile is not present.
-      throw new ElementNotFoundException($this->getSession()->getDriver(), "Tile '$heading'");
+      throw new ElementNotFoundException($this->getSession()->getDriver(), "'$heading' $type item.");
     }
 
-    return $tile;
+    return $item;
   }
 
   /**
@@ -193,7 +250,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the facet is not found in the page.
    */
-  protected function findFacetByAlias($alias) {
+  protected function findFacetByAlias(string $alias): NodeElement {
     $facet_id = self::getFacetIdFromAlias($alias);
     $element = $this->getSession()->getPage()->find('xpath', "//*[@data-drupal-facet-id='{$facet_id}']");
 
@@ -218,7 +275,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the mapping is not found.
    */
-  protected static function getFacetIdFromAlias($alias) {
+  protected static function getFacetIdFromAlias(string $alias): string {
     $mappings = [
       'collection type' => 'collection_type',
       'collection policy domain' => 'collection_policy_domain',
@@ -257,7 +314,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the date range field is not found.
    */
-  protected function findDateRangeComponent($field, $date, $component) {
+  protected function findDateRangeComponent(string $field, string $date, string $component): NodeElement {
     /** @var \Behat\Mink\Element\NodeElement $fieldset */
     $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
 
@@ -291,7 +348,7 @@ trait TraversingTrait {
    * @return \Behat\Mink\Element\NodeElement|null
    *   The date or time component element.
    */
-  protected function findDisabledField($label) {
+  protected function findDisabledField(string $label): ?NodeElement {
     $page = $this->getSession()->getPage();
     // The *[self::div|self::fieldset] is because ief sets the class 'form-item'
     // in a fieldset rather than a div.
@@ -319,7 +376,7 @@ trait TraversingTrait {
    * @return \Behat\Mink\Element\NodeElement[]|null
    *   An array of node elements matching the search.
    */
-  protected function findLinksMarkedAsActive($region = NULL) {
+  protected function findLinksMarkedAsActive($region = NULL): ?array {
     if ($region === NULL) {
       /** @var \Behat\Mink\Element\DocumentElement $regionObj */
       $regionObj = $this->getSession()->getPage();
@@ -346,8 +403,8 @@ trait TraversingTrait {
    * @param string $element
    *   The element name, e.g. 'fieldset', 'field', 'link', 'button', 'content',
    *   'select', 'checkbox', 'radio', 'file', 'optgroup', 'option', 'table', ...
-   * @param string $region
-   *   The region in which the element should be found.
+   * @param \Behat\Mink\Element\TraversableElement $region
+   *   (optional) The region to check in.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The element.
@@ -357,15 +414,12 @@ trait TraversingTrait {
    *
    * @see \Behat\Mink\Selector\NamedSelector
    */
-  protected function findNamedElementInRegion($locator, $element, $region) {
-    $session = $this->getSession();
-    $region_object = $session->getPage()->find('region', $region);
-    if (!$region_object) {
-      throw new \Exception(sprintf('No region "%s" found on the page %s.', $region, $session->getCurrentUrl()));
+  protected function findNamedElementInRegion(string $locator, string $element, TraversableElement $region = NULL): TraversableElement {
+    if (empty($region)) {
+      $region = $this->getSession()->getPage();
     }
-
-    // Find the named element in the region.
-    $element = $region_object->find('named', [$element, $locator]);
+    $session = $this->getSession();
+    $element = $region->find('named', [$element, $locator]);
     if (!$element) {
       throw new \Exception(sprintf('No element with locator "%s" found in the "%s" region on the page %s.', $locator, $region, $session->getCurrentUrl()));
     }
@@ -383,7 +437,7 @@ trait TraversingTrait {
    * @return bool
    *   Whether the element exists or not in the given region.
    */
-  protected function findImageInRegion($filename, NodeElement $region = NULL) {
+  protected function findImageInRegion(string $filename, NodeElement $region = NULL): bool {
     if (empty($region)) {
       $region = $this->getSession()->getPage();
     }

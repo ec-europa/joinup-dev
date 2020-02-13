@@ -19,6 +19,7 @@ Feature: Collection membership administration
       | Kathie Cumbershot |       | kathie_cumbershot@example.com | Kathie     | Cumbershot  |
       | Donald Duck       |       | donald_duck@example.com       | Donald     | Duck        |
       | Turkey Ham        |       | turkey_ham@example.com        | Turkey     | Ham         |
+      | Cam Bridge        |       | cambridge@example.com         | Cam        | Bridge      |
     And the following collections:
       | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
       | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
@@ -87,10 +88,14 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the following email should have been sent:
-      | recipient | Kathie Cumbershot                                                               |
-      | subject   | Joinup: Your request to join the collection Medical diagnosis was approved      |
-      | body      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
+    And the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+      | text                                                                            |
+      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
+    But the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" should not contain the following lines of text:
+      | text                                                                                |
+      | You will receive weekly notifications for newly created content on this collection. |
+      | To manage your notifications go to "My subscriptions" in the user menu.             |
+      | If you think this action is not clear or not due, please contact Joinup Support at  |
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
@@ -98,6 +103,43 @@ Feature: Collection membership administration
     # Check that I see one of the random links that requires an active membership.
     Then I should see the plus button menu
     Then I should see the link "Add news"
+
+  @javascript @email
+  Scenario: Request a membership with subscription and approve it
+    When I am logged in as "Cam Bridge"
+    And all e-mails have been sent
+    And I go to the "Medical diagnosis" collection
+    And I press the "Join this collection" button
+    Then a modal should open
+    And I should see the text "Want to receive notifications, too?"
+
+    When I press "Subscribe" in the "Modal buttons" region
+    And I wait for AJAX to finish
+    Then I should see the success message "You have been subscribed to Medical diagnosis and will receive weekly notifications once your membership is approved."
+
+    # Approve a membership.
+    Given I am logged in as "Lisa Cuddy"
+    When all e-mails have been sent
+    And I go to the "Medical diagnosis" collection
+
+    And I open the group sidebar menu
+    And I click "Members" in the "Left sidebar"
+    And I check the box "Update the member Cam Bridge"
+    Then I select "Approve the pending membership(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the following success messages:
+      | success messages                                         |
+      | Approve the pending membership(s) was applied to 1 item. |
+    And the email sent to "Cam Bridge" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+      | text                                                                                             |
+      | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" collection |
+      | You will receive weekly notifications for newly created content on this collection.              |
+      | To manage your notifications go to "My subscriptions" in the user menu.                          |
+      | If you think this action is not clear or not due, please contact Joinup Support at               |
+
+    When I am logged in as "Cam Bridge"
+    When I click the "My subscriptions" link from the email sent to "Cam Bridge"
+    Then I should see the heading "My subscriptions"
 
   @email
   Scenario: Reject a membership
@@ -179,9 +221,9 @@ Feature: Collection membership administration
       | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following email should have been sent:
-      | recipient | Gregory House                                                                                 |
-      | subject   | Your role has been change to Medical diagnosis                                                |
-      | body      | A collection moderator has changed your role in this group to Member, Collection facilitator. |
+      | recipient | Gregory House                                                                      |
+      | subject   | Your role has been changed to facilitator                                          |
+      | body      | Lisa Cuddy has changed your role in collection "Medical diagnosis" to facilitator. |
 
     # Dr House can now edit the collection.
     When I am logged in as "Gregory House"

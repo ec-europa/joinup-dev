@@ -1,0 +1,20 @@
+uuid: a950b6ff-5430-4246-b76c-60580fb0f738
+langcode: en
+status: true
+dependencies: {  }
+template: og_membership_approve
+label: 'Group membership approval'
+description: 'Group privileged user approves a membership request.'
+text:
+  -
+    value: '<p>Joinup: Your request to join the @entity:bundle @entity:title was approved</p>'
+    format: full_html
+  -
+    value: '<p>@actor:full_name has approved your request to join the "@entity:title" @entity:bundle.</p>'
+    format: full_html
+settings:
+  'token options':
+    clear: false
+    'token replace': false
+  purge_override: false
+  purge_methods: {  }
