@@ -165,7 +165,7 @@ abstract class ShareForm extends ShareFormBase {
       $collection_labels[] = $collection->label();
     }
 
-    // Show a message if the content was shared in at least one collection.
+    // Show a message if the content was shared on at least one collection.
     if (!empty($collections)) {
       $this->messenger->addStatus('Item was shared on the following collections: ' . implode(', ', $collection_labels) . '.');
     }
