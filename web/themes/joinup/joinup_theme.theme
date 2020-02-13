@@ -2005,7 +2005,7 @@ function joinup_theme_preprocess_node(&$variables) {
 function joinup_theme_preprocess_social_share(array &$variables) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $variables['entity'];
-  // Generate an absolute, un-aliased URL.
+  // Generate an entity absolute URL.
   $variables['url'] = $entity->toUrl('canonical', [
     'language' => $entity->language(),
   ])->setAbsolute();
