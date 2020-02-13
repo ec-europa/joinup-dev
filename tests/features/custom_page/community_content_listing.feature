@@ -380,9 +380,9 @@ Feature:
     Given I go to the homepage of the "Emulators" collection
     And I click "Add news" in the plus button menu
     When I fill in the following:
-      | Kicker   | Current wars                |
-      | Headline | Edisson vs Electro          |
-      | Content  | A new movie is comming out. |
+      | Short title | Current wars               |
+      | Headline    | Edisson vs Electro         |
+      | Content     | A new movie is coming out. |
     And I press "Publish"
     Then I should see the heading "Current wars"
 
@@ -397,7 +397,7 @@ Feature:
       | Rare Nintendo64 disk drive discovered |
 
     Given I go to the news content "Current wars" edit screen
-    And I fill in "Kicker" with "Current wars is over"
+    And I fill in "Short title" with "Current wars is over"
     And I press "Update"
     Then I should see the heading "Current wars is over"
 

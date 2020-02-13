@@ -8,7 +8,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
 use Drupal\joinup_subscription\Exception\UserAlreadySubscribedException;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -21,17 +21,17 @@ class InvitationSubscriber implements EventSubscriberInterface {
   /**
    * The subscription service.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $joinupSubscription;
 
   /**
    * Constructs a new InvitationSubscriber.
    *
-   * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $joinupSubscription
+   * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $joinupSubscription
    *   The subscription service.
    */
-  public function __construct(JoinupSubscriptionInterface $joinupSubscription) {
+  public function __construct(JoinupDiscussionSubscriptionInterface $joinupSubscription) {
     $this->joinupSubscription = $joinupSubscription;
   }
 

@@ -5,9 +5,14 @@
  * Contains joinup_subscription.module..
  */
 
+declare(strict_types = 1);
+
 use Drupal\field\FieldStorageConfigInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\message\MessageInterface;
+use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_entity_type_build().
@@ -36,13 +41,62 @@ function joinup_subscription_entity_base_field_info(EntityTypeInterface $entity_
       ->setRequired(FALSE)
       // By default, the new member gets subscribed to all community content of
       // the group.
-      ->setDefaultValue([
-        ['entity_type' => 'node', 'bundle' => 'discussion'],
-        ['entity_type' => 'node', 'bundle' => 'document'],
-        ['entity_type' => 'node', 'bundle' => 'event'],
-        ['entity_type' => 'node', 'bundle' => 'news'],
-      ]);
+      ->setDefaultValue([]);
   }
 
   return $fields;
+}
+
+/**
+ * Implements hook_message_digest_aggregate_alter().
+ *
+ * Reorders the messages in the collection content subscription digest to be
+ * grouped by collection. The collections will be sorted alphabetically and also
+ * the community content items within each collection is sorted alphabetically.
+ */
+function joinup_subscription_message_digest_aggregate_alter(array &$context, UserInterface $account, MessageNotifierInterface $notifier): void {
+  // Only act on the collection community content digest. This can be recognized
+  // because it is not linked to any entity type or entity ID.
+  if (!empty($context['entity_type']) || !empty($context['entity_id'])) {
+    return;
+  }
+
+  $messages = &$context['messages'];
+  uasort($messages, function (MessageInterface $a, MessageInterface $b) {
+    // Find the collections by resolving the entity references from the message
+    // to the community content to the collection.
+    $a_content = $a->field_community_content->first()->entity;
+    $b_content = $b->field_community_content->first()->entity;
+    /** @var \Drupal\rdf_entity\RdfInterface $a_collection */
+    $a_collection = $a_content->og_audience->first()->entity;
+    /** @var \Drupal\rdf_entity\RdfInterface $b_collection */
+    $b_collection = $b_content->og_audience->first()->entity;
+
+    // Within a collection, order by content alphabetically.
+    if ($a_collection->id() === $b_collection->id()) {
+      return $a_content->label() <=> $b_content->label();
+    }
+    // Also order the collections themselves alphabetically.
+    return $a_collection->label() <=> $b_collection->label();
+  });
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Performs the following alterations:
+ * - Sends digest mails as HTML.
+ * - Changes the mail subject.
+ */
+function joinup_subscription_mail_alter(array &$message): void {
+  if ($message['key'] === 'digest') {
+    $message['headers']['Content-Type'] = SWIFTMAILER_FORMAT_HTML;
+    $notifier = $message['params']['notifier'] ?? NULL;
+    if ($notifier instanceof MessageNotifierInterface) {
+      $interval = $notifier->getPluginDefinition()['title'];
+      $message['subject'] = t('Joinup: @interval digest message', [
+        '@interval' => $interval,
+      ]);
+    }
+  }
 }

@@ -1,0 +1,19 @@
+uuid: 0cbd09b5-ded1-49c5-9c3b-95781d2ddfdf
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.og_membership_reject
+id: message.og_membership_reject.mail_subject
+targetEntityType: message
+bundle: og_membership_reject
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_1: true

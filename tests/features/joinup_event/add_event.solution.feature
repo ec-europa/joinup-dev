@@ -79,7 +79,7 @@ Feature: "Add event" visibility options.
     And I press "Save as draft"
     Then I should see the heading "An amazing event"
     And I should see the success message "Event An amazing event has been created."
-    And I should see the text "29 August 2018"
+    And I should see the text "29/08/2018"
     And the "The Luscious Bridges" solution has a event titled "An amazing event"
     # Check that the link to the event is visible on the solution page.
     When I go to the homepage of the "The Luscious Bridges" solution

@@ -38,9 +38,9 @@ Feature: Asset distribution editing.
     And I click "Download releases"
     Then I should see "Releases for OpenBSD solution"
 
-    And the "i386" asset distribution should not have any download urls
     And I should see the download link in the "OpenBSD images" asset distribution
     And I should see the download link in the "Changelog" asset distribution
+    And I should see the external link in the "i386" asset distribution
 
     # Clicking these links will track the download event.
     Then I click "Download" in the "OpenBSD images" asset distribution
@@ -52,9 +52,9 @@ Feature: Asset distribution editing.
     Then I should see "Releases for OpenBSD solution"
 
     # The same download links are shown to anonymous users.
-    And the "i386" asset distribution should not have any download urls
     And I should see the download link in the "OpenBSD images" asset distribution
     And I should see the download link in the "Changelog" asset distribution
+    And I should see the external link in the "i386" asset distribution
 
     # Anonymous users will be prompted with a modal to enter their e-mails.
     When I click "Download" in the "OpenBSD images" asset distribution

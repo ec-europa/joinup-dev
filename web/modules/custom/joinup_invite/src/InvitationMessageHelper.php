@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_invite;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_invite\Controller\InvitationController;
 use Drupal\joinup_invite\Entity\InvitationInterface;
+use Drupal\joinup_notification\EntityMessageHelperInterface;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\message\MessageInterface;
 
@@ -17,11 +17,11 @@ use Drupal\message\MessageInterface;
 class InvitationMessageHelper implements InvitationMessageHelperInterface {
 
   /**
-   * The entity type manager.
+   * The entity message helper service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\joinup_notification\EntityMessageHelperInterface
    */
-  protected $entityTypeManager;
+  protected $entityMessageHelper;
 
   /**
    * The helper service for delivering messages.
@@ -33,62 +33,42 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
   /**
    * Constructs a new InvitationMessageHelper service.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
+   * @param \Drupal\joinup_notification\EntityMessageHelperInterface $entityMessageHelper
+   *   The entity message helper service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $messageDelivery
    *   The helper service for delivering messages.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupMessageDeliveryInterface $messageDelivery) {
-    $this->entityTypeManager = $entityTypeManager;
+  public function __construct(EntityMessageHelperInterface $entityMessageHelper, JoinupMessageDeliveryInterface $messageDelivery) {
+    $this->entityMessageHelper = $entityMessageHelper;
     $this->messageDelivery = $messageDelivery;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function createMessage(InvitationInterface $invitation, string $template, array $arguments) : MessageInterface {
-    // Check that the invitation has been saved, since we need to be able to
-    // reference its ID.
-    if ($invitation->isNew()) {
-      throw new \InvalidArgumentException('Messages can only be created for saved invitations.');
-    }
-
+  public function createMessage(InvitationInterface $invitation, string $template, array $arguments): MessageInterface {
     // Add defaults `@invitation:accept_url` and `@invitation:reject_url`.
     $arguments += $this->getDefaultArguments($invitation);
 
-    /** @var \Drupal\message\MessageInterface $message */
-    $message = $this->entityTypeManager->getStorage('message')->create([
-      'template' => $template,
-      'arguments' => $arguments,
-      'field_invitation' => $invitation->id(),
-    ]);
-
-    return $message;
+    return $this->entityMessageHelper->createMessage($invitation, $template, $arguments, 'field_invitation');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getMessage(InvitationInterface $invitation, string $template) : ?MessageInterface {
-    $messages = $this->entityTypeManager->getStorage('message')->loadByProperties([
-      'template' => $template,
-      'field_invitation' => $invitation->id(),
-    ]);
-
+  public function getMessage(InvitationInterface $invitation, string $template): ?MessageInterface {
+    $messages = $this->entityMessageHelper->getMessages($invitation, $template, 'field_invitation', [], 1);
     return $messages ? reset($messages) : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function sendMessage(InvitationInterface $invitation, string $template) : bool {
+  public function sendMessage(InvitationInterface $invitation, string $template): bool {
     if (!$message = $this->getMessage($invitation, $template)) {
       return FALSE;
     }
-    return $this->messageDelivery
-      ->setMessage($message)
-      ->setRecipients([$invitation->getRecipient()])
-      ->sendMail();
+    return $this->messageDelivery->sendMessageToMultipleUsers($message, [$invitation->getRecipient()]);
   }
 
   /**
@@ -100,7 +80,7 @@ class InvitationMessageHelper implements InvitationMessageHelperInterface {
    * @return array
    *   An associative array of default arguments, keyed by argument ID.
    */
-  protected function getDefaultArguments(InvitationInterface $invitation) : array {
+  protected function getDefaultArguments(InvitationInterface $invitation): array {
     $arguments = [];
 
     foreach (['accept', 'reject'] as $action) {

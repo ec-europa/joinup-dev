@@ -138,6 +138,7 @@ abstract class ShareForm extends ShareFormBase {
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
+      '#extra_suggestion' => 'light_blue',
       '#value' => empty($collections) ? $this->t('Close') : $this->t('Share'),
     ];
 

@@ -18,7 +18,7 @@ Feature: Sharing content between collections
       | Power ballad | validated |
       | Drum'n'Bass  | validated |
     And news content:
-      | title                          | kicker                         | collection   | state     |
+      | title                          | short title                    | collection   | state     |
       | New D'n'B compilation released | New D'n'B compilation released | Classic Rock | validated |
       | Old-school line-up concert     | Old-school line-up concert     | Hip-Hop      | validated |
     And discussion content:

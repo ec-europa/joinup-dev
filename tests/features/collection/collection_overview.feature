@@ -19,13 +19,13 @@ Feature: Collections Overview
     Given users:
       | Username      | E-mail                       |
       | Madam Shirley | i.see.the.future@example.com |
-    Given collections:
+    And collections:
     # As of ISAICP-3618 descriptions should not be visible in regular tiles.
       | title             | description                    | creation date     | state     |
       | E-health          | Supports health-related fields | 2018-10-04 8:31am | validated |
       | Open Data         | Facilitate access to data sets | 2018-10-04 8:33am | validated |
       | Connecting Europe | Reusable tools and services    | 2018-10-04 8:32am | validated |
-    Given the following owner:
+    And the following owner:
       | name                 | type                    |
       | Organisation example | Non-Profit Organisation |
     # Check that visiting as an anonymous does not create cache for all users.
@@ -33,7 +33,7 @@ Feature: Collections Overview
     And I am on the homepage
     Then I should see the link "Collections"
     And I click "Collections"
-    Then I should see the text "Collections are the main collaborative space"
+    And I should see the text "Collections are the main collaborative space"
     And the page should be cacheable
 
     # Check page for authenticated users.
@@ -70,7 +70,10 @@ Feature: Collections Overview
     When I fill in the following:
       | Title       | Colonies in space                   |
       | Description | Some space mumbo jumbo description. |
-    When I select "Employment and Support Allowance" from "Policy domain"
+      # Contact information data.
+      | Name        | Overviewer contact                  |
+      | E-mail      | overviewer@example.com              |
+    And I select "Employment and Support Allowance" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
     # Click the button to select an existing owner.
@@ -97,6 +100,7 @@ Feature: Collections Overview
 
     # Clean up the collection that was created manually.
     Then I delete the "Colonies in space" collection
+    And I delete the "Overviewer contact" contact information
 
   @terms
   Scenario: Custom pages should not be visible on the overview page

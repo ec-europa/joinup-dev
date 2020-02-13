@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.og_membership_role_change.field_membership
+    - message.template.og_membership_role_change
+id: message.og_membership_role_change.default
+targetEntityType: message
+bundle: og_membership_role_change
+mode: default
+content:
+  field_membership:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden: {  }

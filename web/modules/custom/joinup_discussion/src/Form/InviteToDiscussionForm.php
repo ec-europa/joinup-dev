@@ -15,7 +15,8 @@ use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
 use Drupal\joinup_invite\InvitationMessageHelperInterface;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgAccessInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -105,7 +106,7 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * The subscription service.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $subscription;
 
@@ -125,12 +126,12 @@ class InviteToDiscussionForm extends InviteFormBase {
    *   The event dispatcher.
    * @param \Drupal\joinup_invite\InvitationMessageHelperInterface $invitationMessageHelper
    *   The helper service for creating messages for invitations.
-   * @param \Drupal\joinup_subscription\JoinupSubscriptionInterface $subscription
+   * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $subscription
    *   The subscription service.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupSubscriptionInterface $subscription, OgAccessInterface $ogAccess) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EventDispatcherInterface $eventDispatcher, InvitationMessageHelperInterface $invitationMessageHelper, JoinupDiscussionSubscriptionInterface $subscription, OgAccessInterface $ogAccess) {
     parent::__construct($entityTypeManager);
 
     $this->eventDispatcher = $eventDispatcher;
@@ -147,7 +148,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       $container->get('entity_type.manager'),
       $container->get('event_dispatcher'),
       $container->get('joinup_invite.invitation_message_helper'),
-      $container->get('joinup_subscription.subscription'),
+      $container->get('joinup_subscription.discussion_subscription'),
       $container->get('og.access')
     );
   }
@@ -327,41 +328,24 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * Returns the arguments for an invitation message.
    *
-   * @todo This was copied from NotificationSubscriberBase::generateArguments()
-   *   but we cannot call that code directly since it is contained in an
-   *   abstract class. Remove this once ISAICP-4152 is in.
-   *
-   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4152
-   *
    * @param \Drupal\Core\Entity\EntityInterface $discussion
    *   The discussion for which to generate the message arguments.
    *
    * @return array
    *   The message arguments.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the first name or last name of the current user is not known.
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the URL for the discussion cannot be generated.
    */
-  protected function generateArguments(EntityInterface $discussion) : array {
+  protected function generateArguments(EntityInterface $discussion): array {
     $arguments = [];
-    /** @var \Drupal\user\UserInterface $actor */
-    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser()->id());
-    $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
 
     $arguments['@entity:title'] = $discussion->label();
     $arguments['@entity:url'] = $discussion->toUrl('canonical', ['absolute' => TRUE])->toString();
-    $arguments['@actor:field_user_first_name'] = $actor_first_name;
-    $arguments['@actor:field_user_family_name'] = $actor_family_name;
 
-    if ($actor->hasRole('moderator')) {
-      /** @var \Drupal\user\RoleInterface $role */
-      $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
-      $arguments['@actor:role'] = $role->label();
-      $arguments['@actor:full_name'] = 'The Joinup Support Team';
-    }
-    elseif (!$actor->isAnonymous()) {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
-        $actor_first_name . ' ' . $actor_family_name :
-        $actor->get('full_name')->value;
-    }
+    $arguments += MessageArgumentGenerator::getActorArguments();
 
     return $arguments;
   }

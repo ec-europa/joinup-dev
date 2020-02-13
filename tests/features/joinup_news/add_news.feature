@@ -40,12 +40,12 @@ Feature: Creation of news through the UI.
     And I press "Publish"
     Then I should see the following lines of text:
       | Headline field is required.         |
-      | Kicker field is required.           |
+      | Short title field is required.      |
       | Content field is required.          |
       | File description field is required. |
 
     When I fill in the following:
-      | Kicker           | Ytterbium was declared the ultimate metal of the year                                         |
+      | Short title      | Ytterbium has won the ultimate heavy metal of the year award of 2020!                         |
       | Headline         | Strong request for this rare metal that is on the mouth of everybody                          |
       | Content          | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
       | File description | Comparison materials                                                                          |
@@ -56,8 +56,8 @@ Feature: Creation of news through the UI.
     # validation.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3680
     And I press "Publish"
-    Then I should see the error message "Kicker cannot be longer than 30 characters but is currently 53 characters long."
-    When I fill in "Kicker" with "Ytterbium metal of the year"
+    Then I should see the error message "Short title cannot be longer than 66 characters but is currently 69 characters long."
+    When I fill in "Short title" with "Ytterbium metal of the year"
     And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
     # Verify that the author is visible.
