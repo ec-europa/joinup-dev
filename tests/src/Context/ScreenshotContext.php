@@ -8,6 +8,7 @@ use Aws\S3\S3Client;
 use Aws\S3\S3ClientInterface;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\DriverException;
@@ -141,7 +142,7 @@ class ScreenshotContext extends RawMinkContext {
           try {
             $context->assertNotWarningMessage('Notice:');
           }
-          catch (\Exception $e) {
+          catch (ExpectationException $e) {
             // Use the step test in the filename.
             $step = $event->getStep();
             $file_name = str_replace(' ', '_', $step->getKeyword() . '_' . $step->getText());

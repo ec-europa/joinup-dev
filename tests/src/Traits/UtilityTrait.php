@@ -78,6 +78,9 @@ trait UtilityTrait {
    * @return bool
    *   True if human optical receptors will be able to detect this particular
    *   element.
+   *
+   * @throws \Exception
+   *   Thrown when the element is not found in the page.
    */
   protected function isVisuallyVisible(NodeElement $element) {
     \assert(method_exists($this, 'assertJavaScriptEnabledBrowser'), __METHOD__ . ' depends on BrowserCapabilityDetectionTrait. Please include it in your class.');

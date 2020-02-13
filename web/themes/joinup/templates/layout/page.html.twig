@@ -49,8 +49,6 @@
 
     {% if is_front and not logged_in %}
       {% include directory ~ '/templates/parts/featured--anonymous.html.twig' %}
-    {% elseif page.featured and is_navy_header %}
-      {% include directory ~ '/templates/parts/featured--navy-blue.html.twig' %}
     {% elseif page.featured or is_blue_header %}
       <div class="section section--featured">
         {% if is_blue_header %}
@@ -72,7 +70,7 @@
         <div class="row">
           <div class="mdl-grid {{ main_classes|join(' ') }}">
             {% if page.sidebar_left and not has_vertical_tabs %}
-              <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col" role="complementary">
+              <aside class="section section--sidebar-left mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--8-col-phone{{ is_search_page ? ' section--sidebar-left--search' : '' }}" role="complementary">
                 {{ page.sidebar_left }}
               </aside>
             {% endif %}

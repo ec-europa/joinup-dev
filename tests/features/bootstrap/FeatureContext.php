@@ -417,15 +417,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if (!$element) {
       throw new \Exception(sprintf('The select "%s" was not found in the page %s', $select, $this->getSession()->getCurrentUrl()));
     }
-
-    $option_element = $element->find('xpath', '//option[@selected="selected"]');
-    if (!$option_element) {
-      throw new \Exception(sprintf('No option is selected in the %s select in the page %s', $select, $this->getSession()->getCurrentUrl()));
-    }
-
-    if ($option_element->getText() !== $option) {
-      throw new \Exception(sprintf('The option "%s" was not selected in the page %s, %s was selected', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
-    }
+    $this->assertSelectedOption($element, $option);
   }
 
   /**

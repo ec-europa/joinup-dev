@@ -1697,6 +1697,17 @@
             "time": "2017-01-20T21:14:22+00:00"
         },
         {
+            "name": "dkarv/mdl-chip-input",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:dkarv/mdl-chip-input.git",
+                "reference": "master"
+            },
+            "type": "drupal-theme-library",
+            "time": "2018-10-19T20:09:36+00:00"
+        },
+        {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",
             "source": {
@@ -15840,6 +15851,8 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "dkarv/mdl-chip-input": 20,
+        "drupal/antibot": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_exclude": 20,
         "drupal/config_ignore": 20,
