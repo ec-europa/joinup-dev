@@ -36,7 +36,6 @@ form-components:
   dependencies:
     - core/jquery
     - core/jquery.once
-    - core/jquery.ui.slider
     - core/drupal
     - core/drupalSettings
 

@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: front-page
+label: 'Pinned entities'
+description: 'Contains links to entities that are pinned to the front page.'
+locked: false

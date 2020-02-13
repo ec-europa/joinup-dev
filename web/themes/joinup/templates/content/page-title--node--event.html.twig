@@ -20,7 +20,7 @@
     <div class="details">
       <div class="details__element details__element--block">
         <div class="value gray">
-          {{ additional_content.field_event_date }}
+          {{ 'Event date'|t }}: {{ additional_content.field_event_date }}
         </div>
       </div>
       <div class="details__element details__element--block details__element--single">
@@ -30,7 +30,7 @@
     <div class="details">
       {{ additional_content.author }}
       <div class="details__element">
-        <div class="value gray">{{ additional_content.published }}</div>
+        <div class="value gray">{{ 'Published on'|t }}: {{ additional_content.published }}</div>
       </div>
     </div>
   </div>

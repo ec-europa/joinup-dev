@@ -2,13 +2,12 @@ name: Joinup
 type: profile
 description: 'Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability Solutions for European Public Administrations (ISA) Programme. It offers several services that aim to help e-Government professionals share their experience with each other.'
 core: 8.x
+
 distribution:
   name: Joinup
-
 themes:
   - joinup_theme
   - seven
-
 config_devel:
   install:
     - block.block.authoredon
@@ -41,7 +40,6 @@ config_devel:
     - block.block.policy_domain_facet
     - block.block.primaryadminactions
     - block.block.rdf_entities_in_proposed_state
-    - block.block.recommended_content
     - block.block.seven_login
     - block.block.solutiontype
     - block.block.spatial_coverage_facet
@@ -59,6 +57,7 @@ config_devel:
     - core.entity_form_display.ogmenu_instance.navigation.default
     - core.entity_form_display.rdf_entity.collection.propose
     - core.entity_form_display.user.user.register
+    - core.entity_form_display.user.user.subscription_settings
     - core.entity_form_mode.node.collection_custom_page
     - core.entity_form_mode.rdf_entity.propose
     - core.entity_view_display.ogmenu_instance.navigation.default

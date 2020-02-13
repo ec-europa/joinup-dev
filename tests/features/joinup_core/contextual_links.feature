@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a moderator of the website
   in order to better manage all content
@@ -12,8 +12,8 @@ Feature:
     And I go to the "Revisions collection" collection
     And I click "Add news" in the plus button menu
     And I fill in the following:
-      | Kicker   | Revisions collection published          |
-      | Headline | Revisions collection has been published |
+      | Short title | Revisions collection published          |
+      | Headline    | Revisions collection has been published |
     And I enter "We are proud to announce another useless test entity." in the "Content" wysiwyg editor
     And I press "Save as draft"
 

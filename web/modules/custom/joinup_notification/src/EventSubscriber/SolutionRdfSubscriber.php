@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -457,7 +459,7 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
@@ -526,16 +528,17 @@ class SolutionRdfSubscriber extends NotificationSubscriberBase implements EventS
    * @see: ::getUsersMessages() for more information on the array.
    */
   protected function getUsersAndSend(array $user_data, array $bcc_data = []) {
+    $message_values = [];
     $user_data = $this->getUsersMessages($user_data);
     if (!empty($bcc_data)) {
       $ids_to_skip = [];
       foreach ($user_data as $user_ids) {
         $ids_to_skip += $user_ids;
       }
-      $bcc_data = $this->getBccEmails($this->entity, $bcc_data, $ids_to_skip);
+      $message_values['field_message_bcc'] = $this->getBccEmails($this->entity, $bcc_data, $ids_to_skip);
     }
 
-    $this->sendUserDataMessages($user_data, [], $bcc_data);
+    $this->sendUserDataMessages($user_data, [], [], $message_values);
   }
 
   /**

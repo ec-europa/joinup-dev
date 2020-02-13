@@ -71,7 +71,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'spatial coverage' => 'field_spatial_coverage',
     'state' => 'field_ar_state',
     'featured' => 'field_site_featured',
-    'pinned site-wide' => 'field_site_pinned',
+    'pinned to front page' => 'field_site_pinned',
   ];
 
   /**

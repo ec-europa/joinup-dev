@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Following discussions
   As a member of Joinup
   I want to follow interesting discussions
@@ -55,14 +55,14 @@ Feature: Following discussions
   @email
   Scenario: Receive E-mail notifications when actions are taken in discussions.
     Given users:
-      | Username    | E-mail            | First name | Family name |
-      | follower    | dale@example.com  | Dale       | Arden       |
-      | debater     | flash@example.com | Flash      | Gordon      |
-      | facilitator | ming@example.com  | Ming       | Merciless   |
+      | Username    | E-mail            | First name | Family name | Notification frequency |
+      | follower    | dale@example.com  | Dale       | Arden       | monthly                |
+      | debater     | flash@example.com | Flash      | Gordon      | daily                  |
+      | facilitator | ming@example.com  | Ming       | Merciless   | weekly                 |
     And the following collection user membership:
       | collection     | user        | roles       |
       | Dairy products | facilitator | facilitator |
-    And the following discussion content subscriptions:
+    And the following discussion subscriptions:
       | username | title       |
       | follower | Rare Butter |
 
@@ -82,7 +82,7 @@ Feature: Following discussions
       | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
     # The user 'debater' is also a discussion subscriber but because he's the
     # author of the comment, he will not receive the notification.
-    But the following email should not have been sent:
+    And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                             |
       | subject        | Joinup: User Flash Gordon posted a comment in discussion "Rare Butter"                        |
       | body           | Flash Gordon has posted a comment on discussion "Rare Butter" in "Dairy products" collection. |
@@ -94,34 +94,35 @@ Feature: Following discussions
 
     # No E-mail notification is sent when the discussion is updated but no
     # relevant fields are changed.
-    Given the mail collector cache is empty
+    And the mail collector cache is empty
     And I am logged in as "Dr. Hans Zarkov"
     When I go to the discussion content "Rare Butter" edit screen
     And I press "Update"
     Then 0 e-mails should have been sent
 
-    # When relevant fields of a discussion are changed, the followers are
+    # When relevant fields of a discussion are changed, the subscribers are
     # receiving a notification.
     Given I go to the discussion content "Rare Butter" edit screen
     And I fill in "Content" with "The old content was wrong."
     And I press "Update"
+    Then the following email should have been sent:
+      | recipient_mail     | dale@example.com                                                                  |
+      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the following email should have been sent:
-      | recipient_mail | dale@example.com                                                                  |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
-    And the following email should have been sent:
-      | recipient_mail | flash@example.com                                                                 |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail     | flash@example.com                                                                 |
+      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     # The author of the discussion update doesn't receive any notification.
     But the following email should not have been sent:
-      | recipient_mail | hans@example.com                                                                  |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | recipient_mail     | hans@example.com                                                                  |
+      | subject            | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | body               | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    # Check that no other mails have been unexpectedly sent.
     Then 2 e-mails should have been sent
 
     # If the discussion is moved from 'validated' to any other state, no
-    # notification will be send, regardless if a relevant field is changed.
+    # notification will be sent, regardless if a relevant field is changed.
     Given the mail collector cache is empty
     And I am logged in as a moderator
     When I go to the discussion content "Rare Butter" edit screen
@@ -134,34 +135,50 @@ Feature: Following discussions
       | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
     And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                 |
-      | subject        | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
-      | body           | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    And the following email should not have been sent:
+      | recipient_mail | ming@example.com                                                                 |
+      | mail_subject   | Joinup: The discussion "Rare Butter" was updated in the space of "Dairy products" |
+      | mail_body      | The discussion "Rare Butter" was updated in the "Dairy products" collection.      |
+    # The notification that a moderator requests a modification should still be
+    # sent to the content author.
+    But the following email should have been sent:
+      | recipient_mail | hans@example.com                                                          |
+      | subject        | Joinup: Content has been updated                                          |
+      | body           | the Moderator, has requested you to modify the discussion - "Rare Butter" |
+    And 1 e-mail should have been sent
 
     # Delete the discussion and check that no notifications are sent. Since the
     # discussion is not published nobody should be notified.
-    When I go to the "Rare butter" discussion
+    Given the mail collector cache is empty
+    When I go to the "Rare Butter" discussion
     And I click "Delete" in the "Entity actions" region
     And I press "Delete"
 
     Then the following email should not have been sent:
       | recipient_mail | dale@example.com                                                                                     |
-      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
     And the following email should not have been sent:
       | recipient_mail | flash@example.com                                                                                    |
-      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
     And the following email should not have been sent:
       | recipient_mail | hans@example.com                                                                                     |
-      | subject        | Joinup: The discussion "Rare butter" was deleted in the space of "Dairy products"                    |
-      | body           | for your information, the discussion "Rare butter" was deleted from the "Dairy products" collection. |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
+    And the following email should not have been sent:
+      | recipient_mail | ming@example.com                                                                                     |
+      | subject        | Joinup: The discussion "Rare Butter" was deleted in the space of "Dairy products"                    |
+      | body           | for your information, the discussion "Rare Butter" was deleted from the "Dairy products" collection. |
 
     # Now try to delete a published discussion. The notifications should be sent
     # in this case.
     Given discussion content:
       | title     | body                                                   | collection     | state     | author          |
       | Rare feta | Made from milk from the exclusive Manx Loaghtan sheep. | Dairy products | validated | Dr. Hans Zarkov |
-    And discussion content subscriptions:
+    And discussion subscriptions:
       | username    | title     |
       | follower    | Rare feta |
       | facilitator | Rare feta |
