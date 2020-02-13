@@ -7,7 +7,9 @@
 
 namespace Drupal\joinup_group\ProxyClass {
 
-    /**
+  use Drupal\og\OgMembershipInterface;
+
+  /**
      * Provides a proxy class for \Drupal\joinup_group\JoinupGroupManager.
      *
      * @see \Drupal\Component\ProxyBuilder
@@ -78,8 +80,18 @@ namespace Drupal\joinup_group\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, string $role, array $states = array (
+        public function getUserGroupMembershipsByBundle(\Drupal\Core\Session\AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = array (
           0 => 'active',
+        )) : array
+        {
+            return $this->lazyLoadItself()->getUserGroupMembershipsByBundle($user, $entity_type_id, $bundle_id, $states);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, string $role, array $states = array (
+          OgMembershipInterface::STATE_ACTIVE,
         )) : array
         {
             return $this->lazyLoadItself()->getUserMembershipsByRole($user, $role, $states);
@@ -92,7 +104,7 @@ namespace Drupal\joinup_group\ProxyClass {
           0 => 'active',
         )) : array
         {
-          return $this->lazyLoadItself()->getGroupOwners($entity, $states);
+            return $this->lazyLoadItself()->getGroupOwners($entity, $states);
         }
 
     }

@@ -369,3 +369,55 @@ Feature: Moderate community content
       | Metal-rich star cluster     |
       | High frequency              |
       | Cluster                     |
+
+  Scenario: The logo image can be replaced for an event or news item that's in
+    the "proposed" state. See ISAICP-5818.
+
+    Given user:
+      | Username | leo |
+    And the following collection:
+      | title      | Black hole research |
+      | state      | validated           |
+      | moderation | yes                 |
+    And the following collection user membership:
+      | collection          | user |
+      | Black hole research | leo  |
+
+    Given I am logged in as "leo"
+
+    # Test event.
+    And I go to the homepage of the "Black hole research" collection
+    When I click "Add event" in the plus button menu
+    And I fill in the following:
+      | Title            | Alice in Wonderland |
+      | Description      | Here we go...       |
+      | Virtual location | http://example.com  |
+
+    And I attach the file "logo.png" to "Logo"
+    And I press "Upload"
+    When I press "Propose"
+    Then I should see the success message "Event Alice in Wonderland has been created."
+
+    But I click "Edit"
+    And I should see the heading "Edit Event Alice in Wonderland"
+    When I press "Remove"
+    And I should see the heading "Edit Event Alice in Wonderland"
+    And I should see the button "Upload"
+    # Test news.
+    And I go to the homepage of the "Black hole research" collection
+    When I click "Add news" in the plus button menu
+    And I fill in the following:
+      | Short title | Declared the ultimate metal                                                                   |
+      | Headline    | Strong request for this rare metal that is on the mouth of everybody                          |
+      | Content     | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
+
+    And I attach the file "logo.png" to "Logo"
+    And I press "Upload"
+    When I press "Propose"
+    Then I should see the success message "News Declared the ultimate metal has been created."
+
+    But I click "Edit"
+    And I should see the heading "Edit News Declared the ultimate metal"
+    When I press "Remove"
+    And I should see the heading "Edit News Declared the ultimate metal"
+    And I should see the button "Upload"

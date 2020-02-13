@@ -13,14 +13,9 @@ use Drupal\node\NodeInterface;
 class CommunityContentHelper {
 
   /**
-   * Returns an array of node bundles that are considered community content.
-   *
-   * @return array
-   *   An array of node bundle IDs.
+   * An array of node bundles that are considered community content.
    */
-  public static function getBundles(): array {
-    return ['discussion', 'document', 'event', 'news'];
-  }
+  const BUNDLES = ['discussion', 'document', 'event', 'news'];
 
   /**
    * Returns whether the entity is a community content node.
@@ -32,7 +27,7 @@ class CommunityContentHelper {
    *   True if the entity is a community content node, false otherwise.
    */
   public static function isCommunityContent(EntityInterface $entity): bool {
-    return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::getBundles());
+    return $entity instanceof NodeInterface && \in_array($entity->bundle(), self::BUNDLES);
   }
 
   /**

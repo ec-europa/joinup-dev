@@ -39,7 +39,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I am logged in as "CC member"
     And I go to the "CC pre collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CCN create propose"
+    And I fill in "Short title" with "CCN create propose"
     And I fill in "Headline" with "CCN create propose"
     And I fill in "Content" with "CCN create propose"
     And I press "Propose"
@@ -73,7 +73,7 @@ Feature: Notification test for the news transitions on a pre moderated parent.
     And I am logged in as "CC facilitator"
     And I go to the "CC pre collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CCN create publish"
+    And I fill in "Short title" with "CCN create publish"
     And I fill in "Headline" with "CCN create publish"
     And I fill in "Content" with "CCN create publish"
     And I press "Publish"
