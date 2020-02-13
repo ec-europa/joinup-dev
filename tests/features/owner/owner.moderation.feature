@@ -15,7 +15,11 @@ Feature: Owner moderation
 
     When I am logged in as "Raeburn Hibbert"
     And I go to the propose collection form
-    And I fill in "Title" with "The healthy food European project"
+    And I fill in the following:
+      | Title  | The healthy food European project |
+      # Contact information data.
+      | Name   | Duche Baggins                     |
+      | E-mail | duche.baggins@example.com         |
     And I enter "Keep Europe healthy through healthy eating." in the "Description" wysiwyg editor
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
@@ -138,3 +142,4 @@ Feature: Owner moderation
 
     # Final cleanup.
     Then I delete the "The healthy food European project" collection
+    And I delete the "Duche Baggins" contact information

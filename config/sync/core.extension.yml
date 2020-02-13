@@ -91,6 +91,7 @@ module:
   matomo_reporting_api: 0
   menu_ui: 0
   message: 0
+  message_digest: 0
   message_notify: 0
   meta_entity: 0
   moderation: 0
@@ -114,7 +115,6 @@ module:
   password_policy_length: 0
   path: 0
   path_alias: 0
-  persistent_login: 0
   pipeline: 0
   r4032login: 0
   rdf_draft: 0

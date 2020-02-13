@@ -1,0 +1,135 @@
+{% set image_url = site_url ~ '/' ~ directory ~ '/images/digest-message' %}
+
+{% set subscription_url = site_url ~ path('joinup_subscription.my_subscriptions') %}
+
+{% set unsubscription_url = site_url ~ path('joinup_subscription.unsubscribe_all', {'user': receiver_id}) %}
+
+{% set contact_url = site_url ~ path('contact_form.contact_page') %}
+
+<tbody>
+<tr>
+  <td align="center" valign="top" bgcolor="#E9EDEE"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+      <tr>
+        <td align="right" valign="top" bgcolor="#E9EDEE"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+              <td height="30" bgcolor="#ffffff">&nbsp;</td>
+            </tr>
+            </tbody>
+          </table></td>
+        <td width="500" align="left" valign="top"  class="mobile-container"><table width="500" border="0" cellspacing="0" cellpadding="0" class="mobile-container">
+            <tbody>
+            <!-- ISSUE-->
+            <tr>
+              <td align="left" valign="top" bgcolor="#2C4163"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tbody>
+                  <tr>
+                    <td width="" align="left" valign="top" bgcolor="#27456B"  class="hidden--img"><img src="{{ image_url }}/img-1-1@2x.jpg" width="107" height="30" alt=""/></td>
+                    <td width="20" height="30" align="left" valign="middle" bgcolor="#F5A623">&nbsp;</td>
+                    <td width="110" align="left" valign="middle" bgcolor="#F5A623" class="issue">{% trans %}Issue: {{ issue_date }}{% endtrans %}</td>
+                    <td width="20" align="left" valign="middle" bgcolor="#F5A623">&nbsp;</td>
+                  </tr>
+                  </tbody>
+                </table></td>
+            </tr>
+            <!-- ISSUE END-->
+            <!-- HEADER-->
+            <tr>
+              <td align="center" valign="top" bgcolor="#27456B"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tbody>
+                  <tr>
+                    <td width="110" height="170" align="left" valign="top" class="hidden--img"><img src="{{ image_url }}/img-1-2@2x.jpg" width="107" height="72" alt=""/></td>
+                    <td align="center" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                        <tr>
+                          <td align="center" valign="top"><a href="{{ site_url }}"><img src="{{ image_url }}/Logo@2x.jpg" width="250" height="75" alt=""/></a></td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="top">
+                            <span class="H-small">{% trans %}{{ frequency }} digest message{% endtrans %}</span>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table></td>
+                    <td width="110" align="right" valign="middle"  class="hidden--img"><img src="{{ image_url }}/img-2@2x.jpg" width="77" height="145" alt=""/></td>
+                  </tr>
+                  </tbody>
+                </table></td>
+            </tr>
+            <!-- HEADER END-->
+
+            <!-- WELCOME START-->
+            <tr>
+              <td align="left" valign="top" bgcolor="#ffffff"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tbody>
+                  <tr>
+                    <td width="30" height="25" align="left" valign="top">&nbsp;</td>
+                    <td align="left" valign="top">&nbsp;</td>
+                    <td width="30" align="left" valign="top">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="top">&nbsp;</td>
+                    <td align="left" valign="top">
+                      <span class="font-20px">{% trans %}Dear {{ receiver_name }},{% endtrans %}</span></td>
+                    <td align="left" valign="top">&nbsp;</td>
+                  </tr>
+                  </tbody>
+                </table></td>
+            </tr>
+            <!-- WELCOME END-->
+
+            {{ messages }}
+
+            <tr>
+              <td align="left" valign="top">
+                {% trans %}
+                  <b>Kind regards,</b><br/>
+                  <small>The Joinup Support Team</small>
+                {% endtrans %}
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="top" class="separator">&nbsp;</td>
+            </tr>
+            </tbody>
+          </table></td>
+        <td align="left" valign="top" bgcolor="#E9EDEE"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+              <td height="30" bgcolor="#ffffff">&nbsp;</td>
+            </tr>
+            </tbody>
+          </table></td>
+      </tr>
+      </tbody>
+    </table></td>
+</tr>
+
+<!-- FOOTER-->
+<tr>
+  <td align="center" valign="top" class="footer"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+      <tr>
+        <td height="50" align="center" valign="top" bgcolor="#27456B">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="center" valign="top" bgcolor="#27456B"><a href="{{ site_url }}"><img src="{{ image_url }}/Logo-2@2x.jpg" width="200" height="50" alt=""/></a></td>
+      </tr>
+      <tr>
+        <td height="50" align="center" valign="top" bgcolor="#27456B">&nbsp;</td>
+      </tr>
+      <tr>
+        <td height="100" align="center" valign="middle" bgcolor="#ffffff">
+          {% trans %}
+            You received this email because you opted in for Joinup digest messages.<br/>
+            <a href="{{ subscription_url }}">Manage</a> your subscription notifications or <a href="{{ unsubscription_url }}">unsubscribe</a> from all.<br/>
+            <a href="{{ contact_url }}">Contact us</a>.
+          {% endtrans %}
+        </td>
+      </tr>
+      </tbody>
+    </table></td>
+</tr>
+<!-- FOOTER END-->
+</tbody>

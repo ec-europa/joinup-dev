@@ -34,6 +34,7 @@ trait UserTrait {
       'Nationality' => 'field_user_nationality',
       'Professional domain' => 'field_user_professional_domain',
       'Masquerade as' => 'masquerade_as',
+      'Notification frequency' => 'field_user_frequency',
       // @todo Social network
     ];
   }
