@@ -17,7 +17,13 @@ dependencies:
   - state_machine:state_machine
 
 config_devel:
+  - core.entity_form_display.message.community_content_subscription.default
+  - core.entity_view_display.message.community_content_subscription.default
+  - core.entity_view_display.message.community_content_subscription.mail_body
+  - core.entity_view_display.message.community_content_subscription.mail_subject
   - facets.facet.content_bundle
+  - field.field.message.community_content_subscription.field_community_content
+  - field.storage.message.field_community_content
   - field.storage.node.field_attachment
   - field.storage.node.field_comments
   - field.storage.node.field_keywords

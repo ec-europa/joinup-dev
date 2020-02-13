@@ -11,9 +11,6 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: next_cron
-      label: Immediately
-    -
       value: daily
       label: Daily
     -
