@@ -194,6 +194,23 @@
             <param>${drupal.demo.user}</param>
             <param>${drupal.demo.user}</param>
         </drush>
+        <drush
+            command="cas-mock-server:user-create"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <option name="email" value="${drupal.demo.user}@example.com" />
+            <option name="password" value="${drupal.demo.user}" />
+        </drush>
+        <drush
+            command="cas:set-cas-username"
+            assume="yes"
+            root="${website.drupal.dir}"
+            bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <param>${drupal.demo.user}</param>
+        </drush>
     </target>
 
     <!-- Set up development configuration, including on-screen error logging and debugging options. -->

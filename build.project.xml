@@ -417,17 +417,34 @@
 
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
-        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
-        <!-- Create a user with only "authenticated user" role assigned. -->
-        <drush
-                command="user-create"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-            <option name="mail" value="user@example.com" />
-            <option name="password" value="user" />
-            <param>user</param>
-        </drush>
+      <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter=","/>
+      <!-- Create a user with only "authenticated user" role assigned. -->
+      <drush
+        command="user-create"
+        assume="yes"
+        root="${website.drupal.dir}"
+        bin="${drush.bin}">
+        <option name="mail" value="user@example.com"/>
+        <option name="password" value="user"/>
+        <param>user</param>
+      </drush>
+      <drush
+        command="cas-mock-server:user-create"
+        assume="yes"
+        root="${website.drupal.dir}"
+        bin="${drush.bin}">
+        <param>user</param>
+        <option name="email" value="user@example.com"/>
+        <option name="password" value="user"/>
+      </drush>
+      <drush
+        command="cas:set-cas-username"
+        assume="yes"
+        root="${website.drupal.dir}"
+        bin="${drush.bin}">
+        <param>user</param>
+        <param>user</param>
+      </drush>
         <!-- Grant the moderator role also to the administrator. -->
         <drush
                 command="user-add-role"
