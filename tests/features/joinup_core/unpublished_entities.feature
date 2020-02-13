@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-b
 Feature: Unpublished content of the website
   In order to manage unpublished entities
   As a user of the website
@@ -8,6 +8,9 @@ Feature: Unpublished content of the website
     Given the following owner:
       | name            | type                    |
       | Owner something | Non-Profit Organisation |
+    And the following contact:
+      | name  | Published contact       |
+      | email | pub.contact@example.com |
     And users:
       | Username       | Roles |
       | Ed Abbott      |       |
@@ -15,10 +18,10 @@ Feature: Unpublished content of the website
       | Brenda Day     |       |
       | Phillip Shaw   |       |
     And the following collections:
-      | title               | description         | state     | elibrary creation | moderation | abstract     | policy domain     | owner           |
-      | Invisible Boyfriend | Invisible Boyfriend | validated | members           | no         | Trusted host | Supplier exchange | Owner something |
-      | Grey Swords         | Invisible Boyfriend | proposed  | members           | no         | Trusted host | Supplier exchange | Owner something |
-      | Nothing of Slaves   | Invisible Boyfriend | draft     | members           | no         | Trusted host | Supplier exchange | Owner something |
+      | title               | description         | state     | elibrary creation | moderation | abstract     | policy domain     | owner           | contact information |
+      | Invisible Boyfriend | Invisible Boyfriend | validated | members           | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
+      | Grey Swords         | Invisible Boyfriend | proposed  | members           | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
+      | Nothing of Slaves   | Invisible Boyfriend | draft     | members           | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
     And the following collection user memberships:
       | collection          | user           | roles         |
       | Invisible Boyfriend | Ed Abbott      | authenticated |

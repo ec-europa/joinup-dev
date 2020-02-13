@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Add event" visibility options.
   In order to manage events
   As a collection member
@@ -83,7 +83,8 @@ Feature: "Add event" visibility options.
     And I should not see the text "Regional"
     And I should see the text "Rue Belliard 28, Brussels, Belgium"
     But I should see the success message "Event An amazing event has been created."
-    And I should see the text "29 to 30 August 2018"
+    And I should see the text "Event date:"
+    And I should see the text "29 to 30/08/2018"
     And I should see a map centered on latitude 4.370375 and longitude 50.842156
     And I should see the following marker on the map:
       | name        | An amazing event                   |
@@ -97,3 +98,15 @@ Feature: "Add event" visibility options.
     # Check that the link to the event is visible on the collection page.
     When I go to the homepage of the "Stream of Dreams" collection
     Then I should see the link "An amazing event"
+
+    # Check if the event date range is shown in an understandable format if the
+    # event spans a month or year boundary.
+    When I go to the edit form of the "An amazing event" event
+    And I fill the end date of the Date widget with "2018-09-01"
+    And I press "Save as draft"
+    Then I should see the text "29/08 to 01/09/2018"
+
+    When I go to the edit form of the "An amazing event" event
+    And I fill the end date of the Date widget with "2019-01-02"
+    And I press "Save as draft"
+    Then I should see the text "29/08/2018 to 02/01/2019"

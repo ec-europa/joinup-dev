@@ -1,0 +1,10 @@
+uuid: 1bf7963e-26ec-4d1e-84c6-39326eb1e3d3
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.digest_message
+label: 'Digest message'
+targetEntityType: node
+cache: true

@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Content Overview
 
   Scenario: Ensure access to content overview landing page, called "Keep up to date".

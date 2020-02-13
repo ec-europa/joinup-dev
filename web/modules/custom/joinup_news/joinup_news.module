@@ -5,13 +5,15 @@
  * Provides functionality for the news content entity.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_bundle_field_info_alter().
  */
-function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
   // @todo Add test coverage for these constraints.
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2500
   if ($entity_type->id() == 'node' && $bundle == 'news') {
@@ -28,14 +30,14 @@ function joinup_news_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
 /**
  * Implements hook_form_alter().
  *
- * Restrict the kicker(title) to 30 characters long.
+ * Restrict the short title to 66 characters.
  */
-function joinup_news_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function joinup_news_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   if (!in_array($form_id, ['node_news_form', 'node_news_edit_form'])) {
     return;
   }
 
   if (isset($form['title']['widget'][0]['value'])) {
-    $form['title']['widget'][0]['value']['#maxlength'] = 30;
+    $form['title']['widget'][0]['value']['#maxlength'] = 66;
   }
 }

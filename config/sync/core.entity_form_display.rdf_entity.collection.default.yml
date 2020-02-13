@@ -55,6 +55,7 @@ third_party_settings:
         - field_ar_description
         - field_policy_domain
         - field_ar_owner
+        - field_ar_contact_information
         - current_workflow_state
         - transition_motivation
       parent_name: group_general
@@ -74,7 +75,6 @@ third_party_settings:
         - field_ar_access_url
         - field_ar_logo
         - field_ar_banner
-        - field_ar_contact_information
         - field_spatial_coverage
         - field_ar_closed
         - field_ar_elibrary_creation
@@ -98,7 +98,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 5
+    weight: 6
     region: content
     settings:
       title: 'Current workflow state'
@@ -140,7 +140,7 @@ content:
     type: boolean_checkbox
     region: content
   field_ar_contact_information:
-    weight: 14
+    weight: 5
     settings:
       form_mode: inline
       override_labels: true
@@ -151,6 +151,7 @@ content:
       collapsible: false
       collapsed: false
       allow_existing: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -169,7 +170,7 @@ content:
     weight: 17
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: options_buttons
     region: content
   field_ar_logo:
     weight: 12
@@ -198,6 +199,7 @@ content:
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -246,7 +248,7 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

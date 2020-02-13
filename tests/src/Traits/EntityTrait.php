@@ -57,6 +57,9 @@ trait EntityTrait {
 
     if ($result) {
       $result = reset($result);
+      // Make sure we get a fresh entity from the database, to avoid testing
+      // with stale data.
+      $storage->resetCache([$result]);
       return $storage->load($result);
     }
 

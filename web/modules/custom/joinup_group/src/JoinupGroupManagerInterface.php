@@ -23,6 +23,26 @@ interface JoinupGroupManagerInterface {
   public function getGroupsWhereSoleOwner(AccountInterface $user): array;
 
   /**
+   * Returns the memberships of a user for a given bundle.
+   *
+   * Use this to retrieve for example all the user's collection or solution
+   * memberships.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The user for which to retrieve the memberships.
+   * @param string $entity_type_id
+   *   The entity type for which to retrieve the memberships.
+   * @param string $bundle_id
+   *   The bundle for which to retrieve the memberships.
+   * @param array $states
+   *   The membership states. Defaults to active memberships.
+   *
+   * @return \Drupal\og\OgMembershipInterface[]
+   *   The memberships.
+   */
+  public function getUserGroupMembershipsByBundle(AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
+
+  /**
    * Retrieves all the user memberships with a certain role and state.
    *
    * @param \Drupal\Core\Session\AccountInterface $user

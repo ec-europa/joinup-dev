@@ -91,8 +91,16 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
             <property name="behat.yml.template" value="${behat.dir}/behat-only-selenium-cphp.yml.dist" />
         </phingcall>
         <phingcall target="setup-behat">
-            <property name="behat.yml.path" value="${behat.dir}/behat-no-selenium-cphp.yml" />
-            <property name="behat.yml.template" value="${behat.dir}/behat-no-selenium-cphp.yml.dist" />
+            <property name="behat.yml.path" value="${behat.dir}/behat-group-a-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-group-a-cphp.yml.dist" />
+        </phingcall>
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-group-b-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-group-b-cphp.yml.dist" />
+        </phingcall>
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-remainder-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-remainder-cphp.yml.dist" />
         </phingcall>
     </target>
 

@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   As a site moderator/administrator
   When I'm logged in

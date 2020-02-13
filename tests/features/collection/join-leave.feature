@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Joining and leaving collections through the web interface
   In order to participate in the activities of a collection
   As an authenticated user
@@ -36,7 +36,6 @@ Feature: Joining and leaving collections through the web interface
     When I press the "Join this collection" button
     Then I should see the success message "You are now a member of Überwaldean Land Eels."
     And the "Überwaldean Land Eels" collection should have 1 active member
-    And "Madame Sharn" should be subscribed to "document, discussion, news, event" content bundles in the "Überwaldean Land Eels" collection
     When I go to the homepage of the "Überwaldean Land Eels" collection
     Then I should not see the "Join this collection" button
     And I should not see the link "Edit"
@@ -64,10 +63,11 @@ Feature: Joining and leaving collections through the web interface
 
     # Check that both users can leave their respective collections.
     When I click "Leave this collection"
-    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels?"
-    And I should see the text "By leaving the collection you will be no longer able to publish content in it and to receive notifications."
-    And I should see the text "In any case, you will continue to have access to all the Collection's content and whenever you want, you will be able to rejoin the collection."
-    And I should not see the link "Leave this collection"
+    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
+    And I should see the text "By leaving the collection you will be no longer able to publish content in it or receive notifications from it."
+    And I should see the link "Cancel"
+    But I should not see the link "Leave this collection"
+
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
@@ -76,7 +76,7 @@ Feature: Joining and leaving collections through the web interface
     When I am logged in as "Madame Sharn"
     And I go to the homepage of the "Überwaldean Land Eels" collection
     And I click "Leave this collection"
-    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels?"
+    Then I should see the text "Are you sure you want to leave the Überwaldean Land Eels collection?"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Überwaldean Land Eels."
     And I should see the "Join this collection" button
@@ -90,7 +90,7 @@ Feature: Joining and leaving collections through the web interface
     Given my membership state in the "Folk Dance and Song Society" collection changes to "active"
     And I go to the homepage of the "Folk Dance and Song Society" collection
     And I click "Leave this collection"
-    Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society?"
+    Then I should see the text "Are you sure you want to leave the Folk Dance and Song Society collection?"
     When I press the "Confirm" button
     Then I should see the success message "You are no longer a member of Folk Dance and Song Society."
     And I should see the "Join this collection" button
@@ -98,7 +98,6 @@ Feature: Joining and leaving collections through the web interface
     And the "Folk Dance and Song Society" collection should have 0 pending members
 
   Scenario: A collection owner leaving the collection cannot administer users anymore.
-
     Given users:
       | Username            |
       | insect researcher   |
@@ -133,3 +132,32 @@ Feature: Joining and leaving collections through the web interface
     And I press "Confirm"
     When I click "Members"
     Then I should not see the link "Add members"
+
+  @javascript
+  Scenario: Close the modal dialog with the cancel button.
+    Given collections:
+      | title            | abstract                      | closed | description                       | state     |
+      | Sapient Pearwood | Grows in magic-polluted areas | no     | This tree is impervious to magic. | validated |
+    And users:
+      | Username          |
+      | Stewe Griffin |
+    And the following collection user memberships:
+      | collection       | user              | roles |
+      | Sapient Pearwood | Stewe Griffin |       |
+
+    Given I am logged in as "Stewe Griffin"
+    And I go to the homepage of the "Sapient Pearwood" collection
+    And I click "Read more"
+    Then I should see the heading "About Sapient Pearwood"
+
+    And I press "You're a member"
+    And I wait for animations to finish
+    And I click "Leave this collection"
+    And a modal should open
+
+    When I press "Cancel" in the "Modal buttons" region
+    And I wait for AJAX to finish
+    Then I should not see the text "Leave collection"
+    # Since this is a modal, the dialog simply closes and the user is not redirected
+    # to the overview page. This is why the title from "About" is still displayed.
+    And I should see the heading "About Sapient Pearwood"

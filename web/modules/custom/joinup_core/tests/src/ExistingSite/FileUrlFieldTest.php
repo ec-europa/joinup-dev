@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\file_url\FileUrlHandler;
@@ -15,6 +14,7 @@ use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use weitzman\LoginTrait\LoginTrait;
 
 /**
  * Provides methods specifically for testing File module's field handling.
@@ -25,6 +25,7 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
 
   use EntityUtilityTrait;
   use FileUrlTrait;
+  use LoginTrait;
   use RdfEntityCreationTrait;
   use SparqlConnectionTrait;
   use StringTranslationTrait;
@@ -198,28 +199,6 @@ class FileUrlFieldTest extends JoinupExistingSiteTestBase {
     elseif ($file_mode === 'remote') {
       $wrapper->fillField('Remote URL', $value);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * When 'joinup_core' module is enabled, the login button has 'Sign in' as
-   * value, thus we cannot use the original method because that searches for the
-   * login button with 'Log in' as value.
-   */
-  protected function drupalLogin(AccountInterface $account): void {
-    if ($this->loggedInUser) {
-      $this->drupalLogout();
-    }
-
-    $this->drupalGet('user/login');
-    $this->submitForm([
-      'name' => $account->getUsername(),
-      'pass' => $account->passRaw,
-    ], $this->t('Sign in'));
-
-    $this->loggedInUser = $account;
-    $this->container->get('current_user')->setAccount($account);
   }
 
 }
