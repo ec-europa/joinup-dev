@@ -993,3 +993,16 @@ function joinup_core_post_update_stats6(array &$sandbox): ?string {
 function joinup_core_post_update_post_count_storage_node_revisions() {
   joinup_core_post_update_set_news_default_version();
 }
+
+/**
+ * Clean up the migration tables.
+ */
+function joinup_core_post_update_remove_mdigrate_tables(array &$sandbox): string {
+  $connection = Database::getConnection();
+  $tables = $connection->query("SHOW TABLES LIKE 'migrate_%'")->fetchCol();
+  $schema = $connection->schema();
+  foreach ($tables as $table) {
+    $schema->dropTable($table);
+  }
+  return 'Deleted tables: ' . implode(', ', $tables) . '.';
+}
