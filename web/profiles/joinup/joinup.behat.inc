@@ -641,8 +641,15 @@ class JoinupSubContext extends DrupalSubContextBase {
       ]);
     }
 
-    if (property_exists($node, 'published_at') && !is_numeric($node->published_at)) {
-      $node->published_at = strtotime($node->published_at);
+    if (property_exists($node, 'published_at') && !empty($node->published_at)) {
+      // If the entry is not numeric, then it means that the scenario is using a
+      // human readable version of the timestamp.
+      // Example: Sun, 01 Dec 2019 13:00:00 +0100.
+      // This will allow dynamic tests as well. `strtotime` will also be able to
+      // receive entries like "1 day ago" or "+1 month".
+      if (!is_numeric($node->published_at)) {
+        $node->published_at = strtotime($node->published_at);
+      }
     }
 
     $image_fields = ['field_news_logo'];
@@ -716,6 +723,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'publication date' => 'published_at',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
@@ -2752,6 +2760,38 @@ JS;
     foreach ($titles->getRows() as $title) {
       $this->assertEntityUrlInSitemap('node', $title[0], FALSE);
     }
+  }
+
+  /**
+   * Changes the publication date of an entity.
+   *
+   * @param string $title
+   *   The title of the entity.
+   * @param string $bundle
+   *   The bundle of the entity.
+   * @param string $entity_type_id
+   *   The entity type id. Either 'content' or 'rdf entity' is accepted.
+   * @param string $new_publication_date
+   *   The new publication date.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when one of the parameters is not correct.
+   *
+   * @Given the publication date of the :title :bundle :entity_type_id is changed to :new_value
+   */
+  public function givenPublicationDateChanged(string $title, string $bundle, string $entity_type_id, string $new_publication_date): void {
+    if (!in_array($entity_type_id, ['content', 'rdf entity'])) {
+      throw new \InvalidArgumentException('Only "content" and "rdf entity" are allowed for the $entity_type_id parameter.');
+    }
+    $entity_type_id = $entity_type_id === 'content' ? 'node' : 'rdf_entity';
+    $entity = $this->getEntityByLabel($entity_type_id, $title, $bundle);
+    $publication_date = is_numeric($new_publication_date) ? ((int) $new_publication_date) : strtotime($new_publication_date);
+    if (empty($new_publication_date)) {
+      throw new \InvalidArgumentException("'{$new_publication_date}' could not be converted to a proper timestamp.");
+    }
+
+    $entity->set('published_at', $publication_date);
+    $entity->save();
   }
 
   /**

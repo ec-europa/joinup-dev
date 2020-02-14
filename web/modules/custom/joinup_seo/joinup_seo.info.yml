@@ -23,3 +23,8 @@ config_devel:
     - simple_sitemap.bundle_settings.default.rdf_entity.asset_release
     - simple_sitemap.bundle_settings.default.rdf_entity.collection
     - simple_sitemap.bundle_settings.default.rdf_entity.solution
+    - simple_sitemap.bundle_settings.news.node.news
+    - simple_sitemap.custom_links.default
+    - simple_sitemap.settings
+    - simple_sitemap.variants.default_hreflang
+    - simple_sitemap.variants.latest_news
