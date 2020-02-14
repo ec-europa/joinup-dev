@@ -33,14 +33,14 @@ Feature: SEO for news articles.
       # $base_url$ will be replaced with the base url of the website.
       | @id         | <expected url>           |
     And the metatag graph of the item with "name" "Joinup SEO event" should have the following "image" properties:
-      | property             | value       |
-      | @type                | ImageObject |
-      | representativeOfPage | True        |
-      # The test files are assigned a random name so it is very hard to assert the real url. However, when the file is
-      # found and added to the page, the dimensions are added as well. Asserting the dimensions also asserts the url in
-      # a way.
-      | width                | 377         |
-      | height               | 139         |
+      | property             | value                                            |
+      | @type                | ImageObject                                      |
+      | representativeOfPage | True                                             |
+      # $random_text$ can be any string that is appointed by the system and we cannot predict.
+      # In this case, it is a random file name that is appointed to the image.
+      | url                  | $base_url$/sites/default/files/$random_text$.jpg |
+      | width                | 377                                              |
+      | height               | 139                                              |
     And the metatag graph of the item with "name" "Joinup SEO event" should have the following "location" properties:
       | property | value           |
       | @type    | Place           |

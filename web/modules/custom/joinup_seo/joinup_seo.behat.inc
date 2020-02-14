@@ -126,7 +126,18 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
         }
 
         $row['value'] = str_replace('$base_url$', $base_url, $row['value']);
-        if ($graph[$row['property']] !== $row['value']) {
+        if (strpos($row['value'], '$random_text$')) {
+          $row['value'] = preg_quote($row['value'], '#');
+          // $random_text$ is escaped into \$random_text\$ from the preg_quote
+          // above.
+          $row['value'] = str_replace('\$random_text\$', '(.*)?', $row['value']);
+          $found = preg_match("#{$row['value']}#", $graph[$row['property']]) === 1;
+        }
+        else {
+          $found = $graph[$row['property']] === $row['value'];
+        }
+
+        if ($found === FALSE) {
           $wrong_value[$index][] = [
             'property' => $row['property'],
             'expected' => $row['value'],
