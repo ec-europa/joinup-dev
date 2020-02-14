@@ -28,6 +28,7 @@
         "drupal/ds": "^3.5",
         "drupal/editor_file": "~1.4",
         "drupal/email_registration": "^1.0",
+        "drupal/embed_block": "^1.0",
         "drupal/entity_legal": "^2",
         "drupal/error_page": "^1.0",
         "drupal/facets": "1.3",
