@@ -53,6 +53,7 @@
         "drupal/pathauto": "~1.5",
         "drupal/persistent_login": "~1.1",
         "drupal/phingdrushtask": "dev-7.x-2.x",
+        "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta1",
         "drupal/r4032login": "~1.1",
         "drupal/rdf_entity": "^1.0-alpha18",
