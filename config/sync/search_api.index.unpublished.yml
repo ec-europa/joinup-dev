@@ -220,7 +220,7 @@ field_settings:
       config:
         - field.storage.node.field_scope
   field_shared_in:
-    label: 'Shared in'
+    label: 'Shared on'
     datasource_id: 'entity:node'
     property_path: field_shared_in
     type: string
