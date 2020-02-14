@@ -63,7 +63,7 @@
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
         "drupal/simplenews": "^1.0-beta1",
-        "drupal/site_alert": "^1.0",
+        "drupal/site_alert": "dev-1.x",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.6",
         "drupal/spdx": "^1.0.0-alpha5",

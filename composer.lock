@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1668aacdcb02c620e42b45ab5f6fba3d",
+    "content-hash": "8f098eeab9d3255c59bb9a9c15047956",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6406,17 +6406,11 @@
         },
         {
             "name": "drupal/site_alert",
-            "version": "1.0.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/site_alert.git",
-                "reference": "8.x-1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/site_alert-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "b6f40ea8c39ebc34758764e556c0bd9eb190c7cb"
+                "reference": "d26edf5817931279d921a4c91b859a2215efa095"
             },
             "require": {
                 "drupal/core": "*"
@@ -6427,11 +6421,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1571325228",
+                    "version": "8.x-1.0+7-dev",
+                    "datestamp": "1581670730",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -6457,7 +6451,8 @@
             "homepage": "https://www.drupal.org/project/site_alert",
             "support": {
                 "source": "https://git.drupalcode.org/project/site_alert"
-            }
+            },
+            "time": "2020-02-19T14:34:14+00:00"
         },
         {
             "name": "drupal/smart_trim",
@@ -16324,6 +16319,7 @@
         "drupal/matomo_reporting_api": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/site_alert": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
