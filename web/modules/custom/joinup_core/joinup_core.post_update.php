@@ -999,7 +999,7 @@ function joinup_core_post_update_post_count_storage_node_revisions() {
  */
 function joinup_core_post_update_remove_mdigrate_tables(array &$sandbox): string {
   $connection = Database::getConnection();
-  $tables = $connection->query("SHOW TABLES LIKE 'migrate_%';")->fetchCol();
+  $tables = $connection->query("SHOW TABLES LIKE 'migrate_%'")->fetchCol();
   $schema = $connection->schema();
   foreach ($tables as $table) {
     $schema->dropTable($table);
