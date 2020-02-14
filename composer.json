@@ -57,6 +57,7 @@
         "drupal/rdf_entity": "^1.0-alpha18",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
+        "drupal/schema_metatag": "^1.4",
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
         "drupal/simple_sitemap": "^3.4",

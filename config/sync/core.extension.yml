@@ -92,6 +92,7 @@ module:
   message_digest: 0
   message_notify: 0
   meta_entity: 0
+  metatag: 0
   moderation: 0
   nio: 0
   node: 0
@@ -124,6 +125,8 @@ module:
   redirect: 0
   redis: 0
   rest: 0
+  schema_article: 0
+  schema_metatag: 0
   search_api: 0
   search_api_arbitrary_facet: 0
   search_api_db: 0
