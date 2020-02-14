@@ -12,8 +12,8 @@ Feature: SEO for news articles.
       | Username          | E-mail                 | First name | Family name |
       | Joinup SEO author | joinup.seo@example.com | Patrick    | Stewart     |
     And "event" content:
-      | title            | short title   | web url   | start date                      | end date                        | body                                               | logo     | agenda        | location                           | organisation        | scope         | keywords | collection                  | state     |
-      | Joinup SEO event | JOINUPSEO2020 | <web url> | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | summary: Summary of event. - value: Body of event. | logo.png | Event agenda. | Rue Belliard 28, Brussels, Belgium | European Commission | International | Alphabet | Joinup SEO event collection | validated |
+      | title            | short title   | web url   | start date                      | end date                        | body                                               | logo     | agenda        | location   | online location                                          | organisation        | scope         | keywords | collection                  | state     |
+      | Joinup SEO event | JOINUPSEO2020 | <web url> | Wed, 25 Dec 2019 13:00:00 +0100 | Wed, 01 Jan 2020 13:00:00 +0100 | summary: Summary of event. - value: Body of event. | logo.png | Event agenda. | <location> | 0: Some title - 1: http://example.com/some-online-meetup | European Commission | International | Alphabet | Joinup SEO event collection | validated |
 
     When I visit the "Joinup SEO event" event
     Then the metatag JSON should be attached in the page
@@ -42,14 +42,15 @@ Feature: SEO for news articles.
       | width                | 377                                              |
       | height               | 139                                              |
     And the metatag graph of the item with "name" "Joinup SEO event" should have the following "location" properties:
-      | property | value           |
-      | @type    | Place           |
-      | name     | Rue Belliard 28 |
+      | property | value                                 |
+      | @type    | Place                                 |
+      | name     | <expected location>                   |
+      | url      | http://example.com/some-online-meetup |
     # Target the location subgraph which has the name property set to "Rue Belliard 28".
     And the metatag subgraph of the item with "name" "Rue Belliard 28" should have the following "address" properties:
-      | property      | value           |
-      | @type         | PostalAddress   |
-      | streetAddress | Rue Belliard 28 |
+      | property      | value               |
+      | @type         | PostalAddress       |
+      | streetAddress | <expected location> |
     And the metatag subgraph of the item with "name" "Rue Belliard 28" should have the following "geo" properties:
       | property  | value          |
       | @type     | GeoCoordinates |
@@ -65,9 +66,10 @@ Feature: SEO for news articles.
     And the metatag JSON should not be attached in the page
 
     Examples:
-      | web url                                       | expected url                                                             |
-      |                                               | $base_url$/collection/joinup-seo-event-collection/event/joinup-seo-event |
+      | web url                                       | expected url                                                             | location                           | expected location |
+      |                                               | $base_url$/collection/joinup-seo-event-collection/event/joinup-seo-event | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
       # Urls need a title value in the 0 index and a url in the 1 index of the value to work, otherwise it is parsed
       # wrongly.
       # @see: \Drupal\Driver\Fields\Drupal8\LinkHandler::expand
-      | 0: Some url - 1: http://some-random-event-url | http://some-random-event-url                                             |
+      | 0: Some url - 1: http://some-random-event-url | http://some-random-event-url                                             | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
+      | 0: Some url - 1: http://some-random-event-url | http://some-random-event-url                                             |                                    |                   |
