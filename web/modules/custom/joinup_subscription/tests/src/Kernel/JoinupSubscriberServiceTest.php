@@ -10,10 +10,9 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Assert;
 
 /**
- * Tests the JoinupSubscription service.
+ * Tests the JoinupDiscussionSubscription service.
  *
- * @coversDefaultClass \Drupal\joinup_subscription\JoinupSubscription
- *
+ * @coversDefaultClass \Drupal\joinup_subscription\JoinupDiscussionSubscription
  * @group joinup
  */
 class JoinupSubscriberServiceTest extends KernelTestBase {
@@ -51,7 +50,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
   /**
    * The subscription service. This is the system under test.
    *
-   * @var \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @var \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    */
   protected $subscriptionService;
 
@@ -69,6 +68,8 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     'entity_test',
     'flag',
     'joinup_subscription',
+    'message_digest',
+    'message_notify',
     'system',
     'user',
   ];
@@ -85,7 +86,7 @@ class JoinupSubscriberServiceTest extends KernelTestBase {
     $this->installEntitySchema('entity_test');
     $this->installEntitySchema('flagging');
 
-    $this->subscriptionService = $this->container->get('joinup_subscription.subscription');
+    $this->subscriptionService = $this->container->get('joinup_subscription.discussion_subscription');
     $this->flagService = $this->container->get('flag');
 
     $this->flag = Flag::create([

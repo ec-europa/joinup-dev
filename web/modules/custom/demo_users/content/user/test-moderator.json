@@ -122,10 +122,5 @@
         {
             "value": "Test"
         }
-    ],
-    "field_user_subscription_events": [
-        {
-            "value": true
-        }
     ]
 }

@@ -1,0 +1,8 @@
+uuid: bca44ab6-a8c6-41f7-808d-4be5fe77b5b6
+langcode: en
+status: true
+dependencies: {  }
+id: weekly
+label: Weekly
+interval: '1 week'
+description: 'Sends messages in 1 week intervals.'
