@@ -178,36 +178,19 @@
     <!-- Create a demo user. Subtarget of "create-demo-users". -->
     <target name="create-demo-user">
         <drush
-            command="user-create"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <option name="mail" value="${drupal.demo.user}@example.com" />
             <option name="password" value="${drupal.demo.user}" />
             <param>${drupal.demo.user}</param>
         </drush>
         <drush
-            command="user-add-role"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
-            <param>${drupal.demo.user}</param>
-            <param>${drupal.demo.user}</param>
-        </drush>
-        <drush
-            command="cas-mock-server:user-create"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
-            <param>${drupal.demo.user}</param>
-            <option name="email" value="${drupal.demo.user}@example.com" />
-            <option name="password" value="${drupal.demo.user}" />
-        </drush>
-        <drush
-            command="cas:set-cas-username"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <param>${drupal.demo.user}</param>
             <param>${drupal.demo.user}</param>
         </drush>
@@ -278,10 +261,10 @@
     <!-- Enable a module. -->
     <target name="enable-module">
         <drush
-            command="pm-enable"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <param>${module}</param>
         </drush>
     </target>
