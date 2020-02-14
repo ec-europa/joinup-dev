@@ -36,10 +36,10 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
     // Create a local user.
     $local_account = $this->createUser();
-    // Store the hashed password in a variables.
+    // Store the hashed password in a variable for later comparison.
     $original_hashed_pass = $local_account->getPassword();
 
-    // Login with EU Login.
+    // Log in with EU Login.
     $this->casLogin($email, $eulogin_pass);
 
     $page = $this->getSession()->getPage();
