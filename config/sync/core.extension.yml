@@ -84,6 +84,9 @@ module:
   link: 0
   linkit: 0
   mailsystem: 0
+  masquerade: 0
+  masquerade_field: 0
+  masquerade_log: 0
   matomo: 0
   matomo_reporting_api: 0
   menu_ui: 0

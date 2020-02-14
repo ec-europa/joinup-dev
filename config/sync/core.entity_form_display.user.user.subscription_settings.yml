@@ -44,6 +44,7 @@ hidden:
   field_user_professional_domain: true
   langcode: true
   language: true
+  masquerade_as: true
   matomo: true
   path: true
   simplenews: true

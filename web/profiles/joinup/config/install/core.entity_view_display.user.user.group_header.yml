@@ -163,5 +163,7 @@ hidden:
   field_user_content: true
   field_user_frequency: true
   langcode: true
+  masquerade: true
+  masquerade_as: true
   simplenews: true
   user_field_user_content_top: true
