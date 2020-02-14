@@ -633,7 +633,6 @@ function joinup_core_search_api_index_items_alter(IndexInterface $index, array &
  */
 function joinup_core_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['actions']['submit']['#value'] = t('Sign in');
-  $form['#title'] = t('Sign in');
 }
 
 /**
