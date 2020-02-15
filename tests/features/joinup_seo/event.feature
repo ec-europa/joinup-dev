@@ -72,4 +72,22 @@ Feature: SEO for news articles.
       # wrongly.
       # @see: \Drupal\Driver\Fields\Drupal8\LinkHandler::expand
       | 0: Some url - 1: http://some-random-event-url | http://some-random-event-url                                             | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
-      | 0: Some url - 1: http://some-random-event-url | http://some-random-event-url                                             |                                    |                   |
+
+  Scenario: Events without physical address but with online location should still show the online location.
+    Given collections:
+      | title                       | state     |
+      | Joinup SEO event collection | validated |
+    And users:
+      | Username          | E-mail                 | First name | Family name |
+      | Joinup SEO author | joinup.seo@example.com | Patrick    | Stewart     |
+    And "event" content:
+      | title            | short title   | online location                                          | collection                  | state     |
+      | Joinup SEO event | JOINUPSEO2021 | 0: Some title - 1: http://example.com/some-online-meetup | Joinup SEO event collection | validated |
+
+    When I visit the "Joinup SEO event" event
+    Then the metatag JSON should be attached in the page
+    And 1 metatag graph of type "Event" should exist in the page
+    And the metatag graph of the item with "name" "Joinup SEO event" should have the following "location" properties:
+      | property | value                                 |
+      | @type    | Place                                 |
+      | url      | http://example.com/some-online-meetup |
