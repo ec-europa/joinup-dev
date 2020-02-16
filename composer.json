@@ -48,6 +48,7 @@
         "drupal/meta_entity": "^1.0",
         "drupal/og": "^1.0",
         "drupal/og_menu": "dev-1.x",
+        "drupal/paragraphs": "^1.11",
         "drupal/password_policy": "^3.0-alpha5",
         "drupal/pathauto": "~1.5",
         "drupal/persistent_login": "~1.1",
