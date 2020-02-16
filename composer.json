@@ -56,7 +56,7 @@
         "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta1",
         "drupal/r4032login": "~1.1",
-        "drupal/rdf_entity": "^1.0",
+        "drupal/rdf_entity": "^1.0-alpha19",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
         "drupal/search_api": "1.13",
