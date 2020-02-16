@@ -2,10 +2,6 @@ uuid: 76737fd1-feb3-4d21-b0b8-7e6dbc102686
 langcode: en
 status: true
 dependencies:
-  config:
-    - image.style.wysiwyg_full_width
-    - image.style.wysiwyg_half_width
-    - image.style.wysiwyg_one_third_width
   module:
     - editor
     - embed_block
@@ -29,7 +25,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <br> <strong> <cite> <blockquote cite> <code> <q> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-image-style width height> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src frameborder width height allowfullscreen mozallowfullscreen webkitallowfullscreen>'
+      allowed_html: '<em> <br> <strong> <cite> <blockquote cite> <code> <q> <ul type> <ol type start> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <p> <h1> <pre> <img src alt data-entity-type data-entity-uuid data-align data-caption data-image-style width height> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <a hreflang href data-entity-type data-entity-uuid !href accesskey id rel target title> <iframe src allowfullscreen mozallowfullscreen webkitallowfullscreen width height frameborder>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -58,11 +54,11 @@ filters:
     weight: -49
     settings:
       allowed_providers:
-        joinup_ec_video: joinup_ec_video
-        internal_path: internal_path
-        google_docs: google_docs
         prezi: prezi
         slideshare: slideshare
+        google_docs: google_docs
+        joinup_ec_video: joinup_ec_video
+        internal_path: internal_path
         vimeo: vimeo
         youtube: youtube
         youtube_playlist: 0

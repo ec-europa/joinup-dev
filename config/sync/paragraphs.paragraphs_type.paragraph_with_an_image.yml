@@ -1,0 +1,10 @@
+uuid: bf7d28ee-6f04-426e-b371-34a988061f4c
+langcode: en
+status: true
+dependencies: {  }
+id: paragraph_with_an_image
+label: 'Paragraph with an image'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }
