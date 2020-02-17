@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_body_new
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.og_audience
@@ -15,7 +16,7 @@ dependencies:
     - custom_page
     - file
     - image
-    - publication_date
+    - paragraphs
     - text
 id: node.custom_page.default
 targetEntityType: node
@@ -29,27 +30,40 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
         hide_guidelines: '1'
     region: content
   field_attachment:
-    weight: 5
+    weight: 6
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
-  field_cp_content_listing:
+  field_body_new:
+    type: entity_reference_paragraphs
     weight: 3
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_cp_content_listing:
+    weight: 4
     settings:
       query_builder: true
     third_party_settings: {  }
     type: search_api_field_custom_page
     region: content
   field_custom_page_logo:
-    weight: 4
+    weight: 5
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -67,7 +81,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 7
+    weight: 8
     region: content
     third_party_settings: {  }
   title:
@@ -79,7 +93,7 @@ content:
     third_party_settings: {  }
     region: content
   url_redirects:
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -1,0 +1,32 @@
+uuid: 65264172-7d63-4cce-b2ea-35c43a752705
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_body_new
+    - node.type.custom_page
+  module:
+    - entity_reference_revisions
+id: node.custom_page.field_body_new
+field_name: field_body_new
+entity_type: node
+bundle: custom_page
+label: 'Body (New)'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles: null
+    target_bundles_drag_drop:
+      simple_body:
+        weight: 3
+        enabled: false
+      paragraph_with_an_image:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions

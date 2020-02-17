@@ -5,12 +5,14 @@ dependencies:
   config:
     - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_body_new
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
     - ds
+    - entity_reference_revisions
     - field_group
     - file
     - joinup
@@ -24,7 +26,7 @@ third_party_settings:
       children:
         - field_attachment
       parent_name: ''
-      weight: 4
+      weight: 5
       format_type: html_element
       format_settings:
         label: Attachments
@@ -69,9 +71,18 @@ content:
         template_suggestion: fieldset__show_more
     type: file_default
     region: content
+  field_body_new:
+    type: entity_reference_revisions_entity_view
+    weight: 2
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_cp_content_listing:
     type: search_api_field
-    weight: 3
+    weight: 4
     region: content
     label: hidden
     settings: {  }
@@ -82,13 +93,13 @@ content:
     settings: {  }
     third_party_settings: {  }
   node_field_cp_content_listing_top:
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   report:
     label: hidden
-    weight: 5
+    weight: 6
     region: content
     settings:
       trim_length: 80
