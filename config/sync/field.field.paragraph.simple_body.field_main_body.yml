@@ -1,0 +1,22 @@
+uuid: e4941bf2-d947-4a07-8e02-f4d75f49df47
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_main_body
+    - paragraphs.paragraphs_type.simple_body
+  module:
+    - cached_computed_field
+id: paragraph.simple_body.field_main_body
+field_name: field_main_body
+entity_type: paragraph
+bundle: simple_body
+label: 'Main body'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  cache-max-age: 3600
+field_type: cached_computed_text_long
