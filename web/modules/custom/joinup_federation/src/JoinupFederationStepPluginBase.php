@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\pipeline\Exception\PipelineStepPrepareLogicException;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
@@ -33,6 +34,13 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
   protected $pipeline;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Creates a new pipeline step plugin instance.
    *
    * @param array $configuration
@@ -43,10 +51,13 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
    *   The plugin implementation definition.
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->sparql = $sparql;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -57,7 +68,8 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('sparql_endpoint')
+      $container->get('sparql_endpoint'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -77,6 +89,16 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
     if (!$this->pipeline->lock()) {
       throw (new PipelineStepPrepareLogicException())->setError([
         '#markup' => $this->t("This import has timed-out. In the meantime another user has started a new import. Please come back later and retry."),
+      ]);
+    }
+
+    // Ensure that the collection still exists and the URI is correct.
+    $collection_id = $this->getPipeline()->getCollection();
+    if (empty($collection_id) || empty($this->entityTypeManager->getStorage('rdf_entity')->load($collection_id))) {
+      throw (new PipelineStepPrepareLogicException())->setError([
+        '#markup' => $this->t("A collection with URI %collection_id was not found in the page", [
+          '%collection_id' => $collection_id,
+        ]),
       ]);
     }
   }
