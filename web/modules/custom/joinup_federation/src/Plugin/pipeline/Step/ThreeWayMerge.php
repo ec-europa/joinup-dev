@@ -83,8 +83,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *   The time service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator, TimeInterface $time) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
-    $this->entityTypeManager = $entity_type_manager;
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityFieldManager = $entity_field_manager;
     $this->fieldValidator = $field_validator;
     $this->time = $time;

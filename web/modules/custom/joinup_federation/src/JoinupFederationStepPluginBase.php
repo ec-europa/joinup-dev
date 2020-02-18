@@ -94,12 +94,9 @@ abstract class JoinupFederationStepPluginBase extends PipelineStepPluginBase imp
 
     // Ensure that the collection still exists and the URI is correct.
     $collection_id = $this->getPipeline()->getCollection();
+
     if (empty($collection_id) || empty($this->entityTypeManager->getStorage('rdf_entity')->load($collection_id))) {
-      throw (new PipelineStepPrepareLogicException())->setError([
-        '#markup' => $this->t("A collection with URI %collection_id was not found in the page", [
-          '%collection_id' => $collection_id,
-        ]),
-      ]);
+      throw new PipelineStepPrepareLogicException("A collection with URI '{$collection_id}' does not exist.");
     }
   }
 
