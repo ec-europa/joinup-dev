@@ -10,10 +10,11 @@ Feature: As a site moderator I am able to import RDF files.
   Scenario: Test available pipelines
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
     Then the "Data pipeline" select should contain the following options:
-      | - Select -                              |
-      | Joinup collection                       |
-      | Slovenian Interoperability Portal - NIO |
-      | Spain - Center for Technology Transfer  |
+      | - Select -                               |
+      | EU Schemantic Interoperability Catalogue |
+      | Joinup collection                        |
+      | Slovenian Interoperability Portal - NIO  |
+      | Spain - Center for Technology Transfer   |
 
   Scenario: Test the pipeline functionality
     Given collection:
