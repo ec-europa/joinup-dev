@@ -34,6 +34,7 @@
   color: lighten($color-grey-medium, 10%)
   border-bottom-color: lighten($color-grey-medium, 10%)
   box-sizing: border-box
+  outline: none
   &::-webkit-input-placeholder
     font-size: $font-size-base
     font-weight: $font-weight-thin
@@ -77,6 +78,8 @@
   height: 64px
   padding: 0
   +z-index(highlight)
+  .mdl-chip
+    opacity: 0
 
 .search-bar--header-shifted
   right: 120px
@@ -163,6 +166,8 @@
     .search-bar__input-container
       width: calc(100% - 50px)
       max-width: 100%
+    .mdl-chip
+      opacity: 1
 
 .search-bar--header-shifted
   &.is-focused,

@@ -40,6 +40,10 @@
             }
           }
         });
+        // Custom visibility toggle for search bar on search pages.
+        $(context).find(".search-bar-advanced .search-bar__label").on('click', function () {
+          $('.search-bar-advanced').toggleClass('is-focused');
+        });
       });
     }
   };
