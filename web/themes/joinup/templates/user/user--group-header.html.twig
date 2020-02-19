@@ -38,7 +38,7 @@
             <div class="mdl-grid mdl-grid--no-spacing">
               <div class="mdl-cell mdl-cell--4-col">
                 <a class="featured__logo-wrapper" href="{{ path('entity.user.canonical',{'user': user.id()}) }}">
-                  <div class="featured__logo" style="background-image: url({{ file_url(content.field_user_photo['#items'].entity.uri.value) }})"></div>
+                  <div class="featured__logo" style="background-image: url({{ field_user_photo_url }})"></div>
                 </a>
               </div>
               <div class="mdl-cell mdl-cell--7-col mdl-cell--1-offset-desktop">
