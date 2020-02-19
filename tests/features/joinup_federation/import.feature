@@ -2,7 +2,11 @@
 Feature: As a site moderator I am able to import RDF files.
 
   Background:
-    Given users:
+    Given collection:
+      | uri   | http://administracionelectronica.gob.es/ctt |
+      | title | Spain                                       |
+      | state | validated                                   |
+    And users:
       | Username        | Roles     |
       | Antoine Batiste | moderator |
     And I am logged in as "Antoine Batiste"
@@ -17,10 +21,6 @@ Feature: As a site moderator I am able to import RDF files.
       | Spain - Center for Technology Transfer   |
 
   Scenario: Test the pipeline functionality
-    Given collection:
-      | uri   | http://administracionelectronica.gob.es/ctt |
-      | title | Spain                                       |
-      | state | validated                                   |
     And users:
       | Username         | Roles     |
       | LaDonna          | moderator |
@@ -331,11 +331,6 @@ Feature: As a site moderator I am able to import RDF files.
 
   @joinup_collection
   Scenario: Test that solutions cannot be re-federated in a different collection.
-    And collection:
-      | uri   | http://administracionelectronica.gob.es/ctt |
-      | title | Spain                                       |
-      | state | validated                                   |
-
     Given I click "ADMS-AP importer" in the "Administration toolbar" region
     And I select "Spain - Center for Technology Transfer" from "Data pipeline"
     And I press "Execute"
