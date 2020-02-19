@@ -115,11 +115,13 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   public function assertImagePresent(string $filename): void {
     // Drupal appends an underscore and a number to the filename when duplicate
     // files are uploaded, for example when a test is run more than once.
-    // We split up the filename and extension and match for both.
+    // We only check up to the filename and not the extension as the xpath
+    // itself is long enough to ensure the extension part.
     $parts = pathinfo($filename);
-    $extension = $parts['extension'];
+    $host = \Drupal::request()->getSchemeAndHttpHost();
     $filename = $parts['filename'];
-    $this->assertSession()->elementExists('css', "[src*='$filename.$extension']");
+    $xpath = "//div[contains(@class, 'featured__logo') and contains(@style, 'background-image: url({$host}/sites/default/files/{$filename}')]";
+    $this->assertSession()->elementExists('xpath', $xpath);
   }
 
   /**
