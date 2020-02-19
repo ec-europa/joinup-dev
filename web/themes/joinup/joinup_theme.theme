@@ -1018,6 +1018,9 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
 
+  $updateDate = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $updateDate;
+
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
 }
@@ -1031,6 +1034,9 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
+
+  $updateDate = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $updateDate;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1061,6 +1067,9 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
   $field_document_publication_date = $viewBuilder->viewField($node->field_document_publication_date, 'default');
   $variables['additional_content']['field_document_publication_date'] = $field_document_publication_date;
+
+  $updateDate = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $updateDate;
 
   /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $field_short_title = $viewBuilder->viewField($node->field_short_title, 'default');
