@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     watch = require('gulp-watch'),
     sass = require('gulp-sass'),
-    styleguide = require('sc5-styleguide'),
+    // styleguide = require('sc5-styleguide'),
     livereload = require('gulp-livereload');
     mustache = require('gulp-mustache');
 
@@ -36,9 +36,8 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest('js'));
 });
 
-
 // Define SASS compiling task
-gulp.task('sass', function () {
+gulp.task('sass', function (done) {
   gulp.src('sass/app.sass')
     .pipe(sass(
       {outputStyle: 'compressed'}
@@ -47,66 +46,49 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('../css'))
     .pipe(gulp.dest('css'))
     .pipe(livereload());
+  done();
 });
 
-
 // Define Mustache compiling task
-gulp.task('mustache', function() {
+gulp.task('mustache', function(done) {
   return gulp.src("./html-prototype-sandbox/*.html")
     .pipe(mustache())
     .pipe(gulp.dest("./html-prototype"));
 });
 
-
-// Define rendering styleguide task
-// https://github.com/SC5/sc5-styleguide#build-options
-gulp.task('styleguide:generate', function() {
-  return gulp.src(paths.sassStyleguide)
-    .pipe(styleguide.generate({
-        extraHead: [
-          '<script src="/js/material.min.js"></script>',
-          '<script src="/js/jquery.min.js"></script>',
-          '<script src="/js/styleguide.js"></script>',
-        ],
-        disableEncapsulation: true,
-        title: 'Joinup styleguide',
-        server: true,
-        sideNav: true,
-        rootPath: paths.styleguide,
-        overviewPath: 'README.md',
-        commonClass: 'body'
-      }))
-    .pipe(gulp.dest(paths.styleguide));
-});
-gulp.task('styleguide:applystyles', function() {
-  return gulp.src(paths.sassStyleguide)
-    .pipe(sass({
-      errLogToConsole: true
-    }))
-    .pipe(styleguide.applyStyles())
-    .pipe(gulp.dest(paths.styleguide));
-});
-gulp.task('styleguide', ['styleguide:generate', 'styleguide:applystyles']);
 // Define copying images for styleguide task
-gulp.task('images', function() {
+gulp.task('images', function(done) {
   gulp.src(['../images/**'])
     .pipe(gulp.dest(paths.styleguide + '/images'))
     .pipe(gulp.dest('images'));
+  done();
 });
+
 // Define copying fonts for styleguide task
-gulp.task('fonts', function() {
+gulp.task('fonts', function(done) {
   gulp.src(['../fonts/**'])
     .pipe(gulp.dest(paths.styleguide + '/fonts'))
     .pipe(gulp.dest('fonts'));
+  done();
 });
+
 // Define copying javascript for styleguide task
-gulp.task('js', function() {
+gulp.task('js', function(done) {
   gulp.src(['js/**', '../vendor/material-design-lite/material.min.js', '../../../../web/core/assets/vendor/jquery/jquery.min.js'])
     .pipe(gulp.dest(paths.styleguide + '/js'));
+  done();
+});
+
+// Define watch tasks
+gulp.task('watch', function(done) {
+  livereload.listen(45729);
+  gulp.watch(paths.sass, gulp.series('sass'));
+  gulp.watch(paths.html, gulp.series('images', 'fonts', 'js'));
+  gulp.watch(paths.mustache, gulp.series('mustache'));
+  done();
 });
 
 // Listen folders for changes and apply defined tasks
-gulp.task('default', ['styleguide', 'sass', 'images', 'fonts', 'js', 'mustache'], function() {
-  livereload.listen(45729);
-  gulp.watch([paths.sass, paths.html, paths.mustache], ['styleguide', 'sass', 'images', 'fonts', 'js', 'mustache']);
+gulp.task('default', gulp.parallel('sass', 'images', 'fonts', 'js', 'mustache'), function(done) {
+  done();
 });
