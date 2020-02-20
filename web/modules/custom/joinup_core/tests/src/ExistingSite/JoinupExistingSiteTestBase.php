@@ -29,6 +29,13 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
   protected static $honeypotForms;
 
   /**
+   * Whether the current test should run with Antibot features disabled.
+   *
+   * @var bool
+   */
+  protected $disableAntibot = TRUE;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -39,19 +46,26 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
 
     // As ExistingSiteBase tests are running without javascript, we disable
     // Antibot and Honeypot functionality during the tests run.
-    $this->disableAntibot();
     $this->disableHoneypot();
 
     // Disable limited access functionality.
     \Drupal::state()->set('joinup_eulogin.limited_access', FALSE);
+
+    if ($this->disableAntibot) {
+      // As ExistingSiteBase tests are running without javascript, we disable
+      // Antibot during the tests run, if it has been requested.
+      $this->disableAntibot();
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function tearDown(): void {
-    // Restore Antibot and Honeypot functionality after test run.
-    $this->restoreAntibot();
+    // Restores the Antibot functionality, if case.
+    if ($this->disableAntibot) {
+      static::restoreAntibot();
+    }
     $this->restoreHoneypot();
 
     // Make sure we don't send any notifications during test entities cleanup.

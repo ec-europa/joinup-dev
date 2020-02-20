@@ -400,7 +400,7 @@ field_settings:
       module:
         - rdf_entity
   shared_in:
-    label: 'Shared in'
+    label: 'Shared on'
     property_path: aggregated_field
     type: string
     configuration:

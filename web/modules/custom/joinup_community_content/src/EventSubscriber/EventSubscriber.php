@@ -131,7 +131,7 @@ class EventSubscriber implements EventSubscriberInterface {
           ]),
           new GroupContentOperationPermission([
             'name' => "share $bundle_id content",
-            'title' => $this->t('%bundle: Share into a group', ['%bundle' => $bundle_label]),
+            'title' => $this->t('%bundle: Share onto a group', ['%bundle' => $bundle_label]),
             'operation' => 'share',
             'entity type' => 'node',
             'bundle' => $bundle_id,

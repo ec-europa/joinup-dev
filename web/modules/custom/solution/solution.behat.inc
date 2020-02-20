@@ -540,7 +540,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'featured' => 'field_site_featured',
       'pinned to front page' => 'field_site_pinned',
       'pinned in' => 'field_is_pinned_in',
-      'shared in' => 'field_is_shared_in',
+      'shared on' => 'field_is_shared_in',
     ];
   }
 
