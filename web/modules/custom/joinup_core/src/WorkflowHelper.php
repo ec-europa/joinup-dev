@@ -11,6 +11,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
@@ -80,7 +81,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
     $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
@@ -94,11 +95,6 @@ class WorkflowHelper implements WorkflowHelperInterface {
    * {@inheritdoc}
    */
   public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
-    // Placeholder for the method that will be added in ISAICP-4910. For now we
-    // still take the state directly from the transitions. Once we update to the
-    // newest version of State Machine the same state transitions will no longer
-    // be returned and will instead be retrieved from a new service method
-    // `$this->workflowStatePermission->isStateUpdatePermitted()`.
     $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
@@ -116,7 +112,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
     // Set the current user so that states available are retrieved for the
     // specific account.
     // The proper solution would be to pass the account to the state_machine
@@ -141,7 +137,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityStateField(FieldableEntityInterface $entity) {
+  public function getEntityStateField(FieldableEntityInterface $entity): StateItemInterface {
     $field_definition = $this->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle());
     if ($field_definition === NULL) {
       throw new \Exception('No state fields were found in the entity.');
@@ -152,7 +148,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id) {
+  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id): ?FieldDefinitionInterface {
     if ($field_definitions = $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
       return reset($field_definitions);
     }
@@ -163,7 +159,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id) {
+  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id): array {
     return array_filter($this->entityFieldManager->getFieldDefinitions($entity_type_id, $bundle_id), function (FieldDefinitionInterface $field_definition) {
       return $field_definition->getType() == 'state';
     });
@@ -172,7 +168,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL) {
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
     return array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getLabel();
     }, $this->getAvailableTransitions($entity, $account));
@@ -181,14 +177,14 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasEntityStateField($entity_type_id, $bundle_id) {
+  public function hasEntityStateField($entity_type_id, $bundle_id): bool {
     return (bool) $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow) {
+  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow): bool {
     // We rely on being able to inspect the plugin definition. Throw an error if
     // this is not the case.
     if (!$workflow instanceof PluginInspectionInterface) {
@@ -205,11 +201,11 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL) {
+  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL): ?WorkflowInterface {
     if (empty($state_field_name)) {
       $state_field_item = $this->getEntityStateField($entity);
       if (empty($state_field_item)) {
-        return;
+        return NULL;
       }
       $state_field_name = $state_field_item->getName();
     }
@@ -220,7 +216,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL) {
+  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL): ?WorkflowTransition {
     if (empty($state_field_name)) {
       $state_field_item = $this->getEntityStateField($entity);
       if (empty($state_field_item)) {
@@ -249,7 +245,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
+  public function userHasOwnAnyRoles(EntityInterface $entity, AccountInterface $account, array $roles): bool {
     $own = $entity->getOwnerId() === $account->id();
     if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {
       return TRUE;
@@ -264,7 +260,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles) {
+  public function userHasRoles(EntityInterface $entity, AccountInterface $account, array $roles): bool {
     $parent = $this->getEntityParent($entity);
     if (empty($parent)) {
       return FALSE;

@@ -6,17 +6,17 @@ services:
       - { name: cache.context }
   joinup_discussion.invitation_subscriber:
     class: Drupal\joinup_discussion\EventSubscriber\InvitationSubscriber
-    arguments: ['@joinup_subscription.subscription']
+    arguments: ['@joinup_subscription.discussion_subscription']
     tags:
       - { name: event_subscriber }
   joinup_discussion.subscribed_discussion:
     class: Drupal\joinup_discussion\EventSubscriber\SubscribedDiscussionSubscriber
-    arguments: ['@joinup_subscription.subscription', '@joinup_notification.message_delivery', '@current_user', '@entity_type.manager', '@logger.factory']
+    arguments: ['@joinup_subscription.discussion_subscription', '@joinup_notification.message_delivery', '@current_user', '@entity_type.manager', '@logger.factory']
     tags:
       - { name: event_subscriber }
   joinup_discussion.subscribed_discussion_comment:
     class: Drupal\joinup_discussion\EventSubscriber\SubscribedDiscussionCommentSubscriber
-    arguments: ['@joinup_subscription.subscription', '@joinup_notification.message_delivery']
+    arguments: ['@joinup_subscription.discussion_subscription', '@joinup_notification.message_delivery']
     tags:
       - { name: event_subscriber }
   joinup_discussion.workflow_transition:

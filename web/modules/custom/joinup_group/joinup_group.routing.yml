@@ -1,0 +1,27 @@
+entity.rdf_entity.about_page:
+  path: 'rdf_entity/{rdf_entity}/about'
+  defaults:
+    _controller: '\Drupal\joinup_group\Controller\AboutPageController::aboutPage'
+    _title_callback: '\Drupal\joinup_group\Controller\AboutPageController::aboutPageTitle'
+  requirements:
+    _entity_access: 'rdf_entity.view'
+    _custom_access: '\Drupal\joinup_group\Controller\AboutPageController::aboutPageAccess'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
+
+joinup_group.membership_delete_action.confirm:
+  path: '/group/delete/membership'
+  defaults:
+    _form: 'Drupal\joinup_group\Form\DeleteGroupMembershipConfirmForm'
+  requirements:
+    _custom_access: 'Drupal\joinup_group\Form\DeleteGroupMembershipConfirmForm::access'
+
+joinup_group.transfer_group_ownership_confirm:
+  path: '/group/transfer/ownership'
+  defaults:
+    _form: 'Drupal\joinup_group\Form\TransferGroupOwnershipConfirmForm'
+    _title: Transfer
+  requirements:
+    _custom_access: 'Drupal\joinup_group\Form\TransferGroupOwnershipConfirmForm::access'

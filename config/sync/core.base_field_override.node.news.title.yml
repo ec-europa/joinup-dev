@@ -10,8 +10,8 @@ id: node.news.title
 field_name: title
 entity_type: node
 bundle: news
-label: Kicker
-description: 'The kicker is a short, catchy word or phrase and will be placed over the headline.'
+label: 'Short title'
+description: 'Add a short title for the news tile, which will be shown on other Joinup pages.'
 required: true
 translatable: true
 default_value: {  }

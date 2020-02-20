@@ -1,0 +1,16 @@
+type: module
+name: 'Joinup Group'
+description: 'Services and API methods useful for Joinup groups.'
+core: 8.x
+package: Joinup
+
+dependencies:
+  - 'og:og'
+  - 'og_menu:og_menu'
+
+config_devel:
+  install:
+    - system.action.joinup_og_membership_delete_action
+    - system.action.joinup_transfer_group_ownership
+    - views.view.group_content_management
+    - views.view.members_overview

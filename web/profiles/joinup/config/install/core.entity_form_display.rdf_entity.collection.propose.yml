@@ -17,6 +17,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
+    - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
@@ -52,6 +53,7 @@ third_party_settings:
         - field_ar_description
         - field_policy_domain
         - field_ar_owner
+        - field_ar_contact_information
         - transition_motivation
       parent_name: group_general
       weight: 5
@@ -70,7 +72,6 @@ third_party_settings:
         - field_ar_access_url
         - field_ar_logo
         - field_ar_banner
-        - field_ar_contact_information
         - field_spatial_coverage
         - field_ar_closed
         - field_ar_elibrary_creation
@@ -126,7 +127,7 @@ content:
     type: boolean_checkbox
     region: content
   field_ar_contact_information:
-    weight: 13
+    weight: 4
     settings:
       form_mode: inline
       override_labels: true
@@ -137,6 +138,7 @@ content:
       collapsible: false
       collapsed: false
       allow_existing: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -184,6 +186,7 @@ content:
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -206,6 +209,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -221,10 +225,11 @@ content:
     type: language_select
     weight: 1
     region: content
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
   transition_motivation:
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -238,6 +243,7 @@ hidden:
   current_workflow_state: true
   field_ar_affiliates: true
   field_collection_content: true
+  field_newsletter: true
   field_site_featured: true
   field_site_pinned: true
   uid: true

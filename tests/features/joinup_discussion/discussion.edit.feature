@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Discussion page" editing.
   In order to manage discussions
   As an owner of the discussion

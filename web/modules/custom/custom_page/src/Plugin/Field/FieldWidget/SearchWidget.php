@@ -83,7 +83,7 @@ class SearchWidget extends DefaultSearchWidget {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
     // Swap the default label with one that better represents our functionality.
-    $element['enabled']['#title'] = $this->t('Display a community content listing');
+    $element['enabled']['#title'] = $this->t('Add related content');
 
     // There is no need to allow customizing the facets. For now.
     foreach (['fields', 'refresh_rows', 'refresh'] as $key) {
@@ -116,14 +116,14 @@ class SearchWidget extends DefaultSearchWidget {
 
     $element['wrapper']['show_shared'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Show also content shared in the collection'),
-      '#description' => $this->t('When this option is unchecked, only content created inside the group will be shown. When checked, shared content will be included in the listing.'),
+      '#title' => $this->t('Allow shared content'),
+      '#description' => $this->t('Display content shared from other communities.'),
       '#default_value' => $default_values['show_shared'] ?? FALSE,
       '#weight' => -10,
     ];
 
     $element['wrapper']['query_builder']['explanation'] = [
-      '#markup' => $this->t("Note: the filters below don't apply any restriction to the suggestions shown. Restrictions are only applied at visualisation time, so only content belonging to or shared in the group will be shown."),
+      '#markup' => $this->t("Note: the content shown is dynamic, filtered live each time users will visualise the page. As a result, new content might be shown and old content can be altered or deleted."),
       '#weight' => -10,
     ];
 

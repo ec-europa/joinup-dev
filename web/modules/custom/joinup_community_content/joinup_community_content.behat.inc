@@ -108,6 +108,22 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   }
 
   /**
+   * Checks that a content's publication date same as the created date.
+   *
+   * @param string $title
+   *   The title of the content.
+   * @param string $type
+   *   The type of the content.
+   *
+   * @Then the publication date of the :title :type should be equal to the created date
+   */
+  public function assertSamePublishedCreatedTime(string $title, string $type): void {
+    $node = $this->getNodeByTitle($title, $type);
+    Assert::assertNotEmpty($node->published_at->value);
+    Assert::assertEquals($node->created->value, $node->published_at->value);
+  }
+
+  /**
    * Checks that a content has the same publication date with another version.
    *
    * @param string $title
@@ -145,6 +161,34 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
     }
     $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
     Assert::assertEquals($node->published_at->value, $revision->published_at->value);
+  }
+
+  /**
+   * Navigates to the edit or delete form of a community content.
+   *
+   * @param string $action
+   *   The action. Either 'edit' or 'delete'.
+   * @param string $title
+   *   The title of the community content.
+   * @param string $bundle
+   *   The community content type. Usually one of 'discussion', document',
+   *   'event', news', but can in fact be any node type.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when an invalid action is passed.
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the form URL cannot be generated for the community content.
+   *
+   * @When I go to the :action form of the :title :bundle
+   * @When I visit the :action form of the :title :bundle
+   */
+  public function visitNodeForm(string $action, string $title, string $bundle): void {
+    if (!in_array($action, ['edit', 'delete'])) {
+      throw new \InvalidArgumentException('Only "edit" and "delete" actions are allowed.');
+    }
+    $node = $this->getNodeByTitle($title, $bundle);
+    $path = $node->toUrl("{$action}-form")->getInternalPath();
+    $this->visitPath($path);
   }
 
 }

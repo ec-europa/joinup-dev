@@ -1,4 +1,4 @@
-@api
+@api @clearStaticCache @group-a
 Feature: Asset distribution overview on solution.
   In order to view an overview of a solution's releases and download them
   As a user of the website
@@ -11,6 +11,13 @@ Feature: Asset distribution overview on solution.
     And the following solutions:
       | title            | collection  | description        | state     |
       | Lovely Butterfly | End of Past | Sample description | validated |
+
+    # A solution with no releases or standalone distributions has no button.
+    When I go to the homepage of the "Lovely Butterfly" solution
+    Then I should not see the link "Download releases"
+    When I go to "/solution/lovely-butterfly/releases"
+    Then the response status code should be 404
+
     # The release numbers do not follow the creation date to ensure proper
     # ordering. "The Child of the Past" should be shown first as it is the
     # latest release created, even though it is not the latest in the version
@@ -36,6 +43,10 @@ Feature: Asset distribution overview on solution.
     And I should be on "/solution/lovely-butterfly/releases"
 
     And I should see the heading "Lovely Butterfly" in the Header region
+    # The general link "Download releases" should not be shown on the releases
+    # page itself, since it references the page we are already on.
+    But I should not see the link "Download releases"
+
     # Only the published releases should be shown.
     # The release titles include the version as a suffix.
     And I should see the following releases in the exact order:
@@ -50,8 +61,7 @@ Feature: Asset distribution overview on solution.
 
     And I should see the download link in the "Linux" asset distribution
     And I should see the download link in the "User manual" asset distribution
-    # When the distribution file is remote, the download link should not be shown.
-    And the "Windows" asset distribution should not have any download urls
+    And I should see the external link in the "Windows" asset distribution
 
     And the "The Child of the Past" release should be marked as the latest release
 
@@ -87,6 +97,8 @@ Feature: Asset distribution overview on solution.
     And the "The Child of the Past" release should be marked as the latest release
 
     # Publish the release as a solution facilitator.
+    # @todo Unpublished releases are no longer visible for facilitators.
+    # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5736
     When I am logged in as a facilitator of the "Lovely Butterfly" solution
     And I go to the homepage of the "The Deep Doors" release
     When I click "Edit" in the "Entity actions" region
@@ -105,3 +117,17 @@ Feature: Asset distribution overview on solution.
       | The Child of the Past 1 |
       | Thief in the Angels 2   |
     And the "The Deep Doors" release should be marked as the latest release
+
+    # Check that the cache is invalidated.
+    When I delete the "Linux" asset distribution
+    And I delete the "Windows" asset distribution
+    And I delete the "User manual" asset distribution
+    And I delete the "Solaris" asset distribution
+    And I delete the "Hidden spies" release
+    And I delete the "Thief in the Angels" release
+    And I delete the "The Child of the Past" release
+    And I delete the "The Deep Doors" release
+    When I go to the homepage of the "Lovely Butterfly" solution
+    Then I should not see the link "Download releases"
+    When I go to "/solution/lovely-butterfly/releases"
+    Then the response status code should be 404

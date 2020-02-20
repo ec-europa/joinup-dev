@@ -5,21 +5,27 @@
  * Contains \JoinupUserSubContext.
  */
 
+declare(strict_types = 1);
+
+use Behat\Gherkin\Node\TableNode;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeUserCreateScope;
+use Drupal\joinup\Traits\MailCollectorTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing users.
  */
 class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
+  use MailCollectorTrait;
+  use StringTranslationTrait;
   use UserTrait;
   use UtilityTrait;
-  use StringTranslationTrait;
 
   /**
    * Navigates to the canonical page display of a collection.
@@ -30,7 +36,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I go to the (public )profile of :user
    * @When I visit the (public )profile of :user
    */
-  public function visitUserPublicProfile($user) {
+  public function visitUserPublicProfile(string $user): void {
     $this->visitPath($this->getUserByName($user)->url());
   }
 
@@ -45,7 +51,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to the one time sign in page of (the user ):user
    */
-  public function visitOneTimeLogIn($user) {
+  public function visitOneTimeLogIn(string $user): void {
     $user = $this->getUserByName($user);
     if (empty($user)) {
       throw new \Exception("User {$user->getAccountName()} was not found.");
@@ -55,36 +61,23 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Searches the delete confirmation link from an email and navigates to it.
+   * Clicks an HTML link in the last email matching its title.
    *
+   * @param string $title
+   *   The link title.
    * @param string $user
-   *   The user name.
+   *   The user that the email was sent to.
    *
    * @throws \Exception
-   *   Thrown when a user is not found.
+   *   Thrown when the user or the link was not found.
    *
-   * @When I click the delete confirmation link for (the user ):user from the last email
+   * @Given I click the :title link from the email sent to :user
    */
-  public function clickDeleteConfirmationLink($user) {
-    $user = $this->getUserByName($user);
-    if (empty($user)) {
-      throw new \Exception("User {$user->getAccountName()} was not found.");
-    }
-
-    $user_email = $user->getEmail();
-    \Drupal::state()->resetCache();
-    $mails = \Drupal::state()->get('system.test_mail_collector');
-    if (empty($mails)) {
-      throw new Exception('No mail was sent.');
-    }
-
+  public function clickNamedLinkInEmail(string $title, string $user): void {
+    $mails = $this->getUserMails($this->getUserByName($user));
     $matches = [];
     foreach ($mails as $mail) {
-      if ($mail['to'] !== $user_email) {
-        continue;
-      }
-
-      $pattern = '#href="(.*?/user/' . $user->id() . '/cancel/confirm/\d+/.*?)"#';
+      $pattern = '#href="([^"]*?)"[^>]*?>' . $title . '#';
       $body = (string) $mail['body'];
       preg_match_all($pattern, $body, $matches);
       $matches = array_filter($matches);
@@ -98,9 +91,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     }
 
     if (empty($matches)) {
-      $message = $this->t("Deletion confirmation url was not found in the mail body: \n@body", [
-        '@body' => $body,
-      ]);
+      $message = "No link with named {$title} was found in any of the emails sent to {$user}";
       throw new Exception($message);
     }
     $url = reset($matches[1]);
@@ -111,11 +102,17 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    * Checks that a given image is present in the page.
    *
    * This step is copied because the original requires that the link ends in the
-   * extension while modern techniques add extra query parameters in the uri.
+   * extension while modern techniques add extra query parameters in the URI.
+   *
+   * @param string $filename
+   *   The filename of the image to check.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   Thrown when the image is not present in the page.
    *
    * @Then I (should )see the avatar :filename
    */
-  public function assertImagePresent($filename) {
+  public function assertImagePresent(string $filename): void {
     // Drupal appends an underscore and a number to the filename when duplicate
     // files are uploaded, for example when a test is run more than once.
     // We split up the filename and extension and match for both.
@@ -123,6 +120,40 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
     $extension = $parts['extension'];
     $filename = $parts['filename'];
     $this->assertSession()->elementExists('css', "[src*='$filename.$extension']");
+  }
+
+  /**
+   * Checks that the user with the given name has the given profile field data.
+   *
+   * Table format:
+   * | Username   | Mr Bond                    |
+   * | Password   | Bond007                    |
+   * | E-mail     | james.bond@mi5.org         |
+   * | Multivalue | Values,separated,by,commas |
+   *
+   * @param \Behat\Gherkin\Node\TableNode $profile_data_table
+   *   A table containing the user profile field data to check.
+   * @param string $username
+   *   The name of the user to check.
+   *
+   * @throws \Exception
+   *   Thrown when a field in the table does not exist.
+   *
+   * @Then the user :username should have the following data in their user profile:
+   */
+  public function assertUserFields(TableNode $profile_data_table, string $username): void {
+    $user = $this->getUserByName($username);
+    $profile_data = $this->translateUserFieldAliases($profile_data_table->getRowsHash());
+
+    foreach ($profile_data as $field => $values) {
+      $expected_values = explode(',', $values);
+      $actual_values = $user->get($field)->getValue();
+      Assert::assertSameSize($expected_values, $actual_values);
+      foreach ($expected_values as $key => $expected_value) {
+        $actual_value = $user->get($field)->get($key)->value;
+        Assert::assertSame($expected_value, $actual_value);
+      }
+    }
   }
 
   /**
@@ -137,7 +168,7 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @BeforeUserCreate
    */
-  public static function massageFieldsBeforeUserCreate(BeforeUserCreateScope $scope) {
+  public static function massageFieldsBeforeUserCreate(BeforeUserCreateScope $scope): void {
     $user = $scope->getEntity();
 
     self::convertObjectPropertyValues($user, 'status', [

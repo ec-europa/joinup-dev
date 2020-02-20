@@ -57,7 +57,7 @@ Feature: Homepage feature
     When I am logged in as a facilitator of the "The Sacred Future" collection
     And I go to the homepage of the "The Sacred Future" collection
     And I click "Add document" in the plus button menu
-    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared in"
+    And the following fields should not be present "Groups audience, Other groups, Create new revision, Revision log message, Shared on"
     And I fill in the following:
       | Title       | The Sacred Future documentation |
       | Short title | The Sacred Future documentation |
@@ -86,7 +86,7 @@ Feature: Homepage feature
 
     When I am logged in as a moderator
     And I go to the homepage
-    Then I click the contextual link "Pin site-wide" in the "Magenta Mountain" tile
+    Then I click the contextual link "Pin to front page" in the "Magenta Mountain" tile
 
     Given I am not logged in
     And I am on the homepage
@@ -102,7 +102,7 @@ Feature: Homepage feature
     # sorting by visits and creation date.
     When I am logged in as a moderator
     And I go to the homepage
-    Then I click the contextual link "Unpin site-wide" in the "Magenta Mountain" tile
+    Then I click the contextual link "Unpin from front page" in the "Magenta Mountain" tile
 
     Given I am not logged in
     And I am on the homepage

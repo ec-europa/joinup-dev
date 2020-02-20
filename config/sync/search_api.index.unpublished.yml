@@ -4,39 +4,41 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
-    - field.storage.node.field_short_title
-    - field.storage.node.field_shared_in
-    - field.storage.node.field_news_headline
-    - field.storage.node.field_event_agenda
-    - field.storage.node.field_location
-    - field.storage.node.field_organisation
-    - field.storage.node.field_scope
-    - field.storage.node.field_event_date
-    - field.storage.rdf_entity.field_isr_release_notes
-    - field.storage.rdf_entity.field_isr_contact_information
-    - field.storage.rdf_entity.field_ci_name
-    - field.storage.rdf_entity.field_isr_owner
-    - field.storage.rdf_entity.field_owner_name
-    - field.storage.rdf_entity.field_licence_description
-    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_isr_description
     - field.storage.rdf_entity.field_ar_abstract
+    - field.storage.rdf_entity.field_ar_description
+    - field.storage.node.field_event_agenda
+    - field.storage.node.field_event_date
     - field.storage.rdf_entity.field_is_description
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_is_pinned_in
     - field.storage.rdf_entity.field_is_solution_type
-    - field.storage.user.field_user_first_name
+    - field.storage.rdf_entity.field_isr_description
+    - field.storage.rdf_entity.field_isr_release_notes
+    - field.storage.rdf_entity.field_licence_description
+    - field.storage.node.field_location
+    - field.storage.node.field_news_headline
+    - field.storage.node.field_organisation
+    - field.storage.node.field_scope
+    - field.storage.node.field_shared_in
+    - field.storage.node.field_short_title
     - field.storage.user.field_user_family_name
+    - field.storage.user.field_user_first_name
     - field.storage.user.field_user_organisation
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_owner
+    - field.storage.rdf_entity.field_owner_name
+    - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_isr_owner
     - search_api.server.solr_unpublished
   module:
+    - node
     - rdf_entity
+    - user
     - search_api
     - joinup_search
-    - node
-    - user
+    - search_api_solr
+    - asset_distribution
 id: unpublished
 name: 'Unpublished entities index'
 description: ''
@@ -55,6 +57,9 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: created
     type: date
+    dependencies:
+      module:
+        - node
   entity_author:
     label: Author
     property_path: aggregated_field
@@ -215,7 +220,7 @@ field_settings:
       config:
         - field.storage.node.field_scope
   field_shared_in:
-    label: 'Shared in'
+    label: 'Shared on'
     datasource_id: 'entity:node'
     property_path: field_shared_in
     type: string
@@ -259,6 +264,9 @@ field_settings:
     datasource_id: 'entity:rdf_entity'
     property_path: id
     type: string
+    dependencies:
+      module:
+        - rdf_entity
   is_field_ci_name:
     label: 'Contact information » Rdf entity » Name'
     datasource_id: 'entity:rdf_entity'
@@ -318,11 +326,17 @@ field_settings:
     property_path: label
     type: text
     boost: !!float 5
+    dependencies:
+      module:
+        - rdf_entity
   nid:
     label: ID
     datasource_id: 'entity:node'
     property_path: nid
     type: integer
+    dependencies:
+      module:
+        - node
   policy_domain:
     label: 'Policy domain'
     property_path: aggregated_field
@@ -337,16 +351,25 @@ field_settings:
     datasource_id: 'entity:rdf_entity'
     property_path: changed
     type: date
+    dependencies:
+      module:
+        - rdf_entity
   rdf_created:
     label: 'Authored on'
     datasource_id: 'entity:rdf_entity'
     property_path: created
     type: date
+    dependencies:
+      module:
+        - rdf_entity
   rid:
     label: 'Rdf Type'
     datasource_id: 'entity:rdf_entity'
     property_path: rid
     type: string
+    dependencies:
+      module:
+        - rdf_entity
   site_featured:
     label: Featured
     property_path: aggregated_field
@@ -366,7 +389,7 @@ field_settings:
         - 'entity:node/field_site_pinned'
         - 'entity:rdf_entity/field_site_pinned'
   spatial_coverage:
-    label: 'Spatial coverage'
+    label: 'Geographical coverage'
     property_path: aggregated_field
     type: string
     configuration:
@@ -380,17 +403,26 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: sticky
     type: boolean
+    dependencies:
+      module:
+        - node
   title:
     label: Title
     datasource_id: 'entity:node'
     property_path: title
     type: text
     boost: !!float 5
+    dependencies:
+      module:
+        - node
   uid:
     label: 'User ID'
     datasource_id: 'entity:user'
     property_path: uid
     type: integer
+    dependencies:
+      module:
+        - user
 datasource_settings:
   'entity:node':
     bundles:
@@ -437,7 +469,7 @@ processor_settings:
       h3: 2
       strong: 2
     weights:
-      preprocess_index: -15
+      preprocess_index: -43
       preprocess_query: -15
   ignorecase:
     all_fields: false
@@ -463,12 +495,18 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -50
+      preprocess_index: -49
       preprocess_query: -50
+  index_distribution_data:
+    weights:
+      preprocess_index: -50
   joinup_entity_latest_revision: {  }
   joinup_entity_status:
     inverse: true
   rendered_item: {  }
+  solr_date_range:
+    weights:
+      preprocess_index: 0
   stopwords:
     all_fields: false
     fields:
@@ -525,7 +563,7 @@ processor_settings:
       - will
       - with
     weights:
-      preprocess_index: -47
+      preprocess_index: -46
       preprocess_query: -47
   tokenizer:
     all_fields: false
@@ -558,7 +596,7 @@ processor_settings:
     overlap_cjk: 1
     minimum_word_size: '3'
     weights:
-      preprocess_index: -49
+      preprocess_index: -48
       preprocess_query: -49
   transliteration:
     all_fields: false
@@ -586,7 +624,7 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -48
+      preprocess_index: -47
       preprocess_query: -48
   type_boost:
     boosts:
@@ -611,9 +649,10 @@ processor_settings:
       'entity:user':
         datasource_boost: !!float 0
     weights:
-      preprocess_index: 0
+      preprocess_index: -41
 tracker_settings:
-  default: {  }
+  default:
+    indexing_order: fifo
 options:
   index_directly: true
   cron_limit: 50

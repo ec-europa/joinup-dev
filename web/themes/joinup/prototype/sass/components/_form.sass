@@ -209,5 +209,71 @@
     border-width: 1px
     border-color: $color-error
 
+// My subscriptions form
+.form__subscribe-types
+  margin-bottom: 0
+  .form-item
+    flex: 1 100%
+    margin-bottom: $tile-margin
+    select
+      width: 100%
+  .form__subscribe-save
+    flex: 1 100%
+    max-width: 100%
+  +breakpoint(mobile)
+    .form-item
+      flex: 1 50%
+  +breakpoint(desktop)
+    .form__subscribe-save
+      flex: 1 100%
+  +breakpoint(lg-desktop)
+    .form-item
+      flex: 0 1 auto
+      margin-bottom: 0
+      margin-right: $tile-margin
+    .form__subscribe-save
+      flex: 0 1 auto
+      margin-left: auto
+
+.form__subscribe-types-inner
+  display: flex
+  flex-flow: row wrap
+  align-items: center
+  .form__label
+    font-size: 14px
+    font-weight: normal
+
+.form__subscribe-frequency
+  .form-item
+    margin-bottom: $field-margin
+  +breakpoint(lg-desktop)
+    display: flex
+    align-items: flex-end
+    .form-item
+      flex: 1 72%
+      max-width: 72%
+      margin-bottom: 0
+    .form__subscribe-save
+      flex: 1 28%
+      max-width: 28%
+      text-align: right
+
+.form__subscribe-actions
+  text-align: right
+  margin-right: 0
+  .button
+    margin-right: 0
+
+// Add red asterisk in a cas form.
+.cas-account-link-form.form__with-asterisk
+  .mdl-textfield
+    label
+      position: relative
+      &:before
+        position: absolute
+        right: -15px
+        content: '*'
+        color: $color-error
+
 // States
 // --------------------------------------------------

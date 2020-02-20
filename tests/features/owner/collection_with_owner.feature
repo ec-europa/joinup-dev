@@ -7,14 +7,17 @@ Feature: Creation of owners through UI
   @terms
   Scenario: Propose a collection
     Given the following owner:
-      | name            | type    |
+      | name                                                                                                                                                                                                                                                           | type    |
       | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fermentum ante arcu. Vivamus nisl turpis, fringilla ut ante sit amet, bibendum iaculis ante. Nullam vel nisl vehicula, rutrum ante nec, placerat dolor. Sed id odio imperdiet, efficitur lacus | Company |
     And I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     Then the following field widgets should be present "Contact information, Owner"
     When I fill in the following:
-      | Title         | Classical and Ancient Mythology                                                                      |
-      | Description   | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+      | Title       | Classical and Ancient Mythology                                                                      |
+      | Description | The seminal work on the ancient mythologies of the primitive and classical peoples of the Discworld. |
+      # Contact information data.
+      | Name        | Larry Joe                                                                                            |
+      | E-mail      | larry.joe@example.com                                                                                |
     When I select "EU and European Policies" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
     And I attach the file "banner.jpg" to "Banner"
@@ -72,3 +75,4 @@ Feature: Creation of owners through UI
 
     # Clean up the collection that was created.
     Then I delete the "Classical and Ancient Mythology" collection
+    And I delete the "Larry Joe" contact information

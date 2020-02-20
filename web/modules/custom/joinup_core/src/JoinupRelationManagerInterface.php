@@ -66,19 +66,6 @@ interface JoinupRelationManagerInterface {
   public function getParentELibraryCreationOption(EntityInterface $entity): int;
 
   /**
-   * Retrieves all the users that have the administrator role in a group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group entity.
-   * @param array $states
-   *   (optional) An array of membership states to retrieve. Defaults to active.
-   *
-   * @return array
-   *   An array of users that are administrators of the entity group.
-   */
-  public function getGroupOwners(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
-
-  /**
    * Retrieves all the members with any role in a certain group.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -105,30 +92,24 @@ interface JoinupRelationManagerInterface {
   public function getGroupMemberships(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
 
   /**
-   * Retrieves all the user memberships with a certain role and state.
+   * Returns the memberships of a user for a given bundle.
+   *
+   * Use this to retrieve for example all the user's collection or solution
+   * memberships.
    *
    * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user to get the memberships for.
-   * @param string $role
-   *   The role id.
+   *   The user for which to retrieve the memberships.
+   * @param string $entity_type_id
+   *   The entity type for which to retrieve the memberships.
+   * @param string $bundle_id
+   *   The bundle for which to retrieve the memberships.
    * @param array $states
-   *   (optional) An array of membership states to retrieve. Defaults to active.
+   *   The membership states. Defaults to active memberships.
    *
    * @return \Drupal\og\OgMembershipInterface[]
-   *   An array of OG memberships that match the criteria.
+   *   The memberships.
    */
-  public function getUserMembershipsByRole(AccountInterface $user, string $role, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
-
-  /**
-   * Retrieves all the collections where a user is the sole owner.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $user
-   *   The user to retrieve memberships for.
-   *
-   * @return \Drupal\rdf_entity\Entity\Rdf[]
-   *   An array of collections.
-   */
-  public function getCollectionsWhereSoleOwner(AccountInterface $user): array;
+  public function getUserGroupMembershipsByBundle(AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
 
   /**
    * Returns the entity IDs of all collections.
@@ -145,5 +126,17 @@ interface JoinupRelationManagerInterface {
    *   An array of entity IDs.
    */
   public function getSolutionIds(): array;
+
+  /**
+   * Returns the groups that relate to a contact information entity.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface $entity
+   *   The contact information entity.
+   *
+   * @return \Drupal\rdf_entity\RdfInterface[]
+   *   A list of rdf entities that reference the given contact information
+   *   entity.
+   */
+  public function getContactInformationRelatedGroups(RdfInterface $entity): array;
 
 }

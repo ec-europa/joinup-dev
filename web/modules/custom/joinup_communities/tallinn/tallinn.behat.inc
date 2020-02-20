@@ -55,6 +55,13 @@ class TallinnSubContext extends DrupalSubContextBase {
       'field_owner_name' => 'Owner',
     ])->save();
 
+    Rdf::create([
+      'rid' => 'contact_information',
+      'id' => 'http://example.com/contact',
+      'field_contact_name' => 'Contact name',
+      'field_contact_email' => 'contact.email@example.com',
+    ])->save();
+
     // Create the Tallinn entity.
     Rdf::create([
       'rid' => 'collection',
@@ -63,6 +70,7 @@ class TallinnSubContext extends DrupalSubContextBase {
       'field_ar_state' => 'validated',
       'field_policy_domain' => 'http://example.com/term/2',
       'field_ar_owner' => 'http://example.com/owner',
+      'field_ar_contact_information' => 'http://example.com/contact',
     ])->save();
 
     // The 'Implementation monitoring' standard custom page.
@@ -121,6 +129,7 @@ class TallinnSubContext extends DrupalSubContextBase {
       Term::load($id)->delete();
     }
     Rdf::load('http://example.com/owner')->delete();
+    Rdf::load('http://example.com/contact')->delete();
 
     // Clear the dashboard access policy state.
     \Drupal::state()->delete('tallinn.access_policy');

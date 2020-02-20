@@ -71,7 +71,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'spatial coverage' => 'field_spatial_coverage',
     'state' => 'field_ar_state',
     'featured' => 'field_site_featured',
-    'pinned site-wide' => 'field_site_pinned',
+    'pinned to front page' => 'field_site_pinned',
   ];
 
   /**
@@ -131,13 +131,21 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @param string $collection
    *   The title of the collection.
+   * @param string $form
+   *   The entity form. Either 'edit' or 'delete'.
    *
-   * @When I go to the :collection collection edit form
-   * @When I visit the :collection collection edit form
+   * @throws \InvalidArgumentException
+   *   If an invalid $form parameter was passed.
+   *
+   * @When I go to the :collection collection :form form
+   * @When I visit the :collection collection :form form
    */
-  public function visitEditCollection(string $collection): void {
+  public function visitCollectionForm(string $collection, string $form): void {
+    if (!in_array($form, ['edit', 'delete'])) {
+      throw new \InvalidArgumentException('Only "edit" and "delete" are allowed for the $form variable.');
+    }
     $collection = $this->getCollectionByName($collection);
-    $path = $collection->toUrl('edit-form')->getInternalPath();
+    $path = $collection->toUrl("{$form}-form")->getInternalPath();
     $this->visitPath($path);
   }
 
@@ -642,7 +650,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
 
       // Go to the edit form and check that the expected buttons are visible.
-      $this->visitEditCollection($values['collection']);
+      $this->visitCollectionForm($values['collection'], 'edit');
       $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
       $this->assertSubmitButtonsVisible($buttons);
     }

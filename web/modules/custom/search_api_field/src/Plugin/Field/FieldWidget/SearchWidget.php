@@ -133,7 +133,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $element['enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable the search field'),
-      '#description' => $this->t('Uncheck to disable completely the functionality.'),
+      '#description' => $this->t('Related content from the community will be displayed below the one that you are publishing.'),
       '#default_value' => $default_values['enabled'] ?? TRUE,
     ];
 
@@ -477,7 +477,7 @@ class SearchWidget extends WidgetBase implements ContainerFactoryPluginInterface
     $wrapper_id = Html::getUniqueId('query-builder-wrapper');
     $element = [
       '#type' => 'details',
-      '#title' => $this->t('Query builder'),
+      '#title' => $this->t('Content filter'),
       '#open' => TRUE,
       '#attributes' => [
         'id' => $wrapper_id,

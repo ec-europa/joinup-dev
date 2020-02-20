@@ -33,6 +33,7 @@ trait UserTrait {
       'Organisation' => 'field_user_organisation',
       'Nationality' => 'field_user_nationality',
       'Professional domain' => 'field_user_professional_domain',
+      'Notification frequency' => 'field_user_frequency',
       // @todo Social network
     ];
   }

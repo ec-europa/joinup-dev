@@ -10,8 +10,6 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
     Examples:
       | path           |
       | /user/password |
-      | /user/login    |
-      | /user/register |
       | /contact       |
 
   Scenario: Authenticated users.
@@ -25,10 +23,10 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
       | title      | collection    | state     |
       | Let's talk | Family photos | validated |
     And event content:
-      | title      | collection    | state     |
+      | title    | collection    | state     |
       | Birthday | Family photos | validated |
     And news content:
-      | title      | collection    | state     |
+      | title       | collection    | state     |
       | Got married | Family photos | validated |
 
     Given I am logged in as "Günther"
@@ -36,6 +34,12 @@ Feature: As a visitor or logged-in user, when I want to post content, the form
     Then the form is protected by Antibot
 
     When I press "Join this collection"
+    Then I should see the success message "You are now a member of Family photos."
+    And a modal should open
+    Then the form is protected by Antibot
+
+    When I press "No thanks" in the "Modal buttons" region
+    And I go to the homepage of the "Family photos" collection
     And I click "Add discussion" in the plus button menu
     Then the form is protected by Antibot
 

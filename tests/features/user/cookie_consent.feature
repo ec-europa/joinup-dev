@@ -5,29 +5,13 @@ Feature: Cookie consent
   I want to offer the possibility for users to reject the use of cookies
 
   @javascript
-  Scenario Outline: Accept or refuse cookies
-    Given user:
-      | Username | test_cck |
-      | Password | test_cck |
-
-    When I am an anonymous user
-    And I am on the homepage
+  Scenario: Accept or refuse cookies
+    Given I am an anonymous user
     Then I should see the text "This site uses cookies to offer you a better browsing experience. Find out more on how we use cookies and how you can change your settings." in the "Cookie consent banner"
     And I should see the link "I accept cookies" in the "Cookie consent banner"
     And I should see the link "I refuse cookies" in the "Cookie consent banner"
 
-    When I click "I <link> cookies"
-    Then I should not see the "Cookie consent banner" region
-
-    # Logging in does not require re-sign in.
-    When I am on the homepage
-    And I click "Sign in"
-    And I fill in "Email or username" with "test_cck"
-    And I fill in "Password" with "test_cck"
-    And I press "Sign in"
-    Then I should not see the "Cookie consent banner" region
-
-    Examples:
-      | link   |
-      | accept |
-      | refuse |
+    Given I am logged in as a user with the "authenticated" role
+    Then I should see the text "This site uses cookies to offer you a better browsing experience. Find out more on how we use cookies and how you can change your settings." in the "Cookie consent banner"
+    And I should see the link "I accept cookies" in the "Cookie consent banner"
+    And I should see the link "I refuse cookies" in the "Cookie consent banner"

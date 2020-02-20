@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Add community content
   In order to introduce my wisdom in my collections
   As a member of a collection
@@ -84,7 +84,7 @@ Feature: Add community content
     When I am logged in as "Publisher"
     And I go to the "Sample <content type>" <content type>
     Then the "Sample <content type>" <content type> should not have a publication date
-    And I should see the text "01/01/2010"
+    And I should see the text "Published on: 01/01/2010"
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
@@ -93,13 +93,13 @@ Feature: Add community content
     When I click "Revisions" in the "Entity actions" region
     And I click the last "Revert" link
     And I press "Revert"
-    And I go to the "Sample <content type>" <content type>
+    Then the publication date of the "Sample <content type>" <content type> should be equal to the last unpublished version's
 
-    When I click "Edit" in the "Entity actions" region
+    When I go to the "Sample <content type>" <content type>
+    And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then I should see the heading "Sample <content type>"
-    Then the publication date of the "Sample <content type>" <content type> should be equal to the last unpublished version's
-    Then the publication date of the "Sample <content type>" <content type> should be equal to the last published version's
+    And the publication date of the "Sample <content type>" <content type> should be equal to the last published version's
 
     # The document is not tested as the creation date is not shown in the page. For documents, the document publication
     # date is the one shown and this field is exposed to the user.
@@ -108,3 +108,62 @@ Feature: Add community content
       | discussion   |
       | event        |
       | news         |
+
+  Scenario: Directly publishing community content sets the correct publication date.
+    Given the following collections:
+      | title        | description                  | logo     | banner     | state     |
+      | CC container | Community content container. | logo.png | banner.jpg | validated |
+    And I am logged in as a "facilitator" of the "CC container" collection
+
+    # Create a published discussion.
+    When I go to the homepage of the "CC container" collection
+    And I click "Add discussion" in the plus button menu
+    And I fill in the following:
+      | Title   | Published community discussion |
+      | Content | Publihed community discussion  |
+    And I press "Publish"
+    Then I should see the heading "Published community discussion"
+    And the publication date of the "Published community discussion" discussion should be equal to the created date
+
+    # Create a published document.
+    When I go to the homepage of the "CC container" collection
+    And I click "Add document" in the plus button menu
+    And I fill in the following:
+      | Title       | Published community document |
+      | Short title | Published community document |
+    And I select "Document" from "Type"
+    And I enter "Published community document." in the "Description" wysiwyg editor
+    And I press "Publish"
+    Then I should see the heading "Published community document"
+    And the publication date of the "Published community document" document should be equal to the created date
+
+    # Create a published event.
+    When I go to the homepage of the "CC container" collection
+    And I click "Add event" in the plus button menu
+    And I fill in the following:
+      | Title       | Published community event |
+      | Short title | Published community event |
+      | Description | Published community event |
+    And I press "Add another item" at the "Virtual location" field
+    And I fill the start date of the Date widget with "2018-08-29"
+    And I fill the start time of the Date widget with "23:59:59"
+    And I fill the end date of the Date widget with "2018-08-30"
+    And I fill the end time of the Date widget with "12:57:00"
+    And I fill in "Physical location" with "Rue Belliard 28, Brussels, Belgium"
+    And I press "Publish"
+    Then I should see the heading "Published community event"
+    # We are not testing events as behat assigns a slightly different publication date than the creation date.
+    # e.g. if the creation date is 1147483647, the publication date assigned will be 1147483645.
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5679
+    # And the publication date of the "Published community event" event should be equal to the created date
+
+    # Create a published news.
+    When I go to the homepage of the "CC container" collection
+    And I click "Add news" in the plus button menu
+    And I fill in the following:
+      | Short title | Published community news |
+      | Headline    | Published community news |
+      | Content     | Published community news |
+    And I press "Publish"
+    Then I should see the heading "Published community news"
+    And the publication date of the "Published community news" news should be equal to the created date

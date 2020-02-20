@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Dashboard
   In order to see an overview of my related information at a glance
   As an authenticated user
@@ -10,4 +10,3 @@ Feature: Dashboard
     Then I should see the link "Dashboard"
     When I click "Dashboard"
     Then I should see the heading "Dashboard"
-    And I should not see the link "My subscriptions"

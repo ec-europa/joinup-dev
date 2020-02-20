@@ -62,7 +62,7 @@ field.value.search_api_field:
           label: 'Limit'
         query_builder:
           type: mapping
-          label: 'Query builder'
+          label: 'Content filter'
           mapping:
             filters:
               type: sequence

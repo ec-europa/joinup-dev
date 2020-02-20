@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Collection content
   As a user of the website
   I want to access the content of a collection
@@ -46,11 +46,11 @@ Feature: Collection content
 
     When I click "Add solution" in the plus button menu
     And I fill in the following:
-      | Title            | Solution from draft to validated                                    |
-      | Description      | Testing that publishing a solution, updates the collection content. |
-      | Spatial coverage | Switzerland                                                         |
-      | Name             | Costas Papazoglou                                                   |
-      | E-mail address   | CostasPapazoglou@example.com                                        |
+      | Title                 | Solution from draft to validated                                    |
+      | Description           | Testing that publishing a solution, updates the collection content. |
+      | Geographical coverage | Switzerland                                                         |
+      | Name                  | Costas Papazoglou                                                   |
+      | E-mail address        | CostasPapazoglou@example.com                                        |
     And I select "Data gathering, data processing" from "Policy domain"
     And I select "Logging Service" from "Solution type"
     And I press "Add existing" at the "Owner" field
@@ -132,7 +132,7 @@ Feature: Collection content
     # Check the discussion tile.
     Then I should see the "Bigger than Egyptian Museum of Cairo?" tile
     # Check into the HTML so that we assert that actually the HTML has been stripped.
-    And the page should contain the html text "Link to the museum web site ."
+    And the page should contain the html text "Link to the museum website."
     And I should not see the link "Link to the museum"
     # Check the document tile.
     And I should see the "Upper Floor Map" tile
@@ -142,5 +142,5 @@ Feature: Collection content
     And I should see the "Turin Egyptian Museum Reopened" tile
     # Check the newsletter tile.
     And I should see the "Stay informed about this year events and exhibitions" tile
-    And the page should contain the html text "Subscribe to the newsletter to stay up-to-date! ."
+    And the page should contain the html text "Subscribe to the newsletter to stay up-to-date!."
     And I should not see the link "Subscribe to the newsletter"
