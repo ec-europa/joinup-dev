@@ -102,7 +102,7 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
     }
 
     $route_match = $this->routeMatch->getRouteMatchFromRequest($event->getRequest());
-    if ($route_match->getRouteName() === 'joinup_eulogin.limited_access') {
+    if ($route_match->getRouteName() === 'joinup_eulogin.page.limited_access') {
       // For anonymous or EU Login users this page doesn't exist.
       if ($this->isAnonymousOrEuLoginUser()) {
         throw new NotFoundHttpException();
@@ -148,7 +148,7 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
     // between user with different EU Login link status.
     $cache_metadata = (new CacheableMetadata())->addCacheContexts(['user.is_eulogin']);
     // Redirect to 'Limited access' page.
-    $response = new LocalRedirectResponse(Url::fromRoute('joinup_eulogin.limited_access')->toString());
+    $response = new LocalRedirectResponse(Url::fromRoute('joinup_eulogin.page.limited_access')->toString());
     $event->setResponse($response->addCacheableDependency($cache_metadata));
   }
 
@@ -168,7 +168,7 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
       // 'Page not found' is always accessible.
       'joinup_core.not_found',
       // The 'Limited access' warning page.
-      'joinup_eulogin.limited_access',
+      'joinup_eulogin.page.limited_access',
       // CSRF token route.
       'system.csrftoken',
       // Still able to contact support.

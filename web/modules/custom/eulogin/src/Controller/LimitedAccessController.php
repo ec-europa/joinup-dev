@@ -7,7 +7,7 @@ namespace Drupal\joinup_eulogin\Controller;
 use Drupal\Core\Controller\ControllerBase;
 
 /**
- * Provides a controller for the joinup_eulogin.limited_access route.
+ * Provides a controller for the joinup_eulogin.page.limited_access route.
  */
 class LimitedAccessController extends ControllerBase {
 
