@@ -30,7 +30,6 @@ class SolutionAffiliationTest extends KernelTestBase {
     'cached_computed_field',
     'comment',
     'contact_information',
-    'ds',
     'facets',
     'field',
     'field_group',
