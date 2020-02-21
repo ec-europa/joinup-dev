@@ -30,7 +30,7 @@ class EuSicPipeline extends JoinupFederationPipelinePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
+  public function getCollection(): string {
     return 'http://data.europa.eu/w21/b1e19fbc-f96e-478a-a449-fdaaeed17e3a';
   }
 

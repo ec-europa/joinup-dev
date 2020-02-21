@@ -30,7 +30,7 @@ class JoinupCollectionPipeline extends JoinupFederationPipelinePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
+  public function getCollection(): string {
     return 'http://data.europa.eu/w21/df34e3a2-207b-4910-a804-344931654e20';
   }
 
