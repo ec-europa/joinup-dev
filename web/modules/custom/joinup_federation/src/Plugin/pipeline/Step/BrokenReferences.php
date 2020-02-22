@@ -71,8 +71,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    *   The RDF schema field validator service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
-    $this->entityTypeManager = $entity_type_manager;
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityFieldManager = $entity_field_manager;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
   }

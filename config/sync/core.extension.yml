@@ -38,6 +38,7 @@ module:
   embed_block: 0
   entity_legal: 0
   error_page: 0
+  eu_sic: 0
   eupl: 0
   facets: 0
   field: 0
