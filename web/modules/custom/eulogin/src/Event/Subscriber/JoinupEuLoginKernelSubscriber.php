@@ -97,7 +97,7 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
    *   The response event object.
    */
   public function setAccessDeniedCode(FilterResponseEvent $event): void {
-    if (!$this->limitedAccessIsEnabled()) {
+    if ($this->limitedAccessIsDisabled()) {
       return;
     }
 
@@ -118,7 +118,7 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
    *   The request event.
    */
   public function redirectWhenNoAccess(GetResponseEvent $event): void {
-    if (!$this->limitedAccessIsEnabled()) {
+    if ($this->limitedAccessIsDisabled()) {
       return;
     }
 
@@ -210,13 +210,13 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Checks if limiting access is enabled.
+   * Checks if limiting access is disabled.
    *
    * @return bool
-   *   If limiting access is enabled.
+   *   If limiting access is disabled.
    */
-  protected function limitedAccessIsEnabled(): bool {
-    return $this->state->get('joinup_eulogin.limited_access', TRUE);
+  protected function limitedAccessIsDisabled(): bool {
+    return $this->state->get('joinup_eulogin.disable_limited_access', FALSE);
   }
 
 }

@@ -49,7 +49,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     $this->disableHoneypot();
 
     // Disable limited access functionality.
-    \Drupal::state()->set('joinup_eulogin.limited_access', FALSE);
+    \Drupal::state()->set('joinup_eulogin.disable_limited_access', TRUE);
 
     if ($this->disableAntibot) {
       // As ExistingSiteBase tests are running without javascript, we disable
@@ -74,7 +74,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     }
 
     // Re-enable limited access functionality.
-    \Drupal::state()->delete('joinup_eulogin.limited_access');
+    \Drupal::state()->delete('joinup_eulogin.disable_limited_access');
 
     // Restore the mail settings.
     $this->restoreMailSettings();

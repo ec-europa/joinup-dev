@@ -68,7 +68,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $state = \Drupal::state();
 
     // This test needs the limited access functionality enabled.
-    $state->delete('joinup_eulogin.limited_access');
+    $state->delete('joinup_eulogin.disable_limited_access');
 
     $assert = $this->assertSession();
     $page = $this->getSession()->getPage();
@@ -135,7 +135,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertAccess($this->account->toUrl('edit-form'), $this->account->getDisplayName());
 
     // Disable the limited access functionality.
-    \Drupal::state()->set('joinup_eulogin.limited_access', FALSE);
+    $state->set('joinup_eulogin.disable_limited_access', TRUE);
   }
 
   /**

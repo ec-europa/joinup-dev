@@ -21,7 +21,7 @@ class JoinupEuLoginSubContext extends DrupalSubContextBase {
    * @BeforeSuite
    */
   public static function disableLimitedAccess(): void {
-    \Drupal::state()->set('joinup_eulogin.limited_access', FALSE);
+    \Drupal::state()->set('joinup_eulogin.disable_limited_access', TRUE);
   }
 
   /**
@@ -32,7 +32,7 @@ class JoinupEuLoginSubContext extends DrupalSubContextBase {
    * @see self::disableLimitedAccess()
    */
   public static function restoreLimitedAccess(): void {
-    \Drupal::state()->delete('joinup_eulogin.limited_access');
+    \Drupal::state()->delete('joinup_eulogin.disable_limited_access');
   }
 
 }
