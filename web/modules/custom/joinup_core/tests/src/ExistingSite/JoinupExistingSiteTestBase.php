@@ -44,7 +44,15 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Use the testing mail collector during tests.
     $this->startMailCollection();
 
-    // Disable limited access functionality.
+    // A user whose account in not yet linked with an EU Login account has
+    // limited access to the website features. They can login only by using the
+    // one-time-login mechanism, but one-time-login is meant only to allow
+    // password recovery. On the other hand, in testing, we use the
+    // one-time-login mechanism to perform the authentication, instead of
+    // following the CAS login process, thus we disable limited access. Tests
+    // that are specifically testing limited access are able to use this
+    // kill-switch by temporary re-enabling the functionality during testing.
+    // @see \Drupal\Tests\joinup_eulogin\ExistingSite\JoinupEuLoginTest::testLimitedAccess()
     \Drupal::state()->set('joinup_eulogin.disable_limited_access', TRUE);
 
     if ($this->disableSpamProtection) {
