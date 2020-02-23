@@ -26,14 +26,14 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    *
    * @var bool[]
    */
-  protected static $honeypotForms;
+  protected $honeypotForms;
 
   /**
-   * Whether the current test should run with Antibot features disabled.
+   * Whether the current test should run without Antibot & Honeypot features.
    *
    * @var bool
    */
-  protected $disableAntibot = TRUE;
+  protected $disableSpamProtection = TRUE;
 
   /**
    * {@inheritdoc}
@@ -44,17 +44,14 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Use the testing mail collector during tests.
     $this->startMailCollection();
 
-    // As ExistingSiteBase tests are running without javascript, we disable
-    // Antibot and Honeypot functionality during the tests run.
-    $this->disableHoneypot();
-
     // Disable limited access functionality.
     \Drupal::state()->set('joinup_eulogin.disable_limited_access', TRUE);
 
-    if ($this->disableAntibot) {
+    if ($this->disableSpamProtection) {
       // As ExistingSiteBase tests are running without javascript, we disable
-      // Antibot during the tests run, if it has been requested.
+      // Antibot & Honeypot during the tests run, if it has been requested.
       $this->disableAntibot();
+      $this->disableHoneypot();
     }
   }
 
@@ -62,11 +59,11 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
    * {@inheritdoc}
    */
   public function tearDown(): void {
-    // Restores the Antibot functionality, if case.
-    if ($this->disableAntibot) {
-      static::restoreAntibot();
+    // Restores the spam protection functionality, if case.
+    if ($this->disableSpamProtection) {
+      $this->restoreAntibot();
+      $this->restoreHoneypot();
     }
-    $this->restoreHoneypot();
 
     // Make sure we don't send any notifications during test entities cleanup.
     foreach ($this->cleanupEntities as $entity) {
@@ -123,10 +120,10 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('honeypot.settings');
     if (!isset($this->honeypotForms)) {
-      static::$honeypotForms = $config->get('form_settings');
+      $this->honeypotForms = $config->get('form_settings');
     }
     $config
-      ->set('form_settings', array_fill_keys(array_keys(static::$honeypotForms), FALSE))
+      ->set('form_settings', array_fill_keys(array_keys($this->honeypotForms), FALSE))
       ->save();
     static::restoreReadOnlyConfig();
   }
@@ -137,7 +134,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
   protected function restoreHoneypot(): void {
     static::bypassReadOnlyConfig();
     \Drupal::configFactory()->getEditable('honeypot.settings')
-      ->set('form_settings', static::$honeypotForms)
+      ->set('form_settings', $this->honeypotForms)
       ->save();
     static::restoreReadOnlyConfig();
   }

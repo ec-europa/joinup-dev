@@ -18,7 +18,7 @@ class ConfigTest extends JoinupExistingSiteTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $disableAntibot = FALSE;
+  protected $disableSpamProtection = FALSE;
 
   /**
    * Tests that the active and sync stores are the same.
