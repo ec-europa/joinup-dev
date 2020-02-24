@@ -23,6 +23,8 @@ default:
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
         tags: '~@wip&&~@javascript&&@group-b'
+      paths:
+        - features/eulogin/eulogin.feature
   extensions:
     Drupal\MinkExtension:
       base_url: '${behat.base_url}'
