@@ -52,7 +52,7 @@ index c096502..b9ca965 100644
  The Honeypot module was originally developed by Jeff Geerling of [Midwestern Mac,
 diff --git a/honeypot.behat.inc b/honeypot.behat.inc
 new file mode 100644
-index 0000000..2896676
+index 0000000..193da5e
 --- /dev/null
 +++ b/honeypot.behat.inc
 @@ -0,0 +1,85 @@
@@ -136,13 +136,13 @@ index 0000000..2896676
 +   * @BeforeScenario
 +   */
 +  public function abc(\Behat\Behat\Hook\Scope\BeforeScenarioScope $scope) {
-+        error_log($scope->getFeature()->getFile());
-+        error_log($scope->getScenario()->getTitle());
++//        error_log($scope->getFeature()->getFile());
++//        error_log($scope->getScenario()->getTitle());
 +  }
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..d2008e3 100644
+index 83e45ca..6a4b948 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -159,30 +159,32 @@ index 83e45ca..d2008e3 100644
      \Drupal::service('keyvalue.expirable')->get('honeypot_time_restriction')->setWithExpire($identifier, \Drupal::time()->getRequestTime(), 3600 * 24);
      $form_state->setErrorByName('', t('There was a problem with your form submission. Please wait @limit seconds and try again.', ['@limit' => $time_limit]));
    }
-+  _log($form_state->getValue('form_id'), $time_limit);
++  _log($form_state->getValues(), $time_limit);
  }
  
  /**
-@@ -336,3 +337,22 @@ function honeypot_log_failure($form_id, $type) {
+@@ -336,3 +337,24 @@ function honeypot_log_failure($form_id, $type) {
    // TODO - Only accepts two args.
    \Drupal::moduleHandler()->invokeAll('honeypot_reject', [$form_id, $uid, $type]);
  }
 +
-+function _log($form_id, $time_limit) {
++function _log($form_values, $time_limit) {
++  $form_id = $form_values['form_id'];
 +  $uid = \Drupal::currentUser()->id();
 +  $host = \Drupal::request()->getClientIp();
 +  $time = \Drupal::time()->getRequestTime();
 +  $s = "START\n\n";
 +  $s .= "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n";
-+//  $b = debug_backtrace();
-+//  $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
 +  $hu = \Drupal::database()->select('honeypot_user')->fields('honeypot_user')->execute()->fetchAll();
 +
-+  $s .= print_r($hu, TRUE) . "\n";
++  $phu = \Drupal::state()->get('abc', []);
 +
-+  if ($hu) {
++  if ($hu && ($hu !== $phu)) {
++    $s .= print_r($hu, TRUE) . "\n";
++    $s .= print_r($form_values, TRUE) . "\n";
 +    $b = debug_backtrace();
-+   $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
++    $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
 +  }
 +  error_log($s);
++  \Drupal::state()->set('abc', $hu);
 +}
