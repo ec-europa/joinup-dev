@@ -52,10 +52,10 @@ index c096502..b9ca965 100644
  The Honeypot module was originally developed by Jeff Geerling of [Midwestern Mac,
 diff --git a/honeypot.behat.inc b/honeypot.behat.inc
 new file mode 100644
-index 0000000..d6df4e9
+index 0000000..f71d20b
 --- /dev/null
 +++ b/honeypot.behat.inc
-@@ -0,0 +1,75 @@
+@@ -0,0 +1,77 @@
 +<?php
 +
 +/**
@@ -109,6 +109,7 @@ index 0000000..d6df4e9
 +   * @BeforeSuite
 +   */
 +  public static function init() {
++    return;
 +    if (!is_dir(DRUPAL_ROOT . '/../tmp')) {
 +      \Drupal::service('file_system')->mkdir(DRUPAL_ROOT . '/../tmp');
 +    }
@@ -119,6 +120,7 @@ index 0000000..d6df4e9
 +   * @AfterSuite
 +   */
 +  public static function upload() {
++    return;
 +    $result = static::getS3Client()->upload('joinup2', '/behat-screenshots/debug.txt', file_get_contents(DRUPAL_ROOT . '/../tmp/debug.txt'));
 +    print_r($result);
 +  }
@@ -132,7 +134,7 @@ index 0000000..d6df4e9
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..2a785de 100644
+index 83e45ca..bdd01f9 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -179,7 +181,7 @@ index 83e45ca..2a785de 100644
    // Log failed submissions.
    \Drupal::database()->insert('honeypot_user')
      ->fields([
-@@ -336,3 +336,12 @@ function honeypot_log_failure($form_id, $type) {
+@@ -336,3 +336,13 @@ function honeypot_log_failure($form_id, $type) {
    // TODO - Only accepts two args.
    \Drupal::moduleHandler()->invokeAll('honeypot_reject', [$form_id, $uid, $type]);
  }
@@ -190,5 +192,6 @@ index 83e45ca..2a785de 100644
 +  $s = "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n";
 +  $b = debug_backtrace();
 +  $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
-+  file_put_contents(DRUPAL_ROOT . '/../tmp/debug.txt', $s, FILE_APPEND);
++  print_r($s);
++  ob_flush();
 +}
