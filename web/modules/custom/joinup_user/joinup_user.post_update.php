@@ -129,3 +129,54 @@ function joinup_user_post_update_reset_default_icons() {
   include_once __DIR__ . '/joinup_user.install';
   joinup_user_setup_default_avatar();
 }
+
+/**
+ * Set default frequency to 'Weekly' for all existing users.
+ */
+function joinup_user_post_update_set_default_frequency(array &$sandbox) {
+  $database = \Drupal::database();
+
+  if (empty($sandbox['uids'])) {
+    $sandbox['progress'] = 0;
+
+    $select = $database->select('users', 'u');
+    $select->leftJoin('user__field_user_frequency', 'f', 'u.uid = f.entity_id');
+    $select->fields('u', ['uid'])
+      ->isNull('f.field_user_frequency_value')
+      ->condition('u.uid', 0, '!=');
+    $sandbox['uids'] = $select->execute()->fetchCol();
+  }
+
+  $uids = array_splice($sandbox['uids'], 0, 1000);
+  foreach ($uids as $uid) {
+    $fields = [
+      'bundle' => 'user',
+      'deleted' => '0',
+      'entity_id' => $uid,
+      'revision_id' => $uid,
+      'langcode' => 'en',
+      'delta' => 0,
+      'field_user_frequency_value' => 'weekly',
+    ];
+    $database->insert('user__field_user_frequency')->fields($fields)->execute();
+  }
+
+  $count = count($uids);
+  $sandbox['progress'] += $count;
+
+  $sandbox['#finished'] = $sandbox['uids'] ? 0 : 1;
+  if ($sandbox['uids']) {
+    return "Updated {$count} accounts. Continuing...";
+  }
+  else {
+    return "Finished updating {$sandbox['progress']} accounts.";
+  }
+}
+
+/**
+ * Unsubscribe all members from their collections.
+ */
+function joinup_user_post_update_unsubscribe_all_members() {
+  $database = \Drupal::database();
+  $database->truncate('og_membership__subscription_bundles')->execute();
+}

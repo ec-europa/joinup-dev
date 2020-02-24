@@ -1,4 +1,3 @@
-# The allowed conditions for the contact information workflow transitions.
 transitions:
   validated:
     __new__:

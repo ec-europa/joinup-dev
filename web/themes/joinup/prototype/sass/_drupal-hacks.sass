@@ -199,10 +199,11 @@ form .description
     border: none
     padding: 0 !important
     margin: 0
+    display: flex
+    justify-content: flex-end
     .button
       margin: 0
       font-weight: $font-weight-medium
-      @extend .button--blue-light
 
   .ui-widget-content
     padding: 0
@@ -452,6 +453,16 @@ details .details-title
   background: #fff
   .wtfooter
     margin-left: 10px
+
+// List with buttons.
+.links--buttons
+  padding: 0
+  margin: 0
+  list-style: none
+  text-align: center
+  li
+    display: inline-block
+    margin: 0 5px
 
 // Fix margin for attachments in forms.
 .form-managed-file

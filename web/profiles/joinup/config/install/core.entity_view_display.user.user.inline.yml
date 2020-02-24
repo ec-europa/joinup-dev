@@ -11,12 +11,10 @@ dependencies:
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
-    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_subscription_events
     - image.style.profile_icon
   module:
     - ds
@@ -87,11 +85,9 @@ hidden:
   field_user_business_title: true
   field_user_content: true
   field_user_frequency: true
-  field_user_group_types: true
   field_user_nationality: true
   field_user_organisation: true
   field_user_professional_domain: true
-  field_user_subscription_events: true
   langcode: true
   member_for: true
   simplenews: true

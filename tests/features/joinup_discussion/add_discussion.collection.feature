@@ -53,7 +53,7 @@ Feature: Discussions added to collections
     And the following fields should be present "Title, Content, Policy domain, Add a new file"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
-    And the following fields should not be present "Shared in"
+    And the following fields should not be present "Shared on"
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"

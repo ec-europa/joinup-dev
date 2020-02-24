@@ -1,0 +1,19 @@
+uuid: b2aaeee8-47c8-4d3b-bb1f-6135a26f8cb7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.og_membership_approve
+id: message.og_membership_approve.mail_body
+targetEntityType: message
+bundle: og_membership_approve
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  partial_0: true

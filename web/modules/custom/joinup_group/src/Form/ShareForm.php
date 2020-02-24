@@ -138,6 +138,7 @@ abstract class ShareForm extends ShareFormBase {
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
+      '#extra_suggestion' => 'light_blue',
       '#value' => empty($collections) ? $this->t('Close') : $this->t('Share'),
     ];
 
@@ -161,13 +162,13 @@ abstract class ShareForm extends ShareFormBase {
     // already by Drupal.
     foreach ($collections as $id => $value) {
       $collection = $this->sparqlStorage->load($id);
-      $this->shareInCollection($collection);
+      $this->shareOnCollection($collection);
       $collection_labels[] = $collection->label();
     }
 
-    // Show a message if the content was shared in at least one collection.
+    // Show a message if the content was shared on at least one collection.
     if (!empty($collections)) {
-      $this->messenger->addStatus('Item was shared in the following collections: ' . implode(', ', $collection_labels) . '.');
+      $this->messenger->addStatus('Item was shared on the following collections: ' . implode(', ', $collection_labels) . '.');
     }
 
     $form_state->setRedirectUrl($this->entity->toUrl());
@@ -205,18 +206,18 @@ abstract class ShareForm extends ShareFormBase {
    */
   public function buildTitle(EntityInterface $entity): TranslatableMarkup {
     if ($this->isModal() || $this->isAjaxForm()) {
-      return $this->t('Share in');
+      return $this->t('Share on');
     }
     else {
-      return $this->t('Share %title in', ['%title' => $entity->label()]);
+      return $this->t('Share %title on', ['%title' => $entity->label()]);
     }
   }
 
   /**
-   * Retrieves a list of collections where the entity can be shared in.
+   * Retrieves a list of collections where the entity can be shared on.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collections where the current entity can be shared in.
+   *   A list of collections where the current entity can be shared on.
    *
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    *   Thrown when the group reference is not populated.
@@ -225,7 +226,7 @@ abstract class ShareForm extends ShareFormBase {
     // Being part also for the access check, do not allow the user to access
     // this page for entities without a field to store collections it is shared
     // in.
-    if (!$this->entity->hasField($this->getSharedInFieldName())) {
+    if (!$this->entity->hasField($this->getSharedOnFieldName())) {
       return [];
     }
 
@@ -238,7 +239,7 @@ abstract class ShareForm extends ShareFormBase {
   }
 
   /**
-   * Returns a list of groups that the entity cannot be shared in.
+   * Returns a list of groups that the entity cannot be shared on.
    *
    * For nodes, this is the parent group. For rdf entities, it is the affiliated
    * collections of the solution.
@@ -262,21 +263,21 @@ abstract class ShareForm extends ShareFormBase {
    * Shares the current entity inside a collection.
    *
    * @param \Drupal\rdf_entity\RdfInterface $collection
-   *   The collection where to share the entity in.
+   *   The collection where to share the entity on.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   Thrown when the current entity cannot be retrieved from the database.
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    *   Thrown when the entity storage is read only.
    */
-  protected function shareInCollection(RdfInterface $collection): void {
+  protected function shareOnCollection(RdfInterface $collection): void {
     $current_ids = $this->getAlreadySharedCollectionIds();
     $current_ids[] = $collection->id();
 
     // Entity references do not ensure uniqueness.
     $current_ids = array_unique($current_ids);
 
-    $this->entity->get($this->getSharedInFieldName())->setValue($current_ids);
+    $this->entity->get($this->getSharedOnFieldName())->setValue($current_ids);
     $this->entity->save();
   }
 

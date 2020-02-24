@@ -1,0 +1,23 @@
+uuid: bf9ad837-59fd-4314-b375-983715eb0f5b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.community_content_subscription.field_community_content
+    - message.template.community_content_subscription
+id: message.community_content_subscription.default
+targetEntityType: message
+bundle: community_content_subscription
+mode: default
+content:
+  field_community_content:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden: {  }

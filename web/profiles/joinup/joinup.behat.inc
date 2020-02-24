@@ -15,8 +15,8 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
@@ -444,7 +444,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Navigates to the edit page display of a node entity.
+   * Navigates to the edit form of a node entity.
    *
    * @param string $bundle
    *   The type of the node entity.
@@ -708,7 +708,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
-        'shared in' => 'field_shared_in',
+        'shared on' => 'field_shared_in',
         'visits' => 'visit_count',
         'featured' => 'field_site_featured',
         'pinned to front page' => 'field_site_pinned',
@@ -906,12 +906,41 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $state
    *   The expected state.
    *
+   * @throws \Exception
+   *   Thrown when the node doesn't exist or doesn't have a state field.
+   *
    * @Then the :title :type content should have the :state state
    */
-  public function assertNodeWorkflowState($title, $type, $state) {
+  public function assertNodeWorkflowState(string $title, string $type, string $state): void {
     $node = $this->getNodeByTitle($title, $type);
     $actual = $this->getEntityStateField($node)->get('value')->getString();
     Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+  }
+
+  /**
+   * Changes the workflow state of a given entity.
+   *
+   * @param string $title
+   *   The title of the entity to update.
+   * @param string $entity_type
+   *   The entity type.
+   * @param string $state
+   *   The workflow state.
+   *
+   * @throws \Exception
+   *   Thrown when the entity doesn't exist, doesn't have a state field, or
+   *   cannot be saved.
+   *
+   * @Given the workflow state of the :title :entity_type is changed to :state
+   */
+  public function updateWorkflowState(string $title, string $entity_type, string $state): void {
+    $entity_type = self::translateEntityTypeAlias($entity_type);
+    $entity = $this->getEntityByLabel($entity_type, $title);
+    $this->getEntityStateField($entity)->set('value', $state);
+    if ($entity instanceof RevisionableInterface) {
+      $entity->setNewRevision(TRUE);
+    }
+    $entity->save();
   }
 
   /**
@@ -1302,6 +1331,15 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function openPlusButtonMenu() {
     $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.add-content-menu'));
+  }
+
+  /**
+   * Opens the sidebar menu on JS-enabled browsers.
+   *
+   * @When I open the group sidebar menu
+   */
+  public function openGroupMenu() {
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.sidebar-menu'));
   }
 
   /**
@@ -1827,7 +1865,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Asserts that a certain link contains the unaliased path of an entity.
+   * Asserts that a certain link contains the URL of an entity.
    *
    * @param string $link
    *   The link text.
@@ -1841,7 +1879,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
    */
-  public function assertLinkContainsEntityUnaliasedUrl($link, $title, $type) {
+  public function assertLinkContainsEntityUrl(string $link, string $title, string $type): void {
     if (!in_array($type, ['content', 'rdf'])) {
       throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
     }
@@ -1855,11 +1893,10 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
-    $entity_url = $entity->toUrl()->setAbsolute()->getInternalPath();
+    $entity_url = $entity->toUrl()->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
-    Assert::assertContains(urlencode("{$base_url}/{$entity_url}"), $href);
+    Assert::assertContains(urlencode($entity_url), $href);
   }
 
   /**
@@ -2197,7 +2234,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     if (in_array($type, ['collection', 'solution'])) {
       $entity_type_id = 'rdf_entity';
     }
-    elseif (in_array($type, CommunityContentHelper::getBundles())) {
+    elseif (in_array($type, CommunityContentHelper::BUNDLES)) {
       $entity_type_id = 'node';
     }
     else {
@@ -2371,59 +2408,6 @@ JS;
     if ($element->find('css', '.icon--pin')) {
       throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
     }
-  }
-
-  /**
-   * Asserts that a user is subscribed to specific bundles in a collection.
-   *
-   * @param string $user
-   *   The user name.
-   * @param string $bundles
-   *   A list of bundles separated by commas.
-   * @param string $type
-   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
-   *   entity types respectively.
-   * @param string $group_label
-   *   The group name.
-   * @param string $group_bundle
-   *   The group bundle.
-   *
-   * @throws \Exception
-   *   Throws exception if invalid data passed as arguments or if the subscribed
-   *   bundles for the given type do not match the expected ones.
-   *
-   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
-   */
-  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
-    if ($type === 'content') {
-      $type = 'node';
-    }
-    elseif ($type === 'rdf') {
-      $type = 'rdf_entity';
-    }
-    else {
-      throw new Exception("Unsupported type {$type}.");
-    }
-
-    $user = $this->getUserByName($user);
-    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
-    $og_membership = $this->getMembershipByGroupAndUser($group, $user);
-
-    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
-    $bundles = array_map(function ($bundle) use ($type) {
-      return $type . ':' . trim($bundle);
-    }, $bundles);
-
-    // This can also be accessed with:
-    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
-    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
-    $og_bundles = array_map(function ($row) {
-      return $row['entity_type'] . ':' . $row['bundle'];
-    }, $og_bundles);
-
-    sort($bundles);
-    sort($og_bundles);
-    Assert::assertEquals($bundles, $og_bundles);
   }
 
   /**
@@ -2723,6 +2707,44 @@ JS;
     }
 
     return $elements;
+  }
+
+  /**
+   * Asserts the status of the save button in a given region or in the page.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $status
+   *   The expected status. Possible values are 'enabled' and 'disabled'.
+   * @param string $region
+   *   (optional) The region name. If left empty, the whole page will be used.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown if the passed value for the $status variable is not an acceptable
+   *   one.
+   * @throws \Exception
+   *   Thrown when the region or the button are not found or if the expected
+   *   status does not match the actual one.
+   *
+   * @Then the :button button on the :region region should be :status
+   * @Then the :button button should be :status
+   */
+  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+    if (!in_array($status, ['enabled', 'disabled'])) {
+      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
+    }
+
+    if (!empty($region)) {
+      $region = $this->getRegion($region);
+    }
+    else {
+      $region = $this->getSession()->getPage();
+    }
+
+    $expected_status = $status === 'enabled';
+    $button = $this->findNamedElementInRegion($button, 'button', $region);
+    $disabled = !($button->getAttribute('disabled') === 'disabled');
+    Assert::assertEquals($expected_status, $disabled);
   }
 
   /**
