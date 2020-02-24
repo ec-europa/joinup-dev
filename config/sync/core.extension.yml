@@ -81,6 +81,7 @@ module:
   joinup_user: 0
   joinup_video: 0
   language: 0
+  layout_builder: 0
   layout_discovery: 0
   link: 0
   linkit: 0

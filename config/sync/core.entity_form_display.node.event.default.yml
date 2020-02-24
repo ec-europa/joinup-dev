@@ -37,7 +37,6 @@ dependencies:
     - image
     - joinup_core
     - link
-    - publication_date
     - text
 third_party_settings:
   field_group:
@@ -45,8 +44,8 @@ third_party_settings:
       children:
         - field_location
         - field_event_online_location
-      parent_name: ''
-      weight: 6
+      parent_name: group_general
+      weight: 7
       format_type: fieldset
       format_settings:
         label: 'Event Location'
@@ -55,6 +54,77 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Event Location'
+    group_vertical_tabs:
+      children:
+        - group_general
+        - group_layout_builder
+        - group_paragraphs
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Vertical tabs'
+    group_general:
+      children:
+        - title
+        - field_short_title
+        - body
+        - field_event_agenda
+        - field_event_logo
+        - field_event_date
+        - group_event_location
+        - field_organisation
+        - field_organisation_type
+        - transition_motivation
+        - field_event_contact_email
+        - field_event_web_url
+        - field_scope
+        - field_policy_domain
+        - field_keywords
+        - field_event_spatial_coverage
+        - field_attachment
+        - uid
+        - field_comments
+        - current_workflow_state
+        - field_state
+        - url_redirects
+      parent_name: group_vertical_tabs
+      weight: 21
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: General
+    group_paragraphs:
+      children: {  }
+      parent_name: group_vertical_tabs
+      weight: 23
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: Paragraphs
+    group_layout_builder:
+      children: {  }
+      parent_name: group_vertical_tabs
+      weight: 22
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Layout builder'
 id: node.event.default
 targetEntityType: node
 bundle: event
@@ -62,11 +132,12 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 2
+    weight: 3
     settings:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
@@ -95,7 +166,7 @@ content:
     type: comment_default
     region: content
   field_event_agenda:
-    weight: 3
+    weight: 4
     settings:
       rows: 5
       placeholder: ''
@@ -111,13 +182,13 @@ content:
     type: email_default
     region: content
   field_event_date:
-    weight: 5
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: daterange_default
     region: content
   field_event_logo:
-    weight: 4
+    weight: 5
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -193,7 +264,7 @@ content:
     type: options_select
     region: content
   field_short_title:
-    weight: 1
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -209,7 +280,7 @@ content:
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 0
+    weight: 1
     settings:
       size: 60
       placeholder: ''
