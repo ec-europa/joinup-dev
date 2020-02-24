@@ -37,7 +37,7 @@
         "drupal/flag": "^4.0",
         "drupal/geocoder": "^3.0",
         "drupal/geofield": "~1.6",
-        "drupal/honeypot": "^1.29",
+        "drupal/honeypot": "dev-1.x",
         "drupal/inline_entity_form": "^1.0",
         "drupal/linkit": "^5.0-beta10",
         "drupal/matomo": "^1.9",
@@ -229,7 +229,7 @@
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
             "drupal/honeypot": {
-                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
+                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "resources/patch/hp.patch"
             },
             "drupal/inline_entity_form": {
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"

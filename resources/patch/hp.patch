@@ -1,0 +1,187 @@
+diff --git a/README.md b/README.md
+index c096502..b9ca965 100644
+--- a/README.md
++++ b/README.md
+@@ -65,6 +65,47 @@ Honeypot includes a `docker-compose.yml` file that can be used for testing purpo
+ 
+   1. Log into `http://localhost/` with `admin`/`admin` and enable Honeypot (and the Testing module, if desired).
+ 
++### Behat
++
++When the Honeypot time limit is enabled it is important to take this into
++account when writing user scenarios that submit the protected forms.
++
++Use the step definition `Given I wait for the spam protection time limit to
++pass` before submitting a form that is protected by Honeypot. Example:
++
++```
++Scenario: Register a new account
++  Given I am an anonymous user
++  When I click "Log in"
++  And I click "Create new account"
++  And I fill in "Email address" with "user@example.com"
++  And I fill in "Username" with "pterry"
++  And I wait for the spam protection time limit to pass
++  And I press "Create new account"
++  Then I should see the success message "Thank you for applying for an account. Your account is currently pending approval by the site administrator."
++```
++
++If on the other hand you are writing a scenario that describes how a spammer
++will be blocked by Honeypot, add the `@honeypot` tag to the scenario. This will
++clear all failed form submissions from the database after the scenario ends.
++This ensures that there won't be any interference with any subsequent scenarios
++that also interact with Honeypot. This is important because on a test server all
++anonymous users will have the same IP address and are seen by Honeypot as the
++same user. Example:
++
++```
++@honeypot
++Scenario: Spammers are delayed by the anti spam feature
++  Given I am an anonymous user
++  When I click "Log in"
++  And I click "Create new account"
++  And I fill in "Email address" with "spammer@example.com"
++  And I fill in "Username" with "spambot"
++  And I press "Create new account"
++  Then I should see the error message "There was a problem with your form submission. Please wait 5 seconds and try again."
++```
++
++
+ ## Credit
+ 
+ The Honeypot module was originally developed by Jeff Geerling of [Midwestern Mac,
+diff --git a/honeypot.behat.inc b/honeypot.behat.inc
+new file mode 100644
+index 0000000..9385f24
+--- /dev/null
++++ b/honeypot.behat.inc
+@@ -0,0 +1,68 @@
++<?php
++
++/**
++ * @file
++ * Contains \HoneypotSubContext.
++ */
++
++use Behat\Behat\Hook\Scope\AfterScenarioScope;
++use Drupal\DrupalExtension\Context\DrupalSubContextBase;
++
++/**
++ * Integrates Honeypot with Behat Drupal Extension.
++ */
++class HoneypotSubContext extends DrupalSubContextBase {
++
++  /**
++   * Waits a few moments to bypass spam bot detection.
++   *
++   * The Honeypot module is intended to block spam bots and detect if actual
++   * humans are entering forms. One of its checks is that it assumes a human
++   * takes at least a few seconds to fill in a form.
++   *
++   * Use this on forms that are protected by Honeypot before submitting the
++   * form.
++   *
++   * @Given I wait for the honeypot time limit to pass
++   * @Given I wait for the spam protection time limit to pass
++   */
++  public function waitForTimeLimit() {
++    $time_limit = \Drupal::config('honeypot.settings')->get('time_limit');
++    if (is_int($time_limit) && $time_limit > 0) {
++      sleep($time_limit);
++    }
++  }
++
++  /**
++   * Removes all failed form submissions from the database.
++   *
++   * The `@honeypot` tag can be added to Behat scenarios that trigger Honeypot
++   * validation. This will clear all failed submissions from the database,
++   * ensuring that any scenarios that are executed later will not need to wait
++   * an exponential amount of time for validation to pass.
++   *
++   * @AfterScenario @honeypot
++   */
++  public function remove(AfterScenarioScope $event) {
++    \Drupal::database()->delete('honeypot_user')->execute();
++  }
++
++  /**
++   * @AfterSuite
++   */
++  public static function upload() {
++    static::getS3Client()->upload(getenv('joinup2'), 'debug.txt', 'public://debug.txt');
++  }
++
++  protected static function getS3Client(): \Aws\S3\S3ClientInterface {
++    return new \Aws\S3\S3Client([
++      'version' => 'latest',
++      'region' => getenv('eu-west-1'),
++//    'credentials' => [
++//      'key' => getenv('DEBUG_S3_KEY'),
++//      'secret' => getenv('DEBUG_S3_SECRET'),
++//    ],
++    ]);
++  }
++
++}
+diff --git a/honeypot.module b/honeypot.module
+index 83e45ca..5953725 100644
+--- a/honeypot.module
++++ b/honeypot.module
+@@ -5,8 +5,8 @@
+  * Honeypot module, for deterring spam bots from completing Drupal forms.
+  */
+ 
+-use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Component\Utility\Crypt;
++use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Routing\RouteMatchInterface;
+ 
+ /**
+@@ -238,8 +238,8 @@ function _honeypot_time_restriction_validate($element, FormStateInterface $form_
+   // Make sure current time - (time_limit + form time value) is greater than 0.
+   // If not, throw an error.
+   if (!$honeypot_time || \Drupal::time()->getRequestTime() < ($honeypot_time + $time_limit)) {
+-    _honeypot_log($form_state->getValue('form_id'), 'honeypot_time');
+     $time_limit = honeypot_get_time_limit();
++    _honeypot_log($form_state->getValue('form_id'), 'honeypot_time', $time_limit);
+     \Drupal::service('keyvalue.expirable')->get('honeypot_time_restriction')->setWithExpire($identifier, \Drupal::time()->getRequestTime(), 3600 * 24);
+     $form_state->setErrorByName('', t('There was a problem with your form submission. Please wait @limit seconds and try again.', ['@limit' => $time_limit]));
+   }
+@@ -255,8 +255,8 @@ function _honeypot_time_restriction_validate($element, FormStateInterface $form_
+  *     - honeypot: If honeypot field was filled in.
+  *     - honeypot_time: If form was completed before the configured time limit.
+  */
+-function _honeypot_log($form_id, $type) {
+-  honeypot_log_failure($form_id, $type);
++function _honeypot_log($form_id, $type, $time_limit = NULL) {
++  honeypot_log_failure($form_id, $type,  $time_limit);
+   if (\Drupal::config('honeypot.settings')->get('log')) {
+     $variables = [
+       '%form'  => $form_id,
+@@ -319,10 +319,10 @@ function honeypot_get_time_limit(array $form_values = []) {
+  *     - honeypot: If honeypot field was filled in.
+  *     - honeypot_time: If form was completed before the configured time limit.
+  */
+-function honeypot_log_failure($form_id, $type) {
++function honeypot_log_failure($form_id, $type, $time_limit = NULL) {
+   $account = \Drupal::currentUser();
+   $uid = $account->id();
+-
++  _log($uid, $type, $form_id, $time_limit);
+   // Log failed submissions.
+   \Drupal::database()->insert('honeypot_user')
+     ->fields([
+@@ -336,3 +336,12 @@ function honeypot_log_failure($form_id, $type) {
+   // TODO - Only accepts two args.
+   \Drupal::moduleHandler()->invokeAll('honeypot_reject', [$form_id, $uid, $type]);
+ }
++
++function _log($uid, $type, $form_id, $time_limit) {
++  $host = \Drupal::request()->getClientIp();
++  $time = \Drupal::time()->getRequestTime();
++  $s = "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n";
++  $b = debug_backtrace();
++  $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
++  file_put_contents('public://debug.txt', $s, FILE_APPEND);
++}
