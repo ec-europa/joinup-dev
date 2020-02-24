@@ -23,7 +23,6 @@ dependencies:
     - image.style.horizontal_medium_image
     - node.type.news
   module:
-    - ds
     - image
     - joinup
     - smart_trim
@@ -51,13 +50,6 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -69,14 +61,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: comma_separated
   field_news_logo:
@@ -88,13 +72,6 @@ content:
       image_style: horizontal_medium_image
       image_link: content
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
 hidden:

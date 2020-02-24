@@ -12,7 +12,6 @@ dependencies:
     - field.field.node.video.og_audience
     - node.type.video
   module:
-    - ds
     - joinup
     - smart_trim
     - user
@@ -37,14 +36,9 @@ content:
       trim_options:
         text: false
       more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content

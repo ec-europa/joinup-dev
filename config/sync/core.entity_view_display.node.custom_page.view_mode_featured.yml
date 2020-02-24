@@ -12,7 +12,6 @@ dependencies:
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
-    - ds
     - entity_reference_revisions
     - joinup
     - smart_trim
@@ -41,13 +40,6 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
