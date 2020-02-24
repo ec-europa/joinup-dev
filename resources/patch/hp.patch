@@ -134,7 +134,7 @@ index 0000000..f71d20b
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..a49b9ce 100644
+index 83e45ca..60ed434 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -147,46 +147,21 @@ index 83e45ca..a49b9ce 100644
  use Drupal\Core\Routing\RouteMatchInterface;
  
  /**
-@@ -238,8 +238,8 @@ function _honeypot_time_restriction_validate($element, FormStateInterface $form_
-   // Make sure current time - (time_limit + form time value) is greater than 0.
-   // If not, throw an error.
-   if (!$honeypot_time || \Drupal::time()->getRequestTime() < ($honeypot_time + $time_limit)) {
--    _honeypot_log($form_state->getValue('form_id'), 'honeypot_time');
-     $time_limit = honeypot_get_time_limit();
-+    _honeypot_log($form_state->getValue('form_id'), 'honeypot_time', $time_limit);
+@@ -243,6 +243,7 @@ function _honeypot_time_restriction_validate($element, FormStateInterface $form_
      \Drupal::service('keyvalue.expirable')->get('honeypot_time_restriction')->setWithExpire($identifier, \Drupal::time()->getRequestTime(), 3600 * 24);
      $form_state->setErrorByName('', t('There was a problem with your form submission. Please wait @limit seconds and try again.', ['@limit' => $time_limit]));
    }
-@@ -255,8 +255,8 @@ function _honeypot_time_restriction_validate($element, FormStateInterface $form_
-  *     - honeypot: If honeypot field was filled in.
-  *     - honeypot_time: If form was completed before the configured time limit.
-  */
--function _honeypot_log($form_id, $type) {
--  honeypot_log_failure($form_id, $type);
-+function _honeypot_log($form_id, $type, $time_limit = NULL) {
-+  honeypot_log_failure($form_id, $type,  $time_limit);
-   if (\Drupal::config('honeypot.settings')->get('log')) {
-     $variables = [
-       '%form'  => $form_id,
-@@ -319,10 +319,10 @@ function honeypot_get_time_limit(array $form_values = []) {
-  *     - honeypot: If honeypot field was filled in.
-  *     - honeypot_time: If form was completed before the configured time limit.
-  */
--function honeypot_log_failure($form_id, $type) {
-+function honeypot_log_failure($form_id, $type, $time_limit = NULL) {
-   $account = \Drupal::currentUser();
-   $uid = $account->id();
--
-+  _log($uid, $type, $form_id, $time_limit);
-   // Log failed submissions.
-   \Drupal::database()->insert('honeypot_user')
-     ->fields([
-@@ -336,3 +336,13 @@ function honeypot_log_failure($form_id, $type) {
++  _log($form_state->getValue('form_id'), $time_limit);
+ }
+ 
+ /**
+@@ -336,3 +337,14 @@ function honeypot_log_failure($form_id, $type) {
    // TODO - Only accepts two args.
    \Drupal::moduleHandler()->invokeAll('honeypot_reject', [$form_id, $uid, $type]);
  }
 +
-+function _log($uid, $type, $form_id, $time_limit) {
++function _log($form_id, $time_limit) {
++  $uid = \Drupal::currentUser()->id();
 +  $host = \Drupal::request()->getClientIp();
 +  $time = \Drupal::time()->getRequestTime();
 +  $s = "START\n\n";
