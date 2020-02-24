@@ -15,13 +15,23 @@ class JoinupExistingSiteTestBase extends ExistingSiteBase {
   use AntibotTrait;
 
   /**
+   * Whether the current test should run with Antibot features disabled.
+   *
+   * @var bool
+   */
+  protected $disableAntibot = TRUE;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-    // As ExistingSiteBase tests are running without javascript, we disable
-    // Antibot during the tests run.
-    static::disableAntibot();
+
+    if ($this->disableAntibot) {
+      // As ExistingSiteBase tests are running without javascript, we disable
+      // Antibot during the tests run, if it has been requested.
+      static::disableAntibot();
+    }
   }
 
   /**
@@ -43,8 +53,10 @@ class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // destroying the container and the registered shutdown callback will fail.
     $delete_orphans_plugin->process();
 
-    // Restores the Antibot functionality.
-    static::restoreAntibot();
+    // Restores the Antibot functionality, if case.
+    if ($this->disableAntibot) {
+      static::restoreAntibot();
+    }
   }
 
 }

@@ -17,7 +17,6 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
@@ -732,7 +731,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
-        'shared in' => 'field_shared_in',
+        'shared on' => 'field_shared_in',
         'visits' => 'visit_count',
         'featured' => 'field_site_featured',
         'pinned to front page' => 'field_site_pinned',
@@ -1889,7 +1888,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Asserts that a certain link contains the unaliased path of an entity.
+   * Asserts that a certain link contains the URL of an entity.
    *
    * @param string $link
    *   The link text.
@@ -1903,7 +1902,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
    */
-  public function assertLinkContainsEntityUnaliasedUrl($link, $title, $type) {
+  public function assertLinkContainsEntityUrl(string $link, string $title, string $type): void {
     if (!in_array($type, ['content', 'rdf'])) {
       throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
     }
@@ -1917,11 +1916,10 @@ class JoinupSubContext extends DrupalSubContextBase {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
-    $entity_url = $entity->toUrl()->setAbsolute()->getInternalPath();
+    $entity_url = $entity->toUrl()->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
-    Assert::assertContains(urlencode("{$base_url}/{$entity_url}"), $href);
+    Assert::assertContains(urlencode($entity_url), $href);
   }
 
   /**
