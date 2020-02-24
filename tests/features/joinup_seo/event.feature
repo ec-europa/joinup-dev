@@ -22,9 +22,11 @@ Feature: SEO for news articles.
       | property    | value                    |
       | @type       | Event                    |
       | name        | Joinup SEO event         |
-      # Though it would be nice to have this to the Joinup URL, Search Engines expect this to be the URL of the event.
-      # If a website is provided, then that means that the entity in Joinup is simply a promotion, and all the handling
-      # of registrations etc, already has a website, thus we point to that location.
+      # Though it would be nice to have this to the Joinup URL, Search Engines
+      # expect this to be the URL of the event. If a website is provided, then
+      # that means that the entity in Joinup is simply a promotion, and all the
+      # handling of registrations etc, already has a website, thus we point to
+      # that location.
       | url         | <expected url>           |
       # Summary is preferred over the body of the entity.
       | description | Summary of event.        |
@@ -36,8 +38,8 @@ Feature: SEO for news articles.
       | property             | value                                            |
       | @type                | ImageObject                                      |
       | representativeOfPage | True                                             |
-      # $random_text$ can be any string that is appointed by the system and we cannot predict.
-      # In this case, it is a random file name that is appointed to the image.
+      # $random_text$ can be any string that is appointed by the system and we
+      # cannot predict. In this case it is the random file name of the image.
       | url                  | $base_url$/sites/default/files/$random_text$.jpg |
       | width                | 377                                              |
       | height               | 139                                              |
@@ -46,7 +48,8 @@ Feature: SEO for news articles.
       | @type    | Place                                 |
       | name     | <expected location>                   |
       | url      | http://example.com/some-online-meetup |
-    # Target the location subgraph which has the name property set to "Rue Belliard 28".
+    # Target the location subgraph which has the name property set to "Rue
+    # Belliard 28".
     And the metatag subgraph of the item with "name" "Rue Belliard 28" should have the following "address" properties:
       | property      | value               |
       | @type         | PostalAddress       |
@@ -61,15 +64,15 @@ Feature: SEO for news articles.
     When I click "Keep up to date"
     Then I should see the "Joinup SEO event" tile
     # No metatags are defined for the keep up to date page.
-    # No metatags JSON in general means also that the entity metatags of the news item
-    # is also not attached when the tile is present.
+    # No metatags JSON in general means also that the entity metatags of the
+    # news item is also not attached when the tile is present.
     And the metatag JSON should not be attached in the page
 
     Examples:
       | web url                                       | expected url                                                             | location                           | expected location |
       |                                               | $base_url$/collection/joinup-seo-event-collection/event/joinup-seo-event | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
-      # Urls need a title value in the 0 index and a url in the 1 index of the value to work, otherwise it is parsed
-      # wrongly.
+      # Urls need a title value in the 0 index and a url in the 1 index of the
+      # value to work, otherwise it is parsed wrongly.
       # @see: \Drupal\Driver\Fields\Drupal8\LinkHandler::expand
       | 0: Some url - 1: http://some-random-event-url | http://some-random-event-url                                             | Rue Belliard 28, Brussels, Belgium | Rue Belliard 28   |
 
