@@ -142,7 +142,7 @@ index 0000000..2896676
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..60ed434 100644
+index 83e45ca..6c33407 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -173,8 +173,8 @@ index 83e45ca..60ed434 100644
 +  $host = \Drupal::request()->getClientIp();
 +  $time = \Drupal::time()->getRequestTime();
 +  $s = "START\n\n";
-+  $s .= "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n";
-+  $b = debug_backtrace();
-+  $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
++  $s .= "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n\n";
++//  $b = debug_backtrace();
++//  $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
 +  error_log($s);
 +}
