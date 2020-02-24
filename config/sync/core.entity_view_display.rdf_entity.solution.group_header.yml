@@ -26,6 +26,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
     - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
@@ -47,7 +48,6 @@ dependencies:
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.solution
   module:
-    - ds
     - image
     - joinup
     - joinup_core
@@ -73,14 +73,7 @@ content:
     label: hidden
     settings:
       image_style: banner
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   field_is_logo:
     type: image
@@ -90,13 +83,6 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -107,13 +93,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content

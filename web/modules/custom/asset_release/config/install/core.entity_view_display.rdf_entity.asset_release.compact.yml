@@ -25,7 +25,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
-    - ds
     - text
     - user
 id: rdf_entity.asset_release.compact
@@ -64,15 +63,7 @@ content:
     settings:
       view_mode: compact
       link: false
-    third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   field_isr_elibrary_creation:
     weight: 13
@@ -148,14 +139,7 @@ content:
     label: hidden
     settings:
       link_to_entity: false
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   field_isr_source_code_repository:
     weight: 21
