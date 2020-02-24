@@ -43,6 +43,7 @@ module:
   facets: 0
   field: 0
   field_group: 0
+  field_ui: 0
   file: 0
   file_url: 0
   filter: 0
