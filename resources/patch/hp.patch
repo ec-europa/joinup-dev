@@ -52,10 +52,10 @@ index c096502..b9ca965 100644
  The Honeypot module was originally developed by Jeff Geerling of [Midwestern Mac,
 diff --git a/honeypot.behat.inc b/honeypot.behat.inc
 new file mode 100644
-index 0000000..39a52a0
+index 0000000..3a83b29
 --- /dev/null
 +++ b/honeypot.behat.inc
-@@ -0,0 +1,68 @@
+@@ -0,0 +1,72 @@
 +<?php
 +
 +/**
@@ -106,26 +106,30 @@ index 0000000..39a52a0
 +  }
 +
 +  /**
++   * @BeforeSuite
++   */
++  public static function init() {
++    file_put_contents(DRUPAL_ROOT . '/../tmp/debug.txt', "START\n\n");
++  }
++
++  /**
 +   * @AfterSuite
 +   */
 +  public static function upload() {
-+    static::getS3Client()->upload(getenv('joinup2'), 'debug.txt', 'public://debug.txt');
++    $result = static::getS3Client()->upload('joinup2', '/behat-screenshots/debug.txt', file_get_contents(DRUPAL_ROOT . '/../tmp/debug.txt'));
++    print_r($result);
 +  }
 +
 +  protected static function getS3Client(): \Aws\S3\S3ClientInterface {
 +    return new \Aws\S3\S3Client([
 +      'version' => 'latest',
 +      'region' => 'eu-west-1',
-+//    'credentials' => [
-+//      'key' => getenv('DEBUG_S3_KEY'),
-+//      'secret' => getenv('DEBUG_S3_SECRET'),
-+//    ],
 +    ]);
 +  }
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..5953725 100644
+index 83e45ca..2a785de 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -183,5 +187,5 @@ index 83e45ca..5953725 100644
 +  $s = "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n";
 +  $b = debug_backtrace();
 +  $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
-+  file_put_contents('public://debug.txt', $s, FILE_APPEND);
++  file_put_contents(DRUPAL_ROOT . '/../tmp/debug.txt', $s, FILE_APPEND);
 +}
