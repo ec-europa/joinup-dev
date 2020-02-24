@@ -123,14 +123,14 @@ abstract class ShareFormBase extends FormBase {
    * Gets a list of collection ids where the current entity is already shared.
    *
    * @return \Drupal\rdf_entity\RdfInterface[]
-   *   A list of collection ids where the current entity is already shared in.
+   *   A list of collection ids where the current entity is already shared on.
    */
   protected function getAlreadySharedCollectionIds(): array {
-    if (!$this->getSharedInFieldName() || !$this->entity->hasField($this->getSharedInFieldName())) {
+    if (!$this->getSharedOnFieldName() || !$this->entity->hasField($this->getSharedOnFieldName())) {
       return [];
     }
 
-    return array_column($this->entity->get($this->getSharedInFieldName())->getValue(), 'target_id');
+    return array_column($this->entity->get($this->getSharedOnFieldName())->getValue(), 'target_id');
   }
 
   /**
@@ -158,7 +158,7 @@ abstract class ShareFormBase extends FormBase {
    * @return string|null
    *   The field name or null if not configured.
    */
-  protected function getSharedInFieldName(): ?string {
+  protected function getSharedOnFieldName(): ?string {
     return self::SHARED_IN_FIELD_NAMES[$this->entity->getEntityTypeId()][$this->entity->bundle()] ?? NULL;
   }
 
@@ -180,7 +180,7 @@ abstract class ShareFormBase extends FormBase {
   }
 
   /**
-   * Returns a list of groups that the entity cannot be shared in.
+   * Returns a list of groups that the entity cannot be shared on.
    *
    * For nodes, this is the parent group. For rdf entities, it is the affiliated
    * collection of the solution.
