@@ -142,7 +142,7 @@ index 0000000..193da5e
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..6a4b948 100644
+index 83e45ca..77b6b7d 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -163,7 +163,7 @@ index 83e45ca..6a4b948 100644
  }
  
  /**
-@@ -336,3 +337,24 @@ function honeypot_log_failure($form_id, $type) {
+@@ -336,3 +337,37 @@ function honeypot_log_failure($form_id, $type) {
    // TODO - Only accepts two args.
    \Drupal::moduleHandler()->invokeAll('honeypot_reject', [$form_id, $uid, $type]);
  }
@@ -181,10 +181,23 @@ index 83e45ca..6a4b948 100644
 +
 +  if ($hu && ($hu !== $phu)) {
 +    $s .= print_r($hu, TRUE) . "\n";
++    norm($form_values);
 +    $s .= print_r($form_values, TRUE) . "\n";
 +    $b = debug_backtrace();
 +    $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
 +  }
 +  error_log($s);
 +  \Drupal::state()->set('abc', $hu);
++}
++
++function norm(&$a) {
++  foreach ($a as &$e) {
++    if (is_array($e)) {
++      norm($e);
++    }
++    if (get_class($e) == \Drupal\Core\StringTranslation\TranslatableMarkup::class) {
++      $e = (string) $e;
++    }
++
++  }
 +}
