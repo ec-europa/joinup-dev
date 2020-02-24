@@ -142,7 +142,7 @@ index 0000000..2896676
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..6c33407 100644
+index 83e45ca..3e6675a 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -163,7 +163,7 @@ index 83e45ca..6c33407 100644
  }
  
  /**
-@@ -336,3 +337,14 @@ function honeypot_log_failure($form_id, $type) {
+@@ -336,3 +337,16 @@ function honeypot_log_failure($form_id, $type) {
    // TODO - Only accepts two args.
    \Drupal::moduleHandler()->invokeAll('honeypot_reject', [$form_id, $uid, $type]);
  }
@@ -173,8 +173,10 @@ index 83e45ca..6c33407 100644
 +  $host = \Drupal::request()->getClientIp();
 +  $time = \Drupal::time()->getRequestTime();
 +  $s = "START\n\n";
-+  $s .= "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n\n";
++  $s .= "form_id={$form_id}, uid=$uid, host=$host, time=$time, time_limit={$time_limit}\n";
 +//  $b = debug_backtrace();
 +//  $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
++  $hu = \Drupal::database()->select('honeypot_user')->fields('honeypot_user')->execute()->fetchAll();
++  $s .= print_r($hu, TRUE) . "\n\n";
 +  error_log($s);
 +}
