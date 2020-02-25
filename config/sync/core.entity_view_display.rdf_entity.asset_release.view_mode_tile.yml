@@ -26,7 +26,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
-    - ds
     - joinup
     - text
     - user
@@ -47,13 +46,6 @@ content:
       custom_date_format: ''
       timezone: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   field_isr_affiliations_requests:
@@ -147,13 +139,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     region: content
@@ -164,13 +149,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -228,13 +206,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   label:
@@ -244,13 +215,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content

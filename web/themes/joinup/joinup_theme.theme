@@ -403,17 +403,17 @@ function joinup_theme_preprocess_page(&$variables) {
   // Set title back in the global page variables.
   $variables['title'] = $title;
 
-  // Set special variable for the search page.
-  if ($route_name == 'view.search.page_1') {
-    $variables['is_search_page'] = TRUE;
-  }
-
   // Move title on batch pages from header to content.
   if ($route_name == 'system.batch_page.html') {
     unset($variables['page']['header']['#type']);
     unset($variables['page']['header']['#title']);
 
     $variables['custom_content_title'] = $title;
+  }
+
+  // Set a variable that identifies the search page.
+  if ($route_name == 'view.search.page_1') {
+    $variables['is_search_page'] = TRUE;
   }
 }
 
@@ -2002,10 +2002,10 @@ function joinup_theme_preprocess_node(&$variables) {
 function joinup_theme_preprocess_social_share(array &$variables) {
   /** @var \Drupal\Core\Entity\EntityInterface $entity */
   $entity = $variables['entity'];
-  // Generate an absolute, un-aliased URL.
+  // Generate an entity absolute URL.
   $variables['url'] = $entity->toUrl('canonical', [
     'language' => $entity->language(),
-  ])->setAbsolute()->setOption('alias', TRUE);
+  ])->setAbsolute();
 
   $variables['encoded_url'] = urlencode($variables['url']->toString());
   $variables['encoded_title'] = urlencode($entity->label());

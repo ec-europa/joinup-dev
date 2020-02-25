@@ -515,7 +515,7 @@ function collection_search_api_query_search_api_field_field_collection_content_a
   // field. This makes sure that other related entities (such as the collection
   // owner) do not show up as collection content tiles.
   $or->addCondition('entity_groups', [$entity->id()], 'IN');
-  // Or show content that has been shared in this collection.
+  // Or show content that has been shared on this collection.
   $or->addCondition('shared_in', [$entity->id()], 'IN');
   $query->addConditionGroup($or);
 

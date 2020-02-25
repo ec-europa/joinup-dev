@@ -275,8 +275,7 @@ Feature: Global search
       | Bird Birdman                      |
 
   @clearStaticCache
-  Scenario: Solutions and/or releases are find by their distribution keyword.
-
+  Scenario: Solutions and/or releases are found by their distribution keyword.
     Given the following licences:
       | title      |
       | Apache-2.0 |

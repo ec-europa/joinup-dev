@@ -45,7 +45,6 @@ dependencies:
     - image.style.horizontal_medium_image
     - rdf_entity.rdfentity.solution
   module:
-    - ds
     - image
     - smart_trim
     - user
@@ -73,13 +72,6 @@ content:
       more_class: more-link
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     type: smart_trim
@@ -91,14 +83,7 @@ content:
     settings:
       image_style: horizontal_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   label:
     type: string
@@ -106,14 +91,7 @@ content:
     label: hidden
     settings:
       link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
 hidden:
   changed: true

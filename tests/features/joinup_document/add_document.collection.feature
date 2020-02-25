@@ -54,7 +54,7 @@ Feature: "Add document" visibility options.
     And the following fields should be present "Title, Short title, Type, Policy domain, Keywords, Geographical coverage, Licence, Description, Upload a new file or enter a URL"
     # The entity is new, so the current workflow state should not be shown.
     And the following fields should not be present "Current workflow state, Motivation"
-    And the following fields should not be present "Shared in"
+    And the following fields should not be present "Shared on"
 
     When I fill in the following:
       | Title       | An amazing document |

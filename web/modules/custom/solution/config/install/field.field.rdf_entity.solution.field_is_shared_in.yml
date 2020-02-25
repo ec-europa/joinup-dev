@@ -9,7 +9,7 @@ id: rdf_entity.solution.field_is_shared_in
 field_name: field_is_shared_in
 entity_type: rdf_entity
 bundle: solution
-label: 'Shared in'
+label: 'Shared on'
 description: ''
 required: false
 translatable: false

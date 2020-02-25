@@ -205,7 +205,7 @@ Feature: Pinning entities inside collections
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
     Given <content type> content:
-      | title         | collection    | state     | pinned | shared in   |
+      | title         | collection    | state     | pinned | shared on   |
       | Lantern FAQs  | Orange Wrench | validated | yes    | Cloudy Beam |
       | Lantern terms | Orange Wrench | validated | no     |             |
 
@@ -213,7 +213,7 @@ Feature: Pinning entities inside collections
     Then the "Lantern FAQs" tile should be marked as pinned
     But the "Lantern terms" tile should not be marked as pinned
 
-    # When shared in other collection, content shouldn't show the pin icon.
+    # When shared on other collection, content shouldn't show the pin icon.
     When I go to the homepage of the "Cloudy Beam" collection
     Then the "Lantern FAQs" tile should not be marked as pinned
 
