@@ -26,6 +26,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
     - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
@@ -53,6 +54,7 @@ dependencies:
     - inline_entity_form
     - joinup_core
     - link
+    - select2
     - text
 third_party_settings:
   field_group:
@@ -173,6 +175,7 @@ content:
       collapsed: false
       allow_existing: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     region: content
   field_is_description:
@@ -251,6 +254,7 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     region: content
   field_is_product_type:
@@ -281,9 +285,12 @@ content:
     type: boolean_checkbox
     region: content
   field_is_solution_type:
-    type: options_select
+    type: select2_entity_reference
     weight: 6
-    settings: {  }
+    settings:
+      width: element
+      match_operator: CONTAINS
+      autocomplete: false
     third_party_settings: {  }
     region: content
   field_is_standardization_level:
