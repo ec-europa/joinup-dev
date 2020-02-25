@@ -142,7 +142,7 @@ index 0000000..193da5e
 +
 +}
 diff --git a/honeypot.module b/honeypot.module
-index 83e45ca..407b634 100644
+index 83e45ca..2bd89f5 100644
 --- a/honeypot.module
 +++ b/honeypot.module
 @@ -5,8 +5,8 @@
@@ -163,17 +163,13 @@ index 83e45ca..407b634 100644
  }
  
  /**
-@@ -336,3 +337,41 @@ function honeypot_log_failure($form_id, $type) {
+@@ -336,3 +337,37 @@ function honeypot_log_failure($form_id, $type) {
    // TODO - Only accepts two args.
    \Drupal::moduleHandler()->invokeAll('honeypot_reject', [$form_id, $uid, $type]);
  }
 +
 +function _log(FormStateInterface $form_state, $time_limit) {
 +  $form_id = $form_state->getValue('form_id');
-+
-+  if ($form_id !== 'message_contact_form_submission_form') {
-+    return;
-+  }
 +
 +  $uid = \Drupal::currentUser()->id();
 +  $host = \Drupal::request()->getClientIp();
@@ -185,9 +181,9 @@ index 83e45ca..407b634 100644
 +
 +  if ($hu && ($hu !== $phu)) {
 +    $s .= print_r($hu, TRUE) . "\n";
-+    $ui = $form_state->getUserInput();
-+    norm($ui);
-+    $s .= print_r($ui, TRUE) . "\n";
++//    $ui = $form_state->getUserInput();
++//    norm($ui);
++//    $s .= print_r($ui, TRUE) . "\n";
 +//    $b = debug_backtrace();
 +//    $s .= \Drupal\Core\Utility\Error::formatBacktrace($b) . "\n\n";
 +  }
