@@ -56,7 +56,7 @@
         "drupal/pipeline": "^1.0",
         "drupal/publication_date": "^2.0-beta1",
         "drupal/r4032login": "~1.1",
-        "drupal/rdf_entity": "^1.0-alpha19",
+        "drupal/rdf_entity": "^1.0-alpha20",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
         "drupal/search_api": "1.13",
@@ -256,8 +256,7 @@
                 "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
-                "Use 'rdf_entity.update' instead of deprecated 'rdf_entity.edit' on route _entity_access requirement @see https://github.com/ec-europa/rdf_entity/pull/116": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/116.diff"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",
