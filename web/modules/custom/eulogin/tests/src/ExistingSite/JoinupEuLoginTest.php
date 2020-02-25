@@ -116,8 +116,8 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $page->pressButton('Save');
 
     // Check that the password has been changed.
-    $assert->addressEquals("/user/{$this->account->id()}");
     $assert->pageTextContains('The changes have been saved.');
+    $assert->addressEquals("/user/{$this->account->id()}");
     $this->assertNotSame($original_hashed_pass, User::load($this->account->id())->getPassword());
 
     // Create a EU Login user and link it to the local user.
