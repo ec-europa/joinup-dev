@@ -81,6 +81,7 @@
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
+        "jquery/select2": "^4.0",
         "masterminds/html5": "^2.7",
         "ml/json-ld": "^1.1",
         "openeuropa/oe_webtools": "~1.0",
@@ -173,7 +174,11 @@
             "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/modules/custom/joinup_communities/tallinn/lib": ["ec-europa/joinup-tallinn-dashboard"],
             "web/core": ["type:drupal-core"],
-            "web/libraries/{$name}": ["type:drupal-library"],
+            "web/libraries/{$name}": [
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
+            ],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
@@ -286,6 +291,22 @@
         }
     },
     "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "jquery/select2",
+                "version": "4.0.13",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/select2/select2/archive/4.0.13.zip",
+                    "type": "zip"
+                }
+            }
+        },
         {
             "type": "vcs",
             "url": "https://git.drupal.org/project/matomo_reporting_api.git"
