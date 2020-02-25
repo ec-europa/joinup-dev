@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "953a49e696114cd28638cc18d8f6d12f",
+    "content-hash": "2c6a8ecca41537a054424affc2d6e032",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.133.21",
+            "version": "3.133.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3501468a7ef894703141d1c4d68caa3b914cbd96"
+                "reference": "4dd1cc4416a997769b0c2fab95a586190318ad30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3501468a7ef894703141d1c4d68caa3b914cbd96",
-                "reference": "3501468a7ef894703141d1c4d68caa3b914cbd96",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4dd1cc4416a997769b0c2fab95a586190318ad30",
+                "reference": "4dd1cc4416a997769b0c2fab95a586190318ad30",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-02-24T19:15:07+00:00"
+            "time": "2020-02-25T19:10:01+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -1748,6 +1748,17 @@
                 "notation"
             ],
             "time": "2017-01-20T21:14:22+00:00"
+        },
+        {
+            "name": "dkarv/mdl-chip-input",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:dkarv/mdl-chip-input.git",
+                "reference": "master"
+            },
+            "type": "drupal-theme-library",
+            "time": "2018-10-19T20:09:36+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -16305,6 +16316,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "dkarv/mdl-chip-input": 20,
         "drupal/cas_attributes": 20,
         "drupal/config_exclude": 20,
         "drupal/config_ignore": 20,

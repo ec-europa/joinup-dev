@@ -121,9 +121,6 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
  */
 function joinup_community_content_theme($existing, $type, $theme, $path) {
   return [
-    'advanced_search_pseudo_facet' => [
-      'variables' => ['entity' => NULL],
-    ],
     'link_icon' => [
       'variables' => [
         'attributes' => [],
