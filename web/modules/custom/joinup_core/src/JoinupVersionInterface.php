@@ -13,6 +13,11 @@ use Drupal\Core\Url;
 interface JoinupVersionInterface {
 
   /**
+   * The path to the file that contains the Joinup version.
+   */
+  const PATH = DRUPAL_ROOT . '/../VERSION';
+
+  /**
    * Returns a string that uniquely identifies the current Joinup version.
    *
    * @return string

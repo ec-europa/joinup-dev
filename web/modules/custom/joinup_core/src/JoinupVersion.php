@@ -26,8 +26,8 @@ class JoinupVersion implements JoinupVersionInterface {
    */
   public function getVersion(): string {
     if (empty($this->version)) {
-      $filename = DRUPAL_ROOT . '/../VERSION';
-      $this->version = file_exists($filename) ? $this->version = trim(file_get_contents($filename)) : 'n/a';
+      $path = JoinupVersionInterface::PATH;
+      $this->version = file_exists($path) ? $this->version = trim(file_get_contents($path)) : 'n/a';
 
       // Sanitize the version string. This is perhaps overkill since if a hacker
       // can access the version file we are in big trouble anyway. In any case
