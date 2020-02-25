@@ -61,6 +61,7 @@
         "drupal/redis": "^1.2",
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
+        "drupal/select2": "^1.6",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.6",

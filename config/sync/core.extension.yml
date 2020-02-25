@@ -128,6 +128,7 @@ module:
   search_api_db: 0
   search_api_field: 0
   search_api_solr: 0
+  select2: 0
   semic: 0
   serialization: 0
   simplenews: 0
