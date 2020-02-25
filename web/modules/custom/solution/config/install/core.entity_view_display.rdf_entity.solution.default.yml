@@ -43,7 +43,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_status
     - rdf_entity.rdfentity.solution
   module:
-    - ds
     - field_group
     - search_api_field
     - smart_trim
@@ -98,13 +97,6 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: p_wrapper
   rdf_entity_field_is_content_inline_facets:

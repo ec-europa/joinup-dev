@@ -7,7 +7,7 @@ dependencies:
     - field.field.message.community_content_subscription.field_community_content
     - message.template.community_content_subscription
   module:
-    - ds
+    - joinup
 id: message.community_content_subscription.mail_body
 targetEntityType: message
 bundle: community_content_subscription
@@ -22,13 +22,6 @@ content:
       view_mode: digest_message
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   partial_1:
