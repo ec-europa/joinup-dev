@@ -304,7 +304,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -327,7 +327,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
@@ -353,10 +353,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function assertSelectOptionsAsList($select, TableNode $table) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
-
-    $rows = $table->getColumn(0);
-    Assert::assertEquals($rows, $available_options);
+    $this->assertSelectAvailableOptions($field, $table);
   }
 
   /**
@@ -2630,6 +2627,44 @@ JS;
   }
 
   /**
+   * Asserts the status of the save button in a given region or in the page.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $status
+   *   The expected status. Possible values are 'enabled' and 'disabled'.
+   * @param string $region
+   *   (optional) The region name. If left empty, the whole page will be used.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown if the passed value for the $status variable is not an acceptable
+   *   one.
+   * @throws \Exception
+   *   Thrown when the region or the button are not found or if the expected
+   *   status does not match the actual one.
+   *
+   * @Then the :button button on the :region region should be :status
+   * @Then the :button button should be :status
+   */
+  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+    if (!in_array($status, ['enabled', 'disabled'])) {
+      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
+    }
+
+    if (!empty($region)) {
+      $region = $this->getRegion($region);
+    }
+    else {
+      $region = $this->getSession()->getPage();
+    }
+
+    $expected_status = $status === 'enabled';
+    $button = $this->findNamedElementInRegion($button, 'button', $region);
+    $disabled = !($button->getAttribute('disabled') === 'disabled');
+    Assert::assertEquals($expected_status, $disabled);
+  }
+
+  /**
    * Checks that there are exactly the given number of elements on the page.
    *
    * @param string $count
@@ -2707,44 +2742,6 @@ JS;
     }
 
     return $elements;
-  }
-
-  /**
-   * Asserts the status of the save button in a given region or in the page.
-   *
-   * @param string $button
-   *   The button label.
-   * @param string $status
-   *   The expected status. Possible values are 'enabled' and 'disabled'.
-   * @param string $region
-   *   (optional) The region name. If left empty, the whole page will be used.
-   *
-   * @throws \InvalidArgumentException
-   *   Thrown if the passed value for the $status variable is not an acceptable
-   *   one.
-   * @throws \Exception
-   *   Thrown when the region or the button are not found or if the expected
-   *   status does not match the actual one.
-   *
-   * @Then the :button button on the :region region should be :status
-   * @Then the :button button should be :status
-   */
-  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
-    if (!in_array($status, ['enabled', 'disabled'])) {
-      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
-    }
-
-    if (!empty($region)) {
-      $region = $this->getRegion($region);
-    }
-    else {
-      $region = $this->getSession()->getPage();
-    }
-
-    $expected_status = $status === 'enabled';
-    $button = $this->findNamedElementInRegion($button, 'button', $region);
-    $disabled = !($button->getAttribute('disabled') === 'disabled');
-    Assert::assertEquals($expected_status, $disabled);
   }
 
   /**
