@@ -11,6 +11,7 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
          checkForUnintentionallyCoveredCode="false"
+         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
          verbose="true">
 <!-- TODO set printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter" once
  https://youtrack.jetbrains.com/issue/WI-24808 is resolved. Drupal provides a
