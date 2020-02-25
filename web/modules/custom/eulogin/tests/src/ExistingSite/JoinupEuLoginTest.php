@@ -115,9 +115,6 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $page->fillField('Confirm password', $new_pass);
     $page->pressButton('Save');
 
-    print_r($page->getContent());
-    error_log($page->getContent());
-
     // Check that the password has been changed.
     $assert->addressEquals("/user/{$this->account->id()}");
     $assert->pageTextContains('The changes have been saved.');
