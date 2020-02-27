@@ -36,26 +36,22 @@ function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $que
 }
 
 /**
- * Implements hook_preprocess_views_view_rss__collection_feed__rss_feed().
+ * Implements hook_preprocess_views_view_rss__group_feed__rss_feed().
  *
  * Adds dynamic title and description to the rss.
  */
 function joinup_rss_preprocess_views_view_rss__group_feed__rss_feed(&$variables): void {
   // Load the entity from the first view argument. The argument has been already
   // validated early so we can expect a group to be loaded successfully.
-  $encoded_collection_id = $variables['view']->args[0];
-  $group = Rdf::load(UriEncoder::decodeUrl($encoded_collection_id));
-
-  $variables['title'] = t('Latest updates from the @label @bundle', [
-    '@label' => $group->label(),
-    '@bundle' => $group->bundle(),
-  ]);
+  $encoded_uri_id = $variables['view']->args[0];
+  $group = Rdf::load(UriEncoder::decodeUrl($encoded_uri_id));
 
   $variables = [
     '@label' => $group->label(),
     '@bundle' => $group->bundle(),
   ];
 
+  $variables['title'] = t('Latest updates from the @label @bundle', $variables);
   $variables['description'] = $group->bundle() === 'collection' ?
     t('This feed contains the latest published content from the @label @bundle, including the newest solutions.', $variables) :
     t('This feed contains the latest published content from the @label @bundle.', $variables);
@@ -85,7 +81,7 @@ function joinup_rss_page_attachments(array &$attachments): void {
     return;
   }
 
-  $url = Url::fromRoute("view.group_feed.rss_feed", [
+  $url = Url::fromRoute('view.group_feed.rss_feed', [
     'rdf_entity' => UriEncoder::encodeUrl($entity->id()),
   ])->setAbsolute();
 

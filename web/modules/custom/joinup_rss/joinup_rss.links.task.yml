@@ -1,4 +1,4 @@
-joinup_rss.collection:
+joinup_rss.feed:
   route_name: view.group_feed.rss_feed
   title: 'RSS feed'
   base_route: entity.rdf_entity.canonical
