@@ -121,7 +121,8 @@ class RssContext extends RawMinkContext {
         $nodes = $xpath->query("//channel/item[$xpath_node_index]/$key");
         // Support is limited to nodes that appear once only.
         Assert::assertCount(1, $nodes, "Invalid count for $key element.");
-        Assert::assertEquals($value, trim($nodes->item(0)->nodeValue));
+        $actual_value = trim($nodes->item(0)->nodeValue);
+        Assert::assertEquals($value, $actual_value, "'{$value}' is equal to '{$actual_value}'.");
       }
     }
   }
