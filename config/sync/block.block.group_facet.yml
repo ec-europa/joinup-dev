@@ -9,12 +9,10 @@ dependencies:
     - joinup_core
   theme:
     - joinup_theme
-_core:
-  default_config_hash: Q-yF1_SXvQ4zJe7jAbEOjlIknalAqWN6dK4hw2rrFWw
 id: group_facet
 theme: joinup_theme
-region: filters
-weight: -15
+region: sidebar_left
+weight: -11
 provider: null
 plugin: 'facet_block:group'
 settings:
@@ -22,7 +20,6 @@ settings:
   label: 'Search page - Group facet'
   provider: facets
   label_display: '0'
-  block_id: group_facet
 visibility:
   request_route:
     id: request_route
