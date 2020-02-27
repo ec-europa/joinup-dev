@@ -153,6 +153,24 @@ function solution_form_rdf_entity_solution_edit_form_alter(array &$form, FormSta
 }
 
 /**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Alters the RDF entity form for solutions:
+ * - Allow to choose multiple solution types without having to hold down the
+ *   `ctrl` key while clicking.
+ */
+function solution_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only alter solution forms.
+  if ($form_state->getFormObject()->getEntity()->bundle() !== 'solution') {
+    return;
+  }
+
+  // Keep the dropdown open after selecting an option. This makes it possible to
+  // select multiple options without having to hold down the `ctrl` key.
+  $form['field_is_solution_type']['widget']['#select2']['closeOnSelect'] = FALSE;
+}
+
+/**
  * Implements hook_ENTITY_TYPE_access().
  *
  * Interrupts the permissions for updating a solution. The permission is not
