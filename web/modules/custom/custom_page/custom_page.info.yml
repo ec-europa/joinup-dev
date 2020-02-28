@@ -8,7 +8,6 @@ dependencies:
   - 'drupal:menu_ui'
   - 'drupal:path'
   - 'drupal:user'
-  - 'ds:ds'
   - 'joinup:joinup_community_content'
   - 'joinup:joinup_core'
   - 'joinup:joinup_group'

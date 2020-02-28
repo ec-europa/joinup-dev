@@ -49,7 +49,7 @@ Feature: Solution membership administration
     When I click "Add members"
     And I fill in "E-mail" with "marcia_garcia@example.com"
     And I press "Add"
-    Then the page should show only the chips:
+    Then the page should show the following chips in the Content region:
       | Marcia Garcia |
     When I select "Facilitator" from "Role"
     And I press "Add members"

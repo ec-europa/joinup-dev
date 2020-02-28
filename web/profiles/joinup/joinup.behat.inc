@@ -26,6 +26,7 @@ use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\FormTrait;
+use Drupal\joinup\Traits\KeyboardInteractionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -59,6 +60,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   use EntityTrait;
   use FileTrait;
   use FormTrait;
+  use KeyboardInteractionTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
@@ -302,7 +304,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -325,7 +327,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
@@ -351,10 +353,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function assertSelectOptionsAsList($select, TableNode $table) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
-
-    $rows = $table->getColumn(0);
-    Assert::assertEquals($rows, $available_options);
+    $this->assertSelectAvailableOptions($field, $table);
   }
 
   /**
@@ -2363,20 +2362,23 @@ JS;
   }
 
   /**
-   * Press the enter key in the keyboard.
+   * Press a key in a field.
    *
    * Works only in JavaScript-enabled browsers.
    *
+   * @param string $key
+   *   The human readable name of the key to press.
    * @param string $field
-   *   The field where to press the enter key.
+   *   The field in which to press the key.
    *
    * @throws \Exception
    *   Thrown when the browser doesn't support JavaScript or when the field is
    *   not found.
    *
-   * @When I hit enter( in the keyboard) on the field :field
+   * @When I hit :key( in the keyboard) on the field :field
+   * @When I hit|press the :key key in the :field field
    */
-  public function hitEnterKeyboard($field) {
+  public function pressKeyInField(string $key, string $field): void {
     if (!$this->browserSupportsJavaScript()) {
       throw new \Exception('This step requires JavaScript to run.');
     }
@@ -2386,19 +2388,7 @@ JS;
       throw new \Exception("Could not find field '$field'");
     }
 
-    $element->keyDown("\r");
-    try {
-      $element->keyUp("\r");
-    }
-    catch (StaleElementReference $e) {
-      // Depending on the implementation of the user interaction we are trying
-      // to trigger by pressing the enter key, it is posssible the action is
-      // triggered on the keydown event or on the keyup event. If it is
-      // implemented on the keydown event then it might happen that the page
-      // refreshes immediately without waiting for the key to be released.
-      // Ignore the fact that the field might already be gone when performing
-      // the keyup event.
-    }
+    $this->pressKeyInElement($key, $element);
   }
 
   /**
@@ -2694,6 +2684,86 @@ JS;
     $button = $this->findNamedElementInRegion($button, 'button', $region);
     $disabled = !($button->getAttribute('disabled') === 'disabled');
     Assert::assertEquals($expected_status, $disabled);
+  }
+
+  /**
+   * Checks that there are exactly the given number of elements on the page.
+   *
+   * @param string $count
+   *   The number of elements that should be present on the page.
+   * @param string $element_name
+   *   The human readable name of the element to find on the page.
+   *
+   * @Then there should be exactly :count :element_name on the page
+   */
+  public function assertElementCount(string $count, string $element_name): void {
+    Assert::assertEquals((int) $count, count($this->getElementsMatchingElementAlias($element_name)));
+  }
+
+  /**
+   * Returns selectors used to find elements with a human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return array[]
+   *   An indexed array of selectors intended to be used with Mink's `find()`
+   *   methods. Each value is a tuple containing two strings:
+   *   - 0: the selector, e.g. 'css' or 'xpath'.
+   *   - 1: the locator.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getSelectorsMatchingElementAlias(string $alias): array {
+    $elements = [
+      // The various search input fields.
+      [
+        'names' => [
+          'search bar',
+          'search bars',
+          'search field',
+          'search fields',
+        ],
+        'selectors' => [
+          // The site-wide search field in the top right corner.
+          ['css', 'input#search-bar__input'],
+          // The search field on the search result pages.
+          ['css', '#block-exposed-form-search-page input.form-text'],
+        ],
+      ],
+    ];
+
+    foreach ($elements as $element) {
+      if (in_array($alias, $element['names'])) {
+        return $element['selectors'];
+      }
+    }
+
+    throw new \InvalidArgumentException("No selectors are defined for the element named '$alias'.");
+  }
+
+  /**
+   * Returns elements that match the given human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements matching the identifier.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getElementsMatchingElementAlias(string $alias): array {
+    $elements = [];
+
+    foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
+      list ($selector, $locator) = $selector_tuple;
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
+    }
+
+    return $elements;
   }
 
   /**
