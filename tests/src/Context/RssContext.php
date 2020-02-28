@@ -122,7 +122,7 @@ class RssContext extends RawMinkContext {
         // Support is limited to nodes that appear once only.
         Assert::assertCount(1, $nodes, "Invalid count for $key element.");
         $actual_value = trim($nodes->item(0)->nodeValue);
-        Assert::assertEquals($value, $actual_value, "'{$value}' is equal to '{$actual_value}'.");
+        Assert::assertSame($value, $actual_value);
       }
     }
   }
