@@ -46,15 +46,15 @@ function joinup_rss_preprocess_views_view_rss__group_feed__rss_feed(&$variables)
   $encoded_uri_id = $variables['view']->args[0];
   $group = Rdf::load(UriEncoder::decodeUrl($encoded_uri_id));
 
-  $variables = [
+  $replacements = [
     '@label' => $group->label(),
     '@bundle' => $group->bundle(),
   ];
 
-  $variables['title'] = t('Latest updates from the @label @bundle', $variables);
+  $variables['title'] = t('Latest updates from the @label @bundle', $replacements);
   $variables['description'] = $group->bundle() === 'collection' ?
-    t('This feed contains the latest published content from the @label @bundle, including the newest solutions.', $variables) :
-    t('This feed contains the latest published content from the @label @bundle.', $variables);
+    t('This feed contains the latest published content from the @label @bundle, including the newest solutions.', $replacements) :
+    t('This feed contains the latest published content from the @label @bundle.', $replacements);
 
   // According to the RSS specifications this should be the URL of the website's
   // front page. But for the collection or solution feeds the homepage is the
