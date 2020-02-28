@@ -100,7 +100,7 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "behat/behat": "~3.4",
-        "behat/gherkin": "~4.6",
+        "behat/gherkin": "^4.6.1",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "behat/mink-selenium2-driver": "~1.4",
@@ -197,9 +197,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "behat/gherkin": {
-                "Correctly filter features, now that the base path is correctly set": "https://github.com/Behat/Gherkin/compare/v4.6.0...a7d84eb6ba245ea268a304312d14660788bf6c29.patch"
-            },
             "drupal/cas": {
                 "Allow a pre-login subscriber to set the reason for cancelling the login @see https://www.drupal.org/project/cas/issues/3111073": "https://www.drupal.org/files/issues/2020-02-04/3111073-2.patch"
             },
