@@ -22,7 +22,6 @@ dependencies:
   module:
     - comment
     - datetime
-    - ds
     - field_group
     - file_url
     - link
@@ -92,13 +91,6 @@ content:
       timezone_override: ''
       format_type: date_only
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: datetime_default
@@ -109,14 +101,6 @@ content:
     settings:
       mode: link
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
     type: file_url_default
@@ -129,13 +113,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_shared_in:
@@ -147,14 +124,6 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: entity_reference__listing_tile
   field_short_title:
@@ -163,13 +132,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: string
@@ -181,13 +143,6 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   report:
@@ -201,13 +156,6 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: link

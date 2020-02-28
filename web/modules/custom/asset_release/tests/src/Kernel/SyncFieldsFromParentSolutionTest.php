@@ -32,7 +32,6 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'comment',
     'contact_information',
     'datetime',
-    'ds',
     'facets',
     'field',
     'field_group',

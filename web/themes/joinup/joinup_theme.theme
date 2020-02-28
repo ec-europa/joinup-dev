@@ -163,18 +163,6 @@ function _joinup_non_blue_header_routes() {
 }
 
 /**
- * Get a list of routes which should have navy blue header.
- *
- * @return array
- *   The routes.
- */
-function _joinup_navy_blue_header_routes() {
-  return [
-    'view.search.page_1',
-  ];
-}
-
-/**
  * Get a list of routes which should have blue header, but they are not forms.
  *
  * @return array
@@ -300,6 +288,10 @@ function joinup_theme_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'path' => $path . '/templates/form',
     ],
+    'joinup_exposed_search' => [
+      'render element' => 'form',
+      'path' => $path . '/templates/form',
+    ],
     'social_share' => [
       'variables' => ['entity' => NULL],
       'path' => $path . '/templates/parts',
@@ -350,7 +342,6 @@ function joinup_theme_preprocess_page(&$variables) {
 
   // Get routes which should have modifications.
   $blue_header_routes = _joinup_blue_header_routes();
-  $navy_header_routes = _joinup_navy_blue_header_routes();
   $other_forms = _joinup_non_blue_header_routes();
   $not_forms = _joinup_not_forms_routes();
 
@@ -362,10 +353,6 @@ function joinup_theme_preprocess_page(&$variables) {
     if (in_array($route_name, $blue_header_routes)) {
       $variables['is_blue_header'] = TRUE;
       $is_form_container = TRUE;
-    }
-
-    if (in_array($route_name, $navy_header_routes)) {
-      $variables['is_navy_header'] = TRUE;
     }
   }
 
@@ -422,6 +409,11 @@ function joinup_theme_preprocess_page(&$variables) {
     unset($variables['page']['header']['#title']);
 
     $variables['custom_content_title'] = $title;
+  }
+
+  // Set a variable that identifies the search page.
+  if ($route_name == 'view.search.page_1') {
+    $variables['is_search_page'] = TRUE;
   }
 }
 
@@ -610,12 +602,17 @@ function joinup_theme_preprocess_block(&$variables) {
       }
       break;
 
+    // Add classes to identify the search bars.
+    case 'global_search':
+    case 'exposed_form_search_page':
+      $variables['attributes']['class'][] = 'search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-chipfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right';
+      break;
+
     // Add special classes for dropdown menus in header.
     case 'support':
     case 'joinup_theme_account_menu':
       $variables['attributes']['class'][] = 'block--small-nav';
       break;
-
   }
 
   // Set default title tag.
@@ -736,18 +733,6 @@ function joinup_theme_preprocess_container(&$variables) {
   if (isset($variables['element']['submit']['#extra_suggestion']) && $variables['element']['submit']['#extra_suggestion'] === 'subscribe') {
     $variables['no_margin'] = TRUE;
   }
-}
-
-/**
- * Implements hook_preprocess_HOOK() for an advanced search inline facet region.
- *
- * Template: 'container--facet-region--inline-facets--with-advanced-search'.
- */
-function joinup_theme_preprocess_container__facet_region__inline_facets__with_advanced_search(&$variables) {
-  $variables['advanced_search'] = [
-    '#theme' => 'advanced_search_pseudo_facet',
-    '#entity' => $variables['element']['#entity'],
-  ];
 }
 
 /**
@@ -904,6 +889,20 @@ function joinup_theme_preprocess_form(&$variables) {
     $variables['attributes']['class'][] = 'form__content';
     $variables['attributes']['class'][] = 'form__margin-top';
     $variables['attributes']['class'][] = 'form__member-actions';
+  }
+
+  // Get group parameter on the search page.
+  if ($variables['element']['#id'] == 'views-exposed-form-search-page-1') {
+    $param = \Drupal::request()->get('f');
+    if (isset($param[0])) {
+      $id = str_replace('group:', '', $param[0], $count);
+      if ($count == 1) {
+        $rdf_entity = \Drupal::entityTypeManager()->getStorage('rdf_entity')->load($id);
+        if (!empty($rdf_entity)) {
+          $variables['filters'][$id] = $rdf_entity->label();
+        }
+      }
+    }
   }
 }
 
@@ -1439,6 +1438,11 @@ function joinup_theme_theme_suggestions_page_title_alter(array &$suggestions, ar
  */
 function joinup_theme_theme_suggestions_form_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'form__' . str_replace('-', '_', $variables['element']['#form_id']);
+
+  // Add suggestion for search form in the header.
+  if ($variables['element']['#id'] == 'views-exposed-form-search-page-1') {
+    $suggestions[] = 'form__joinup_exposed_search';
+  }
 }
 
 /**
@@ -1582,6 +1586,12 @@ function joinup_theme_form_alter(&$form, FormStateInterface $form_state, $form_i
 
   if (is_array($form['#theme']) && array_intersect($form['#theme'], $custom_forms) && !array_intersect($form['#theme'], $tab_forms)) {
     $form['#theme'][] = 'buttons_separated_form';
+  }
+
+  // Add suggestion for search form in the header.
+  if ($form['#id'] == 'views-exposed-form-search-page-1') {
+    $form['#theme'] = ['joinup_exposed_search'];
+    $form['keys']['#extra_suggestion'] = 'joinup_exposed_search';
   }
 
   // Change markup in an username field.
@@ -1799,19 +1809,6 @@ function joinup_theme_preprocess_table__file_formatter_table(&$variables) {
       $file = $variables['rows'][$index]['cells'][0]['content']['#file'];
       $variables['rows'][$index]['#file_extension'] = _joinup_theme_get_file_extension($file);
     }
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- *
- * Add theme suggestions and classes in search form.
- */
-function joinup_theme_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (strpos($form['#id'], 'views-exposed-form-search-page-') !== FALSE) {
-    $form['keys']['#extra_suggestion'] = 'search_bar';
-    $form['keys']['#attributes']['class'][] = 'search-bar__input';
-    $form['keys']['#attributes']['placeholder'] = t('Start typing to search...');
   }
 }
 

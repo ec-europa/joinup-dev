@@ -164,7 +164,6 @@ module:
   views_bulk_operations: 0
   views_data_export: 0
   workflow_state_permission: 0
-  ds: 1
   menu_admin_per_menu: 1
   menu_link_content: 1
   pathauto: 1

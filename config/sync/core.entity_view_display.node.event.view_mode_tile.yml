@@ -31,7 +31,6 @@ dependencies:
     - node.type.event
   module:
     - datetime_range
-    - ds
     - image
     - joinup
     - smart_trim
@@ -55,14 +54,9 @@ content:
       trim_options:
         text: false
       more_class: more-link
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -76,13 +70,6 @@ content:
       format_type: date_only
       separator: '-'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   field_event_logo:
@@ -91,14 +78,7 @@ content:
     settings:
       image_style: horizontal_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     type: image
     region: content
   field_short_title:

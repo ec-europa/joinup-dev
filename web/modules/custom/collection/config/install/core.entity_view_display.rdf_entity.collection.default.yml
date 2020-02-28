@@ -22,7 +22,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
-    - ds
     - field_group
     - search_api_field
     - smart_trim
@@ -72,13 +71,6 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: p_wrapper
   field_ar_description:
@@ -100,13 +92,6 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: p_wrapper
   field_collection_content:

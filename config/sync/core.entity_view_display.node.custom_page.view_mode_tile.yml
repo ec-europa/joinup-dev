@@ -12,7 +12,6 @@ dependencies:
     - image.style.horizontal_medium_image
     - node.type.custom_page
   module:
-    - ds
     - image
     - joinup
     - user
@@ -32,13 +31,6 @@ content:
       image_style: horizontal_medium_image
       image_link: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
 hidden:

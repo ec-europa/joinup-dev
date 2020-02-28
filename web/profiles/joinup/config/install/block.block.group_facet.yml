@@ -10,8 +10,8 @@ dependencies:
     - joinup_theme
 id: group_facet
 theme: joinup_theme
-region: filters
-weight: -15
+region: sidebar_left
+weight: -11
 provider: null
 plugin: 'facet_block:group'
 settings:
