@@ -13,8 +13,8 @@ backend_config:
   connector_config:
     scheme: http
     host: solr_unpublished
-    port: '8983'
-    path: /solr
+    port: 8983
+    path: /
     core: drupal_unpublished
     timeout: 5
     index_timeout: 5
@@ -27,3 +27,7 @@ backend_config:
   skip_schema_check: false
   site_hash: true
   domain: generic
+  server_prefix: ''
+  optimize: false
+  environment: default
+  rows: 10
