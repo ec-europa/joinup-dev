@@ -248,3 +248,15 @@ Feature: "Add solution" visibility options.
     Then I delete the "Climate change tracker" solution
     And I delete the "Climate change tracker" solution
     And I delete the "Angela Crespi" contact information
+
+  @javascript @terms
+  Scenario: Test that a user can select options from the select2 widget.
+    Given the following collection:
+      | title | A collection of select2 options |
+      | state | validated                       |
+    When I am logged in as a facilitator of the "A collection of select2 options" collection
+    And I go to the homepage of the "A collection of select2 options" collection
+    And I open the plus button menu
+    And I click "Add solution"
+
+    Then the select2 widget should be present in the "Solution type" field

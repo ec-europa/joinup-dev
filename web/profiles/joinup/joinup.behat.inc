@@ -2780,4 +2780,25 @@ JS;
     $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
   }
 
+  /**
+   * Asserts that a field shows a select2 select list widget.
+   *
+   * @param string $field_name
+   *   The field name.
+   *
+   * @throws \Exception
+   *   Thrown when the field is not found or does not show a select2 widget.
+   *
+   * @Given the select2 widget should be present in the :field_name field
+   */
+  public function assertSelect2WidgetOnField(string $field_name): void {
+    $field = $this->getSession()->getPage()->findField($field_name);
+    // The parent is retrieved as the element itself is too deep into the
+    // options of the select widget.
+    if (empty($field->getParent()->find('xpath', '//select[contains(@class, "select2-widget")]'))) {
+      throw new \Exception("The {$field_name} does not show a select2 widget.");
+    }
+
+  }
+
 }
