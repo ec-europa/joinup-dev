@@ -93,20 +93,102 @@
         name="stop-apache-solr"
         description="Stop the Apache Solr server.">
         <exec dir="${solr.dir}"
-              command="./bin/solr stop"
-              checkreturn="true"
-              passthru="true" />
+              command="./bin/solr status"
+              returnProperty="solr.status"
+              passthru="true"/>
+
+        <if>
+            <equals arg1="${solr.status}" arg2="0"/>
+            <then>
+                <exec dir="${solr.dir}"
+                      command="./bin/solr stop"
+                      checkreturn="true"
+                      passthru="true"/>
+            </then>
+            <else>
+                <echo message="Apache Solr is already stopped."/>
+            </else>
+        </if>
+    </target>
+
+    <target name="create-apache-solr-config">
+        <foreach list="published,unpublished"
+                 target="create-apache-solr-config-core"
+                 param="solr.core_name"/>
+    </target>
+
+    <target name="create-apache-solr-config-core" hidden="true">
+        <if>
+            <not>
+                <isset property="solr.core_name"/>
+            </not>
+            <then>
+                <fail message="Cannot run 'create-apache-solr-config-core' as a standalone target. Use 'create-apache-solr-config' instead."/>
+            </then>
+        </if>
+
+        <property name="solr.config.core.dir"
+                  value="${solr.config.dir}/${solr.core_name}"/>
+        <delete dir="${solr.config.core.dir}" quiet="true"/>
+        <delete file="${solr.config.core.dir}.zip" quiet="true"/>
+        <drush
+                command="search-api-solr:get-server-config"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>solr_${solr.core_name}</param>
+            <param>${solr.config.core.dir}.zip</param>
+            <param>${solr.version}</param>
+        </drush>
+        <unzip file="${solr.config.core.dir}.zip"
+               todir="${solr.config.core.dir}"/>
+        <delete file="${solr.config.core.dir}.zip" quiet="true"/>
+    </target>
+
+    <target name="install-apache-solr-config"
+            depends="create-apache-solr-config">
+        <if>
+            <not>
+                <or>
+                    <contains substring="${solr.core.published.host}"
+                              string="localhost,127.0.0.1"/>
+                    <contains substring="${solr.core.unpublished.host}"
+                              string="localhost,127.0.0.1"/>
+                </or>
+            </not>
+            <then>
+                <fail message="The 'install-apache-solr-config' target runs only if Solr install is on local host."/>
+            </then>
+        </if>
+
+        <foreach list="published,unpublished"
+                 target="install-apache-solr-config-core"
+                 param="solr.core_name"/>
+        <phingcall target="restart-apache-solr"/>
+    </target>
+
+    <target name="install-apache-solr-config-core" hidden="true">
+        <if>
+            <not>
+                <isset property="solr.core_name"/>
+            </not>
+            <then>
+                <fail message="Cannot run 'install-apache-solr-config-core' as a standalone target. Use 'install-apache-solr-config' instead."/>
+            </then>
+        </if>
+
+        <property name="solr.config.core.dir"
+                  value="${solr.config.dir}/${solr.core_name}"/>
+        <property name="solr.server.core.conf.dir"
+                  value="${solr.dir}/server/solr/drupal_${solr.core_name}/conf"/>
+        <delete dir="${solr.server.core.conf.dir}" quiet="true"/>
+        <mkdir dir="${solr.server.core.conf.dir}"/>
+        <copy todir="${solr.server.core.conf.dir}">
+            <fileset dir="${solr.config.core.dir}"/>
+        </copy>
     </target>
 
     <target name="configure-apache-solr">
-        <if>
-            <not>
-                <available file="${solr.config.dir}" type="dir" property="solr.config.dir.available" />
-            </not>
-            <then>
-                <fail message="Search API Solr is not installed. Did you run `composer install`?" />
-            </then>
-        </if>
         <if>
             <available file="${solr.core.published.dir}" type="dir" property="solr.core.published.dir.available" />
             <then>
@@ -118,10 +200,6 @@
                       command="./bin/solr create_core -c ${solr.core.published.name}"
                       checkreturn="true"
                       passthru="true"/>
-                <!-- Copy the configuration. -->
-                <copy todir="${solr.core.published.dir}/conf" overwrite="true">
-                    <fileset dir="${solr.config.dir}" />
-                </copy>
             </else>
         </if>
         <if>
@@ -135,14 +213,10 @@
                       command="./bin/solr create_core -c ${solr.core.unpublished.name}"
                       checkreturn="true"
                       passthru="true"/>
-                <!-- Copy the configuration. -->
-                <copy todir="${solr.core.unpublished.dir}/conf" overwrite="true">
-                    <fileset dir="${solr.config.dir}" />
-                </copy>
             </else>
         </if>
-        <!-- Restart Solr so our configuration changes are picked up. -->
-        <phingcall target="restart-apache-solr" />
+        <!-- Install the configuration and restart the Solr server. -->
+        <phingcall target="install-apache-solr-config"/>
     </target>
 
     <!-- Override Solr server connection information in the settings.local.php file. -->
