@@ -1,4 +1,4 @@
-uuid: c2b281ea-ebfb-4898-b563-712ad5c6f238
+uuid: f026e5d6-d01b-4405-9436-d01f40ab4317
 langcode: en
 status: true
 dependencies:
@@ -7,9 +7,9 @@ dependencies:
     - language
   config:
     - language.entity.da
-id: text_da_7_0_0
+id: text_da_6_0_0
 label: 'Danish Text Field'
-minimum_solr_version: 7.0.0
+minimum_solr_version: 6.0.0
 custom_code: ''
 field_type_language_code: da
 domains: {  }
@@ -28,7 +28,7 @@ field_type:
         class: solr.WhitespaceTokenizerFactory
       filters:
         -
-          class: solr.WordDelimiterGraphFilterFactory
+          class: solr.WordDelimiterFilterFactory
           catenateNumbers: 1
           generateNumberParts: 1
           protected: protwords_da.txt
@@ -70,7 +70,7 @@ field_type:
         class: solr.WhitespaceTokenizerFactory
       filters:
         -
-          class: solr.WordDelimiterGraphFilterFactory
+          class: solr.WordDelimiterFilterFactory
           catenateNumbers: 0
           generateNumberParts: 0
           protected: protwords_da.txt

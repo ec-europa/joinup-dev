@@ -9,7 +9,6 @@ dependencies:
     - language.entity.es
 id: text_es_7_0_0
 label: 'Spanish Text Field'
-managed_schema: false
 minimum_solr_version: 7.0.0
 custom_code: ''
 field_type_language_code: es
@@ -86,6 +85,9 @@ field_type:
           protected: protwords_es.txt
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
 solr_configs:
   searchComponents:
     -
