@@ -107,5 +107,6 @@ hidden:
   created: true
   field_licence_deprecated: true
   langcode: true
+  search_api_excerpt: true
   spdx_licence_external_url: true
   spdx_licence_label: true

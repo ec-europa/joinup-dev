@@ -96,3 +96,4 @@ hidden:
   changed: true
   created: true
   langcode: true
+  search_api_excerpt: true

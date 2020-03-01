@@ -14,4 +14,6 @@ content:
     weight: 0
     region: content
 hidden:
+  field_membership: true
   partial_0: true
+  search_api_excerpt: true

@@ -179,4 +179,5 @@ hidden:
   langcode: true
   og_group: true
   releases_overview: true
+  search_api_excerpt: true
   share_link: true

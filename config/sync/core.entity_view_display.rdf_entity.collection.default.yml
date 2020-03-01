@@ -149,4 +149,5 @@ hidden:
   last_update: true
   members: true
   og_group: true
+  search_api_excerpt: true
   solutions: true

@@ -120,5 +120,6 @@ hidden:
   field_user_content: true
   field_user_frequency: true
   langcode: true
+  search_api_excerpt: true
   simplenews: true
   user_field_user_content_top: true

@@ -148,4 +148,5 @@ hidden:
   rdf_entity_field_is_content_top: true
   read_more: true
   related_solutions: true
+  search_api_excerpt: true
   share_link: true

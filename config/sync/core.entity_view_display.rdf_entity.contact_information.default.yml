@@ -58,3 +58,4 @@ hidden:
   created: true
   field_ci_state: true
   langcode: true
+  search_api_excerpt: true
