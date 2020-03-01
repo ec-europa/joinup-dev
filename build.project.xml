@@ -405,16 +405,6 @@
         <touch file="${project.basedir}/disable-config-readonly" />
     </target>
 
-    <target name="ensure-search-api-solr-site-hash">
-        <drush
-                command="php:eval"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}">
-            <param>'\Drupal\search_api_solr\Utility\Utility::getSiteHash();'</param>
-        </drush>
-    </target>
-
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
         <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
@@ -552,16 +542,11 @@
     <target
         name="rebuild-dev"
         description="Build a development environment based on the production database."
-        depends="build-dev, rebuild-environment, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
-
-    <target
-        name="setup-acceptance"
-        description="Set up an acceptance environment."
-        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, download-databases, rebuild-environment, setup-config-sync-dir, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="build-dev, rebuild-environment, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server, enable-config-read-only" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server, enable-config-read-only" />
 
 </project>
