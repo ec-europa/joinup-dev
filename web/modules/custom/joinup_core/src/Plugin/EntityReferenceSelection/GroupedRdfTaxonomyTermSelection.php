@@ -44,7 +44,7 @@ class GroupedRdfTaxonomyTermSelection extends TermSelection {
             $parent_name = $term->label();
           }
           else {
-            $options[$bundle][$parent_name][$term->id()] = str_repeat('-', $term->depth) . $term->label();
+            $options[$bundle][$parent_name][$term->id()] = $term->label();
           }
         }
       }
