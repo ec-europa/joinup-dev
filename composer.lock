@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53029a9d69cee90b61880a9a819ed273",
+    "content-hash": "3d77761b4d60c253870b01693dac49cf",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7234,6 +7234,10 @@
                 },
                 "branch-alias": {
                     "dev-master": "10.x-dev"
+                },
+                "patches_applied": {
+                    "Do not throw an exception when valid JSON data evaluates to empty PHP data @see https://github.com/drush-ops/drush/pull/4342": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4342.diff",
+                    "Output correct data for machine readable formats in config:status @see https://github.com/drush-ops/drush/pull/4340": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4340.diff"
                 }
             },
             "autoload": {
