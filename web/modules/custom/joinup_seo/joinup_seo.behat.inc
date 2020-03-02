@@ -92,23 +92,20 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The value of the property of which to identify the graph by.
    * @param \Behat\Gherkin\Node\TableNode $table
    *   A table of properties for the given graph.
-   * @param string $sub_property
+   * @param string|null $sub_property
    *   A sub property to look into.
    *
    * @throws \Exception
    *   Thrown if the graph is not found in the page or the requested sub
    *   property does not exist.
    *
-   * @Given the metatag graph of the item with :property :value should have the following properties:
-   * @Given the metatag graph of the item with :property :value should have the following :sub_property properties:
+   * @Given the metatag (sub)graph of the item with :property :value should have the following properties:
+   * @Given the metatag (sub)graph of the item with :property :value should have the following :sub_property properties:
    */
-  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, string $sub_property = ''): void {
-    $graph = $this->getGraphFromMetatags($property, $value);
-    if (empty($graph)) {
-      throw new \Exception("No graphs were found that have a property '{$property}' of value '{$value}'.");
-    }
-    if (!empty($sub_property) && !isset($graph[$sub_property])) {
-      throw new \Exception("The graph with property '{$property}' of value '{$value}' does not have a sub property '{$sub_property}'.");
+  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, string $sub_property = NULL): void {
+    $graphs = $this->getGraphsFromMetatags($property, $value, $sub_property);
+    if (empty($graphs)) {
+      throw new \Exception("No graphs were found that have a property '{$property}' of value '{$value}' or none of them contain a '{$sub_property}' property.");
     }
 
     // The url structure is very important in the SEO metatags as a wrong url
@@ -116,37 +113,58 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
     // the full url must be always asserted.
     $base_url = \Drupal::request()->getSchemeAndHttpHost();
 
-    if (!empty($sub_property)) {
-      $graph = (array) $graph[$sub_property];
-    }
-
-    $not_exists = [];
+    $hash = $table->getColumnsHash();
+    $missing_properties = [];
     $wrong_value = [];
-    foreach ($table->getColumnsHash() as $row) {
-      if (!isset($graph[$row['property']])) {
-        $not_exists[] = $row['property'];
+    foreach ($graphs as $index => $graph) {
+      $found = TRUE;
+      foreach ($hash as $row) {
+        if (!isset($graph[$row['property']])) {
+          $missing_properties[$index][] = $row['property'];
+          $found = FALSE;
+          continue;
+        }
+
+        $row['value'] = str_replace('$base_url$', $base_url, $row['value']);
+        if (strpos($row['value'], '$random_text$')) {
+          $row['value'] = preg_quote($row['value'], '#');
+          // $random_text$ is escaped into \$random_text\$ from the preg_quote
+          // above.
+          $row['value'] = str_replace('\$random_text\$', '(.*)?', $row['value']);
+          $found = preg_match("#{$row['value']}#", $graph[$row['property']]) === 1;
+        }
+        else {
+          $found = $graph[$row['property']] === $row['value'];
+        }
+
+        if ($found === FALSE) {
+          $wrong_value[$index][] = [
+            'property' => $row['property'],
+            'expected' => $row['value'],
+            'found' => $graph[$row['property']],
+          ];
+        }
       }
 
-      $row['value'] = str_replace('$base_url$', $base_url, $row['value']);
-      if ($graph[$row['property']] !== $row['value']) {
-        $wrong_value[$row['property']] = [
-          'expected' => $row['value'],
-          'found' => $graph[$row['property']],
-        ];
+      if ($found === TRUE) {
+        return;
       }
     }
 
-    if (!empty($not_exists) || !empty($wrong_value)) {
-      $error_messages = [];
-      foreach ($not_exists as $property) {
-        $error_messages[] = "The property '{$property}' was not found in the graph.";
+    // Construct the error messages for each graph found.
+    $error_messages = [];
+    foreach ($graphs as $index => $graph) {
+      if (!empty($missing_properties[$index])) {
+        $properties = implode(', ', $missing_properties[$index]);
+        $error_messages[] = "Index {$index}: The graph is missing the following properties: {$properties}";
       }
-      foreach ($wrong_value as $property => $data) {
-        $error_messages[] = "The property '{$property}' had an expected value '{$data['expected']}' but '{$data['found']}' was found.";
+      if (isset($wrong_value[$index])) {
+        foreach ($wrong_value[$index] as $data) {
+          $error_messages[] = "Index {$index}: Wrong property '{$data['property']}' value: Expected '{$data['expected']}' but '{$data['found']}' was found.";
+        }
       }
-
-      throw new Exception(implode("\n", $error_messages));
     }
+    throw new Exception(implode("\n", $error_messages));
   }
 
   /**
@@ -159,7 +177,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
     $page = $this->getSession()->getPage();
     if ($script = $page->find('xpath', '//script[@type="application/ld+json"]')) {
       $json = $script->getText();
-      return (array) json_decode($json);
+      return json_decode($json, TRUE);
     }
 
     return NULL;
@@ -172,20 +190,77 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The property of which to identify the graph by.
    * @param string $value
    *   The value of the property of which to identify the graph by.
+   * @param string|null $sub_graph
+   *   (optional) Fetch a subgraph of the graphs instead of the graph itself.
    *
    * @return array|null
    *   The first graph that matches the criteria as an array or null if no match
    *   is found.
    */
-  protected function getGraphFromMetatags(string $property, string $value): ?array {
+  protected function getGraphsFromMetatags(string $property, string $value, string $sub_graph = NULL): ?array {
     $json = $this->getMetatagsAsJson();
-    foreach ($json['@graph'] as $graph) {
-      if (isset($graph->$property) && $graph->$property === $value) {
-        return (array) $graph;
+    $sub_graphs = $this->getSubGraphsFromGraph($json, $property, $value);
+    if (!empty($sub_graph)) {
+      $sub_graphs = array_map(function (array $graph) use ($sub_graph) {
+        return array_key_exists($sub_graph, $graph) ? $graph[$sub_graph] : NULL;
+      }, $sub_graphs);
+    }
+    return array_filter($sub_graphs);
+  }
+
+  /**
+   * Retrieves a list of subgraphs from a graph.
+   *
+   * Used to search for a property within the graph that contains a subproperty.
+   * For example, a graph contains a location property which in turn contains a
+   * sub property that has a latitude and a longitude. This method can search
+   * either simply by the identifier or if the identifier contains a property or
+   * if the property contained by an identifier matches a value.
+   *
+   * @param array $graph
+   *   The parent graph.
+   * @param string $identifier
+   *   The property name to identify the graph with.
+   * @param string|null $identifier_value
+   *   (optional) The identifier value. Should not be used along with $property
+   *   filter as the $identifier_value requires $identifier to have a string
+   *   value, while $property requires it to have an array as a value.
+   * @param bool $reset
+   *   Reset the list of graphs. This method might run multiple times over many
+   *   scenarios so the static variable $graphs_found might leak results in
+   *   other cases. Initial value must always be TRUE while every subsequent
+   *   call from within the method will be FALSE.
+   *
+   * @return array
+   *   An array of subgraphs that match the above criteria.
+   */
+  protected function getSubGraphsFromGraph(array $graph, string $identifier, string $identifier_value = NULL, bool $reset = TRUE): array {
+    static $graphs_found = [];
+    if ($reset) {
+      $graphs_found = [];
+    }
+    foreach ($graph as $sub_graph_or_value) {
+      if (is_array($sub_graph_or_value)) {
+        if (array_key_exists($identifier, $sub_graph_or_value)) {
+          if (is_array($sub_graph_or_value[$identifier])) {
+            if (empty($property)) {
+              // No filter is required on the subgraph so the whole graph is
+              // valid.
+              $graphs_found[] = $sub_graph_or_value;
+            }
+          }
+          // A non strict comparison is used because in behat, parameter values
+          // are usually strings. Values can still be integers though.
+          elseif (!empty($identifier_value) && $sub_graph_or_value[$identifier] == $identifier_value) {
+            $graphs_found[] = $sub_graph_or_value;
+          }
+        }
+        // In any case, the subgraph is an array so search deeper for valid
+        // instances of subgraphs.
+        $this->getSubGraphsFromGraph($sub_graph_or_value, $identifier, $identifier_value, FALSE);
       }
     }
-
-    return NULL;
+    return $graphs_found;
   }
 
 }

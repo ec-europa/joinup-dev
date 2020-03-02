@@ -650,7 +650,7 @@ class JoinupSubContext extends DrupalSubContextBase {
       }
     }
 
-    $image_fields = ['field_news_logo'];
+    $image_fields = ['field_news_logo', 'field_event_logo'];
     foreach ($image_fields as $image_field) {
       if (!empty($node->$image_field)) {
         $file = $this->createFile($node->$image_field);
@@ -705,12 +705,15 @@ class JoinupSubContext extends DrupalSubContextBase {
       ],
       'event' => [
         'keywords' => 'field_keywords',
+        'logo' => 'field_event_logo',
         'short title' => 'field_short_title',
         'start date' => 'field_event_date:value',
         'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
+        'online location' => 'field_event_online_location',
         'organisation' => 'field_organisation',
+        'web url' => 'field_event_web_url',
         'scope' => 'field_scope',
         'state' => 'field_state',
       ],
