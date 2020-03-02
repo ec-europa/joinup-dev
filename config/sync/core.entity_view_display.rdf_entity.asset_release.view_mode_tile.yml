@@ -240,3 +240,4 @@ hidden:
   field_spatial_coverage: true
   langcode: true
   og_audience: true
+  search_api_excerpt: true

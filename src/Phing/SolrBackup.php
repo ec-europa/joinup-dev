@@ -10,7 +10,7 @@ use GuzzleHttp\Client;
 /**
  * Provides status check for Solr replication backup or restore.
  *
- * @see https://lucene.apache.org/solr/guide/7_7/making-and-restoring-backups.html
+ * @see https://lucene.apache.org/solr/guide/6_6/making-and-restoring-backups.html
  */
 class SolrBackup extends \Task {
 
@@ -175,11 +175,11 @@ class SolrBackup extends \Task {
    * @return string
    *   The URL.
    *
-   * @see https://lucene.apache.org/solr/guide/7_7/making-and-restoring-backups.html
+   * @see https://lucene.apache.org/solr/guide/6_6/making-and-restoring-backups.html
    */
   protected function getUrl(bool $check_status = FALSE): string {
     $properties = $this->getProject()->getProperties();
-    $core_url = $properties["solr.core.{$this->core}.url"];
+    $core_url = rtrim($properties["solr.core.{$this->core}.url"], '/') . '/solr';
     $core_name = $properties["solr.core.{$this->core}.name"];
     return "{$core_url}/{$core_name}/replication?command={$this->getCommand($check_status)}&name={$this->core}&location={$properties['exports.solr.destination.folder']}&wt=json&json.nl=map";
   }

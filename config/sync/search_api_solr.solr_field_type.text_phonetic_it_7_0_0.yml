@@ -9,7 +9,6 @@ dependencies:
     - language.entity.it
 id: text_phonetic_it_7_0_0
 label: 'Fulltext Phonetic Italian'
-managed_schema: false
 minimum_solr_version: 7.0.0
 custom_code: phonetic
 field_type_language_code: it
@@ -77,6 +76,9 @@ field_type:
           concat: true
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
 solr_configs: {  }
 text_files:
   stopwords: "ad\nal\nallo\nai\nagli\nall\nagl\nalla\nalle\ncon\ncol\ncoi\nda\ndal\ndallo\ndai\ndagli\ndall\ndagl\ndalla\ndalle\ndi\ndel\ndello\ndei\ndegli\ndell\ndegl\ndella\ndelle\nin\nnel\nnello\nnei\nnegli\nnell\nnegl\nnella\nnelle\nsu\nsul\nsullo\nsui\nsugli\nsull\nsugl\nsulla\nsulle\nper\ntra\ncontro\nio\ntu\nlui\nlei\nnoi\nvoi\nloro\nmio\nmia\nmiei\nmie\ntuo\ntua\ntuoi\ntue\nsuo\nsua\nsuoi\nsue\nnostro\nnostra\nnostri\nnostre\nvostro\nvostra\nvostri\nvostre\nmi\nti\nci\nvi\nlo\nla\nli\nle\ngli\nne\nil\nun\nuno\nuna\nma\ned\nse\nperché\nanche\ncome\ndov\ndove\nche\nchi\ncui\nnon\npiù\nquale\nquanto\nquanti\nquanta\nquante\nquello\nquelli\nquella\nquelle\nquesto\nquesti\nquesta\nqueste\nsi\ntutto\ntutti\na\nc\ne\ni\nl\no\nho\nhai\nha\nabbiamo\navete\nhanno\nabbia\nabbiate\nabbiano\navrò\navrai\navrà\navremo\navrete\navranno\navrei\navresti\navrebbe\navremmo\navreste\navrebbero\navevo\navevi\naveva\navevamo\navevate\navevano\nebbi\navesti\nebbe\navemmo\naveste\nebbero\navessi\navesse\navessimo\navessero\navendo\navuto\navuta\navuti\navute\nsono\nsei\nè\nsiamo\nsiete\nsia\nsiate\nsiano\nsarò\nsarai\nsarà\nsaremo\nsarete\nsaranno\nsarei\nsaresti\nsarebbe\nsaremmo\nsareste\nsarebbero\nero\neri\nera\neravamo\neravate\nerano\nfui\nfosti\nfu\nfummo\nfoste\nfurono\nfossi\nfosse\nfossimo\nfossero\nessendo\nfaccio\nfai\nfacciamo\nfanno\nfaccia\nfacciate\nfacciano\nfarò\nfarai\nfarà\nfaremo\nfarete\nfaranno\nfarei\nfaresti\nfarebbe\nfaremmo\nfareste\nfarebbero\nfacevo\nfacevi\nfaceva\nfacevamo\nfacevate\nfacevano\nfeci\nfacesti\nfece\nfacemmo\nfaceste\nfecero\nfacessi\nfacesse\nfacessimo\nfacessero\nfacendo\nsto\nstai\nsta\nstiamo\nstanno\nstia\nstiate\nstiano\nstarò\nstarai\nstarà\nstaremo\nstarete\nstaranno\nstarei\nstaresti\nstarebbe\nstaremmo\nstareste\nstarebbero\nstavo\nstavi\nstava\nstavamo\nstavate\nstavano\nstetti\nstesti\nstette\nstemmo\nsteste\nstettero\nstessi\nstesse\nstessimo\nstessero\nstando\n"

@@ -15,3 +15,4 @@ hidden:
   field_community_content: true
   partial_0: true
   partial_1: true
+  search_api_excerpt: true

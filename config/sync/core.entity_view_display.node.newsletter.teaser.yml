@@ -45,4 +45,5 @@ hidden:
   og_audience: true
   published_at: true
   report: true
+  search_api_excerpt: true
   simplenews_issue: true

@@ -9,7 +9,6 @@ dependencies:
     - language.entity.el
 id: text_el_7_0_0
 label: 'Greek Text Field'
-managed_schema: false
 minimum_solr_version: 7.0.0
 custom_code: ''
 field_type_language_code: el
@@ -82,6 +81,9 @@ field_type:
           class: solr.GreekStemFilterFactory
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
+unstemmed_field_type: null
+spellcheck_field_type: null
+collated_field_type: null
 solr_configs:
   searchComponents:
     -

@@ -23,4 +23,5 @@ content:
   partial_1:
     weight: 0
     region: content
-hidden: {  }
+hidden:
+  search_api_excerpt: true

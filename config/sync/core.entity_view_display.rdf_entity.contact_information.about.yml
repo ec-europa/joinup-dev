@@ -59,3 +59,4 @@ hidden:
   field_ci_state: true
   label: true
   langcode: true
+  search_api_excerpt: true
