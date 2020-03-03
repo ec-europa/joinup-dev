@@ -155,8 +155,12 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
       }
 
       if ($found === TRUE) {
-        return;
+        break;
       }
+    }
+
+    if (empty($wrong_value) && empty($missing_properties)) {
+      return;
     }
 
     // Construct the error messages for each graph found.
