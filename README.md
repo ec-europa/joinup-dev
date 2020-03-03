@@ -31,6 +31,9 @@ There are two ways to run Joinup. With `docker` and `docker-compose` and buildin
 
 To start with docker, please, check the separated [README file](resources/docker/README.md).
 
+### Mac without docker installation
+To start on a mac and want to do this without docker, please, check the separated [README file](resources/mac/README.md).
+
 ### Local installation
 
 To run Joinup locally, below is a list of requirements and instructions.
