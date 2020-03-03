@@ -19,21 +19,23 @@ Feature: SEO for news articles.
     Then the metatag JSON should be attached in the page
     And 1 metatag graph of type "Event" should exist in the page
     And the metatag graph of the item with "name" "Joinup SEO event" should have the following properties:
-      | property    | value                    |
-      | @type       | Event                    |
-      | name        | Joinup SEO event         |
+      | property    | value                            |
+      | @type       | Event                            |
+      | name        | Joinup SEO event                 |
       # Though it would be nice to have this to the Joinup URL, Search Engines
       # expect this to be the URL of the event. If a website is provided, then
       # that means that the entity in Joinup is simply a promotion, and all the
       # handling of registrations etc, already has a website, thus we point to
       # that location.
-      | url         | <expected url>           |
+      | url         | <expected url>                   |
       # Summary is preferred over the body of the entity.
-      | description | Summary of event.        |
-      | startDate   | 2019-12-25T15:00:00+0100 |
-      | endDate     | 2020-01-01T15:00:00+0100 |
+      | description | Summary of event.                |
+      # The $timezone$ variable will allow any 2-digit number in the string. This is because of different timezones in
+      # different environments.
+      | startDate   | 2019-12-25T$timezone$:00:00+0100 |
+      | endDate     | 2020-01-01T$timezone$:00:00+0100 |
       # $base_url$ will be replaced with the base url of the website.
-      | @id         | <expected url>           |
+      | @id         | <expected url>                   |
     And the metatag graph of the item with "name" "Joinup SEO event" should have the following "image" properties:
       | property             | value                                            |
       | @type                | ImageObject                                      |
