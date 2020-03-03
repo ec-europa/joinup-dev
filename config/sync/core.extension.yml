@@ -128,6 +128,7 @@ module:
   schema_article: 0
   schema_event: 0
   schema_metatag: 0
+  schema_social_media_posting: 0
   search_api: 0
   search_api_arbitrary_facet: 0
   search_api_db: 0
