@@ -18,7 +18,6 @@ dependencies:
     - field.field.user.user.field_user_professional_domain
     - image.style.vertical_medium_image
   module:
-    - ds
     - image
     - user
 id: user.user.view_mode_featured
@@ -32,14 +31,7 @@ content:
     label: hidden
     settings:
       link_to_entity: false
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   field_user_family_name:
     weight: 1
@@ -63,14 +55,7 @@ content:
     settings:
       image_style: vertical_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     type: image
     region: content
 hidden:

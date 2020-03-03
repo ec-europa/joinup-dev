@@ -10,7 +10,6 @@ dependencies:
   - drupal:link
   - drupal:options
   - drupal:text
-  - ds:ds
   - facets:facets
   - field_group:field_group
   - inline_entity_form:inline_entity_form

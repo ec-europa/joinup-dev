@@ -25,7 +25,6 @@ dependencies:
     - image.style.vertical_medium_image
     - rdf_entity.rdfentity.collection
   module:
-    - ds
     - image
     - joinup
     - smart_trim
@@ -50,14 +49,9 @@ content:
         text: false
       more_class: more-link
       summary_handler: full
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   field_ar_logo:
@@ -66,14 +60,7 @@ content:
     settings:
       image_style: vertical_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     type: image
     region: content
   label:
@@ -82,14 +69,7 @@ content:
     weight: 1
     settings:
       link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   members:
     weight: 2

@@ -7,7 +7,6 @@ dependencies:
     - field.field.rdf_entity.licence.field_licence_type
     - rdf_entity.rdfentity.licence
   module:
-    - ds
     - smart_trim
     - user
 id: rdf_entity.licence.view_mode_tile
@@ -32,13 +31,6 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     type: smart_trim
@@ -50,13 +42,6 @@ content:
     settings:
       link_to_entity: true
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
