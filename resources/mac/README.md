@@ -183,20 +183,6 @@ drush user:unblock
 ````
 drush uli
 ````
-
-## FRONT-END documentation
-For using the gulp please set your node version to v11.15.0 ( its recommanded to know your current node version so your can put ik back for newer projects ).
-To do this check:  
-[How do down or upgrade your node version.](https://www.surrealcms.com/blog/how-to-upgrade-or-downgrade-nodejs-using-npm.html)
-
-Then use the following commands:
-````
- $ cd web/themes/joinup/prototype ;
- $ npm install;    
- ````
- Check gulp file for all the possible tasks
-
-
 ## Switching between branches
 This is needed when you need to when you switch a branch to keep your content up to date
 ````
