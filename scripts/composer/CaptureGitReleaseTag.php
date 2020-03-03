@@ -32,6 +32,8 @@ class CaptureGitReleaseTag {
 
     $fs = new Filesystem();
     $fs->dumpFile("$directory/VERSION", $version);
+
+    $event->getIO()->write("$version written to $directory/VERSION.");
   }
 
 }
