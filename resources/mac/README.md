@@ -1,4 +1,4 @@
-# joinup on mac without docker
+# Joinup on mac without docker
 Here you will find the steps to run the joinup project on your mac without docker.
 
 ## Prerequisites
@@ -127,7 +127,7 @@ $ composer install
 $ ./vendor/bin/phing build-dev
 ```
 
-4 - install and/or relink
+4 - Install and/or relink
 ```
 $ brew unlink unixodbc
 $ brew install virtuoso
@@ -136,7 +136,7 @@ $ brew link unixodbc
 $ brew link --overwrite virtuoso
 ```
 
-5 - setup viriuoso
+5 - Setup viriuoso
 ```
 $ ./vendor/bin/phing virtuoso-setup
 $ ./vendor/bin/phing virtuoso-start
@@ -148,14 +148,14 @@ $ ./vendor/bin/phing setup-virtuoso-permissions
 $ ./vendor/bin/phing install-dev
 ```
 
-7 - Setup solar and check if its running
+7 - Setup solar and check if it's running
 ```  
 $ ./vendor/bin/phing setup-apache-solr
 ```
 [Check Virtuoso](http://localhost:8890/sparql)  
 [Check Solr](http://localhost:8983/solr/#/)
 
-8 - Download Databases
+8 - Download production Databases
 ````
  $ ./vendor/bin/phing download-databases
 ````
@@ -171,34 +171,34 @@ $ ./vendor/bin/phing install-dev
 ```
 **WARNING** If you get an error:  
 *“ Your site configuration active store is currently locked.”*  
-comment this line in **/web/sites/default/settings.php**  
+Comment this line in **/web/sites/default/settings.php**  
 $settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');
 
-11 - unblock the admin user
+11 - Unblock the admin user
 ````
 drush user:unblock
 ````
 
-12 - create a new admin user 
+12 - Create a new admin user 
 ````
 drush uli
 ````
 
-## Using the gulp
+## FRONT-END documentation
 For using the gulp please set your node version to v11.15.0 ( its recommanded to know your current node version so your can put ik back for newer projects ).
 To do this check:  
 [How do down or upgrade your node version.](https://www.surrealcms.com/blog/how-to-upgrade-or-downgrade-nodejs-using-npm.html)
 
-thenuse the following commands:
+Then use the following commands:
 ````
  $ cd web/themes/joinup/prototype ;
  $ npm install;    
  ````
- check gulp file for all the possible tasks
+ Check gulp file for all the possible tasks
 
 
 ## Switching between branches
-This is you need to when you switch a branch to keep your content up to date
+This is needed when you need to when you switch a branch to keep your content up to date
 ````
 ./vendor/bin/phing build-dev 
 ./vendor/bin/phing rebuild-environment 
