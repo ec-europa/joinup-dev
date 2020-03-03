@@ -607,6 +607,22 @@ class JoinupSubContext extends DrupalSubContextBase {
       }
     }
 
+    if (!empty($node->field_attachment)) {
+      // We want to copy it from the fixtures into the file system and register
+      // it in the CustomPageSubContext so it can be cleaned up after the
+      // scenario ends. Perform a small dance to get access to the context class
+      // from inside this static callback.
+      /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+      $environment = $scope->getEnvironment();
+      /** @var \CustomPageSubContext $context */
+      $context = $environment->getContext(self::class);
+      foreach ($context->explodeCommaSeparatedStepArgument($node->field_attachment) as $filename) {
+        // The file is tracked by its filename so the value still remains to be
+        // the filenames instead of the url.
+        $context->createFile($filename);
+      }
+    }
+
     // Replace collection and solution group references that use titles with the
     // actual URI. Note that this fails if a URI is supplied for a collection or
     // solution in a Behat test. This is by design, the URIs are not exposed to
@@ -691,8 +707,11 @@ class JoinupSubContext extends DrupalSubContextBase {
         'logo' => 'field_custom_page_logo',
       ],
       'discussion' => [
+        'attachments' => 'field_attachment',
         'content' => 'body',
+        'keywords' => 'field_keywords',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'document' => [
         'document type' => 'field_type',
@@ -721,7 +740,6 @@ class JoinupSubContext extends DrupalSubContextBase {
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
         'logo' => 'field_news_logo',
-        'publication date' => 'published_at',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
         'publication date' => 'published_at',
