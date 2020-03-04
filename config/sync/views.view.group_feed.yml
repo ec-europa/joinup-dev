@@ -1,4 +1,4 @@
-uuid: 09fe5267-bb9a-40bb-8a2a-e9abc9b70a97
+uuid: 3d4ff932-e3a5-4c38-ba8a-c6778c8006c9
 langcode: en
 status: true
 dependencies:
@@ -6,16 +6,15 @@ dependencies:
     - field.storage.node.body
     - field.storage.rdf_entity.field_is_description
     - rdf_entity.rdfentity.collection
+    - rdf_entity.rdfentity.solution
     - search_api.index.published
   module:
     - joinup_search
     - search_api
     - smart_trim
     - user
-_core:
-  default_config_hash: MS8QjS3LfnqbmpOoqmv2OZ0H42yr_MGeOfM_6eeLB2E
-id: collection_feed
-label: 'Collection feed'
+id: group_feed
+label: 'Group feed'
 module: views
 description: ''
 tag: ''
@@ -1653,6 +1652,7 @@ display:
           validate_options:
             bundles:
               collection: collection
+              solution: solution
             operation: view
             multiple: 0
             access: false
