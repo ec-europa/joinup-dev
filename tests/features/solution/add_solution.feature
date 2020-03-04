@@ -251,12 +251,27 @@ Feature: "Add solution" visibility options.
 
   @javascript @terms
   Scenario: Test that a user can select options from the select2 widget.
-    Given the following collection:
-      | title | A collection of select2 options |
-      | state | validated                       |
-    When I am logged in as a facilitator of the "A collection of select2 options" collection
-    And I go to the homepage of the "A collection of select2 options" collection
-    And I open the plus button menu
-    And I click "Add solution"
+    Given the following contact:
+      | name | Jon Doe |
+    And the following owner:
+      | name     |
+      | Jane Roe |
+    And the following solution:
+      | title               | Solution                           |
+      | state               | validated                          |
+      | description         | A solution to test select2 options |
+      | contact information | Jon Doe                            |
+      | owner               | Jane Roe                           |
+      | policy domain       | Finance in EU                      |
 
-    Then the select2 widget should be present in the "Solution type" field
+    When I am logged in as a moderator
+    And I go to the "Solution" solution edit form
+    Then the Select2 widget should be present in the "Solution type" field
+    When I select "Business Capability" from "Solution type"
+    And I additionally select "Privacy Framework" from "Solution type"
+    And I additionally select "Semantic Interoperability Requirement" from "Solution type"
+    And I press "Publish"
+    And I go to the "Solution" solution edit form
+    Then the option with text "Business Capability" from select "Solution type" is selected
+    And the option with text "Privacy Framework" from select "Solution type" is selected
+    And the option with text "Semantic Interoperability Requirement" from select "Solution type" is selected
