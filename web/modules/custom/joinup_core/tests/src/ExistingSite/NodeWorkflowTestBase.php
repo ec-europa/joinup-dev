@@ -1033,20 +1033,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   }
 
   /**
-   * Returns an array of the available eLibrary states.
-   *
-   * @return int[]
-   *   An array of the available eLibrary states.
-   */
-  protected function getElibraryStates(): array {
-    return [
-      ContentCreationOptions::FACILITATORS,
-      ContentCreationOptions::MEMBERS,
-      ContentCreationOptions::REGISTERED_USERS,
-    ];
-  }
-
-  /**
    * Asserts that two workflow state arrays are equal.
    *
    * @param string[] $expected
