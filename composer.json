@@ -26,7 +26,6 @@
         "drupal/core-composer-scaffold": "^8.8.1",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "^1.0-alpha1",
-        "drupal/ds": "^3.5",
         "drupal/editor_file": "~1.4",
         "drupal/email_registration": "^1.0",
         "drupal/embed_block": "^1.0",
