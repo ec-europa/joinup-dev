@@ -2937,7 +2937,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_ignore.git",
-                "reference": "498063a9781f3b9ee42ee06909bfca8da9989b0d"
+                "reference": "1c179cb78ce963978c8e24b3a3a09b1294a17483"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9",
@@ -2953,7 +2953,7 @@
                 },
                 "drupal": {
                     "version": "8.x-3.x-dev",
-                    "datestamp": "1583006472",
+                    "datestamp": "1583009151",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -2988,7 +2988,7 @@
                 "issues": "http://drupal.org/project/config_ignore",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2020-02-29T20:45:27+00:00"
+            "time": "2020-03-04T08:40:31+00:00"
         },
         {
             "name": "drupal/config_readonly",
@@ -10121,7 +10121,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-02-13T14:54:04+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
