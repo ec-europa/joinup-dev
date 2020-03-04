@@ -144,7 +144,7 @@ view:
           - authenticated
 create:
   'node:pre_moderated':
-    -
+    only_facilitators:
       save_as_draft:
         roles:
           - moderator
@@ -163,7 +163,7 @@ create:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    -
+    only_members:
       save_as_draft:
         roles:
           - moderator
@@ -184,7 +184,7 @@ create:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    -
+    any_user:
       save_as_draft:
         roles:
           - authenticated
@@ -198,7 +198,7 @@ create:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
   'node:post_moderated':
-    -
+    only_facilitators:
       save_as_draft:
         roles:
           - moderator
@@ -211,7 +211,7 @@ create:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    -
+    only_members:
       save_as_draft:
         roles:
           - moderator
@@ -226,7 +226,7 @@ create:
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    -
+    any_user:
       save_as_draft:
         roles:
           - authenticated
@@ -234,7 +234,7 @@ create:
         roles:
           - authenticated
   'node:discussion:post_moderated':
-    -
+    only_facilitators:
       save_as_draft:
         roles:
           - moderator
@@ -247,7 +247,7 @@ create:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    -
+    only_members:
       save_as_draft:
         roles:
           - moderator
@@ -262,7 +262,7 @@ create:
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    -
+    any_user:
       save_as_draft:
         roles:
           - authenticated
