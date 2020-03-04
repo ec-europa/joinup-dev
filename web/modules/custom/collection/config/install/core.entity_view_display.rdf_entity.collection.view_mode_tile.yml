@@ -9,6 +9,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
@@ -25,6 +26,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - image
+    - joinup
     - smart_trim
     - user
 id: rdf_entity.collection.view_mode_tile
@@ -47,6 +49,8 @@ content:
         text: false
       more_class: more-link
       summary_handler: full
+      wrap_output: false
+      wrap_class: trimmed
     third_party_settings:
       joinup:
         template_suggestion: ''
@@ -80,6 +84,7 @@ hidden:
   field_ar_banner: true
   field_ar_closed: true
   field_ar_contact_information: true
+  field_ar_content_creation: true
   field_ar_description: true
   field_ar_elibrary_creation: true
   field_ar_moderation: true

@@ -8,6 +8,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
@@ -23,6 +24,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - field_group
+    - joinup
     - search_api_field
     - smart_trim
     - user
@@ -132,6 +134,7 @@ hidden:
   field_ar_banner: true
   field_ar_closed: true
   field_ar_contact_information: true
+  field_ar_content_creation: true
   field_ar_elibrary_creation: true
   field_ar_logo: true
   field_ar_moderation: true

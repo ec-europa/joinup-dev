@@ -9,6 +9,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
@@ -33,7 +34,7 @@ bundle: collection
 mode: rdf_draft
 content:
   field_ar_abstract:
-    weight: 9
+    weight: 7
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -51,24 +52,21 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-  field_ar_closed:
-    weight: 10
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
   field_ar_contact_information:
-    weight: 4
+    weight: 3
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_ar_content_creation:
+    type: list_default
+    weight: 8
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_ar_description:
     weight: 1
     label: above
@@ -76,15 +74,8 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_ar_elibrary_creation:
-    weight: 11
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_ar_moderation:
-    weight: 12
+    weight: 9
     label: above
     settings:
       format: default
@@ -94,7 +85,7 @@ content:
     type: boolean
     region: content
   field_ar_owner:
-    weight: 5
+    weight: 4
     label: above
     settings:
       link: true
@@ -102,7 +93,7 @@ content:
     type: entity_reference_label
     region: content
   field_policy_domain:
-    weight: 6
+    weight: 5
     label: above
     settings:
       link: true
@@ -110,7 +101,7 @@ content:
     type: entity_reference_label
     region: content
   field_spatial_coverage:
-    weight: 7
+    weight: 6
     label: above
     settings:
       link: true
@@ -130,6 +121,8 @@ hidden:
   created: true
   field_ar_affiliates: true
   field_ar_banner: true
+  field_ar_closed: true
+  field_ar_elibrary_creation: true
   field_ar_logo: true
   field_ar_state: true
   field_collection_content: true

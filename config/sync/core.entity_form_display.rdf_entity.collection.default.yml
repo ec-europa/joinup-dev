@@ -10,6 +10,7 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
@@ -76,8 +77,7 @@ third_party_settings:
         - field_ar_logo
         - field_ar_banner
         - field_spatial_coverage
-        - field_ar_closed
-        - field_ar_elibrary_creation
+        - field_ar_content_creation
         - field_ar_moderation
         - field_newsletter
       parent_name: group_general
@@ -132,13 +132,6 @@ content:
     third_party_settings: {  }
     type: image_image
     region: content
-  field_ar_closed:
-    weight: 16
-    settings:
-      display_label: false
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_ar_contact_information:
     weight: 5
     settings:
@@ -152,8 +145,15 @@ content:
       collapsed: false
       allow_existing: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
+    region: content
+  field_ar_content_creation:
+    weight: 17
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_ar_description:
     weight: 2
@@ -165,12 +165,6 @@ content:
         hide_help: '0'
         hide_guidelines: '1'
     type: text_textarea
-    region: content
-  field_ar_elibrary_creation:
-    weight: 17
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
     region: content
   field_ar_logo:
     weight: 12
@@ -200,6 +194,7 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -230,7 +225,7 @@ content:
     type: options_select
     region: content
   field_spatial_coverage:
-    weight: 15
+    weight: 14
     settings:
       match_operator: CONTAINS
       size: 60
@@ -255,6 +250,8 @@ content:
 hidden:
   created: true
   field_ar_affiliates: true
+  field_ar_closed: true
+  field_ar_elibrary_creation: true
   field_site_featured: true
   field_site_pinned: true
   langcode: true

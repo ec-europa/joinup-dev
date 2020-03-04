@@ -47,6 +47,7 @@ config_devel:
   - field.field.rdf_entity.collection.field_ar_banner
   - field.field.rdf_entity.collection.field_ar_closed
   - field.field.rdf_entity.collection.field_ar_contact_information
+  - field.field.rdf_entity.collection.field_ar_content_creation
   - field.field.rdf_entity.collection.field_ar_description
   - field.field.rdf_entity.collection.field_ar_elibrary_creation
   - field.field.rdf_entity.collection.field_ar_logo
@@ -65,6 +66,7 @@ config_devel:
   - field.storage.rdf_entity.field_ar_banner
   - field.storage.rdf_entity.field_ar_closed
   - field.storage.rdf_entity.field_ar_contact_information
+  - field.storage.rdf_entity.field_ar_content_creation
   - field.storage.rdf_entity.field_ar_description
   - field.storage.rdf_entity.field_ar_elibrary_creation
   - field.storage.rdf_entity.field_ar_logo
