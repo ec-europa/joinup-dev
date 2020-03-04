@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Context;
 
+use Behat\Mink\Element\NodeElement;
 use Drupal\DrupalExtension\Context\MinkContext as DrupalExtensionMinkContext;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
@@ -84,6 +87,73 @@ class MinkContext extends DrupalExtensionMinkContext {
     // @codingStandardsIgnoreLine
     $tricksy = TRUE;
     parent::iWaitForAjaxToFinish($event);
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Overrides the parent method in order to support Select2.
+   */
+  public function selectOption($select, $option): void {
+    if ($field = $this->select2IsUsed($select, $option)) {
+      $this->selectSelect2Option($field, $option);
+      return;
+    }
+    parent::selectOption($select, $option);
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Overrides the parent method in order to support Select2.
+   */
+  public function additionallySelectOption($select, $option): void {
+    if ($field = $this->select2IsUsed($select, $option)) {
+      $this->selectSelect2Option($field, $option);
+      return;
+    }
+    parent::additionallySelectOption($select, $option);
+  }
+
+  /**
+   * Checks if a given select field is using Select2.
+   *
+   * @param string $select
+   *   The select.
+   * @param string $option
+   *   The option to be selected.
+   *
+   * @return \Behat\Mink\Element\NodeElement|false
+   *   It returns the field as node element, if Select2 is used it or FALSE
+   *   otherwise.
+   */
+  protected function select2IsUsed(string $select, string $option) {
+    // In non-Javascript browsers Select2 nicely degrades to a simple select.
+    if (!$this->browserSupportsJavaScript()) {
+      return FALSE;
+    }
+
+    $field = $this->getSession()->getPage()->findField($select);
+    if (!$field->getParent()->find('xpath', '//select[contains(@class, "select2-widget")]')) {
+      // This not a Select2 widget but a simple select.
+      return FALSE;
+    }
+    return $field;
+  }
+
+  /**
+   * Selects a Select2 option.
+   *
+   * @param \Behat\Mink\Element\NodeElement $field
+   *   The select field as a node element.
+   * @param string $option
+   *   The option to be selected.
+   */
+  protected function selectSelect2Option(NodeElement $field, string $option): void {
+    $select2_search = $field->getParent()->find('xpath', '//select[contains(@class, "select2-widget")]/following-sibling::span//input[@class="select2-search__field"]');
+    $select2_search->setValue($option);
+    $select2_option = $this->getSession()->getPage()->find('xpath', '//li[contains(text(), "' . $option . '")]');
+    $select2_option->click();
   }
 
 }
