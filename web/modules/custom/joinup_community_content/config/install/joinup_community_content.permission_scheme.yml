@@ -339,16 +339,6 @@ update:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-    update_proposed:
-      own:
-        roles:
-          - authenticated
-      any:
-        roles:
-          - moderator
-        og_roles:
-          - rdf_entity-collection-facilitator
-          - rdf_entity-solution-facilitator
     report:
       any:
         roles:
