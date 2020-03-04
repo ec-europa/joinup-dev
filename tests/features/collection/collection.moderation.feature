@@ -176,6 +176,8 @@ Feature: Collection moderation
     # Regression test for a bug that caused the slider that controls the
     # eLibrary creation setting to revert to default state when the form is
     # resubmitted, as happens during moderation. Ref. ISAICP-3200.
+    # Note that the eLibrary slider has been replaced with the Content creation
+    # radio buttons, but we are keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     # Propose a collection, filling in the required fields.
     When I go to the propose collection form
@@ -195,13 +197,15 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-    And I select the radio button "Any registered user can create new content."
+    And I select the radio button "Any user can create content."
 
     # Regression test for a bug that caused the eLibrary creation setting to be
     # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
+    # Note that the eLibrary slider has been replaced with the Content creation
+    # radio buttons, but we are keeping the coverage for now.
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
-    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Submit the form and approve it as a moderator. This should not cause the
     # eLibrary creation option to change.
@@ -212,14 +216,14 @@ Feature: Collection moderation
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
     # Also when saving and reopening the edit form the eLibrary creation option
     # should remain unchanged.
     When I press "Publish"
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Spectres in fog" collection
@@ -227,9 +231,11 @@ Feature: Collection moderation
     And I delete the "A secretary in the fog" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #1
+  Scenario: Changing Content creation value - regression #1
     # Regression test for a bug that happens when a change on the eLibrary
     # creation setting happens after an ajax callback.
+    # Note that the eLibrary slider has been replaced with the Content creation
+    # radio buttons, but we are keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I fill in the following:
@@ -249,7 +255,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-    And I select the radio button "Any registered user can create new content."
+    And I select the radio button "Any user can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -258,7 +264,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
+    Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Domestic bovins" collection
@@ -266,9 +272,12 @@ Feature: Collection moderation
     And I delete the "Domestic secretary" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #2
+  Scenario: Changing Content creation value - regression #2
     # Regression test for a bug that causes the wrong eLibrary creation value
     # to be saved after the "Closed collection" checkbox is checked.
+    # Note that the "Closed collection" option no longer exists and that the
+    # eLibrary slider has been replaced with the Content creation radio
+    # buttons, but we are keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I fill in the following:
@@ -288,10 +297,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-    And I select the radio button "Only collection facilitators can create new content."
+    And I select the radio button "Only facilitators can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -300,7 +306,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
+    Then the radio button "Only facilitators can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Theft of Body" collection
@@ -308,11 +314,13 @@ Feature: Collection moderation
     And I delete the "Secretary of thieves" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #3
+  Scenario: Changing Content creation value - regression #3
     # Regression test for a bug that happens when an "Add more" button on a
     # multi-value widget is clicked and then the "Closed collection" checkbox
     # is checked.
     # @see collection_form_rdf_entity_form_alter()
+    # Note that the "Closed collection" option no longer exists but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I fill in the following:
@@ -334,10 +342,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
-
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-    And I select the radio button "Only collection facilitators can create new content."
+    And I select the radio button "Only facilitators can create content."
 
     # Save the collection.
     When I press "Propose"
@@ -346,7 +351,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
+    Then the radio button "Only facilitators can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "Silken Emperor" collection
@@ -354,10 +359,12 @@ Feature: Collection moderation
     And I delete the "Secretary of Silk" contact information
 
   @terms @javascript
-  Scenario: Changing eLibrary creation value - regression #4
+  Scenario: Changing Content creation value - regression #4
     # Regression test for a bug that happens when the "Closed collection" checkbox
     # is checked and then an "Add more" button on a multi-value widget is clicked.
     # @see collection_form_rdf_entity_form_alter()
+    # Note that the "Closed collection" option no longer exists but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I fill in the following:
@@ -377,10 +384,7 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-
-    When I check "Closed collection"
-    And I wait for AJAX to finish
-    And I select the radio button "Only collection facilitators can create new content."
+    And I select the radio button "Only facilitators can create content."
 
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
@@ -392,7 +396,7 @@ Feature: Collection moderation
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
+    Then the radio button "Only facilitators can create content." from field "Content creation" should be selected
 
     # Clean up the entities that were created.
     Then I delete the "The blue ships" collection

@@ -21,7 +21,7 @@ Feature: Document moderation
       | description         | The wolverine is a Marvel hero. |
       | logo                | logo.png                        |
       | banner              | banner.jpg                      |
-      | elibrary creation   | registered users                |
+      | content creation    | registered users                |
       | moderation          | no                              |
       | state               | validated                       |
       | owner               | thisisanowner                   |
@@ -69,9 +69,7 @@ Feature: Document moderation
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    And I check "Closed collection"
-    And I wait for AJAX to finish
-    And I select the radio button "Only members can create new content."
+    And I select the radio button "Only members can create content."
     And I press "Publish"
     # I should now have the possibility to add documents.
     When I open the plus button menu

@@ -155,7 +155,7 @@ Feature: Collection homepage
     And I press "Save as draft"
     And I click "View draft" in the "Entity actions" region
     Then I should see the text "Moderated"
-    And I should see the text "Open collection"
+    And I should see the text "Only members can create content."
     And I should see the text "Bilbo Baggins"
     And I should see the text "Employment and Support Allowance"
     And I should see the heading "Middle earth nightly"
@@ -163,6 +163,11 @@ Feature: Collection homepage
     But I should not see the "Rohirrim make extraordinary deal" tile
     And I should not see the "Breaking: Gandalf supposedly plans his retirement" tile
     And I should not see the "Big hobbit feast - fireworks at midnight" tile
+
+    # In an earlier implementation the "Content creation" option was split in
+    # two options. We should no longer see the deprecated "open/closed" option.
+    And I should not see the text "Open collection"
+    And I should not see the text "Closed collection"
 
   Scenario: The collection homepage should be cacheable for anonymous users.
     Given I am an anonymous user

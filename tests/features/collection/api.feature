@@ -41,7 +41,6 @@ Feature: Collection API
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Prayfish"
     And I press "Add owner"
-    And I check "Closed collection"
     And I check "Moderated"
     And I press "Propose"
     Then I should see the heading "Collection API example"
