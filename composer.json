@@ -9,6 +9,7 @@
         "composer/composer": "^1.9.1",
         "composer/installers": "^1.7",
         "continuousphp/aws-sdk-phing": "~0.5",
+        "cpliakas/git-wrapper": "~1.7",
         "cweagans/composer-patches": "^1.6.4",
         "dkarv/mdl-chip-input": "dev-master",
         "drupal/allowed_formats": "^1.2",
@@ -144,6 +145,7 @@
             "DrupalProject\\": "src"
         },
         "classmap": [
+            "scripts/composer/CaptureGitReleaseTag.php",
             "scripts/composer/ScriptHandler.php",
             "scripts/composer/RemoveWrongPatchedObjects.php",
             "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php",
@@ -159,10 +161,12 @@
     },
     "scripts": {
         "post-install-cmd": [
+            "DrupalProject\\composer\\CaptureGitReleaseTag::capture",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ],
         "post-update-cmd": [
+            "DrupalProject\\composer\\CaptureGitReleaseTag::capture",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ]
