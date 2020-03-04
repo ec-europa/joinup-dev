@@ -448,13 +448,23 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       throw new \Exception(sprintf('The select "%s" was not found.', $select));
     }
 
-    $option_element = $element->find('xpath', '//option[@selected="selected"]');
-    if (!$option_element) {
-      throw new \Exception(sprintf('No option is selected in the %s select', $select));
+    // It's plural as it could be a multi-select.
+    $option_elements = $element->findAll('xpath', '//option[@selected="selected"]');
+    if (!$option_elements) {
+      throw new \Exception(sprintf('No options are selected in the %s select', $select));
     }
 
-    if ($option_element->getText() !== $option) {
-      throw new \Exception(sprintf('The option "%s" was expected to be selected, but %s was selected instead.', $option, $this->getSession()->getCurrentUrl(), $option_element->getHtml()));
+    $selected = FALSE;
+    /** @var \Behat\Mink\Element\NodeElement $option_element */
+    foreach ($option_elements as $option_element) {
+      if ($option_element->getText() !== $option) {
+        $selected = TRUE;
+        break;
+      }
+    }
+
+    if (!$selected) {
+      throw new \Exception(sprintf('The option "%s" was expected to be selected but is not.', $option));
     }
   }
 
