@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\joinup_core\ELibraryCreationOptions;
+use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
@@ -307,7 +307,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
     return [
       'collection' => [
         self::PRE_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -319,7 +319,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::MEMBERS => [
+          ContentCreationOptions::MEMBERS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -339,7 +339,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'proposed',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'proposed',
@@ -365,7 +365,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ],
         ],
         self::POST_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -375,7 +375,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::MEMBERS => [
+          ContentCreationOptions::MEMBERS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -393,7 +393,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'validated',
@@ -419,7 +419,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       ],
       'solution' => [
         self::PRE_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -431,7 +431,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'proposed',
@@ -457,7 +457,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ],
         ],
         self::POST_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -467,7 +467,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'validated',
@@ -1000,7 +1000,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       'rid' => $bundle,
       $field_identifier[$bundle] . 'state' => $state,
       $field_identifier[$bundle] . 'moderation' => $moderation,
-      $field_identifier[$bundle] . 'elibrary_creation' => $e_library === NULL ? ELibraryCreationOptions::REGISTERED_USERS : $e_library,
+      $field_identifier[$bundle] . 'elibrary_creation' => $e_library === NULL ? ContentCreationOptions::REGISTERED_USERS : $e_library,
     ];
 
     // It's not possible to create orphan solutions.
@@ -1040,9 +1040,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    */
   protected function getElibraryStates(): array {
     return [
-      ELibraryCreationOptions::FACILITATORS,
-      ELibraryCreationOptions::MEMBERS,
-      ELibraryCreationOptions::REGISTERED_USERS,
+      ContentCreationOptions::FACILITATORS,
+      ContentCreationOptions::MEMBERS,
+      ContentCreationOptions::REGISTERED_USERS,
     ];
   }
 
