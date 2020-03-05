@@ -25,16 +25,16 @@ Feature: Collection homepage
       | contact information | Kalikatoura                      |
       | logo                | logo.png                         |
       | moderation          | yes                              |
-      | elibrary creation   | members                          |
+      | content creation    | members                          |
       | state               | validated                        |
       | policy domain       | Employment and Support Allowance |
     And the following solution:
-      | title             | Bilbo's book          |
-      | collection        | Middle earth daily    |
-      | description       | Bilbo's autobiography |
-      | elibrary creation | members               |
-      | creation date     | 2014-10-17 8:32am     |
-      | state             | validated             |
+      | title            | Bilbo's book          |
+      | collection       | Middle earth daily    |
+      | description      | Bilbo's autobiography |
+      | content creation | members               |
+      | creation date    | 2014-10-17 8:32am     |
+      | state            | validated             |
     And the following collection user memberships:
       | collection         | user     | roles       |
       | Middle earth daily | Frodo    | facilitator |

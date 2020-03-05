@@ -174,10 +174,11 @@ Feature: Collection moderation
   @terms @javascript
   Scenario: Moderate an open collection
     # Regression test for a bug that caused the slider that controls the
-    # eLibrary creation setting to revert to default state when the form is
+    # content creation setting to revert to default state when the form is
     # resubmitted, as happens during moderation. Ref. ISAICP-3200.
-    # Note that the eLibrary slider has been replaced with the Content creation
-    # radio buttons, but we are keeping the coverage for now.
+    # Note that this is an issue that affected the legacy eLibrary slider which
+    # has been replaced with the Content creation radio buttons, but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     # Propose a collection, filling in the required fields.
     When I go to the propose collection form
@@ -199,16 +200,17 @@ Feature: Collection moderation
     And I wait for AJAX to finish
     And I select the radio button "Any user can create content."
 
-    # Regression test for a bug that caused the eLibrary creation setting to be
+    # Regression test for a bug that caused the content creation setting to be
     # lost when adding an item to a multivalue field. Ref. ISAICP-3200.
-    # Note that the eLibrary slider has been replaced with the Content creation
-    # radio buttons, but we are keeping the coverage for now.
+    # Note that this is an issue that affected the legacy eLibrary slider which
+    # has been replaced with the Content creation radio buttons, but we are
+    # keeping the coverage for now.
     When I press "Add another item" at the "Geographical coverage" field
     And I wait for AJAX to finish
     Then the radio button "Any user can create content." from field "Content creation" should be selected
 
     # Submit the form and approve it as a moderator. This should not cause the
-    # eLibrary creation option to change.
+    # content creation option to change.
     When I press "Propose"
     Then I should see the heading "Spectres in fog"
     When I am logged in as a user with the "moderator" role
@@ -217,7 +219,7 @@ Feature: Collection moderation
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     Then the radio button "Any user can create content." from field "Content creation" should be selected
-    # Also when saving and reopening the edit form the eLibrary creation option
+    # Also when saving and reopening the edit form the content creation option
     # should remain unchanged.
     When I press "Publish"
     And I open the header local tasks menu
@@ -232,10 +234,11 @@ Feature: Collection moderation
 
   @terms @javascript
   Scenario: Changing Content creation value - regression #1
-    # Regression test for a bug that happens when a change on the eLibrary
+    # Regression test for a bug that happens when a change on the content
     # creation setting happens after an ajax callback.
-    # Note that the eLibrary slider has been replaced with the Content creation
-    # radio buttons, but we are keeping the coverage for now.
+    # Note that this is an issue that affected the legacy eLibrary slider which
+    # has been replaced with the Content creation radio buttons, but we are
+    # keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I fill in the following:
@@ -273,10 +276,10 @@ Feature: Collection moderation
 
   @terms @javascript
   Scenario: Changing Content creation value - regression #2
-    # Regression test for a bug that causes the wrong eLibrary creation value
+    # Regression test for a bug that causes the wrong content creation value
     # to be saved after the "Closed collection" checkbox is checked.
     # Note that the "Closed collection" option no longer exists and that the
-    # eLibrary slider has been replaced with the Content creation radio
+    # legacy eLibrary slider has been replaced with the Content creation radio
     # buttons, but we are keeping the coverage for now.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form

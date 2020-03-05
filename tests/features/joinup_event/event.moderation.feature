@@ -21,7 +21,7 @@ Feature: Event moderation
       | description         | The Forgotten Female. |
       | logo                | logo.png              |
       | banner              | banner.jpg            |
-      | elibrary creation   | registered users      |
+      | content creation    | registered users      |
       | moderation          | no                    |
       | state               | validated             |
       | owner               | Alma Lee              |
@@ -33,10 +33,10 @@ Feature: Event moderation
       | Wet Lords  | Patricia Lynch | facilitator |
 
   @javascript
-  Scenario: Available transitions change per eLibrary and moderation settings.
-    # For post-moderated collections with eLibrary set to allow all users to
-    # create content, authenticated users that are not members can create
-    # events.
+  Scenario: Available transitions change to match content creation and moderation settings.
+    # For post-moderated collections with content creation set to allow all
+    # users to create content, authenticated users that are not members can
+    # create events.
     When I am logged in as "Salvador Thomas"
     And I go to the homepage of the "Wet Lords" collection
     And I click "Add event" in the plus button menu

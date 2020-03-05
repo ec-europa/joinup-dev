@@ -33,10 +33,10 @@ Feature: Document moderation
       | The Naked Ashes | Kirk Collier    | facilitator |
 
   @javascript
-  Scenario: Available transitions change per eLibrary and moderation settings.
-    # For post-moderated collections with eLibrary set to allow all users to
-    # create content, authenticated users that are not members can create
-    # documents.
+  Scenario: Available transitions change to match content creation and moderation settings.
+    # For post-moderated collections with content creation set to allow all
+    # users to create content, authenticated users that are not members can
+    # create documents.
     When I am logged in as "Crab y Patties"
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu

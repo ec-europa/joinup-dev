@@ -25,6 +25,7 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\og\OgRoleInterface;
@@ -126,12 +127,12 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title        | description            | state                                                              | documentation | closed | creation date    | elibrary creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
-   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no                | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
-   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes               | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
+   * | title        | description            | state                                                              | documentation | closed | creation date    | content creation | featured | moderation | modification date | landing page               | webdav creation | webdav url                  | wiki                        |
+   * | Foo solution | This is a foo solution | draft|proposed|validated|deletion request|needs update|blacklisted | text.pdf      | yes    | 28-01-1995 12:05 | no               | yes      | yes        |                   | http://foo-url-example.com | yes             | http://joinup.eu/foo/webdav | http://foo-wiki-example.com |
+   * | Bar solution | This is a bar solution | validated                                                          | text.pdf      | no     | 28-01-1995 12:06 | yes              | no       | no         |                   | http://bar-url-example.com | no              |                             | http://bar-wiki-example.com |
    * @codingStandardsIgnoreEnd
    *
-   * Fields title, description, state and elibrary creation are mandatory.
+   * Fields title, description, state and content creation are mandatory.
    *
    * @param \Behat\Gherkin\Node\TableNode $solution_table
    *   The solution data.
@@ -177,7 +178,7 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * | collection          | Example collection                                             |
    * | contact information | Grahame Paterson, Aulay MacFarlane                             |
    * | documentation       | text.pdf                                                       |
-   * | elibrary creation   | facilitators|members|registered users                          |
+   * | content creation    | facilitators|members|registered users                          |
    * | featured            | yes|no                                                         |
    * | landing page        | http://example.com/foobar/landing                              |
    * | language            | Greek, German                                                  |
@@ -525,10 +526,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
       'affiliations requests' => 'field_is_affiliations_requests',
       'banner' => 'field_is_banner',
       'contact information' => 'field_is_contact_information',
+      'content creation' => 'field_is_content_creation',
       'creation date' => 'created',
       'description' => 'field_is_description',
       'documentation' => 'field_is_documentation',
-      'elibrary creation' => 'field_is_elibrary_creation',
       'keywords' => 'field_keywords',
       'landing page' => 'field_is_landing_page',
       'language' => 'field_is_language',
@@ -575,10 +576,10 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
   protected function convertValueAliases(array $fields) {
     $mapped_values = [
       'field_is_moderation' => ['no' => 0, 'yes' => 1],
-      'field_is_elibrary_creation' => [
-        'facilitators' => 0,
-        'members' => 1,
-        'registered users' => 2,
+      'field_is_content_creation' => [
+        'facilitators' => ContentCreationOptions::FACILITATORS,
+        'members' => ContentCreationOptions::MEMBERS,
+        'registered users' => ContentCreationOptions::REGISTERED_USERS,
       ],
       'field_is_webdav_creation' => ['no' => 0, 'yes' => 1],
       'field_is_state' => [

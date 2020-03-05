@@ -106,7 +106,7 @@ Feature: Proposing a collection
   # vanished after performing an AJAX request in a different element on the
   # page.
   # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
-  Scenario: E-library options should not vanish after AJAX request.
+  Scenario: Content creation options should not vanish after AJAX request.
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I click the "Additional fields" tab
