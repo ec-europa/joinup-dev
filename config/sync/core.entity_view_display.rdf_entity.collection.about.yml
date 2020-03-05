@@ -35,6 +35,7 @@ third_party_settings:
   field_group:
     group_moderation:
       children:
+        - field_ar_closed
         - field_ar_content_creation
         - field_ar_moderation
       parent_name: ''
@@ -95,6 +96,18 @@ content:
         template_suggestion: fieldset
     type: link
     region: content
+  field_ar_closed:
+    type: boolean
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings:
+      joinup:
+        template_suggestion: fieldset
   field_ar_contact_information:
     weight: 5
     label: above
@@ -108,11 +121,13 @@ content:
     region: content
   field_ar_content_creation:
     type: list_default
-    weight: 8
+    weight: 1
     region: content
     label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      joinup:
+        template_suggestion: fieldset
   field_ar_description:
     weight: 1
     label: hidden
@@ -121,7 +136,7 @@ content:
     type: text_default
     region: content
   field_ar_moderation:
-    weight: 9
+    weight: 2
     label: hidden
     settings:
       format: default
@@ -148,7 +163,6 @@ hidden:
   created: true
   field_ar_affiliates: true
   field_ar_banner: true
-  field_ar_closed: true
   field_ar_elibrary_creation: true
   field_ar_logo: true
   field_ar_state: true

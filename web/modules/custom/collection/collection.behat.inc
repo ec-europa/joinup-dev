@@ -58,6 +58,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'abstract' => 'field_ar_abstract',
     'access url' => 'field_ar_access_url',
     'banner' => 'field_ar_banner',
+    'closed' => 'field_ar_closed',
     'contact information' => 'field_ar_contact_information',
     'content creation' => 'field_ar_content_creation',
     'creation date' => 'created',
@@ -168,9 +169,9 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title                   | abstract                                   | access url                             | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                                               |
-   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
-   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                                               |
+   * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
+   * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -251,6 +252,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
         'members' => 'only_members',
         'registered users' => 'any_user',
       ],
+      'field_ar_closed' => ['no' => 0, 'yes' => 1],
       'field_ar_state' => [
         'draft' => 'draft',
         'proposed' => 'proposed',
@@ -328,6 +330,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * | logo             | logo.png                                                            |
    * | featured         | yes|no                                                              |
    * | moderation       | yes|no                                                              |
+   * | closed           | yes|no                                                              |
    * | content creation | facilitators|members|registered users                               |
    * | metadata url     | https://ec.europa.eu/my/url                                         |
    * | state            | draft|proposed|validated|archival request|deletion request|archived |

@@ -75,6 +75,7 @@ third_party_settings:
         - field_ar_logo
         - field_ar_banner
         - field_spatial_coverage
+        - field_ar_closed
         - field_ar_content_creation
         - field_ar_moderation
       parent_name: group_general
@@ -122,6 +123,13 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     region: content
+  field_ar_closed:
+    type: boolean_checkbox
+    weight: 14
+    region: content
+    settings:
+      display_label: false
+    third_party_settings: {  }
   field_ar_contact_information:
     weight: 4
     settings:
@@ -141,7 +149,7 @@ content:
     region: content
   field_ar_content_creation:
     type: options_buttons
-    weight: 16
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -165,7 +173,7 @@ content:
     type: image_image
     region: content
   field_ar_moderation:
-    weight: 17
+    weight: 16
     settings:
       display_label: false
     third_party_settings: {  }
@@ -240,7 +248,6 @@ hidden:
   created: true
   current_workflow_state: true
   field_ar_affiliates: true
-  field_ar_closed: true
   field_ar_elibrary_creation: true
   field_collection_content: true
   field_newsletter: true

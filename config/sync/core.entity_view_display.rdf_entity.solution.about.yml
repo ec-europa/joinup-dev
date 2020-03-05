@@ -203,7 +203,9 @@ content:
     region: content
     label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      joinup:
+        template_suggestion: fieldset
   field_is_description:
     type: text_default
     weight: 0
