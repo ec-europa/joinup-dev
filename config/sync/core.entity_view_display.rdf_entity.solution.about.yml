@@ -10,6 +10,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -75,7 +76,7 @@ third_party_settings:
       label: Categorisation
     group_moderation:
       children:
-        - field_is_elibrary_creation
+        - field_is_content_creation
         - field_is_moderation
       parent_name: ''
       weight: 5
@@ -196,6 +197,13 @@ content:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
+  field_is_content_creation:
+    type: list_default
+    weight: 20
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_is_description:
     type: text_default
     weight: 0
@@ -210,15 +218,6 @@ content:
     label: hidden
     settings:
       mode: link
-    third_party_settings:
-      joinup:
-        template_suggestion: fieldset
-  field_is_elibrary_creation:
-    type: list_default
-    weight: 19
-    region: content
-    label: hidden
-    settings: {  }
     third_party_settings:
       joinup:
         template_suggestion: fieldset
@@ -347,6 +346,7 @@ hidden:
   field_is_banner: true
   field_is_content: true
   field_is_distribution: true
+  field_is_elibrary_creation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true

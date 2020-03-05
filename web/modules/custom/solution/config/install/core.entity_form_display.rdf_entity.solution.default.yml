@@ -9,6 +9,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -24,8 +25,9 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
-    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
+    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -76,7 +78,7 @@ third_party_settings:
         - field_is_owner
         - field_is_solution_type
         - field_is_moderation
-        - field_is_elibrary_creation
+        - field_is_content_creation
         - field_is_test_resource_type
         - field_is_actor
         - field_is_business_process
@@ -127,7 +129,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 14
+    weight: 15
     region: content
     settings:
       title: 'Current workflow state'
@@ -136,7 +138,7 @@ content:
     third_party_settings: {  }
   field_is_actor:
     type: options_select
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -150,7 +152,7 @@ content:
     region: content
   field_is_business_process:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 12
     region: content
     settings:
       match_operator: CONTAINS
@@ -172,7 +174,14 @@ content:
       collapsed: false
       allow_existing: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
+    region: content
+  field_is_content_creation:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_is_description:
     weight: 2
@@ -192,12 +201,6 @@ content:
       add_new_label: 'Upload a new file or enter a URL'
     third_party_settings: {  }
     type: file_url_generic
-    region: content
-  field_is_elibrary_creation:
-    weight: 8
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
     region: content
   field_is_landing_page:
     weight: 13
@@ -250,11 +253,12 @@ content:
       collapsible: false
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     region: content
   field_is_product_type:
     type: entity_reference_autocomplete
-    weight: 12
+    weight: 13
     region: content
     settings:
       match_operator: CONTAINS
@@ -287,20 +291,20 @@ content:
     region: content
   field_is_standardization_level:
     type: options_select
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   field_is_state:
     type: state_machine_buttons
-    weight: 15
+    weight: 16
     settings:
       use_transition_label: 1
     third_party_settings: {  }
     region: content
   field_is_test_resource_type:
     type: options_select
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -343,7 +347,7 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -352,6 +356,7 @@ hidden:
   field_is_affiliations_requests: true
   field_is_content: true
   field_is_distribution: true
+  field_is_elibrary_creation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true

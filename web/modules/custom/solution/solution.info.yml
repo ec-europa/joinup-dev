@@ -43,6 +43,7 @@ config_devel:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -84,6 +85,7 @@ config_devel:
     - field.storage.rdf_entity.field_is_business_process
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_is_content
+    - field.storage.rdf_entity.field_is_content_creation
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_is_distribution
     - field.storage.rdf_entity.field_is_documentation
