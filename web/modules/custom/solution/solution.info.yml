@@ -119,3 +119,4 @@ config_devel:
     - rdf_entity.rdfentity.solution
     - solution.settings
     - sparql_entity_storage.mapping.rdf_entity.solution
+    - system.action.change_collection
