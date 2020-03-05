@@ -457,12 +457,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $selected = FALSE;
     /** @var \Behat\Mink\Element\NodeElement $option_element */
     foreach ($option_elements as $option_element) {
-      if ($option_element->getText() !== $option) {
+      if ($option_element->getText() === $option) {
         $selected = TRUE;
         break;
       }
     }
-
     if (!$selected) {
       throw new \Exception(sprintf('The option "%s" was expected to be selected but is not.', $option));
     }
