@@ -120,3 +120,4 @@ config_devel:
     - solution.settings
     - sparql_entity_storage.mapping.rdf_entity.solution
     - system.action.change_collection
+    - views.view.manage_collection_solutions
