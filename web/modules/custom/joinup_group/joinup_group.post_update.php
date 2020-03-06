@@ -39,6 +39,7 @@ function joinup_group_post_update_migrate_elibrary(array &$sandbox) {
       ->execute();
     $sandbox['current'] = 0;
     $sandbox['max'] = count($sandbox['entity_ids']);
+    $sandbox['errors'] = 0;
   }
 
   $slice = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
@@ -52,11 +53,19 @@ function joinup_group_post_update_migrate_elibrary(array &$sandbox) {
 
     $entity->set($field_mapping[$bundle]['destination'], $updated_value);
     $entity->skip_notification = TRUE;
-    $entity->save();
+    try {
+      $entity->save();
+    }
+    catch (\Exception $e) {
+      // Some solutions have lost their collection affiliation and can not be
+      // updated. Skip these and keep track of the number of errors.
+      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5870
+      $sandbox['errors']++;
+    }
 
     $sandbox['current']++;
   }
 
   $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
-  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}. Errors: {$sandbox['errors']}";
 }
