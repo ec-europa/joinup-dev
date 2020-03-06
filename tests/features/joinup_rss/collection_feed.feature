@@ -21,29 +21,29 @@ Feature: Collection RSS feed.
       | Indigo Monkey    | forest  | facilitator |
       | Dreaded Scissors | otto    | facilitator |
     And solutions:
-      | title           | state     | author  | creation date    | collection       |
-      | Lantern Global  | validated | alejake | 2018-12-18 08:00 | Indigo Monkey    |
-      | Proton Lonesome | validated | alejake | 2019-01-05 10:00 | Indigo Monkey    |
-      | Shiny Ray       | validated | otto    | 2018-08-14 17:36 | Dreaded Scissors |
+      | title           | state     | author  | creation date          | collection       |
+      | Lantern Global  | validated | alejake | 2018-12-18 08:00 +0100 | Indigo Monkey    |
+      | Proton Lonesome | validated | alejake | 2019-01-05 10:00 +0100 | Indigo Monkey    |
+      | Shiny Ray       | validated | otto    | 2018-08-14 17:36 +0200 | Dreaded Scissors |
     And news content:
-      | title                                   | body                                                     | state     | author  | created          | collection       | solution        |
-      | Monkeys favourite indigo amongst colors | Research results are out.                                | validated | alejake | 2019-01-21 12:36 | Indigo Monkey    |                 |
-      | Proton lonesomeness reaches peak        | More than 200 thousand protons were interviewed.         | validated | forest  | 2019-01-07 12:00 |                  | Proton Lonesome |
-      | New metal alloy improves scissors       | It improves sharpness but they are more subject to rust. | validated | otto    | 2018-04-11 09:00 | Dreaded Scissors |                 |
+      | title                                   | body                                                     | state     | author  | created                | collection       | solution        |
+      | Monkeys favourite indigo amongst colors | Research results are out.                                | validated | alejake | 2019-01-21 12:36 +0100 | Indigo Monkey    |                 |
+      | Proton lonesomeness reaches peak        | More than 200 thousand protons were interviewed.         | validated | forest  | 2019-01-07 12:00 +0100 |                  | Proton Lonesome |
+      | New metal alloy improves scissors       | It improves sharpness but they are more subject to rust. | validated | otto    | 2018-04-11 09:00 +0200 | Dreaded Scissors |                 |
     And event content:
-      | title                    | body                                                                                                                                                                                                                                                                                                                                                                                            | state     | author | created          | collection       |
-      | Banana tasting           | Testing more than 20 varities of bananas from all over the world.                                                                                                                                                                                                                                                                                                                               | validated | forest | 2018-09-14 07:36 | Indigo Monkey    |
-      | Scissor sharpening party | value: <p>The place where to be if you want to keep <strong>cutting</strong> the paper at the best of your scissors <a href="http://www.example.com/">possibilities</a>.</p> <table><tr><td>Lorem ipsum dolor sit amet consectetur adipiscing elit. Etiam sed consectetur turpis. In porta lectus sit amet nulla feugiat et viverra massa fringilla.</td></tr></table> - format: content_editor | validated | otto   | 2017-11-26 14:18 | Dreaded Scissors |
+      | title                    | body                                                                                                                                                                                                                                                                                                                                                                                            | state     | author | created                | collection       |
+      | Banana tasting           | Testing more than 20 varities of bananas from all over the world.                                                                                                                                                                                                                                                                                                                               | validated | forest | 2018-09-14 07:36 +0200 | Indigo Monkey    |
+      | Scissor sharpening party | value: <p>The place where to be if you want to keep <strong>cutting</strong> the paper at the best of your scissors <a href="http://www.example.com/">possibilities</a>.</p> <table><tr><td>Lorem ipsum dolor sit amet consectetur adipiscing elit. Etiam sed consectetur turpis. In porta lectus sit amet nulla feugiat et viverra massa fringilla.</td></tr></table> - format: content_editor | validated | otto   | 2017-11-26 14:18 +0100 | Dreaded Scissors |
     And document content:
-      | title                  | body                                                     | state     | author  | created          | collection    |
-      | Indigo technical paper | All technical information about the rare indigo monkeys. | validated | alejake | 2016-05-30 12:21 | Indigo Monkey |
+      | title                  | body                                                     | state     | author  | created                | collection    |
+      | Indigo technical paper | All technical information about the rare indigo monkeys. | validated | alejake | 2016-05-30 12:21 +0200 | Indigo Monkey |
     And discussion content:
-      | title                                          | body                                                                                   | state     | author  | created          | collection    |
-      | Is the indigo coloration caused by their food? | I was reading the technical paper and it seems their main food is the indigo cherries. | validated | alejake | 2019-01-21 13:00 | Indigo Monkey |
+      | title                                          | body                                                                                   | state     | author  | created                | collection    |
+      | Is the indigo coloration caused by their food? | I was reading the technical paper and it seems their main food is the indigo cherries. | validated | alejake | 2019-01-21 13:00 +0100 | Indigo Monkey |
     And custom_page content:
-      | title             | body                                            | state     | author | created          | collection        |
-      | Indigo variations | The four major tones of indigo are listed here. | validated | forest | 2017-10-15 18:30 | Indigo Monkey     |
-      | List of devices   | Available remote electrical devices.            | validated |        | 2019-02-08 09:00 | Remote Electrical |
+      | title             | body                                            | state     | author | created                | collection        |
+      | Indigo variations | The four major tones of indigo are listed here. | validated | forest | 2017-10-15 18:30 +0200 | Indigo Monkey     |
+      | List of devices   | Available remote electrical devices.            | validated |        | 2019-02-08 09:00 +0100 | Remote Electrical |
 
     When I am an anonymous user
     And I go to the homepage of the "Indigo Monkey" collection
@@ -87,8 +87,8 @@ Feature: Collection RSS feed.
       | Event: Scissor sharpening party         | /collection/dreaded-scissors/event/scissor-sharpening-party         | The place where to be if you want to keep cutting the paper at the best of your scissors possibilities. Lorem ipsum dolor sit amet consectetur adipiscing elit. Etiam sed consectetur turpis. In porta | Sun, 26 Nov 2017 14:18:00 +0100 | Otto Drake |
 
     When I go to the homepage of the "Lantern Global" solution
-    Then I should not see the link "RSS feed" in the "Entity actions" region
-    And the page should contain 0 RSS autodiscovery links
+    Then I should see the link "RSS feed" in the "Entity actions" region
+    And the page should contain 1 RSS autodiscovery links
 
     When I am logged in as a facilitator of the "Remote Electrical" collection
     And I go to the homepage of the "Remote Electrical" collection

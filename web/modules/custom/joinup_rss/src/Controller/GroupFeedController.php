@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provide additional access checks for the collection feed view.
  */
-class CollectionFeedController extends ControllerBase {
+class GroupFeedController extends ControllerBase {
 
   /**
    * The SPARQL storage.
@@ -25,7 +25,7 @@ class CollectionFeedController extends ControllerBase {
   private $sparqlStorage;
 
   /**
-   * Instantiates a new CollectionFeedController object.
+   * Instantiates a new GroupFeedController object.
    *
    * @param \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $sparql_storage
    *   The RDF entity storage.
@@ -44,7 +44,7 @@ class CollectionFeedController extends ControllerBase {
   }
 
   /**
-   * Access check for the collection feed view route.
+   * Access check for the group feed view route.
    *
    * @param string $rdf_entity
    *   The encoded ID of an RDF entity.
@@ -54,10 +54,9 @@ class CollectionFeedController extends ControllerBase {
    */
   public function access(string $rdf_entity): AccessResultInterface {
     $loaded_entity = $this->sparqlStorage->load(UriEncoder::decodeUrl($rdf_entity));
-
     return AccessResult::allowedIf(
       $loaded_entity instanceof RdfInterface &&
-      $loaded_entity->bundle() === 'collection' &&
+      in_array($loaded_entity->bundle(), ['collection', 'solution']) &&
       $loaded_entity->isPublished()
     )->addCacheableDependency($loaded_entity);
   }
