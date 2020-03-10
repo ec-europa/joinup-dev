@@ -84,3 +84,27 @@ Feature: Creation of news through the UI.
 
     When I click "Keep up to date"
     Then I should see the image "logo.png" in the "Ytterbium metal of the year" tile
+
+  @javascript @generateMedia @uploadFiles:logo.png
+  Scenario: Test the image library widget.
+    Given the following collection:
+      | title | Stream of Dreams |
+      | state | validated        |
+    And news content:
+      | title             | collection       | headline      | body      | state     |
+      | The Great Opening | Stream of Dreams | Here we go... | It opens! | validated |
+
+    Given I am logged in as a moderator
+
+    # Upload works.
+    When I go to the news content "The Great Opening" edit screen
+    And I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+
+    # Picking-up pre-uploaded images works.
+    When I remove the file from "Logo"
+    And I wait for AJAX to finish
+    And I select image #6 as news logo
+    And I wait for AJAX to finish
+    And I press "Update"
+    And the "The Great Opening" news logo is image #6
