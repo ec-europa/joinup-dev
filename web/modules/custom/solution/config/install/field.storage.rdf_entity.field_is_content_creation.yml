@@ -9,7 +9,7 @@ third_party_settings:
   sparql_entity_storage:
     mapping:
       value:
-        predicate: 'http://joinup.eu/collection/content_creation'
+        predicate: 'http://joinup.eu/solution/content_creation'
         format: literal
 id: rdf_entity.field_is_content_creation
 field_name: field_is_content_creation
