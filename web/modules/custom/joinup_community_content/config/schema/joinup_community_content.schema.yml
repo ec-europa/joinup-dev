@@ -18,7 +18,7 @@ joinup_community_content.permission_scheme:
         label: 'Workflow id'
         type: sequence
         sequence:
-          label: 'eLibrary value'
+          label: 'Content creation value'
           type: sequence
           sequence:
             label: 'Transition id'
