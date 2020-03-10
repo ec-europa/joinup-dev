@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\spain_ctt\Plugin\pipeline\Pipeline;
+namespace Drupal\eu_sic\Plugin\pipeline\Pipeline;
 
 use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
 
 /**
- * The data pipeline of Spanish repository.
+ * The data pipeline for the EU SIC collection.
  *
  * @PipelinePipeline(
- *   id = "spain",
- *   label = @Translation("Spain - Center for Technology Transfer"),
+ *   id = "eu_sic",
+ *   label = @Translation("EU Schemantic Interoperability Catalogue"),
  *   steps = {
  *     "manual_upload",
  *     "remove_unsupported_data",
@@ -25,13 +25,13 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *   },
  * )
  */
-class SpainCttPipeline extends JoinupFederationPipelinePluginBase {
+class EuSicPipeline extends JoinupFederationPipelinePluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function getCollection(): string {
-    return 'http://administracionelectronica.gob.es/ctt';
+    return 'http://data.europa.eu/w21/b1e19fbc-f96e-478a-a449-fdaaeed17e3a';
   }
 
 }
