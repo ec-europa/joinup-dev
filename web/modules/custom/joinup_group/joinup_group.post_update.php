@@ -13,7 +13,7 @@ use EasyRdf\Graph;
 /**
  * Migrate eLibrary data to the new Content creation field.
  */
-function joinup_group_post_update_migrate_elibrar1y(): void {
+function joinup_group_post_update_migrate_elibrary(): void {
   $predicate_mapping = [
     'http://joinup.eu/collection/elibrary_creation' => 'http://joinup.eu/collection/content_creation',
     'http://joinup.eu/solution/elibrary_creation' => 'http://joinup.eu/solution/content_creation',
