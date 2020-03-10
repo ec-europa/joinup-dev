@@ -16,7 +16,6 @@ dependencies:
   module:
     - asset_distribution
     - digital_size_formatter
-    - ds
     - user
 id: rdf_entity.asset_distribution.compact
 targetEntityType: rdf_entity
@@ -33,13 +32,6 @@ content:
       show_remote_files: true
       remote_files_title: External
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
   field_ad_file_size:
@@ -63,14 +55,7 @@ content:
     label: hidden
     settings:
       link_to_entity: true
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
 hidden:
   changed: true

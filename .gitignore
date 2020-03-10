@@ -43,8 +43,9 @@
 # Ignore the config_readonly killswitch.
 /disable-config-readonly
 
-# Ignore temporary files
+# Ignore temporary and auto-generated files.
 /tmp
+/VERSION
 
 # Ignore local docker-compose file.
 docker-compose.local.yml

@@ -30,7 +30,7 @@ class SpainCttPipeline extends JoinupFederationPipelinePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
+  public function getCollection(): string {
     return 'http://administracionelectronica.gob.es/ctt';
   }
 

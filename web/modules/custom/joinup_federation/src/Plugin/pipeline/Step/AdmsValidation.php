@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\adms_validator\AdmsValidatorInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
@@ -53,11 +54,13 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
    *   The plugin implementation definition.
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The ADMS validator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, AdmsValidatorInterface $adms_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, AdmsValidatorInterface $adms_validator) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->admsValidator = $adms_validator;
   }
 
@@ -70,6 +73,7 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
       $plugin_id,
       $plugin_definition,
       $container->get('sparql_endpoint'),
+      $container->get('entity_type.manager'),
       $container->get('adms_validator.validator')
     );
   }

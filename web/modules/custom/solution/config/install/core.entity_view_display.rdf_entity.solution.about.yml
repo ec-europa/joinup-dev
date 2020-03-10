@@ -44,7 +44,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_status
     - rdf_entity.rdfentity.solution
   module:
-    - ds
     - field_group
     - file_url
     - link
@@ -171,14 +170,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_business_process:
@@ -189,13 +180,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_contact_information:
@@ -205,14 +189,6 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: two_columns
     type: entity_reference_entity_view
@@ -232,14 +208,6 @@ content:
     settings:
       mode: link
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_elibrary_creation:
@@ -249,13 +217,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_landing_page:
@@ -270,13 +231,6 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   field_is_language:
@@ -287,13 +241,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_metrics_page:
@@ -308,13 +255,6 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   field_is_moderation:
@@ -327,13 +267,6 @@ content:
       format_custom_true: ''
       format_custom_false: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_owner:
@@ -343,14 +276,6 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: two_columns
     type: entity_reference_entity_view
@@ -363,14 +288,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_solution_type:
@@ -381,14 +298,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_standardization_level:
@@ -399,13 +308,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_is_test_resource_type:
@@ -416,13 +318,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
   field_status:
@@ -433,13 +328,6 @@ content:
     settings:
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
 hidden:

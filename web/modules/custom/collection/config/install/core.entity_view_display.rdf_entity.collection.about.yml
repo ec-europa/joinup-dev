@@ -23,7 +23,6 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
-    - ds
     - field_group
     - link
     - options
@@ -76,13 +75,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: full_border
     type: text_default
@@ -97,13 +89,6 @@ content:
       url_plain: false
       rel: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
     type: link
@@ -116,13 +101,6 @@ content:
       format_custom_true: ''
       format_custom_false: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
     type: boolean
@@ -134,14 +112,6 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: two_columns
     type: entity_reference_entity_view
@@ -158,13 +128,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
     type: list_default
@@ -177,13 +140,6 @@ content:
       format_custom_true: ''
       format_custom_false: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
     type: boolean
@@ -195,13 +151,6 @@ content:
       view_mode: about
       link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: two_columns
     type: entity_reference_entity_view
