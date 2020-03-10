@@ -8,64 +8,71 @@
 declare(strict_types = 1);
 
 use Drupal\joinup_group\ContentCreationOptions;
+use EasyRdf\Graph;
 
 /**
  * Migrate eLibrary data to the new Content creation field.
  */
-function joinup_group_post_update_migrate_elibrary(array &$sandbox) {
-  $field_mapping = [
-    'collection' => [
-      'source' => 'field_ar_elibrary_creation',
-      'destination' => 'field_ar_content_creation',
-    ],
-    'solution' => [
-      'source' => 'field_is_elibrary_creation',
-      'destination' => 'field_is_content_creation',
-    ],
+function joinup_group_post_update_migrate_elibrar1y(): void {
+  $predicate_mapping = [
+    'http://joinup.eu/collection/elibrary_creation' => 'http://joinup.eu/collection/content_creation',
+    'http://joinup.eu/solution/elibrary_creation' => 'http://joinup.eu/solution/content_creation',
   ];
-
   $elibrary_to_content_creation_mapping = [
     0 => ContentCreationOptions::FACILITATORS,
     1 => ContentCreationOptions::MEMBERS,
     2 => ContentCreationOptions::REGISTERED_USERS,
   ];
 
-  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
+  $sparql = \Drupal::service('sparql.endpoint');
 
-  if (!isset($sandbox['entity_ids'])) {
-    $bundles = ['collection', 'solution'];
-    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', $bundles, 'IN')
-      ->execute();
-    $sandbox['current'] = 0;
-    $sandbox['max'] = count($sandbox['entity_ids']);
-    $sandbox['errors'] = 0;
+  // Get all elibrary triples regardless of their graph.
+  $query = <<< Query
+SELECT ?graph ?entity_id ?predicate ?value
+WHERE {
+  GRAPH ?graph {
+    ?entity_id ?predicate ?value .
+    VALUES ?predicate { <http://joinup.eu/collection/elibrary_creation> <http://joinup.eu/solution/elibrary_creation> } .
+  }
+}
+Query;
+  $results = $sparql->query($query);
+
+  $graphs = [];
+
+  foreach ($results->getArrayCopy() as $result) {
+    $graph_uri = (string) $result->graph;
+    // Instead of running a huge INSERT query that will most probably fail, we
+    // are using graph objects to store triples for each graph, then we insert
+    // the graphs into the graph store.
+    if (!isset($graphs[$graph_uri])) {
+      $graphs[$graph_uri] = new Graph($graph_uri);
+    }
+    $graphs[$graph_uri]->add(
+      $result->entity_id->getUri(),
+      $predicate_mapping[$result->predicate->getUri()],
+      $elibrary_to_content_creation_mapping[$result->value->getValue()]
+    );
   }
 
-  $slice = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  /** @var \Drupal\joinup_sparql\JoinupSparqlGraphStoreHelperInterface $graph_store_helper */
+  $graph_store_helper = \Drupal::service('joinup_sparql.graph_store.helper');
+  $graph_store = $graph_store_helper->createGraphStore();
 
-  /** @var \Drupal\rdf_entity\RdfInterface $entity */
-  foreach ($storage->loadMultiple($slice) as $entity) {
-    $bundle = $entity->bundle();
+  foreach ($graphs as $graph_uri => $graph) {
+    // Delete the legacy elibrary creation triples.
+    $query = "WITH <{$graph_uri}>
+DELETE { ?s ?p ?o . }
+WHERE {
+  ?s ?p ?o .
+  VALUES ?p { <http://joinup.eu/collection/elibrary_creation> <http://joinup.eu/solution/elibrary_creation> } . 
+}";
+    $sparql->query($query);
 
-    $original_value = $entity->get($field_mapping[$bundle]['source'])->value;
-    $updated_value = $elibrary_to_content_creation_mapping[$original_value];
-
-    $entity->set($field_mapping[$bundle]['destination'], $updated_value);
-    $entity->skip_notification = TRUE;
-    try {
-      $entity->save();
-    }
-    catch (\Exception $e) {
-      // Some solutions have lost their collection affiliation and can not be
-      // updated. Skip these and keep track of the number of errors.
-      // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5870
-      $sandbox['errors']++;
-    }
-
-    $sandbox['current']++;
+    // Insert the new content creation triples. We're using here the graph store
+    // in order to handle a big list of triples. A SPARQL query would have been
+    // crashed.
+    $graph_store->insert($graph);
   }
-
-  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
-  return "Processed {$sandbox['current']} out of {$sandbox['max']}. Errors: {$sandbox['errors']}";
 }
