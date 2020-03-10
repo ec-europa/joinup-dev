@@ -154,8 +154,12 @@ Feature: Proposing a collection
     Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
     And the "Only collection facilitators can create new content." radio button should not be selected
 
-  @javascript
+  @javascript @generateMedia @terms
   Scenario: Propose collection form fields should be organized in tabs.
+    Given the following owner:
+      | name                 | type    |
+      | Organisation example | Company |
+
     Given I am logged in as an "authenticated user"
     When I go to the propose collection form
     Then the following fields should be visible "Title, Description, Policy domain"
@@ -164,12 +168,52 @@ Feature: Proposing a collection
     And the following fields should not be present "Affiliates"
     And the following field widgets should be visible "Contact information"
 
+    # Fill the mandatory fields.
+    And I fill in "Title" with "Just a proposal"
+    And I enter "Nothing..." in the "Description" wysiwyg editor
+    And I select "Employment and Support Allowance" from "Policy domain"
+    And I press "Add existing" at the "Owner" field
+    And I fill in "Owner" with "Organisation example"
+    And I press "Add owner"
+    And I fill in the following:
+      | E-mail | invisible.man@example.com |
+      | Name   | Invisible Man             |
+    And I press "Create contact information"
+
     When I click "Additional fields" tab
     Then the following fields should not be visible "Title, Description, Policy domain"
     And the following field widgets should not be visible "Owner"
     And the following fields should be visible "Closed collection, eLibrary creation, Moderated, Abstract, Geographical coverage"
     And the following fields should not be present "Affiliates"
     And the following field widgets should not be visible "Contact information"
+
+    # As a user, editing a collection, solution, event or news item, I want to
+    # be able to pick-up a pre-uploaded image when editing the logo or the
+    # banner, as an alternative to the image upload.
+    When I select image #3 as collection logo
+    And I select image #8 as collection banner
+    And I press "Propose"
+    Then I should see the success message "Thank you for proposing a collection. Your request is currently pending approval by the site administrator."
+    And the "Just a proposal" collection logo is image #3
+    And the "Just a proposal" collection banner is image #8
+
+    When I go to the "Just a proposal" collection edit form
+    And I click "Additional fields" tab
+    And I remove the file from the "Logo" field
+    But I wait for AJAX to finish
+
+    # Upload also works.
+    When I attach the file "logo.png" to "Logo"
+    And I wait for AJAX to finish
+    And I press "Propose"
+
+    When I go to the "Just a proposal" collection edit form
+    And I click "Additional fields" tab
+    Then I should see the link "logo.png"
+
+    # As some entities were created via UI, we should explicitly delete them.
+    And I delete the "Just a proposal" collection
+    And I delete the "Invisible Man" contact information
 
   @javascript @terms
   # This is a regression test for a bug where nothing was happening when
