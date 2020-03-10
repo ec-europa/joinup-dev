@@ -82,14 +82,6 @@ content:
     label: above
     settings: {  }
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: true
-            classes: {  }
       joinup:
         template_suggestion: fieldset
     type: basic_string
