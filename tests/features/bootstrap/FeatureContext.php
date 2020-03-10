@@ -13,6 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -20,6 +21,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\TagTrait;
+use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\joinup\HtmlManipulator;
 use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -32,8 +34,10 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_core\JoinupVersionInterface;
+use Drupal\media\Entity\Media;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -62,6 +66,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @var string|bool
    */
   protected $version;
+
+  /**
+   * Keeps track of created testing entities.
+   *
+   * @var array[]
+   */
+  protected $entities = [];
 
   /**
    * Checks that a 200 OK response occurred.
@@ -1660,7 +1671,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * @Then the form is protected by Antibot
    */
   public function assertFormIsProtectedByAntibot(): void {
-    $session = $page = $this->getSession();
+    $session = $this->getSession();
 
     // Unlock the form by using the Antibot javascript API.
     $session->executeScript('Drupal.antibot.unlockForms();');
@@ -1733,6 +1744,227 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // doesn't employ a cache context. In order to make the version show up on
     // previously cached pages we need to invalidate the render cache manually.
     Cache::invalidateTags(['rendered']);
+  }
+
+  /**
+   * Selects an image from the image browser of a given field and offset.
+   *
+   * @param string $offset
+   *   An "1 based" offset of the image.
+   * @param string $content_type
+   *   The type of content: collection, solution, event, news.
+   * @param string $image_type
+   *   The field label.
+   *
+   * @throws \InvalidArgumentException
+   *   When the offset is invalid or the field doesn't exist.
+   *
+   * @When I select image #:offset as :content_type :image_type
+   */
+  public function selectImageFromTheFieldImageLibraryBrowser(string $offset, string $content_type, string $image_type): void {
+    $this->validateImageLibraryBrowserStepDefinitionParams($content_type, $image_type, $offset);
+    $map = $this->getImageLibraryBrowserMapping();
+
+    $page = $this->getSession()->getPage();
+    if (!$field = $page->findField("files[{$map[$content_type]['fields'][$image_type]}_0]")) {
+      throw new \InvalidArgumentException("Invalid field ($image_type).");
+    }
+
+    // Get the field wrapper.
+    $wrapper = $field->find('xpath', './ancestor::*[contains(concat(" ", @class, " "), " form-item ")][1]');
+    $images = $wrapper->findAll('css', '.image-library-widget-link');
+
+    // Convert to zero-based index.
+    $delta = $offset - 1;
+    if (!isset($images[$delta])) {
+      throw new \InvalidArgumentException("No image at position #$offset in $image_type field.");
+    }
+
+    $images[$delta]->click();
+
+    // Get the clicked image file ID.
+    $image_classes = $images[$delta]->getAttribute('class');
+    $image_classes = $image_classes ? preg_split('/\s+/', $image_classes) : [];
+    foreach ($image_classes as $class) {
+      if (preg_match('/^image\-(\d+)$/', $class, $found)) {
+        break;
+      }
+    }
+    $image_fid = $found[1];
+
+    $state = \Drupal::state();
+    // Save the clicked image file ID for this field for later checks.
+    $clicks = $state->get('image_library_widget.clicks', []);
+    $clicks[$content_type][$image_type][$offset] = $image_fid;
+    $state->set('image_library_widget.clicks', $clicks);
+  }
+
+  /**
+   * Asserts that a given image from the image library was added to an entity.
+   *
+   * @param string $content_type
+   *   The type of content: collection, solution, event, news.
+   * @param string $title
+   *   The content title.
+   * @param string $image_type
+   *   The type of image; logo, banner.
+   * @param string $offset
+   *   The "1 based" position of the image from the image library broeser.
+   *
+   * @throws \RuntimeException
+   *   Thrown when an entity with the given $title does not exist.
+   * @throws \Exception
+   *   When no image of type $type has been clicked.
+   *
+   * @Then the :title :content_type :image_type is image #:offset
+   */
+  public function assertImageFromTheFieldImageLibraryBrowser(string $content_type, string $title, string $image_type, string $offset): void {
+    $this->validateImageLibraryBrowserStepDefinitionParams($content_type, $image_type, $offset);
+    $map = $this->getImageLibraryBrowserMapping();
+    $entity = $this->getEntityByLabel($map[$content_type]['type'], $title, $content_type);
+    $image_field = $entity->get($map[$content_type]['fields'][$image_type]);
+    if ($image_field->isEmpty()) {
+      throw new ExpectationFailedException("The {$title} {$image_type} field is empty but it should point to the image at position #{$offset}.");
+    }
+
+    $state = \Drupal::state();
+    $clicks = $state->get('image_library_widget.clicks', []);
+    if (!isset($clicks[$content_type][$image_type][$offset])) {
+      throw new \Exception("The {$image_type} images should have been clicked but it was not.");
+    }
+    if ($clicks[$content_type][$image_type][$offset] !== $image_field->target_id) {
+      throw new ExpectationFailedException("The {$title} {$image_type} should contain the image #{$offset} but it doesn't.");
+    }
+  }
+
+  /**
+   * Returns the mapping of logo and banner fields to their content type.
+   *
+   * @return array
+   *   Mapping.
+   */
+  protected function getImageLibraryBrowserMapping(): array {
+    return [
+      'collection' => [
+        'type' => 'rdf_entity',
+        'fields' => [
+          'logo' => 'field_ar_logo',
+          'banner' => 'field_ar_banner',
+        ],
+      ],
+      'solution' => [
+        'type' => 'rdf_entity',
+        'fields' => [
+          'logo' => 'field_is_logo',
+          'banner' => 'field_is_banner',
+        ],
+      ],
+      'event' => [
+        'type' => 'node',
+        'fields' => [
+          'logo' => 'field_event_logo',
+        ],
+      ],
+      'news' => [
+        'type' => 'node',
+        'fields' => [
+          'logo' => 'field_news_logo',
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Validates the parameters passed to image library step definitions.
+   *
+   * @param string $content_type
+   *   The type of content: collection, solution, event, news.
+   * @param string $image_type
+   *   The type of image; logo, banner.
+   * @param string $offset
+   *   The "1 based" position of the image from the image library browser.
+   *
+   * @throws \InvalidArgumentException
+   *   When a passed parameters is invalid.
+   */
+  protected function validateImageLibraryBrowserStepDefinitionParams(string $content_type, string $image_type, string $offset): void {
+    if (!ctype_digit($offset) || $offset < 1) {
+      throw new \InvalidArgumentException("Invalid image position ($offset).");
+    }
+    $map = $this->getImageLibraryBrowserMapping();
+    if (!isset($map[$content_type])) {
+      throw new \InvalidArgumentException("Invalid content type '{$content_type}'. Allowed: " . implode(', ', array_keys($map)) . '.');
+    }
+    if (!isset($map[$content_type]['fields'][$image_type])) {
+      throw new \InvalidArgumentException("Invalid image type '{$image_type}' for content type '{$content_type}'. Allowed: " . implode(', ', array_keys($map[$content_type]['fields'][$image_type])) . '.');
+    }
+  }
+
+  /**
+   * Removes the first file item from a file field.
+   *
+   * @param string $field_name
+   *   The file field label.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   When the field is not found.
+   *
+   * @todo Extend this step definition to handle also item with delta > 0.
+   *
+   * @When I remove the (first )file from (the ):field( field)
+   */
+  public function removeFirstFileFromField(string $field_name): void {
+    $session = $this->getSession();
+    $locator = '//label[text()="' . $field_name . '"]';
+    if (!$label = $session->getPage()->find('xpath', $locator)) {
+      throw new ElementNotFoundException($session->getDriver(), 'Label', 'xpath', $locator);
+    }
+    // Get the field wrapper.
+    $field = $label->find('xpath', './ancestor::*[contains(concat(" ", @class, " "), " form-item ")][1]');
+    $field->findButton('Remove')->press();
+  }
+
+  /**
+   * Creates testing media items.
+   *
+   * @BeforeScenario @generateMedia
+   */
+  public function generateMedia(): void {
+    $media_type_ids = [
+      'collection_banner',
+      'collection_logo',
+      'solution_banner',
+      'solution_logo',
+      'event_logo',
+      'news_logo',
+    ];
+    foreach ($media_type_ids as $media_type_id) {
+      $definition = \Drupal::service('entity_field.manager')->getFieldDefinitions('media', $media_type_id)['image_library_widget_image'];
+      for ($i = 0; $i < 15; $i++) {
+        $media = Media::create([
+          'bundle' => $media_type_id,
+          'name' => $this->getRandom()->string(),
+          'image_library_widget_image' => ImageItem::generateSampleValue($definition),
+        ]);
+        $media->save();
+        $this->entities['media'][$media->id()] = $media;
+      }
+    }
+  }
+
+  /**
+   * Clears testing media items.
+   *
+   * @AfterScenario @generateMedia
+   */
+  public function clearMedia(): void {
+    if (!empty($this->entities['media'])) {
+      /** @var \Drupal\media\MediaStorage $media_storage */
+      $media_storage = \Drupal::entityTypeManager()->getStorage('media');
+      $media_storage->delete($this->entities['media']);
+      unset($this->entities['media']);
+    }
+    \Drupal::state()->delete('image_library_widget.clicks');
   }
 
 }

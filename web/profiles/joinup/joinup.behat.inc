@@ -691,6 +691,7 @@ class JoinupSubContext extends DrupalSubContextBase {
         'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
+        'online location' => 'field_event_online_location',
         'organisation' => 'field_organisation',
         'scope' => 'field_scope',
         'state' => 'field_state',

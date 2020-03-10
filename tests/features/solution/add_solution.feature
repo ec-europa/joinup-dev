@@ -248,3 +248,35 @@ Feature: "Add solution" visibility options.
     Then I delete the "Climate change tracker" solution
     And I delete the "Climate change tracker" solution
     And I delete the "Angela Crespi" contact information
+
+  @javascript @terms @generateMedia
+  Scenario: Tests the image library widget.
+    Given the following owner:
+      | name                 | type    |
+      | Organisation example | Company |
+    And the following contact:
+      | email | invisible.man@example.com |
+      | name  | Invisible Man             |
+    And the following solution:
+      | title               | Cleaning solution                                 |
+      | description         | Use on metal surfaces.                            |
+      | owner               | Organisation example                              |
+      | state               | validated                                         |
+      | solution type       | Non-binding Instrument, Service Discovery Service |
+      | policy domain       | Employment and Support Allowance                  |
+      | contact information | Invisible Man                                     |
+
+    Given I am logged in as a moderator
+    When I go to the "Cleaning solution" solution edit form
+    When I click "Additional fields" tab
+    And  I remove the first file from "Logo"
+    And  I remove the first file from "Banner"
+    And I wait for AJAX to finish
+
+    When I select image #2 as solution logo
+    And I wait for AJAX to finish
+    And I select image #9 as solution banner
+    And I wait for AJAX to finish
+    And I press "Publish"
+    And the "Cleaning solution" solution logo is image #2
+    And the "Cleaning solution" solution banner is image #9

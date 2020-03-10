@@ -27,7 +27,7 @@ trait EntityTrait {
    * @param string $bundle
    *   Optional bundle to check. If omitted, the entity can be of any bundle.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
+   * @return \Drupal\Core\Entity\ContentEntityInterface
    *   The requested entity.
    *
    * @throws \RuntimeException
