@@ -66,12 +66,12 @@ Query;
 DELETE { ?s ?p ?o . }
 WHERE {
   ?s ?p ?o .
-  VALUES ?p { <http://joinup.eu/collection/elibrary_creation> <http://joinup.eu/solution/elibrary_creation> } . 
+  VALUES ?p { <http://joinup.eu/collection/elibrary_creation> <http://joinup.eu/solution/elibrary_creation> } .
 }";
     $sparql->query($query);
 
     // Insert the new content creation triples. We're using here the graph store
-    // in order to handle a big list of triples. A SPARQL query would have been
+    // in order to handle a big list of triples. A SPARQL query would have
     // crashed.
     $graph_store->insert($graph);
   }
