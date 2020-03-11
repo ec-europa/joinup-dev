@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b62ea7d6f8971e51c2590a83e0ad21a",
+    "content-hash": "883fea9a6b8a1eaaa83a7a3ccbebd4b8",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3164,12 +3164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "e67272fa0ee69c85d8591c3538b07b224176b601"
+                "reference": "b1a3f0d35027e93cb4138a6374bf5ce82cb1b7a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/e67272fa0ee69c85d8591c3538b07b224176b601",
-                "reference": "e67272fa0ee69c85d8591c3538b07b224176b601",
+                "url": "https://api.github.com/repos/drupal/core/zipball/b1a3f0d35027e93cb4138a6374bf5ce82cb1b7a0",
+                "reference": "b1a3f0d35027e93cb4138a6374bf5ce82cb1b7a0",
                 "shasum": ""
             },
             "require": {
@@ -3407,7 +3407,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-03-10T23:45:57+00:00"
+            "time": "2020-03-11T11:50:26+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
@@ -3745,20 +3745,14 @@
         },
         {
             "name": "drupal/dynamic_entity_reference",
-            "version": "2.0.0-alpha11",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/dynamic_entity_reference.git",
-                "reference": "8.x-2.0-alpha11"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/dynamic_entity_reference-8.x-2.0-alpha11.zip",
-                "reference": "8.x-2.0-alpha11",
-                "shasum": "109047e07a7e77528747d41044b6cf13f2671ac7"
+                "reference": "6da88ad134062de8bc02b528fa2260ec55c99f43"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8.7.7 || ^9"
             },
             "type": "drupal-module",
             "extra": {
@@ -3766,11 +3760,11 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-alpha11",
-                    "datestamp": "1575458288",
+                    "version": "8.x-2.0-alpha11+2-dev",
+                    "datestamp": "1581689911",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3800,7 +3794,8 @@
                 "source": "http://cgit.drupalcode.org/dynamic_entity_reference",
                 "issues": "http://drupal.org/project/dynamic_entity_reference",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2020-02-29T06:56:03+00:00"
         },
         {
             "name": "drupal/editor_file",
@@ -4359,17 +4354,11 @@
         },
         {
             "name": "drupal/flag",
-            "version": "4.0.0-beta1",
+            "version": "dev-4.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flag.git",
-                "reference": "8.x-4.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flag-8.x-4.0-beta1.zip",
-                "reference": "8.x-4.0-beta1",
-                "shasum": "a8873e368489f37b53e5ae8262a6e1ed7fdabea1"
+                "reference": "d40565e4fecec6e7ef0b58503a0f32fc4f7e27e1"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4383,12 +4372,15 @@
                     "dev-4.x": "4.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-4.0-beta1",
-                    "datestamp": "1572442085",
+                    "version": "8.x-4.0-beta1+1-dev",
+                    "datestamp": "1572506886",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Drupal 9 Deprecated Code Report @see https://www.drupal.org/project/flag/issues/3042758": "https://www.drupal.org/files/issues/2020-02-12/3042758-26.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4437,7 +4429,8 @@
             "homepage": "https://www.drupal.org/project/flag",
             "support": {
                 "source": "https://git.drupalcode.org/project/flag"
-            }
+            },
+            "time": "2019-11-19T20:37:01+00:00"
         },
         {
             "name": "drupal/geocoder",
@@ -4803,20 +4796,14 @@
         },
         {
             "name": "drupal/linkit",
-            "version": "5.0.0-beta10",
+            "version": "dev-5.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/linkit.git",
-                "reference": "8.x-5.0-beta10"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/linkit-8.x-5.0-beta10.zip",
-                "reference": "8.x-5.0-beta10",
-                "shasum": "9980707514ec63fd1bdc27eebd4af243efda97a6"
+                "reference": "4a5834c7bc3d78bb684fd1766e857105ad037378"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8.7.7 || ^9"
             },
             "require-dev": {
                 "drupal/imce": "*"
@@ -4827,15 +4814,16 @@
                     "dev-5.x": "5.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-5.0-beta10",
-                    "datestamp": "1573783085",
+                    "version": "8.x-5.0-beta10+3-dev",
+                    "datestamp": "1573863181",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
+                    "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2020-03-11/2877535-12.patch",
+                    "Drupal 9 Deprecated Code Report for LinkIt module @see https://www.drupal.org/project/linkit/issues/3042631": "https://www.drupal.org/files/issues/2020-01-28/linkit-d9-3042631-11.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4855,7 +4843,8 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/linkit",
                 "issues": "http://drupal.org/project/linkit"
-            }
+            },
+            "time": "2019-11-16T00:07:03+00:00"
         },
         {
             "name": "drupal/mailsystem",
@@ -5350,6 +5339,9 @@
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "EntityTypeInterface::isSubclassOf() is deprecated @see https://github.com/Gizra/og/pull/635": "https://patch-diff.githubusercontent.com/raw/Gizra/og/pull/635.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -16258,6 +16250,9 @@
         "drupal/config_ignore": 20,
         "drupal/config_update": 20,
         "drupal/core": 20,
+        "drupal/dynamic_entity_reference": 20,
+        "drupal/flag": 20,
+        "drupal/linkit": 20,
         "drupal/matomo_reporting_api": 20,
         "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
