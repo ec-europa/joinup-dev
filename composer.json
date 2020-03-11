@@ -23,7 +23,7 @@
         "drupal/config_ignore": "dev-3.x",
         "drupal/config_readonly": "^1.0",
         "drupal/config_update": "dev-1.x",
-        "drupal/core": "^8.8.1",
+        "drupal/core": "8.9.x-dev",
         "drupal/core-composer-scaffold": "^8.8.1",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "^1.0-alpha1",
