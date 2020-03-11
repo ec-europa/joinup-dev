@@ -10,7 +10,7 @@ dependencies:
 id: statistics
 theme: joinup_theme
 region: featured
-weight: -13
+weight: -14
 provider: null
 plugin: statistics
 settings:

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
@@ -58,13 +59,15 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
    *   The plugin implementation definition.
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\rdf_entity_provenance\ProvenanceHelperInterface $rdf_entity_provenance_helper
    *   The RDF entity provenance helper service.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $sparql, ProvenanceHelperInterface $rdf_entity_provenance_helper, AccountProxyInterface $current_user) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, AccountProxyInterface $current_user) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->provenanceHelper = $rdf_entity_provenance_helper;
     $this->currentUser = $current_user;
   }
@@ -78,6 +81,7 @@ class ProvenanceActivity extends JoinupFederationStepPluginBase implements Pipel
       $plugin_id,
       $plugin_definition,
       $container->get('sparql_endpoint'),
+      $container->get('entity_type.manager'),
       $container->get('rdf_entity_provenance.provenance_helper'),
       $container->get('current_user')
     );

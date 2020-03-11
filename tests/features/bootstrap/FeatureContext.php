@@ -15,13 +15,12 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
-use Behat\Mink\Selector\Xpath\Escaper;
 use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Site\Settings;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\HtmlManipulator;
-use Drupal\joinup\KeyboardEventKeyCodes as BrowserKey;
 use Drupal\joinup\Traits\AntibotTrait;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
@@ -32,6 +31,7 @@ use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup_core\JoinupVersionInterface;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
 use WebDriver\Exception;
@@ -53,6 +53,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   use TraversingTrait;
   use UserTrait;
   use UtilityTrait;
+
+  /**
+   * The Joinup version, retrieved from the `VERSION` file in the project root.
+   *
+   * Will contain the contents of the file, or FALSE if the file is not present.
+   *
+   * @var string|bool
+   */
+  protected $version;
 
   /**
    * Checks that a 200 OK response occurred.
@@ -1671,6 +1680,59 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $message_storage = \Drupal::entityTypeManager()->getStorage('message');
     $mids = $message_storage->getQuery()->execute();
     $message_storage->delete($message_storage->loadMultiple($mids));
+  }
+
+  /**
+   * Creates a backup of the Joinup `VERSION` file.
+   *
+   * Tests that interact with the version file should be tagged with `@version`.
+   *
+   * @BeforeScenario @version
+   */
+  public function backupJoinupVersion(): void {
+    $filename = DRUPAL_ROOT . '/../VERSION';
+    $this->version = file_exists($filename) ? $this->version = file_get_contents($filename) : FALSE;
+  }
+
+  /**
+   * Restores the backup of the Joinup `VERSION` file.
+   *
+   * @AfterScenario @version
+   */
+  public function restoreJoinupVersion(): void {
+    if ($this->version === FALSE) {
+      unlink(JoinupVersionInterface::PATH);
+    }
+    else {
+      file_put_contents(JoinupVersionInterface::PATH, $this->version);
+    }
+  }
+
+  /**
+   * Sets the Joinup version.
+   *
+   * Since this overwrites the `VERSION` file in the root folder, any scenario
+   * that includes this step should be tagged with `@version` so that the
+   * original contents of the file will be restored at the end of the scenario.
+   *
+   * @param string $version
+   *   The Joinup version to set, e.g. 'v1.57.0' or 'v1.57.0-66-g1234abcde'.
+   *
+   * @When the Joinup version is set to :version
+   */
+  public function setJoinupVersion(string $version): void {
+    // Alert the user that the `@version` tag is required.
+    Assert::assertTrue($this->hasTag('version'), 'The `@version` tag is required for scenarios that want to change the Joinup version.');
+
+    // We also require the Drupal API to retrieve the project root folder.
+    Assert::assertTrue($this->hasTag('api'), 'The `@api` tag is required for scenarios that use the `@version` tag.');
+
+    file_put_contents(JoinupVersionInterface::PATH, $version);
+
+    // The version string is not meant to change in between deployments, so it
+    // doesn't employ a cache context. In order to make the version show up on
+    // previously cached pages we need to invalidate the render cache manually.
+    Cache::invalidateTags(['rendered']);
   }
 
 }

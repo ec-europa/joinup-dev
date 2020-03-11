@@ -8,7 +8,7 @@ dependencies:
   module:
     - search_api
 id: spatial_coverage
-name: 'Geographical coverage'
+name: 'Geographic coverage'
 url_alias: spatial_coverage
 weight: 0
 min_count: 1
@@ -16,12 +16,11 @@ show_only_one_result: true
 field_identifier: spatial_coverage
 facet_source_id: 'search_api:views_page__search__page_1'
 widget:
-  type: links_inline
+  type: dropdown
   config:
     show_numbers: true
-    all_text: everywhere
-    prefix_text: 'Located in:'
-    suffix_text: ''
+    default_option_label: 'Any location'
+    arbitrary_facet_plugin: _none
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -68,4 +67,4 @@ processor_configs:
     settings: {  }
 empty_behavior:
   behavior: none
-show_title: null
+show_title: true
