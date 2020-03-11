@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
@@ -48,11 +49,13 @@ class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements Pi
    *   The plugin implementation definition.
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\sparql_entity_storage\SparqlEntityStorageGraphHandlerInterface $graph_handler
    *   The SPARQL graph handler service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, SparqlEntityStorageGraphHandlerInterface $graph_handler) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, SparqlEntityStorageGraphHandlerInterface $graph_handler) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->graphHandler = $graph_handler;
   }
 
@@ -65,6 +68,7 @@ class AddJoinupVocabularies extends JoinupFederationStepPluginBase implements Pi
       $plugin_id,
       $plugin_definition,
       $container->get('sparql_endpoint'),
+      $container->get('entity_type.manager'),
       $container->get('sparql.graph_handler')
     );
   }

@@ -2,6 +2,7 @@
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
@@ -47,11 +48,13 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase implements PipelineS
    *   The plugin implementation definition.
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\joinup_federation\JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager
    *   The ADMS v1 to v2 transformation plugin manager.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, JoinupFederationAdms2ConvertPassPluginManager $adms2_conver_pass_plugin_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->adms2ConverPassPluginManager = $adms2_conver_pass_plugin_manager;
   }
 
@@ -64,6 +67,7 @@ class ConvertToAdms2 extends JoinupFederationStepPluginBase implements PipelineS
       $plugin_id,
       $plugin_definition,
       $container->get('sparql_endpoint'),
+      $container->get('entity_type.manager'),
       $container->get('plugin.manager.joinup_federation_adms2_convert_pass')
     );
   }
