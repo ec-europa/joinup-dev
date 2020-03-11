@@ -26,7 +26,6 @@ dependencies:
 config_devel:
   install:
     - core.base_field_override.rdf_entity.solution.label
-    - core.entity_form_display.rdf_entity.solution.default
     - core.entity_view_display.rdf_entity.solution.about
     - core.entity_view_display.rdf_entity.solution.default
     - core.entity_view_display.rdf_entity.solution.group_header
@@ -119,3 +118,6 @@ config_devel:
     - rdf_entity.rdfentity.solution
     - solution.settings
     - sparql_entity_storage.mapping.rdf_entity.solution
+  optional:
+    - core.entity_form_display.rdf_entity.solution.default
+
