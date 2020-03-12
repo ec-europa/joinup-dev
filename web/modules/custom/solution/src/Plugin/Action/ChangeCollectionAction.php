@@ -40,12 +40,12 @@ class ChangeCollectionAction extends ActionBase implements ContainerFactoryPlugi
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $private_tempStore_factory
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $private_tempstore_factory
    *   The private tempstore factory.
    */
-  public function __construct(array $configuration, string $plugin_id, $plugin_definition, PrivateTempStoreFactory $private_tempStore_factory) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, PrivateTempStoreFactory $private_tempstore_factory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->tempStore = $private_tempStore_factory->get('change_collection');
+    $this->tempStore = $private_tempstore_factory->get('change_collection');
   }
 
   /**
