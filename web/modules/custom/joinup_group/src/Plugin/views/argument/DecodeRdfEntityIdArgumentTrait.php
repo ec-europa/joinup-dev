@@ -7,7 +7,7 @@ namespace Drupal\joinup_group\Plugin\views\argument;
 use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
- * Reusable code for group argument views handlers.
+ * Reusable Views argument setter for arguments based on Sparql URIs.
  */
 trait DecodeRdfEntityIdArgumentTrait {
 

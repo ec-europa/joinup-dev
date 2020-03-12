@@ -1,7 +1,7 @@
 @api @group-a
 Feature: As a moderator I want to be able to move solutions to other collection.
 
-  Scenario: Test moving solution to other collection.
+  Scenario: Moderators can move a solution to a different collection.
 
     Given the following collections:
       | uri                            | title       | state     |
@@ -9,12 +9,13 @@ Feature: As a moderator I want to be able to move solutions to other collection.
       | http://example.com/destination | Destination | validated |
 
     And solutions:
-      | title      | collection        | state     |
-      | Solution 1 | Source | validated |
-      | Solution 2 | Source | validated |
-      | Solution 3 | Source | validated |
-      | Solution 4 | Source | validated |
+      | title      | collection | state     |
+      | Solution 1 | Source     | validated |
+      | Solution 2 | Source     | validated |
+      | Solution 3 | Source     | validated |
+      | Solution 4 | Source     | validated |
 
+    # Only moderators should be able to access this feature.
     Given I am an anonymous user
     When I go to the homepage of the "Source" collection
     Then I should not see the link "Manage solutions"
@@ -49,7 +50,7 @@ Feature: As a moderator I want to be able to move solutions to other collection.
       | Solution 1                                                                        |
       | Solution 4                                                                        |
 
-    # Try to move to the source collection.
+    # Trying to move solutions to the same collection should result in an error.
     When I fill in "Select the destination collection" with "Source"
     And I press "Move solutions"
     Then I should see the error message "The destination collection cannot be the same as the source collection."
