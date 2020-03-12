@@ -23,10 +23,10 @@ dependencies:
     - node.type.news
   module:
     - comment
-    - ds
     - field_group
     - file
     - image
+    - joinup
     - link
     - text
     - user
@@ -68,14 +68,6 @@ content:
     settings:
       use_description_as_link_text: true
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: with_label
   field_comments:
@@ -93,13 +85,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: string
@@ -113,13 +98,6 @@ content:
       image_style: image_style_news_logo
       image_link: content
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
   field_news_referenced_solution:
@@ -129,14 +107,6 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
@@ -151,14 +121,6 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: fieldset
     type: link
@@ -172,14 +134,6 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: entity_reference__listing_tile
   report:
@@ -193,13 +147,6 @@ content:
       rel: '0'
       target: '0'
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: link

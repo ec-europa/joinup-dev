@@ -8,12 +8,10 @@ dependencies:
     - user
   theme:
     - joinup_theme
-_core:
-  default_config_hash: BAp2EWGxFvtlaSYXP8oa99T-gPKU4fwoFEUOIaaDxAA
 id: statistics
 theme: joinup_theme
 region: featured
-weight: -13
+weight: -14
 provider: null
 plugin: statistics
 settings:

@@ -26,7 +26,6 @@ dependencies:
     - image.style.image_style_collection_logo
     - rdf_entity.rdfentity.collection
   module:
-    - ds
     - image
     - joinup
     - joinup_core
@@ -42,14 +41,7 @@ content:
     label: hidden
     settings:
       image_style: banner
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   field_ar_logo:
     type: image
@@ -59,13 +51,6 @@ content:
       image_style: image_style_collection_logo
       image_link: ''
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -81,13 +66,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content

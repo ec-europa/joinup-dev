@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
 use Drupal\pipeline\Plugin\PipelineStepInterface;
@@ -86,11 +87,13 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
    *   The plugin implementation definition.
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
    *   The SPARQL database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $constraint_manager
    *   The constraint plugin manager service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $connection, PluginManagerInterface $constraint_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $connection);
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, ConnectionInterface $connection, EntityTypeManagerInterface $entity_type_manager, PluginManagerInterface $constraint_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $connection, $entity_type_manager);
     $this->constraintManager = $constraint_manager;
   }
 
@@ -103,6 +106,7 @@ class JoinupValidation extends JoinupFederationStepPluginBase implements Pipelin
       $plugin_id,
       $plugin_definition,
       $container->get('sparql_endpoint'),
+      $container->get('entity_type.manager'),
       $container->get('validation.constraint')
     );
   }
