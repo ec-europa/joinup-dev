@@ -184,6 +184,9 @@ function joinup_licence_theme($existing, $type, $theme, $path) {
  *
  * Adds extension and file size to the available variables when rendering a
  * document node.
+ *
+ * @todo Why is this in joinup_licence? What does this have to do with licences?
+ * @todo Update documentation, this is not retrieving extensions nor file sizes.
  */
 function joinup_licence_preprocess_node(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
@@ -200,12 +203,19 @@ function joinup_licence_preprocess_node(&$variables) {
     $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
   }
 
+  // @todo Consider moving the below logic into joinup_document.
   if ($node->bundle() !== 'document' || $node->get('field_file')->isEmpty()) {
     return;
   }
 
   /** @var \Drupal\file\FileInterface $file */
   $file = $node->get('field_file')->first()->entity;
+
+  // The document could reference an orphaned file entity.
+  if (empty($file)) {
+    return;
+  }
+
   $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
 
   if (!$is_remote) {
