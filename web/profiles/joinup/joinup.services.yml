@@ -10,7 +10,6 @@ services:
     lazy: true
   joinup.route_subscriber:
     class: Drupal\joinup\Routing\RouteSubscriber
-    arguments: ['@entity.manager']
     tags:
       - { name: event_subscriber }
   joinup.uid_1_only_access:
