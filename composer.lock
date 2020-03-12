@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1aa918cf365f5eb83e49d8e2c64a4f34",
+    "content-hash": "3e57958465f4a2a1df217eb41e95a5f2",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5992,7 +5992,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
+                    "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
+                    "The entity manager is deprecated and will be removed in Drupal 9 @see https://github.com/ec-europa/rdf_entity/pull/118": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/118.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
