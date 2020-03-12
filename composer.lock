@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "73aa3bf8f180b39bb2cbba330e2ad304",
+    "content-hash": "8147e230e20b9ad56c0ba6716a126977",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3160,16 +3160,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.8.2",
+            "version": "8.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "f997857003276c2ae6d27db30f0eab9c7dd10e62"
+                "reference": "77971de6d6ade7366cdd3fadfc16c5d02e531446"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/f997857003276c2ae6d27db30f0eab9c7dd10e62",
-                "reference": "f997857003276c2ae6d27db30f0eab9c7dd10e62",
+                "url": "https://api.github.com/repos/drupal/core/zipball/77971de6d6ade7366cdd3fadfc16c5d02e531446",
+                "reference": "77971de6d6ade7366cdd3fadfc16c5d02e531446",
                 "shasum": ""
             },
             "require": {
@@ -3381,7 +3381,8 @@
                     "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
                     "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
                     "Config import creates 'Undefined index: uuid' notice @see https://www.drupal.org/project/drupal/issues/2863785": "https://www.drupal.org/files/issues/config_import_creates-2863785-2.patch",
-                    "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "https://www.drupal.org/files/issues/2019-12-04/2381293-134.patch"
+                    "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "https://www.drupal.org/files/issues/2019-12-04/2381293-134.patch",
+                    "Form blocks break layout save @see https://www.drupal.org/project/drupal/issues/3045171": "https://www.drupal.org/files/issues/2020-02-04/layout-builder-save-issue-3045171-140.patch"
                 }
             },
             "autoload": {
@@ -3405,7 +3406,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-02-01T19:51:15+00:00"
+            "time": "2020-03-04T18:01:37+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
@@ -10249,7 +10250,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-04-02T18:33:21+00:00"
+            "time": "2020-03-02T18:32:28+00:00"
         },
         {
             "name": "stack/builder",
