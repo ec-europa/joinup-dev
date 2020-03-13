@@ -117,7 +117,7 @@ Feature: Proposing a collection
     And I press "Save as draft"
     Then I should see the error message "Content with title The Ratcatcher's Guild already exists. Please choose a different title."
 
-  @javascript
+  @javascript @uploadFiles:banner.jpg
   # This is a regression test for a bug in which the label texts of the options
   # vanished after performing an AJAX request in a different element on the
   # page.
@@ -126,13 +126,50 @@ Feature: Proposing a collection
     Given I am logged in as a user with the "authenticated" role
     When I go to the propose collection form
     And I click the "Additional fields" tab
-    And I attach the file "banner1.jpg" to "Banner"
+    And I attach the file "banner.jpg" to "Banner"
     And I wait for AJAX to finish
-    Then I should see the link "banner1.jpg"
-    And I should see the text "Only members can create content."
-    And I should see the text "Any user can create content."
+    Then I should see the link "banner.jpg"
+    And I should see the text "Only members can create new content."
+    And I should see the text "Any registered user can create new content."
 
-  @javascript @generateMedia @terms
+  @javascript
+  Scenario: eLibrary creation options should adapt to the state of the 'closed collection' option
+    Given I am logged in as a user with the "authenticated" role
+    When I go to the propose collection form
+    And I click the "Additional fields" tab
+
+    # Initially the collection is open, check if the eLibrary options are OK.
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Any registered user can create new content." radio button should not be selected
+    And I should not see the text "Only collection facilitators can create new content."
+
+    When I select the radio button "Any registered user can create new content."
+    Then the radio button "Any registered user can create new content." from field "eLibrary creation" should be selected
+    And the "Only members can create new content." radio button should not be selected
+
+    # When toggling to closed, the option 'any registered user' should disappear
+    # and the option for facilitators should appear.
+    When I check "Closed collection"
+    And I wait for AJAX to finish
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Only collection facilitators can create new content." radio button should not be selected
+    And I should not see the text "Any registered user can create new content."
+    When I select the radio button "Only collection facilitators can create new content."
+    Then the radio button "Only collection facilitators can create new content." from field "eLibrary creation" should be selected
+    And the "Only members can create new content." radio button should not be selected
+
+    # This is a regression test for a bug in which the both the previous option
+    # and the default option were selected after cycling the collection
+    # checkbox status open-closed-open-closed.
+    # See https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2589
+    When I uncheck "Closed collection"
+    And I wait for AJAX to finish
+    And I check "Closed collection"
+    And I wait for AJAX to finish
+    Then the radio button "Only members can create new content." from field "eLibrary creation" should be selected
+    And the "Only collection facilitators can create new content." radio button should not be selected
+
+  @javascript @generateMedia @terms @uploadFiles:logo.png
   Scenario: Propose collection form fields should be organized in tabs.
     Given the following owner:
       | name                 | type    |

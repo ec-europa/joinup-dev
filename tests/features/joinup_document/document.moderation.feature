@@ -80,6 +80,7 @@ Feature: Document moderation
     And I go to the homepage of the "The Naked Ashes" collection
     Then the plus button menu should be empty
 
+  @uploadFiles:test.zip
   Scenario: Transit documents from one state to another.
     When I am logged in as "Gretchen Greene"
     And I go to the homepage of the "The Naked Ashes" collection
