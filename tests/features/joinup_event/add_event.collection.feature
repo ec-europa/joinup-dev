@@ -33,6 +33,7 @@ Feature: "Add event" visibility options.
     And I go to the homepage of the "The Stripped Stream" collection
     Then I should see the link "Add event"
 
+  @uploadFiles:test.zip
   Scenario: Add event as a facilitator.
     Given collections:
       | title            | logo     | banner     | state     |
