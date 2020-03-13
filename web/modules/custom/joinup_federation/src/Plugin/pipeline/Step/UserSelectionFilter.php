@@ -90,7 +90,7 @@ class UserSelectionFilter extends JoinupFederationStepPluginBase implements Pipe
    *   The RDF schema field validator service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, ProvenanceHelperInterface $rdf_entity_provenance_helper, DateFormatterInterface $date_formatter, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityTypeManager = $entity_type_manager;
     $this->provenanceHelper = $rdf_entity_provenance_helper;
     $this->dateFormatter = $date_formatter;
