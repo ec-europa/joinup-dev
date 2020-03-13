@@ -4,13 +4,10 @@ dependencies:
   config:
     - rdf_entity.rdfentity.collection
     - search_api.index.published
-    - user.role.administrator
-    - user.role.moderator
   module:
     - joinup_group
     - search_api
-    - user
-    - views_bulk_operations
+    - solution
 id: manage_collection_solutions
 label: 'Manage collection solutions'
 module: views
@@ -26,11 +23,8 @@ display:
     position: 0
     display_options:
       access:
-        type: role
-        options:
-          role:
-            moderator: moderator
-            administrator: administrator
+        type: manage_solutions
+        options: {  }
       cache:
         type: tag
         options: {  }
@@ -53,7 +47,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 30
+          items_per_page: 20
           offset: 0
           id: 0
           total_pages: null
@@ -113,14 +107,14 @@ display:
       row:
         type: fields
       fields:
-        views_bulk_operations_bulk_form:
-          id: views_bulk_operations_bulk_form
-          table: views
-          field: views_bulk_operations_bulk_form
+        search_api_bulk_form:
+          id: search_api_bulk_form
+          table: search_api_index_published
+          field: search_api_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Views bulk operations'
+          label: ''
           exclude: false
           alter:
             alter_text: false
@@ -153,7 +147,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -161,48 +155,13 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          batch: true
-          batch_size: 10
-          form_step: true
-          buttons: false
-          clear_on_exposed: false
           action_title: Action
+          include_exclude: include
           selected_actions:
-            comment_delete_action: 0
-            'flag_action:subscribe_discussions_flag': 0
-            'flag_action:subscribe_discussions_unflag': 0
-            joinup_change_group: 0
-            node_unpromote_action: 0
-            node_unpublish_action: 0
-            node_publish_action: 0
-            node_unpublish_by_keyword_action: 0
-            node_assign_owner_action: 0
-            node_promote_action: 0
-            node_save_action: 0
-            node_make_sticky_action: 0
-            node_make_unsticky_action: 0
-            simplenews_send_action: 0
-            simplenews_stop_action: 0
-            joinup_change_collection: joinup_change_collection
-            user_unblock_user_action: 0
-            user_block_user_action: 0
-            user_remove_role_action: 0
-            user_add_role_action: 0
-            vbo_cancel_user_action: 0
-            views_bulk_operations_delete_entity: 0
-            pathauto_update_alias: 0
-            'entity:save_action:node': 0
-            'entity:save_action:rdf_entity': 0
-            'entity:save_action:user': 0
-            'entity:unpublish_action:node': 0
-            'entity:unpublish_action:rdf_entity': 0
-            'entity:publish_action:node': 0
-            'entity:publish_action:rdf_entity': 0
-            'entity:delete_action:node': 0
-          preconfiguration:
-            joinup_change_collection:
-              label_override: ''
-          plugin_id: views_bulk_operations_bulk_form
+            - change_collection
+          link_to_item: 0
+          use_highlighting: 0
+          plugin_id: search_api_bulk_form
         label:
           id: label
           table: search_api_index_published
@@ -468,7 +427,19 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_string
-      sorts: {  }
+      sorts:
+        label:
+          id: label
+          table: search_api_index_published
+          field: label
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
       title: 'Manage solutions'
       header: {  }
       footer: {  }
@@ -536,7 +507,7 @@ display:
         - url
         - url.query_args
         - 'user.node_grants:view'
-        - user.roles
+        - user.permissions
       tags:
         - 'config:search_api.index.published'
         - 'search_api_list:published'
@@ -566,7 +537,7 @@ display:
         - url
         - url.query_args
         - 'user.node_grants:view'
-        - user.roles
+        - user.permissions
       tags:
         - 'config:search_api.index.published'
         - 'search_api_list:published'

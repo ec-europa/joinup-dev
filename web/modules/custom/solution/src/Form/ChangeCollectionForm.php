@@ -173,7 +173,7 @@ class ChangeCollectionForm extends FormBase {
       }
       catch (\Exception $e) {
         $this->messenger()->addError($this->t("Error while trying to change the collection for %solution solution.", $messenger_arguments));
-        $this->logger->info("Error while trying to move solution '@solution' from '@source_collection' to '@destination_collection' collection.", $logger_arguments);
+        $this->logger->error("Error while trying to move solution '@solution' from '@source_collection' to '@destination_collection' collection.", $logger_arguments);
       }
     }
   }
