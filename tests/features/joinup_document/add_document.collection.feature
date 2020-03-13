@@ -33,6 +33,7 @@ Feature: "Add document" visibility options.
     And I go to the homepage of the "Ring of Truth" collection
     Then I should see the link "Add document"
 
+  @uploadFiles:test.zip
   Scenario: Add document as a facilitator.
     Given user:
       | Username    | napcheese         |

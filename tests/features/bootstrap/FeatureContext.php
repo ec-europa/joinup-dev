@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
@@ -1744,6 +1745,56 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // doesn't employ a cache context. In order to make the version show up on
     // previously cached pages we need to invalidate the render cache manually.
     Cache::invalidateTags(['rendered']);
+  }
+
+  /**
+   * Clears file entities created via UI.
+   *
+   * Starting with Drupal 8.4.0 files that have no remaining usages are no
+   * longer deleted by default. Some scenarios are creating files by uploading
+   * them to entities, in UI. Such files are not cleared after test run even the
+   * host entity is explicitly deleted. A scenario trying to upload a file used
+   * previously by other scenario will result in a changed file name, making it
+   * very hard to perform assertions on the file name. Scenarios that are
+   * uploading files should be tagged with:
+   * @code
+   * @uploadFiles:<filename1.ext>,<filename2.ext>,...
+   * @endcode
+   * For instance, a scenario tagged with @uploadFiles:logo.png,banner.jpg will
+   * clear the 2 file entities (together with the files from files system) after
+   * the scenario completes.
+   *
+   * @param \Behat\Behat\Hook\Scope\AfterScenarioScope $event
+   *   The "after scenario" scope event.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the entity type doesn't exist.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown when an entity with a non-existing storage is passed.
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown if the bundle does not exist or was needed but not specified.
+   *
+   * @see https://www.drupal.org/node/2891902
+   *
+   * @AfterScenario
+   */
+  public function clearFiles(AfterScenarioScope $event): void {
+    $files = array_reduce($event->getScenario()->getTags(), function (array $files, string $tag) {
+      if (preg_match('/^uploadFiles:(.*)$/', $tag, $found)) {
+        $files = explode(',', $found[1]);
+      }
+      return $files;
+    }, []);
+
+    if ($files) {
+      $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+      $fids = $file_storage->getQuery()
+        ->condition('filename', $files, 'IN')
+        ->execute();
+      if ($fids) {
+        $file_storage->delete($file_storage->loadMultiple($fids));
+      }
+    }
   }
 
   /**

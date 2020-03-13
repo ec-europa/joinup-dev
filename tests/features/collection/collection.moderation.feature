@@ -171,7 +171,7 @@ Feature: Collection moderation
     Then I should see the text "No berry pie"
     And I should not see the text "Some berry pie"
 
-  @terms @javascript
+  @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Moderate an open collection
     # Regression test for a bug that caused the slider that controls the
     # eLibrary creation setting to revert to default state when the form is
@@ -226,7 +226,7 @@ Feature: Collection moderation
     And I delete the "Katsumoto" owner
     And I delete the "A secretary in the fog" contact information
 
-  @terms @javascript
+  @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Changing eLibrary creation value - regression #1
     # Regression test for a bug that happens when a change on the eLibrary
     # creation setting happens after an ajax callback.
@@ -265,7 +265,7 @@ Feature: Collection moderation
     And I delete the "Garnett Clifton" owner
     And I delete the "Domestic secretary" contact information
 
-  @terms @javascript
+  @javascript @terms @uploadFiles:logo.png,banner.jpg
   Scenario: Changing eLibrary creation value - regression #2
     # Regression test for a bug that causes the wrong eLibrary creation value
     # to be saved after the "Closed collection" checkbox is checked.
@@ -307,7 +307,7 @@ Feature: Collection moderation
     And I delete the "Coretta Simonson" owner
     And I delete the "Secretary of thieves" contact information
 
-  @terms @javascript
+  @javascript @terms @javascript @uploadFiles:logo.png,banner.jpg
   Scenario: Changing eLibrary creation value - regression #3
     # Regression test for a bug that happens when an "Add more" button on a
     # multi-value widget is clicked and then the "Closed collection" checkbox
@@ -353,7 +353,7 @@ Feature: Collection moderation
     And I delete the "Terrance Nash" owner
     And I delete the "Secretary of Silk" contact information
 
-  @terms @javascript
+  @javascript @terms @javascript @uploadFiles:logo.png,banner.jpg
   Scenario: Changing eLibrary creation value - regression #4
     # Regression test for a bug that happens when the "Closed collection" checkbox
     # is checked and then an "Add more" button on a multi-value widget is clicked.

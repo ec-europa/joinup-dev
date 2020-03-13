@@ -4,6 +4,7 @@ Feature: Creation of news through the UI.
   As a user
   I need to be able to create news through the UI.
 
+  @uploadFiles:logo.png,test.zip
   Scenario: Share the news in other collections/solutions.
     Given user:
       | Username    | isotopedancer      |
