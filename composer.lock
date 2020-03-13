@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5208302bd3d30e571ebeebdada49ccc1",
+    "content-hash": "8f272ee071f115467906885539d3e323",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6257,7 +6257,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-03/social_media_posting.patch"
+                    "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10292,7 +10292,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2019-03-13T23:53:42+00:00"
+            "time": "2020-03-02T18:32:28+00:00"
         },
         {
             "name": "stack/builder",
