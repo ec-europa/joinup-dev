@@ -14,7 +14,7 @@ Feature: Collections Overview
     When I click "Collections"
     Then I should see the heading "Collections"
 
-  @terms
+  @terms @uploadFiles:logo.png,banner.jpg
   Scenario: View collection overview as an anonymous user
     Given users:
       | Username      | E-mail                       |

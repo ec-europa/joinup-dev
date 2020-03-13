@@ -4,6 +4,7 @@ Feature: Homepage feature
   when I visit the homepage of Joinup
   I want to see updates regarding the content that might be of interest to me.
 
+  @uploadFiles:test.zip
   Scenario: Show content related to groups the user belongs to on the homepage.
     Given users:
       | Username     | Roles     | E-mail                   |

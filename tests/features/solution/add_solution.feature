@@ -29,7 +29,7 @@ Feature: "Add solution" visibility options.
     And I go to the homepage of the "Collection solution test" collection
     Then I should not see the link "Add solution"
 
-  @terms @email
+  @terms @email @uploadFiles:logo.png,banner.jpg
   Scenario: Add solution as a collection facilitator.
     Given the following collection:
       | title | Belgian barista's |
