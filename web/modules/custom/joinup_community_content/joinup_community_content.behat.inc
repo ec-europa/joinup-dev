@@ -194,6 +194,9 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   /**
    * Update one of the date properties of a node and clear the cache.
    *
+   * A full format is "Thu, 26 Dec 2019 14:00:00 +0100" or without the day name.
+   * The above includes also "+0100" which represents the timezone.
+   *
    * @param string $field_name
    *   The date field/property name.
    * @param string $title
@@ -212,6 +215,10 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
     }
     $node->set($field_name, $time);
     $node->save();
+
+    // Since this is a direct node update, the cache tags have to be invalidated
+    // manually for the pages to be updated.
+    \Drupal::service('cache_tags.invalidator')->invalidateTags($node->getCacheTagsToInvalidate());
   }
 
 }
