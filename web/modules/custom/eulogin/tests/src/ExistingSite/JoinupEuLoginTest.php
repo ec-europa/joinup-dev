@@ -95,13 +95,6 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $page->pressButton('Log in');
     $assert->pageTextContains('You have just used your one-time login link. It is no longer necessary to use this link to log in. Please change your password.');
 
-    // Try to navigate to pages that are not accessible .
-    $this->assertLimitedAccess('<front>');
-    $this->assertLimitedAccess('/collections');
-    $this->assertLimitedAccess('/solutions');
-    $this->assertLimitedAccess('/keep-up-to-date');
-    $this->assertLimitedAccess('/search');
-
     // Check that the user is still able to contact the support.
     $this->assertAccess('/contact', 'Contact');
     // Check that the user is still able to access its profile page.
@@ -120,11 +113,36 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $assert->pageTextContains('The changes have been saved.');
     $this->assertNotSame($original_hashed_pass, User::load($this->account->id())->getPassword());
 
+    // Try to navigate to pages that are not accessible .
+    $this->assertLimitedAccess('<front>');
+    $this->assertLimitedAccess('/collections');
+    $this->assertLimitedAccess('/solutions');
+    $this->assertLimitedAccess('/keep-up-to-date');
+    $this->assertLimitedAccess('/search');
+
+    // Check that the link to EU Login works.
+    $this->clickLink('EU Login');
+    $assert->pageTextContains('Sign in to continue');
+
+    // Check that the redirect to limited access page has not been cached.
+    $this->drupalGet('<front>');
+    $assert->statusCodeEquals(200);
+    $this->drupalGet('/collections');
+    $assert->statusCodeEquals(200);
+    $this->drupalGet('/solutions');
+    $assert->statusCodeEquals(200);
+    $this->drupalGet('/keep-up-to-date');
+    $assert->statusCodeEquals(200);
+    $this->drupalGet('/search');
+    $assert->statusCodeEquals(200);
+
     // Create a EU Login user and link it to the local user.
     $authname = $this->randomMachineName();
-    $this->createCasUser($authname, "{$authname}@example.com", $this->randomString(), [], $this->account);
+    $eulogin_pass = user_password();
+    $this->createCasUser($authname, "{$authname}@example.com", $eulogin_pass, [], $this->account);
 
     // The access is allowed.
+    $this->casLogin("{$authname}@example.com", $eulogin_pass);
     $this->assertAccess('<front>');
     $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
