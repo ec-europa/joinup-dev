@@ -46,7 +46,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
     $page = $this->getSession()->getPage();
 
-    // Select the option tha allows pairing with the local account.
+    // Select the option that allows pairing with the local account.
     $page->selectFieldOption('account_exist', 'yes');
 
     // Use the local credentials to pair the account.
@@ -116,7 +116,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $assert->pageTextContains('The changes have been saved.');
     $this->assertNotSame($original_hashed_pass, User::load($this->account->id())->getPassword());
 
-    // Try to navigate to pages that are not accessible .
+    // Try to navigate to pages that are not accessible.
     $this->assertLimitedAccess('<front>');
     $this->assertLimitedAccess('/collections');
     $this->assertLimitedAccess('/solutions');
