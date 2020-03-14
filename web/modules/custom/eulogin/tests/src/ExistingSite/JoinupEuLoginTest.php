@@ -7,6 +7,7 @@ namespace Drupal\Tests\joinup_eulogin\ExistingSite;
 use Drupal\Tests\cas\Traits\CasTestTrait;
 use Drupal\Tests\joinup_core\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\user\Entity\User;
+use weitzman\LoginTrait\LoginTrait;
 
 /**
  * Tests the EU Login.
@@ -16,6 +17,7 @@ use Drupal\user\Entity\User;
 class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
   use CasTestTrait;
+  use LoginTrait;
 
   /**
    * Testing account.
