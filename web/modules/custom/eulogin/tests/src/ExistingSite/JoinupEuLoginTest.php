@@ -137,7 +137,10 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertAccess('/search');
 
     // Grant the user with 'unlimited access' permission.
-    $this->account->addRole($rid = $this->createRole(['unlimited access']));
+    $this->bypassReadOnlyConfig();
+    $rid = $this->createRole(['unlimited access']);
+    $this->restoreReadOnlyConfig();
+    $this->account->addRole($rid);
     $this->account->save();
 
     $this->drupalLogin($this->account);
@@ -177,7 +180,9 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
    * Tests that accounts with unlimited access cannot be linked with EU Login.
    */
   public function testUnlimitedAccessAccounts(): void {
+    $this->bypassReadOnlyConfig();
     $local_account = $this->createUser(['unlimited access']);
+    $this->restoreReadOnlyConfig();
     $authname = $this->randomMachineName();
     $pass = $this->randomString();
     $this->createCasUser($authname, "{$authname}@example.com", $pass);
