@@ -128,16 +128,11 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $assert->pageTextContains('Sign in to continue');
 
     // Check that the redirect to limited access page has not been cached.
-    $this->drupalGet('<front>');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/collections');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/solutions');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/keep-up-to-date');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/search');
-    $assert->statusCodeEquals(200);
+    $this->assertAccess('<front>');
+    $this->assertAccess('/collections');
+    $this->assertAccess('/solutions');
+    $this->assertAccess('/keep-up-to-date');
+    $this->assertAccess('/search');
 
     // Create a EU Login user and link it to the local user.
     $authname = $this->randomMachineName();
