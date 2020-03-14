@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73aa3bf8f180b39bb2cbba330e2ad304",
+    "content-hash": "ff3136109930bd3a9f9e70193837975a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -2723,6 +2723,9 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Allow subscribing to form validation @see https://www.drupal.org/project/cas_account_link/issues/3119811": "https://www.drupal.org/files/issues/2020-03-14/3119811-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -16278,5 +16281,6 @@
     },
     "platform-overrides": {
         "php": "7.1.9"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }

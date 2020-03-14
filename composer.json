@@ -202,6 +202,9 @@
             "drupal/cas": {
                 "Allow a pre-login subscriber to set the reason for cancelling the login @see https://www.drupal.org/project/cas/issues/3111073": "https://www.drupal.org/files/issues/2020-02-04/3111073-2.patch"
             },
+            "drupal/cas_account_link": {
+                "Allow subscribing to form validation @see https://www.drupal.org/project/cas_account_link/issues/3119811": "https://www.drupal.org/files/issues/2020-03-14/3119811-2.patch"
+            },
             "drupal/config_devel": {
                 "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
             },
