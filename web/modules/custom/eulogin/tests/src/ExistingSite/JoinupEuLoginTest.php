@@ -136,6 +136,23 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertAccess('/keep-up-to-date');
     $this->assertAccess('/search');
 
+    // Grant the user with 'unlimited access' permission.
+    $this->account->addRole($rid = $this->createRole(['unlimited access']));
+    $this->account->save();
+
+    $this->drupalLogin($this->account);
+
+    // Try to navigate to pages that are not accessible to regular users.
+    $this->assertAccess('<front>');
+    $this->assertAccess('/collections');
+    $this->assertAccess('/solutions');
+    $this->assertAccess('/keep-up-to-date');
+    $this->assertAccess('/search');
+
+    // Remove the role from account.
+    $this->account->removeRole($rid);
+    $this->account->save();
+
     // Create a EU Login user and link it to the local user.
     $authname = $this->randomMachineName();
     $eulogin_pass = user_password();
