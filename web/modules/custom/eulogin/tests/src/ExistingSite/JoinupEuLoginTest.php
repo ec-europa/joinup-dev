@@ -155,6 +155,28 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
   }
 
   /**
+   * Tests that accounts with unlimited access cannot be linked with EU Login.
+   */
+  public function testUnlimitedAccessAccounts(): void {
+    $local_account = $this->createUser(['unlimited access']);
+    $authname = $this->randomMachineName();
+    $pass = $this->randomString();
+    $this->createCasUser($authname, "{$authname}@example.com", $pass);
+    $this->casLogin("{$authname}@example.com", $pass);
+
+    $page = $this->getSession()->getPage();
+
+    // Select the option that allows pairing with the local account.
+    $page->selectFieldOption('account_exist', 'yes');
+
+    // Use the local credentials to pair the account.
+    $page->fillField('Email or username', $local_account->getAccountName());
+    $page->fillField('Password', $local_account->pass_raw);
+    $page->pressButton('Sign in');
+    $this->assertSession()->pageTextContains("Linking the local {$local_account->getDisplayName()} user with an EU Login account is not allowed.");
+  }
+
+  /**
    * Asserts that navigating to a URL will end on the 'Limited access' page.
    *
    * @param \Drupal\Core\Url|string $url
