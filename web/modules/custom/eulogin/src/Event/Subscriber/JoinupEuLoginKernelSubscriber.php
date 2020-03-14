@@ -146,7 +146,10 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
 
     // The browser caches the redirect. Make sure the cache is not leaking
     // between user with different EU Login link status.
-    $cache_metadata = (new CacheableMetadata())->addCacheContexts(['user.is_eulogin']);
+    $cache_metadata = (new CacheableMetadata())->addCacheContexts([
+      'user.is_eulogin',
+      'user.permissions',
+    ]);
     // Redirect to 'Limited access' page.
     $response = new LocalRedirectResponse(Url::fromRoute('joinup_eulogin.page.limited_access')->toString());
     $event->setResponse($response->addCacheableDependency($cache_metadata));
