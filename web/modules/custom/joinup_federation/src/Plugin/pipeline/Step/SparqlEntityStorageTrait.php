@@ -13,13 +13,6 @@ use Drupal\sparql_entity_storage\SparqlEntityStorageInterface;
 trait SparqlEntityStorageTrait {
 
   /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * The RDF entity SPARQL storage.
    *
    * @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface

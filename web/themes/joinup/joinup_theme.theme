@@ -380,6 +380,12 @@ function joinup_theme_preprocess_page(&$variables) {
     unset($variables['page']['content']['pagetitle']);
   }
 
+  // Retrieve the Joinup version and link to display in the footer.
+  /** @var \Drupal\joinup_core\JoinupVersionInterface $joinup_version */
+  $joinup_version = \Drupal::service('joinup_core.joinup_version');
+  $variables['version'] = $joinup_version->getVersion();
+  $variables['version_url'] = $joinup_version->getUrl();
+
   // Remove title on pages, where title is already in the header.
   if ($route_name == 'entity.rdf_entity.canonical') {
 
@@ -869,21 +875,7 @@ function joinup_theme_preprocess_field__comment(&$variables) {
  * Implements hook_preprocess_HOOK() for form.html.twig.
  */
 function joinup_theme_preprocess_form(&$variables) {
-  // Exclude collection and solution forms.
-  $form_ids = [
-    'rdf_entity_collection_edit_form',
-    'rdf_entity_collection_propose_form',
-    'rdf_entity_collection_add_form',
-    'rdf_entity_solution_edit_form',
-    'rdf_entity_solution_form',
-    'rdf_entity_solution_add_form',
-  ];
-
-  // Display asterisk for required fields.
-  if (!in_array($variables['element']['#form_id'], $form_ids)) {
-    $variables['attributes']['class'][] = 'form__with-asterisk';
-  }
-
+  $variables['attributes']['class'][] = 'form__with-asterisk';
   // Additional classes for members overview.
   if (strpos($variables['element']['#form_id'], 'views_form_og_members_overview_default_rdf_entity') !== FALSE) {
     $variables['attributes']['class'][] = 'form__content';
