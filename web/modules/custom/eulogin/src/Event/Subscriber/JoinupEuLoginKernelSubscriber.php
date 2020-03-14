@@ -206,7 +206,9 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
     // - is anonymous.
     return $this->currentUser->isAnonymous()
     // - or is an EU Login linked user.
-    || $this->authmap->get($this->currentUser->id(), 'cas');
+    || $this->authmap->get($this->currentUser->id(), 'cas')
+    // - or is granted with 'unlimited access' permission.
+    || $this->currentUser->hasPermission('unlimited access');
   }
 
   /**
