@@ -31,11 +31,13 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     // Create an EU Login user.
     $authname = $this->randomMachineName();
     $email = "{$authname}@example.com";
-    $eulogin_pass = $this->randomString();
+    $eulogin_pass = user_password();
     $this->createCasUser($authname, $email, $eulogin_pass);
 
     // Create a local user.
-    $local_account = $this->createUser();
+    $local_account = $this->createUser([], NULL, FALSE, [
+      'pass' => $this->generateRandomPassword(),
+    ]);
     // Store the hashed password in a variable for later comparison.
     $original_hashed_pass = $local_account->getPassword();
 
@@ -104,7 +106,8 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
     // Set a new password.
     $page->fillField('Current password', $this->account->passRaw);
-    $page->fillField('Password', $new_pass = $this->randomString());
+    $new_pass = $this->generateRandomPassword();
+    $page->fillField('Password', $new_pass);
     $page->fillField('Confirm password', $new_pass);
     $page->pressButton('Save');
 
@@ -211,6 +214,42 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $mail = end($mails);
     preg_match('#(/user/reset/[^"].+)"#', (string) $mail['body'], $urls);
     return $urls[1];
+  }
+
+  /**
+   * Generates a random password with respect to site's password policies.
+   *
+   * Unfortunately, the Password Policy module lacks a random password generator
+   * that would have generate passwords satisfying the site's password policies.
+   * It also lacks a password validator service, usable at API level, that would
+   * has allowed us to generate such a password. According to Joinup site
+   * policies we need a password longer than 8 characters with, at least, three
+   * character types, out of four (lowercase letters, uppercase letters, digits,
+   * special characters). But user_password() doesn't return special characters,
+   * so we will append a random string, that already contains special
+   * characters, and borrow the 'character_types' validation, to ensure the
+   * password compliance. Not enforcing this leads to random test failures.
+   *
+   * @see user_password()
+   * @see \Drupal\password_policy_character_types\Plugin\PasswordConstraint\CharacterTypes::validate()
+   */
+  protected function generateRandomPassword(): string {
+    // Borrowed from CharacterTypes::validate().
+    $valid_password = function (string $password): bool {
+      $character_sets = count(array_filter([
+        preg_match('/[a-z]/', $password),
+        preg_match('/[A-Z]/', $password),
+        preg_match('/[0-9]/', $password),
+        preg_match('/[^a-zA-Z0-9]/', $password),
+      ]));
+      return $character_sets >= 3;
+    };
+
+    do {
+      $password = user_password() . $this->randomString(6);
+    } while (!$valid_password($password));
+
+    return $password;
   }
 
 }
