@@ -206,7 +206,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
    * @return string
    *   The reset URL.
    */
-  protected function extractPasswordResetUrlFromMail() {
+  protected function extractPasswordResetUrlFromMail(): string {
     $mails = $this->getMails();
     $mail = end($mails);
     preg_match('#(/user/reset/[^"].+)"#', (string) $mail['body'], $urls);
