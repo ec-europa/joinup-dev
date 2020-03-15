@@ -156,4 +156,29 @@ class MinkContext extends DrupalExtensionMinkContext {
     $select2_option->click();
   }
 
+  /**
+   * Deselects a Select2 option by clicking the x button in the chip.
+   *
+   * @param string $option
+   *   The option to be deselected.
+   * @param string $select
+   *   The select field name.
+   *
+   * @throws \Exception
+   *   Thrown if the field is not a select2 widget.
+   *
+   * @Given I deselect the option :option from the :select select2 widget
+   */
+  public function deselectSelect2Option(string $option, string $select): void {
+    if (!$field = $this->select2IsUsed($select, $option)) {
+      throw new \Exception('This method can only be used for a select2 widget.');
+    }
+
+    $xpath = '//li[contains(@class, "select2-selection__choice") and contains(text(), "' . $option . '")]/span[contains(@class, "select2-selection__choice__remove")]';
+    if (!$selected_option_remove = $field->getParent()->find('xpath', $xpath)) {
+      throw new \Exception("The {$option} was not found as selected.");
+    }
+    $selected_option_remove->click();
+  }
+
 }
