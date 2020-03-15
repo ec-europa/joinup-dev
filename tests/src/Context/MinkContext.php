@@ -96,6 +96,13 @@ class MinkContext extends DrupalExtensionMinkContext {
    */
   public function selectOption($select, $option): void {
     if ($field = $this->select2IsUsed($select, $option)) {
+      $xpath = '//li[contains(@class, "select2-selection__choice")]/span[contains(@class, "select2-selection__choice__remove")]';
+      if ($selected_remove_buttons = $field->getParent()->findAll('xpath', $xpath)) {
+        foreach ($selected_remove_buttons as $selected_remove_button) {
+          $selected_remove_button->click();
+        }
+      }
+
       $this->selectSelect2Option($field, $option);
       return;
     }
