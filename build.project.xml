@@ -282,17 +282,14 @@
         </drush>
     </target>
 
-    <!-- Compile SASS to CSS. -->
-    <target name="compile-sass"
-            description="Compile the SASS to CSS.">
-        <!-- Make sure the CSS directory exists. -->
-        <mkdir dir="${sass.output.dir}" />
-        <sass
-            executable="${sass.bin}"
-            flags="--sourcemap=${sass.sourcemap}"
-            style="${sass.style}"
-            input="${sass.input}"
-            output="${sass.output.dir}/${sass.output.file}" />
+    <!-- Compile SCSS to CSS. -->
+    <target name="compile-scss">
+        <mkdir dir="${scssphp.css.output.dir}" />
+        <exec executable="${scssphp.bin}"
+              output="${scssphp.css.output.file}">
+            <arg value="--style=${scssphp.style}"/>
+            <arg value="${scssphp.input.file}"/>
+        </exec>
     </target>
 
     <!-- Set the transaction type to READ-COMMITTED. -->
@@ -542,12 +539,12 @@
     <target
         name="build-dist"
         description="Build a distribution package."
-        depends="install-composer-dependencies-dist, compile-sass" />
+        depends="install-composer-dependencies-dist, compile-scss" />
 
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-sass" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-scss" />
 
     <target
         name="rebuild-dev"
