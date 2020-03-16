@@ -4,7 +4,7 @@ namespace Drupal\custom_page\Form;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -60,8 +60,8 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
   /**
    * Constructs a MenuForm object.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity type manager.
    * @param \Drupal\Core\Entity\Query\QueryFactory $entity_query_factory
    *   The factory for entity queries.
    * @param \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager
@@ -75,8 +75,8 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
    * @param \Symfony\Component\Routing\Matcher\UrlMatcherInterface $url_matcher
    *   The Symfony route matcher.
    */
-  public function __construct(EntityManagerInterface $entity_manager, QueryFactory $entity_query_factory, MenuLinkManagerInterface $menu_link_manager, MenuLinkTreeInterface $menu_tree, LinkGeneratorInterface $link_generator, OgAccessInterface $og_access, UrlMatcherInterface $url_matcher) {
-    parent::__construct($entity_manager, $entity_query_factory, $menu_link_manager, $menu_tree, $link_generator, $og_access);
+  public function __construct(EntityRepositoryInterface $entity_repository, QueryFactory $entity_query_factory, MenuLinkManagerInterface $menu_link_manager, MenuLinkTreeInterface $menu_tree, LinkGeneratorInterface $link_generator, OgAccessInterface $og_access, UrlMatcherInterface $url_matcher) {
+    parent::__construct($entity_repository, $entity_query_factory, $menu_link_manager, $menu_tree, $link_generator, $og_access);
 
     $this->urlMatcher = $url_matcher;
   }
@@ -86,7 +86,7 @@ class OgMenuInstanceForm extends OriginalOgMenuInstanceForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager'),
+      $container->get('entity.repository'),
       $container->get('entity.query'),
       $container->get('plugin.manager.menu.link'),
       $container->get('menu.link_tree'),
