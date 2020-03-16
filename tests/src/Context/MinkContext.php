@@ -99,10 +99,9 @@ class MinkContext extends DrupalExtensionMinkContext {
       $xpath = '//li[contains(@class, "select2-selection__choice")]/span[contains(@class, "select2-selection__choice__remove")]';
       if ($selected_remove_buttons = $field->getParent()->findAll('xpath', $xpath)) {
         // This method selects anew an option in a normal select list. To have
-        // the same results in a select2 widget, all selected options have to
-        // be removed manually.
-        // To select an additional item, use the ::additionallySelectOption
-        // method.
+        // the same results in a Select2 widget, all selected options have to
+        // be removed manually. To select an additional item, use the
+        // ::additionallySelectOption method.
         foreach ($selected_remove_buttons as $selected_remove_button) {
           $selected_remove_button->click();
         }
@@ -136,7 +135,7 @@ class MinkContext extends DrupalExtensionMinkContext {
    *   The option to be selected.
    *
    * @return \Behat\Mink\Element\NodeElement|false
-   *   It returns the field as node element, if Select2 is used it or FALSE
+   *   It returns the field as node element, if Select2 is used or FALSE
    *   otherwise.
    */
   protected function select2IsUsed(string $select, string $option) {
@@ -179,11 +178,11 @@ class MinkContext extends DrupalExtensionMinkContext {
    * @throws \Exception
    *   Thrown if the field is not a select2 widget.
    *
-   * @Given I deselect the option :option from the :select select2 widget
+   * @Given I deselect the option :option from the :select Select2 widget
    */
   public function deselectSelect2Option(string $option, string $select): void {
     if (!$field = $this->select2IsUsed($select, $option)) {
-      throw new \Exception('This method can only be used for a select2 widget.');
+      throw new \Exception('This method can only be used for a Select2 widget.');
     }
 
     $xpath = '//li[contains(@class, "select2-selection__choice") and contains(text(), "' . $option . '")]/span[contains(@class, "select2-selection__choice__remove")]';
