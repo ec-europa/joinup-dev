@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f272ee071f115467906885539d3e323",
+    "content-hash": "45ccbc3bec92d53324ef444362b48fdc",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6257,7 +6257,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch"
+                    "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch",
+                    "Add support for DigitalDocument @see https://www.drupal.org/project/schema_metatag/issues/3120153": "https://www.drupal.org/files/issues/2020-03-16/digital_document_group-D8-3.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
