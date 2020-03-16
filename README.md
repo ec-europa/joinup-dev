@@ -29,7 +29,7 @@ There are two ways to run Joinup. With `docker` and `docker-compose` and buildin
 
 ### Docker
 
-To start with docker, please, check the separated [README file](resources/docker/README.md).
+Instructions for installing with docker can be found in the dedicated [Docker README file](resources/docker/README.md).
 
 ### Local installation
 
@@ -78,14 +78,20 @@ run the Behat test, please refer directly to the documention of
     ```
 
 * Install Virtuoso. For basic instructions, see [setting up
-  Virtuoso](https://github.com/ec-europa/rdf_entity/blob/8.x-1.x/README.md).
-  Due to [a bug in Virtuoso 6](https://github.com/openlink/virtuoso-opensource/issues/303) it is recommended to use Virtuoso 7.
+  Virtuoso](https://git.drupalcode.org/project/sparql_entity_storage/blob/8.x-1.x/README.md#setting-up-virtuoso).
   During installation some RDF based taxonomies will be imported from the `resources/fixtures` folder.
   Make sure Virtuoso can read from this folder by adding it to the `DirsAllowed`
   setting in your `virtuoso.ini`. For example:
 
     ```
     DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
+    ```
+
+  Then, set up and start the Virtuoso server:
+
+    ```
+    $ ./vendor/bin/phing virtuoso-setup
+    $ ./vendor/bin/phing virtuoso-start
     ```
 
 * Install the official [SASS compiler](https://github.com/sass/sass). This
@@ -129,15 +135,12 @@ entire `build.properties.dist` file, since this would override all options.
 Example `build.properties.local`:
 
 ```
-# The location of the Composer binary.
-composer.bin = /usr/bin/composer
-
-# The location of the Virtuoso console (Debian / Ubuntu).
-isql.bin = /usr/bin/virtuoso-isql
-# The location of the Virtuoso console (Arch Linux).
+# The location of the Virtuoso console (Debian / Ubuntu / Arch Linux).
 isql.bin = /usr/bin/virtuoso-isql
 # The location of the Virtuoso console (Redhat / Fedora / OSX with Homebrew).
 isql.bin = /usr/local/bin/isql
+# The location of the Virtuoso binary (Arch Linux).
+virtuoso.binary = /usr/bin/virtuosod
 
 # SQL database settings.
 drupal.db.name = my_database
@@ -155,9 +158,6 @@ drupal.admin.password = admin
 
 # The base URL to use in tests.
 drupal.base_url = http://joinup.local
-
-# Verbosity of Drush commands. Set to 'yes' for verbose output.
-drush.verbose = yes
 ```
 
 

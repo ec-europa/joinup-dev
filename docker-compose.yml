@@ -41,7 +41,7 @@ services:
     ports:
       - "8890:8890"
 
-  mail:
+  mailhog:
     image: mailhog/mailhog
     ports:
       - "1025:1025"
