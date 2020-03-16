@@ -5,7 +5,7 @@ id: node__document
 label: 'Content: Document'
 tags:
   schema_digital_document_about: '[node:field_keywords]'
-  schema_digital_document_associated_media: 'a:5:{s:5:"@type";s:12:"CreativeWork";s:3:"@id";s:28:"[node:field_file:entity:url]";s:4:"name";s:29:"[node:field_file:entity:name]";s:3:"url";s:28:"[node:field_file:entity:url]";s:13:"datePublished";s:57:"[node:field_document_publication_date:date:html_datetime]";}'
+  schema_digital_document_associated_media: 'a:5:{s:5:"@type";s:11:"MediaObject";s:3:"@id";s:28:"[node:field_file:entity:url]";s:4:"name";s:29:"[node:field_file:entity:name]";s:3:"url";s:28:"[node:field_file:entity:url]";s:13:"datePublished";s:57:"[node:field_document_publication_date:date:html_datetime]";}'
   schema_digital_document_license: '[node:field_licence:target_id]'
   schema_digital_document_type: DigitalDocument
   schema_digital_document_is_accessible_for_free: 'True'
