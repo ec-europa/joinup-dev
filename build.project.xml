@@ -285,9 +285,20 @@
     <!-- Compile SCSS to CSS. -->
     <target name="compile-scss">
         <mkdir dir="${scssphp.css.output.dir}" />
+        <if>
+            <istrue value="${scssphp.sourcemap}"/>
+            <then>
+                <property name="scss.sourcemap.arg" value="--sourcemap"/>
+            </then>
+            <else>
+                <property name="scss.sourcemap.arg" value=""/>
+            </else>
+        </if>
+
         <exec executable="${scssphp.bin}"
               output="${scssphp.css.output.file}">
             <arg value="--style=${scssphp.style}"/>
+            <arg value="${scss.sourcemap.arg}"/>
             <arg value="${scssphp.input.file}"/>
         </exec>
     </target>
