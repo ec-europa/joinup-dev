@@ -128,7 +128,7 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('honeypot.settings');
     if (!isset($this->honeypotForms)) {
-      $this->honeypotForms = $config->get('form_settings');
+      $this->honeypotForms = $config->get('form_settings') ?? [];
     }
     $config
       ->set('form_settings', array_fill_keys(array_keys($this->honeypotForms), FALSE))
