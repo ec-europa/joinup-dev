@@ -230,10 +230,10 @@ function _joinup_is_create_form_route($route_name) {
  *   Renderable array contains the author.
  */
 function _joinup_theme_get_author(NodeInterface $node) {
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
-  $author_inline = $viewBuilder->view($author, 'inline');
+  $author_inline = $view_builder->view($author, 'inline');
 
   return $author_inline;
 }
@@ -966,11 +966,11 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
   }
 
   // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the creation date field.
   $creation_date = $entity->get('created');
-  $creation_date = $viewBuilder->viewField($creation_date, 'default');
+  $creation_date = $view_builder->viewField($creation_date, 'default');
   $variables['additional_content']['created'] = $creation_date;
 }
 
@@ -982,13 +982,13 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_distribution(&$va
   $entity = $variables['entity'];
 
   // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the file size and licence fields.
   $field_ad_file_size = $entity->field_ad_file_size;
   $field_ad_licence = $entity->field_ad_licence;
-  $field_ad_file_size = $viewBuilder->viewField($field_ad_file_size, 'default');
-  $field_ad_licence = $viewBuilder->viewField($field_ad_licence, 'default');
+  $field_ad_file_size = $view_builder->viewField($field_ad_file_size, 'default');
+  $field_ad_licence = $view_builder->viewField($field_ad_licence, 'default');
 
   $variables['additional_content']['field_ad_file_size'] = $field_ad_file_size;
   $variables['additional_content']['field_ad_licence'] = $field_ad_licence;
@@ -1001,16 +1001,16 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
-  $field_news_headline = $viewBuilder->viewField($node->field_news_headline, 'default');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  $field_news_headline = $view_builder->viewField($node->field_news_headline, 'default');
   $variables['additional_content']['field_news_headline'] = $field_news_headline;
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
 
-  $updateDate = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
-  $variables['additional_content']['updated'] = $updateDate;
+  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1026,8 +1026,8 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
 
-  $updateDate = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
-  $variables['additional_content']['updated'] = $updateDate;
+  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1069,7 +1069,6 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   $update_date = $date_formatter->format($node->getChangedTime(), 'custom', 'd/m/Y');
   $variables['additional_content']['updated'] = $update_date;
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
   $field_short_title = $view_builder->viewField($node->field_short_title, 'default');
   $variables['additional_content']['field_short_title'] = $field_short_title;
 
@@ -1179,12 +1178,12 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
 
   // Get dates and location fields.
-  $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
-  $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
+  $field_event_date = $view_builder->viewField($node->get('field_event_date'), 'default');
+  $field_event_location = $view_builder->viewField($node->get('field_location'), 'default');
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
 
