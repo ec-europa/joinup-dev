@@ -41,7 +41,6 @@ To start on macOS without Docker, please, check the separated [README file](reso
 #### Requirements
 * A regular LAMP stack running PHP 7.1.0 or higher
 * Virtuoso 7 (Triplestore database)
-* SASS compiler
 * Apache Solr
 
 #### Dependency management and builds
@@ -86,13 +85,6 @@ run the Behat test, please refer directly to the documention of
 
     ```
     DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
-    ```
-
-* Install the official [SASS compiler](https://github.com/sass/sass). This
-  depends on Ruby being installed on your system.
-
-    ```
-    $ gem install sass
     ```
 
 * Install [Selenium](https://github.com/SeleniumHQ/docker-selenium/blob/master/README.md).
