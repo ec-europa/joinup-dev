@@ -47,7 +47,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
         ['setRandomPassword'],
         ['setMessageAndRedirect'],
       ],
-      CasAccountLinkEvents::VALIDATE => 'preventLinkingUnlimitedAccessAccounts',
+      CasAccountLinkEvents::VALIDATE => 'preventLinkingLimitedAccessBypassAccounts',
     ];
   }
 
@@ -120,7 +120,13 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
   }
 
   /**
-   * Disallow linking accounts granted with 'unlimited access' permission.
+   * Disallow linking accounts that can bypass the limited access.
+   *
+   * The only users that can bypass the access limitation are accounts used for
+   * maintenance and demonstration purposes, such as UID 1, demo users, and
+   * other functional accounts. It does not make sense to link these accounts
+   * with EU Login since that service is intended to identify actual human EU
+   * citizens.
    *
    * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkValidateEvent $event
    *   The CAS Account Link validate event object.
@@ -130,7 +136,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    *   Thrown if the storage handler couldn't be loaded.
    */
-  public function preventLinkingUnlimitedAccessAccounts(CasAccountLinkValidateEvent $event): void {
+  public function preventLinkingLimitedAccessBypassAccounts(CasAccountLinkValidateEvent $event): void {
     $form_state = $event->getFormState();
     if ($form_state->getValue('account_exist') === 'no') {
       return;
@@ -139,7 +145,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
     /** @var \Drupal\user\UserInterface $account */
     $account = $this->entityTypeManager->getStorage('user')->load($form_state->get('uid'));
 
-    if ($account->hasPermission('unlimited access')) {
+    if ($account->hasPermission('bypass limited access')) {
       $form_state->setErrorByName('login][name', $this->t('Linking the local %username user with an EU Login account is not allowed.', [
         '%username' => $account->getDisplayName(),
       ]));

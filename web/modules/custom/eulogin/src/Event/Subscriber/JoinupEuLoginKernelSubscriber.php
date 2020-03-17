@@ -104,7 +104,7 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
     $route_match = $this->routeMatch->getRouteMatchFromRequest($event->getRequest());
     if ($route_match->getRouteName() === 'joinup_eulogin.page.limited_access') {
       // For anonymous or EU Login users this page doesn't exist.
-      if ($this->userHasUnlimitedAccess()) {
+      if ($this->currentUserCanBypassLimitedAccess()) {
         throw new NotFoundHttpException();
       }
       $event->getResponse()->setStatusCode(Response::HTTP_FORBIDDEN);
@@ -123,7 +123,7 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
     }
 
     // Allow anonymous or EU Login users.
-    if ($this->userHasUnlimitedAccess()) {
+    if ($this->currentUserCanBypassLimitedAccess()) {
       return;
     }
 
@@ -199,19 +199,19 @@ class JoinupEuLoginKernelSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Checks if the current user has unlimited access.
+   * Checks if the current user can bypass limited access.
    *
    * @return bool
-   *   TRUE if the current user has unlimited access.
+   *   TRUE if the current user can bypass limited access.
    */
-  protected function userHasUnlimitedAccess(): bool {
-    // A user has unlimited access if:
+  protected function currentUserCanBypassLimitedAccess(): bool {
+    // A user can bypass limited access if:
     // - is anonymous.
     return $this->currentUser->isAnonymous()
     // - or is an EU Login linked user.
     || $this->authmap->get($this->currentUser->id(), 'cas')
-    // - or is granted with 'unlimited access' permission.
-    || $this->currentUser->hasPermission('unlimited access');
+    // - or is granted with 'bypass limited access' permission.
+    || $this->currentUser->hasPermission('bypass limited access');
   }
 
   /**

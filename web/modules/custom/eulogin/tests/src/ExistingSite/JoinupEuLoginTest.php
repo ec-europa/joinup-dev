@@ -125,27 +125,32 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $this->assertLimitedAccess('/keep-up-to-date');
     $this->assertLimitedAccess('/search');
 
-    // Check that the link to EU Login works.
+    // Check that the link to EU Login works. By clicking this link the user
+    // will be logged out of their Drupal account and will be ready to log in
+    // using EU Login.
     $this->clickLink('EU Login');
     $assert->pageTextContains('Sign in to continue');
 
-    // Check that the redirect to limited access page has not been cached.
+    // Check that the redirect to limited access page has not been cached. The
+    // user is now anonymous, so should be again able to access all pages.
     $this->assertAccess('<front>');
     $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
     $this->assertAccess('/keep-up-to-date');
     $this->assertAccess('/search');
 
-    // Grant the user with 'unlimited access' permission.
+    // Log in as an special user with 'bypass limited access' permission. These
+    // users are intended for maintenance or demonstration purposes.
     $this->bypassReadOnlyConfig();
-    $rid = $this->createRole(['unlimited access']);
+    $rid = $this->createRole(['bypass limited access']);
     $this->restoreReadOnlyConfig();
     $this->account->addRole($rid);
     $this->account->save();
 
     $this->drupalLogin($this->account);
 
-    // Try to navigate to pages that are not accessible to regular users.
+    // Try to navigate to pages that are not accessible to non-linked users. The
+    // users who can bypass limited access should be able to access these pages.
     $this->assertAccess('<front>');
     $this->assertAccess('/collections');
     $this->assertAccess('/solutions');
@@ -177,11 +182,16 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
   }
 
   /**
-   * Tests that accounts with unlimited access cannot be linked with EU Login.
+   * Tests that special user accounts cannot be linked with EU Login.
+   *
+   * User accounts intended for maintenance and demonstration purposes (such as
+   * UID 1 and demo users) do not represent actual EU citizens so they should
+   * not be linked with EU Login. These users have the `bypass limited access`
+   * permission.
    */
-  public function testUnlimitedAccessAccounts(): void {
+  public function testLimitedAccessBypassAccounts(): void {
     $this->bypassReadOnlyConfig();
-    $local_account = $this->createUser(['unlimited access']);
+    $local_account = $this->createUser(['bypass limited access']);
     $this->restoreReadOnlyConfig();
     $authname = $this->randomMachineName();
     $pass = $this->randomString();
