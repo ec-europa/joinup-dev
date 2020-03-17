@@ -31,9 +31,9 @@ Feature: SEO for document content.
       | name                | SEO document                                         |
       | license             | https://example.com/license1                         |
       | description         | Document test1.zip                                   |
-      | datePublished       | 2019-12-25T13:00:00+0100                             |
+      | datePublished       | 2019-12-25T$timezone$:00:00+0100                     |
       | isAccessibleForFree | True                                                 |
-      | dateModified        | 2020-01-01T13:00:00+0100                             |
+      | dateModified        | 2020-01-01T$timezone$:00:00+0100                     |
       | mainEntityOfPage    | $base_url$/sites/default/files/test$random_text$.zip |
     # Adding numerical property values is turning the "about" property into an array comparison.
     And the metatag graph of the item with "name" "SEO document" should have the following "about" properties:
@@ -49,7 +49,7 @@ Feature: SEO for document content.
       | @id           | $base_url$/sites/default/files/test$random_text$.zip |
       | name          | test.zip                                             |
       | url           | $base_url$/sites/default/files/test$random_text$.zip |
-      | datePublished | 2019-12-25T14:00:00+0100                             |
+      | datePublished | 2019-12-25T$timezone$:00:00+0100                     |
     And the metatag graph of the item with "name" "SEO document" should have the following "author" properties:
       | property | value                         |
       | @type    | Person                        |
@@ -80,9 +80,9 @@ Feature: SEO for document content.
       | headline            | SEO document                               |
       | name                | SEO document                               |
       | description         | Remote url example                         |
-      | datePublished       | 2019-12-25T13:00:00+0100                   |
+      | datePublished       | 2019-12-25T$timezone$:00:00+0100           |
       | isAccessibleForFree | True                                       |
-      | dateModified        | 2020-01-01T13:00:00+0100                   |
+      | dateModified        | 2020-01-01T$timezone$:00:00+0100           |
       | mainEntityOfPage    | http://example.com/some-file-url.extension |
     And the metatag graph of the item with "name" "SEO document" should have the following "associatedMedia" properties:
       | property      | value                                      |
@@ -90,4 +90,4 @@ Feature: SEO for document content.
       | @id           | http://example.com/some-file-url.extension |
       | name          | some-file-url.extension                    |
       | url           | http://example.com/some-file-url.extension |
-      | datePublished | 2019-12-25T14:00:00+0100                   |
+      | datePublished | 2019-12-25T$timezone$:00:00+0100           |
