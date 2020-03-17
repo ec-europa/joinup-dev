@@ -72,11 +72,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
     </target>
 
     <target name="build-continuousphp" >
-        <echo message="Install the SASS compiler" />
-        <exec dir="${project.basedir}"
-              command="gem install sass"
-              checkreturn="true"
-              passthru="true" />
         <!-- Set environment variables as extra properties through cloudformation -->
         <env2property prefix="cphp" phingproperty="cloudformation.properties" />
         <echo message="Copy CPHP pipeline variables to local properties file" />

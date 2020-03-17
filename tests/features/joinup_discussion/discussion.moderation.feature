@@ -10,11 +10,11 @@ Feature: Discussion moderation
       | Gabe Rogers     |
       | Brigham Salvage |
     And the following collection:
-      | title             | DIY collection                           |
-      | description       | Collection of "Do it yourself" projects. |
-      | logo              | logo.png                                 |
-      | elibrary creation | members                                  |
-      | state             | validated                                |
+      | title            | DIY collection                           |
+      | description      | Collection of "Do it yourself" projects. |
+      | logo             | logo.png                                 |
+      | content creation | members                                  |
+      | state            | validated                                |
     And the following collection user membership:
       | collection     | user            | roles       |
       | DIY collection | Gabe Rogers     | member      |
@@ -94,11 +94,11 @@ Feature: Discussion moderation
       | Lance Rustici | lance.rustici@example.com |
       | Denny Winslow | denny.winslow@example.com |
     And the following collection:
-      | title             | Valentine's day survival kit                   |
-      | description       | How to survive the most scary day of the year. |
-      | logo              | logo.png                                       |
-      | elibrary creation | members                                        |
-      | state             | validated                                      |
+      | title            | Valentine's day survival kit                   |
+      | description      | How to survive the most scary day of the year. |
+      | logo             | logo.png                                       |
+      | content creation | members                                        |
+      | state            | validated                                      |
     And the following collection user membership:
       | collection                   | user          | roles       |
       | Valentine's day survival kit | Vince Rome    | member      |

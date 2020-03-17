@@ -53,6 +53,7 @@ permissions:
   - 'feature entity'
   - 'filter membership overview'
   - 'manage newsroom newsletter subscriptions'
+  - 'manage solutions'
   - 'moderate entity parents'
   - 'pin entity'
   - 'reset joinup_collection pipeline'
