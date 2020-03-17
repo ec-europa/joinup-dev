@@ -12,8 +12,8 @@ Feature: Notification test for the event transitions on a pre moderated parent.
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title             | state     | elibrary creation | moderation |
-      | CC pre collection | validated | members           | yes        |
+      | title             | state     | content creation | moderation |
+      | CC pre collection | validated | members          | yes        |
     And the following collection user memberships:
       | collection        | user           | roles       |
       | CC pre collection | CC owner       | owner       |

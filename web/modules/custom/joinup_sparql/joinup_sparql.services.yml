@@ -7,3 +7,5 @@ services:
     class: Drupal\joinup_sparql\JoinupAcceptHeaderMiddleware
     tags:
       - { name: http_middleware, priority: 401 }
+  joinup_sparql.graph_store.helper:
+    class: Drupal\joinup_sparql\JoinupSparqlGraphStoreHelper
