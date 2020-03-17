@@ -18,8 +18,8 @@ use PHPUnit\Framework\Assert;
  */
 class JoinupCommunityContentSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use TraversingTrait;
   use NodeTrait;
+  use TraversingTrait;
 
   /**
    * Asserts that a tile is not marked as shared from another collection.
@@ -189,6 +189,33 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
     $node = $this->getNodeByTitle($title, $bundle);
     $path = $node->toUrl("{$action}-form")->getInternalPath();
     $this->visitPath($path);
+  }
+
+  /**
+   * Update one of the date properties of a node.
+   *
+   * @param string $field_name
+   *   The date field/property name.
+   * @param string $title
+   *   The node label.
+   * @param string $bundle
+   *   The node label.
+   * @param string $new_date
+   *   The new date property. The format should be acceptable by the strtotime()
+   *   function. A full format example is "Thu, 26 Dec 2019 14:00:00 +0100". The
+   *   above includes also "+0100" which represents the timezone.
+   *
+   * @see strtotime()
+   *
+   * @Given the :field_name date of the :title :bundle is :new_date
+   */
+  public function updateNodeDateProperty(string $field_name, string $title, string $bundle, string $new_date): void {
+    if (!($time = strtotime($new_date))) {
+      throw new \Exception("{$new_date} could not be converted to string.");
+    }
+    $this->getNodeByTitle($title, $bundle)
+      ->set($field_name, $time)
+      ->save();
   }
 
 }
