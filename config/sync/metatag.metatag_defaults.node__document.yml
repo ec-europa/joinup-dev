@@ -14,7 +14,7 @@ tags:
   schema_digital_document_date_published: '[node:field_document_publication_date:date:html_datetime]'
   schema_digital_document_description: '[node:summary]'
   schema_digital_document_name: '[node:title]'
-  schema_digital_document_date_modified: '[node:changed]'
+  schema_digital_document_date_modified: '[node:changed:html_datetime]'
   schema_digital_document_main_entity_of_page: '[node:field_file:entity:url]'
   schema_digital_document_author: 'a:4:{s:5:"@type";s:6:"Person";s:3:"@id";s:17:"[node:author:url]";s:4:"name";s:26:"[node:author:display-name]";s:3:"url";s:17:"[node:author:url]";}'
   schema_digital_document_encoding_format: '[node:field_file:entity:mime]'
