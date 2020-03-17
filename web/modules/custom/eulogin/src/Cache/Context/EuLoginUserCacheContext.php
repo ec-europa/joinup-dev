@@ -23,6 +23,21 @@ use Drupal\Core\Session\AccountInterface;
 class EuLoginUserCacheContext extends UserCacheContextBase implements CacheContextInterface {
 
   /**
+   * A context value representing a user that has linked their EU Login account.
+   */
+  const USER_IS_LINKED = 'y';
+
+  /**
+   * A context value representing a user that has not yet linked with EU Login.
+   */
+  const USER_NOT_LINKED = 'n';
+
+  /**
+   * A context value representing an anonymous user.
+   */
+  const USER_ANONYMOUS = '0';
+
+  /**
    * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
@@ -54,13 +69,13 @@ class EuLoginUserCacheContext extends UserCacheContextBase implements CacheConte
    */
   public function getContext() {
     if ($this->user->isAnonymous()) {
-      return '0';
+      return self::USER_ANONYMOUS;
     }
 
     /** @var \Drupal\user\UserInterface $account */
     $account = $this->entityTypeManager->getStorage('user')->load($this->user->id());
 
-    return !$account->get('eulogin_authname')->isEmpty() ? 'y' : 'n';
+    return !$account->get('eulogin_authname')->isEmpty() ? self::USER_IS_LINKED : self::USER_NOT_LINKED;
   }
 
   /**
