@@ -6,22 +6,22 @@ Feature: Distribution API
 
   Scenario: Programmatically create a distribution
     Given the following collection:
-      | title             | Asset distribution collection API foo |
-      | logo              | logo.png                              |
-      | moderation        | yes                                   |
-      | elibrary creation | facilitators                          |
-      | state             | validated                             |
+      | title            | Asset distribution collection API foo |
+      | logo             | logo.png                              |
+      | moderation       | yes                                   |
+      | content creation | facilitators                          |
+      | state            | validated                             |
     And the following solution:
-      | title             | Asset distribution solution           |
-      | collection        | Asset distribution collection API foo |
-      | description       | Asset distribution sample solution    |
-      | documentation     | text.pdf                              |
-      | elibrary creation | registered users                      |
-      | landing page      | http://foo-example.com/landing        |
-      | webdav creation   | no                                    |
-      | webdav url        | http://joinup.eu/solution/foo/webdav  |
-      | wiki              | http://example.wiki/foobar/wiki       |
-      | state             | validated                             |
+      | title            | Asset distribution solution           |
+      | collection       | Asset distribution collection API foo |
+      | description      | Asset distribution sample solution    |
+      | documentation    | text.pdf                              |
+      | content creation | registered users                      |
+      | landing page     | http://foo-example.com/landing        |
+      | webdav creation  | no                                    |
+      | webdav url       | http://joinup.eu/solution/foo/webdav  |
+      | wiki             | http://example.wiki/foobar/wiki       |
+      | state            | validated                             |
     And the following release:
       | title          | Asset distribution asset release   |
       | description    | Asset distribution sample solution |
@@ -40,17 +40,17 @@ Feature: Distribution API
 
   Scenario: Programmatically create a distribution using only the mandatory fields
     Given the following collection:
-      | title             | Asset distribution short API bar |
-      | logo              | logo.png                         |
-      | moderation        | yes                              |
-      | elibrary creation | facilitators                     |
-      | state             | validated                        |
+      | title            | Asset distribution short API bar |
+      | logo             | logo.png                         |
+      | moderation       | yes                              |
+      | content creation | facilitators                     |
+      | state            | validated                        |
     And the following solution:
-      | title             | AD first solution mandatory short |
-      | collection        | Asset distribution short API bar  |
-      | description       | Another sample solution           |
-      | elibrary creation | members                           |
-      | state             | validated                         |
+      | title            | AD first solution mandatory short |
+      | collection       | Asset distribution short API bar  |
+      | description      | Another sample solution           |
+      | content creation | members                           |
+      | state            | validated                         |
     And the following release:
       | title          | AD first release                   |
       | description    | Asset distribution sample solution |

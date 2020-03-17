@@ -223,9 +223,9 @@
             "format": "content_editor"
         }
     ],
-    "field_is_elibrary_creation": [
+    "field_is_content_creation": [
         {
-            "value": "1"
+            "value": "only_members"
         }
     ],
     "field_is_moderation": [

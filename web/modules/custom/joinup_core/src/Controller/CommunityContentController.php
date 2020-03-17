@@ -32,7 +32,7 @@ abstract class CommunityContentController extends ControllerBase {
    *
    * @var \Drupal\joinup_core\NodeWorkflowAccessControlHandler
    */
-  protected $workflowAccessControlHanlder;
+  protected $workflowAccessControlHandler;
 
   /**
    * Constructs an CommunityContentController.
@@ -44,7 +44,7 @@ abstract class CommunityContentController extends ControllerBase {
    */
   public function __construct(OgAccessInterface $og_access, NodeWorkflowAccessControlHandler $workflow_access_control_handler) {
     $this->ogAccess = $og_access;
-    $this->workflowAccessControlHanlder = $workflow_access_control_handler;
+    $this->workflowAccessControlHandler = $workflow_access_control_handler;
   }
 
   /**
@@ -98,7 +98,7 @@ abstract class CommunityContentController extends ControllerBase {
     }
 
     $content = $this->createContentEntity($rdf_entity);
-    return $this->workflowAccessControlHanlder->entityAccess($content, 'create', $account);
+    return $this->workflowAccessControlHandler->entityAccess($content, 'create', $account);
   }
 
   /**

@@ -5,7 +5,6 @@
  * Contains \DocumentSubContext.
  */
 
-use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -71,18 +70,18 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
       unset($node->{'file type'});
     }
 
-    if (!empty($node->{'document publication date'})) {
+    if (isset($node->{'document publication date'})) {
+      $time = $node->{'document publication date'};
+      if (!is_numeric($time)) {
+        $time = strtotime($time);
+        if (empty($time)) {
+          throw new Exception("{$node->{'document publication date'}} could not be converted to timestamp.");
+        }
+      }
+
       /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
       $date_formatter = \Drupal::service('date.formatter');
-
-      if (isset($node->{'document publication date'})) {
-        $date = strtotime($node->{'document publication date'});
-        if ($date === FALSE) {
-          throw new \Exception(sprintf('Invalid format for date specified: %s', $node->{'document publication date'}));
-        }
-
-        $node->{'document publication date'} = $date_formatter->format($date, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
-      }
+      $node->{'document publication date'} = $date_formatter->format($time, 'custom', 'Y-m-d H:i:s');
     }
   }
 

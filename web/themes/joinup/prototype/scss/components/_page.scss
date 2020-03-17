@@ -1,0 +1,101 @@
+// Page
+//
+
+// Component
+// --------------------------------------------------
+// .page
+
+// Elements
+// --------------------------------------------------
+.page__title,
+.page__title-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.page__title-wrapper {
+  @include breakpoint(tablet) {
+    margin: 0 60px 40px 60px;
+  }
+}
+
+.region--featured {
+  .page__title-wrapper {
+    margin: 20px 0;
+
+    @include breakpoint(desktop) {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+  }
+
+  .page__title-wrapper--create {
+    margin-left: 50px;
+  }
+}
+
+.section--content-middle {
+  .page__title,
+  .page__title-wrapper {
+    @include breakpoint(tablet) {
+      margin: 0 60px 40px 0;
+    }
+  }
+}
+
+.page__content {
+  @media print {
+    padding: 0;
+    padding-bottom: 20px;
+  }
+}
+
+.page__title,
+.page__title-wrapper {
+  .icon--plus {
+    left: -50px;
+
+    @include centered($horizontal: false, $vertical: true);
+    @include icon-size(35px);
+  }
+
+  h1 {
+    margin: 0;
+    display: inline;
+    vertical-align: middle;
+  }
+
+  .permalink {
+    display: none;
+    color: $color-base;
+    font-size: $font-size-medium;
+    vertical-align: middle;
+  }
+
+  &:hover {
+    .permalink {
+      display: inline;
+    }
+  }
+}
+
+.page__title-wrapper {
+  @media print {
+    margin: 0;
+  }
+}
+
+// Modifiers
+// --------------------------------------------------
+
+// States
+// --------------------------------------------------
+
+// Dependencies
+// --------------------------------------------------
+.content-container--default {
+  .page__content {
+    @extend .white-box;
+  }
+}
