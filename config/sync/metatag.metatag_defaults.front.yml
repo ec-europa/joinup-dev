@@ -1,0 +1,14 @@
+uuid: de62a4de-e764-4a20-95a0-4bec36b17394
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 1noCXlegCr5HFehQRF1ViXy1jhU1jZ_sNN99a8Sj5jo
+id: front
+label: 'Front page'
+tags:
+  abstract: 'Joinup offers several services that aim to help e-Government professionals share their experience with each other. We also hope to support them to find, choose, re-use, develop and implement interoperability solutions.'
+  description: 'Joinup is a collaborative platform created by the European Commission and funded by the European Union via the Interoperability solutions for public administrations, businesses and citizens (ISA2) Programme.'
+  title: '[site:name]'
+  shortlink: '[site:url]'
+  canonical_url: '[site:url]'

@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Contains hook implementations for the Joinup SEO module.
+ */
+
+declare(strict_types = 1);
+
+/**
+ * Implements hook_simple_sitemap_sitemap_types_alter().
+ */
+function joinup_seo_simple_sitemap_sitemap_types_alter(array &$sitemap_types): void {
+  if (!isset($sitemap_types['default_hreflang'])) {
+    return;
+  }
+
+  // Replace the default entity generator entry to allow to skip recent news
+  // entries.
+  if ($index = array_search('entity', $sitemap_types['default_hreflang']['urlGenerators'])) {
+    $sitemap_types['default_hreflang']['urlGenerators'][$index] = 'joinup_entity';
+  }
+}
+
+/**
+ * Implements hook_metatags_alter().
+ *
+ * When a field contains multiple values, the normal way of adding one entry for
+ * each delta is to use the Pivot. Pivot will allow the field to be rendered as
+ * an array value objects instead of a single object.
+ * In order to render all deltas in the field, the tag tokens must include all
+ * deltas separated by comma, e.g.
+ * '[node:field_file:0:entity:url],[node:field_file:1:entity:url]' etc.
+ * When the field has unlimited cardinality though, it is impossible to do such
+ * a thing. Thus, dynamically change the metatags for the entity to include a
+ * specific number of tokens with delta that ensure that all values are
+ * rendered.
+ */
+function joinup_seo_metatags_alter(array &$metatags, array &$context) {
+  if (!isset($metatags['schema_social_media_posting_shared_content'])) {
+    return;
+  }
+
+  $count = count($context['entity']->get('field_attachment')->getValue());
+  if ($count === 1) {
+    return;
+  }
+
+  $tags = unserialize($metatags['schema_social_media_posting_shared_content']);
+  $tag_list = [
+    '@id' => 'entity:url',
+    'name' => 'entity:name',
+    'url' => 'entity:url',
+    'datePublished' => 'entity:created:html_datetime',
+  ];
+  foreach ($tag_list as $tag_name => $tag_suffix) {
+    $new_tags = [];
+    for ($i = 0; $i <= $count; $i++) {
+      $new_tags[] = "[node:field_attachment:{$i}:{$tag_suffix}]";
+    }
+    $tags[$tag_name] = implode(',', $new_tags);
+  }
+  $metatags['schema_social_media_posting_shared_content'] = serialize($tags);
+}
