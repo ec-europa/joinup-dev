@@ -9,12 +9,12 @@ Feature: Document API
       | name        |
       | Joinup Derp |
     And the following collection:
-      | title             | Joinup document name |
-      | owner             | Joinup Derp          |
-      | logo              | logo.png             |
-      | moderation        | yes                  |
-      | elibrary creation | facilitators         |
-      | state             | validated            |
+      | title            | Joinup document name |
+      | owner            | Joinup Derp          |
+      | logo             | logo.png             |
+      | moderation       | yes                  |
+      | content creation | facilitators         |
+      | state            | validated            |
     And document content:
       | title    | document type | short title | body               | collection           |
       | JD title | Document      | Short       | Dummy description. | Joinup document name |

@@ -9,8 +9,8 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
-    - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
@@ -24,6 +24,7 @@ dependencies:
     - rdf_entity.rdfentity.collection
   module:
     - field_group
+    - joinup
     - link
     - options
     - text
@@ -33,7 +34,7 @@ third_party_settings:
     group_moderation:
       children:
         - field_ar_closed
-        - field_ar_elibrary_creation
+        - field_ar_content_creation
         - field_ar_moderation
       parent_name: ''
       weight: 4
@@ -94,17 +95,17 @@ content:
     type: link
     region: content
   field_ar_closed:
-    weight: 6
+    type: boolean
+    weight: 0
+    region: content
     label: hidden
     settings:
       format: default
-      format_custom_true: ''
       format_custom_false: ''
+      format_custom_true: ''
     third_party_settings:
       joinup:
         template_suggestion: fieldset
-    type: boolean
-    region: content
   field_ar_contact_information:
     weight: 5
     label: above
@@ -116,6 +117,15 @@ content:
         template_suggestion: two_columns
     type: entity_reference_entity_view
     region: content
+  field_ar_content_creation:
+    type: list_default
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings:
+      joinup:
+        template_suggestion: fieldset
   field_ar_description:
     weight: 1
     label: hidden
@@ -123,17 +133,8 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_ar_elibrary_creation:
-    weight: 7
-    label: hidden
-    settings: {  }
-    third_party_settings:
-      joinup:
-        template_suggestion: fieldset
-    type: list_default
-    region: content
   field_ar_moderation:
-    weight: 8
+    weight: 2
     label: hidden
     settings:
       format: default

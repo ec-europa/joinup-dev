@@ -1,0 +1,39 @@
+// Footer
+//
+// Footer component
+
+// Component
+// --------------------------------------------------
+.section--footer {
+  margin-top: auto;
+
+  @include hidden-print;
+
+  .footer__first {
+    background-color: $color-blue-default;
+  }
+
+  .footer__second {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    background-color: $color-blue-default;
+  }
+
+  .footer__site-name {
+    margin-top: 0;
+    margin-bottom: 10px;
+
+    img {
+      height: 30px;
+      width: auto;
+    }
+  }
+
+  .footer__version {
+    a {
+      color: #acb7c4;
+      font-size: 0.85em;
+      text-decoration: none;
+    }
+  }
+}

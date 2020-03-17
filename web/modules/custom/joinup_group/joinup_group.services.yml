@@ -17,3 +17,8 @@ services:
     arguments: ['@current_user', '@tempstore.private']
     tags:
     - name: event_subscriber
+  joinup_group.group.access_check:
+    class: Drupal\joinup_group\Access\JoinupGroupAccessCheck
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: access_check, applies_to: _joinup_group }

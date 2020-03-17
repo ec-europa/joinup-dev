@@ -109,16 +109,14 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
   /**
    * {@inheritdoc}
    */
-  // @codingStandardsIgnoreLine
-  public function getParentELibraryCreationOption(EntityInterface $entity): int {
+  public function getParentContentCreationOption(EntityInterface $entity): string {
     $parent = $this->getParent($entity);
     $field_array = [
-      'collection' => 'field_ar_elibrary_creation',
-      'solution' => 'field_is_elibrary_creation',
+      'collection' => 'field_ar_content_creation',
+      'solution' => 'field_is_content_creation',
     ];
 
-    $e_library = (int) $parent->{$field_array[$parent->bundle()]}->first()->value;
-    return $e_library;
+    return $parent->{$field_array[$parent->bundle()]}->first()->value;
   }
 
   /**

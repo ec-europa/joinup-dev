@@ -51,19 +51,18 @@ interface JoinupRelationManagerInterface {
   public function getParentState(EntityInterface $entity): string;
 
   /**
-   * Retrieves the eLibrary creation option of the parent.
+   * Retrieves the content creation option of the parent entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The group content entity.
    *
    * @return int
-   *   The eLibrary creation option. Can be one of the following values:
-   *   - \Drupal\joinup_core\ELibraryCreationOptions::FACILITATORS
-   *   - \Drupal\joinup_core\ELibraryCreationOptions::MEMBERS
-   *   - \Drupal\joinup_core\ELibraryCreationOptions::REGISTERED_USERS
+   *   The content creation option. Can be one of the following values:
+   *   - \Drupal\joinup_group\ContentCreationOptions::FACILITATORS
+   *   - \Drupal\joinup_group\ContentCreationOptions::MEMBERS
+   *   - \Drupal\joinup_group\ContentCreationOptions::REGISTERED_USERS
    */
-  // @codingStandardsIgnoreLine
-  public function getParentELibraryCreationOption(EntityInterface $entity): int;
+  public function getParentContentCreationOption(EntityInterface $entity): string;
 
   /**
    * Retrieves all the members with any role in a certain group.

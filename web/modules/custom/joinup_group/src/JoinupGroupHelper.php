@@ -13,6 +13,16 @@ use Drupal\rdf_entity\RdfInterface;
 class JoinupGroupHelper {
 
   /**
+   * Group bundles.
+   *
+   * @var string[]
+   */
+  const GROUP_BUNDLES = [
+    'collection' => 'collection',
+    'solution' => 'solution',
+  ];
+
+  /**
    * Returns whether the entity is one of the rdf groups.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
@@ -23,7 +33,7 @@ class JoinupGroupHelper {
    *   otherwise.
    */
   public static function isGroup(EntityInterface $entity): bool {
-    return self::isCollection($entity) || self::isSolution($entity);
+    return isset(self::GROUP_BUNDLES[$entity->bundle()]);
   }
 
   /**

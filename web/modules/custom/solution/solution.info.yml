@@ -43,10 +43,10 @@ config_devel:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -84,10 +84,10 @@ config_devel:
     - field.storage.rdf_entity.field_is_business_process
     - field.storage.rdf_entity.field_is_contact_information
     - field.storage.rdf_entity.field_is_content
+    - field.storage.rdf_entity.field_is_content_creation
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_is_distribution
     - field.storage.rdf_entity.field_is_documentation
-    - field.storage.rdf_entity.field_is_elibrary_creation
     - field.storage.rdf_entity.field_is_has_version
     - field.storage.rdf_entity.field_is_included_asset
     - field.storage.rdf_entity.field_is_issue_tracker
@@ -119,3 +119,5 @@ config_devel:
     - rdf_entity.rdfentity.solution
     - solution.settings
     - sparql_entity_storage.mapping.rdf_entity.solution
+    - system.action.change_collection
+    - views.view.manage_collection_solutions

@@ -6,14 +6,14 @@ Feature: Collection API
 
   Scenario: Programmatically create a collection
     Given the following collection:
-      | title             | Open Data Initiative |
-      | logo              | logo.png             |
-      | banner            | banner.jpg           |
-      | moderation        | no                   |
-      | closed            | no                   |
-      | elibrary creation | facilitators         |
-      | policy domain     | E-health             |
-      | state             | validated            |
+      | title            | Open Data Initiative |
+      | logo             | logo.png             |
+      | banner           | banner.jpg           |
+      | moderation       | no                   |
+      | closed           | no                   |
+      | content creation | facilitators         |
+      | policy domain    | E-health             |
+      | state            | validated            |
     Then I should have 1 collection
 
   Scenario: Programmatically create a collection using only the name
@@ -41,7 +41,6 @@ Feature: Collection API
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "Prayfish"
     And I press "Add owner"
-    And I check "Closed collection"
     And I check "Moderated"
     And I press "Propose"
     Then I should see the heading "Collection API example"
