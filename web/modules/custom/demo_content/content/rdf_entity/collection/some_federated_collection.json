@@ -210,9 +210,9 @@
             "value": false
         }
     ],
-    "field_ar_elibrary_creation": [
+    "field_ar_content_creation": [
         {
-            "value": 0
+            "value": "only_facilitators"
         }
     ],
     "field_ar_moderation": [

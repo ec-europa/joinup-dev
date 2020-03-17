@@ -176,18 +176,18 @@ perform the transition and the user is one of them, the transition is allowed;
 * if there are Og roles that are allowed to perform the transition and the user
 is one of them, the transition is allowed;
 
-Note that in the above cases, the parent's eLibrary settings, in the case of a
-new entity created, are already taken into account. The allowed roles are a
-combination of the roles allowed by the workflow, the parent's moderation and
-the parent's eLibrary settings.
+Note that in the above cases, the parent's content creation settings, in the
+case of a new entity created, are already taken into account. The allowed roles
+are a combination of the roles allowed by the workflow, the parent's moderation
+and the parent's content creation settings.
 
 ### The access handler
 
 The community content share a base access handler. The idea behind this is that
 joinup is a highly complex system when it comes to moderation. Access to
 transitions have a multi layered access system including the og membership
-permissions, the global permissions, the group's settings regarding eLibrary and
-moderation and workflow specific needs.
+permissions, the global permissions, the group's settings regarding content
+creation and moderation and workflow specific needs.
 
 The idea here is that there has to be a base for all the access control and this
 base will integrate with the rest.
@@ -226,9 +226,9 @@ The access is given to the user if there are allowed transitions from the
 default one (`__new__`).
 
 **Important:**
-A non saved entity must be passed as an argument as the eLibrary creation is
-only taken into account for entities that have the `->isNew()` handle returning
-`TRUE`.
+A non saved entity must be passed as an argument as the content creation setting
+is only taken into account for entities that have the `->isNew()` handle
+returning `TRUE`.
 Note that the workflow guard class will take into account the Og membership
 and the parent's settings.
 
@@ -296,7 +296,7 @@ The structure of the array is:
 ```
 $access_array = [
   'parent_bundle' => [
-    'elibrary_status' => [
+    'content_creation_option' => [
       'user variable 1',
       'user variable 2',
      ],
@@ -339,7 +339,7 @@ Tests the transitions available for each case. The structure of the array is:
 ```
 $workflow_array = [
   'parent_bundle' => [
-    'parent_e_library' => [
+    'parent_content_creation_option' => [
       'parent_moderation' => [
         'entity_state' => [
           'user variable' => [
