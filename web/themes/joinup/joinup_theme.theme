@@ -230,10 +230,10 @@ function _joinup_is_create_form_route($route_name) {
  *   Renderable array contains the author.
  */
 function _joinup_theme_get_author(NodeInterface $node) {
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('user');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('user');
   $author = $node->get('uid')->entity;
-  $author_inline = $viewBuilder->view($author, 'inline');
+  $author_inline = $view_builder->view($author, 'inline');
 
   return $author_inline;
 }
@@ -966,11 +966,11 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_release(&$variabl
   }
 
   // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the creation date field.
   $creation_date = $entity->get('created');
-  $creation_date = $viewBuilder->viewField($creation_date, 'default');
+  $creation_date = $view_builder->viewField($creation_date, 'default');
   $variables['additional_content']['created'] = $creation_date;
 }
 
@@ -982,13 +982,13 @@ function joinup_theme_preprocess_page_title__rdf_entity__asset_distribution(&$va
   $entity = $variables['entity'];
 
   // Get the view builder service from the entity type manager.
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('rdf_entity');
   // Get the file size and licence fields.
   $field_ad_file_size = $entity->field_ad_file_size;
   $field_ad_licence = $entity->field_ad_licence;
-  $field_ad_file_size = $viewBuilder->viewField($field_ad_file_size, 'default');
-  $field_ad_licence = $viewBuilder->viewField($field_ad_licence, 'default');
+  $field_ad_file_size = $view_builder->viewField($field_ad_file_size, 'default');
+  $field_ad_licence = $view_builder->viewField($field_ad_licence, 'default');
 
   $variables['additional_content']['field_ad_file_size'] = $field_ad_file_size;
   $variables['additional_content']['field_ad_licence'] = $field_ad_licence;
@@ -1001,13 +1001,16 @@ function joinup_theme_preprocess_page_title__node__news(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
-  $field_news_headline = $viewBuilder->viewField($node->field_news_headline, 'default');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  $field_news_headline = $view_builder->viewField($node->field_news_headline, 'default');
   $variables['additional_content']['field_news_headline'] = $field_news_headline;
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
+
+  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1022,6 +1025,9 @@ function joinup_theme_preprocess_page_title__node__discussion(&$variables) {
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
   $variables['additional_content']['published'] = $published;
+
+  $update_date = \Drupal::service('date.formatter')->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
 
   $author_inline = _joinup_theme_get_author($node);
   $variables['additional_content']['author'] = $author_inline;
@@ -1048,13 +1054,22 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
-  $field_document_publication_date = $viewBuilder->viewField($node->field_document_publication_date, 'default');
+  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+  $date_formatter = \Drupal::service('date.formatter');
+  $field_document_publication_date = $view_builder->viewField($node->field_document_publication_date, 'default');
   $variables['additional_content']['field_document_publication_date'] = $field_document_publication_date;
+  $publication_date_value = $node->field_document_publication_date->value;
+  // The raw value allowed to properly display the field above with any class
+  // or configuration applied but still have the value to compare to the changed
+  // date in the Twig template.
+  $variables['additional_content']['field_document_publication_date_raw'] = $date_formatter->format(strtotime($publication_date_value), 'custom', 'd/m/Y');
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $field_short_title = $viewBuilder->viewField($node->field_short_title, 'default');
+  $update_date = $date_formatter->format($node->getChangedTime(), 'custom', 'd/m/Y');
+  $variables['additional_content']['updated'] = $update_date;
+
+  $field_short_title = $view_builder->viewField($node->field_short_title, 'default');
   $variables['additional_content']['field_short_title'] = $field_short_title;
 
   $author_inline = _joinup_theme_get_author($node);
@@ -1163,12 +1178,12 @@ function joinup_theme_preprocess_page_title__node__event(&$variables) {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['entity'];
 
-  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder('node');
+  /* @var \Drupal\Core\Entity\EntityViewBuilderInterface $view_builder */
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
 
   // Get dates and location fields.
-  $field_event_date = $viewBuilder->viewField($node->get('field_event_date'), 'default');
-  $field_event_location = $viewBuilder->viewField($node->get('field_location'), 'default');
+  $field_event_date = $view_builder->viewField($node->get('field_event_date'), 'default');
+  $field_event_location = $view_builder->viewField($node->get('field_location'), 'default');
 
   $published = \Drupal::service('date.formatter')->format($node->published_at->published_at_or_created, 'date_only');
 
@@ -1957,27 +1972,60 @@ function joinup_theme_preprocess_message_digest(&$variables) {
  *
  * - Adds the site URL to use in nodes.
  * - Adds the group ID and label as data attributes in tiles.
+ * - Adds bundle class in listing templates for bundle specific theming.
+ * - Adds the created date to news articles.
+ * - Adds a variable indicating the attachment file type on documents.
  */
 function joinup_theme_preprocess_node(&$variables) {
-  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
-
-  if ($variables['view_mode'] !== 'view_mode_tile') {
-    return;
-  }
-
-  /** @var \Drupal\node\Entity\Node $node */
+  /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['node'];
 
-  /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
-  $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
-  if ($parent) {
-    $variables['attributes']['data-drupal-parent-id'] = $parent->id();
-    $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+  // Add the site URL to use in nodes.
+  $variables['site_url'] = \Drupal::request()->getSchemeAndHttpHost();
+
+  // Add the group ID and label as data attributes in tiles.
+  if ($variables['view_mode'] === 'view_mode_tile') {
+    /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
+    $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+    if ($parent) {
+      $variables['attributes']['data-drupal-parent-id'] = $parent->id();
+      $variables['attributes']['data-drupal-parent-label'] = $parent->label();
+    }
+
+    // If the node is shared somewhere, attach the related library.
+    if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
+      $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
+    }
   }
 
-  // If the node is shared somewhere, attach the related library.
-  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
-    $variables['#attached']['library'][] = 'joinup_theme/shared_entity';
+  // Add bundle class in listing templates.
+  if ($variables['view_mode'] === 'view_mode_tile' || $variables['view_mode'] === 'view_mode_featured') {
+    $bundle_class = 'listing__card--' . str_replace('_', '-', $node->bundle());
+    $variables['attributes']['class'][] = $bundle_class;
+  }
+
+  // Add the created date to news articles.
+  if ($node->bundle() === 'news') {
+    $variables['created'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'date_only');
+  }
+
+  // Add a variable indicating the attachment file type on documents.
+  if ($node->bundle() === 'document' && !$node->get('field_file')->isEmpty()) {
+    /** @var \Drupal\file\FileInterface $file */
+    $file = $node->get('field_file')->first()->entity;
+
+    // The document could reference an orphaned file entity, so only proceed if
+    // we actually have a file.
+    if (!empty($file)) {
+      $is_remote = \Drupal::service('file_url.handler')->isRemote($file);
+
+      if (!$is_remote) {
+        $variables['extension'] = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+      }
+      else {
+        $variables['extension'] = t('External');
+      }
+    }
   }
 }
 

@@ -68,13 +68,6 @@ content:
       link: false
     third_party_settings: {  }
     region: content
-  field_isr_elibrary_creation:
-    weight: 13
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_isr_issue_tracker:
     weight: 19
     label: above

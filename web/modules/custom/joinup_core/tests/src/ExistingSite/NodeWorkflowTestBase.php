@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\joinup_core\ELibraryCreationOptions;
+use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
@@ -121,9 +121,9 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
     $operation = 'create';
     $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);
     foreach ($this->createAccessProvider() as $parent_bundle => $moderation_data) {
-      foreach ($moderation_data as $moderation => $elibrary_data) {
-        foreach ($elibrary_data as $elibrary => $allowed_roles) {
-          $parent = $this->createParent($parent_bundle, 'validated', $moderation, $elibrary);
+      foreach ($moderation_data as $moderation => $content_creation_data) {
+        foreach ($content_creation_data as $content_creation => $allowed_roles) {
+          $parent = $this->createParent($parent_bundle, 'validated', $moderation, $content_creation);
           $content = Node::create([
             'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
@@ -133,12 +133,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
 
           $non_allowed_roles = array_diff($test_roles, array_keys($allowed_roles));
           foreach ($allowed_roles as $user_var => $expected_target_states) {
-            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, E-Library: {$elibrary}, User variable: {$user_var}, Operation: {$operation}";
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, Content creation: {$content_creation}, User variable: {$user_var}, Operation: {$operation}";
             $actual_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->{$user_var});
             $this->assertWorkflowStatesEqual($expected_target_states, $actual_target_states, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
-            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, E-Library: {$elibrary}, User variable: {$user_var}, Operation: {$operation}";
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, Content creation: {$content_creation}, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
             $this->assertFalse($access, $message);
           }
@@ -286,7 +286,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    * $access_array = [
    *  'parent bundle' => [
    *    'moderation' => [
-   *      'elibrary status' => [
+   *      'content creation status' => [
    *        'user variable' => [
    *          'transition allowed',
    *          'transition allowed',
@@ -307,7 +307,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
     return [
       'collection' => [
         self::PRE_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -319,7 +319,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::MEMBERS => [
+          ContentCreationOptions::MEMBERS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -339,7 +339,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'proposed',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'proposed',
@@ -365,7 +365,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ],
         ],
         self::POST_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -375,7 +375,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::MEMBERS => [
+          ContentCreationOptions::MEMBERS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -393,7 +393,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'validated',
@@ -419,7 +419,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       ],
       'solution' => [
         self::PRE_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'proposed',
@@ -431,7 +431,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'proposed',
@@ -457,7 +457,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ],
         ],
         self::POST_MODERATION => [
-          ELibraryCreationOptions::FACILITATORS => [
+          ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
               'validated',
@@ -467,7 +467,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
               'validated',
             ],
           ],
-          ELibraryCreationOptions::REGISTERED_USERS => [
+          ContentCreationOptions::REGISTERED_USERS => [
             'userAuthenticated' => [
               'draft',
               'validated',
@@ -974,8 +974,8 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    *   The state of the entity.
    * @param string $moderation
    *   Whether the parent is pre or post moderated.
-   * @param string $e_library
-   *   The 'eLibrary_creation' value of the parent entity.
+   * @param string $content_creation
+   *   The content creation value of the parent entity.
    *
    * @return \Drupal\rdf_entity\RdfInterface
    *   The created parent entity.
@@ -983,11 +983,11 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   If entity creation fails.
    */
-  protected function createParent($bundle, $state = 'validated', $moderation = NULL, $e_library = NULL): RdfInterface {
-    // Make sure the current user is set to anonymous when creating solutions
+  protected function createParent($bundle, $state = 'validated', $moderation = NULL, $content_creation = NULL): RdfInterface {
+    // Make sure the current user is set to anonymous when creating groups
     // through the API so we can assign the administrator manually. If a user is
-    // logged in during creation of the solution they will automatically become
-    // the administrator.
+    // logged in during creation of the group they will automatically become the
+    // administrator.
     $this->setCurrentUser($this->userAnonymous);
 
     $field_identifier = [
@@ -1000,7 +1000,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       'rid' => $bundle,
       $field_identifier[$bundle] . 'state' => $state,
       $field_identifier[$bundle] . 'moderation' => $moderation,
-      $field_identifier[$bundle] . 'elibrary_creation' => $e_library === NULL ? ELibraryCreationOptions::REGISTERED_USERS : $e_library,
+      $field_identifier[$bundle] . 'content_creation' => $content_creation === NULL ? ContentCreationOptions::REGISTERED_USERS : $content_creation,
     ];
 
     // It's not possible to create orphan solutions.
@@ -1030,20 +1030,6 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    */
   protected function getEntityType(): string {
     return 'node';
-  }
-
-  /**
-   * Returns an array of the available eLibrary states.
-   *
-   * @return int[]
-   *   An array of the available eLibrary states.
-   */
-  protected function getElibraryStates(): array {
-    return [
-      ELibraryCreationOptions::FACILITATORS,
-      ELibraryCreationOptions::MEMBERS,
-      ELibraryCreationOptions::REGISTERED_USERS,
-    ];
   }
 
   /**

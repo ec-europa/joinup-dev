@@ -266,9 +266,9 @@ class NodeWorkflowAccessControlHandler {
   protected function entityCreateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
     $create_scheme = $this->getPermissionScheme('create');
     $workflow_id = $this->getEntityWorkflowId($entity);
-    $e_library = $this->getEntityElibrary($entity);
+    $content_creation = $this->getParentContentCreationOption($entity);
 
-    foreach ($create_scheme[$workflow_id][$e_library] as $ownership_data) {
+    foreach ($create_scheme[$workflow_id][$content_creation] as $ownership_data) {
       // There is no check whether the transition is allowed as only allowed
       // transitions are mapped in the permission scheme configuration object.
       if ($this->workflowHelper->userHasRoles($entity, $account, $ownership_data)) {
@@ -367,33 +367,33 @@ class NodeWorkflowAccessControlHandler {
   }
 
   /**
-   * Returns the value of the eLibrary settings of the parent of an entity.
+   * Returns the content creation option value of the parent of an entity.
    *
    * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    *
    * @return array
-   *   The eLibrary value.
+   *   The content creation option value.
    */
-  protected function getEntityElibrary(NodeInterface $entity): string {
+  protected function getParentContentCreationOption(NodeInterface $entity): string {
     $parent = $this->relationManager->getParent($entity);
-    $e_library_name = $this->getParentElibraryName($parent);
-    return $parent->{$e_library_name}->value;
+    $field_name = $this->getParentContentCreationFieldName($parent);
+    return $parent->{$field_name}->value;
   }
 
   /**
-   * Returns the eLibrary creation field's machine name.
+   * Returns the content creation field's machine name.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The parent entity.
    *
    * @return string
-   *   The machine name of the eLibrary creation field.
+   *   The machine name of the content creation field.
    */
-  protected function getParentElibraryName(EntityInterface $entity): string {
+  protected function getParentContentCreationFieldName(EntityInterface $entity): string {
     $field_array = [
-      'collection' => 'field_ar_elibrary_creation',
-      'solution' => 'field_is_elibrary_creation',
+      'collection' => 'field_ar_content_creation',
+      'solution' => 'field_is_content_creation',
     ];
 
     return $field_array[$entity->bundle()];

@@ -14,3 +14,7 @@ solution.settings:
           sequence:
             type: string
             label: 'Role'
+
+action.configuration.change_collection:
+  type: mapping
+  label: 'Change collection action configuration'
