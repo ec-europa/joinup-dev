@@ -34,3 +34,16 @@ solution.unshare_form:
     parameters:
       rdf_entity:
         type: entity:rdf_entity
+
+solution.change_collection:
+  path: '/rdf_entity/{rdf_entity}/change-collection'
+  defaults:
+    _form: Drupal\solution\Form\ChangeCollectionForm
+    _title: 'Select a destination collection'
+  requirements:
+    _permission: 'manage solutions'
+    _joinup_group: 'collection'
+  options:
+    parameters:
+      rdf_entity:
+        type: entity:rdf_entity
