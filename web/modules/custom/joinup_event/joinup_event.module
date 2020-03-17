@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\joinup_event\Plugin\Field\FieldFormatter\WebtoolsMapFormatter;
 
 /**
@@ -51,4 +52,44 @@ function joinup_event_field_formatter_info_alter(array &$info) {
   if (isset($info['oe_webtools_maps_map'])) {
     $info['oe_webtools_maps_map']['class'] = WebtoolsMapFormatter::class;
   }
+}
+
+/**
+ * Implements hook_token_info_alter().
+ */
+function joinup_event_token_info_alter(&$info) {
+  $info['tokens']['node']['event_url'] = [
+    'name' => t('Url of the event'),
+    'description' => t('The website provided if available or the Joinup event URL.'),
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function joinup_event_tokens($type, array $tokens, array $data = [], array $options = [], BubbleableMetadata $bubbleable_metadata = NULL) {
+  $replacements = [];
+
+  if ($type == 'node' && !empty($data['node'])) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $data['node'];
+
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        // Returns the event url. If the user has inserted a value in the
+        // field_event_web_url, then this is the event url, otherwise, uses the
+        // joinup url.
+        case 'event_url':
+          if ($node->isNew() || $node->bundle() !== 'event') {
+            break;
+          }
+
+          $replacements[$original] = $node->get('field_event_web_url')->isEmpty() ?
+            $node->toUrl('canonical', ['absolute' => TRUE])->toString() :
+            $node->get('field_event_web_url')->uri;
+      }
+    }
+  }
+
+  return $replacements;
 }

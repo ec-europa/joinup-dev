@@ -1,0 +1,31 @@
+name: Joinup SEO
+type: module
+description: Contains specific functionality that helps visibility of the platform in search engines.
+core: 8.x
+package: Joinup
+
+dependencies:
+  - simple_sitemap:simple_sitemap
+
+config_devel:
+  install:
+    - metatag.metatag_defaults.403
+    - metatag.metatag_defaults.404
+    - metatag.metatag_defaults.front
+    - metatag.metatag_defaults.global
+    - metatag.metatag_defaults.node
+    - metatag.metatag_defaults.node__discussion
+    - metatag.metatag_defaults.node__news
+    - simple_sitemap.bundle_settings.default.node.custom_page
+    - simple_sitemap.bundle_settings.default.node.discussion
+    - simple_sitemap.bundle_settings.default.node.document
+    - simple_sitemap.bundle_settings.default.node.event
+    - simple_sitemap.bundle_settings.default.node.news
+    - simple_sitemap.bundle_settings.default.rdf_entity.asset_release
+    - simple_sitemap.bundle_settings.default.rdf_entity.collection
+    - simple_sitemap.bundle_settings.default.rdf_entity.solution
+    - simple_sitemap.bundle_settings.news.node.news
+    - simple_sitemap.custom_links.default
+    - simple_sitemap.settings
+    - simple_sitemap.variants.default_hreflang
+    - simple_sitemap.variants.latest_news

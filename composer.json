@@ -60,8 +60,10 @@
         "drupal/rdf_entity": "^1.0-alpha20",
         "drupal/redirect": "^1.4",
         "drupal/redis": "^1.2",
+        "drupal/schema_metatag": "^1.4",
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
+        "drupal/simple_sitemap": "^3.4",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.6",
@@ -264,6 +266,9 @@
             },
             "drupal/rdf_entity": {
                 "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
+            },
+            "drupal/schema_metatag": {
+                "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch"
             },
             "drupal/search_api": {
                 "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",
