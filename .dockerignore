@@ -30,8 +30,7 @@ tests/behat.yml
 web/phpunit.xml
 web/sites/default/services.yml
 
-# Ignore compiled CSS and SASS cache.
-.sass-cache/
+# Ignore compiled CSS.
 web/themes/joinup/css
 web/themes/joinup/prototype/css/*.css
 # Ignore theme libraries
