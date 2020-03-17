@@ -31,7 +31,7 @@ Feature: SEO for document content.
       | name                | SEO document                                         |
       | license             | https://example.com/license1                         |
       | description         | Document test1.zip                                   |
-      | datePublished       | 2019-12-25T14:00:00+0100                             |
+      | datePublished       | 2019-12-25T13:00:00+0100                             |
       | isAccessibleForFree | True                                                 |
       | dateModified        | 2020-01-01T13:00:00+0100                             |
       | mainEntityOfPage    | $base_url$/sites/default/files/test$random_text$.zip |
@@ -80,7 +80,7 @@ Feature: SEO for document content.
       | headline            | SEO document                               |
       | name                | SEO document                               |
       | description         | Remote url example                         |
-      | datePublished       | 2019-12-25T14:00:00+0100                   |
+      | datePublished       | 2019-12-25T13:00:00+0100                   |
       | isAccessibleForFree | True                                       |
       | dateModified        | 2020-01-01T13:00:00+0100                   |
       | mainEntityOfPage    | http://example.com/some-file-url.extension |
