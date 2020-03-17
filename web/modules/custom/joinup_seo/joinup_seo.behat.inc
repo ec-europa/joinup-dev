@@ -94,6 +94,9 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   A table of properties for the given graph.
    * @param string|null $sub_property
    *   A sub property to look into.
+   * @param int|null $delta
+   *   If the field contains multiple values, i.e. the pivot is enabled, then
+   *   use the $delta variable to check the specific delta.
    *
    * @throws \Exception
    *   Thrown if the graph is not found in the page or the requested sub
@@ -101,8 +104,10 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *
    * @Given the metatag (sub)graph of the item with :property :value should have the following properties:
    * @Given the metatag (sub)graph of the item with :property :value should have the following :sub_property properties:
+   * @Given the metatag (sub)graph of the item with :property :value should have the following properties in index :delta:
+   * @Given the metatag (sub)graph of the item with :property :value should have the following :sub_property properties in index :delta:
    */
-  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, string $sub_property = NULL): void {
+  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, string $sub_property = NULL, $delta = NULL): void {
     $graphs = $this->getGraphsFromMetatags($property, $value, $sub_property);
     if (empty($graphs)) {
       throw new \Exception("No graphs were found that have a property '{$property}' of value '{$value}' or none of them contain a '{$sub_property}' property.");
@@ -117,6 +122,9 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
     $missing_properties = [];
     $wrong_value = [];
     foreach ($graphs as $index => $graph) {
+      if ($delta !== NULL) {
+        $graph = $graph[$delta];
+      }
       $found = TRUE;
       foreach ($hash as $row) {
         if (!isset($graph[$row['property']])) {
@@ -126,11 +134,12 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
         }
 
         $row['value'] = str_replace('$base_url$', $base_url, $row['value']);
-        if (strpos($row['value'], '$random_text$')) {
+        if (strpos($row['value'], '$random_text$') || strpos($row['value'], '$timezone$')) {
           $row['value'] = preg_quote($row['value'], '#');
           // $random_text$ is escaped into \$random_text\$ from the preg_quote
           // above.
-          $row['value'] = str_replace('\$random_text\$', '(.*)?', $row['value']);
+          $row['value'] = str_replace('\$random_text\$', '([^/]*)?', $row['value']);
+          $row['value'] = str_replace('\$timezone\$', '\d{2}', $row['value']);
           $found = preg_match("#{$row['value']}#", $graph[$row['property']]) === 1;
         }
         else {
@@ -147,8 +156,12 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
       }
 
       if ($found === TRUE) {
-        return;
+        break;
       }
+    }
+
+    if (empty($wrong_value) && empty($missing_properties)) {
+      return;
     }
 
     // Construct the error messages for each graph found.
