@@ -1,0 +1,4 @@
+variants:
+  news:
+    label: News
+    weight: 1
