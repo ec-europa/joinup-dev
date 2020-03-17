@@ -283,7 +283,8 @@
     </target>
 
     <!-- Compile SCSS to CSS. -->
-    <target name="compile-scss">
+    <target name="compile-scss"
+            description="Compile the SCSS to CSS.">
         <mkdir dir="${scssphp.css.output.dir}" />
         <if>
             <istrue value="${scssphp.sourcemap}"/>
