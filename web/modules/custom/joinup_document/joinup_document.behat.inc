@@ -5,6 +5,7 @@
  * Contains \DocumentSubContext.
  */
 
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -49,24 +50,40 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
   public static function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
-    if ($node->type !== 'document' || empty($node->file)) {
+    if ($node->type !== 'document') {
       return;
     }
 
-    $type = isset($node->{'file type'}) ? $node->{'file type'} : 'remote';
-    if ($type !== 'remote') {
-      // If the file is local we want to copy it from the fixtures into the file
-      // system and register it in the DocumentSubContext so it can be cleaned
-      // up after the scenario ends. Perform a small dance to get access to the
-      // context class from inside this static callback.
-      /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
-      $environment = $scope->getEnvironment();
-      /** @var \DocumentSubContext $context */
-      $context = $environment->getContext(self::class);
-      $node->file = $context->createFile($node->file)->id();
+    if (!empty($node->file)) {
+      $type = isset($node->{'file type'}) ? $node->{'file type'} : 'remote';
+      if ($type !== 'remote') {
+        // If the file is local we want to copy it from the fixtures into the file
+        // system and register it in the DocumentSubContext so it can be cleaned
+        // up after the scenario ends. Perform a small dance to get access to the
+        // context class from inside this static callback.
+        /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+        $environment = $scope->getEnvironment();
+        /** @var \DocumentSubContext $context */
+        $context = $environment->getContext(self::class);
+        $node->file = $context->createFile($node->file)->id();
+      }
+
+      unset($node->{'file type'});
     }
 
-    unset($node->{'file type'});
+    if (!empty($node->{'document publication date'})) {
+      /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+      $date_formatter = \Drupal::service('date.formatter');
+
+      if (isset($node->{'document publication date'})) {
+        $date = strtotime($node->{'document publication date'});
+        if ($date === FALSE) {
+          throw new \Exception(sprintf('Invalid format for date specified: %s', $node->{'document publication date'}));
+        }
+
+        $node->{'document publication date'} = $date_formatter->format($date, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+      }
+    }
   }
 
   /**
