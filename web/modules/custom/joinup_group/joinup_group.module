@@ -206,6 +206,7 @@ function joinup_group_rdf_entity_presave(EntityInterface $entity) {
     'banner' => ['field_ar_banner', 'field_is_banner'],
   ];
 
+  $file_system = \Drupal::service('file_system');
   $fixtures_path = drupal_get_path('module', 'joinup_group') . '/fixtures/images/';
   foreach ($field_data as $field_type => $fields) {
     foreach ($fields as $field) {
@@ -213,8 +214,8 @@ function joinup_group_rdf_entity_presave(EntityInterface $entity) {
         // Get files without the . and .. directories.
         $files = array_slice(scandir($fixtures_path . $field_type), 2);
         $random = array_rand($files);
-        $file_path = \Drupal::service('file_system')->realpath($fixtures_path . $field_type . '/' . $files[$random]);
-        $file_path = file_unmanaged_copy($file_path, 'public://');
+        $file_path = $file_system->realpath($fixtures_path . $field_type . '/' . $files[$random]);
+        $file_path = $file_system->copy($file_path, 'public://');
         $file = File::create(['uri' => $file_path]);
         $file->save();
         $entity->set($field, $file->id());

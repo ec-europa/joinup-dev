@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\demo_content\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Path\AliasStorageInterface;
 use Drupal\file\Entity\File;
@@ -29,16 +32,26 @@ class ImportSubscriber implements EventSubscriberInterface {
   protected $pathAliasStorage;
 
   /**
+   * The file system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
    * Constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
    * @param \Drupal\Core\Path\AliasStorageInterface $path_alias_storage
    *   The path alias storage service.
+   * @param \Drupal\Core\File\FileSystemInterface $file_system
+   *   The file system service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasStorageInterface $path_alias_storage) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasStorageInterface $path_alias_storage, FileSystemInterface $file_system) {
     $this->configFactory = $config_factory;
     $this->pathAliasStorage = $path_alias_storage;
+    $this->fileSystem = $file_system;
   }
 
   /**
@@ -69,7 +82,7 @@ class ImportSubscriber implements EventSubscriberInterface {
           if ($entity->get($field_name)) {
             $file_path = $directory . $file_name;
             if (is_file($file_path)) {
-              if ($file_path = file_unmanaged_copy($file_path)) {
+              if ($file_path = $this->fileSystem->copy($file_path, 'public://')) {
                 $file = File::create(['uri' => $file_path]);
                 $file->save();
                 $entity->set($field_name, $file->id());
