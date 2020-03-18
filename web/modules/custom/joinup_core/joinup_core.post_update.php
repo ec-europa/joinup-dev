@@ -72,7 +72,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
       $target = StreamWrapperManager::getTarget($attachment->getFileUri());
       $uri = "private://$target";
       $destination_dir = $file_system->dirname($uri);
-      if (!file_prepare_directory($destination_dir, FILE_CREATE_DIRECTORY)) {
+      if (!$file_system->prepareDirectory($destination_dir, FILE_CREATE_DIRECTORY)) {
         throw new \RuntimeException("Cannot create directory '$destination_dir'.");
       }
       if (!file_move($attachment, $uri)) {
