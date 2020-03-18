@@ -102,23 +102,29 @@
     </target>
 
     <target name="install-java">
-        <echo message="sudo apt-get -y update"/>
-        <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>
+<!--        <echo message="sudo apt-get -y update"/>-->
+<!--        <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>-->
 
-        <echo message="sudo apt-get -y install software-properties-common"/>
-        <exec command="sudo apt-get -y install software-properties-common" checkreturn="true" passthru="true"/>
+<!--        <echo message="sudo apt-get -y install software-properties-common"/>-->
+<!--        <exec command="sudo apt-get -y install software-properties-common" checkreturn="true" passthru="true"/>-->
 
-        <echo message="sudo add-apt-repository &quot;deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse&quot;"/>
-        <exec command="sudo add-apt-repository &quot;deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse&quot;" checkreturn="true" passthru="true"/>
+<!--        <echo message="sudo add-apt-repository &quot;deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse&quot;"/>-->
+<!--        <exec command="sudo add-apt-repository &quot;deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse&quot;" checkreturn="true" passthru="true"/>-->
 
         <echo message="sudo apt-get -y update"/>
         <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>
 
         <echo message="sudo apt-get -y install openjdk-8-jre"/>
         <exec command="sudo apt-get -y install openjdk-8-jre" checkreturn="true" passthru="true"/>
+
+        <echo message="export"/>
+        <exec command="export" checkreturn="true" passthru="true"/>
+
+        <echo message="java -version"/>
+        <exec command="java -version" checkreturn="true" passthru="true"/>
 <!--sudo apt-get -y install lsof;-->
-        </target>
-    <!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
+   </target>
+     <!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
 <!--    <target name="provision-stack"-->
 <!--            description="Provision a stack on AWS"-->
 <!--            depends="setup-aws, run-stack, setup-deployment-group" />-->
