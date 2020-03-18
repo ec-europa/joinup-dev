@@ -5,6 +5,8 @@
  * Install, update and uninstall functions for the Demo users module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Implements hook_uninstall().
  */
@@ -15,8 +17,9 @@ function demo_users_uninstall() {
     $content = file_get_contents($uri);
     $decoded = \Drupal::service('serializer')->decode($content, 'hal_json');
     $name = $decoded['name'][0]['value'];
+    /** @var \Drupal\user\UserInterface $user */
     if ($user = user_load_by_name($name)) {
-      user_delete($user->id());
+      $user->delete();
     }
   }
 }
