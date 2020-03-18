@@ -71,7 +71,7 @@
         </if>
     </target>
 
-    <target name="build-continuousphp" depends="setup-apache-solr">
+    <target name="build-continuousphp" depends="install-jre, setup-apache-solr">
         <!-- Set environment variables as extra properties through cloudformation -->
         <env2property prefix="cphp" phingproperty="cloudformation.properties" />
         <echo message="Copy CPHP pipeline variables to local properties file" />
@@ -101,7 +101,15 @@
 
     </target>
 
-<!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
+    <target name="install-jre">
+        <exec command="sudo sudo apt install default-jre"
+              checkreturn="true"
+              passthru="true" />
+        <exec command="java -version"
+              checkreturn="true"
+              passthru="true" />
+        </target>
+    <!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
 <!--    <target name="provision-stack"-->
 <!--            description="Provision a stack on AWS"-->
 <!--            depends="setup-aws, run-stack, setup-deployment-group" />-->
