@@ -6,6 +6,7 @@ namespace Drupal\joinup\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\Url;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
@@ -29,6 +30,13 @@ class SolutionsByLicenceForm extends FormBase {
   protected $connection;
 
   /**
+   * The pager manager.
+   *
+   * @var \Drupal\Core\Pager\PagerManagerInterface
+   */
+  protected $pagerManager;
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -40,9 +48,12 @@ class SolutionsByLicenceForm extends FormBase {
    *
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
    *   The SPARQL connection.
+   * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
+   *   The pager manager.
    */
-  public function __construct(ConnectionInterface $connection) {
+  public function __construct(ConnectionInterface $connection, PagerManagerInterface $pagerManager) {
     $this->connection = $connection;
+    $this->pagerManager = $pagerManager;
   }
 
   /**
@@ -50,7 +61,8 @@ class SolutionsByLicenceForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('sparql_endpoint')
+      $container->get('sparql_endpoint'),
+      $container->get('pager.manager')
     );
   }
 
@@ -77,7 +89,7 @@ class SolutionsByLicenceForm extends FormBase {
     $licence_id = $form_state->getValue('licence_option');
     $results = $this->connection->query($this->getCountQuery($licence_id));
     $total = reset($results)->total->getValue();
-    $page = pager_default_initialize($total, self::ITEMS_PER_PAGE);
+    $page = $this->pagerManager->createPager($total, self::ITEMS_PER_PAGE)->getCurrentPage();
     $offset = $page * self::ITEMS_PER_PAGE;
     $items = $this->connection->query($this->getQuery($offset, $licence_id));
 
