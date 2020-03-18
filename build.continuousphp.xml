@@ -109,8 +109,7 @@
 <!--        <mkdir dir="${tmp.dir}" />-->
         <httpget url="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" dir="${env.PWD}" followRedirects="true"/>
         <untar file="${env.PWD}/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="${env.PWD}"/>
-        <symlink link="/usr/local/bin/jre" target="${env.PWD}/jdk8u242-b08-jre/bin"/>
-
+        <exec command="symlink ${env.PWD}/jdk8u242-b08-jre/bin /usr/local/bin/jre"/>
         <echo message="export"/>
         <exec command="export" checkreturn="true" passthru="true"/>
 <!--PATH=/home/cphp/data/container/$CPHP_BUILD_ID/workspace/jdk8u242-b08-jre/bin:$PATH-->
