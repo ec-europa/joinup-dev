@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Creating content and commenting on archived collection
   In order to not waste time on maintaining legacy collections
   As a collection owner
@@ -30,11 +30,6 @@ Feature: Creating content and commenting on archived collection
     When I am logged in as "Lee Reeves"
     And I go to the "The Weeping's Stars" discussion
     Then the following fields should be present "Create comment"
-    And I should see the button "Post comment"
-
-    When I am not logged in
-    And I go to the "The Weeping's Stars" discussion
-    Then the following fields should be present "Your name, Email, Create comment"
     And I should see the button "Post comment"
 
     When I am logged in as "Karl Fields"

@@ -11,16 +11,12 @@ dependencies:
     - field.field.user.user.field_user_family_name
     - field.field.user.user.field_user_first_name
     - field.field.user.user.field_user_frequency
-    - field.field.user.user.field_user_group_types
     - field.field.user.user.field_user_nationality
     - field.field.user.user.field_user_organisation
     - field.field.user.user.field_user_photo
     - field.field.user.user.field_user_professional_domain
-    - field.field.user.user.field_user_professional_profile
-    - field.field.user.user.field_user_subscription_events
     - image.style.vertical_medium_image
   module:
-    - ds
     - image
     - user
 id: user.user.view_mode_featured
@@ -34,14 +30,7 @@ content:
     label: hidden
     settings:
       link_to_entity: false
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     region: content
   field_user_family_name:
     weight: 1
@@ -65,14 +54,7 @@ content:
     settings:
       image_style: vertical_medium_image
       image_link: content
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
+    third_party_settings: {  }
     type: image
     region: content
 hidden:
@@ -81,12 +63,9 @@ hidden:
   field_social_media: true
   field_user_content: true
   field_user_frequency: true
-  field_user_group_types: true
   field_user_nationality: true
   field_user_organisation: true
   field_user_professional_domain: true
-  field_user_professional_profile: true
-  field_user_subscription_events: true
   langcode: true
   member_for: true
   simplenews: true

@@ -5,16 +5,18 @@
  * Contains \DiscussionSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
-use Drupal\joinup_subscription\JoinupSubscriptionInterface;
+use Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface;
 use PHPUnit\Framework\Assert;
 
 /**
  * Behat step definitions for testing discussions.
  */
-class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupDiscussionSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use NodeTrait;
 
@@ -27,7 +29,7 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I go to the :title discussion
    * @When I visit the :title discussion
    */
-  public function visitDiscussion($title) {
+  public function visitDiscussion(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'discussion');
     $this->visitPath($node->url());
@@ -43,20 +45,20 @@ class DiscussionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Then the :title discussion should have :count subscriber(s)
    */
-  public function assertSubscribers($title, $count) {
+  public function assertSubscribers(string $title, int $count): void {
     $discussion = $this->getNodeByTitle($title, 'discussion');
-    $subscribers = $this->getSubscriptionService()->getSubscribers($discussion, 'subscribe_discussions');
+    $subscribers = $this->getDiscussionSubscriptionService()->getSubscribers($discussion, 'subscribe_discussions');
     Assert::assertEquals($count, count($subscribers));
   }
 
   /**
    * Returns the Joinup subscription service.
    *
-   * @return \Drupal\joinup_subscription\JoinupSubscriptionInterface
+   * @return \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    *   The subscription service.
    */
-  protected function getSubscriptionService() : JoinupSubscriptionInterface {
-    return \Drupal::service('joinup_subscription.subscription');
+  protected function getDiscussionSubscriptionService() : JoinupDiscussionSubscriptionInterface {
+    return \Drupal::service('joinup_subscription.discussion_subscription');
   }
 
 }

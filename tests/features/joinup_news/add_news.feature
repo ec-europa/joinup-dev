@@ -26,7 +26,7 @@ Feature: Creation of news through the UI.
 
     When I am logged in as a "facilitator" of the "Metal fans" collection
     And I go to the homepage of the "Metal fans" collection
-    Then the following fields should not be present "Shared in, Motivation"
+    Then the following fields should not be present "Shared on, Motivation"
 
     # Log in as a facilitator of the "Density catalogue project" solution
     When I am logged in as isotopedancer
@@ -35,16 +35,17 @@ Feature: Creation of news through the UI.
 
     # Check required fields.
     And I attach the file "test.zip" to "Add a new file"
+    And I attach the file "logo.png" to "Logo"
     And I press "Upload"
     And I press "Publish"
     Then I should see the following lines of text:
       | Headline field is required.         |
-      | Kicker field is required.           |
+      | Short title field is required.      |
       | Content field is required.          |
       | File description field is required. |
 
     When I fill in the following:
-      | Kicker           | Ytterbium was declared the ultimate metal of the year                                         |
+      | Short title      | Ytterbium has won the ultimate heavy metal of the year award of 2020!                         |
       | Headline         | Strong request for this rare metal that is on the mouth of everybody                          |
       | Content          | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
       | File description | Comparison materials                                                                          |
@@ -55,8 +56,8 @@ Feature: Creation of news through the UI.
     # validation.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3680
     And I press "Publish"
-    Then I should see the error message "Kicker cannot be longer than 30 characters but is currently 53 characters long."
-    When I fill in "Kicker" with "Ytterbium metal of the year"
+    Then I should see the error message "Short title cannot be longer than 66 characters but is currently 69 characters long."
+    When I fill in "Short title" with "Ytterbium metal of the year"
     And I press "Publish"
     Then I should see the success message "News Ytterbium metal of the year has been created."
     # Verify that the author is visible.
@@ -67,7 +68,7 @@ Feature: Creation of news through the UI.
     And I should see the link "Milana Laninga" in the "Content" region
     But I should not see the link "isotopedancer" in the "Content" region
 
-    # Edit again and try to share into the same solution.
+    # Edit again and try to share onto the same solution.
     When I click "Edit" in the "Entity actions" region
     And I fill in "Referenced solution" with values "Dig do's and don'ts, Dig do's and don'ts"
     And I press "Update"
@@ -80,3 +81,6 @@ Feature: Creation of news through the UI.
     # Verify that the tiles are shown.
     Then I should see the "Dig do's and don'ts" tile
     And I should see the "Anvil test routines" tile
+
+    When I click "Keep up to date"
+    Then I should see the image "logo.png" in the "Ytterbium metal of the year" tile

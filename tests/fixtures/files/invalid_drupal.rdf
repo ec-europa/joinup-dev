@@ -55,6 +55,16 @@
         <dcat:distribution rdf:resource="http://example.com/distribution/3"/>
     </rdf:Description>
 
+    <rdf:Description rdf:about="http://example.com/solution/1/replica">
+        <rdf:type rdf:resource="http://www.w3.org/ns/dcat#Dataset"/>
+        <dct:title>Solution 1</dct:title>
+        <dct:description>This solution has the same title with another solution but a different ID.</dct:description>
+        <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-05-07T11:35:24+03:00</dc:issued>
+        <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2015-12-05T16:02:24+02:00</dc:modified>
+        <dct:publisher rdf:resource="http://example.com/owner/1"/>
+        <dcat:contactPoint rdf:resource="http://example.com/contact/1"/>
+    </rdf:Description>
+
     <!-- #### Releases #### -->
 
     <!-- A release with 2 distributions. -->

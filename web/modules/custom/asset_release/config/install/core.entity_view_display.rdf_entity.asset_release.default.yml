@@ -24,7 +24,6 @@ dependencies:
     - field.field.rdf_entity.asset_release.field_status
     - rdf_entity.rdfentity.asset_release
   module:
-    - ds
     - file_url
     - state_machine
     - text
@@ -42,13 +41,6 @@ content:
       past_format: '@interval ago'
       granularity: 1
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     type: timestamp_ago
@@ -84,14 +76,6 @@ content:
       view_mode: view_mode_tile
       link: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: entity_reference__listing_tile
     type: entity_reference_entity_view
@@ -104,23 +88,8 @@ content:
     settings:
       mode: link
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
-  field_isr_elibrary_creation:
-    weight: 13
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_isr_issue_tracker:
     weight: 19
     label: above
@@ -181,13 +150,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -251,13 +213,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
     region: content

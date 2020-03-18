@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Subscribing to collection newsletters
   In order to promote my collection
   As a collection owner
@@ -30,17 +30,17 @@ Feature: Subscribing to collection newsletters
   Scenario: Only moderators can enter the subscription information for a collection.
     Given I am logged in as a moderator
     And I go to the "Volkor X" collection
-    And I click the contextual link "Edit" in the Header region
+    When I click "Edit" in the "Entity actions" region
     Then the following fields should be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
     When I am logged in as "Filippos Demetriou"
     And I go to the "Volkor X" collection
-    And I click the contextual link "Edit" in the Header region
+    When I click "Edit" in the "Entity actions" region
     Then the following fields should not be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
     When I am logged in as "Tatiana Andreas"
     And I go to the "Volkor X" collection
-    And I click the contextual link "Edit" in the Header region
+    When I click "Edit" in the "Entity actions" region
     Then the following fields should not be present "Enable newsletter subscriptions, Universe acronym, Newsletter service ID"
 
   Scenario: Configure the newsletter subscription
@@ -53,14 +53,14 @@ Feature: Subscribing to collection newsletters
     # If "Enable newsletter subscriptions" is not checked then it should be
     # possible to submit the form without entering data in the two newsletter
     # fields.
-    When I click the contextual link "Edit" in the Header region
+    When I click "Edit" in the "Entity actions" region
     And I uncheck "Enable newsletter subscriptions"
     And I press "Publish"
     Then I should see the heading "Volkor X"
 
     # If "Enable newsletter subscriptions" is checked then the fields become
     # required and an error message should be shown if they are not filled in.
-    When I click the contextual link "Edit" in the Header region
+    When I click "Edit" in the "Entity actions" region
     And I check "Enable newsletter subscriptions"
     And I press "Publish"
     Then I should see the following error messages:
@@ -80,7 +80,7 @@ Feature: Subscribing to collection newsletters
 
     # Disable the newsletter subscriptions again. This should make the form
     # disappear.
-    When I click the contextual link "Edit" in the Header region
+    When I click "Edit" in the "Entity actions" region
     And I uncheck "Enable newsletter subscriptions"
     And I press "Publish"
     Then I should see the heading "Volkor X"
@@ -90,7 +90,8 @@ Feature: Subscribing to collection newsletters
   Scenario: Subscribe to a newsletter
     Given I am logged in as "Magdalini Kokinos"
     When I go to the "Volkor X" collection
-    And I click the contextual link "Edit" in the Header region
+    And I open the header local tasks menu
+    And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
     And I check "Enable newsletter subscriptions"
     And I fill in "Universe acronym" with "volkor-x"

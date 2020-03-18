@@ -1,27 +1,28 @@
-@api
+@api @group-a
 Feature: Add distribution through the UI
   In order to manage distributions
   As a facilitator
   I need to be able to add "Distribution" RDF entities through the UI.
 
   Background:
-    Given the following solution:
-      | title       | Solution random x name           |
-      | description | Some reusable random description |
-      | state       | validated                        |
-    And the following collection:
+    Given the following collection:
       | title      | Asset Distribution Test |
       | logo       | logo.png                |
-      | affiliates | Solution random x name  |
       | state      | validated               |
+     And the following solution:
+      | title       | Solution random x name           |
+      | collection  | Asset Distribution Test          |
+      | description | Some reusable random description |
+      | state       | validated                        |
     And the following release:
       | title         | 1.0.0 Authoritarian Alpaca |
       | description   | First public release.      |
       | is version of | Solution random x name     |
       | state         | validated                  |
-    And the following licence:
-      | title       | WTFPL                                    |
-      | description | The WTFPL is a rather permissive licence |
+    And the following licences:
+      | title              | description                                              | deprecated |
+      | WTFPL              | The WTFPL is a rather permissive licence                 | no         |
+      | Deprecated licence | The deprecated licence should not be available to select | yes        |
 
   Scenario: Add a distribution to a solution as a facilitator.
     When I am logged in as a "facilitator" of the "Solution random x name" solution
@@ -30,8 +31,11 @@ Feature: Add distribution through the UI
 
     When I click "Add distribution"
     Then I should see the heading "Add Distribution"
-    And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique"
-    And the following fields should not be present "Langcode, Translation"
+    And the following fields should be present "Title, Description, Access URL, Licence, Format, Representation technique"
+    But the following fields should not be present "Langcode, Translation"
+    And the "Licence" field should contain the "WTFPL" options
+    But the "Licence" field should not contain the "Deprecated licence" options
+
     # @todo: The link has to be changed to the legal contact form.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
@@ -42,9 +46,9 @@ Feature: Add distribution through the UI
     And I select "Web Ontology Language Full/DL/Lite" from "Representation technique"
     And I press "Save"
     # Regression test for required field.
-    # @see: https://webgate.ec.europa/eu/CITnet/jira/browse/ISAICP-3064
-    Then I should see the error message "License field is required."
-    When I select "WTFPL" from "License"
+    # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3064
+    Then I should see the error message "Licence field is required."
+    When I select "WTFPL" from "Licence"
     And I press "Save"
     Then I should have 1 distribution
     And the "Linux x86-64 SDK" distribution should have the link of the "test.zip" in the access URL field
@@ -101,14 +105,14 @@ Feature: Add distribution through the UI
     When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
     And I click "Add distribution" in the plus button menu
     Then I should see the heading "Add Distribution"
-    And the following fields should be present "Title, Description, Access URL, License, Format, Representation technique"
+    And the following fields should be present "Title, Description, Access URL, Licence, Format, Representation technique"
     # @todo: The link has to be changed to the legal contact form.
     # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2789
     And I should see the link "contacting us"
     When I fill in "Title" with "Source tarball"
     And I enter "<p>The full source code.</p>" in the "Description" wysiwyg editor
     Given I upload the file "test.zip" to "Access URL"
-    And I select "WTFPL" from "License"
+    And I select "WTFPL" from "Licence"
     And I select "Web Ontology Language Full/DL/Lite" from "Representation technique"
     And I press "Save"
     Then I should have 1 distribution
@@ -154,12 +158,12 @@ Feature: Add distribution through the UI
     When I go to the homepage of the "1.0.0 Authoritarian Alpaca" release
     And I click "Add distribution" in the plus button menu
     When I fill in "Title" with "MacOSX binary"
-    And I select "WTFPL" from "License"
+    And I select "WTFPL" from "Licence"
     And I press "Save"
     Then I should have 1 distribution
     When I click "Add distribution" in the plus button menu
     When I fill in "Title" with "MacOSX binary"
-    And I select "WTFPL" from "License"
+    And I select "WTFPL" from "Licence"
     And I press "Save"
     Then I should see the error message "A distribution with title MacOSX binary already exists in this release. Please choose a different title."
     And I should have 1 distribution
@@ -168,7 +172,7 @@ Feature: Add distribution through the UI
     When I go to the homepage of the "1.0.0 Adolf Sieverts" release
     And I click "Add distribution" in the plus button menu
     When I fill in "Title" with "MacOSX binary"
-    And I select "WTFPL" from "License"
+    And I select "WTFPL" from "Licence"
     And I press "Save"
     Then I should have 2 distributions
 
@@ -186,7 +190,7 @@ Feature: Add distribution through the UI
     When I go to the homepage of the "Solution random x name" solution
     And I click "Add distribution" in the plus button menu
     When I fill in "Title" with "Windows - source"
-    And I select "WTFPL" from "License"
+    And I select "WTFPL" from "Licence"
     And I press "Save"
     Then I should see the error message "A distribution with title Windows - source already exists in this solution. Please choose a different title."
 

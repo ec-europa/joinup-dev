@@ -35,10 +35,12 @@ To start with docker, please, check the separated [README file](resources/docker
 
 To run Joinup locally, below is a list of requirements and instructions.
 
+#### On macOS without Docker installation
+To start on macOS without Docker, please, check the separated [README file](resources/mac/README.md).
+
 #### Requirements
 * A regular LAMP stack running PHP 7.1.0 or higher
 * Virtuoso 7 (Triplestore database)
-* SASS compiler
 * Apache Solr
 
 #### Dependency management and builds
@@ -83,13 +85,6 @@ run the Behat test, please refer directly to the documention of
 
     ```
     DirsAllowed = /var/www/joinup/resources/fixtures, /usr/share/virtuoso-opensource-7/vad
-    ```
-
-* Install the official [SASS compiler](https://github.com/sass/sass). This
-  depends on Ruby being installed on your system.
-
-    ```
-    $ gem install sass
     ```
 
 * Install [Selenium](https://github.com/SeleniumHQ/docker-selenium/blob/master/README.md).
@@ -212,5 +207,3 @@ there is information on handling draft in CRUD operations for rdf entities.
 there is information on how to handle notifications in Joinup.
 * In [Joinup core module](web/modules/custom/joinup_core/README.md) there is
 information on how to handle and create workflows.
-* In [Matomo analytics](docs/matomo.md) you find information about working with
-the web analytics platform used in Joinup.

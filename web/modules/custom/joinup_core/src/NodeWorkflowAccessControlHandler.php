@@ -15,7 +15,6 @@ use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 
 /**
  * Access handler for entities with a workflow.
@@ -77,7 +76,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * The membership manager.
    *
-   * @var \Drupal\og\MembershipManager
+   * @var \Drupal\og\MembershipManagerInterface
    */
   protected $membershipManager;
 
@@ -203,7 +202,7 @@ class NodeWorkflowAccessControlHandler {
           return AccessResult::forbidden();
         }
         $parent = $this->relationManager->getParent($entity);
-        $membership = $this->membershipManager->getMembership($parent, $account);
+        $membership = $this->membershipManager->getMembership($parent, $account->id());
         if ($membership instanceof OgMembership) {
           return AccessResult::allowedIf($membership->hasPermission($operation));
         }
@@ -250,7 +249,7 @@ class NodeWorkflowAccessControlHandler {
     $view_scheme = $this->getPermissionScheme('view');
     $workflow_id = $this->getEntityWorkflowId($entity);
     $state = $this->getEntityState($entity);
-    return $this->userHasOwnAnyRoles($entity, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
+    return $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $view_scheme[$workflow_id][$state]) ? AccessResult::allowed() : AccessResult::forbidden();
   }
 
   /**
@@ -267,12 +266,12 @@ class NodeWorkflowAccessControlHandler {
   protected function entityCreateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
     $create_scheme = $this->getPermissionScheme('create');
     $workflow_id = $this->getEntityWorkflowId($entity);
-    $e_library = $this->getEntityElibrary($entity);
+    $content_creation = $this->getParentContentCreationOption($entity);
 
-    foreach ($create_scheme[$workflow_id][$e_library] as $transition_id => $ownership_data) {
+    foreach ($create_scheme[$workflow_id][$content_creation] as $ownership_data) {
       // There is no check whether the transition is allowed as only allowed
       // transitions are mapped in the permission scheme configuration object.
-      if ($this->userHasRoles($entity, $account, $ownership_data)) {
+      if ($this->workflowHelper->userHasRoles($entity, $account, $ownership_data)) {
         return AccessResult::allowed();
       }
     }
@@ -291,19 +290,11 @@ class NodeWorkflowAccessControlHandler {
    *   The access result check.
    */
   protected function entityUpdateAccess(NodeInterface $entity, AccountInterface $account): AccessResult {
-    $update_scheme = $this->getPermissionScheme('update');
-    $workflow_id = $this->getEntityWorkflowId($entity);
-    $allowed_transitions = $this->workflowHelper->getAvailableTransitions($entity, $account);
-    $transition_ids = array_map(function (WorkflowTransition $transition) {
-      return $transition->getId();
-    }, $allowed_transitions);
-
-    foreach ($transition_ids as $transition_id) {
-      if ($this->userHasOwnAnyRoles($entity, $account, $update_scheme[$workflow_id][$transition_id])) {
-        return AccessResult::allowed();
-      }
+    $allowed_states = $this->workflowHelper->getAvailableTargetStates($entity, $account);
+    if (empty($allowed_states)) {
+      return AccessResult::forbidden();
     }
-    return AccessResult::forbidden();
+    return AccessResult::allowed();
   }
 
   /**
@@ -322,71 +313,11 @@ class NodeWorkflowAccessControlHandler {
     $workflow_id = $this->getEntityWorkflowId($entity);
     $state = $this->getEntityState($entity);
 
-    if (isset($delete_scheme[$workflow_id][$state]) && $this->userHasOwnAnyRoles($entity, $account, $delete_scheme[$workflow_id][$state])) {
+    if (isset($delete_scheme[$workflow_id][$state]) && $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $delete_scheme[$workflow_id][$state])) {
       return AccessResult::allowed();
     }
 
     return AccessResult::forbidden();
-  }
-
-  /**
-   * Checks whether the user has at least one of the provided roles.
-   *
-   * @param \Drupal\node\NodeInterface $entity
-   *   The group content entity.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
-   * @param array $roles
-   *   A list of role ids indexed by keys 'own' and 'any' which represents
-   *   ownership and a second level of 'roles' for system roles and
-   *   'og_roles' for og roles.
-   *
-   * @return bool
-   *   True if the user has at least one of the roles provided.
-   */
-  protected function userHasOwnAnyRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
-    $own = $entity->getOwnerId() === $account->id();
-    if (isset($roles['any']) && $this->userHasRoles($entity, $account, $roles['any'])) {
-      return TRUE;
-    }
-    if ($own && isset($roles['own']) && $this->userHasRoles($entity, $account, $roles['own'])) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Checks whether the user has at least one of the provided roles.
-   *
-   * @param \Drupal\node\NodeInterface $entity
-   *   The group content entity.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
-   * @param array $roles
-   *   A list of role ids indexed by 'roles' for system roles and
-   *   'og_roles' for og roles.
-   *
-   * @return bool
-   *   True if the user has at least one of the roles provided.
-   */
-  protected function userHasRoles(NodeInterface $entity, AccountInterface $account, array $roles): bool {
-    $parent = $this->getEntityParent($entity);
-    $membership = $this->membershipManager->getMembership($parent, $account);
-
-    // First check the 'any' permissions.
-    if (isset($roles['roles'])) {
-      if (array_intersect($account->getRoles(), $roles['roles'])) {
-        return TRUE;
-      }
-    }
-    if (isset($roles['og_roles']) && !empty($membership)) {
-      if (array_intersect($membership->getRolesIds(), $roles['og_roles'])) {
-        return TRUE;
-      }
-    }
-
-    return FALSE;
   }
 
   /**
@@ -436,33 +367,33 @@ class NodeWorkflowAccessControlHandler {
   }
 
   /**
-   * Returns the value of the eLibrary settings of the parent of an entity.
+   * Returns the content creation option value of the parent of an entity.
    *
    * @param \Drupal\node\NodeInterface $entity
    *   The group content entity.
    *
    * @return array
-   *   The eLibrary value.
+   *   The content creation option value.
    */
-  protected function getEntityElibrary(NodeInterface $entity): string {
+  protected function getParentContentCreationOption(NodeInterface $entity): string {
     $parent = $this->relationManager->getParent($entity);
-    $e_library_name = $this->getParentElibraryName($parent);
-    return $parent->{$e_library_name}->value;
+    $field_name = $this->getParentContentCreationFieldName($parent);
+    return $parent->{$field_name}->value;
   }
 
   /**
-   * Returns the eLibrary creation field's machine name.
+   * Returns the content creation field's machine name.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The parent entity.
    *
    * @return string
-   *   The machine name of the eLibrary creation field.
+   *   The machine name of the content creation field.
    */
-  protected function getParentElibraryName(EntityInterface $entity): string {
+  protected function getParentContentCreationFieldName(EntityInterface $entity): string {
     $field_array = [
-      'collection' => 'field_ar_elibrary_creation',
-      'solution' => 'field_is_elibrary_creation',
+      'collection' => 'field_ar_content_creation',
+      'solution' => 'field_is_content_creation',
     ];
 
     return $field_array[$entity->bundle()];

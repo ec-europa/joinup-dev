@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-b
 Feature: Notification test for the event transitions on a post moderated parent.
   In order to manage my collections
   As an owner of the collection
@@ -12,21 +12,21 @@ Feature: Notification test for the event transitions on a post moderated parent.
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title              | state     | elibrary creation | moderation |
-      | CC post collection | validated | members           | no         |
+      | title              | state     | content creation | moderation |
+      | CC post collection | validated | members          | no         |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
       | CC post collection | CC facilitator | facilitator |
       | CC post collection | CC member      |             |
     And event content:
-      | title                                | author    | body | location                             | collection         | field_state  |
-      | CC notify post publish               | CC member | body | CC notify post publish               | CC post collection | draft        |
-      | CC notify post request changes       | CC member | body | CC notify post request changes       | CC post collection | validated    |
-      | CC notify post report                | CC member | body | CC notify post report                | CC post collection | validated    |
-      | CC notify post propose from reported | CC member | body | CC notify post propose from reported | CC post collection | needs_update |
-      | CC notify post approve proposed      | CC member | body | CC notify post approve proposed      | CC post collection | proposed     |
-      | CC notify post delete                | CC member | body | CC notify post delete                | CC post collection | validated    |
+      | title                                | author    | body | location                       | collection         | field_state  |
+      | CC notify post publish               | CC member | body | Half Moon Street, London       | CC post collection | draft        |
+      | CC notify post request changes       | CC member | body | Quai d'Orleans, Paris          | CC post collection | validated    |
+      | CC notify post report                | CC member | body | Rue du Mont Thabor, Paris      | CC post collection | validated    |
+      | CC notify post propose from reported | CC member | body | Cort Adelers Gate, Oslo        | CC post collection | needs_update |
+      | CC notify post approve proposed      | CC member | body | Ferdinand Bolstraat, Amsterdam | CC post collection | proposed     |
+      | CC notify post delete                | CC member | body | Lychener Strasse, Berlin       | CC post collection | validated    |
 
     # Test 'create' operation.
     When all e-mails have been sent
@@ -35,11 +35,11 @@ Feature: Notification test for the event transitions on a post moderated parent.
     And I click "Add event" in the plus button menu
     And I fill in "Title" with "CC notify create publish"
     And I fill in "Description" with "CC notify create publish"
-    And I fill in "Location" with "CC notify create publish"
+    And I fill in "Physical location" with "Capel Street, Dublin"
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC owner                                                                                                                                                               |
-      | subject   | Joinup: Content has been published                                                                                                                                     |
+      | recipient | CC owner                                                                                                                                                              |
+      | subject   | Joinup: Content has been published                                                                                                                                    |
       | body      | CC Member has published the new event - "CC notify create publish" in the collection: "CC post collection".You can access the new content at the following link: http |
 
     # Test 'update' operation.
@@ -85,8 +85,8 @@ Feature: Notification test for the event transitions on a post moderated parent.
     And I click "Edit" in the "Entity actions" region
     And I press "Publish"
     Then the following email should have been sent:
-      | recipient | CC member                                                                                                                                                   |
-      | subject   | Joinup: Content has been updated                                                                                                                            |
+      | recipient | CC member                                                                                                                                                          |
+      | subject   | Joinup: Content has been updated                                                                                                                                   |
       | body      | the Facilitator, CC Facilitator has approved your request of publication of the event - "CC notify post approve proposed" in the collection: "CC post collection". |
 
     # Test 'delete' operation.

@@ -13,6 +13,7 @@ use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -22,6 +23,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
 
   use EntityReferenceTrait;
   use FileTrait;
+  use SearchTrait;
   use RdfEntityTrait;
 
   /**
@@ -41,7 +43,6 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @When I visit (the homepage of )the :asset_release release
    */
   public function visitRelease(string $asset_release): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $asset_release */
     $asset_release = $this->getAssetReleaseByName($asset_release);
     $this->visitPath($asset_release->url());
   }
@@ -178,8 +179,10 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @When I delete the :asset_release release
    */
   public function deleteAssetRelease(string $asset_release): void {
-    /** @var \Drupal\rdf_entity\RdfInterface $asset_release */
     $asset_release = $this->getAssetReleaseByName($asset_release);
+    if (isset($this->assetReleases[$asset_release->id()])) {
+      unset($this->assetReleases[$asset_release->id()]);
+    }
     $asset_release->skip_notification = TRUE;
     $asset_release->delete();
   }
@@ -213,17 +216,7 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @Then I should have :number release(s)
    */
   public function assertReleaseCount(int $number): void {
-    // We cannot rely on $this->assertRdfEntityCount() because a release shares
-    // the same bundle with a solution. We need to distinguish them by the
-    // presence of the 'is_version_of' field - if this field is missing it is a
-    // solution, if it is present it is a release.
-    $actual = \Drupal::entityQuery('rdf_entity')
-      ->condition('rid', 'asset_release')
-      ->count()
-      ->execute();
-    if ($actual != $number) {
-      throw new \Exception("Wrong number of release entities. Expected number: $number, actual number: $actual.");
-    }
+    $this->assertRdfEntityCount($number, 'asset_release');
   }
 
   /**
@@ -232,11 +225,21 @@ class AssetReleaseSubContext extends DrupalSubContextBase implements DrupalSubCo
    * @AfterScenario
    */
   public function cleanAssetReleases(): void {
+    if (empty($this->assetReleases)) {
+      return;
+    }
+
+    // Since we might be cleaning up many releases, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any asset_releases that were created.
     foreach ($this->assetReleases as $asset_release) {
       $asset_release->skip_notification = TRUE;
       $asset_release->delete();
     }
+    $this->assetReleases = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**

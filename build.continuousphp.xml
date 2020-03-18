@@ -72,11 +72,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
     </target>
 
     <target name="build-continuousphp" >
-        <echo message="Install the SASS compiler" />
-        <exec dir="${project.basedir}"
-              command="gem install sass"
-              checkreturn="true"
-              passthru="true" />
         <!-- Set environment variables as extra properties through cloudformation -->
         <env2property prefix="cphp" phingproperty="cloudformation.properties" />
         <echo message="Copy CPHP pipeline variables to local properties file" />
@@ -85,11 +80,37 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
               command="sed -i 's/^cphp\.//' build.properties.local"
               checkreturn="true"
               passthru="true" />
+        <echo message="Create the Behat configuration files to run in parallel." />
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-only-selenium-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-only-selenium-cphp.yml.dist" />
+        </phingcall>
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-group-a-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-group-a-cphp.yml.dist" />
+        </phingcall>
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-group-b-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-group-b-cphp.yml.dist" />
+        </phingcall>
+        <phingcall target="setup-behat">
+            <property name="behat.yml.path" value="${behat.dir}/behat-remainder-cphp.yml" />
+            <property name="behat.yml.template" value="${behat.dir}/behat-remainder-cphp.yml.dist" />
+        </phingcall>
     </target>
 
     <!-- provision new demo/test stack on AWS -->
     <target name="provision-stack"
             description="Provision a stack on AWS"
             depends="setup-aws, run-stack, setup-deployment-group" />
+
+    <!-- Sleeps to allow services to get up and be ready -->
+    <target name="sleep">
+        <echo message="Sleeping ${sleep.hours} hours, ${sleep.minutes} minutes, ${sleep.seconds} seconds, ${sleep.milliseconds} milliseconds"/>
+        <sleep hours="${sleep.hours}"
+               minutes="${sleep.minutes}"
+               seconds="${sleep.seconds}"
+               milliseconds="${sleep.milliseconds}"/>
+    </target>
 
 </project>

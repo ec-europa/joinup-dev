@@ -1,4 +1,4 @@
-rdf_entity.mapping.*.third_party.rdf_schema_field_validation:
+sparql_entity_storage.mapping.*.third_party.rdf_schema_field_validation:
   type: mapping
   label: 'Settings related to the fields defined in a schema.'
   mapping:

@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Collection TCA agreement
   In order to ensure activity by facilitators
   As a site owner
@@ -15,7 +15,7 @@ Feature: Collection TCA agreement
     When I am not logged in
     And I visit "/collections"
     And I click "Create collection"
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
 
   Scenario: Authenticated users can access the TCA agreement page.
     When I am logged in as a user with the "authenticated" role
@@ -30,18 +30,28 @@ Feature: Collection TCA agreement
     And I press "Yes"
     # No javascript test.
     Then I should see the error message "You have to agree that you will manage your collection on a regular basis."
-    When I check the box "I understand and I commit to manage my collection on a regular basis."
+    When I check the box "I have read and accept the legal notice and I commit to manage my collection on a regular basis."
     And I press "Yes"
     Then I should see the heading "Propose collection"
 
-  Scenario Outline: TCA page contains links with additional information
+  Scenario: TCA page contains links with additional information
+    Given the following legal document version:
+      | Document     | Label | Published | Acceptance label                                                                                   | Content                                                    |
+      | Legal notice | 1.1   | yes       | I have read and accept the <a href="[entity_legal_document:url]">[entity_legal_document:label]</a> | The information on this site is subject to a disclaimer... |
+
     When I am logged in as a user with the "authenticated" role
     And I visit "/collections"
-    And I click "Create collection"
-    And I click "<link>"
-    Then I should see the heading "<title>"
+    Then I should see the warning message "You must accept this agreement before continuing."
 
-    Examples:
-      | link                 | title                |
-      | legal notice         | Legal notice         |
-      | eligibility criteria | Eligibility criteria |
+    Given I check "I have read and accept the Legal notice"
+    And I press "Submit"
+
+    And I click "Create collection"
+    And I click "legal notice"
+    Then I should see the heading "Legal notice"
+
+    Given move backward one page
+
+    And I click "eligibility criteria"
+    Then I should see the heading "Eligibility criteria"
+

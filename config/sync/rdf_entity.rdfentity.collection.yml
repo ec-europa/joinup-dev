@@ -1,0 +1,13 @@
+uuid: 6405feb7-c8c1-454b-be0e-4719bbcf640a
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: MMqUO29XmXa_FwBvKFUq21Rwk_9gUsarOZdp1W-Iok8
+name: Collection
+rid: collection
+description: 'An Asset Repository stores descriptions of Assets and Asset Distributions.'
+label_singular: collection
+label_plural: collections
+label_count:
+  no_count_capitalize: !!binary Q29sbGVjdGlvbgNDb2xsZWN0aW9ucw==

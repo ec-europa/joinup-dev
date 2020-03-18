@@ -8,8 +8,8 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
-    - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
@@ -22,8 +22,8 @@ dependencies:
     - field.field.rdf_entity.collection.field_spatial_coverage
     - rdf_entity.rdfentity.collection
   module:
-    - ds
     - field_group
+    - joinup
     - search_api_field
     - smart_trim
     - user
@@ -72,13 +72,6 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: p_wrapper
   field_ar_description:
@@ -100,13 +93,6 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: p_wrapper
   field_collection_content:
@@ -147,7 +133,7 @@ hidden:
   field_ar_banner: true
   field_ar_closed: true
   field_ar_contact_information: true
-  field_ar_elibrary_creation: true
+  field_ar_content_creation: true
   field_ar_logo: true
   field_ar_moderation: true
   field_ar_owner: true

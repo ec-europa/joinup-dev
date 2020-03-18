@@ -1,31 +1,10 @@
 # Add handy links to configuration forms to the administration menu.
-joinup_core.admin_reporting:
-  route_name: joinup_core.admin_reporting
-  parent: system.admin
-  description: 'Access Joinup reports.'
-  title: 'Reporting'
-  weight: 75
-
-joinup_core.matomo_integration_settings:
-  title: 'Matomo integration'
-  route_name: joinup_core.matomo_integration_settings
-  description: 'Configure when download and visit counts are refreshed.'
-  parent: system.admin
-  weight: 0
-
 joinup_core.rdf_entity_uri_web_converter_page:
   title: 'RDF ID converter'
   route_name: joinup_core.rdf_entity_uri_web_converter_page
   description: 'Encodes and decodes RDF entity IDs.'
   parent: system.admin
   weight: 1
-
-joinup_core.adms_ap_importer:
-  title: 'ADMS-AP importer'
-  route_name: pipeline.pipeline_select
-  description: 'Imports federated data.'
-  parent: system.admin
-  weight: 2
 
 joinup_core.redirects:
   title: 'Redirects'
@@ -58,3 +37,10 @@ joinup_core.support.contact:
   menu_name: support
   url: 'internal:/contact'
   weight: -100
+
+joinup_core.eulogin:
+  title: 'Sign in with EU Login'
+  menu_name: account
+  route_name: cas.login
+  class: Drupal\joinup_core\Plugin\Menu\EuLoginMenuLink
+  weight: -21

@@ -12,11 +12,9 @@ dependencies:
     - field.field.node.discussion.field_site_featured
     - field.field.node.discussion.field_site_pinned
     - field.field.node.discussion.field_state
-    - field.field.node.discussion.field_visit_count
     - field.field.node.discussion.og_audience
     - node.type.discussion
   module:
-    - ds
     - options
     - smart_trim
     - user
@@ -41,13 +39,6 @@ content:
       wrap_output: false
       wrap_class: trimmed
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     type: smart_trim
@@ -67,7 +58,6 @@ hidden:
   field_shared_in: true
   field_site_featured: true
   field_site_pinned: true
-  field_visit_count: true
   flag_subscribe_discussions: true
   invite_link: true
   langcode: true

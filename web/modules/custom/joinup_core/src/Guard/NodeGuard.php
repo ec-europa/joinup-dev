@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Guard;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
-use Drupal\og\MembershipManagerInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
+use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
  * Guard class for the transitions of nodes.
@@ -19,32 +20,11 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 class NodeGuard implements GuardInterface {
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * The current logged in user.
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $currentUser;
-
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The OG membership manager service.
-   *
-   * @var \Drupal\og\MembershipManagerInterface
-   */
-  protected $ogMembershipManager;
 
   /**
    * The relation manager service.
@@ -75,32 +55,35 @@ class NodeGuard implements GuardInterface {
   protected $workflowHelper;
 
   /**
+   * The workflow state permission service.
+   *
+   * @var \Drupal\workflow_state_permission\WorkflowStatePermissionInterface
+   */
+  protected $workflowStatePermission;
+
+  /**
    * Instantiates the NodeGuard service.
    *
    * The classes inheriting this class, should also ensure that they set the
    * protected variable $transitions to be used by the ::allowed() method.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager service.
    * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
    *   The relation manager service.
-   * @param \Drupal\og\MembershipManagerInterface $ogMembershipManager
-   *   The OG membership manager service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
+   * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
+   *   The workflow state permission service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, JoinupRelationManagerInterface $relationManager, MembershipManagerInterface $ogMembershipManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper) {
-    $this->entityTypeManager = $entityTypeManager;
+  public function __construct(JoinupRelationManagerInterface $relationManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->relationManager = $relationManager;
-    $this->ogMembershipManager = $ogMembershipManager;
-    $this->configFactory = $configFactory;
     $this->currentUser = $currentUser;
     $this->workflowHelper = $workflow_helper;
     $this->permissionScheme = $configFactory->get('joinup_community_content.permission_scheme');
+    $this->workflowStatePermission = $workflowStatePermission;
   }
 
   /**
@@ -121,34 +104,21 @@ class NodeGuard implements GuardInterface {
   public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $permission_scheme = $this->permissionScheme->get('create');
     $workflow_id = $workflow->getId();
-    $e_library = (string) $this->relationManager->getParentELibraryCreationOption($entity);
+    $content_creation = (string) $this->relationManager->getParentContentCreationOption($entity);
 
-    if (!isset($permission_scheme[$workflow_id][$e_library][$transition->getId()])) {
+    if (!isset($permission_scheme[$workflow_id][$content_creation][$transition->getId()])) {
       return FALSE;
     }
-    return $this->workflowHelper->userHasRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$e_library][$transition->getId()]);
+    return $this->workflowHelper->userHasRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$content_creation][$transition->getId()]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function allowedUpdate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
-    $permission_scheme = $this->permissionScheme->get('update');
-    $access = FALSE;
-
-    $workflow_id = $workflow->getId();
-    if ($this->workflowHelper->userHasOwnAnyRoles($entity, $this->currentUser, $permission_scheme[$workflow_id][$transition->getId()])) {
-      $access = TRUE;
-    }
-
-    // If the user has access to the 'request_deletion' transition but also has
-    // delete permission to the entity, revoke the permission to request
-    // deletion.
-    if ($access && $transition->getId() === 'request_deletion') {
-      $access = !$entity->access('delete');
-    }
-
-    return $access;
+    $from_state = $this->getState($entity);
+    $to_state = $transition->getToState()->getId();
+    return $this->workflowStatePermission->isStateUpdatePermitted($this->currentUser, $entity, $from_state, $to_state);
   }
 
   /**

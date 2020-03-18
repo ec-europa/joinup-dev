@@ -8,7 +8,7 @@
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
-use Drupal\changed_fields\NodeSubject;
+use Drupal\changed_fields\EntitySubject;
 use Drupal\joinup_discussion\DiscussionObserver;
 use Drupal\joinup_discussion\Event\DiscussionDeleteEvent;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
@@ -23,7 +23,7 @@ use Drupal\node\NodeInterface;
 function joinup_discussion_node_presave(NodeInterface $discussion) {
   if ($discussion->bundle() === 'discussion') {
     // Create a node subject object, add the observer and notify about changes.
-    $node_subject = new NodeSubject($discussion, 'default_field_comparator');
+    $node_subject = new EntitySubject($discussion, 'default_field_comparator');
     $node_subject->attach(new DiscussionObserver(\Drupal::service('event_dispatcher')));
     $node_subject->notify();
   }

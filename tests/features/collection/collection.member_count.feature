@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Collection homepage
   In order to have the users properly informed
   As an owner of the website
@@ -78,6 +78,11 @@ Feature: Collection homepage
     Then I see the text "4 Members" in the "Header" region
 
   Scenario: Blocked users are not counted towards total member count.
+    # Cache the collection overview page.
+    When I am not logged in
+    When I visit the collection overview
+    Then I should see the text "3" in the "Under the mountain" tile
+
     Given I am logged in as a moderator
     And I am on the homepage
     When I click "People"
@@ -92,6 +97,10 @@ Feature: Collection homepage
     Then I should see the text "4 Members" in the "Header" region
     And I click "Members" in the "Left sidebar"
     Then the "Roles" field should contain the "- Any - (4)" option
+
+    # Ensure that cache is invalidated properly for tiles in search api views.
+    When I visit the collection overview
+    Then I should see the text "4" in the "Under the mountain" tile
 
     # Block the user to ensure again that the counters are updated.
     Given I am logged in as a moderator
@@ -108,3 +117,7 @@ Feature: Collection homepage
     Then I should see the text "3 Members" in the "Header" region
     And I click "Members" in the "Left sidebar"
     Then the "Roles" field should contain the "- Any - (3)" option
+
+    # Ensure that cache is invalidated properly for tiles in search api views.
+    When I visit the collection overview
+    Then I should see the text "3" in the "Under the mountain" tile

@@ -14,27 +14,27 @@ Feature: In order to avoid users changing federated values
       | title       | A federated licence       |
       | description | Licence agreement details |
       | type        | Public domain             |
-    And the following solution:
-      | title               | A federated solution                 |
-      | description         | This is a federated solution         |
-      | owner               | John Federator                       |
-      | contact information | John Federator's contact             |
-      | documentation       | text.pdf                             |
-      | elibrary creation   | registered users                     |
-      | landing page        | http://foo-example.com/landing       |
-      | webdav creation     | no                                   |
-      | webdav url          | http://joinup.eu/solution/foo/webdav |
-      | wiki                | http://example.wiki/foobar/wiki      |
-      | state               | validated                            |
     And the following collection:
       | title               | A federated collection   |
       | logo                | logo.png                 |
       | moderation          | yes                      |
       | owner               | John Federator           |
       | contact information | John Federator's contact |
-      | elibrary creation   | facilitators             |
-      | affiliates          | A federated solution     |
+      | content creation    | facilitators             |
       | state               | validated                |
+    And the following solution:
+      | title               | A federated solution                 |
+      | collection          | A federated collection               |
+      | description         | This is a federated solution         |
+      | owner               | John Federator                       |
+      | contact information | John Federator's contact             |
+      | documentation       | text.pdf                             |
+      | content creation    | registered users                     |
+      | landing page        | http://foo-example.com/landing       |
+      | webdav creation     | no                                   |
+      | webdav url          | http://joinup.eu/solution/foo/webdav |
+      | wiki                | http://example.wiki/foobar/wiki      |
+      | state               | validated                            |
     And the following release:
       | title          | A federated release         |
       | description    | This is a federated release |
@@ -67,7 +67,6 @@ Feature: In order to avoid users changing federated values
     And "A federated distribution" should have a related provenance activity
     And "John Federator" should have a related provenance activity
     And "John Federator's contact" should have a related provenance activity
-    And "A federated licence" should have a related provenance activity
 
   Scenario Outline: Schema fields are disabled for federated entities.
     When I am logged in as a moderator
@@ -77,11 +76,10 @@ Feature: In order to avoid users changing federated values
     And the following fields should not be disabled "<fields not disabled>"
 
     Examples:
-      | label                    | type         | fields disabled                                                                                              | fields not disabled                                                                                            |
-      | A federated collection   | collection   | Title, Description, Contact information, Owner                                                               | Abstract, Access URL, Policy domain, Moderated, eLibrary creation, Motivation, Logo, Banner, Closed collection |
-      | A federated solution     | solution     | Title, Description, Contact information, Owner, Keywords, Related solutions, Status, Languages, Landing page | Policy domain, Moderated, eLibrary creation, Motivation, Logo, Banner, Metrics pager                           |
-      | A federated release      | release      | Name, Release number, Keywords, Status, Language                                                             | Motivation                                                                                                     |
-      | A federated distribution | distribution | Title, Description, Access URL, Format, Status                                                               |                                                                                                                |
-      | John Federator           | owner        | Name                                                                                                         |                                                                                                                |
-      | John Federator's contact | contact      | E-mail address, Name, Website URL                                                                            |                                                                                                                |
-      | A federated licence      | licence      | Title, Description, Type                                                                                     |                                                                                                                |
+      | label                    | type         | fields disabled                                                                                              | fields not disabled                                                                                           |
+      | A federated collection   | collection   | Title, Description, Contact information, Owner                                                               | Abstract, Access URL, Policy domain, Moderated, Content creation, Motivation, Logo, Banner, Closed collection |
+      | A federated solution     | solution     | Title, Description, Contact information, Owner, Keywords, Related solutions, Status, Languages, Landing page | Policy domain, Moderated, Content creation, Motivation, Logo, Banner, Metrics pager                           |
+      | A federated release      | release      | Name, Release number, Keywords, Status, Language                                                             | Motivation                                                                                                    |
+      | A federated distribution | distribution | Title, Description, Access URL, Format, Status, Licence                                                      |                                                                                                               |
+      | John Federator           | owner        | Name                                                                                                         |                                                                                                               |
+      | John Federator's contact | contact      | E-mail address, Name, Website URL                                                                            |                                                                                                               |

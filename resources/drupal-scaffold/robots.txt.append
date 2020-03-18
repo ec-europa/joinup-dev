@@ -1,0 +1,5 @@
+# Legacy services
+Disallow: /dss-webapp/
+Disallow: /site/
+Disallow: /svn/
+Disallow: /webdav/

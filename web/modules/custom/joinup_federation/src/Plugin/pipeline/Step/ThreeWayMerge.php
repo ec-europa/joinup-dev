@@ -9,9 +9,10 @@ use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
@@ -70,7 +71,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -82,8 +83,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
    *   The time service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $field_validator, TimeInterface $time) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
-    $this->entityTypeManager = $entity_type_manager;
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityFieldManager = $entity_field_manager;
     $this->fieldValidator = $field_validator;
     $this->time = $time;
@@ -92,7 +92,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,
@@ -174,7 +174,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       }
 
       if ($needs_save) {
-        $this->handleAffiliation($incoming_entity, $entity_exists);
         $this->handleDistributionParent($incoming_entity, $entity_exists);
         $incoming_entity->skip_notification = TRUE;
         $incoming_entity->save();
@@ -257,7 +256,7 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
       }
     }
 
-    // Set he state of new entities to 'validated'.
+    // Set the state of new entities to 'validated'.
     if ($state_field_name) {
       $incoming_entity->set($state_field_name, 'validated');
     }
@@ -275,53 +274,6 @@ class ThreeWayMerge extends JoinupFederationStepPluginBase implements PipelineSt
         $field->applyDefaultValue();
       }
     }
-  }
-
-  /**
-   * Handles the incoming solution affiliation.
-   *
-   * For existing solutions, we only check if the configured collection ID
-   * matches the solution affiliation. For new solutions, we affiliate the
-   * solution to the configured collection.
-   *
-   * @param \Drupal\rdf_entity\RdfInterface $incoming_solution
-   *   The incoming solution.
-   * @param bool $entity_exists
-   *   If the incoming entity already exits on the system.
-   *
-   * @throws \Exception
-   *   If the configured collection is different than the collection of the
-   *   local solution.
-   */
-  protected function handleAffiliation(RdfInterface $incoming_solution, bool $entity_exists): void {
-    // Check only solutions.
-    if ($incoming_solution->bundle() !== 'solution') {
-      return;
-    }
-
-    // If this plugin was not configured to assign a collection, exit early.
-    if (!$collection_id = $this->getPipeline()->getCollection()) {
-      return;
-    }
-
-    if (!$entity_exists) {
-      $incoming_solution->set('collection', $collection_id);
-      return;
-    }
-
-    // Check for collection mismatch when federating an existing solution.
-    $match = FALSE;
-    foreach ($incoming_solution->get('collection') as $item) {
-      if ($item->target_id === $collection_id) {
-        $match = TRUE;
-        break;
-      }
-    }
-
-    if (!$match) {
-      throw new \Exception("Plugin '3_way_merge' is configured to assign the '$collection_id' collection but the existing solution '{$incoming_solution->id()}' has '{$incoming_solution->collection->target_id}' as collection.");
-    }
-    // For an existing solution we don't make any changes to its affiliation.
   }
 
   /**

@@ -9,6 +9,8 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
@@ -81,7 +83,7 @@ function custom_page_node_update(NodeInterface $entity) {
     $result = $menu_link_manager->loadLinksByRoute('entity.node.canonical', ['node' => $entity->id()]);
 
     if (!empty($result)) {
-      foreach ($result as $id => $instance) {
+      foreach ($result as $instance) {
         $menu_link_manager->updateDefinition($instance->getPluginId(), ['title' => $entity->getTitle()], TRUE);
       }
     }
@@ -139,11 +141,14 @@ function custom_page_search_api_query_search_api_field_field_cp_content_listing_
   }
 
   $field_value = $query->getOption('search_api_field item')->value;
-
-  if (!empty($field_value['show_shared'])) {
+  /** @var \Drupal\search_api\Query\Query $query */
+  if ($field_value['global_search']) {
+    $query->addCondition('entity_groups', NULL, '<>');
+  }
+  elseif (!empty($field_value['show_shared'])) {
     $or = $query
       ->createConditionGroup('or')
-      ->addCondition('field_shared_in', [$group->id()], 'IN')
+      ->addCondition('shared_in', [$group->id()], 'IN')
       ->addCondition('entity_groups', [$group->id()], 'IN');
     $query->addConditionGroup($or);
   }
@@ -186,4 +191,15 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     return AccessResult::allowed();
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function custom_page_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  return AccessResult::allowedIf(
+    $operation === 'edit'
+    && $field_definition->getName() === 'status'
+    && $field_definition->getTargetEntityTypeId() === 'node'
+    && $field_definition->getTargetBundle() === 'custom_page');
 }

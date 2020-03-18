@@ -5,40 +5,40 @@ Feature: Solution API
   I need to be able to use the Solution API
 
   Scenario: Programmatically create a solution
-    Given the following solution:
-      | title             | My first solution                    |
-      | description       | A sample solution                    |
-      | logo              | logo.png                             |
-      | banner            | banner.jpg                           |
-      | documentation     | text.pdf                             |
-      | elibrary creation | registered users                     |
-      | landing page      | http://foo-example.com/landing       |
-      | webdav creation   | no                                   |
-      | webdav url        | http://joinup.eu/solution/foo/webdav |
-      | wiki              | http://example.wiki/foobar/wiki      |
-      | state             | validated                            |
-    And the following collection:
-      | title             | Solution API foo  |
-      | logo              | logo.png          |
-      | moderation        | yes               |
-      | elibrary creation | facilitators      |
-      | affiliates        | My first solution |
-      | state             | validated         |
+    Given the following collection:
+      | title            | Solution API foo |
+      | logo             | logo.png         |
+      | moderation       | yes              |
+      | content creation | facilitators     |
+      | state            | validated        |
+    And the following solution:
+      | title            | My first solution                    |
+      | collection       | Solution API foo                     |
+      | description      | A sample solution                    |
+      | logo             | logo.png                             |
+      | banner           | banner.jpg                           |
+      | documentation    | text.pdf                             |
+      | content creation | registered users                     |
+      | landing page     | http://foo-example.com/landing       |
+      | webdav creation  | no                                   |
+      | webdav url       | http://joinup.eu/solution/foo/webdav |
+      | wiki             | http://example.wiki/foobar/wiki      |
+      | state            | validated                            |
     Then I should have 1 solution
 
   Scenario: Programmatically create a solution using only the mandatory fields
-    Given the following solution:
-      | title             | My first solution mandatory |
-      | description       | Another sample solution     |
-      | elibrary creation | members                     |
-      | state             | validated                   |
-    And the following collection:
-      | title             | Solution API bar            |
-      | logo              | logo.png                    |
-      | moderation        | yes                         |
-      | elibrary creation | facilitators                |
-      | affiliates        | My first solution mandatory |
-      | state             | validated                   |
+    Given the following collection:
+      | title            | Solution API bar |
+      | logo             | logo.png         |
+      | moderation       | yes              |
+      | content creation | facilitators     |
+      | state            | validated        |
+    And the following solution:
+      | title            | My first solution mandatory |
+      | collection       | Solution API bar            |
+      | description      | Another sample solution     |
+      | content creation | members                     |
+      | state            | validated                   |
     Then I should have 1 solution
 
   Scenario: Programmatically create a solution that is affiliated with a collection
@@ -59,16 +59,16 @@ Feature: Solution API
       | name      | type            |
       | Leechidna | Local Authority |
     And users:
-      | Username          | Password |
-      | Solution API user | pass     |
+      | Username          |
+      | Solution API user |
     And the following collection:
-      | title             | This is a klm collection |
-      | logo              | logo.png                 |
-      | banner            | banner.jpg               |
-      | moderation        | no                       |
-      | closed            | no                       |
-      | elibrary creation | facilitators             |
-      | state             | validated                |
+      | title            | This is a klm collection |
+      | logo             | logo.png                 |
+      | banner           | banner.jpg               |
+      | moderation       | no                       |
+      | closed           | no                       |
+      | content creation | facilitators             |
+      | state            | validated                |
     And the following collection user memberships:
       | user              | collection               | roles       |
       | Solution API user | This is a klm collection | facilitator |

@@ -16,10 +16,13 @@ Feature: User profile
     # username.
     Then I should see the heading "Leonardo Da Vinci"
     And I should see the avatar "user_icon.png"
+
+    But I should not see the text "Country of origin:" in the "Header" region
+
     When I click "Edit"
     Then the following fields should be present "Current password, Email, Password, Confirm password, First name"
-    And the following fields should be present "Family name, Photo, Country of origin, Professional profile, Professional domain, Business title"
-    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, Google+, SlideShare, Youtube, Vimeo"
+    And the following fields should be present "Family name, Photo, Country of origin, Professional domain, Business title"
+    And the following fields should be present "Facebook, Twitter, LinkedIn, GitHub, SlideShare, Youtube, Vimeo"
     And the following fields should not be present "Time zone"
     # Username label and user name are on separate lines to be more MDL-like after ISAICP-3770
     And I should see the text "Username"
@@ -27,7 +30,6 @@ Feature: User profile
     And I fill in "First name" with "Leoke"
     And I fill in "Family name" with "di ser Piero da Vinci"
     And I select "Supplier exchange" from "Professional domain"
-    And I fill in "Professional profile" with "SAP expert"
     And I fill in "Country of origin" with "Italy"
     And I fill in "Facebook" with "leodavinci"
     And I fill in "Twitter" with "therealdavinci"
@@ -50,7 +52,6 @@ Feature: User profile
     And the link "Twitter" in the "Header" region should point to "https://www.twitter.com/therealdavinci"
     And the link "LinkedIn" in the "Header" region should point to "https://www.linkedin.com/leonardo.davinci"
     And the link "GitHub" in the "Header" region should point to "https://github.com/davinci"
-    And I should not see the link "Google+" in the "Header" region
     And I should not see the link "SlideShare" in the "Header" region
     And I should not see the link "Youtube" in the "Header" region
     And I should not see the link "Vimeo" in the "Header" region
@@ -60,6 +61,9 @@ Feature: User profile
     # A user should not be able to edit the profile page of another user.
     When I go to the public profile of "Domenico Ghirlandaio"
     Then I should not see the link "Edit"
+    # Verify that the user's "Country of origin" field is visible on its profile.
+    When I go to the public profile of "Leonardo Da Vinci"
+    Then I should see the text "Country of origin: Italy" in the "Header" region
 
   @terms
   Scenario: A moderator can navigate to any users profile and edit it.
@@ -77,13 +81,12 @@ Feature: User profile
     Then I click "Edit"
     Then the following fields should be present "Email, Username, Password, Confirm password"
     And the following fields should be present "First name, Family name, Photo, Professional domain, Business title"
-    And the following fields should be present "Country of origin, Professional profile, Organisation"
+    And the following fields should be present "Country of origin, Organisation"
     And the following fields should not be present "Time zone"
     And I should not see the text "Username: Leonardo Da Vinci"
     And I fill in "First name" with "Leo"
     And I fill in "Family name" with "di ser Piero da Vinci"
     And I select "Finance in EU" from "Professional domain"
-    And I fill in "Professional profile" with "SAP expert"
     And I fill in "Country of origin" with "Italy"
     And I press the "Save" button
     Then I should see the success message "The changes have been saved."
@@ -110,14 +113,14 @@ Feature: User profile
       | Anise Edwardson   | anise.edwardson@example.com   |            |             |
       | Jayson Granger    | jayson.granger@example.com    |            |             |
       | Clarette Fairburn | clarette.fairburn@example.com | Clarette   | Fairburn    |
-    And the following solutions:
-      | title              | description                                     | logo     | banner     | state     | creation date    |
-      | E.C.O. fertilizers | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated | 2017-02-23 13:00 |
-      | SOUND project      | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated | 2017-02-23 14:01 |
     And the following collections:
-      | title                 | description                           | logo     | banner     | state     | affiliates         | creation date    |
-      | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | E.C.O. fertilizers | 2017-02-23 10:00 |
-      | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | SOUND project      | 2017-02-23 12:00 |
+      | title                 | description                           | logo     | banner     | state     | creation date    |
+      | Botanic E.D.E.N.      | European Deep Earth Nurturing project | logo.png | banner.jpg | validated | 2017-02-23 10:00 |
+      | Ethic flower handling | Because even flowers have feelings.   | logo.png | banner.jpg | validated | 2017-02-23 12:00 |
+    And the following solutions:
+      | title              | collection            | description                                     | logo     | banner     | state     | creation date    |
+      | E.C.O. fertilizers | Botanic E.D.E.N.      | Ecologic cool organic fertilizers production.   | logo.png | banner.jpg | validated | 2017-02-23 13:00 |
+      | SOUND project      | Ethic flower handling | Music playlist for growing flowers with rhythm. | logo.png | banner.jpg | validated | 2017-02-23 14:01 |
     And discussion content:
       | title                          | author          | collection            | state     | created          |
       | Repopulating blue iris         | Corwin Robert   | Botanic E.D.E.N.      | validated | 2018-06-15 16:00 |
@@ -186,7 +189,7 @@ Feature: User profile
     # the full name as header title and in the page title tag.
     When I go to the public profile of cgarnett67
     Then I should see the heading "Callista Garnett" in the "Header" region
-    And the HTML title tag should contain the text "Callista Garnett"
+    And the HTML title of the page should be "Callista Garnett"
     # The title should not be duplicated.
     And I should not see the "Page title" region
     And I should not see the heading "cgarnett67"
@@ -194,7 +197,7 @@ Feature: User profile
     # The full name fall backs to the user name when the fields are not filled.
     When I go to the public profile of delwin999
     Then I should see the heading delwin999 in the "Header" region
-    And the HTML title tag should contain the text delwin999
+    And the HTML title of the page should be delwin999
     And I should not see the "Page title" region
 
   Scenario: The user profile page is updated when the user joins or leaves a collection
@@ -251,13 +254,13 @@ Feature: User profile
     When I am logged in as an "authenticated user"
     And I am on the homepage
     And I click "My account"
-    Then I should not see the link "Subscription Settings"
+    Then I should not see the link "Subscription settings"
     And I should not see the link "Persistent Logins"
     And I should not see the link "Newsletters"
 
   @email
   Scenario: A user, changing its E-mail should receive a notification on his old
-    E-mail address and a verification link on its new address.
+  E-mail address and a verification link on its new address.
 
     Given users:
       | Username       | E-mail         | Password | First name | Family name |

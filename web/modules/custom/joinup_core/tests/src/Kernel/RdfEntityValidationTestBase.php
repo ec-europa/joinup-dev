@@ -16,7 +16,6 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'allowed_formats',
     'cached_computed_field',
     'comment',
-    'ds',
     'image',
     'joinup_core',
     'link',
@@ -30,6 +29,7 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'state_machine',
     'taxonomy',
     'tour',
+    'workflow_state_permission',
   ];
 
   /**

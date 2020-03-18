@@ -1,4 +1,4 @@
-@api @terms @email
+@api @terms @email @group-a
 Feature: Notification test for the collection transitions.
   In order to manage my collections
   As an user that is related to the collection
@@ -8,6 +8,9 @@ Feature: Notification test for the collection transitions.
     Given the following owner:
       | name       | type                    |
       | NC for all | Non-Profit Organisation |
+    And the following contact:
+      | name  | Notificationous absolutous        |
+      | email | absolute.notification@example.com |
     And users:
       | Username       | Roles     | E-mail                  | First name | Family name |
       | NC moderator   | moderator | nc_moderator@test.com   | NC         | Moderator   |
@@ -17,29 +20,29 @@ Feature: Notification test for the collection transitions.
       | NC member1     |           | nc_member1@test.com     | NC         | Member1     |
       | NC member2     |           | nc_member2@test.com     | NC         | Member2     |
       | NCS owner      |           | ncs_owner@test.com      | NC         | Owner       |
+    And collections:
+      | title                  | state            | abstract     | description   | policy domain     | owner      | contact information        |
+      | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      # The following will also cover the validate edited notification.
+      | NC to propose edit     | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to validate edit    | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to request archival | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to request deletion | validated        | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to reject deletion  | deletion request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
+      | NC to delete           | deletion request | No one cares | No one cares. | Supplier exchange | NC for all | Notificationous absolutous |
     And the following solutions:
-      | title        | logo     | banner     | state     |
+      | title        | collections                          | logo     | banner     | state     |
       # Has only one affiliate.
-      | NC Solution1 | logo.png | banner.jpg | validated |
+      | NC Solution1 | NC to archive                        | logo.png | banner.jpg | validated |
       # Has more than one affiliate.
-      | NC Solution2 | logo.png | banner.jpg | validated |
+      | NC Solution2 | NC to request archival,NC to archive | logo.png | banner.jpg | validated |
     And the following solution user memberships:
       | solution     | user      | roles |
       | NC Solution1 | NCS owner | owner |
       | NC Solution2 | NCS owner | owner |
-    And collections:
-      | title                  | state            | abstract     | description   | policy domain     | owner      | affiliates                     |
-      | NC to propose          | draft            | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to validate         | proposed         | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      # The following will also cover the validate edited notification.
-      | NC to propose edit     | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to validate edit    | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to request archival | validated        | No one cares | No one cares. | Supplier exchange | NC for all | "NC Solution2"                 |
-      | NC to request deletion | validated        | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to reject archival  | archival request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to reject deletion  | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
-      | NC to archive          | archival request | No one cares | No one cares. | Supplier exchange | NC for all | "NC Solution1", "NC Solution2" |
-      | NC to delete           | deletion request | No one cares | No one cares. | Supplier exchange | NC for all |                                |
     And the following collection user memberships:
       | collection             | user           | roles              |
       | NC to propose          | NC owner       | owner, facilitator |
@@ -64,9 +67,12 @@ Feature: Notification test for the collection transitions.
     And I am logged in as "NC user"
     When I go to the propose collection form
     When I fill in the following:
-      | Title            | NC proposed new |
-      | Description      | No one cares.   |
-      | Spatial coverage | Belgium         |
+      | Title                 | NC proposed new     |
+      | Description           | No one cares.       |
+      | Geographical coverage | Belgium             |
+      # Contact information data.
+      | Name                  | Super Sayan Academy |
+      | E-mail                | ssa@example.com     |
     When I select "HR" from "Policy domain"
     And I press "Add existing" at the "Owner" field
     And I fill in "Owner" with "NC for all"
@@ -77,8 +83,9 @@ Feature: Notification test for the collection transitions.
       | To approve or reject this proposal, please go to                                   |
       | If you think this action is not clear or not due, please contact Joinup Support at |
 
-    # Clean up manually created collection.
+    # Clean up the manually created entities.
     Then I delete the "NC proposed new" collection
+    And I delete the "Super Sayan Academy" contact information
 
     # Test 'propose' operation (on an existing collection)
     When all e-mails have been sent

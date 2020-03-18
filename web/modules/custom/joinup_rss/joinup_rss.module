@@ -9,49 +9,35 @@ declare(strict_types = 1);
 
 use Drupal\Core\Url;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\UriEncoder;
-use Drupal\views\Plugin\views\query\QueryPluginBase;
-use Drupal\views\ViewExecutable;
+use Drupal\sparql_entity_storage\UriEncoder;
 
 /**
- * Implements hook_views_query_alter().
- *
- * Decodes RDF entity ID before running the query.
- *
- * @see joinup_core_views_query_alter()
- */
-function joinup_rss_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void {
-  if ($view->id() !== 'collection_feed') {
-    return;
-  }
-
-  foreach ($query->getWhere() as &$group) {
-    foreach ($group['conditions'] as &$condition) {
-      if ($condition[0] === 'entity_groups') {
-        $condition[1] = UriEncoder::decodeUrl($condition[1]);
-        return;
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_views_view_rss__collection_feed__rss_feed().
+ * Implements hook_preprocess_views_view_rss__group_feed__rss_feed().
  *
  * Adds dynamic title and description to the rss.
  */
-function joinup_rss_preprocess_views_view_rss__collection_feed__rss_feed(&$variables): void {
+function joinup_rss_preprocess_views_view_rss__group_feed__rss_feed(&$variables): void {
   // Load the entity from the first view argument. The argument has been already
-  // validated early so we can expect a collection to be loaded successfully.
-  $encoded_collection_id = $variables['view']->args[0];
-  $collection = Rdf::load(UriEncoder::decodeUrl($encoded_collection_id));
+  // validated early so we can expect a group to be loaded successfully.
+  $encoded_uri_id = $variables['view']->args[0];
+  $group = Rdf::load(UriEncoder::decodeUrl($encoded_uri_id));
 
-  $variables['title'] = t('Latest updates from the @collection collection', [
-    '@collection' => $collection->label(),
-  ]);
-  $variables['description'] = t('This feed contains the latest published content from the @collection collection, including the newest solutions.', [
-    '@collection' => $collection->label(),
-  ]);
+  $replacements = [
+    '@label' => $group->label(),
+    '@bundle' => $group->bundle(),
+  ];
+
+  $variables['title'] = t('Latest updates from the @label @bundle', $replacements);
+  $variables['description'] = $group->bundle() === 'collection' ?
+    t('This feed contains the latest published content from the @label @bundle, including the newest solutions.', $replacements) :
+    t('This feed contains the latest published content from the @label @bundle.', $replacements);
+
+  // According to the RSS specifications this should be the URL of the website's
+  // front page. But for the collection or solution feeds the homepage is the
+  // group's canonical URL.
+  // @see https://validator.w3.org/feed/docs/rss2.html#requiredChannelElements
+  // @see https://www.drupal.org/project/drupal/issues/3070620
+  $variables['link'] = $group->toUrl()->setAbsolute()->toString();
 }
 
 /**
@@ -67,19 +53,20 @@ function joinup_rss_page_attachments(array &$attachments): void {
 
   /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
   $entity = $route->getParameter('rdf_entity');
-  if ($entity->bundle() !== 'collection') {
+  if (!in_array($entity->bundle(), ['collection', 'solution'])) {
     return;
   }
 
-  $url = Url::fromRoute('view.collection_feed.rss_feed', [
+  $url = Url::fromRoute('view.group_feed.rss_feed', [
     'rdf_entity' => UriEncoder::encodeUrl($entity->id()),
   ])->setAbsolute();
 
   if ($url->access()) {
     $attachments['#attached']['feed'][] = [
       $url->toString(),
-      t('Latest updates from the @collection collection', [
-        '@collection' => $entity->label(),
+      t('Latest updates from the @label @bundle', [
+        '@label' => $entity->label(),
+        '@bundle' => $entity->bundle(),
       ]),
     ];
   }

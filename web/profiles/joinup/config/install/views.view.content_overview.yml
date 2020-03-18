@@ -8,13 +8,12 @@ dependencies:
     - joinup_core
     - search_api
 id: content_overview
-label: Content
+label: 'Content overview'
 module: views
-description: ''
+description: 'Keep up to date page'
 tag: ''
 base_table: search_api_index_published
 base_field: search_api_id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -460,6 +459,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -499,6 +500,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -538,6 +541,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -577,6 +582,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -591,6 +598,18 @@ display:
             group_items: {  }
           plugin_id: search_api_string
       sorts:
+        published_at:
+          id: published_at
+          table: search_api_index_published
+          field: published_at
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
         entity_created:
           id: entity_created
           table: search_api_index_published
@@ -621,8 +640,9 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
   page_1:
     display_plugin: page
     id: page_1
@@ -643,8 +663,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - community_content_author
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'

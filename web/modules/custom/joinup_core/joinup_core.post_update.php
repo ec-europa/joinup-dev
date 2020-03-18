@@ -6,9 +6,15 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
+use Drupal\og\Entity\OgRole;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\redirect\Entity\Redirect;
+use Drupal\search_api\Entity\Index;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 use EasyRdf\Resource;
@@ -118,7 +124,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
 
   $data = ['collection', 'solution', 'asset_release', 'asset_distribution'];
   foreach ($data as $bundle) {
-    RdfEntityMapping::loadByName('rdf_entity', $bundle)
+    SparqlMapping::loadByName('rdf_entity', $bundle)
       ->setThirdPartySetting('rdf_schema_field_validation', 'property_predicates', ['http://www.w3.org/2000/01/rdf-schema#domain'])
       ->setThirdPartySetting('rdf_schema_field_validation', 'graph', $graph_uri)
       ->setThirdPartySetting('rdf_schema_field_validation', 'class', $class_definition)
@@ -130,7 +136,7 @@ function joinup_core_post_update_configure_rdf_schema_field_validation() {
  * Fix the banner predicate [ISAICP-4332].
  */
 function joinup_core_post_update_fix_banner_predicate() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
   SELECT ?graph ?entity_id ?image_uri
@@ -189,11 +195,11 @@ QUERY;
  * Fix the owner class predicate [ISAICP-4333].
  */
 function joinup_core_post_update_fix_owner_predicate() {
-  $rdf_entity_mapping = RdfEntityMapping::loadByName('rdf_entity', 'owner');
-  $rdf_entity_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
-  $rdf_entity_mapping->save();
+  $sparql_mapping = SparqlMapping::loadByName('rdf_entity', 'owner');
+  $sparql_mapping->setRdfType('http://xmlns.com/foaf/0.1/Agent');
+  $sparql_mapping->save();
 
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?type
@@ -241,7 +247,7 @@ QUERY;
  * Fix data type of the solution contact point[ISAICP-4334].
  */
 function joinup_core_post_update_fix_solution_contact_datatypea() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   // Two issues are to be fixed here.
   // 1. The contact reference should be a resource instead of a literal.
@@ -297,7 +303,7 @@ QUERY;
  * Fix data type of the access url field [ISAICP-4349].
  */
 function joinup_core_post_update_fix_access_url_datatype() {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql_endpoint */
   $sparql_endpoint = \Drupal::service('sparql_endpoint');
   $retrieve_query = <<<QUERY
 SELECT ?graph ?entity_id ?predicate ?access_url
@@ -526,6 +532,86 @@ function joinup_core_post_update_create_distribution_aliases(array &$sandbox) {
 }
 
 /**
+ * Create release aliases and create a redirect from the existing ones.
+ */
+function joinup_core_post_update_create_new_release_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.rdf_entities_releases.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.rdf_entities_releases')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $sandbox['entity_ids'] = \Drupal::entityQuery('rdf_entity')
+      ->condition('rid', 'asset_release')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
+ * Create news aliases for news, event, discussion and document content types.
+ */
+function joinup_core_post_update_create_new_node_aliases(array &$sandbox): string {
+  if (!isset($sandbox['entity_ids'])) {
+    $pathauto_settings = Yaml::decode(file_get_contents(DRUPAL_ROOT . '/profiles/joinup/config/install/pathauto.pattern.community_content.yml'));
+    \Drupal::configFactory()
+      ->getEditable('pathauto.pattern.community_content')
+      ->setData($pathauto_settings)
+      ->save();
+
+    $bundles = ['news', 'event', 'discussion', 'document'];
+    $sandbox['entity_ids'] = \Drupal::entityQuery('node')
+      ->condition('type', $bundles, 'IN')
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['max'] = count($sandbox['entity_ids']);
+  }
+
+  $entity_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $pathauto_generator */
+  $pathauto_generator = \Drupal::service('pathauto.generator');
+
+  $result = array_slice($sandbox['entity_ids'], $sandbox['current'], 50);
+  foreach ($entity_storage->loadMultiple($result) as $entity) {
+    $source_url = $entity->toUrl()->toString();
+    $new_alias = $pathauto_generator->createEntityAlias($entity, 'insert');
+
+    Redirect::create([
+      'redirect_source' => $source_url,
+      'redirect_redirect' => 'internal:' . $new_alias['alias'],
+      'language' => 'und',
+      'status_code' => '301',
+    ])->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['current'] / $sandbox['max']);
+  return "Processed {$sandbox['current']} out of {$sandbox['max']}.";
+}
+
+/**
  * Disable database logging, use the syslog instead.
  */
 function joinup_core_post_update_swap_dblog_with_syslog() {
@@ -536,4 +622,494 @@ function joinup_core_post_update_swap_dblog_with_syslog() {
   // them. Write the log entries to the syslog instead.
   \Drupal::service('module_installer')->install(['syslog']);
   \Drupal::service('module_installer')->uninstall(['dblog']);
+}
+
+/**
+ * Enable the spdx module.
+ */
+function joinup_core_post_update_enable_spdx() {
+  \Drupal::service('module_installer')->install(['spdx']);
+}
+
+/**
+ * Re import the legal type vocabulary so that the weight is imported.
+ */
+function joinup_core_post_update_re_import_legal_type_vocabulary() {
+  \Drupal::service('joinup_core.vocabulary_fixtures.helper')->importFixtures('licence-legal-type');
+}
+
+/**
+ * Corrects the versions of faulty news items.
+ */
+function joinup_core_post_update_set_news_default_version() {
+  // Due to some cache state inconsistency, some nodes had their state
+  // reverted in a previous version without creating a new revision for this.
+  // While in a Drupal site it is normal to have forward revisions, it is not
+  // normal to have forward published revisions. If the entity is published,
+  // then the default version(current published) should be the latest
+  // revision. Instead, what happens is that these entities are published but
+  // also have revision(s) that are also published but of a newer version id.
+  //
+  // The query used is only returning published revisions as even if there is a
+  // forward draft revision in the entity, the draft versions are not published
+  // and thus, are not the default versions. This will set the latest published
+  // revision as the default one.
+  $results = \Drupal::service('joinup_core.requirements_helper')->getNodesWithProblematicRevisions();
+  $nids = array_keys($results);
+  /** @var \Drupal\node\NodeStorage $node_storage */
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  /** @var \Drupal\node\NodeInterface $node */
+  foreach ($node_storage->loadMultiple($nids) as $node) {
+    $latest_revision = $node_storage->loadRevision($results[$node->id()]->latest_vid);
+    $latest_revision->isDefaultRevision(TRUE);
+    $latest_revision->save();
+  }
+}
+
+/**
+ * Enable the nio module.
+ */
+function joinup_core_post_update_enable_nio() {
+  \Drupal::service('module_installer')->install(['nio']);
+}
+
+/**
+ * Enable the Publication Date module.
+ */
+function joinup_core_post_update_install_publication_date() {
+  \Drupal::service('module_installer')->install(['publication_date']);
+}
+
+/**
+ * Enable the joinup_privacy module.
+ */
+function joinup_core_post_update_enable_joinup_privacy() {
+  \Drupal::service('module_installer')->install(['joinup_privacy']);
+}
+
+/**
+ * Deletes unused files explicitly requested for deletion.
+ */
+function joinup_core_post_update_delete_orphaned_files() {
+  $files_to_remove = [
+    'public://document/2017-05/e-trustex_software_architecture_document_0.pdf',
+    'public://document/2013-12/e-TrustEx Interface Control Document.pdf',
+  ];
+
+  $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+  foreach ($files_to_remove as $uri) {
+    $files = $file_storage->loadByProperties(['uri' => $uri]);
+    if ($file = reset($files)) {
+      $file->delete();
+    }
+  }
+}
+
+/**
+ * Reset the publication dates.
+ */
+function joinup_core_post_update_0_fix_publication_dates() {
+  // Due to an incorrect earlier version of the install hook of the
+  // Publication Date module a number of older news items were present without a
+  // publication date. Erase all publication dates and restore them.
+  // Note that since this update hook is prefixed with a 0 it is guaranteed to
+  // run before the post update hook of the Publication Date module.
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $connection = \Drupal::database();
+  $connection->update($node_storage->getDataTable())
+    ->fields(['published_at' => NULL])
+    ->execute();
+  $connection->update($node_storage->getRevisionDataTable())
+    ->fields(['published_at' => NULL])
+    ->execute();
+}
+
+/**
+ * Reset the publication dates again.
+ */
+function joinup_core_post_update_refix_publication_dates() {
+  $connection = Database::getConnection();
+
+  // Clean up the values from the database and start anew.
+  joinup_core_post_update_0_fix_publication_dates();
+
+  // The upstream update path is using the `changed` timestamp in order to
+  // update the publication timestamp. However, we already have a way of
+  // accurately tracking it, the `created` property. We already update the
+  // `created` property during the initial publication so by reproducing the
+  // upstream queries but having the `created` property used instead, we
+  // properly set the publication date.
+  $queries = [
+    // Update nodes with multiple revisions that have at least one published
+    // revision so the publication date is set to the created timestamp of the
+    // first published revision.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_revision} r, (
+  SELECT
+    nid,
+    MIN(vid) as vid,
+    MIN(created) as created
+  FROM {node_field_revision}
+  WHERE status = 1
+  GROUP BY nid
+  ORDER BY vid
+) s
+SET r.published_at = s.created
+WHERE r.nid = s.nid AND r.vid >= s.vid;
+SQL
+      ,
+      'arguments' => [],
+    ],
+
+    // Set the remainder of the publication dates in the revisions table to the
+    // default timestamp. This applies to all revisions that were created before
+    // the node was first published.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_revision} r
+SET r.published_at = :default_timestamp
+WHERE r.published_at IS NULL;
+SQL
+      ,
+      'arguments' => [':default_timestamp' => PUBLICATION_DATE_DEFAULT],
+    ],
+
+    // Copy the publication date from the revisions table to the node table.
+    [
+      'query' => <<<SQL
+UPDATE {node_field_data} d, {node_field_revision} r
+SET d.published_at = r.published_at
+WHERE d.vid = r.vid;
+SQL
+      ,
+      'arguments' => [],
+    ],
+  ];
+
+  // Perform the operations in a single atomic transaction.
+  $transaction = $connection->startTransaction();
+  try {
+    foreach ($queries as $query_data) {
+      \Drupal::database()->query($query_data['query'], $query_data['arguments']);
+    }
+  }
+  catch (Exception $e) {
+    $transaction->rollBack();
+    throw new Exception('Database error', 0, $e);
+  }
+}
+
+/**
+ * Stats #3: Repair Search API task.
+ */
+function joinup_core_post_update_stats3(): void {
+  $db = \Drupal::database();
+
+  $tasks = $db->select('search_api_task')
+    ->fields('search_api_task', ['id', 'data'])
+    ->condition('type', 'updateIndex')
+    ->condition('server_id', 'solr_published')
+    ->condition('index_id', 'published')
+    ->execute()
+    ->fetchAllKeyed();
+
+  $published_index_values = Index::load('published')->toArray();
+  foreach ($tasks as $id => $data) {
+    $data = unserialize($data);
+    // When a Search API index config entity is updated, a reindex is triggered
+    // but, for some reasons, the task uses the 'original' index config entity
+    // version.
+    // @see \Drupal\search_api\Entity\Server::updateIndex()
+    $data['#values'] = $published_index_values;
+    $db->update('search_api_task')
+      ->condition('id', $id)
+      ->fields(['data' => serialize($data)])
+      ->execute();
+  }
+}
+
+/**
+ * Stats #4: Create metadata entities.
+ */
+function joinup_core_post_update_stats4(array &$sandbox): ?string {
+  $db = \Drupal::database();
+  if (!isset($sandbox['current'])) {
+    $sandbox['current'] = 0;
+    $sandbox['processed'] = ['rdf_entity' => 0, 'node' => 0];
+  }
+
+  $items = $db->select('joinup_core_stats_update_temp')
+    ->fields('joinup_core_stats_update_temp')
+    ->condition('id', $sandbox['current'], '>')
+    ->orderBy('id')
+    ->range(0, 500)
+    ->execute()
+    ->fetchAll();
+  $sandbox['#finished'] = (int) empty($items);
+
+  if (!$sandbox['#finished']) {
+    /** @var \Drupal\Component\Uuid\UuidInterface $uuid */
+    $uuid = \Drupal::service('uuid');
+    $timestamp = \Drupal::time()->getRequestTime();
+
+    foreach ($items as $item) {
+      $target_entity_type_id = $item->entity_type_id;
+      $target_entity_id = $item->entity_id;
+      $meta_entity_type_id = $target_entity_type_id === 'rdf_entity' ? 'download_count' : 'visit_count';
+
+      // We're using direct SQL insert statements to speedup the process.
+      $meta_entity_id = $db->insert('meta_entity')->fields([
+        'type' => $meta_entity_type_id,
+        'uuid' => $uuid->generate(),
+        'label' => "$target_entity_type_id: $target_entity_id",
+        'target__target_id' => $target_entity_id,
+        'target__target_type' => $target_entity_type_id,
+        'created' => $timestamp,
+        'changed' => $timestamp,
+        'target__target_id_int' => $target_entity_type_id === 'rdf_entity' ? NULL : (int) $target_entity_id,
+      ])->execute();
+      $db->insert('meta_entity__count')->fields([
+        'bundle' => $meta_entity_type_id,
+        'entity_id' => $meta_entity_id,
+        'revision_id' => $meta_entity_id,
+        'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+        'delta' => 0,
+        'count_value' => (int) $item->counter,
+      ])->execute();
+      $sandbox['current'] = $item->id;
+      $sandbox['processed'][$target_entity_type_id]++;
+    }
+
+    return "Progress: {$sandbox['processed']['rdf_entity']} distributions, {$sandbox['processed']['node']} nodes.";
+  }
+  $db->schema()->dropTable('joinup_core_stats_update_temp');
+
+  return "Finished processing {$sandbox['processed']['rdf_entity']} distributions and {$sandbox['processed']['node']} nodes.";
+}
+
+/**
+ * Stats #5: Remove stale triples.
+ */
+function joinup_core_post_update_stats5(): void {
+  /** @var \Drupal\Driver\Database\sparql\Connection $sparql_connection */
+  $sparql_connection = \Drupal::service('sparql.endpoint');
+  $sparql_connection->query("WITH <http://joinup.eu/asset_distribution/published>
+DELETE {
+  ?s ?p ?o .
+}
+WHERE {
+  ?s ?p ?o .
+  VALUES ?p { <http://schema.org/userInteractionCount> <http://schema.org/expires> }
+}");
+}
+
+/**
+ * Stats #6: Update field queue.
+ */
+function joinup_core_post_update_stats6(array &$sandbox): ?string {
+  $db = \Drupal::database();
+
+  if (!isset($sandbox['items'])) {
+    // Make sure that cron is not consuming the queue while we're updating it.
+    // We try to acquire a lock, pretending that cron is running. If we succeed,
+    // a cron that attempts to start after this update has started, will not run
+    // as it will not be able to acquire the lock. If we fail, means the cron
+    // has already started before this update. That should be reported, as all
+    // cron processes should be stopped before starting the Joinup update.
+    // @see \Drupal\Core\Cron::run()
+    if (!\Drupal::lock()->acquire('cron', 900.0)) {
+      // Cron is currently running.
+      throw new \RuntimeException("Cannot update Joinup because cron is currently running. Ensure the conjob processes are stopped before attempting to update Joinup.");
+    }
+    $sandbox['items'] = [];
+    $sandbox['processed'] = 0;
+
+    // Store all 'cached_computed_field_expired_fields' queue items in sandbox.
+    $items = $db->select('queue', 'q')
+      ->fields('q', ['item_id', 'data'])
+      ->condition('name', 'cached_computed_field_expired_fields')
+      ->orderBy('q.item_id')
+      ->execute()
+      ->fetchAllKeyed();
+    foreach ($items as $item_id => $data) {
+      $data = unserialize($data);
+      $sandbox['items'][] = [
+        'id' => $item_id,
+        'entity_id' => $data['entity_id'],
+        'entity_type_id' => $data['entity_type'],
+      ];
+    }
+  }
+
+  if ($items_to_process = array_splice($sandbox['items'], 0, 500)) {
+    $ids = array_map(function (array $item): string {
+      return $item['entity_id'];
+    }, $items_to_process);
+    $entities = $db->select('meta_entity', 'm')
+      ->fields('m', ['target__target_id', 'id'])
+      ->condition('target__target_id', $ids, 'IN')
+      ->execute()
+      ->fetchAllKeyed();
+    $items_to_delete = [];
+    foreach ($items_to_process as $item) {
+      if (isset($entities[$item['entity_id']])) {
+        // References to content entities replaced with same to meta entities.
+        $data = [
+          'entity_type' => 'meta_entity',
+          'entity_id' => $entities[$item['entity_id']],
+          'field_name' => 'count',
+          'expire' => 0,
+        ];
+        $db->update('queue')
+          ->fields(['data' => serialize($data)])
+          ->condition('item_id', $item['id'])
+          ->execute();
+      }
+      else {
+        // The entity might have been deleted in the meantime.
+        $items_to_delete[] = $item['id'];
+      }
+      if ($items_to_delete) {
+        $db->delete('queue')
+          ->condition('item_id', $items_to_delete, 'IN')
+          ->execute();
+      }
+      $sandbox['processed']++;
+    }
+  }
+
+  $sandbox['#finished'] = $sandbox['items'] ? 0 : 1;
+
+  if ($sandbox['#finished']) {
+    // Release the fake 'cron' lock.
+    \Drupal::lock()->release('cron');
+    return "Processed {$sandbox['processed']} items from queue.";
+  }
+
+  return "Finished processing {$sandbox['processed']} items from queue.";
+}
+
+/**
+ * Correct the faulty revisions after the storage changes on the counters.
+ */
+function joinup_core_post_update_post_count_storage_node_revisions() {
+  joinup_core_post_update_set_news_default_version();
+}
+
+/**
+ * Clean up the migration tables.
+ */
+function joinup_core_post_update_remove_mdigrate_tables(array &$sandbox): string {
+  $connection = Database::getConnection();
+  $tables = $connection->query("SHOW TABLES LIKE 'migrate_%'")->fetchCol();
+  $schema = $connection->schema();
+  foreach ($tables as $table) {
+    $schema->dropTable($table);
+  }
+  return 'Deleted tables: ' . implode(', ', $tables) . '.';
+}
+
+/**
+ * Update memberships of the Joinup support and editor and other accounts.
+ */
+function joinup_core_post_update_update_support_memberships(&$sandbox) {
+  // Update/remove memberships from various users and assign new memberships
+  // according to the request.
+  // @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5656
+  /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
+  $membership_manager = \Drupal::service('og.membership_manager');
+  if (empty($sandbox['collections'])) {
+    $sandbox['collections'] = [
+      // For the owner value, the new owner of the solutions will be the owner
+      // of the relevant collection. The Joinup Federation Support will be
+      // removed as a facilitator.
+      "https://www.xrepository.deutschland-online.de" => 'owner',
+      "https://riha.eesti.ee" => 'owner',
+      "http://www.belgif.be/specifications/" => 'owner',
+      "http://digitaliser.dk" => 'owner',
+      "http://dox.gs1.eu/documents" => 'owner',
+      "http://www.e-gif.gov.gr" => 'owner',
+      "http://publications.europa.eu/mdr/" => 'owner',
+      "http://vocabulary.wolterskluwer.de" => 'owner',
+      "http://standards.esd.org.uk" => 'owner',
+      "http://data.europa.eu/w21/33598e9e-2654-4639-9528-d70772837ce4" => 'owner',
+      "http://administracionelectronica.gob.es/ctt" => 'owner',
+      // The joinup-editor value will have the same actions as above but the new
+      // owner of the solutions will be Joinup Editor.
+      "http://dublincore.org/specifications" => 'joinup-editor',
+      "http://webapp.etsi.org/WorkProgram/" => 'joinup-editor',
+      "http://data.europa.eu/w21/b1e19fbc-f96e-478a-a449-fdaaeed17e3a" => 'joinup-editor',
+      "http://www.cen.eu/cen/pages/default.aspx" => 'joinup-editor',
+      "http://data.europa.eu/w21/01b52000-c0ba-4e64-a32c-79557a743462" => 'joinup-editor',
+      "https://www.ciec-platform.org/CIECPublicEnvironment" => 'joinup-editor',
+      "http://lov.okfn.org/dataset/lov" => 'joinup-editor',
+      "http://www.metadataregistry.org/" => 'joinup-editor',
+      "http://www.w3.org/TR/" => 'joinup-editor',
+    ];
+    $sandbox['joinup_support_uid'] = user_load_by_name('Joinup_Federation_Support')->id();
+    $sandbox['count'] = 0;
+    $sandbox['max'] = count($sandbox['collections']);
+
+    // Anonymous function that creates an owner for the group and removes the
+    // membership of the Joinup Federation Support user.
+    // Does not assign a new owner if there is already an owner after all.
+    $sandbox['handle_memberships'] = function (RdfInterface $group, AccountInterface $new_owner) use ($membership_manager, $sandbox): void {
+      // Cleanup the Joinup Federation Support membership.
+      if ($support_membership = $membership_manager->getMembership($group, $sandbox['joinup_support_uid'])) {
+        $support_membership->delete();
+      }
+
+      if (!empty($membership_manager->getGroupMembershipsByRoleNames($group, ['administrator']))) {
+        return;
+      };
+
+      if (!$new_owner_membership = $membership_manager->getMembership($group, $new_owner->id())) {
+        $new_owner_membership = $membership_manager->createMembership($group, $new_owner);
+      }
+
+      $group_admin_role = OgRole::loadByGroupAndName($group, 'administrator');
+      $group_facilitator_role = OgRole::loadByGroupAndName($group, 'facilitator');
+      $new_owner_membership->addRole($group_admin_role);
+      $new_owner_membership->addRole($group_facilitator_role);
+      $new_owner_membership->save();
+    };
+  }
+
+  $rdf_storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  $collection_id = key($sandbox['collections']);
+  /** @var \Drupal\rdf_entity\RdfInterface $collection */
+  $collection = $rdf_storage->load($collection_id);
+  $value = array_shift($sandbox['collections']);
+
+  if ($value === 'owner') {
+    $memberships = $membership_manager->getGroupMembershipsByRoleNames($collection, ['administrator']);
+    // Normally, there should only be one $membership which is an administrator.
+    if (count($memberships) > 1) {
+      throw new \Exception("More than one owners were found for {$collection->label()}");
+    }
+    /** @var \Drupal\og\OgMembershipInterface $owner_membership */
+    $owner_membership = reset($memberships);
+    $new_owner = $owner_membership->getOwner();
+  }
+  elseif ($value === 'joinup-editor') {
+    $new_owner = user_load_by_name('joinup-editor');
+  }
+
+  if (empty($new_owner)) {
+    throw new \Exception("Owner not found for the {$collection->label()} collection");
+  }
+
+  // Handle the group itself.
+  $sandbox['handle_memberships']($collection, $new_owner);
+
+  // Handle child solutions.
+  $related_solutions = $collection->get('field_ar_affiliates')->referencedEntities();
+  foreach ($related_solutions as $solution) {
+    $sandbox['handle_memberships']($solution, $new_owner);
+  }
+
+  $sandbox['count']++;
+  $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
+  return "Processed {$sandbox['count']} out of {$sandbox['max']} collections";
 }

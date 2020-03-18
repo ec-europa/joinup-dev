@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\eira\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
@@ -10,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 
 /**
- * Provides a 'EiraDeprecatedTermBlock' block.
+ * Provides a block showing information about deprecated EIRA building blocks.
  *
  * @Block(
  *  id = "eira_derprecated_term_block",
@@ -34,7 +36,7 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
   protected $entityTypeManager;
 
   /**
-   * Constructs a new OverviewMessageBlock object.
+   * Constructs a new EiraDeprecatedTermBlock.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -92,12 +94,12 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
       ->execute();
 
     if (empty($results)) {
-      $message = t('This building block is deprecated, and should not be used in new development.');
+      $message = $this->t('This building block is deprecated, and should not be used in new development.');
     }
     else {
       $replacement_id = reset($results);
       $replacement = $taxonomy_storage->load($replacement_id);
-      $message = t('This building block is deprecated, and should not be used in new development. Consider using @title (@uri) instead.', [
+      $message = $this->t('This building block is deprecated, and should not be used in new development. Consider using @title (@uri) instead.', [
         '@uri' => $replacement->id(),
         '@title' => $replacement->label(),
       ]);
@@ -109,7 +111,7 @@ class EiraDeprecatedTermBlock extends BlockBase implements ContainerFactoryPlugi
         'warning' => [$message],
       ],
       '#status_headings' => [
-        'warning' => t('Warning message'),
+        'warning' => $this->t('Warning message'),
       ],
     ];
 

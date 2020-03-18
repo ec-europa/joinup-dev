@@ -2,19 +2,24 @@
 Feature: Global search
   As a user of the site I can find content through the global search.
 
+  # Todo: This test runs with javascript enabled because in a non-javascript
+  # environment, the dropdown facet is simply a list of links. Remove the
+  # `@javascript` tag when the upstream issue in the Facets module is fixed.
+  # Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5739
+  # Ref. https://www.drupal.org/project/facets/issues/2937191
+  @javascript
   Scenario: Anonymous user can find items
-    Given the following solutions:
-      | title          | description                                                                                                                          | policy domain | spatial coverage | state     |
-      | Spherification | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography    | European Union   | validated |
-      | Foam           | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |               |                  | validated |
-    And the following collection:
+    Given the following collection:
       | title            | Molecular cooking collection |
       | logo             | logo.png                     |
       | moderation       | no                           |
-      | affiliates       | Spherification, Foam         |
       | policy domain    | Demography                   |
       | spatial coverage | Belgium                      |
       | state            | validated                    |
+    And the following solutions:
+      | title          | collection                   | description                                                                                                                          | policy domain | spatial coverage | state     |
+      | Spherification | Molecular cooking collection | Spherification is the culinary process of shaping a liquid into spheres                                                              | Demography    | European Union   | validated |
+      | Foam           | Molecular cooking collection | "The use of foam in cuisine has been used in many forms in the history of cooking:whipped cream, meringue, and mousse are all foams" |               |                  | validated |
     And news content:
       | title                 | body             | collection                   | policy domain           | spatial coverage | state     |
       | El Celler de Can Roca | The best in town | Molecular cooking collection | Statistics and Analysis | Luxembourg       | validated |
@@ -23,61 +28,97 @@ Feature: Global search
     # @todo The search page cache should be cleared when new content is added.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3428
     And the cache has been cleared
-    When I am at "/search"
+    When I visit the search page
     # All content is visible.
     Then I should see the "Molecular cooking collection" tile
     And I should see the "El Celler de Can Roca" tile
     And I should see the "Spherification" tile
     And I should see the "Foam" tile
-    # Inline facets should be in place.
-    And "all policy domains" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "Demography (2), Statistics and Analysis (1)"
-    And "everywhere" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1), Luxembourg (1)"
+    # Facets should be in place.
+    And the option with text "Any policy domain" from select facet "policy domain" is selected
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain             |
+      | Demography   (2)              |
+      | Statistics and Analysis   (1) |
+    And the option with text "Any location" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | Belgium   (1)        |
+      | European Union   (1) |
+      | Luxembourg   (1)     |
+    # Check that only one search field is available. In an earlier version of
+    # Joinup there were two search fields, but this was confusing users.
+    And there should be exactly 1 "search field" on the page
 
     # Test the policy domain facet.
-    When I click "Demography" in the "policy domain" inline facet
-    Then "Demography (2)" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "Statistics and Analysis (1), all policy domains"
-    And "everywhere" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "Belgium (1), European Union (1)"
+    When I select "Demography" from the "policy domain" select facet
+    Then the option with text "Demography   (2)" from select facet "policy domain" is selected
+    # The selected option moves to the last position by default.
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain             |
+      | Statistics and Analysis   (1) |
+      | Demography   (2)              |
+    Then the option with text "Any location" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | Belgium   (1)        |
+      | European Union   (1) |
     And I should see the "Molecular cooking collection" tile
     And I should see the "Spherification" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Foam" tile
 
     # Test the spatial coverage facet.
-    When I click "Belgium" in the "spatial coverage" inline facet
-    Then "Belgium (1)" should be selected in the "spatial coverage" inline facet
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1), everywhere"
-    And "Demography (1)" should be selected in the "policy domain" inline facet
-    And the "policy domain" inline facet should allow selecting the following values "all policy domains"
+    When I select "Belgium" from the "spatial coverage" select facet
+    Then the option with text "Belgium   (1)" from select facet "spatial coverage" is selected
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | European Union   (1) |
+      | Belgium   (1)        |
+    Then the option with text "Demography   (1)" from select facet "policy domain" is selected
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain |
+      | Demography   (1)  |
     And I should see the "Molecular cooking collection" tile
     But I should not see the "El Celler de Can Roca" tile
     And I should not see the "Spherification" tile
     And I should not see the "Foam" tile
 
     # Reset the search by visiting again the search page.
-    Given I am at "/search"
+    Given I am on the search page
+    Then I should see the text "Content types" in the "Left sidebar" region
 
     # Select link in the 'type' facet.
-    When I click the Solutions content tab
-    Then the "policy domain" inline facet should allow selecting the following values "Demography (1)"
-    And the "spatial coverage" inline facet should allow selecting the following values "European Union (1)"
+
+    When I check the "News (1)" checkbox from the "Content types" facet
+    Then the "News" content checkbox item should be selected
+    And the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+
+    When I check the "Solutions (2)" checkbox from the "Content types" facet
+    Then the "Solutions" content checkbox item should be selected
+    And the "News" content checkbox item should be selected
+    Then the "Content types" checkbox facet should allow selecting the following values "Solutions (2), Collection (1), News (1)"
+    And the "policy domain" select facet should contain the following options:
+      | Any policy domain             |
+      | Demography   (1)              |
+      | Statistics and Analysis   (1) |
+    And the "spatial coverage" select facet should contain the following options:
+      | Any location         |
+      | European Union   (1) |
+      | Luxembourg   (1)     |
     And I should not see the "Molecular cooking collection" tile
-    And I should not see the "El Celler de Can Roca" tile
+    And I should see the "El Celler de Can Roca" tile
     But I should see the "Spherification" tile
     And I should see the "Foam" tile
 
     # Launch a text search.
-    When I fill in "Search" with "Cooking"
-    And I press "Search"
+    When I open the search bar by clicking on the search icon
+    And I enter "Cooking" in the search bar and press enter
     Then I should see the "Molecular cooking collection" tile
     And I should see the "Foam" tile
     But I should not see the "Spherification" tile
     And I should not see the "El Celler de Can Roca" tile
 
-  @terms
   Scenario: Content can be found with a full-text search.
     Given the following owner:
       | name              | type    |
@@ -128,81 +169,82 @@ Feature: Global search
       | ulyssesfrees | ulysses.freeman@example.com | Ulysses    | Freeman     | Omero snc    |
 
     # "Alpha" is used in all the rdf entities titles.
-    When I enter "Alpha" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    When I enter "Alpha" in the search bar and press enter
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Omega" is used in all the node entities titles.
-    When I enter "omega" in the header search bar and hit enter
+    When I enter "omega" in the search bar and press enter
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 
     # "Beta" is used in all the rdf entities body fields.
-    When I enter "beta" in the header search bar and hit enter
-    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Distribution alpha, Licence Alpha"
+    When I enter "beta" in the search bar and press enter
+    Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
     # "Epsilon" is used in all the node entities body fields.
-    When I enter "epsilon" in the header search bar and hit enter
+    When I enter "epsilon" in the search bar and press enter
     Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 
     # "Alphabet" is used in all the keywords fields.
-    When I enter "Alphabet" in the header search bar and hit enter
+    When I enter "Alphabet" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha, News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
 
     # "Gamma" is used in the collection abstract.
-    When I enter "gamma" in the header search bar and hit enter
+    When I enter "gamma" in the search bar and press enter
     Then the page should show the tiles "Collection alpha"
     And I should not see the text "Newsletter omega"
 
     # "Delta" is used in headline and short titles.
-    When I enter "delta" in the header search bar and hit enter
+    When I enter "delta" in the search bar and press enter
     Then the page should show the tiles "News omega, Event Omega, Document omega"
     And I should not see the text "Newsletter omega"
 
     # Search for the event fields: agenda, location, address, organisation, scope.
-    When I enter "agenda" in the header search bar and hit enter
+    When I enter "agenda" in the search bar and press enter
     Then the page should show the tiles "Event Omega"
-    When I enter "location" in the header search bar and hit enter
+    When I enter "location" in the search bar and press enter
     Then the page should show the tiles "Alternative event"
-    When I enter "place" in the header search bar and hit enter
+    When I enter "place" in the search bar and press enter
     Then the page should show the tiles "Event Omega"
-    When I enter "organisation" in the header search bar and hit enter
+    When I enter "organisation" in the search bar and press enter
     Then the page should show the tiles "Alternative event"
-    When I enter "international" in the header search bar and hit enter
+    When I enter "international" in the search bar and press enter
     Then the page should show the tiles "Event Omega"
 
     # The owner and contact information names should be indexed inside the solutions/releases they are linked to.
-    When I enter "responsible" in the header search bar and hit enter
+    When I enter "responsible" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha"
     # Visit the homepage to be sure that the test fetches the correct updated page.
     When I go to the homepage
-    And I enter "contact" in the header search bar and hit enter
+    And I enter "contact" in the search bar and press enter
     Then the page should show the tiles "Solution alpha, Release Alpha"
 
     # Users should be found by first name, family name and organisation.
-    When I enter "Jenessa" in the header search bar and hit enter
+    When I enter "Jenessa" in the search bar and press enter
     Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "freeman" in the header search bar and hit enter
+    When I enter "freeman" in the search bar and press enter
     Then the page should show the tiles "Ulysses Freeman"
-    When I enter "clyffco" in the header search bar and hit enter
+    When I enter "clyffco" in the search bar and press enter
     Then the page should show the tiles "Jenessa Carlyle"
-    When I enter "Omero+snc" in the header search bar and hit enter
+    When I enter "Omero+snc" in the search bar and press enter
     Then the page should show the tiles "Ulysses Freeman"
 
   Scenario: Collections and solutions are shown first in search results with the same relevance.
-    Given the following solution:
+    Given collections:
+      | title                           | description                         | state     |
+      | Ornithology: the study of birds | Ornithology is a branch of zoology. | validated |
+      | Husky Flying Xylophone          | A strange instrument.               | validated |
+    And the following solution:
       | title       | Bird outposts in the wild            |
+      | collection  | Ornithology: the study of birds      |
       | description | Exotic wings and where to find them. |
       | state       | validated                            |
-    And collections:
-      | title                           | description                         | state     | affiliates                |
-      | Ornithology: the study of birds | Ornithology is a branch of zoology. | validated | Bird outposts in the wild |
-      | Husky Flying Xylophone          | A strange instrument.               | validated |                           |
     And custom_page content:
       | title           | body                                  | collection                      |
       | Disturbed birds | Flocks of trained pigeons flying off. | Ornithology: the study of birds |
@@ -222,7 +264,7 @@ Feature: Global search
       | Family name | Birdman      |
 
     # The bird is the word... to search.
-    When I enter "Bird" in the header search bar and hit enter
+    When I enter "Bird" in the search bar and press enter
     Then I should see the following tiles in the correct order:
       | Ornithology: the study of birds   |
       | Bird outposts in the wild         |
@@ -231,3 +273,188 @@ Feature: Global search
       | Bird spotting                     |
       | Best place to find an exotic bird |
       | Bird Birdman                      |
+
+  @clearStaticCache
+  Scenario: Solutions and/or releases are found by their distribution keyword.
+    Given the following licences:
+      | title      |
+      | Apache-2.0 |
+      | LGPL       |
+    And the following solution:
+      | title | Zzolution |
+      | state | validated |
+
+    When I enter "ZzoluDistro" in the search bar and press enter
+    Then I should see "No content found for your search."
+
+    # Add distribution, child of solution.
+    Given the following distribution:
+      | title                    | ZzoluDistro                     |
+      | parent                   | Zzolution                       |
+      | description              | Übermensch foot size            |
+      | access url               | http://example.com/zzolu-distro |
+      | licence                  | Apache-2.0                      |
+      | format                   | HTML                            |
+      | representation technique | Datalog                         |
+
+    When I enter "zzoludistro" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "ubermensch" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "zzolu-distro" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "apache" in the search bar and press enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "Apache-2.0,Zzolution"
+    When I enter "HTML" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "Datalog" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+
+    Given I am logged in as a moderator
+    When I visit the "ZzoluDistro" asset distribution edit form
+    And I fill in "Title" with "DistroZzolu"
+    And I fill in "Description" with "Nietzsche's"
+    And I press the "Remove" button
+    And I set a remote URL "http://example.com/guzzle" to "Access URL"
+    And I select "LGPL" from "Licence"
+    And I select "CSV" from "Format"
+    And I select "Human Language" from "Representation technique"
+    And I press "Save"
+
+    # Repeat the previous searches to prove that the initial keywords were
+    # removed from the Search API index.
+    Given I am an anonymous user
+    When I enter "zzoludistro" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "ubermensch" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "zzolu-distro" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "apache" in the search bar and press enter
+    Then the page should show only the tiles "Apache-2.0"
+    When I enter "HTML" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "Datalog" in the search bar and press enter
+    Then I should see "No content found for your search."
+
+    # Search now with the new keywords.
+    When I enter "distrozzolu" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "nietzsche" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "guzzle" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "lGPL" in the search bar and press enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "LGPL,Zzolution"
+    When I enter "CSV" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+    When I enter "Human Language" in the search bar and press enter
+    Then the page should show only the tiles "Zzolution"
+
+    Given I delete the "DistroZzolu" asset distribution
+
+    # The parent solution has been re-indexed without distribution data.
+    When I enter "distrozzolu" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "nietzsche" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "guzzle" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "lGPL" in the search bar and press enter
+    Then the page should show only the tiles "LGPL"
+    When I enter "CSV" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "Human Language" in the search bar and press enter
+    Then I should see "No content found for your search."
+
+    # Add a new distribution, child of a release.
+    Given the following release:
+      | title         | Releazz   |
+      | state         | validated |
+      | is version of | Zzolution |
+
+    When I enter "ReleazzDistro" in the search bar and press enter
+    Then I should see "No content found for your search."
+
+    And the following distribution:
+      | title                    | ReleazzDistro                     |
+      | parent                   | Releazz                           |
+      | description              | Dracula                           |
+      | access url               | http://example.com/releazz-distro |
+      | licence                  | Apache-2.0                        |
+      | format                   | HTML                              |
+      | representation technique | Datalog                           |
+
+    When I enter "releazzDistro" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "dracula" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "releazz-distro" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "apache" in the search bar and press enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "Apache-2.0,Releazz"
+    When I enter "HTML" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "Datalog" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+
+    Given I am logged in as a moderator
+    When I visit the "ReleazzDistro" asset distribution edit form
+    And I fill in "Title" with "DistroReleazz"
+    And I fill in "Description" with "Zorro"
+    And I press the "Remove" button
+    And I set a remote URL "http://example.com/mishmash" to "Access URL"
+    And I select "LGPL" from "Licence"
+    And I select "CSV" from "Format"
+    And I select "Human Language" from "Representation technique"
+    And I press "Save"
+
+    # Repeat the previous searches to prove that the initial keywords were
+    # removed from the Search API index.
+    Given I am an anonymous user
+    When I enter "releazzDistro" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "dracula" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "releazz-distro" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "apache" in the search bar and press enter
+    Then the page should show only the tiles "Apache-2.0"
+    When I enter "HTML" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "Datalog" in the search bar and press enter
+    Then I should see "No content found for your search."
+
+    # Search now with the new keywords.
+    When I enter "dIstrOreleazz" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "zoRRo" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "mishMash" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "LGpl" in the search bar and press enter
+    # Also the licence itself is retrieved.
+    Then the page should show only the tiles "LGPL,Releazz"
+    When I enter "CSV" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+    When I enter "Human Language" in the search bar and press enter
+    Then the page should show only the tiles "Releazz"
+
+    Given I delete the "DistroReleazz" asset distribution
+
+    # The parent release has been re-indexed without distribution data.
+    When I enter "dIstrOreleazz" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "zoRRo" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "mishMash" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "lGPL" in the search bar and press enter
+    Then the page should show only the tiles "LGPL"
+    When I enter "CSV" in the search bar and press enter
+    Then I should see "No content found for your search."
+    When I enter "Human Language" in the search bar and press enter
+    Then I should see "No content found for your search."

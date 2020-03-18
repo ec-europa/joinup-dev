@@ -16,7 +16,6 @@ dependencies:
     - field.field.node.document.field_site_pinned
     - field.field.node.document.field_state
     - field.field.node.document.field_type
-    - field.field.node.document.field_visit_count
     - field.field.node.document.og_audience
     - node.type.document
   module:
@@ -25,6 +24,7 @@ dependencies:
     - datetime
     - file_url
     - joinup_core
+    - publication_date
     - text
 id: node.document.default
 targetEntityType: node
@@ -70,6 +70,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -95,6 +96,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -146,6 +148,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   url_redirects:
     weight: 15
@@ -157,10 +160,10 @@ hidden:
   field_shared_in: true
   field_site_featured: true
   field_site_pinned: true
-  field_visit_count: true
   langcode: true
   og_audience: true
   path: true
   promote: true
+  published_at: true
   status: true
   sticky: true

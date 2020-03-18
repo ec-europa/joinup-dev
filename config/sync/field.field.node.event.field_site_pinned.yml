@@ -1,0 +1,25 @@
+uuid: 458e41f5-30d3-4f12-8335-9823b6d8b838
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_site_pinned
+    - node.type.event
+_core:
+  default_config_hash: lwufZHm346uhiROkgEkVCOykmK1EkiEiZpCxgED9J38
+id: node.event.field_site_pinned
+field_name: field_site_pinned
+entity_type: node
+bundle: event
+label: 'Site pinned'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

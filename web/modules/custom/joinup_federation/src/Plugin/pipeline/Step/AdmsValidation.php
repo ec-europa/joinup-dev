@@ -4,15 +4,16 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\pipeline\Step;
 
-use Drupal\adms_validator\AdmsValidator;
 use Drupal\adms_validator\AdmsValidatorInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
 use Drupal\pipeline\Exception\PipelineStepExecutionLogicException;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -51,25 +52,28 @@ class AdmsValidation extends JoinupFederationStepPluginBase implements PipelineS
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    * @param \Drupal\adms_validator\AdmsValidatorInterface $adms_validator
    *   The ADMS validator service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, AdmsValidatorInterface $adms_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, AdmsValidatorInterface $adms_validator) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->admsValidator = $adms_validator;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,
       $plugin_definition,
       $container->get('sparql_endpoint'),
+      $container->get('entity_type.manager'),
       $container->get('adms_validator.validator')
     );
   }

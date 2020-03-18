@@ -5,16 +5,24 @@
  * Module handling notifications in joinup.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
+use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\NotificationEvents;
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
+ *
+ * Sends notifications when community content is updated.
  */
 function joinup_notification_node_insert(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('create', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
+    return;
+  }
+  joinup_notification_dispatch_notification('create', NotificationEvents::COMMUNITY_CONTENT_CREATE, $entity);
 }
 
 /**
@@ -33,18 +41,22 @@ function joinup_notification_node_insert(EntityInterface $entity) {
  * @see: https://www.drupal.org/node/2833084
  */
 function joinup_notification_node_presave(EntityInterface $entity) {
-  $bundles = ['document', 'discussion', 'event', 'news'];
-  if ($entity->isNew() || !in_array($entity->bundle(), $bundles)) {
+  if ($entity->isNew() || !CommunityContentHelper::isCommunityContent($entity)) {
     return;
   }
-  $entity->field_state_initial_value = $entity->get('field_state')->first()->getInitialValue();
+  $entity->field_state_initial_value = $entity->get('field_state')->first()->getOriginalId();
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
+ *
+ * Sends notifications when community content is updated.
  */
 function joinup_notification_node_update(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('update', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
+    return;
+  }
+  joinup_notification_dispatch_notification('update', NotificationEvents::COMMUNITY_CONTENT_UPDATE, $entity);
 }
 
 /**
@@ -56,7 +68,10 @@ function joinup_notification_node_update(EntityInterface $entity) {
  * into the delete hooks which can lead into false data e.g. wrong state.
  */
 function joinup_notification_node_predelete(EntityInterface $entity) {
-  joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_CRUD, $entity);
+  if (!CommunityContentHelper::isCommunityContent($entity)) {
+    return;
+  }
+  joinup_notification_dispatch_notification('delete', NotificationEvents::COMMUNITY_CONTENT_DELETE, $entity);
 }
 
 /**
@@ -126,11 +141,13 @@ function joinup_notification_dispatch_notification($operation, $event_name, Enti
 /**
  * Implements hook_mail_alter().
  *
- * Converts in HTML the mails sent by the user and joinup_user modules.
- *
- * For emails sent by the message_notify module, add a prefix and a suffix.
+ * Performs the following alterations:
+ * - Converts the mails sent by the "user" and "joinup_user" modules to HTML.
+ * - Adds the following data to emails sent by the "message_notify" module:
+ *   - Prefixes the mail body with a greeting, and ends it with a goodbye.
+ *   - Adds a list of BCC recipients.
  */
-function joinup_notification_mail_alter(&$message) {
+function joinup_notification_mail_alter(array &$message): void {
   if ($message['module'] === 'user' || $message['module'] === 'joinup_user') {
     // Convert new lines to paragraphs and line breaks. Also transform the body
     // to markup.
@@ -156,7 +173,18 @@ function joinup_notification_mail_alter(&$message) {
       $suffix = t('<p>Kind regards,</p><p>The Joinup Support Team</p>');
       $message['body'] = array_merge([$prefix], $message['body'], [$suffix]);
     }
+
+    // Add BCC recipients if they are present.
+    /** @var \Drupal\message\Entity\Message $message_entity */
+    $message_entity = $message['params']['message_entity'] ?? NULL;
+    if ($message_entity && $message_entity->hasField('field_message_bcc') && !$message_entity->get('field_message_bcc')->isEmpty()) {
+      $bcc = array_map(function ($value) {
+        return $value['value'];
+      }, $message_entity->get('field_message_bcc')->getValue());
+      $message['headers']['Bcc'] = implode(';', $bcc);
+    }
   }
+
 }
 
 /**

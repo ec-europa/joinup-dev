@@ -17,6 +17,17 @@ use Solarium\Core\Query\QueryInterface as SolariumQueryInterface;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
+ * Implements hook_theme().
+ */
+function joinup_search_theme($existing, $type, $theme, $path) {
+  return [
+    'joinup_search_global_search' => [
+      'variables' => ['filters' => []],
+    ],
+  ];
+}
+
+/**
  * Implements hook_entity_field_access().
  *
  * Grant access to fields of type search only to moderators except from
@@ -62,8 +73,11 @@ function joinup_search_module_implements_alter(&$implementations, $hook) {
  *
  * Sets a default search ordering for the content displayed in the collections'
  * and solutions' overview page as well as the custom pages.
+ *
+ * @throws \Drupal\search_api\SearchApiException
+ *   Thrown when the Search API server instance could not be loaded.
  */
-function joinup_search_search_api_query_alter(QueryInterface &$query) {
+function joinup_search_search_api_query_alter(QueryInterface $query) {
   if ($query->getSearchId() === 'rdf_entity.field_collection_content') {
     // In case the user has filtered by event, first sort by the event date.
     // @todo: This will be generic when event calendar will be implemented for
@@ -78,16 +92,16 @@ function joinup_search_search_api_query_alter(QueryInterface &$query) {
     }
   }
 
+  // Sort collection content by creation date, newest first.
   $search_ids = [
     'rdf_entity.field_collection_content',
     'rdf_entity.field_is_content',
     'node.field_cp_content_listing',
   ];
 
-  if (!in_array($query->getSearchId(), $search_ids)) {
-    return;
+  if (in_array($query->getSearchId(), $search_ids)) {
+    $query->sort('entity_created', 'DESC');
   }
-  $query->sort('entity_created', 'DESC');
 }
 
 /**
@@ -137,8 +151,12 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
     if (empty($document->getFields()['bs_sticky'])) {
       $document->setField('bs_sticky', FALSE);
     }
-    if (!isset($document->getFields()['bs_site_pinned'])) {
-      $document->setField('bs_site_pinned', FALSE);
+    if (!empty($document->getFields()['ss_search_api_id'])) {
+      /** @var \Drupal\search_api\Item\Item[] $items */
+      $id = $document->getFields()['ss_search_api_id'];
+      $entity = $items[$id]->getOriginalObject()->getValue();
+      $value = $entity->hasField('front_page_pinned') ? $entity->get('front_page_pinned')->value : 0;
+      $document->setField('bs_site_pinned', $value);
     }
   }
 }
@@ -151,6 +169,7 @@ function joinup_search_search_api_solr_documents_alter(&$documents, IndexInterfa
 function joinup_search_search_api_solr_field_mapping_alter(IndexInterface $index, array &$fields) {
   $mappings = [
     'entity_created' => 'ds_entity_created',
+    'published_on' => 'ds_published_on',
     'site_pinned' => 'bs_site_pinned',
   ];
 
@@ -169,6 +188,19 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
     return;
   }
 
+  _joinup_search_apply_global_search_api_solr_settings($solarium_query, $query);
+  _joinup_search_apply_listing_content_query_settings($solarium_query, $query);
+}
+
+/**
+ * Apply the global settings to all solarium queries on Joinup.
+ *
+ * @param \Solarium\Core\Query\QueryInterface $solarium_query
+ *   The solarium query.
+ * @param \Drupal\search_api\Query\QueryInterface $query
+ *   The search api query class.
+ */
+function _joinup_search_apply_global_search_api_solr_settings(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
   // Keep the edismax parser to allow document boosting to work properly.
   // @todo remove when document boosting is reimplemented by search_api_solr
   // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4907
@@ -226,4 +258,76 @@ function joinup_search_search_api_solr_query_alter(SolariumQueryInterface $solar
 
   $sorts = $solarium_query->getSorts();
   $solarium_query->setSorts([$sort => 'asc'] + $sorts);
+}
+
+/**
+ * Apply solr settings related to search_api_field listings.
+ *
+ * @param \Solarium\Core\Query\QueryInterface $solarium_query
+ *   The solarium query.
+ * @param \Drupal\search_api\Query\QueryInterface $query
+ *   The search api query class.
+ */
+function _joinup_search_apply_listing_content_query_settings(SolariumQueryInterface $solarium_query, QueryInterface $query): void {
+  if (!$query->hasTag('search_api_field_field_collection_content') && !$query->hasTag('search_api_field_field_is_content')) {
+    return;
+  }
+
+  // This alter is aware only about group content searches except when the
+  // filter 'event' is applied. When the 'event' filter is applied, the event
+  // date is used to sort, in joinup_search_search_api_query_alter().
+  // @see joinup_search_search_api_query_alter()
+  if (_joinup_search_search_api_has_condition($query->getConditionGroup(), 'entity_bundle', 'event')) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityInterface $entity */
+  if (!$entity = $query->getOption('search_api_field entity')) {
+    return;
+  }
+
+  // In order to sort by the pinned status of the entity, we need to create a
+  // sort function query. The values that are used for sort are evaluated at
+  // runtime instead of being retrieved from the index.
+  // An entity is pinned when:
+  // - for nodes, when they are belong to the current group and the sticky
+  //   field is set to true;
+  // - for solutions, when they are pinned inside the current collection.
+  // The query() Solr function query is a good candidate for doing custom sorts,
+  // but it will return the score of the subquery. The score can be different
+  // between single results and can range from a small fraction above zero to
+  // infinite.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, query({!v='sm_entity_groups:<id>'},0)), query({!v='sm_field_is_pinned_in:<id>'},0))"
+  // "query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'})"
+  // @codingStandardsIgnoreEnd
+  // The and() operator will return false when the subquery score is lower than
+  // 1, so both of the above will fail the sorting.
+  // Solr 6.x has the gt(x,y) function, that will return true if x is greater
+  // than y. By using gt(), any positive score can be transformed to true.
+  // Example:
+  // @codingStandardsIgnoreStart
+  // "or(and(bs_sticky, gt(query({!v='sm_entity_groups:<id>'},0),0)), gt(query({!v='sm_field_is_pinned_in:<id>'},0),0))"
+  // "gt(query({!v='(bs_sticky:true AND sm_entity_groups:<id>) OR (sm_field_is_pinned_in:<id>)'}),0)"
+  // @codingStandardsIgnoreEnd
+  // Unfortunately, Solr 5.x doesn't support the gt() function.
+  // Both Solr versions support the termfreq() function, which will return the
+  // number of occurrences of a term in a field of the document.
+  // Alternatively, also the exists() function could be used in conjunction with
+  // the query() function, but it looks more expensive.
+  // Example:
+  // @codingStandardsIgnoreLine
+  // "or(and(bs_sticky,exists(query({!v='sm_entity_groups:<id>'},0))),exists(query({!v='sm_field_is_pinned_in:<id>'},0)))"
+  // @see https://lucene.apache.org/solr/guide/6_6/function-queries.html#function-queries
+  // @see http://archive.apache.org/dist/lucene/solr/ref-guide/apache-solr-ref-guide-5.5.pdf
+  $computed_sort = sprintf(
+    "or(and(bs_sticky,termfreq(sm_entity_groups,%1\$s)),termfreq(sm_field_is_pinned_in,%1\$s))",
+    $solarium_query->getHelper()->escapePhrase($entity->id())
+  );
+  $solarium_query->setSorts([
+    $computed_sort => 'desc',
+    'score' => 'desc',
+    'ds_entity_created' => 'desc',
+  ]);
 }

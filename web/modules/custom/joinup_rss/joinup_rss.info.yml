@@ -6,8 +6,9 @@ package: Joinup
 
 dependencies:
   - drupal:views
+  - joinup_group:joinup_group
   - joinup_search:joinup_search
   - smart_trim:smart_trim
 
 config_devel:
-  - views.view.collection_feed
+  - views.view.group_feed

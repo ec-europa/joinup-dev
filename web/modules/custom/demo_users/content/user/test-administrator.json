@@ -80,9 +80,6 @@
                 "github": {
                     "value": ""
                 },
-                "googleplus": {
-                    "value": ""
-                },
                 "linkedin": {
                     "value": ""
                 },
@@ -124,11 +121,6 @@
     "field_user_first_name": [
         {
             "value": "Test"
-        }
-    ],
-    "field_user_subscription_events": [
-        {
-            "value": true
         }
     ]
 }

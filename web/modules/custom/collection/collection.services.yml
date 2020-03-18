@@ -4,13 +4,19 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: cache.context }
+  cache_context.collection_owner:
+    class: 'Drupal\collection\Cache\Context\CollectionOwnerCacheContext'
+    arguments: ['@current_user', '@entity_type.manager', '@og.membership_manager', '@database', '@private_key']
+    tags:
+      - { name: 'cache.context'}
   collection.event_subscriber:
     class: Drupal\collection\EventSubscriber\CollectionEventSubscriber
+    arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: 'event_subscriber' }
   collection.fulfillment_guard:
     class: Drupal\collection\Guard\CollectionFulfillmentGuard
-    arguments: ['@entity_type.manager', '@config.factory', '@current_user']
+    arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: collection }
   collection.lazy_builders:

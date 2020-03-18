@@ -12,12 +12,13 @@ cd ${PROJECT_ROOT}
 echo "Disabling config_readonly."
 touch disable-config-readonly
 
-./vendor/bin/drush cache:clear bin config --yes
+./vendor/bin/phing redis-flush
+./vendor/bin/drush updatedb --yes --no-post-updates
+./vendor/bin/drush config:import --yes
 ./vendor/bin/drush updatedb --yes
-./vendor/bin/drush cs-update --discard-overrides --yes
-./vendor/bin/drush cache-rebuild --yes
+./vendor/bin/drush pm:enable stage_file_proxy --yes
 
-echo "Rebuilding node access records." &&
+echo "Rebuilding node access records."
 ./vendor/bin/drush php:eval "if(node_access_needs_rebuild()) { node_access_rebuild(); }"
 
 echo "Enabling config_readonly."

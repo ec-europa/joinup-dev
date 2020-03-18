@@ -7,10 +7,10 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\Entity\RdfEntityMapping;
 use Drupal\rdf_entity\Entity\RdfEntityType;
+use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests field synchronization between solution and release.
@@ -19,7 +19,7 @@ use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
  */
 class SyncFieldsFromParentSolutionTest extends KernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
+  use SparqlConnectionTrait;
 
   /**
    * {@inheritdoc}
@@ -32,7 +32,6 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'comment',
     'contact_information',
     'datetime',
-    'ds',
     'facets',
     'field',
     'field_group',
@@ -56,12 +55,15 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'search_api_field',
     'smart_trim',
     'solution',
+    'sparql_entity_storage',
     'state_machine',
     'system',
     'taxonomy',
     'text',
     'tour',
     'user',
+    'views',
+    'workflow_state_permission',
   ];
 
   /**
@@ -83,11 +85,12 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'contact_information',
       'owner',
       'asset_release',
+      'sparql_entity_storage',
     ]);
 
     RdfEntityType::create(['rid' => 'collection'])->save();
-    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/rdf_entity.mapping.rdf_entity.collection.yml'));
-    RdfEntityMapping::create($mapping)->save();
+    $mapping = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/sparql_entity_storage.mapping.rdf_entity.collection.yml'));
+    SparqlMapping::create($mapping)->save();
     $field_storage = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.storage.rdf_entity.field_ar_affiliates.yml'));
     FieldStorageConfig::create($field_storage)->save();
     $field_config = Yaml::decode(file_get_contents(__DIR__ . '/../../../../collection/config/install/field.field.rdf_entity.collection.field_ar_affiliates.yml'));
@@ -143,18 +146,26 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'field_owner_state' => 'validated',
     ])->save();
 
+    Rdf::create([
+      'rid' => 'collection',
+      'id' => 'http://example.com/collection',
+      'label' => 'Collection',
+    ])->save();
+
     // Create two solutions to be related.
     Rdf::create([
       'rid' => 'solution',
       'id' => 'http://example.com/solution-related1',
       'label' => 'Related solution 1',
       'field_is_state' => 'proposed',
+      'collection' => 'http://example.com/collection',
     ])->save();
     Rdf::create([
       'rid' => 'solution',
       'id' => 'http://example.com/solution-related2',
       'label' => 'Related solution 2',
       'field_is_state' => 'proposed',
+      'collection' => 'http://example.com/collection',
     ])->save();
   }
 
@@ -177,6 +188,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'field_is_included_asset' => 'http://example.com/solution-related1',
       'field_is_translation' => 'http://example.com/solution-related1',
       'field_policy_domain' => 'http://example.com/policy-domain/d1',
+      'collection' => 'http://example.com/collection',
     ])->save();
 
     // Create a release.
@@ -238,6 +250,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
       'solution-related2',
       'solution',
       'release',
+      'collection',
     ];
     foreach ($rdf_entity_keys as $key) {
       if ($rdf = Rdf::load("http://example.com/$key")) {

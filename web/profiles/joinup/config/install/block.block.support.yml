@@ -10,7 +10,7 @@ dependencies:
 id: support
 theme: joinup_theme
 region: header
-weight: 0
+weight: -19
 provider: null
 plugin: 'system_menu_block:support'
 settings:
@@ -20,4 +20,5 @@ settings:
   label_display: '0'
   level: 1
   depth: 0
+  expand_all_items: false
 visibility: {  }

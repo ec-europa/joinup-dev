@@ -18,6 +18,8 @@ Feature: Solution homepage
     And the page should contain the html text "(signified by arrows)…"
     # There should be a link to the about page.
     And I should see the link "Read more"
+    # The page should be cacheable.
+    And the page should be cacheable
     # The abstract itself should be stripped of unsightly links.
     But I should not see the link "mathematical"
     # The 'Read more' link leads to the About page.
@@ -41,15 +43,15 @@ Feature: Solution homepage
   @terms
   Scenario: Custom pages should not be visible on the solution homepage
     Given the following solution:
-      | title             | Jira restarters                      |
-      | description       | Rebooting solves all issues          |
-      | documentation     | text.pdf                             |
-      | elibrary creation | registered users                     |
-      | landing page      | http://foo-example.com/landing       |
-      | webdav creation   | no                                   |
-      | webdav url        | http://joinup.eu/solution/foo/webdav |
-      | wiki              | http://example.wiki/foobar/wiki      |
-      | state             | validated                            |
+      | title            | Jira restarters                      |
+      | description      | Rebooting solves all issues          |
+      | documentation    | text.pdf                             |
+      | content creation | registered users                     |
+      | landing page     | http://foo-example.com/landing       |
+      | webdav creation  | no                                   |
+      | webdav url       | http://joinup.eu/solution/foo/webdav |
+      | wiki             | http://example.wiki/foobar/wiki      |
+      | state            | validated                            |
     And news content:
       | title                             | body                             | solution        | policy domain           | spatial coverage | state     |
       | Jira will be down for maintenance | As always, during business hours | Jira restarters | Statistics and Analysis | Luxembourg       | validated |
@@ -62,14 +64,14 @@ Feature: Solution homepage
     And I should not see the "Maintenance page" tile
 
   Scenario: A link to the first collection a solution is affiliated to should be shown in the solution header.
-    Given the following solutions:
-      | title       | state     |
-      | Robotic arm | validated |
-      | ARM9        | validated |
-    And collections:
-      | title              | affiliates        | state     |
-      | Disappointed Steel | Robotic arm, ARM9 | validated |
-      | Random Arm         | ARM9              | validated |
+    Given collections:
+      | title              | state     |
+      | Disappointed Steel | validated |
+      | Random Arm         | validated |
+    And the following solutions:
+      | title       | state     | collections                   |
+      | Robotic arm | validated | Disappointed Steel            |
+      | ARM9        | validated | Disappointed Steel,Random Arm |
 
     When I go to the homepage of the "Robotic arm" solution
     Then I should see the link "Disappointed Steel"

@@ -18,8 +18,8 @@ use PHPUnit\Framework\Assert;
  */
 class JoinupCommunityContentSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
-  use TraversingTrait;
   use NodeTrait;
+  use TraversingTrait;
 
   /**
    * Asserts that a tile is not marked as shared from another collection.
@@ -75,83 +75,147 @@ class JoinupCommunityContentSubContext extends DrupalSubContextBase implements D
   }
 
   /**
-   * Asserts that the created time differs between published and unpublished.
+   * Asserts that a node entity does not have a publication date.
    *
    * @param string $title
    *   The title of the content.
    * @param string $type
    *   The type of the content.
-   * @param string $published
-   *   Whether to request the published or unpublished version. Allowed values
-   *   are 'published' and 'unpublished'.
    *
-   * @throws \InvalidArgumentException
-   *   Thrown if $published has an invalid value.
-   * @throws \Exception
-   *   Thrown if the expected and the actual values match.
-   *
-   * @Given the latest version of the :title :type should have a different created date than the last :published version
+   * @Then the :title :type should not have a publication date
    */
-  public function assertDifferentCreatedTimeWithUnpublishedVersion(string $title, string $type, string $published): void {
-    if (!in_array($published, ['published', 'unpublished'])) {
-      throw new Exception('Only "published" and "unpublished" values are allowed for variable $published.');
-    }
-    $published = $published === 'published';
-    $revision_list = $this->getNodeRevisionIdsList($title, $type);
-    $revision_id = reset($revision_list);
-    $latest_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
-
-    $previous_revision_list = $this->getNodeRevisionIdsList($title, $type, $published);
-    // If both requested versions are of the same status, the pre-last revision
-    // is the correct one.
-    $index = array_search($revision_id, $previous_revision_list);
-    if ($index !== FALSE) {
-      unset($previous_revision_list[$index]);
-    }
-    $previous_id = reset($previous_revision_list);
-    $previous_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($previous_id);
-
-    Assert::assertNotEquals($latest_revision->getCreatedTime(), $previous_revision->getCreatedTime());
+  public function assertDifferentCreatedTimeWithUnpublishedVersion(string $title, string $type): void {
+    // The Publication Date module sets a default value to the publication date
+    // for nodes that have never been published.
+    $node = $this->getNodeByTitle($title, $type);
+    Assert::assertEquals(PUBLICATION_DATE_DEFAULT, $node->published_at->value);
   }
 
   /**
-   * Asserts that the created time is the same with the last published version.
+   * Checks that content has a publication date different from the created date.
+   *
+   * @param string $title
+   *   The title of the content.
+   * @param string $type
+   *   The type of the content.
+   *
+   * @Then the publication date of the :title :type should not be equal to the created date
+   */
+  public function assertDifferentPublishedCreatedTime(string $title, string $type): void {
+    $node = $this->getNodeByTitle($title, $type);
+    Assert::assertNotEmpty($node->published_at->value);
+    Assert::assertNotEquals($node->created->value, $node->published_at->value);
+  }
+
+  /**
+   * Checks that a content's publication date same as the created date.
+   *
+   * @param string $title
+   *   The title of the content.
+   * @param string $type
+   *   The type of the content.
+   *
+   * @Then the publication date of the :title :type should be equal to the created date
+   */
+  public function assertSamePublishedCreatedTime(string $title, string $type): void {
+    $node = $this->getNodeByTitle($title, $type);
+    Assert::assertNotEmpty($node->published_at->value);
+    Assert::assertEquals($node->created->value, $node->published_at->value);
+  }
+
+  /**
+   * Checks that a content has the same publication date with another version.
    *
    * @param string $title
    *   The title of the content.
    * @param string $type
    *   The type of the content.
    * @param string $published
-   *   Whether to request the published or unpublished version. Allowed values
-   *   are 'published' and 'unpublished'.
+   *   Whether to check for the last published or unpublished version.
+   *   Possible options are 'published' and 'unpublished'.
    *
    * @throws \InvalidArgumentException
-   *   Thrown if $published has an invalid value.
+   *   Thrown if the $published variable does not have an acceptable value.
    * @throws \Exception
-   *   Thrown if the expected and the actual values do not match.
+   *   Thrown if there was no previous revision found.
    *
-   * @Given the latest version of the :title :type should have the same created date as the last :published version
+   * @Then the publication date of the :title :type should be equal to the last :published version's
    */
-  public function assertSameCreatedTimeWithLastVersion(string $title, string $type, string $published): void {
+  public function assertEqualRevisionsPublicationTime(string $title, string $type, string $published): void {
     if (!in_array($published, ['published', 'unpublished'])) {
-      throw new InvalidArgumentException('Only "published" and "unpublished" values are allowed for variable $published.');
+      throw new InvalidArgumentException("Only 'published' and 'unpublished' values are allowed for the 'published' flag.");
     }
     $published = $published === 'published';
-    $revision_list = $this->getNodeRevisionIdsList($title, $type);
-    $revision_id = reset($revision_list);
-    $latest_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
 
-    $previous_revision_list = $this->getNodeRevisionIdsList($title, $type, $published);
-    // If both requested versions are of the same status, the pre-last revision
-    // is the correct one.
-    $index = array_search($revision_id, $previous_revision_list);
-    if ($index !== FALSE) {
-      unset($previous_revision_list[$index]);
+    $node = $this->getNodeByTitle($title, $type);
+    $node_revisions = $this->getNodeRevisionIdsList($title, $type, $published);
+    $revision_id = reset($node_revisions);
+    // In case the revision id is the same as the current node, then a node with
+    // the same status was requested. Thus, pick the next id from the list.
+    if ($node->getRevisionId() == $revision_id) {
+      $revision_id = reset($node_revisions);
     }
-    $previous_id = reset($previous_revision_list);
-    $previous_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($previous_id);
 
-    Assert::assertEquals($latest_revision->getCreatedTime(), $previous_revision->getCreatedTime());
+    if (empty($revision_id)) {
+      throw new Exception("There was no revision found with the given criteria.");
+    }
+    $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+    Assert::assertEquals($node->published_at->value, $revision->published_at->value);
+  }
+
+  /**
+   * Navigates to the edit or delete form of a community content.
+   *
+   * @param string $action
+   *   The action. Either 'edit' or 'delete'.
+   * @param string $title
+   *   The title of the community content.
+   * @param string $bundle
+   *   The community content type. Usually one of 'discussion', document',
+   *   'event', news', but can in fact be any node type.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when an invalid action is passed.
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the form URL cannot be generated for the community content.
+   *
+   * @When I go to the :action form of the :title :bundle
+   * @When I visit the :action form of the :title :bundle
+   */
+  public function visitNodeForm(string $action, string $title, string $bundle): void {
+    if (!in_array($action, ['edit', 'delete'])) {
+      throw new \InvalidArgumentException('Only "edit" and "delete" actions are allowed.');
+    }
+    $node = $this->getNodeByTitle($title, $bundle);
+    $path = $node->toUrl("{$action}-form")->getInternalPath();
+    $this->visitPath($path);
+  }
+
+  /**
+   * Update one of the date properties of a node.
+   *
+   * @param string $field_name
+   *   The date field/property name.
+   * @param string $title
+   *   The node label.
+   * @param string $bundle
+   *   The node label.
+   * @param string $new_date
+   *   The new date property. The format should be acceptable by the strtotime()
+   *   function. A full format example is "Thu, 26 Dec 2019 14:00:00 +0100". The
+   *   above includes also "+0100" which represents the timezone.
+   *
+   * @see strtotime()
+   *
+   * @Given the :field_name date of the :title :bundle is :new_date
+   */
+  public function updateNodeDateProperty(string $field_name, string $title, string $bundle, string $new_date): void {
+    if (!($time = strtotime($new_date))) {
+      throw new \Exception("{$new_date} could not be converted to string.");
+    }
+    $this->getNodeByTitle($title, $bundle)
+      ->set($field_name, $time)
+      ->save();
   }
 
 }

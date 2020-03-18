@@ -52,28 +52,6 @@ class JoinupController extends ControllerBase {
   }
 
   /**
-   * Provides empty homepage..
-   *
-   * @return array
-   *   A render array for the homepage.
-   */
-  public function homepageContent() {
-    $build = [];
-    return $build;
-  }
-
-  /**
-   * Provides a legal notice page.
-   *
-   * @return array
-   *   A render array for the legal notice page.
-   */
-  public function legalNotice() {
-    $build = ['#theme' => 'joinup_legal_notice'];
-    return $build;
-  }
-
-  /**
    * Provides a page outlining eligibility criteria for solutions.
    *
    * @return array

@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Event API
   In order to manage custom pages programmatically
   As a backend developer
@@ -9,12 +9,12 @@ Feature: Event API
       | name        | type    |
       | Event Owner | Company |
     And the following collection:
-      | title             | Le Event Heureux |
-      | owner             | Event Owner      |
-      | logo              | logo.png         |
-      | moderation        | yes              |
-      | elibrary creation | facilitators     |
-      | state             | validated        |
+      | title            | Le Event Heureux |
+      | owner            | Event Owner      |
+      | logo             | logo.png         |
+      | moderation       | yes              |
+      | content creation | facilitators     |
+      | state            | validated        |
     And event content:
       | title       | short title | body                                     | collection       | start date          | end date            |
       | Dummy Event | Short       | This is some dummy content like foo:bar. | Le Event Heureux | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 |

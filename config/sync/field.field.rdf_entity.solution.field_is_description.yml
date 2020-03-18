@@ -1,0 +1,31 @@
+uuid: 683c2dd3-55bc-4d12-9301-45f6d4c19b6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_is_description
+    - rdf_entity.rdfentity.solution
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    content_editor: content_editor
+    basic_html: '0'
+    simple_html: '0'
+    simple_text: '0'
+    plain_text: '0'
+_core:
+  default_config_hash: BsXqm8Mtcj5-Lgv0dKCRdWsNz0mjUbtu2BnOgA1NYfo
+id: rdf_entity.solution.field_is_description
+field_name: field_is_description
+entity_type: rdf_entity
+bundle: solution
+label: Description
+description: 'At least 5 words, not similar to the title.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

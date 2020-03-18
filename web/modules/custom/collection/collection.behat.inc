@@ -5,23 +5,29 @@
  * Contains \CollectionSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
+use Drupal\joinup\Traits\SearchTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
+use Drupal\joinup_collection\JoinupCollectionHelper;
 use Drupal\og\Og;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\og_menu\Tests\Traits\OgMenuTrait;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\rdf_entity\RdfInterface;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\user\Entity\User;
 
 /**
@@ -32,13 +38,41 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   use EntityReferenceTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
   use NodeTrait;
   use OgMenuTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use SearchTrait;
   use UserTrait;
   use UtilityTrait;
   use WorkflowTrait;
+
+  /**
+   * Mapping of human readable field labels to machine names.
+   */
+  protected const FIELD_ALIASES = [
+    'author' => 'uid',
+    'uri' => 'id',
+    'title' => 'label',
+    'abstract' => 'field_ar_abstract',
+    'access url' => 'field_ar_access_url',
+    'banner' => 'field_ar_banner',
+    'closed' => 'field_ar_closed',
+    'contact information' => 'field_ar_contact_information',
+    'content creation' => 'field_ar_content_creation',
+    'creation date' => 'created',
+    'description' => 'field_ar_description',
+    'logo' => 'field_ar_logo',
+    'moderation' => 'field_ar_moderation',
+    'modification date' => 'changed',
+    'owner' => 'field_ar_owner',
+    'policy domain' => 'field_policy_domain',
+    'spatial coverage' => 'field_spatial_coverage',
+    'state' => 'field_ar_state',
+    'featured' => 'field_site_featured',
+    'pinned to front page' => 'field_site_pinned',
+  ];
 
   /**
    * Test collections.
@@ -53,7 +87,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I go to the propose collection form
    * @When I visit the propose collection form
    */
-  public function visitProposeCollectionForm() {
+  public function visitProposeCollectionForm(): void {
     $this->visitPath('propose/collection');
   }
 
@@ -66,7 +100,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @When I go to (the homepage of )the :collection collection
    * @When I visit (the homepage of )the :collection collection
    */
-  public function visitCollection($collection) {
+  public function visitCollection(string $collection): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
     $collection = $this->getCollectionByName($collection);
     $this->visitPath($collection->url());
@@ -81,13 +115,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param string $title
    *   The collection title.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   The collection.
    *
    * @throws \InvalidArgumentException
    *   Thrown when a collection with the given title does not exist.
    */
-  protected function getCollectionByName($title) {
+  protected function getCollectionByName(string $title): RdfInterface {
     $collection = $this->getRdfEntityByLabel($title, 'collection');
     return $collection;
   }
@@ -97,23 +131,36 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @param string $collection
    *   The title of the collection.
+   * @param string $form
+   *   The entity form. Either 'edit' or 'delete'.
    *
-   * @When I go to the :collection collection edit form
-   * @When I visit the :collection collection edit form
+   * @throws \InvalidArgumentException
+   *   If an invalid $form parameter was passed.
+   *
+   * @When I go to the :collection collection :form form
+   * @When I visit the :collection collection :form form
    */
-  public function visitEditCollection($collection) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
+  public function visitCollectionForm(string $collection, string $form): void {
+    if (!in_array($form, ['edit', 'delete'])) {
+      throw new \InvalidArgumentException('Only "edit" and "delete" are allowed for the $form variable.');
+    }
     $collection = $this->getCollectionByName($collection);
-    $path = $collection->url('edit-form');
+    $path = $collection->toUrl("{$form}-form")->getInternalPath();
     $this->visitPath($path);
   }
 
   /**
    * Navigates to the collections overview page.
    *
+   * @todo This is currently dependent on the Joinup profile being installed,
+   *   since the view providing this overview page is exported in the profile.
+   *   Remove this todo when ISAICP-5176 is fixed.
+   *
+   * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
+   *
    * @When I visit the collection overview( page)
    */
-  public function visitCollectionOverviewPage() {
+  public function visitCollectionOverviewPage(): void {
     $this->visitPath('/collections');
   }
 
@@ -122,7 +169,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * Table format:
    * @codingStandardsIgnoreStart
-   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | elibrary creation                     | featured | logo | moderation | modification date | owner | state                                                               |
+   * | title                   | abstract                                   | access url                             | closed | creation date    | description                                                                                                        | content creation                      | featured | logo | moderation | modification date | owner | state                                                               |
    * | Dog owner collection    | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes|no | 28-01-1995 12:05 | The Afghan Hound is elegance personified.                                                                          | facilitators|members|registered users | yes      |      | yes        |                   |       |                                                                     |
    * | Cats collection 4 ever! | Cats are cool!                             | http://mashable.com/category/cats/     | yes|no | 28-01-1995 12:06 | The domestic cat (Felis catus or Felis silvestris catus) is a small usually furry domesticated carnivorous mammal. | facilitators|members|registered users | no       |      | no         |                   |       | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
@@ -137,8 +184,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given (the following )collections:
    */
-  public function givenCollections(TableNode $collection_table) {
-    $aliases = self::collectionFieldAliases();
+  public function givenCollections(TableNode $collection_table): void {
+    $aliases = self::FIELD_ALIASES;
 
     foreach ($collection_table->getColumnsHash() as $collection) {
       $values = [];
@@ -163,39 +210,6 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Returns the field alias mapping.
-   *
-   * @return array
-   *   The field alias mapping.
-   */
-  protected static function collectionFieldAliases() {
-    // Mapping alias - field name.
-    return [
-      'author' => 'uid',
-      'uri' => 'id',
-      'title' => 'label',
-      'abstract' => 'field_ar_abstract',
-      'access url' => 'field_ar_access_url',
-      'affiliates' => 'field_ar_affiliates',
-      'banner' => 'field_ar_banner',
-      'closed' => 'field_ar_closed',
-      'contact information' => 'field_ar_contact_information',
-      'creation date' => 'created',
-      'description' => 'field_ar_description',
-      'elibrary creation' => 'field_ar_elibrary_creation',
-      'logo' => 'field_ar_logo',
-      'moderation' => 'field_ar_moderation',
-      'modification date' => 'changed',
-      'owner' => 'field_ar_owner',
-      'policy domain' => 'field_policy_domain',
-      'spatial coverage' => 'field_spatial_coverage',
-      'state' => 'field_ar_state',
-      'featured' => 'field_site_featured',
-      'pinned site-wide' => 'field_site_pinned',
-    ];
-  }
-
-  /**
    * Enriches the provided field values with defaults for missing values.
    *
    * @param array $fields
@@ -204,7 +218,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @return array
    *   The array with default values added.
    */
-  protected function provideDefaultValues(array $fields) {
+  protected function provideDefaultValues(array $fields): array {
     $default_values = [
       'field_ar_state' => 'draft',
     ];
@@ -224,19 +238,19 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param array $fields
    *   An array of fields keyed by field name.
    *
-   * @return mixed
+   * @return array
    *   The array with the values converted.
    *
    * @throws \Exception
    *    Throws an exception when a mapped value is not found.
    */
-  protected function convertValueAliases(array $fields) {
+  protected function convertValueAliases(array $fields): array {
     $mapped_values = [
       'field_ar_moderation' => ['no' => 0, 'yes' => 1],
-      'field_ar_elibrary_creation' => [
-        'facilitators' => 0,
-        'members' => 1,
-        'registered users' => 2,
+      'field_ar_content_creation' => [
+        'facilitators' => 'only_facilitators',
+        'members' => 'only_members',
+        'registered users' => 'any_user',
       ],
       'field_ar_closed' => ['no' => 0, 'yes' => 1],
       'field_ar_state' => [
@@ -273,13 +287,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @param array $values
    *   An optional associative array of values, keyed by property name.
    *
-   * @return \Drupal\rdf_entity\Entity\Rdf
+   * @return \Drupal\rdf_entity\RdfInterface
    *   A new collection entity.
    *
    * @throws \Exception
    *   Thrown when a given image is not found.
    */
-  protected function createCollection(array $values) {
+  protected function createCollection(array $values): RdfInterface {
     // Add images.
     $image_fields = ['field_ar_banner', 'field_ar_logo'];
     foreach ($image_fields as $field_name) {
@@ -311,15 +325,15 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @codingStandardsIgnoreStart
    * Table format:
-   * | title           | Open Data Initiative                                                |
-   * | author          | Mightily Oats                                                       |
-   * | logo            | logo.png                                                            |
-   * | featured        | yes|no                                                              |
-   * | moderation      | yes|no                                                              |
-   * | closed          | yes|no                                                              |
-   * | create elibrary | facilitators|members|registered users                               |
-   * | metadata url    | https://ec.europa.eu/my/url                                         |
-   * | state           | draft|proposed|validated|archival request|deletion request|archived |
+   * | title            | Open Data Initiative                                                |
+   * | author           | Mightily Oats                                                       |
+   * | logo             | logo.png                                                            |
+   * | featured         | yes|no                                                              |
+   * | moderation       | yes|no                                                              |
+   * | closed           | yes|no                                                              |
+   * | content creation | facilitators|members|registered users                               |
+   * | metadata url     | https://ec.europa.eu/my/url                                         |
+   * | state            | draft|proposed|validated|archival request|deletion request|archived |
    * @codingStandardsIgnoreEnd
    *
    * Only the title field is required.
@@ -332,8 +346,8 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given (the following )collection:
    */
-  public function givenCollection(TableNode $collection_table) {
-    $aliases = self::collectionFieldAliases();
+  public function givenCollection(TableNode $collection_table): void {
+    $aliases = self::FIELD_ALIASES;
 
     $values = [];
     // Replace the column aliases with the actual field names.
@@ -363,8 +377,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I delete the :collection collection
    */
-  public function deleteCollection($collection) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
+  public function deleteCollection(string $collection): void {
     $collection = $this->getCollectionByName($collection);
     $collection->skip_notification = TRUE;
     $collection->delete();
@@ -378,7 +391,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Then I should have :number collection(s)
    */
-  public function assertCollectionCount($number) {
+  public function assertCollectionCount(int $number): void {
     $this->assertRdfEntityCount($number, 'collection');
   }
 
@@ -392,7 +405,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *   The name of the collection to check.
    * @param int $number
    *   The expected number of members in the collection.
-   * @param int $membership_state
+   * @param string $membership_state
    *   The state of the membership. Can be either active, pending or blocked.
    *
    * @throws \Exception
@@ -400,7 +413,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Then the :collection collection should have :number :membership_state member(s)
    */
-  public function assertMemberCount($collection, $number, $membership_state) {
+  public function assertMemberCount(string $collection, int $number, string $membership_state): void {
     $states = [
       OgMembershipInterface::STATE_ACTIVE,
       OgMembershipInterface::STATE_PENDING,
@@ -448,7 +461,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given (the following )collection user membership(s):
    */
-  public function givenCollectionUserMemberships(TableNode $membership_table) {
+  public function givenCollectionUserMemberships(TableNode $membership_table): void {
     foreach ($membership_table->getColumnsHash() as $values) {
       $group = $this->getCollectionByName($values['collection']);
       $this->givenUserMembership($group, $values);
@@ -475,7 +488,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given (the following ):bundle content menu items for the corresponding collections:
    */
-  public function givenCollectionMenuItems($bundle, TableNode $menu_table) {
+  public function givenCollectionMenuItems(string $bundle, TableNode $menu_table): void {
     foreach ($menu_table->getColumnsHash() as $values) {
       $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
       $content = $this->getNodeByTitle($values['page'], $bundle);
@@ -518,7 +531,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Given (the following )custom page(s) menu structure:
    * @Given (the following )collection menu structure:
    */
-  public function givenCollectionMenuStructure(TableNode $menu_table) {
+  public function givenCollectionMenuStructure(TableNode $menu_table): void {
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
     $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     foreach ($menu_table->getColumnsHash() as $values) {
@@ -548,7 +561,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given (the user ):username should be the owner of the :rdf_entity collection
    */
-  public function assertCollectionOwnership($username, $rdf_entity) {
+  public function assertCollectionOwnership(string $username, string $rdf_entity): void {
     $user = user_load_by_name($username);
     if (empty($user)) {
       throw new \Exception("User {$username} could not be found.");
@@ -577,7 +590,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @Given I should own the :rdf_entity collection
    */
-  public function assertCollectionOwnershipCurrentUser($rdf_entity) {
+  public function assertCollectionOwnershipCurrentUser(string $rdf_entity): void {
     if (!$current_user = $this->userManager->getCurrentUser()) {
       throw new \Exception("No current user.");
     }
@@ -589,26 +602,38 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @AfterScenario
    */
-  public function cleanCollections() {
+  public function cleanCollections(): void {
+    if (empty($this->collections)) {
+      return;
+    }
+
+    // Since we might be cleaning up many collections, temporarily disable the
+    // feature to commit the index after every query.
+    $this->disableCommitOnUpdate();
+
     // Remove any collections that were created.
     foreach ($this->collections as $collection) {
       $collection->skip_notification = TRUE;
       $collection->delete();
     }
+    $this->collections = [];
+    $this->enableCommitOnUpdate();
   }
 
   /**
    * Checks that a user has the available state options for the collection.
    *
    * The method also checks that these options are the only options available.
+   * This method will log in as each user in sequence, so take care to only use
+   * it when the currently logged in user can be discarded.
    *
    * Table format:
-   * | collection   | user | options          |
-   * | Collection A | John | Status1          |
-   * | Collection B | Jack | Status1, Status2 |
+   * | collection   | user | buttons         |
+   * | Collection A | John | Save as draft   |
+   * | Collection B | Jack | Update, Publish |
    *
    * @param \Behat\Gherkin\Node\TableNode $check_table
-   *   The table with the triplets collection-user-options.
+   *   The table with the triplets collection-user-buttons.
    *
    * @throws \Exception
    *    Thrown when the user does not exist.
@@ -617,64 +642,35 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * following state buttons should be available for the user on the
    * collection'.
    *
-   * @Given for the following collection, the corresponding user should have the corresponding (available )state buttons:
+   * @Then for the following collection, the corresponding user should have the corresponding (available )state buttons:
    */
-  public function verifyWorkflowTransitions(TableNode $check_table) {
+  public function verifyStateButtons(TableNode $check_table): void {
     foreach ($check_table->getColumnsHash() as $values) {
-      // Load entity.
-      $collection = $this->getCollectionByName($values['collection']);
+      $username = $values['user'];
+      $user = $this->userManager->getUser($username);
 
-      // Load user.
-      $user = user_load_by_name($values['user']);
-      if (empty($user)) {
-        throw new \Exception('User ' . $values['user'] . ' not found.');
+      // Check if we are already logged in as the user to test.
+      $current_username = $this->userManager->getCurrentUser()->name ?? NULL;
+      if ($username !== $current_username) {
+        $this->authenticationManager->logIn($user);
       }
 
-      // Convert states to an array.
-      $states = empty($values['states']) ? [] : explode(',', $values['states']);
-      $states = array_map('trim', $states);
-
-      $this->assertAvailableTransitions($collection, $states, $user);
+      // Go to the edit form and check that the expected buttons are visible.
+      $this->visitCollectionForm($values['collection'], 'edit');
+      $buttons = $this->explodeCommaSeparatedStepArgument($values['buttons']);
+      $this->assertSubmitButtonsVisible($buttons);
     }
-  }
-
-  /**
-   * Applies a transition to a collection.
-   *
-   * @param string $username
-   *   The username applying the transition.
-   * @param string $entity_name
-   *   The title of the collection.
-   * @param string $to_state
-   *   The state that the collection transits to.
-   *
-   * @throws \Exception
-   *    An exception is thrown if the user is not found or the transition is not
-   *    allowed for this user.
-   *
-   * @Given the user :username changes the state of the :entity_name collection to :to_state
-   */
-  public function applyCollectionWorkflowTransition($username, $entity_name, $to_state) {
-    $user = user_load_by_name($username);
-    if (empty($user)) {
-      throw new \Exception("User {$username} was not found.");
-    }
-    $collection = $this->getCollectionByName($entity_name);
-    $available_states = $this->getAvailableStates($collection, $user);
-    if (($transition_id = array_search($to_state, $available_states)) === FALSE) {
-      throw new \Exception("The given user does not have permission to apply the specific transition.");
-    }
-    $transition = $collection->get('field_ar_state')->first()->getWorkflow()->getTransition($transition_id);
-    $collection->get('field_ar_state')->first()->applyTransition($transition);
-    $collection->save();
   }
 
   /**
    * Navigates to the collection leave confirmation form.
    *
+   * @param string $label
+   *   The label of the collection group.
+   *
    * @Given I am about to leave( the) :label( collection)
    */
-  public function visitCollectionLeaveConfirmationPage($label) {
+  public function visitCollectionLeaveConfirmationPage(string $label): void {
     $collection = $this->getEntityByLabel('rdf_entity', $label, 'collection');
     $encoded_id = UriEncoder::encodeUrl($collection->id());
     $this->visitPath("/rdf_entity/$encoded_id/leave");
@@ -683,10 +679,19 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   /**
    * Asserts that a given or current user is member of collection list.
    *
+   * @param string $labels
+   *   A string of comma separated labels.
+   * @param string|null $user_name
+   *   The user name related to the assertion.
+   *
+   * @throws \Exception
+   *   Thrown if a logged in user was not found or it was not passed, or if the
+   *   assertion failed.
+   *
    * @Then I am member of :labels collection(s)
    * @Then user :user_name is member of :labels collection(s)
    */
-  public function assertUserIsMemberOfCollection($labels, $user_name = NULL) {
+  public function assertUserIsMemberOfCollection(string $labels, string $user_name = NULL): void {
     /** @var \Drupal\user\UserInterface $account */
     if (!$user_name) {
       $user = $this->getUserManager()->getCurrentUser();
@@ -713,15 +718,33 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Updates the name of a collection.
+   *
+   * @param string $collection
+   *   The name of the collection to update.
+   * @param string $name
+   *   The new anem for the collection.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   Thrown when the updated collection cannot be saved.
+   *
+   * @When I change the name of the :collection collection to :name
+   */
+  public function updateCollectionName(string $collection, string $name): void {
+    $entity = $this->getCollectionByName($collection);
+    $entity->setName($name)->save();
+  }
+
+  /**
    * Creates the standard 'Joinup' collection.
    *
    * @beforeScenario @joinup_collection
    *
    * @see joinup_collection.module
    */
-  public function createJoinupCollection() {
+  public function createJoinupCollection(): void {
     $this->createCollection([
-      'id' => JOINUP_COLLECTION_ID,
+      'id' => JoinupCollectionHelper::getCollectionId(),
       'label' => 'Joinup',
       'field_ar_state' => 'validated',
     ]);

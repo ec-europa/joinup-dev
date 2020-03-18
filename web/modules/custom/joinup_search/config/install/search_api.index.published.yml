@@ -9,18 +9,18 @@ dependencies:
     - field.storage.node.field_location
     - field.storage.node.field_organisation
     - field.storage.node.field_scope
-    - field.storage.node.field_shared_in
     - field.storage.node.field_short_title
-    - field.storage.node.field_visit_count
+    - field.storage.meta_entity.count
     - field.storage.rdf_entity.field_ar_abstract
-    - field.storage.rdf_entity.field_is_contact_information
-    - field.storage.rdf_entity.field_ci_name
     - field.storage.rdf_entity.field_isr_contact_information
+    - field.storage.rdf_entity.field_ci_name
+    - field.storage.rdf_entity.field_is_contact_information
+    - field.storage.rdf_entity.field_licence_spdx_licence
+    - field.storage.rdf_entity.field_licence_description
     - field.storage.rdf_entity.field_ad_description
-    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_is_description
     - field.storage.rdf_entity.field_isr_description
-    - field.storage.rdf_entity.field_licence_description
+    - field.storage.rdf_entity.field_ar_description
     - field.storage.rdf_entity.field_is_owner
     - field.storage.rdf_entity.field_owner_name
     - field.storage.rdf_entity.field_isr_owner
@@ -33,6 +33,8 @@ dependencies:
     - search_api.server.solr_published
   module:
     - node
+    - publication_date
+    - meta_entity
     - rdf_entity
     - user
     - search_api
@@ -195,6 +197,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.rdf_entity.field_licence_description
+  field_licence_spdx_licence:
+    label: 'Corresponding SPDX licence'
+    datasource_id: 'entity:rdf_entity'
+    property_path: field_licence_spdx_licence
+    type: string
+    dependencies:
+      config:
+        - field.storage.rdf_entity.field_licence_spdx_licence
   field_location:
     label: Location
     datasource_id: 'entity:node'
@@ -228,14 +238,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_scope
-  field_shared_in:
-    label: 'Shared in'
-    datasource_id: 'entity:node'
-    property_path: field_shared_in
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_shared_in
   field_short_title:
     label: 'Short title'
     datasource_id: 'entity:node'
@@ -271,11 +273,13 @@ field_settings:
   field_visit_count:
     label: 'Visit count'
     datasource_id: 'entity:node'
-    property_path: field_visit_count
+    property_path: 'visit_count:entity:count'
     type: integer
     dependencies:
+      module:
+        - meta_entity
       config:
-        - field.storage.node.field_visit_count
+        - field.storage.meta_entity.count
   id:
     label: ID
     datasource_id: 'entity:rdf_entity'
@@ -363,6 +367,14 @@ field_settings:
       fields:
         - 'entity:node/field_policy_domain'
         - 'entity:rdf_entity/field_policy_domain'
+  published_at:
+    label: 'Published on'
+    datasource_id: 'entity:node'
+    property_path: published_at
+    type: date
+    dependencies:
+      module:
+        - publication_date
   rdf_changed:
     label: Changed
     datasource_id: 'entity:rdf_entity'
@@ -387,6 +399,15 @@ field_settings:
     dependencies:
       module:
         - rdf_entity
+  shared_in:
+    label: 'Shared on'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_shared_in'
+        - 'entity:rdf_entity/field_is_shared_in'
   site_featured:
     label: Featured
     property_path: aggregated_field
@@ -406,7 +427,7 @@ field_settings:
         - 'entity:node/field_site_pinned'
         - 'entity:rdf_entity/field_site_pinned'
   spatial_coverage:
-    label: 'Spatial coverage'
+    label: 'Geographical coverage'
     property_path: aggregated_field
     type: string
     configuration:

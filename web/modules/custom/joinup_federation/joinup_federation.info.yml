@@ -3,8 +3,13 @@ name: 'Joinup Federation'
 description: 'Allow modules to implement pipelines for RDF data federation.'
 core: 8.x
 package: Joinup
+
 dependencies:
-  - pipeline
-  - rdf_entity
-  - rdf_entity_provenance
-  - rdf_schema_field_validation
+  - 'joinup:pipeline'
+  - 'joinup:rdf_entity_provenance'
+  - 'joinup:rdf_schema_field_validation'
+  - 'rdf_entity:rdf_entity'
+
+config_devel:
+  install:
+    - sparql_entity_storage.graph.staging

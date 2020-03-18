@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Collection membership administration
   In order to build a community
   As a collection facilitator
@@ -19,6 +19,7 @@ Feature: Collection membership administration
       | Kathie Cumbershot |       | kathie_cumbershot@example.com | Kathie     | Cumbershot  |
       | Donald Duck       |       | donald_duck@example.com       | Donald     | Duck        |
       | Turkey Ham        |       | turkey_ham@example.com        | Turkey     | Ham         |
+      | Cam Bridge        |       | cambridge@example.com         | Cam        | Bridge      |
     And the following collections:
       | title             | description               | logo     | banner     | owner        | contact information                    | closed | state     |
       | Medical diagnosis | 10 patients in 10 minutes | logo.png | banner.jpg | James Wilson | Princeton-Plainsboro Teaching Hospital | yes    | validated |
@@ -47,6 +48,7 @@ Feature: Collection membership administration
       | Donald Duck has requested to join your collection "Medical diagnosis" as a member. |
       | To approve or reject this request, click on                                        |
       | If you think this action is not clear or not due, please contact Joinup Support at |
+      | /collection/medical-diagnosis/members                                              |
     And the following email should have been sent:
       | recipient | Turkey Ham                                                                         |
       | subject   | Joinup: A user has requested to join your collection                               |
@@ -70,6 +72,14 @@ Feature: Collection membership administration
     When all e-mails have been sent
     And I go to the "Medical diagnosis" collection
     And I click "Members" in the "Left sidebar"
+    Then the "Action" select should contain the following options:
+      | Approve the pending membership(s)                               |
+      | Block the selected membership(s)                                |
+      | Unblock the selected membership(s)                              |
+      | Delete the selected membership(s)                               |
+      | Add the facilitator role to the selected members                |
+      | Transfer the ownership of the collection to the selected member |
+      | Remove the facilitator role from the selected members           |
     # Assert that the user does not see the default OG tab.
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"
@@ -78,10 +88,14 @@ Feature: Collection membership administration
     Then I should see the following success messages:
       | success messages                                         |
       | Approve the pending membership(s) was applied to 1 item. |
-    And the following email should have been sent:
-      | recipient | Kathie Cumbershot                                                               |
-      | subject   | Joinup: Your request to join the collection Medical diagnosis was approved      |
-      | body      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
+    And the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+      | text                                                                            |
+      | Lisa Cuddy has approved your request to join the "Medical diagnosis" collection |
+    But the email sent to "Kathie Cumbershot" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" should not contain the following lines of text:
+      | text                                                                                |
+      | You will receive weekly notifications for newly created content on this collection. |
+      | To manage your notifications go to "My subscriptions" in the user menu.             |
+      | If you think this action is not clear or not due, please contact Joinup Support at  |
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
@@ -89,6 +103,43 @@ Feature: Collection membership administration
     # Check that I see one of the random links that requires an active membership.
     Then I should see the plus button menu
     Then I should see the link "Add news"
+
+  @javascript @email
+  Scenario: Request a membership with subscription and approve it
+    When I am logged in as "Cam Bridge"
+    And all e-mails have been sent
+    And I go to the "Medical diagnosis" collection
+    And I press the "Join this collection" button
+    Then a modal should open
+    And I should see the text "Want to receive notifications, too?"
+
+    When I press "Subscribe" in the "Modal buttons" region
+    And I wait for AJAX to finish
+    Then I should see the success message "You have been subscribed to Medical diagnosis and will receive weekly notifications once your membership is approved."
+
+    # Approve a membership.
+    Given I am logged in as "Lisa Cuddy"
+    When all e-mails have been sent
+    And I go to the "Medical diagnosis" collection
+
+    And I open the group sidebar menu
+    And I click "Members" in the "Left sidebar"
+    And I check the box "Update the member Cam Bridge"
+    Then I select "Approve the pending membership(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the following success messages:
+      | success messages                                         |
+      | Approve the pending membership(s) was applied to 1 item. |
+    And the email sent to "Cam Bridge" with subject "Joinup: Your request to join the collection Medical diagnosis was approved" contains the following lines of text:
+      | text                                                                                             |
+      | Lisa Cuddy has approved your request to join and subscribe to the "Medical diagnosis" collection |
+      | You will receive weekly notifications for newly created content on this collection.              |
+      | To manage your notifications go to "My subscriptions" in the user menu.                          |
+      | If you think this action is not clear or not due, please contact Joinup Support at               |
+
+    When I am logged in as "Cam Bridge"
+    When I click the "My subscriptions" link from the email sent to "Cam Bridge"
+    Then I should see the heading "My subscriptions"
 
   @email
   Scenario: Reject a membership
@@ -100,14 +151,46 @@ Feature: Collection membership administration
     Then I should not see the link "Group"
     And I check the box "Update the member Kathie Cumbershot"
     Then I select "Delete the selected membership(s)" from "Action"
-    And I press the "Apply to selected items" button
+
+    When I press the "Apply to selected items" button
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
+    And I should see "The member Kathie Cumbershot will be deleted from the 'Medical diagnosis' collection."
+    And I should see "This action cannot be undone."
+
+    Given I click "Cancel"
+    Then I should see the heading "Members"
+
+    Given I check the box "Update the member Kathie Cumbershot"
+    Then I select "Delete the selected membership(s)" from "Action"
+
+    When I press the "Apply to selected items" button
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'Medical diagnosis' collection?"
+
+    When I press "Confirm"
     Then I should see the following success messages:
-      | success messages                                         |
-      | Delete the selected membership(s) was applied to 1 item. |
+      | success messages                                                                       |
+      | The member Kathie Cumbershot has been deleted from the 'Medical diagnosis' collection. |
     And the following email should have been sent:
       | recipient | Kathie Cumbershot                                                               |
       | subject   | Joinup: Your request to join the collection Medical diagnosis was rejected      |
       | body      | Lisa Cuddy has rejected your request to join the "Medical diagnosis" collection |
+
+    # Delete multiple members from collection.
+    Given I check the box "Update the member Gregory House"
+    And I check the box "Update the member Turkey Ham"
+
+    When I select "Delete the selected membership(s)" from "Action"
+    And I press the "Apply to selected items" button
+    Then I should see the heading "Are you sure you want to delete the selected memberships from the 'Medical diagnosis' collection?"
+    And I should see "The following members:"
+    And I should see "Gregory House"
+    And I should see "Turkey Ham"
+    And I should see "will be deleted from the 'Medical diagnosis' collection."
+    And I should see "This action cannot be undone."
+
+    Given I press "Confirm"
+    Then I should see the success message "The following members were removed from the 'Medical diagnosis' collection: Gregory House, Turkey Ham"
+    And I should see "Lisa Cuddy" in the "Lisa Cuddy" row
 
     # Check new privileges.
     When I am logged in as "Kathie Cumbershot"
@@ -138,9 +221,9 @@ Feature: Collection membership administration
       | success messages                                                        |
       | Add the facilitator role to the selected members was applied to 1 item. |
     And the following email should have been sent:
-      | recipient | Gregory House                                                                                 |
-      | subject   | Your role has been change to Medical diagnosis                                                |
-      | body      | A collection moderator has changed your role in this group to Member, Collection facilitator. |
+      | recipient | Gregory House                                                                      |
+      | subject   | Your role has been changed to facilitator                                          |
+      | body      | Lisa Cuddy has changed your role in collection "Medical diagnosis" to facilitator. |
 
     # Dr House can now edit the collection.
     When I am logged in as "Gregory House"
@@ -182,7 +265,7 @@ Feature: Collection membership administration
 
     When I fill in "E-mail" with "gregory_house@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Gregory House |
     # Verify that an error message is shown when trying to add a mail not
     # present in the system.
@@ -197,18 +280,18 @@ Feature: Collection membership administration
     # Add some other users.
     When I fill in "E-mail" with "j.belanger@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Jeannette Belanger |
       | Gregory House      |
     When I fill in "E-mail" with "donald_duck@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Jeannette Belanger |
       | Gregory House      |
       | Donald Duck        |
     # Remove a user.
     When I press the remove button on the chip "Donald Duck"
-    Then the page should show only the chips:
+    Then the page should show the following chips in the Content region:
       | Jeannette Belanger |
       | Gregory House      |
     And I should not see the text "Donald Duck"
@@ -225,7 +308,7 @@ Feature: Collection membership administration
     When I click "Add members"
     When I fill in "E-mail" with "dwight1@example.com"
     And I press "Add"
-    Then the page should show the chips:
+    Then the page should show the following chips in the Content region:
       | Christian Dwight |
     When I select "Facilitator" from "Role"
     And I press "Add members"

@@ -7,16 +7,16 @@ namespace Drupal\Tests\joinup_federation\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\pipeline\PipelineState;
 use Drupal\pipeline\PipelineStateInterface;
-use Drupal\rdf_entity\RdfEntityGraphStoreTrait;
-use Drupal\Tests\rdf_entity\Traits\RdfDatabaseConnectionTrait;
+use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Provides a base class for pipeline step kernel tests.
  */
 abstract class StepTestBase extends KernelTestBase {
 
-  use RdfDatabaseConnectionTrait;
-  use RdfEntityGraphStoreTrait;
+  use SparqlConnectionTrait;
+  use SparqlGraphStoreTrait;
 
   /**
    * Testing pipeline.
@@ -38,10 +38,11 @@ abstract class StepTestBase extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'pipeline',
     'joinup_federation',
     'joinup_federation_test',
+    'pipeline',
     'rdf_entity',
+    'sparql_entity_storage',
   ];
 
   /**
@@ -50,12 +51,36 @@ abstract class StepTestBase extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
     $this->setUpSparql();
+    $this->setUpPipeline();
+  }
 
+  /**
+   * Sets up the pipeline with the joinup_federation_testing_pipeline plugin.
+   */
+  protected function setUpPipeline(): void {
     /** @var \Drupal\pipeline\Plugin\PipelinePipelinePluginManager $pipeline_plugin_manager */
     $pipeline_plugin_manager = $this->container->get('plugin.manager.pipeline_pipeline');
     /** @var \Drupal\pipeline\Plugin\PipelinePipelineInterface $pipeline */
     $this->pipeline = $pipeline_plugin_manager->createInstance('joinup_federation_testing_pipeline');
     $this->pipeline->setSteps($this->getUsedStepPlugins());
+  }
+
+  /**
+   * Runs the ::prepare method of the given step.
+   *
+   * @param string $step_plugin_id
+   *   The pipeline step.
+   * @param \Drupal\pipeline\PipelineStateInterface $state
+   *   (optional) The pipeline state object. If missed a brand new will be
+   *   created from the passed step.
+   */
+  protected function runPipelinePrepare(string $step_plugin_id, PipelineStateInterface $state = NULL) {
+    $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
+    if (!$state) {
+      $state = (new PipelineState())->setStepId($step_plugin_id);
+    }
+    $this->pipeline->setCurrentState($state);
+    $step_plugin_instance->prepare();
   }
 
   /**

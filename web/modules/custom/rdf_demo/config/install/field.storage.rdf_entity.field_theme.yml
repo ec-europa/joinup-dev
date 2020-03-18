@@ -4,7 +4,7 @@ dependencies:
   module:
     - rdf_entity
 third_party_settings:
-  rdf_entity:
+  sparql_entity_storage:
     rdf_mapping: 'dcat:theme'
 id: rdf_entity.field_theme
 field_name: field_theme

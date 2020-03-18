@@ -1,8 +1,8 @@
-@api @email
-Feature: Pinning content entities inside collections
+@api @email @group-a
+Feature: Pinning entities inside collections
   As a facilitator of a collection
-  I want to pin content at the top of the collection homepage
-  So that important content has more visibility
+  I want to pin entities at the top of the collection homepage
+  So that important entities has more visibility
 
   Background:
     Given the following collections:
@@ -205,7 +205,7 @@ Feature: Pinning content entities inside collections
   @javascript
   Scenario Outline: Pinned content tiles should show a visual cue only in their collection homepage.
     Given <content type> content:
-      | title         | collection    | state     | pinned | shared in   |
+      | title         | collection    | state     | pinned | shared on   |
       | Lantern FAQs  | Orange Wrench | validated | yes    | Cloudy Beam |
       | Lantern terms | Orange Wrench | validated | no     |             |
 
@@ -213,7 +213,7 @@ Feature: Pinning content entities inside collections
     Then the "Lantern FAQs" tile should be marked as pinned
     But the "Lantern terms" tile should not be marked as pinned
 
-    # When shared in other collection, content shouldn't show the pin icon.
+    # When shared on other collection, content shouldn't show the pin icon.
     When I go to the homepage of the "Cloudy Beam" collection
     Then the "Lantern FAQs" tile should not be marked as pinned
 
@@ -278,19 +278,3 @@ Feature: Pinning content entities inside collections
     Then the "Fast lightning" tile should not be marked as pinned
     When I go to the homepage of the "Orange Wrench" collection
     Then the "Fast lightning" tile should be marked as pinned
-
-  Scenario Outline: Content cannot be pinned inside solutions.
-    Given <content type> content:
-      | title        | solution     | state     |
-      | To be pinned | Space Silver | validated |
-
-    When I am logged in as a facilitator of the "Space Silver" solution
-    And I go to the homepage of the "Space Silver" solution
-    Then I should not see the contextual link "Pin" in the "To be pinned" tile
-
-    Examples:
-      | content type |
-      | event        |
-      | document     |
-      | discussion   |
-      | news         |

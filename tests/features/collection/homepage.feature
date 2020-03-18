@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-a
 Feature: Collection homepage
   In order find content around a topic
   As a user of the website
@@ -6,30 +6,35 @@ Feature: Collection homepage
 
   Background:
     Given users:
-      | Username | Status |
-      | Frodo    | active |
-      | Boromir  | active |
-      | Legoloas | active |
-      | Gimli    | active |
-    Given the following owner:
+      | Username | Status | Roles     |
+      | Frodo    | active |           |
+      | Boromir  | active |           |
+      | Legoloas | active |           |
+      | Gimli    | active |           |
+      | Samwise  | active | moderator |
+    And the following owner:
       | name          |
       | Bilbo Baggins |
-    Given the following solution:
-      | title             | Bilbo's book          |
-      | description       | Bilbo's autobiography |
-      | elibrary creation | members               |
-      | creation date     | 2014-10-17 8:32am     |
-      | state             | validated             |
+    And the following contact:
+      | name  | Kalikatoura             |
+      | email | kalikatoura@example.com |
     And the following collection:
-      | title             | Middle earth daily               |
-      | description       | Middle earth daily               |
-      | owner             | Bilbo Baggins                    |
-      | logo              | logo.png                         |
-      | moderation        | yes                              |
-      | elibrary creation | members                          |
-      | state             | validated                        |
-      | policy domain     | Employment and Support Allowance |
-      | affiliates        | Bilbo's book                     |
+      | title               | Middle earth daily               |
+      | description         | Middle earth daily               |
+      | owner               | Bilbo Baggins                    |
+      | contact information | Kalikatoura                      |
+      | logo                | logo.png                         |
+      | moderation          | yes                              |
+      | content creation    | members                          |
+      | state               | validated                        |
+      | policy domain       | Employment and Support Allowance |
+    And the following solution:
+      | title            | Bilbo's book          |
+      | collection       | Middle earth daily    |
+      | description      | Bilbo's autobiography |
+      | content creation | members               |
+      | creation date    | 2014-10-17 8:32am     |
+      | state            | validated             |
     And the following collection user memberships:
       | collection         | user     | roles       |
       | Middle earth daily | Frodo    | facilitator |
@@ -43,26 +48,43 @@ Feature: Collection homepage
       | title                                    | short title      | body                                      | collection         | created           | start date          | end date            | state     | policy domain     | changed  |
       | Big hobbit feast - fireworks at midnight | Big hobbit feast | Barbecue followed by dance and fireworks. | Middle earth daily | 2014-10-17 8:33am | 2016-03-15T11:12:12 | 2016-03-15T11:12:12 | validated | Supplier exchange | 2017-7-5 |
 
+  @clearStaticCache
   Scenario: The collection homepage shows the collection metrics.
     When I go to the homepage of the "Middle earth daily" collection
-    Then a tour should be available
     Then I see the text "3 Members" in the "Header" region
-    Then I see the text "1 Solution" in the "Header" region
+    And I see the text "1 Solution" in the "Header" region
 
-    # @see ISAICP-3599
     # Test caching of the metrics: Solutions.
-#    Then I delete the "Bilbo's book" solution
-#    When I am logged in as Gimli
-#    And I go to the homepage of the "Middle earth daily" collection
-#    Then I see the text "0 Solutions" in the "Header" region
+    When I delete the "Bilbo's book" solution
+    And I reload the page
+    Then I see the text "3 Members" in the "Header" region
+    And I see the text "0 Solutions" in the "Header" region
 
-    # Test last updated
-#    Then I am logged in as "Frodo"
-#    And I go to the homepage of the "Middle earth daily" collection
-#    Then I click "Rohirrim make extraordinary deal"
-#    And I click "Edit" in the "Entity actions" region
-#    Then I press "Update"
-#    And I go to the homepage of the "Middle earth daily" collection
+    When I delete the "Frodo" user
+    And I reload the page
+    Then I see the text "2 Members" in the "Header" region
+    And I see the text "0 Solutions" in the "Header" region
+
+  Scenario: The collection homepage is cached for anonymous users
+    Given I am an anonymous user
+    And I go to the homepage of the "Middle earth daily" collection
+    Then the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+
+  Scenario Outline: The collection homepage is cached for authenticated users
+    Given I am logged in as <user>
+    And I go to the homepage of the "Middle earth daily" collection
+    Then the page should be cacheable
+    When I reload the page
+    Then the page should be cached
+
+    Examples:
+      | user    |
+      | Frodo   |
+      | Boromir |
+      | Gimli   |
+      | Samwise |
 
   Scenario: The collection homepage shows related content.
     When I go to the homepage of the "Middle earth daily" collection
@@ -123,34 +145,6 @@ Feature: Collection homepage
     And I should see the "Rohirrim make extraordinary deal" tile
     But I should not see the "Big hobbit feast - fireworks at midnight" tile
 
-  Scenario: Forward search facets to the search page (Advanced search)
-    Given I go to the homepage of the "Middle earth daily" collection
-    When I click the News content tab
-    And I click "Supplier exchange" in the "collection policy domain" inline facet
-    And I click "Advanced search"
-    Then I should be on the search page
-    Then the News content tab should be selected
-    And "Middle earth daily (1)" should be selected in the "from" inline facet
-    And "Supplier exchange (1)" should be selected in the "policy domain" inline facet
-    Then I should see the following tiles in the correct order:
-      | Breaking: Gandalf supposedly plans his retirement |
-
-  Scenario: Forward search facets to the search page are ordered properly
-    Given I go to the homepage of the "Middle earth daily" collection
-    When I click the News content tab
-    And I click "Advanced search"
-    Then I should be on the search page
-    Then the News content tab should be selected
-    Then I should see the following tiles in the correct order:
-      | Rohirrim make extraordinary deal                  |
-      | Breaking: Gandalf supposedly plans his retirement |
-
-  Scenario: Search engines and link crawlers should not follow advanced search link.
-    Given I go to the homepage of the "Middle earth daily" collection
-    Then search engines should be discouraged to follow the link "Advanced search"
-    When I click "Supplier exchange" in the "collection policy domain" inline facet
-    Then search engines should be discouraged to follow the link "Advanced search"
-
   # Regression test to ensure that related community content does not appear in the draft view.
   # @see: https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3262
   Scenario: The related content should not be shown in the draft view version as part of the content.
@@ -162,6 +156,7 @@ Feature: Collection homepage
     And I click "View draft" in the "Entity actions" region
     Then I should see the text "Moderated"
     And I should see the text "Open collection"
+    And I should see the text "Only members can create content."
     And I should see the text "Bilbo Baggins"
     And I should see the text "Employment and Support Allowance"
     And I should see the heading "Middle earth nightly"

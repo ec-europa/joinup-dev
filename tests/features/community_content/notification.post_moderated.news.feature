@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-b
 Feature: Notification test for the news transitions on a post moderated parent.
   In order to manage my collections
   As an owner of the collection
@@ -12,8 +12,8 @@ Feature: Notification test for the news transitions on a post moderated parent.
       | CC facilitator   |           | notify_facilitator@test.com | CC         | Facilitator |
       | CC member        |           | notify_member@test.com      | CC         | Member      |
     And collections:
-      | title              | state     | elibrary creation | moderation |
-      | CC post collection | validated | members           | no         |
+      | title              | state     | content creation | moderation |
+      | CC post collection | validated | members          | no         |
     And the following collection user memberships:
       | collection         | user           | roles       |
       | CC post collection | CC owner       | owner       |
@@ -33,7 +33,7 @@ Feature: Notification test for the news transitions on a post moderated parent.
     And I am logged in as "CC member"
     And I go to the "CC post collection" collection
     And I click "Add news" in the plus button menu
-    And I fill in "Kicker" with "CCN create publish"
+    And I fill in "Short title" with "CCN create publish"
     And I fill in "Headline" with "CCN create publish"
     And I fill in "Content" with "CCN create publish"
     And I press "Publish"

@@ -1,17 +1,8 @@
+@group-a
 Feature: User authentication
   In order to protect the integrity of the website
   As a product owner
   I want to make sure users with various roles can only access pages they are authorized to
-
-  Scenario: Anonymous user can see the user login page
-    Given I am not logged in
-    When I visit "user"
-    Then I should see the text "Sign in"
-    And I should see the text "Reset your password"
-    And I should see the text "Email or username"
-    And I should see the text "Password"
-    But I should not see the text "Sign out"
-    And I should not see the text "My account"
 
   Scenario Outline: Anonymous user can access public pages
     Given I am not logged in
@@ -23,12 +14,11 @@ Feature: User authentication
       | user/login          |
       | user/password       |
       | user/register       |
-      | joinup/legal-notice |
 
   Scenario Outline: Anonymous user cannot access restricted pages
     Given I am not logged in
     When I go to "<path>"
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should see the heading "Sign in to continue"
 
     Examples:
       | path                                                           |
@@ -37,14 +27,19 @@ Feature: User authentication
       | admin/config/search/redirect                                   |
       | admin/content                                                  |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/people                                                   |
+      | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
       | admin/structure/views                                          |
-      | propose/collection                                             |
-      | propose/solution                                               |
       | dashboard                                                      |
+      | licence                                                        |
+      | licence/add                                                    |
       | node                                                           |
       | node/add                                                       |
       | node/add/custom_page                                           |
@@ -52,6 +47,8 @@ Feature: User authentication
       | node/add/document                                              |
       | node/add/event                                                 |
       | node/add/news                                                  |
+      | propose/collection                                             |
+      | propose/solution                                               |
       | rdf_entity/add                                                 |
       | rdf_entity/add/asset_distribution                              |
       | rdf_entity/add/asset_release                                   |
@@ -60,7 +57,7 @@ Feature: User authentication
       | rdf_entity/add/licence                                         |
       | rdf_entity/add/owner                                           |
       | rdf_entity/add/solution                                        |
-      | licence                                                        |
+      | user/subscriptions                                             |
 
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
@@ -68,11 +65,11 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                |
-      | propose/collection  |
-      | collections         |
-      | user                |
-      | joinup/legal-notice |
+      | path               |
+      | collections        |
+      | propose/collection |
+      | user               |
+      | user/subscriptions |
 
   @api
   Scenario Outline: Authenticated user cannot access site administration
@@ -86,9 +83,14 @@ Feature: User authentication
       | admin/config                                                   |
       | admin/content                                                  |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
       | admin/people                                                   |
+      | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | admin/structure                                                |
       | admin/structure/views                                          |
       | dashboard                                                      |
@@ -120,8 +122,13 @@ Feature: User authentication
       | path                                                           |
       | admin/people                                                   |
       | admin/content/rdf                                              |
+      | admin/legal-notice                                             |
+      | admin/legal-notice/add                                         |
+      | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
+      | admin/reporting/solutions-by-licences                          |
+      | admin/reporting/solutions-by-type                              |
       | dashboard                                                      |
       | licence                                                        |
       | licence/add                                                    |
@@ -180,6 +187,8 @@ Feature: User authentication
       | admin/config                       |
       | admin/content                      |
       | admin/content/rdf                  |
+      | admin/legal-notice                 |
+      | admin/legal-notice/add             |
       | admin/people                       |
       | admin/structure                    |
       | node                               |

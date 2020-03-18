@@ -1,19 +1,38 @@
-@api
+@api @group-b
 Feature:
   As a site moderator/administrator
   When I'm logged in
   I want to be able to access the Joinup reporting section.
 
   Scenario Outline: Test the general access to Reporting section.
-    Given I am logged in as a <role>
-    And I am on the homepage
-    When I am on "/admin/reporting"
+    Given I am logged in as a user with the <role> role
+    When I am on "<url>"
     Then I should get a <code> HTTP response
 
     Examples:
-      | role          | code |
-      | authenticated | 403  |
-      | moderator     | 200  |
+      | url                                                         | role          | code |
+      | /admin/reporting                                            | authenticated | 403  |
+      | /admin/reporting                                            | moderator     | 200  |
+      | /admin/reporting/legal-notice-report                        | authenticated | 403  |
+      | /admin/reporting/legal-notice-report                        | moderator     | 200  |
+      | /admin/reporting/group-administrators/rdf_entity/collection | authenticated | 403  |
+      | /admin/reporting/group-administrators/rdf_entity/collection | moderator     | 200  |
+      | /admin/reporting/export-user-list                           | authenticated | 403  |
+      | /admin/reporting/export-user-list                           | moderator     | 200  |
+      | /admin/reporting/solutions-by-type                          | authenticated | 403  |
+      | /admin/reporting/solutions-by-type                          | moderator     | 200  |
+      | /admin/reporting/solutions-by-licences                      | authenticated | 403  |
+      | /admin/reporting/solutions-by-licences                      | moderator     | 200  |
+
+  Scenario: Links should be visible on the reporting page for a moderator.
+    Given I am logged in as a user with the moderator role
+    And I am on "/admin/reporting"
+    Then I should see the following links:
+      | Collection administrators  |
+      | Export user list           |
+      | Solutions by solution type |
+      | Solutions by licences      |
+      | Legal notice report        |
 
   # This scenario is a light test to avoid regressions.
   Scenario: Moderators can access the list of published solutions and filter them by dates and type.
@@ -61,14 +80,14 @@ Feature:
     And I should not see the text "Restless Burst"
     # Verify that the CSV link is present.
     # Note: the link is rendered as icon in a real browser.
-    And I should see the link "Subscribe to Moderator: Solutions by type"
-    When I click "Subscribe to Moderator: Solutions by type"
+    And I should see the link "Download CSV"
+    When I click "Download CSV"
     Then I should get a valid web page
 
     # Verify that access to the CSV endpoint is forbidden for anonymous and normal users.
     When I am an anonymous user
     And I am on "/admin/reporting/solutions-by-type/csv?_format=csv"
-    Then I should see the error message "Access denied. You must sign in to view this page."
+    Then I should get an access denied error
     When I am logged in as an "authenticated user"
     And I am on "/admin/reporting/solutions-by-type/csv?_format=csv"
     Then I should get an access denied error

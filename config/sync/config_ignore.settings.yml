@@ -1,0 +1,4 @@
+ignored_config_entities:
+  - cas_mock_server.settings
+  - core.menu.static_menu_link_overrides
+  - stage_file_proxy.settings

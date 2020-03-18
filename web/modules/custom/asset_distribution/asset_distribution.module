@@ -5,13 +5,17 @@
  * Contains asset_distribution.module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\asset_distribution\DistributionParentFieldItemList;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file_url\FileUrlHandler;
+use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -67,13 +71,13 @@ function asset_distribution_form_rdf_entity_asset_distribution_form_alter(&$form
 }
 
 /**
- * Implements hook_rdf_load_bundle_alter().
+ * Implements hook_sparql_bundle_load_alter().
  *
  * There is an initial check whether the bundle is empty because the method
  * that invokes this hook is also called for taxonomies and the bundle is
  * currently being skipped for the taxonomies.
  */
-function asset_distribution_rdf_load_bundle_alter($entity_values, &$bundles) {
+function asset_distribution_sparql_bundle_load_alter($entity_values, &$bundles) {
   if (count($bundles) > 1 && in_array('solution', $bundles)) {
     if (isset($entity_values['http://purl.org/dc/terms/isVersionOf'])) {
       $bundles = array_diff($bundles, ['solution']);
@@ -112,26 +116,49 @@ function asset_distribution_rdf_entity_presave(RdfInterface $distribution) {
 /**
  * Implements hook_ENTITY_TYPE_insert().
  */
-function asset_distribution_rdf_entity_insert(EntityInterface $entity) {
-  asset_distribution_rdf_entity_update($entity);
+function asset_distribution_rdf_entity_insert(RdfInterface $distribution): void {
+  if ($distribution->bundle() === 'asset_distribution') {
+    // Invalidate the solution cache.
+    asset_distribution_invalidate_solution_cache($distribution);
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
-function asset_distribution_rdf_entity_update(EntityInterface $entity) {
-  if ($entity->bundle() === 'asset_distribution') {
+function asset_distribution_rdf_entity_update(RdfInterface $distribution): void {
+  if ($distribution->bundle() !== 'asset_distribution') {
+    return;
+  }
+
+  // Invalidate the solution cache.
+  asset_distribution_invalidate_solution_cache($distribution);
+
+  // Reindex the distribution's parent. Note that this is done automatically
+  // on distribution insert, in DistributionParentFieldItemList::postSave(),
+  // by saving the parent after a new distribution has been saved.
+  // @see \Drupal\asset_distribution\DistributionParentFieldItemList::postSave()
+  /** @var \Drupal\rdf_entity\RdfInterface $parent */
+  if (!$distribution->get('parent')->isEmpty() && ($parent = $distribution->get('parent')->entity)) {
+    ContentEntity::indexEntity($parent);
+  }
+}
+
+/**
+ * Invalidates the distribution solution cache.
+ *
+ * @param \Drupal\rdf_entity\RdfInterface $distribution
+ *   The distribution being inserted/updated.
+ */
+function asset_distribution_invalidate_solution_cache(RdfInterface $distribution): void {
+  /** @var \Drupal\rdf_entity\RdfInterface $solution */
+  if ($solution = Rdf::load($distribution->get('og_audience')->target_id)) {
+    /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator */
+    $cache_tags_invalidator = \Drupal::service('cache_tags.invalidator');
     // Solutions show the licence of their releases in the solution header.
     // Clear the cache of the solution this release belongs to so any licence
     // change is picked up.
-    /** @var \Drupal\rdf_entity\RdfInterface $solution */
-    $solution = $entity->get('og_audience')->entity;
-
-    if ($solution) {
-      /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator */
-      $cache_tags_invalidator = \Drupal::service('cache_tags.invalidator');
-      $cache_tags_invalidator->invalidateTags($solution->getCacheTagsToInvalidate());
-    }
+    $cache_tags_invalidator->invalidateTags($solution->getCacheTagsToInvalidate());
   }
 }
 
@@ -175,7 +202,7 @@ function asset_distribution_preprocess_rdf_entity(&$variables) {
  *   The term ID as URI or NULL, if the term doesn't exists.
  */
 function asset_distribution_get_file_type_term_by_mime($mime_type) {
-  /** @var \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql */
+  /** @var \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql */
   $sparql = \Drupal::service('sparql_endpoint');
 
   $query = <<<QUERY
@@ -250,4 +277,36 @@ function asset_distribution_form_alter(&$form, FormStateInterface $form_state, $
       $form['field_ad_gitb_compliant']['#access'] = TRUE;
     }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * Cleanup entity reference field items to the deleted distribution from
+ * solutions and releases.
+ */
+function asset_distribution_rdf_entity_delete(RdfInterface $distribution) {
+  if ($distribution->bundle() !== 'asset_distribution') {
+    return;
+  }
+
+  /** @var \Drupal\sparql_entity_storage\SparqlEntityStorageInterface $storage */
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+
+  $ids = $storage->getQuery('OR')
+    ->condition('field_is_distribution', $distribution->id())
+    ->condition('field_isr_distribution', $distribution->id())
+    ->execute();
+
+  foreach ($storage->loadMultiple($ids) as $entity) {
+    $field_name = $entity->bundle() === 'solution' ? 'field_is_distribution' : 'field_isr_distribution';
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
+    $field = $entity->get($field_name);
+    $field->filter(function (EntityReferenceItem $item) use ($distribution): bool {
+      return $item->target_id !== $distribution->id();
+    });
+    $entity->skip_notification = TRUE;
+    $entity->save();
+  }
+
 }

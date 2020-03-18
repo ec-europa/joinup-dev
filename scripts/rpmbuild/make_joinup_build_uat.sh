@@ -32,12 +32,13 @@ JOINUP_DIR=${SOURCES_DIR}/Joinup-${BUILD_VERSION}
 mkdir -p ${JOINUP_DIR} || exit 1
 
 # Build the site.
-${COMPOSER_PATH} install || exit 1
-./vendor/bin/phing compile-sass || exit 1
+sudo ${COMPOSER_PATH} self-update || exit 1
+COMPOSER_DISCARD_CHANGES=true ${COMPOSER_PATH} install --no-interaction --prefer-dist || exit 1
+./vendor/bin/phing compile-scss || exit 1
 
 
 # Collect the source files for the package.
-cp -r build* composer.* resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
+cp -r build* composer.* VERSION config/ resources/ scripts/ src/ vendor/ web/ ${JOINUP_DIR} || exit 1
 
 # Replace files and folders with production symlinks.
 rm -rf ${JOINUP_DIR}/web/sites/default/settings.php

@@ -1,0 +1,7 @@
+services:
+  workflow_state_permission.workflow_state_permission:
+    class: Drupal\workflow_state_permission\WorkflowStatePermission
+    arguments: ['@plugin.manager.workflow_state_permission']
+  plugin.manager.workflow_state_permission:
+    class: Drupal\workflow_state_permission\WorkflowStatePermissionPluginManager
+    parent: default_plugin_manager

@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Invite members to subscribe to discussions
   In order to promote discussion of topics
   As a discussion author or moderator
@@ -137,12 +137,12 @@ Feature: Invite members to subscribe to discussions
     And I should not see the text "Shaquila Paternoster (paternoster)"
 
     When I fill in "E-mail" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |
     When I fill in "E-mail" with "lcrawford@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show the chips:
       | Lynwood Crawford |
@@ -156,7 +156,7 @@ Feature: Invite members to subscribe to discussions
 
     # Add another one.
     When I fill in "E-mail" with "shaquila.paternoster@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show the chips:
       | Shaquila Paternoster |
@@ -179,7 +179,7 @@ Feature: Invite members to subscribe to discussions
     # Try if it is possible to resend an invitation.
     Given the mail collector cache is empty
     When I fill in "E-mail" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |
@@ -213,7 +213,7 @@ Feature: Invite members to subscribe to discussions
     When I go to the "Concerned about dissolved gases?" discussion
     And I click "Invite"
     And I fill in "E-mail" with "gloruskin.hr@example.com"
-    And I hit enter in the keyboard on the field "E-mail"
+    And I hit "enter" in the keyboard on the field "E-mail"
     And I wait for AJAX to finish
     Then the page should show only the chips:
       | Glory Ruskin |

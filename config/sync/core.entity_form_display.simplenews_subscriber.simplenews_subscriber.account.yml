@@ -1,0 +1,25 @@
+uuid: 53b4249b-dd86-455a-abc1-02f7e28e6392
+langcode: und
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.simplenews_subscriber.account
+    - field.field.simplenews_subscriber.simplenews_subscriber.subscriptions
+  module:
+    - simplenews
+_core:
+  default_config_hash: wsSwexy6Zc4ZKCF3dNzcg9vwvZeAsOKhe-WpASvCLIs
+id: simplenews_subscriber.simplenews_subscriber.account
+targetEntityType: simplenews_subscriber
+bundle: simplenews_subscriber
+mode: account
+content:
+  subscriptions:
+    type: simplenews_subscription_select
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  mail: true
+  uid: true

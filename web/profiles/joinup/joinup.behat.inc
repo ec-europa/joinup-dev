@@ -15,7 +15,8 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Url;
+use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\file\Entity\File;
@@ -24,6 +25,8 @@ use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
 use Drupal\joinup\Traits\ContextualLinksTrait;
 use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\FileTrait;
+use Drupal\joinup\Traits\FormTrait;
+use Drupal\joinup\Traits\KeyboardInteractionTrait;
 use Drupal\joinup\Traits\MaterialDesignTrait;
 use Drupal\joinup\Traits\NodeTrait;
 use Drupal\joinup\Traits\OgTrait;
@@ -35,6 +38,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup\Traits\WorkflowTrait;
 use Drupal\joinup\Traits\WysiwygTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -55,10 +59,13 @@ class JoinupSubContext extends DrupalSubContextBase {
   use ContextualLinksTrait;
   use EntityTrait;
   use FileTrait;
+  use FormTrait;
+  use KeyboardInteractionTrait;
   use MaterialDesignTrait;
   use NodeTrait;
   use OgTrait;
   use RdfEntityTrait;
+  use StringTranslationTrait;
   use TabledragTrait;
   use TraversingTrait;
   use UserTrait;
@@ -214,7 +221,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   /**
    * Checks that the logged in user has the given OG roles in the given group.
    *
-   * If the user has more than the required roles, he might have permissions
+   * If the user has more than the required roles, they might have permissions
    * from the rest of the roles that will lead the test to a false positive.
    * For this reason, we request check for the specific roles passed.
    *
@@ -260,7 +267,12 @@ class JoinupSubContext extends DrupalSubContextBase {
         $username = $value;
       }
     };
-    // Submit form.
+
+    // Submit form, waiting for Honeypot protection delay to pass.
+    /** @var \HoneypotSubContext $honeypot */
+    $honeypot = $this->getContext('\HoneypotSubContext');
+    $honeypot->waitForTimeLimit();
+
     $this->getSession()->getPage()->pressButton("Create new account");
 
     // Get the last registered user.
@@ -292,7 +304,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectContainsOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     if (array_intersect($options, $available_options) !== $options) {
@@ -315,7 +327,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function checkSelectDoesNotContainOptions($select, $options) {
     $field = $this->findSelect($select);
-    $available_options = array_values($this->getSelectOptions($field));
+    $available_options = $this->getSelectOptions($field);
     $options = $this->explodeCommaSeparatedStepArgument($options);
 
     $intersection = array_intersect($available_options, $options);
@@ -323,6 +335,25 @@ class JoinupSubContext extends DrupalSubContextBase {
     if (!empty($intersection)) {
       throw new \Exception("The select '{$select}' should not contain the options: " . implode(', ', $intersection));
     }
+  }
+
+  /**
+   * Asserts the list of available options in a select box.
+   *
+   * @param string $select
+   *   The name of the field element.
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The available list of options.
+   *
+   * @throws Exception
+   *    Throws an exception when the select is not found or options are not
+   *    identical.
+   *
+   * @Then the :select select should contain the following options:
+   */
+  public function assertSelectOptionsAsList($select, TableNode $table) {
+    $field = $this->findSelect($select);
+    $this->assertSelectAvailableOptions($field, $table);
   }
 
   /**
@@ -410,7 +441,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Navigates to the edit page display of a node entity.
+   * Navigates to the edit form of a node entity.
    *
    * @param string $bundle
    *   The type of the node entity.
@@ -559,7 +590,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @BeforeNodeCreate
    */
-  public static function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
+  public function massageFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
     // Replace field label aliases with the actual field names.
@@ -573,6 +604,22 @@ class JoinupSubContext extends DrupalSubContextBase {
         if (!empty($value)) {
           $node->$name = $value;
         }
+      }
+    }
+
+    if (!empty($node->field_attachment)) {
+      // We want to copy it from the fixtures into the file system and register
+      // it in the CustomPageSubContext so it can be cleaned up after the
+      // scenario ends. Perform a small dance to get access to the context class
+      // from inside this static callback.
+      /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+      $environment = $scope->getEnvironment();
+      /** @var \CustomPageSubContext $context */
+      $context = $environment->getContext(self::class);
+      foreach ($context->explodeCommaSeparatedStepArgument($node->field_attachment) as $filename) {
+        // The file is tracked by its filename so the value still remains to be
+        // the filenames instead of the url.
+        $context->createFile($filename);
       }
     }
 
@@ -599,6 +646,32 @@ class JoinupSubContext extends DrupalSubContextBase {
 
     if (isset($node->sticky)) {
       throw new \Exception('Please use "pinned" instead of "sticky".');
+    }
+
+    if (property_exists($node, 'visit_count')) {
+      $node->visit_count = MetaEntity::create([
+        'type' => 'visit_count',
+        'count' => (int) $node->visit_count,
+      ]);
+    }
+
+    if (property_exists($node, 'published_at') && !empty($node->published_at)) {
+      // If the entry is not numeric, then it means that the scenario is using a
+      // human readable version of the timestamp.
+      // Example: Sun, 01 Dec 2019 13:00:00 +0100.
+      // This will allow dynamic tests as well. `strtotime` will also be able to
+      // receive entries like "1 day ago" or "+1 month".
+      if (!is_numeric($node->published_at)) {
+        $node->published_at = strtotime($node->published_at);
+      }
+    }
+
+    $image_fields = ['field_news_logo', 'field_event_logo'];
+    foreach ($image_fields as $image_field) {
+      if (!empty($node->$image_field)) {
+        $file = $this->createFile($node->$image_field);
+        $node->$image_field = $file->getFileUri();
+      }
     }
 
     // Replace the human-readable values for multiple fields.
@@ -634,8 +707,11 @@ class JoinupSubContext extends DrupalSubContextBase {
         'logo' => 'field_custom_page_logo',
       ],
       'discussion' => [
+        'attachments' => 'field_attachment',
         'content' => 'body',
+        'keywords' => 'field_keywords',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'document' => [
         'document type' => 'field_type',
@@ -645,32 +721,39 @@ class JoinupSubContext extends DrupalSubContextBase {
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
         'state' => 'field_state',
+        'document publication date' => 'field_document_publication_date',
+        'publication date' => 'published_at',
       ],
       'event' => [
         'keywords' => 'field_keywords',
+        'logo' => 'field_event_logo',
         'short title' => 'field_short_title',
         'start date' => 'field_event_date:value',
         'end date' => 'field_event_date:end_value',
         'agenda' => 'field_event_agenda',
         'location' => 'field_location',
+        'online location' => 'field_event_online_location',
         'organisation' => 'field_organisation',
+        'web url' => 'field_event_web_url',
         'scope' => 'field_scope',
         'state' => 'field_state',
       ],
       'news' => [
         'headline' => 'field_news_headline',
         'keywords' => 'field_keywords',
+        'logo' => 'field_news_logo',
         'spatial coverage' => 'field_news_spatial_coverage',
         'state' => 'field_state',
+        'publication date' => 'published_at',
       ],
       'shared' => [
         'collection' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'solution' => OgGroupAudienceHelperInterface::DEFAULT_FIELD,
         'policy domain' => 'field_policy_domain',
-        'shared in' => 'field_shared_in',
-        'visits' => 'field_visit_count',
+        'shared on' => 'field_shared_in',
+        'visits' => 'visit_count',
         'featured' => 'field_site_featured',
-        'pinned site-wide' => 'field_site_pinned',
+        'pinned to front page' => 'field_site_pinned',
       ],
     ];
 
@@ -865,12 +948,41 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @param string $state
    *   The expected state.
    *
+   * @throws \Exception
+   *   Thrown when the node doesn't exist or doesn't have a state field.
+   *
    * @Then the :title :type content should have the :state state
    */
-  public function assertNodeWorkflowState($title, $type, $state) {
+  public function assertNodeWorkflowState(string $title, string $type, string $state): void {
     $node = $this->getNodeByTitle($title, $type);
     $actual = $this->getEntityStateField($node)->get('value')->getString();
     Assert::assertEquals($state, $actual, "The $title $type content has the expected state '$state' (actual: '$actual')");
+  }
+
+  /**
+   * Changes the workflow state of a given entity.
+   *
+   * @param string $title
+   *   The title of the entity to update.
+   * @param string $entity_type
+   *   The entity type.
+   * @param string $state
+   *   The workflow state.
+   *
+   * @throws \Exception
+   *   Thrown when the entity doesn't exist, doesn't have a state field, or
+   *   cannot be saved.
+   *
+   * @Given the workflow state of the :title :entity_type is changed to :state
+   */
+  public function updateWorkflowState(string $title, string $entity_type, string $state): void {
+    $entity_type = self::translateEntityTypeAlias($entity_type);
+    $entity = $this->getEntityByLabel($entity_type, $title);
+    $this->getEntityStateField($entity)->set('value', $state);
+    if ($entity instanceof RevisionableInterface) {
+      $entity->setNewRevision(TRUE);
+    }
+    $entity->save();
   }
 
   /**
@@ -1158,7 +1270,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Assert that the given form submission buttons are present on the page.
+   * Asserts that the given form submission buttons are present on the page.
    *
    * @param string $buttons
    *   A comma separated list of button labels.
@@ -1177,17 +1289,7 @@ class JoinupSubContext extends DrupalSubContextBase {
   public function assertFormSubmitButtonsVisible($buttons, $count = NULL) {
     $buttons = $this->explodeCommaSeparatedStepArgument($buttons);
 
-    $page = $this->getSession()->getPage();
-    $not_found = [];
-    foreach ($buttons as $button) {
-      if (!$page->findButton($button)) {
-        $not_found[] = $button;
-      }
-    }
-
-    if (!empty($not_found)) {
-      throw new \Exception('Button(s) expected, but not found: ' . implode(', ', $not_found));
-    }
+    $this->assertSubmitButtonsVisible($buttons, FALSE);
 
     if (!empty($count)) {
       // Only check the actual form submit buttons, ignore other buttons that
@@ -1274,6 +1376,15 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
+   * Opens the sidebar menu on JS-enabled browsers.
+   *
+   * @When I open the group sidebar menu
+   */
+  public function openGroupMenu() {
+    $this->openMaterialDesignMenu($this->getSession()->getPage()->find('css', '.sidebar-menu'));
+  }
+
+  /**
    * Opens a specific MDL dropdown menu on JS-enabled browsers.
    *
    * @When I open the header local tasks menu
@@ -1305,11 +1416,11 @@ class JoinupSubContext extends DrupalSubContextBase {
     $current_url = $this->getSession()->getCurrentUrl();
     $current_url = str_replace($this->getMinkParameter('base_url'), '', $current_url);
     if ($current_url !== $url) {
-      $message = t('Url "@current" does not match expected "@expected".', [
+      $message = $this->t('Url "@current" does not match expected "@expected".', [
         '@current' => $current_url,
         '@expected' => $url,
       ]);
-      throw new Exception($message);
+      throw new Exception((string) $message);
     }
   }
 
@@ -1499,32 +1610,16 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Emulates closing and re-opening of the browser.
+   * Checks that the given workflow buttons are visible.
    *
-   * @When I close and reopen the browser
+   * @param string $buttons
+   *   A comma separated list of workflow button labels.
+   *
+   * @Then I should see the workflow buttons :buttons
    */
-  public function restartSession() {
-    /** @var \Symfony\Component\BrowserKit\CookieJar $cookie_jar */
-    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
-
-    // We are going to keep all the cookies with a valid expire time. The
-    // \Symfony\Component\BrowserKit\CookieJar::all() method already removes
-    // expired cookies, so we need to strip the ones with a null expire time.
-    // A null expire time means that the cookie is going to be deleted when the
-    // browser is closed.
-    $persistent = [];
-    foreach ($cookie_jar->all() as $cookie) {
-      if (!is_null($cookie->getExpiresTime())) {
-        $persistent[] = $cookie;
-      }
-    }
-
-    $this->getSession()->restart();
-    $cookie_jar = $this->getSession()->getDriver()->getClient()->getCookieJar();
-
-    foreach ($persistent as $cookie) {
-      $cookie_jar->set($cookie);
-    }
+  public function assertWorkflowButtons(string $buttons): void {
+    $labels = $this->explodeCommaSeparatedStepArgument($buttons);
+    $this->assertSubmitButtonsVisible($labels);
   }
 
   /**
@@ -1812,30 +1907,38 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Asserts that a certain link contains the unaliased path of a node.
+   * Asserts that a certain link contains the URL of an entity.
    *
    * @param string $link
    *   The link text.
    * @param string $title
-   *   The node title.
+   *   The entity title.
+   * @param string $type
+   *   The entity type. Either 'content' or 'rdf'.
    *
    * @throws \Exception
    *   Thrown when the link is not in the page.
    *
-   * @Then the share link :link should point to the :title content
+   * @Then /^the share link "(?P<link>[^"]+)" should point to the "(?P<title>[^"]+)" (?P<type>[^" ]+)(?:| entity)$/
    */
-  public function assertLinkContainsNodeUnaliasedUrl($link, $title) {
-    $node = $this->getNodeByTitle($title);
+  public function assertLinkContainsEntityUrl(string $link, string $title, string $type): void {
+    if (!in_array($type, ['content', 'rdf'])) {
+      throw new InvalidArgumentException('Type can only be one of "content" and "rdf".');
+    }
+    $function = $type === 'content' ? 'getNodeByTitle' : 'getRdfEntityByLabel';
+
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
+    $entity = $this->$function($title);
     $link_element = $this->getSession()->getPage()->findLink($link);
 
     if (!$link_element) {
       throw new \Exception("Link '{$link}' was not found in the page.");
     }
 
-    $base_url = rtrim(Url::fromRoute('<front>')->setAbsolute()->toString(), '/');
+    $entity_url = $entity->toUrl()->setAbsolute()->toString();
     $href = $link_element->getAttribute('href');
 
-    Assert::assertContains(urlencode("{$base_url}/node/{$node->id()}"), $href);
+    Assert::assertContains(urlencode($entity_url), $href);
   }
 
   /**
@@ -1896,22 +1999,6 @@ class JoinupSubContext extends DrupalSubContextBase {
   }
 
   /**
-   * Waits for a few moments to bypass spam bot validation.
-   *
-   * The Honeypot module is intended to block spam bots and detect if actual
-   * humans are entering forms. One of its checks is that it assumes a human
-   * takes at least 5 seconds to fill in a form.
-   *
-   * Use this on forms that are protected by Honeypot before submitting the
-   * form.
-   *
-   * @Then I wait for the honeypot validation to pass
-   */
-  public function iWaitForHoneypot() {
-    sleep(5);
-  }
-
-  /**
    * Wait until a running batch job has finished.
    *
    * This will periodically check if the progress bar is still visible on the
@@ -1931,7 +2018,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    * @Given I wait for the pipeline batch job to finish
    */
   public function iWaitForThePipelineBatchJobToFinish() {
-    while ($field_selector = $this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
+    while ($this->getSession()->getPage()->find('css', 'meta[http-equiv=\'Refresh\']')) {
       $this->getSession()->reload();
     }
   }
@@ -2189,7 +2276,7 @@ class JoinupSubContext extends DrupalSubContextBase {
     if (in_array($type, ['collection', 'solution'])) {
       $entity_type_id = 'rdf_entity';
     }
-    elseif (in_array($type, CommunityContentHelper::getBundles())) {
+    elseif (in_array($type, CommunityContentHelper::BUNDLES)) {
       $entity_type_id = 'node';
     }
     else {
@@ -2269,7 +2356,7 @@ JS;
     $found_tags_array = explode(';', $found_tags);
     $invalid_tags = array_intersect($format_tags, $found_tags_array);
     if (!empty($invalid_tags)) {
-      throw new \Exception(t('The following elements were found in the format list but should not: @found.', [
+      throw new \Exception($this->t('The following elements were found in the format list but should not: @found.', [
         '@found' => implode(', ', $invalid_tags),
       ]));
     }
@@ -2298,20 +2385,23 @@ JS;
   }
 
   /**
-   * Press the enter key in the keyboard.
+   * Press a key in a field.
    *
    * Works only in JavaScript-enabled browsers.
    *
+   * @param string $key
+   *   The human readable name of the key to press.
    * @param string $field
-   *   The field where to press the enter key.
+   *   The field in which to press the key.
    *
    * @throws \Exception
    *   Thrown when the browser doesn't support JavaScript or when the field is
    *   not found.
    *
-   * @When I hit enter( in the keyboard) on the field :field
+   * @When I hit :key( in the keyboard) on the field :field
+   * @When I hit|press the :key key in the :field field
    */
-  public function hitEnterKeyboard($field) {
+  public function pressKeyInField(string $key, string $field): void {
     if (!$this->browserSupportsJavaScript()) {
       throw new \Exception('This step requires JavaScript to run.');
     }
@@ -2321,19 +2411,7 @@ JS;
       throw new \Exception("Could not find field '$field'");
     }
 
-    $element->keyDown("\r");
-    try {
-      $element->keyUp("\r");
-    }
-    catch (StaleElementReference $e) {
-      // Depending on the implementation of the user interaction we are trying
-      // to trigger by pressing the enter key, it is posssible the action is
-      // triggered on the keydown event or on the keyup event. If it is
-      // implemented on the keydown event then it might happen that the page
-      // refreshes immediately without waiting for the key to be released.
-      // Ignore the fact that the field might already be gone when performing
-      // the keyup event.
-    }
+    $this->pressKeyInElement($key, $element);
   }
 
   /**
@@ -2372,59 +2450,6 @@ JS;
     if ($element->find('css', '.icon--pin')) {
       throw new \Exception("The tile '$heading' is marked as pinned, but it shouldn't be.");
     }
-  }
-
-  /**
-   * Asserts that a user is subscribed to specific bundles in a collection.
-   *
-   * @param string $user
-   *   The user name.
-   * @param string $bundles
-   *   A list of bundles separated by commas.
-   * @param string $type
-   *   Either 'content' or 'rdf' which corresponds to 'node' and 'rdf_entity'
-   *   entity types respectively.
-   * @param string $group_label
-   *   The group name.
-   * @param string $group_bundle
-   *   The group bundle.
-   *
-   * @throws \Exception
-   *   Throws exception if invalid data passed as arguments or if the subscribed
-   *   bundles for the given type do not match the expected ones.
-   *
-   * @Given :user should be subscribed to :bundles :type bundles in the :group_label :group_bundle
-   */
-  public function shouldBeSubscribedToContentInCollection($user, $bundles, $type, $group_label, $group_bundle) {
-    if ($type === 'content') {
-      $type = 'node';
-    }
-    elseif ($type === 'rdf') {
-      $type = 'rdf_entity';
-    }
-    else {
-      throw new Exception("Unsupported type {$type}.");
-    }
-
-    $user = $this->getUserByName($user);
-    $group = $this->getEntityByLabel('rdf_entity', $group_label, $group_bundle);
-    $og_membership = $this->getMembershipByGroupAndUser($group, $user);
-
-    $bundles = $this->explodeCommaSeparatedStepArgument($bundles);
-    $bundles = array_map(function ($bundle) use ($type) {
-      return $type . ':' . trim($bundle);
-    }, $bundles);
-
-    // This can also be accessed with:
-    // $og_membership->get('subscription_bundles')->getValue()[0][$type];
-    $og_bundles = $og_membership->get('subscription_bundles')->getValue();
-    $og_bundles = array_map(function ($row) {
-      return $row['entity_type'] . ':' . $row['bundle'];
-    }, $og_bundles);
-
-    sort($bundles);
-    sort($og_bundles);
-    Assert::assertEquals($bundles, $og_bundles);
   }
 
   /**
@@ -2474,7 +2499,7 @@ JS;
       // indentation elements to assert later on based on the parent value.
       $indentation = $current_row->findAll('css', 'div.indentation');
 
-      if ($data['parent'] === '') {
+      if (!isset($data['parent']) || $data['parent'] === '') {
         Assert::assertEmpty($parent_input->getValue());
         Assert::assertCount(0, $indentation, "The menu link '{$data['title']}' should not be indented but it is.");
       }
@@ -2644,6 +2669,287 @@ JS;
       }
       $title_input_element->setValue($row['title']);
     }
+  }
+
+  /**
+   * Asserts the status of the save button in a given region or in the page.
+   *
+   * @param string $button
+   *   The button label.
+   * @param string $status
+   *   The expected status. Possible values are 'enabled' and 'disabled'.
+   * @param string $region
+   *   (optional) The region name. If left empty, the whole page will be used.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown if the passed value for the $status variable is not an acceptable
+   *   one.
+   * @throws \Exception
+   *   Thrown when the region or the button are not found or if the expected
+   *   status does not match the actual one.
+   *
+   * @Then the :button button on the :region region should be :status
+   * @Then the :button button should be :status
+   */
+  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+    if (!in_array($status, ['enabled', 'disabled'])) {
+      throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
+    }
+
+    if (!empty($region)) {
+      $region = $this->getRegion($region);
+    }
+    else {
+      $region = $this->getSession()->getPage();
+    }
+
+    $expected_status = $status === 'enabled';
+    $button = $this->findNamedElementInRegion($button, 'button', $region);
+    $disabled = !($button->getAttribute('disabled') === 'disabled');
+    Assert::assertEquals($expected_status, $disabled);
+  }
+
+  /**
+   * Checks that there are exactly the given number of elements on the page.
+   *
+   * @param string $count
+   *   The number of elements that should be present on the page.
+   * @param string $element_name
+   *   The human readable name of the element to find on the page.
+   *
+   * @Then there should be exactly :count :element_name on the page
+   */
+  public function assertElementCount(string $count, string $element_name): void {
+    Assert::assertEquals((int) $count, count($this->getElementsMatchingElementAlias($element_name)));
+  }
+
+  /**
+   * Returns selectors used to find elements with a human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return array[]
+   *   An indexed array of selectors intended to be used with Mink's `find()`
+   *   methods. Each value is a tuple containing two strings:
+   *   - 0: the selector, e.g. 'css' or 'xpath'.
+   *   - 1: the locator.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getSelectorsMatchingElementAlias(string $alias): array {
+    $elements = [
+      // The various search input fields.
+      [
+        'names' => [
+          'search bar',
+          'search bars',
+          'search field',
+          'search fields',
+        ],
+        'selectors' => [
+          // The site-wide search field in the top right corner.
+          ['css', 'input#search-bar__input'],
+          // The search field on the search result pages.
+          ['css', '#block-exposed-form-search-page input.form-text'],
+        ],
+      ],
+    ];
+
+    foreach ($elements as $element) {
+      if (in_array($alias, $element['names'])) {
+        return $element['selectors'];
+      }
+    }
+
+    throw new \InvalidArgumentException("No selectors are defined for the element named '$alias'.");
+  }
+
+  /**
+   * Returns elements that match the given human readable identifier.
+   *
+   * @param string $alias
+   *   A human readable element identifier.
+   *
+   * @return \Behat\Mink\Element\NodeElement[]
+   *   The elements matching the identifier.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when the element name is not defined.
+   */
+  protected function getElementsMatchingElementAlias(string $alias): array {
+    $elements = [];
+
+    foreach ($this->getSelectorsMatchingElementAlias($alias) as $selector_tuple) {
+      list ($selector, $locator) = $selector_tuple;
+      $elements = array_merge($elements, $this->getSession()->getPage()->findAll($selector, $locator));
+    }
+
+    return $elements;
+  }
+
+  /**
+   * Asserts that a paragraph containing the given text is present in the page.
+   *
+   * @param string $text
+   *   The text that should be present in a paragraph.
+   *
+   * @Then I should see a paragraph containing the text :text
+   */
+  public function assertParagraphText(string $text): void {
+    $element = $this->getSession()->getPage()->find('xpath', '//p[text() = "' . $text . '"]');
+    Assert::assertNotEmpty($element);
+  }
+
+  /**
+   * Asserts that the content absolute urls exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the nodes.
+   *
+   * @throws \Exception
+   *   Thrown if any link does not exist in the page.
+   *
+   * @Given I should see the absolute urls of the following content entities:
+   */
+  public function assertContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('node', $title[0]);
+    }
+  }
+
+  /**
+   * Asserts that the rdf entity absolute urls exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the rdf entities.
+   *
+   * @throws \Exception
+   *   Thrown if any link does not exist in the page.
+   *
+   * @Given I should see the absolute urls of the following RDF entities:
+   */
+  public function assertRdfEntityAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('rdf_entity', $title[0]);
+    }
+  }
+
+  /**
+   * Asserts that the content absolute urls do not exist as links.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the nodes.
+   *
+   * @throws \Exception
+   *   Thrown if at least a link exists in the page.
+   *
+   * @Given I should not see the absolute urls of the following content entities:
+   */
+  public function assertNotContentAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('node', $title[0], FALSE);
+    }
+  }
+
+  /**
+   * Changes the publication date of an entity.
+   *
+   * @param string $title
+   *   The title of the entity.
+   * @param string $bundle
+   *   The bundle of the entity.
+   * @param string $entity_type_id
+   *   The entity type id. Either 'content' or 'rdf entity' is accepted.
+   * @param string $new_publication_date
+   *   The new publication date.
+   *
+   * @throws \InvalidArgumentException
+   *   Thrown when one of the parameters is not correct.
+   *
+   * @Given the publication date of the :title :bundle :entity_type_id is changed to :new_value
+   */
+  public function givenPublicationDateChanged(string $title, string $bundle, string $entity_type_id, string $new_publication_date): void {
+    if (!in_array($entity_type_id, ['content', 'rdf entity'])) {
+      throw new \InvalidArgumentException('Only "content" and "rdf entity" are allowed for the $entity_type_id parameter.');
+    }
+    $entity_type_id = $entity_type_id === 'content' ? 'node' : 'rdf_entity';
+    $entity = $this->getEntityByLabel($entity_type_id, $title, $bundle);
+    $publication_date = is_numeric($new_publication_date) ? ((int) $new_publication_date) : strtotime($new_publication_date);
+    if (empty($new_publication_date)) {
+      throw new \InvalidArgumentException("'{$new_publication_date}' could not be converted to a proper timestamp.");
+    }
+
+    $entity->set('published_at', $publication_date);
+    $entity->save();
+  }
+
+  /**
+   * Asserts that the absolute url of an rdf entity exists as a link.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $titles
+   *   The titles of the rdf entities.
+   *
+   * @throws \Exception
+   *   Thrown if the link does not exist in the page.
+   *
+   * @Given I should not see the absolute urls of the following RDF entities:
+   */
+  public function assertEmptyRdfEntityAbsoluteUrlsAsLinkInPage(TableNode $titles): void {
+    foreach ($titles->getRows() as $title) {
+      $this->assertEntityUrlInSitemap('rdf_entity', $title[0], FALSE);
+    }
+  }
+
+  /**
+   * Asserts a url in the sitemap response.
+   *
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param string $entity_label
+   *   The entity label.
+   * @param bool $exists
+   *   (optional) Whether to assert that a link exists or not exists. Defaults
+   *   to TRUE.
+   *
+   * @throws \Exception
+   *   Thrown if the link assertion is not the expected one.
+   */
+  protected function assertEntityUrlInSitemap(string $entity_type_id, string $entity_label, bool $exists = TRUE): void {
+    $entity = $this->getEntityByLabel($entity_type_id, $entity_label);
+    $link_text = $entity->toUrl()->setAbsolute()->toString();
+    $expected = '<loc>' . $link_text . '</loc>';
+    $response = $this->getSession()->getPage()->getContent();
+    if ($exists) {
+      Assert::assertContains($expected, $response);
+    }
+    else {
+      Assert::assertNotContains($expected, $response);
+    }
+  }
+
+  /**
+   * Asserts that the anchor from the url has a correct id to track in the page.
+   *
+   * There is no good way to track if the page has navigated to the anchor
+   * requested as this is a browser side functionality. What we _can_ assert is
+   * that the anchor that is requested from the URL exists as an element id in
+   * the page.
+   *
+   * @throws \Exception
+   *   Thrown when the url does not include an anchor or the anchor is not found
+   *   in the page.
+   *
+   * @When the page should point to the anchor from the URL
+   */
+  public function assertCorrectAnchor(): void {
+    $current_url = $this->getSession()->getCurrentUrl();
+    $url_parts = UrlHelper::parse($current_url);
+    if (empty($url_parts['fragment'])) {
+      throw new Exception("The {$current_url} does not contain an anchor.");
+    }
+    $this->assertHtmlText("id=\"{$url_parts['fragment']}\"");
   }
 
 }

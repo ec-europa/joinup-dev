@@ -9,15 +9,16 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\joinup_federation\JoinupFederationStepPluginBase;
+use Drupal\pipeline\Plugin\PipelineStepInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithBatchTrait;
-use Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
 use Drupal\taxonomy\TermInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Removes the references to entities blacklisted in the previous step.
+ * Removes the references to entities removed in the previous step.
  *
  * @PipelineStep(
  *   id = "broken_references",
@@ -60,7 +61,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rdf_entity\Database\Driver\sparql\ConnectionInterface $sparql
+   * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $sparql
    *   The SPARQL database connection.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
@@ -70,8 +71,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    *   The RDF schema field validator service.
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, ConnectionInterface $sparql, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, SchemaFieldValidatorInterface $rdf_schema_field_validator) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql);
-    $this->entityTypeManager = $entity_type_manager;
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $sparql, $entity_type_manager);
     $this->entityFieldManager = $entity_field_manager;
     $this->rdfSchemaFieldValidator = $rdf_schema_field_validator;
   }
@@ -79,7 +79,7 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PipelineStepInterface {
     return new static(
       $configuration,
       $plugin_id,
@@ -112,9 +112,9 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
    */
   public function execute() {
     $ids = $this->extractNextSubset('remaining_ids', static::BATCH_SIZE);
-    $blacklist = array_flip($this->getPersistentDataValue('blacklist'));
+    $not_selected = array_flip($this->getPersistentDataValue('not_selected'));
     /** @var \Drupal\rdf_entity\RdfInterface $entity */
-    foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $id => $entity) {
+    foreach ($this->getRdfStorage()->loadMultiple($ids, ['staging']) as $entity) {
       $changed = 0;
       $reference_fields = $this->getAdmsSchemaEntityReferenceFields($entity->bundle(), ['rdf_entity', 'taxonomy_term']);
 
@@ -122,9 +122,10 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field */
         $field = $entity->get($field_name);
 
-        // Remove references to entities that were blacklisted by the user.
-        if ($blacklist && ($target_entity_type_id === 'rdf_entity')) {
-          $changed |= $this->removeBlacklistedReferences($field, $blacklist);
+        // Remove references to entities that were not selected for import by
+        // the user.
+        if ($not_selected && ($target_entity_type_id === 'rdf_entity')) {
+          $changed |= $this->removeBlacklistedReferences($field, $not_selected);
         }
         // Remove references to non-existing taxonomy terms.
         elseif ($target_entity_type_id === 'taxonomy_term') {
@@ -140,22 +141,22 @@ class BrokenReferences extends JoinupFederationStepPluginBase implements Pipelin
   }
 
   /**
-   * Removes the items referencing blacklisted entities from a field.
+   * Removes the items referencing not imported entities from the given field.
    *
    * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
    *   The entity reference field item list.
-   * @param array $blacklist
-   *   The list of blacklisted entity IDs.
+   * @param string[] $ids_to_remove
+   *   The list of entity IDs to remove.
    *
    * @return int
    *   If at least one field item has been removed, the value is 1. 0 otherwise.
    */
-  protected function removeBlacklistedReferences(EntityReferenceFieldItemListInterface $field, array $blacklist): int {
+  protected function removeBlacklistedReferences(EntityReferenceFieldItemListInterface $field, array $ids_to_remove): int {
     $changed = 0;
 
     if (!$field->isEmpty()) {
-      $field->filter(function (FieldItemInterface $field_item) use ($blacklist, &$changed): bool {
-        if (isset($blacklist[$field_item->target_id])) {
+      $field->filter(function (FieldItemInterface $field_item) use ($ids_to_remove, &$changed): bool {
+        if (isset($ids_to_remove[$field_item->target_id])) {
           $changed = 1;
           return FALSE;
         }

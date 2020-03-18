@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-b
 Feature: Event moderation
   In order to manage events
   As a user of the website
@@ -13,26 +13,30 @@ Feature: Event moderation
     And the following owner:
       | name     |
       | Alma Lee |
+    And the following contact:
+      | name  | Evs contact             |
+      | email | evs.contact@example.com |
     And the following collection:
-      | title             | Wet Lords             |
-      | description       | The Forgotten Female. |
-      | logo              | logo.png              |
-      | banner            | banner.jpg            |
-      | elibrary creation | registered users      |
-      | moderation        | no                    |
-      | state             | validated             |
-      | owner             | Alma Lee              |
-      | policy domain     | E-inclusion           |
+      | title               | Wet Lords             |
+      | description         | The Forgotten Female. |
+      | logo                | logo.png              |
+      | banner              | banner.jpg            |
+      | content creation    | registered users      |
+      | moderation          | no                    |
+      | state               | validated             |
+      | owner               | Alma Lee              |
+      | contact information | Evs contact           |
+      | policy domain       | E-inclusion           |
     And the following collection user membership:
       | collection | user           | roles       |
       | Wet Lords  | Rosa Vaughn    | member      |
       | Wet Lords  | Patricia Lynch | facilitator |
 
   @javascript
-  Scenario: Available transitions change per eLibrary and moderation settings.
-    # For post-moderated collections with eLibrary set to allow all users to
-    # create content, authenticated users that are not members can create
-    # events.
+  Scenario: Available transitions change to match content creation and moderation settings.
+    # For post-moderated collections with content creation set to allow all
+    # users to create content, authenticated users that are not members can
+    # create events.
     When I am logged in as "Salvador Thomas"
     And I go to the homepage of the "Wet Lords" collection
     And I click "Add event" in the plus button menu
@@ -67,7 +71,7 @@ Feature: Event moderation
     And I click the "Additional fields" tab
     And I check "Closed collection"
     And I wait for AJAX to finish
-    And I select "Only members can create new content." from "eLibrary creation"
+    And I select the radio button "Only members can create content."
     And I press "Publish"
     # I should now have the possibility to add events.
     When I open the plus button menu
@@ -83,17 +87,17 @@ Feature: Event moderation
     And I go to the homepage of the "Wet Lords" collection
     And I click "Add event"
     When I fill in the following:
-      | Title       | Rainbow of Worlds                     |
-      | Short title | Rainbow of Worlds                     |
-      | Description | This is going to be an amazing event. |
-      | Location    | Worlds crossroad                      |
+      | Title             | Rainbow of Worlds                     |
+      | Short title       | Rainbow of Worlds                     |
+      | Description       | This is going to be an amazing event. |
+      | Physical location | Worlds crossroad                      |
     And I fill the start date of the Date widget with "2018-08-30"
     And I fill the start time of the Date widget with "23:59:00"
     And I fill the end date of the Date widget with "2018-09-01"
     And I fill the end time of the Date widget with "00:30:00"
     And I press "Save as draft"
     Then I should see the success message "Event Rainbow of Worlds has been created"
-    And I should see the text "30 August to 01 September 2018"
+    And I should see the text "30/08 to 01/09/2018"
 
     # Publish the content.
     When I open the header local tasks menu

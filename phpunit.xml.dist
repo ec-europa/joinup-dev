@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- TODO set checkForUnintentionallyCoveredCode="true" once https://www.drupal.org/node/2626832 is resolved. -->
-<!-- TODO set printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter" once
- https://youtrack.jetbrains.com/issue/WI-24808 is resolved. Drupal provides a
- result printer that links to the html output results for functional tests.
- Unfortunately, this breaks the output of PHPStorm's PHPUnit runner. However, if
- using the command line you can add
- - -printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" to use it (note there
- should be no spaces between the hyphens).
+<!-- PHPUnit expects functional tests to be run with either a privileged user
+ or your current system user. See core/tests/README.md and
+ https://www.drupal.org/node/2116263 for details.
 -->
-<phpunit bootstrap="core/tests/bootstrap.php" colors="true"
+<phpunit bootstrap="../vendor/weitzman/drupal-test-traits/src/bootstrap.php"
+         colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
-         checkForUnintentionallyCoveredCode="false">
+         checkForUnintentionallyCoveredCode="false"
+         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+         verbose="true">
   <php>
     <!-- Set error reporting to E_ALL. -->
     <ini name="error_reporting" value="32767"/>
@@ -29,11 +28,40 @@
     <env name="SIMPLETEST_LEGACY_DB" value=""/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
-    <!-- Example BROWSERTEST_OUTPUT_FILE value: /path/to/webroot/sites/simpletest/browser_output/outputfile.txt -->
-    <env name="BROWSERTEST_OUTPUT_FILE" value=""/>
+    <!-- To have browsertest output use an alternative base URL. For example if
+     SIMPLETEST_BASE_URL is an internal DDEV URL, you can set this to the
+     external DDev URL so you can follow the links directly.
+    -->
+    <env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>
+    <!-- To disable deprecation testing completely uncomment the next line. -->
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+    <!-- Example for changing the driver class for mink tests MINK_DRIVER_CLASS value: 'Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver' -->
+    <env name="MINK_DRIVER_CLASS" value=''/>
+    <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
+    <env name="MINK_DRIVER_ARGS" value=''/>
+    <!-- Example for changing the driver args to phantomjs tests MINK_DRIVER_ARGS_PHANTOMJS value: '["http://127.0.0.1:8510"]' -->
+    <env name="MINK_DRIVER_ARGS_PHANTOMJS" value=''/>
+    <!-- Example for changing the driver args to webdriver tests MINK_DRIVER_ARGS_WEBDRIVER value: '["chrome", { "chromeOptions": { "w3c": false } }, "http://localhost:4444/wd/hub"]' For using the Firefox browser, replace "chrome" with "firefox" -->
+    <env name="MINK_DRIVER_ARGS_WEBDRIVER" value=''/>
+
+    <!-- Drupal Test Traits defaults. -->
+    <env name="DTT_BASE_URL" value="http://example.com"/>
+    <env name="DTT_API_URL" value="http://localhost:9222"/>
+    <env name="DTT_MINK_DRIVER_ARGS" value='["firefox", null, "http://localhost:4444/wd/hub"]'/>
   </php>
   <testsuites>
   </testsuites>
+  <listeners>
+    <listener class="\Drupal\Tests\Listeners\DrupalListener">
+    </listener>
+    <!-- The Symfony deprecation listener has to come after the Drupal listener -->
+    <!--
+      This has been disabled until we have decided on an approach to tackle deprecated code.
+      Ref. https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5208
+      <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
+      </listener>
+    -->
+  </listeners>
   <!-- Filter for coverage reports. -->
   <filter>
     <whitelist>
@@ -42,11 +70,8 @@
       <directory>./core/modules</directory>
       <directory>./modules</directory>
       <directory>./sites</directory>
-      <!-- By definition test classes have no tests. -->
-      <exclude>
-        <directory suffix="Test.php">./</directory>
-        <directory suffix="TestBase.php">./</directory>
-      </exclude>
+      <!-- Exclude all test modules, tests etc -->
+      <exclude-pattern>*/tests/*</exclude-pattern>
      </whitelist>
   </filter>
 </phpunit>

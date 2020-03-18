@@ -8,10 +8,10 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_business_process
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
+    - field.field.rdf_entity.solution.field_is_content_creation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
-    - field.field.rdf_entity.solution.field_is_elibrary_creation
     - field.field.rdf_entity.solution.field_is_has_version
     - field.field.rdf_entity.solution.field_is_included_asset
     - field.field.rdf_entity.solution.field_is_issue_tracker
@@ -23,8 +23,9 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
-    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_related_solutions
+    - field.field.rdf_entity.solution.field_is_shared_in
+    - field.field.rdf_entity.solution.field_is_show_eira_related
     - field.field.rdf_entity.solution.field_is_solution_type
     - field.field.rdf_entity.solution.field_is_source_code_repository
     - field.field.rdf_entity.solution.field_is_standardization_level
@@ -43,8 +44,8 @@ dependencies:
     - field.field.rdf_entity.solution.field_status
     - rdf_entity.rdfentity.solution
   module:
-    - ds
     - field_group
+    - joinup
     - search_api_field
     - smart_trim
     - user
@@ -98,15 +99,19 @@ content:
       more_link: false
       summary_handler: full
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: p_wrapper
+  field_is_shared_in:
+    type: entity_reference_entity_view
+    weight: 5
+    region: content
+    label: above
+    settings:
+      view_mode: view_mode_tile
+      link: false
+    third_party_settings:
+      joinup:
+        template_suggestion: entity_reference__listing_tile
   rdf_entity_field_is_content_inline_facets:
     weight: 2
     region: content
@@ -137,9 +142,9 @@ hidden:
   field_is_banner: true
   field_is_business_process: true
   field_is_contact_information: true
+  field_is_content_creation: true
   field_is_distribution: true
   field_is_documentation: true
-  field_is_elibrary_creation: true
   field_is_has_version: true
   field_is_included_asset: true
   field_is_issue_tracker: true
@@ -151,8 +156,8 @@ hidden:
   field_is_owner: true
   field_is_pinned_in: true
   field_is_product_type: true
-  field_is_show_eira_related: true
   field_is_related_solutions: true
+  field_is_show_eira_related: true
   field_is_solution_type: true
   field_is_source_code_repository: true
   field_is_standardization_level: true
@@ -173,3 +178,4 @@ hidden:
   langcode: true
   og_group: true
   releases_overview: true
+  share_link: true

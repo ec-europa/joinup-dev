@@ -16,7 +16,7 @@ use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\rdf_entity\UriEncoder;
+use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

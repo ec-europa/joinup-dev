@@ -7,7 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -22,7 +21,7 @@ use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
 function joinup_community_content_entity_extra_field_info() {
   $fields = [];
 
-  foreach (CommunityContentHelper::getBundles() as $bundle) {
+  foreach (CommunityContentHelper::BUNDLES as $bundle) {
     $fields['node'][$bundle]['display']['share_link'] = [
       'label' => t('Share'),
       'description' => t('A link to share the content'),
@@ -41,25 +40,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
     return;
   }
 
-  $url = Url::fromRoute('joinup_community_content.share_content_form', [
-    'node' => $entity->id(),
-  ]);
-  $build['share_link'] = [
-    '#theme' => 'link_icon',
-    '#title' => t('Share'),
-    '#icon' => 'share',
-    '#url' => $url,
-    '#attributes' => [
-      'class' => ['use-ajax', 'action-link'],
-      'data-dialog-type' => 'modal',
-      'data-dialog-options' => Json::encode([
-        'width' => 'auto',
-        'height' => 'auto',
-      ]),
-    ],
-    '#access' => $url->access(),
-    '#attached' => ['library' => ['core/drupal.dialog.ajax']],
-  ];
+  $build['share_link'] = joinup_group_generate_share_link($entity, 'joinup_community_content.share_content_form');
   $build['#cache'] = [
     'contexts' => [
       'og_role',
@@ -73,7 +54,7 @@ function joinup_community_content_node_view(array &$build, EntityInterface $enti
 function joinup_community_content_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Skip if we are not on a community content form.
   $community_content_form_ids = [];
-  foreach (CommunityContentHelper::getBundles() as $bundle) {
+  foreach (CommunityContentHelper::BUNDLES as $bundle) {
     $community_content_form_ids[] = "node_{$bundle}_form";
     $community_content_form_ids[] = "node_{$bundle}_edit_form";
   }
@@ -136,34 +117,10 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_preprocess_node().
- *
- * For shared nodes, adds an attribute with the id of the parent entity where
- * they have been shared from.
- */
-function joinup_community_content_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-
-  // Apply the visual cue only on the tile view mode.
-  if ($variables['view_mode'] !== 'view_mode_tile') {
-    return;
-  }
-
-  // If the node is shared somewhere, attach the related library.
-  if ($node->hasField('field_shared_in') && !$node->get('field_shared_in')->isEmpty()) {
-    $variables['#attached']['library'][] = 'joinup_community_content/shared_content';
-  }
-}
-
-/**
  * Implements hook_theme().
  */
 function joinup_community_content_theme($existing, $type, $theme, $path) {
   return [
-    'advanced_search_pseudo_facet' => [
-      'variables' => ['entity' => NULL],
-    ],
     'link_icon' => [
       'variables' => [
         'attributes' => [],
@@ -172,32 +129,7 @@ function joinup_community_content_theme($existing, $type, $theme, $path) {
         'url' => NULL,
       ],
     ],
-    'social_share' => [
-      'variables' => ['entity' => NULL],
-    ],
   ];
-}
-
-/**
- * Preprocess function for the "social_share" theme hook.
- *
- * @param array $variables
- *   An associative array containing:
- *   - entity: the entity being shared.
- *
- * @throws \Drupal\Core\Entity\EntityMalformedException
- *   Thrown when the entity being shared does not support generating a URL.
- */
-function template_preprocess_social_share(array &$variables) {
-  /** @var \Drupal\Core\Entity\EntityInterface $entity */
-  $entity = $variables['entity'];
-  // Generate an absolute, un-aliased URL.
-  $variables['url'] = $entity->toUrl('canonical', [
-    'language' => $entity->language(),
-  ])->setAbsolute()->setOption('alias', TRUE);
-
-  $variables['encoded_url'] = urlencode($variables['url']->toString());
-  $variables['encoded_title'] = urlencode($entity->label());
 }
 
 /**
@@ -273,7 +205,7 @@ function joinup_community_content_translate_facet_arguments(array $arguments) {
     'solution_spatial_coverage' => 'spatial_coverage',
   ];
 
-  foreach ($arguments as $key => &$argument) {
+  foreach ($arguments as &$argument) {
     list($facet_id, $value) = explode(':', $argument, 2);
     if (array_key_exists($facet_id, $mapping)) {
       $argument = implode(':', [$mapping[$facet_id], $value]);

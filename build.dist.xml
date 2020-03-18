@@ -51,8 +51,7 @@
             command="site-install"
             assume="yes"
             root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+            bin="${drush.bin}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="${website.site.name}" />
             <option name="account-name" value="${drupal.admin.username}" />
@@ -147,6 +146,20 @@
         <touch file="${phpunit.browsertest_output_file}" />
     </target>
 
+    <!-- Set up Drush. -->
+    <target name="setup-drush" description="Generate the configuration file for Drush.">
+        <if>
+            <available file="${drush.yml.path}" type="file" property="drush.yml.available" />
+            <then>
+                <echo message="Deleting existing drush.yml configuration file" />
+                <delete file="${drush.yml.path}" failonerror="false" />
+            </then>
+        </if>
+        <echo message="Creating drush.yml configuration file" />
+        <loadfile property="drush.yml.content" file="${drush.yml.template}" />
+        <echo message="${drush.yml.content}" file="${drush.yml.path}" />
+    </target>
+
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
         <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
@@ -155,8 +168,7 @@
                 command="user-create"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="mail" value="user@example.com" />
             <option name="password" value="user" />
             <param>user</param>
@@ -166,21 +178,19 @@
     <!-- Create a demo user. Subtarget of "create-demo-users". -->
     <target name="create-demo-user">
         <drush
-            command="user-create"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <option name="mail" value="${drupal.demo.user}@example.com" />
             <option name="password" value="${drupal.demo.user}" />
             <param>${drupal.demo.user}</param>
         </drush>
         <drush
-            command="user-add-role"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <param>${drupal.demo.user}</param>
             <param>${drupal.demo.user}</param>
         </drush>
@@ -243,8 +253,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>${drupal.modules.dev}</param>
         </drush>
     </target>
@@ -252,11 +261,10 @@
     <!-- Enable a module. -->
     <target name="enable-module">
         <drush
-            command="pm-enable"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="pm-enable"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <param>${module}</param>
         </drush>
     </target>
@@ -339,12 +347,12 @@
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush" />
 
     <target
         name="setup-dev"
         description="Set up 'development mode' for an installed website."
-        depends="enable-dev-settings, redirect-outgoing-email, enable-dev-modules" />
+        depends="enable-dev-settings, setup-config-exclude, redirect-outgoing-email, enable-dev-modules" />
 
     <target
         name="setup-acceptance"

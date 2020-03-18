@@ -1,0 +1,92 @@
+uuid: a1d822cd-5e53-40af-8a17-5e8deb7dafdf
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.digest_message
+    - field.field.node.news.body
+    - field.field.node.news.field_attachment
+    - field.field.node.news.field_comments
+    - field.field.node.news.field_keywords
+    - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_logo
+    - field.field.node.news.field_news_referenced_solution
+    - field.field.node.news.field_news_source_url
+    - field.field.node.news.field_news_spatial_coverage
+    - field.field.node.news.field_policy_domain
+    - field.field.node.news.field_shared_in
+    - field.field.node.news.field_site_featured
+    - field.field.node.news.field_site_pinned
+    - field.field.node.news.field_state
+    - field.field.node.news.og_audience
+    - image.style.digest_image
+    - node.type.news
+  module:
+    - image
+    - joinup
+    - smart_trim
+    - user
+id: node.news.digest_message
+targetEntityType: node
+bundle: news
+mode: digest_message
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 0
+    settings:
+      trim_length: 200
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings:
+      joinup:
+        template_suggestion: no_wrappers
+    region: content
+  field_news_headline:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      joinup:
+        template_suggestion: no_wrappers
+    type: string
+    region: content
+  field_news_logo:
+    type: image_url
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      image_style: digest_image
+    third_party_settings:
+      joinup:
+        template_suggestion: ''
+hidden:
+  field_attachment: true
+  field_comments: true
+  field_keywords: true
+  field_news_referenced_solution: true
+  field_news_source_url: true
+  field_news_spatial_coverage: true
+  field_policy_domain: true
+  field_shared_in: true
+  field_site_featured: true
+  field_site_pinned: true
+  field_state: true
+  langcode: true
+  links: true
+  og_audience: true
+  published_at: true
+  report: true
+  share_link: true

@@ -15,6 +15,7 @@ use Drupal\joinup_federation\JoinupFederationPipelinePluginBase;
  *     "remove_unsupported_data",
  *     "add_joinup_vocabularies",
  *     "adms_validation",
+ *     "analyze_incoming_entities",
  *     "user_selection_filter",
  *     "3_way_merge",
  *     "broken_references",
@@ -29,8 +30,8 @@ class JoinupCollectionPipeline extends JoinupFederationPipelinePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getCollection(): ?string {
-    return 'http://placeHolder/11c81d8f-1527-4044-a694-b847d66362e1';
+  public function getCollection(): string {
+    return 'http://data.europa.eu/w21/df34e3a2-207b-4910-a804-344931654e20';
   }
 
 }

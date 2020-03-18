@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\contact_form\EventSubscriber;
 
 use Drupal\contact_form\ContactFormEvents;
@@ -46,10 +48,8 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $recipient = $this->configFactory->get('contact_form.settings')->get('default_recipient');
     /** @var \Drupal\message\MessageInterface $message */
     $message = $event->getEntity();
-    $event->setSuccess($this->messageDelivery
-      ->setMessage($message)
-      ->setRecipientsAsEmails([$recipient])
-      ->sendMail());
+    $result = $this->messageDelivery->sendMessageToEmailAddresses($message, [$recipient]);
+    $event->setSuccess($result);
   }
 
   /**
@@ -127,14 +127,10 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    *
    * Skip generating the arguments during the sending process.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $notifier_options = [], array $message_values = []): bool {
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $success && $this->messageDelivery
-        ->createMessage($template_id)
-        ->setArguments($arguments)
-        ->setRecipients(User::loadMultiple($user_ids))
-        ->sendMail();
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, User::loadMultiple($user_ids), $notifier_options, $message_values) && $success;
     }
     return $success;
   }
@@ -180,7 +176,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
     $arguments['@actor:field_user_first_name'] = $message->get('field_contact_first_name')->first()->value;
     $arguments['@actor:field_user_last_name'] = $message->get('field_contact_last_name')->first()->value;
     $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] . ' ' . $arguments['@actor:field_user_last_name'];
-    $arguments['@legal_notice:url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
+    $arguments['@legal_notice:url'] = Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString();
     $arguments['@message:subject'] = $message->get('field_contact_subject')->first()->value;
     $arguments['@message:message'] = strip_tags($message->get('field_contact_message')->first()->value);
     if (!empty($message->get('field_contact_url')->first()->uri)) {
@@ -195,7 +191,7 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     return [];
   }
 

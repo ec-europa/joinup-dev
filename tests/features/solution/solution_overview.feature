@@ -6,6 +6,7 @@ Feature: Solutions Overview
 
   Scenario: Check visibility of "Solutions" menu link.
     Given I am an anonymous user
+    And I am on the homepage
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the heading "Solutions"
@@ -90,6 +91,8 @@ Feature: Solutions Overview
     And I am on the homepage
     Then I should see the link "Solutions"
     And I click "Solutions"
+    Then I should see the text "A solution on Joinup is a framework, tool, or service"
+    And the page should be cacheable
 
     # Access the page as a moderator to ensure proper caching.
     When I am logged in as a "moderator"
@@ -99,6 +102,7 @@ Feature: Solutions Overview
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
     And I should not see the "Uniting Europe" tile
+    And the page should be cacheable
 
     # Check page for authenticated users.
     When I am logged in as "Madam Shirley"
@@ -108,6 +112,7 @@ Feature: Solutions Overview
     And I should see the "Closed data" tile
     And I should see the "Isolating Europe" tile
     But I should not see the "Uniting Europe" tile
+    And the page should be cacheable
 
     When I am an anonymous user
     And I am on the homepage
@@ -119,6 +124,8 @@ Feature: Solutions Overview
     And I should not see the text "Facilitate access to data sets"
     And I should see the link "Isolating Europe"
     And I should not see the text "Reusable tools and services"
+    And the page should be cacheable
+
     When I click "Non electronic health"
     Then I should see the heading "Non electronic health"
 
@@ -127,12 +134,12 @@ Feature: Solutions Overview
     When I go to the add solution form of the "Pikachu, I choose you" collection
     Then I should see the heading "Add Solution"
     When I fill in the following:
-      | Title            | Colonies in Earth                                                      |
-      | Description      | Some space mumbo jumbo description.                                    |
-      | Spatial coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
-      | Language         | http://publications.europa.eu/resource/authority/language/VLS          |
-      | Name             | Ambrosio Morison                                                       |
-      | E-mail address   | ambrosio.morison@example.com                                           |
+      | Title                 | Colonies in Earth                                                      |
+      | Description           | Some space mumbo jumbo description.                                    |
+      | Geographical coverage | Belgium (http://publications.europa.eu/resource/authority/country/BEL) |
+      | Language              | http://publications.europa.eu/resource/authority/language/VLS          |
+      | Name                  | Ambrosio Morison                                                       |
+      | E-mail address        | ambrosio.morison@example.com                                           |
     Then I select "http://data.europa.eu/dr8/DataExchangeService" from "Solution type"
     And I select "Demography" from "Policy domain"
     And I attach the file "logo.png" to "Logo"
@@ -149,6 +156,7 @@ Feature: Solutions Overview
     When I am on the homepage
     And I click "Solutions"
     Then I should see the text "Colonies in Earth"
+    And the page should be cacheable
 
     # Check the new solution as an anonymous user.
     When I am an anonymous user
@@ -156,6 +164,7 @@ Feature: Solutions Overview
     Then I should see the link "Solutions"
     When I click "Solutions"
     Then I should see the link "Colonies in Earth"
+    And the page should be cacheable
 
     # Clean up the solution that was created manually.
     And I delete the "Colonies in Earth" solution
@@ -187,42 +196,51 @@ Feature: Solutions Overview
     When I am logged in as "Joann Womack"
     And I click "Solutions"
     Then the "My solutions content" inline facet should allow selecting the following values "My solutions (3), Featured solutions (2)"
+    And the page should be cacheable
     When I click "My solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
       | Lost Yard           |
       | Lost Scattered Fish |
       | Silver Gravel       |
     And the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), All solutions"
+    And the page should be cacheable
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the collections page would lead to cached facets
     # to be leaked to other users.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All solutions" in the "My solutions content" inline facet
     Then the "My solutions content" inline facet should allow selecting the following values "My solutions (3), Featured solutions (2)"
+    And the page should be cacheable
 
     When I am logged in as "Ryker Brandon"
     When I click "Solutions"
     Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), My solutions (1)"
+    And the page should be cacheable
     When I click "My solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
       | Long Tungsten |
     And the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), All solutions"
+    And the page should be cacheable
     # Verify that the facets are cached for the correct user by visiting again
     # the collections page without any facet filter.
     When I click "All solutions" in the "My solutions content" inline facet
     Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2), My solutions (1)"
+    And the page should be cacheable
 
     When I am an anonymous user
     And I click "Solutions"
     # The anonymous user has no access to the "My solutions" facet entry.
     Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
+    And the page should be cacheable
     When I click "Featured solutions" in the "My solutions content" inline facet
     Then I should see the following tiles in the correct order:
       | Subdivision Morbid           |
       | Hungry Disappointed Tungsten |
     And the "My solutions content" inline facet should allow selecting the following values "All solutions"
+    And the page should be cacheable
     When I click "All solutions" in the "My solutions content" inline facet
     Then the "My solutions content" inline facet should allow selecting the following values "Featured solutions (2)"
+    And the page should be cacheable
 
     When I am logged in as "Ryker Brandon"
     And I click "Solutions"
@@ -230,6 +248,7 @@ Feature: Solutions Overview
     Then I should see the following tiles in the correct order:
       | Subdivision Morbid           |
       | Hungry Disappointed Tungsten |
+    And the page should be cacheable
 
   Scenario: Solution overview active trail should persist on urls with arguments.
     Given I am an anonymous user

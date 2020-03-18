@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\Core\Site\Settings;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\joinup\Traits\NodeTrait;
@@ -16,7 +17,7 @@ use Drupal\joinup\Traits\NodeTrait;
 /**
  * Behat step definitions for testing events.
  */
-class EventSubContext extends DrupalSubContextBase {
+class JoinupEventSubContext extends DrupalSubContextBase {
 
   use NodeTrait;
 
@@ -56,6 +57,8 @@ class EventSubContext extends DrupalSubContextBase {
    */
   public static function massageEventFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope): void {
     $node = $scope->getEntity();
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+    $date_formatter = \Drupal::service('date.formatter');
 
     if ($node->type !== 'event') {
       return;
@@ -69,7 +72,7 @@ class EventSubContext extends DrupalSubContextBase {
           throw new \Exception(sprintf('Invalid format for date specified: %s', $node->$field));
         }
 
-        $node->$field = $date;
+        $node->$field = $date_formatter->format($date, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
       }
     }
   }

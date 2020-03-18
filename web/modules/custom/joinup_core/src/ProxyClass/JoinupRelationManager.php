@@ -102,19 +102,9 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getParentELibraryCreationOption(\Drupal\Core\Entity\EntityInterface $entity) : int
+        public function getParentContentCreationOption(\Drupal\Core\Entity\EntityInterface $entity) : string
         {
-            return $this->lazyLoadItself()->getParentELibraryCreationOption($entity);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        public function getGroupOwners(\Drupal\Core\Entity\EntityInterface $entity, array $states = array (
-          0 => 'active',
-        )) : array
-        {
-            return $this->lazyLoadItself()->getGroupOwners($entity, $states);
+            return $this->lazyLoadItself()->getParentContentCreationOption($entity);
         }
 
         /**
@@ -140,29 +130,11 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function getUserMembershipsByRole(\Drupal\Core\Session\AccountInterface $user, string $role, array $states = array (
+        public function getUserGroupMembershipsByBundle(\Drupal\Core\Session\AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = array (
           0 => 'active',
         )) : array
         {
-            return $this->lazyLoadItself()->getUserMembershipsByRole($user, $role, $states);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        public function getCollectionsWhereSoleOwner(\Drupal\Core\Session\AccountInterface $user) : array
-        {
-            return $this->lazyLoadItself()->getCollectionsWhereSoleOwner($user);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        public function getGroupMembershipsByRoles(\Drupal\Core\Entity\EntityInterface $entity, array $role_names, array $states = array (
-          0 => 'active',
-        )) : array
-        {
-            return $this->lazyLoadItself()->getGroupMembershipsByRoles($entity, $role_names, $states);
+            return $this->lazyLoadItself()->getUserGroupMembershipsByBundle($user, $entity_type_id, $bundle_id, $states);
         }
 
         /**
@@ -179,6 +151,14 @@ namespace Drupal\joinup_core\ProxyClass {
         public function getSolutionIds() : array
         {
             return $this->lazyLoadItself()->getSolutionIds();
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getContactInformationRelatedGroups(\Drupal\rdf_entity\RdfInterface $entity) : array
+        {
+            return $this->lazyLoadItself()->getContactInformationRelatedGroups($entity);
         }
 
     }

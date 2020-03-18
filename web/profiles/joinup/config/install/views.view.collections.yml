@@ -1,3 +1,5 @@
+# @todo: this view should be moved into the `collection` module.
+# @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-5176
 langcode: en
 status: true
 dependencies:
@@ -14,7 +16,6 @@ description: ''
 tag: ''
 base_table: search_api_index_published
 base_field: search_api_id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -459,6 +460,8 @@ display:
               anonymous: '0'
               moderator: '0'
               administrator: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -511,8 +514,9 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'
   page_1:
     display_plugin: page
     id: page_1
@@ -533,8 +537,10 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
+        - collection_owner
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
-      tags: {  }
+        - 'user.node_grants:view'
+      tags:
+        - 'config:search_api.index.published'

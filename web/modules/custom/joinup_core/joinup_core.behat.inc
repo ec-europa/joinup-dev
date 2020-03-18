@@ -9,13 +9,11 @@ declare(strict_types = 1);
 
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
+use Drupal\joinup\Chip;
+use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
+use Drupal\joinup\Traits\EntityTrait;
 use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UtilityTrait;
-use Drupal\joinup\Traits\EntityTrait;
-use Drupal\joinup\Traits\NodeTrait;
-use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\joinup\Traits\UserTrait;
-use Drupal\og\OgGroupAudienceHelperInterface;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -23,31 +21,57 @@ use PHPUnit\Framework\Assert;
  */
 class JoinupCoreSubContext extends DrupalSubContextBase {
 
-  use UtilityTrait;
-  use TraversingTrait;
-
+  use BrowserCapabilityDetectionTrait;
   use EntityTrait;
-  use NodeTrait;
-  use UserTrait;
-  use RdfEntityTrait;
+  use TraversingTrait;
+  use UtilityTrait;
 
   /**
    * Asserts that only the expected chips are shown in the page.
    *
    * @param \Behat\Gherkin\Node\TableNode $table
    *   The table containing the expected chip labels.
+   * @param string $region
+   *   Optional region in which to locate the chips to check. If omitted all
+   *   chips found in the entire page will be checked.
    *
-   * @Then the page should show( only) the chips:
+   * @throws \Exception
+   *    Thrown when the region is not found.
+   *
+   * @Then the page should show( only) the( following) chip(s):
+   * @Then the page should show( only) the( following) chip(s) in the :region region:
    */
-  public function assertChipElements(TableNode $table): void {
-    $chips = $this->getSession()->getPage()->findAll('css', '.mdl-chip__text');
-    $found = array_map(function ($element) {
-      /** @var \Behat\Mink\Element\NodeElement $element */
+  public function assertChipElements(TableNode $table, string $region = NULL): void {
+    $chips = $this->getChips($region);
+    $found = array_map(function (Chip $element) {
       return $element->getText();
     }, $chips);
 
     $expected = $table->getColumn(0);
     Assert::assertEquals($expected, $found, "The expected chip elements don't match the ones found in the page", 0.0, 10, TRUE);
+  }
+
+  /**
+   * Asserts that the expected number of chips are shown.
+   *
+   * @param string $number
+   *   The expected number of chips. This is a string rather than an integer
+   *   because step definitions are represented in text.
+   * @param string $region
+   *   Optional region in which to locate the chips to check. If omitted all
+   *   chips found in the entire page will be checked.
+   *
+   * @throws \Exception
+   *    Thrown when the region is not found.
+   *
+   * @Then the page should contain :number chip(s)
+   * @Then the page should not contain any chips
+   * @Then the :region region should contain :number chip(s)
+   * @Then the :region region should not contain any chips
+   */
+  public function assertChipCount(string $number = NULL, string $region = NULL): void {
+    $number = (int) $number;
+    Assert::assertCount($number, $this->getChips($region));
   }
 
   /**
@@ -59,24 +83,90 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    * @throws \Exception
    *   Thrown when either the chip or its remove button are not found.
    *
-   * @Then I press the remove button on the chip :text
+   * @When I press the remove button on the chip :text
    */
   public function clickRemoveChipButton(string $text): void {
-    // Find the element that contains the user name.
-    $xpath = "//span[contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__text ')][contains(text(), '$text')]";
-    $chip = $this->getSession()->getPage()->find('xpath', $xpath);
+    // Find the element that contains the given text.
+    $chip = $this->getChipByText($text);
     if (!$chip) {
       throw new Exception("The chip containing the label '$text' was not found on the page.");
     }
 
     // Find the related button.
-    $xpath = "/following-sibling::button[@type='submit'][contains(concat(' ', normalize-space(@class), ' '), ' mdl-chip__action ')]";
-    $button = $chip->find('xpath', $xpath);
+    $button = $chip->getRemoveButton();
     if (!$button) {
       throw new \Exception("Couldn't find the button to remove the chip '$text'.");
     }
 
     $button->press();
+  }
+
+  /**
+   * Returns the chips that are present in the given region.
+   *
+   * @param string $region
+   *   Optional region in which to locate the chips to return. If omitted all
+   *   chips found in the entire page will be returned.
+   *
+   * @return \Drupal\joinup\Chip[]
+   *   The elements representing the chips.
+   *
+   * @throws \Exception
+   *    Thrown when the region is not found.
+   */
+  protected function getChips(string $region = NULL): array {
+    // Default to the entire page if the region is omitted.
+    $base_element = $region ? $this->getRegion($region) : $this->getSession()->getPage();
+
+    $chips = [];
+
+    // If the chips are being displayed using the `mdl-chip-input` JavaScript
+    // library then they will only be visible if the browser supports JS. If the
+    // browser doesn't support JavaScript then the chips are still present in
+    // the DOM as invisible form input fields. We can still add them with the
+    // `is_visible` flag disabled to indicate they only can be interacted with
+    // in a limited way.
+    $locator_visibility_mapping = [
+      '.mdl-chip__text' => TRUE,
+    ];
+    if (!$this->browserSupportsJavaScript()) {
+      $locator_visibility_mapping['.mdl-chipfield__input'] = FALSE;
+    }
+    foreach ($locator_visibility_mapping as $locator => $is_visible) {
+      foreach ($base_element->findAll('css', $locator) as $element) {
+        $chips[] = new Chip($element, $is_visible);
+      }
+    }
+
+    return $chips;
+  }
+
+  /**
+   * Returns the chip with the given text.
+   *
+   * If multiple chips are present with the same text, then the first one will
+   * be returned.
+   *
+   * @param string $text
+   *   The text that should be present in the chip.
+   * @param string $region
+   *   Optional region in which to locate the chips to return. If omitted all
+   *   chips found in the entire page will be returned.
+   *
+   * @throws \Exception
+   *    Thrown when the region is not found.
+   *
+   * @return \Drupal\joinup\Chip|null
+   *   The chip, or NULL if no chip with the given text is present in the page.
+   */
+  protected function getChipByText(string $text, string $region = NULL): ?Chip {
+    foreach ($this->getChips($region) as $chip) {
+      if ($chip->getText() === $text) {
+        return $chip;
+      }
+    }
+
+    return NULL;
   }
 
   /**
@@ -86,8 +176,12 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    *   The taxonomy term name.
    *
    * @Given I go to the :name (taxonomy )term( page)
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the taxonomy term does not have a URL to go to.
    */
   public function visitTaxonomyTermPage(string $name): void {
+    /** @var \Drupal\taxonomy\TermInterface $term */
     $term = static::getEntityByLabel('taxonomy_term', $name);
     $this->visitPath($term->toUrl()->toString());
   }
@@ -154,33 +248,6 @@ class JoinupCoreSubContext extends DrupalSubContextBase {
    */
   public function assertResponseContentType(string $content_type): void {
     $this->assertSession()->responseHeaderEquals('Content-Type', $content_type);
-  }
-
-  /**
-   * Checks if the given node belongs to the given group.
-   *
-   * If there are multiple nodes or groups with the same name, then only
-   * the first one is checked.
-   *
-   * @param string $group_label
-   *   The name of the collection or solution to check.
-   * @param string $group_type
-   *   The type of the group.
-   * @param string $content_title
-   *   The title of the node to check.
-   *
-   * @throws \Exception
-   *   Thrown when a node with the given title doesn't exist.
-   *
-   * @Then the :group_label :group_type should have a custom page titled :group_title
-   * @Then the :group_label :group_type should have a community content titled :group_title
-   */
-  public function assertNodeOgMembership(string $group_label, string $group_type, string $content_title): void {
-    $group = $this->getRdfEntityByLabel($group_label, $group_type);
-    $node = $this->getNodeByTitle($content_title);
-    if ($node->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id !== $group->id()) {
-      throw new \Exception("The node '$content_title' is not associated with collection '{$group->label()}'.");
-    }
   }
 
   /**

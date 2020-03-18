@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
+    - field.field.node.news.field_news_logo
     - field.field.node.news.field_news_referenced_solution
     - field.field.node.news.field_news_source_url
     - field.field.node.news.field_news_spatial_coverage
@@ -15,15 +16,17 @@ dependencies:
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
-    - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
+    - image.style.thumbnail
     - node.type.news
   module:
     - allowed_formats
     - comment
     - file
+    - image
     - joinup_core
     - link
+    - publication_date
     - text
 id: node.news.default
 targetEntityType: node
@@ -32,7 +35,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 3
+    weight: 4
     settings:
       rows: 9
       placeholder: ''
@@ -44,7 +47,7 @@ content:
     region: content
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 13
+    weight: 14
     region: content
     settings:
       title: 'Current workflow state'
@@ -52,20 +55,20 @@ content:
       show_for_new_entities: false
     third_party_settings: {  }
   field_attachment:
-    weight: 10
+    weight: 11
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
   field_comments:
-    weight: 8
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     type: comment_default
     region: content
   field_keywords:
-    weight: 7
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -80,17 +83,26 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_news_logo:
+    type: image_image
+    weight: 3
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
   field_news_referenced_solution:
-    weight: 9
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
   field_news_source_url:
-    weight: 4
+    weight: 5
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -98,22 +110,23 @@ content:
     type: link_default
     region: content
   field_news_spatial_coverage:
-    weight: 5
+    weight: 6
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
   field_policy_domain:
-    weight: 6
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_state:
-    weight: 14
+    weight: 15
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -135,21 +148,22 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 12
     region: content
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   url_redirects:
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -158,9 +172,9 @@ hidden:
   field_shared_in: true
   field_site_featured: true
   field_site_pinned: true
-  field_visit_count: true
   og_audience: true
   path: true
   promote: true
+  published_at: true
   status: true
   sticky: true

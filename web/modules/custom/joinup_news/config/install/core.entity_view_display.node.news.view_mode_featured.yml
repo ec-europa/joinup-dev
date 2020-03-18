@@ -16,11 +16,9 @@ dependencies:
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
-    - field.field.node.news.field_visit_count
     - field.field.node.news.og_audience
     - node.type.news
   module:
-    - ds
     - smart_trim
     - user
 id: node.news.view_mode_featured
@@ -43,13 +41,6 @@ content:
         text: false
       more_class: more-link
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -61,14 +52,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: comma_separated
 hidden:
@@ -83,7 +66,6 @@ hidden:
   field_site_featured: true
   field_site_pinned: true
   field_state: true
-  field_visit_count: true
   langcode: true
   links: true
   og_audience: true

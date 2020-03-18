@@ -1,0 +1,24 @@
+services:
+  joinup_eulogin.cas.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginCasEventsSubscriber
+    arguments: ['@config.factory', '@user.data']
+    tags:
+      - { name: 'event_subscriber' }
+  joinup_eulogin.cas_account_link.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginCasAccountLinkEventsSubscriber
+    tags:
+      - { name: 'event_subscriber' }
+  joinup_eulogin.route.subscriber:
+    class: Drupal\joinup_eulogin\Routing\JoinupEuLoginRouteSubscriber
+    tags:
+      - { name: 'event_subscriber' }
+  joinup_eulogin.kernel.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginKernelSubscriber
+    arguments: ['@current_route_match', '@current_user', '@externalauth.authmap', '@state']
+    tags:
+      - { name: 'event_subscriber' }
+  cache_context.user.is_eulogin:
+    class: Drupal\joinup_eulogin\Cache\Context\EuLoginUserCacheContext
+    arguments: ['@current_user', '@entity_type.manager']
+    tags:
+      - { name: cache.context }

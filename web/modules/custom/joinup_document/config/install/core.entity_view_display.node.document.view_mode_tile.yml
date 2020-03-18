@@ -17,11 +17,9 @@ dependencies:
     - field.field.node.document.field_site_pinned
     - field.field.node.document.field_state
     - field.field.node.document.field_type
-    - field.field.node.document.field_visit_count
     - field.field.node.document.og_audience
     - node.type.document
   module:
-    - ds
     - file_url
     - options
     - smart_trim
@@ -50,13 +48,6 @@ content:
       wrap_output: false
       more_link: false
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
   field_file:
@@ -75,14 +66,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings:
-      ds:
-        ds_limit: ''
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: comma_separated
   field_type:
@@ -92,13 +75,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: no_wrappers
 hidden:
@@ -112,7 +88,6 @@ hidden:
   field_site_featured: true
   field_site_pinned: true
   field_state: true
-  field_visit_count: true
   langcode: true
   links: true
   og_audience: true

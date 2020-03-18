@@ -25,11 +25,9 @@ dependencies:
     - field.field.node.event.field_site_featured
     - field.field.node.event.field_site_pinned
     - field.field.node.event.field_state
-    - field.field.node.event.field_visit_count
     - field.field.node.event.og_audience
     - node.type.event
   module:
-    - ds
     - options
     - smart_trim
     - user
@@ -53,13 +51,6 @@ content:
         text: false
       more_class: more-link
     third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
       joinup:
         template_suggestion: ''
     region: content
@@ -91,7 +82,6 @@ hidden:
   field_short_title: true
   field_site_featured: true
   field_site_pinned: true
-  field_visit_count: true
   langcode: true
   links: true
   og_audience: true

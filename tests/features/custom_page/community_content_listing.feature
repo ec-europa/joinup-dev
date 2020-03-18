@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature:
   In order to make it easy to browse to specific content
   As a moderator
@@ -26,7 +26,7 @@ Feature:
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should be present "Display a community content listing, Show also content shared in the collection"
+    And the following fields should be present "Add related content, Allow shared content"
     And the following fields should not be present "Query presets, Limit"
     And I should see the button "Add and configure filter"
 
@@ -34,7 +34,7 @@ Feature:
     When I go to the homepage of the "Nintendo64" collection
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
-    And the following fields should be present "Display a community content listing, Show also content shared in the collection, Query presets, Limit"
+    And the following fields should be present "Add related content, Allow shared content, Query presets, Limit"
     And I should see the button "Add and configure filter"
 
   Scenario: Configure a custom page to show a community content listing.
@@ -45,8 +45,12 @@ Feature:
     When I fill in the following:
       | Title | Latest content                        |
       | Body  | Shows all content for this collection |
-    And I check "Display a community content listing"
-    And I press "Save"
+    And I check "Add related content"
+    Then I should see the text "Related content from the community will be displayed below the one that you are publishing."
+    And I should see the text "Display content shared from other communities."
+    And I should see the text "Note: the content shown is dynamic, filtered live each time users will visualise the page. As a result, new content might be shown and old content can be altered or deleted."
+
+    When I press "Save"
     Then I should see the heading "Latest content"
     And I should see the "Rare Nintendo64 disk drive discovered" tile
     And I should see the "20 year anniversary" tile
@@ -70,7 +74,7 @@ Feature:
     Given I am logged in as a facilitator of the "Nintendo64" collection
     And I go to the "Latest news" custom page
     When I click "Edit" in the "Entity actions" region
-    And I check "Show also content shared in the collection"
+    And I check "Allow shared content"
     And I press "Save"
     # Only news are displayed.
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -82,7 +86,7 @@ Feature:
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share"
-    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following collections: Nintendo64"
 
     When I go to the "Latest news" custom page
     Then I should see the "Rare Nintendo64 disk drive discovered" tile
@@ -102,7 +106,7 @@ Feature:
     And I should not see the "NEC VR4300 CPU" tile
 
     When I click "Edit" in the "Entity actions" region
-    And I uncheck "Display a community content listing"
+    And I uncheck "Add related content"
     And I press "Save"
     Then I should not see the "Rare Nintendo64 disk drive discovered" tile
     And I should not see the "20 year anniversary" tile
@@ -116,7 +120,7 @@ Feature:
     Then I should see the heading "Add custom page"
     When I fill in "Title" with "Chosen content"
     And I enter "Shows a specific set of tiles." in the "Body" wysiwyg editor
-    And I check "Display a community content listing"
+    And I check "Add related content"
     And I press "Save"
     Then I should see the heading "Chosen content"
     And I should see the following tiles in the correct order:
@@ -159,19 +163,19 @@ Feature:
     And I select "News" from "Available filters"
     And I press "Add and configure filter"
     And I fill in the latest "News" field with "NEC VR4300 CPU"
-    And I check "Show also content shared in the collection"
+    And I check "Allow shared content"
     And I press "Save"
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
       | What's your favourite N64 game?       |
       | Rare Nintendo64 disk drive discovered |
 
-    # Content shared in the collection will be shown.
+    # Content shared on the collection will be shown.
     When I go to the "NEC VR4300 CPU" news
     And I click "Share"
     And I check "Nintendo64"
     And I press "Share" in the "Modal buttons" region
-    Then I should see the success message "Item was shared in the following collections: Nintendo64"
+    Then I should see the success message "Item was shared on the following collections: Nintendo64"
     When I go to the "Chosen content" custom page
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
@@ -182,7 +186,7 @@ Feature:
     # Disabling inclusion of shared content will remove it from the list, even if still referenced.
     When I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
-    And I uncheck "Show also content shared in the collection"
+    And I uncheck "Allow shared content"
     And I press "Save"
     Then I should see the following tiles in the correct order:
       | 20 year anniversary                   |
@@ -247,7 +251,7 @@ Feature:
     When I fill in the following:
       | Title | Collection content                        |
       | Body  | Shows all the content for this collection |
-    And I check "Display a community content listing"
+    And I check "Add related content"
     And I press "Save"
     Then I should see the heading "Collection content"
     # Verify that unwanted facets are not shown in the page.
@@ -281,7 +285,7 @@ Feature:
       | Title         | Newsletters 2018                      |
       | Body          | Shows all content for this collection |
       | Query presets | entity_bundle\|newsletter             |
-    And I check the box "Display a community content listing"
+    And I check the box "Add related content"
     And I press "Save"
     Then I should see the "Nintendo64 in the News" tile
 
@@ -298,7 +302,7 @@ Feature:
     When I fill in the following:
       | Title | Manuals        |
       | Body  | Product guides |
-    And I check the box "Display a community content listing"
+    And I check the box "Add related content"
     And I fill in "Query presets" with:
         """
         entity_bundle|document
@@ -315,7 +319,7 @@ Feature:
     When I fill in the following:
       | Title | Licences          |
       | Body  | Product licensing |
-    And I check the box "Display a community content listing"
+    And I check the box "Add related content"
     And I fill in "Query presets" with:
         """
         entity_bundle|document
@@ -332,7 +336,7 @@ Feature:
     And I click "Add custom page"
     Then I should see the heading "Add custom page"
     When I fill in "Title" with "Query presets validation"
-    And I check "Display a community content listing"
+    And I check "Add related content"
     And I fill in "Query presets" with "wrongvalue"
     And I press "Save"
     Then I should see the error message "Invalid query preset line added: wrongvalue."
@@ -350,3 +354,59 @@ Feature:
         """
     And I press "Save"
     Then I should see the error message "Invalid search field specified: unknown_field."
+
+  Scenario: Global search setting allows for site-wide content in the content listing.
+    Given I am logged in as a moderator
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "Add custom page"
+    Then I should see the heading "Add custom page"
+    When I fill in the following:
+      | Title | All content     |
+      | Body  | Show EVERYTHING |
+    And I check "Add related content"
+    And I check "Global search"
+    And I press "Save"
+    Then I should see the heading "All content"
+    # All tiles are available.
+    And I should see the following tiles in the correct order:
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
+      | NEC VR4300 CPU                        |
+      | 20 year anniversary                   |
+      | Rare Nintendo64 disk drive discovered |
+
+    # Ensure that when content is created or editted in another group,
+    # the page cache is invalidated.
+    Given I go to the homepage of the "Emulators" collection
+    And I click "Add news" in the plus button menu
+    When I fill in the following:
+      | Short title | Current wars               |
+      | Headline    | Edisson vs Electro         |
+      | Content     | A new movie is coming out. |
+    And I press "Publish"
+    Then I should see the heading "Current wars"
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "All content" in the "Left sidebar" region
+    And I should see the following tiles in the correct order:
+      | Current wars                          |
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
+      | NEC VR4300 CPU                        |
+      | 20 year anniversary                   |
+      | Rare Nintendo64 disk drive discovered |
+
+    Given I go to the news content "Current wars" edit screen
+    And I fill in "Short title" with "Current wars is over"
+    And I press "Update"
+    Then I should see the heading "Current wars is over"
+
+    When I go to the homepage of the "Nintendo64" collection
+    And I click "All content" in the "Left sidebar" region
+    And I should see the following tiles in the correct order:
+      | Current wars is over                  |
+      | Searching for green pad.              |
+      | What's your favourite N64 game?       |
+      | NEC VR4300 CPU                        |
+      | 20 year anniversary                   |
+      | Rare Nintendo64 disk drive discovered |

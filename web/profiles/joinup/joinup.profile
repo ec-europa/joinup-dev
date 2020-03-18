@@ -15,10 +15,10 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup\JoinupCustomInstallTasks;
-use Drupal\joinup\JoinupHelper;
 use Drupal\joinup_community_content\CommunityContentHelper;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\views\ViewExecutable;
 
@@ -108,13 +108,9 @@ function joinup_entity_type_alter(array &$entity_types) {
   // add propose form displays to them.
   // Skip this during installation, since the RDF entity will not yet be
   // registered.
-  if (!drupal_installation_attempted()) {
+  if (!InstallerKernel::installationAttempted()) {
     /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
     $entity_types['rdf_entity']->setFormclass('propose', 'Drupal\rdf_entity\Form\RdfForm');
-
-    // Swap the default user cancel form implementation with a custom one that
-    // prevents deleting users when they are the sole owner of a collection.
-    $entity_types['user']->setFormClass('cancel', 'Drupal\joinup\Form\UserCancelForm');
   }
 }
 
@@ -130,14 +126,14 @@ function joinup_form_field_config_edit_form_alter(&$form) {
 }
 
 /**
- * Implements hook_rdf_apply_default_fields_alter().
+ * Implements hook_sparql_apply_default_fields_alter().
  *
  * This profile includes 'content_editor' filter format as a text editor and
  * access to 'full_html' and the rest of the filter formats are restricted.
  * With this hook, we make sure that the default fields with type 'text_long'
  * have the 'content_editor' filter format as default.
  */
-function joinup_rdf_apply_default_fields_alter($type, &$values) {
+function joinup_sparql_apply_default_fields_alter($type, &$values) {
   // Since the profile includes a filter format, we provide this as default.
   if ($type == 'text_long') {
     foreach ($values as &$value) {
@@ -189,6 +185,7 @@ function joinup_entity_access(EntityInterface $entity, $operation, AccountInterf
   if ($entity->getEntityTypeId() === 'ogmenu_instance' && $operation !== 'update') {
     return AccessResult::forbidden();
   }
+  return AccessResult::neutral();
 }
 
 /**
@@ -317,15 +314,6 @@ function joinup_theme_suggestions_field_alter(array &$suggestions, array &$varia
 }
 
 /**
- * Implements hook_install_tasks_alter().
- */
-function joinup_install_tasks_alter(&$tasks, $install_state) {
-  $tasks['joinup_remove_simplenews_defaults'] = [
-    'function' => [JoinupCustomInstallTasks::class, 'removeSimpleNewsDefaults'],
-  ];
-}
-
-/**
  * Implements hook_theme().
  */
 function joinup_theme($existing, $type, $theme, $path) {
@@ -379,30 +367,56 @@ function joinup_entity_view_alter(array &$build, EntityInterface $entity, Entity
     ];
   }
 
-  // Add the "collection_context" contextual links group on community content
-  // and solutions.
-  if (JoinupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
-    // The rendered entity needs to vary by og group context.
-    $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], ['og_group_context']);
-    $build['#contextual_links']['collection_context'] = [
-      'route_parameters' => [
-        'entity_type' => $entity->getEntityTypeId(),
-        'entity' => $entity->id(),
-        // The collection parameter is a required parameter in the pin/unpin
-        // routes. If the parameter is left empty, a critical exception will
-        // occur and the contextual links generation will break. By passing an
-        // empty value, an upcast exception will be catched and the access
-        // checks will correctly return an access denied.
-        'collection' => NULL,
-      ],
-      'metadata' => ['changed' => $entity->getChangedTime()],
-    ];
-    /** @var \Drupal\rdf_entity\RdfInterface $collection */
-    $collection = \Drupal::service('og.context')->getGroup();
-    if ($collection && JoinupHelper::isCollection($collection)) {
-      $build['#contextual_links']['collection_context']['route_parameters']['collection'] = $collection->id();
-      $build['#contextual_links']['collection_context']['metadata']['collection_changed'] = $collection->getChangedTime();
-    }
+  if (!JoinupGroupHelper::isSolution($entity) && !CommunityContentHelper::isCommunityContent($entity)) {
+    return;
+  }
+
+  // The contextual links need to vary per user roles and per user og roles.
+  // Core already takes care of varying by roles by applying the
+  // user.permissions cache context and applying the permission hash in the
+  // contextual links. We need to include the corresponding data deriving from
+  // the og role cache context.
+  /** @var \Drupal\og\Cache\Context\OgRoleCacheContext $cache_service */
+  $cache_service = \Drupal::service('cache_context.og_role');
+  $roles_hash = $cache_service->getContext();
+
+  // The rendered entity needs to vary by og group context.
+  $build['#cache']['contexts'] = Cache::mergeContexts($build['#cache']['contexts'], [
+    'og_role',
+    'og_group_context',
+  ]);
+
+  /** @var \Drupal\rdf_entity\RdfInterface $group */
+  $group = \Drupal::service('og.context')->getGroup();
+
+  // The existence of the group context contextual links helps with enforcing
+  // the og_context to the entity because otherwise there is nothing in the view
+  // itself that would invalidate the tile and make it really `og_role`
+  // dependant.
+  $build['#contextual_links']['group_context'] = [
+    'route_parameters' => [
+      'entity_type' => $entity->getEntityTypeId(),
+      'entity' => $entity->id(),
+      // The group parameter is a required parameter in the pin/unpin
+      // routes. If the parameter is left empty, a critical exception will
+      // occur and the contextual links generation will break. By passing an
+      // empty value, an upcast exception will be catched and the access
+      // checks will correctly return an access denied.
+      'group' => NULL,
+    ],
+    'metadata' => [
+      'changed' => $entity->getChangedTime(),
+      'og_roles_hash' => $roles_hash,
+    ],
+  ];
+
+  // The next check asserts that the group is either a collection or a solution
+  // but for solutions, only community content are allowed to be pinned, not
+  // related solutions.
+  if ($group && (JoinupGroupHelper::isCollection($group) || CommunityContentHelper::isCommunityContent($entity) && JoinupGroupHelper::isSolution($group))) {
+    // Used by the contextual links for pinning/unpinning entity in group.
+    // @see: joinup.pin_entity, joinup.unpin_entity routes.
+    $build['#contextual_links']['group_context']['route_parameters']['group'] = $group->id();
   }
 }
 
@@ -441,18 +455,24 @@ function _joinup_preprocess_entity_tiles(array &$variables) {
     $variables['#attached']['library'][] = 'joinup/site_wide_featured';
   }
 
+  $context = \Drupal::service('og.context')->getRuntimeContexts(['og']);
+  $group = NULL;
+  if (!empty($context['og'])) {
+    $group = $context['og']->getContextValue();
+  }
+
   /** @var \Drupal\joinup\PinServiceInterface $pin_service */
   $pin_service = \Drupal::service('joinup.pin_service');
-  if ($pin_service->isEntityPinned($entity)) {
+  if ($pin_service->isEntityPinned($entity, $group)) {
     $variables['attributes']['class'][] = 'is-pinned';
     $variables['#attached']['library'][] = 'joinup/pinned_entities';
 
-    if (JoinupHelper::isSolution($entity)) {
-      $collection_ids = [];
-      foreach ($pin_service->getCollectionsWherePinned($entity) as $collection) {
-        $collection_ids[] = $collection->id();
+    if (JoinupGroupHelper::isSolution($entity) || CommunityContentHelper::isCommunityContent($entity)) {
+      $group_ids = [];
+      foreach ($pin_service->getGroupsWherePinned($entity) as $group) {
+        $group_ids[] = $group->id();
       }
-      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $collection_ids);
+      $variables['attributes']['data-drupal-pinned-in'] = implode(',', $group_ids);
     }
   }
 }

@@ -16,7 +16,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Behat step definitions for testing documents.
  */
-class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
+class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   use FileTrait;
   use NodeTrait;
@@ -49,21 +49,37 @@ class DocumentSubContext extends DrupalSubContextBase implements DrupalSubContex
   public static function massageDocumentFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope) {
     $node = $scope->getEntity();
 
-    if ($node->type !== 'document' || empty($node->file)) {
+    if ($node->type !== 'document') {
       return;
     }
 
-    $type = isset($node->{'file type'}) ? $node->{'file type'} : 'remote';
-    if ($type !== 'remote') {
-      // If the file is local we want to copy it from the fixtures into the file
-      // system and register it in the DocumentSubContext so it can be cleaned
-      // up after the scenario ends. Perform a small dance to get access to the
-      // context class from inside this static callback.
-      /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
-      $environment = $scope->getEnvironment();
-      /** @var \DocumentSubContext $context */
-      $context = $environment->getContext(self::class);
-      $node->file = $context->createFile($node->file)->id();
+    if (!empty($node->file)) {
+      $type = isset($node->{'file type'}) ? $node->{'file type'} : 'remote';
+      if ($type !== 'remote') {
+        // If the file is local we want to copy it from the fixtures into the
+        // file system and register it in the DocumentSubContext so it can be
+        // cleaned up after the scenario ends. Perform a small dance to get
+        // access to the context class from inside this static callback.
+        /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+        $environment = $scope->getEnvironment();
+        /** @var \DocumentSubContext $context */
+        $context = $environment->getContext(self::class);
+        $node->file = $context->createFile($node->file)->id();
+      }
+    }
+
+    if (isset($node->{'document publication date'})) {
+      $time = $node->{'document publication date'};
+      if (!is_numeric($time)) {
+        $time = strtotime($time);
+        if (empty($time)) {
+          throw new Exception("{$node->{'document publication date'}} could not be converted to timestamp.");
+        }
+      }
+
+      /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+      $date_formatter = \Drupal::service('date.formatter');
+      $node->{'document publication date'} = $date_formatter->format($time, 'custom', 'Y-m-d H:i:s');
     }
 
     unset($node->{'file type'});

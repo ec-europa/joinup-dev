@@ -1,21 +1,21 @@
-@api
+@api @group-b
 Feature:
   As an owner of a website
   In order to guarantee data persistence
   All semantic assets need to have a persistent URI
 
   Scenario: Entities should have distinct URI pattern
-    Given the following solution:
+    Given the following collection:
+      | title | Persistent collection                                          |
+      | logo  | logo.png                                                       |
+      | state | validated                                                      |
+      | uri   | http://data.europa.eu/w21/37b8103e-26e5-4c81-8ce5-43ced02ff7d0 |
+    And the following solution:
       | title       | Persistent solution                                            |
+      | collection  | Persistent collection                                          |
       | description | Persistent solution                                            |
       | state       | validated                                                      |
       | uri         | http://data.europa.eu/w21/ffb0ffc9-7704-45d3-95b3-42706b6320e5 |
-    And the following collection:
-      | title      | Persistent collection                                          |
-      | logo       | logo.png                                                       |
-      | affiliates | Persistent solution                                            |
-      | state      | validated                                                      |
-      | uri        | http://data.europa.eu/w21/37b8103e-26e5-4c81-8ce5-43ced02ff7d0 |
     And the following release:
       | title          | Persistent release                                             |
       | release number | 23                                                             |

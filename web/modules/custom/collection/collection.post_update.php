@@ -25,3 +25,12 @@ function collection_post_update_show_events_facet() {
     $collection->save();
   }
 }
+
+/**
+ * Remove 'system.action.joinup_collection_og_membership_delete_action' config.
+ */
+function collection_post_update_remove_joinup_collection_og_membership_delete_action() {
+  \Drupal::configFactory()
+    ->getEditable('system.action.joinup_collection_og_membership_delete_action')
+    ->delete();
+}

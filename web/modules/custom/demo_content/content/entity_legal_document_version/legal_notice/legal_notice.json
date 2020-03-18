@@ -1,0 +1,77 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/joinup\/legal-notice\/legal_notice_1562929852?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/entity_legal_document_version\/legal_notice"
+        }
+    },
+    "name": [
+        {
+            "value": "legal_notice_1562929852"
+        }
+    ],
+    "published": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "c0bac256-c243-4440-bd31-b2b988375f5b"
+        }
+    ],
+    "document_name": [
+        {
+            "target_id": "legal_notice"
+        }
+    ],
+    "label": [
+        {
+            "value": "Legal notice",
+            "lang": "en"
+        }
+    ],
+    "acceptance_label": [
+        {
+            "value": "I agree to the <a href=\"[entity_legal_document:url]\">Legal notice<\/a> document",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": "2019-07-12T11:11:23+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2019-07-12T11:11:23+00:00",
+            "lang": "en",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "entity_legal_document_text": [
+        {
+            "value": "<h2>Important legal notice<\/h2>\r\n<p>The information on this site is subject to a disclaimer, a copyright and rules related to personal data protection, each in line with the general <a href=\"http:\/\/ec.europa.eu\/geninfo\/legal_notices_en.htm\">European Commission legal notice<\/a>, and terms of use.<\/p>\r\n<h2>Copyright notice<\/h2>\r\n<p>Unless otherwise indicated, reproduction is authorised, except for commercial purposes, provided that the source (Joinup) is acknowledged. Where prior permission must be obtained for the reproduction or use of textual and multimedia information (sound, images, software, etc.), such permission shall cancel the above-mentioned general permission and shall clearly indicate any restrictions on use.<\/p>\r\n<h3>Special Rules for hosted and federated Open-Source Software projects<\/h3>\r\n<p>Please note that all the Open-Source Applications (Projects), which are available through the repository on Joinup are provided by their owners (named in each case) subject to the copyright licences indicated in each case; the owners have to certify that all intellectual property rights concerning the Assets belong to them and no intellectual property rights of third parties are infringed. Please refer to the individual project for further information. Please note, that the European Commission accepts no responsibility with regard to these projects.<\/p>\r\n<h3>Special Rules for interoperability solutions<\/h3>\r\n<p>Reproduction is not authorized in general for the interoperability solutions. The copyright for the interoperability solutions is defined individually by the licence attached to the individual solution by its owner. Please refer to the individual solution for further information.<\/p>\r\n<h2>Disclaimer<\/h2>\r\n<p>The European Commission maintains this website to enhance public access to information about its initiatives and European Union policies in general. Our goal is to keep this information timely and accurate. If errors are brought to our attention, we will try to correct them. However, the Commission accepts no responsibility or liability whatsoever with regard to the information on this site.<\/p>\r\n<p>This information is:<\/p>\r\n<ol>\r\n  <li>of a general nature only and is not intended to address the specific circumstances of any particular individual or entity;<\/li>\r\n  <li>not necessarily comprehensive, complete, accurate or up to date; sometimes linked to external sites over which the Commission services have no control and for which the Commission assumes no responsibility;<\/li>\r\n  <li>not professional or legal advice (if you need specific advice, you should always consult a suitably qualified professional).<\/li>\r\n<\/ol>\r\n<p>Please note that it cannot be guaranteed that a document available on-line exactly reproduces an officially adopted text. Only European Union legislation published in paper editions of the Official Journal of the European Union is deemed authentic.<\/p>\r\n<p>Please also note that all interoperability solutions, which are available through the repository on Joinup are provided by their owners (named in each case) subject to the licences indicated in each case; the owners have to certify that all intellectual property rights concerning the solutions belong to them and no intellectual property rights of third parties are infringed. The European Commission accepts no responsibility with regard to these solutions.<\/p>\r\n<p>It is our goal to minimize disruption caused by technical errors. However, some data or information on our site may have been created or structured in files or formats that are not error-free and we cannot guarantee that our service will not be interrupted or otherwise affected by such problems. The Commission accepts no responsibility with regard to such problems incurred as a result of using this site or any linked external sites.<\/p>\r\n<p>This disclaimer is not intended to limit the liability of the Commission in contravention of any requirements laid down in applicable national law nor to exclude its liability for matters which may not be excluded under that law.<\/p>\r\n<h2>Privacy Statement<\/h2>\r\n<h3>The Specific Privacy Statement for the Joinup website can be found <a href=\"https:\/\/joinup.ec.europa.eu\/sites\/default\/files\/custom-page\/attachment\/2019-07\/Specific_Privacy_Statement_Joinup_clean.pdf\">here<\/a><\/h3>",
+            "format": "content_editor",
+            "processed": "<h2>Important legal notice<\/h2>\n<p>The information on this site is subject to a disclaimer, a copyright and rules related to personal data protection, each in line with the general <a href=\"http:\/\/ec.europa.eu\/geninfo\/legal_notices_en.htm\">European Commission legal notice<\/a>, and terms of use.<\/p>\n<h2>Copyright notice<\/h2>\n<p>Unless otherwise indicated, reproduction is authorised, except for commercial purposes, provided that the source (Joinup) is acknowledged. Where prior permission must be obtained for the reproduction or use of textual and multimedia information (sound, images, software, etc.), such permission shall cancel the above-mentioned general permission and shall clearly indicate any restrictions on use.<\/p>\n<h3>Special Rules for hosted and federated Open-Source Software projects<\/h3>\n<p>Please note that all the Open-Source Applications (Projects), which are available through the repository on Joinup are provided by their owners (named in each case) subject to the copyright licences indicated in each case; the owners have to certify that all intellectual property rights concerning the Assets belong to them and no intellectual property rights of third parties are infringed. Please refer to the individual project for further information. Please note, that the European Commission accepts no responsibility with regard to these projects.<\/p>\n<h3>Special Rules for interoperability solutions<\/h3>\n<p>Reproduction is not authorized in general for the interoperability solutions. The copyright for the interoperability solutions is defined individually by the licence attached to the individual solution by its owner. Please refer to the individual solution for further information.<\/p>\n<h2>Disclaimer<\/h2>\n<p>The European Commission maintains this website to enhance public access to information about its initiatives and European Union policies in general. Our goal is to keep this information timely and accurate. If errors are brought to our attention, we will try to correct them. However, the Commission accepts no responsibility or liability whatsoever with regard to the information on this site.<\/p>\n<p>This information is:<\/p>\n<ol>\n  <li>of a general nature only and is not intended to address the specific circumstances of any particular individual or entity;<\/li>\n  <li>not necessarily comprehensive, complete, accurate or up to date; sometimes linked to external sites over which the Commission services have no control and for which the Commission assumes no responsibility;<\/li>\n  <li>not professional or legal advice (if you need specific advice, you should always consult a suitably qualified professional).<\/li>\n<\/ol>\n<p>Please note that it cannot be guaranteed that a document available on-line exactly reproduces an officially adopted text. Only European Union legislation published in paper editions of the Official Journal of the European Union is deemed authentic.<\/p>\n<p>Please also note that all interoperability solutions, which are available through the repository on Joinup are provided by their owners (named in each case) subject to the licences indicated in each case; the owners have to certify that all intellectual property rights concerning the solutions belong to them and no intellectual property rights of third parties are infringed. The European Commission accepts no responsibility with regard to these solutions.<\/p>\n<p>It is our goal to minimize disruption caused by technical errors. However, some data or information on our site may have been created or structured in files or formats that are not error-free and we cannot guarantee that our service will not be interrupted or otherwise affected by such problems. The Commission accepts no responsibility with regard to such problems incurred as a result of using this site or any linked external sites.<\/p>\n<p>This disclaimer is not intended to limit the liability of the Commission in contravention of any requirements laid down in applicable national law nor to exclude its liability for matters which may not be excluded under that law.<\/p>\n<h2>Privacy Statement<\/h2>\n<h3>The Specific Privacy Statement for the Joinup website can be found <a href=\"https:\/\/joinup.ec.europa.eu\/sites\/default\/files\/custom-page\/attachment\/2019-07\/Specific_Privacy_Statement_Joinup_clean.pdf\">here<\/a><\/h3>",
+            "summary": "",
+            "lang": "en"
+        }
+    ]
+}

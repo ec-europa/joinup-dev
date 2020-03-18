@@ -2,6 +2,9 @@
 
 <project name="Joinup" default="help">
 
+    <!-- Import Config management targets. -->
+    <import file="${project.basedir}/build.config.xml" optional="true" />
+
     <!-- Import Phing targets related to the D6 migration. -->
     <import file="${project.basedir}/build.migration.xml" optional="true" />
 
@@ -19,6 +22,9 @@
 
     <!-- Import Phing targets related to Virtuoso. -->
     <import file="${project.basedir}/vendor/ec-europa/virtuoso/build.virtuoso.xml" optional="true" />
+
+    <!-- Import Phing targets related to EU Login. -->
+    <import file="${project.basedir}/build.eulogin.xml" optional="true" />
 
     <echo msg="Loading Behat task." />
     <taskdef name="behat" classname="BehatTask" />
@@ -44,16 +50,16 @@
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
-            command="site-install"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
+                command="site-install"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="${website.site.name}" />
             <option name="account-name" value="${drupal.admin.username}" />
             <option name="account-pass" value="${drupal.admin.password}" />
             <option name="account-mail" value="${drupal.admin.email}" />
+            <option name="existing-config" />
             <param>${website.profile.name}</param>
             <!-- Disable sending of e-mails during installation. -->
             <param>install_configure_form.enable_update_status_module=NULL</param>
@@ -78,52 +84,42 @@
 
     <target name="import-rdf-fixtures">
         <rdf-import-fixtures
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            Port="${sparql.port}" />
+                IsqlPath="${isql.bin}"
+                DataSourceName="${sparql.dsn}"
+                Username="${sparql.user}"
+                Password="${sparql.password}"
+                Port="${sparql.port}" />
 
         <afterrdffixturesimport
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            Port="${sparql.port}" />
+                IsqlPath="${isql.bin}"
+                DataSourceName="${sparql.dsn}"
+                Username="${sparql.user}"
+                Password="${sparql.password}"
+                Port="${sparql.port}" />
     </target>
 
     <!-- Execute Drupal updates. -->
-    <target name="execute-updates">
-        <!-- Cache might be stale with memory cache backends, such as Redis,
-        after a database restore. Running `drush updatedb` may give unexpected
-        results, for example when trying to enable modules that were enabled
-        prior to database restore. That's because they will be falsely reported
-        as "already installed". Clear the config cache bin so that updates will
-        run on with non-cached configuration values. -->
+    <target name="execute-updates" depends="disable-config-read-only, redis-flush">
         <drush
-                command="cache:clear"
+                command="updatedb"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-            <param>bin</param>
-            <param>config</param>
+                bin="${drush.bin}">
+            <option name="no-post-updates"/>
+        </drush>
+        <drush
+                command="config:import"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
         </drush>
         <drush
                 command="updatedb"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
         </drush>
-        <drush
-                command="cs-update"
-                assume="yes"
-                root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-            <option name="discard-overrides" />
-        </drush>
+        <phingcall target="enable-config-read-only"/>
     </target>
 
     <!-- Download database backups from the ASDA server. -->
@@ -133,6 +129,9 @@
     <target name="download-virtuoso-database">
         <mkdir dir="${exports.virtuoso.destination.folder}" />
         <echo msg="Fetching list of files to download." />
+        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
+        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
+        <php expression="ini_set('memory_limit', '1G');" />
         <httpget
                 url="${exports.virtuoso.source}"
                 authUser="${asda.username}"
@@ -140,6 +139,8 @@
                 authScheme="basic"
                 dir="${exports.virtuoso.destination.folder}"
         />
+        <!-- Restore the original memory limit. -->
+        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
         <untar file="${exports.virtuoso.destination.folder}JOINUP_VIRTUOSO_PRD_LATEST.tar.gz" todir="${exports.virtuoso.destination.folder}" />
 
         <copy todir="${exports.virtuoso.destination.folder}">
@@ -158,6 +159,9 @@
     <!-- Downloads a backup of the SQL database from the ASDA server. -->
     <target name="download-sql-database">
         <echo msg="Downloading SQL database dump from ASDA." />
+        <!-- Temporarily increase the memory limit so the download doesn't run out of memory. -->
+        <php expression="ini_get('memory_limit');" returnproperty="memory_limit.original" />
+        <php expression="ini_set('memory_limit', '1G');" />
         <httpget
                 url="${exports.sql.source}"
                 authUser="${asda.username}"
@@ -168,6 +172,10 @@
         <copy file="${tmp.dir}/JOINUP_PRD_LATEST.sql.gz" tofile="${exports.sql.destination}" overwrite="true"/>
         <delete file="${tmp.dir}/dump.sql" failonerror="false" />
         <exec command="gunzip -f ${exports.sql.destination}" dir="${tmp.dir}" />
+        <!-- Remove the MySQL trigger definer -->
+        <exec command="perl -i -pe 's/DEFINER=&quot;[^&quot;]+&quot;@&quot;[^&quot;]+&quot;//g' ${tmp.dir}/dump.sql" passthru="true" checkreturn="true"/>
+        <!-- Restore the original memory limit. -->
+        <php expression="ini_set('memory_limit', '${memory_limit.original}');" />
     </target>
 
     <target name="restore-mysql-dump" depends="disable-webtools-geocoding-cache, empty-mysql-database">
@@ -175,8 +183,7 @@
                 command="sql-query"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <option name="file" value="${tmp.dir}/dump.sql" />
         </drush>
         <!-- Make sure to truncate the cache tables immediately after importing.
@@ -225,11 +232,32 @@
                 sparqlUrl="${phpunit.sparql_url}"
                 legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
-                browsertestOutputFile="${phpunit.browsertest_output_file}" />
+                browsertestOutputFile="${phpunit.browsertest_output_file}"
+                dttBaseUrl="${dtt.base_url}"
+                dttApiUrl="${dtt.api_url}"
+                dttMinkDriverArgs="${dtt.mink_driver_args}" />
 
         <!-- Create the directory and file for browsertest output. -->
         <mkdir dir="${phpunit.browsertest_output_dir}" />
         <touch file="${phpunit.browsertest_output_file}" />
+
+    </target>
+
+    <target name="create-phpunit-mysql-database">
+        <php expression="explode('://', '${phpunit.db_url}', 2)[0]" returnProperty="phpunit.db.type"/>
+        <if>
+            <equals arg1="${phpunit.db.type}" arg2="mysql"/>
+            <then>
+                <drush
+                        command="sql:create"
+                        assume="yes"
+                        root="${website.drupal.dir}"
+                        bin="${drush.bin}"
+                        verbose="${drush.verbose}">
+                    <option name="db-url" value="${phpunit.db_url}"/>
+                </drush>
+            </then>
+        </if>
     </target>
 
     <!-- Enable modules for user acceptance testing. These are different from the
@@ -240,8 +268,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>${drupal.modules.uat}</param>
         </drush>
     </target>
@@ -251,22 +278,30 @@
                 command="cr"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
         </drush>
     </target>
 
-    <!-- Compile SASS to CSS. -->
-    <target name="compile-sass"
-            description="Compile the SASS to CSS.">
-        <!-- Make sure the CSS directory exists. -->
-        <mkdir dir="${sass.output.dir}" />
-        <sass
-            executable="${sass.bin}"
-            flags="--sourcemap=${sass.sourcemap}"
-            style="${sass.style}"
-            input="${sass.input}"
-            output="${sass.output.dir}/${sass.output.file}" />
+    <!-- Compile SCSS to CSS. -->
+    <target name="compile-scss"
+            description="Compile the SCSS to CSS.">
+        <mkdir dir="${scssphp.css.output.dir}" />
+        <if>
+            <istrue value="${scssphp.sourcemap}"/>
+            <then>
+                <property name="scss.sourcemap.arg" value="--sourcemap"/>
+            </then>
+            <else>
+                <property name="scss.sourcemap.arg" value=""/>
+            </else>
+        </if>
+
+        <exec executable="${scssphp.bin}"
+              output="${scssphp.css.output.file}">
+            <arg value="--style=${scssphp.style}"/>
+            <arg value="${scss.sourcemap.arg}"/>
+            <arg value="${scssphp.input.file}"/>
+        </exec>
     </target>
 
     <!-- Set the transaction type to READ-COMMITTED. -->
@@ -322,8 +357,8 @@
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
     <target name="disable-persistent-session-cookies"
-        description="Disable persistent session cookies"
-        depends="writable-settings-folder, writable-services-yml">
+            description="Disable persistent session cookies"
+            depends="writable-settings-folder, writable-services-yml">
 
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -340,52 +375,41 @@
         </reflexive>
     </target>
 
-    <!-- Export complete site configuration. -->
-    <target name="export-config">
-        <!-- Make sure the config directory exists. -->
-        <mkdir dir="${drupal.config.dir}" />
-        <drush
-            command="config-export"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}"
-            verbose="${drush.verbose}">
-            <option name="destination" value="${drupal.config.dir}" />
-        </drush>
-    </target>
+    <target name="enable-config-read-only"
+            depends="writable-settings-folder, writable-settings-php"
+            description="Enables config_readonly.">
 
-    <target
-        name="enable-config-read-only"
-        depends="writable-settings-folder, writable-settings-php"
-        description="Make config read-only.">
-        <phingcall target="enable-module">
-            <property name="module" value="config_readonly" />
-        </phingcall>
-        <append destFile="${website.settings.php}" text="$settings['config_readonly'] = TRUE;${line.separator}" />
-    </target>
+        <!-- Remove any existing setting. -->
+        <reflexive>
+            <fileset dir="${website.settings.dir}">
+                <include pattern="settings.php" />
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp
+                            pattern="^\$settings\['config_readonly'\].*$\n"
+                            replace=""
+                            modifiers="m" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
 
-    <target
-        name="disable-config-read-only"
-        depends="writable-settings-folder, writable-settings-php"
-        description="Make config writable.">
+        <!-- Add config_readonly kill-switch. -->
+        <append destFile="${website.settings.php}" text="$settings['config_readonly'] = !file_exists(getcwd() . '/../disable-config-readonly');${line.separator}" />
+
+        <!-- Make sure config_readonly is enabled. -->
         <if>
-            <available file="${website.settings.php}" type="file" property="settings.php.available" />
+            <istrue value="${config_readonly.enabled}"/>
             <then>
-                <reflexive>
-                    <fileset dir="${website.settings.dir}">
-                        <include pattern="settings.php" />
-                    </fileset>
-                    <filterchain>
-                        <replaceregexp>
-                            <regexp
-                                pattern="^\$settings\['config_readonly'\].*$\n"
-                                replace=""
-                                modifiers="m" />
-                        </replaceregexp>
-                    </filterchain>
-                </reflexive>
+                <delete file="${project.basedir}/disable-config-readonly" quiet="true"/>
             </then>
         </if>
+    </target>
+
+    <target name="disable-config-read-only"
+            depends="writable-settings-folder, writable-settings-php"
+            description="Disables config_readonly.">
+        <touch file="${project.basedir}/disable-config-readonly" />
     </target>
 
     <target name="ensure-search-api-solr-site-hash">
@@ -393,24 +417,39 @@
                 command="php:eval"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>'\Drupal\search_api_solr\Utility\Utility::getSiteHash();'</param>
         </drush>
     </target>
 
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
-        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
+        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter=","/>
         <!-- Create a user with only "authenticated user" role assigned. -->
         <drush
                 command="user-create"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
-            <option name="mail" value="user@example.com" />
-            <option name="password" value="user" />
+                bin="${drush.bin}">
+            <option name="mail" value="user@example.com"/>
+            <option name="password" value="user"/>
+            <param>user</param>
+        </drush>
+        <drush
+                command="cas-mock-server:user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>user</param>
+            <option name="email" value="user@example.com"/>
+            <option name="password" value="user"/>
+        </drush>
+        <drush
+                command="cas:set-cas-username"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>user</param>
             <param>user</param>
         </drush>
         <!-- Grant the moderator role also to the administrator. -->
@@ -418,10 +457,47 @@
                 command="user-add-role"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>moderator</param>
             <param>administrator</param>
+        </drush>
+    </target>
+
+    <!-- Create a demo user. Subtarget of "create-demo-users". -->
+    <target name="create-demo-user">
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <option name="mail" value="${drupal.demo.user}@example.com" />
+            <option name="password" value="${drupal.demo.user}" />
+            <param>${drupal.demo.user}</param>
+        </drush>
+        <drush
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <param>${drupal.demo.user}</param>
+        </drush>
+        <drush
+                command="cas-mock-server:user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <option name="email" value="${drupal.demo.user}@example.com" />
+            <option name="password" value="${drupal.demo.user}" />
+        </drush>
+        <drush
+                command="cas:set-cas-username"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <param>${drupal.demo.user}</param>
         </drush>
     </target>
 
@@ -431,8 +507,7 @@
                 command="pm-enable"
                 assume="yes"
                 root="${website.drupal.dir}"
-                bin="${drush.bin}"
-                verbose="${drush.verbose}">
+                bin="${drush.bin}">
             <param>stage_file_proxy</param>
         </drush>
         <phingcall target="configure-stage-file-proxy"/>
@@ -529,22 +604,27 @@
     <target
         name="build-dist"
         description="Build a distribution package."
-        depends="install-composer-dependencies-dist, compile-sass" />
+        depends="install-composer-dependencies-dist, compile-scss" />
 
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, compile-sass" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-scss" />
+
+    <target
+        name="rebuild-dev"
+        description="Build a development environment based on the production database."
+        depends="build-dev, rebuild-environment, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
 
     <target
         name="setup-acceptance"
         description="Set up an acceptance environment."
-        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, setup-migration, import-legacy-db, download-databases, rebuild-environment, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
+        depends="setup-virtuoso-permissions, configure-apache-solr-drupal, configure-matomo-drupal, configure-stage-file-proxy, download-databases, rebuild-environment, setup-config-sync-dir, reindex-apache-solr, enable-uat-modules, enable-dev-settings" />
 
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server, enable-config-read-only" />
 
     <target name="check-deprecated-code">
         <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src" passthru="true" checkreturn="true"/>

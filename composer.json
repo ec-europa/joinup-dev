@@ -5,111 +5,134 @@
     "license": "EUPL",
     "require": {
         "php": ">=7.1.0",
-        "composer/composer": "^1.7.1",
-        "composer/installers": "^1.2",
-        "continuousphp/aws-sdk-phing": "~0.1",
+        "ext-json": "*",
+        "composer/composer": "^1.9.1",
+        "composer/installers": "^1.7",
+        "continuousphp/aws-sdk-phing": "~0.5",
+        "cpliakas/git-wrapper": "~1.7",
         "cweagans/composer-patches": "^1.6.4",
-        "drupal-composer/drupal-scaffold": "^2.2",
-        "drupal/allowed_formats": "^1.1",
-        "drupal/cached_computed_field": "^1.0-beta4",
-        "drupal/changed_fields": "^2.0",
-        "drupal/config_provider": "~1.0",
-        "drupal/config_readonly": "~1.0",
-        "drupal/config_sync": "^1.0-alpha7",
-        "drupal/config_update": "~1.4",
-        "drupal/core": "^8.6.13",
-        "drupal/diff": "^1.0@RC",
+        "dkarv/mdl-chip-input": "dev-master",
+        "drupal/allowed_formats": "^1.2",
+        "drupal/antibot": "^1.3",
+        "drupal/cached_computed_field": "^1.0-beta5",
+        "drupal/cas": "^1.6",
+        "drupal/cas_account_link": "^1.0",
+        "drupal/cas_attributes": "dev-1.x",
+        "drupal/changed_fields": "^3.2",
+        "drupal/config_exclude": "dev-1.x",
+        "drupal/config_ignore": "dev-3.x",
+        "drupal/config_readonly": "^1.0",
+        "drupal/config_update": "dev-1.x",
+        "drupal/core": "^8.8.1",
+        "drupal/core-composer-scaffold": "^8.8.1",
+        "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "^1.0-alpha1",
-        "drupal/ds": "^3.0",
-        "drupal/editor_file": "~1.0",
-        "drupal/email_registration": "^1.0-rc6",
-        "drupal/facets": "^1.2",
-        "drupal/field_group": "~1.0-rc6",
-        "drupal/file_url": "~1.0",
-        "drupal/flag": "^4.0@alpha",
+        "drupal/editor_file": "~1.4",
+        "drupal/email_registration": "^1.0",
+        "drupal/embed_block": "^1.0",
+        "drupal/entity_legal": "^2",
+        "drupal/error_page": "^1.0",
+        "drupal/facets": "1.3",
+        "drupal/field_group": "^1.0",
+        "drupal/file_url": "^1.0-alpha7",
+        "drupal/flag": "^4.0",
         "drupal/geocoder": "^3.0",
-        "drupal/geofield": "~1.0",
-        "drupal/honeypot": "^1.27",
-        "drupal/inline_entity_form": "^1.0-rc1",
-        "drupal/linkit": "^5.0-beta6",
-        "drupal/matomo": "^1.7",
-        "drupal/matomo_reporting_api": "~2.0",
+        "drupal/geofield": "~1.6",
+        "drupal/honeypot": "^1.29",
+        "drupal/inline_entity_form": "^1.0",
+        "drupal/linkit": "^5.0-beta10",
+        "drupal/matomo": "^1.9",
+        "drupal/matomo_reporting_api": "dev-8.x-2.x",
         "drupal/menu_admin_per_menu": "^1.0",
-        "drupal/message": "^1.0-rc2",
-        "drupal/message_notify": "~1.0",
-        "drupal/migrate_drush": "~1.1",
-        "drupal/migrate_run": "^1.0@beta",
-        "drupal/migrate_spreadsheet": "~1.0",
-        "drupal/og": "^1.0-alpha2",
-        "drupal/og_menu": "^1.0-alpha3",
-        "drupal/password_policy": "^3.0-alpha4",
-        "drupal/pathauto": "~1.4",
-        "drupal/persistent_login": "~1.0",
-        "drupal/phingdrushtask": "dev-7.x-2.x#f4b020f09da3c174fce40f2bd9a9617689f57124",
-        "drupal/r4032login": "dev-1.x#391f10d69b9b8c466a2fddac2a6b99f1289e7781",
-        "drupal/rdf_entity": "^1.0-alpha15",
-        "drupal/redirect": "^1.0",
-        "drupal/redis": "^1.1",
-        "drupal/search_api": "^1.11",
+        "drupal/message": "^1.0",
+        "drupal/message_digest": "^1.0-rc3",
+        "drupal/message_notify": "~1.1",
+        "drupal/meta_entity": "^1.0",
+        "drupal/og": "^1.0",
+        "drupal/og_menu": "dev-1.x",
+        "drupal/password_policy": "^3.0-alpha5",
+        "drupal/pathauto": "~1.5",
+        "drupal/persistent_login": "~1.1",
+        "drupal/phingdrushtask": "dev-7.x-2.x",
+        "drupal/pipeline": "^1.0",
+        "drupal/publication_date": "^2.0-beta1",
+        "drupal/r4032login": "~1.1",
+        "drupal/rdf_entity": "^1.0-alpha20",
+        "drupal/redirect": "^1.4",
+        "drupal/redis": "^1.2",
+        "drupal/schema_metatag": "^1.4",
+        "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
-        "drupal/simplenews": "^1.0-alpha3",
-        "drupal/smart_trim": "^1.0",
-        "drupal/social_media_links": "^2.5",
-        "drupal/sparql_entity_storage": "dev-empty-module",
-        "drupal/state_machine": "1.0-beta3",
-        "drupal/subpathauto": "^1.0@rc",
-        "drupal/swiftmailer": "^1.0@beta",
-        "drupal/token": "~1.0",
-        "drupal/video_embed_field": "~1.5",
+        "drupal/simple_sitemap": "^3.4",
+        "drupal/simplenews": "^1.0-beta1",
+        "drupal/smart_trim": "~1.2",
+        "drupal/social_media_links": "^2.6",
+        "drupal/spdx": "^1.0.0-alpha5",
+        "drupal/state_machine": "^1.0",
+        "drupal/subpathauto": "~1.0",
+        "drupal/swiftmailer": "dev-1.x#694cbf25d8c026b0c7c118093696d151a7874754",
+        "drupal/token": "~1.5",
+        "drupal/video_embed_field": "~1.6",
         "drupal/view_unpublished": "~1.0@alpha",
-        "drupal/views_bulk_operations": "^1.0",
-        "drupal/views_data_export": "^1.0-beta1",
-        "drush/drush": "^9.6.0-rc4",
+        "drupal/views_bulk_operations": "^2.5",
+        "drupal/views_data_export": "^1.0",
+        "drush/drush": "~10",
         "easyrdf/easyrdf": "0.10.0-alpha1 as 0.9.2",
         "ec-europa/infra": "dev-master",
         "ec-europa/joinup-tallinn-dashboard": "dev-master",
         "ec-europa/material-design-lite": "dev-joinup",
         "ec-europa/virtuoso": "^2.1",
         "jacklmoore/autosize": "dev-master",
-        "ml/json-ld": "^1.0",
-        "openeuropa/oe_webtools_location": "dev-master",
+        "masterminds/html5": "^2.7",
+        "ml/json-ld": "^1.1",
+        "openeuropa/oe_webtools": "~1.0",
+        "openeuropa/webtools-geocoding-provider": "~0.1",
         "pear/console_table": "~1.3",
-        "phing/phing": "^2.15.0",
+        "phing/phing": "^2.16",
         "predis/predis": "~1.1",
+        "scssphp/scssphp": "^1.0",
         "semiceu/adms-ap_validator": "dev-master",
         "typhonius/behattask": "1.0",
-        "webflo/drupal-finder": "~1.0",
-        "webmozart/path-util": "~2.3"
+        "webflo/drupal-finder": "~1.2",
+        "webmozart/path-util": "~2.3",
+        "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "require-dev": {
         "ext-dom": "*",
+        "ext-iconv": "*",
         "ext-libxml": "*",
         "behat/behat": "~3.4",
-        "behat/gherkin": "^4.5.1",
+        "behat/gherkin": "^4.6.1",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
-        "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
-        "drupal/admin_toolbar": "^1.23",
-        "drupal/coder": "^8.3.1",
-        "drupal/config_devel": "~1.2",
-        "drupal/config_inspector": "^1.0@beta",
-        "drupal/default_content": "^1.0-alpha7",
-        "drupal/devel": "~2.0",
-        "drupal/drupal-extension": "^4.0@beta",
+        "behat/mink-selenium2-driver": "~1.4",
+        "drupal/admin_toolbar": "^1.27",
+        "drupal/cas_mock_server": "^1.0",
+        "drupal/coder": "^8.3.6",
+        "drupal/config_devel": "~1.4",
+        "drupal/config_inspector": "^1.0",
+        "drupal/default_content": "^1.0-alpha8",
+        "drupal/devel": "~2.1",
+        "drupal/drupal-extension": "^4.0",
         "drupal/filecache": "^1.0-beta2",
         "drupal/renderviz": "^1.0",
-        "drupal/restui": "^1.16",
-        "drupal/stage_file_proxy": "dev-1.x#6d9fd4bf3b13e92a0051b8e0d625889a6d74f66f",
+        "drupal/restui": "^1.17",
+        "drupal/stage_file_proxy": "^1.0",
+        "drupaltest/behat-one-time-login": "^1.0",
         "jcalderonzumba/gastonjs": "^1.1@dev",
-        "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
+        "jcalderonzumba/mink-phantomjs-driver": "^0.3.3",
         "lovers-of-behat/table-extension": "^1.2.0",
         "mglaman/phpstan-drupal": "^0.11.4",
-        "mikey179/vfsstream": "~1.2",
+        "mikey179/vfsstream": "~1.6",
         "pear/http_request2": "~2.3",
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpstan/phpstan-deprecation-rules": "^0.11.0",
-        "phpunit/phpunit": "~6.0",
-        "symfony/css-selector": "~2.8"
+        "phpunit/phpunit": "~6.5",
+        "symfony/css-selector": "~2.8|~3.0|~4.0",
+        "symfony/dom-crawler": "4.4.4",
+        "symfony/phpunit-bridge": "^4.2",
+        "weitzman/drupal-test-traits": "~1.3.1",
+        "weitzman/logintrait": "^1.1"
     },
     "conflict": {
         "drupal/drupal": "*",
@@ -125,13 +148,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\joinup\\": "tests/src",
             "DrupalProject\\": "src"
         },
         "classmap": [
-            "scripts/composer/ScriptHandler.php",
+            "scripts/composer/CaptureGitReleaseTag.php",
             "scripts/composer/RemoveWrongPatchedObjects.php",
-            "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php",
+            "scripts/composer/ScriptHandler.php",
+            "web/modules/contrib/error_page/src/ErrorPageErrorHandler.php",
+            "web/modules/contrib/sparql_entity_storage/src/Database/Driver/sparql/ConnectionInterface.php",
             "web/modules/custom/adms_validator/adms_validator.behat.inc",
             "web/modules/custom/asset_distribution/asset_distribution.behat.inc",
             "web/modules/custom/asset_release/asset_release.behat.inc",
@@ -139,7 +163,6 @@
             "web/modules/custom/contact_form/contact_form.behat.inc",
             "web/modules/custom/contact_information/contact_information.behat.inc",
             "web/modules/custom/custom_page/custom_page.behat.inc",
-            "web/modules/custom/error_page/src/ErrorPageErrorHandler.php",
             "web/modules/custom/joinup_communities/tallinn/tallinn.behat.inc",
             "web/modules/custom/joinup_community_content/joinup_community_content.behat.inc",
             "web/modules/custom/joinup_core/joinup_core.behat.inc",
@@ -152,150 +175,177 @@
             "web/modules/custom/joinup_newsletter/joinup_newsletter.behat.inc",
             "web/modules/custom/joinup_notification/joinup_notification.behat.inc",
             "web/modules/custom/joinup_search/joinup_search.behat.inc",
+            "web/modules/custom/joinup_sparql/driver/joinup_sparql/Connection.php",
             "web/modules/custom/joinup_subscription/joinup_subscription.behat.inc",
             "web/modules/custom/joinup_user/joinup_user.behat.inc",
             "web/modules/custom/moderation/moderation.behat.inc",
             "web/modules/custom/oe_newsroom_newsletter/oe_newsroom_newsletter.behat.inc",
             "web/modules/custom/owner/owner.behat.inc",
-            "web/modules/custom/pipeline/pipeline.behat.inc",
             "web/modules/custom/rdf_entity_provenance/rdf_entity_provenance.behat.inc",
             "web/modules/custom/solution/solution.behat.inc",
             "web/profiles/joinup/joinup.behat.inc"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Drupal\\joinup\\": "tests/src",
+            "Drupal\\Tests\\cas_mock_server\\": "web/modules/contrib/cas_mock_server/tests/src"
+        }
+    },
     "scripts": {
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-        "pre-install-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
-        ],
-        "pre-update-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
-        ],
         "post-install-cmd": [
+            "DrupalProject\\composer\\CaptureGitReleaseTag::capture",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ],
         "post-update-cmd": [
+            "DrupalProject\\composer\\CaptureGitReleaseTag::capture",
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
             "DrupalProject\\composer\\RemoveWrongPatchedObjects::remove"
         ]
     },
     "extra": {
         "installer-paths": {
+            "drush/Commands/{$name}": ["type:drupal-drush"],
+            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/modules/custom/joinup_communities/tallinn/lib": ["ec-europa/joinup-tallinn-dashboard"],
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"],
             "web/themes/joinup/vendor/{$name}": ["type:drupal-theme-library"]
         },
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "web/"
+            },
+            "file-mapping": {
+                "[web-root]/robots.txt": {
+                    "append": "resources/drupal-scaffold/robots.txt.append"
+                }
+            }
+        },
         "enable-patching": true,
-        "composer-exit-on-patch-failure": 1,
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
         "patches": {
-            "drupal/drupal-extension": {
-                "Add missing negative step @see https://github.com/jhedstrom/drupalextension/pull/527": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/527.diff"
+            "drupal/cas": {
+                "Allow a pre-login subscriber to set the reason for cancelling the login @see https://www.drupal.org/project/cas/issues/3111073": "https://www.drupal.org/files/issues/2020-02-04/3111073-2.patch"
             },
-            "behat/gherkin": {
-                "Correctly filter features, now that the base path is correctly set": "https://patch-diff.githubusercontent.com/raw/Behat/Gherkin/pull/129.patch"
-            },
-            "drupal/config_sync": {
-                "Perform a clean refresh after the importing through the drush command @see https://www.drupal.org/node/2971610": "https://www.drupal.org/files/issues/2018-05-09/perform_clean_refresh_2971610-5-D8.patch"
+            "drupal/config_devel": {
+                "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
             },
             "drupal/core": {
-                "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2018-10-16/85494-261.patch",
+                "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2019-12-03/85494-287-8.8.x.patch",
                 "SQLite database locking errors cause fatal errors @see https://www.drupal.org/node/1120020": "https://www.drupal.org/files/issues/1120020-59.patch",
-                "Allow image style to be selected in text editor. @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2018-09-05/2061377-309.patch",
-                "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2018-08-31/2320877-28.patch",
-                "Duplicate HTML IDs are created for file_managed_file fields @see https://www.drupal.org/node/2497909": "https://www.drupal.org/files/issues/2018-09-01/2497909-86.patch",
-                "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2018-08-31/2556069-46.patch",
+                "Allow image style to be selected in text editor @see https://www.drupal.org/node/2061377": "https://www.drupal.org/files/issues/2020-01-28/2061377-362.patch",
+                "Allow making the file description a required field @see https://www.drupal.org/node/2320877": "https://www.drupal.org/files/issues/2020-01-29/2320877-35.patch",
+                "Caption element throws TypeError: Cannot read property 'tagName' of null in Drupal.behaviors.filterFilterHtmlUpdating @see https://www.drupal.org/node/2556069": "https://www.drupal.org/files/issues/2020-01-29/2556069-56.patch",
                 "Enlarge file_usage entity ID length. @see https://www.drupal.org/node/2675600": "https://www.drupal.org/files/issues/2675600-30.patch",
                 "Menu link plugins should provide a way for the link to be conditionally hidden @see https://www.drupal.org/project/drupal/issues/2719609": "https://www.drupal.org/files/issues/2719609-2.patch",
                 "New option for Views page displays to use the admin theme @see https://www.drupal.org/node/2719797": "https://www.drupal.org/files/issues/2719797-65.patch",
                 "Bundle label plural variants @see https://www.drupal.org/node/2765065": "https://www.drupal.org/files/issues/2018-06-11/2765065-93.patch",
-                "Allow updating modules with new service dependencies @see https://www.drupal.org/project/drupal/issues/2863986": "https://www.drupal.org/files/issues/2863986-2-49.patch",
-                "New event dispatch: a migrated entity is about to be saved @see https://www.drupal.org/node/2890012": "https://www.drupal.org/files/issues/2018-08-22/2890012-25.patch",
                 "Lazy services: support PHP7 return types in generate-proxy-class @see https://www.drupal.org/node/2919243": "https://www.drupal.org/files/issues/2919243-2.patch",
-                "Profile provided configuration entities can have unmeetable dependencies @see https://www.drupal.org/node/2922417": "resources/patch/2922417-38-no-conflict.patch",
-                "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2018-11-05/3008254-5.patch",
-                "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2018-12-03/node_revision_route_object-2730631-D8-77.patch",
-                "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-01-18/2895352-8.patch",
-                "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch"
+                "Users w/o access to content should still have configurable access to the content URL @see https://www.drupal.org/project/drupal/issues/3008254": "https://www.drupal.org/files/issues/2019-12-03/3008254-19-8.8.x.patch",
+                "Node revision routes don't convert {node} param @see https://www.drupal.org/project/drupal/issues/2730631": "https://www.drupal.org/files/issues/2019-04-04/2730631_85_0.patch",
+                "Disable tableselect element options @see https://www.drupal.org/project/drupal/issues/2895352": "https://www.drupal.org/files/issues/2019-12-03/2895352-42-8.8.x.patch",
+                "Make it easier to trigger a tour @see https://www.drupal.org/project/drupal/issues/3012027": "https://www.drupal.org/files/issues/2018-11-07/3012027-2.patch",
+                "Cache tags are not invalidated on revision delete @see https://www.drupal.org/project/drupal/issues/2945928": "https://www.drupal.org/files/issues/entity-cache_revision_deletion-2945928-2.patch",
+                "Config import creates 'Undefined index: uuid' notice @see https://www.drupal.org/project/drupal/issues/2863785": "https://www.drupal.org/files/issues/config_import_creates-2863785-2.patch",
+                "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "https://www.drupal.org/files/issues/2019-12-04/2381293-134.patch",
+                "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch"
             },
-            "drupal/email_registration": {
-                "Allow username on the registration form @see https://www.drupal.org/project/email_registration/issues/2927109": "https://www.drupal.org/files/issues/2019-01-10/2927109-10.patch"
+            "drupal/externalauth": {
+                "Clean up linkExistingAccount method so it doesn't needless prefix username with provider name @see https://www.drupal.org/project/externalauth/issues/3104478": "https://www.drupal.org/files/issues/2020-01-08/3104478-3.patch"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
             },
+            "drupal/honeypot": {
+                "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
+            },
             "drupal/inline_entity_form": {
-                "Required IEF forms for existing entities don't work. @see https://www.drupal.org/node/2830328": "https://www.drupal.org/files/issues/inline_entity_form-existing_reference_no_submit-2830328-5-D8.patch",
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
             },
             "drupal/linkit": {
                 "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
             },
             "drupal/matomo_reporting_api": {
-                "Migrate from 'piwik_reporting_api' @see https://www.drupal.org/project/matomo_reporting_api/issues/2993831": "https://www.drupal.org/files/issues/2018-08-20/2993831-2.patch"
+                "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
             },
-            "drupal/message_notify": {
-                "Calling assert() with a string argument is deprecated @see https://www.drupal.org/project/message_notify/issues/2966213": "https://www.drupal.org/files/issues/2018-10-15/2966213-3.patch"
+            "drupal/message_digest": {
+                "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
             },
             "drupal/password_policy": {
-                "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch"
+                "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
+                "'Field field_last_password_reset is unknown' while importing configuration on site without password_policy activated @see https://www.drupal.org/project/password_policy/issues/2771129": "https://www.drupal.org/files/issues/2019-08-15/2771129-100_0.patch",
+                "Display pass policy status table only if the password element is shown @see https://www.drupal.org/project/password_policy/issues/3068891": "https://www.drupal.org/files/issues/2019-08-10/3068891-5.patch"
+            },
+            "drupal/publication_date": {
+                "Published on empty for existing nodes @see https://www.drupal.org/project/publication_date/issues/2983348": "https://www.drupal.org/files/issues/2019-08-16/2983348-39.patch",
+                "Provide computed properties that return the publication date or the created/updated date @see https://www.drupal.org/project/publication_date/issues/3066317": "https://www.drupal.org/files/issues/2019-07-07/3066317-3.patch"
             },
             "drupal/rdf_entity": {
-                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/12.diff"
+                "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff"
+            },
+            "drupal/schema_metatag": {
+                "Split SchemaArticle and SchemaSocialMediaPosting @see https://www.drupal.org/project/schema_metatag/issues/3117434": "https://www.drupal.org/files/issues/2020-03-13/3117434-D8-8.patch"
             },
             "drupal/search_api": {
-                "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "https://www.drupal.org/files/issues/views_cached_results-2824640-13.patch",
-                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch"
-            },
-            "drupal/simplenews": {
-                "Avoid double sync of fields from subscription to user when user is being saved @see https://www.drupal.org/node/2914814": "https://www.drupal.org/files/issues/2914814-2.patch"
-            },
-            "drupal/smart_trim": {
-                "Additional options checkbox do not appear to save @see https://www.drupal.org/project/smart_trim/issues/2941492": "https://www.drupal.org/files/issues/2018-05-04/2941492-4.patch"
-            },
-            "drupal/state_machine": {
-                "Fire generic events when transition are applied. @see https://www.drupal.org/node/2832415": "https://www.drupal.org/files/issues/fire_generic_events-2832415-2.patch",
-                "Schema validation error when running functional tests. @see https://www.drupal.org/node/2838952": "https://www.drupal.org/files/issues/schema_validation_error-2838952-2.patch",
-                "Move static cache to the loading of the workflow. @see https://www.drupal.org/node/2846986": "https://www.drupal.org/files/issues/state_machine-fixing_the_issue_with_static_cache-2846986-10-D8.patch",
-                "Allow access to the initialValue protected property. @see https://www.drupal.org/node/2896479": "https://www.drupal.org/files/issues/allow_access_to_initial_value-2896479-2-D8.patch"
-            },
-            "drupal/swiftmailer": {
-                "Error after updating to beta2 @see https://www.drupal.org/node/2875026": "https://www.drupal.org/files/issues/2948607-2.patch",
-                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2018-11-07/3000553-9_includes-3000546-4.patch"
+                "Views cached results are not taking into account the access check. @see https://www.drupal.org/node/2824640": "resources/patch/search-api-2824640-103-8.x-1.13.patch",
+                "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
+                "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
+                "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-03-09/3117171-5.patch"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
-            "drupal/video_embed_field": {
-                "Allow also YouTube embed URLs. Improve the YT regexp @see https://www.drupal.org/node/2899093": "https://www.drupal.org/files/issues/2899093-8.patch"
+            "drupal/swiftmailer": {
+                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
+                "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2019-08-26/2892104-21.patch"
             },
-            "drupal/views_data_export": {
-                "Display schema should extend rest export @see https://www.drupal.org/project/views_data_export/issues/2896104": "https://www.drupal.org/files/issues/2896104-2-fix_display_schema.patch"
+            "drupal/video_embed_field": {
+                "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
+            },
+            "drush/drush": {
+                "Do not throw an exception when valid JSON data evaluates to empty PHP data @see https://github.com/drush-ops/drush/pull/4342": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4342.diff",
+                "Output correct data for machine readable formats in config:status @see https://github.com/drush-ops/drush/pull/4340": "resources/patch/drush-4340.patch"
+            },
+            "openeuropa/oe_webtools": {
+                "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
+                "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
+                "Add the possibility to display a marker in the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff"
             }
         }
     },
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://git.drupal.org/project/redirect.git"
+            "url": "https://git.drupal.org/project/matomo_reporting_api.git"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/ec-europa/rdf_entity.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/ec-europa/sparql_entity_storage.git"
+            "type": "package",
+            "package": {
+                "name": "spdx/license-list-data",
+                "version": "master",
+                "source": {
+                    "url": "https://github.com/spdx/license-list-data",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
         },
         {
             "type": "vcs",
             "url": "https://github.com/ec-europa/joinup-tallinn-dashboard.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ec-europa/spdx.git"
         },
         {
             "type": "vcs",
@@ -346,6 +396,19 @@
                     "url": "git@github.com:ec-europa/material-design-lite.git",
                     "type": "git",
                     "reference": "joinup"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "dkarv/mdl-chip-input",
+                "version": "dev-master",
+                "type": "drupal-theme-library",
+                "source": {
+                    "url": "git@github.com:dkarv/mdl-chip-input.git",
+                    "type": "git",
+                    "reference": "master"
                 }
             }
         },

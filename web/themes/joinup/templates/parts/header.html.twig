@@ -1,7 +1,7 @@
 <header class="section section--header" role="banner">
   <div class="mdl-layout__header-row">
     <a href="{{ base_path }}" class="header-logo mdl-layout-title" title="{{ 'Home'|t }}">
-      <img src="{{ base_path ~ directory }}/images/logo.png" alt="{{ 'Home'|t }}">
+      <img src="{{ base_path ~ directory }}/images/logo.svg" alt="{{ 'Home'|t }}">
     </a>
     <div class="mdl-layout-spacer"></div>
 
@@ -9,21 +9,8 @@
 
     <div class="mdl-layout-spacer"></div>
 
-    <div class="search-bar search-bar--header search-bar--white mdl-textfield mdl-js-textfield mdl-textfield--expandable
-    mdl-textfield--floating-label mdl-textfield--align-right">
-      <label class="search-bar__label header__search-icon mdl-button mdl-js-button mdl-button--icon"
-      for="search-bar__input">
-        <span class="search-bar__icon icon icon--search"></span>
-      </label>
-
-      {# @todo Create search form - https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-2637 #}
-      <form action="{{ path("view.search.page_1") }}" class="search-bar__input-container mdl-textfield__expandable-holder">
-        <input class="search-bar__input mdl-textfield__input" type="text" name="keys"
-        id="search-bar__input">
-      </form>
-    </div>
-{{ page.header }}
-{{ page.header_profile_menu }}
+    {{ page.header }}
+    {{ page.header_profile_menu }}
 
 </div>
 </header>

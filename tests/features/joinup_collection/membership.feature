@@ -1,4 +1,4 @@
-@api @joinup_collection
+@api @joinup_collection @group-b
 Feature: Tests membership to Joinup collection.
 
   Background:
@@ -40,8 +40,14 @@ Feature: Tests membership to Joinup collection.
     And I click "Members"
     And I check "edit-og-membership-bulk-form-0"
     And I select "Delete the selected membership(s)" from "Action"
-    And I press "Apply to selected items"
-    Then I should see "Delete the selected membership(s) was applied to 1 item."
+
+    When I press "Apply to selected items"
+    Then I should see the heading "Are you sure you want to delete the selected membership from the 'An arbitrary collection' collection?"
+    And I should see "The member joe will be deleted from the 'An arbitrary collection' collection."
+    And I should see "This action cannot be undone."
+
+    When I press "Confirm"
+    Then I should see the success message "The member joe has been deleted from the 'An arbitrary collection' collection."
 
     Given I go to the homepage of the "Joinup" collection
     And I click "Members"

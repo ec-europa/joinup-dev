@@ -1,0 +1,22 @@
+uuid: 2ba02ed3-4b11-4958-b55d-7f39fa67282d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.community_content_subscription.field_community_content
+    - message.template.community_content_subscription
+id: message.community_content_subscription.default
+targetEntityType: message
+bundle: community_content_subscription
+mode: default
+content:
+  field_community_content:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  partial_0: true

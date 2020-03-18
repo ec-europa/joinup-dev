@@ -8,7 +8,7 @@ use Drupal\asset_distribution\Plugin\Validation\Constraint\DistributionSinglePar
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\joinup_federation\StagingCandidateGraphsInterface;
-use Drupal\rdf_entity\Entity\Query\Sparql\SparqlQueryInterface;
+use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

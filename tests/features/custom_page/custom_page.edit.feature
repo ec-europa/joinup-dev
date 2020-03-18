@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: "Custom page" editing.
   In order to manage custom pages
   As a moderator or group facilitator
@@ -47,7 +47,7 @@ Feature: "Custom page" editing.
     And I go to the "Buena Vista Distribution Company" custom page
     And I click "Edit"
     Then I should see the heading "Edit Custom page Buena Vista Distribution Company"
-    And the following fields should be present "Title, Body"
+    And the following fields should be present "Title, Body, Published"
     And the following fields should not be present "Groups audience, Other groups"
     When I fill in "Title" with "Walt Disney Studios Motion Pictures"
     And I press "Save"

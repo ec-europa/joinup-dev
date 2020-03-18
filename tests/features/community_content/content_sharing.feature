@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-b
 Feature: Sharing content between collections
   As a privileged user
   I want to share content between collections
@@ -18,7 +18,7 @@ Feature: Sharing content between collections
       | Power ballad | validated |
       | Drum'n'Bass  | validated |
     And news content:
-      | title                          | kicker                         | collection   | state     |
+      | title                          | short title                    | collection   | state     |
       | New D'n'B compilation released | New D'n'B compilation released | Classic Rock | validated |
       | Old-school line-up concert     | Old-school line-up concert     | Hip-Hop      | validated |
     And discussion content:
@@ -50,7 +50,7 @@ Feature: Sharing content between collections
     And the following fields should not be present "Classic Rock, Hip-Hop, Power ballad, Drum'n'Bass"
 
     # A member of a single collection which is the one where the content was
-    # created can share in social networks only.
+    # created can share on social networks only.
     When I am logged in as "Marjolein Rye"
     And I go to the content page of the type "<content type>" with the title "Interesting content"
     And I click "Share"
@@ -80,7 +80,7 @@ Feature: Sharing content between collections
     When I check "Classic Rock"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Item was shared in the following collections: Classic Rock."
+    Then I should see the success message "Item was shared on the following collections: Classic Rock."
     # Verify that the collections where the content has already been shared are
     # not shown anymore in the list.
     When I click "Share"
@@ -92,12 +92,12 @@ Feature: Sharing content between collections
     When I go to the homepage of the "Classic Rock" collection
     Then the page should show only the tiles "New D'n'B compilation released, Rockabilly is still rocking, Interesting content"
 
-    # It should not be shared in the other collection.
+    # It should not be shared on the other collection.
     When I go to the homepage of the "Drum'n'Bass" collection
     Then I should not see the "Interesting content" tile
 
     # Content can be un-shared only by facilitators of the collections they
-    # have been shared in.
+    # have been shared on.
     When I am an anonymous user
     And I go to the homepage of the "Classic Rock" collection
     Then I should see the "Interesting content" tile
@@ -146,9 +146,77 @@ Feature: Sharing content between collections
     Then I should see the "Interesting content" tile
     And I should not see the contextual link "Unshare" in the "Interesting content" tile
 
-    # The content should obviously not shared in the other collection too.
+    # The content should obviously not shared on the other collection too.
     When I go to the homepage of the "Drum'n'Bass" collection
     Then I should not see the "Interesting content" tile
+
+    Examples:
+      | content type |
+      | event        |
+      | document     |
+      | discussion   |
+      | news         |
+
+  @javascript
+  Scenario Outline: Share/Unshare should be visible according to the group permissions.
+    Given collections:
+      | title      | state     |
+      | Westeros   | validated |
+      | Essos city | validated |
+    And "<content type>" content:
+      | title       | collection | state     |
+      | Iron throne | Westeros   | validated |
+    Given users:
+      | Username       | E-mail                     | Roles     |
+      | Jamie Lanister | jamie.lanister@example.com | moderator |
+      | John Snow      | john.snow@example.com      |           |
+      | Arya Stark     | arya.stark@example.com     |           |
+    And the following collection user memberships:
+      | collection | user       | roles       |
+      | Westeros   | John snow  | facilitator |
+      | Essos city | John snow  | member      |
+      | Essos city | Arya Stark | facilitator |
+
+    When I am logged in as "Arya Stark"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    And I should not see the contextual link "Unshare" in the "Iron throne" tile
+
+    When I am logged in as "John Snow"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    But I should not see the contextual link "Unshare" in the "Iron throne" tile
+
+    When I click the contextual link "Share" in the "Iron throne" tile
+    Then a modal should open
+    And the following fields should be present "Essos city"
+    When I check "Essos city"
+    And I press "Share" in the "Modal buttons" region
+    And I wait for AJAX to finish
+    Then I should see the success message "Item was shared on the following collections: Essos city."
+
+    When I am on the homepage
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    # Simple members can still not unshare content from collections.
+    But I should not see the contextual link "Unshare" in the "Iron throne" tile
+
+    When I am logged in as "Arya Stark"
+    And I click "Keep up to date"
+    # Link 'Unshare' vary by user og role since the 2 users up to now have the same permissions outside og.
+    Then I should see the contextual links "Share, Unshare" in the "Iron throne" tile
+    When I click the contextual link "Unshare" in the "Iron throne" tile
+    Then a modal should open
+    And the following fields should be present "Essos city"
+
+    When I am logged in as "Jamie Lanister"
+    And I click "Keep up to date"
+    Then I should see the contextual link "Share" in the "Iron throne" tile
+    # Moderators should be able to unshare from every group the content is shared on.
+    And I should see the contextual link "Unshare" in the "Iron throne" tile
+    When I click the contextual link "Unshare" in the "Iron throne" tile
+    Then a modal should open
+    And the following fields should be present "Essos city"
 
     Examples:
       | content type |
@@ -165,7 +233,7 @@ Feature: Sharing content between collections
       | Mars  | validated |
       | Venus | validated |
     And <content type> content:
-      | title         | collection | shared in   | state     |
+      | title         | collection | shared on   | state     |
       | Earth content | Earth      | Mars        | validated |
       | Mars content  | Mars       |             | validated |
       | Venus content | Venus      | Earth, Mars | validated |
@@ -207,7 +275,7 @@ Feature: Sharing content between collections
       | Milky Way     | validated |
       | Chocolate Way | validated |
     And "document" content:
-      | title                 | collection    | shared in     | state     | created    | pinned |
+      | title                 | collection    | shared on     | state     | created    | pinned |
       | Milky Way content     | Milky Way     | Chocolate Way | validated | 2017-06-04 | yes    |
       | Chocolate Way content | Chocolate Way |               | validated | 2017-06-05 | no     |
     When I go to the homepage of the "Chocolate Way" collection
@@ -228,9 +296,9 @@ Feature: Sharing content between collections
       | Username        | E-mail                |
       | Sanjica Sauvage | sanjisauv@example.com |
     And the following collection user memberships:
-      | collection   | user            |
-      | Secrets      | Sanjica Sauvage |
-      | Gossip       | Sanjica Sauvage |
+      | collection | user            |
+      | Secrets    | Sanjica Sauvage |
+      | Gossip     | Sanjica Sauvage |
     And I am an anonymous user
     When I go to the content page of the type "<content type>" with the title "An unshareable secret"
     And I click "Share"
@@ -238,26 +306,24 @@ Feature: Sharing content between collections
     And I should see the following lines of text:
       | Facebook |
       | Twitter  |
-      | Google + |
       | Linkedin |
 
-    # Check that the collection the content is shared in is immediately shown in the "Shared in" tiles.
+    # Check that the collection the content is shared on is immediately shown in the "Shared on" tiles.
     Given I am logged in as "Sanjica Sauvage"
     When I go to the content page of the type "<content type>" with the title "An unshareable secret"
     And I click "Share"
     Then a modal should open
     And I should see the following lines of text:
-      | Share in                    |
+      | Share on                    |
       | Facebook                    |
       | Twitter                     |
-      | Google +                    |
       | Linkedin                    |
-      | Other collections in Joinup |
+      | Other collections on Joinup |
     When I check "Gossip"
     And I press "Share" in the "Modal buttons" region
     And I wait for AJAX to finish
-    Then I should see the success message "Item was shared in the following collections: Gossip."
-    And I should see the heading "Shared in"
+    Then I should see the success message "Item was shared on the following collections: Gossip."
+    And I should see the heading "Shared on"
     And I should see the "Gossip" tile
 
     Examples:

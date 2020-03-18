@@ -9,8 +9,8 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_banner
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
+    - field.field.rdf_entity.collection.field_ar_content_creation
     - field.field.rdf_entity.collection.field_ar_description
-    - field.field.rdf_entity.collection.field_ar_elibrary_creation
     - field.field.rdf_entity.collection.field_ar_logo
     - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
@@ -54,6 +54,7 @@ third_party_settings:
         - field_ar_description
         - field_policy_domain
         - field_ar_owner
+        - field_ar_contact_information
         - current_workflow_state
         - transition_motivation
       parent_name: group_general
@@ -73,10 +74,9 @@ third_party_settings:
         - field_ar_access_url
         - field_ar_logo
         - field_ar_banner
-        - field_ar_contact_information
         - field_spatial_coverage
         - field_ar_closed
-        - field_ar_elibrary_creation
+        - field_ar_content_creation
         - field_ar_moderation
         - field_newsletter
       parent_name: group_general
@@ -97,7 +97,7 @@ mode: default
 content:
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 5
+    weight: 6
     region: content
     settings:
       title: 'Current workflow state'
@@ -132,14 +132,14 @@ content:
     type: image_image
     region: content
   field_ar_closed:
-    weight: 16
+    type: boolean_checkbox
+    weight: 15
+    region: content
     settings:
       display_label: false
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_ar_contact_information:
-    weight: 14
+    weight: 5
     settings:
       form_mode: inline
       override_labels: true
@@ -150,8 +150,16 @@ content:
       collapsible: false
       collapsed: false
       allow_existing: false
+      allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
+    region: content
+  field_ar_content_creation:
+    weight: 16
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_ar_description:
     weight: 2
@@ -164,12 +172,6 @@ content:
         hide_guidelines: '1'
     type: text_textarea
     region: content
-  field_ar_elibrary_creation:
-    weight: 17
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_ar_logo:
     weight: 12
     settings:
@@ -179,7 +181,7 @@ content:
     type: image_image
     region: content
   field_ar_moderation:
-    weight: 18
+    weight: 17
     settings:
       display_label: false
     third_party_settings: {  }
@@ -197,6 +199,8 @@ content:
       match_operator: CONTAINS
       collapsible: false
       collapsed: false
+      allow_duplicate: false
+      revision: false
     third_party_settings: {  }
     type: inline_entity_form_complex
     region: content
@@ -215,7 +219,7 @@ content:
     type: search_api_field_default
     region: content
   field_newsletter:
-    weight: 19
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: oe_newsroom_newsletter_default
@@ -227,20 +231,14 @@ content:
     type: options_select
     region: content
   field_spatial_coverage:
-    weight: 15
+    weight: 14
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
-    region: content
-  id:
-    type: auto_uri
-    weight: 0
-    settings:
-      prefix: 'http://joinup.eu/adms/asset-repository'
-    third_party_settings: {  }
     region: content
   label:
     type: string_textfield
@@ -251,7 +249,7 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

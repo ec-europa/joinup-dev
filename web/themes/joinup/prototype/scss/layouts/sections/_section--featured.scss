@@ -1,0 +1,26 @@
+// Featured
+//
+// Featured component
+
+// Component
+// --------------------------------------------------
+.section--featured {
+  .support-menu {
+    position: absolute;
+    top: 5px;
+    right: 65px;
+  }
+
+  .anonymous-menu {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+
+    @include z-index(navigation);
+  }
+}
+
+.section--featured-navy-blue {
+  text-align: center;
+  background-color: #27456b;
+}

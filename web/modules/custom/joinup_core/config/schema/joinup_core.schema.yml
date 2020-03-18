@@ -89,32 +89,6 @@ plugin.plugin_configuration.search_api_processor.joinup_entity_status:
       label: 'Inverse'
     roles:
 
-joinup_core.matomo_settings:
-  type: config_object
-  label: 'Matomo integration settings'
-  mapping:
-    visit_counts:
-      type: sequence
-      sequence:
-        type: joinup_core.matomo_settings.visit_counts.[%key]
-    download_counts:
-      type: sequence
-      sequence:
-        type: joinup_core.matomo_settings.download_counts.[%key]
-    launch_date:
-      type: string
-      label: 'The date when the website was launched, in ISO-8601 extended format.'
-
-joinup_core.matomo_settings.*.*:
-  type: mapping
-  mapping:
-    period:
-      type: integer
-      label: 'Time period, in days.'
-    type:
-      type: string
-      label: 'The type of metric to use.'
-
 entity_reference_selection.grouped_rdf_taxonomy_term_selection:default:
   type: entity_reference_selection.default
   label: 'RDF taxonomy term selection handler settings'
@@ -133,24 +107,3 @@ field.formatter.settings.joinup_timestamp_timeago:
     timeago_settings:
       type: ignore
       label: 'Timeago plugin settings'
-
-action.configuration.joinup_transfer_group_ownership:
-  type: action_configuration_default
-  label: 'Transfer the ownership of the group to the selected member'
-
-# Default schema for group menu block settings.
-group_menu_block_default:
-  type: block_settings
-  label: 'Og menu block settings'
-  mapping:
-    level:
-      type: integer
-      label: 'Starting level'
-    depth:
-      type: integer
-      label: 'Maximum number of levels'
-
-# Schema for the group sidebar menu block settings.
-block.settings.group_menu_block:*:
-  type: group_menu_block_default
-  label: 'Group sidebar menu block settings'

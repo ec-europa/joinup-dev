@@ -1,4 +1,4 @@
-@api @email
+@api @email @group-a
 Feature: Content Overview
 
   Scenario: Ensure access to content overview landing page, called "Keep up to date".
@@ -46,6 +46,7 @@ Feature: Content Overview
     And I am on the homepage
     And I click "Keep up to date"
     Then a tour should be available
+    And the page should be cacheable
     And I should see the following facet items "Discussion, Document, News, Events" in this order
     And the "Events" content tab is displayed
     And I should not see the following facet items "Collection"
@@ -85,6 +86,7 @@ Feature: Content Overview
     And I should see the "A Night at the Opera" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
+    And the page should be cacheable
 
     # Check the page for anonymous users.
     When I am an anonymous user
@@ -98,11 +100,13 @@ Feature: Content Overview
     And I should see the "A Night at the Opera" tile
     But I should not see the "Rumble collection" tile
     And I should not see the "Night of Shadow" tile
+    And the page should be cacheable
 
   Scenario: Content overview active trail should persist on urls with arguments.
     Given I am an anonymous user
     And I visit "/keep-up-to-date?a=1"
     Then "Keep up to date" should be the active item in the "Header menu" menu
+    And the page should be cacheable
 
   Scenario: Users are able to filter content they have created or that is featured site-wide.
     Given users:
@@ -134,12 +138,14 @@ Feature: Content Overview
       | Early Avenue           |
       | Hideous Dreaded Monkey |
     And the "My content" inline facet should allow selecting the following values "Featured content (2), All content"
+    And the page should be cacheable
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the content page would lead to cached facets
     # to be leaked to other users.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All content" in the "My content" inline facet
     Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (2)"
+    And the page should be cacheable
 
     When I am logged in as "nenaroberts"
     And I click "Keep up to date"
@@ -148,12 +154,14 @@ Feature: Content Overview
     Then I should see the following tiles in the correct order:
       | Itchy Artificial |
     And the "My content" inline facet should allow selecting the following values "Featured content (2), All content"
+    And the page should be cacheable
     # Regression test to ensure that the facets are cached by user.
     # Subsequent page loads of the content page would lead to cached facets
     # to be leaked to other users.
     # @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3777
     When I click "All content" in the "My content" inline facet
     Then the "My content" inline facet should allow selecting the following values "Featured content (2), My content (1)"
+    And the page should be cacheable
 
     When I am an anonymous user
     And I am on the homepage

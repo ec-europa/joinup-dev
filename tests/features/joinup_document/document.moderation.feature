@@ -1,4 +1,4 @@
-@api @terms
+@api @terms @group-b
 Feature: Document moderation
   In order to manage documents
   As a user of the website
@@ -13,26 +13,30 @@ Feature: Document moderation
     And the following owner:
       | name          |
       | thisisanowner |
+    And the following contact:
+      | name  | Dis contact             |
+      | email | dis.contact@example.com |
     And the following collection:
-      | title             | The Naked Ashes                 |
-      | description       | The wolverine is a Marvel hero. |
-      | logo              | logo.png                        |
-      | banner            | banner.jpg                      |
-      | elibrary creation | registered users                |
-      | moderation        | no                              |
-      | state             | validated                       |
-      | owner             | thisisanowner                   |
-      | policy domain     | E-inclusion                     |
+      | title               | The Naked Ashes                 |
+      | description         | The wolverine is a Marvel hero. |
+      | logo                | logo.png                        |
+      | banner              | banner.jpg                      |
+      | content creation    | registered users                |
+      | moderation          | no                              |
+      | state               | validated                       |
+      | owner               | thisisanowner                   |
+      | contact information | Dis contact                     |
+      | policy domain       | E-inclusion                     |
     And the following collection user membership:
       | collection      | user            | roles       |
       | The Naked Ashes | Gretchen Greene | member      |
       | The Naked Ashes | Kirk Collier    | facilitator |
 
   @javascript
-  Scenario: Available transitions change per eLibrary and moderation settings.
-    # For post-moderated collections with eLibrary set to allow all users to
-    # create content, authenticated users that are not members can create
-    # documents.
+  Scenario: Available transitions change to match content creation and moderation settings.
+    # For post-moderated collections with content creation set to allow all
+    # users to create content, authenticated users that are not members can
+    # create documents.
     When I am logged in as "Crab y Patties"
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
@@ -65,9 +69,7 @@ Feature: Document moderation
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    And I check "Closed collection"
-    And I wait for AJAX to finish
-    And I select "Only members can create new content." from "eLibrary creation"
+    And I select the radio button "Only members can create content."
     And I press "Publish"
     # I should now have the possibility to add documents.
     When I open the plus button menu
@@ -83,8 +85,8 @@ Feature: Document moderation
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
     When I fill in the following:
-      | Title       | An amazing document                      |
-      | Short title | Amazing document                         |
+      | Title       | An amazing document |
+      | Short title | Amazing document    |
     And I enter "This is going to be an amazing document." in the "Description" wysiwyg editor
     And I select "Document" from "Type"
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"

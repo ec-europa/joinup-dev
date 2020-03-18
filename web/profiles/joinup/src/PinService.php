@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\joinup;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -50,14 +53,14 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $collection = NULL) {
-    if (JoinupHelper::isSolution($entity)) {
-      if (empty($collection)) {
+  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $group = NULL) {
+    if (JoinupGroupHelper::isSolution($entity)) {
+      if (empty($group)) {
         return !$entity->get(self::SOLUTION_PIN_FIELD)->isEmpty();
       }
       /** @var \Drupal\rdf_entity\RdfInterface $entity */
       foreach ($entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities() as $rdf) {
-        if ($rdf->id() === $collection->id()) {
+        if ($rdf->id() === $group->id()) {
           return TRUE;
         }
       }
@@ -75,16 +78,16 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function setEntityPinned(ContentEntityInterface $entity, RdfInterface $collection, bool $pinned) {
-    if (JoinupHelper::isSolution($entity)) {
+  public function setEntityPinned(ContentEntityInterface $entity, RdfInterface $group, bool $pinned) {
+    if (JoinupGroupHelper::isSolution($entity)) {
       $field = $entity->get(self::SOLUTION_PIN_FIELD);
       if ($pinned) {
-        $field->appendItem($collection->id());
+        $field->appendItem($group->id());
       }
       else {
-        $field->filter(function ($item) use ($collection) {
+        $field->filter(function ($item) use ($group) {
           /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $item */
-          return $item->target_id !== $collection->id();
+          return $item->target_id !== $group->id();
         });
       }
     }
@@ -101,8 +104,8 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCollectionsWherePinned(ContentEntityInterface $entity) {
-    if (JoinupHelper::isSolution($entity)) {
+  public function getGroupsWherePinned(ContentEntityInterface $entity) {
+    if (JoinupGroupHelper::isSolution($entity)) {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {

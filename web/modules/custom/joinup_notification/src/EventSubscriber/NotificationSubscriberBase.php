@@ -13,10 +13,12 @@ use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * A base class for the notification subscribers.
@@ -205,6 +207,51 @@ abstract class NotificationSubscriberBase {
   }
 
   /**
+   * Retrieves a list of emails from a given list of roles.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group entity.
+   * @param array $bcc_data
+   *   An associative array of roles indexed by the 'roles' key or the
+   *   'og_roles' key depending on whether it is a site wide role or an og role.
+   * @param int[] $uids_to_skip
+   *   (optional) An array of ids to skip.
+   *
+   * @return string[]
+   *   An array of emails.
+   */
+  protected function getBccEmails(EntityInterface $entity, array $bcc_data, array $uids_to_skip = []): array {
+    $user_storage = $this->entityTypeManager->getStorage('user');
+    $return = [];
+    foreach ($bcc_data['roles'] as $role_id) {
+      $uids = $this->getRecipientIdsByRole($role_id);
+      if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
+        $emails = array_map(function (UserInterface $user): string {
+          return $user->getEmail();
+        }, $user_storage->loadMultiple($uids));
+        $return += $emails;
+      }
+    }
+
+    if (isset($bcc_data['og_roles'])) {
+      $og_role_storage = $this->entityTypeManager->getStorage('og_role');
+      /** @var \Drupal\og\OgRoleInterface[] $roles */
+      $roles = $og_role_storage->loadMultiple(array_keys($bcc_data['og_roles']));
+      foreach ($bcc_data['og_roles'] as $role_id => $messages) {
+        $uids = $this->getRecipientIdsByOgRole($entity, $roles[$role_id]);
+        if ($uids = array_diff(array_values($uids), $uids_to_skip)) {
+          $emails = array_map(function (UserInterface $user): string {
+            return $user->getEmail();
+          }, $user_storage->loadMultiple($uids));
+          $return += $emails;
+        }
+      }
+    }
+
+    return $return;
+  }
+
+  /**
    * Returns the users with a given role.
    *
    * @param string $role_id
@@ -269,40 +316,24 @@ abstract class NotificationSubscriberBase {
    *   - Actor role
    *   - Actor full name (This will be 'The Joinup Support Team' if the user
    *   has the moderator role)
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   *   Thrown when the URL for the entity cannot be generated.
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   *   Thrown when the first name or last name of the current user is not known.
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = [];
-    /** @var \Drupal\user\UserInterface $actor */
-    $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
-    $actor_first_name = !empty($actor->get('field_user_first_name')->first()->value) ? $actor->get('field_user_first_name')->first()->value : '';
-    $actor_family_name = !empty($actor->get('field_user_family_name')->first()->value) ? $actor->get('field_user_family_name')->first()->value : '';
 
     $arguments['@entity:title'] = $entity->label();
     $arguments['@entity:bundle'] = $entity->bundle();
-    $arguments['@entity:url'] = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
-    $arguments['@actor:field_user_first_name'] = $actor_first_name;
-    $arguments['@actor:field_user_family_name'] = $actor_family_name;
+    $arguments['@entity:url'] = $entity->toUrl('canonical')->setAbsolute()->toString();
+    $arguments['@user:my_subscriptions'] = Url::fromRoute('joinup_subscription.my_subscriptions')->setAbsolute()->toString();
 
-    if ($actor->isAnonymous()) {
-      // If an anonymous is creating content, set the first name to also be 'the
-      // Joinup Moderation Team' because some emails use only the first name
-      // instead of the full name.
-      $arguments['@actor:role'] = 'moderator';
-      $arguments['@actor:full_name'] = $arguments['@actor:field_user_first_name'] = 'the Joinup Moderation Team';
-    }
-    elseif ($actor->hasRole('moderator')) {
-      /** @var \Drupal\user\RoleInterface $role */
-      $role = $this->entityTypeManager->getStorage('user_role')->load('moderator');
-      $arguments['@actor:role'] = $role->label();
-      $arguments['@actor:full_name'] = 'The Joinup Support Team';
-    }
-    elseif (!$actor->isAnonymous()) {
-      $arguments['@actor:full_name'] = empty($actor->get('full_name')->value) ?
-        $actor_first_name . ' ' . $actor_family_name :
-        $actor->get('full_name')->value;
-    }
-    $arguments['@site:contact_url'] = Url::fromRoute('contact_form.contact_page', [], ['absolute' => TRUE])->toString();
-    $arguments['@site:legal_notice_url'] = Url::fromRoute('joinup.legal_notice', [], ['absolute' => TRUE])->toString();
+    $arguments += MessageArgumentGenerator::getActorArguments();
+    $arguments += MessageArgumentGenerator::getContactFormUrlArgument();
+
+    $arguments['@site:legal_notice_url'] = Url::fromRoute('entity.entity_legal_document.canonical', ['entity_legal_document' => 'legal_notice'], ['absolute' => TRUE])->toString();
 
     return $arguments;
   }
@@ -313,21 +344,22 @@ abstract class NotificationSubscriberBase {
    * @param array $user_data
    *   An array of user ids and their corresponding messages.
    * @param array $arguments
-   *   Optionally pass additional arguments.
+   *   (optional) Additional arguments to be passed to the message.
+   * @param array $notifier_options
+   *   An optional associative array of options to pass to the Email notifier
+   *   plugin.
+   * @param array $message_values
+   *   Optional array of field values to send on the message entity.
    *
    * @return bool
    *   Whether or not the messages were sent successfully.
    */
-  protected function sendUserDataMessages(array $user_data, array $arguments = []) : bool {
+  protected function sendUserDataMessages(array $user_data, array $arguments = [], array $notifier_options = [], array $message_values = []): bool {
     $arguments += $this->generateArguments($this->entity);
 
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $success && $this->messageDelivery
-        ->createMessage($template_id)
-        ->setArguments($arguments)
-        ->setRecipients(User::loadMultiple($user_ids))
-        ->sendMail();
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, User::loadMultiple($user_ids), $notifier_options, $message_values) && $success;
     }
     return $success;
   }

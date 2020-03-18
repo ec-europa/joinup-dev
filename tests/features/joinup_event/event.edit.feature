@@ -1,8 +1,32 @@
-@api
+@api @group-b
 Feature: "Event page" editing.
   In order to manage events
   As an owner of the event
   I need to be able to edit it.
+
+  Scenario: Add and remove map
+    Given collections:
+      | title  | logo     | banner     | state     |
+      | Heroes | logo.png | banner.jpg | validated |
+    And I am logged in as a facilitator of the "Heroes" collection
+    When I go to the homepage of the "Heroes" collection
+    And I click "Add event" in the plus button menu
+    When I fill in the following:
+      | Title             | Best event                                               |
+      | Description       | It will be the best event this year.                     |
+      | Physical location | Tower Bridge, Tower Bridge Road, London, United Kingdom. |
+    And I press "Save as draft"
+    Then I should see the heading "Best event"
+    And I should see a map on the page
+    When I click "Edit" in the "Entity actions" region
+    Then I should see the heading "Edit Event Best event"
+    When I clear the field "Physical location"
+    And I enter the following for the "Virtual location" link field:
+      | URL                              | Title           |
+      | https://share-and-reuse.example/ | Share and reuse |
+    And I press "Save as draft"
+    Then I should see the heading "Best event"
+    And I should not see a map on the page
 
   Scenario Outline: Owners and moderators should be able to view the Edit link.
     Given users:

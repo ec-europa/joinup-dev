@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_notification\Event\NotificationEvent;
+use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
 use Drupal\og\OgRoleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,17 +17,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * The notification base conditions are an extension of the solution templates.
  * @codingStandardsIgnoreStart
- * Template 21: release_update
+ * Template 21: distribution_update
  *   Operation: update
- *   Transition: update_published
+ *   Source state: published
  *   Recipients: solution owners, solution facilitators, moderators
- * Template 22: release_delete
+ * Template 22: distribution_delete
  *   Operation: delete
  *   Source state: published, needs_update
  *   Recipients: owner
  * @codingStandardsIgnoreEnd
  */
 class DistributionRdfSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
+
+  use StringTranslationTrait;
 
   const TEMPLATE_UPDATE = 'distribution_update';
   const TEMPLATE_DELETE = 'distribution_delete';
@@ -177,7 +183,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
   /**
    * {@inheritdoc}
    */
-  protected function generateArguments(EntityInterface $entity) {
+  protected function generateArguments(EntityInterface $entity): array {
     $arguments = parent::generateArguments($entity);
     $actor = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $actor_first_name = $arguments['@actor:field_user_first_name'];
@@ -191,26 +197,25 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
       // Some legacy releases exist without a version. Thus, a check for
       // existence is needed.
       $version = empty($parent->get('field_isr_release_number')->first()->value) ? '' : $parent->get('field_isr_release_number')->first()->value;
-      $arguments['@release:info:with_version'] = t('of the release @release, @version', [
+      $arguments['@release:info:with_version'] = $this->t('of the release @release, @version', [
         '@release' => $parent->label(),
         '@version' => $version,
       ]);
     }
     if (!empty($solution)) {
-      $arguments['@group:title'] = $solution->label();
-      $arguments['@group:bundle'] = $solution->bundle();
+      $arguments += MessageArgumentGenerator::getGroupArguments($solution);
       if (empty($arguments['@actor:role'])) {
-        $membership = $this->membershipManager->getMembership($solution, $actor);
+        $membership = $this->membershipManager->getMembership($solution, $actor->id());
         if (!empty($membership)) {
           $role_names = array_map(function (OgRoleInterface $og_role) {
             return $og_role->getName();
           }, $membership->getRoles());
 
           if (in_array('administrator', $role_names)) {
-            $arguments['@actor:role'] = t('Owner');
+            $arguments['@actor:role'] = $this->t('Owner');
           }
           elseif (in_array('facilitator', $role_names)) {
-            $arguments['@actor:role'] = t('Facilitator');
+            $arguments['@actor:role'] = $this->t('Facilitator');
           }
         }
         $arguments['@actor:full_name'] = $actor_first_name . ' ' . $actor_last_name;

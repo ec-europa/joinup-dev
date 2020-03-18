@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Theme override to display a menu.
+ *
+ * Available variables:
+ * - items: A nested list of items. Each item contains:
+ * -- title: The title of the parent.
+ * -- class: The explicit parent class to pass to the list
+ * -- children: A nested list of items. Each item contains:
+ * --- data-licence-category: The licence category to pass to the data attribute data-licence-category.
+ * --- title: The title of the child.
+ * --- description: The description of the field to pass to the data attribute.
+ */
+#}
+<div class="listing listing--grid">
+  <div class="licence-filter__label">{{ "Select licence terms below"|t }}</div>
+  <div class="row">
+    <div class="mdl-grid">
+      {% for parent_item in items %}
+        <div class="licence-filter {{ parent_item.class }} mdl-cell mdl-cell--4-col mdl-cell--2-col-wide">
+          <div class="licence__card mdl-card">
+            <div class="licence-filter__header">
+              <span>{{ parent_item.title }}</span>
+            </div>
+            <div class="licence-filter__content">
+              <ul class="licence-filter__list">
+                {% for child in parent_item.items %}
+                  <li class="licence-filter__item"><a data-licence-category="{{ child.licence_category }}" href="#" title="{{ child.description }}">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

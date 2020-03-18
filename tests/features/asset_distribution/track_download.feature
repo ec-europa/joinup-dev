@@ -1,4 +1,4 @@
-@api
+@api @group-a
 Feature: Asset distribution editing.
   As a privileged user of the website
   I want to track downloads of distributions
@@ -10,12 +10,12 @@ Feature: Asset distribution editing.
       | title       | Postcard licence                     |
       | description | Send a postcard from where you live. |
       | type        | Attribution                          |
-    And solution:
-      | title | OpenBSD   |
-      | state | validated |
     And collection:
-      | title      | Berkeley Software Distributions |
-      | affiliates | OpenBSD                         |
+      | title | Berkeley Software Distributions |
+      | state | validated                       |
+    And solution:
+      | title      | OpenBSD                         |
+      | collection | Berkeley Software Distributions |
       | state      | validated                       |
     And release:
       | title          | Winter of 95 |
@@ -38,9 +38,9 @@ Feature: Asset distribution editing.
     And I click "Download releases"
     Then I should see "Releases for OpenBSD solution"
 
-    And the "i386" asset distribution should not have any download urls
     And I should see the download link in the "OpenBSD images" asset distribution
     And I should see the download link in the "Changelog" asset distribution
+    And I should see the external link in the "i386" asset distribution
 
     # Clicking these links will track the download event.
     Then I click "Download" in the "OpenBSD images" asset distribution
@@ -52,9 +52,9 @@ Feature: Asset distribution editing.
     Then I should see "Releases for OpenBSD solution"
 
     # The same download links are shown to anonymous users.
-    And the "i386" asset distribution should not have any download urls
     And I should see the download link in the "OpenBSD images" asset distribution
     And I should see the download link in the "Changelog" asset distribution
+    And I should see the external link in the "i386" asset distribution
 
     # Anonymous users will be prompted with a modal to enter their e-mails.
     When I click "Download" in the "OpenBSD images" asset distribution
@@ -73,7 +73,7 @@ Feature: Asset distribution editing.
     Then the modal should be closed
 
     # Verify that the modal also shows in the overview page.
-    When I click "Details" in the "Changelog" asset distribution
+    When I click "Changelog" in the "Changelog" asset distribution
     Then I should see the link "Download"
     When I click "Download"
     Then a modal should open

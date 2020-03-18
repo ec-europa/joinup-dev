@@ -1,0 +1,27 @@
+uuid: b97e2bec-bde5-48f5-8bbf-cfa76ab022f5
+langcode: en
+status: true
+dependencies:
+  module:
+    - rdf_entity
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://spdx.org/rdf/terms#licenseId'
+        format: literal
+id: rdf_entity.field_spdx_licence_id
+field_name: field_spdx_licence_id
+entity_type: rdf_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

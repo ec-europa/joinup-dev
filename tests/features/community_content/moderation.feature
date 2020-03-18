@@ -1,4 +1,4 @@
-@api
+@api @group-b
 Feature: Moderate community content
   In order to accept or reject content that is proposed for publication or deletion
   As a facilitator
@@ -16,7 +16,12 @@ Feature: Moderate community content
     # content moderation overview.
     When I am logged in as a facilitator of the "Black hole research" collection
     And I go to the homepage of the "Black hole research" collection
-    And I click the contextual link "Moderate content" in the "Header" region
+    # Contextual links should not be shown in the group header. All contextual
+    # actions are instead handled through the "Entity actions". Since both are
+    # themed similarly (as a "three dot menu") it is too confusing to have both
+    # visible in the same area.
+    Then I should not see any contextual links in the "Header" region
+    And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should see the text "Nothing to moderate. Enjoy your day!"
 
@@ -169,14 +174,15 @@ Feature: Moderate community content
     # Approve the content, and check that it no longer shows up in the moderation overview.
     When I press "Publish"
     Then I should see the success message "Discussion Black-body spectrum radiation has been updated."
-    And I click the contextual link "Moderate content" in the "Header" region
+    When I go to the homepage of the "Black hole research" collection
+    And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should not see the text "Black-body spectrum radiation"
 
     # Now repeat this for the solution.
     When I am logged in as a facilitator of the "Survey For Supernovae" solution
     And I go to the homepage of the "Survey For Supernovae" solution
-    And I click the contextual link "Moderate content" in the "Header" region
+    And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     Then I should see the following headings:
       | Cataclysmic variables                |
@@ -275,7 +281,8 @@ Feature: Moderate community content
     # Approve the content, and check that it no longer shows up in the moderation overview.
     When I press "Publish"
     Then I should see the success message "Discussion Cataclysmic variables has been updated."
-    And I click the contextual link "Moderate content" in the "Header" region
+    When I go to the homepage of the "Survey For Supernovae" solution
+    And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should not see the text "Cataclysmic variables"
 
@@ -286,7 +293,8 @@ Feature: Moderate community content
     And I fill in "Title" with "Cataclysmic conditions"
     And I fill in "Motivation" with "This is a regression issue."
     And I press "Request changes"
-    And I click the contextual link "Moderate content" in the "Header" region
+    And I go to the homepage of the "Survey For Supernovae" solution
+    And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And I should see the text "Cataclysmic conditions"
     And I should not see the text "Cataclysmic variables"
@@ -316,7 +324,8 @@ Feature: Moderate community content
 
     When I am logged in as a facilitator of the "Neutron stars" collection
     And I go to the homepage of the "Neutron stars" collection
-    And I click the contextual link "Moderate content" in the "Header" region
+    And I open the header local tasks menu
+    And I click "Moderate content" in the "Entity actions" region
     Then I should see the heading "Content moderation"
     And the available options in the "Content of type" select should be "All (7), Discussion (2), Document (3), Event (1), News (1)"
     And the available options in the "in state" select should be "All (7), Deletion request (3), Proposed (4)"
@@ -360,3 +369,55 @@ Feature: Moderate community content
       | Metal-rich star cluster     |
       | High frequency              |
       | Cluster                     |
+
+  Scenario: The logo image can be replaced for an event or news item that's in
+    the "proposed" state. See ISAICP-5818.
+
+    Given user:
+      | Username | leo |
+    And the following collection:
+      | title      | Black hole research |
+      | state      | validated           |
+      | moderation | yes                 |
+    And the following collection user membership:
+      | collection          | user |
+      | Black hole research | leo  |
+
+    Given I am logged in as "leo"
+
+    # Test event.
+    And I go to the homepage of the "Black hole research" collection
+    When I click "Add event" in the plus button menu
+    And I fill in the following:
+      | Title            | Alice in Wonderland |
+      | Description      | Here we go...       |
+      | Virtual location | http://example.com  |
+
+    And I attach the file "logo.png" to "Logo"
+    And I press "Upload"
+    When I press "Propose"
+    Then I should see the success message "Event Alice in Wonderland has been created."
+
+    But I click "Edit"
+    And I should see the heading "Edit Event Alice in Wonderland"
+    When I press "Remove"
+    And I should see the heading "Edit Event Alice in Wonderland"
+    And I should see the button "Upload"
+    # Test news.
+    And I go to the homepage of the "Black hole research" collection
+    When I click "Add news" in the plus button menu
+    And I fill in the following:
+      | Short title | Declared the ultimate metal                                                                   |
+      | Headline    | Strong request for this rare metal that is on the mouth of everybody                          |
+      | Content     | Thanks to its lower density compared to thulium and lutetium its applications have increased. |
+
+    And I attach the file "logo.png" to "Logo"
+    And I press "Upload"
+    When I press "Propose"
+    Then I should see the success message "News Declared the ultimate metal has been created."
+
+    But I click "Edit"
+    And I should see the heading "Edit News Declared the ultimate metal"
+    When I press "Remove"
+    And I should see the heading "Edit News Declared the ultimate metal"
+    And I should see the button "Upload"
