@@ -109,7 +109,7 @@
         <mkdir dir="${tmp.dir}" />
         <mkdir dir="${project.basedir}/java" />
         <httpget url="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" dir="${tmp.dir}" />
-        <untar file="OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="/java"/>
+        <untar file="OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="${project.basedir}/java/java"/>
         <exec command="export PATH=${project.basedir}/java/jdk8u242-b08-jre/bin:$PATH"/>
 
 
