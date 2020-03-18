@@ -106,10 +106,10 @@
         <echo message="lsb_release -a"/>
         <exec command="lsb_release -a" checkreturn="true" passthru="true"/>
 
-        <mkdir dir="${tmp.dir}" />
-        <httpget url="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" dir="${tmp.dir}" followRedirects="true"/>
-        <untar file="${tmp.dir}/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="${tmp.dir}"/>
-        <exec command="export PATH=${tmp.dir}/jdk8u242-b08-jre/bin:$PATH"/>
+<!--        <mkdir dir="${tmp.dir}" />-->
+        <httpget url="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" dir="${env.PWD}" followRedirects="true"/>
+        <untar file="${env.PWD}/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="${env.PWD}"/>
+<!--        <exec command="export PATH=${tmp.dir}/jdk8u242-b08-jre/bin:$PATH"/>-->
 
         <echo message="export"/>
         <exec command="export" checkreturn="true" passthru="true"/>
