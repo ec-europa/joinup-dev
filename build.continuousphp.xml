@@ -71,7 +71,7 @@
         </if>
     </target>
 
-    <target name="build-continuousphp" depends="install-jre, setup-apache-solr">
+    <target name="build-continuousphp" depends="install-java, setup-apache-solr">
         <!-- Set environment variables as extra properties through cloudformation -->
         <env2property prefix="cphp" phingproperty="cloudformation.properties" />
         <echo message="Copy CPHP pipeline variables to local properties file" />
@@ -101,10 +101,12 @@
 
     </target>
 
-    <target name="install-jre">
-        <exec command="sudo apt-get -y update ;
-sudo apt-get install -y lsof;
+    <target name="install-java">
+        <exec command="sudo add-apt-repository ppa:webupd8team/java;
+sudo apt-get -y update;
+sudo apt-get -y install lsof;
 sudo apt-get -y install openjdk-8-jdk;
+export;
 java -version"
               checkreturn="true"
               passthru="true" />
