@@ -103,6 +103,7 @@
 
     <target name="install-jre">
         <exec command="sudo apt -y update ;
+sudo apt-get install -y lsof;
 sudo apt -y install default-jre;
 java -version"
               checkreturn="true"
