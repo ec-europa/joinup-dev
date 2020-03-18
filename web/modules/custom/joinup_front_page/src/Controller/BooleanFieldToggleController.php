@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_front_page\Controller;
 
 use Drupal\Core\Access\AccessResult;
@@ -68,7 +70,7 @@ class BooleanFieldToggleController extends ControllerBase {
     // "_title" route parameter.
     // @see \Drupal\Core\Controller\TitleResolver::getTitle()
     // @codingStandardsIgnoreLine
-    drupal_set_message($this->t($message, [
+    $this->messenger()->addMessage($this->t($message, [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
     ]));

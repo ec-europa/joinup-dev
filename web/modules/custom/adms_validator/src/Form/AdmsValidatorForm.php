@@ -135,10 +135,10 @@ class AdmsValidatorForm extends FormBase {
     $this->sparql->query("CLEAR GRAPH <$uri>");
 
     if ($schema_errors->isSuccessful()) {
-      drupal_set_message($this->t('No errors found during validation.'));
+      $this->messenger()->addMessage($this->t('No errors found during validation.'));
     }
     else {
-      drupal_set_message($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
+      $this->messenger()->addMessage($this->t('%count schema error(s) were found while validating.', ['%count' => $schema_errors->errorCount()]), 'warning');
     }
     $form_state->set('validation_errors', $schema_errors);
   }
