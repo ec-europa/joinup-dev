@@ -1,0 +1,37 @@
+uuid: 4d8be8cf-ef5b-4e3e-800e-d7547f0ddc13
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - rdf_entity
+    - sparql_entity_storage
+third_party_settings:
+  sparql_entity_storage:
+    mapping:
+      value:
+        predicate: 'http://joinup.eu/solution/content_moderation'
+        format: literal
+id: rdf_entity.field_is_content_moderation
+field_name: field_is_content_moderation
+entity_type: rdf_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: no_moderation
+      label: 'No moderation needed'
+    -
+      value: members_moderation
+      label: 'Facilitator content does not need validation'
+    -
+      value: all_moderation
+      label: 'Moderate all content'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

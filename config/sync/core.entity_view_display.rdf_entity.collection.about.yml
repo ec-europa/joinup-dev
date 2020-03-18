@@ -11,9 +11,9 @@ dependencies:
     - field.field.rdf_entity.collection.field_ar_closed
     - field.field.rdf_entity.collection.field_ar_contact_information
     - field.field.rdf_entity.collection.field_ar_content_creation
+    - field.field.rdf_entity.collection.field_ar_content_moderation
     - field.field.rdf_entity.collection.field_ar_description
     - field.field.rdf_entity.collection.field_ar_logo
-    - field.field.rdf_entity.collection.field_ar_moderation
     - field.field.rdf_entity.collection.field_ar_owner
     - field.field.rdf_entity.collection.field_ar_state
     - field.field.rdf_entity.collection.field_collection_content
@@ -36,7 +36,7 @@ third_party_settings:
       children:
         - field_ar_closed
         - field_ar_content_creation
-        - field_ar_moderation
+        - field_ar_content_moderation
       parent_name: ''
       weight: 4
       format_type: html_element
@@ -127,24 +127,19 @@ content:
     third_party_settings:
       joinup:
         template_suggestion: fieldset
+  field_ar_content_moderation:
+    type: list_default
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_ar_description:
     weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
-    region: content
-  field_ar_moderation:
-    weight: 2
-    label: hidden
-    settings:
-      format: default
-      format_custom_true: ''
-      format_custom_false: ''
-    third_party_settings:
-      joinup:
-        template_suggestion: fieldset
-    type: boolean
     region: content
   field_ar_owner:
     weight: 4

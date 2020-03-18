@@ -84,8 +84,8 @@ class JoinupRelationManager implements JoinupRelationManagerInterface, Container
       return NULL;
     }
     $field_array = [
-      'collection' => 'field_ar_moderation',
-      'solution' => 'field_is_moderation',
+      'collection' => 'field_ar_content_moderation',
+      'solution' => 'field_is_content_moderation',
     ];
 
     $moderation = $parent->{$field_array[$parent->bundle()]}->value;

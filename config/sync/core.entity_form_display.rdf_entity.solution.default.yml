@@ -11,6 +11,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_content_creation
+    - field.field.rdf_entity.solution.field_is_content_moderation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -21,7 +22,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_language
     - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
-    - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
@@ -77,7 +77,7 @@ third_party_settings:
         - field_policy_domain
         - field_is_owner
         - field_is_solution_type
-        - field_is_moderation
+        - field_is_content_moderation
         - field_is_content_creation
         - field_is_test_resource_type
         - field_is_actor
@@ -183,6 +183,12 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
+  field_is_content_moderation:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_is_description:
     weight: 2
     settings:
@@ -231,13 +237,6 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-    region: content
-  field_is_moderation:
-    weight: 7
-    settings:
-      display_label: false
-    third_party_settings: {  }
-    type: boolean_checkbox
     region: content
   field_is_owner:
     type: inline_entity_form_complex
