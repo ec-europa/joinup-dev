@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa66ba06e47267d7392fcd1025129a0d",
+    "content-hash": "f8fdf24ae019e07a35d34431f5fe0a0b",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5488,7 +5488,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og_menu.git",
-                "reference": "16c40e03a4274e1dd781ab9a02478b7e15aea5ef"
+                "reference": "29b5d7470a07fa96cbf7eb46a65895872be17d9e"
             },
             "require": {
                 "drupal/core": "*",
@@ -5500,15 +5500,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+13-dev",
-                    "datestamp": "1584029947",
+                    "version": "8.x-1.0-alpha3+14-dev",
+                    "datestamp": "1584030229",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Drupal 9 readiness: entity manager is deprecated @see https://www.drupal.org/project/og_menu/issues/3119437": "https://www.drupal.org/files/issues/2020-03-12/3119437-2.patch"
+                    "Drupal 9 readiness: deprecated code report @see https://www.drupal.org/project/og_menu/issues/3120584": "https://www.drupal.org/files/issues/2020-03-18/3120584-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5547,7 +5547,7 @@
                 "source": "https://git.drupalcode.org/project/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
             },
-            "time": "2020-03-12T16:23:32+00:00"
+            "time": "2020-03-18T15:10:03+00:00"
         },
         {
             "name": "drupal/password_policy",

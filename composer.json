@@ -290,7 +290,7 @@
                 "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
             },
             "drupal/og_menu": {
-                "Drupal 9 readiness: entity manager is deprecated @see https://www.drupal.org/project/og_menu/issues/3119437": "https://www.drupal.org/files/issues/2020-03-12/3119437-2.patch"
+                "Drupal 9 readiness: deprecated code report @see https://www.drupal.org/project/og_menu/issues/3120584": "https://www.drupal.org/files/issues/2020-03-18/3120584-2.patch"
             },
             "drupal/password_policy": {
                 "Do not override the default user entity view. @see https://www.drupal.org/node/2650192": "https://www.drupal.org/files/issues/properly_place_fields-2650192-4-D8.patch",
