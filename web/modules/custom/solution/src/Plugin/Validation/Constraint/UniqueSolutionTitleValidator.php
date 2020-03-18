@@ -71,7 +71,7 @@ class UniqueSolutionTitleValidator extends ConstraintValidator implements Contai
     if (!$this->solutionTitleHelper->titleIsUniqueWithinAffiliation($solution)) {
       $this->context->addViolation($constraint->message, [
         '%value' => $item->value,
-        '@entity_type' => $solution->getEntityType()->getLowercaseLabel(),
+        '@entity_type' => $solution->getEntityType()->getSingularLabel(),
         '@field_name' => $items->getFieldDefinition()->getLabel(),
       ]);
     }
