@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8fdf24ae019e07a35d34431f5fe0a0b",
+    "content-hash": "465393c2140d6d131f037f045092368c",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.133.38",
+            "version": "3.133.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5ec9442162d83f94918bc17136a2b674a04784e5"
+                "reference": "0e3b9e497bd39063cb504115c726d369d8f4d455"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5ec9442162d83f94918bc17136a2b674a04784e5",
-                "reference": "5ec9442162d83f94918bc17136a2b674a04784e5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0e3b9e497bd39063cb504115c726d369d8f4d455",
+                "reference": "0e3b9e497bd39063cb504115c726d369d8f4d455",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-03-17T18:16:01+00:00"
+            "time": "2020-03-18T18:13:04+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -3160,16 +3160,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.8.3",
+            "version": "8.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "77971de6d6ade7366cdd3fadfc16c5d02e531446"
+                "reference": "34e59fcf702c1b3c497bbd6e92e68e546c5d15b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/77971de6d6ade7366cdd3fadfc16c5d02e531446",
-                "reference": "77971de6d6ade7366cdd3fadfc16c5d02e531446",
+                "url": "https://api.github.com/repos/drupal/core/zipball/34e59fcf702c1b3c497bbd6e92e68e546c5d15b8",
+                "reference": "34e59fcf702c1b3c497bbd6e92e68e546c5d15b8",
                 "shasum": ""
             },
             "require": {
@@ -3406,20 +3406,20 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-03-04T18:01:37+00:00"
+            "time": "2020-03-18T16:26:33+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "8.8.3",
+            "version": "8.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
-                "reference": "984129ae3152d570c9448e52869f04a22fc75269"
+                "reference": "4825cb5234c28dff79ad298db582dfb23ff4ca59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-composer-scaffold/zipball/984129ae3152d570c9448e52869f04a22fc75269",
-                "reference": "984129ae3152d570c9448e52869f04a22fc75269",
+                "url": "https://api.github.com/repos/drupal/core-composer-scaffold/zipball/4825cb5234c28dff79ad298db582dfb23ff4ca59",
+                "reference": "4825cb5234c28dff79ad298db582dfb23ff4ca59",
                 "shasum": ""
             },
             "require": {
@@ -3453,7 +3453,7 @@
             "keywords": [
                 "drupal"
             ],
-            "time": "2020-02-21T09:36:23+00:00"
+            "time": "2020-03-10T10:15:17+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -5484,14 +5484,20 @@
         },
         {
             "name": "drupal/og_menu",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/og_menu.git",
-                "reference": "29b5d7470a07fa96cbf7eb46a65895872be17d9e"
+                "reference": "8.x-1.0-alpha4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/og_menu-8.x-1.0-alpha4.zip",
+                "reference": "8.x-1.0-alpha4",
+                "shasum": "14934bc85722000ece34d5e2dc563cfc2d741e05"
             },
             "require": {
-                "drupal/core": "*",
+                "drupal/core": "^8 || ^9",
                 "drupal/og": "^1.0.0-alpha4"
             },
             "type": "drupal-module",
@@ -5500,15 +5506,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3+14-dev",
-                    "datestamp": "1584030229",
+                    "version": "8.x-1.0-alpha4",
+                    "datestamp": "1584557490",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
-                },
-                "patches_applied": {
-                    "Drupal 9 readiness: deprecated code report @see https://www.drupal.org/project/og_menu/issues/3120584": "https://www.drupal.org/files/issues/2020-03-18/3120584-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5546,8 +5549,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/og_menu",
                 "issues": "https://drupal.org/project/issues/og_menu"
-            },
-            "time": "2020-03-18T15:10:03+00:00"
+            }
         },
         {
             "name": "drupal/password_policy",
@@ -16839,7 +16841,6 @@
         "drupal/config_ignore": 20,
         "drupal/config_update": 20,
         "drupal/matomo_reporting_api": 20,
-        "drupal/og_menu": 20,
         "drupal/phingdrushtask": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
