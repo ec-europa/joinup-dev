@@ -102,9 +102,9 @@
     </target>
 
     <target name="install-jre">
-        <exec command="sudo apt -y update ;
+        <exec command="sudo apt-get -y update ;
 sudo apt-get install -y lsof;
-sudo apt -y install default-jre;
+sudo apt-get -y install openjdk-8-jdk;
 java -version"
               checkreturn="true"
               passthru="true" />
