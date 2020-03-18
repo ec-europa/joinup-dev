@@ -107,11 +107,12 @@
         <exec command="lsb_release -a" checkreturn="true" passthru="true"/>
 
         <mkdir dir="${tmp.dir}" />
-        <mkdir dir="${project.basedir}/java" />
         <httpget url="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" dir="${tmp.dir}" followRedirects="true"/>
-        <untar file="${tmp.dir}/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="${project.basedir}/java/"/>
-        <exec command="export PATH=${project.basedir}/java/jdk8u242-b08-jre/bin:$PATH"/>
+        <untar file="${tmp.dir}/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="${tmp.dir}"/>
+        <exec command="export PATH=${tmp.dir}/jdk8u242-b08-jre/bin:$PATH"/>
 
+        <echo message="export"/>
+        <exec command="export" checkreturn="true" passthru="true"/>
 
 <!--        <echo message="sudo apt-get &#45;&#45;yes update"/>-->
 <!--        <exec command="sudo apt-get &#45;&#45;yes update" checkreturn="true" passthru="true"/>-->
@@ -136,8 +137,6 @@
 <!--        <echo message="sudo apt-get &#45;&#45;yes install openjdk-8-jre-headless"/>-->
 <!--        <exec command="sudo apt-get &#45;&#45;yes install openjdk-8-jre-headless" checkreturn="true" passthru="true"/>-->
 
-<!--        <echo message="export"/>-->
-<!--        <exec command="export" checkreturn="true" passthru="true"/>-->
 
         <echo message="java -version"/>
         <exec command="java -version" checkreturn="true" passthru="true"/>
