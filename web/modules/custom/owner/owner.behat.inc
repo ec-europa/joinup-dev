@@ -102,7 +102,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *
    * @Then I should have :number owner/owners
    */
-  public function assertOwnerCount($number) {
+  public function assertOwnerCount(int $number): void {
     $this->assertRdfEntityCount($number, 'owner');
   }
 

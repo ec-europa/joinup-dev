@@ -203,7 +203,7 @@ class JoinupLicenceSubContext extends DrupalSubContextBase implements DrupalSubC
    *
    * @Then I should have :number licence(s)
    */
-  public function assertLicenceCount($number) {
+  public function assertLicenceCount(int $number): void {
     $this->assertRdfEntityCount($number, 'licence');
   }
 
