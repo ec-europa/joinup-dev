@@ -5,10 +5,13 @@
  * Post update functions for the Joinup core module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Database\Database;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\file\Entity\File;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\RdfInterface;
@@ -66,7 +69,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
       if (!file_exists($attachment->getFileUri())) {
         continue;
       }
-      $target = file_uri_target($attachment->getFileUri());
+      $target = StreamWrapperManager::getTarget($attachment->getFileUri());
       $uri = "private://$target";
       $destination_dir = $file_system->dirname($uri);
       if (!file_prepare_directory($destination_dir, FILE_CREATE_DIRECTORY)) {
