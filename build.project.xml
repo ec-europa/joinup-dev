@@ -627,7 +627,7 @@
         depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server, enable-config-read-only" />
 
     <target name="check-deprecated-code">
-        <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src drush/Commands scripts/composer tests/src" passthru="true" checkreturn="true"/>
+        <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src scripts/composer tests/src" passthru="true" checkreturn="true"/>
     </target>
 
 </project>
