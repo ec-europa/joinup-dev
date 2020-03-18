@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace Drupal\demo_content\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Path\AliasStorageInterface;
 use Drupal\file\Entity\File;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -25,11 +25,11 @@ class ImportSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
-   * The path alias storage service.
+   * The entity type manager.
    *
-   * @var \Drupal\Core\Path\AliasStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $pathAliasStorage;
+  protected $entityTypeManager;
 
   /**
    * The file system service.
@@ -43,14 +43,14 @@ class ImportSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
-   * @param \Drupal\Core\Path\AliasStorageInterface $path_alias_storage
-   *   The path alias storage service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\File\FileSystemInterface $file_system
    *   The file system service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasStorageInterface $path_alias_storage, FileSystemInterface $file_system) {
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, FileSystemInterface $file_system) {
     $this->configFactory = $config_factory;
-    $this->pathAliasStorage = $path_alias_storage;
+    $this->entityTypeManager = $entity_type_manager;
     $this->fileSystem = $file_system;
   }
 
@@ -70,6 +70,7 @@ class ImportSubscriber implements EventSubscriberInterface {
    *   The event element. Contains the entities and the module.
    */
   public function entitiesImport(Event $event) {
+    $path_alias_storage = $this->entityTypeManager->getStorage('path_alias');
     $file_mapping = $this->configFactory->get('demo_content.settings')->get('file_mappings');
     $imported = $event->getImportedEntities();
     $directory = drupal_get_path('module', 'demo_content') . '/fixtures/files/';
@@ -94,7 +95,7 @@ class ImportSubscriber implements EventSubscriberInterface {
       $entity->save();
 
       if ($uuid === 'c0bac256-c243-4440-bd31-b2b988375f5b') {
-        $this->pathAliasStorage->save('/legal/document/legal_notice', '/joinup/legal-notice', LanguageInterface::LANGCODE_NOT_SPECIFIED);
+        $path_alias_storage->save('/legal/document/legal_notice', '/joinup/legal-notice', LanguageInterface::LANGCODE_NOT_SPECIFIED);
       }
     }
   }

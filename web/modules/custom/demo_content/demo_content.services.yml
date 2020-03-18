@@ -1,6 +1,6 @@
 services:
   demo_content.import:
     class: Drupal\demo_content\EventSubscriber\ImportSubscriber
-    arguments: ['@config.factory', '@path.alias_storage', '@file_system']
+    arguments: ['@config.factory', '@entity_type.manager', '@file_system']
     tags:
       - { name: event_subscriber }
