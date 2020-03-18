@@ -84,7 +84,10 @@ abstract class JoinupExistingSiteTestBase extends ExistingSiteBase {
     // Restore the mail settings.
     $this->restoreMailSettings();
 
+    // The parent method might cleanup config entities.
+    $this->bypassReadOnlyConfig();
     parent::tearDown();
+    $this->restoreReadOnlyConfig();
 
     /** @var \Drupal\Component\Plugin\PluginManagerInterface $delete_orphans_manager */
     $delete_orphans_manager = \Drupal::service('plugin.manager.og.delete_orphans');
