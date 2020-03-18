@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Utility\LinkGeneratorInterface;
 use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -37,6 +38,13 @@ class SolutionsByLicenceForm extends FormBase {
   protected $pagerManager;
 
   /**
+   * The link generator.
+   *
+   * @var \Drupal\Core\Utility\LinkGeneratorInterface
+   */
+  protected $linkGenerator;
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -50,10 +58,13 @@ class SolutionsByLicenceForm extends FormBase {
    *   The SPARQL connection.
    * @param \Drupal\Core\Pager\PagerManagerInterface $pagerManager
    *   The pager manager.
+   * @param \Drupal\Core\Utility\LinkGeneratorInterface $linkGenerator
+   *   The link generator.
    */
-  public function __construct(ConnectionInterface $connection, PagerManagerInterface $pagerManager) {
+  public function __construct(ConnectionInterface $connection, PagerManagerInterface $pagerManager, LinkGeneratorInterface $linkGenerator) {
     $this->connection = $connection;
     $this->pagerManager = $pagerManager;
+    $this->linkGenerator = $linkGenerator;
   }
 
   /**
@@ -62,7 +73,8 @@ class SolutionsByLicenceForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('sparql_endpoint'),
-      $container->get('pager.manager')
+      $container->get('pager.manager'),
+      $container->get('link_generator')
     );
   }
 
@@ -103,8 +115,8 @@ class SolutionsByLicenceForm extends FormBase {
       ]);
 
       $rows[] = [
-        $this->getLinkGenerator()->generate($item->licence_label, $licence_url),
-        $this->getLinkGenerator()->generate($item->solution_label, $solution_url),
+        $this->linkGenerator->generate($item->licence_label, $licence_url),
+        $this->linkGenerator->generate($item->solution_label, $solution_url),
       ];
     }
 
