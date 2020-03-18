@@ -102,7 +102,10 @@
     </target>
 
     <target name="install-jre">
-        <exec command="sudo sudo apt install default-jre"
+        <exec command="sudo apt update"
+              checkreturn="true"
+              passthru="true" />
+        <exec command="sudo apt install default-jre"
               checkreturn="true"
               passthru="true" />
         <exec command="java -version"
