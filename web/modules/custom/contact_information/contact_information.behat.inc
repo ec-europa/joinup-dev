@@ -143,7 +143,7 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    *
    * @Then I should have :number contact information(s)
    */
-  public function assertContactInformationCount($number) {
+  public function assertContactInformationCount(int $number): void {
     $this->assertRdfEntityCount($number, 'contact_information');
   }
 
