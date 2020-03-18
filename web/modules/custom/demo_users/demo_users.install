@@ -11,9 +11,11 @@ declare(strict_types = 1);
  * Implements hook_uninstall().
  */
 function demo_users_uninstall() {
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
   // Deletes demo users.
   $path = drupal_get_path('module', 'demo_content') . '/content/user';
-  foreach (array_keys(file_scan_directory($path, '|\.json$|')) as $uri) {
+  foreach (array_keys($file_system->scanDirectory($path, '|\.json$|')) as $uri) {
     $content = file_get_contents($uri);
     $decoded = \Drupal::service('serializer')->decode($content, 'hal_json');
     $name = $decoded['name'][0]['value'];
