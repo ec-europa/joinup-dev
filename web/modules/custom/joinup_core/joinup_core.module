@@ -433,12 +433,9 @@ function joinup_core_element_info_alter(array &$info) {
  * source file entity is deleted, thus we're fulfilling this task here.
  */
 function joinup_core_file_delete(EntityInterface $entity) {
-  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-  $file_system = \Drupal::service('file_system');
-
   /** @var \Drupal\file\FileInterface $entity */
   $uri = $entity->getFileUri();
-  $scheme = $file_system->uriScheme($uri);
+  $scheme = StreamWrapperManager::getScheme($uri);
   if ($scheme !== 'public') {
     return;
   }
