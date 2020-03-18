@@ -5,6 +5,8 @@
  * Contains \ContactInformationSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -38,11 +40,13 @@ class ContactInformationSubContext extends DrupalSubContextBase implements Drupa
    * @When I visit (the homepage of )the :label contact
    * @When I go to the :label contact information page
    * @When I visit the :label contact information page
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitContactInformationPage($label) {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getRdfEntityByLabel($label, 'contact_information');
-    $this->visitPath($entity->url());
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**

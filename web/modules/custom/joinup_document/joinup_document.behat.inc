@@ -5,6 +5,8 @@
  * Contains \DocumentSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -30,11 +32,13 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
    *
    * @When I go to the :title document
    * @When I visit the :title document
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitDocument($title) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'document');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**

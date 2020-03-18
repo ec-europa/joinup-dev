@@ -449,11 +449,13 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @When I go to the :bundle (content ) :title edit screen
    * @When I visit the :bundle (content ) :title edit screen
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
-    $this->visitPath($node->url('edit-form'));
+    $this->visitPath($node->toUrl('edit-form')->toString());
   }
 
   /**
@@ -469,11 +471,13 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @When I go to the content page of the type :type with the title :title
    * @When I visit the content page of the type :type with the title :title
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitNodePage($type, $title) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, $type);
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**
