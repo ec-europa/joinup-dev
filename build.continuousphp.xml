@@ -106,7 +106,6 @@
         <httpget url="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" dir="${env.PWD}" followRedirects="true"/>
         <untar file="${env.PWD}/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="${env.PWD}"/>
         <delete file="${env.PWD}/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz"/>
-        <exec command="symlink ${env.PWD}/jdk8u242-b08-jre/bin /usr/local/bin/jre"/>
         <exec command="java -version" checkreturn="true" passthru="true"/>
    </target>
 
