@@ -82,7 +82,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
   }
 
   // Finally, remove the empty public://contact_form directory.
-  file_unmanaged_delete_recursive('public://contact_form');
+  $file_system->deleteRecursive('public://contact_form');
 }
 
 /**
