@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Session\AccountInterface;
@@ -72,7 +73,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
       $target = StreamWrapperManager::getTarget($attachment->getFileUri());
       $uri = "private://$target";
       $destination_dir = $file_system->dirname($uri);
-      if (!$file_system->prepareDirectory($destination_dir, FILE_CREATE_DIRECTORY)) {
+      if (!$file_system->prepareDirectory($destination_dir, FileSystemInterface::CREATE_DIRECTORY)) {
         throw new \RuntimeException("Cannot create directory '$destination_dir'.");
       }
       if (!file_move($attachment, $uri)) {
