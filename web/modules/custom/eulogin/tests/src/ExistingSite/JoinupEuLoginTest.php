@@ -7,6 +7,7 @@ namespace Drupal\Tests\joinup_eulogin\ExistingSite;
 use Drupal\Tests\cas\Traits\CasTestTrait;
 use Drupal\Tests\joinup_core\ExistingSite\JoinupExistingSiteTestBase;
 use Drupal\user\Entity\User;
+use weitzman\LoginTrait\LoginTrait;
 
 /**
  * Tests the EU Login.
@@ -16,6 +17,7 @@ use Drupal\user\Entity\User;
 class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
   use CasTestTrait;
+  use LoginTrait;
 
   /**
    * Testing account.
@@ -46,7 +48,7 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
     $page = $this->getSession()->getPage();
 
-    // Select the option tha allows pairing with the local account.
+    // Select the option that allows pairing with the local account.
     $page->selectFieldOption('account_exist', 'yes');
 
     // Use the local credentials to pair the account.
@@ -116,28 +118,48 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
     $assert->pageTextContains('The changes have been saved.');
     $this->assertNotSame($original_hashed_pass, User::load($this->account->id())->getPassword());
 
-    // Try to navigate to pages that are not accessible .
+    // Try to navigate to pages that are not accessible.
     $this->assertLimitedAccess('<front>');
     $this->assertLimitedAccess('/collections');
     $this->assertLimitedAccess('/solutions');
     $this->assertLimitedAccess('/keep-up-to-date');
     $this->assertLimitedAccess('/search');
 
-    // Check that the link to EU Login works.
+    // Check that the link to EU Login works. By clicking this link the user
+    // will be logged out of their Drupal account and will be ready to log in
+    // using EU Login.
     $this->clickLink('EU Login');
     $assert->pageTextContains('Sign in to continue');
 
-    // Check that the redirect to limited access page has not been cached.
-    $this->drupalGet('<front>');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/collections');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/solutions');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/keep-up-to-date');
-    $assert->statusCodeEquals(200);
-    $this->drupalGet('/search');
-    $assert->statusCodeEquals(200);
+    // Check that the redirect to limited access page has not been cached. The
+    // user is now anonymous, so should be again able to access all pages.
+    $this->assertAccess('<front>');
+    $this->assertAccess('/collections');
+    $this->assertAccess('/solutions');
+    $this->assertAccess('/keep-up-to-date');
+    $this->assertAccess('/search');
+
+    // Log in as an special user with 'bypass limited access' permission. These
+    // users are intended for maintenance or demonstration purposes.
+    $this->bypassReadOnlyConfig();
+    $rid = $this->createRole(['bypass limited access']);
+    $this->restoreReadOnlyConfig();
+    $this->account->addRole($rid);
+    $this->account->save();
+
+    $this->drupalLogin($this->account);
+
+    // Try to navigate to pages that are not accessible to non-linked users. The
+    // users who can bypass limited access should be able to access these pages.
+    $this->assertAccess('<front>');
+    $this->assertAccess('/collections');
+    $this->assertAccess('/solutions');
+    $this->assertAccess('/keep-up-to-date');
+    $this->assertAccess('/search');
+
+    // Remove the role from account.
+    $this->account->removeRole($rid);
+    $this->account->save();
 
     // Create a EU Login user and link it to the local user.
     $authname = $this->randomMachineName();
@@ -157,6 +179,35 @@ class JoinupEuLoginTest extends JoinupExistingSiteTestBase {
 
     // Disable the limited access functionality.
     $state->set('joinup_eulogin.disable_limited_access', TRUE);
+  }
+
+  /**
+   * Tests that special user accounts cannot be linked with EU Login.
+   *
+   * User accounts intended for maintenance and demonstration purposes (such as
+   * UID 1 and demo users) do not represent actual EU citizens so they should
+   * not be linked with EU Login. These users have the `bypass limited access`
+   * permission.
+   */
+  public function testLimitedAccessBypassAccounts(): void {
+    $this->bypassReadOnlyConfig();
+    $local_account = $this->createUser(['bypass limited access']);
+    $this->restoreReadOnlyConfig();
+    $authname = $this->randomMachineName();
+    $pass = $this->randomString();
+    $this->createCasUser($authname, "{$authname}@example.com", $pass);
+    $this->casLogin("{$authname}@example.com", $pass);
+
+    $page = $this->getSession()->getPage();
+
+    // Select the option that allows pairing with the local account.
+    $page->selectFieldOption('account_exist', 'yes');
+
+    // Use the local credentials to pair the account.
+    $page->fillField('Email or username', $local_account->getAccountName());
+    $page->fillField('Password', $local_account->pass_raw);
+    $page->pressButton('Sign in');
+    $this->assertSession()->pageTextContains("Linking the local {$local_account->getDisplayName()} user with an EU Login account is not allowed.");
   }
 
   /**
