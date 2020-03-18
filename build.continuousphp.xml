@@ -2,26 +2,26 @@
 
 <project name="ContinuousPHP" default="help">
 
-    <echo msg="Loading AWS additional tasks." />
-    <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
-    <property name="aws.profile" value="" />
+<!--    <echo msg="Loading AWS additional tasks." />-->
+<!--    <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />-->
+<!--    <property name="aws.profile" value="" />-->
 
     <echo msg="Turn environment variable into a phing property" />
     <taskdef name="env2property" classname="\DrupalProject\Phing\EnvironmentVarAsProperty" />
 
-    <echo msg="Loading infra additional tasks." />
-    <import file="./vendor/ec-europa/infra/infra.xml" />
+<!--    <echo msg="Loading infra additional tasks." />-->
+<!--    <import file="./vendor/ec-europa/infra/infra.xml" />-->
 
     <!-- Run Behat tests. -->
-    <!-- Use this target to run tests with increased verbosity on ContinuousPHP to help debugging. -->
-    <target name="run-behat-tests" description="Run Behat tests.">
-        <behat
-            executable="${behat.bin}"
-            config="${behat.yml.path}"
-            strict="${behat.options.strict}"
-            verbose="${behat.options.verbosity}"
-        />
-    </target>
+<!--    &lt;!&ndash; Use this target to run tests with increased verbosity on ContinuousPHP to help debugging. &ndash;&gt;-->
+<!--    <target name="run-behat-tests" description="Run Behat tests.">-->
+<!--        <behat-->
+<!--            executable="${behat.bin}"-->
+<!--            config="${behat.yml.path}"-->
+<!--            strict="${behat.options.strict}"-->
+<!--            verbose="${behat.options.verbosity}"-->
+<!--        />-->
+<!--    </target>-->
 
     <target name="setup-continuousphp"
             depends="check-continuousphp">
@@ -34,29 +34,29 @@
             file="./vendor/ec-europa/infra/continuousphp/odbc.ini"
             tofile="${user.home}/.odbc.ini"
             overwrite="true" />
-        <echo message="Create Solr index" />
-        <exec dir="${project.basedir}"
-              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;
-sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;
-sudo /opt/solr/bin/solr create_core -c drupal_published;
-sudo mkdir /opt/solr/server/solr/drupal_published;
-sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/drupal_published/conf/;
-sudo /opt/solr/bin/solr create_core -c drupal_unpublished;
-sudo mkdir /opt/solr/server/solr/drupal_unpublished;
-sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/drupal_unpublished/conf/"
-              checkreturn="true"
-              passthru="true" />
-        <echo message="Report Solr status" />
-        <exec dir="${project.basedir}"
-              command="sudo /opt/solr/bin/solr status"
-              checkreturn="true"
-              passthru="true" />
-        <echo message="Restart Solr" />
-        <exec dir="${project.basedir}"
-              command="sudo /opt/solr/bin/solr restart"
-              checkreturn="true"
-              passthru="true"
-              spawn="true" />
+<!--        <echo message="Create Solr index" />-->
+<!--        <exec dir="${project.basedir}"-->
+<!--              command="sudo curl -o /opt/solr/search_api_solr.tar.gz https://ftp.drupal.org/files/projects/search_api_solr-8.x-1.0-alpha4.tar.gz;-->
+<!--sudo tar xvzf /opt/solr/search_api_solr.tar.gz -C /opt/solr;-->
+<!--sudo /opt/solr/bin/solr create_core -c drupal_published;-->
+<!--sudo mkdir /opt/solr/server/solr/drupal_published;-->
+<!--sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/drupal_published/conf/;-->
+<!--sudo /opt/solr/bin/solr create_core -c drupal_unpublished;-->
+<!--sudo mkdir /opt/solr/server/solr/drupal_unpublished;-->
+<!--sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/drupal_unpublished/conf/"-->
+<!--              checkreturn="true"-->
+<!--              passthru="true" />-->
+<!--        <echo message="Report Solr status" />-->
+<!--        <exec dir="${project.basedir}"-->
+<!--              command="sudo /opt/solr/bin/solr status"-->
+<!--              checkreturn="true"-->
+<!--              passthru="true" />-->
+<!--        <echo message="Restart Solr" />-->
+<!--        <exec dir="${project.basedir}"-->
+<!--              command="sudo /opt/solr/bin/solr restart"-->
+<!--              checkreturn="true"-->
+<!--              passthru="true"-->
+<!--              spawn="true" />-->
     </target>
 
     <target name="check-continuousphp">
@@ -71,7 +71,7 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
         </if>
     </target>
 
-    <target name="build-continuousphp" >
+    <target name="build-continuousphp" depends="setup-apache-solr">
         <!-- Set environment variables as extra properties through cloudformation -->
         <env2property prefix="cphp" phingproperty="cloudformation.properties" />
         <echo message="Copy CPHP pipeline variables to local properties file" />
@@ -97,12 +97,14 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
             <property name="behat.yml.path" value="${behat.dir}/behat-remainder-cphp.yml" />
             <property name="behat.yml.template" value="${behat.dir}/behat-remainder-cphp.yml.dist" />
         </phingcall>
+
+
     </target>
 
-    <!-- provision new demo/test stack on AWS -->
-    <target name="provision-stack"
-            description="Provision a stack on AWS"
-            depends="setup-aws, run-stack, setup-deployment-group" />
+<!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
+<!--    <target name="provision-stack"-->
+<!--            description="Provision a stack on AWS"-->
+<!--            depends="setup-aws, run-stack, setup-deployment-group" />-->
 
     <!-- Sleeps to allow services to get up and be ready -->
     <target name="sleep">
