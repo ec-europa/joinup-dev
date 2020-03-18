@@ -106,8 +106,8 @@
         <echo message="lsb_release -a"/>
         <exec command="lsb_release -a" checkreturn="true" passthru="true"/>
 
-<!--        <echo message="sudo apt-get -y update"/>-->
-<!--        <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>-->
+        <echo message="sudo apt-get -y update"/>
+        <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>
 
 <!--        <echo message="sudo apt-get -y install software-properties-common"/>-->
 <!--        <exec command="sudo apt-get -y install software-properties-common" checkreturn="true" passthru="true"/>-->
@@ -118,8 +118,8 @@
 <!--        <echo message="sudo apt-get -y update"/>-->
 <!--        <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>-->
 
-        <echo message="sudo apt-get -y install default-jre"/>
-        <exec command="sudo apt-get -y install default-jre" checkreturn="true" passthru="true"/>
+        <echo message="sudo apt-get -y install openjdk-8-jre-headless"/>
+        <exec command="sudo apt-get -y install openjdk-8-jre-headless" checkreturn="true" passthru="true"/>
 
         <echo message="export"/>
         <exec command="export" checkreturn="true" passthru="true"/>
