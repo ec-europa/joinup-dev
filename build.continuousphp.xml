@@ -107,10 +107,10 @@
         <exec command="lsb_release -a" checkreturn="true" passthru="true"/>
 
         <mkdir dir="${tmp.dir}" />
-        <mkdir dir="/java" />
+        <mkdir dir="${project.basedir}/java" />
         <httpget url="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" dir="${tmp.dir}" />
         <untar file="OpenJDK8U-jre_x64_linux_hotspot_8u242b08.tar.gz" todir="/java"/>
-        <exec command="export PATH=/java/jdk8u242-b08-jre/bin:$PATH"/>
+        <exec command="export PATH=${project.basedir}/java/jdk8u242-b08-jre/bin:$PATH"/>
 
 
 <!--        <echo message="sudo apt-get &#45;&#45;yes update"/>-->
