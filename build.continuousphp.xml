@@ -110,6 +110,7 @@
         <exec command="java -version" checkreturn="true" passthru="true"/>
    </target>
 
+    
      <!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
 <!--    <target name="provision-stack"-->
 <!--            description="Provision a stack on AWS"-->
