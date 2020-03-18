@@ -102,10 +102,10 @@
     </target>
 
     <target name="install-java">
-        <exec command="sudo add-apt-repository ppa:webupd8team/java;
+        <exec command="sudo add-apt-repository ppa:openjdk-r/ppa;
 sudo apt-get -y update;
 sudo apt-get -y install lsof;
-sudo apt-get -y install openjdk-8-jdk;
+sudo apt-get -y install openjdk-8-jre;
 export;
 java -version"
               checkreturn="true"
