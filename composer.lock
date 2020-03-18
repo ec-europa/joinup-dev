@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "928d1bcc682fb777f9bb58504ad7c335",
+    "content-hash": "cbd6224568b94e4c8f17012221445037",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -5506,6 +5506,9 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Drupal 9 readiness: entity manager is deprecated @see https://www.drupal.org/project/og_menu/issues/3119437": "https://www.drupal.org/files/issues/2020-03-12/3119437-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
