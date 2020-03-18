@@ -102,17 +102,12 @@
     </target>
 
     <target name="install-java">
-        <exec command="
-sudo apt-get -y update;
-sudo apt-get -y install software-properties-common;
-sudo add-apt-repository -y universe;
-sudo apt-get -y update;
-sudo apt-get -y install lsof;
-sudo apt-get -y install openjdk-8-jre;
-export;
-java -version"
-              checkreturn="true"
-              passthru="true" />
+        <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>
+        <exec command="sudo apt-get -y install software-properties-common" checkreturn="true" passthru="true"/>
+        <exec command="sudo add-apt-repository -y universe" checkreturn="true" passthru="true"/>
+        <exec command="sudo apt-get -y update" checkreturn="true" passthru="true"/>
+        <exec command="sudo apt-get -y install openjdk-8-jre" checkreturn="true" passthru="true"/>
+<!--sudo apt-get -y install lsof;-->
         </target>
     <!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
 <!--    <target name="provision-stack"-->
