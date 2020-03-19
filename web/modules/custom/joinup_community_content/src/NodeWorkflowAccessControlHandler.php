@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\joinup_community_content;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;

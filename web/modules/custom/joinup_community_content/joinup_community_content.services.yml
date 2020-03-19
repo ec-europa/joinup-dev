@@ -14,3 +14,6 @@ services:
     arguments: ['@joinup_group.relation_info', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: community_content }
+  joinup_community_content.node_workflow_access:
+    class: Drupal\joinup_community_content\NodeWorkflowAccessControlHandler
+    arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_group.relation_info', '@current_user', '@config.factory', '@joinup_core.workflow.helper']

@@ -195,7 +195,7 @@ base will integrate with the rest.
 The way this is achieved is by creating a handler that will invoke all other
 handlers and finally approve or reject the operation access.
 
-The handler is `Drupal\joinup_core\NodeWorkflowAccessControlHandler` and is also
+The handler is `Drupal\joinup_community_content\NodeWorkflowAccessControlHandler` and is also
 hosted in joinup_core. joinup_core also handles the invocation of this class
 using the `hook_node_access`.
 

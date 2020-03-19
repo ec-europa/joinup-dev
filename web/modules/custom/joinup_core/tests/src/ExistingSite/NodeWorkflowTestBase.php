@@ -81,7 +81,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    * just a bundle due to the need to check extra information regarding the
    * group that the entity belongs to.
    *
-   * @var \Drupal\joinup_core\NodeWorkflowAccessControlHandler
+   * @var \Drupal\joinup_community_content\NodeWorkflowAccessControlHandler
    */
   protected $workflowAccess;
 
@@ -91,7 +91,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   public function setUp(): void {
     parent::setUp();
 
-    $this->workflowAccess = \Drupal::service('joinup_core.node_workflow_access');
+    $this->workflowAccess = \Drupal::service('joinup_community_content.node_workflow_access');
     $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUser();

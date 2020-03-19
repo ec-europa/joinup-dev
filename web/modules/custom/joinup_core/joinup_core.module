@@ -150,7 +150,7 @@ function joinup_core_node_access(NodeInterface $entity, string $operation, Accou
   if (!CommunityContentHelper::isCommunityContent($entity)) {
     return AccessResult::neutral();
   }
-  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
+  return \Drupal::service('joinup_community_content.node_workflow_access')->entityAccess($entity, $operation, $account);
 }
 
 /**
