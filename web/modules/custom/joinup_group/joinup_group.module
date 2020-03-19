@@ -56,8 +56,10 @@ function joinup_group_entity_type_alter(array &$entity_types) {
 
   // Override the delete form to disallow deletion of groups with children.
   /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $rdf_entity_type */
-  $rdf_entity_type = $entity_types['rdf_entity'];
-  $rdf_entity_type->setFormClass('delete', RdfDeleteForm::class);
+  if (array_key_exists('rdf_entity', $entity_types)) {
+    $rdf_entity_type = $entity_types['rdf_entity'];
+    $rdf_entity_type->setFormClass('delete', RdfDeleteForm::class);
+  }
 }
 
 /**

@@ -24,6 +24,7 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
     'comment',
     'diff',
     'joinup_community_content',
+    'joinup_group',
     'message_notify',
     'node',
     'og',
