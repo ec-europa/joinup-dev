@@ -25,7 +25,6 @@ dependencies:
     - datetime
     - file_url
     - joinup_core
-    - publication_date
     - text
 id: node.document.default
 targetEntityType: node
@@ -39,6 +38,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
