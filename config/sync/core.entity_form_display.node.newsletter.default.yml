@@ -9,6 +9,7 @@ dependencies:
     - node.type.newsletter
   module:
     - allowed_formats
+    - publication_date
     - text
 _core:
   default_config_hash: aB_z4NQK-KhuRJ8iQK1bFBdHLDiHq_RYRDeooAstzVs
@@ -24,6 +25,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'

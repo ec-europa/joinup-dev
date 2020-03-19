@@ -13,6 +13,7 @@ dependencies:
   module:
     - allowed_formats
     - comment
+    - publication_date
     - text
     - video_embed_field
 _core:
@@ -29,6 +30,7 @@ content:
       rows: 9
       placeholder: ''
       summary_rows: 3
+      show_summary: false
     third_party_settings:
       allowed_formats:
         hide_help: '0'
