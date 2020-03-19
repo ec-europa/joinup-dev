@@ -5,6 +5,8 @@
  * Builds placeholder replacement tokens for community content related data.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
 
@@ -55,11 +57,11 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
           break;
 
         case 'path-to-community-content':
-          /** @var \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager */
-          $relation_manager = \Drupal::service('joinup_group.relation_info');
+          /** @var \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info */
+          $relation_info = \Drupal::service('joinup_group.relation_info');
           $path_parts = [];
 
-          if ($parent = $relation_manager->getParent($node)) {
+          if ($parent = $relation_info->getParent($node)) {
             $bubbleable_metadata->addCacheableDependency($parent);
             /** @var \Drupal\rdf_entity\RdfInterface $collection */
             if ($parent->bundle() === 'solution' && $collection = $parent->collection->first()->entity) {

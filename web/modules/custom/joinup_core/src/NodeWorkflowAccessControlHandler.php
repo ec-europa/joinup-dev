@@ -82,11 +82,11 @@ class NodeWorkflowAccessControlHandler {
   protected $membershipManager;
 
   /**
-   * The discussions relation manager.
+   * The group relation info service.
    *
    * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * The current logged in user.
@@ -110,21 +110,14 @@ class NodeWorkflowAccessControlHandler {
   protected $workflowHelper;
 
   /**
-   * The permission scheme stored in configuration.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  protected $permissionScheme;
-
-  /**
-   * Constructs a JoinupDocumentRelationManager object.
+   * Constructs a new NodeWorkflowAccessControlHandler.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
-   *   The relation manager service.
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   *   The group relation info service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -132,10 +125,10 @@ class NodeWorkflowAccessControlHandler {
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManagerInterface $relation_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManagerInterface $relation_info, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
-    $this->relationManager = $relation_manager;
+    $this->relationInfo = $relation_info;
     $this->currentUser = $current_user;
     $this->workflowHelper = $workflow_helper;
     $this->configFactory = $config_factory;
@@ -196,13 +189,13 @@ class NodeWorkflowAccessControlHandler {
         return $this->entityDeleteAccess($entity, $account);
 
       case 'post comments':
-        $parent_state = $this->relationManager->getParentState($entity);
+        $parent_state = $this->relationInfo->getParentState($entity);
         $entity_state = $this->getEntityState($entity);
         // Commenting on content of an archived group is not allowed.
         if ($parent_state === 'archived' || $entity_state === 'archived') {
           return AccessResult::forbidden();
         }
-        $parent = $this->relationManager->getParent($entity);
+        $parent = $this->relationInfo->getParent($entity);
         $membership = $this->membershipManager->getMembership($parent, $account->id());
         if ($membership instanceof OgMembership) {
           return AccessResult::allowedIf($membership->hasPermission($operation));
@@ -377,7 +370,7 @@ class NodeWorkflowAccessControlHandler {
    *   The content creation option value.
    */
   protected function getParentContentCreationOption(NodeInterface $entity): string {
-    $parent = $this->relationManager->getParent($entity);
+    $parent = $this->relationInfo->getParent($entity);
     $field_name = $this->getParentContentCreationFieldName($parent);
     return $parent->{$field_name}->value;
   }

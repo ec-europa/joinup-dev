@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_search\Plugin\search_api\processor;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -30,11 +32,11 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
   use PluginFormTrait;
 
   /**
-   * The relation manager service.
+   * The relation info service.
    *
    * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * Constructs a JoinupEntityLatestRevision object.
@@ -45,12 +47,12 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
    *   The plugin_id for the plugin instance.
    * @param array $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
-   *   The relation manager service.
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   *   The relation info service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, JoinupRelationManagerInterface $relation_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, JoinupRelationManagerInterface $relation_info) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->relationManager = $relation_manager;
+    $this->relationInfo = $relation_info;
   }
 
   /**
@@ -110,7 +112,7 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
       $inverse = $this->getConfiguration()['inverse'];
       $enabled = TRUE;
       if ($object instanceof NodeInterface) {
-        $parent = $this->relationManager->getParent($object);
+        $parent = $this->relationInfo->getParent($object);
         // Check if empty to avoid exceptions.
         // The entity can be published only if the parent entity is published.
         if (empty($parent) || !$parent->isPublished()) {

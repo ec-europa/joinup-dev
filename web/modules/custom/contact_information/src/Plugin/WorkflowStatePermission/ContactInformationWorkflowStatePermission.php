@@ -35,11 +35,11 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   protected $configFactory;
 
   /**
-   * The relation manager service.
+   * The relation info service.
    *
    * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * The membership manager service.
@@ -66,17 +66,17 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    *   The plugin implementation definition.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
-   *   The relation manager service.
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   *   The relation info service.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, JoinupRelationManagerInterface $relation_manager, MembershipManagerInterface $membership_manager, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, JoinupRelationManagerInterface $relation_info, MembershipManagerInterface $membership_manager, WorkflowHelperInterface $workflow_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
-    $this->relationManager = $relation_manager;
+    $this->relationInfo = $relation_info;
     $this->membershipManager = $membership_manager;
     $this->workflowHelper = $workflow_helper;
   }
@@ -154,7 +154,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       }
     }
 
-    foreach ($this->relationManager->getContactInformationRelatedGroups($entity) as $group) {
+    foreach ($this->relationInfo->getContactInformationRelatedGroups($entity) as $group) {
       $membership = $this->membershipManager->getMembership($group, $account->id());
       if (empty($membership)) {
         continue;

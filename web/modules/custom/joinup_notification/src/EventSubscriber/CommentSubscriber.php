@@ -65,7 +65,7 @@ class CommentSubscriber extends NotificationSubscriberBase implements EventSubsc
         $this->group = $this->parent;
       }
       elseif ($this->groupTypeManager->isGroupContent($this->parent->getEntityTypeId(), $this->parent->bundle())) {
-        $this->group = $this->relationManager->getParent($this->parent);
+        $this->group = $this->relationInfo->getParent($this->parent);
       }
     }
   }

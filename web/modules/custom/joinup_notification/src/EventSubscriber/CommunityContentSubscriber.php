@@ -85,15 +85,15 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $joinup_core_relations_manager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
    *   The relation manager service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message deliver service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManagerInterface $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
-    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $joinup_core_relations_manager, $message_delivery);
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupRelationManagerInterface $relation_info, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $relation_info, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
 
@@ -271,7 +271,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = $this->relationInfo->getParent($entity);
     if (!empty($parent)) {
       $arguments += MessageArgumentGenerator::getGroupArguments($parent);
 

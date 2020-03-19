@@ -28,11 +28,11 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
   protected $urlGeneratorManager;
 
   /**
-   * The Joinup relation manager service.
+   * The Joinup group relation info service.
    *
    * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * Constructs a JoinupUrlGeneratorBase object.
@@ -55,13 +55,13 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    *   The sitemap entity helper service.
    * @param \Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\UrlGeneratorManager $url_generator_manager
    *   The url generator manager service.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
-   *   The joinup relation manager service.
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   *   The joinup group relation info service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupRelationManagerInterface $relation_manager) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupRelationManagerInterface $relation_info) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $generator, $logger, $language_manager, $entity_type_manager, $entityHelper, $url_generator_manager);
     $this->urlGeneratorManager = $url_generator_manager;
-    $this->relationManager = $relation_manager;
+    $this->relationInfo = $relation_info;
   }
 
   /**
@@ -150,7 +150,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
     // In case the entity type is a node, we also need to also take into account
     // the status of the parent.
     if ($entity->getEntityTypeId() === 'node') {
-      $parent = $this->relationManager->getParent($entity);
+      $parent = $this->relationInfo->getParent($entity);
       if (empty($parent) || !$parent->isPublished()) {
         return FALSE;
       }

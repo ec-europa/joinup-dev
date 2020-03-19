@@ -192,7 +192,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
 
     // Add arguments related to the parent collection or solution.
     $parent = $entity->parent->entity;
-    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : $this->relationManager->getParent($entity);
+    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : $this->relationInfo->getParent($entity);
     if (!empty($parent) && $parent->bundle() === 'asset_release') {
       // Some legacy releases exist without a version. Thus, a check for
       // existence is needed.

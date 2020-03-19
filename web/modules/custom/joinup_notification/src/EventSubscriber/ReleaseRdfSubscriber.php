@@ -308,7 +308,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = $this->relationInfo->getParent($entity);
     if (!empty($parent)) {
       $arguments += MessageArgumentGenerator::getGroupArguments($parent);
       if (empty($arguments['@actor:role'])) {

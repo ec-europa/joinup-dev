@@ -27,14 +27,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class ShareForm extends ShareFormBase {
 
   /**
-   * The Joinup relation manager.
+   * The group relation info service.
    *
    * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
-   * Constructs a new ShareContentFormBase object.
+   * Constructs a new ShareForm.
    *
    * @param \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage
    *   The RDF entity storage.
@@ -48,12 +48,12 @@ abstract class ShareForm extends ShareFormBase {
    *   The current user account.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
-   *   The Joinup relation manager.
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   *   The group relation info service.
    */
-  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, JoinupRelationManagerInterface $relation_manager) {
+  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, JoinupRelationManagerInterface $relation_info) {
     parent::__construct($sparql_storage, $rdf_builder, $membership_manager, $role_manager, $current_user, $messenger);
-    $this->relationManager = $relation_manager;
+    $this->relationInfo = $relation_info;
   }
 
   /**
@@ -252,7 +252,7 @@ abstract class ShareForm extends ShareFormBase {
    */
   protected function getExcludedParent(): ?RdfInterface {
     if ($this->entity->getEntityTypeId() === 'node') {
-      return $this->relationManager->getParent($this->entity);
+      return $this->relationInfo->getParent($this->entity);
     }
     else {
       return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;

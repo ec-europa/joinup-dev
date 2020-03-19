@@ -89,11 +89,11 @@ abstract class NotificationSubscriberBase {
   protected $workflowHelper;
 
   /**
-   * The relation manager service.
+   * The relation info service.
    *
    * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * The message delivery service.
@@ -117,19 +117,19 @@ abstract class NotificationSubscriberBase {
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelperInterface $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $joinup_core_relations_manager
-   *   The relation manager service.
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   *   The relation info service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message delivery service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $joinup_core_workflow_helper, JoinupRelationManagerInterface $joinup_core_relations_manager, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $joinup_core_workflow_helper, JoinupRelationManagerInterface $relation_info, JoinupMessageDeliveryInterface $message_delivery) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
     $this->groupTypeManager = $og_group_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->workflowHelper = $joinup_core_workflow_helper;
-    $this->relationManager = $joinup_core_relations_manager;
+    $this->relationInfo = $relation_info;
     $this->messageDelivery = $message_delivery;
   }
 
@@ -280,7 +280,7 @@ abstract class NotificationSubscriberBase {
    */
   protected function getRecipientIdsByOgRole(EntityInterface $entity, OgRoleInterface $role): array {
     if (!$this->groupTypeManager->isGroup($entity->getEntityTypeId(), $entity->bundle())) {
-      $entity = $this->relationManager->getParent($entity);
+      $entity = $this->relationInfo->getParent($entity);
     }
     if (empty($entity)) {
       return [];
