@@ -6,7 +6,7 @@ services:
       - { name: cache.context }
   joinup_discussion.invitation_subscriber:
     class: Drupal\joinup_discussion\EventSubscriber\InvitationSubscriber
-    arguments: ['@joinup_subscription.discussion_subscription']
+    arguments: ['@joinup_subscription.discussion_subscription', '@messenger']
     tags:
       - { name: event_subscriber }
   joinup_discussion.subscribed_discussion:

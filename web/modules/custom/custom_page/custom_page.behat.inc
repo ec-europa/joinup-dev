@@ -55,23 +55,16 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
       return;
     }
 
-    // We want to copy it from the fixtures into the file system and register it
-    // in the CustomPageSubContext so it can be cleaned up after the scenario
-    // ends. Perform a small dance to get access to the context class from
-    // inside this static callback.
-    /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
-    $environment = $scope->getEnvironment();
-    /** @var \CustomPageSubContext $context */
-    $context = $environment->getContext(self::class);
-
-    if (!empty($node->attachments)) {
-      foreach ($context->explodeCommaSeparatedStepArgument($node->attachments) as $filename) {
-        /** @var \Drupal\file\FileInterface $file */
-        $context->createFile($filename);
-      }
-    }
-
     if (!empty($node->logo)) {
+      // We want to copy it from the fixtures into the file system and register
+      // it in the CustomPageSubContext so it can be cleaned up after the
+      // scenario ends. Perform a small dance to get access to the context class
+      // from inside this static callback.
+      /** @var \Behat\Behat\Context\Environment\InitializedContextEnvironment $environment */
+      $environment = $scope->getEnvironment();
+      /** @var \CustomPageSubContext $context */
+      $context = $environment->getContext(self::class);
+
       /** @var \Drupal\file\FileInterface $file */
       $file = $context->createFile($node->logo);
       $node->logo = $file->getFileUri();
@@ -86,11 +79,13 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to the :title custom page
    * @When I visit the :title custom page
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitCustomPage(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'custom_page');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**

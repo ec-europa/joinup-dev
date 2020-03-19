@@ -19,6 +19,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\joinup_community_content\CommunityContentHelper;
@@ -311,7 +312,7 @@ function joinup_core_rdf_entity_view(array &$build, EntityInterface $entity, Ent
   }
 
   $link = Link::fromTextAndUrl(t('here'), $url)->toString();
-  drupal_set_message(t('You are viewing the published version. To view the latest draft version, click @here.', [
+  \Drupal::messenger()->addMessage(t('You are viewing the published version. To view the latest draft version, click @here.', [
     '@here' => $link,
   ]), 'warning');
 }
@@ -432,17 +433,14 @@ function joinup_core_element_info_alter(array &$info) {
  * source file entity is deleted, thus we're fulfilling this task here.
  */
 function joinup_core_file_delete(EntityInterface $entity) {
-  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-  $file_system = \Drupal::service('file_system');
-
   /** @var \Drupal\file\FileInterface $entity */
   $uri = $entity->getFileUri();
-  $scheme = $file_system->uriScheme($uri);
+  $scheme = StreamWrapperManager::getScheme($uri);
   if ($scheme !== 'public') {
     return;
   }
 
-  $path = 'base:/' . \Drupal::service('stream_wrapper.public')->getDirectoryPath() . '/' . file_uri_target($uri);
+  $path = 'base:/' . \Drupal::service('stream_wrapper.public')->getDirectoryPath() . '/' . StreamWrapperManager::getTarget($uri);
 
   // Delete all redirects targeting this path.
   redirect_delete_by_path($path);
@@ -633,7 +631,6 @@ function joinup_core_search_api_index_items_alter(IndexInterface $index, array &
  */
 function joinup_core_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['actions']['submit']['#value'] = t('Sign in');
-  $form['#title'] = t('Sign in');
 }
 
 /**

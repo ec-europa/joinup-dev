@@ -84,7 +84,7 @@ class PinEntityController extends ControllerBase {
   public function pin(ContentEntityInterface $entity, RdfInterface $group) {
     $this->pinService->setEntityPinned($entity, $group, TRUE);
 
-    drupal_set_message($this->t('@bundle %title has been pinned in the @group_bundle %group.', [
+    $this->messenger()->addMessage($this->t('@bundle %title has been pinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
       '@group_bundle' => $group->bundle(),
@@ -108,7 +108,7 @@ class PinEntityController extends ControllerBase {
   public function unpin(ContentEntityInterface $entity, RdfInterface $group) {
     $this->pinService->setEntityPinned($entity, $group, FALSE);
 
-    drupal_set_message($this->t('@bundle %title has been unpinned in the @group_bundle %group.', [
+    $this->messenger()->addMessage($this->t('@bundle %title has been unpinned in the @group_bundle %group.', [
       '@bundle' => $entity->get($entity->getEntityType()->getKey('bundle'))->entity->label(),
       '%title' => $entity->label(),
       '@group_bundle' => $group->bundle(),

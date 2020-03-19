@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\Core\Site\Settings;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
 use Drupal\joinup\Traits\NodeTrait;
@@ -35,11 +36,13 @@ class JoinupEventSubContext extends DrupalSubContextBase {
    *
    * @When I go to the :title event
    * @When I visit the :title event
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitEvent(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'event');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**
@@ -56,6 +59,8 @@ class JoinupEventSubContext extends DrupalSubContextBase {
    */
   public static function massageEventFieldsBeforeNodeCreate(BeforeNodeCreateScope $scope): void {
     $node = $scope->getEntity();
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+    $date_formatter = \Drupal::service('date.formatter');
 
     if ($node->type !== 'event') {
       return;
@@ -69,7 +74,7 @@ class JoinupEventSubContext extends DrupalSubContextBase {
           throw new \Exception(sprintf('Invalid format for date specified: %s', $node->$field));
         }
 
-        $node->$field = $date;
+        $node->$field = $date_formatter->format($date, 'custom', DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
       }
     }
   }

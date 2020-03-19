@@ -50,10 +50,10 @@
     <!-- Install the website. -->
     <target name="install" depends="writable-settings-folder, writable-settings-php, disable-config-read-only">
         <drush
-            command="site-install"
-            assume="yes"
-            root="${website.drupal.dir}"
-            bin="${drush.bin}">
+                command="site-install"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
             <option name="db-url" value="${drupal.db.url}" />
             <option name="site-name" value="${website.site.name}" />
             <option name="account-name" value="${drupal.admin.username}" />
@@ -84,18 +84,18 @@
 
     <target name="import-rdf-fixtures">
         <rdf-import-fixtures
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            Port="${sparql.port}" />
+                IsqlPath="${isql.bin}"
+                DataSourceName="${sparql.dsn}"
+                Username="${sparql.user}"
+                Password="${sparql.password}"
+                Port="${sparql.port}" />
 
         <afterrdffixturesimport
-            IsqlPath="${isql.bin}"
-            DataSourceName="${sparql.dsn}"
-            Username="${sparql.user}"
-            Password="${sparql.password}"
-            Port="${sparql.port}" />
+                IsqlPath="${isql.bin}"
+                DataSourceName="${sparql.dsn}"
+                Username="${sparql.user}"
+                Password="${sparql.password}"
+                Port="${sparql.port}" />
     </target>
 
     <!-- Execute Drupal updates. -->
@@ -282,17 +282,26 @@
         </drush>
     </target>
 
-    <!-- Compile SASS to CSS. -->
-    <target name="compile-sass"
-            description="Compile the SASS to CSS.">
-        <!-- Make sure the CSS directory exists. -->
-        <mkdir dir="${sass.output.dir}" />
-        <sass
-            executable="${sass.bin}"
-            flags="--sourcemap=${sass.sourcemap}"
-            style="${sass.style}"
-            input="${sass.input}"
-            output="${sass.output.dir}/${sass.output.file}" />
+    <!-- Compile SCSS to CSS. -->
+    <target name="compile-scss"
+            description="Compile the SCSS to CSS.">
+        <mkdir dir="${scssphp.css.output.dir}" />
+        <if>
+            <istrue value="${scssphp.sourcemap}"/>
+            <then>
+                <property name="scss.sourcemap.arg" value="--sourcemap"/>
+            </then>
+            <else>
+                <property name="scss.sourcemap.arg" value=""/>
+            </else>
+        </if>
+
+        <exec executable="${scssphp.bin}"
+              output="${scssphp.css.output.file}">
+            <arg value="--style=${scssphp.style}"/>
+            <arg value="${scss.sourcemap.arg}"/>
+            <arg value="${scssphp.input.file}"/>
+        </exec>
     </target>
 
     <!-- Set the transaction type to READ-COMMITTED. -->
@@ -348,8 +357,8 @@
     <!-- Disable persistent session cookies, this is necessary for the "Remember
       me" option at user log in. -->
     <target name="disable-persistent-session-cookies"
-        description="Disable persistent session cookies"
-        depends="writable-settings-folder, writable-services-yml">
+            description="Disable persistent session cookies"
+            depends="writable-settings-folder, writable-services-yml">
 
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -366,10 +375,9 @@
         </reflexive>
     </target>
 
-    <target
-        name="enable-config-read-only"
-        depends="writable-settings-folder, writable-settings-php"
-        description="Enables config_readonly.">
+    <target name="enable-config-read-only"
+            depends="writable-settings-folder, writable-settings-php"
+            description="Enables config_readonly.">
 
         <!-- Remove any existing setting. -->
         <reflexive>
@@ -398,10 +406,9 @@
         </if>
     </target>
 
-    <target
-        name="disable-config-read-only"
-        depends="writable-settings-folder, writable-settings-php"
-        description="Disables config_readonly.">
+    <target name="disable-config-read-only"
+            depends="writable-settings-folder, writable-settings-php"
+            description="Disables config_readonly.">
         <touch file="${project.basedir}/disable-config-readonly" />
     </target>
 
@@ -417,15 +424,32 @@
 
     <!-- Create demo users. -->
     <target name="create-demo-users" description="Create demo users.">
-        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter="," />
+        <foreach list="${drupal.demo.users}" param="drupal.demo.user" target="create-demo-user" delimiter=","/>
         <!-- Create a user with only "authenticated user" role assigned. -->
         <drush
                 command="user-create"
                 assume="yes"
                 root="${website.drupal.dir}"
                 bin="${drush.bin}">
-            <option name="mail" value="user@example.com" />
-            <option name="password" value="user" />
+            <option name="mail" value="user@example.com"/>
+            <option name="password" value="user"/>
+            <param>user</param>
+        </drush>
+        <drush
+                command="cas-mock-server:user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>user</param>
+            <option name="email" value="user@example.com"/>
+            <option name="password" value="user"/>
+        </drush>
+        <drush
+                command="cas:set-cas-username"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>user</param>
             <param>user</param>
         </drush>
         <!-- Grant the moderator role also to the administrator. -->
@@ -436,6 +460,44 @@
                 bin="${drush.bin}">
             <param>moderator</param>
             <param>administrator</param>
+        </drush>
+    </target>
+
+    <!-- Create a demo user. Subtarget of "create-demo-users". -->
+    <target name="create-demo-user">
+        <drush
+                command="user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <option name="mail" value="${drupal.demo.user}@example.com" />
+            <option name="password" value="${drupal.demo.user}" />
+            <param>${drupal.demo.user}</param>
+        </drush>
+        <drush
+                command="user-add-role"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <param>${drupal.demo.user}</param>
+        </drush>
+        <drush
+                command="cas-mock-server:user-create"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <option name="email" value="${drupal.demo.user}@example.com" />
+            <option name="password" value="${drupal.demo.user}" />
+        </drush>
+        <drush
+                command="cas:set-cas-username"
+                assume="yes"
+                root="${website.drupal.dir}"
+                bin="${drush.bin}">
+            <param>${drupal.demo.user}</param>
+            <param>${drupal.demo.user}</param>
         </drush>
     </target>
 
@@ -542,12 +604,12 @@
     <target
         name="build-dist"
         description="Build a distribution package."
-        depends="install-composer-dependencies-dist, compile-sass" />
+        depends="install-composer-dependencies-dist, compile-scss" />
 
     <target
         name="build-dev"
         description="Build a development environment."
-        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-sass" />
+        depends="install-composer-dependencies, setup-behat, setup-php-codesniffer, setup-phpunit, setup-drush, compile-scss" />
 
     <target
         name="rebuild-dev"
@@ -563,5 +625,9 @@
         name="install-dev"
         description="Install the website and set up the development environment."
         depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server, enable-config-read-only" />
+
+    <target name="check-deprecated-code">
+        <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src scripts/composer tests/src" passthru="true" checkreturn="true"/>
+    </target>
 
 </project>

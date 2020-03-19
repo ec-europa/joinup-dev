@@ -8,7 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
-use Drupal\DrupalExtension\ScenarioTagTrait;
+use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\oe_newsroom_newsletter\NewsletterSubscriber\MockNewsletterSubscriber;
 use PHPUnit\Framework\Assert;
@@ -19,7 +19,7 @@ use PHPUnit\Framework\Assert;
 class OeNewsroomNewsletterSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
-  use ScenarioTagTrait;
+  use TagTrait;
 
   /**
    * The newsletter subscriber that was originally configured.
@@ -53,9 +53,7 @@ class OeNewsroomNewsletterSubContext extends DrupalSubContextBase {
    * developer is alerted if this tag is forgotten to be added to the scenario.
    */
   protected function assertNewsletterTagPresent(): void {
-    // @todo Change this to use TagTrait once ScenarioTagTrait is deprecated.
-    // @see https://github.com/jhedstrom/drupalextension/pull/510
-    $tags = $this->getScenario()->getTags();
+    $tags = $this->getTags();
     Assert::assertTrue(in_array('newsroom_newsletter', $tags));
   }
 

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group\EventSubscriber;
 
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\Core\Url;
@@ -37,16 +38,26 @@ class TransferGroupOwnershipSubscriber implements EventSubscriberInterface {
   protected $tempStore;
 
   /**
+   * The messenger.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Constructs a new event subscriber.
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user service.
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $tempstore_factory
    *   The user private tempstore factory.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
    */
-  public function __construct(AccountInterface $current_user, PrivateTempStoreFactory $tempstore_factory) {
+  public function __construct(AccountInterface $current_user, PrivateTempStoreFactory $tempstore_factory, MessengerInterface $messenger) {
     $this->currentUser = $current_user;
     $this->tempStore = $tempstore_factory->get('joinup_transfer_group_ownership');
+    $this->messenger = $messenger;
   }
 
   /**
@@ -78,7 +89,7 @@ class TransferGroupOwnershipSubscriber implements EventSubscriberInterface {
         if (!empty($data['messages'])) {
           foreach ($data['messages'] as $severity => $messages) {
             foreach ($messages as $message) {
-              drupal_set_message($message, $severity);
+              $this->messenger->addMessage($message, $severity);
             }
           }
           $membership = OgMembership::load($data['membership']);

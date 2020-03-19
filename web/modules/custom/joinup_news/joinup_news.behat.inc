@@ -5,6 +5,8 @@
  * Contains \NewsSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\joinup\Traits\NodeTrait;
@@ -24,11 +26,13 @@ class JoinupNewsSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to the :title news
    * @When I visit the :title news
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitNewsPage($title) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'news');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
 }
