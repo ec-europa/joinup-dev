@@ -521,7 +521,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I go to the distribution downloads page
    */
   public function goToDistributionDownloadsPage(): void {
-    $this->visitPath('admin/statistics/distribution-downloads');
+    $this->visitPath('admin/reporting/distribution-downloads');
   }
 
   /**
