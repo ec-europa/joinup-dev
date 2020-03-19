@@ -89,22 +89,23 @@ function joinup_core_requirements($phase) {
     }
 
     // Ensure that no solutions are orphaned.
-    $requirements['joinup_core_no_orphaned_solutions'] = [
-      'title' => t('Orphaned solutions'),
-      'description' => t('All solutions have an affiliated collection.'),
-      'value' => t('All solutions have an affiliated collection.'),
-    ];
-
     $results = \Drupal::service('joinup_core.requirements_helper')->getOrphanedSolutions();
     if (!empty($results)) {
-      $error = t('The following solutions were found without an affiliation: :errors', [
+      $value = t('The following solutions were found without an affiliation: :errors', [
         ':errors' => implode("\n", array_values($results)),
       ]);
-      $requirements['joinup_core_no_orphaned_solutions'] += [
-        'severity' => REQUIREMENT_ERROR,
-        'value' => $error,
-      ];
+      $severity = REQUIREMENT_ERROR;
     }
+    else {
+      $value = t('All solutions have an affiliated collection.');
+      $severity = REQUIREMENT_OK;
+    }
+    $requirements['joinup_core_no_orphaned_solutions'] = [
+      'title' => t('Orphaned solutions'),
+      'description' => t('All solutions should have an affiliated collection.'),
+      'severity' => $severity,
+      'value' => $value,
+    ];
   }
 
   return $requirements;
