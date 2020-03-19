@@ -2,10 +2,10 @@
 // @codingStandardsIgnoreFile
 
 /**
- * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_group\JoinupRelationManager' "modules/custom/joinup_core/src".
+ * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_group\JoinupRelationManager' "modules/custom/joinup_group/src".
  */
 
-namespace Drupal\joinup_core\ProxyClass {
+namespace Drupal\joinup_group\ProxyClass {
 
     /**
      * Provides a proxy class for \Drupal\joinup_group\JoinupRelationManager.
