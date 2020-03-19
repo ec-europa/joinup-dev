@@ -193,7 +193,7 @@ abstract class ShareFormBase extends FormBase {
    */
   protected function getExcludedParent(): ?RdfInterface {
     if ($this->entity->getEntityTypeId() === 'node') {
-      return $this->relationManager->getParent($this->entity);
+      return $this->relationInfo->getParent($this->entity);
     }
     else {
       return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;

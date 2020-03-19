@@ -9,7 +9,7 @@ services:
     arguments: ['@og.membership_manager', '@entity_type.manager']
     lazy: true
   joinup_group.relation_info:
-    class: Drupal\joinup_group\JoinupRelationManager
+    class: Drupal\joinup_group\JoinupGroupRelationInfo
     arguments: ['@og.membership_manager', '@entity_type.manager']
     lazy: true
   joinup_group.route_subscriber:

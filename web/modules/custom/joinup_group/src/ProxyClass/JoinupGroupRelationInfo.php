@@ -2,13 +2,13 @@
 // @codingStandardsIgnoreFile
 
 /**
- * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_group\JoinupRelationManager' "modules/custom/joinup_group/src".
+ * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_group\JoinupGroupRelationInfo' "modules/custom/joinup_group/src".
  */
 
 namespace Drupal\joinup_group\ProxyClass {
 
     /**
-     * Provides a proxy class for \Drupal\joinup_group\JoinupRelationManager.
+     * Provides a proxy class for \Drupal\joinup_group\JoinupGroupRelationInfo.
      *
      * @see \Drupal\Component\ProxyBuilder
      */

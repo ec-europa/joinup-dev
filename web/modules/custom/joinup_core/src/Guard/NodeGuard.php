@@ -27,11 +27,11 @@ class NodeGuard implements GuardInterface {
   protected $currentUser;
 
   /**
-   * The relation manager service.
+   * The relation info service.
    *
    * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * The allowed transitions array.
@@ -67,8 +67,8 @@ class NodeGuard implements GuardInterface {
    * The classes inheriting this class, should also ensure that they set the
    * protected variable $transitions to be used by the ::allowed() method.
    *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationManager
-   *   The relation manager service.
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
+   *   The relation info service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
@@ -78,8 +78,8 @@ class NodeGuard implements GuardInterface {
    * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The workflow state permission service.
    */
-  public function __construct(JoinupGroupRelationInfoInterface $relationManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
-    $this->relationManager = $relationManager;
+  public function __construct(JoinupGroupRelationInfoInterface $relationInfo, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
+    $this->relationInfo = $relationInfo;
     $this->currentUser = $currentUser;
     $this->workflowHelper = $workflow_helper;
     $this->permissionScheme = $configFactory->get('joinup_community_content.permission_scheme');
@@ -104,7 +104,7 @@ class NodeGuard implements GuardInterface {
   public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $permission_scheme = $this->permissionScheme->get('create');
     $workflow_id = $workflow->getId();
-    $content_creation = (string) $this->relationManager->getParentContentCreationOption($entity);
+    $content_creation = (string) $this->relationInfo->getParentContentCreationOption($entity);
 
     if (!isset($permission_scheme[$workflow_id][$content_creation][$transition->getId()])) {
       return FALSE;

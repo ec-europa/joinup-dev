@@ -40,11 +40,11 @@ class GroupAdministratorsController extends ControllerBase {
   protected $groupTypeManager;
 
   /**
-   * The Joinup relation manager.
+   * The Joinup group relation info service.
    *
    * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
-  protected $joinupRelationManager;
+  protected $relationInfo;
 
   /**
    * The entity type bundle info service.
@@ -65,16 +65,16 @@ class GroupAdministratorsController extends ControllerBase {
    *
    * @param \Drupal\og\GroupTypeManager $groupTypeManager
    *   The OG group type manager.
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $joinupRelationManager
-   *   The Joinup relation manager.
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
+   *   The Joinup group relation info service.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
    *   The entity type bundle info service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   The current route match service.
    */
-  public function __construct(GroupTypeManager $groupTypeManager, JoinupGroupRelationInfoInterface $joinupRelationManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, RouteMatchInterface $routeMatch) {
+  public function __construct(GroupTypeManager $groupTypeManager, JoinupGroupRelationInfoInterface $relationInfo, EntityTypeBundleInfoInterface $entityTypeBundleInfo, RouteMatchInterface $routeMatch) {
     $this->groupTypeManager = $groupTypeManager;
-    $this->joinupRelationManager = $joinupRelationManager;
+    $this->relationInfo = $relationInfo;
     $this->entityTypeBundleInfo = $entityTypeBundleInfo;
     $this->routeMatch = $routeMatch;
   }
@@ -375,7 +375,7 @@ class GroupAdministratorsController extends ControllerBase {
     // Since this is a moderator-only feature that is rarely used we don't need
     // to worry about the potential performance impact of loading a large number
     // of memberships.
-    $collection_ids = $this->joinupRelationManager->getCollectionIds();
+    $collection_ids = $this->relationInfo->getCollectionIds();
 
     if (empty($collection_ids)) {
       return [];

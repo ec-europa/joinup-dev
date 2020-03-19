@@ -37,24 +37,24 @@ class PinEntityController extends ControllerBase {
   protected $pinService;
 
   /**
-   * The Joinup relation manager.
+   * The Joinup group relation info service.
    *
    * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * Instantiates a new PinEntityController object.
    *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationManager
-   *   The Joinup relation manager.
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
+   *   The Joinup group relation info service.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    * @param \Drupal\joinup\PinServiceInterface $pinService
    *   The pin service.
    */
-  public function __construct(JoinupGroupRelationInfoInterface $relationManager, OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
-    $this->relationManager = $relationManager;
+  public function __construct(JoinupGroupRelationInfoInterface $relationInfo, OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
+    $this->relationInfo = $relationInfo;
     $this->ogAccess = $ogAccess;
     $this->pinService = $pinService;
   }
@@ -190,7 +190,7 @@ class PinEntityController extends ControllerBase {
       $groups = $entity->get('collection')->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      $groups = [$this->relationManager->getParent($entity)];
+      $groups = [$this->relationInfo->getParent($entity)];
     }
 
     $list = [];

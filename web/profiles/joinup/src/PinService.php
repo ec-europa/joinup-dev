@@ -25,20 +25,20 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   const SOLUTION_PIN_FIELD = 'field_is_pinned_in';
 
   /**
-   * The relations manager service.
+   * The group relations info service.
    *
    * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * Constructs a PinService service.
    *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationManager
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
    *   The relations manager service.
    */
-  public function __construct(JoinupGroupRelationInfoInterface $relationManager) {
-    $this->relationManager = $relationManager;
+  public function __construct(JoinupGroupRelationInfoInterface $relationInfo) {
+    $this->relationInfo = $relationInfo;
   }
 
   /**
@@ -109,7 +109,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {
-      return [$this->relationManager->getParent($entity)];
+      return [$this->relationInfo->getParent($entity)];
     }
 
     return [];

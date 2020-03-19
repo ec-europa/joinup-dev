@@ -53,7 +53,7 @@ function joinup_news_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'news') {
     throw new Exception('This method can only be called for document entities');
   }
-  /** @var \Drupal\joinup_group\JoinupRelationManager $relation_info */
+  /** @var \Drupal\joinup_group\JoinupGroupRelationInfo $relation_info */
   $relation_info = \Drupal::service('joinup_group.relation_info');
   $moderation = $relation_info->getParentModeration($entity);
   $moderation_type = $moderation == 1 ? 'pre_moderated' : 'post_moderated';
@@ -144,7 +144,7 @@ into the class. For example, in the joinup_news module, this is the constructor:
 ```
 public function __construct(
   EntityTypeManagerInterface $entityTypeManager,
-  JoinupRelationManager $relationInfo,
+  JoinupGroupRelationInfoInterface $relationInfo,
   MembershipManagerInterface $ogMembershipManager,
   ConfigFactoryInterface $configFactory,
   AccountInterface $currentUser

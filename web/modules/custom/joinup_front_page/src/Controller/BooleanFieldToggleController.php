@@ -22,20 +22,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class BooleanFieldToggleController extends ControllerBase {
 
   /**
-   * The Joinup relation manager.
+   * The Joinup group relation info service.
    *
    * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
-  protected $relationManager;
+  protected $relationInfo;
 
   /**
    * Instantiates a new SiteFeatureController object.
    *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationManager
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
    *   The Joinup relation manager.
    */
-  public function __construct(JoinupGroupRelationInfoInterface $relationManager) {
-    $this->relationManager = $relationManager;
+  public function __construct(JoinupGroupRelationInfoInterface $relationInfo) {
+    $this->relationInfo = $relationInfo;
   }
 
   /**
@@ -113,7 +113,7 @@ class BooleanFieldToggleController extends ControllerBase {
       $redirect = $entity->toUrl();
     }
     else {
-      $redirect = $this->relationManager->getParent($entity)->toUrl();
+      $redirect = $this->relationInfo->getParent($entity)->toUrl();
     }
 
     return $this->redirect($redirect->getRouteName(), $redirect->getRouteParameters());
