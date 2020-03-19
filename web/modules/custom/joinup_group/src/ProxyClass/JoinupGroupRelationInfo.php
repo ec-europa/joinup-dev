@@ -12,7 +12,7 @@ namespace Drupal\joinup_group\ProxyClass {
      *
      * @see \Drupal\Component\ProxyBuilder
      */
-    class JoinupRelationManager implements \Drupal\joinup_group\JoinupRelationManagerInterface, \Drupal\Core\DependencyInjection\ContainerInjectionInterface
+    class JoinupGroupRelationInfo implements \Drupal\joinup_group\JoinupGroupRelationInfoInterface, \Drupal\Core\DependencyInjection\ContainerInjectionInterface
     {
 
         use \Drupal\Core\DependencyInjection\DependencySerializationTrait;
@@ -27,7 +27,7 @@ namespace Drupal\joinup_group\ProxyClass {
         /**
          * The real proxied service, after it was lazy loaded.
          *
-         * @var \Drupal\joinup_group\JoinupRelationManager
+         * @var \Drupal\joinup_group\JoinupGroupRelationInfo
          */
         protected $service;
 
@@ -72,7 +72,7 @@ namespace Drupal\joinup_group\ProxyClass {
          */
         public static function create(\Symfony\Component\DependencyInjection\ContainerInterface $container)
         {
-            \Drupal\joinup_group\JoinupRelationManager::create($container);
+            \Drupal\joinup_group\JoinupGroupRelationInfo::create($container);
         }
 
         /**

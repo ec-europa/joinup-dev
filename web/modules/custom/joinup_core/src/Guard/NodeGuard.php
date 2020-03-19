@@ -7,7 +7,7 @@ namespace Drupal\joinup_core\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_group\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -29,7 +29,7 @@ class NodeGuard implements GuardInterface {
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
   protected $relationManager;
 
@@ -67,7 +67,7 @@ class NodeGuard implements GuardInterface {
    * The classes inheriting this class, should also ensure that they set the
    * protected variable $transitions to be used by the ::allowed() method.
    *
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relationManager
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationManager
    *   The relation manager service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory service.
@@ -78,7 +78,7 @@ class NodeGuard implements GuardInterface {
    * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The workflow state permission service.
    */
-  public function __construct(JoinupRelationManagerInterface $relationManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
+  public function __construct(JoinupGroupRelationInfoInterface $relationManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->relationManager = $relationManager;
     $this->currentUser = $currentUser;
     $this->workflowHelper = $workflow_helper;

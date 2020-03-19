@@ -12,7 +12,7 @@ use Drupal\rdf_entity\RdfInterface;
 /**
  * An interface for Joinup relation manager services.
  */
-interface JoinupRelationManagerInterface {
+interface JoinupGroupRelationInfoInterface {
 
   /**
    * Retrieves the parent of the entity.

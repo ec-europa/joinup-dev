@@ -7,7 +7,7 @@ namespace Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\joinup_group\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\simple_sitemap\EntityHelper;
 use Drupal\simple_sitemap\Logger;
 use Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\EntityUrlGenerator;
@@ -30,7 +30,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
   /**
    * The Joinup group relation info service.
    *
-   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
   protected $relationInfo;
 
@@ -55,10 +55,10 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    *   The sitemap entity helper service.
    * @param \Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\UrlGeneratorManager $url_generator_manager
    *   The url generator manager service.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
    *   The joinup group relation info service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupRelationManagerInterface $relation_info) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupGroupRelationInfoInterface $relation_info) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $generator, $logger, $language_manager, $entity_type_manager, $entityHelper, $url_generator_manager);
     $this->urlGeneratorManager = $url_generator_manager;
     $this->relationInfo = $relation_info;

@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_group\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
@@ -84,7 +84,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * The group relation info service.
    *
-   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
   protected $relationInfo;
 
@@ -116,7 +116,7 @@ class NodeWorkflowAccessControlHandler {
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
    *   The group relation info service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
@@ -125,7 +125,7 @@ class NodeWorkflowAccessControlHandler {
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupRelationManagerInterface $relation_info, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupGroupRelationInfoInterface $relation_info, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
     $this->relationInfo = $relation_info;

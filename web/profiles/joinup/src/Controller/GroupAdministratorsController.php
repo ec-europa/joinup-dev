@@ -16,7 +16,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\csv_serialization\Encoder\CsvEncoder;
-use Drupal\joinup_group\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\og\GroupTypeManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +42,7 @@ class GroupAdministratorsController extends ControllerBase {
   /**
    * The Joinup relation manager.
    *
-   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
   protected $joinupRelationManager;
 
@@ -65,14 +65,14 @@ class GroupAdministratorsController extends ControllerBase {
    *
    * @param \Drupal\og\GroupTypeManager $groupTypeManager
    *   The OG group type manager.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $joinupRelationManager
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $joinupRelationManager
    *   The Joinup relation manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
    *   The entity type bundle info service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   The current route match service.
    */
-  public function __construct(GroupTypeManager $groupTypeManager, JoinupRelationManagerInterface $joinupRelationManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, RouteMatchInterface $routeMatch) {
+  public function __construct(GroupTypeManager $groupTypeManager, JoinupGroupRelationInfoInterface $joinupRelationManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, RouteMatchInterface $routeMatch) {
     $this->groupTypeManager = $groupTypeManager;
     $this->joinupRelationManager = $joinupRelationManager;
     $this->entityTypeBundleInfo = $entityTypeBundleInfo;

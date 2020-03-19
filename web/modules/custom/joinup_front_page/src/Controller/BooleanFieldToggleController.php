@@ -7,7 +7,7 @@ namespace Drupal\joinup_front_page\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\joinup_group\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -24,17 +24,17 @@ class BooleanFieldToggleController extends ControllerBase {
   /**
    * The Joinup relation manager.
    *
-   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
   protected $relationManager;
 
   /**
    * Instantiates a new SiteFeatureController object.
    *
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relationManager
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationManager
    *   The Joinup relation manager.
    */
-  public function __construct(JoinupRelationManagerInterface $relationManager) {
+  public function __construct(JoinupGroupRelationInfoInterface $relationManager) {
     $this->relationManager = $relationManager;
   }
 

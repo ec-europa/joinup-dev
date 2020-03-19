@@ -44,7 +44,7 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
   }
 
   $token_service = \Drupal::token();
-  /** @var \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info */
+  /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
   $relation_info = \Drupal::service('joinup_group.relation_info');
   if (isset($tokens['parent_collection'])) {
     $original = $tokens['parent_collection'];

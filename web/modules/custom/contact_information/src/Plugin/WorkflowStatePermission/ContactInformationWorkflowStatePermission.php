@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_group\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -37,7 +37,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   /**
    * The relation info service.
    *
-   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
    */
   protected $relationInfo;
 
@@ -66,14 +66,14 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    *   The plugin implementation definition.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
-   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info
+   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
    *   The relation info service.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, JoinupRelationManagerInterface $relation_info, MembershipManagerInterface $membership_manager, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, JoinupGroupRelationInfoInterface $relation_info, MembershipManagerInterface $membership_manager, WorkflowHelperInterface $workflow_helper) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
     $this->relationInfo = $relation_info;

@@ -110,7 +110,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
     throw new Exception('This function can only be called for community content apart from discussion.');
   }
 
-  /** @var \Drupal\joinup_group\JoinupRelationManagerInterface $relation_info */
+  /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
   $relation_info = \Drupal::service('joinup_group.relation_info');
   $moderation = $relation_info->getParentModeration($entity);
   return $moderation == NodeWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';

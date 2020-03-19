@@ -174,7 +174,7 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     return AccessResult::neutral();
   }
 
-  /** @var \Drupal\joinup_group\JoinupRelationManager $relation_info */
+  /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
   $relation_info = \Drupal::service('joinup_group.relation_info');
   $parent = $relation_info->getParent($node);
   // Let parentless nodes (e.g. newsletters) be handled by the core access.

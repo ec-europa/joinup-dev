@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Service to manage relations for the group content entities.
  */
-class JoinupRelationManager implements JoinupRelationManagerInterface, ContainerInjectionInterface {
+class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, ContainerInjectionInterface {
 
   /**
    * The entity type manager.
