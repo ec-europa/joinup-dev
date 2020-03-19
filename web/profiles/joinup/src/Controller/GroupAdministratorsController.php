@@ -16,7 +16,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\csv_serialization\Encoder\CsvEncoder;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\og\GroupTypeManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +42,7 @@ class GroupAdministratorsController extends ControllerBase {
   /**
    * The Joinup relation manager.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $joinupRelationManager;
 
@@ -65,7 +65,7 @@ class GroupAdministratorsController extends ControllerBase {
    *
    * @param \Drupal\og\GroupTypeManager $groupTypeManager
    *   The OG group type manager.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinupRelationManager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $joinupRelationManager
    *   The Joinup relation manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
    *   The entity type bundle info service.

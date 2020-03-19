@@ -55,7 +55,7 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
           break;
 
         case 'path-to-community-content':
-          /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
+          /** @var \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager */
           $relation_manager = \Drupal::service('joinup_core.relations_manager');
           $path_parts = [];
 

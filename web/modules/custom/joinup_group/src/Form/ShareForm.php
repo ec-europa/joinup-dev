@@ -14,7 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleManagerInterface;
 use Drupal\sparql_entity_storage\SparqlEntityStorage;
@@ -29,7 +29,7 @@ abstract class ShareForm extends ShareFormBase {
   /**
    * The Joinup relation manager.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -48,7 +48,7 @@ abstract class ShareForm extends ShareFormBase {
    *   The current user account.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
    *   The Joinup relation manager.
    */
   public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, JoinupRelationManagerInterface $relation_manager) {

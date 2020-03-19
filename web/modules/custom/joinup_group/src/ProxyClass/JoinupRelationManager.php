@@ -12,7 +12,7 @@ namespace Drupal\joinup_group\ProxyClass {
      *
      * @see \Drupal\Component\ProxyBuilder
      */
-    class JoinupRelationManager implements \Drupal\joinup_core\JoinupRelationManagerInterface, \Drupal\Core\DependencyInjection\ContainerInjectionInterface
+    class JoinupRelationManager implements \Drupal\joinup_group\JoinupRelationManagerInterface, \Drupal\Core\DependencyInjection\ContainerInjectionInterface
     {
 
         use \Drupal\Core\DependencyInjection\DependencySerializationTrait;

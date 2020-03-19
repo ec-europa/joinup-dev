@@ -7,7 +7,7 @@ namespace Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\simple_sitemap\EntityHelper;
 use Drupal\simple_sitemap\Logger;
 use Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\EntityUrlGenerator;
@@ -30,7 +30,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
   /**
    * The Joinup relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -55,7 +55,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    *   The sitemap entity helper service.
    * @param \Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\UrlGeneratorManager $url_generator_manager
    *   The url generator manager service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
    *   The joinup relation manager service.
    */
   public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupRelationManagerInterface $relation_manager) {

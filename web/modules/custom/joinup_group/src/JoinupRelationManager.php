@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;

@@ -7,7 +7,7 @@ namespace Drupal\joinup;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,14 +27,14 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   /**
    * The relations manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
   /**
    * Constructs a PinService service.
    *
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relationManager
    *   The relations manager service.
    */
   public function __construct(JoinupRelationManagerInterface $relationManager) {

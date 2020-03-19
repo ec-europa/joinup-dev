@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
@@ -83,7 +84,7 @@ class NodeWorkflowAccessControlHandler {
   /**
    * The discussions relation manager.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -122,7 +123,7 @@ class NodeWorkflowAccessControlHandler {
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
    *   The relation manager service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.

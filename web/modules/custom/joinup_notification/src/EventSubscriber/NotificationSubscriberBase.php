@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
@@ -91,7 +91,7 @@ abstract class NotificationSubscriberBase {
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -117,7 +117,7 @@ abstract class NotificationSubscriberBase {
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelperInterface $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinup_core_relations_manager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $joinup_core_relations_manager
    *   The relation manager service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message delivery service.

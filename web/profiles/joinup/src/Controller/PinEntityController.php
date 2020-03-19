@@ -11,7 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\PinServiceInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -39,14 +39,14 @@ class PinEntityController extends ControllerBase {
   /**
    * The Joinup relation manager.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
   /**
    * Instantiates a new PinEntityController object.
    *
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relationManager
    *   The Joinup relation manager.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.

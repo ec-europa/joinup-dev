@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -37,7 +37,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -66,7 +66,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    *   The plugin implementation definition.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager
    *   The relation manager service.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The membership manager service.

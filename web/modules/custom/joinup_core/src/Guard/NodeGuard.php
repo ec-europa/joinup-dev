@@ -7,7 +7,7 @@ namespace Drupal\joinup_core\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -29,7 +29,7 @@ class NodeGuard implements GuardInterface {
   /**
    * The relation manager service.
    *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
+   * @var \Drupal\joinup_group\JoinupRelationManagerInterface
    */
   protected $relationManager;
 
@@ -67,7 +67,7 @@ class NodeGuard implements GuardInterface {
    * The classes inheriting this class, should also ensure that they set the
    * protected variable $transitions to be used by the ::allowed() method.
    *
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $relationManager
    *   The relation manager service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory service.

@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupRelationManagerInterface;
 use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
@@ -85,7 +85,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinup_core_relations_manager
+   * @param \Drupal\joinup_group\JoinupRelationManagerInterface $joinup_core_relations_manager
    *   The relation manager service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message deliver service.
