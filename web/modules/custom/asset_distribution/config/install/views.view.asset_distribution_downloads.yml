@@ -558,13 +558,13 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/statistics/distribution-downloads
+      path: admin/reporting/distribution-downloads
       menu:
         type: normal
         title: 'Distribution downloads'
         description: ''
         expanded: false
-        parent: system.admin
+        parent: joinup.admin_reporting
         weight: 50
         context: '0'
         menu_name: admin
