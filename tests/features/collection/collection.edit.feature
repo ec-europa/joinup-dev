@@ -13,12 +13,12 @@ Feature: Editing collections
       | name  | Collection editorial             |
       | email | collection.editorial@example.com |
     And collections:
-      | title                 | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                               | elibrary creation | moderation | policy domain     | owner                | contact information  | state |
-      | Überwaldean Land Eels | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified. | facilitators      | yes        | Supplier exchange | Organisation example | Collection editorial | draft |
+      | title                 | logo     | banner     | abstract                                   | access url                             | closed | creation date    | description                               | content creation | moderation | policy domain     | owner                | contact information  | state |
+      | Überwaldean Land Eels | logo.png | banner.jpg | Read up on all about <strong>dogs</strong> | http://dogtime.com/dog-breeds/profiles | yes    | 28-01-1995 12:05 | The Afghan Hound is elegance personified. | facilitators     | yes        | Supplier exchange | Organisation example | Collection editorial | draft |
     When I am logged in as a facilitator of the "Überwaldean Land Eels" collection
     And I go to the homepage of the "Überwaldean Land Eels" collection
     And I click "Edit" in the "Entity actions" region
-    Then the following fields should be present "Title, Description, Abstract, Policy domain, Geographical coverage, Closed collection, eLibrary creation, Moderated, Motivation"
+    Then the following fields should be present "Title, Description, Abstract, Policy domain, Geographical coverage, Content creation, Moderated, Motivation"
     And the following field widgets should be present "Contact information, Owner"
     And the following fields should not be present "Langcode, Translation, Affiliates, Enable the search field, Query presets, Limit"
     And I should see "Short description text of the collection. Appears on the Overview page. (Leave blank to use the trimmed value of the Description field.)"

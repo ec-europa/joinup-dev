@@ -13,8 +13,9 @@ use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\TagTrait;
 use Drupal\joinup\Traits\ConfigReadOnlyTrait;
 use Drupal\joinup\Traits\MailCollectorTrait;
-use Drupal\joinup\Traits\UtilityTrait;
+use Drupal\joinup\Traits\MailConfigTrait;
 use Drupal\joinup\Traits\UserTrait;
+use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\message\Entity\MessageTemplate;
 use PHPUnit\Framework\Assert;
 
@@ -25,6 +26,7 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
 
   use ConfigReadOnlyTrait;
   use MailCollectorTrait;
+  use MailConfigTrait;
   use TagTrait;
   use UserTrait;
   use UtilityTrait;
@@ -506,29 +508,19 @@ class JoinupNotificationSubContext extends DrupalSubContextBase {
    * @BeforeScenario @email
    */
   public function beforeEmailScenario(): void {
-    // Check if the user is overriding the mail system configuration in
-    // settings.php, and abort the test if this is the case.
-    $settings = \Drupal::configFactory()->get('mailsystem.settings');
-    $settings_are_overridden = $settings->hasOverrides('defaults.sender');
-    $settings_are_using_test_mail_collector = $settings->get('defaults.sender') === 'test_mail_collector';
-    if ($settings_are_overridden && !$settings_are_using_test_mail_collector) {
-      throw new \Exception('Cannot inspect emails since the "mailsystem.settings.defaults.sender" is overridden in settings.php.');
-    }
-    // Set up the testing mail system. This is only needed if we aren't already
-    // using it.
-    if (!$settings_are_using_test_mail_collector) {
-      self::bypassReadOnlyConfig();
+    if (!$this->isTestMailCollectorUsed()) {
+      // Check if the mail system configuration has been overridden in
+      // settings.php or settings.local.php.
+      $this->checkMailConfigOverride();
 
+      self::bypassReadOnlyConfig();
       $this->mailConfig = \Drupal::configFactory()->getEditable('mailsystem.settings');
       $this->savedMailDefaults = $this->mailConfig->get('defaults.sender');
       $this->mailConfig->set('defaults.sender', 'test_mail_collector')->save();
-
       self::restoreReadOnlyConfig();
     }
-
-    // Clear out any mails from previous scenarios.
-    \Drupal::state()->set('system.test_mail_collector', []);
-    \Drupal::state()->resetCache();
+    // Reset the mail collector by wiping any leftovers from a previous test.
+    \Drupal::state()->delete('system.test_mail_collector');
   }
 
   /**
