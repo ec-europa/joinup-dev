@@ -134,7 +134,7 @@ settings](../joinup_news/config/install/joinup_news.settings) file.
 ### The guard class
 The `Guard class` will take care of the allowed transitions. This class
 is now centralized and the base class exists in joinup_core. This class is
-`Drupal\joinup_core\Guard\NodeGuard`. The guard classes of the community content
+`Drupal\joinup_community_content\Guard\NodeGuard`. The guard classes of the community content
 should extend this class and make use of the `allowed()` method -if possible-
 without overriding it.
 The only thing needed to be done in the guard class, is to load the

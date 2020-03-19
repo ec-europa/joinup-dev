@@ -1,9 +1,4 @@
 services:
-  joinup_core.fulfillment_guard:
-    class: Drupal\joinup_core\Guard\NodeGuard
-    arguments: ['@joinup_group.relation_info', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']
-    tags:
-      - { name: state_machine.guard, group: community_content }
   joinup_core.joinup_version:
     class: Drupal\joinup_core\JoinupVersion
   joinup_core.node_workflow_access:

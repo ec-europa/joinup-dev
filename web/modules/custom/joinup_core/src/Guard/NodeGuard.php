@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Guard;
+namespace Drupal\joinup_community_content\Guard;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -15,7 +15,7 @@ use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
- * Guard class for the transitions of nodes.
+ * Guard class for the transitions of community content.
  */
 class NodeGuard implements GuardInterface {
 
