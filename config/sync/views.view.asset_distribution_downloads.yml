@@ -4,8 +4,6 @@ status: true
 dependencies:
   config:
     - system.menu.admin
-    - user.role.administrator
-    - user.role.moderator
   module:
     - asset_distribution
     - file
@@ -27,11 +25,9 @@ display:
     position: 0
     display_options:
       access:
-        type: role
+        type: perm
         options:
-          role:
-            moderator: moderator
-            administrator: administrator
+          perm: 'access distribution reports'
       cache:
         type: tag
         options: {  }
@@ -556,7 +552,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user.roles
+        - user.permissions
       tags: {  }
   page_1:
     display_plugin: page
@@ -587,5 +583,5 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user.roles
+        - user.permissions
       tags: {  }
