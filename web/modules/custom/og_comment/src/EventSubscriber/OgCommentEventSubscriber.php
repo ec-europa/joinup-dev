@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\og\EventSubscriber;
+namespace Drupal\og_comment\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;

@@ -36,11 +36,13 @@ class JoinupEventSubContext extends DrupalSubContextBase {
    *
    * @When I go to the :title event
    * @When I visit the :title event
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitEvent(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'event');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**

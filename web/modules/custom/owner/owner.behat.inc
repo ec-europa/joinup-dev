@@ -5,6 +5,8 @@
  * Contains \OwnerSubContext.
  */
 
+declare(strict_types = 1);
+
 use Behat\Gherkin\Node\TableNode;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
@@ -100,7 +102,7 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *
    * @Then I should have :number owner/owners
    */
-  public function assertOwnerCount($number) {
+  public function assertOwnerCount(int $number): void {
     $this->assertRdfEntityCount($number, 'owner');
   }
 
@@ -183,11 +185,13 @@ class OwnerSubContext extends DrupalSubContextBase implements DrupalSubContextIn
    *
    * @When I go to (the homepage of )the :owner owner
    * @When I visit (the homepage of )the :owner owner
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitOwner($owner) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $owner */
-    $owner = $this->getRdfEntityByLabel($owner, 'owner');
-    $this->visitPath($owner->url());
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getRdfEntityByLabel($owner, 'owner');
+    $this->visitPath($entity->toUrl()->toString());
   }
 
 }

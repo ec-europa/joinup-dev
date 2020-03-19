@@ -47,11 +47,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I visit (the homepage of )the :asset_distribution distribution
    * @When I go to (the homepage of )the :asset_distribution asset distribution
    * @When I visit (the homepage of )the :asset_distribution asset distribution
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getAssetDistributionByName($asset_distribution);
-    $this->visitPath($entity->url());
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**
@@ -62,11 +64,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @When I go to the :asset_distribution asset distribution edit form
    * @When I visit the :asset_distribution asset distribution edit form
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitEditAssetDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getAssetDistributionByName($asset_distribution);
-    $path = $entity->url('edit-form');
+    $path = $entity->toUrl('edit-form')->toString();
     $this->visitPath($path);
   }
 

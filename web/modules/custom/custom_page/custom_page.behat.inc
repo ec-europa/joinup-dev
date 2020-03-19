@@ -79,11 +79,13 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to the :title custom page
    * @When I visit the :title custom page
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitCustomPage(string $title): void {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'custom_page');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**

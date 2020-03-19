@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -12,17 +14,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FileFields extends ControllerBase {
 
   /**
-   * The entity manager.
+   * The entity field manager.
    *
    * @var \Drupal\Core\Entity\EntityFieldManagerInterface
    */
   protected $entityFieldManager;
 
   /**
-   * Constructs a new class instance.
+   * Constructs a new FileFields controller.
    *
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
-   *   The entity manager.
+   *   The entity field manager.
    */
   public function __construct(EntityFieldManagerInterface $entity_field_manager) {
     $this->entityFieldManager = $entity_field_manager;

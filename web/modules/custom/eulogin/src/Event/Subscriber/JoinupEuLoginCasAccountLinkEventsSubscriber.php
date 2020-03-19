@@ -7,6 +7,8 @@ namespace Drupal\joinup_eulogin\Event\Subscriber;
 use Drupal\cas_account_link\Event\CasAccountLinkEvents;
 use Drupal\cas_account_link\Event\Events\CasAccountLinkEmailCollisionEvent;
 use Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent;
+use Drupal\cas_account_link\Event\Events\CasAccountLinkValidateEvent;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,6 +21,23 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
   use StringTranslationTrait;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a new event subscriber instance.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
@@ -28,6 +47,7 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
         ['setRandomPassword'],
         ['setMessageAndRedirect'],
       ],
+      CasAccountLinkEvents::VALIDATE => 'preventLinkingLimitedAccessBypassAccounts',
     ];
   }
 
@@ -96,6 +116,39 @@ class JoinupEuLoginCasAccountLinkEventsSubscriber implements EventSubscriberInte
     else {
       $event->setSuccessMessage($this->t('Fill in the fields below to let the Joinup community learn more about you!'));
       $event->setRedirectUrl($event->getAccount()->toUrl('edit-form'));
+    }
+  }
+
+  /**
+   * Disallow linking accounts that can bypass the limited access.
+   *
+   * The only users that can bypass the access limitation are accounts used for
+   * maintenance and demonstration purposes, such as UID 1, demo users, and
+   * other functional accounts. It does not make sense to link these accounts
+   * with EU Login since that service is intended to identify actual human EU
+   * citizens.
+   *
+   * @param \Drupal\cas_account_link\Event\Events\CasAccountLinkValidateEvent $event
+   *   The CAS Account Link validate event object.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Thrown if the 'user' entity type doesn't exist.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   *   Thrown if the storage handler couldn't be loaded.
+   */
+  public function preventLinkingLimitedAccessBypassAccounts(CasAccountLinkValidateEvent $event): void {
+    $form_state = $event->getFormState();
+    if ($form_state->getValue('account_exist') === 'no') {
+      return;
+    }
+
+    /** @var \Drupal\user\UserInterface $account */
+    $account = $this->entityTypeManager->getStorage('user')->load($form_state->get('uid'));
+
+    if ($account->hasPermission('bypass limited access')) {
+      $form_state->setErrorByName('login][name', $this->t('Linking the local %username user with an EU Login account is not allowed.', [
+        '%username' => $account->getDisplayName(),
+      ]));
     }
   }
 

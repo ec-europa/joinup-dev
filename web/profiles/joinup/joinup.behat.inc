@@ -12,7 +12,6 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\Entity\Comment;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\RevisionableInterface;
@@ -450,11 +449,13 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @When I go to the :bundle (content ) :title edit screen
    * @When I visit the :bundle (content ) :title edit screen
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitNodeEditForm($bundle, $title) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getNodeByTitle($title, $bundle);
-    $this->visitPath($node->url('edit-form'));
+    $this->visitPath($node->toUrl('edit-form')->toString());
   }
 
   /**
@@ -470,11 +471,13 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @When I go to the content page of the type :type with the title :title
    * @When I visit the content page of the type :type with the title :title
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitNodePage($type, $title) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, $type);
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**
@@ -1868,7 +1871,7 @@ class JoinupSubContext extends DrupalSubContextBase {
    */
   public function assertHomepageStatistics(TableNode $statistics_table) {
     foreach ($statistics_table->getRowsHash() as $type => $expected_value) {
-      $wrapper_selector = Unicode::strtolower("stats__wrapper__$type");
+      $wrapper_selector = mb_strtolower("stats__wrapper__$type");
       $xpath = '//div[contains(concat(" ", normalize-space(@class), " "), " ' . $wrapper_selector . ' ")]//div[contains(concat(" ", normalize-space(@class), " "), " stats__text--upper ")]';
       $element = $this->getSession()->getPage()->find('xpath', $xpath);
       Assert::assertEquals($expected_value, $element->getText());
