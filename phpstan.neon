@@ -5,7 +5,6 @@ parameters:
     ignoreErrors:
         # TODO: Remove un-ignore this rule in ISAICP-5899.
         - '#\Drupal calls should be avoided in classes, use dependency injection instead#'
-        - '#Missing cache backend declaration for performance.#'
         - '#Plugin manager has cache backend specified but does not declare cache tags.#'
 includes:
     - vendor/mglaman/phpstan-drupal/extension.neon
