@@ -61,7 +61,7 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('joinup_core.relations_manager')
+      $container->get('joinup_group.relation_info')
     );
   }
 

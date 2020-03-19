@@ -142,7 +142,7 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     // To grant access to group owner/facilitators, we need to identify first
     // which groups reference the contact information.
     /** @var \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager */
-    $relation_manager = \Drupal::service('joinup_core.relations_manager');
+    $relation_manager = \Drupal::service('joinup_group.relation_info');
     if ($groups = $relation_manager->getContactInformationRelatedGroups($entity)) {
       $group = reset($groups);
       $membership = \Drupal::service('og.membership_manager')->getMembership($group, $account->id());

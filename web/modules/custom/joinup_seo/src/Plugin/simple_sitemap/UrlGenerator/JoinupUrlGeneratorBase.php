@@ -78,7 +78,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
       $container->get('entity_type.manager'),
       $container->get('simple_sitemap.entity_helper'),
       $container->get('plugin.manager.simple_sitemap.url_generator'),
-      $container->get('joinup_core.relations_manager')
+      $container->get('joinup_group.relation_info')
     );
   }
 

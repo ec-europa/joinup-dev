@@ -6,7 +6,7 @@ services:
       - { name: 'cache.context'}
   joinup.pin_service:
     class: Drupal\joinup\PinService
-    arguments: ['@joinup_core.relations_manager']
+    arguments: ['@joinup_group.relation_info']
     lazy: true
   joinup.route_subscriber:
     class: Drupal\joinup\Routing\RouteSubscriber

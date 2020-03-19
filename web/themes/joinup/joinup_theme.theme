@@ -1986,7 +1986,7 @@ function joinup_theme_preprocess_node(&$variables) {
   // Add the group ID and label as data attributes in tiles.
   if ($variables['view_mode'] === 'view_mode_tile') {
     /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
-    $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+    $parent = \Drupal::service('joinup_group.relation_info')->getParent($node);
     if ($parent) {
       $variables['attributes']['data-drupal-parent-id'] = $parent->id();
       $variables['attributes']['data-drupal-parent-label'] = $parent->label();

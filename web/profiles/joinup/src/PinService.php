@@ -46,7 +46,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('joinup_core.relations_manager')
+      $container->get('joinup_group.relation_info')
     );
   }
 

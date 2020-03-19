@@ -67,7 +67,7 @@ abstract class ShareForm extends ShareFormBase {
       $container->get('og.role_manager'),
       $container->get('current_user'),
       $container->get('messenger'),
-      $container->get('joinup_core.relations_manager')
+      $container->get('joinup_group.relation_info')
     );
   }
 

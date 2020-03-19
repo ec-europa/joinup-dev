@@ -90,7 +90,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       $plugin_id,
       $plugin_definition,
       $container->get('config.factory'),
-      $container->get('joinup_core.relations_manager'),
+      $container->get('joinup_group.relation_info'),
       $container->get('og.membership_manager'),
       $container->get('joinup_core.workflow.helper')
     );

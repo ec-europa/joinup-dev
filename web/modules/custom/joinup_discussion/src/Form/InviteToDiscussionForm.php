@@ -296,7 +296,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       // user is a facilitator), or the author of the discussion itself.
       $user = $account->getAccount();
       /** @var \Drupal\rdf_entity\Entity\Rdf $group */
-      $group = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+      $group = \Drupal::service('joinup_group.relation_info')->getParent($node);
 
       $is_group_administrator = $user->hasPermission('administer groups');
       $is_owner = $user->id() == $node->getOwnerId();

@@ -54,7 +54,7 @@ function joinup_news_workflow_selector(EntityInterface $entity) {
     throw new Exception('This method can only be called for document entities');
   }
   /** @var \Drupal\joinup_group\JoinupRelationManager $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $relation_manager = \Drupal::service('joinup_group.relation_info');
   $moderation = $relation_manager->getParentModeration($entity);
   $moderation_type = $moderation == 1 ? 'pre_moderated' : 'post_moderated';
   return "node:news:$moderation_type";

@@ -45,7 +45,7 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
 
   $token_service = \Drupal::token();
   /** @var \Drupal\joinup_group\JoinupRelationManagerInterface $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
+  $relation_manager = \Drupal::service('joinup_group.relation_info');
   if (isset($tokens['parent_collection'])) {
     $original = $tokens['parent_collection'];
     $parent_solution = $rdf_entity;

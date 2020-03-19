@@ -85,7 +85,7 @@ class GroupAdministratorsController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('og.group_type_manager'),
-      $container->get('joinup_core.relations_manager'),
+      $container->get('joinup_group.relation_info'),
       $container->get('entity_type.bundle.info'),
       $container->get('current_route_match')
     );
