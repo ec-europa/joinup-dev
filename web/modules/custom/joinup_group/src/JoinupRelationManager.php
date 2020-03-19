@@ -2,12 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\joinup_group;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
@@ -16,13 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Service to manage relations for the group content entities.
- *
- * @todo This module depends on functionality provided by a number of modules
- *   such as Collection and Solution that depend on joinup_core themselves. This
- *   causes a circular dependency. It should be moved to the installation
- *   profile.
- *
- * @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-4543
  */
 class JoinupRelationManager implements JoinupRelationManagerInterface, ContainerInjectionInterface {
 

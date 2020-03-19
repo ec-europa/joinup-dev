@@ -2,13 +2,13 @@
 // @codingStandardsIgnoreFile
 
 /**
- * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_core\JoinupRelationManager' "modules/custom/joinup_core/src".
+ * This file was generated via php core/scripts/generate-proxy-class.php 'Drupal\joinup_group\JoinupRelationManager' "modules/custom/joinup_core/src".
  */
 
 namespace Drupal\joinup_core\ProxyClass {
 
     /**
-     * Provides a proxy class for \Drupal\joinup_core\JoinupRelationManager.
+     * Provides a proxy class for \Drupal\joinup_group\JoinupRelationManager.
      *
      * @see \Drupal\Component\ProxyBuilder
      */
@@ -27,7 +27,7 @@ namespace Drupal\joinup_core\ProxyClass {
         /**
          * The real proxied service, after it was lazy loaded.
          *
-         * @var \Drupal\joinup_core\JoinupRelationManager
+         * @var \Drupal\joinup_group\JoinupRelationManager
          */
         protected $service;
 
@@ -72,7 +72,7 @@ namespace Drupal\joinup_core\ProxyClass {
          */
         public static function create(\Symfony\Component\DependencyInjection\ContainerInterface $container)
         {
-            \Drupal\joinup_core\JoinupRelationManager::create($container);
+            \Drupal\joinup_group\JoinupRelationManager::create($container);
         }
 
         /**

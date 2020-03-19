@@ -14,7 +14,7 @@ services:
     tags:
       - name: event_subscriber
   joinup_core.relations_manager:
-    class: Drupal\joinup_core\JoinupRelationManager
+    class: Drupal\joinup_group\JoinupRelationManager
     arguments: ['@og.membership_manager', '@entity_type.manager']
     lazy: true
   joinup_core.workflow.helper:
