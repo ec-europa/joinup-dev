@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Validation\Constraint;
 
-use Drupal\Component\Utility\Unicode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -47,8 +48,8 @@ class UniqueFieldValueInBundleValidator extends ConstraintValidator {
     if ($value_taken) {
       $this->context->addViolation($constraint->message, [
         '%value' => $item->{$main_property},
-        '@entity_type' => $entity->getEntityType()->getLowercaseLabel(),
-        '@field_name' => Unicode::strtolower($items->getFieldDefinition()->getLabel()),
+        '@entity_type' => $entity->getEntityType()->getSingularLabel(),
+        '@field_name' => mb_strtolower($items->getFieldDefinition()->getLabel()),
       ]);
     }
   }

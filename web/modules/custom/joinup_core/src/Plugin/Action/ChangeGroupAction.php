@@ -226,7 +226,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
           '#theme' => 'item_list',
           '#items' => $message_group,
         ];
-        drupal_set_message($this->renderer->render($list), $type);
+        $this->messenger()->addMessage($this->renderer->render($list), $type);
       }
     }
   }

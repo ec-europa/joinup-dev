@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\search_api_field\Plugin;
 
-use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\search_api\Query\ConditionSetInterface;
 
 /**
  * Interface definition for search api field filters plugins.
  */
-interface FilterPluginInterface extends PluginFormInterface, ConfigurablePluginInterface {
+interface FilterPluginInterface extends PluginFormInterface, ConfigurableInterface {
 
   /**
    * Applies the filter configuration to the search query.

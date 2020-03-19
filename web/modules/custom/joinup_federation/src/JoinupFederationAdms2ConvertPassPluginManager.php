@@ -29,7 +29,9 @@ class JoinupFederationAdms2ConvertPassPluginManager extends DefaultPluginManager
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
     parent::__construct('Plugin/Adms2ConvertPass', $namespaces, $module_handler, JoinupFederationAdms2ConvertPassInterface::class, Adms2ConvertPass::class);
     $this->alterInfo('adms2_convert_pass_info');
-    $this->setCacheBackend($cache_backend, 'adms2_convert_pass_plugins');
+    $this->setCacheBackend($cache_backend, 'adms2_convert_pass_plugins', [
+      'adms2_convert_pass_plugins',
+    ]);
   }
 
   /**

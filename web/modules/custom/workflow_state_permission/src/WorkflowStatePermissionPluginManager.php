@@ -28,7 +28,9 @@ class WorkflowStatePermissionPluginManager extends DefaultPluginManager {
     parent::__construct('Plugin/WorkflowStatePermission', $namespaces, $module_handler, '\Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface', 'Drupal\workflow_state_permission\Annotation\WorkflowStatePermission');
 
     $this->alterInfo('workflow_state_permission_plugin_info');
-    $this->setCacheBackend($cache_backend, 'workflow_state_permission_plugin');
+    $this->setCacheBackend($cache_backend, 'workflow_state_permission_plugin', [
+      'workflow_state_permission_plugin',
+    ]);
   }
 
 }

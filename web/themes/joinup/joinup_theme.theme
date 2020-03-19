@@ -837,7 +837,7 @@ function joinup_theme_preprocess_field(&$variables) {
 function joinup_theme_preprocess_field__comment(&$variables) {
   // Get entity url needed for login and register routes.
   $entity = $variables['element']['#object'];
-  $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
+  $variables['entity_bundle'] = mb_strtolower($entity->type->entity->label());
 
   // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;

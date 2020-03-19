@@ -113,4 +113,6 @@ sudo rsync -avz /opt/solr/search_api_solr/solr-conf/6.x/ /opt/solr/server/solr/d
                milliseconds="${sleep.milliseconds}"/>
     </target>
 
+    <!-- Checks to execute during build phase to exit early in case of easily preventable errors. -->
+    <target name="sanity-check" depends="check-deprecated-code"/>
 </project>

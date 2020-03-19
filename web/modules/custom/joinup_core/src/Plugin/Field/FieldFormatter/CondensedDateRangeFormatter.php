@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -166,7 +168,7 @@ class CondensedDateRangeFormatter extends DateTimeFormatterBase {
 
     if ($this->getFieldSetting('datetime_type') == DateTimeItem::DATETIME_TYPE_DATE) {
       // A date without time will pick up the current time, use the default.
-      datetime_date_default_time($date);
+      $date->setDefaultDateTime();
     }
 
     // Create the ISO date in Universal Time.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_licence\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
@@ -117,10 +119,15 @@ class LicenceOverviewController extends ControllerBase {
 
   /**
    * Builds a table row for a licence rdf_entity.
+   *
+   * @return array
+   *   A table row.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
-    $row['id'] = $entity->link();
+    $row['id'] = $entity->toLink()->toString();
     $row['rid'] = $entity->bundle();
     return $row;
   }

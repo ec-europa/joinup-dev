@@ -1,9 +1,10 @@
 <?php
 
-namespace Drupal\Tests\rdf_entity\Kernel;
+namespace Drupal\Tests\rdf_entity_provenance\Kernel;
 
 use Drupal\Core\Validation\Plugin\Validation\Constraint\UniqueFieldConstraint;
 use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;
 
 /**
  * Provides unit testing the provenance_associated_with constraint.

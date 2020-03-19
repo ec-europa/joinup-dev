@@ -270,7 +270,7 @@ class InviteToDiscussionForm extends InviteFormBase {
         default:
           throw new \Exception("Unknown result type '$result'.");
       }
-      drupal_set_message($message, $type);
+      $this->messenger()->addMessage($message, $type);
     }
   }
 

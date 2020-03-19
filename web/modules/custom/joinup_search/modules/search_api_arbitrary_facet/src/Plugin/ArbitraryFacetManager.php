@@ -26,7 +26,9 @@ class ArbitraryFacetManager extends DefaultPluginManager {
     parent::__construct('Plugin/ArbitraryFacet', $namespaces, $module_handler, 'Drupal\search_api_arbitrary_facet\Plugin\ArbitraryFacetInterface', 'Drupal\search_api_arbitrary_facet\Annotation\ArbitraryFacet');
 
     $this->alterInfo('search_api_arbitrary_facet_arbitrary_facet_info');
-    $this->setCacheBackend($cache_backend, 'search_api_arbitrary_facet_arbitrary_facet_plugins');
+    $this->setCacheBackend($cache_backend, 'search_api_arbitrary_facet_arbitrary_facet_plugins', [
+      'search_api_arbitrary_facet_arbitrary_facet_plugins',
+    ]);
   }
 
 }

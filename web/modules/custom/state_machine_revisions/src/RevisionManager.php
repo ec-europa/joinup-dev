@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\state_machine_revisions;
 
 use Drupal\Core\Entity\ContentEntityInterface;
