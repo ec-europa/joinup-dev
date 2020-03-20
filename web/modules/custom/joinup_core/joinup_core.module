@@ -8,7 +8,6 @@
 declare(strict_types = 1);
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -18,11 +17,9 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
-use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\node\NodeInterface;
@@ -141,16 +138,6 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
       $form[$field_name]['#attributes']['class'][] = 'joinup-nodrag';
     }
   }
-}
-
-/**
- * Implements hook_node_access().
- */
-function joinup_core_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
-  if (!CommunityContentHelper::isCommunityContent($entity)) {
-    return AccessResult::neutral();
-  }
-  return \Drupal::service('joinup_community_content.community_content_workflow_access')->entityAccess($entity, $operation, $account);
 }
 
 /**
