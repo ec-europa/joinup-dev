@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\joinup_core\ExistingSite;
+namespace Drupal\Tests\joinup_community_content\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\joinup_community_content\NodeWorkflowAccessControlHandler;
@@ -11,6 +11,7 @@ use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
+use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 use weitzman\DrupalTestTraits\Entity\NodeCreationTrait;
 
 /**

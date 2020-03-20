@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_document\ExistingSite;
 
-use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
+use Drupal\Tests\joinup_community_content\ExistingSite\NodeWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the document node.
