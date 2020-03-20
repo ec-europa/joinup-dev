@@ -18,7 +18,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
@@ -143,25 +142,12 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
 /**
  * Implements hook_entity_base_field_info().
  *
- * - Provides a base field that displays the current workflow state on nodes and
- *   RDF entities. This field is intended to be used on edit forms which use the
- *   set of buttons to perform the workflow state transitions. When these
- *   buttons are used the current workflow state is not indicated, so this field
- *   can be used to expose this information.
  * - Provides a 'report' field on community content pages that can be used to
  *   report inappropriate content.
  * - Provides a 'path' field only for the 'rdf_entity' entities.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
-
-  if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
-    $fields['current_workflow_state'] = BaseFieldDefinition::create('current_workflow_state')
-      ->setLabel(new TranslatableMarkup('Current workflow state'))
-      ->setDisplayOptions('form', ['type' => 'hidden'])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setComputed(TRUE);
-  }
 
   // Add a 'report' field to community content entities. Currently all node
   // types are community content.
