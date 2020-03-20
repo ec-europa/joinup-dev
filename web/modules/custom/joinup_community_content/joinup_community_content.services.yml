@@ -10,7 +10,7 @@ services:
     tags:
       - { name: 'event_subscriber' }
   joinup_community_content.fulfillment_guard:
-    class: Drupal\joinup_community_content\Guard\NodeGuard
+    class: Drupal\joinup_community_content\Guard\CommunityContentGuard
     arguments: ['@joinup_group.relation_info', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: community_content }

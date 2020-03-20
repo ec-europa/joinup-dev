@@ -134,7 +134,7 @@ settings](../joinup_news/config/install/joinup_news.settings) file.
 ### The guard class
 The `Guard class` will take care of the allowed transitions. This class
 is now centralized and the base class exists in joinup_core. This class is
-`Drupal\joinup_community_content\Guard\NodeGuard`. The guard classes of the community content
+`Drupal\joinup_community_content\Guard\CommunityContentGuard`. The guard classes of the community content
 should extend this class and make use of the `allowed()` method -if possible-
 without overriding it.
 The only thing needed to be done in the guard class, is to load the
@@ -160,11 +160,11 @@ public function __construct(
       ->get('joinup_news.settings')->get('transitions');
 }
 ```
-The `$this->transitions` is the array defined in the `NodeGuard` class and is
+The `$this->transitions` is the array defined in the `CommunityContentGuard` class and is
 used in the `allowed()` method so it needs to be populated otherwise the
 functionality will break.
 
-By default the checks taking place in the `NodeGuard` class are (by sequence):
+By default the checks taking place in the `CommunityContentGuard` class are (by sequence):
 * if the transition array is not populated (as described above), no transitions
 are allowed;
 * if the passed user has the admin permission on the entity type, all

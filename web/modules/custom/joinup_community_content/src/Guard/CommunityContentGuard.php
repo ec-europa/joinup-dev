@@ -17,7 +17,7 @@ use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 /**
  * Guard class for the transitions of community content.
  */
-class NodeGuard implements GuardInterface {
+class CommunityContentGuard implements GuardInterface {
 
   /**
    * The current logged in user.
@@ -62,7 +62,7 @@ class NodeGuard implements GuardInterface {
   protected $workflowStatePermission;
 
   /**
-   * Instantiates the NodeGuard service.
+   * Constructs a new CommunityContentGuard service.
    *
    * The classes inheriting this class, should also ensure that they set the
    * protected variable $transitions to be used by the ::allowed() method.
