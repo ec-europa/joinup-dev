@@ -1,5 +1,5 @@
 create:
-  'node:pre_moderated':
+  'node:members_moderation':
     propose:
       roles:
         moderator:
@@ -15,7 +15,7 @@ create:
           - cc_transition_publish
         rdf_entity-solution-administrator:
           - cc_transition_publish
-  'node:post_moderated':
+  'node:no_moderation':
     propose:
       roles:
         moderator:
@@ -42,7 +42,7 @@ create:
         rdf_entity-solution-administrator:
           - cc_transition_publish
 update:
-  'node:pre_moderated':
+  'node:members_moderation':
     propose:
       roles:
         moderator:
@@ -88,7 +88,7 @@ update:
     reject_deletion:
       owner:
         - cc_transition_reject_deletion
-  'node:post_moderated':
+  'node:no_moderation':
     publish:
       roles:
         moderator:
@@ -145,14 +145,14 @@ update:
         rdf_entity-solution-administrator:
           - cc_transition_propose_reported
 delete:
-  'node:pre_moderated':
+  'node:members_moderation':
     validated:
       owner:
         - cc_delete
     deletion_request:
       owner:
         - cc_delete
-  'node:post_moderated':
+  'node:no_moderation':
     validated:
       owner:
         - cc_delete

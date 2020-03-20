@@ -1,0 +1,23 @@
+uuid: 143b218a-31fb-472d-8f6a-5b1bf35d4efb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_ar_content_moderation
+    - rdf_entity.rdfentity.collection
+  module:
+    - options
+id: rdf_entity.collection.field_ar_content_moderation
+field_name: field_ar_content_moderation
+entity_type: rdf_entity
+bundle: collection
+label: 'Content moderation'
+description: "<strong>No moderation needed.</strong> Users with content creation permission can publish without the owner's validation.\r\n<strong>Facilitator content does not need validation.</strong> Users with content creation permission can create, and the owner needs to validate each proposal, except facilitators', who may publish without the owner's validation.\r\n<strong>Moderate all content.</strong> Users with content creation permission can create, the owner needs to validate each proposal, including facilitators'."
+required: true
+translatable: false
+default_value:
+  -
+    value: members_moderation
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,5 +1,5 @@
 view:
-  'node:pre_moderated':
+  'node:no_moderation':
     draft:
       own:
         roles:
@@ -45,7 +45,7 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:post_moderated':
+  'node:members_moderation':
     draft:
       own:
         roles:
@@ -91,7 +91,53 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:discussion:post_moderated':
+  'node:all_moderation':
+    draft:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-administrator
+          - rdf_entity-solution-administrator
+    validated:
+      any:
+        roles:
+          - anonymous
+          - authenticated
+    needs_update:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-administrator
+          - rdf_entity-solution-administrator
+    proposed:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-administrator
+          - rdf_entity-solution-administrator
+    deletion_request:
+      own:
+        roles:
+          - authenticated
+      any:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-administrator
+          - rdf_entity-solution-administrator
+'node:discussion:post_moderated':
     draft:
       own:
         roles:
@@ -143,7 +189,43 @@ view:
           - anonymous
           - authenticated
 create:
-  'node:pre_moderated':
+  'node:no_moderation':
+    only_facilitators:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    only_members:
+      save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-member
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+    any_user:
+      save_as_draft:
+        roles:
+          - authenticated
+      publish:
+        roles:
+          - authenticated
+  'node:members_moderation':
     only_facilitators:
       save_as_draft:
         roles:
@@ -197,9 +279,15 @@ create:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:post_moderated':
+  'node:all_moderation':
     only_facilitators:
       save_as_draft:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-facilitator
+          - rdf_entity-solution-facilitator
+      propose:
         roles:
           - moderator
         og_roles:
@@ -209,8 +297,8 @@ create:
         roles:
           - moderator
         og_roles:
-          - rdf_entity-collection-facilitator
-          - rdf_entity-solution-facilitator
+          - rdf_entity-collection-administrator
+          - rdf_entity-solution-administrator
     only_members:
       save_as_draft:
         roles:
@@ -219,20 +307,32 @@ create:
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-      publish:
+      propose:
         roles:
           - moderator
         og_roles:
           - rdf_entity-collection-member
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-administrator
+          - rdf_entity-solution-administrator
     any_user:
       save_as_draft:
         roles:
           - authenticated
-      publish:
+      propose:
         roles:
           - authenticated
+      publish:
+        roles:
+          - moderator
+        og_roles:
+          - rdf_entity-collection-administrator
+          - rdf_entity-solution-administrator
   'node:discussion:post_moderated':
     only_facilitators:
       save_as_draft:
@@ -270,7 +370,105 @@ create:
         roles:
           - authenticated
 update:
-  'node:pre_moderated':
+  'node:no_moderation':
+    draft:
+      draft:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      validated:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    validated:
+      draft:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      deletion_request:
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      proposed:
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      validated:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    proposed:
+      needs_update:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      proposed:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      validated:
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    needs_update:
+      validated:
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    deletion_request:
+      validated:
+        own:
+          roles:
+            - authenticated
+  'node:members_moderation':
     draft:
       draft:
         own:
@@ -366,7 +564,7 @@ update:
         own:
           roles:
             - authenticated
-  'node:post_moderated':
+  'node:all_moderation':
     draft:
       draft:
         own:
@@ -375,44 +573,6 @@ update:
         any:
           roles:
             - moderator
-          og_roles:
-            - rdf_entity-collection-facilitator
-            - rdf_entity-solution-facilitator
-      validated:
-        own:
-          roles:
-            - authenticated
-        any:
-          roles:
-            - moderator
-          og_roles:
-            - rdf_entity-collection-facilitator
-            - rdf_entity-solution-facilitator
-    validated:
-      draft:
-        own:
-          roles:
-            - authenticated
-        any:
-          roles:
-            - moderator
-          og_roles:
-            - rdf_entity-collection-facilitator
-            - rdf_entity-solution-facilitator
-      deletion_request:
-        any:
-          roles:
-            - moderator
-          og_roles:
-            - rdf_entity-collection-facilitator
-            - rdf_entity-solution-facilitator
-      proposed:
-        any:
-          roles:
-            - moderator
-          og_roles:
-            - rdf_entity-collection-facilitator
-            - rdf_entity-solution-facilitator
       validated:
         own:
           roles:
@@ -424,6 +584,13 @@ update:
             - rdf_entity-collection-facilitator
             - rdf_entity-solution-facilitator
     proposed:
+      draft:
+        own:
+          roles:
+            - authenticated
+        any:
+          roles:
+            - moderator
       needs_update:
         own:
           roles:
@@ -438,6 +605,35 @@ update:
         own:
           roles:
             - authenticated
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      validated:
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+    validated:
+      draft:
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      deletion_request:
+        any:
+          roles:
+            - moderator
+          og_roles:
+            - rdf_entity-collection-facilitator
+            - rdf_entity-solution-facilitator
+      proposed:
         any:
           roles:
             - moderator
@@ -571,7 +767,7 @@ update:
             - rdf_entity-collection-facilitator
             - rdf_entity-solution-facilitator
 delete:
-  'node:pre_moderated':
+  'node:members_moderation':
     draft:
       own:
         roles:
@@ -607,7 +803,7 @@ delete:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:post_moderated':
+  'node:no_moderation':
     draft:
       own:
         roles:

@@ -6,6 +6,7 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\joinup_group\ContentCreationOptions;
+use Drupal\joinup_group\ContentModerationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
@@ -120,10 +121,10 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   protected function createOperationTest(): void {
     $operation = 'create';
     $test_roles = array_diff($this->getAvailableUsers(), ['userOwner']);
-    foreach ($this->createAccessProvider() as $parent_bundle => $moderation_data) {
-      foreach ($moderation_data as $moderation => $content_creation_data) {
+    foreach ($this->createAccessProvider() as $parent_bundle => $content_moderation_data) {
+      foreach ($content_moderation_data as $content_moderation => $content_creation_data) {
         foreach ($content_creation_data as $content_creation => $allowed_roles) {
-          $parent = $this->createParent($parent_bundle, 'validated', $moderation, $content_creation);
+          $parent = $this->createParent($parent_bundle, 'validated', $content_moderation, $content_creation);
           $content = Node::create([
             'title' => $this->randomMachineName(),
             'type' => $this->getEntityBundle(),
@@ -133,12 +134,12 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
 
           $non_allowed_roles = array_diff($test_roles, array_keys($allowed_roles));
           foreach ($allowed_roles as $user_var => $expected_target_states) {
-            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, Content creation: {$content_creation}, User variable: {$user_var}, Operation: {$operation}";
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$content_moderation}, Content creation: {$content_creation}, User variable: {$user_var}, Operation: {$operation}";
             $actual_target_states = $this->workflowHelper->getAvailableTargetStates($content, $this->{$user_var});
             $this->assertWorkflowStatesEqual($expected_target_states, $actual_target_states, $message);
           }
           foreach ($non_allowed_roles as $user_var) {
-            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$moderation}, Content creation: {$content_creation}, User variable: {$user_var}, Operation: {$operation}";
+            $message = "Parent bundle: {$parent_bundle}, Content bundle: {$this->getEntityBundle()}, Content state: -new entity-, Ownership: any, Moderation: {$content_moderation}, Content creation: {$content_creation}, User variable: {$user_var}, Operation: {$operation}";
             $access = $this->entityAccess->access($content, $operation, $this->{$user_var});
             $this->assertFalse($access, $message);
           }
@@ -306,7 +307,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   protected function createAccessProvider(): array {
     return [
       'collection' => [
-        self::PRE_MODERATION => [
+        ContentModerationOptions::MEMBERS_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -364,7 +365,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        ContentModerationOptions::NO_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -418,7 +419,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         ],
       ],
       'solution' => [
-        self::PRE_MODERATION => [
+        ContentModerationOptions::MEMBERS_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -456,7 +457,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        ContentModerationOptions::NO_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -640,7 +641,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    */
   protected function updateAccessProvider(): array {
     $data = [
-      self::PRE_MODERATION => [
+      ContentModerationOptions::MEMBERS_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -713,7 +714,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ],
         ],
       ],
-      self::POST_MODERATION => [
+      ContentModerationOptions::NO_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -819,7 +820,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   protected function deleteAccessProvider(): array {
     return [
       'collection' => [
-        self::PRE_MODERATION => [
+        ContentModerationOptions::MEMBERS_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -851,7 +852,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        ContentModerationOptions::NO_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -882,7 +883,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         ],
       ],
       'solution' => [
-        self::PRE_MODERATION => [
+        ContentModerationOptions::MEMBERS_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -914,7 +915,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        ContentModerationOptions::NO_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -972,7 +973,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    *   The bundle of the entity to create.
    * @param string $state
    *   The state of the entity.
-   * @param string $moderation
+   * @param string $content_moderation
    *   Whether the parent is pre or post moderated.
    * @param string $content_creation
    *   The content creation value of the parent entity.
@@ -983,7 +984,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    *   If entity creation fails.
    */
-  protected function createParent($bundle, $state = 'validated', $moderation = NULL, $content_creation = NULL): RdfInterface {
+  protected function createParent($bundle, $state = 'validated', $content_moderation = NULL, $content_creation = NULL): RdfInterface {
     // Make sure the current user is set to anonymous when creating groups
     // through the API so we can assign the administrator manually. If a user is
     // logged in during creation of the group they will automatically become the
@@ -999,7 +1000,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
       'label' => $this->randomMachineName(),
       'rid' => $bundle,
       $field_identifier[$bundle] . 'state' => $state,
-      $field_identifier[$bundle] . 'moderation' => $moderation,
+      $field_identifier[$bundle] . 'content_moderation' => $content_moderation,
       $field_identifier[$bundle] . 'content_creation' => $content_creation === NULL ? ContentCreationOptions::REGISTERED_USERS : $content_creation,
     ];
 

@@ -11,6 +11,7 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_contact_information
     - field.field.rdf_entity.solution.field_is_content
     - field.field.rdf_entity.solution.field_is_content_creation
+    - field.field.rdf_entity.solution.field_is_content_moderation
     - field.field.rdf_entity.solution.field_is_description
     - field.field.rdf_entity.solution.field_is_distribution
     - field.field.rdf_entity.solution.field_is_documentation
@@ -21,7 +22,6 @@ dependencies:
     - field.field.rdf_entity.solution.field_is_language
     - field.field.rdf_entity.solution.field_is_logo
     - field.field.rdf_entity.solution.field_is_metrics_page
-    - field.field.rdf_entity.solution.field_is_moderation
     - field.field.rdf_entity.solution.field_is_owner
     - field.field.rdf_entity.solution.field_is_pinned_in
     - field.field.rdf_entity.solution.field_is_product_type
@@ -110,6 +110,7 @@ hidden:
   field_is_contact_information: true
   field_is_content: true
   field_is_content_creation: true
+  field_is_content_moderation: true
   field_is_description: true
   field_is_distribution: true
   field_is_documentation: true
@@ -119,7 +120,6 @@ hidden:
   field_is_landing_page: true
   field_is_language: true
   field_is_metrics_page: true
-  field_is_moderation: true
   field_is_owner: true
   field_is_pinned_in: true
   field_is_product_type: true

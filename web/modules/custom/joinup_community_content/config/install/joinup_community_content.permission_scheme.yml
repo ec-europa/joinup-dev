@@ -1,6 +1,6 @@
 # View operation permission scheme.
 view:
-  'node:pre_moderated':
+  'node:members_moderation':
     draft:
       own:
         roles:
@@ -46,7 +46,7 @@ view:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:post_moderated':
+  'node:no_moderation':
     draft:
       own:
         roles:
@@ -145,7 +145,7 @@ view:
           - authenticated
 # Create operation permission scheme.
 create:
-  'node:pre_moderated':
+  'node:members_moderation':
     only_facilitators:
       save_as_draft:
         roles:
@@ -199,7 +199,7 @@ create:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:post_moderated':
+  'node:no_moderation':
     only_facilitators:
       save_as_draft:
         roles:
@@ -273,7 +273,7 @@ create:
           - authenticated
 # Update operation permission scheme.
 update:
-  'node:pre_moderated':
+  'node:members_moderation':
     save_as_draft:
       own:
         roles:
@@ -364,7 +364,7 @@ update:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:post_moderated':
+  'node:no_moderation':
     save_as_draft:
       own:
         roles:
@@ -559,7 +559,7 @@ update:
           - rdf_entity-solution-facilitator
 # Delete operation permission scheme.
 delete:
-  'node:pre_moderated':
+  'node:members_moderation':
     draft:
       own:
         roles:
@@ -595,7 +595,7 @@ delete:
         og_roles:
           - rdf_entity-collection-facilitator
           - rdf_entity-solution-facilitator
-  'node:post_moderated':
+  'node:no_moderation':
     draft:
       own:
         roles:

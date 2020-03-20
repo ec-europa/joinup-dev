@@ -577,14 +577,14 @@ function joinup_core_motivation_form_validate(array &$form, FormStateInterface $
 function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $transition_id) {
   $required_transitions = [
     'node' => [
-      'node:pre_moderated' => [
+      'node:members_moderation' => [
         'report',
         'request_changes',
         'report',
         'reject_deletion',
         'request_deletion',
       ],
-      'node:post_moderated' => [
+      'node:no_moderation' => [
         'report',
         'request_changes',
       ],

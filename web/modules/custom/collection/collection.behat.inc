@@ -64,7 +64,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     'creation date' => 'created',
     'description' => 'field_ar_description',
     'logo' => 'field_ar_logo',
-    'moderation' => 'field_ar_moderation',
+    'moderation' => 'field_ar_content_moderation',
     'modification date' => 'changed',
     'owner' => 'field_ar_owner',
     'policy domain' => 'field_policy_domain',
@@ -248,7 +248,11 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    */
   protected function convertValueAliases(array $fields): array {
     $mapped_values = [
-      'field_ar_moderation' => ['no' => 0, 'yes' => 1],
+      'field_ar_content_moderation' => [
+        'No moderation' => 'no_moderation',
+        'Members need moderation' => 'members_moderation',
+        'Moderated' => 'all_moderation',
+      ],
       'field_ar_content_creation' => [
         'facilitators' => 'only_facilitators',
         'members' => 'only_members',

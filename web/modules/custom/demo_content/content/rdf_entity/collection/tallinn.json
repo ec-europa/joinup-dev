@@ -333,9 +333,9 @@
             "value": "only_members"
         }
     ],
-    "field_ar_moderation": [
+    "field_ar_content_moderation": [
         {
-            "value": false
+            "value": "no_moderation"
         }
     ],
     "field_ar_state": [

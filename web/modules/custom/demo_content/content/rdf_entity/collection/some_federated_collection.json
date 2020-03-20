@@ -215,9 +215,9 @@
             "value": "only_facilitators"
         }
     ],
-    "field_ar_moderation": [
+    "field_ar_content_moderation": [
         {
-            "value": true
+            "value": "members_moderation"
         }
     ],
     "field_ar_state": [
