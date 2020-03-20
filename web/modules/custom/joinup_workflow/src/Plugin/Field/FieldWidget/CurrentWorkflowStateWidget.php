@@ -1,6 +1,8 @@
 <?php
 
-namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
+declare(strict_types = 1);
+
+namespace Drupal\joinup_workflow\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -31,7 +33,7 @@ class CurrentWorkflowStateWidget extends WidgetBase implements ContainerFactoryP
   protected $workflowHelper;
 
   /**
-   * Constructs a SearchWidget object.
+   * Constructs a new CurrentWorkflowStateWidget.
    *
    * @param string $plugin_id
    *   The plugin_id for the widget.
