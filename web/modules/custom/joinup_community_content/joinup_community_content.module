@@ -219,7 +219,7 @@ function joinup_community_content_translate_facet_arguments(array $arguments) {
   ];
 
   foreach ($arguments as &$argument) {
-    list($facet_id, $value) = explode(':', $argument, 2);
+    [$facet_id, $value] = explode(':', $argument, 2);
     if (array_key_exists($facet_id, $mapping)) {
       $argument = implode(':', [$mapping[$facet_id], $value]);
     }
