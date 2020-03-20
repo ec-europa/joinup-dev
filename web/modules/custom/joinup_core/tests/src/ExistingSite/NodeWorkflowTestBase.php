@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\joinup_community_content\NodeWorkflowAccessControlHandler;
 use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
@@ -20,9 +21,6 @@ use weitzman\DrupalTestTraits\Entity\NodeCreationTrait;
 abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
 
   use NodeCreationTrait;
-
-  const PRE_MODERATION = 1;
-  const POST_MODERATION = 0;
 
   /**
    * A user assigned as an owner to document entities.
@@ -306,7 +304,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   protected function createAccessProvider(): array {
     return [
       'collection' => [
-        self::PRE_MODERATION => [
+        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -364,7 +362,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        NodeWorkflowAccessControlHandler::POST_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -418,7 +416,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         ],
       ],
       'solution' => [
-        self::PRE_MODERATION => [
+        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -456,7 +454,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        NodeWorkflowAccessControlHandler::POST_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -640,7 +638,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    */
   protected function updateAccessProvider(): array {
     $data = [
-      self::PRE_MODERATION => [
+      NodeWorkflowAccessControlHandler::PRE_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -713,7 +711,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ],
         ],
       ],
-      self::POST_MODERATION => [
+      NodeWorkflowAccessControlHandler::POST_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -819,7 +817,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   protected function deleteAccessProvider(): array {
     return [
       'collection' => [
-        self::PRE_MODERATION => [
+        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -851,7 +849,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        NodeWorkflowAccessControlHandler::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -882,7 +880,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         ],
       ],
       'solution' => [
-        self::PRE_MODERATION => [
+        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -914,7 +912,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        self::POST_MODERATION => [
+        NodeWorkflowAccessControlHandler::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
