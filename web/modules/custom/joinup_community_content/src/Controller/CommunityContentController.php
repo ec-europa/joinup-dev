@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Controller;
+namespace Drupal\joinup_community_content\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
@@ -35,7 +35,7 @@ abstract class CommunityContentController extends ControllerBase {
   protected $workflowAccessControlHandler;
 
   /**
-   * Constructs an CommunityContentController.
+   * Constructs a CommunityContentController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
