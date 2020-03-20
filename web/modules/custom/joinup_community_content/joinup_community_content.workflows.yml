@@ -1,6 +1,6 @@
 # The workflow of the community content for a pre moderated parent.
-node:pre_moderated:
-  id: pre_moderated
+node:members_moderation:
+  id: members_moderation
   label: "Pre moderated"
   group: community_content
   states:
@@ -59,8 +59,8 @@ node:pre_moderated:
       from: [deletion_request]
       to: validated
 # The workflow of the community content for a post moderated parent.
-node:post_moderated:
-  id: post_moderated
+node:no_moderation:
+  id: no_moderation
   label: "Post moderated"
   group: community_content
   states:
@@ -106,7 +106,7 @@ node:post_moderated:
       to: proposed
 # The workflow of the discussion entity for a post moderated parent.
 # Discussions include an archived state so a separate workflow is defined.
-node:discussion:post_moderated:
+node:discussion:no_moderation:
   id: discussion
   label: "Discussion (Post moderated)"
   group: community_content

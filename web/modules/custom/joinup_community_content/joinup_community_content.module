@@ -13,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
+use Drupal\joinup_group\ContentModerationOptions;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -113,7 +113,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
   /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
   $relation_manager = \Drupal::service('joinup_core.relations_manager');
   $moderation = $relation_manager->getParentModeration($entity);
-  return $moderation == NodeWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
+  return $moderation === ContentModerationOptions::MEMBERS_MODERATION ? 'node:members_moderation' : 'node:no_moderation';
 }
 
 /**
@@ -206,7 +206,7 @@ function joinup_community_content_translate_facet_arguments(array $arguments) {
   ];
 
   foreach ($arguments as &$argument) {
-    list($facet_id, $value) = explode(':', $argument, 2);
+    [$facet_id, $value] = explode(':', $argument, 2);
     if (array_key_exists($facet_id, $mapping)) {
       $argument = implode(':', [$mapping[$facet_id], $value]);
     }

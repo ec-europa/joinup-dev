@@ -36,37 +36,6 @@ class NodeWorkflowAccessControlHandler {
   const STATE_FIELD = 'field_state';
 
   /**
-   * Flag for pre-moderated groups.
-   */
-  const PRE_MODERATION = 1;
-
-  /**
-   * Flag for post-moderated groups.
-   */
-  const POST_MODERATION = 0;
-
-  /**
-   * The machine name of the default workflow for groups.
-   *
-   * @todo: Change the group workflows to 'default'.
-   */
-  const WORKFLOW_DEFAULT = 'default';
-
-  /**
-   * The machine name of the pre moderated workflow for group content.
-   *
-   * @todo: Backport this to entity types other than document.
-   */
-  const WORKFLOW_PRE_MODERATED = 'pre_moderated';
-
-  /**
-   * The machine name of the post moderated workflow for group content.
-   *
-   * @todo: Backport this to entity types other than document.
-   */
-  const WORKFLOW_POST_MODERATED = 'post_moderated';
-
-  /**
    * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
