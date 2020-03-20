@@ -30,7 +30,7 @@ use Drupal\rdf_entity\RdfInterface;
  *
  * @see joinup_community_content.permission_scheme.yml
  */
-class NodeWorkflowAccessControlHandler {
+class CommunityContentWorkflowAccessControlHandler {
 
   /**
    * The state field machine name.
@@ -111,7 +111,7 @@ class NodeWorkflowAccessControlHandler {
   protected $workflowHelper;
 
   /**
-   * Constructs a new NodeWorkflowAccessControlHandler.
+   * Constructs a new CommunityContentWorkflowAccessControlHandler.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.

@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_community_content\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\joinup_community_content\NodeWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_group\ContentCreationOptions;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
@@ -19,7 +19,7 @@ use weitzman\DrupalTestTraits\Entity\NodeCreationTrait;
  *
  * @group rdf_entity
  */
-abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
+abstract class CommunityContentWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
 
   use NodeCreationTrait;
 
@@ -80,7 +80,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    * just a bundle due to the need to check extra information regarding the
    * group that the entity belongs to.
    *
-   * @var \Drupal\joinup_community_content\NodeWorkflowAccessControlHandler
+   * @var \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler
    */
   protected $workflowAccess;
 
@@ -90,7 +90,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   public function setUp(): void {
     parent::setUp();
 
-    $this->workflowAccess = \Drupal::service('joinup_community_content.node_workflow_access');
+    $this->workflowAccess = \Drupal::service('joinup_community_content.community_content_workflow_access');
     $this->userOwner = $this->createUser();
     $this->userAnonymous = new AnonymousUserSession();
     $this->userAuthenticated = $this->createUser();
@@ -305,7 +305,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   protected function createAccessProvider(): array {
     return [
       'collection' => [
-        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -363,7 +363,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        NodeWorkflowAccessControlHandler::POST_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -417,7 +417,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         ],
       ],
       'solution' => [
-        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -455,7 +455,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        NodeWorkflowAccessControlHandler::POST_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
           ContentCreationOptions::FACILITATORS => [
             'userModerator' => [
               'draft',
@@ -639,7 +639,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
    */
   protected function updateAccessProvider(): array {
     $data = [
-      NodeWorkflowAccessControlHandler::PRE_MODERATION => [
+      CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -712,7 +712,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
           ],
         ],
       ],
-      NodeWorkflowAccessControlHandler::POST_MODERATION => [
+      CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
         'draft' => [
           'own' => [
             'draft',
@@ -818,7 +818,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
   protected function deleteAccessProvider(): array {
     return [
       'collection' => [
-        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -850,7 +850,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        NodeWorkflowAccessControlHandler::POST_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -881,7 +881,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
         ],
       ],
       'solution' => [
-        NodeWorkflowAccessControlHandler::PRE_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::PRE_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [
@@ -913,7 +913,7 @@ abstract class NodeWorkflowTestBase extends JoinupWorkflowExistingSiteTestBase {
             ],
           ],
         ],
-        NodeWorkflowAccessControlHandler::POST_MODERATION => [
+        CommunityContentWorkflowAccessControlHandler::POST_MODERATION => [
           'draft' => [
             'own' => TRUE,
             'any' => [

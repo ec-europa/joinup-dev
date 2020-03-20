@@ -10,7 +10,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_community_content\NodeWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
@@ -103,7 +103,7 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
     $permission_scheme = $this->configFactory->get('joinup_community_content.permission_scheme')->get('update');
     $access = FALSE;
 
-    $workflow_id = $entity->{NodeWorkflowAccessControlHandler::STATE_FIELD}->first()->getWorkflow()->getId();
+    $workflow_id = $entity->{CommunityContentWorkflowAccessControlHandler::STATE_FIELD}->first()->getWorkflow()->getId();
     $matrix = $permission_scheme[$workflow_id][$to_state][$from_state] ?? NULL;
     if (!empty($matrix) && $this->workflowHelper->userHasOwnAnyRoles($entity, $account, $matrix)) {
       $access = TRUE;

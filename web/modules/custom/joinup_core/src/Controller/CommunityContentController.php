@@ -7,7 +7,7 @@ namespace Drupal\joinup_core\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_community_content\NodeWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\og\OgAccessInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -30,7 +30,7 @@ abstract class CommunityContentController extends ControllerBase {
   /**
    * The node workflow access control handler.
    *
-   * @var \Drupal\joinup_community_content\NodeWorkflowAccessControlHandler
+   * @var \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler
    */
   protected $workflowAccessControlHandler;
 
@@ -39,10 +39,10 @@ abstract class CommunityContentController extends ControllerBase {
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
-   * @param \Drupal\joinup_community_content\NodeWorkflowAccessControlHandler $workflow_access_control_handler
+   * @param \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler
    *   The node workflow access control handler.
    */
-  public function __construct(OgAccessInterface $og_access, NodeWorkflowAccessControlHandler $workflow_access_control_handler) {
+  public function __construct(OgAccessInterface $og_access, CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler) {
     $this->ogAccess = $og_access;
     $this->workflowAccessControlHandler = $workflow_access_control_handler;
   }
@@ -53,7 +53,7 @@ abstract class CommunityContentController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('og.access'),
-      $container->get('joinup_community_content.node_workflow_access')
+      $container->get('joinup_community_content.community_content_workflow_access')
     );
   }
 
