@@ -34,8 +34,8 @@ interface JoinupGroupRelationInfoInterface {
    *
    * @return int
    *   The moderation status. Can be one of the following values:
-   *   - NodeWorkflowAccessControlHandler::PRE_MODERATION
-   *   - NodeWorkflowAccessControlHandler::POST_MODERATION
+   *   - CommunityContentWorkflowAccessControlHandler::PRE_MODERATION
+   *   - CommunityContentWorkflowAccessControlHandler::POST_MODERATION
    */
   public function getParentModeration(EntityInterface $entity): ?int;
 
