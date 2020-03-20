@@ -10,7 +10,7 @@ use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * An interface for Joinup relation manager services.
+ * An interface for services that provide information about group relations.
  */
 interface JoinupGroupRelationInfoInterface {
 

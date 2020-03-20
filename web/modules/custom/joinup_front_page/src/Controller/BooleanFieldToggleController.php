@@ -32,7 +32,7 @@ class BooleanFieldToggleController extends ControllerBase {
    * Instantiates a new SiteFeatureController object.
    *
    * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
-   *   The Joinup relation manager.
+   *   The Joinup group relation info service.
    */
   public function __construct(JoinupGroupRelationInfoInterface $relationInfo) {
     $this->relationInfo = $relationInfo;

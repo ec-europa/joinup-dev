@@ -86,7 +86,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
    *   The workflow helper service.
    * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
-   *   The relation manager service.
+   *   The Joinup group relation info service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message deliver service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
