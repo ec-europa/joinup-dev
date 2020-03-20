@@ -105,3 +105,16 @@ Feature: Asset distribution editing.
       | Marianne Sherburne       | marianne.herburne@example.com | Changelog      |
       | Marianne Sherburne       | marianne.herburne@example.com | OpenBSD images |
       | Anonymous (not verified) | trackme@example.com           | OpenBSD images |
+
+    When I click "Download CSV"
+    And I wait for the batch process to finish
+    Then I should see the success message "Export complete. Download the file here if file is not automatically downloaded."
+    And I should see the link "here"
+
+    And the file downloaded from the "here" link contains the following strings:
+      | ID,User,Email,"File name",Distribution,Created                                 |
+      | ,"Bradley Emmett",bradley.emmett@example.com,text.pdf,Changelog,               |
+      | ,"Marianne Sherburne",marianne.herburne@example.com,text.pdf,Changelog,        |
+      | ,"Bradley Emmett",bradley.emmett@example.com,test.zip,"OpenBSD images",        |
+      | ,"Anonymous (not verified)",trackme@example.com,test.zip,"OpenBSD images",     |
+      | ,"Marianne Sherburne",marianne.herburne@example.com,test.zip,"OpenBSD images", |

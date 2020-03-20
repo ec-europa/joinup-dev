@@ -13,6 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -32,8 +33,11 @@ use Drupal\joinup\Traits\TraversingTrait;
 use Drupal\joinup\Traits\UserTrait;
 use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_core\JoinupVersionInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -1808,6 +1812,59 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // doesn't employ a cache context. In order to make the version show up on
     // previously cached pages we need to invalidate the render cache manually.
     Cache::invalidateTags(['rendered']);
+  }
+
+  /**
+   * Asserts that a file downloaded from a link contains a list of strings.
+   *
+   * @param string $link_label
+   *   The link from where to download the file.
+   * @param \Behat\Gherkin\Node\TableNode $strings_table
+   *   A table with a single column. Each row contains a string.
+   *
+   * @throws \Exception
+   *   Thrown when:
+   *   - It's not a Javascript test.
+   *   - The link has no href attribute.
+   *
+   * @Then the file downloaded from the :link_label link contains the following strings:
+   */
+  public function assertDownloadedFileContainsStrings(string $link_label, TableNode $strings_table): void {
+    $driver = $this->getSession()->getDriver();
+    if (!$driver instanceof Selenium2Driver) {
+      throw new \Exception('This step definition works only with Selenium2Driver driver.');
+    }
+    if (!$link = $this->getSession()->getPage()->findLink($link_label)) {
+      throw new ElementNotFoundException($driver, 'Link', NULL, $link_label);
+    }
+    if (!$href = $link->getAttribute('href')) {
+      throw new \Exception("The link '${link_label}' misses an 'href' attribute.");
+    }
+
+    $driver_session = $driver->getWebDriverSession();
+    $cookies = [];
+    foreach ($driver_session->getAllCookies() as $cookie) {
+      $cookies[$cookie['name']] = $cookie['value'];
+    }
+    $cookie_jar = CookieJar::fromArray($cookies, $cookie['domain']);
+    $client = new Client(['cookies' => $cookie_jar]);
+
+    $response = $client->get($href);
+    if ($response->getStatusCode() !== 200) {
+      throw new \Exception("Code {$response->getStatusCode()} received while trying to download the file.");
+    }
+
+    if (!$content = $response->getBody()->getContents()) {
+      throw new \Exception("The downloaded file has no content.");
+    }
+
+    $not_found = array_filter($strings_table->getColumn(0), function (string $text) use ($content): bool {
+      return strpos($content, $text) === FALSE;
+    });
+
+    if ($not_found) {
+      throw new ExpectationFailedException("Following strings were not found in the downloaded file:\n- " . implode("\n- ", $not_found));
+    }
   }
 
 }
