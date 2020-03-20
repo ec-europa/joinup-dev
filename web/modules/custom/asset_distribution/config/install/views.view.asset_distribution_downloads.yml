@@ -5,8 +5,12 @@ dependencies:
     - system.menu.admin
   module:
     - asset_distribution
+    - csv_serialization
     - file
+    - rest
+    - serialization
     - user
+    - views_data_export
 id: asset_distribution_downloads
 label: 'Distribution downloads'
 module: views
@@ -525,7 +529,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'No events found.'
+            value: 'No distributions found.'
             format: content_editor
           plugin_id: text
       relationships:
@@ -551,9 +555,53 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
-  page_1:
+  csv_export:
+    display_plugin: data_export
+    id: csv_export
+    display_title: 'CSV Export'
+    position: 2
+    display_options:
+      display_extenders: {  }
+      path: admin/reporting/distribution-downloads/csv
+      filename: distributions.csv
+      automatic_download: true
+      store_in_public_file_directory: false
+      redirect_to_display: page
+      custom_redirect_path: false
+      include_query_params: true
+      displays:
+        page: page
+        default: '0'
+      auth:
+        - cookie
+      export_method: batch
+      export_batch_size: 500
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: true
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+            use_serializer_encode_only: false
+      display_description: ''
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - user.permissions
+      tags: {  }
+  page:
     display_plugin: page
-    id: page_1
+    id: page
     display_title: Page
     position: 1
     display_options:
