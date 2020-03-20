@@ -9,8 +9,6 @@ use Drupal\simple_sitemap\Plugin\simple_sitemap\SitemapType\SitemapTypeBase;
 /**
  * A sitemap type that includes generators related to latest news.
  *
- * @package Drupal\joinup_seo\Plugin\simple_sitemap\SitemapType
- *
  * @SitemapType(
  *   id = "latest_news",
  *   label = @Translation("Latest news"),
