@@ -846,20 +846,22 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @param string $field
    *   The date range field name.
-   * @param string $date
-   *   The sub-field name. Either "start" or "end".
    * @param string $component
    *   The sub-field component. Either "date" or "time".
    * @param string $value
    *   The field value.
+   * @param string $date
+   *   (optional) The sub-field name. Either "start" or "end". If left empty, it
+   *   is assumed that the field is a simple datetime field and not a range,
+   *   thus, the date or time components are looked in the whole field.
    *
    * @throws \Exception
    *   Thrown when the date range field is not found.
    *
    * @When I fill the :date :component of the :field widget with :value
    */
-  public function fillDateRangeField($field, $date, $component, $value) {
-    $element = $this->findDateRangeComponent($field, $date, $component);
+  public function fillDateRangeField($field, $component, $value, $date = NULL) {
+    $element = $this->findDateRangeComponent($field, $component, $date);
     $element->setValue($value);
   }
 
@@ -868,18 +870,21 @@ class JoinupSubContext extends DrupalSubContextBase {
    *
    * @param string $field
    *   The date range field name.
-   * @param string $date
-   *   The sub-field name. Either "start" or "end".
    * @param string $component
    *   The sub-field component. Either "date" or "time".
+   * @param string $date
+   *   (optional) The sub-field name. Either "start" or "end". If left empty, it
+   *   is assumed that the field is a simple datetime field and not a range,
+   *   thus, the date or time components are looked in the whole field.
    *
    * @throws \Exception
    *   Thrown when the date range field is not found.
    *
    * @When I clear the :date :component of the :field widget
+   * @When I clear the :component of the :field widget
    */
-  public function clearDateRangeField($field, $date, $component) {
-    $element = $this->findDateRangeComponent($field, $date, $component);
+  public function clearDateRangeField($field, $component, $date = NULL) {
+    $element = $this->findDateRangeComponent($field, $component, $date);
     $element->setValue('');
   }
 
