@@ -24,7 +24,12 @@
 <!--    </target>-->
 
     <target name="setup-continuousphp"
-            depends="check-continuousphp">
+            depends="check-continuousphp, start-apache-solr">
+        <exec dir="${solr.dir}"
+              command="./bin/solr status"
+              checkreturn="true"
+              passthru="true" />
+
         <echo msg="Set the virtuoso checkpoint to -1. Do not use a checkpoint for CPHP testing."/>
         <phingcall target="set-virtuoso-checkpoint">
             <property name="interval" value="-1"/>
@@ -73,6 +78,11 @@
     </target>
 
     <target name="build-continuousphp" depends="install-java, setup-apache-solr">
+        <exec dir="${solr.dir}"
+              command="./bin/solr status"
+              checkreturn="true"
+              passthru="true" />
+
         <!-- Set environment variables as extra properties through cloudformation -->
         <env2property prefix="cphp" phingproperty="cloudformation.properties" />
         <echo message="Copy CPHP pipeline variables to local properties file" />
