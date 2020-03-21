@@ -35,9 +35,11 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_core\JoinupVersionInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -1842,12 +1844,27 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     }
 
     $driver_session = $driver->getWebDriverSession();
-    $cookies = [];
-    foreach ($driver_session->getAllCookies() as $cookie) {
-      $cookies[$cookie['name']] = $cookie['value'];
+    $cookie_jar = new CookieJar();
+
+    // We're only extracting the session cookie as that should be enough to
+    // download even a private file.
+    $cookie = array_reduce($driver_session->getAllCookies(), function (?SetCookie $cookie, array $cookie_info): ?SetCookie {
+      if ($cookie_info['name'] === \Drupal::service('session')->getName()) {
+        $cookie = new SetCookie();
+        $cookie->setName($cookie_info['name']);
+        $cookie->setValue($cookie_info['value']);
+        $cookie->setDomain($cookie_info['domain']);
+        $cookie->setPath($cookie_info['path']);
+        $cookie->setSecure($cookie_info['secure']);
+        $cookie->setHttpOnly($cookie_info['httpOnly']);
+      }
+      return $cookie;
+    });
+
+    if ($cookie) {
+      $cookie_jar->setCookie($cookie);
     }
-    $cookie_jar = CookieJar::fromArray($cookies, $cookie['domain']);
-    $client = new Client(['cookies' => $cookie_jar]);
+    $client = new Client(['cookies' => $cookie_jar, 'timeout' => 60]);
 
     $response = $client->get($href);
     if ($response->getStatusCode() !== 200) {
