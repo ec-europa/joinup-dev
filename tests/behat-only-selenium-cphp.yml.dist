@@ -23,6 +23,8 @@ default:
         - LoversOfBehat\TableExtension\Context\TableContext
       filters:
         tags: '~@wip&&@javascript'
+      paths:
+        - features/asset_distribution/track_download.feature
   extensions:
     Drupal\MinkExtension:
       base_url: '${behat.base_url}'
