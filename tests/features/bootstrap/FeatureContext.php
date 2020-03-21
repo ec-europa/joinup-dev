@@ -1846,6 +1846,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $driver_session = $driver->getWebDriverSession();
     $cookie_jar = new CookieJar();
 
+    var_dump($driver_session->getAllCookies());
+
     // We're only extracting the session cookie as that should be enough to
     // download even a private file.
     $cookie = array_reduce($driver_session->getAllCookies(), function (?SetCookie $cookie, array $cookie_info): ?SetCookie {
@@ -1864,7 +1866,10 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     if ($cookie) {
       $cookie_jar->setCookie($cookie);
     }
-    $client = new Client(['cookies' => $cookie_jar, 'timeout' => 60]);
+    $client = new Client(['cookies' => $cookie_jar, 'timeout' => 30]);
+
+    var_dump($cookie);
+    var_dump($cookie_jar);
 
     $response = $client->get($href);
     if ($response->getStatusCode() !== 200) {
