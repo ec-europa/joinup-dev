@@ -1,0 +1,9 @@
+services:
+  state_machine_permissions.helper:
+    class: Drupal\state_machine_permissions\StateMachinePermissionsHelper
+    arguments: ['@entity_field.manager', '@plugin.manager.workflow_group', '@plugin.manager.workflow']
+  state_machine_permissions.og_subscriber:
+    class: Drupal\state_machine_permissions\EventSubscriber\StateMachineOgSubscriber
+    arguments: ['@entity_field.manager', '@state_machine_permissions.helper']
+    tags:
+      - name: event_subscriber

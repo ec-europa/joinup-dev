@@ -1,0 +1,2 @@
+permission_callbacks:
+  - \Drupal\state_machine_permissions\StateMachinePermissions::stateMachinePermissions

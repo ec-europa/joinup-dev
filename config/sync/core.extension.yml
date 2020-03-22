@@ -147,6 +147,7 @@ module:
   sparql_entity_storage: 0
   spdx: 0
   state_machine: 0
+  state_machine_permissions: 0
   state_machine_revisions: 0
   subpathauto: 0
   swiftmailer: 0
