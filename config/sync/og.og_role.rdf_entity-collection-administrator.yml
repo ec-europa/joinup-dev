@@ -14,5 +14,7 @@ group_type: rdf_entity
 group_bundle: collection
 group_id: null
 permissions:
+  - 'collection - collection_workflow - transition from validated to archival_request'
+  - 'collection - collection_workflow - transition from validated to deletion_request'
   - 'request collection deletion'
 role_type: null
