@@ -11,8 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgMembershipInterface;
-use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -68,19 +66,6 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
     }
 
     return reset($groups['rdf_entity']);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupUsers(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    return array_reduce($this->membershipManager->getGroupMembershipsByRoleNames($entity, [OgRoleInterface::AUTHENTICATED], $states), function ($users, OgMembershipInterface $membership) {
-      $user = $membership->getOwner();
-      if (!empty($user)) {
-        $users[] = $user;
-      }
-      return $users;
-    }, []);
   }
 
   /**

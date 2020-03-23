@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Drupal\joinup_group;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -24,19 +23,6 @@ interface JoinupGroupRelationInfoInterface {
    *    found.
    */
   public function getParent(EntityInterface $entity): ?RdfInterface;
-
-  /**
-   * Retrieves all the members with any role in a certain group.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group entity.
-   * @param array $states
-   *   (optional) An array of membership states to retrieve. Defaults to active.
-   *
-   * @return array
-   *   An array of users that are members of the entity group.
-   */
-  public function getGroupUsers(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
 
   /**
    * Returns the groups that relate to a contact information entity.
