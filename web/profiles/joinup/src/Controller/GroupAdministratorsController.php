@@ -394,8 +394,8 @@ class GroupAdministratorsController extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function getCollectionIds(): array {
-    $storage = $this->entityTypeManager->getStorage('rdf_entity');
-    $definition = $this->entityTypeManager->getDefinition('rdf_entity');
+    $storage = $this->entityTypeManager()->getStorage('rdf_entity');
+    $definition = $this->entityTypeManager()->getDefinition('rdf_entity');
     $bundle_key = $definition->getKey('bundle');
 
     $query = $storage->getQuery();
