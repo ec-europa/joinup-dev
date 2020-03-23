@@ -375,7 +375,7 @@ class GroupAdministratorsController extends ControllerBase {
     // Since this is a moderator-only feature that is rarely used we don't need
     // to worry about the potential performance impact of loading a large number
     // of memberships.
-    $collection_ids = $this->relationInfo->getCollectionIds();
+    $collection_ids = $this->getCollectionIds();
 
     if (empty($collection_ids)) {
       return [];
@@ -394,6 +394,25 @@ class GroupAdministratorsController extends ControllerBase {
       ->execute();
 
     return $membership_storage->loadMultiple($membership_ids);
+  }
+
+  /**
+   * Returns the entity IDs of all collections.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function getCollectionIds(): array {
+    $storage = $this->entityTypeManager->getStorage('rdf_entity');
+    $definition = $this->entityTypeManager->getDefinition('rdf_entity');
+    $bundle_key = $definition->getKey('bundle');
+
+    $query = $storage->getQuery();
+    $query->condition($bundle_key, 'collection');
+    return $query->execute();
   }
 
 }

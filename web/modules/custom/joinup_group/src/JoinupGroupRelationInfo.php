@@ -106,39 +106,6 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getCollectionIds(): array {
-    return $this->getRdfEntityIdsByBundle('collection');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSolutionIds(): array {
-    return $this->getRdfEntityIdsByBundle('solution');
-  }
-
-  /**
-   * Returns the entity IDs of the RDF entities with the given bundle ID.
-   *
-   * @param string $bundle
-   *   The bundle ID.
-   *
-   * @return string[]
-   *   An array of entity IDs.
-   */
-  protected function getRdfEntityIdsByBundle(string $bundle): array {
-    $storage = $this->entityTypeManager->getStorage('rdf_entity');
-    $definition = $this->entityTypeManager->getDefinition('rdf_entity');
-    $bundle_key = $definition->getKey('bundle');
-
-    $query = $storage->getQuery();
-    $query->condition($bundle_key, $bundle);
-    return $query->execute();
-  }
-
-  /**
    * Returns the entity storage for OgMembership entities.
    *
    * @return \Drupal\Core\Entity\EntityStorageInterface

@@ -73,22 +73,6 @@ interface JoinupGroupRelationInfoInterface {
   public function getUserGroupMembershipsByBundle(AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = [OgMembershipInterface::STATE_ACTIVE]): array;
 
   /**
-   * Returns the entity IDs of all collections.
-   *
-   * @return string[]
-   *   An array of entity IDs.
-   */
-  public function getCollectionIds(): array;
-
-  /**
-   * Returns the entity IDs of all solutions.
-   *
-   * @return string[]
-   *   An array of entity IDs.
-   */
-  public function getSolutionIds(): array;
-
-  /**
    * Returns the groups that relate to a contact information entity.
    *
    * @param \Drupal\rdf_entity\RdfInterface $entity
