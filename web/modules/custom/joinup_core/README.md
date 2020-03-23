@@ -53,9 +53,8 @@ function joinup_news_workflow_selector(EntityInterface $entity) {
   if ($entity->bundle() != 'news') {
     throw new Exception('This method can only be called for document entities');
   }
-  /** @var \Drupal\joinup_group\JoinupGroupRelationInfo $relation_info */
-  $relation_info = \Drupal::service('joinup_group.relation_info');
-  $moderation = $relation_info->getParentModeration($entity);
+  $parent = Drupal\joinup_group\JoinupGroupHelper::getGroup($entity);
+  $moderation = Drupal\joinup_group\JoinupGroupHelper::getModeration($parent);
   $moderation_type = $moderation == 1 ? 'pre_moderated' : 'post_moderated';
   return "node:news:$moderation_type";
 }

@@ -20,6 +20,7 @@ use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\message\MessageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
@@ -1986,7 +1987,7 @@ function joinup_theme_preprocess_node(&$variables) {
   // Add the group ID and label as data attributes in tiles.
   if ($variables['view_mode'] === 'view_mode_tile') {
     /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
-    $parent = \Drupal::service('joinup_group.relation_info')->getParent($node);
+    $parent = JoinupGroupHelper::getGroup($node);
     if ($parent) {
       $variables['attributes']['data-drupal-parent-id'] = $parent->id();
       $variables['attributes']['data-drupal-parent-label'] = $parent->label();
