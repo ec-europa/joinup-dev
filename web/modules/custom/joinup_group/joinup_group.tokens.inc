@@ -8,6 +8,7 @@
 declare(strict_types = 1);
 
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\joinup_group\JoinupGroupHelper;
 
 /**
  * Implements hook_token_info().
@@ -44,13 +45,11 @@ function joinup_group_tokens(string $type, array $tokens, array $data, array $op
   }
 
   $token_service = \Drupal::token();
-  /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
-  $relation_info = \Drupal::service('joinup_group.relation_info');
   if (isset($tokens['parent_collection'])) {
     $original = $tokens['parent_collection'];
     $parent_solution = $rdf_entity;
     if ($rdf_entity->bundle() !== 'solution') {
-      $parent_solution = $relation_info->getParent($rdf_entity);
+      $parent_solution = JoinupGroupHelper::getGroup($rdf_entity);
     }
 
     if (empty($parent_solution) || $parent_solution->collection->isEmpty()) {

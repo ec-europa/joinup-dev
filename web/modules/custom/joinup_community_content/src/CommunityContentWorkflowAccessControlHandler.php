@@ -12,7 +12,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
@@ -85,13 +84,6 @@ class CommunityContentWorkflowAccessControlHandler {
   protected $membershipManager;
 
   /**
-   * The group relation info service.
-   *
-   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
-   */
-  protected $relationInfo;
-
-  /**
    * The current logged in user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -119,8 +111,6 @@ class CommunityContentWorkflowAccessControlHandler {
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
-   *   The group relation info service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -128,10 +118,9 @@ class CommunityContentWorkflowAccessControlHandler {
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupGroupRelationInfoInterface $relation_info, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
-    $this->relationInfo = $relation_info;
     $this->currentUser = $current_user;
     $this->workflowHelper = $workflow_helper;
     $this->configFactory = $config_factory;
@@ -375,7 +364,7 @@ class CommunityContentWorkflowAccessControlHandler {
    *   The content creation option value.
    */
   protected function getParentContentCreationOption(NodeInterface $entity): string {
-    $parent = $this->relationInfo->getParent($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
     return JoinupGroupHelper::getContentCreation($parent);
   }
 

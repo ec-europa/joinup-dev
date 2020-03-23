@@ -7,8 +7,7 @@ namespace Drupal\joinup_front_page\Controller;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 
 /**
  * Controller that allows to toggle a boolean field on or off.
@@ -20,32 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * - message: the message to show to the user upon completion.
  */
 class BooleanFieldToggleController extends ControllerBase {
-
-  /**
-   * The Joinup group relation info service.
-   *
-   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
-   */
-  protected $relationInfo;
-
-  /**
-   * Instantiates a new SiteFeatureController object.
-   *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
-   *   The Joinup group relation info service.
-   */
-  public function __construct(JoinupGroupRelationInfoInterface $relationInfo) {
-    $this->relationInfo = $relationInfo;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('joinup_group.relation_info')
-    );
-  }
 
   /**
    * Route callback that sets the entity field to the specified value.
@@ -113,7 +86,7 @@ class BooleanFieldToggleController extends ControllerBase {
       $redirect = $entity->toUrl();
     }
     else {
-      $redirect = $this->relationInfo->getParent($entity)->toUrl();
+      $redirect = JoinupGroupHelper::getGroup($entity)->toUrl();
     }
 
     return $this->redirect($redirect->getRouteName(), $redirect->getRouteParameters());

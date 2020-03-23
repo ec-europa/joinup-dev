@@ -125,9 +125,7 @@ function joinup_community_content_workflow_selector(EntityInterface $entity): ?s
     throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
   }
 
-  /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
-  $relation_info = \Drupal::service('joinup_group.relation_info');
-  $parent_entity = $relation_info->getParent($entity);
+  $parent_entity = JoinupGroupHelper::getGroup($entity);
 
   // If the entity doesn't have a parent group we cannot determine the workflow.
   // This can happen e.g. when deleting orphaned group content.

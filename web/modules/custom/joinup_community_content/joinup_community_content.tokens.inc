@@ -9,6 +9,7 @@ declare(strict_types = 1);
 
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
+use Drupal\joinup_group\JoinupGroupHelper;
 
 /**
  * Implements hook_token_info_alter().
@@ -45,7 +46,7 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
           $node_storage = \Drupal::entityTypeManager()->getStorage('node');
           $revision_ids = $node_storage->revisionIds($node);
           if (count($revision_ids) > 1) {
-            list($left_revision, $right_revision) = array_slice($revision_ids, -2, 2);
+            [$left_revision, $right_revision] = array_slice($revision_ids, -2, 2);
 
             $replacements[$original] = Url::fromRoute('diff.revisions_diff', [
               'node' => $node->id(),
@@ -57,11 +58,9 @@ function joinup_community_content_tokens($type, array $tokens, array $data = [],
           break;
 
         case 'path-to-community-content':
-          /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
-          $relation_info = \Drupal::service('joinup_group.relation_info');
           $path_parts = [];
 
-          if ($parent = $relation_info->getParent($node)) {
+          if ($parent = JoinupGroupHelper::getGroup($node)) {
             $bubbleable_metadata->addCacheableDependency($parent);
             /** @var \Drupal\rdf_entity\RdfInterface $collection */
             if ($parent->bundle() === 'solution' && $collection = $parent->collection->first()->entity) {
