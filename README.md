@@ -207,3 +207,60 @@ there is information on handling draft in CRUD operations for rdf entities.
 there is information on how to handle notifications in Joinup.
 * In [Joinup core module](web/modules/custom/joinup_core/README.md) there is
 information on how to handle and create workflows.
+
+### Checking live site analytics.
+In order to check the analytics when it comes to page visits and downloads, a local MATOMO instance is needed.
+#### Requirements
+* A local LAMP stack as you have for Joinup.
+* Set up a local apache site to a directory of choice.
+* Set up a local database and its user with full access to the database.
+#### Installation
+```bash
+; Download the MATOMO package to the tmp folder.
+$ cd /tmp && wget https://builds.matomo.org/piwik.zip
+
+; Extract the package.
+$ unzip piwik.zip
+
+; Move the extracted foldre to your local server directory.
+; In the following example command, it is assumed that the directory chosen for the
+; MATOMO instance, is `/var/www/html/matomo`.
+$ mv piwik /var/www/html/matomo
+```
+Now, visit your configured webserver domain e.g. "http://local.matomo.instance/" and follow the onscreen instructions to
+set up the server, ensure you meet the requirements, and choose the admin account.
+
+In the end of the configuration wizard, also enter the details of the website that you want to be tracked.
+
+Log in to the MATOMO and click the gear icon and then under "Personal" click "Settings".
+Scroll down to find the authentication token and copy it.
+
+On your settings.local.php add the following settings:
+```php
+$config['matomo.settings']['site_id'] = '1';
+// The MATOMO instance url. Note that the trailing url should be there.
+$config['matomo.settings']['url_http'] = 'http://matomo.test/';
+$config['matomo.settings']['url_https'] = '';
+// The authentication token you copied from the instance.
+$config['matomo_reporting_api.settings']['token_auth'] = '1234567890abcdefg';
+```
+
+Finally, on your `matomo.settings.yml`, change the `request_path_mode` from 2 to 0.
+This will enable the data tracking.
+
+NOTICE: This does not track search results as those are handled by the oe_webtools.
+
+#### Calculating results
+When visiting some pages, the visits will be logged. However, under the "Behaviour" section, no results will be shown as
+these need to be calculated and archived first. Since MATOMO is based on a cron job, a manual trigger has to happen.
+
+Under the `/var/www/html/matomo` (or the directory you have configured), there is the `console` executable. Run the
+following command to re-calculate all statistics:
+```bash
+./console core:archive --force-all-websites --force-all-periods=315576000 --force-date-last-n=1000
+```
+The above command will recalculate statistics fo all sites if you have more than one.
+
+#### Usual problems
+When accessing one of the reports under the "Behaviour" section, the default date range is not going to show any
+results. In order to show results, change the date range to the current month.
