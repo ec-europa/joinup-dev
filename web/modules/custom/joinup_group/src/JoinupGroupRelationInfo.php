@@ -92,20 +92,6 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getUserGroupMembershipsByBundle(AccountInterface $user, string $entity_type_id, string $bundle_id, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
-    $storage = $this->getOgMembershipStorage();
-    $query = $storage->getQuery()
-      ->condition('uid', $user->id())
-      ->condition('entity_type', $entity_type_id)
-      ->condition('entity_bundle', $bundle_id)
-      ->condition('state', $states, 'IN');
-
-    return $storage->loadMultiple($query->execute());
-  }
-
-  /**
    * Returns the entity storage for OgMembership entities.
    *
    * @return \Drupal\Core\Entity\EntityStorageInterface
