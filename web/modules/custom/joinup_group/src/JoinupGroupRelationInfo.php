@@ -4,13 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_group;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,22 +22,12 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
   protected $entityTypeManager;
 
   /**
-   * The OG membership manager service.
-   *
-   * @var \Drupal\og\MembershipManagerInterface
-   */
-  protected $membershipManager;
-
-  /**
    * Constructs a JoinupRelationshipManager object.
    *
-   * @param \Drupal\og\MembershipManagerInterface $membershipManager
-   *   The OG membership manager service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
    */
-  public function __construct(MembershipManagerInterface $membershipManager, EntityTypeManagerInterface $entityTypeManager) {
-    $this->membershipManager = $membershipManager;
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
   }
 
@@ -51,46 +36,8 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('og.membership_manager'),
       $container->get('entity_type.manager')
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getParent(EntityInterface $entity): ?RdfInterface {
-    $groups = $this->membershipManager->getGroups($entity);
-    if (empty($groups['rdf_entity'])) {
-      return NULL;
-    }
-
-    return reset($groups['rdf_entity']);
-  }
-
-  /**
-   * Returns the entity storage for OgMembership entities.
-   *
-   * @return \Drupal\Core\Entity\EntityStorageInterface
-   *   The entity storage.
-   */
-  protected function getOgMembershipStorage(): EntityStorageInterface {
-    // Since entities can be dynamically defined in Drupal the generic entity
-    // type manager service can throw exceptions in case entities are not
-    // available. However these circumstances do not apply to us since we are
-    // requesting the OgMembership entities which are defined in code in the OG
-    // module on which we correctly depend. Transform these exceptions to
-    // unchecked runtime exceptions so we don't need to document these all the
-    // way up the call stack.
-    try {
-      return $this->entityTypeManager->getStorage('og_membership');
-    }
-    catch (InvalidPluginDefinitionException $e) {
-      throw new \RuntimeException('The OgMembership entity has an invalid plugin definition.', NULL, $e);
-    }
-    catch (PluginNotFoundException $e) {
-      throw new \RuntimeException('The OgMembership entity storage does not exist.', NULL, $e);
-    }
   }
 
   /**
