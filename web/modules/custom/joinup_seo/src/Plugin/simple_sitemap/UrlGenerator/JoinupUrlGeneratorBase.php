@@ -7,7 +7,7 @@ namespace Drupal\joinup_seo\Plugin\simple_sitemap\UrlGenerator;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\simple_sitemap\EntityHelper;
 use Drupal\simple_sitemap\Logger;
 use Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\EntityUrlGenerator;
@@ -26,13 +26,6 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    * @var \Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\UrlGeneratorManager
    */
   protected $urlGeneratorManager;
-
-  /**
-   * The Joinup group relation info service.
-   *
-   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
-   */
-  protected $relationInfo;
 
   /**
    * Constructs a JoinupUrlGeneratorBase object.
@@ -55,13 +48,10 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
    *   The sitemap entity helper service.
    * @param \Drupal\simple_sitemap\Plugin\simple_sitemap\UrlGenerator\UrlGeneratorManager $url_generator_manager
    *   The url generator manager service.
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
-   *   The joinup group relation info service.
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager, JoinupGroupRelationInfoInterface $relation_info) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, Simplesitemap $generator, Logger $logger, LanguageManagerInterface $language_manager, EntityTypeManagerInterface $entity_type_manager, EntityHelper $entityHelper, UrlGeneratorManager $url_generator_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $generator, $logger, $language_manager, $entity_type_manager, $entityHelper, $url_generator_manager);
     $this->urlGeneratorManager = $url_generator_manager;
-    $this->relationInfo = $relation_info;
   }
 
   /**
@@ -77,8 +67,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
       $container->get('language_manager'),
       $container->get('entity_type.manager'),
       $container->get('simple_sitemap.entity_helper'),
-      $container->get('plugin.manager.simple_sitemap.url_generator'),
-      $container->get('joinup_group.relation_info')
+      $container->get('plugin.manager.simple_sitemap.url_generator')
     );
   }
 
@@ -150,7 +139,7 @@ abstract class JoinupUrlGeneratorBase extends EntityUrlGenerator {
     // In case the entity type is a node, we also need to also take into account
     // the status of the parent.
     if ($entity->getEntityTypeId() === 'node') {
-      $parent = $this->relationInfo->getParent($entity);
+      $parent = JoinupGroupHelper::getGroup($entity);
       if (empty($parent) || !$parent->isPublished()) {
         return FALSE;
       }
