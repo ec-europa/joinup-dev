@@ -122,6 +122,9 @@ class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
     if ($keys = $this->currentRequest->get('keys')) {
       $search_data = $event->getSearch();
       $search_data->setKeyword($keys);
+      if ($total_rows = $this->currentRequest->attributes->get('total_rows')) {
+        $search_data->setCount($total_rows);
+      }
     }
   }
 
