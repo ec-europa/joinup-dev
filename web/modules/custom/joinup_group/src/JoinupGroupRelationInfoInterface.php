@@ -27,19 +27,6 @@ interface JoinupGroupRelationInfoInterface {
   public function getParent(EntityInterface $entity): ?RdfInterface;
 
   /**
-   * Retrieves the moderation state of the parent.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return int
-   *   The moderation status. Can be one of the following values:
-   *   - CommunityContentWorkflowAccessControlHandler::PRE_MODERATION
-   *   - CommunityContentWorkflowAccessControlHandler::POST_MODERATION
-   */
-  public function getParentModeration(EntityInterface $entity): ?int;
-
-  /**
    * Retrieves the content creation option of the parent entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity

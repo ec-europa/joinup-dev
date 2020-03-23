@@ -16,6 +16,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 
 /**
@@ -125,7 +126,8 @@ function joinup_community_content_workflow_selector(EntityInterface $entity) {
 
   /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
   $relation_info = \Drupal::service('joinup_group.relation_info');
-  $moderation = $relation_info->getParentModeration($entity);
+  $parent_entity = $relation_info->getParent($entity);
+  $moderation = JoinupGroupHelper::getModeration($parent_entity);
   return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
 }
 

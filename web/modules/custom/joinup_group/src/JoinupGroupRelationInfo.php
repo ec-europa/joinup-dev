@@ -74,23 +74,6 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
   /**
    * {@inheritdoc}
    */
-  public function getParentModeration(EntityInterface $entity): ?int {
-    $parent = $this->getParent($entity);
-    if (!$parent) {
-      return NULL;
-    }
-    $field_array = [
-      'collection' => 'field_ar_moderation',
-      'solution' => 'field_is_moderation',
-    ];
-
-    $moderation = $parent->{$field_array[$parent->bundle()]}->value;
-    return (int) $moderation;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getParentContentCreationOption(EntityInterface $entity): string {
     $parent = $this->getParent($entity);
     $field_array = [
