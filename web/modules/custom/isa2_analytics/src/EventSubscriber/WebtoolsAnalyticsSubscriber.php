@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class WebtoolsAnalyticsSubscriber implements EventSubscriberInterface {
 
   /**
-   * The entity type manager interface.
+   * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */

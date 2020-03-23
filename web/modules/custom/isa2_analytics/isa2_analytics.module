@@ -12,8 +12,8 @@ use Drupal\views\ViewExecutable;
 /**
  * Implements hook_views_post_execute().
  *
- * Set the total rows in the parameter bag so that it is retrievable in the
- * analytics subscriber.
+ * Set the total rows in the current request attribute parameter bag so that it
+ * is retrievable in the analytics subscriber.
  *
  * @see \oe_webtools_analytics_page_attachments()
  * @see \Drupal\isa2_analytics\EventSubscriber\WebtoolsAnalyticsSubscriber::setSearchData
