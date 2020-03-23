@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\joinup\Controller;
 
@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup\PinServiceInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\og\OgAccessInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -37,24 +36,14 @@ class PinEntityController extends ControllerBase {
   protected $pinService;
 
   /**
-   * The Joinup group relation info service.
-   *
-   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
-   */
-  protected $relationInfo;
-
-  /**
    * Instantiates a new PinEntityController object.
    *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
-   *   The Joinup group relation info service.
    * @param \Drupal\og\OgAccessInterface $ogAccess
    *   The OG access service.
    * @param \Drupal\joinup\PinServiceInterface $pinService
    *   The pin service.
    */
-  public function __construct(JoinupGroupRelationInfoInterface $relationInfo, OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
-    $this->relationInfo = $relationInfo;
+  public function __construct(OgAccessInterface $ogAccess, PinServiceInterface $pinService) {
     $this->ogAccess = $ogAccess;
     $this->pinService = $pinService;
   }
@@ -64,7 +53,6 @@ class PinEntityController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('joinup_group.relation_info'),
       $container->get('og.access'),
       $container->get('joinup.pin_service')
     );
@@ -190,7 +178,7 @@ class PinEntityController extends ControllerBase {
       $groups = $entity->get('collection')->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      $groups = [$this->relationInfo->getParent($entity)];
+      $groups = [JoinupGroupHelper::getGroup($entity)];
     }
 
     $list = [];
@@ -220,7 +208,7 @@ class PinEntityController extends ControllerBase {
       return JoinupGroupHelper::isCollection($group);
     }
     elseif (CommunityContentHelper::isCommunityContent($entity)) {
-      return JoinupGroupHelper::isCollection($group) || JoinupGroupHelper::isSolution($group);
+      return JoinupGroupHelper::isGroup($group);
     }
     return FALSE;
   }

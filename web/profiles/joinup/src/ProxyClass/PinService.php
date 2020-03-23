@@ -12,7 +12,7 @@ namespace Drupal\joinup\ProxyClass {
      *
      * @see \Drupal\Component\ProxyBuilder
      */
-    class PinService implements \Drupal\joinup\PinServiceInterface, \Drupal\Core\DependencyInjection\ContainerInjectionInterface
+    class PinService implements \Drupal\joinup\PinServiceInterface
     {
 
         use \Drupal\Core\DependencyInjection\DependencySerializationTrait;
@@ -70,14 +70,6 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public static function create(\Symfony\Component\DependencyInjection\ContainerInterface $container)
-        {
-            \Drupal\joinup\PinService::create($container);
-        }
-
-        /**
-         * {@inheritdoc}
-         */
         public function isEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group = NULL)
         {
             return $this->lazyLoadItself()->isEntityPinned($entity, $group);
@@ -86,7 +78,7 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function setEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group, bool $pinned)
+        public function setEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group, $pinned)
         {
             return $this->lazyLoadItself()->setEntityPinned($entity, $group, $pinned);
         }

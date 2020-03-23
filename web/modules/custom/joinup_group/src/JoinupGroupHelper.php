@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\joinup_group;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -82,6 +83,22 @@ class JoinupGroupHelper {
    */
   public static function isSolution(EntityInterface $entity): bool {
     return self::isRdfEntityOfBundle($entity, 'solution');
+  }
+
+  /**
+   * Returns the group the entity belongs to.
+   *
+   * This relies on the fact that in Joinup every group entity only belongs to a
+   * single group, and always uses the default field name for the group field.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to return the group.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The group entity, or NULL if the entity doesn't have a group.
+   */
+  public static function getGroup(EntityInterface $entity): ?EntityInterface {
+    return $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
   }
 
   /**

@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\joinup;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A service to handle pinned entities.
  */
-class PinService implements PinServiceInterface, ContainerInjectionInterface {
+class PinService implements PinServiceInterface {
 
   /**
    * The field that holds the collections where a solution is pinned in.
@@ -23,32 +20,6 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
    * @var string
    */
   const SOLUTION_PIN_FIELD = 'field_is_pinned_in';
-
-  /**
-   * The group relations info service.
-   *
-   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
-   */
-  protected $relationInfo;
-
-  /**
-   * Constructs a PinService service.
-   *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
-   *   The relations manager service.
-   */
-  public function __construct(JoinupGroupRelationInfoInterface $relationInfo) {
-    $this->relationInfo = $relationInfo;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('joinup_group.relation_info')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -109,7 +80,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {
-      return [$this->relationInfo->getParent($entity)];
+      return [JoinupGroupHelper::getGroup($entity)];
     }
 
     return [];

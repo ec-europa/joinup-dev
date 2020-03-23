@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
@@ -174,9 +175,7 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     return AccessResult::neutral();
   }
 
-  /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
-  $relation_info = \Drupal::service('joinup_group.relation_info');
-  $parent = $relation_info->getParent($node);
+  $parent = JoinupGroupHelper::getGroup($node);
   // Let parentless nodes (e.g. newsletters) be handled by the core access.
   if (empty($parent)) {
     return AccessResult::neutral();
