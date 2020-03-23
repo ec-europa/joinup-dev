@@ -718,6 +718,7 @@ class JoinupSubContext extends DrupalSubContextBase {
       ],
       'document' => [
         'document type' => 'field_type',
+        'document publication date' => 'field_document_publication_date',
         'file' => 'field_file',
         'keywords' => 'field_keywords',
         'licence' => 'field_licence',
