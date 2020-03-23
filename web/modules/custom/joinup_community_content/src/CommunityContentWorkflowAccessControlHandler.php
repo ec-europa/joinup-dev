@@ -376,26 +376,7 @@ class CommunityContentWorkflowAccessControlHandler {
    */
   protected function getParentContentCreationOption(NodeInterface $entity): string {
     $parent = $this->relationInfo->getParent($entity);
-    $field_name = $this->getParentContentCreationFieldName($parent);
-    return $parent->{$field_name}->value;
-  }
-
-  /**
-   * Returns the content creation field's machine name.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The parent entity.
-   *
-   * @return string
-   *   The machine name of the content creation field.
-   */
-  protected function getParentContentCreationFieldName(EntityInterface $entity): string {
-    $field_array = [
-      'collection' => 'field_ar_content_creation',
-      'solution' => 'field_is_content_creation',
-    ];
-
-    return $field_array[$entity->bundle()];
+    return JoinupGroupHelper::getContentCreation($parent);
   }
 
   /**

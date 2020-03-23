@@ -21,6 +21,14 @@ class JoinupGroupHelper {
   ];
 
   /**
+   * Content creation field machine names per group bundle.
+   */
+  const GROUP_CONTENT_CREATION = [
+    'collection' => 'field_ar_content_creation',
+    'solution' => 'field_is_content_creation',
+  ];
+
+  /**
    * Content moderation field machine names per group bundle.
    */
   const GROUP_MODERATION_FIELDS = [
@@ -89,6 +97,22 @@ class JoinupGroupHelper {
    */
   public static function getModeration(EntityInterface $entity): int {
     return (int) $entity->{self::GROUP_MODERATION_FIELDS[$entity->bundle()]}->first()->value;
+  }
+
+  /**
+   * Returns the content creation option for the given group.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group for which to return the content creation option value.
+   *
+   * @return string
+   *   The content creation option value. Can be one of the following:
+   *   - \Drupal\joinup_group\ContentCreationOptions::FACILITATORS
+   *   - \Drupal\joinup_group\ContentCreationOptions::MEMBERS
+   *   - \Drupal\joinup_group\ContentCreationOptions::REGISTERED_USERS
+   */
+  public static function getContentCreation(EntityInterface $entity): string {
+    return $entity->{self::GROUP_CONTENT_CREATION[$entity->bundle()]}->first()->value;
   }
 
   /**

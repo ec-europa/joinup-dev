@@ -74,19 +74,6 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
   /**
    * {@inheritdoc}
    */
-  public function getParentContentCreationOption(EntityInterface $entity): string {
-    $parent = $this->getParent($entity);
-    $field_array = [
-      'collection' => 'field_ar_content_creation',
-      'solution' => 'field_is_content_creation',
-    ];
-
-    return $parent->{$field_array[$parent->bundle()]}->first()->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getGroupUsers(EntityInterface $entity, array $states = [OgMembershipInterface::STATE_ACTIVE]): array {
     return array_reduce($this->getGroupMemberships($entity, $states), function ($users, OgMembershipInterface $membership) {
       $user = $membership->getOwner();

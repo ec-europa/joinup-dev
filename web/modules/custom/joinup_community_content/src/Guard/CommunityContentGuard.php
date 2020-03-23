@@ -7,6 +7,7 @@ namespace Drupal\joinup_community_content\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\state_machine\Guard\GuardInterface;
@@ -104,7 +105,8 @@ class CommunityContentGuard implements GuardInterface {
   public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $permission_scheme = $this->permissionScheme->get('create');
     $workflow_id = $workflow->getId();
-    $content_creation = (string) $this->relationInfo->getParentContentCreationOption($entity);
+    $parent = $this->relationInfo->getParent($entity);
+    $content_creation = JoinupGroupHelper::getContentCreation($parent);
 
     if (!isset($permission_scheme[$workflow_id][$content_creation][$transition->getId()])) {
       return FALSE;

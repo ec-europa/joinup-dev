@@ -27,20 +27,6 @@ interface JoinupGroupRelationInfoInterface {
   public function getParent(EntityInterface $entity): ?RdfInterface;
 
   /**
-   * Retrieves the content creation option of the parent entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return int
-   *   The content creation option. Can be one of the following values:
-   *   - \Drupal\joinup_group\ContentCreationOptions::FACILITATORS
-   *   - \Drupal\joinup_group\ContentCreationOptions::MEMBERS
-   *   - \Drupal\joinup_group\ContentCreationOptions::REGISTERED_USERS
-   */
-  public function getParentContentCreationOption(EntityInterface $entity): string;
-
-  /**
    * Retrieves all the members with any role in a certain group.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
