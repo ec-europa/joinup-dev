@@ -78,7 +78,7 @@ namespace Drupal\joinup\ProxyClass {
         /**
          * {@inheritdoc}
          */
-        public function setEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group, $pinned)
+        public function setEntityPinned(\Drupal\Core\Entity\ContentEntityInterface $entity, \Drupal\rdf_entity\RdfInterface $group, bool $pinned)
         {
             return $this->lazyLoadItself()->setEntityPinned($entity, $group, $pinned);
         }
