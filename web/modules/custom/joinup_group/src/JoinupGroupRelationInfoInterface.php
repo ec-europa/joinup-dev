@@ -40,17 +40,6 @@ interface JoinupGroupRelationInfoInterface {
   public function getParentModeration(EntityInterface $entity): ?int;
 
   /**
-   * Retrieves the state of the parent.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The group content entity.
-   *
-   * @return string
-   *   The state of the parent entity.
-   */
-  public function getParentState(EntityInterface $entity): string;
-
-  /**
    * Retrieves the content creation option of the parent entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity

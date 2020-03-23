@@ -14,12 +14,18 @@ class JoinupGroupHelper {
 
   /**
    * Group bundles.
-   *
-   * @var string[]
    */
   const GROUP_BUNDLES = [
     'collection' => 'collection',
     'solution' => 'solution',
+  ];
+
+  /**
+   * Workflow state field machine names per group bundle.
+   */
+  const GROUP_STATE_FIELDS = [
+    'collection' => 'field_ar_state',
+    'solution' => 'field_is_state',
   ];
 
   /**
@@ -60,6 +66,19 @@ class JoinupGroupHelper {
    */
   public static function isSolution(EntityInterface $entity): bool {
     return self::isRdfEntityOfBundle($entity, 'solution');
+  }
+
+  /**
+   * Returns the workflow state for the given group.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The group for which to return the workflow state.
+   *
+   * @return string
+   *   The workflow state.
+   */
+  public static function getState(EntityInterface $entity): string {
+    return $entity->{self::GROUP_STATE_FIELDS[$entity->bundle()]}->first()->value;
   }
 
   /**

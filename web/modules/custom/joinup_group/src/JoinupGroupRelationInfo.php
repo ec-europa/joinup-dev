@@ -91,20 +91,6 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
   /**
    * {@inheritdoc}
    */
-  public function getParentState(EntityInterface $entity): string {
-    $parent = $this->getParent($entity);
-    $field_array = [
-      'collection' => 'field_ar_state',
-      'solution' => 'field_is_state',
-    ];
-
-    $state = $parent->{$field_array[$parent->bundle()]}->first()->value;
-    return $state;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getParentContentCreationOption(EntityInterface $entity): string {
     $parent = $this->getParent($entity);
     $field_array = [

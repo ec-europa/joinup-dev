@@ -11,11 +11,13 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -190,13 +192,15 @@ class CommunityContentWorkflowAccessControlHandler {
         return $this->entityDeleteAccess($entity, $account);
 
       case 'post comments':
-        $parent_state = $this->relationInfo->getParentState($entity);
+        $parent = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
+        $parent_state = JoinupGroupHelper::getState($parent);
         $entity_state = $this->getEntityState($entity);
+
         // Commenting on content of an archived group is not allowed.
         if ($parent_state === 'archived' || $entity_state === 'archived') {
           return AccessResult::forbidden();
         }
-        $parent = $this->relationInfo->getParent($entity);
+
         $membership = $this->membershipManager->getMembership($parent, $account->id());
         if ($membership instanceof OgMembership) {
           return AccessResult::allowedIf($membership->hasPermission($operation));
