@@ -1130,7 +1130,7 @@ function joinup_core_post_update_delete_orphaned_solutions() {
   $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
   foreach ($solution_ids as $solution_id) {
     $solution = $storage->load($solution_id);
-    $solution->skip_notification = 1;
+    $solution->skip_notification = TRUE;
     $solution->delete();
   }
 }
