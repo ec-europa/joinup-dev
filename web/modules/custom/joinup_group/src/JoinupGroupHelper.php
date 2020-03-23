@@ -89,7 +89,7 @@ class JoinupGroupHelper {
    * Returns the group the entity belongs to.
    *
    * This relies on the fact that in Joinup every group entity only belongs to a
-   * single group, and always uses the default field name for the group field.
+   * single group.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity for which to return the group.
@@ -98,7 +98,23 @@ class JoinupGroupHelper {
    *   The group entity, or NULL if the entity doesn't have a group.
    */
   public static function getGroup(EntityInterface $entity): ?EntityInterface {
-    return $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
+    $group_field = self::getGroupField($entity);
+    return $entity->get($group_field)->entity;
+  }
+
+  /**
+   * Returns the name of the group field for the given entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity for which to return the group field name.
+   *
+   * @return string
+   *   The field name.
+   */
+  public static function getGroupField(EntityInterface $entity): string {
+    // Asset releases use the ADMS-AP dictated name for the group field, while
+    // all others use the default name.
+    return $entity->bundle() === 'asset_release' ? 'field_isr_is_version_of' : OgGroupAudienceHelperInterface::DEFAULT_FIELD;
   }
 
   /**
