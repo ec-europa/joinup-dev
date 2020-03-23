@@ -89,9 +89,8 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
  */
 function joinup_group_propose_message_submit(&$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
-  $fields = ['collection' => 'field_ar_state', 'solution' => 'field_is_state'];
   $entity = $form_object->getEntity();
-  $state = $entity->get($fields[$entity->bundle()])->value;
+  $state = JoinupGroupHelper::getState($entity);
 
   if ($state === 'proposed') {
     \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));
