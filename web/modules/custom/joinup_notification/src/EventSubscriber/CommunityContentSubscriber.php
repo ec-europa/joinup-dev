@@ -117,10 +117,16 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $state_item = $this->workflowHelper->getEntityStateFieldDefinition($this->entity->getEntityTypeId(), $this->entity->bundle());
     if (!empty($state_item)) {
       $this->stateField = $state_item->getName();
-      $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
       $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
       $to_state = $this->entity->get($this->stateField)->first()->value;
-      $this->transition = $this->workflow->findTransition($from_state, $to_state);
+
+      $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
+      // In some cases the workflow cannot be determined, for example when
+      // deleting orphaned group content that has a workflow that depends on the
+      // parent entity's content moderation status.
+      if ($this->workflow) {
+        $this->transition = $this->workflow->findTransition($from_state, $to_state);
+      }
     }
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
@@ -223,7 +229,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // latest revision is forced here.
     if ($latest_revision = $this->revisionManager->loadLatestRevision($this->entity)) {
       $state = $latest_revision->get($this->stateField)->first()->value;
-      if (empty($this->config[$this->workflow->getId()][$state])) {
+      if (empty($this->workflow) || empty($this->config[$this->workflow->getId()][$state])) {
         return;
       }
 

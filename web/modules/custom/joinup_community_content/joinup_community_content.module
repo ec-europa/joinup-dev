@@ -111,22 +111,30 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The community content entity.
  *
- * @return string
- *   The id of the workflow to use.
+ * @return string|null
+ *   The id of the workflow to use, or NULL if the workflow cannot be
+ *   determined.
  *
- * @throws Exception
+ * @throws \InvalidArgumentException
  *    Thrown when the function is called for bundles that do not refer to
  *    community content.
  */
-function joinup_community_content_workflow_selector(EntityInterface $entity) {
+function joinup_community_content_workflow_selector(EntityInterface $entity): ?string {
   $bundles = ['document', 'event', 'news'];
   if ($entity->getEntityTypeId() !== 'node' || !in_array($entity->bundle(), $bundles)) {
-    throw new Exception('This function can only be called for community content apart from discussion.');
+    throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
   }
 
   /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
   $relation_info = \Drupal::service('joinup_group.relation_info');
   $parent_entity = $relation_info->getParent($entity);
+
+  // If the entity doesn't have a parent group we cannot determine the workflow.
+  // This can happen e.g. when deleting orphaned group content.
+  if (empty($parent_entity)) {
+    return NULL;
+  }
+
   $moderation = JoinupGroupHelper::getModeration($parent_entity);
   return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
 }
