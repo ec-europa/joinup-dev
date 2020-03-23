@@ -1117,3 +1117,18 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
   $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
   return "Processed {$sandbox['count']} out of {$sandbox['max']} collections";
 }
+
+/**
+ * Clears out some solutions tha are orphaned and not updated recently.
+ */
+function joinup_core_post_update_delete_orphaned_solutions() {
+  $solution_ids = [
+    'http://data.europa.eu/w21/b9f30715-8921-4b27-b906-a3fb9b72bf50',
+    'http://data.europa.eu/w21/cac5e29b-d3f9-4a07-b348-6a34ec233dd6',
+    'http://data.europa.eu/w21/0e51ed56-b06c-45cf-92d6-3612fdd2d0b4',
+  ];
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  foreach ($solution_ids as $solution_id) {
+    $storage->load($solution_id)->delete();
+  }
+}
