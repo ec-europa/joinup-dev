@@ -11,11 +11,12 @@ use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_core\WorkflowHelperInterface;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\MembershipManagerInterface;
+use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
@@ -83,13 +84,6 @@ class CommunityContentWorkflowAccessControlHandler {
   protected $membershipManager;
 
   /**
-   * The group relation info service.
-   *
-   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
-   */
-  protected $relationInfo;
-
-  /**
    * The current logged in user.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -117,8 +111,6 @@ class CommunityContentWorkflowAccessControlHandler {
    *   The entity type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The OG membership manager service.
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
-   *   The group relation info service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current logged in user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -126,10 +118,9 @@ class CommunityContentWorkflowAccessControlHandler {
    * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, JoinupGroupRelationInfoInterface $relation_info, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
     $this->entityTypeManager = $entity_type_manager;
     $this->membershipManager = $og_membership_manager;
-    $this->relationInfo = $relation_info;
     $this->currentUser = $current_user;
     $this->workflowHelper = $workflow_helper;
     $this->configFactory = $config_factory;
@@ -190,13 +181,15 @@ class CommunityContentWorkflowAccessControlHandler {
         return $this->entityDeleteAccess($entity, $account);
 
       case 'post comments':
-        $parent_state = $this->relationInfo->getParentState($entity);
+        $parent = $entity->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->entity;
+        $parent_state = JoinupGroupHelper::getState($parent);
         $entity_state = $this->getEntityState($entity);
+
         // Commenting on content of an archived group is not allowed.
         if ($parent_state === 'archived' || $entity_state === 'archived') {
           return AccessResult::forbidden();
         }
-        $parent = $this->relationInfo->getParent($entity);
+
         $membership = $this->membershipManager->getMembership($parent, $account->id());
         if ($membership instanceof OgMembership) {
           return AccessResult::allowedIf($membership->hasPermission($operation));
@@ -371,27 +364,8 @@ class CommunityContentWorkflowAccessControlHandler {
    *   The content creation option value.
    */
   protected function getParentContentCreationOption(NodeInterface $entity): string {
-    $parent = $this->relationInfo->getParent($entity);
-    $field_name = $this->getParentContentCreationFieldName($parent);
-    return $parent->{$field_name}->value;
-  }
-
-  /**
-   * Returns the content creation field's machine name.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The parent entity.
-   *
-   * @return string
-   *   The machine name of the content creation field.
-   */
-  protected function getParentContentCreationFieldName(EntityInterface $entity): string {
-    $field_array = [
-      'collection' => 'field_ar_content_creation',
-      'solution' => 'field_is_content_creation',
-    ];
-
-    return $field_array[$entity->bundle()];
+    $parent = JoinupGroupHelper::getGroup($entity);
+    return JoinupGroupHelper::getContentCreation($parent);
   }
 
   /**

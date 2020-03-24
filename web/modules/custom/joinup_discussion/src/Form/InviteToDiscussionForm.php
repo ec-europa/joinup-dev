@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_invite\Entity\Invitation;
 use Drupal\joinup_invite\Entity\InvitationInterface;
 use Drupal\joinup_invite\Form\InviteFormBase;
@@ -296,7 +297,7 @@ class InviteToDiscussionForm extends InviteFormBase {
       // user is a facilitator), or the author of the discussion itself.
       $user = $account->getAccount();
       /** @var \Drupal\rdf_entity\Entity\Rdf $group */
-      $group = \Drupal::service('joinup_group.relation_info')->getParent($node);
+      $group = JoinupGroupHelper::getGroup($node);
 
       $is_group_administrator = $user->hasPermission('administer groups');
       $is_owner = $user->id() == $node->getOwnerId();

@@ -16,6 +16,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 
 /**
@@ -110,22 +111,29 @@ function joinup_community_content_attachment_file_process($element, FormStateInt
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   The community content entity.
  *
- * @return string
- *   The id of the workflow to use.
+ * @return string|null
+ *   The id of the workflow to use, or NULL if the workflow cannot be
+ *   determined.
  *
- * @throws Exception
+ * @throws \InvalidArgumentException
  *    Thrown when the function is called for bundles that do not refer to
  *    community content.
  */
-function joinup_community_content_workflow_selector(EntityInterface $entity) {
+function joinup_community_content_workflow_selector(EntityInterface $entity): ?string {
   $bundles = ['document', 'event', 'news'];
   if ($entity->getEntityTypeId() !== 'node' || !in_array($entity->bundle(), $bundles)) {
-    throw new Exception('This function can only be called for community content apart from discussion.');
+    throw new \InvalidArgumentException('This function can only be called for community content apart from discussion.');
   }
 
-  /** @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info */
-  $relation_info = \Drupal::service('joinup_group.relation_info');
-  $moderation = $relation_info->getParentModeration($entity);
+  $parent_entity = JoinupGroupHelper::getGroup($entity);
+
+  // If the entity doesn't have a parent group we cannot determine the workflow.
+  // This can happen e.g. when deleting orphaned group content.
+  if (empty($parent_entity)) {
+    return NULL;
+  }
+
+  $moderation = JoinupGroupHelper::getModeration($parent_entity);
   return $moderation == CommunityContentWorkflowAccessControlHandler::PRE_MODERATION ? 'node:pre_moderated' : 'node:post_moderated';
 }
 

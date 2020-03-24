@@ -7,7 +7,7 @@ namespace Drupal\joinup_community_content\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
@@ -25,13 +25,6 @@ class CommunityContentGuard implements GuardInterface {
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $currentUser;
-
-  /**
-   * The relation info service.
-   *
-   * @var \Drupal\joinup_group\JoinupGroupRelationInfoInterface
-   */
-  protected $relationInfo;
 
   /**
    * The allowed transitions array.
@@ -67,8 +60,6 @@ class CommunityContentGuard implements GuardInterface {
    * The classes inheriting this class, should also ensure that they set the
    * protected variable $transitions to be used by the ::allowed() method.
    *
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relationInfo
-   *   The relation info service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
@@ -78,8 +69,7 @@ class CommunityContentGuard implements GuardInterface {
    * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The workflow state permission service.
    */
-  public function __construct(JoinupGroupRelationInfoInterface $relationInfo, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
-    $this->relationInfo = $relationInfo;
+  public function __construct(ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->currentUser = $currentUser;
     $this->workflowHelper = $workflow_helper;
     $this->permissionScheme = $configFactory->get('joinup_community_content.permission_scheme');
@@ -104,7 +94,8 @@ class CommunityContentGuard implements GuardInterface {
   public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $permission_scheme = $this->permissionScheme->get('create');
     $workflow_id = $workflow->getId();
-    $content_creation = (string) $this->relationInfo->getParentContentCreationOption($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
+    $content_creation = JoinupGroupHelper::getContentCreation($parent);
 
     if (!isset($permission_scheme[$workflow_id][$content_creation][$transition->getId()])) {
       return FALSE;

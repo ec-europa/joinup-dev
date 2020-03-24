@@ -9,8 +9,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_group\JoinupGroupRelationInfoInterface;
 use Drupal\joinup_core\WorkflowHelper;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
@@ -85,15 +85,13 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The og membership manager service.
    * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
    *   The workflow helper service.
-   * @param \Drupal\joinup_group\JoinupGroupRelationInfoInterface $relation_info
-   *   The Joinup group relation info service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message deliver service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupGroupRelationInfoInterface $relation_info, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
-    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $relation_info, $message_delivery);
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
 
@@ -117,10 +115,16 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $state_item = $this->workflowHelper->getEntityStateFieldDefinition($this->entity->getEntityTypeId(), $this->entity->bundle());
     if (!empty($state_item)) {
       $this->stateField = $state_item->getName();
-      $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
       $from_state = isset($this->entity->field_state_initial_value) ? $this->entity->field_state_initial_value : 'draft';
       $to_state = $this->entity->get($this->stateField)->first()->value;
-      $this->transition = $this->workflow->findTransition($from_state, $to_state);
+
+      $this->workflow = $this->entity->get($this->stateField)->first()->getWorkflow();
+      // In some cases the workflow cannot be determined, for example when
+      // deleting orphaned group content that has a workflow that depends on the
+      // parent entity's content moderation status.
+      if ($this->workflow) {
+        $this->transition = $this->workflow->findTransition($from_state, $to_state);
+      }
     }
     $this->motivation = empty($this->entity->motivation) ? '' : $this->entity->motivation;
     $this->hasPublished = $this->hasPublishedVersion($this->entity);
@@ -223,7 +227,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     // latest revision is forced here.
     if ($latest_revision = $this->revisionManager->loadLatestRevision($this->entity)) {
       $state = $latest_revision->get($this->stateField)->first()->value;
-      if (empty($this->config[$this->workflow->getId()][$state])) {
+      if (empty($this->workflow) || empty($this->config[$this->workflow->getId()][$state])) {
         return;
       }
 
@@ -271,7 +275,7 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
     $arguments['@entity:hasPublished:status'] = $this->hasPublished ? 'an update of the' : 'a new';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationInfo->getParent($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
     if (!empty($parent)) {
       $arguments += MessageArgumentGenerator::getGroupArguments($parent);
 
