@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_group;
+namespace Drupal\contact_information;
 
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * An interface for services that provide information about group relations.
+ * Interface for services that inform about contact information relations.
  */
-interface JoinupGroupRelationInfoInterface {
+interface ContactInformationRelationInfoInterface {
 
   /**
    * Returns the groups that relate to a contact information entity.

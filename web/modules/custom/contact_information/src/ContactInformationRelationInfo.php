@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_group;
+namespace Drupal\contact_information;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -10,9 +10,9 @@ use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Service to manage relations for the group content entities.
+ * Service to provide information about contact information entity relations.
  */
-class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, ContainerInjectionInterface {
+class ContactInformationRelationInfo implements ContactInformationRelationInfoInterface, ContainerInjectionInterface {
 
   /**
    * The entity type manager.
@@ -22,7 +22,7 @@ class JoinupGroupRelationInfo implements JoinupGroupRelationInfoInterface, Conta
   protected $entityTypeManager;
 
   /**
-   * Constructs a JoinupRelationshipManager object.
+   * Constructs a new ContactInformationRelationInfo service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
