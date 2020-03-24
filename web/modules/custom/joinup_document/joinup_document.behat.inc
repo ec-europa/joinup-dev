@@ -5,6 +5,8 @@
  * Contains \DocumentSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -30,11 +32,13 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
    *
    * @When I go to the :title document
    * @When I visit the :title document
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitDocument($title) {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $this->getNodeByTitle($title, 'document');
-    $this->visitPath($node->url());
+    $this->visitPath($node->toUrl()->toString());
   }
 
   /**
@@ -66,6 +70,8 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
         $context = $environment->getContext(self::class);
         $node->file = $context->createFile($node->file)->id();
       }
+
+      unset($node->{'file type'});
     }
 
     if (isset($node->{'document publication date'})) {
@@ -81,8 +87,6 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
       $date_formatter = \Drupal::service('date.formatter');
       $node->{'document publication date'} = $date_formatter->format($time, 'custom', 'Y-m-d H:i:s');
     }
-
-    unset($node->{'file type'});
   }
 
   /**

@@ -119,7 +119,7 @@ class InviteToGroupForm extends InviteFormBase {
       $membership->save();
     }
 
-    drupal_set_message($this->t('Successfully added the role %role to the selected users.', [
+    $this->messenger()->addMessage($this->t('Successfully added the role %role to the selected users.', [
       '%role' => $role->label(),
     ]));
     $form_state->setRedirect('entity.rdf_entity.member_overview', [

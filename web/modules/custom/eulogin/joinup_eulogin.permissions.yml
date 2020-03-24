@@ -1,0 +1,4 @@
+bypass limited access:
+  title: 'Bypass limited access'
+  description: 'Allows to bypass the access limitation imposed on users that are not linked to an EU Login account.'
+  restrict access: true

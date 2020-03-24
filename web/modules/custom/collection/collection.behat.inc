@@ -99,11 +99,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to (the homepage of )the :collection collection
    * @When I visit (the homepage of )the :collection collection
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitCollection(string $collection): void {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $collection */
-    $collection = $this->getCollectionByName($collection);
-    $this->visitPath($collection->url());
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getCollectionByName($collection);
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**

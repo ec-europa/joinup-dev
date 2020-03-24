@@ -10,12 +10,11 @@ services:
     lazy: true
   joinup_group.route_subscriber:
     class: Drupal\joinup_group\Routing\RouteSubscriber
-    arguments: ['@entity.manager']
     tags:
       - { name: event_subscriber }
   joinup_group.transfer_ownership_subscriber:
     class: Drupal\joinup_group\EventSubscriber\TransferGroupOwnershipSubscriber
-    arguments: ['@current_user', '@tempstore.private']
+    arguments: ['@current_user', '@tempstore.private', '@messenger']
     tags:
     - name: event_subscriber
   joinup_group.group.access_check:

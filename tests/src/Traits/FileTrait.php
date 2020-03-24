@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Traits;
 
 use Drupal\file\Entity\File;
@@ -43,7 +45,7 @@ trait FileTrait {
     // Copy the file into the public files folder and turn it into a File
     // entity before linking it to the collection.
     $uri = 'public://' . $filename;
-    $destination = file_unmanaged_copy($path, $uri);
+    $destination = \Drupal::service('file_system')->copy($path, $uri);
     $file = File::create(['uri' => $destination, 'filename' => $filename]);
     $file->save();
 

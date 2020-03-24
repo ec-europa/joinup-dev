@@ -35,14 +35,14 @@ trait EntityTrait {
    *   exist.
    */
   protected static function getEntityByLabel(string $entity_type_id, string $label, string $bundle = NULL): EntityInterface {
-    $entity_manager = \Drupal::entityTypeManager();
+    $entity_type_manager = \Drupal::entityTypeManager();
     try {
-      $storage = $entity_manager->getStorage($entity_type_id);
+      $storage = $entity_type_manager->getStorage($entity_type_id);
     }
     catch (InvalidPluginDefinitionException $e) {
       throw new \RuntimeException('Storage not found', NULL, $e);
     }
-    $entity = $entity_manager->getDefinition($entity_type_id);
+    $entity = $entity_type_manager->getDefinition($entity_type_id);
 
     $query = $storage->getQuery()
       ->condition($entity->getKey('label'), $label)

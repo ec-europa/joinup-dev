@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_discussion\EventSubscriber;
 
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_invite\Event\InvitationEventInterface;
 use Drupal\joinup_invite\Event\InvitationEvents;
@@ -26,13 +27,23 @@ class InvitationSubscriber implements EventSubscriberInterface {
   protected $joinupSubscription;
 
   /**
+   * The messenger.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Constructs a new InvitationSubscriber.
    *
    * @param \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface $joinupSubscription
    *   The subscription service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
    */
-  public function __construct(JoinupDiscussionSubscriptionInterface $joinupSubscription) {
+  public function __construct(JoinupDiscussionSubscriptionInterface $joinupSubscription, MessengerInterface $messenger) {
     $this->joinupSubscription = $joinupSubscription;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -64,14 +75,14 @@ class InvitationSubscriber implements EventSubscriberInterface {
     try {
       $result = $this->joinupSubscription->subscribe($invitation->getRecipient(), $invitation->getEntity(), 'subscribe_discussions');
       if ($result) {
-        drupal_set_message($this->t('You have been subscribed to this discussion.'));
+        $this->messenger->addMessage($this->t('You have been subscribed to this discussion.'));
       }
       else {
-        drupal_set_message($this->t('Your subscription request could not be processed. Please try again later.'));
+        $this->messenger->addMessage($this->t('Your subscription request could not be processed. Please try again later.'));
       }
     }
     catch (UserAlreadySubscribedException $e) {
-      drupal_set_message($this->t('You were already subscribed to this discussion.'));
+      $this->messenger->addMessage($this->t('You were already subscribed to this discussion.'));
     }
   }
 
@@ -92,7 +103,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
     // After an invitation to participate in a discussion has been rejected we
     // should unsubscribe the user and show them a success message.
     $this->joinupSubscription->unsubscribe($invitation->getRecipient(), $invitation->getEntity(), 'subscribe_discussions');
-    drupal_set_message($this->t('You have rejected the invitation to this discussion.'));
+    $this->messenger->addMessage($this->t('You have rejected the invitation to this discussion.'));
   }
 
 }

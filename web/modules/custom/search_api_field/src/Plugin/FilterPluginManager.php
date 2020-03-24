@@ -37,7 +37,9 @@ class FilterPluginManager extends DefaultPluginManager implements FilterPluginMa
     parent::__construct('Plugin/SearchApiField/Filter', $namespaces, $module_handler, FilterPluginInterface::class, SearchApiFieldFilter::class);
 
     $this->alterInfo('search_api_field_filter_info');
-    $this->setCacheBackend($cache_backend, 'search_api_field_filter_plugins');
+    $this->setCacheBackend($cache_backend, 'search_api_field_filter_plugins', [
+      'search_api_field_filter_plugins',
+    ]);
   }
 
   /**

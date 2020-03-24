@@ -837,7 +837,7 @@ function joinup_theme_preprocess_field(&$variables) {
 function joinup_theme_preprocess_field__comment(&$variables) {
   // Get entity url needed for login and register routes.
   $entity = $variables['element']['#object'];
-  $variables['entity_bundle'] = Unicode::strtolower($entity->type->entity->label());
+  $variables['entity_bundle'] = mb_strtolower($entity->type->entity->label());
 
   // Get the comment status from the entity itself.
   $comments_status = $variables['element']['#items']->status;
@@ -1064,7 +1064,7 @@ function joinup_theme_preprocess_page_title__node__document(&$variables) {
   // The raw value allowed to properly display the field above with any class
   // or configuration applied but still have the value to compare to the changed
   // date in the Twig template.
-  $variables['additional_content']['field_document_publication_date_raw'] = $date_formatter->format(strtotime($publication_date_value), 'custom', 'd/m/Y');
+  $variables['additional_content']['field_document_publication_date_raw'] = empty($publication_date_value) ? '' : $date_formatter->format(strtotime($publication_date_value), 'custom', 'd/m/Y');
 
   $update_date = $date_formatter->format($node->getChangedTime(), 'custom', 'd/m/Y');
   $variables['additional_content']['updated'] = $update_date;

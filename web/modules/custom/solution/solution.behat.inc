@@ -84,11 +84,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    * @When I go to (the homepage of )the :solution solution
    * @When I visit (the homepage of )the :solution solution
    * @Given I am on (the homepage of )the :solution solution
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitSolution($solution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $solution = $this->getSolutionByName($solution);
-    $this->visitPath($solution->url());
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getSolutionByName($solution);
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**
@@ -99,11 +101,13 @@ class SolutionSubContext extends DrupalSubContextBase implements DrupalSubContex
    *
    * @When I go to the :solution solution edit form
    * @When I visit the :solution solution edit form
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitEditSolution($solution) {
-    /** @var \Drupal\rdf_entity\Entity\Rdf $solution */
-    $solution = $this->getSolutionByName($solution);
-    $path = $solution->url('edit-form');
+    /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
+    $entity = $this->getSolutionByName($solution);
+    $path = $entity->toUrl('edit-form')->toString();
     $this->visitPath($path);
   }
 

@@ -75,6 +75,7 @@ module:
   joinup_notification: 0
   joinup_rss: 0
   joinup_search: 0
+  joinup_seo: 0
   joinup_sparql: 0
   joinup_stats: 0
   joinup_subscription: 0
@@ -92,6 +93,7 @@ module:
   message_digest: 0
   message_notify: 0
   meta_entity: 0
+  metatag: 0
   moderation: 0
   nio: 0
   node: 0
@@ -124,6 +126,11 @@ module:
   redirect: 0
   redis: 0
   rest: 0
+  schema_article: 0
+  schema_digital_document: 0
+  schema_event: 0
+  schema_metatag: 0
+  schema_social_media_posting: 0
   search_api: 0
   search_api_arbitrary_facet: 0
   search_api_db: 0
@@ -131,6 +138,7 @@ module:
   search_api_solr: 0
   semic: 0
   serialization: 0
+  simple_sitemap: 0
   simplenews: 0
   site_alert: 0
   smart_trim: 0
