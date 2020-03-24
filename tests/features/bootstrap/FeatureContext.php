@@ -13,6 +13,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Element\TraversableElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Drupal\Component\Serialization\Yaml;
@@ -34,6 +35,7 @@ use Drupal\joinup\Traits\UtilityTrait;
 use Drupal\joinup_core\JoinupVersionInterface;
 use LoversOfBehat\TableExtension\Hook\Scope\AfterTableFetchScope;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use WebDriver\Exception;
 use WebDriver\Key;
 
@@ -1808,6 +1810,60 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     // doesn't employ a cache context. In order to make the version show up on
     // previously cached pages we need to invalidate the render cache manually.
     Cache::invalidateTags(['rendered']);
+  }
+
+  /**
+   * Asserts that a file downloaded from a link contains a list of strings.
+   *
+   * IMPORTANT NOTE: This step definition is not performing any file access
+   * check. The file content is read directly from the file system. The user
+   * access to the file should be tested in separate Behat steps.
+   *
+   * @param string $link_label
+   *   The link from where to download the file.
+   * @param \Behat\Gherkin\Node\TableNode $strings_table
+   *   A table with a single column. Each row contains a string.
+   *
+   * @throws \Exception
+   *   If the link has no href attribute or the file content cannot be loaded.
+   *
+   * @Then the file downloaded from the :link_label link contains the following strings:
+   */
+  public function assertDownloadedFileContainsStrings(string $link_label, TableNode $strings_table): void {
+    if (!$link = $this->getSession()->getPage()->findLink($link_label)) {
+      throw new ElementNotFoundException($this->getSession()->getDriver(), 'Link', NULL, $link_label);
+    }
+    if (!$url = $link->getAttribute('href')) {
+      throw new \Exception("The link '${link_label}' misses an 'href' attribute.");
+    }
+
+    // Get the path part from the URL.
+    $path = trim(parse_url($url, PHP_URL_PATH), '/');
+
+    // Drupal private file.
+    if (strpos($path, 'system/files') === 0) {
+      $path = Settings::get('file_private_path') . '/' . substr($path, 12);
+    }
+    // Webserver accessible file.
+    else {
+      $path = DRUPAL_ROOT . "/{$path}";
+    }
+
+    if (($content = file_get_contents($path)) === FALSE) {
+      throw new \Exception("Cannot read '{$path}' file.");
+    }
+
+    if (!$content) {
+      throw new \Exception("The downloaded file has no content.");
+    }
+
+    $not_found = array_filter($strings_table->getColumn(0), function (string $text) use ($content): bool {
+      return strpos($content, $text) === FALSE;
+    });
+
+    if ($not_found) {
+      throw new ExpectationFailedException("Following strings were not found in the downloaded file:\n- " . implode("\n- ", $not_found));
+    }
   }
 
 }
