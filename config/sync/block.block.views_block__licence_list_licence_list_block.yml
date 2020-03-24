@@ -1,11 +1,18 @@
 uuid: 9d5a1007-f5ca-4f1d-82e8-b2c6404a52e4
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - views.view.licence_list
+  module:
+    - system
+    - views
+  theme:
+    - joinup_theme
 id: views_block__licence_list_licence_list_block
 theme: joinup_theme
 region: content
-weight: -14
+weight: -15
 provider: null
 plugin: 'views_block:licence_list-licence_list_block'
 settings:

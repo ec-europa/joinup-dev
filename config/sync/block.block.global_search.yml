@@ -10,7 +10,7 @@ dependencies:
 id: global_search
 theme: joinup_theme
 region: header
-weight: -19
+weight: -22
 provider: null
 plugin: joinup_search_global_search
 settings:
