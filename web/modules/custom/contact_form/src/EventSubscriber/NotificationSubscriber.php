@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase;
-use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -128,9 +127,11 @@ class NotificationSubscriber extends NotificationSubscriberBase implements Event
    * Skip generating the arguments during the sending process.
    */
   protected function sendUserDataMessages(array $user_data, array $arguments = [], array $notifier_options = [], array $message_values = []): bool {
+    $user_storage = $this->entityTypeManager->getStorage('user');
+
     $success = TRUE;
     foreach ($user_data as $template_id => $user_ids) {
-      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, User::loadMultiple($user_ids), $notifier_options, $message_values) && $success;
+      $success = $this->messageDelivery->sendMessageTemplateToMultipleUsers($template_id, $arguments, $user_storage->loadMultiple($user_ids), $notifier_options, $message_values) && $success;
     }
     return $success;
   }
