@@ -5,7 +5,6 @@ core: 8.x
 package: Joinup
 dependencies:
   - 'drupal:user'
-  - 'joinup:joinup_core'
   - 'joinup:search_api_field'
   - 'message:message'
   - 'og:og'

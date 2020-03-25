@@ -8,7 +8,7 @@ use Drupal\Component\Utility\Xss;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_core\Controller\CommunityContentController;
+use Drupal\joinup_community_content\Controller\CommunityContentController;
 use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
 

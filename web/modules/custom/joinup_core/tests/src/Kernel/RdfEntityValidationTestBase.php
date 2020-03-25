@@ -14,15 +14,12 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
    */
   public static $modules = [
     'allowed_formats',
-    'cached_computed_field',
     'comment',
     'image',
     'joinup_core',
-    'link',
     'node',
     'oe_newsroom_newsletter',
     'og',
-    'matomo_reporting_api',
     'rdf_taxonomy',
     'rdf_entity',
     'rdf_schema_field_validation',

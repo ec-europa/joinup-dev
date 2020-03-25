@@ -10,8 +10,6 @@ use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
  * Interface FrontPageMenuHelperInterface.
- *
- * @package Drupal\joinup_front_page
  */
 interface FrontPageMenuHelperInterface {
 

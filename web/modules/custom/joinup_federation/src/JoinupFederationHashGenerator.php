@@ -12,8 +12,6 @@ use EasyRdf\Sparql\Result;
 
 /**
  * Helper class to generate a hash containing all data of an rdf entity.
- *
- * @package Drupal\joinup_federation
  */
 class JoinupFederationHashGenerator {
 

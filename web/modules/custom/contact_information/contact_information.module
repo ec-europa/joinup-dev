@@ -5,6 +5,8 @@
  * Provides functionality for the contact information module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -132,7 +134,9 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     }
   }
   elseif ($operation == 'edit') {
-    $available_target_states = \Drupal::service('joinup_core.workflow.helper')->getAvailableTargetStates($entity, $account);
+    /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+    $available_target_states = $workflow_helper->getAvailableTargetStates($entity, $account);
     return empty($available_target_states) ? AccessResult::forbidden() : AccessResult::allowed();
   }
   // Use an elseif to avoid checking memberships for anonymous users.
@@ -141,12 +145,12 @@ function contact_information_rdf_entity_access(EntityInterface $entity, $operati
     // entities by a simple reference field.
     // To grant access to group owner/facilitators, we need to identify first
     // which groups reference the contact information.
-    /** @var \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager */
-    $relation_manager = \Drupal::service('joinup_core.relations_manager');
-    if ($groups = $relation_manager->getContactInformationRelatedGroups($entity)) {
+    /** @var \Drupal\contact_information\ContactInformationRelationInfoInterface $relation_info */
+    $relation_info = \Drupal::service('contact_information.relation_info');
+    if ($groups = $relation_info->getContactInformationRelatedGroups($entity)) {
       $group = reset($groups);
       $membership = \Drupal::service('og.membership_manager')->getMembership($group, $account->id());
-      if ($membership && $membership->hasPermission("delete contact_information rdf entity")) {
+      if ($membership && $membership->hasPermission('delete contact_information rdf entity')) {
         return AccessResult::allowed();
       }
     }
