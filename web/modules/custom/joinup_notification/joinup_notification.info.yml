@@ -4,7 +4,6 @@ description: 'Handles notifications for joinup project.'
 core: 8.x
 package: Joinup
 dependencies:
-  - 'joinup:joinup_core'
   - 'joinup:joinup_workflow'
   - 'joinup:solution'
   - 'joinup:state_machine_revisions'
