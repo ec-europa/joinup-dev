@@ -11,7 +11,7 @@ use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgGroupAudienceHelper;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
+use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 use weitzman\DrupalTestTraits\Entity\NodeCreationTrait;
 
 /**

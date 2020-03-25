@@ -6,14 +6,14 @@ namespace Drupal\Tests\contact_information\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
+use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 
 /**
  * Tests the workflow for the contact information entity.
  *
  * @group contact_information
  */
-class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
+class ContactInformationWorkflowTest extends \Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase {
 
   /**
    * A non authenticated user.

@@ -8,14 +8,14 @@ use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
+use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 
 /**
  * Tests crud operations and the workflow for the asset release rdf entity.
  *
  * @group asset_release
  */
-class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
+class AssetReleaseWorkflowTest extends \Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase {
 
   /**
    * A non authenticated user.
