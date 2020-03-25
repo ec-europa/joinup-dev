@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 use Drupal\node\NodeStorageInterface;
@@ -100,7 +100,7 @@ class CommunityContentWorkflowAccessControlHandler {
   /**
    * The workflow helper class.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -115,7 +115,7 @@ class CommunityContentWorkflowAccessControlHandler {
    *   The current logged in user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, MembershipManagerInterface $og_membership_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WorkflowHelperInterface $workflow_helper) {
