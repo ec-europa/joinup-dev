@@ -13,7 +13,7 @@ use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase
  *
  * @group contact_information
  */
-class ContactInformationWorkflowTest extends \Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase {
+class ContactInformationWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
 
   /**
    * A non authenticated user.

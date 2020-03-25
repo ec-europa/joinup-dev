@@ -15,7 +15,7 @@ use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase
  *
  * @group asset_release
  */
-class AssetReleaseWorkflowTest extends \Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase {
+class AssetReleaseWorkflowTest extends JoinupWorkflowExistingSiteTestBase {
 
   /**
    * A non authenticated user.
