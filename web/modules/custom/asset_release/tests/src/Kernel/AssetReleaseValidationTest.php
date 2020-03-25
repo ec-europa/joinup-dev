@@ -21,6 +21,7 @@ class AssetReleaseValidationTest extends RdfEntityValidationTestBase {
     'asset_release',
     'file',
     'file_url',
+    'joinup_workflow',
   ];
 
   /**
