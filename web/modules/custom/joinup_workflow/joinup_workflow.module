@@ -7,6 +7,8 @@
 
 declare(strict_types = 1);
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
@@ -33,6 +35,35 @@ function joinup_workflow_entity_base_field_info(EntityTypeInterface $entity_type
   }
 
   return $fields;
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function joinup_workflow_entity_create(EntityInterface $entity) {
+  // Since the state_machine module does not support same from-to state
+  // transitions, the transition events also don't fire. Normally, the
+  // transition event would be the one to decide whether the entity would be
+  // published or not, this is not happening for new entities.
+  // In Joinup, we do not create any entity with an initial state but for
+  // testing, it is necessary to setup the initial status automatically
+  // depending on the initial state that is passed into the entity.
+  // @see: \Drupal\state_machine\Plugin\Field\FieldType\StateItem::preSave
+  if ($entity instanceof EntityPublishedInterface) {
+    /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
+    if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
+      $state_field = $workflow_helper->getEntityStateField($entity);
+      $workflow = $state_field->getWorkflow();
+      $state_id = $state_field->getValue()['value'];
+      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
+        $entity->setPublished();
+      }
+      else {
+        $entity->setUnpublished();
+      }
+    }
+  }
 }
 
 /**
