@@ -56,7 +56,7 @@ class JoinupGroupHelper {
    *   otherwise.
    */
   public static function isGroup(EntityInterface $entity): bool {
-    return isset(self::GROUP_BUNDLES[$entity->bundle()]);
+    return $entity instanceof RdfInterface && isset(self::GROUP_BUNDLES[$entity->bundle()]);
   }
 
   /**
