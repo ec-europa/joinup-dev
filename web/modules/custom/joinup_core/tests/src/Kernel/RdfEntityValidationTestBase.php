@@ -18,6 +18,7 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'comment',
     'image',
     'joinup_core',
+    'joinup_workflow',
     'link',
     'node',
     'oe_newsroom_newsletter',

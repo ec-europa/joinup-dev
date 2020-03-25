@@ -39,6 +39,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     'inline_entity_form',
     'joinup_core',
     'joinup_sparql',
+    'joinup_workflow',
     'link',
     'matomo_reporting_api',
     'node',
