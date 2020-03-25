@@ -7,7 +7,7 @@ namespace Drupal\collection\EventSubscriber;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent;
+use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface;
 use Drupal\og\GroupPermission;
 use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
@@ -108,11 +108,12 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
    *
    * This applies both to collections and solutions.
    *
-   * @todo Move this in a shared 'group' module that can contain code that is
+   * @param \Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent $event
+   *   The event.
+   *
+   *@todo Move this in a shared 'group' module that can contain code that is
    *   shared between collections and solutions.
    *
-   * @param \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent $event
-   *   The event.
    */
   public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
     $entity = $event->getEntity();

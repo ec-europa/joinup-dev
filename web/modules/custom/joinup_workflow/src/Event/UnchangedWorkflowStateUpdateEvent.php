@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Event;
+namespace Drupal\joinup_workflow\Event;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class UnchangedWorkflowStateUpdateEvent extends Event {
 
-  const EVENT_NAME = 'joinup_core.unchanged_workflow_state_update';
+  const EVENT_NAME = 'joinup_workflow.unchanged_workflow_state_update';
 
   /**
    * The entity being updated.
@@ -110,7 +110,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $label
    *   The label text.
    *
-   * @return \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent
+   * @return self
    *   The event, for chaining.
    */
   public function setLabel(TranslatableMarkup $label): self {
@@ -134,7 +134,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param int $weight
    *   The weight.
    *
-   * @return \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent
+   * @return self
    *   The event, for chaining.
    */
   public function setWeight(int $weight): self {
@@ -161,7 +161,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param \Drupal\Core\Access\AccessResultInterface $access
    *   The access result object.
    *
-   * @return \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent
+   * @return self
    *   The event, for chaining.
    */
   public function setAccess(AccessResultInterface $access): self {

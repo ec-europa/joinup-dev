@@ -7,7 +7,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent;
+use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Drupal\og\Event\PermissionEventInterface as OgPermissionEventInterface;
 use Drupal\og\GroupContentOperationPermission;
 use Drupal\og\GroupPermission;
@@ -151,7 +151,7 @@ class EventSubscriber implements EventSubscriberInterface {
   /**
    * Determines if the content be updated without changing workflow state.
    *
-   * @param \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent $event
+   * @param \Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent $event
    *   The event.
    */
   public function onUnchangedWorkflowStateUpdate(UnchangedWorkflowStateUpdateEvent $event): void {
