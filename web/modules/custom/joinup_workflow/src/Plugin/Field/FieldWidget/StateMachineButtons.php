@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
+namespace Drupal\joinup_workflow\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Plugin implementation of the 'state_machine_buttons' widget.
+ * Field widget showing the available workflow transition states as buttons.
  *
  * @FieldWidget(
  *   id = "state_machine_buttons",

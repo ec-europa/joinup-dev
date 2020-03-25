@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Event fired when an entity is updated without changing its workflow state.
  *
- * @see \Drupal\joinup_core\Plugin\Field\FieldWidget\StateMachineButtons
+ * @see \Drupal\joinup_workflow\Plugin\Field\FieldWidget\StateMachineButtons
  */
 class UnchangedWorkflowStateUpdateEvent extends Event {
 

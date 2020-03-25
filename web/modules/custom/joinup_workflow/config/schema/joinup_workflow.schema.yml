@@ -1,0 +1,6 @@
+field.widget.settings.state_machine_buttons:
+  type: mapping
+  label: 'Settings for the state machine buttons field widget.'
+  mapping:
+    use_transition_label:
+      type: integer

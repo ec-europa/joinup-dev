@@ -114,7 +114,7 @@ function joinup_workflow_motivation_form_validate(array &$form, FormStateInterfa
 
   $triggering_element = $form_state->getTriggeringElement();
   // If '#state_id' is empty, it means that no transition has been triggered.
-  // @see \Drupal\joinup_core\Plugin\Field\FieldWidget\StateMachineButtons::processActions()
+  // @see \Drupal\joinup_workflow\Plugin\Field\FieldWidget\StateMachineButtons::processActions()
   // "Add new" in the contact information field.
   if (empty($triggering_element['#state_id'])) {
     return;
