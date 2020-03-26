@@ -70,6 +70,8 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
         $context = $environment->getContext(self::class);
         $node->file = $context->createFile($node->file)->id();
       }
+
+      unset($node->{'file type'});
     }
 
     if (isset($node->{'document publication date'})) {
@@ -85,8 +87,6 @@ class JoinupDocumentSubContext extends DrupalSubContextBase implements DrupalSub
       $date_formatter = \Drupal::service('date.formatter');
       $node->{'document publication date'} = $date_formatter->format($time, 'custom', 'Y-m-d H:i:s');
     }
-
-    unset($node->{'file type'});
   }
 
   /**

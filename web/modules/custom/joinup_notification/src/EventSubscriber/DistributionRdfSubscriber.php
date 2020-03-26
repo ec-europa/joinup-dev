@@ -6,6 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
@@ -192,7 +193,7 @@ class DistributionRdfSubscriber extends NotificationSubscriberBase implements Ev
 
     // Add arguments related to the parent collection or solution.
     $parent = $entity->parent->entity;
-    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : $this->relationManager->getParent($entity);
+    $solution = (!empty($parent) && $parent->bundle() === 'solution') ? $parent : JoinupGroupHelper::getGroup($entity);
     if (!empty($parent) && $parent->bundle() === 'asset_release') {
       // Some legacy releases exist without a version. Thus, a check for
       // existence is needed.

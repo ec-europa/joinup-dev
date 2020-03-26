@@ -122,22 +122,11 @@
 
     <!-- Set up PHPUnit. -->
     <target name="setup-phpunit" description="Generate the configuration file for PHPUnit.">
-        <if>
-            <available file="${phpunit.config}" type="file" property="phpunit.config.available" />
-            <then>
-                <echo message="Deleting existing PHPUnit configuration file." />
-                <delete file="${phpunit.config}" failonerror="false" />
-            </then>
-        </if>
         <phpunitconfiguration
                 configFile="${phpunit.config}"
                 distFile="${phpunit.dist}"
-                files="${phpunit.files}"
-                directories="${phpunit.directories}"
-                testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
-                legacyDbUrl="${drupal.db.type}://${drupal.db.user}:${drupal.db.password}@${drupal.db.host}:${drupal.db.port}/${phpunit.migrate.legacy_db.name}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
                 browsertestOutputFile="${phpunit.browsertest_output_file}" />
 

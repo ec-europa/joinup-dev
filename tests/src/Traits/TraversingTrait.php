@@ -359,10 +359,12 @@ trait TraversingTrait {
    *
    * @param string $field
    *   The date range field name.
-   * @param string $date
-   *   The sub-field name. Either "start" or "end".
    * @param string $component
    *   The sub-field component. Either "date" or "time".
+   * @param string $date
+   *   (optional) The sub-field name. Either "start" or "end". If left empty, it
+   *   is assumed that the field is a simple datetime field and not a range,
+   *   thus, the date or time components are looked in the whole field.
    *
    * @return \Behat\Mink\Element\NodeElement
    *   The date or time component element.
@@ -370,7 +372,7 @@ trait TraversingTrait {
    * @throws \Exception
    *   Thrown when the date range field is not found.
    */
-  protected function findDateRangeComponent(string $field, string $date, string $component): NodeElement {
+  protected function findDateRangeComponent(string $field, string $component, string $date = NULL): NodeElement {
     /** @var \Behat\Mink\Element\NodeElement $fieldset */
     $fieldset = $this->getSession()->getPage()->find('named', ['fieldset', $field]);
 
@@ -378,16 +380,19 @@ trait TraversingTrait {
       throw new \Exception("The '$field' field was not found.");
     }
 
-    $date = ucfirst($date) . ' date';
-    /** @var \Behat\Mink\Element\NodeElement $element */
-    $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
-
-    if (!$element) {
-      throw new \Exception("The '$date' sub-field of the '$field' field was not found.");
+    if ($date !== NULL) {
+      $date = ucfirst($date) . ' date';
+      /** @var \Behat\Mink\Element\NodeElement $element */
+      $element = $fieldset->find('xpath', '//h4[text()="' . $date . '"]//following-sibling::div[1]');
+      if (!$element) {
+        throw new \Exception("The '$date' sub-field of the '$field' field was not found.");
+      }
+    }
+    else {
+      $element = $fieldset;
     }
 
     $component_node = $element->findField(ucfirst($component));
-
     if (!$component_node) {
       throw new \Exception("The '$component' component for the '$field' '$element' was not found.");
     }

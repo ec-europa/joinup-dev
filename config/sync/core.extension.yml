@@ -127,6 +127,7 @@ module:
   redis: 0
   rest: 0
   schema_article: 0
+  schema_digital_document: 0
   schema_event: 0
   schema_metatag: 0
   schema_social_media_posting: 0

@@ -9,7 +9,6 @@ dependencies:
   - 'drupal:path'
   - 'drupal:user'
   - 'joinup:joinup_community_content'
-  - 'joinup:joinup_core'
   - 'joinup:joinup_group'
   - 'joinup:search_api_field'
   - 'og:og'

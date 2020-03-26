@@ -7,69 +7,17 @@ namespace Drupal\joinup_group\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
-use Drupal\og\MembershipManagerInterface;
-use Drupal\og\OgRoleManagerInterface;
-use Drupal\sparql_entity_storage\SparqlEntityStorage;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form to share a community content inside collections.
  */
 abstract class ShareForm extends ShareFormBase {
-
-  /**
-   * The Joinup relation manager.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
-
-  /**
-   * Constructs a new ShareContentFormBase object.
-   *
-   * @param \Drupal\sparql_entity_storage\SparqlEntityStorage $sparql_storage
-   *   The RDF entity storage.
-   * @param \Drupal\Core\Entity\EntityViewBuilderInterface $rdf_builder
-   *   The RDF view builder.
-   * @param \Drupal\og\MembershipManagerInterface $membership_manager
-   *   The OG membership manager.
-   * @param \Drupal\og\OgRoleManagerInterface $role_manager
-   *   The OG role manager service.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
-   *   The current user account.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
-   *   The Joinup relation manager.
-   */
-  public function __construct(SparqlEntityStorage $sparql_storage, EntityViewBuilderInterface $rdf_builder, MembershipManagerInterface $membership_manager, OgRoleManagerInterface $role_manager, AccountInterface $current_user, MessengerInterface $messenger, JoinupRelationManagerInterface $relation_manager) {
-    parent::__construct($sparql_storage, $rdf_builder, $membership_manager, $role_manager, $current_user, $messenger);
-    $this->relationManager = $relation_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager')->getStorage('rdf_entity'),
-      $container->get('entity_type.manager')->getViewBuilder('rdf_entity'),
-      $container->get('og.membership_manager'),
-      $container->get('og.role_manager'),
-      $container->get('current_user'),
-      $container->get('messenger'),
-      $container->get('joinup_core.relations_manager')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -252,7 +200,7 @@ abstract class ShareForm extends ShareFormBase {
    */
   protected function getExcludedParent(): ?RdfInterface {
     if ($this->entity->getEntityTypeId() === 'node') {
-      return $this->relationManager->getParent($this->entity);
+      return JoinupGroupHelper::getGroup($this->entity);
     }
     else {
       return $this->entity->get('collection')->isEmpty() ? NULL : $this->entity->get('collection')->first()->entity;

@@ -21,13 +21,10 @@ class CustomTokensTest extends TokenReplaceKernelTestBase {
    * {@inheritdoc}
    */
   public static $modules = [
-    'comment',
     'diff',
     'joinup_community_content',
-    'message_notify',
     'node',
     'og',
-    'state_machine',
     'workflow_state_permission',
   ];
 
