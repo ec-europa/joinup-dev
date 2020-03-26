@@ -110,8 +110,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $label
    *   The label text.
    *
-   * @return self
-   *   The event, for chaining.
+   * @return $this
    */
   public function setLabel(TranslatableMarkup $label): self {
     $this->label = $label;
@@ -134,8 +133,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param int $weight
    *   The weight.
    *
-   * @return self
-   *   The event, for chaining.
+   * @return $this
    */
   public function setWeight(int $weight): self {
     $this->weight = $weight;
@@ -161,8 +159,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param \Drupal\Core\Access\AccessResultInterface $access
    *   The access result object.
    *
-   * @return self
-   *   The event, for chaining.
+   * @return $this
    */
   public function setAccess(AccessResultInterface $access): self {
     $this->access = $this->access->orIf($access);
