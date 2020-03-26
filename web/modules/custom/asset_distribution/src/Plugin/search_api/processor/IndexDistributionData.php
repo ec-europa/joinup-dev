@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_distribution\Plugin\search_api\processor;
 
 use Drupal\search_api\IndexInterface;
@@ -49,7 +51,7 @@ class IndexDistributionData extends ProcessorPluginBase {
   }
 
   /**
-   * Appends the distribution data to the paremts Search API description field.
+   * Appends the distribution data to the parent's Search API description field.
    *
    * @param \Drupal\search_api\Item\ItemInterface $item
    *   The Search API item.
