@@ -5,6 +5,8 @@
  * Post update functions for Joinup Subscription module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\og\Entity\OgMembership;

@@ -5,6 +5,8 @@
  * Post update functions for the Spain CTT module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\og\Entity\OgRole;
 use Drupal\og\OgMembershipInterface;
 use Drupal\rdf_entity\Entity\Rdf;

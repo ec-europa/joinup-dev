@@ -5,6 +5,8 @@
  * Provides functionality for the Joinup search module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldDefinitionInterface;

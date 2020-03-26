@@ -5,6 +5,8 @@
  * Contains functionality regarding the demo users of the joinup project.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Entity\OgRole;
