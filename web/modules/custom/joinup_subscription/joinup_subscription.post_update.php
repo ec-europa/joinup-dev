@@ -5,9 +5,9 @@
  * Post update functions for Joinup Subscription module.
  */
 
-use Drupal\og\Entity\OgMembership;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\og\Entity\OgMembership;
 
 /**
  * Install the 'flag' module.

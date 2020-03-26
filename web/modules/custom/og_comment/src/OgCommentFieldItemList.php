@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\og_comment;
 
-use Drupal\comment\CommentFieldItemList;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\comment\CommentFieldItemList;
 
 /**
  * Defines a item list class for comment fields.

@@ -7,9 +7,9 @@ namespace Drupal\isa2_analytics\EventSubscriber;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\oe_webtools_analytics\AnalyticsEventInterface;
+use Drupal\oe_webtools_analytics\Event\AnalyticsEvent;
 use Drupal\og\OgContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\oe_webtools_analytics\Event\AnalyticsEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

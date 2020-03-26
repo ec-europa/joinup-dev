@@ -331,7 +331,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
    *   The OG menu link.
    */
-  protected function getOgMenuLink(NodeInterface $custom_page) : ?MenuLinkContentInterface {
+  protected function getOgMenuLink(NodeInterface $custom_page): ?MenuLinkContentInterface {
     $menu_instance = $this->getOgMenuInstance();
     if (empty($menu_instance)) {
       return NULL;
@@ -356,7 +356,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * @return \Drupal\og_menu\OgMenuInstanceInterface|null
    *   The OG menu instance.
    */
-  protected function getOgMenuInstance() : ?OgMenuInstanceInterface {
+  protected function getOgMenuInstance(): ?OgMenuInstanceInterface {
     if (!isset($this->ogMenuInstance)) {
       $og_menu_storage = $this->entityTypeManager->getStorage('ogmenu_instance');
       // @todo If we ever support more than one OG Menu then we should no longer

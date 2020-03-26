@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\pipeline\PipelineState;
 use Drupal\pipeline\PipelineStateInterface;
 use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Provides a base class for pipeline step kernel tests.

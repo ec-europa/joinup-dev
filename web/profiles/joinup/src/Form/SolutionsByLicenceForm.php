@@ -52,7 +52,7 @@ class SolutionsByLicenceForm extends FormBase {
   }
 
   /**
-   * SolutionsByLicenceController constructor.
+   * Constructs a SolutionsByLicenceController.
    *
    * @param \Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface $connection
    *   The SPARQL connection.

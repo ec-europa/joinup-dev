@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_distribution\Controller;
 
 use Drupal\Core\Access\AccessResult;

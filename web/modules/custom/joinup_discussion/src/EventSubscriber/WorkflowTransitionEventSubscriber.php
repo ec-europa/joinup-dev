@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_discussion\EventSubscriber;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;

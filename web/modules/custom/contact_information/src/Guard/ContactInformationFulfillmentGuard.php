@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\contact_information\Guard;
 
 use Drupal\Core\Entity\EntityInterface;

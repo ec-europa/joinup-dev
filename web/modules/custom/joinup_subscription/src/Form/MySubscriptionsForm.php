@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_subscription\Form;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -18,7 +19,6 @@ use Drupal\joinup_group\JoinupGroupManagerInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Component\Serialization\Json;
 
 /**
  * Provides a Joinup subscription form.

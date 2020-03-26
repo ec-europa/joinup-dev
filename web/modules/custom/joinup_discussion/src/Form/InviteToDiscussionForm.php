@@ -286,7 +286,7 @@ class InviteToDiscussionForm extends InviteFormBase {
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function access(AccountProxyInterface $account, NodeInterface $node = NULL) : AccessResult {
+  public function access(AccountProxyInterface $account, NodeInterface $node = NULL): AccessResult {
     $access = FALSE;
 
     // The node should be a published discussion.
@@ -318,7 +318,7 @@ class InviteToDiscussionForm extends InviteFormBase {
    * @return bool
    *   Whether or not the message was successfully delivered.
    */
-  protected function sendMessage(InvitationInterface $invitation) : bool {
+  protected function sendMessage(InvitationInterface $invitation): bool {
     $arguments = $this->generateArguments($invitation->getEntity());
     $message = $this->invitationMessageHelper->createMessage($invitation, self::TEMPLATE_DISCUSSION_INVITE, $arguments);
     $message->save();
