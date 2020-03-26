@@ -1161,7 +1161,7 @@ function joinup_theme_preprocess_user(&$variables) {
 
   // Truncate business title.
   $business_title = $variables['user']->get('field_user_business_title')->value;
-  $variables['short_business_title'] = substr($business_title, 0, 30);
+  $variables['short_business_title'] = !empty($business_title) ? substr($business_title, 0, 30) : '';
 }
 
 /**
