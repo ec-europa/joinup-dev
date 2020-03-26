@@ -150,8 +150,7 @@ phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 # The path to the configuration file template.
 phpunit.dist = ${project.basedir}/phpunit.xml.dist
 
-# The path to the generated configuration file. This is typically inside the web
-# root.
+# The path to the generated configuration file.
 phpunit.config = ${project.basedir}/phpunit.xml
 
 # The base URL to use in functional tests.
