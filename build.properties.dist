@@ -152,7 +152,7 @@ phpunit.dist = ${project.basedir}/phpunit.xml.dist
 
 # The path to the generated configuration file. This is typically inside the web
 # root.
-phpunit.config = ${website.drupal.dir}/phpunit.xml
+phpunit.config = ${project.basedir}/phpunit.xml
 
 # The name to give to the test suite of the project.
 phpunit.testsuite.name = ${project.name}
