@@ -125,9 +125,6 @@
         <phpunitconfiguration
                 configFile="${phpunit.config}"
                 distFile="${phpunit.dist}"
-                files="${phpunit.files}"
-                directories="${phpunit.directories}"
-                testsuiteName="${phpunit.testsuite.name}"
                 baseUrl="${phpunit.base_url}"
                 dbUrl="${phpunit.db_url}"
                 browsertestOutputDirectory="${phpunit.browsertest_output_dir}"
