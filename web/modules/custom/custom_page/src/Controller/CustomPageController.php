@@ -13,7 +13,7 @@ use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Class CustomPageController.
+ * Controller for custom pages.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.

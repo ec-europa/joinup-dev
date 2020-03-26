@@ -21,7 +21,7 @@ abstract class UnshareForm extends ShareFormBase {
   }
 
   /**
-   * Form constructor.
+   * Form builder for the unshare form.
    *
    * @param array $form
    *   An associative array containing the structure of the form.

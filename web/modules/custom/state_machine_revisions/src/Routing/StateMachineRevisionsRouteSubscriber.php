@@ -44,7 +44,7 @@ class StateMachineRevisionsRouteSubscriber extends RouteSubscriberBase {
   protected $entityTypes;
 
   /**
-   * StateMachineRevisionsRouteSubscriber constructor.
+   * Constructs a new StateMachineRevisionsRouteSubscriber.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.

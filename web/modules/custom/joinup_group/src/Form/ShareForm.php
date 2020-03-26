@@ -27,7 +27,7 @@ abstract class ShareForm extends ShareFormBase {
   }
 
   /**
-   * Form constructor.
+   * Form builder for the share form.
    *
    * @param array $form
    *   An associative array containing the structure of the form.

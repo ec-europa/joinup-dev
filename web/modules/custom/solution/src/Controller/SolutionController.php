@@ -10,7 +10,7 @@ use Drupal\og\Og;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Class SolutionController.
+ * Controller for solution forms.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.

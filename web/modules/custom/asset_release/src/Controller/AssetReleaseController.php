@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Class AssetReleaseController.
+ * Controller for asset release forms.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.

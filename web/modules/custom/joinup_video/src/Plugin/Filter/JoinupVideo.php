@@ -59,7 +59,7 @@ class JoinupVideo extends FilterBase implements ContainerFactoryPluginInterface 
   protected $currentUser;
 
   /**
-   * VideoEmbedWysiwyg constructor.
+   * Constructs a new JoinupVideo filter.
    *
    * @param array $configuration
    *   Plugin configuration.

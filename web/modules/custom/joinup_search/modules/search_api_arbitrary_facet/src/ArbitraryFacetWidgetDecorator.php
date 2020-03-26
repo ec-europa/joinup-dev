@@ -14,7 +14,7 @@ use Drupal\facets\Widget\WidgetPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class ArbitraryFacetWidgetDecorator.
+ * Decorator for the arbitrary facet widget.
  */
 class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerFactoryPluginInterface {
 

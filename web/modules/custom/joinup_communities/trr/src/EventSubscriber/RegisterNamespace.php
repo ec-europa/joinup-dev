@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class RegisterNamespace.
+ * Event subscriber that registers the TRR namespace on every page load.
  */
 class RegisterNamespace implements EventSubscriberInterface {
 
