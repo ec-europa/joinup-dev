@@ -203,7 +203,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getWorkflow(EntityInterface $entity, string $state_field_name = NULL): ?WorkflowInterface {
+  public function getWorkflow(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowInterface {
     if (empty($state_field_name)) {
       $state_field_item = $this->getEntityStateField($entity);
       if (empty($state_field_item)) {
@@ -218,7 +218,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function findTransitionOnUpdate(EntityInterface $entity, string $state_field_name = NULL): ?WorkflowTransition {
+  public function findTransitionOnUpdate(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowTransition {
     if (empty($state_field_name)) {
       $state_field_item = $this->getEntityStateField($entity);
       if (empty($state_field_item)) {
