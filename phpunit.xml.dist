@@ -77,11 +77,9 @@
   <!-- Filter for coverage reports. -->
   <filter>
     <whitelist>
-      <directory>./core/includes</directory>
-      <directory>./core/lib</directory>
-      <directory>./core/modules</directory>
-      <directory>./modules</directory>
-      <directory>./sites</directory>
+      <directory>web/modules/custom</directory>
+      <directory>web/profiles</directory>
+      <directory>web/themes</directory>
       <!-- Exclude all test modules, tests etc -->
       <exclude-pattern>*/tests/*</exclude-pattern>
      </whitelist>
