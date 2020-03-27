@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\joinup_workflow;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -150,7 +150,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id): ?FieldDefinitionInterface {
+  public function getEntityStateFieldDefinition(string $entity_type_id, string $bundle_id): ?FieldDefinitionInterface {
     if ($field_definitions = $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id)) {
       return reset($field_definitions);
     }
@@ -161,7 +161,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id): array {
+  public function getEntityStateFieldDefinitions(string $entity_type_id, string $bundle_id): array {
     return array_filter($this->entityFieldManager->getFieldDefinitions($entity_type_id, $bundle_id), function (FieldDefinitionInterface $field_definition) {
       return $field_definition->getType() == 'state';
     });
@@ -179,14 +179,14 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasEntityStateField($entity_type_id, $bundle_id): bool {
+  public function hasEntityStateField(string $entity_type_id, string $bundle_id): bool {
     return (bool) $this->getEntityStateFieldDefinitions($entity_type_id, $bundle_id);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow): bool {
+  public function isWorkflowStatePublished(string $state_id, WorkflowInterface $workflow): bool {
     // We rely on being able to inspect the plugin definition. Throw an error if
     // this is not the case.
     if (!$workflow instanceof PluginInspectionInterface) {
@@ -203,7 +203,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL): ?WorkflowInterface {
+  public function getWorkflow(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowInterface {
     if (empty($state_field_name)) {
       $state_field_item = $this->getEntityStateField($entity);
       if (empty($state_field_item)) {
@@ -218,7 +218,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL): ?WorkflowTransition {
+  public function findTransitionOnUpdate(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowTransition {
     if (empty($state_field_name)) {
       $state_field_item = $this->getEntityStateField($entity);
       if (empty($state_field_item)) {

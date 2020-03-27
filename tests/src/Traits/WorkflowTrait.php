@@ -6,7 +6,7 @@ namespace Drupal\joinup\Traits;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 
 /**
  * Helper methods to deal with workflow checks.
@@ -126,11 +126,11 @@ trait WorkflowTrait {
   /**
    * Returns the workflow helper service.
    *
-   * @return \Drupal\joinup_core\WorkflowHelperInterface
+   * @return \Drupal\joinup_workflow\WorkflowHelperInterface
    *   The workflow helper service.
    */
   protected function getWorkflowHelper(): WorkflowHelperInterface {
-    return \Drupal::service('joinup_core.workflow.helper');
+    return \Drupal::service('joinup_workflow.workflow_helper');
   }
 
   /**

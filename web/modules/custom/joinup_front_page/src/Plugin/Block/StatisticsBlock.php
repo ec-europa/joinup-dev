@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Block;
+namespace Drupal\joinup_front_page\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -43,7 +43,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * The workflow helper.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -58,7 +58,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, WorkflowHelperInterface $workflow_helper) {
@@ -76,7 +76,7 @@ class StatisticsBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('joinup_core.workflow.helper')
+      $container->get('joinup_workflow.workflow_helper')
     );
   }
 

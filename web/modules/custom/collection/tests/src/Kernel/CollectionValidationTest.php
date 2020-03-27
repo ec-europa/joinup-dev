@@ -21,10 +21,13 @@ class CollectionValidationTest extends RdfEntityValidationTestBase {
     'field_group',
     'file',
     'inline_entity_form',
+    'joinup_workflow',
     'options',
     'search_api',
     'search_api_field',
     'smart_trim',
+    'state_machine',
+    'workflow_state_permission',
   ];
 
   /**

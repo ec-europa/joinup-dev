@@ -7,8 +7,8 @@ namespace Drupal\joinup_community_content\Guard;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
@@ -43,7 +43,7 @@ class CommunityContentGuard implements GuardInterface {
   /**
    * The workflow helper class.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -64,7 +64,7 @@ class CommunityContentGuard implements GuardInterface {
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The workflow state permission service.

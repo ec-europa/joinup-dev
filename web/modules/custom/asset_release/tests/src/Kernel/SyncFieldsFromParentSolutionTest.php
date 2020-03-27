@@ -42,6 +42,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'image',
     'inline_entity_form',
     'joinup_core',
+    'joinup_workflow',
     'link',
     'matomo_reporting_api',
     'node',

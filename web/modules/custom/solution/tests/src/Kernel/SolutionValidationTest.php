@@ -28,13 +28,16 @@ class SolutionValidationTest extends RdfEntityValidationTestBase {
     'file',
     'file_url',
     'inline_entity_form',
+    'joinup_workflow',
     'og',
     'options',
     'search_api',
     'search_api_field',
     'smart_trim',
     'solution',
+    'state_machine',
     'views',
+    'workflow_state_permission',
   ];
 
   /**

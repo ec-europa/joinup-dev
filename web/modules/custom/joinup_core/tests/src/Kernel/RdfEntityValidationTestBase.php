@@ -25,10 +25,8 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'rdf_taxonomy',
     'rdf_entity',
     'rdf_schema_field_validation',
-    'state_machine',
     'taxonomy',
     'tour',
-    'workflow_state_permission',
   ];
 
   /**

@@ -9,12 +9,12 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\joinup_core\WorkflowHelper;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManager;
 use Drupal\og\OgRoleInterface;
@@ -83,15 +83,15 @@ class CommunityContentSubscriber extends NotificationSubscriberBase implements E
    *   The og group type manager service.
    * @param \Drupal\og\MembershipManager $og_membership_manager
    *   The og membership manager service.
-   * @param \Drupal\joinup_core\WorkflowHelper $joinup_core_workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message deliver service.
    * @param \Drupal\state_machine_revisions\RevisionManagerInterface $revision_manager
    *   The revision manager service.
    */
-  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelper $joinup_core_workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
-    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $joinup_core_workflow_helper, $message_delivery);
+  public function __construct(EntityTypeManager $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManager $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery, RevisionManagerInterface $revision_manager) {
+    parent::__construct($entity_type_manager, $config_factory, $current_user, $og_group_type_manager, $og_membership_manager, $workflow_helper, $message_delivery);
     $this->revisionManager = $revision_manager;
   }
 
