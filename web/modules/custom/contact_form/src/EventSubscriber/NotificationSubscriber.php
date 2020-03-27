@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\contact_form\EventSubscriber;
 
-use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
+use Drupal\contact_form\ContactFormEvents;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\EventSubscriber\NotificationSubscriberBase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

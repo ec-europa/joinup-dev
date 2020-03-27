@@ -16,10 +16,10 @@ use Drupal\pipeline\Plugin\PipelineStepWithClientRedirectResponseTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithFormInterface;
 use Drupal\pipeline\Plugin\PipelineStepWithFormTrait;
 use Drupal\pipeline\Plugin\PipelineStepWithResponseInterface;
-use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity_provenance\ProvenanceHelperInterface;
 use Drupal\rdf_schema_field_validation\SchemaFieldValidatorInterface;
+use Drupal\sparql_entity_storage\Database\Driver\sparql\ConnectionInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlArg;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

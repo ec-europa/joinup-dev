@@ -9,11 +9,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\file\Entity\File;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class ImportSubscriber.
+ * Subscribes to entities being imported.
  */
 class ImportSubscriber implements EventSubscriberInterface {
 
@@ -39,7 +39,7 @@ class ImportSubscriber implements EventSubscriberInterface {
   protected $fileSystem;
 
   /**
-   * Constructor.
+   * Constructs an ImportSubscriber.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory service.

@@ -36,7 +36,7 @@ interface WorkflowHelperInterface {
    * @return string[]
    *   An array of available target workflow states.
    */
-  public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
+  public function getAvailableTargetStates(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array;
 
   /**
    * Returns the available transitions labels of an entity for the given user.
@@ -52,7 +52,7 @@ interface WorkflowHelperInterface {
    * @return array
    *   An array of transition labels.
    */
-  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array;
 
   /**
    * Returns the available transition states of an entity for the given user.
@@ -65,7 +65,7 @@ interface WorkflowHelperInterface {
    * @return \Drupal\state_machine\Plugin\Workflow\WorkflowTransition[]
    *   An array of transition objects.
    */
-  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL): array;
+  public function getAvailableTransitions(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array;
 
   /**
    * Returns the state field definitions of an entity.

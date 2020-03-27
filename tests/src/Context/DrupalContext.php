@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup\Context;
 
 use Behat\Gherkin\Node\TableNode;

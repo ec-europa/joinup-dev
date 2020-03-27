@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Drupal\Tests\contact_information\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
+use Drupal\rdf_entity\Entity\Rdf;
 
 /**
  * Tests the workflow for the contact information entity.

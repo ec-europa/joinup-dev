@@ -21,19 +21,9 @@ use Drupal\rdf_entity\RdfInterface;
 class ShareForm extends OriginalForm {
 
   /**
-   * Form constructor.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
-   *   The entity being shared.
-   *
-   * @return array
-   *   The form structure.
+   * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
     return parent::doBuildForm($form, $form_state, $rdf_entity);
   }
 

@@ -693,7 +693,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
    * @Then I am member of :labels collection(s)
    * @Then user :user_name is member of :labels collection(s)
    */
-  public function assertUserIsMemberOfCollection(string $labels, string $user_name = NULL): void {
+  public function assertUserIsMemberOfCollection(string $labels, ?string $user_name = NULL): void {
     /** @var \Drupal\user\UserInterface $account */
     if (!$user_name) {
       $user = $this->getUserManager()->getCurrentUser();

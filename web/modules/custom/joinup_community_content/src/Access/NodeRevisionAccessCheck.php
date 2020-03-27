@@ -63,7 +63,7 @@ class NodeRevisionAccessCheck extends CoreNodeRevisionAccessCheck {
   /**
    * {@inheritdoc}
    */
-  public function access(Route $route, AccountInterface $account, $node_revision = NULL, NodeInterface $node = NULL) {
+  public function access(Route $route, AccountInterface $account, $node_revision = NULL, ?NodeInterface $node = NULL) {
     if ($node_revision) {
       $node = $this->nodeStorage->loadRevision($node_revision);
     }

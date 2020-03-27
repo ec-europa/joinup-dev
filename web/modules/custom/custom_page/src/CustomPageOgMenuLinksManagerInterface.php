@@ -21,7 +21,7 @@ interface CustomPageOgMenuLinksManagerInterface {
    * @return \Drupal\node\NodeInterface[]
    *   A list of child nodes.
    */
-  public function getChildren(NodeInterface $custom_page) : array;
+  public function getChildren(NodeInterface $custom_page): array;
 
   /**
    * Adds a OG menu link pointing to a custom page.
@@ -31,7 +31,7 @@ interface CustomPageOgMenuLinksManagerInterface {
    *
    * @return $this
    */
-  public function addLink(NodeInterface $custom_page) : CustomPageOgMenuLinksManagerInterface;
+  public function addLink(NodeInterface $custom_page): CustomPageOgMenuLinksManagerInterface;
 
   /**
    * Move the OG menu links of a custom page to a new group OG menu instance.
@@ -43,7 +43,7 @@ interface CustomPageOgMenuLinksManagerInterface {
    *
    * @return $this
    */
-  public function moveLinks(NodeInterface $custom_page, $group_id) : CustomPageOgMenuLinksManagerInterface;
+  public function moveLinks(NodeInterface $custom_page, $group_id): CustomPageOgMenuLinksManagerInterface;
 
   /**
    * Deletes all the corresponding OG menu links pointing to a custom page.
@@ -53,7 +53,7 @@ interface CustomPageOgMenuLinksManagerInterface {
    *
    * @return $this
    */
-  public function deleteLinks(NodeInterface $custom_page) : CustomPageOgMenuLinksManagerInterface;
+  public function deleteLinks(NodeInterface $custom_page): CustomPageOgMenuLinksManagerInterface;
 
   /**
    * Gets the OG menu instance, given a custom page.
@@ -64,7 +64,7 @@ interface CustomPageOgMenuLinksManagerInterface {
    * @return \Drupal\og_menu\OgMenuInstanceInterface|null
    *   The OG menu instance or NULL if none can be determined.
    */
-  public function getOgMenuInstanceByCustomPage(NodeInterface $custom_page) : ?OgMenuInstanceInterface;
+  public function getOgMenuInstanceByCustomPage(NodeInterface $custom_page): ?OgMenuInstanceInterface;
 
   /**
    * Returns the OG menu instance, given a group ID.
@@ -75,6 +75,6 @@ interface CustomPageOgMenuLinksManagerInterface {
    * @return \Drupal\og_menu\OgMenuInstanceInterface|null
    *   The OG menu instance or NULL if none can be determined.
    */
-  public function getOgMenuInstanceByGroupId(string $group_id) : ?OgMenuInstanceInterface;
+  public function getOgMenuInstanceByGroupId(string $group_id): ?OgMenuInstanceInterface;
 
 }

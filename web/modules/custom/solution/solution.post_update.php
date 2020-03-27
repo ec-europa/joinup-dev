@@ -5,6 +5,8 @@
  * Post update functions for the solution module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Sets the default value for 'Solutions related by type' field.
  */

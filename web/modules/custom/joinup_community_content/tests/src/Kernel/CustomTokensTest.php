@@ -6,9 +6,9 @@ namespace Drupal\Tests\joinup_community_content\Kernel;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Url;
+use Drupal\Tests\system\Kernel\Token\TokenReplaceKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
-use Drupal\Tests\system\Kernel\Token\TokenReplaceKernelTestBase;
 
 /**
  * Tests the tokens provided by the joinup_community_content module.

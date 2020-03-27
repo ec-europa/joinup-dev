@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\contact_form\EventSubscriber;
 
-use Drupal\contact_form\ContactFormEvents;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\contact_form\ContactFormEvents;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

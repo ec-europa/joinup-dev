@@ -31,7 +31,7 @@ class JoinupFrontPageMenuAccess extends MenuAdminPerMenuAccess {
   /**
    * {@inheritdoc}
    */
-  public function menuLinkAccess(AccountInterface $account, MenuLinkInterface $menu_link_plugin = NULL): AccessResultInterface {
+  public function menuLinkAccess(AccountInterface $account, ?MenuLinkInterface $menu_link_plugin = NULL): AccessResultInterface {
     if ($menu_link_plugin->getMenuName() === 'front-page') {
       // Disallow editing new links for the front-page menu.
       return AccessResult::forbidden();
@@ -42,7 +42,7 @@ class JoinupFrontPageMenuAccess extends MenuAdminPerMenuAccess {
   /**
    * {@inheritdoc}
    */
-  public function menuItemAccess(AccountInterface $account, MenuLinkContent $menu_link_content = NULL): AccessResultInterface {
+  public function menuItemAccess(AccountInterface $account, ?MenuLinkContent $menu_link_content = NULL): AccessResultInterface {
     if ($menu_link_content->getMenuName() === 'front-page') {
       // Disable canonical page access.
       return AccessResult::forbidden();

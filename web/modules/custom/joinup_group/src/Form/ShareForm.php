@@ -27,13 +27,13 @@ abstract class ShareForm extends ShareFormBase {
   }
 
   /**
-   * Form constructor.
+   * Form builder for the share form.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   The entity being shared.
    *
    * @return array
@@ -42,7 +42,7 @@ abstract class ShareForm extends ShareFormBase {
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    *   Thrown when the group reference is not populated.
    */
-  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL): array {
+  public function doBuildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity = NULL): array {
     $this->entity = $entity;
 
     $form['share'] = [

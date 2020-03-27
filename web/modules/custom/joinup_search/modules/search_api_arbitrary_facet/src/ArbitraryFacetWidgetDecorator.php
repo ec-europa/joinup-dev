@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_arbitrary_facet;
 
 use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\facets\Widget\WidgetPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\facets\FacetInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\facets\FacetInterface;
+use Drupal\facets\Widget\WidgetPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class ArbitraryFacetWidgetDecorator.
+ * Decorator for the arbitrary facet widget.
  */
 class ArbitraryFacetWidgetDecorator implements WidgetPluginInterface, ContainerFactoryPluginInterface {
 

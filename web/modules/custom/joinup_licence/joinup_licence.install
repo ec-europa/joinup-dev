@@ -5,6 +5,8 @@
  * Install, uninstall, schema and requirements hook for joinup_licence module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Corrects the label predicate.
  */
