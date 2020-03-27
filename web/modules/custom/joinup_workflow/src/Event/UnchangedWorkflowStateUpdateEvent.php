@@ -17,8 +17,6 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class UnchangedWorkflowStateUpdateEvent extends Event {
 
-  const EVENT_NAME = 'joinup_workflow.unchanged_workflow_state_update';
-
   /**
    * The entity being updated.
    *

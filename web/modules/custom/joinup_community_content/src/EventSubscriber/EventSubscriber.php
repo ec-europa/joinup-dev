@@ -67,7 +67,7 @@ class EventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       OgPermissionEventInterface::EVENT_NAME => [['provideOgRevisionPermissions']],
-      UnchangedWorkflowStateUpdateEvent::EVENT_NAME => 'onUnchangedWorkflowStateUpdate',
+      'joinup_workflow.unchanged_workflow_state_update' => 'onUnchangedWorkflowStateUpdate',
     ];
   }
 
