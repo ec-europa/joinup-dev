@@ -50,6 +50,14 @@ Feature: SEO for news articles.
       | @id      | __base_url__/user/__random_text__ |
       | name     | Kurk Smith                        |
       | url      | __base_url__/user/__random_text__ |
+    And the following meta tags should available in the html:
+      | identifier    | value                                                                   |
+      | description   | Summary of news.                                                        |
+      | og:url        | __base_url__/collection/joinup-seo-news-collection/news/joinup-seo-news |
+      | og:site_name  | Joinup                                                                  |
+      | og:title      | Joinup SEO news                                                         |
+      | og:image      | __base_url__/sites/default/files/__random_text__.jpg                    |
+      | og:image:type | image/jpeg                                                              |
 
     When I click "Keep up to date"
     Then I should see the "Joinup SEO news" tile

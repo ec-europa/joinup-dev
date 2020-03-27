@@ -51,7 +51,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
       else {
         $row['value'] = $this->escapeStringWithVariables($row['value']);
         $actual = $tag->getText();
-        $found = preg_match("#{$row['value']}#", $actual) === 1;
+        $found = preg_match("#^{$row['value']}$#", $actual) === 1;
 
         if ($found === FALSE) {
           $errors[] = [
