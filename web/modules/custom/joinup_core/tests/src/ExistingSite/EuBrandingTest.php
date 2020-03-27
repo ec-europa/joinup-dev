@@ -12,24 +12,21 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 class EuBrandingTest extends JoinupExistingSiteTestBase {
 
   /**
-   * Tests that EU webtools global banner appears only on the home page.
+   * Tests that EU webtools global banner appears on all pages.
    */
   public function testEuGlobalBanner(): void {
-    $this->drupalGet('<front>');
-    $this->assertSession()->responseContains('<script src="//europa.eu/webtools/load.js?globan=111" defer></script>');
-
     // Random picked up pages.
     $pages = [
+      '<front>',
       '/contact',
       '/search',
       '/collections',
       '/solutions',
       '/keep-up-to-date',
-      '/search',
     ];
     foreach ($pages as $page) {
       $this->drupalGet($page);
-      $this->assertSession()->responseNotContains('?globan=111" defer></script>');
+      $this->assertSession()->responseContains('<script src="//europa.eu/webtools/load.js?globan=111" defer></script>');
     }
   }
 

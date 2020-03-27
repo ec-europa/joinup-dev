@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ecfda2b9bd5c37c03c858a2af91e1334",
+    "content-hash": "ce8e9c3a6683b1c7a4e42e7dd924a26f",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -8918,8 +8918,7 @@
                 "patches_applied": {
                     "Allow to pass an optional referer. @see https://github.com/openeuropa/oe_webtools/pull/96": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/96.diff",
                     "Place the webtools loader on the head. @see https://github.com/openeuropa/oe_webtools/pull/102": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/102.diff",
-                    "Add the possibility to display a marker in the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff",
-                    "Allow selective display of banner @see https://github.com/openeuropa/oe_webtools/pull/122": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/122.diff"
+                    "Add the possibility to display a marker in the map. @see https://github.com/openeuropa/oe_webtools/pull/111": "https://patch-diff.githubusercontent.com/raw/openeuropa/oe_webtools/pull/111.diff"
                 }
             },
             "autoload": {
