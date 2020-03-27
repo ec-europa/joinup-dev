@@ -94,7 +94,7 @@ class MySubscriptionsForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, AccountInterface $user = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?AccountInterface $user = NULL) {
     // When no user is passed we cannot show anything useful.
     if (empty($user)) {
       throw new \InvalidArgumentException('No user account supplied.');

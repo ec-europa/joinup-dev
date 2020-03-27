@@ -23,7 +23,7 @@ class ShareForm extends OriginalForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
     return parent::doBuildForm($form, $form_state, $rdf_entity);
   }
 

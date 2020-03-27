@@ -67,28 +67,28 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Constructs a new ScreenshotContext context.
    *
-   * @param string $localDir
+   * @param string|null $localDir
    *   Optional directory where the screenshots are saved. If omitted the
    *   screenshots will not be saved.
-   * @param string $s3Dir
+   * @param string|null $s3Dir
    *   Optional folder on an Amazon S3 bucket where screenshots will be uploaded
    *   to. If omitted, the screenshots will not be uploaded to AWS S3.
-   * @param string $s3Region
+   * @param string|null $s3Region
    *   Optional AWS region where the Amazon S3 bucket is located. If omitted,
    *   the screenshots will not be uploaded to AWS S3.
-   * @param string $s3Bucket
+   * @param string|null $s3Bucket
    *   Optional name of the Amazon S3 bucket where screenshots will be uploaded.
    *   If omitted, the screenshots will not be uploaded to AWS S3.
-   * @param string $s3Key
+   * @param string|null $s3Key
    *   The key to use to authenticate with Amazon S3. If omitted, the key will
    *   be taken from the environment variables.
-   * @param string $s3Secret
+   * @param string|null $s3Secret
    *   The secret to use to authenticate with Amazon S3. If omitted, the secret
    *   will be taken from the environment variables.
    *
    * @see tests/behat.yml.dist
    */
-  public function __construct(string $localDir = NULL, string $s3Dir = NULL, string $s3Region = NULL, string $s3Bucket = NULL, string $s3Key = NULL, string $s3Secret = NULL) {
+  public function __construct(?string $localDir = NULL, ?string $s3Dir = NULL, ?string $s3Region = NULL, ?string $s3Bucket = NULL, ?string $s3Key = NULL, ?string $s3Secret = NULL) {
     $this->localDir = $localDir;
     $this->s3Dir = $s3Dir;
     $this->s3Region = $s3Region;
@@ -100,12 +100,12 @@ class ScreenshotContext extends RawMinkContext {
   /**
    * Saves a screenshot under a given name.
    *
-   * @param string $name
+   * @param string|null $name
    *   The file name.
    *
    * @Then I take a screenshot :name
    */
-  public function takeScreenshot(string $name = NULL): void {
+  public function takeScreenshot(?string $name = NULL): void {
     $message = "Screenshot created in @file_name";
     $this->createScreenshot($name, $message);
   }

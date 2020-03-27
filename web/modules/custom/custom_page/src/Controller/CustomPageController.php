@@ -28,7 +28,7 @@ class CustomPageController extends CommunityContentController {
    * The custom pages are only allowed to be created for collections and
    * solutions.
    */
-  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResult {
+  public function createAccess(RdfInterface $rdf_entity, ?AccountInterface $account = NULL): AccessResult {
     if (empty($account)) {
       $account = $this->currentUser();
     }

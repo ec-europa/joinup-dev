@@ -83,7 +83,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableStatesLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
+  public function getAvailableStatesLabels(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array {
     $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
@@ -96,7 +96,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
+  public function getAvailableTargetStates(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array {
     $allowed_transitions = $this->getAvailableTransitions($entity, $account);
 
     $allowed_states = array_map(function (WorkflowTransition $transition) {
@@ -114,7 +114,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTransitions(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
+  public function getAvailableTransitions(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array {
     // Set the current user so that states available are retrieved for the
     // specific account.
     // The proper solution would be to pass the account to the state_machine
@@ -170,7 +170,7 @@ class WorkflowHelper implements WorkflowHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, AccountInterface $account = NULL): array {
+  public function getAvailableTransitionsLabels(FieldableEntityInterface $entity, ?AccountInterface $account = NULL): array {
     return array_map(function (WorkflowTransition $transition) {
       return (string) $transition->getLabel();
     }, $this->getAvailableTransitions($entity, $account));

@@ -31,7 +31,7 @@ class OgCommentFieldItemList extends CommentFieldItemList {
   /**
    * {@inheritdoc}
    */
-  public function access($operation = 'view', AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($operation = 'view', ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     $host_entity = $this->getEntity();
     // We cannot inject services in this plugin as it extends TypedData and it
     // does not support dependency injection.

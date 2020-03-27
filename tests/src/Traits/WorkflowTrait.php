@@ -27,7 +27,7 @@ trait WorkflowTrait {
    *    Thrown when the expected transitions array does not exactly match the
    *    array of available options.
    */
-  protected function assertAvailableTransitions(FieldableEntityInterface $entity, array $available_transitions, AccountInterface $user = NULL) {
+  protected function assertAvailableTransitions(FieldableEntityInterface $entity, array $available_transitions, ?AccountInterface $user = NULL) {
     $allowed_transitions = $this->getAvailableTransitions($entity, $user);
     $allowed_transitions = array_values($allowed_transitions);
     sort($allowed_transitions);
@@ -61,7 +61,7 @@ trait WorkflowTrait {
    * @return string[]
    *   An array of available target workflow states.
    */
-  protected function getAvailableTargetStates(FieldableEntityInterface $entity, AccountInterface $user = NULL): array {
+  protected function getAvailableTargetStates(FieldableEntityInterface $entity, ?AccountInterface $user = NULL): array {
     return $this->getWorkflowHelper()->getAvailableTargetStates($entity, $user);
   }
 

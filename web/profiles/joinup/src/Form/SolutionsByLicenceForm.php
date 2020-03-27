@@ -169,13 +169,13 @@ QUERY;
   /**
    * Returns the query that counts total of the results.
    *
-   * @param string $licence_id
+   * @param string|null $licence_id
    *   (Optional) A licence id to narrow down the results with.
    *
    * @return string
    *   The count query.
    */
-  protected function getCountQuery(string $licence_id = NULL): string {
+  protected function getCountQuery(?string $licence_id = NULL): string {
     $query = <<<QUERY
 SELECT COUNT(*) AS ?total
 WHERE {
@@ -215,13 +215,13 @@ QUERY;
    *
    * @param int $offset
    *   The offset number.
-   * @param string $licence_id
+   * @param string|null $licence_id
    *   (Optional) A licence id to narrow down the results with.
    *
    * @return string
    *   The query string.
    */
-  protected function getQuery(int $offset, string $licence_id = NULL): string {
+  protected function getQuery(int $offset, ?string $licence_id = NULL): string {
     $query = <<<QUERY
 SELECT DISTINCT ?solution ?licence_label ?licence ?solution_label
 WHERE {

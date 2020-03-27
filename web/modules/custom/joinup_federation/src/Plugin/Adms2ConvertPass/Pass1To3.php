@@ -136,7 +136,7 @@ RDF;
    *   otherwise an associative array of ADMS v2 type URIs keyed by ADMSv1 type
    *   URIs.
    */
-  protected static function getAdms1To2TypeConversionMap(string $adms1_uri = NULL) {
+  protected static function getAdms1To2TypeConversionMap(?string $adms1_uri = NULL) {
     $conversion_map = [
       'http://www.w3.org/ns/adms#Asset' => static::ASSET,
       'http://www.w3.org/ns/adms#AssetRepository' => static::ASSET_CATALOG,

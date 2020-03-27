@@ -197,7 +197,7 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
 /**
  * Implements hook_entity_field_access().
  */
-function custom_page_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+function custom_page_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL) {
   return AccessResult::allowedIf(
     $operation === 'edit'
     && $field_definition->getName() === 'status'

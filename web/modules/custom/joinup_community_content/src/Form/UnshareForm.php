@@ -24,7 +24,7 @@ class UnshareForm extends OriginalForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?NodeInterface $node = NULL): array {
     return parent::doBuildForm($form, $form_state, $node);
   }
 

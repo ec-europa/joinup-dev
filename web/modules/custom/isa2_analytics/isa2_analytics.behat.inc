@@ -20,14 +20,14 @@ class Isa2AnalyticsSubContext extends DrupalSubContextBase {
   /**
    * Checks the presence of a site section in the analytics reporting data.
    *
-   * @param string $section
+   * @param string|null $section
    *   Optional site section to check. If omitted the site section is expected
    *   to be missing from the analytics data.
    *
    * @Then the analytics report should not include a site section
    * @Then the analytics report should include the site section :section
    */
-  public function assertSiteSection(string $section = NULL): void {
+  public function assertSiteSection(?string $section = NULL): void {
     if ($section) {
       $this->assertAnalyticsJsonContainsParameter(AnalyticsEventInterface::SITE_SECTION, $section);
     }

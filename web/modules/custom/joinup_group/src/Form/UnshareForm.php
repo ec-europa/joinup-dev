@@ -27,13 +27,13 @@ abstract class UnshareForm extends ShareFormBase {
    *   An associative array containing the structure of the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   The entity being unshared.
    *
    * @return array
    *   The form structure.
    */
-  public function doBuildForm(array $form, FormStateInterface $form_state, EntityInterface $entity = NULL): array {
+  public function doBuildForm(array $form, FormStateInterface $form_state, ?EntityInterface $entity = NULL): array {
     $this->entity = $entity;
 
     $options = array_map(function ($collection) {

@@ -75,7 +75,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
     $result = $this->getModerationItems($rdf_entity);
     $count = $this->getModerationItemCount($result);
 

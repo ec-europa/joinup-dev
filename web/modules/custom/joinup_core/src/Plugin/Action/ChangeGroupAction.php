@@ -129,7 +129,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
   /**
    * {@inheritdoc}
    */
-  public function access($node, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($node, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     // The access is limited at the view level.
     return $return_as_object ? AccessResult::allowed() : TRUE;
   }
@@ -234,7 +234,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
   /**
    * {@inheritdoc}
    */
-  public function execute(NodeInterface $node = NULL) {
+  public function execute(?NodeInterface $node = NULL) {
     $this->executeMultiple([$node]);
   }
 

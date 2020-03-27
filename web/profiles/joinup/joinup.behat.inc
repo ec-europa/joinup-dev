@@ -2687,7 +2687,7 @@ JS;
    *   The button label.
    * @param string $status
    *   The expected status. Possible values are 'enabled' and 'disabled'.
-   * @param string $region
+   * @param string|null $region
    *   (optional) The region name. If left empty, the whole page will be used.
    *
    * @throws \InvalidArgumentException
@@ -2700,7 +2700,7 @@ JS;
    * @Then the :button button on the :region region should be :status
    * @Then the :button button should be :status
    */
-  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+  public function assertButtonStatus(string $button, string $status, ?string $region = NULL): void {
     if (!in_array($status, ['enabled', 'disabled'])) {
       throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
     }

@@ -180,7 +180,7 @@ class InviteToDiscussionForm extends InviteFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?NodeInterface $node = NULL) {
     $this->discussion = $node;
 
     return parent::build($form, $form_state);
@@ -280,13 +280,13 @@ class InviteToDiscussionForm extends InviteFormBase {
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $account
    *   The user for which to check access.
-   * @param \Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface|null $node
    *   The discussion to which users will be invited.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function access(AccountProxyInterface $account, NodeInterface $node = NULL): AccessResult {
+  public function access(AccountProxyInterface $account, ?NodeInterface $node = NULL): AccessResult {
     $access = FALSE;
 
     // The node should be a published discussion.

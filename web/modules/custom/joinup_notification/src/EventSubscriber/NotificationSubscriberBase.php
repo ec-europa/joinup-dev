@@ -144,13 +144,13 @@ abstract class NotificationSubscriberBase {
    * @param array $user_data
    *   A structured array of user ownership and roles and their corresponding
    *   message ids.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   Optionally alter the entity to be checked.
    *
    * @return array
    *   An array of message ids that every key is an array of user ids.
    */
-  protected function getUsersMessages(array $user_data, EntityInterface $entity = NULL) {
+  protected function getUsersMessages(array $user_data, ?EntityInterface $entity = NULL) {
     $entity = $entity ?: $this->entity;
     // Ensure proper loops.
     $user_data += [
