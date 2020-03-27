@@ -5,6 +5,8 @@
  * Post update functions for the Joinup licence module.
  */
 
+declare(strict_types = 1);
+
 use EasyRdf\Graph;
 use EasyRdf\GraphStore;
 

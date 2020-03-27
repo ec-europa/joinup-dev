@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_field\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\Html;

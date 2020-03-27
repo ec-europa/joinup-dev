@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_discussion\Cache;
 
 use Drupal\Core\Cache\CacheableMetadata;

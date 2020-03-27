@@ -5,6 +5,8 @@
  * Install functions of the Joinup user module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\file\Entity\File;
 

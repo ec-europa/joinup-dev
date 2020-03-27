@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_arbitrary_facet\Plugin;
 
-use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Plugin\DefaultPluginManager;
 
 /**
  * Provides the Arbitrary facet plugin manager.

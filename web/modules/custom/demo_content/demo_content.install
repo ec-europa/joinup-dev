@@ -5,6 +5,8 @@
  * Install, update and uninstall functions for the Demo content module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\EntityInterface;
 
 /**

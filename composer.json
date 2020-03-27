@@ -128,6 +128,7 @@
         "pfrenssen/phpcs-pre-push": "1.1",
         "phpstan/phpstan-deprecation-rules": "~0.12",
         "phpunit/phpunit": "~6.5",
+        "slevomat/coding-standard": "~6.1",
         "symfony/css-selector": "~2.8|~3.0|~4.0",
         "symfony/dom-crawler": "4.4.4",
         "symfony/phpunit-bridge": "^4.2",

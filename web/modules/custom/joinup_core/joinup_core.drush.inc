@@ -5,6 +5,8 @@
  * Drush commands related to joinup.
  */
 
+declare(strict_types = 1);
+
 /**
  * Implements hook_drush_command().
  */

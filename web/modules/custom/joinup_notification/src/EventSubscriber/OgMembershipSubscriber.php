@@ -12,7 +12,7 @@ use Drupal\og\OgMembershipInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class OgMembershipSubscriber.
+ * Handles notifications related to changes in group memberships.
  */
 class OgMembershipSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 

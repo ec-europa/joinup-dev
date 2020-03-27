@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_video\Unit;
 
-use Drupal\joinup_video\Plugin\video_embed_field\Provider\JoinupEcVideo;
 use Drupal\Tests\UnitTestCase;
+use Drupal\joinup_video\Plugin\video_embed_field\Provider\JoinupEcVideo;
 
 /**
  * Tests the Joinup EC Video plugin.

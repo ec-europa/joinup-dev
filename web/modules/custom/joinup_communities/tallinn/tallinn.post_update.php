@@ -5,6 +5,8 @@
  * Post update functions for Tallinn.
  */
 
+declare(strict_types = 1);
+
 /**
  * Install the 'embed_block' module and add the dashboard block in page content.
  */

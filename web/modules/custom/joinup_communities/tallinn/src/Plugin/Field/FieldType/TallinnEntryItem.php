@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\tallinn\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
