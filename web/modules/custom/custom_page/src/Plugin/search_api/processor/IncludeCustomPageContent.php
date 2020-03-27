@@ -23,15 +23,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * custom pages.
  *
  * @SearchApiProcessor(
- *   id = "include_basic_page_content",
- *   label = @Translation("Include basic page content"),
- *   description = @Translation("Improves searchability of collections and solutions by including the content of basic pages."),
+ *   id = "include_custom_page_content",
+ *   label = @Translation("Include custom page content"),
+ *   description = @Translation("Improves searchability of collections and solutions by including the content of custom pages."),
  *   stages = {
  *     "preprocess_index" = 0,
  *   },
  * )
  */
-class IncludeBasicPageContent extends ProcessorPluginBase {
+class IncludeCustomPageContent extends ProcessorPluginBase {
 
   /**
    * The custom page provider service.
