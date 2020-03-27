@@ -152,7 +152,6 @@
             "DrupalProject\\": "src"
         },
         "classmap": [
-            "web/modules/custom/joinup_workflow/src/Event/UnchangedWorkflowStateUpdateEvent.php",
             "scripts/composer/CaptureGitReleaseTag.php",
             "scripts/composer/RemoveWrongPatchedObjects.php",
             "scripts/composer/ScriptHandler.php",

@@ -55,7 +55,7 @@ class CollectionEventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       PermissionEventInterface::EVENT_NAME => 'provideDefaultOgPermissions',
-      UnchangedWorkflowStateUpdateEvent::EVENT_NAME => 'onUnchangedWorkflowStateUpdate',
+      'joinup_workflow.unchanged_workflow_state_update' => 'onUnchangedWorkflowStateUpdate',
     ];
   }
 
