@@ -63,7 +63,7 @@ class ChangeCollectionAction extends ActionBase implements ContainerFactoryPlugi
   /**
    * {@inheritdoc}
    */
-  public function access($solution, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($solution, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     // The access is limited at the view level.
     return $return_as_object ? AccessResult::allowed() : TRUE;
   }
@@ -84,7 +84,7 @@ class ChangeCollectionAction extends ActionBase implements ContainerFactoryPlugi
   /**
    * {@inheritdoc}
    */
-  public function execute(RdfInterface $solution = NULL): void {
+  public function execute(?RdfInterface $solution = NULL): void {
     $this->executeMultiple([$solution]);
   }
 

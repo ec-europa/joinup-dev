@@ -133,13 +133,13 @@ class CommunityContentWorkflowAccessControlHandler {
    *   The group content entity object.
    * @param string $operation
    *   The CRUD operation.
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface|null $account
    *   The user account.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The result of the access check.
    */
-  public function entityAccess(EntityInterface $entity, $operation, AccountInterface $account = NULL): AccessResult {
+  public function entityAccess(EntityInterface $entity, $operation, ?AccountInterface $account = NULL): AccessResult {
     if ($account === NULL) {
       $account = $this->currentUser;
     }

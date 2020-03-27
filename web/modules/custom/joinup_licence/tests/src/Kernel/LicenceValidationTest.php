@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_licence\Kernel;
 
+use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 use Drupal\joinup_core\Plugin\Validation\Constraint\UniqueFieldInBundleConstraint;
 use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 
 /**
  * Tests the validation on the licence bundle entity.

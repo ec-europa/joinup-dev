@@ -81,7 +81,7 @@ class InviteToGroupForm extends InviteFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
     $this->rdfEntity = $rdf_entity;
 
     $form['role'] = [

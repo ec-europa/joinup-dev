@@ -47,7 +47,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
   /**
    * {@inheritdoc}
    */
-  public function getChildren(NodeInterface $custom_page) : array {
+  public function getChildren(NodeInterface $custom_page): array {
     $menu_link_content_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $node_storage = $this->entityTypeManager->getStorage('node');
 
@@ -99,7 +99,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
   /**
    * {@inheritdoc}
    */
-  public function addLink(NodeInterface $custom_page) : CustomPageOgMenuLinksManagerInterface {
+  public function addLink(NodeInterface $custom_page): CustomPageOgMenuLinksManagerInterface {
     $menu_link_content_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $this->verifyCustomPage($custom_page);
     if ($og_menu_instance = $this->getOgMenuInstanceByCustomPage($custom_page)) {
@@ -116,7 +116,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
   /**
    * {@inheritdoc}
    */
-  public function moveLinks(NodeInterface $custom_page, $group_id) : CustomPageOgMenuLinksManagerInterface {
+  public function moveLinks(NodeInterface $custom_page, $group_id): CustomPageOgMenuLinksManagerInterface {
     $menu_link_content_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $this->verifyCustomPage($custom_page);
     if ($source_og_menu_instance = $this->getOgMenuInstanceByCustomPage($custom_page)) {
@@ -145,7 +145,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
   /**
    * {@inheritdoc}
    */
-  public function deleteLinks(NodeInterface $custom_page) : CustomPageOgMenuLinksManagerInterface {
+  public function deleteLinks(NodeInterface $custom_page): CustomPageOgMenuLinksManagerInterface {
     $menu_link_content_storage = $this->entityTypeManager->getStorage('menu_link_content');
     $this->verifyCustomPage($custom_page);
     /** @var \Drupal\Core\Menu\MenuLinkTreeInterface $t */
@@ -181,7 +181,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
   /**
    * {@inheritdoc}
    */
-  public function getOgMenuInstanceByCustomPage(NodeInterface $custom_page) : ?OgMenuInstanceInterface {
+  public function getOgMenuInstanceByCustomPage(NodeInterface $custom_page): ?OgMenuInstanceInterface {
     $this->verifyCustomPage($custom_page);
     if ($group_id = $custom_page->get(OgGroupAudienceHelperInterface::DEFAULT_FIELD)->target_id) {
       return $this->getOgMenuInstanceByGroupId($group_id);
@@ -195,7 +195,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    * @param \Drupal\node\NodeInterface $custom_page
    *   The node to check.
    */
-  protected function verifyCustomPage(NodeInterface $custom_page) : void {
+  protected function verifyCustomPage(NodeInterface $custom_page): void {
     $bundle = $custom_page->bundle();
     if ($bundle !== 'custom_page') {
       throw new \InvalidArgumentException("The node is not a custom page, but a '$bundle'.");
@@ -211,7 +211,7 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
    * @return \Drupal\og_menu\OgMenuInstanceInterface|null
    *   The OG menu instance or NULL if none can be determined.
    */
-  protected function getOgMenuInstanceByGroupId(string $group_id) : ?OgMenuInstanceInterface {
+  protected function getOgMenuInstanceByGroupId(string $group_id): ?OgMenuInstanceInterface {
     if (Rdf::load($group_id)) {
       $properties = [
         'type' => 'navigation',

@@ -100,7 +100,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function execute(OgMembership $membership = NULL): void {
+  public function execute(?OgMembership $membership = NULL): void {
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $membership->getGroup();
 
@@ -127,7 +127,7 @@ class TransferGroupOwnershipAction extends ActionBase implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function access($membership, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($membership, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\og\OgMembershipInterface $membership */
     /** @var \Drupal\rdf_entity\RdfInterface $group */
     $group = $membership->getGroup();

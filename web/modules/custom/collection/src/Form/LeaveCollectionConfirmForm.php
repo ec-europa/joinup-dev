@@ -102,7 +102,7 @@ class LeaveCollectionConfirmForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL): array {
     // Store the collection on the object so it can be reused.
     $this->collection = $rdf_entity;
 

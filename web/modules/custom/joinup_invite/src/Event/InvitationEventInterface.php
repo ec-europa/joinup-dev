@@ -17,7 +17,7 @@ interface InvitationEventInterface {
    * @return \Drupal\joinup_invite\Entity\InvitationInterface
    *   The invitation.
    */
-  public function getInvitation() : InvitationInterface;
+  public function getInvitation(): InvitationInterface;
 
   /**
    * Stores the invitation for which the event takes place.
@@ -27,7 +27,7 @@ interface InvitationEventInterface {
    *
    * @return $this
    */
-  public function setInvitation(InvitationInterface $invitation) : self;
+  public function setInvitation(InvitationInterface $invitation): self;
 
   /**
    * Returns the action taken on the invitation for which the event takes place.
@@ -35,7 +35,7 @@ interface InvitationEventInterface {
    * @return string
    *   The action.
    */
-  public function getAction() : string;
+  public function getAction(): string;
 
   /**
    * Stores the action taken on the invitation for which the event takes place.
@@ -45,6 +45,6 @@ interface InvitationEventInterface {
    *
    * @return $this
    */
-  public function setAction(string $action) : self;
+  public function setAction(string $action): self;
 
 }

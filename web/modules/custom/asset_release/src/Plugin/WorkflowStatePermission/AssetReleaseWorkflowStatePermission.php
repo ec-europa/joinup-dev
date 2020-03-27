@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Drupal\asset_release\Plugin\WorkflowStatePermission;
 
-use Drupal\asset_release\AssetReleaseRelations;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\asset_release\AssetReleaseRelations;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

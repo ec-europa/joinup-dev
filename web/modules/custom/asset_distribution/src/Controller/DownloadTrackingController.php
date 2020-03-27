@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_distribution\Controller;
 
-use Drupal\asset_distribution\Form\AnonymousDownloadForm;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\ContentEntityStorageInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\asset_distribution\Form\AnonymousDownloadForm;
 use Drupal\file\FileInterface;
 use Drupal\file_url\FileUrlHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;

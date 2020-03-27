@@ -6,14 +6,14 @@ namespace Drupal\Tests\joinup_core\ExistingSite;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\file\FileInterface;
-use Drupal\file_url\FileUrlHandler;
-use Drupal\rdf_entity\Entity\Rdf;
-use Drupal\sparql_entity_storage\UriEncoder;
 use Drupal\Tests\joinup_core\Traits\FileUrlTrait;
 use Drupal\Tests\rdf_entity\Traits\DrupalTestTraits\RdfEntityCreationTrait;
 use Drupal\Tests\rdf_entity\Traits\EntityUtilityTrait;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use Drupal\file\FileInterface;
+use Drupal\file_url\FileUrlHandler;
+use Drupal\rdf_entity\Entity\Rdf;
+use Drupal\sparql_entity_storage\UriEncoder;
 use weitzman\LoginTrait\LoginTrait;
 
 /**

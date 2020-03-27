@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Drupal\Tests\solution\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
+use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
-use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
 
 /**
  * Tests the validation on the solution bundle entity.

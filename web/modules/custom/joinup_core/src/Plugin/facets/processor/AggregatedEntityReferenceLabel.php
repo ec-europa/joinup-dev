@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\facets\processor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;

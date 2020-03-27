@@ -22,7 +22,7 @@ use Drupal\state_machine_revisions\RevisionManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Notification subscriber for community content.
+ * Handles notifications related to community content.
  */
 class CommunityContentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 

@@ -13,7 +13,7 @@ use Drupal\joinup_notification\NotificationEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class CommentSubscriber.
+ * Handles notifications related to comments.
  */
 class CommentSubscriber extends NotificationSubscriberBase implements EventSubscriberInterface {
 

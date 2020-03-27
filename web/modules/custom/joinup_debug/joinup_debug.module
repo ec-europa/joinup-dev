@@ -7,8 +7,8 @@
 
 declare(strict_types = 1);
 
-use Drupal\node\NodeInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_ENTITY_TYPE_presave().

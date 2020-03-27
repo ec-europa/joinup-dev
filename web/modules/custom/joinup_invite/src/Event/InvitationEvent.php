@@ -29,14 +29,14 @@ class InvitationEvent extends Event implements InvitationEventInterface {
   /**
    * {@inheritdoc}
    */
-  public function getInvitation() : InvitationInterface {
+  public function getInvitation(): InvitationInterface {
     return $this->invitation;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setInvitation(InvitationInterface $invitation) : InvitationEventInterface {
+  public function setInvitation(InvitationInterface $invitation): InvitationEventInterface {
     $this->invitation = $invitation;
     return $this;
   }
@@ -44,14 +44,14 @@ class InvitationEvent extends Event implements InvitationEventInterface {
   /**
    * {@inheritdoc}
    */
-  public function getAction() : string {
+  public function getAction(): string {
     return $this->action;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setAction(string $action) : InvitationEventInterface {
+  public function setAction(string $action): InvitationEventInterface {
     $this->action = $action;
     return $this;
   }

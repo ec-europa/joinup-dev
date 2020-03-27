@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_video\Plugin\video_embed_field\Provider;
 
-use GuzzleHttp\ClientInterface;
 use Drupal\video_embed_field\ProviderPluginBase;
+use GuzzleHttp\ClientInterface;
 
 /**
  * A docs.google.com presentation plugin provider.
