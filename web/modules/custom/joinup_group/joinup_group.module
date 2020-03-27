@@ -56,8 +56,10 @@ function joinup_group_entity_type_alter(array &$entity_types) {
 
   // Override the delete form to disallow deletion of groups with children.
   /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $rdf_entity_type */
-  $rdf_entity_type = $entity_types['rdf_entity'];
-  $rdf_entity_type->setFormClass('delete', RdfDeleteForm::class);
+  if (array_key_exists('rdf_entity', $entity_types)) {
+    $rdf_entity_type = $entity_types['rdf_entity'];
+    $rdf_entity_type->setFormClass('delete', RdfDeleteForm::class);
+  }
 }
 
 /**
@@ -87,9 +89,8 @@ function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $for
  */
 function joinup_group_propose_message_submit(&$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
-  $fields = ['collection' => 'field_ar_state', 'solution' => 'field_is_state'];
   $entity = $form_object->getEntity();
-  $state = $entity->get($fields[$entity->bundle()])->value;
+  $state = JoinupGroupHelper::getState($entity);
 
   if ($state === 'proposed') {
     \Drupal::messenger()->addStatus(t('Thank you for proposing a @entity_label. Your request is currently pending approval by the site administrator.', ['@entity_label' => $entity->get('rid')->entity->getSingularLabel()]));

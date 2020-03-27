@@ -4,14 +4,15 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_discussion\ExistingSite;
 
-use Drupal\Tests\joinup_core\ExistingSite\NodeWorkflowTestBase;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
+use Drupal\Tests\joinup_community_content\ExistingSite\CommunityContentWorkflowTestBase;
 
 /**
  * Tests CRUD operations and workflow transitions for the discussion node.
  *
  * @group joinup_discussion
  */
-class DiscussionWorkflowTest extends NodeWorkflowTestBase {
+class DiscussionWorkflowTest extends CommunityContentWorkflowTestBase {
 
   /**
    * {@inheritdoc}
@@ -33,7 +34,7 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   protected function createAccessProvider(): array {
     $return = parent::createAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
-      unset($return[$bundle][self::PRE_MODERATION]);
+      unset($return[$bundle][CommunityContentWorkflowAccessControlHandler::PRE_MODERATION]);
     }
     return $return;
   }
@@ -64,9 +65,9 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   protected function updateAccessProvider(): array {
     $data = parent::updateAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
-      unset($data[$bundle][self::PRE_MODERATION]);
+      unset($data[$bundle][CommunityContentWorkflowAccessControlHandler::PRE_MODERATION]);
       foreach (['userModerator', 'userOgFacilitator'] as $user) {
-        $data[$bundle][self::POST_MODERATION]['validated']['any'][$user][] = 'archived';
+        $data[$bundle][CommunityContentWorkflowAccessControlHandler::POST_MODERATION]['validated']['any'][$user][] = 'archived';
       }
     }
 
@@ -79,9 +80,9 @@ class DiscussionWorkflowTest extends NodeWorkflowTestBase {
   protected function deleteAccessProvider(): array {
     $data = parent::deleteAccessProvider();
     foreach (['collection', 'solution'] as $bundle) {
-      unset($data[$bundle][self::PRE_MODERATION]);
-      $data[$bundle][self::POST_MODERATION]['archived']['own'] = TRUE;
-      $data[$bundle][self::POST_MODERATION]['archived']['any'] = [
+      unset($data[$bundle][CommunityContentWorkflowAccessControlHandler::PRE_MODERATION]);
+      $data[$bundle][CommunityContentWorkflowAccessControlHandler::POST_MODERATION]['archived']['own'] = TRUE;
+      $data[$bundle][CommunityContentWorkflowAccessControlHandler::POST_MODERATION]['archived']['any'] = [
         'userModerator',
         'userOgFacilitator',
       ];

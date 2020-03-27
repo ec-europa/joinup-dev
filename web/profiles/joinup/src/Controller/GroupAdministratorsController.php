@@ -16,7 +16,6 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\csv_serialization\Encoder\CsvEncoder;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\og\GroupTypeManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,13 +39,6 @@ class GroupAdministratorsController extends ControllerBase {
   protected $groupTypeManager;
 
   /**
-   * The Joinup relation manager.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $joinupRelationManager;
-
-  /**
    * The entity type bundle info service.
    *
    * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
@@ -65,16 +57,13 @@ class GroupAdministratorsController extends ControllerBase {
    *
    * @param \Drupal\og\GroupTypeManager $groupTypeManager
    *   The OG group type manager.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $joinupRelationManager
-   *   The Joinup relation manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entityTypeBundleInfo
    *   The entity type bundle info service.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   The current route match service.
    */
-  public function __construct(GroupTypeManager $groupTypeManager, JoinupRelationManagerInterface $joinupRelationManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, RouteMatchInterface $routeMatch) {
+  public function __construct(GroupTypeManager $groupTypeManager, EntityTypeBundleInfoInterface $entityTypeBundleInfo, RouteMatchInterface $routeMatch) {
     $this->groupTypeManager = $groupTypeManager;
-    $this->joinupRelationManager = $joinupRelationManager;
     $this->entityTypeBundleInfo = $entityTypeBundleInfo;
     $this->routeMatch = $routeMatch;
   }
@@ -85,7 +74,6 @@ class GroupAdministratorsController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('og.group_type_manager'),
-      $container->get('joinup_core.relations_manager'),
       $container->get('entity_type.bundle.info'),
       $container->get('current_route_match')
     );
@@ -375,7 +363,7 @@ class GroupAdministratorsController extends ControllerBase {
     // Since this is a moderator-only feature that is rarely used we don't need
     // to worry about the potential performance impact of loading a large number
     // of memberships.
-    $collection_ids = $this->joinupRelationManager->getCollectionIds();
+    $collection_ids = $this->getCollectionIds();
 
     if (empty($collection_ids)) {
       return [];
@@ -394,6 +382,25 @@ class GroupAdministratorsController extends ControllerBase {
       ->execute();
 
     return $membership_storage->loadMultiple($membership_ids);
+  }
+
+  /**
+   * Returns the entity IDs of all collections.
+   *
+   * @return string[]
+   *   An array of entity IDs.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function getCollectionIds(): array {
+    $storage = $this->entityTypeManager()->getStorage('rdf_entity');
+    $definition = $this->entityTypeManager()->getDefinition('rdf_entity');
+    $bundle_key = $definition->getKey('bundle');
+
+    $query = $storage->getQuery();
+    $query->condition($bundle_key, 'collection');
+    return $query->execute();
   }
 
 }

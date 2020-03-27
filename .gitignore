@@ -27,7 +27,7 @@
 /drush/drush.yml
 /phpcs.xml
 /tests/behat.yml
-/web/phpunit.xml
+/phpunit.xml
 /web/sites/default/services.yml
 
 # Ignore compiled CSS.

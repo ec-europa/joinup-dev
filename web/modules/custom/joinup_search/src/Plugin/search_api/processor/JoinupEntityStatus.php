@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_search\Plugin\search_api\processor;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\user\UserInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Excludes unpublished entities from the index.
@@ -28,42 +29,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterface {
 
   use PluginFormTrait;
-
-  /**
-   * The relation manager service.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
-
-  /**
-   * Constructs a JoinupEntityLatestRevision object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param array $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relation_manager
-   *   The relation manager service.
-   */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, JoinupRelationManagerInterface $relation_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->relationManager = $relation_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('joinup_core.relations_manager')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -110,7 +75,7 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
       $inverse = $this->getConfiguration()['inverse'];
       $enabled = TRUE;
       if ($object instanceof NodeInterface) {
-        $parent = $this->relationManager->getParent($object);
+        $parent = JoinupGroupHelper::getGroup($object);
         // Check if empty to avoid exceptions.
         // The entity can be published only if the parent entity is published.
         if (empty($parent) || !$parent->isPublished()) {

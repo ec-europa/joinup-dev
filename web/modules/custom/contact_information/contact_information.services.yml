@@ -4,3 +4,6 @@ services:
     arguments: ['@current_user', '@workflow_state_permission.workflow_state_permission']
     tags:
       - { name: state_machine.guard, group: contact_information }
+  contact_information.relation_info:
+    class: Drupal\contact_information\ContactInformationRelationInfo
+    arguments: ['@entity_type.manager']

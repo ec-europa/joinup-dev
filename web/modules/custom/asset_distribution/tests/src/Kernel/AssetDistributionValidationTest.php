@@ -28,7 +28,6 @@ class AssetDistributionValidationTest extends RdfEntityValidationTestBase {
     'file',
     'file_url',
     'options',
-    'views',
   ];
 
   /**
