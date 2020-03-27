@@ -241,13 +241,15 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
     // the full url must be always asserted.
     $base_url = \Drupal::request()->getSchemeAndHttpHost();
 
-    $string = str_replace('$base_url$', $base_url, $string);
     $string = preg_quote($string, '#');
-    if (strpos($string, '$random_text$') || strpos($string, '$timezone$')) {
-      // $random_text$ is escaped into \$random_text\$ from the preg_quote
-      // above.
-      $string = str_replace('\$random_text\$', '([^/]*)?', $string);
-      $string = str_replace('\$timezone\$', '\d{2}', $string);
+    $replacements = [
+      '__base_url__' => preg_quote($base_url),
+      '__random_text__' => '([^/]*)?',
+      '__timezone__' => '\d{2}',
+    ];
+
+    foreach ($replacements as $search => $replace) {
+      $string = str_replace($search, $replace, $string);
     }
     return $string;
   }

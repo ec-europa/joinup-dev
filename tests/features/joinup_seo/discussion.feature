@@ -27,7 +27,7 @@ Feature: SEO for discussion forum posts.
       | datePublished       | 2019-12-25T13:00:00+0100                                                                          |
       | isAccessibleForFree | True                                                                                              |
       | dateModified        | 2020-01-01T13:00:00+0100                                                                          |
-      | mainEntityOfPage    | $base_url$/collection/joinup-seo-discussion-collection/discussion/discussions-are-now-forum-posts |
+      | mainEntityOfPage    | __base_url__/collection/joinup-seo-discussion-collection/discussion/discussions-are-now-forum-posts |
     # Adding numerical property values is turning the "about" property into an array comparison.
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "about" properties:
       | property | value      |
@@ -45,35 +45,35 @@ Feature: SEO for discussion forum posts.
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "sharedContent" properties in index 0:
       | property | value                                                |
       | @type    | MediaObject                                          |
-      # $random_text$ can be any string that is appointed by the system and we
+      # __random_text__ can be any string that is appointed by the system and we
       # cannot predict. In this case it is the random file name suffix before the file extension.
-      | @id      | $base_url$/sites/default/files/test$random_text$.zip |
+      | @id      | __base_url__/sites/default/files/test__random_text__.zip |
       | name     | test.zip                                             |
-      | url      | $base_url$/sites/default/files/test$random_text$.zip |
+      | url      | __base_url__/sites/default/files/test__random_text__.zip |
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "sharedContent" properties in index 1:
       | property | value                                                |
       | @type    | MediaObject                                          |
-      # $random_text$ can be any string that is appointed by the system and we
+      # __random_text__ can be any string that is appointed by the system and we
       # cannot predict. In this case it is the random file name suffix before the file extension.
-      | @id      | $base_url$/sites/default/files/test$random_text$.zip |
+      | @id      | __base_url__/sites/default/files/test__random_text__.zip |
       | name     | test1.zip                                            |
-      | url      | $base_url$/sites/default/files/test$random_text$.zip |
+      | url      | __base_url__/sites/default/files/test__random_text__.zip |
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "author" properties:
       | property | value                         |
       | @type    | Person                        |
       # The user id is only a number but we can be quite certain that this will be a url to the user since the
-      # $random_text$ does not include a / character.
-      | @id      | $base_url$/user/$random_text$ |
+      # __random_text__ does not include a / character.
+      | @id      | __base_url__/user/__random_text__ |
       | name     | Kindle eReader                |
-      | url      | $base_url$/user/$random_text$ |
+      | url      | __base_url__/user/__random_text__ |
     And the metatag graph of the item with "name" "Discussions are now forum posts" should have the following "publisher" properties:
       | property | value                         |
       | @type    | Person                        |
       # The user id is only a number but we can be quite certain that this will be a url to the user since the
-      # $random_text$ does not include a / character.
-      | @id      | $base_url$/user/$random_text$ |
+      # __random_text__ does not include a / character.
+      | @id      | __base_url__/user/__random_text__ |
       | name     | Kindle eReader                |
-      | url      | $base_url$/user/$random_text$ |
+      | url      | __base_url__/user/__random_text__ |
 
     When I click "Keep up to date"
     Then I should see the "Discussions are now forum posts" tile
