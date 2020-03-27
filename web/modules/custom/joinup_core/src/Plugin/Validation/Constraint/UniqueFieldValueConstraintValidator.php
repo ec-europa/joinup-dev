@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\Validation\Constraint;
 
 use Drupal\joinup_core\Traits\FieldItemsTrait;

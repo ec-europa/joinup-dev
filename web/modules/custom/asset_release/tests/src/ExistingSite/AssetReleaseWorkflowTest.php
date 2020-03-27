@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\asset_release\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\RdfInterface;
-use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 
 /**
  * Tests crud operations and the workflow for the asset release rdf entity.

@@ -32,11 +32,11 @@ class RdfEntityReferenceFieldItemList extends EntityReferenceFieldItemList {
    * @param string|null $name
    *   (optional) The name of the created property, or NULL if it is the root
    *   of a typed data tree. Defaults to NULL.
-   * @param \Drupal\Core\TypedData\TypedDataInterface $parent
+   * @param \Drupal\Core\TypedData\TypedDataInterface|null $parent
    *   (optional) The parent object of the data property, or NULL if it is the
    *   root of a typed data tree. Defaults to NULL.
    */
-  public function __construct(DataDefinitionInterface $definition, StagingCandidateGraphsInterface $staging_candidate_graphs, ?string $name = NULL, TypedDataInterface $parent = NULL) {
+  public function __construct(DataDefinitionInterface $definition, StagingCandidateGraphsInterface $staging_candidate_graphs, ?string $name = NULL, ?TypedDataInterface $parent = NULL) {
     parent::__construct($definition, $name, $parent);
     $this->stagingCandidateGraphs = $staging_candidate_graphs;
   }
@@ -44,7 +44,7 @@ class RdfEntityReferenceFieldItemList extends EntityReferenceFieldItemList {
   /**
    * {@inheritdoc}
    */
-  public static function createInstance($definition, $name = NULL, TraversableTypedDataInterface $parent = NULL): self {
+  public static function createInstance($definition, $name = NULL, ?TraversableTypedDataInterface $parent = NULL): self {
     return new static(
       $definition,
       \Drupal::service('joinup_federation.staging_candidate_graphs'),

@@ -13,7 +13,7 @@ use Drupal\og_menu\OgMenuInstanceInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Class CustomPageController.
+ * Controller for custom pages.
  *
  * Handles the form to perform actions when it is called by a route that
  * includes an rdf_entity id.
@@ -28,7 +28,7 @@ class CustomPageController extends CommunityContentController {
    * The custom pages are only allowed to be created for collections and
    * solutions.
    */
-  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResult {
+  public function createAccess(RdfInterface $rdf_entity, ?AccountInterface $account = NULL): AccessResult {
     if (empty($account)) {
       $account = $this->currentUser();
     }

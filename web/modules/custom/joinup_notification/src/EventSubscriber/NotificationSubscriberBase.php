@@ -9,8 +9,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
-use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
@@ -144,13 +144,13 @@ abstract class NotificationSubscriberBase {
    * @param array $user_data
    *   A structured array of user ownership and roles and their corresponding
    *   message ids.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   Optionally alter the entity to be checked.
    *
    * @return array
    *   An array of message ids that every key is an array of user ids.
    */
-  protected function getUsersMessages(array $user_data, EntityInterface $entity = NULL) {
+  protected function getUsersMessages(array $user_data, ?EntityInterface $entity = NULL) {
     $entity = $entity ?: $this->entity;
     // Ensure proper loops.
     $user_data += [

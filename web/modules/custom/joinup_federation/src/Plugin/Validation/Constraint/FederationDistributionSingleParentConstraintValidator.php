@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_federation\Plugin\Validation\Constraint;
 
-use Drupal\asset_distribution\Plugin\Validation\Constraint\DistributionSingleParentValidator;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\asset_distribution\Plugin\Validation\Constraint\DistributionSingleParentValidator;
 use Drupal\joinup_federation\StagingCandidateGraphsInterface;
 use Drupal\sparql_entity_storage\Entity\Query\Sparql\SparqlQueryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

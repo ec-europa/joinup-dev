@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_core\Kernel\Plugin\Condition;
 
 use Drupal\Core\Routing\CurrentRouteMatch;

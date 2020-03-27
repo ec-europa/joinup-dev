@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\moderation\Form;
 
 use Drupal\Component\Utility\Unicode;
@@ -73,7 +75,7 @@ class ContentModerationOverviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
     $result = $this->getModerationItems($rdf_entity);
     $count = $this->getModerationItemCount($result);
 

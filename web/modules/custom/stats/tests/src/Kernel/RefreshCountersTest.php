@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_stats\Kernel;
 
-use Drupal\field\Entity\FieldConfig;
-use Drupal\file\Entity\File;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\file\Entity\File;
 
 /**
  * Tests the download & visit count refresh.

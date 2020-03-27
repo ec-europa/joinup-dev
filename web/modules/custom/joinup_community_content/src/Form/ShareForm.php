@@ -21,19 +21,9 @@ use Drupal\node\NodeInterface;
 class ShareForm extends OriginalForm {
 
   /**
-   * Form constructor.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   * @param \Drupal\node\NodeInterface $node
-   *   The entity being shared.
-   *
-   * @return array
-   *   The form structure.
+   * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state, ?NodeInterface $node = NULL): array {
     return parent::doBuildForm($form, $form_state, $node);
   }
 
