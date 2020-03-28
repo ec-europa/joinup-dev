@@ -248,10 +248,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
       '__timezone__' => '\d{2}',
     ];
 
-    foreach ($replacements as $search => $replace) {
-      $string = str_replace($search, $replace, $string);
-    }
-    return $string;
+    return strtr($string, $replacements);
   }
 
   /**
