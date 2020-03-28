@@ -236,9 +236,9 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The converted string.
    */
   protected function escapeStringWithVariables(string $string): string {
-    // The url structure is very important in the SEO metatags as a wrong url
-    // or an internal path could cause search engines to be missleaded. Thus,
-    // the full url must be always asserted.
+    // The URL structure is very important in the SEO metatags as a wrong URL
+    // or an internal path could cause search engines to be misled. Thus,
+    // the full URL must be always asserted.
     $base_url = \Drupal::request()->getSchemeAndHttpHost();
 
     $string = preg_quote($string, '#');
