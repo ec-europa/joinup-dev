@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\joinup;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\rdf_entity\RdfInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A service to handle pinned entities.
  */
-class PinService implements PinServiceInterface, ContainerInjectionInterface {
+class PinService implements PinServiceInterface {
 
   /**
    * The field that holds the collections where a solution is pinned in.
@@ -25,35 +22,9 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
   const SOLUTION_PIN_FIELD = 'field_is_pinned_in';
 
   /**
-   * The relations manager service.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
-
-  /**
-   * Constructs a PinService service.
-   *
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
-   *   The relations manager service.
-   */
-  public function __construct(JoinupRelationManagerInterface $relationManager) {
-    $this->relationManager = $relationManager;
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('joinup_core.relations_manager')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $group = NULL) {
+  public function isEntityPinned(ContentEntityInterface $entity, ?RdfInterface $group = NULL) {
     if (JoinupGroupHelper::isSolution($entity)) {
       if (empty($group)) {
         return !$entity->get(self::SOLUTION_PIN_FIELD)->isEmpty();
@@ -109,7 +80,7 @@ class PinService implements PinServiceInterface, ContainerInjectionInterface {
       return $entity->get(self::SOLUTION_PIN_FIELD)->referencedEntities();
     }
     elseif (CommunityContentHelper::isCommunityContent($entity) && $entity->isSticky()) {
-      return [$this->relationManager->getParent($entity)];
+      return [JoinupGroupHelper::getGroup($entity)];
     }
 
     return [];

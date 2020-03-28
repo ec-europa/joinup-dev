@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_distribution\Form;
 
 use Drupal\Component\Utility\Html;
@@ -62,7 +64,7 @@ class AnonymousDownloadForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, FileInterface $file = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?FileInterface $file = NULL) {
     $this->file = $file;
 
     $form['#id'] = Html::getId($this->getFormId());

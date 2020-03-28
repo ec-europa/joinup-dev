@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\og_comment;
 
-use Drupal\comment\CommentAccessControlHandler;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityHandlerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\comment\CommentAccessControlHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

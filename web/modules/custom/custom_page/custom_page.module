@@ -5,6 +5,8 @@
  * Main functions and hook implementations of the custom page module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
@@ -12,6 +14,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgMembership;
 use Drupal\og\Og;
@@ -172,9 +175,7 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
     return AccessResult::neutral();
   }
 
-  /** @var \Drupal\joinup_core\JoinupRelationManager $relation_manager */
-  $relation_manager = \Drupal::service('joinup_core.relations_manager');
-  $parent = $relation_manager->getParent($node);
+  $parent = JoinupGroupHelper::getGroup($node);
   // Let parentless nodes (e.g. newsletters) be handled by the core access.
   if (empty($parent)) {
     return AccessResult::neutral();
@@ -196,7 +197,7 @@ function custom_page_node_access(NodeInterface $node, $op, AccountInterface $acc
 /**
  * Implements hook_entity_field_access().
  */
-function custom_page_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+function custom_page_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL) {
   return AccessResult::allowedIf(
     $operation === 'edit'
     && $field_definition->getName() === 'status'

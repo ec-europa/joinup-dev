@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Controller;
+namespace Drupal\joinup_community_content\Controller;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\NodeWorkflowAccessControlHandler;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\og\OgAccessInterface;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
@@ -30,19 +30,19 @@ abstract class CommunityContentController extends ControllerBase {
   /**
    * The node workflow access control handler.
    *
-   * @var \Drupal\joinup_core\NodeWorkflowAccessControlHandler
+   * @var \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler
    */
   protected $workflowAccessControlHandler;
 
   /**
-   * Constructs an CommunityContentController.
+   * Constructs a CommunityContentController.
    *
    * @param \Drupal\og\OgAccessInterface $og_access
    *   The OG access handler.
-   * @param \Drupal\joinup_core\NodeWorkflowAccessControlHandler $workflow_access_control_handler
+   * @param \Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler
    *   The node workflow access control handler.
    */
-  public function __construct(OgAccessInterface $og_access, NodeWorkflowAccessControlHandler $workflow_access_control_handler) {
+  public function __construct(OgAccessInterface $og_access, CommunityContentWorkflowAccessControlHandler $workflow_access_control_handler) {
     $this->ogAccess = $og_access;
     $this->workflowAccessControlHandler = $workflow_access_control_handler;
   }
@@ -53,7 +53,7 @@ abstract class CommunityContentController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('og.access'),
-      $container->get('joinup_core.node_workflow_access')
+      $container->get('joinup_community_content.community_content_workflow_access')
     );
   }
 
@@ -78,13 +78,13 @@ abstract class CommunityContentController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the document entity is created.
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface|null $account
    *   The account to check access for. The current user will be used if NULL.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResult {
+  public function createAccess(RdfInterface $rdf_entity, ?AccountInterface $account = NULL): AccessResult {
     if (empty($account)) {
       $account = $this->currentUser();
     }

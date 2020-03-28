@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_discussion;
 
-use Drupal\changed_fields\ObserverInterface;
 use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Drupal\changed_fields\ObserverInterface;
 use Drupal\joinup_discussion\Event\DiscussionEvents;
 use Drupal\joinup_discussion\Event\DiscussionUpdateEvent;
 

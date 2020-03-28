@@ -16,6 +16,7 @@ dependencies:
   - 'joinup:contact_information'
   - 'joinup:joinup_core'
   - 'joinup:joinup_user'
+  - 'joinup:joinup_workflow'
   - 'joinup:owner'
   - 'joinup:workflow_state_permission'
   - 'og:og'

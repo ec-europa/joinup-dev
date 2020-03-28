@@ -182,7 +182,7 @@ QUERY;
    *
    * @todo Consider using \EasyRdf\Graph.
    */
-  protected function insertTriples(string $graph_uri, array $triples):void {
+  protected function insertTriples(string $graph_uri, array $triples): void {
     $expanded_triples = [];
     foreach ($triples as $subject => $predicates) {
       foreach ($predicates as $predicate => $objects) {

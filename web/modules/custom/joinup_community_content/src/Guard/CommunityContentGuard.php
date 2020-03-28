@@ -2,22 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Guard;
+namespace Drupal\joinup_community_content\Guard;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\joinup_core\JoinupRelationManagerInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\state_machine\Guard\GuardInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowInterface;
 use Drupal\state_machine\Plugin\Workflow\WorkflowTransition;
 use Drupal\workflow_state_permission\WorkflowStatePermissionInterface;
 
 /**
- * Guard class for the transitions of nodes.
+ * Guard class for the transitions of community content.
  */
-class NodeGuard implements GuardInterface {
+class CommunityContentGuard implements GuardInterface {
 
   /**
    * The current logged in user.
@@ -25,13 +25,6 @@ class NodeGuard implements GuardInterface {
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $currentUser;
-
-  /**
-   * The relation manager service.
-   *
-   * @var \Drupal\joinup_core\JoinupRelationManagerInterface
-   */
-  protected $relationManager;
 
   /**
    * The allowed transitions array.
@@ -50,7 +43,7 @@ class NodeGuard implements GuardInterface {
   /**
    * The workflow helper class.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -62,24 +55,21 @@ class NodeGuard implements GuardInterface {
   protected $workflowStatePermission;
 
   /**
-   * Instantiates the NodeGuard service.
+   * Constructs a new CommunityContentGuard service.
    *
    * The classes inheriting this class, should also ensure that they set the
    * protected variable $transitions to be used by the ::allowed() method.
    *
-   * @param \Drupal\joinup_core\JoinupRelationManagerInterface $relationManager
-   *   The relation manager service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The configuration factory service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current logged in user.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    * @param \Drupal\workflow_state_permission\WorkflowStatePermissionInterface $workflowStatePermission
    *   The workflow state permission service.
    */
-  public function __construct(JoinupRelationManagerInterface $relationManager, ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
-    $this->relationManager = $relationManager;
+  public function __construct(ConfigFactoryInterface $configFactory, AccountInterface $currentUser, WorkflowHelperInterface $workflow_helper, WorkflowStatePermissionInterface $workflowStatePermission) {
     $this->currentUser = $currentUser;
     $this->workflowHelper = $workflow_helper;
     $this->permissionScheme = $configFactory->get('joinup_community_content.permission_scheme');
@@ -104,7 +94,8 @@ class NodeGuard implements GuardInterface {
   public function allowedCreate(WorkflowTransition $transition, WorkflowInterface $workflow, EntityInterface $entity) {
     $permission_scheme = $this->permissionScheme->get('create');
     $workflow_id = $workflow->getId();
-    $content_creation = (string) $this->relationManager->getParentContentCreationOption($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
+    $content_creation = JoinupGroupHelper::getContentCreation($parent);
 
     if (!isset($permission_scheme[$workflow_id][$content_creation][$transition->getId()])) {
       return FALSE;

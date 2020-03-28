@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\facets\widget;
 
 use Drupal\Core\Form\FormStateInterface;

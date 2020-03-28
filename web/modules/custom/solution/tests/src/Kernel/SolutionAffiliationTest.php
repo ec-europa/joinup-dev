@@ -5,13 +5,13 @@ declare(strict_types = 1);
 namespace Drupal\Tests\solution\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests solution affiliation.
@@ -39,6 +39,7 @@ class SolutionAffiliationTest extends KernelTestBase {
     'inline_entity_form',
     'joinup_core',
     'joinup_sparql',
+    'joinup_workflow',
     'link',
     'matomo_reporting_api',
     'node',

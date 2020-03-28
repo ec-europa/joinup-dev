@@ -29,7 +29,7 @@ class LicenceFilterBlock extends BlockBase implements ContainerFactoryPluginInte
   protected $entityTypeManager;
 
   /**
-   * LicenceFilterBlock constructor.
+   * Constructs a new LicenceFilterBlock.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

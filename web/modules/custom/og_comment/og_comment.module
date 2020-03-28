@@ -5,6 +5,8 @@
  * Hook implementations for og_comment.
  */
 
+declare(strict_types = 1);
+
 /**
  * Implements hook_entity_type_alter().
  */

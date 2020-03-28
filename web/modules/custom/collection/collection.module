@@ -7,7 +7,6 @@
 
 declare(strict_types = 1);
 
-use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -17,6 +16,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\collection\Plugin\Field\FieldType\LastUpdatedFieldItemList;
 use Drupal\node\NodeInterface;
 use Drupal\og\Entity\OgRole;
 use Drupal\og\Og;
@@ -24,9 +24,9 @@ use Drupal\og\OgMembershipInterface;
 use Drupal\og\OgRoleInterface;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
-use Drupal\sparql_entity_storage\SparqlGraphInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\search_api\Query\QueryInterface;
+use Drupal\sparql_entity_storage\SparqlGraphInterface;
 
 /**
  * Implements hook_theme().
@@ -138,7 +138,9 @@ function collection_rdf_entity_access(EntityInterface $entity, $operation, Accou
       break;
 
     case 'edit':
-      $allowed_transitions = \Drupal::service('joinup_core.workflow.helper')->getAvailableTransitions($entity, $account);
+      /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+      $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
+      $allowed_transitions = $workflow_helper->getAvailableTransitions($entity, $account);
       return empty($allowed_transitions) ? AccessResult::forbidden() : AccessResult::allowed();
 
     default:

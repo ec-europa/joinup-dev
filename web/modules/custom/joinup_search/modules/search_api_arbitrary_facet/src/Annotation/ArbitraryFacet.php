@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_arbitrary_facet\Annotation;
 
 use Drupal\Component\Annotation\Plugin;

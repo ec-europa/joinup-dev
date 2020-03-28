@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\og_comment\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;

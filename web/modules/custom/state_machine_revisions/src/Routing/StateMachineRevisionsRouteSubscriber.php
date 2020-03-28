@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\state_machine_revisions\Routing;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -42,7 +44,7 @@ class StateMachineRevisionsRouteSubscriber extends RouteSubscriberBase {
   protected $entityTypes;
 
   /**
-   * StateMachineRevisionsRouteSubscriber constructor.
+   * Constructs a new StateMachineRevisionsRouteSubscriber.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.

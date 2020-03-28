@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_core\Kernel\Plugin\Condition;
 
 use Drupal\Core\Routing\CurrentRouteMatch;
@@ -19,9 +21,8 @@ class RequestRouteConditionTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'joinup_core',
-    'matomo_reporting_api',
     'og',
     'rdf_entity',
     'sparql_entity_storage',

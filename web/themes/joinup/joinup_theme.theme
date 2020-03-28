@@ -5,6 +5,8 @@
  * Functions to support theming in the Joinup theme.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\Cache;
@@ -20,6 +22,7 @@ use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup_core\Controller\IdRedirect;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\message\MessageInterface;
 use Drupal\node\NodeInterface;
 use Drupal\oe_newsroom_newsletter\Form\NewsletterSubscribeForm;
@@ -1158,7 +1161,7 @@ function joinup_theme_preprocess_user(&$variables) {
 
   // Truncate business title.
   $business_title = $variables['user']->get('field_user_business_title')->value;
-  $variables['short_business_title'] = substr($business_title, 0, 30);
+  $variables['short_business_title'] = !empty($business_title) ? substr($business_title, 0, 30) : '';
 }
 
 /**
@@ -1986,7 +1989,7 @@ function joinup_theme_preprocess_node(&$variables) {
   // Add the group ID and label as data attributes in tiles.
   if ($variables['view_mode'] === 'view_mode_tile') {
     /** @var \Drupal\rdf_entity\RdfInterface|null $parent */
-    $parent = \Drupal::service('joinup_core.relations_manager')->getParent($node);
+    $parent = JoinupGroupHelper::getGroup($node);
     if ($parent) {
       $variables['attributes']['data-drupal-parent-id'] = $parent->id();
       $variables['attributes']['data-drupal-parent-label'] = $parent->label();

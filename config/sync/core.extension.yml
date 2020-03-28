@@ -81,6 +81,7 @@ module:
   joinup_subscription: 0
   joinup_user: 0
   joinup_video: 0
+  joinup_workflow: 0
   language: 0
   layout_discovery: 0
   link: 0

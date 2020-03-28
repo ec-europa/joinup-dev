@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\asset_distribution\Plugin\search_api\processor;
 
 use Drupal\search_api\IndexInterface;

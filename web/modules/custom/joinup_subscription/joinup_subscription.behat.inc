@@ -56,13 +56,13 @@ class JoinupSubscriptionSubContext extends DrupalSubContextBase implements Drupa
   /**
    * Navigates to the My subscriptions form of the given user.
    *
-   * @param string $username
+   * @param string|null $username
    *   The name of the user.
    *
    * @When I go to the subscription settings of :username
    * @When I go to my subscriptions
    */
-  public function visitMySubscriptions(string $username = NULL): void {
+  public function visitMySubscriptions(?string $username = NULL): void {
     if (!empty($username)) {
       $user = $this->getUserByName($username);
       $url = Url::fromRoute('joinup_subscription.subscriptions', [

@@ -59,7 +59,7 @@ class JoinupDiscussionSubContext extends DrupalSubContextBase implements DrupalS
    * @return \Drupal\joinup_subscription\JoinupDiscussionSubscriptionInterface
    *   The subscription service.
    */
-  protected function getDiscussionSubscriptionService() : JoinupDiscussionSubscriptionInterface {
+  protected function getDiscussionSubscriptionService(): JoinupDiscussionSubscriptionInterface {
     return \Drupal::service('joinup_subscription.discussion_subscription');
   }
 

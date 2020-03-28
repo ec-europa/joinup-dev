@@ -5,12 +5,14 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  - 'joinup:joinup_core'
+  - 'drupal:user'
   - 'joinup:joinup_group'
+  - 'joinup:joinup_workflow'
   - 'menu_admin_per_menu:menu_admin_per_menu'
 
 config_devel:
   install:
     - block.block.recommended_content
+    - block.block.statistics
     - system.menu.front-page
     - tour.tour.joinup_homepage

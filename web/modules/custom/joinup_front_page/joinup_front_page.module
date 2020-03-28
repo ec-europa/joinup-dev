@@ -89,3 +89,18 @@ function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $en
   $entity = reset($entities);
   $front_page_helper->updateSearchApiEntry($entity);
 }
+
+/**
+ * Implements hook_theme().
+ */
+function joinup_front_page_theme($existing, $type, $theme, $path) {
+  return [
+    'statistics_block' => [
+      'variables' => [
+        'collection_count' => 0,
+        'solution_count' => 0,
+        'content_count' => 0,
+      ],
+    ],
+  ];
+}

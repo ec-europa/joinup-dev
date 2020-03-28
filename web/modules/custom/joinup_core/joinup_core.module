@@ -8,21 +8,16 @@
 declare(strict_types = 1);
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
-use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
 use Drupal\node\NodeInterface;
@@ -46,13 +41,6 @@ function joinup_core_theme($existing, $type, $theme, $path) {
         'attributes' => [],
         'prefix_text' => '',
         'suffix_text' => '',
-      ],
-    ],
-    'statistics_block' => [
-      'variables' => [
-        'collection_count' => 0,
-        'solution_count' => 0,
-        'content_count' => 0,
       ],
     ],
     '404_not_found' => [
@@ -144,37 +132,14 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
 }
 
 /**
- * Implements hook_node_access().
- */
-function joinup_core_node_access(NodeInterface $entity, string $operation, AccountInterface $account): AccessResult {
-  if (!CommunityContentHelper::isCommunityContent($entity)) {
-    return AccessResult::neutral();
-  }
-  return \Drupal::service('joinup_core.node_workflow_access')->entityAccess($entity, $operation, $account);
-}
-
-/**
  * Implements hook_entity_base_field_info().
  *
- * - Provides a base field that displays the current workflow state on nodes and
- *   RDF entities. This field is intended to be used on edit forms which use the
- *   set of buttons to perform the workflow state transitions. When these
- *   buttons are used the current workflow state is not indicated, so this field
- *   can be used to expose this information.
  * - Provides a 'report' field on community content pages that can be used to
  *   report inappropriate content.
  * - Provides a 'path' field only for the 'rdf_entity' entities.
  */
 function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
   $fields = [];
-
-  if ($entity_type->id() === 'rdf_entity' || $entity_type->id() === 'node') {
-    $fields['current_workflow_state'] = BaseFieldDefinition::create('current_workflow_state')
-      ->setLabel(new TranslatableMarkup('Current workflow state'))
-      ->setDisplayOptions('form', ['type' => 'hidden'])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setComputed(TRUE);
-  }
 
   // Add a 'report' field to community content entities. Currently all node
   // types are community content.
@@ -377,35 +342,6 @@ function joinup_core_field_formatter_info_alter(array &$info) {
 }
 
 /**
- * Implements hook_entity_create().
- */
-function joinup_core_entity_create(EntityInterface $entity) {
-  // Since the state_machine module does not support same from-to state
-  // transitions, the transition events also don't fire. Normally, the
-  // transition event would be the one to decide whether the entity would be
-  // published or not, this is not happening for new entities.
-  // In Joinup, we do not create any entity with an initial state but for
-  // testing, it is necessary to setup the initial status automatically
-  // depending on the initial state that is passed into the entity.
-  // @see: \Drupal\state_machine\Plugin\Field\FieldType\StateItem::preSave
-  if ($entity instanceof EntityPublishedInterface) {
-    /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
-    $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-    if ($workflow_helper->hasEntityStateField($entity->getEntityTypeId(), $entity->bundle())) {
-      $state_field = $workflow_helper->getEntityStateField($entity);
-      $workflow = $state_field->getWorkflow();
-      $state_id = $state_field->getValue()['value'];
-      if ($workflow_helper->isWorkflowStatePublished($state_id, $workflow)) {
-        $entity->setPublished();
-      }
-      else {
-        $entity->setUnpublished();
-      }
-    }
-  }
-}
-
-/**
  * Implements hook_element_info_alter().
  *
  * Override the validate handler for the datetime widget.
@@ -467,147 +403,6 @@ function joinup_core_entity_extra_field_info() {
   }
 
   return $fields;
-}
-
-/**
- * Returns an array of form IDs that should have a motivation field.
- *
- * @return array
- *   An array of form IDs.
- */
-function joinup_core_get_motivation_form_ids() {
-  return [
-    'rdf_entity_collection_edit_form',
-    'rdf_entity_solution_edit_form',
-    'rdf_entity_asset_release_edit_form',
-    'node_discussion_edit_form',
-    'node_document_edit_form',
-    'node_event_edit_form',
-    'node_news_edit_form',
-  ];
-}
-
-/**
- * Implements hook_form_alter().
- */
-function joinup_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (!in_array($form_id, joinup_core_get_motivation_form_ids())) {
-    return;
-  }
-
-  $form['transition_motivation'] = [
-    '#type' => 'textarea',
-    '#title' => t('Motivation'),
-    '#description' => t('Description of the reason of this operation.'),
-  ];
-  $form['#validate'][] = 'joinup_core_motivation_form_validate';
-}
-
-/**
- * Validation function for the forms with a motivation field.
- *
- * @param array $form
- *   The form array.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The form state object.
- */
-function joinup_core_motivation_form_validate(array &$form, FormStateInterface $form_state) {
-  /** @var \Drupal\node\NodeInterface $entity */
-  $entity = $form_state->getFormObject()->getEntity();
-
-  $triggering_element = $form_state->getTriggeringElement();
-  // If '#state_id' is empty, it means that no transition has been triggered.
-  // @see \Drupal\joinup_core\Plugin\Field\FieldWidget\StateMachineButtons::processActions()
-  // "Add new" in the contact information field.
-  if (empty($triggering_element['#state_id'])) {
-    return;
-  }
-  $to_state = $triggering_element['#state_id'];
-
-  /** @var \Drupal\joinup_core\WorkflowHelper $workflow_helper */
-  $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
-  $state_field = $workflow_helper->getEntityStateFieldDefinition($entity->getEntityTypeId(), $entity->bundle())->getName();
-  /** @var \Drupal\state_machine\Plugin\Workflow\Workflow $workflow */
-  $workflow = $workflow_helper->getWorkflow($entity, $state_field);
-  $from_state = $entity->get($state_field)->first()->value;
-
-  $transition = $workflow->findTransition($from_state, $to_state);
-  if (empty($transition)) {
-    return;
-  }
-
-  $required = joinup_core_is_motivation_required($entity->getEntityTypeId(), $workflow->getId(), $transition->getId());
-  // @todo Remove this when the 'reject_deletion' and 'reject_archival' for
-  //   rdf_entities are separate transitions.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3644
-  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'collection' && $transition->getId() === 'validate' && !in_array($from_state, ['archival_request', 'deletion_request'])) {
-    $required = FALSE;
-  }
-  // @todo Remove this when the 'reject_deletion' and 'proposed_from_validated'
-  //   for rdf_entities are separate transitions.
-  // @see https://webgate.ec.europa.eu/CITnet/jira/browse/ISAICP-3840
-  if ($entity->getEntityTypeId() === 'rdf_entity' && $entity->bundle() === 'solution') {
-    $user_roles = \Drupal::currentUser()->getRoles();
-    $reject_deletion = $transition->getId() === 'validate' && $from_state === 'deletion_request';
-    $propose_changes = $transition->getId() === 'propose' && $from_state === 'validated' && in_array('moderator', $user_roles);
-    if ($reject_deletion || $propose_changes) {
-      $required = TRUE;
-    }
-  }
-
-  if ($required && empty($form_state->getValue('transition_motivation'))) {
-    $form_state->setErrorByName('transition_motivation', t('This action requires you to fill in the motivation field.'));
-  }
-  $entity->motivation = $form_state->getValue('transition_motivation');
-}
-
-/**
- * Returns whether the transition requires a motivation.
- *
- * @param string $entity_type_id
- *   The entity type ID.
- * @param string $workflow_id
- *   The workflow ID.
- * @param string $transition_id
- *   The transition ID.
- *
- * @return bool
- *   Whether the transition requires a motivation.
- */
-function joinup_core_is_motivation_required($entity_type_id, $workflow_id, $transition_id) {
-  $required_transitions = [
-    'node' => [
-      'node:pre_moderated' => [
-        'report',
-        'request_changes',
-        'report',
-        'reject_deletion',
-        'request_deletion',
-      ],
-      'node:post_moderated' => [
-        'report',
-        'request_changes',
-      ],
-      'node:discussion:post_moderated' => [
-        'report',
-        'request_changes',
-      ],
-    ],
-    'rdf_entity' => [
-      'collection_workflow' => [
-        'validate',
-        'archive',
-      ],
-      'solution_workflow' => [
-        'needs_update',
-      ],
-      'asset_release_workflow' => [
-        'request_changes',
-      ],
-    ],
-  ];
-
-  return !empty($required_transitions[$entity_type_id][$workflow_id]) && in_array($transition_id, $required_transitions[$entity_type_id][$workflow_id]);
 }
 
 /**

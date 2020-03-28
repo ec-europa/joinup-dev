@@ -168,7 +168,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    * @Given the metatag (sub)graph of the item with :property :value should have the following properties in index :delta:
    * @Given the metatag (sub)graph of the item with :property :value should have the following :sub_property properties in index :delta:
    */
-  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, string $sub_property = NULL, $delta = NULL): void {
+  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, ?string $sub_property = NULL, $delta = NULL): void {
     $graphs = $this->getGraphsFromMetatags($property, $value, $sub_property);
     if (empty($graphs)) {
       throw new \Exception("No graphs were found that have a property '{$property}' of value '{$value}' or none of them contain a '{$sub_property}' property.");
@@ -284,7 +284,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The first graph that matches the criteria as an array or null if no match
    *   is found.
    */
-  protected function getGraphsFromMetatags(string $property, string $value, string $sub_graph = NULL): ?array {
+  protected function getGraphsFromMetatags(string $property, string $value, ?string $sub_graph = NULL): ?array {
     $json = $this->getMetatagsAsJson();
     $sub_graphs = $this->getSubGraphsFromGraph($json, $property, $value);
     if (!empty($sub_graph)) {
@@ -321,7 +321,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    * @return array
    *   An array of subgraphs that match the above criteria.
    */
-  protected function getSubGraphsFromGraph(array $graph, string $identifier, string $identifier_value = NULL, bool $reset = TRUE): array {
+  protected function getSubGraphsFromGraph(array $graph, string $identifier, ?string $identifier_value = NULL, bool $reset = TRUE): array {
     static $graphs_found = [];
     if ($reset) {
       $graphs_found = [];
