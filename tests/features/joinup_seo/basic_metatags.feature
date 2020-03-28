@@ -14,18 +14,18 @@ Feature:
       | og:url        | __base_url__/                                                                                                                                                                                                              |
       | og:site_name  | Joinup                                                                                                                                                                                                                     |
       | og:title      | Joinup                                                                                                                                                                                                                     |
-      | og:image      | https://joinup.ec.europa.eu/themes/joinup/images/logo.svg                                                                                                                                                                  |
+      | og:image      | __base_url__/themes/joinup/images/logo.svg                                                                                                                                                                                 |
       | og:image:type | image/svg+xml                                                                                                                                                                                                              |
     And the HTML title of the page should be "Joinup"
 
     When I click "Collections"
     Then the following meta tags should available in the html:
-      | identifier    | value                                                     |
-      | og:url        | __base_url__/collections                                  |
-      | og:site_name  | Joinup                                                    |
-      | og:title      | Collections                                               |
-      | og:image      | https://joinup.ec.europa.eu/themes/joinup/images/logo.svg |
-      | og:image:type | image/svg+xml                                             |
+      | identifier    | value                                      |
+      | og:url        | __base_url__/collections                   |
+      | og:site_name  | Joinup                                     |
+      | og:title      | Collections                                |
+      | og:image      | __base_url__/themes/joinup/images/logo.svg |
+      | og:image:type | image/svg+xml                              |
 
     Examples:
       | user type                                         |
