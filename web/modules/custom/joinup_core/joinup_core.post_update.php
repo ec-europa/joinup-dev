@@ -1134,3 +1134,29 @@ function joinup_core_post_update_delete_orphaned_solutions() {
     $solution->delete();
   }
 }
+
+/**
+ * Implements hook_post_update_NAME().
+ */
+function joinup_core_post_update_fix_broken_accounts(&$sandbox) {
+  // Delete test accounts without email.
+  foreach (['test_cancel', 'test_cancel_mod'] as $user_name) {
+    if ($user = user_load_by_name($user_name)) {
+      $user->delete();
+    }
+  }
+
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+  $uids = $user_storage
+    ->getQuery()
+    ->notExists('mail')
+    ->execute();
+  // Remove the anonymous user.
+  unset($uids['0']);
+  /** @var \Drupal\user\UserInterface $user */
+  foreach ($user_storage->loadMultiple($uids) as $user) {
+    $mail = $user->getAccountName() . '@example.com';
+    $user->setEmail($mail);
+    $user->save();
+  }
+}
