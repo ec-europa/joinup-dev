@@ -125,7 +125,7 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
     // access, we will add a submit button for the same state update.
     $state = $items->value;
     $event = new UnchangedWorkflowStateUpdateEvent($items->getEntity(), $state, $this->getDefaultSameStateUpdateLabel($state), -20);
-    $this->eventDispatcher->dispatch(UnchangedWorkflowStateUpdateEvent::EVENT_NAME, $event);
+    $this->eventDispatcher->dispatch('joinup_workflow.unchanged_workflow_state_update', $event);
 
     if (!$event->getAccess()->isForbidden()) {
       $element['#same_state_button'] = [
