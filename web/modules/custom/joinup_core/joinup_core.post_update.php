@@ -1136,7 +1136,7 @@ function joinup_core_post_update_delete_orphaned_solutions() {
 }
 
 /**
- * Implements hook_post_update_NAME().
+ * Fix broken accounts with empty emails.
  */
 function joinup_core_post_update_fix_broken_accounts(&$sandbox) {
   // Delete test accounts without email.
@@ -1150,9 +1150,9 @@ function joinup_core_post_update_fix_broken_accounts(&$sandbox) {
   $uids = $user_storage
     ->getQuery()
     ->notExists('mail')
+    ->condition('uid', 0, '!=')
     ->execute();
-  // Remove the anonymous user.
-  unset($uids['0']);
+
   /** @var \Drupal\user\UserInterface $user */
   foreach ($user_storage->loadMultiple($uids) as $user) {
     $mail = $user->getAccountName() . '@example.com';
