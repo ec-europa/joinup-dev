@@ -86,12 +86,14 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
 
       // Only process groups.
       if (!JoinupGroupHelper::isGroup($entity)) {
-        return;
+        continue;
       }
 
       foreach ($this->customPageProvider->getCustomPagesByGroupId($entity->id()) as $custom_page) {
-        // @todo Implement.
-        $field = $item->getField('??');
+        // Index the custom page data inside the description of the collection
+        // or solution. Both have their own unique field name.
+        $field_name = $entity->bundle() === 'collection' ? 'field_ar_description' : 'field_is_description';
+        $field = $item->getField($field_name);
         // Index the title and body text of the custom page.
         $field->addValue($custom_page->label());
         $body_field_item_list = $custom_page->get('body');
