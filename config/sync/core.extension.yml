@@ -95,6 +95,7 @@ module:
   message_notify: 0
   meta_entity: 0
   metatag: 0
+  metatag_open_graph: 0
   moderation: 0
   nio: 0
   node: 0
