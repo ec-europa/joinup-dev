@@ -110,20 +110,22 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
       $inverse = $this->getConfiguration()['inverse'];
       $enabled = TRUE;
       if ($object instanceof NodeInterface) {
+        $enabled = $object->isPublished();
+
         // Load the parent from the entity storage cache rather than relying on
         // the copy that is present in $object->og_audience->entity since this
         // might be stale. This ensures that if the parent has been published in
         // this request we will act on the actual updated state.
-        $parent_id = $object->get(JoinupGroupHelper::getGroupField($object))->target_id;
-        $parent = $rdf_storage->load($parent_id);
-
-        // Check if empty to avoid exceptions.
-        // The entity can be published only if the parent entity is published.
-        if (empty($parent) || !$parent->isPublished()) {
+        if ($enabled) {
+          // The entity can be published only if the parent entity is published.
           $enabled = FALSE;
-        }
-        else {
-          $enabled = $object->isPublished();
+          $parent_id = $object->get(JoinupGroupHelper::getGroupField($object))->target_id;
+          if (!empty($parent_id)) {
+            $parent = $rdf_storage->load($parent_id);
+            if (!empty($parent) && $parent->isPublished()) {
+              $enabled = TRUE;
+            }
+          }
         }
       }
       elseif ($object instanceof RdfInterface) {
@@ -132,6 +134,7 @@ class JoinupEntityStatus extends ProcessorPluginBase implements PluginFormInterf
       elseif ($object instanceof UserInterface) {
         $enabled = $object->isActive();
       }
+
       $enabled = $inverse ? !$enabled : $enabled;
       if (!$enabled) {
         unset($items[$item_id]);
