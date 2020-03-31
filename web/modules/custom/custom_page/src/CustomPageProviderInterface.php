@@ -14,13 +14,13 @@ interface CustomPageProviderInterface {
    *
    * @param string $group_id
    *   The entity ID of the group for which to return the custom pages.
-   * @param bool $include_disabled
-   *   Whether or not to include custom pages that are disabled by the group
-   *   facilitators and are not visible in the group menu. Defaults to FALSE.
+   * @param bool $exclude_disabled
+   *   Whether or not to exclude custom pages that are disabled by the group
+   *   facilitators and are not visible in the group menu. Defaults to TRUE.
    *
    * @return \Drupal\node\NodeInterface[]
    *   The custom page entities.
    */
-  public function getCustomPagesByGroupId(string $group_id, bool $include_disabled = FALSE): array;
+  public function getCustomPagesByGroupId(string $group_id, bool $exclude_disabled = TRUE): array;
 
 }
