@@ -79,13 +79,15 @@ function joinup_seo_page_attachments(array &$attachments) {
 
   /** @var \Drupal\sparql_entity_storage\SparqlSerializerInterface $serializer */
   $serializer = \Drupal::service('sparql_entity.serializer');
-  if (!$output = $serializer->serializeEntity($entity, 'jsonld')) {
+  if (!$output = $serializer->serializeEntity($entity, 'json')) {
     return;
   }
 
-  // Serializer returns an array so we remove the outer array enclosure tags
-  // to output the only element standalone. Works like reset().
-  $output = trim($output, '[]');
+  // Serializer returns an array reset() the results to display them properly.
+  $output = json_decode($output);
+  $output = (object) $output;
+  $output = json_encode($output);
+
   $attachments['#attached']['html_head'][] = [
     [
       '#tag' => 'script',
