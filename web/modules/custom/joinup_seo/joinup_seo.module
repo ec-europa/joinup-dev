@@ -77,20 +77,6 @@ function joinup_seo_page_attachments(array &$attachments) {
     return;
   }
 
-  $allowed_bundles = [
-    'collection',
-    'solution',
-    'asset_release',
-    'asset_distribution',
-    'licence',
-  ];
-  // Owners and contact information entities are not viewable by anonymous users
-  // in their canonical route so there is no point attaching metadata to these
-  // pages.
-  if (!in_array($entity->bundle(), $allowed_bundles)) {
-    return;
-  }
-
   /** @var \Drupal\sparql_entity_storage\SparqlSerializerInterface $serializer */
   $serializer = \Drupal::service('sparql_entity.serializer');
   if (!$output = $serializer->serializeEntity($entity, 'jsonld')) {
