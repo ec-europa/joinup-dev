@@ -56,7 +56,8 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
    * @param \Drupal\custom_page\CustomPageProviderInterface $custom_page_provider
    *   The custom page provider.
    *
-   * @return self
+   * @return $this
+   *   The processor, for chaining.
    */
   public function setCustomPageProvider(CustomPageProviderInterface $custom_page_provider): self {
     $this->customPageProvider = $custom_page_provider;
