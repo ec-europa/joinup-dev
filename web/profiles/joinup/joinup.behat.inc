@@ -988,9 +988,12 @@ class JoinupSubContext extends DrupalSubContextBase {
     $entity_type = self::translateEntityTypeAlias($entity_type);
     $entity = $this->getEntityByLabel($entity_type, $title);
     $this->getEntityStateField($entity)->set('value', $state);
-    if ($entity instanceof RevisionableInterface) {
+
+    // Only create a new revision if the entity type supports it.
+    if ($entity->getEntityType()->isRevisionable()) {
       $entity->setNewRevision(TRUE);
     }
+
     $entity->save();
   }
 
