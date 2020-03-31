@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
+namespace Drupal\joinup_workflow\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,12 +28,12 @@ class CurrentWorkflowStateWidget extends WidgetBase implements ContainerFactoryP
   /**
    * The workflow helper service.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
   /**
-   * Constructs a SearchWidget object.
+   * Constructs a new CurrentWorkflowStateWidget.
    *
    * @param string $plugin_id
    *   The plugin_id for the widget.
@@ -45,7 +45,7 @@ class CurrentWorkflowStateWidget extends WidgetBase implements ContainerFactoryP
    *   The widget settings.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, WorkflowHelperInterface $workflow_helper) {
@@ -64,7 +64,7 @@ class CurrentWorkflowStateWidget extends WidgetBase implements ContainerFactoryP
       $configuration['field_definition'],
       $configuration['settings'],
       $configuration['third_party_settings'],
-      $container->get('joinup_core.workflow.helper')
+      $container->get('joinup_workflow.workflow_helper')
     );
   }
 

@@ -169,8 +169,8 @@ function owner_rdf_entity_access(EntityInterface $entity, $operation, AccountInt
 
   switch ($operation) {
     case 'edit':
-      /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
-      $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+      /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+      $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
       $allowed_states = $workflow_helper->getAvailableTargetStates($entity, $account);
       return AccessResult::forbiddenIf(empty($allowed_states));
   }

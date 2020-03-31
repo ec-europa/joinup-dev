@@ -168,8 +168,8 @@ function solution_rdf_entity_access(EntityInterface $entity, $operation, Account
   }
 
   if ($operation == 'edit') {
-    /** @var \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper */
-    $workflow_helper = \Drupal::service('joinup_core.workflow.helper');
+    /** @var \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper */
+    $workflow_helper = \Drupal::service('joinup_workflow.workflow_helper');
     $allowed_transitions = $workflow_helper->getAvailableTransitions($entity, $account);
     if (empty($allowed_transitions)) {
       return AccessResult::forbidden();

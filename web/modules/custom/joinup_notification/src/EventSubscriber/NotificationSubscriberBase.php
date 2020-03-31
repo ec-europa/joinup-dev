@@ -9,11 +9,11 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
-use Drupal\joinup_core\WorkflowHelperInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\JoinupMessageDeliveryInterface;
 use Drupal\joinup_notification\MessageArgumentGenerator;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\og\OgRoleInterface;
@@ -84,7 +84,7 @@ abstract class NotificationSubscriberBase {
   /**
    * The workflow helper service.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -108,18 +108,18 @@ abstract class NotificationSubscriberBase {
    *   The og group type manager service.
    * @param \Drupal\og\MembershipManagerInterface $og_membership_manager
    *   The og membership manager service.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $joinup_core_workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper service.
    * @param \Drupal\joinup_notification\JoinupMessageDeliveryInterface $message_delivery
    *   The message delivery service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $joinup_core_workflow_helper, JoinupMessageDeliveryInterface $message_delivery) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactory $config_factory, AccountProxy $current_user, GroupTypeManager $og_group_type_manager, MembershipManagerInterface $og_membership_manager, WorkflowHelperInterface $workflow_helper, JoinupMessageDeliveryInterface $message_delivery) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
     $this->groupTypeManager = $og_group_type_manager;
     $this->membershipManager = $og_membership_manager;
-    $this->workflowHelper = $joinup_core_workflow_helper;
+    $this->workflowHelper = $workflow_helper;
     $this->messageDelivery = $message_delivery;
   }
 

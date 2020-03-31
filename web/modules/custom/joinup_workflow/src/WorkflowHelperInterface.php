@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core;
+namespace Drupal\joinup_workflow;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -78,7 +78,7 @@ interface WorkflowHelperInterface {
    * @return \Drupal\Core\Field\FieldDefinitionInterface[]
    *   Returns an array of state field definitions.
    */
-  public function getEntityStateFieldDefinitions($entity_type_id, $bundle_id): array;
+  public function getEntityStateFieldDefinitions(string $entity_type_id, string $bundle_id): array;
 
   /**
    * Returns the state field definition of an entity.
@@ -96,7 +96,7 @@ interface WorkflowHelperInterface {
    *   Returns the state field definition of the entity or NULL if none is
    *   found.
    */
-  public function getEntityStateFieldDefinition($entity_type_id, $bundle_id): ?FieldDefinitionInterface;
+  public function getEntityStateFieldDefinition(string $entity_type_id, string $bundle_id): ?FieldDefinitionInterface;
 
   /**
    * Returns the StateItem field for a given entity.
@@ -127,7 +127,7 @@ interface WorkflowHelperInterface {
    * @return bool
    *   TRUE if the entity has a state field. FALSE otherwise.
    */
-  public function hasEntityStateField($entity_type_id, $bundle_id): bool;
+  public function hasEntityStateField(string $entity_type_id, string $bundle_id): bool;
 
   /**
    * Checks if a state is set as published in a certain workflow.
@@ -144,33 +144,33 @@ interface WorkflowHelperInterface {
    *   Thrown when the workflow is not plugin based, because this is required to
    *   retrieve the publication state from the workflow states.
    */
-  public function isWorkflowStatePublished($state_id, WorkflowInterface $workflow): bool;
+  public function isWorkflowStatePublished(string $state_id, WorkflowInterface $workflow): bool;
 
   /**
    * Returns the workflow related to an entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity object.
-   * @param string $state_field_name
-   *   The state field name. If not passed, it will be searched.
+   * @param string|null $state_field_name
+   *   (optional) The state field name. If not passed, it will be searched.
    *
    * @return \Drupal\workflows\WorkflowInterface|null
    *   The workflow object or null if it was not found.
    */
-  public function getWorkflow(EntityInterface $entity, $state_field_name = NULL): ?WorkflowInterface;
+  public function getWorkflow(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowInterface;
 
   /**
    * Finds the transition given an entity that is being updated.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity object.
-   * @param string $state_field_name
-   *   The state field name. If not passed, it will be searched.
+   * @param string|null $state_field_name
+   *   (optional) The state field name. If not passed, it will be searched.
    *
    * @return \Drupal\state_machine\Plugin\Workflow\WorkflowTransition|null
    *   The transition object or null if it was not found.
    */
-  public function findTransitionOnUpdate(EntityInterface $entity, $state_field_name = NULL): ?WorkflowTransition;
+  public function findTransitionOnUpdate(EntityInterface $entity, ?string $state_field_name = NULL): ?WorkflowTransition;
 
   /**
    * Checks whether the user has at least one of the provided roles.

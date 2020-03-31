@@ -11,7 +11,7 @@ use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_community_content\CommunityContentHelper;
 use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -48,7 +48,7 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
   /**
    * The workflow helper service.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -65,7 +65,7 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
    *   The config factory.
    * @param \Drupal\og\MembershipManagerInterface $membershipManager
    *   The OG membership manager.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflowHelper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflowHelper
    *   The workflow helper service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, MembershipManagerInterface $membershipManager, WorkflowHelperInterface $workflowHelper) {
@@ -85,7 +85,7 @@ class CommunityContentWorkflowStatePermission extends PluginBase implements Work
       $plugin_definition,
       $container->get('config.factory'),
       $container->get('og.membership_manager'),
-      $container->get('joinup_core.workflow.helper')
+      $container->get('joinup_workflow.workflow_helper')
     );
   }
 

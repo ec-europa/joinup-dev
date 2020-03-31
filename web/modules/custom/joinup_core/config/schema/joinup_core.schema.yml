@@ -36,32 +36,11 @@ field.formatter.settings.daterange_condensed:
       type: date_format
       label: 'Different years format'
 
-field.widget.settings.current_workflow_state_widget:
-  type: mapping
-  label: 'Field widget format settings for the current workflow state field.'
-  mapping:
-    title:
-      type: string
-      label: 'The title to use for the field widget.'
-    title_display:
-      type: string
-      label: 'The setting that determines how the field widget title is displayed.'
-    show_for_new_entities:
-      type: boolean
-      label: 'The setting that allows to show the widget on entity creation forms.'
-
 field.widget.settings.email_legacy_multicardinality:
   type: field.widget.settings.email_default
 
 field.widget.settings.link_legacy_multicardinality:
   type: field.widget.settings.link_default
-
-field.widget.settings.state_machine_buttons:
-  type: mapping
-  label: 'Theme settings for Joinup project.'
-  mapping:
-    use_transition_label:
-      type: integer
 
 field.widget.settings.string_textfield_legacy_multicardinality:
   type: field.widget.settings.string_textfield
