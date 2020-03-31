@@ -40,6 +40,7 @@ gulp.task('sass', function (done) {
     .pipe(sass(
       {outputStyle: 'compressed'}
     ).on('error', sass.logError))
+    .pipe(rename('style.min.css'))
     .pipe(gulp.dest('../css')) 
     .pipe(gulp.dest('css'))
     .pipe(livereload());
