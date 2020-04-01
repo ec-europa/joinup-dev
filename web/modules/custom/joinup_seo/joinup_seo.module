@@ -77,16 +77,11 @@ function joinup_seo_page_attachments(array &$attachments) {
     return;
   }
 
-  /** @var \Drupal\sparql_entity_storage\SparqlSerializerInterface $serializer */
-  $serializer = \Drupal::service('sparql_entity.serializer');
-  if (!$output = $serializer->serializeEntity($entity, 'json')) {
+  /** @var \Drupal\joinup_seo\JoinupSeoExportHelperInterface $serializer */
+  $serializer = \Drupal::service('joinup_seo.export_helper');
+  if (!$output = $serializer->exportRdfEntityMetadata($entity)) {
     return;
   }
-
-  // Serializer returns an array reset() the results to display them properly.
-  $output = json_decode($output);
-  $output = (object) $output;
-  $output = json_encode($output);
 
   $attachments['#attached']['html_head'][] = [
     [

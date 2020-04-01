@@ -397,11 +397,9 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The serialized metadata.
    */
   protected function generateSerializedData(RdfInterface $rdf_entity): string {
-    /** @var \Drupal\sparql_entity_storage\SparqlSerializerInterface $serializer */
-    $serializer = \Drupal::service('sparql_entity.serializer');
-    $json_output = $serializer->serializeEntity($rdf_entity, 'jsonld');
-    $json_output = trim($json_output, '[]');
-    return $json_output;
+    /** @var \Drupal\joinup_seo\JoinupSeoExportHelperInterface $serializer */
+    $serializer = \Drupal::service('joinup_seo.export_helper');
+    return $serializer->exportRdfEntityMetadata($rdf_entity);
   }
 
 }
