@@ -126,3 +126,42 @@ function custom_page_post_update_delete_sub_pages_menu_block() {
     $block->delete();
   }
 }
+
+/**
+ * Provide default 'global_search' value property.
+ */
+function custom_page_post_update_default_global_search(array &$sandbox): string {
+  $db = \Drupal::database();
+
+  // Using direct databases queries rather than the API for performance reasons.
+  if (!isset($sandbox['rows'])) {
+    $sandbox['rows'] = [];
+    foreach (['node__field_cp_content_listing', 'node_revision__field_cp_content_listing'] as $table) {
+      $rows = $db->select($table)
+        ->fields($table, ['revision_id', 'field_cp_content_listing_value'])
+        ->condition('field_cp_content_listing_value', '%"global_search"%', 'NOT LIKE')
+        ->execute()
+        ->fetchAllKeyed();
+      foreach ($rows as $revision_id => $value) {
+        $sandbox['rows'][] = [
+          'revision_id' => $revision_id,
+          'table' => $table,
+          'value' => unserialize($value),
+        ];
+      }
+    }
+    $sandbox['total'] = count($rows);
+  }
+
+  $rows = array_splice($sandbox['rows'], 0, 300);
+  foreach ($rows as $row) {
+    $row['value']['global_search'] = FALSE;
+    $db->update($row['table'])
+      ->fields(['field_cp_content_listing_value' => serialize($row['value'])])
+      ->condition('revision_id', $row['revision_id'])
+      ->execute();
+  }
+  $sandbox['#finished'] = (int) empty($sandbox['rows']);
+
+  return 'Processed ' . count($rows) . ' items out of ' . $sandbox['total'];
+}
