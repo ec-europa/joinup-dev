@@ -90,9 +90,9 @@ function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $en
   /** @var \Drupal\joinup_menu\JoinupMenuHelperInterface $menu_helper */
   $menu_helper = \Drupal::service('joinup_menu.menu_helper');
   $entities = $menu_helper->loadEntitiesFromMenuItems([$entity]);
-  $entity = reset($entities);
-  $entity->original = $entity;
-  ContentEntity::indexEntity($entity);
+  $linked_entity = reset($entities);
+  $linked_entity->original = $linked_entity;
+  ContentEntity::indexEntity($linked_entity);
 }
 
 /**
