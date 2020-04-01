@@ -1,0 +1,4 @@
+services:
+  joinup_menu.menu_helper:
+    class: Drupal\joinup_menu\JoinupMenuHelper
+    arguments: ['@entity_type.manager']

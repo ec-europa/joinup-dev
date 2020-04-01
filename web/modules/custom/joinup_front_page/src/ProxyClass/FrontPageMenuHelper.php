@@ -99,14 +99,6 @@ namespace Drupal\joinup_front_page\ProxyClass {
             $this->lazyLoadItself()->updateSearchApiEntry($entity);
         }
 
-        /**
-         * {@inheritdoc}
-         */
-        public function loadEntitiesFromMenuItems(array $menu_items) : array
-        {
-            return $this->lazyLoadItself()->loadEntitiesFromMenuItems($menu_items);
-        }
-
     }
 
 }

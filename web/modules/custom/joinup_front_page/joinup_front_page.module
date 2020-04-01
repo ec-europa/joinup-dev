@@ -83,11 +83,11 @@ function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $en
     return;
   }
 
-  /** @var \Drupal\joinup_front_page\FrontPageMenuHelperInterface $front_page_helper */
-  $front_page_helper = \Drupal::service('joinup_front_page.front_page_helper');
-  $entities = $front_page_helper->loadEntitiesFromMenuItems([$entity]);
+  /** @var \Drupal\joinup_menu\JoinupMenuHelperInterface $menu_helper */
+  $menu_helper = \Drupal::service('joinup_menu.menu_helper');
+  $entities = $menu_helper->loadEntitiesFromMenuItems([$entity]);
   $entity = reset($entities);
-  $front_page_helper->updateSearchApiEntry($entity);
+  $menu_helper->updateSearchApiEntry($entity);
 }
 
 /**

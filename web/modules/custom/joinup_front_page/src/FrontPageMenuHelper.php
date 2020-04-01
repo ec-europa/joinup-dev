@@ -14,7 +14,7 @@ use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
- * Controller that assigns to or removes entities from the front page menu.
+ * Service that assigns to or removes entities from the front page menu.
  */
 class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
 
@@ -127,27 +127,6 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
       $entity->original = $entity;
       search_api_entity_update($entity);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function loadEntitiesFromMenuItems(array $menu_items): array {
-    $items = [];
-    $node_storage = $this->entityTypeManager->getStorage('node');
-    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
-
-    foreach ($menu_items as $menu_item) {
-      $url_parameters = $menu_item->getUrlObject()->getRouteParameters();
-      if (isset($url_parameters['node'])) {
-        $items[] = $node_storage->load($url_parameters['node']);
-      }
-      else {
-        $items[] = $rdf_storage->load($url_parameters['rdf_entity']);
-      }
-    }
-
-    return $items;
   }
 
 }

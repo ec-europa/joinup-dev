@@ -65,6 +65,7 @@
             <property name="forbiddenCommentPatterns" type="array">
                 <element value="/@inheritDoc/"/>
                 <element value="/^Class [a-zA-z]*\.$/"/>
+                <element value="/^Interface [a-zA-z]*\.$/"/>
                 <element value="/^[a-zA-z]* constructor\.$/"/>
             </property>
         </properties>
