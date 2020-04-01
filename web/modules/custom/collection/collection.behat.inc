@@ -471,16 +471,18 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Alters relationships between menu items for the custom pages menu.
+   * Alters custom page menu items for group navigation menus.
    *
    * It does not create the menu items as they are created automatically when
    * the custom pages are created.
    *
    * Table format:
-   * | title              | parent              | weight |
-   * | Custom page parent | Custom page child 1 |      1 |
-   * | Custom page parent | Custom page child 2 |      3 |
-   * | Custom page parent | Custom page child 3 |      2 |
+   * | title              | parent              | weight | enabled |
+   * | Custom page parent | Custom page child 1 |      1 | yes     |
+   * | Custom page parent | Custom page child 2 |      3 | yes     |
+   * | Custom page parent | Custom page child 3 |      2 | no      |
+   *
+   * All columns except the 'title' column are optional.
    *
    * @param \Behat\Gherkin\Node\TableNode $menu_table
    *   The menu table.
@@ -495,9 +497,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
     $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     foreach ($menu_table->getColumnsHash() as $values) {
-      if (isset($values['parent']) && !empty($values['parent'])) {
+      if (!empty($values['parent'])) {
         $parent_link = $this->getMenuLinkByTitle($values['parent']);
         $values['parent'] = $parent_link->getPluginId();
+      }
+
+      if (!empty($values['enabled'])) {
+        $values['enabled'] = (int) $values['enabled'] === 'yes';
       }
 
       $child_link = $this->getMenuLinkByTitle($values['title']);
