@@ -91,15 +91,16 @@ class IncludeCustomPageContent extends ProcessorPluginBase {
       }
 
       foreach ($this->customPageProvider->getCustomPagesByGroupId($entity->id()) as $custom_page) {
-        // Index the custom page data inside the description of the collection
-        // or solution. Both have their own unique field name.
-        $field_name = $entity->bundle() === 'collection' ? 'field_ar_description' : 'field_is_description';
-        $field = $item->getField($field_name);
-        // Index the title and body text of the custom page.
-        $field->addValue($custom_page->label());
+        // Index the title and body text of the custom page data inside the
+        // collection or solution.
+        $label_field = $item->getField('label');
+        $label_field->addValue($custom_page->label());
+
+        $body_field_name = $entity->bundle() === 'collection' ? 'field_ar_description' : 'field_is_description';
+        $body_field = $item->getField($body_field_name);
         $body_field_item_list = $custom_page->get('body');
         if (!$body_field_item_list->isEmpty()) {
-          $field->addValue(check_markup($body_field_item_list->value, $body_field_item_list->format));
+          $body_field->addValue(check_markup($body_field_item_list->value, $body_field_item_list->format));
         }
       }
     }
