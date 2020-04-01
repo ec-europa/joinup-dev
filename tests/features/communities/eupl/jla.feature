@@ -138,9 +138,9 @@ Feature:
       | http://joinup.eu/spdx/UPL-1.0    | UPL-1.0    | UPL-1.0    |
       | http://joinup.eu/spdx/LGPL-2.1   | LGPL-2.1   | LGPL-2.1   |
     And licences:
-      | uri                               | title                                    | spdx licence | legal type                                                            |
-      | http://joinup.eu/licence/apache20 | Apache License, Version 2.0              | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
-      | http://joinup.eu/licence/gpl2plus | GNU General Public License v2.0 or later | GPL-2.0+     | Distribute                                                            |
+      | uri                               | title                                    | spdx licence | legal type                                                            | description      |
+      | http://joinup.eu/licence/apache20 | Apache License, Version 2.0              | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce | Apache-2.0 descr |
+      | http://joinup.eu/licence/gpl2plus | GNU General Public License v2.0 or later | GPL-2.0+     | Distribute                                                            | GPL-2.0+ descr   |
 
     # Test the page when the comparision list is missed.
     When I am on "/licence/compare"
@@ -184,6 +184,7 @@ Feature:
 
     When I visit "/licence/compare/Apache-2.0;GPL-2.0+"
     Then I should see the "licence comparer" table
+    And the response should contain "<script type=\"application/json\" data-drupal-selector=\"licence-comparer-data\">{\"Apache-2.0\":{\"title\":\"Apache License, Version 2.0\",\"description\":\"Apache-2.0 descr\",\"spdxUrl\":\"http:\/\/joinup.eu\/spdx\/Apache-2.0\"},\"GPL-2.0+\":{\"title\":\"GNU General Public License v2.0 or later\",\"description\":\"GPL-2.0+ descr\",\"spdxUrl\":\"http:\/\/joinup.eu\/spdx\/GPL-2.0+\"}}</script>"
     And the "licence comparer" table should be:
       | Can               | Apache-2.0 | GPL-2.0+ |  |  |  |
       | Use/reproduce     | x          |          |  |  |  |
