@@ -503,7 +503,7 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
       }
 
       if (!empty($values['enabled'])) {
-        $values['enabled'] = (int) $values['enabled'] === 'yes';
+        $values['enabled'] = (int) ($values['enabled'] === 'yes');
       }
 
       $child_link = $this->getMenuLinkByTitle($values['title']);
