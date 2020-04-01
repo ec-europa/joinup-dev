@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce8e9c3a6683b1c7a4e42e7dd924a26f",
+    "content-hash": "ab19baa0aad720fda5d9959f5ac3c1f6",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4104,6 +4104,11 @@
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Sync forked code with Drupal core @see https://www.drupal.org/project/error_page/issues/3124053": "https://www.drupal.org/files/issues/2020-04-01/3124053-2.patch",
+                    "Fix strict typing error @see https://www.drupal.org/project/error_page/issues/3124056": "https://www.drupal.org/files/issues/2020-04-01/3124056-2.patch",
+                    "Fix documentation @see https://www.drupal.org/project/error_page/issues/3111450": "https://www.drupal.org/files/issues/2020-04-01/3111450-2.patch"
                 }
             },
             "autoload": {
@@ -4120,6 +4125,14 @@
                     "name": "Claudiu Cristea",
                     "homepage": "https://www.drupal.org/u/claudiu.cristea",
                     "role": "maintainer"
+                },
+                {
+                    "name": "idimopoulos",
+                    "homepage": "https://www.drupal.org/user/2578708"
+                },
+                {
+                    "name": "pfrenssen",
+                    "homepage": "https://www.drupal.org/user/382067"
                 }
             ],
             "description": "Show a user-friendly page when a fatal error or an exception occurs.",

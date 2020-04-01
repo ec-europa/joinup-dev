@@ -269,6 +269,11 @@
             "drupal/drupal-extension": {
               "Add space arround the keywords to avoid wrongly matching @see https://github.com/jhedstrom/drupalextension/pull/561": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/561.patch"
             },
+            "drupal/error_page": {
+                "Sync forked code with Drupal core @see https://www.drupal.org/project/error_page/issues/3124053": "https://www.drupal.org/files/issues/2020-04-01/3124053-2.patch",
+                "Fix strict typing error @see https://www.drupal.org/project/error_page/issues/3124056": "https://www.drupal.org/files/issues/2020-04-01/3124056-2.patch",
+                "Fix documentation @see https://www.drupal.org/project/error_page/issues/3111450": "https://www.drupal.org/files/issues/2020-04-01/3111450-2.patch"
+            },
             "drupal/externalauth": {
                 "Clean up linkExistingAccount method so it doesn't needless prefix username with provider name @see https://www.drupal.org/project/externalauth/issues/3104478": "https://www.drupal.org/files/issues/2020-01-08/3104478-3.patch"
             },
