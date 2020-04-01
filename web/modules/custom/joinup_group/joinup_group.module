@@ -244,9 +244,10 @@ function joinup_group_rdf_entity_update(EntityInterface $entity) {
     /** @var \Drupal\og\MembershipManagerInterface $membership_manager */
     $membership_manager = \Drupal::service('og.membership_manager');
     $content_ids = $membership_manager->getGroupContentIds($entity, ['node']);
-    $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
-    foreach ($entities as $entity_item) {
-      ContentEntity::indexEntity($entity_item);
+    $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($content_ids['node']);
+    /** @var \Drupal\node\NodeInterface $node */
+    foreach ($nodes as $node) {
+      ContentEntity::indexEntity($node);
     }
   }
 }
