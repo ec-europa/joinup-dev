@@ -178,15 +178,13 @@ class MySubscriptionsForm extends FormBase {
 
       $subscription_status = [];
 
+      $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
       $membership_has_subscription = FALSE;
       foreach (CommunityContentHelper::BUNDLES as $key => $bundle_id) {
-        $subscription_bundles = $membership->get('subscription_bundles')->getIterator()->getArrayCopy();
         $value = array_reduce($subscription_bundles, function (bool $carry, EntityBundlePairItem $entity_bundle_pair) use ($bundle_id): bool {
           return $carry || $entity_bundle_pair->getBundleId() === $bundle_id;
         }, FALSE);
-        if (!$membership_has_subscription && $value) {
-          $membership_has_subscription = TRUE;
-        }
+        $membership_has_subscription = $membership_has_subscription || $value;
         $form['collections'][$collection->id()]['bundles'][$bundle_id] = [
           '#type' => 'checkbox',
           '#title' => $bundle_info[$bundle_id]['label'],
@@ -236,7 +234,6 @@ class MySubscriptionsForm extends FormBase {
 
     $form['edit-actions']['unsubscribe_all'] = [
       '#type' => 'link',
-      '#attached' => [],
       '#title' => $this->t('Unsubscribe from all'),
       '#url' => Url::fromRoute('joinup_subscription.unsubscribe_all', [
         'user' => $user->id(),
@@ -348,10 +345,9 @@ class MySubscriptionsForm extends FormBase {
     $form_state->set('collections_with_subscription', $collections_with_subscription);
     $form['edit-actions']['unsubscribe_all']['#access'] = !empty($collections_with_subscription);
 
-    $response = new AjaxResponse();
-    $response->addCommand(new ReplaceCommand("#{$form['collections'][$submitted_collection_id]['#id']}", $form['collections'][$submitted_collection_id]));
-    $response->addCommand(new ReplaceCommand('#edit-actions', $form['edit-actions']));
-    return $response;
+    return (new AjaxResponse())
+      ->addCommand(new ReplaceCommand("#{$form['collections'][$submitted_collection_id]['#id']}", $form['collections'][$submitted_collection_id]))
+      ->addCommand(new ReplaceCommand('#edit-actions', $form['edit-actions']));
   }
 
   /**
