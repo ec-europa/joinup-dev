@@ -40,12 +40,4 @@ interface FrontPageMenuHelperInterface {
    */
   public function unpinFromFrontPage(FieldableEntityInterface $entity): void;
 
-  /**
-   * Updates the search api index entry of the entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to be updated.
-   */
-  public function updateSearchApiEntry(EntityInterface $entity): void;
-
 }

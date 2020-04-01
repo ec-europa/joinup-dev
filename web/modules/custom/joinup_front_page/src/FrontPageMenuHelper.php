@@ -117,9 +117,12 @@ class FrontPageMenuHelper implements FrontPageMenuHelperInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Updates the search api index entry of the entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to be updated.
    */
-  public function updateSearchApiEntry(EntityInterface $entity): void {
+  protected function updateSearchApiEntry(EntityInterface $entity): void {
     // Check the existence of the `search_api` module in order to relax the
     // dependency chain since the `search_api` part is secondary functionality
     // here.

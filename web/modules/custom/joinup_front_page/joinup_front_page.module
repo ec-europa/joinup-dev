@@ -14,6 +14,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\joinup_front_page\FrontPagePinnedFieldItemList;
 use Drupal\menu_link_content\MenuLinkContentInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -77,6 +78,9 @@ function joinup_front_page_entity_view_alter(array &$build, EntityInterface $ent
 
 /**
  * Implements hook_ENTITY_TYPE_update().
+ *
+ * Reindexes linked content whenever the front page menu changes. This ensures
+ * that content added to the menu will also appear in search results.
  */
 function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $entity) {
   if ($entity->getMenuName() !== 'front-page') {
@@ -87,7 +91,8 @@ function joinup_front_page_menu_link_content_update(MenuLinkContentInterface $en
   $menu_helper = \Drupal::service('joinup_menu.menu_helper');
   $entities = $menu_helper->loadEntitiesFromMenuItems([$entity]);
   $entity = reset($entities);
-  $menu_helper->updateSearchApiEntry($entity);
+  $entity->original = $entity;
+  ContentEntity::indexEntity($entity);
 }
 
 /**
