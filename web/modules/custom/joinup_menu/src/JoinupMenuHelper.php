@@ -50,8 +50,10 @@ class JoinupMenuHelper implements JoinupMenuHelperInterface {
     foreach ($menu_items as $menu_item) {
       $url_parameters = $menu_item->getUrlObject()->getRouteParameters();
       foreach (array_keys($storage_handlers) as $entity_type) {
-        $items[] = $storage_handlers[$entity_type]->load($url_parameters[$entity_type]);
-        break;
+        if (isset($url_parameters[$entity_type])) {
+          $items[] = $storage_handlers[$entity_type]->load($url_parameters[$entity_type]);
+          break;
+        }
       }
     }
 
