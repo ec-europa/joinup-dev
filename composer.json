@@ -316,8 +316,8 @@
                 "Plugins with URL prefix should not allow URLs as user input @see https://www.drupal.org/node/2898726": "https://www.drupal.org/files/issues/2898726-3.patch"
             },
             "drupal/swiftmailer": {
-                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2019-08-26/3000553-18.patch",
-                "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2019-08-26/2892104-21.patch"
+                "Add spooling for increased performance @see https://www.drupal.org/project/swiftmailer/issues/3000553": "https://www.drupal.org/files/issues/2020-04-01/3000553-25.patch",
+                "Allow Cc and Bcc headers @see https://www.drupal.org/project/swiftmailer/issues/2892104": "https://www.drupal.org/files/issues/2020-04-01/2892104-26.patch"
             },
             "drupal/video_embed_field": {
                 "Extend support for embed URLs. Option to force privacy @see https://www.drupal.org/project/video_embed_field/issues/3060201 (originally on https://www.drupal.org/node/2899093)": "https://www.drupal.org/files/issues/2019-06-11/privacy_mode-3060201-D8-6.patch"
