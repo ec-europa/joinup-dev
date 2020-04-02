@@ -17,4 +17,5 @@ settings:
   label: 'Site alerts'
   provider: site_alert
   label_display: '0'
+  timeout: 0
 visibility: {  }
