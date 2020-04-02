@@ -122,6 +122,8 @@
                 <copy todir="${solr.core.published.dir}/conf" overwrite="true">
                     <fileset dir="${solr.config.dir}" />
                 </copy>
+                <!-- After solr 7.1, the stream body is disabled by default but is needed for development. -->
+                <exec command="curl --verbose ${solr.core.published.url}/${solr.core.published.name}/config -H 'Content-type:application/json' -d'{&quot;set-property&quot; : {&quot;requestDispatcher.requestParsers.enableRemoteStreaming&quot;:true}, &quot;set-property&quot; : {&quot;requestDispatcher.requestParsers.enableStreamBody&quot;:true}}'" />
             </else>
         </if>
         <if>
@@ -139,6 +141,8 @@
                 <copy todir="${solr.core.unpublished.dir}/conf" overwrite="true">
                     <fileset dir="${solr.config.dir}" />
                 </copy>
+                <!-- After solr 7.1, the stream body is disabled by default but is needed for development. -->
+                <exec command="curl --verbose ${solr.core.unpublished.url}/${solr.core.unpublished.name}/config -H 'Content-type:application/json' -d'{&quot;set-property&quot; : {&quot;requestDispatcher.requestParsers.enableRemoteStreaming&quot;:true}, &quot;set-property&quot; : {&quot;requestDispatcher.requestParsers.enableStreamBody&quot;:true}}'" />
             </else>
         </if>
         <!-- Restart Solr so our configuration changes are picked up. -->
