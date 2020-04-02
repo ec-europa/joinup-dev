@@ -1928,8 +1928,12 @@ function joinup_theme_preprocess_filter_caption(&$variables) {
     $variables['classes'] = 'image-caption';
   }
 
+  // The image node element may be a \Drupal\filter\Render\FilteredMarkup
+  // instance. Cast it to a string to be compatible with `strpos()` as strict
+  // typing is enforced.
+  $node = (string) $variables['node'];
   foreach ($width_array as $width) {
-    if (strpos($variables['node'], $width) !== FALSE) {
+    if (strpos($node, $width) !== FALSE) {
       $variables['classes'] .= ' ' . str_replace('_', '-', $width);
     }
   }
