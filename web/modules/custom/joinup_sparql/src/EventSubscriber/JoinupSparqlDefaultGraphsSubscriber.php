@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_sparql\EventSubscriber;
 
 use Drupal\sparql_entity_storage\Event\DefaultGraphsEvent;

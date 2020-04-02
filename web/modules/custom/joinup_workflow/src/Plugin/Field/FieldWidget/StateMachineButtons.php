@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Plugin\Field\FieldWidget;
+namespace Drupal\joinup_workflow\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -11,12 +11,12 @@ use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent;
+use Drupal\joinup_workflow\Event\UnchangedWorkflowStateUpdateEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Plugin implementation of the 'state_machine_buttons' widget.
+ * Field widget showing the available workflow transition states as buttons.
  *
  * @FieldWidget(
  *   id = "state_machine_buttons",
@@ -125,7 +125,7 @@ class StateMachineButtons extends OptionsSelectWidget implements ContainerFactor
     // access, we will add a submit button for the same state update.
     $state = $items->value;
     $event = new UnchangedWorkflowStateUpdateEvent($items->getEntity(), $state, $this->getDefaultSameStateUpdateLabel($state), -20);
-    $this->eventDispatcher->dispatch(UnchangedWorkflowStateUpdateEvent::EVENT_NAME, $event);
+    $this->eventDispatcher->dispatch('joinup_workflow.unchanged_workflow_state_update', $event);
 
     if (!$event->getAccess()->isForbidden()) {
       $element['#same_state_button'] = [

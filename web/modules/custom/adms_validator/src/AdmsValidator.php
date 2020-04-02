@@ -32,7 +32,7 @@ class AdmsValidator implements AdmsValidatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getValidationQuery(string $graph_uri = NULL): string {
+  public function getValidationQuery(?string $graph_uri = NULL): string {
     if (empty($this->validationQuery)) {
       $this->validationQuery = self::getDefaultValidationQuery($graph_uri);
     }

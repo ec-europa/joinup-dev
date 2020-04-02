@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\custom_page\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\og\OgGroupAudienceHelperInterface;
@@ -13,7 +16,6 @@ use Drupal\og_menu\Entity\OgMenuInstance;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests the custom page OG menu link updater service.

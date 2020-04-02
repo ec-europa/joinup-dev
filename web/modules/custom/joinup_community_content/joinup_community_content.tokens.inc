@@ -30,7 +30,7 @@ function joinup_community_content_token_info_alter(&$info) {
 /**
  * Implements hook_tokens().
  */
-function joinup_community_content_tokens($type, array $tokens, array $data = [], array $options = [], BubbleableMetadata $bubbleable_metadata = NULL) {
+function joinup_community_content_tokens($type, array $tokens, array $data = [], array $options = [], ?BubbleableMetadata $bubbleable_metadata = NULL) {
   $replacements = [];
 
   if ($type == 'node' && !empty($data['node'])) {

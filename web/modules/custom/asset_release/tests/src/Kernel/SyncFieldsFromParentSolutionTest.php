@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\asset_release\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\rdf_entity\Entity\Rdf;
 use Drupal\rdf_entity\Entity\RdfEntityType;
 use Drupal\sparql_entity_storage\Entity\SparqlMapping;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Tests field synchronization between solution and release.
@@ -40,6 +42,7 @@ class SyncFieldsFromParentSolutionTest extends KernelTestBase {
     'image',
     'inline_entity_form',
     'joinup_core',
+    'joinup_workflow',
     'link',
     'matomo_reporting_api',
     'node',

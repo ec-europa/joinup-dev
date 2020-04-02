@@ -5,6 +5,8 @@
  * Main functions and hook implementations of the eira module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 

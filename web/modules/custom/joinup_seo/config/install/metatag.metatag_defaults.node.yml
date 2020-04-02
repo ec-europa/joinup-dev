@@ -4,6 +4,11 @@ dependencies: {  }
 id: node
 label: Content
 tags:
+  canonical_url: '[node:url]'
   title: '[node:title] | [site:name]'
   description: '[node:summary]'
-  canonical_url: '[node:url]'
+  og_type: '[node:content-type:name]'
+  og_url: '[node:url:absolute]'
+  og_site_name: '[site:name]'
+  og_title: '[node:title]'
+  og_description: '[node:summary]'

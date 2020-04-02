@@ -18,6 +18,67 @@ use PHPUnit\Framework\Assert;
 class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubContextInterface {
 
   /**
+   * Asserts that a list of meta tags are presented in the page.
+   *
+   * @codingStandardsIgnoreStart
+   * | identifier            | value            |
+   * | description           | Some description |
+   * | og:title              | My site          |
+   * @codingStandardsIgnoreEnd
+   * The "identifier" and the "meta value" table headers are mandatory. The
+   * "identifier" can be either the name or the property value of the meta
+   * entry.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $list
+   *   A list of meta tags to check for.
+   *
+   * @throws \Exception
+   *   Thrown if at least one of the tags is not found or has a wrong value.
+   *
+   * @Given the following meta tags should available in the html:
+   */
+  public function assertMetaTagListInPage(TableNode $list): void {
+    $page = $this->getSession()->getPage();
+    $missing = [];
+    $errors = [];
+    foreach ($list->getColumnsHash() as $row) {
+      $identifier = $row['identifier'];
+      $xpath = "//head/meta[@name='{$identifier}' or @property='{$identifier}']/@content";
+      $tag = $page->find('xpath', $xpath);
+      if (empty($tag)) {
+        $missing[$identifier] = $identifier;
+      }
+      else {
+        $row['value'] = $this->escapeStringWithVariables($row['value']);
+        $actual = $tag->getText();
+        $found = preg_match("#^{$row['value']}$#", $actual) === 1;
+
+        if ($found === FALSE) {
+          $errors[] = [
+            'property' => $identifier,
+            'expected' => $row['value'],
+            'found' => $actual,
+          ];
+        }
+      }
+    }
+
+    // Construct the error messages for each graph found.
+    $error_messages = [];
+    if (!empty($missing)) {
+      $properties = implode(', ', $missing);
+      $error_messages[] = "Meta entries not found: {$properties}";
+    }
+    foreach ($errors as $error) {
+      $error_messages[] = "Wrong property '{$error['property']}' value: Expected '{$error['expected']}' but '{$error['found']}' was found.";
+    }
+
+    if (!empty($error_messages)) {
+      throw new Exception(implode("\n", $error_messages));
+    }
+  }
+
+  /**
    * Asserts a meta tag value in the page.
    *
    * @param string $meta_name
@@ -107,16 +168,11 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    * @Given the metatag (sub)graph of the item with :property :value should have the following properties in index :delta:
    * @Given the metatag (sub)graph of the item with :property :value should have the following :sub_property properties in index :delta:
    */
-  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, string $sub_property = NULL, $delta = NULL): void {
+  public function assertPropertiesOfMetatagGraph(string $property, string $value, TableNode $table, ?string $sub_property = NULL, $delta = NULL): void {
     $graphs = $this->getGraphsFromMetatags($property, $value, $sub_property);
     if (empty($graphs)) {
       throw new \Exception("No graphs were found that have a property '{$property}' of value '{$value}' or none of them contain a '{$sub_property}' property.");
     }
-
-    // The url structure is very important in the SEO metatags as a wrong url
-    // or an internal path could cause search engines to be missleaded. Thus,
-    // the full url must be always asserted.
-    $base_url = \Drupal::request()->getSchemeAndHttpHost();
 
     $hash = $table->getColumnsHash();
     $missing_properties = [];
@@ -133,18 +189,8 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
           continue;
         }
 
-        $row['value'] = str_replace('$base_url$', $base_url, $row['value']);
-        if (strpos($row['value'], '$random_text$') || strpos($row['value'], '$timezone$')) {
-          $row['value'] = preg_quote($row['value'], '#');
-          // $random_text$ is escaped into \$random_text\$ from the preg_quote
-          // above.
-          $row['value'] = str_replace('\$random_text\$', '([^/]*)?', $row['value']);
-          $row['value'] = str_replace('\$timezone\$', '\d{2}', $row['value']);
-          $found = preg_match("#{$row['value']}#", $graph[$row['property']]) === 1;
-        }
-        else {
-          $found = $graph[$row['property']] === $row['value'];
-        }
+        $row['value'] = $this->escapeStringWithVariables($row['value']);
+        $found = preg_match("#^{$row['value']}$#", $graph[$row['property']]) === 1;
 
         if ($found === FALSE) {
           $wrong_value[$index][] = [
@@ -181,6 +227,31 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
   }
 
   /**
+   * Escapes available variables from string and prepares it for a regex match.
+   *
+   * @param string $string
+   *   The string to convert.
+   *
+   * @return string
+   *   The converted string.
+   */
+  protected function escapeStringWithVariables(string $string): string {
+    // The URL structure is very important in the SEO metatags as a wrong URL
+    // or an internal path could cause search engines to be misled. Thus,
+    // the full URL must be always asserted.
+    $base_url = \Drupal::request()->getSchemeAndHttpHost();
+
+    $string = preg_quote($string, '#');
+    $replacements = [
+      '__base_url__' => preg_quote($base_url),
+      '__random_text__' => '([^/]*)?',
+      '__timezone__' => '\d{2}',
+    ];
+
+    return strtr($string, $replacements);
+  }
+
+  /**
    * Retrieves the entity metatags as a JSON array from the page.
    *
    * @return array|null
@@ -210,7 +281,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    *   The first graph that matches the criteria as an array or null if no match
    *   is found.
    */
-  protected function getGraphsFromMetatags(string $property, string $value, string $sub_graph = NULL): ?array {
+  protected function getGraphsFromMetatags(string $property, string $value, ?string $sub_graph = NULL): ?array {
     $json = $this->getMetatagsAsJson();
     $sub_graphs = $this->getSubGraphsFromGraph($json, $property, $value);
     if (!empty($sub_graph)) {
@@ -247,7 +318,7 @@ class JoinupSeoSubContext extends DrupalSubContextBase implements DrupalSubConte
    * @return array
    *   An array of subgraphs that match the above criteria.
    */
-  protected function getSubGraphsFromGraph(array $graph, string $identifier, string $identifier_value = NULL, bool $reset = TRUE): array {
+  protected function getSubGraphsFromGraph(array $graph, string $identifier, ?string $identifier_value = NULL, bool $reset = TRUE): array {
     static $graphs_found = [];
     if ($reset) {
       $graphs_found = [];

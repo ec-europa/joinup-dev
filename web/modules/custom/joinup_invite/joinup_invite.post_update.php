@@ -5,6 +5,8 @@
  * Post update functions for the Joinup Invite module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Install the new entity types that are provided with this module.
  */

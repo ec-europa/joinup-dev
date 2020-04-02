@@ -16,6 +16,7 @@ dependencies:
   - joinup:contact_information
   - joinup:joinup_core
   - joinup:joinup_group
+  - joinup:joinup_workflow
   - joinup:oe_newsroom_newsletter
   - joinup:owner
   - joinup:rdf_schema_field_validation

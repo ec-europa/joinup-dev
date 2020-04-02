@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_eulogin\Event\Subscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\cas_account_link\Event\CasAccountLinkEvents;
 use Drupal\cas_account_link\Event\Events\CasAccountLinkEmailCollisionEvent;
 use Drupal\cas_account_link\Event\Events\CasAccountLinkPostLinkEvent;
 use Drupal\cas_account_link\Event\Events\CasAccountLinkValidateEvent;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

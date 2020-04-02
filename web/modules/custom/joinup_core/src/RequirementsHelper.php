@@ -27,7 +27,7 @@ class RequirementsHelper {
   protected $sparqlConnection;
 
   /**
-   * RequirementsHelper constructor.
+   * Constructs a new RequirementsHelper.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The SQL connection class for the primary database storage.

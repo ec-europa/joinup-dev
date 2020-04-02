@@ -5,6 +5,8 @@
  * Post update functions for the custom_page module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\node\Entity\Node;
 
 /**

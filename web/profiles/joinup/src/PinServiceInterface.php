@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup;
 
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -15,7 +17,7 @@ interface PinServiceInterface {
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity to check.
-   * @param \Drupal\rdf_entity\RdfInterface $group
+   * @param \Drupal\rdf_entity\RdfInterface|null $group
    *   The rdf group where the entity should be pinned. Defaults to NULL,
    *   so the function will return TRUE if the entity is pinned in any
    *   group.
@@ -23,7 +25,7 @@ interface PinServiceInterface {
    * @return bool
    *   True if the entity is pinned, false otherwise.
    */
-  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $group = NULL);
+  public function isEntityPinned(ContentEntityInterface $entity, ?RdfInterface $group = NULL);
 
   /**
    * Sets the entity pinned status inside a certain group.

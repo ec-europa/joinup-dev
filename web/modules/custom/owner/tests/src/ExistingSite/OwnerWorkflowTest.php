@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\owner\ExistingSite;
 
 use Drupal\Core\Session\AnonymousUserSession;
-use Drupal\Tests\joinup_core\ExistingSite\JoinupWorkflowExistingSiteTestBase;
+use Drupal\Tests\joinup_workflow\ExistingSite\JoinupWorkflowExistingSiteTestBase;
 
 /**
  * Tests crud operations and the workflow for the owner rdf entity.

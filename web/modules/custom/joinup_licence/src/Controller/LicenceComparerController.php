@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup_licence\Controller;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\joinup_licence\LicenceComparerHelper;
@@ -45,12 +46,20 @@ class LicenceComparerController extends ControllerBase {
       }
     }
 
-    // Collect cache metadata from dependencies.
     $cache_metadata = new CacheableMetadata();
-    foreach ($this->licences as $licence) {
+    $data = [];
+    foreach ($this->licences as $spdx_id => $licence) {
+      // Collect cache metadata from dependencies.
       $cache_metadata
         ->addCacheableDependency($licence)
         ->addCacheableDependency($licence->field_licence_spdx_licence->entity);
+
+      // Build licence data to be attached as Json to the page.
+      $data[$spdx_id] = [
+        'title' => $licence->label(),
+        'description' => check_markup($licence->field_licence_description->value, 'content_editor'),
+        'spdxUrl' => $licence->field_licence_spdx_licence->target_id,
+      ];
     }
 
     $build = [
@@ -60,6 +69,22 @@ class LicenceComparerController extends ControllerBase {
         '#attributes' => [
           'data-drupal-selector' => 'licence-comparer',
           'class' => ['licence-comparer'],
+        ],
+      ],
+      '#attached' => [
+        'html_head' => [
+          [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'script',
+              '#value' => Json::encode($data),
+              '#attributes' => [
+                'type' => 'application/json',
+                'data-drupal-selector' => 'licence-comparer-data',
+              ],
+            ],
+            'licence_comparer_data',
+          ],
         ],
       ],
     ];
@@ -194,6 +219,7 @@ class LicenceComparerController extends ControllerBase {
         'class' => [
           'licence-comparer__header',
         ],
+        'data-licence-id' => $spdx_id,
       ];
     }
 
