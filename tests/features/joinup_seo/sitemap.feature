@@ -30,9 +30,10 @@ Feature:
       | title           | description |
       | Sitemap licence | Not allowed |
     And "custom_page" content:
-      | title                            | collection                   | body | logo     |
-      | Sitemap custom page of draft     | Sitemap collection draft     | N/A  | logo.png |
-      | Sitemap custom page of validated | Sitemap collection validated | N/A  | logo.png |
+      | title                                           | collection                   | body | logo     | langcode |
+      | Sitemap custom page of draft                    | Sitemap collection draft     | N/A  | logo.png | en       |
+      | Sitemap custom page of validated                | Sitemap collection validated | N/A  | logo.png | en       |
+      | Sitemap custom page of validated but in Spanish | Sitemap collection validated | N/A  | logo.png | es       |
     And news content:
       | title                                    | headline     | body              | solution                   | state     | publication date                |
       | Sitemap news draft                       | Sitemap news | Sitemap news body | Sitemap solution validated | draft     |                                 |
@@ -77,16 +78,20 @@ Feature:
       | Sitemap owner            |
       | Sitemap secretariat      |
     And I should not see the absolute urls of the following content entities:
-      | Sitemap custom page of draft                   |
-      | Sitemap discussion draft                       |
-      | Sitemap discussion validated but parent is not |
-      | Sitemap document draft                         |
-      | Sitemap document validated but parent is not   |
-      | Sitemap event draft                            |
-      | Sitemap event validated but parent is not      |
-      | Sitemap news draft                             |
-      | Sitemap news validated and recent              |
-      | Sitemap news validated but parent is not       |
+      | Sitemap custom page of draft                    |
+      | Sitemap custom page of validated but in Spanish |
+      | Sitemap discussion draft                        |
+      | Sitemap discussion validated but parent is not  |
+      | Sitemap document draft                          |
+      | Sitemap document validated but parent is not    |
+      | Sitemap event draft                             |
+      | Sitemap event validated but parent is not       |
+      | Sitemap news draft                              |
+      | Sitemap news validated and recent               |
+      | Sitemap news validated but parent is not        |
+    # The following piece of xhtml is used to declare an alternative language. If it exists in the page it means that
+    # another language is included in the output.
+    And the response should not contain "<xhtml:link rel=\"alternate\" hreflang="
 
     # Check the dedicated sitemap for news articles that only contains hot news
     # topics published in the last 2 days.
