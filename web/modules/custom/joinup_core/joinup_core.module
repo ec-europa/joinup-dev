@@ -20,6 +20,7 @@ use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\Core\Template\Attribute;
 use Drupal\joinup_core\Element\Datetime;
 use Drupal\joinup_core\Entity\Controller\JoinupRdfListBuilder;
+use Drupal\joinup_core\JoinupSiteAlertListBuilder;
 use Drupal\node\NodeInterface;
 use Drupal\og\OgMembershipInterface;
 use Drupal\search_api\IndexInterface;
@@ -132,6 +133,18 @@ function joinup_core_form_rdf_entity_form_alter(&$form, FormStateInterface $form
 }
 
 /**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ *
+ * Alters the Site Alert entity form to hide the scheduling of the alerts. Due
+ * to a bug in the core page cache module the scheduling can only work using an
+ * additional AJAX call which is undesirable in our case. By disabling the
+ * scheduling the alerts are managed manually and the page cache works normally.
+ */
+function joinup_core_form_site_alert_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['scheduling']['#access'] = FALSE;
+}
+
+/**
  * Implements hook_entity_base_field_info().
  *
  * - Provides a 'report' field on community content pages that can be used to
@@ -178,6 +191,14 @@ function joinup_core_entity_base_field_info(EntityTypeInterface $entity_type) {
  * Implements hook_entity_type_alter().
  */
 function joinup_core_entity_type_alter(array &$entity_types) {
+  // Check that the Site Alert entity type is defined, so we can avoid depending
+  // on the Site Alert module.
+  if (isset($entity_types['site_alert'])) {
+    // Override the list builder with a version which omits the unused 'Start
+    // time' and 'End time' columns.
+    $entity_types['site_alert']->setListBuilderClass(JoinupSiteAlertListBuilder::class);
+  }
+
   if (!isset($entity_types['rdf_entity'])) {
     return;
   }
