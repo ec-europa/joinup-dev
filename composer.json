@@ -63,7 +63,7 @@
         "drupal/schema_metatag": "^1.4",
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
-        "drupal/simple_sitemap": "^3.4",
+        "drupal/simple_sitemap": "3.x-dev#178a232a4960ec7076fd7b8702058bc59f56a6d9",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.6",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9411ba37d360e3ba6b14d1cba62de536",
+    "content-hash": "912292878e90f269b700cc5a67fd05c3",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6493,17 +6493,11 @@
         },
         {
             "name": "drupal/simple_sitemap",
-            "version": "3.5.0",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simple_sitemap.git",
-                "reference": "8.x-3.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/simple_sitemap-8.x-3.5.zip",
-                "reference": "8.x-3.5",
-                "shasum": "8e93d4dcf483b1558b800570af1d3b231b8fa6f3"
+                "reference": "178a232a4960ec7076fd7b8702058bc59f56a6d9"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -6515,16 +6509,16 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.5",
-                    "datestamp": "1576429387",
+                    "version": "8.x-3.5+15-dev",
+                    "datestamp": "1584487838",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10"
                     }
                 }
             },
@@ -6550,7 +6544,8 @@
                 "source": "https://cgit.drupalcode.org/simple_sitemap",
                 "issues": "https://drupal.org/project/issues/simple_sitemap",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2020-03-18T11:46:13+00:00"
         },
         {
             "name": "drupal/simplenews",
@@ -8232,6 +8227,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -8278,6 +8274,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -17390,6 +17387,7 @@
         "drupal/config_update": 20,
         "drupal/matomo_reporting_api": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/simple_sitemap": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
