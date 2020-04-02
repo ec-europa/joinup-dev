@@ -13,5 +13,5 @@ tags:
   og_site_name: '[site:name]'
   og_image_secure_url: '[site:url]themes/joinup/images/logo.svg'
   og_title: '[current-page:title]'
-  og_image_type: 'image/svg+xml'
+  og_image_type: image/svg+xml
   og_image: '[site:url]themes/joinup/images/logo.svg'

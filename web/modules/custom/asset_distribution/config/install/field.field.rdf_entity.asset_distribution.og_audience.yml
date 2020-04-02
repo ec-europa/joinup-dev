@@ -21,5 +21,4 @@ settings:
   handler_settings:
     target_bundles:
       solution: solution
-  access_override: false
 field_type: og_standard_reference
