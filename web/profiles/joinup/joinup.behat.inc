@@ -725,7 +725,6 @@ class JoinupSubContext extends DrupalSubContextBase {
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
         'state' => 'field_state',
-        'document publication date' => 'field_document_publication_date',
         'publication date' => 'published_at',
       ],
       'event' => [
