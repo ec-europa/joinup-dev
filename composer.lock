@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec46545aa782a68f0ff81dc4d52aba43",
+    "content-hash": "9411ba37d360e3ba6b14d1cba62de536",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -13858,7 +13858,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
+                    "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch",
+                    "Error after updating to 1.5.0 @see https://www.drupal.org/project/config_devel/issues/3124261": "https://www.drupal.org/files/issues/2020-04-02/3124261-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

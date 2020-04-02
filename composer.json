@@ -109,7 +109,7 @@
         "drupal/admin_toolbar": "^1.27",
         "drupal/cas_mock_server": "^1.0",
         "drupal/coder": "^8.3.6",
-        "drupal/config_devel": "~1.4",
+        "drupal/config_devel": "~1.5",
         "drupal/config_inspector": "^1.0",
         "drupal/default_content": "^1.0-alpha8",
         "drupal/devel": "~2.1",
@@ -244,7 +244,8 @@
                 "Allow a pre-login subscriber to set the reason for cancelling the login @see https://www.drupal.org/project/cas/issues/3111073": "https://www.drupal.org/files/issues/2020-02-04/3111073-2.patch"
             },
             "drupal/config_devel": {
-                "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch"
+                "Add a tool for manipulating module info files @see https://www.drupal.org/project/config_devel/issues/2392929": "https://www.drupal.org/files/issues/2019-12-17/2392929-2.patch",
+                "Error after updating to 1.5.0 @see https://www.drupal.org/project/config_devel/issues/3124261": "https://www.drupal.org/files/issues/2020-04-02/3124261-2.patch"
             },
             "drupal/core": {
                 "Use email verification when changing user email addresses @see https://www.drupal.org/project/drupal/issues/85494": "https://www.drupal.org/files/issues/2019-12-03/85494-287-8.8.x.patch",
