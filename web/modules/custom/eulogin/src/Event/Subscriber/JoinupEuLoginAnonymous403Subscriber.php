@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 /**
  * Redirects anonymous 403 pages to EU Login login page.
  */
-class JoinupUserAnonymous403Subscriber extends HttpExceptionSubscriberBase {
+class JoinupEuLoginAnonymous403Subscriber extends HttpExceptionSubscriberBase {
 
   /**
    * The current user.
@@ -67,12 +67,12 @@ class JoinupUserAnonymous403Subscriber extends HttpExceptionSubscriberBase {
     ];
     $redirect_url = Url::fromRoute('cas.login', [], $options)->toString();
 
-    $response = new CacheableRedirectResponse($redirect_url, 302);
+    $response = new CacheableRedirectResponse($redirect_url);
 
     $cache_metadata = new CacheableMetadata();
 
-    // Vary the redirect cache on URL.
-    $cache_metadata->addCacheContexts(['url']);
+    // Vary the redirect cache by URL and if the user is anonymous or not.
+    $cache_metadata->addCacheContexts(['url', 'user.roles:anonymous']);
 
     // Copy the original cache metadata associated with the exception. The
     // exception itself received the cache metadata from the route access check.
