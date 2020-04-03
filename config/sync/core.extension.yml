@@ -116,7 +116,6 @@ module:
   path: 0
   path_alias: 0
   pipeline: 0
-  r4032login: 0
   rdf_draft: 0
   rdf_entity: 0
   rdf_entity_provenance: 0
