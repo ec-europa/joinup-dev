@@ -26,49 +26,69 @@
  * - member_for: A custom variable, which contains a 'member for' timespan.
  */
 #}
-<div class="featured__outer-wrapper">
+<div class="featured__outer-wrapper featured__outer-wrapper--user">
   <div class="featured__overlay"></div>
   <div class="featured__inner-wrapper">
-    {# @todo This is temporary, once all fields are available, it will be replaced. #}
-    <a class="featured__title-wrapper" href="{{ path('entity.user.canonical',{'user': user.id()}) }}">
-      <div class="featured__logo">{{ content.field_user_photo }}</div>
-      <div class="featured__text featured__text--double">
-        <h1><span>{{ full_name }}</span></h1>
-        {% if content.field_user_business_title|render %}
-          <div class="featured__text-small">{{ content.field_user_business_title }}</div>
-        {% endif %}
-      </div>
-    </a>
-    {% if content.field_social_media|render %}
-      <div class="featured__container">
-        {{ content.field_social_media }}
-      </div>
-    {% endif %}
-      <div class="featured__stats">
-        <div class="stats__column">
-          <div class="stats__wrapper">
-            <span class="stats__text">{{ 'Member for'|t }}:</span>
-            <span class="stats__text bold">{{ member_for }}</span>
+    <div class="mdl-grid mdl-grid--no-spacing">
+      <div class="mdl-cell--8-col mdl-cell--8-col-tablet mdl-cell--2-offset-desktop">
+
+        <div class="mdl-grid">
+
+          <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-wide">
+            <a class="featured__logo-wrapper" href="{{ path('entity.user.canonical',{'user': user.id()}) }}">
+              <div class="featured__logo" style="background-image: url({{ field_user_photo_url }})"></div>
+            </a>
+            {% if content.field_social_media|render %}
+              {{ content.field_social_media }}
+            {% endif %}
           </div>
-          {% if content.field_user_nationality|render %}
-            <div class="stats__wrapper">
-              <span class="stats__text">{{ 'Country of origin'|t }}:</span>
-              <span class="stats__text bold">{{ content.field_user_nationality }}</span>
+
+          <div class="mdl-cell mdl-cell--8-col mdl-cell--9-col-wide">
+            <div class="featured__text featured__text--double">
+              <h1><span>{{ full_name }}</span></h1>
+              {% if content.field_user_business_title|render %}
+                <div class="featured__text-small bold">{{ content.field_user_business_title }}</div>
+              {% endif %}
             </div>
-          {% endif %}
-          {% if content.field_user_organisation|render %}
-            <div class="stats__wrapper">
-              <span class="stats__text">{{ 'Organisation'|t }}:</span>
-              <span class="stats__text bold">{{ content.field_user_organisation }}</span>
+
+            <div class="mdl-grid mdl-grid--no-spacing">
+
+              <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-wide">
+                {% if content.field_user_organisation|render %}
+                  <div class="stats__wrapper stats__wrapper-organisation">
+                    <span class="stats__text bold">{{ 'Organisation'|t }}:</span>
+                    <span class="stats__text">{{ content.field_user_organisation }}</span>
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-wide">
+                {% if content.field_user_professional_domain|render %}
+                  <div class="stats__wrapper stats__wrapper-domain">
+                    <span class="stats__text bold">{{ 'Domains'|t }}:</span>
+                    <span class="stats__text">{{ content.field_user_professional_domain }}</span>
+                  </div>
+                {% endif %}
+                <div class="stats__wrapper stats__wrapper-domain">
+                  <span class="stats__text bold">Domains:</span>
+                  <span class="stats__col--double">
+                    <div>
+                        <div>Free and open source software</div>
+                        <div>ICT</div>
+                        <div>Science and technology</div>
+                        <div>Collaboration</div>
+                        <div>Free and open source software in Public Administrations</div>
+                        <div>ICT standardisation in eGovernment</div>
+                        <div>Open government</div>
+                        <div>eGovernmentttt</div>
+                    </div>
+                  </span>
+                </div>
+              </div>
             </div>
-          {% endif %}
-          {% if content.field_user_professional_domain|render %}
-            <div class="stats__wrapper">
-              <span class="stats__text">{{ 'Domains'|t }}:</span>
-              <span class="stats__text bold">{{ content.field_user_professional_domain }}</span>
-            </div>
-          {% endif %}
+          </div>
         </div>
       </div>
+    </div>
   </div>
 </div>
