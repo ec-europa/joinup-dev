@@ -180,3 +180,29 @@ function joinup_user_post_update_unsubscribe_all_members() {
   $database = \Drupal::database();
   $database->truncate('og_membership__subscription_bundles')->execute();
 }
+
+/**
+ * Fix broken accounts with empty emails.
+ */
+function joinup_user_post_update_fix_broken_accounts(): void {
+  // Delete test accounts without email.
+  foreach (['test_cancel', 'test_cancel_mod'] as $user_name) {
+    if ($user = user_load_by_name($user_name)) {
+      $user->delete();
+    }
+  }
+
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+  $uids = $user_storage
+    ->getQuery()
+    ->notExists('mail')
+    ->condition('uid', 0, '!=')
+    ->execute();
+
+  /** @var \Drupal\user\UserInterface $user */
+  foreach ($user_storage->loadMultiple($uids) as $user) {
+    $mail = $user->getAccountName() . '@example.com';
+    $user->setEmail($mail);
+    $user->save();
+  }
+}
