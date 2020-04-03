@@ -29,7 +29,6 @@ Feature: Site alerts
     And I press "Save"
     Then I should see the text "Not Active"
 
-    Then I break
     # The alert should no longer be shown.
     Given I am not logged in
     And I am on the homepage
