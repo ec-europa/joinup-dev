@@ -147,11 +147,12 @@ class LinksInlineWidget extends WidgetPluginBase implements ContainerFactoryPlug
     // When there is no active items, add the reset link to it, otherwise move
     // it to the end of all the inactive items.
     $all_link = $this->generateResetLink($facet);
-    if (empty($active)) {
-      $active[] = $all_link;
-    }
-    else {
+    if (!empty($active)) {
       $inactive[] = $all_link;
+    }
+    // Do not add the link if there are no items at all.
+    elseif (!empty($inactive)) {
+      $active[] = $all_link;
     }
 
     $configuration = $this->getConfiguration();
