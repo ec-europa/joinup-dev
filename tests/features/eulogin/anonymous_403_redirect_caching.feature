@@ -1,8 +1,10 @@
-@api
-Feature: Ensure that cache invalidation is working properly.
+@api @group-a
+Feature: Ensure that redirect cache invalidation is working properly.
 
   @terms
-  Scenario: Cache is invalidated for anonymous users when publishing a collection.
+  Scenario: Redirect cache is invalidated for anonymous users when publishing a
+  collection.
+
     Given owner:
       | name          | type    |
       | Cache company | Company |
@@ -13,7 +15,6 @@ Feature: Ensure that cache invalidation is working properly.
       | Title                 | Cache debug collection      |
       | Description           | Description does not matter |
       | Geographical coverage | Belgium                     |
-      # Contact information data.
       | Name                  | Cache manager               |
       | E-mail                | cache_manager@example.com   |
     And I select "HR" from "Policy domain"
