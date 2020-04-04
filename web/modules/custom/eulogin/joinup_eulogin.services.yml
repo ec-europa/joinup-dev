@@ -18,6 +18,11 @@ services:
     arguments: ['@current_route_match', '@current_user', '@externalauth.authmap', '@state']
     tags:
       - { name: 'event_subscriber' }
+  joinup_eulogin.anonymous_403.subscriber:
+    class: Drupal\joinup_eulogin\Event\Subscriber\JoinupEuLoginAnonymous403Subscriber
+    arguments: ['@current_user']
+    tags:
+      - { name: event_subscriber }
   cache_context.user.is_eulogin:
     class: Drupal\joinup_eulogin\Cache\Context\EuLoginUserCacheContext
     arguments: ['@current_user', '@entity_type.manager']
