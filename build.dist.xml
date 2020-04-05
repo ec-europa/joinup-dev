@@ -137,13 +137,6 @@
 
     <!-- Set up Drush. -->
     <target name="setup-drush" description="Generate the configuration file for Drush.">
-        <if>
-            <available file="${drush.yml.path}" type="file" property="drush.yml.available" />
-            <then>
-                <echo message="Deleting existing drush.yml configuration file" />
-                <delete file="${drush.yml.path}" failonerror="false" />
-            </then>
-        </if>
         <echo message="Creating drush.yml configuration file" />
         <loadfile property="drush.yml.content" file="${drush.yml.template}" />
         <echo message="${drush.yml.content}" file="${drush.yml.path}" />
