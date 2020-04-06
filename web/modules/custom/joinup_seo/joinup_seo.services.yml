@@ -1,0 +1,4 @@
+services:
+  joinup_seo.export_helper:
+    class: Drupal\joinup_seo\JoinupSeoExportHelper
+    arguments: ['@sparql_entity.serializer']
