@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\joinup\Cache\Context;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Cache\Context\CacheContextInterface;
+use Drupal\Core\Cache\Context\CalculatedCacheContextInterface;
 use Drupal\Core\Cache\Context\UserCacheContextBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -22,9 +22,14 @@ use Drupal\Core\Session\AccountInterface;
  * This is similar to UserCacheContext but is much less granular, since the
  * number of content authors is small relative to the total number of users.
  *
+ * To vary only by a single community content type, the cache context key can be
+ * appended as a cache context parameter. For example to vary events by author,
+ * use 'community_content_author:event'.
+ *
  * Cache context ID: 'community_content_author'
+ * Calculated cache context ID: 'community_content_author:%bundle'
  */
-class CommunityContentAuthorCacheContext extends UserCacheContextBase implements CacheContextInterface {
+class CommunityContentAuthorCacheContext extends UserCacheContextBase implements CalculatedCacheContextInterface {
 
   /**
    * The string to return when no context is found.
@@ -41,7 +46,7 @@ class CommunityContentAuthorCacheContext extends UserCacheContextBase implements
   /**
    * Static cache of queried cache contexts.
    *
-   * @var string[]
+   * @var string[][]
    */
   protected $cachedContexts = [];
 
@@ -69,7 +74,7 @@ class CommunityContentAuthorCacheContext extends UserCacheContextBase implements
   /**
    * {@inheritdoc}
    */
-  public function getContext(): string {
+  public function getContext($bundle = NULL): string {
     if ($this->user->isAnonymous()) {
       return self::NO_CONTEXT;
     }
@@ -77,21 +82,26 @@ class CommunityContentAuthorCacheContext extends UserCacheContextBase implements
 
     // Since this might be called many times per request, only perform the query
     // once and cache it.
-    if (!isset($this->cachedContexts[$uid])) {
+    if (!isset($this->cachedContexts[$uid][$bundle])) {
       $query = $this->entityTypeManager->getStorage('node')->getQuery();
       $query
         ->condition('uid', $uid)
         ->range(0, 1);
-      $this->cachedContexts[$uid] = empty($query->execute()) ? self::NO_CONTEXT : (string) $uid;
+
+      if (!empty($bundle)) {
+        $query->condition('type', $bundle);
+      }
+
+      $this->cachedContexts[$uid][$bundle] = empty($query->execute()) ? self::NO_CONTEXT : (string) $uid;
     }
 
-    return $this->cachedContexts[$uid];
+    return $this->cachedContexts[$uid][$bundle];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCacheableMetadata() {
+  public function getCacheableMetadata($bundle = NULL) {
     return new CacheableMetadata();
   }
 

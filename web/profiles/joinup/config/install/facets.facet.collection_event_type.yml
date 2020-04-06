@@ -18,7 +18,7 @@ widget:
     suffix_text: ''
     arbitrary_facet_plugin: events_arbitrary
     cache_contexts:
-      - user
+      - community_content_author:event
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
