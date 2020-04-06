@@ -9,7 +9,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\menu_link_content\MenuLinkContentInterface;
 
 /**
- * Interface FrontPageMenuHelperInterface.
+ * Interface for services that deal with the front page menu.
  */
 interface FrontPageMenuHelperInterface {
 
@@ -39,24 +39,5 @@ interface FrontPageMenuHelperInterface {
    *   The entity to remove from the front page menu.
    */
   public function unpinFromFrontPage(FieldableEntityInterface $entity): void;
-
-  /**
-   * Updates the search api index entry of the entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity to be updated.
-   */
-  public function updateSearchApiEntry(EntityInterface $entity): void;
-
-  /**
-   * Loads the entities related to the passed menu items.
-   *
-   * @param \Drupal\menu_link_content\Entity\MenuLinkContent[] $menu_items
-   *   The array of menu items.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   An array of entities in the same order as their menu items.
-   */
-  public function loadEntitiesFromMenuItems(array $menu_items): array;
 
 }

@@ -203,15 +203,9 @@ class CustomPageOgMenuLinksManager implements CustomPageOgMenuLinksManagerInterf
   }
 
   /**
-   * Gets the OG menu instance, given a group ID.
-   *
-   * @param string $group_id
-   *   The ID of the group where is attached the OG menu instance.
-   *
-   * @return \Drupal\og_menu\OgMenuInstanceInterface|null
-   *   The OG menu instance or NULL if none can be determined.
+   * {@inheritdoc}
    */
-  protected function getOgMenuInstanceByGroupId(string $group_id): ?OgMenuInstanceInterface {
+  public function getOgMenuInstanceByGroupId(string $group_id): ?OgMenuInstanceInterface {
     if (Rdf::load($group_id)) {
       $properties = [
         'type' => 'navigation',

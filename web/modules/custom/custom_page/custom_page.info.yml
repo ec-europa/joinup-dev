@@ -12,6 +12,7 @@ dependencies:
   - 'joinup:joinup_group'
   - 'joinup:search_api_field'
   - 'og:og'
+  - 'search_api:search_api'
   - 'smart_trim:smart_trim'
 
 config_devel:

@@ -9,7 +9,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Helper methods for dealing with groups in Joinup.
+ * Static helper methods for dealing with groups in Joinup.
  */
 class JoinupGroupHelper {
 

@@ -1,0 +1,5 @@
+type: module
+name: 'Joinup Menu'
+description: 'Reusable code to interact with menus in Joinup.'
+core: 8.x
+package: Joinup

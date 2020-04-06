@@ -471,58 +471,18 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
-   * Creates menu items for an og group menu.
-   *
-   * This function uses only the navigation menu for the items.
-   * If the collection passed does not have a menu yet, one is created.
-   * Nodes are loaded by title.
-   *
-   * Table format:
-   * | collection   | label             | page         | weight |
-   * | Collection 1 | Page 1 menu label | Page 1 title | 0      |
-   * | Collection 1 | Page 2 menu label | Page 2 title | 1      |
-   * | Collection 2 | Page 3 menu label | Page 3 title | 0      |
-   *
-   * @param string $bundle
-   *   The bundle of the content entity.
-   * @param \Behat\Gherkin\Node\TableNode $menu_table
-   *   The menu table.
-   *
-   * @Given (the following ):bundle content menu items for the corresponding collections:
-   */
-  public function givenCollectionMenuItems(string $bundle, TableNode $menu_table): void {
-    foreach ($menu_table->getColumnsHash() as $values) {
-      $group = $this->getRdfEntityByLabel($values['collection'], 'collection');
-      $content = $this->getNodeByTitle($values['page'], $bundle);
-      $og_menu_instance = $this->getOgMenuInstance($group->id(), 'navigation');
-      if (empty($og_menu_instance)) {
-        $og_menu_instance = $this->createOgMenuInstance($group->id(), 'navigation');
-      }
-
-      // Prepare the array to pass to MenuLinkContent::create method.
-      $menu_item_data = [
-        'title' => $values['label'],
-        'link' => ['uri' => 'internal:/node/' . $content->id()],
-        'menu_name' => 'ogmenu-' . $og_menu_instance->id(),
-        'weight' => $values['weight'],
-        'expanded' => TRUE,
-      ];
-
-      $this->createOgMenuItem($menu_item_data);
-    }
-  }
-
-  /**
-   * Alters relationships between menu items for the custom pages menu.
+   * Alters custom page menu items for group navigation menus.
    *
    * It does not create the menu items as they are created automatically when
    * the custom pages are created.
    *
    * Table format:
-   * | title              | parent              | weight |
-   * | Custom page parent | Custom page child 1 |      1 |
-   * | Custom page parent | Custom page child 2 |      3 |
-   * | Custom page parent | Custom page child 3 |      2 |
+   * | title              | parent              | weight | enabled |
+   * | Custom page parent | Custom page child 1 |      1 | yes     |
+   * | Custom page parent | Custom page child 2 |      3 | yes     |
+   * | Custom page parent | Custom page child 3 |      2 | no      |
+   *
+   * All columns except the 'title' column are optional.
    *
    * @param \Behat\Gherkin\Node\TableNode $menu_table
    *   The menu table.
@@ -537,9 +497,13 @@ class CollectionSubContext extends DrupalSubContextBase implements DrupalSubCont
     /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
     $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
     foreach ($menu_table->getColumnsHash() as $values) {
-      if (isset($values['parent']) && !empty($values['parent'])) {
+      if (!empty($values['parent'])) {
         $parent_link = $this->getMenuLinkByTitle($values['parent']);
         $values['parent'] = $parent_link->getPluginId();
+      }
+
+      if (!empty($values['enabled'])) {
+        $values['enabled'] = (int) ($values['enabled'] === 'yes');
       }
 
       $child_link = $this->getMenuLinkByTitle($values['title']);
