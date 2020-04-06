@@ -7,7 +7,7 @@ namespace Drupal\joinup_seo;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Interface JoinupSeoExportHelperInterface.
+ * Interface for services that export RDF data using JSON.
  */
 interface JoinupSeoExportHelperInterface {
 
