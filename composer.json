@@ -330,6 +330,9 @@
                 "Do not throw an exception when valid JSON data evaluates to empty PHP data @see https://github.com/drush-ops/drush/pull/4342": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4342.diff",
                 "Output correct data for machine readable formats in config:status @see https://github.com/drush-ops/drush/pull/4340": "resources/patch/drush-4340.patch"
             },
+            "easyrdf/easyrdf": {
+                "a": "resources/patch/e.patch"
+            },
             "ec-europa/virtuoso": {
                 "a": "resources/patch/v.patch"
             },

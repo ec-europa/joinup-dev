@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fd3f0b02e4673316a4efa040a427a34",
+    "content-hash": "fca5a0e3c3f2808684c1d29b7d4354a7",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7468,6 +7468,11 @@
                 "semsol/arc2": "~2.2"
             },
             "type": "library",
+            "extra": {
+                "patches_applied": {
+                    "a": "resources/patch/e.patch"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "EasyRdf\\": "lib"

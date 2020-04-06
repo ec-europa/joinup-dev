@@ -1,0 +1,13 @@
+diff --git a/lib/Sparql/Client.php b/lib/Sparql/Client.php
+index 656d90c..9e5d501 100644
+--- a/lib/Sparql/Client.php
++++ b/lib/Sparql/Client.php
+@@ -244,7 +244,7 @@ class Client
+         $response = $this->executeQuery($processed_query, $type);
+ 
+         if (!$response->isSuccessful()) {
+-            throw new Http\Exception("HTTP request for SPARQL query failed", 0, null, $response->getBody());
++            throw new Http\Exception("HTTP request for SPARQL query failed " . $response->getBody(), 0, null, $response->getBody());
+         }
+ 
+         if ($response->getStatus() == 204) {

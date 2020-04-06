@@ -2,26 +2,26 @@
 
 <project name="ContinuousPHP" default="help">
 
-<!--    <echo msg="Loading AWS additional tasks." />-->
-<!--    <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />-->
-<!--    <property name="aws.profile" value="" />-->
+    <echo msg="Loading AWS additional tasks." />
+    <import file="./vendor/continuousphp/aws-sdk-phing/tasks.xml" />
+    <property name="aws.profile" value="" />
 
     <echo msg="Turn environment variable into a phing property" />
     <taskdef name="env2property" classname="\DrupalProject\Phing\EnvironmentVarAsProperty" />
 
-<!--    <echo msg="Loading infra additional tasks." />-->
-<!--    <import file="./vendor/ec-europa/infra/infra.xml" />-->
+    <echo msg="Loading infra additional tasks." />
+    <import file="./vendor/ec-europa/infra/infra.xml" />
 
     <!-- Run Behat tests. -->
-<!--    &lt;!&ndash; Use this target to run tests with increased verbosity on ContinuousPHP to help debugging. &ndash;&gt;-->
-<!--    <target name="run-behat-tests" description="Run Behat tests.">-->
-<!--        <behat-->
-<!--            executable="${behat.bin}"-->
-<!--            config="${behat.yml.path}"-->
-<!--            strict="${behat.options.strict}"-->
-<!--            verbose="${behat.options.verbosity}"-->
-<!--        />-->
-<!--    </target>-->
+    <!-- Use this target to run tests with increased verbosity on ContinuousPHP to help debugging. -->
+    <target name="run-behat-tests" description="Run Behat tests.">
+        <behat
+            executable="${behat.bin}"
+            config="${behat.yml.path}"
+            strict="${behat.options.strict}"
+            verbose="${behat.options.verbosity}"
+        />
+    </target>
 
     <target name="setup-continuousphp"
             depends="check-continuousphp, start-apache-solr">
@@ -122,9 +122,9 @@
 
     
      <!--    &lt;!&ndash; provision new demo/test stack on AWS &ndash;&gt;-->
-<!--    <target name="provision-stack"-->
-<!--            description="Provision a stack on AWS"-->
-<!--            depends="setup-aws, run-stack, setup-deployment-group" />-->
+    <target name="provision-stack"
+            description="Provision a stack on AWS"
+            depends="setup-aws, run-stack, setup-deployment-group" />
 
     <!-- Sleeps to allow services to get up and be ready -->
     <target name="sleep">
