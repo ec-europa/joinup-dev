@@ -63,7 +63,7 @@
         "drupal/schema_metatag": "^1.4",
         "drupal/search_api": "1.13",
         "drupal/search_api_solr": "2.2",
-        "drupal/simple_sitemap": "3.x-dev#178a232a4960ec7076fd7b8702058bc59f56a6d9",
+        "drupal/simple_sitemap": "3.x-dev#75017cd102811de8af5eb7faeaa6fc019403fc73",
         "drupal/simplenews": "^1.0-beta1",
         "drupal/smart_trim": "~1.2",
         "drupal/social_media_links": "^2.6",
@@ -312,6 +312,9 @@
                 "item_id column is too short. @see https://www.drupal.org/node/2829696": "https://www.drupal.org/files/issues/item_id_column_is_too_short-2829696-10-D8.patch",
                 "Add a static method that knows to index a given entity @see https://www.drupal.org/project/search_api/issues/3106342": "https://www.drupal.org/files/issues/2020-01-14/3106342-6.patch",
                 "Bulk Form field for SAPI @see https://www.drupal.org/project/search_api/issues/3117171": "https://www.drupal.org/files/issues/2020-04-01/3117171-13.patch"
+            },
+            "drupal/simple_sitemap": {
+                "Incorrect XSL links for different language domains @see https://www.drupal.org/node/3082387": "https://git.drupalcode.org/project/simple_sitemap/commit/178a232.diff"
             },
             "drupal/social_media_links": {
                 "Missing config schema for field, widget and formatter @see https://www.drupal.org/node/2898680": "https://www.drupal.org/files/issues/2898680-6.patch",

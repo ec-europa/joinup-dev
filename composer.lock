@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bb0fc8ae4fc75f4fabf181b68e8e889",
+    "content-hash": "9036f3b682ddd1996b491b60e2f2a384",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -6498,7 +6498,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simple_sitemap.git",
-                "reference": "178a232a4960ec7076fd7b8702058bc59f56a6d9"
+                "reference": "75017cd102811de8af5eb7faeaa6fc019403fc73"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -6521,6 +6521,9 @@
                     "services": {
                         "drush.services.yml": "^9 || ^10"
                     }
+                },
+                "patches_applied": {
+                    "Incorrect XSL links for different language domains @see https://www.drupal.org/node/3082387": "https://git.drupalcode.org/project/simple_sitemap/commit/178a232.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6546,7 +6549,7 @@
                 "issues": "https://drupal.org/project/issues/simple_sitemap",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
-            "time": "2020-03-18T11:46:13+00:00"
+            "time": "2020-03-17T23:28:40+00:00"
         },
         {
             "name": "drupal/simplenews",
