@@ -593,7 +593,7 @@
     <target
         name="build-dist"
         description="Build a distribution package."
-        depends="install-composer-dependencies-dist, compile-scss" />
+        depends="install-composer-dependencies-dist, compile-scss, setup-drush" />
 
     <target
         name="build-dev"

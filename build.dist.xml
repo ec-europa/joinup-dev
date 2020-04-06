@@ -137,11 +137,13 @@
 
     <!-- Set up Drush. -->
     <target name="setup-drush" description="Generate the configuration file for Drush.">
+        <!-- Allow to override from environment variable, if exist. This is
+        useful on environments where we cannot configure local properties. -->
         <if>
-            <available file="${drush.yml.path}" type="file" property="drush.yml.available" />
+            <isset property="env.DRUPAL_BASE_URL"/>
             <then>
-                <echo message="Deleting existing drush.yml configuration file" />
-                <delete file="${drush.yml.path}" failonerror="false" />
+                <property name="drupal.base_url" value="${env.DRUPAL_BASE_URL}" override="true"/>
+                <echo message="The 'drupal.base_url' Phing property has been overridden by the DRUPAL_BASE_URL environment variable."/>
             </then>
         </if>
         <echo message="Creating drush.yml configuration file" />
