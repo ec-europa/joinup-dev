@@ -12,7 +12,6 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
@@ -987,9 +986,12 @@ class JoinupSubContext extends DrupalSubContextBase {
     $entity_type = self::translateEntityTypeAlias($entity_type);
     $entity = $this->getEntityByLabel($entity_type, $title);
     $this->getEntityStateField($entity)->set('value', $state);
-    if ($entity instanceof RevisionableInterface) {
+
+    // Only create a new revision if the entity type supports it.
+    if ($entity->getEntityType()->isRevisionable()) {
       $entity->setNewRevision(TRUE);
     }
+
     $entity->save();
   }
 
