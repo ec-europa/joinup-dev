@@ -104,13 +104,13 @@ class AddLicenceToComparisonForm extends FormBase {
 
     // In any case, do not show licences that are not linked to an SPDX licence.
     $query->exists('field_licence_spdx_licence');
-    $query->sort('label', 'ASC');
     $options = [];
     $ids = $query->execute();
     foreach ($rdf_storage->loadMultiple($ids) as $licence) {
       $spdx_licence = $licence->get('field_licence_spdx_licence')->entity;
       $options[$spdx_licence->get('field_spdx_licence_id')->value] = $licence->label() . ' (' . $spdx_licence->label() . ')';
     }
+    asort($options);
 
     return $options;
   }
