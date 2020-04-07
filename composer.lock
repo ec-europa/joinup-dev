@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f054c58663c15a93152d87f1e2b08e08",
+    "content-hash": "b4afacffd97c48b4f06e9b31ca37bd48",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -440,6 +440,16 @@
                 "dependency",
                 "package"
             ],
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-03-13T19:34:27+00:00"
         },
         {
@@ -728,6 +738,12 @@
             "keywords": [
                 "Xdebug",
                 "performance"
+            ],
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                }
             ],
             "time": "2020-03-01T12:26:26+00:00"
         },
@@ -3771,7 +3787,7 @@
                 "shasum": "109047e07a7e77528747d41044b6cf13f2671ac7"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -5973,89 +5989,6 @@
             }
         },
         {
-            "name": "drupal/r4032login",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/r4032login.git",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/r4032login-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "dd9dc2daf8e4b960d2be1fe58e19a8ec4fbf30f1"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1533913684",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Bevan",
-                    "homepage": "https://www.drupal.org/user/49989"
-                },
-                {
-                    "name": "Nixou",
-                    "homepage": "https://www.drupal.org/user/2304734"
-                },
-                {
-                    "name": "RobLoach",
-                    "homepage": "https://www.drupal.org/user/61114"
-                },
-                {
-                    "name": "Sk8erPeter",
-                    "homepage": "https://www.drupal.org/user/1441344"
-                },
-                {
-                    "name": "bdone",
-                    "homepage": "https://www.drupal.org/user/687670"
-                },
-                {
-                    "name": "deekayen",
-                    "homepage": "https://www.drupal.org/user/972"
-                },
-                {
-                    "name": "lotyrin",
-                    "homepage": "https://www.drupal.org/user/216580"
-                },
-                {
-                    "name": "mikesmullin",
-                    "homepage": "https://www.drupal.org/user/108440"
-                },
-                {
-                    "name": "pwolanin",
-                    "homepage": "https://www.drupal.org/user/49851"
-                },
-                {
-                    "name": "shrop",
-                    "homepage": "https://www.drupal.org/user/14767"
-                }
-            ],
-            "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
-            "homepage": "https://www.drupal.org/project/r4032login",
-            "support": {
-                "source": "https://git.drupalcode.org/project/r4032login"
-            }
-        },
-        {
             "name": "drupal/rdf_entity",
             "version": "1.0.0-alpha20",
             "source": {
@@ -6337,6 +6270,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-1.13",
                     "datestamp": "1562599986",
@@ -6997,8 +6933,20 @@
             ],
             "authors": [
                 {
+                    "name": "AdamPS",
+                    "homepage": "https://www.drupal.org/user/2650563"
+                },
+                {
+                    "name": "Anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
                     "name": "B-Prod",
                     "homepage": "https://www.drupal.org/user/407852"
+                },
+                {
+                    "name": "geek-merlin",
+                    "homepage": "https://www.drupal.org/user/229048"
                 },
                 {
                     "name": "sbrattla",
@@ -10381,7 +10329,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2020-02-13T14:54:04+00:00"
+            "time": "2019-03-13T23:53:42+00:00"
         },
         {
             "name": "stack/builder",
