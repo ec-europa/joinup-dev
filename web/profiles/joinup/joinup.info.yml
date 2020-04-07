@@ -41,6 +41,7 @@ config_devel:
     - block.block.primaryadminactions
     - block.block.rdf_entities_in_proposed_state
     - block.block.seven_login
+    - block.block.site_alerts
     - block.block.solutiontype
     - block.block.spatial_coverage_facet
     - block.block.support

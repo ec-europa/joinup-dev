@@ -25,6 +25,7 @@ dependencies:
   - 'redirect:redirect'
   - 'search_api:search_api'
   - 'search_api_solr:search_api_solr'
+  - 'site_alert:site_alert'
   - 'state_machine:state_machine'
 
 config_devel:
