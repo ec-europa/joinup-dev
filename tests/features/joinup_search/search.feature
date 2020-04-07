@@ -173,9 +173,10 @@ Feature: Global search
     Then the page should show the tiles "Collection alpha, Solution alpha, Release Alpha, Licence Alpha"
     And I should not see the text "Newsletter omega"
 
-    # "Omega" is used in all the node entities titles.
+    # "Omega" is used in all the node entities titles. Since the content of
+    # custom pages is added to their collection, we also match the collection.
     When I enter "omega" in the search bar and press enter
-    Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
+    Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 
@@ -186,7 +187,7 @@ Feature: Global search
 
     # "Epsilon" is used in all the node entities body fields.
     When I enter "epsilon" in the search bar and press enter
-    Then the page should show the tiles "News omega, Event Omega, Document omega, Discussion omega, Page omega"
+    Then the page should show the tiles "Collection alpha, News omega, Event Omega, Document omega, Discussion omega, Page omega"
     # Orphaned entities are not indexed.
     # And I should see the text "Newsletter omega"
 

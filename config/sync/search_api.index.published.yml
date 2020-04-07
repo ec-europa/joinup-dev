@@ -39,9 +39,10 @@ dependencies:
     - publication_date
     - user
     - search_api
+    - asset_distribution
+    - custom_page
     - joinup_search
     - search_api_solr
-    - asset_distribution
 id: published
 name: 'Published entities index'
 description: ''
@@ -535,8 +536,11 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -49
+      preprocess_index: -48
       preprocess_query: -50
+  include_custom_page_content:
+    weights:
+      preprocess_index: -49
   index_distribution_data:
     weights:
       preprocess_index: -50
@@ -602,7 +606,7 @@ processor_settings:
       - will
       - with
     weights:
-      preprocess_index: -46
+      preprocess_index: -45
       preprocess_query: -47
   tokenizer:
     all_fields: false
@@ -634,7 +638,7 @@ processor_settings:
     overlap_cjk: 1
     minimum_word_size: '3'
     weights:
-      preprocess_index: -48
+      preprocess_index: -47
       preprocess_query: -49
   transliteration:
     all_fields: false
@@ -662,7 +666,7 @@ processor_settings:
       - label
       - title
     weights:
-      preprocess_index: -47
+      preprocess_index: -46
       preprocess_query: -48
   type_boost:
     boosts:
@@ -684,7 +688,7 @@ processor_settings:
       'entity:user':
         datasource_boost: !!float 0
     weights:
-      preprocess_index: -41
+      preprocess_index: -42
 tracker_settings:
   default:
     indexing_order: fifo
