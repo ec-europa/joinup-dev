@@ -13,6 +13,7 @@ dependencies:
   - 'geocoder:geocoder_field'
   - 'geocoder:geocoder_geofield'
   - 'geofield:geofield'
+  - 'joinup:joinup_bundle_class'
   - 'joinup:joinup_community_content'
   - 'joinup:joinup_core'
   - 'oe_webtools:oe_webtools_geocoding'
