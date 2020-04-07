@@ -60,6 +60,14 @@ class AddLicenceToComparisonForm extends FormBase {
       '#options' => $this->getLicenceOptions($licences),
       '#empty_value' => '',
       '#empty_option' => $this->t('- Add licence -'),
+      '#attributes' => [
+        'class' => ['auto_submit'],
+      ],
+      '#attached' => [
+        'library' => [
+          'joinup_licence/search_auto_submit',
+        ],
+      ],
     ];
     return $form;
   }
