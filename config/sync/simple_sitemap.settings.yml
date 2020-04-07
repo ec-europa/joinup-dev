@@ -8,9 +8,20 @@ xsl: false
 base_url: ''
 default_variant: default
 custom_links_include_images: false
-excluded_languages: {  }
+excluded_languages:
+  cs: cs
+  da: da
+  nl: nl
+  et: et
+  fr: fr
+  de: de
+  el: el
+  it: it
+  sl: sl
+  es: es
 enabled_entity_types:
   - node
   - rdf_entity
 _core:
   default_config_hash: 52CWcEcMD0WxvDTjONwtNpMR2DILJ9UUPn30tGa23co
+disable_language_hreflang: false

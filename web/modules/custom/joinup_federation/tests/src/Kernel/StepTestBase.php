@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 use Drupal\pipeline\PipelineState;
 use Drupal\pipeline\PipelineStateInterface;
 use Drupal\sparql_entity_storage\SparqlGraphStoreTrait;
-use Drupal\Tests\sparql_entity_storage\Traits\SparqlConnectionTrait;
 
 /**
  * Provides a base class for pipeline step kernel tests.
@@ -70,11 +70,11 @@ abstract class StepTestBase extends KernelTestBase {
    *
    * @param string $step_plugin_id
    *   The pipeline step.
-   * @param \Drupal\pipeline\PipelineStateInterface $state
+   * @param \Drupal\pipeline\PipelineStateInterface|null $state
    *   (optional) The pipeline state object. If missed a brand new will be
    *   created from the passed step.
    */
-  protected function runPipelinePrepare(string $step_plugin_id, PipelineStateInterface $state = NULL) {
+  protected function runPipelinePrepare(string $step_plugin_id, ?PipelineStateInterface $state = NULL) {
     $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
     if (!$state) {
       $state = (new PipelineState())->setStepId($step_plugin_id);
@@ -88,11 +88,11 @@ abstract class StepTestBase extends KernelTestBase {
    *
    * @param string $step_plugin_id
    *   The pipeline step.
-   * @param \Drupal\pipeline\PipelineStateInterface $state
+   * @param \Drupal\pipeline\PipelineStateInterface|null $state
    *   (optional) The pipeline state object. If missed a brand new will be
    *   created from the passed step.
    */
-  protected function runPipelineStep(string $step_plugin_id, PipelineStateInterface $state = NULL) {
+  protected function runPipelineStep(string $step_plugin_id, ?PipelineStateInterface $state = NULL) {
     $step_plugin_instance = $this->pipeline->createStepInstance($step_plugin_id);
     if (!$state) {
       $state = (new PipelineState())->setStepId($step_plugin_id);

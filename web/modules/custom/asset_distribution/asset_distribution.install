@@ -5,6 +5,8 @@
  * Install, uninstall, schema, requirements for the asset_distribution.module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Corrects the representation technique predicate.
  */

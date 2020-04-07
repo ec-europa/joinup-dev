@@ -312,6 +312,33 @@ class CustomPageSubContext extends DrupalSubContextBase implements DrupalSubCont
   }
 
   /**
+   * Changes the publication state of a given custom page.
+   *
+   * Note that this is only targeting custom pages because most other node types
+   * are community content whose workflow state controls if they are published.
+   *
+   * @param string $title
+   *   The title of the custom page to update.
+   * @param string $state
+   *   The publication state to set, can be either 'published' or 'unpublished'.
+   *
+   * @throws \Exception
+   *   Thrown when the custom page doesn't exist, or cannot be saved.
+   *
+   * @When the publication state of the :title custom page is changed to :state
+   */
+  public function updatePublicationState(string $title, string $state): void {
+    $node = $this->getNodeByTitle($title, 'custom_page');
+    if ($state === 'published') {
+      $node->setPublished();
+    }
+    else {
+      $node->setUnpublished();
+    }
+    $node->save();
+  }
+
+  /**
    * Asserts that a custom page tile has the logo properly set.
    *
    * @param string $title

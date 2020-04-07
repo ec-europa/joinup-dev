@@ -49,7 +49,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() : array {
+  public static function getSubscribedEvents(): array {
     $events[InvitationEvents::ACCEPT_INVITATION_EVENT] = ['acceptInvitation'];
     $events[InvitationEvents::REJECT_INVITATION_EVENT] = ['rejectInvitation'];
 
@@ -62,7 +62,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
-  public function acceptInvitation(InvitationEventInterface $event) : void {
+  public function acceptInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
 
     // Ignore invitations to other content entities.
@@ -92,7 +92,7 @@ class InvitationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\joinup_invite\Event\InvitationEventInterface $event
    *   The event that was fired.
    */
-  public function rejectInvitation(InvitationEventInterface $event) : void {
+  public function rejectInvitation(InvitationEventInterface $event): void {
     $invitation = $event->getInvitation();
 
     // Ignore invitations to other content entities.

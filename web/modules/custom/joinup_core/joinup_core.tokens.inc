@@ -5,6 +5,8 @@
  * Tokens support for Joinup Core module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**

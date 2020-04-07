@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\search_api_field\Plugin\facets\facet_source;
 
 use Drupal\Core\Path\CurrentPathStack;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_subscription\Plugin\ActionLink;
 
 use Drupal\Core\Entity\EntityInterface;

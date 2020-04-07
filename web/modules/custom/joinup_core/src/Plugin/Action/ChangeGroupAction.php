@@ -129,7 +129,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
   /**
    * {@inheritdoc}
    */
-  public function access($node, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($node, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     // The access is limited at the view level.
     return $return_as_object ? AccessResult::allowed() : TRUE;
   }
@@ -234,7 +234,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
   /**
    * {@inheritdoc}
    */
-  public function execute(NodeInterface $node = NULL) {
+  public function execute(?NodeInterface $node = NULL) {
     $this->executeMultiple([$node]);
   }
 
@@ -331,7 +331,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * @return \Drupal\menu_link_content\MenuLinkContentInterface|null
    *   The OG menu link.
    */
-  protected function getOgMenuLink(NodeInterface $custom_page) : ?MenuLinkContentInterface {
+  protected function getOgMenuLink(NodeInterface $custom_page): ?MenuLinkContentInterface {
     $menu_instance = $this->getOgMenuInstance();
     if (empty($menu_instance)) {
       return NULL;
@@ -356,7 +356,7 @@ class ChangeGroupAction extends ViewsBulkOperationsActionBase implements Contain
    * @return \Drupal\og_menu\OgMenuInstanceInterface|null
    *   The OG menu instance.
    */
-  protected function getOgMenuInstance() : ?OgMenuInstanceInterface {
+  protected function getOgMenuInstance(): ?OgMenuInstanceInterface {
     if (!isset($this->ogMenuInstance)) {
       $og_menu_storage = $this->entityTypeManager->getStorage('ogmenu_instance');
       // @todo If we ever support more than one OG Menu then we should no longer

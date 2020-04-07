@@ -395,7 +395,7 @@ function joinup_user_search_api_query_search_api_field_field_user_content_alter(
  *
  * @see \Drupal\user\Controller\UserController::userTitle()
  */
-function joinup_user_canonical_title(UserInterface $user = NULL) {
+function joinup_user_canonical_title(?UserInterface $user = NULL) {
   return $user ? ['#markup' => $user->get('full_name')->value, '#allowed_tags' => Xss::getHtmlTagList()] : '';
 }
 

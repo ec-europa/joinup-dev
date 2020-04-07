@@ -10,7 +10,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\contact_information\ContactInformationRelationInfoInterface;
-use Drupal\joinup_core\WorkflowHelperInterface;
+use Drupal\joinup_workflow\WorkflowHelperInterface;
 use Drupal\og\MembershipManagerInterface;
 use Drupal\rdf_entity\RdfInterface;
 use Drupal\workflow_state_permission\WorkflowStatePermissionPluginInterface;
@@ -51,7 +51,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
   /**
    * The workflow helper class.
    *
-   * @var \Drupal\joinup_core\WorkflowHelperInterface
+   * @var \Drupal\joinup_workflow\WorkflowHelperInterface
    */
   protected $workflowHelper;
 
@@ -70,7 +70,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
    *   The relation info service.
    * @param \Drupal\og\MembershipManagerInterface $membership_manager
    *   The membership manager service.
-   * @param \Drupal\joinup_core\WorkflowHelperInterface $workflow_helper
+   * @param \Drupal\joinup_workflow\WorkflowHelperInterface $workflow_helper
    *   The workflow helper class.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, ContactInformationRelationInfoInterface $relation_info, MembershipManagerInterface $membership_manager, WorkflowHelperInterface $workflow_helper) {
@@ -92,7 +92,7 @@ class ContactInformationWorkflowStatePermission extends PluginBase implements Wo
       $container->get('config.factory'),
       $container->get('contact_information.relation_info'),
       $container->get('og.membership_manager'),
-      $container->get('joinup_core.workflow.helper')
+      $container->get('joinup_workflow.workflow_helper')
     );
   }
 

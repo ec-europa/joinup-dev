@@ -5,6 +5,8 @@
  * Install, uninstall, schema and requirements hook for Joinup.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Database\Database;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Site\Settings;

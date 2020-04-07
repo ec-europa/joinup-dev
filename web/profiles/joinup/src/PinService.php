@@ -24,7 +24,7 @@ class PinService implements PinServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public function isEntityPinned(ContentEntityInterface $entity, RdfInterface $group = NULL) {
+  public function isEntityPinned(ContentEntityInterface $entity, ?RdfInterface $group = NULL) {
     if (JoinupGroupHelper::isSolution($entity)) {
       if (empty($group)) {
         return !$entity->get(self::SOLUTION_PIN_FIELD)->isEmpty();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_federation\Kernel;
 
 use Drupal\adms_validator\AdmsValidator;

@@ -5,6 +5,8 @@
  * Post update functions for the collection module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Updates the collection content field to show the events facet.
  */

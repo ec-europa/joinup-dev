@@ -10,14 +10,14 @@ declare(strict_types = 1);
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Drupal\comment\CommentInterface;
-use Drupal\comment\Entity\Comment;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Hook\Scope\BeforeNodeCreateScope;
+use Drupal\User\Entity\User;
+use Drupal\comment\CommentInterface;
+use Drupal\comment\Entity\Comment;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\joinup\Traits\BrowserCapabilityDetectionTrait;
@@ -42,7 +42,6 @@ use Drupal\node\Entity\Node;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\search_api\Entity\Server;
-use Drupal\User\Entity\User;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -725,7 +724,6 @@ class JoinupSubContext extends DrupalSubContextBase {
         'short title' => 'field_short_title',
         'spatial coverage' => 'field_document_spatial_coverage',
         'state' => 'field_state',
-        'document publication date' => 'field_document_publication_date',
         'publication date' => 'published_at',
       ],
       'event' => [
@@ -988,9 +986,12 @@ class JoinupSubContext extends DrupalSubContextBase {
     $entity_type = self::translateEntityTypeAlias($entity_type);
     $entity = $this->getEntityByLabel($entity_type, $title);
     $this->getEntityStateField($entity)->set('value', $state);
-    if ($entity instanceof RevisionableInterface) {
+
+    // Only create a new revision if the entity type supports it.
+    if ($entity->getEntityType()->isRevisionable()) {
       $entity->setNewRevision(TRUE);
     }
+
     $entity->save();
   }
 
@@ -2687,7 +2688,7 @@ JS;
    *   The button label.
    * @param string $status
    *   The expected status. Possible values are 'enabled' and 'disabled'.
-   * @param string $region
+   * @param string|null $region
    *   (optional) The region name. If left empty, the whole page will be used.
    *
    * @throws \InvalidArgumentException
@@ -2700,7 +2701,7 @@ JS;
    * @Then the :button button on the :region region should be :status
    * @Then the :button button should be :status
    */
-  public function assertButtonStatus(string $button, string $status, string $region = NULL): void {
+  public function assertButtonStatus(string $button, string $status, ?string $region = NULL): void {
     if (!in_array($status, ['enabled', 'disabled'])) {
       throw new InvalidArgumentException('Allowed values for status variable are "enabled" and "disabled".');
     }

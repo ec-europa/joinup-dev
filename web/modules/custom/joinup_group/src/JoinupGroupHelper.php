@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\joinup_group;
 
@@ -9,7 +9,7 @@ use Drupal\og\OgGroupAudienceHelperInterface;
 use Drupal\rdf_entity\RdfInterface;
 
 /**
- * Helper methods for dealing with groups in Joinup.
+ * Static helper methods for dealing with groups in Joinup.
  */
 class JoinupGroupHelper {
 
@@ -56,7 +56,7 @@ class JoinupGroupHelper {
    *   otherwise.
    */
   public static function isGroup(EntityInterface $entity): bool {
-    return isset(self::GROUP_BUNDLES[$entity->bundle()]);
+    return $entity instanceof RdfInterface && isset(self::GROUP_BUNDLES[$entity->bundle()]);
   }
 
   /**

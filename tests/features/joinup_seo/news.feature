@@ -19,16 +19,16 @@ Feature: SEO for news articles.
     Then the metatag JSON should be attached in the page
     And 1 metatag graph of type "NewsArticle" should exist in the page
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following properties:
-      | property            | value                                                                 |
-      | @type               | NewsArticle                                                           |
-      | headline            | Headline of Joinup SEO news                                           |
+      | property            | value                                                                   |
+      | @type               | NewsArticle                                                             |
+      | headline            | Headline of Joinup SEO news                                             |
       # Summary is preferred over the body of the entity.
-      | description         | Summary of news.                                                      |
-      | isAccessibleForFree | True                                                                  |
-      | datePublished       | 2019-12-25T13:00:00+0100                                              |
-      | dateModified        | 2020-01-01T13:00:00+0100                                              |
-      # $base_url$ will be replaced with the base url of the website.
-      | mainEntityOfPage    | $base_url$/collection/joinup-seo-news-collection/news/joinup-seo-news |
+      | description         | Summary of news.                                                        |
+      | isAccessibleForFree | True                                                                    |
+      | datePublished       | 2019-12-25T13:00:00+0100                                                |
+      | dateModified        | 2020-01-01T13:00:00+0100                                                |
+      # __base_url__ will be replaced with the base url of the website.
+      | mainEntityOfPage    | __base_url__/collection/joinup-seo-news-collection/news/joinup-seo-news |
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following "image" properties:
       | property             | value       |
       | @type                | ImageObject |
@@ -39,17 +39,31 @@ Feature: SEO for news articles.
       | width                | 377         |
       | height               | 139         |
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following "author" properties:
-      | property | value                         |
-      | @type    | Person                        |
-      | @id      | $base_url$/user/$random_text$ |
-      | name     | Kurk Smith                    |
-      | url      | $base_url$/user/$random_text$ |
+      | property | value                             |
+      | @type    | Person                            |
+      | @id      | __base_url__/user/__random_text__ |
+      | name     | Kurk Smith                        |
+      | url      | __base_url__/user/__random_text__ |
     And the metatag graph of the item with "name" "Joinup SEO news" should have the following "publisher" properties:
-      | property | value                         |
-      | @type    | Person                        |
-      | @id      | $base_url$/user/$random_text$ |
-      | name     | Kurk Smith                    |
-      | url      | $base_url$/user/$random_text$ |
+      | property | value                             |
+      | @type    | Person                            |
+      | @id      | __base_url__/user/__random_text__ |
+      | name     | Kurk Smith                        |
+      | url      | __base_url__/user/__random_text__ |
+    And the following meta tags should available in the html:
+      | identifier             | value                                                                   |
+      | description            | Summary of news.                                                        |
+      | og:url                 | __base_url__/collection/joinup-seo-news-collection/news/joinup-seo-news |
+      | og:site_name           | Joinup                                                                  |
+      | og:title               | Joinup SEO news                                                         |
+      | og:description         | Summary of news.                                                        |
+      | og:image               | __base_url__/sites/default/files/__random_text__.jpg                    |
+      | og:image:type          | image/jpeg                                                              |
+      | og:image:width         | 377                                                                     |
+      | og:image:height        | 139                                                                     |
+      | article:author         | Kurk Smith                                                              |
+      | article:published_time | 2019-12-25T13:00:00+0100                                                |
+      | article:modified_time  | 2020-01-01T13:00:00+0100                                                |
 
     When I click "Keep up to date"
     Then I should see the "Joinup SEO news" tile

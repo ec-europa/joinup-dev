@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\joinup_discussion\ExistingSite;
 
-use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 use Drupal\Tests\joinup_community_content\ExistingSite\CommunityContentWorkflowTestBase;
+use Drupal\joinup_community_content\CommunityContentWorkflowAccessControlHandler;
 
 /**
  * Tests CRUD operations and workflow transitions for the discussion node.

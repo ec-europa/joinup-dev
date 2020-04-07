@@ -12,8 +12,12 @@ third_party_settings:
   allowed_formats:
     content_editor: content_editor
     basic_html: '0'
+    eira_format: '0'
+    licence: '0'
+    restricted_html: '0'
     simple_html: '0'
     simple_text: '0'
+    full_html: '0'
     plain_text: '0'
 _core:
   default_config_hash: MYE4qG23Xk8I6KYd15pk0PKdvWfDFQ0PNzZbw7m8UFk
@@ -28,6 +32,6 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  display_summary: true
+  display_summary: false
   required_summary: false
 field_type: text_with_summary

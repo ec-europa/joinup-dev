@@ -78,13 +78,13 @@ abstract class CommunityContentController extends ControllerBase {
    *
    * @param \Drupal\rdf_entity\RdfInterface $rdf_entity
    *   The RDF entity for which the document entity is created.
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface|null $account
    *   The account to check access for. The current user will be used if NULL.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result object.
    */
-  public function createAccess(RdfInterface $rdf_entity, AccountInterface $account = NULL): AccessResult {
+  public function createAccess(RdfInterface $rdf_entity, ?AccountInterface $account = NULL): AccessResult {
     if (empty($account)) {
       $account = $this->currentUser();
     }

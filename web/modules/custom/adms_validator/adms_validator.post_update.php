@@ -5,6 +5,8 @@
  * Post update functions for ADMS-AP Validator module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Database\Database;
 
 /**

@@ -25,16 +25,16 @@ Feature: SEO for document content.
     Then the metatag JSON should be attached in the page
     And 1 metatag graph of type "DigitalDocument" should exist in the page
     And the metatag graph of the item with "name" "SEO document" should have the following properties:
-      | property            | value                                                |
-      | @type               | DigitalDocument                                      |
-      | headline            | SEO document                                         |
-      | name                | SEO document                                         |
-      | license             | https://example.com/license1                         |
-      | description         | Document test1.zip                                   |
-      | datePublished       | 2019-12-25T$timezone$:00:00+0100                     |
-      | isAccessibleForFree | True                                                 |
-      | dateModified        | 2020-01-01T$timezone$:00:00+0100                     |
-      | mainEntityOfPage    | $base_url$/sites/default/files/test$random_text$.zip |
+      | property            | value                                                    |
+      | @type               | DigitalDocument                                          |
+      | headline            | SEO document                                             |
+      | name                | SEO document                                             |
+      | license             | https://example.com/license1                             |
+      | description         | Document test1.zip                                       |
+      | datePublished       | 2019-12-25T__timezone__:00:00+0100                       |
+      | isAccessibleForFree | True                                                     |
+      | dateModified        | 2020-01-01T__timezone__:00:00+0100                       |
+      | mainEntityOfPage    | __base_url__/sites/default/files/test__random_text__.zip |
     # Adding numerical property values is turning the "about" property into an array comparison.
     And the metatag graph of the item with "name" "SEO document" should have the following "about" properties:
       | property | value |
@@ -42,22 +42,29 @@ Feature: SEO for document content.
       | 1        | key2  |
       | 2        | key3  |
     And the metatag graph of the item with "name" "SEO document" should have the following "associatedMedia" properties:
-      | property      | value                                                |
-      | @type         | MediaObject                                          |
-      # $random_text$ can be any string that is appointed by the system and we
+      | property      | value                                                    |
+      | @type         | MediaObject                                              |
+      # __random_text__ can be any string that is appointed by the system and we
       # cannot predict. In this case it is the random file name suffix before the file extension.
-      | @id           | $base_url$/sites/default/files/test$random_text$.zip |
-      | name          | test.zip                                             |
-      | url           | $base_url$/sites/default/files/test$random_text$.zip |
-      | datePublished | 2019-12-25T$timezone$:00:00+0100                     |
+      | @id           | __base_url__/sites/default/files/test__random_text__.zip |
+      | name          | test.zip                                                 |
+      | url           | __base_url__/sites/default/files/test__random_text__.zip |
+      | datePublished | 2019-12-25T__timezone__:00:00+0100                       |
     And the metatag graph of the item with "name" "SEO document" should have the following "author" properties:
-      | property | value                         |
-      | @type    | Person                        |
+      | property | value                             |
+      | @type    | Person                            |
       # The user id is only a number but we can be quite certain that this will be a url to the user since the
-      # $random_text$ does not include a / character.
-      | @id      | $base_url$/user/$random_text$ |
-      | name     | Scrapper Jedi                 |
-      | url      | $base_url$/user/$random_text$ |
+      # __random_text__ does not include a / character.
+      | @id      | __base_url__/user/__random_text__ |
+      | name     | Scrapper Jedi                     |
+      | url      | __base_url__/user/__random_text__ |
+    And the following meta tags should available in the html:
+      | identifier     | value                                                                        |
+      | description    | Document test1.zip                                                           |
+      | og:url         | __base_url__/collection/joinup-seo-document-collection/document/seo-document |
+      | og:site_name   | Joinup                                                                       |
+      | og:title       | SEO document                                                                 |
+      | og:description | Document test1.zip                                                           |
 
     When I click "Keep up to date"
     Then I should see the "SEO document" tile
@@ -80,9 +87,9 @@ Feature: SEO for document content.
       | headline            | SEO document                               |
       | name                | SEO document                               |
       | description         | Remote url example                         |
-      | datePublished       | 2019-12-25T$timezone$:00:00+0100           |
+      | datePublished       | 2019-12-25T__timezone__:00:00+0100         |
       | isAccessibleForFree | True                                       |
-      | dateModified        | 2020-01-01T$timezone$:00:00+0100           |
+      | dateModified        | 2020-01-01T__timezone__:00:00+0100         |
       | mainEntityOfPage    | http://example.com/some-file-url.extension |
     And the metatag graph of the item with "name" "SEO document" should have the following "associatedMedia" properties:
       | property      | value                                      |
@@ -90,4 +97,4 @@ Feature: SEO for document content.
       | @id           | http://example.com/some-file-url.extension |
       | name          | some-file-url.extension                    |
       | url           | http://example.com/some-file-url.extension |
-      | datePublished | 2019-12-25T$timezone$:00:00+0100           |
+      | datePublished | 2019-12-25T__timezone__:00:00+0100         |

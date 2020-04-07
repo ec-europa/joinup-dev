@@ -5,6 +5,8 @@
  * Install, uninstall, schema and requirements hook for the owner module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Fix the owner type predicate.
  */

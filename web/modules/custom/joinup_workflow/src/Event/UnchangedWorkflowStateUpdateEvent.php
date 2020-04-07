@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\joinup_core\Event;
+namespace Drupal\joinup_workflow\Event;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
@@ -13,11 +13,9 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Event fired when an entity is updated without changing its workflow state.
  *
- * @see \Drupal\joinup_core\Plugin\Field\FieldWidget\StateMachineButtons
+ * @see \Drupal\joinup_workflow\Plugin\Field\FieldWidget\StateMachineButtons
  */
 class UnchangedWorkflowStateUpdateEvent extends Event {
-
-  const EVENT_NAME = 'joinup_core.unchanged_workflow_state_update';
 
   /**
    * The entity being updated.
@@ -110,8 +108,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param \Drupal\Core\StringTranslation\TranslatableMarkup $label
    *   The label text.
    *
-   * @return \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent
-   *   The event, for chaining.
+   * @return $this
    */
   public function setLabel(TranslatableMarkup $label): self {
     $this->label = $label;
@@ -134,8 +131,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param int $weight
    *   The weight.
    *
-   * @return \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent
-   *   The event, for chaining.
+   * @return $this
    */
   public function setWeight(int $weight): self {
     $this->weight = $weight;
@@ -161,8 +157,7 @@ class UnchangedWorkflowStateUpdateEvent extends Event {
    * @param \Drupal\Core\Access\AccessResultInterface $access
    *   The access result object.
    *
-   * @return \Drupal\joinup_core\Event\UnchangedWorkflowStateUpdateEvent
-   *   The event, for chaining.
+   * @return $this
    */
   public function setAccess(AccessResultInterface $access): self {
     $this->access = $this->access->orIf($access);

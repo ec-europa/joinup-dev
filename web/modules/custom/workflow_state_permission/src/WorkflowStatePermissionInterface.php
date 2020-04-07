@@ -40,7 +40,7 @@ interface WorkflowStatePermissionInterface {
    * @return bool
    *   TRUE if the transition is allowed, FALSE if it is not.
    *
-   * @see \Drupal\joinup_core\WorkflowHelperInterface::getAvailableTargetStates()
+   * @see \Drupal\joinup_workflow\WorkflowHelperInterface::getAvailableTargetStates()
    */
   public function isStateUpdatePermitted(AccountInterface $account, EntityInterface $entity, string $from_state, string $to_state): bool;
 

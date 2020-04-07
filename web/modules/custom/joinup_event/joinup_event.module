@@ -67,7 +67,7 @@ function joinup_event_token_info_alter(&$info) {
 /**
  * Implements hook_tokens().
  */
-function joinup_event_tokens($type, array $tokens, array $data = [], array $options = [], BubbleableMetadata $bubbleable_metadata = NULL) {
+function joinup_event_tokens($type, array $tokens, array $data = [], array $options = [], ?BubbleableMetadata $bubbleable_metadata = NULL) {
   $replacements = [];
 
   if ($type == 'node' && !empty($data['node'])) {

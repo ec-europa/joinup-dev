@@ -5,6 +5,8 @@
  * Contains \ContactFormSubContext.
  */
 
+declare(strict_types = 1);
+
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 
 /**
