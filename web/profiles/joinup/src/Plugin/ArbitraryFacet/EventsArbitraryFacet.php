@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\joinup\Plugin\ArbitraryFacet;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -107,7 +108,9 @@ class EventsArbitraryFacet extends ArbitraryFacetBase implements ContainerFactor
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return ['community_content_author:event'] + parent::getCacheContexts();
+    return Cache::mergeContexts([
+      'community_content_author:event',
+    ], parent::getCacheContexts());
   }
 
 }
