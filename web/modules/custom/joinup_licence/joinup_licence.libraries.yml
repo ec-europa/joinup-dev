@@ -10,5 +10,4 @@ search_auto_submit:
     js/search_auto_submit.js: {}
   dependencies:
     - core/jquery
-    - core/jquery.once
     - core/drupal
