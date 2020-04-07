@@ -7,7 +7,6 @@ namespace Drupal\joinup_licence\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -70,14 +69,6 @@ class AddLicenceToComparisonForm extends FormBase {
         ],
       ],
     ];
-
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Add'),
-      '#attributes' => [
-        'class' => ['licence-search-submit'],
-      ],
-    ];
     return $form;
   }
 
@@ -119,28 +110,9 @@ class AddLicenceToComparisonForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $value = $form_state->getValue('licence_search');
-    $licences = isset($form_state->getBuildInfo()['args'][0]['licences'])
-      ? array_keys($form_state->getBuildInfo()['args'][0]['licences'])
-      : [];
-    $licences[] = $value;
-    array_unique($licences);
-    $licences_parameter = implode(';', $licences + [$value]);
-
-    // Url::fromRoute encodes the parameters passed as a filter. In order to
-    // show beautified URIs on the address bar, construct the URL from the route
-    // so that the URI is created through the API, decode the generated string
-    // and pass it as a Url::fromUri which does not encode the path since it is
-    // an absolute URL.
-    // The difference is that, instead of getting
-    // http://test.com/licence/compare/Licence1%3BLicence2%3BLicence3
-    // we get the normal
-    // http://test.com/licence/compare/Licence1;Licence2;Licence3.
-    $uri_string = Url::fromRoute('joinup_licence.comparer', ['licences' => $licences_parameter])
-      ->setAbsolute()
-      ->toString();
-    $uri_string = urldecode($uri_string);
-    $form_state->setRedirectUrl(Url::fromUri($uri_string));
+    // This form does not have any submit mechanism. A fake submission takes
+    // place through JS.
+    // @see ::buildForm.
   }
 
 }

@@ -23,10 +23,7 @@ joinup_licence.comparer:
     _title: 'Joinup Licensing Assistant (JLA)'
   requirements:
     _access: 'TRUE'
-    # The '+' and the ' ' characters are sides of the same coin. When the URL is accessed by inserting directly the
-    # URL into the address bar, '+' is converted to ' '. However, when using Drupal API to construct a route, it should
-    # be left intact.
-    licences: '([a-zA-Z0-9][a-zA-Z0-9. +-]+;)+[a-zA-Z0-9][a-zA-Z0-9. +-]+'
+    licences: '([a-zA-Z0-9][a-zA-Z0-9. -]+;)+[a-zA-Z0-9][a-zA-Z0-9. -]+'
   options:
     parameters:
       licences:
