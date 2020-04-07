@@ -185,54 +185,54 @@ Feature:
     When I visit "/licence/compare/Apache-2.0;GPL-2.0+"
     Then I should see the "licence comparer" table
     And the response should contain "<script type=\"application/json\" data-drupal-selector=\"licence-comparer-data\">{\"Apache-2.0\":{\"title\":\"Apache License, Version 2.0\",\"description\":\"Apache-2.0 descr\",\"spdxUrl\":\"http:\/\/joinup.eu\/spdx\/Apache-2.0\"},\"GPL-2.0+\":{\"title\":\"GNU General Public License v2.0 or later\",\"description\":\"GPL-2.0+ descr\",\"spdxUrl\":\"http:\/\/joinup.eu\/spdx\/GPL-2.0+\"}}</script>"
-    And the "licence comparer" table should be:
-      | Can               | Apache-2.0 | GPL-2.0+ |  |  |  |
-      | Use/reproduce     | x          |          |  |  |  |
-      | Distribute        |            | x        |  |  |  |
-      | Modify/merge      |            |          |  |  |  |
-      | Sublicense        |            |          |  |  |  |
-      | Commercial use    |            |          |  |  |  |
-      | Use patents       |            |          |  |  |  |
-      | Place warranty    |            |          |  |  |  |
-      | Must              | Apache-2.0 | GPL-2.0+ |  |  |  |
-      | Incl. Copyright   |            |          |  |  |  |
-      | Royalty free      | x          |          |  |  |  |
-      | State changes     |            |          |  |  |  |
-      | Disclose source   |            |          |  |  |  |
-      | Copyleft/Share a. |            |          |  |  |  |
-      | Lesser copyleft   |            |          |  |  |  |
-      | SaaS/network      |            |          |  |  |  |
-      | Include licence   |            |          |  |  |  |
-      | Rename modifs.    |            |          |  |  |  |
-      | Cannot            | Apache-2.0 | GPL-2.0+ |  |  |  |
-      | Hold liable       |            |          |  |  |  |
-      | Use trademark     |            |          |  |  |  |
-      | Commerce          |            |          |  |  |  |
-      | Modify            | x          |          |  |  |  |
-      | Ethical clauses   |            |          |  |  |  |
-      | Pub sector only   |            |          |  |  |  |
-      | Sublicence        |            |          |  |  |  |
-      | Compatible        | Apache-2.0 | GPL-2.0+ |  |  |  |
-      | None N/A          |            |          |  |  |  |
-      | Permissive        |            |          |  |  |  |
-      | GPL               |            |          |  |  |  |
-      | Other copyleft    |            |          |  |  |  |
-      | Linking freedom   |            |          |  |  |  |
-      | Multilingual      |            |          |  |  |  |
-      | For data          |            |          |  |  |  |
-      | For software      |            |          |  |  |  |
-      | Law               | Apache-2.0 | GPL-2.0+ |  |  |  |
-      | EU/MS law         |            |          |  |  |  |
-      | US law            |            |          |  |  |  |
-      | Licensor's law    |            |          |  |  |  |
-      | Other law         |            |          |  |  |  |
-      | Not fixed/local   |            |          |  |  |  |
-      | Venue fixed       |            |          |  |  |  |
-      | Support           | Apache-2.0 | GPL-2.0+ |  |  |  |
-      | Strong Community  | x          |          |  |  |  |
-      | Governments/EU    | x          |          |  |  |  |
-      | OSI approved      |            |          |  |  |  |
-      | FSF Free/Libre    |            |          |  |  |  |
+    And the "licence comparer" table should contain:
+      | Can               | Apache-2.0 | GPL-2.0+ |
+      | Use/reproduce     | x          |          |
+      | Distribute        |            | x        |
+      | Modify/merge      |            |          |
+      | Sublicense        |            |          |
+      | Commercial use    |            |          |
+      | Use patents       |            |          |
+      | Place warranty    |            |          |
+      | Must              | Apache-2.0 | GPL-2.0+ |
+      | Incl. Copyright   |            |          |
+      | Royalty free      | x          |          |
+      | State changes     |            |          |
+      | Disclose source   |            |          |
+      | Copyleft/Share a. |            |          |
+      | Lesser copyleft   |            |          |
+      | SaaS/network      |            |          |
+      | Include licence   |            |          |
+      | Rename modifs.    |            |          |
+      | Cannot            | Apache-2.0 | GPL-2.0+ |
+      | Hold liable       |            |          |
+      | Use trademark     |            |          |
+      | Commerce          |            |          |
+      | Modify            | x          |          |
+      | Ethical clauses   |            |          |
+      | Pub sector only   |            |          |
+      | Sublicence        |            |          |
+      | Compatible        | Apache-2.0 | GPL-2.0+ |
+      | None N/A          |            |          |
+      | Permissive        |            |          |
+      | GPL               |            |          |
+      | Other copyleft    |            |          |
+      | Linking freedom   |            |          |
+      | Multilingual      |            |          |
+      | For data          |            |          |
+      | For software      |            |          |
+      | Law               | Apache-2.0 | GPL-2.0+ |
+      | EU/MS law         |            |          |
+      | US law            |            |          |
+      | Licensor's law    |            |          |
+      | Other law         |            |          |
+      | Not fixed/local   |            |          |
+      | Venue fixed       |            |          |
+      | Support           | Apache-2.0 | GPL-2.0+ |
+      | Strong Community  | x          |          |
+      | Governments/EU    | x          |          |
+      | OSI approved      |            |          |
+      | FSF Free/Libre    |            |          |
     And the page should not be cached
 
     When I reload the page
