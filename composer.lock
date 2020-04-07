@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e492c4ce4a2e7f17a0657e6ad44e2bb",
+    "content-hash": "d208a1b3e66796e955944a020238e4af",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4201,17 +4201,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/facets.git",
-                "reference": "8.x-1.3"
+                "reference": "8.x-1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "2ca517094a34112e8168746123d337a25da6a227"
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "ee2d584b8a225ab981e313f6050e13bc9c98e40b"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4225,7 +4225,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.3",
+                    "version": "8.x-1.4",
                     "datestamp": "1556645881",
                     "security-coverage": {
                         "status": "covered",
@@ -5978,89 +5978,6 @@
             }
         },
         {
-            "name": "drupal/r4032login",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/r4032login.git",
-                "reference": "8.x-1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/r4032login-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "dd9dc2daf8e4b960d2be1fe58e19a8ec4fbf30f1"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1533913684",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Bevan",
-                    "homepage": "https://www.drupal.org/user/49989"
-                },
-                {
-                    "name": "Nixou",
-                    "homepage": "https://www.drupal.org/user/2304734"
-                },
-                {
-                    "name": "RobLoach",
-                    "homepage": "https://www.drupal.org/user/61114"
-                },
-                {
-                    "name": "Sk8erPeter",
-                    "homepage": "https://www.drupal.org/user/1441344"
-                },
-                {
-                    "name": "bdone",
-                    "homepage": "https://www.drupal.org/user/687670"
-                },
-                {
-                    "name": "deekayen",
-                    "homepage": "https://www.drupal.org/user/972"
-                },
-                {
-                    "name": "lotyrin",
-                    "homepage": "https://www.drupal.org/user/216580"
-                },
-                {
-                    "name": "mikesmullin",
-                    "homepage": "https://www.drupal.org/user/108440"
-                },
-                {
-                    "name": "pwolanin",
-                    "homepage": "https://www.drupal.org/user/49851"
-                },
-                {
-                    "name": "shrop",
-                    "homepage": "https://www.drupal.org/user/14767"
-                }
-            ],
-            "description": "Redirect anonymous users from 403 Access Denied pages to the /user/login page.",
-            "homepage": "https://www.drupal.org/project/r4032login",
-            "support": {
-                "source": "https://git.drupalcode.org/project/r4032login"
-            }
-        },
-        {
             "name": "drupal/rdf_entity",
             "version": "1.0.0-alpha20",
             "source": {
@@ -6480,17 +6397,11 @@
         },
         {
             "name": "drupal/simple_sitemap",
-            "version": "3.5.0",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simple_sitemap.git",
-                "reference": "8.x-3.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/simple_sitemap-8.x-3.5.zip",
-                "reference": "8.x-3.5",
-                "shasum": "8e93d4dcf483b1558b800570af1d3b231b8fa6f3"
+                "reference": "75017cd102811de8af5eb7faeaa6fc019403fc73"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -6502,17 +6413,20 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.5",
-                    "datestamp": "1576429387",
+                    "version": "8.x-3.5+15-dev",
+                    "datestamp": "1584487838",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10"
                     }
+                },
+                "patches_applied": {
+                    "Incorrect XSL links for different language domains @see https://www.drupal.org/node/3082387": "https://git.drupalcode.org/project/simple_sitemap/commit/178a232.diff"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6537,7 +6451,8 @@
                 "source": "https://cgit.drupalcode.org/simple_sitemap",
                 "issues": "https://drupal.org/project/issues/simple_sitemap",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2020-03-17T23:28:40+00:00"
         },
         {
             "name": "drupal/simplenews",
@@ -17273,6 +17188,7 @@
         "drupal/config_update": 20,
         "drupal/matomo_reporting_api": 20,
         "drupal/phingdrushtask": 20,
+        "drupal/simple_sitemap": 20,
         "drupal/swiftmailer": 20,
         "drupal/view_unpublished": 15,
         "ec-europa/infra": 20,
