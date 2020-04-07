@@ -101,6 +101,9 @@ class AddLicenceToComparisonForm extends FormBase {
       $spdx_licence = $licence->get('field_licence_spdx_licence')->entity;
       $options[$spdx_licence->get('field_spdx_licence_id')->value] = $licence->label() . ' (' . $spdx_licence->label() . ')';
     }
+    // Query sorting on properties other than ID and rid are not supported in
+    // sparql_entity_storage yet.
+    // @see: https://github.com/ec-europa/sparql_entity_storage/issues/10
     asort($options);
 
     return $options;
