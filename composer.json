@@ -12,7 +12,7 @@
         "cpliakas/git-wrapper": "~1.7",
         "cweagans/composer-patches": "^1.6.4",
         "dkarv/mdl-chip-input": "dev-master",
-        "drupal/allowed_formats": "^1.2",
+        "drupal/allowed_formats": "dev-1.x",
         "drupal/antibot": "^1.3",
         "drupal/cached_computed_field": "^1.0-beta5",
         "drupal/cas": "^1.6",
@@ -23,10 +23,11 @@
         "drupal/config_ignore": "dev-3.x",
         "drupal/config_readonly": "^1.0",
         "drupal/config_update": "dev-1.x",
-        "drupal/core": "^8.8.5",
-        "drupal/core-composer-scaffold": "^8.8.4",
+        "drupal/core": "^8.9.0-beta2",
+        "drupal/core-composer-scaffold": "^8.9.0-beta2",
         "drupal/diff": "~1.0",
         "drupal/digital_size_formatter": "^1.0-alpha1",
+        "drupal/dynamic_entity_reference": "2.x-dev",
         "drupal/editor_file": "~1.4",
         "drupal/email_registration": "^1.0",
         "drupal/embed_block": "^1.0",
@@ -35,12 +36,12 @@
         "drupal/facets": "~1.4",
         "drupal/field_group": "^1.0",
         "drupal/file_url": "^1.0-alpha7",
-        "drupal/flag": "^4.0",
+        "drupal/flag": "4.x-dev",
         "drupal/geocoder": "^3.0",
         "drupal/geofield": "~1.6",
         "drupal/honeypot": "^1.29",
         "drupal/inline_entity_form": "^1.0",
-        "drupal/linkit": "^5.0-beta10",
+        "drupal/linkit": "5.x-dev",
         "drupal/matomo": "^1.9",
         "drupal/matomo_reporting_api": "dev-8.x-2.x",
         "drupal/menu_admin_per_menu": "^1.0",
@@ -112,12 +113,12 @@
         "drupal/config_inspector": "^1.0",
         "drupal/default_content": "^1.0-alpha8",
         "drupal/devel": "~2.1",
-        "drupal/drupal-extension": "^4.0",
+        "drupal/drupal-extension": "dev-master",
         "drupal/filecache": "^1.0-beta2",
         "drupal/renderviz": "^1.0",
         "drupal/restui": "^1.17",
         "drupal/stage_file_proxy": "^1.0",
-        "drupaltest/behat-one-time-login": "^1.0",
+        "drupaltest/behat-one-time-login": "dev-master",
         "jcalderonzumba/gastonjs": "^1.1@dev",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.3",
         "lovers-of-behat/table-extension": "^1.2.0",
@@ -129,6 +130,7 @@
         "phpunit/phpunit": "~6.5",
         "slevomat/coding-standard": "~6.1",
         "symfony/css-selector": "~2.8|~3.0|~4.0",
+        "symfony/debug": "~4.3.0",
         "symfony/dom-crawler": "4.4.4",
         "symfony/phpunit-bridge": "^4.2",
         "weitzman/drupal-test-traits": "~1.3.1",
@@ -265,14 +267,14 @@
                 "Allow sorting of actions @see https://www.drupal.org/project/drupal/issues/2381293": "https://www.drupal.org/files/issues/2019-12-04/2381293-134.patch",
                 "Pass current route parameters to the confirmation form route @see https://www.drupal.org/project/drupal/issues/2901412": "https://www.drupal.org/files/issues/2020-02-25/2901412-13.patch"
             },
-            "drupal/drupal-extension": {
-              "Add space arround the keywords to avoid wrongly matching @see https://github.com/jhedstrom/drupalextension/pull/561": "https://patch-diff.githubusercontent.com/raw/jhedstrom/drupalextension/pull/561.patch"
-            },
             "drupal/externalauth": {
                 "Clean up linkExistingAccount method so it doesn't needless prefix username with provider name @see https://www.drupal.org/project/externalauth/issues/3104478": "https://www.drupal.org/files/issues/2020-01-08/3104478-3.patch"
             },
             "drupal/facets": {
                 "Facet Summary for Facet Items with a set dependency. @see https://www.drupal.org/node/2873480": "resources/patch/facet_summary_for_facet-2873480-18.patch"
+            },
+            "drupal/flag": {
+                "Drupal 9 Deprecated Code Report @see https://www.drupal.org/project/flag/issues/3042758": "https://www.drupal.org/files/issues/2020-02-12/3042758-26.patch"
             },
             "drupal/honeypot": {
                 "Behat integration. @see https://www.drupal.org/project/honeypot/issues/3059040": "https://www.drupal.org/files/issues/2019-06-03/3059040-2.patch"
@@ -281,10 +283,13 @@
                 "Autocomplete field doesn't allow to reference entities with long titles @see https://www.drupal.org/node/2895663": "https://www.drupal.org/files/issues/2895663-2.patch"
             },
             "drupal/linkit": {
-                "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2877535-4.linkit.Link-shown-after-the-autocomplete-selection-is-the-bare-nodexxx-link-not-the-alias.patch"
+                "Link shown after the autocomplete selection is the bare node/xxx link, not the alias @see https://www.drupal.org/node/2877535": "https://www.drupal.org/files/issues/2020-03-11/2877535-12.patch"
             },
             "drupal/matomo_reporting_api": {
                 "Ensure backward compatibility with Piwik @see https://www.drupal.org/project/matomo_reporting_api/issues/3080854": "https://www.drupal.org/files/issues/2019-09-18/3080854-7.patch"
+            },
+            "drupal/message": {
+                "Drupal 9 Deprecated Code Report @see https://www.drupal.org/project/message/issues/3113123": "https://www.drupal.org/files/issues/2020-02-13/3113123-4.patch"
             },
             "drupal/message_digest": {
                 "Provide a Behat step definition to check that the digest for a user is empty @see https://www.drupal.org/project/message_digest/issues/3088774#comment-13315655": "https://www.drupal.org/files/issues/2019-10-18/3088774-2.patch"
@@ -300,6 +305,7 @@
             },
             "drupal/rdf_entity": {
                 "Allow bundle label plural variants @see https://github.com/ec-europa/rdf_entity/pull/12": "https://github.com/ec-europa/rdf_entity/compare/8.x-1.x...bd61c32c6f877f2c0376ec9aa213b89b6bcb19b8.diff",
+                "The entity manager is deprecated and will be removed in Drupal 9 @see https://github.com/ec-europa/rdf_entity/pull/118": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/118.patch",
                 "Add entity cacheable metadata to view access result @see https://github.com/ec-europa/rdf_entity/pull/120": "https://patch-diff.githubusercontent.com/raw/ec-europa/rdf_entity/pull/120.diff"
             },
             "drupal/schema_metatag": {
