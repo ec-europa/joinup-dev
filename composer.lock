@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2d83eeee800c20729f4af97c436a8f8",
+    "content-hash": "ecccb7f6af91603160c24d24eecff34a",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -4216,17 +4216,17 @@
         },
         {
             "name": "drupal/facets",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/facets.git",
-                "reference": "8.x-1.3"
+                "reference": "8.x-1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "2ca517094a34112e8168746123d337a25da6a227"
+                "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "ee2d584b8a225ab981e313f6050e13bc9c98e40b"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4240,7 +4240,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.3",
+                    "version": "8.x-1.4",
                     "datestamp": "1556645881",
                     "security-coverage": {
                         "status": "covered",
