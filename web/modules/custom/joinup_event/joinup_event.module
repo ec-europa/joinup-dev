@@ -30,7 +30,7 @@ function joinup_event_entity_bundle_field_info_alter(array &$fields, EntityTypeI
 /**
  * Implements hook_joinup_community_content_node_bundle_classes_alter().
  */
-function joinup_event_joinup_community_content_node_bundle_classes_alter(array &$bundle_classes) {
+function joinup_event_joinup_bundle_class_alter(array &$bundle_classes) {
   $bundle_classes['event'] = Event::class;
 }
 
