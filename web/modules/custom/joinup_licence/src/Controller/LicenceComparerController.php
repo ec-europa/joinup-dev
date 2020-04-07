@@ -7,7 +7,10 @@ namespace Drupal\joinup_licence\Controller;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
+use Drupal\joinup_licence\Form\AddLicenceToComparisonForm;
 use Drupal\joinup_licence\LicenceComparerHelper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a page controller callbacks.
@@ -20,6 +23,29 @@ class LicenceComparerController extends ControllerBase {
    * @var \Drupal\rdf_entity\RdfInterface[]
    */
   protected $licences = [];
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(RendererInterface $renderer) {
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('renderer')
+    );
+  }
 
   /**
    * Responds to a request made to 'joinup_licence.comparer' route.
@@ -223,7 +249,7 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->padWithEmptyCells($row, ['licence-comparer__header', 'licence-comparer__empty']);
+    $this->fillHeaderRows($row);
 
     return $row;
   }
@@ -264,13 +290,51 @@ class LicenceComparerController extends ControllerBase {
       ];
     }
 
-    $this->padWithEmptyCells($row, [
+    $this->fillContentRows($row);
+
+    return $row;
+  }
+
+  /**
+   * Fills in the header rows with an add licence option and empty cells.
+   *
+   * @param array $row
+   *   A row array.
+   */
+  protected function fillHeaderRows(array &$row): void {
+    $classes = ['licence-comparer__header', 'licence-comparer__empty'];
+    $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
+
+    if ($amount !== 0) {
+      $add_licence_form = $this->formBuilder()->getForm(AddLicenceToComparisonForm::class, ['licences' => $this->licences]);
+      $rendered = $this->renderer->render($add_licence_form);
+      $row[] = [
+        'data' => $rendered,
+        'class' => [
+          'licence-comparer__header',
+          'licence-comparer__empty',
+        ],
+      ];
+
+      $amount--;
+    }
+    $this->padWithEmptyCells($row, $classes, $amount);
+  }
+
+  /**
+   * Fills in the content rows with empty cells.
+   *
+   * @param array $row
+   *   A row array.
+   */
+  protected function fillContentRows(array &$row): void {
+    $classes = [
       'licence-comparer__cell',
       'licence-comparer__empty',
       'licence-comparer__empty-cell',
-    ]);
-
-    return $row;
+    ];
+    $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
+    $this->padWithEmptyCells($row, $classes, $amount);
   }
 
   /**
@@ -280,10 +344,11 @@ class LicenceComparerController extends ControllerBase {
    *   A row array.
    * @param array $class
    *   A list of classes to be added to the empty cell.
+   * @param int $count
+   *   The number of empty cells to add.
    */
-  protected function padWithEmptyCells(array &$row, array $class): void {
-    $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
-    for ($i = 0; $i < $amount; $i++) {
+  protected function padWithEmptyCells(array &$row, array $class, int $count): void {
+    for ($i = 0; $i < $count; $i++) {
       $row[] = [
         'data' => '',
         'class' => $class,
