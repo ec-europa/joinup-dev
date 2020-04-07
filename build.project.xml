@@ -551,6 +551,23 @@
         <append destFile="${website.settings.php}" text="$settings['error_page']['uuid'] = TRUE; // Used by 'error_page' module.${line.separator}$settings['error_page']['template_dir'] = DRUPAL_ROOT . '/../resources/error_page'; // Used by 'error_page' module.${line.separator}set_error_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleError']); // Used by 'error_page' module.${line.separator}set_exception_handler(['Drupal\error_page\ErrorPageErrorHandler', 'handleException']); // Used by 'error_page' module.${line.separator}" />
     </target>
 
+    <target name="verbose-error-logging"
+            depends="writable-settings-folder, writable-settings-local-php, clear-error-logging">
+        <replaceregexp
+                file="${website.settings.local.php}"
+                pattern="\$config\['system\.logging'\]\['error_level'\].*${line.separator}"
+                replace="" />
+        <append destFile="${website.settings.local.php}" text="$config['system.logging']['error_level'] = 'verbose';${line.separator}" />
+    </target>
+
+    <target name="clear-error-logging"
+            depends="writable-settings-folder, writable-settings-local-php">
+        <replaceregexp
+                file="${website.settings.local.php}"
+                pattern="\$config\['system\.logging'\]\['error_level'\].*${line.separator}"
+                replace="" />
+    </target>
+
     <target name="disable-webtools-geocoding-cache">
         <reflexive>
             <fileset dir="${website.settings.dir}">
@@ -603,7 +620,7 @@
     <target
         name="rebuild-dev"
         description="Build a development environment based on the production database."
-        depends="build-dev, rebuild-environment, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server" />
+        depends="build-dev, rebuild-environment, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, verbose-error-logging, start-cas-mock-server" />
 
     <target
         name="setup-acceptance"
@@ -613,7 +630,7 @@
     <target
         name="install-dev"
         description="Install the website and set up the development environment."
-        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, start-cas-mock-server, enable-config-read-only" />
+        depends="setup-virtuoso-permissions, purge-solr-backend, purge-virtuoso-backend, clean-redis-settings, disable-webtools-geocoding-cache, setup-config-sync-dir, install, ensure-search-api-solr-site-hash, setup-redis, import-rdf-fixtures, setup-dev, configure-apache-solr-drupal, configure-matomo-drupal, create-demo-users, enable-webtools-geocoding-cache, setup-mocked-newsroom-newsletter-subscriber, set-custom-error-handlers, verbose-error-logging, start-cas-mock-server, enable-config-read-only" />
 
     <target name="check-deprecated-code">
         <exec command="${project.basedir}/vendor/bin/phpstan --no-progress --ansi -n -vvv analyse web/modules/custom web/profiles web/themes src scripts/composer tests/src" passthru="true" checkreturn="true"/>
