@@ -410,3 +410,55 @@ Feature:
     And the "licence comparer" table should contain:
       | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 | LGPL-2.1 |
     And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD;UPL-1.0;LGPL-2.1"
+
+  Scenario: No javascript version of adding extra licences to the comparison page.
+    Given SPDX licences:
+      | uri                              | title      | ID         |
+      | http://joinup.eu/spdx/Apache-2.0 | Apache-2.0 | Apache-2.0 |
+      | http://joinup.eu/spdx/GPL-2.0+   | GPL-2.0+   | GPL-2.0+   |
+      | http://joinup.eu/spdx/BSL-1.0    | BSL-1.0    | BSL-1.0    |
+      | http://joinup.eu/spdx/0BSD       | 0BSD       | 0BSD       |
+      | http://joinup.eu/spdx/UPL-1.0    | UPL-1.0    | UPL-1.0    |
+      | http://joinup.eu/spdx/LGPL-2.1   | LGPL-2.1   | LGPL-2.1   |
+    And licences:
+      | uri                               | title             | spdx licence | legal type                                                            |
+      | http://joinup.eu/licence/apache20 | Joinup Apache-2.0 | Apache-2.0   | Strong Community, Royalty free, Modify, Governments/EU, Use/reproduce |
+      | http://joinup.eu/licence/gpl2plus | Joinup GPL-2.0+   | GPL-2.0+     | Distribute                                                            |
+      | http://joinup.eu/licence/bsl1     | Joinup BSL-1.0    | BSL-1.0      | Distribute, Modify                                                    |
+      | http://joinup.eu/licence/0bsd     | Joinup 0BSD       | 0BSD         | Distribute, Royalty free                                              |
+      | http://joinup.eu/licence/upl1     | Joinup UPL-1.0    | UPL-1.0      | Distribute, Royalty free, Governments/EU                              |
+      | http://joinup.eu/licence/lgpl21   | Joinup LGPL-2.1   | LGPL-2.1     | Distribute, Royalty free, Governments/EU, Place warranty              |
+
+    Given I am an anonymous user
+
+    When I visit "/licence/compare/GPL-2.0+;Apache-2.0;0BSD;UPL-1.0;LGPL-2.1"
+    Then the following fields should not be present "Add licence"
+    # Assert the first row which includes the licences available in the comparison table.
+    And the "licence comparer" table should contain:
+      | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 | LGPL-2.1 |
+
+    When I visit "/licence/compare/GPL-2.0+;Apache-2.0"
+    Then the following fields should be present "Add licence"
+    And the "licence comparer" table should contain:
+      | Can | GPL-2.0+ | Apache-2.0 |
+
+    When I select "Joinup 0BSD (0BSD)" from "Add licence"
+    And I press "Add"
+    Then the following fields should be present "Add licence"
+    And the "licence comparer" table should contain:
+      | Can | GPL-2.0+ | Apache-2.0 | 0BSD |
+    And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD"
+
+    When I select "Joinup UPL-1.0 (UPL-1.0)" from "Add licence"
+    And I press "Add"
+    Then the following fields should be present "Add licence"
+    And the "licence comparer" table should contain:
+      | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 |
+    And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD;UPL-1.0"
+
+    When I select "Joinup LGPL-2.1 (LGPL-2.1)" from "Add licence"
+    And I press "Add"
+    Then the following fields should not be present "Add licence"
+    And the "licence comparer" table should contain:
+      | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 | LGPL-2.1 |
+    And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD;UPL-1.0;LGPL-2.1"
