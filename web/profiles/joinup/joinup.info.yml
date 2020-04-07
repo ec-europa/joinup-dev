@@ -94,6 +94,7 @@ config_devel:
     - language.content_settings.rdf_entity.collection
     - language.content_settings.rdf_entity.licence
     - language.content_settings.rdf_entity.solution
+    - language.types
     - og_comment.settings
     - og_menu.ogmenu.navigation
     - password_policy.password_policy.generic_policy
