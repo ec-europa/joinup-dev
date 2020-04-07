@@ -74,7 +74,10 @@ trait EntityTrait {
    */
   protected static function entityTypeAliases(): array {
     return [
+      'collection' => 'rdf_entity',
       'content' => 'node',
+      'group' => 'rdf_entity',
+      'solution' => 'rdf_entity',
     ];
   }
 
