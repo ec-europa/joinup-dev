@@ -552,12 +552,20 @@
     </target>
 
     <target name="verbose-error-logging"
-            depends="writable-settings-folder, writable-settings-local-php">
+            depends="writable-settings-folder, writable-settings-local-php, clear-error-logging">
         <replaceregexp
                 file="${website.settings.local.php}"
                 pattern="\$config\['system\.logging'\]\['error_level'\].*${line.separator}"
                 replace="" />
         <append destFile="${website.settings.local.php}" text="$config['system.logging']['error_level'] = 'verbose';${line.separator}" />
+    </target>
+
+    <target name="clear-error-logging"
+            depends="writable-settings-folder, writable-settings-local-php">
+        <replaceregexp
+                file="${website.settings.local.php}"
+                pattern="\$config\['system\.logging'\]\['error_level'\].*${line.separator}"
+                replace="" />
     </target>
 
     <target name="disable-webtools-geocoding-cache">
