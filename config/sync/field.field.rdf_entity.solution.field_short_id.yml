@@ -1,0 +1,19 @@
+uuid: b9ebc059-97a4-4523-bf9b-77a8b828a6dd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.rdf_entity.field_short_id
+    - rdf_entity.rdfentity.solution
+id: rdf_entity.solution.field_short_id
+field_name: field_short_id
+entity_type: rdf_entity
+bundle: solution
+label: 'Short ID'
+description: "A small representing string for the solution, like an acronym. E.g. for a solution named \"European Commission solutions\" it can be \"ECSo\" or \"EuCoS\".\r\nThe short ID will be used in the URL of the solutions instead of the label so that the URLs are user friendly.\r\nThis is not editable after the solution's initial publication."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
