@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4dc88e498e217effd43a935610f0295d",
+    "content-hash": "328fdfeaac586d314b6ea555812fec87",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3164,16 +3164,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.9.0-beta2",
+            "version": "8.9.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "d67c87a64c552525b3c2433047d96c445310d4c4"
+                "reference": "bd38e6c7df640867de0fe41f055864645e1bf0a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/d67c87a64c552525b3c2433047d96c445310d4c4",
-                "reference": "d67c87a64c552525b3c2433047d96c445310d4c4",
+                "url": "https://api.github.com/repos/drupal/core/zipball/bd38e6c7df640867de0fe41f055864645e1bf0a8",
+                "reference": "bd38e6c7df640867de0fe41f055864645e1bf0a8",
                 "shasum": ""
             },
             "require": {
@@ -3410,11 +3410,11 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-04-02T18:59:14+00:00"
+            "time": "2020-03-26T22:24:05+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "8.9.0-beta2",
+            "version": "8.9.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
