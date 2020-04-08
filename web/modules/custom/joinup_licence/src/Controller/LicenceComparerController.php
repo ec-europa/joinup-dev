@@ -8,7 +8,6 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\joinup_licence\Form\AddLicenceToComparisonForm;
 use Drupal\joinup_licence\LicenceComparerHelper;
 use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -309,17 +308,22 @@ class LicenceComparerController extends ControllerBase {
     }
 
     $classes = ['licence-comparer__header', 'licence-comparer__empty'];
+    // \Drupal\Core\Render\Element\Select::processSelect does not seem
+    // to be called if the element is not rendered through a form
+    // builder. Thus, the name of the field and the default values are
+    // not set. Manually set the additional properties.
     $row[] = [
       'data' => [
         'licence_search' => [
           '#type' => 'select',
           '#title' => $this->t('Add licence'),
           '#title_display' => 'invisible',
-          '#options' => $this->getLicenceOptions(),
-          '#empty_value' => '',
-          '#empty_option' => $this->t('- Add licence -'),
+          '#options' => ['' => $this->t('- Add licence -')]
+          + $this->getLicenceOptions(),
+          '#default_value' => '',
           '#attributes' => [
             'class' => ['auto_submit'],
+            'name' => 'Add licence',
           ],
           '#attached' => [
             'library' => [
@@ -373,21 +377,18 @@ class LicenceComparerController extends ControllerBase {
   /**
    * Returns list of available licences to add to the compare table.
    *
-   * @param \Drupal\rdf_entity\RdfInterface[] $licences
-   *   An ordered list of Joinup licence entities keyed by their SPDX ID.
-   *
    * @return array
    *   A list of licence labels indexed by their SPDX ID.
    */
-  protected function getLicenceOptions(array $licences = []): array {
+  protected function getLicenceOptions(): array {
     $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
 
     $query = $rdf_storage->getQuery()->condition('rid', 'licence');
-    if (!empty($licences)) {
+    if (!empty($this->licences)) {
       // Do not include licences already in the comparison page if any.
-      $existing_ids = empty($licences) ? NULL : array_map(function (RdfInterface $licence): string {
+      $existing_ids = array_map(function (RdfInterface $licence): string {
         return $licence->id();
-      }, $licences);
+      }, $this->licences);
       $query->condition('id', $existing_ids, 'NOT IN');
     }
 
