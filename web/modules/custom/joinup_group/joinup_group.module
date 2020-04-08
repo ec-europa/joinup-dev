@@ -11,6 +11,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
@@ -27,6 +28,18 @@ use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function joinup_group_entity_bundle_field_info_alter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
+  $bundles = ['collection', 'solution'];
+  if ($entity_type->id() === 'rdf_entity' && in_array($bundle, $bundles)) {
+    if (!empty($fields['field_short_id'])) {
+      $fields['field_short_id']->addConstraint('UniqueField');
+    }
+  }
+}
 
 /**
  * Implements hook_preprocess_page().
