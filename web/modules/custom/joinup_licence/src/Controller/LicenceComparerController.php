@@ -10,6 +10,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\joinup_licence\Form\AddLicenceToComparisonForm;
 use Drupal\joinup_licence\LicenceComparerHelper;
+use Drupal\rdf_entity\RdfInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -302,22 +303,35 @@ class LicenceComparerController extends ControllerBase {
    *   A row array.
    */
   protected function fillHeaderRows(array &$row): void {
-    $classes = ['licence-comparer__header', 'licence-comparer__empty'];
     $amount = LicenceComparerHelper::MAX_LICENCE_COUNT - count($this->licences);
-
-    if ($amount !== 0) {
-      $add_licence_form = $this->formBuilder()->getForm(AddLicenceToComparisonForm::class, ['licences' => $this->licences]);
-      $rendered = $this->renderer->render($add_licence_form);
-      $row[] = [
-        'data' => $rendered,
-        'class' => [
-          'licence-comparer__header',
-          'licence-comparer__empty',
-        ],
-      ];
-
-      $amount--;
+    if ($amount === 0) {
+      return;
     }
+
+    $classes = ['licence-comparer__header', 'licence-comparer__empty'];
+    $row[] = [
+      'data' => [
+        'licence_search' => [
+          '#type' => 'select',
+          '#title' => $this->t('Add licence'),
+          '#title_display' => 'invisible',
+          '#options' => $this->getLicenceOptions(),
+          '#empty_value' => '',
+          '#empty_option' => $this->t('- Add licence -'),
+          '#attributes' => [
+            'class' => ['auto_submit'],
+          ],
+          '#attached' => [
+            'library' => [
+              'joinup_licence/search_auto_submit',
+            ],
+          ],
+        ],
+      ],
+      'class' => $classes,
+    ];
+    $amount--;
+
     $this->padWithEmptyCells($row, $classes, $amount);
   }
 
@@ -354,6 +368,43 @@ class LicenceComparerController extends ControllerBase {
         'class' => $class,
       ];
     }
+  }
+
+  /**
+   * Returns list of available licences to add to the compare table.
+   *
+   * @param \Drupal\rdf_entity\RdfInterface[] $licences
+   *   An ordered list of Joinup licence entities keyed by their SPDX ID.
+   *
+   * @return array
+   *   A list of licence labels indexed by their SPDX ID.
+   */
+  protected function getLicenceOptions(array $licences = []): array {
+    $rdf_storage = $this->entityTypeManager->getStorage('rdf_entity');
+
+    $query = $rdf_storage->getQuery()->condition('rid', 'licence');
+    if (!empty($licences)) {
+      // Do not include licences already in the comparison page if any.
+      $existing_ids = empty($licences) ? NULL : array_map(function (RdfInterface $licence): string {
+        return $licence->id();
+      }, $licences);
+      $query->condition('id', $existing_ids, 'NOT IN');
+    }
+
+    // In any case, do not show licences that are not linked to an SPDX licence.
+    $query->exists('field_licence_spdx_licence');
+    $options = [];
+    $ids = $query->execute();
+    foreach ($rdf_storage->loadMultiple($ids) as $licence) {
+      $spdx_licence = $licence->get('field_licence_spdx_licence')->entity;
+      $options[$spdx_licence->get('field_spdx_licence_id')->value] = $spdx_licence->label() . ' | ' . $licence->label();
+    }
+    // Query sorting on properties other than ID and rid are not supported in
+    // sparql_entity_storage yet.
+    // @see: https://github.com/ec-europa/sparql_entity_storage/issues/10
+    asort($options);
+
+    return $options;
   }
 
 }
