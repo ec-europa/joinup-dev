@@ -410,16 +410,14 @@ Feature:
       | UPL-1.0 \| Joinup UPL-1.0   |
     And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD"
 
-    When I select "BSL-1.0 | Joinup BSL-1.0" from "Add licence"
+    When I select "UPL-1.0 | Joinup UPL-1.0" from "Add licence"
     Then the following fields should be present "Add licence"
     And the "licence comparer" table should contain:
       | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 |
     And the "Add licence" select should contain the following options:
       | - Add licence -             |
+      | BSL-1.0 \| Joinup BSL-1.0   |
       | LGPL-2.1 \| Joinup LGPL-2.1 |
-      | UPL-1.0 \| Joinup UPL-1.0   |
-    And the "licence comparer" table should contain:
-      | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 |
     And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD;UPL-1.0"
 
     When I select "LGPL-2.1 | Joinup LGPL-2.1" from "Add licence"
