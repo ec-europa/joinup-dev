@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc10feb212b84c488e3ceea69e1f89f5",
+    "content-hash": "bb4a53af3b0fc7a7627e466e0929f896",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -3178,12 +3178,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "353773bfbc494c6d1cc4fd33c4463e3307434a24"
+                "reference": "6e9d3dea72537b3a557749c5e614abc92f55b8bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/353773bfbc494c6d1cc4fd33c4463e3307434a24",
-                "reference": "353773bfbc494c6d1cc4fd33c4463e3307434a24",
+                "url": "https://api.github.com/repos/drupal/core/zipball/6e9d3dea72537b3a557749c5e614abc92f55b8bf",
+                "reference": "6e9d3dea72537b3a557749c5e614abc92f55b8bf",
                 "shasum": ""
             },
             "require": {
@@ -3420,7 +3420,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-03-18T20:21:19+00:00"
+            "time": "2020-03-19T11:39:59+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
