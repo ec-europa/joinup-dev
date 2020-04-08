@@ -27,13 +27,6 @@ dependencies:
 config_devel:
   install:
     - core.base_field_override.rdf_entity.solution.label
-    - core.entity_form_display.rdf_entity.solution.default
-    - core.entity_view_display.rdf_entity.solution.about
-    - core.entity_view_display.rdf_entity.solution.default
-    - core.entity_view_display.rdf_entity.solution.group_header
-    - core.entity_view_display.rdf_entity.solution.rdf_draft
-    - core.entity_view_display.rdf_entity.solution.view_mode_featured
-    - core.entity_view_display.rdf_entity.solution.view_mode_tile
     - facets.facet.solution_content_bundle
     - facets.facet.solution_policy_domain
     - facets.facet.solution_spatial_coverage
@@ -122,3 +115,11 @@ config_devel:
     - sparql_entity_storage.mapping.rdf_entity.solution
     - system.action.change_collection
     - views.view.manage_collection_solutions
+  optional:
+    - core.entity_form_display.rdf_entity.solution.default
+    - core.entity_view_display.rdf_entity.solution.about
+    - core.entity_view_display.rdf_entity.solution.default
+    - core.entity_view_display.rdf_entity.solution.group_header
+    - core.entity_view_display.rdf_entity.solution.rdf_draft
+    - core.entity_view_display.rdf_entity.solution.view_mode_featured
+    - core.entity_view_display.rdf_entity.solution.view_mode_tile
