@@ -358,11 +358,11 @@ class LicenceComparerController extends ControllerBase {
    *   A row array.
    * @param array $class
    *   A list of classes to be added to the empty cell.
-   * @param int $count
+   * @param int $amount
    *   The number of empty cells to add.
    */
-  protected function padWithEmptyCells(array &$row, array $class, int $count): void {
-    for ($i = 0; $i < $count; $i++) {
+  protected function padWithEmptyCells(array &$row, array $class, int $amount): void {
+    for ($i = 0; $i < $amount; $i++) {
       $row[] = [
         'data' => '',
         'class' => $class,
