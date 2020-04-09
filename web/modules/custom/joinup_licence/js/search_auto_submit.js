@@ -16,9 +16,9 @@
   Drupal.behaviors.searchAutoSubmit = {
     attach: function (context) {
       $('.auto-submit', context).on('change', function (event) {
-        var $value = $(event.target).val();
+        const $value = $(event.target).val();
         if ($value !== '') {
-          var new_pathname = document.location.pathname;
+          let new_pathname = document.location.pathname;
           new_pathname += ';' + $value;
           document.location.href = document.location.href.replace(document.location.pathname, new_pathname);
         }
