@@ -314,15 +314,21 @@ class LicenceComparerController extends ControllerBase {
     // not set. Manually set the additional properties.
     $row[] = [
       'data' => [
-        'licence_search' => [
-          '#type' => 'select',
+        'licence_search_label' => [
+          '#type' => 'label',
+          '#for' => 'licence-search',
           '#title' => $this->t('Add licence'),
           '#title_display' => 'invisible',
+        ],
+        'licence_search' => [
+          '#type' => 'select',
           '#options' => $this->getLicenceOptions(),
           '#default_value' => '',
           '#attributes' => [
             'class' => ['auto-submit'],
             'name' => 'licence_search',
+            'id' => 'licence-search',
+            'title' => $this->t('Add licence'),
           ],
           '#attached' => [
             'library' => [
