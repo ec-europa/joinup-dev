@@ -381,47 +381,47 @@ Feature:
 
     Given I am an anonymous user
 
-    When I visit "/licence/compare/GPL-2.0+;Apache-2.0;0BSD;UPL-1.0;LGPL-2.1"
+    When I visit "/licence/compare/LGPL-2.1;Apache-2.0;0BSD;UPL-1.0;GPL-2.0+"
     Then the following fields should not be present "Add licence"
     # Assert the first row which includes the licences available in the comparison table.
     And the "licence comparer" table should contain:
-      | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 | LGPL-2.1 |
+      | Can | LGPL-2.1 | Apache-2.0 | 0BSD | UPL-1.0 | GPL-2.0+ |
 
-    When I visit "/licence/compare/GPL-2.0+;Apache-2.0"
+    When I visit "/licence/compare/LGPL-2.1;Apache-2.0"
     Then the following fields should be present "Add licence"
     And the "licence comparer" table should contain:
-      | Can | GPL-2.0+ | Apache-2.0 |
+      | Can | LGPL-2.1 | Apache-2.0 |
     And the "Add licence" select should contain the following options:
       | - Add licence -             |
       | 0BSD \| Joinup 0BSD         |
       | BSL-1.0 \| Joinup BSL-1.0   |
-      | LGPL-2.1 \| Joinup LGPL-2.1 |
+      | GPL-2.0+ \| Joinup GPL-2.0+ |
       | UPL-1.0 \| Joinup UPL-1.0   |
 
     When I select "0BSD | Joinup 0BSD" from "Add licence"
     # The page automatically refreshes.
     Then the following fields should be present "Add licence"
     And the "licence comparer" table should contain:
-      | Can | GPL-2.0+ | Apache-2.0 | 0BSD |
+      | Can | LGPL-2.1 | Apache-2.0 | 0BSD |
     And the "Add licence" select should contain the following options:
       | - Add licence -             |
       | BSL-1.0 \| Joinup BSL-1.0   |
-      | LGPL-2.1 \| Joinup LGPL-2.1 |
+      | GPL-2.0+ \| Joinup GPL-2.0+ |
       | UPL-1.0 \| Joinup UPL-1.0   |
-    And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD"
+    And the url should match "/licence/compare/LGPL-2.1;Apache-2.0;0BSD"
 
     When I select "UPL-1.0 | Joinup UPL-1.0" from "Add licence"
     Then the following fields should be present "Add licence"
     And the "licence comparer" table should contain:
-      | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 |
+      | Can | LGPL-2.1 | Apache-2.0 | 0BSD | UPL-1.0 |
     And the "Add licence" select should contain the following options:
       | - Add licence -             |
       | BSL-1.0 \| Joinup BSL-1.0   |
-      | LGPL-2.1 \| Joinup LGPL-2.1 |
-    And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD;UPL-1.0"
+      | GPL-2.0+ \| Joinup GPL-2.0+ |
+    And the url should match "/licence/compare/LGPL-2.1;Apache-2.0;0BSD;UPL-1.0"
 
-    When I select "LGPL-2.1 | Joinup LGPL-2.1" from "Add licence"
+    When I select "GPL-2.0+ | Joinup GPL-2.0+" from "Add licence"
     Then the following fields should not be present "Add licence"
     And the "licence comparer" table should contain:
-      | Can | GPL-2.0+ | Apache-2.0 | 0BSD | UPL-1.0 | LGPL-2.1 |
-    And the url should match "/licence/compare/GPL-2.0\+;Apache-2.0;0BSD;UPL-1.0;LGPL-2.1"
+      | Can | LGPL-2.1 | Apache-2.0 | 0BSD | UPL-1.0 | GPL-2.0+ |
+    And the url should match "/licence/compare/LGPL-2.1;Apache-2.0;0BSD;UPL-1.0;GPL-2.0\+"
