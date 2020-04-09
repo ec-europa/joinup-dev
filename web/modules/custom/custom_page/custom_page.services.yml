@@ -1,9 +1,12 @@
 services:
-  custom_page.route_subscriber:
-    class: Drupal\custom_page\Routing\RouteSubscriber
-    tags:
-     - { name: event_subscriber }
   custom_page.og_menu_links_manager:
     class: Drupal\custom_page\CustomPageOgMenuLinksManager
     arguments: ['@entity_type.manager', '@plugin.manager.menu.link']
     lazy: true
+  custom_page.provider:
+    class: Drupal\custom_page\CustomPageProvider
+    arguments: ['@entity_type.manager', '@plugin.manager.menu.link', '@custom_page.og_menu_links_manager']
+  custom_page.route_subscriber:
+    class: Drupal\custom_page\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

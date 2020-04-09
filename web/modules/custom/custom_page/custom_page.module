@@ -14,9 +14,11 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\joinup_group\JoinupGroupHelper;
+use Drupal\menu_link_content\MenuLinkContentInterface;
 use Drupal\node\NodeInterface;
 use Drupal\og\Og;
 use Drupal\og\OgGroupAudienceHelperInterface;
+use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\search_api\Query\QueryInterface;
 
 /**
@@ -33,16 +35,35 @@ function custom_page_entity_bundle_field_info_alter(&$fields, EntityTypeInterfac
 /**
  * Implements hook_ENTITY_TYPE_insert().
  *
- * Create a menu link when a custom page gets saved.
+ * - Creates a menu link whenever a new custom page is created.
+ * - Reindexes the parent collection/solution so that they are searchable using
+ *   the content of the new custom page.
  */
 function custom_page_node_insert(EntityInterface $entity) {
   if ($entity->bundle() === 'custom_page') {
     \Drupal::service('custom_page.og_menu_links_manager')->addLink($entity);
   }
+
+  // The content of custom pages is included in the search index of their
+  // collections and solutions, so that the parent group can be found when
+  // searching for keywords contained in their custom pages. Make sure to
+  // reindex the parent group so that the new custom page is included.
+  // @see \Drupal\custom_page\Plugin\search_api\processor\IncludeCustomPageContent
+  $parent = $entity->og_audience->entity;
+  if (!empty($parent)) {
+    ContentEntity::indexEntity($entity->og_audience->entity);
+  }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_update().
+ *
+ * - Updates links to this custom page if the title has changed or if the page
+ *   becomes (un)published.
+ * - When a custom page moves to a new group, move the link to the menu of the
+ *   new group.
+ * - Reindexes the parent collection/solution so that they are searchable using
+ *   the content of the new custom page.
  */
 function custom_page_node_update(NodeInterface $entity) {
   if ($entity->bundle() !== 'custom_page') {
@@ -70,6 +91,65 @@ function custom_page_node_update(NodeInterface $entity) {
   if ($entity->og_audience->target_id !== $original->og_audience->target_id) {
     \Drupal::service('custom_page.og_menu_links_manager')
       ->moveLinks($original, $entity->og_audience->target_id);
+  }
+
+  // The content of custom pages is included in the search index of their
+  // collections and solutions, so that the parent group can be found when
+  // searching for keywords contained in their custom pages. Make sure to
+  // reindex the parent group so that the changed content is included.
+  // @see \Drupal\custom_page\Plugin\search_api\processor\IncludeCustomPageContent
+  $parent = $entity->og_audience->entity;
+  if (!empty($parent)) {
+    ContentEntity::indexEntity($entity->og_audience->entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * - Reindexes the parent collection/solution so that the content of the deleted
+ *   custom page no longer shows up in the search results for the parent group.
+ */
+function custom_page_node_delete(NodeInterface $entity) {
+  if ($entity->bundle() !== 'custom_page') {
+    return;
+  }
+
+  // The content of custom pages is included in the search index of their
+  // collections and solutions, so that the parent group can be found when
+  // searching for keywords contained in their custom pages. Make sure to
+  // reindex the parent group so that the deleted content is no longer included.
+  // @see \Drupal\custom_page\Plugin\search_api\processor\IncludeCustomPageContent
+  $parent = $entity->og_audience->entity;
+  if (!empty($parent)) {
+    ContentEntity::indexEntity($entity->og_audience->entity);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Whenever a custom page that is linked in the navigation menu of a collection
+ * or solution becomes enabled or disabled we need to reindex the group, since
+ * the content of the custom menu should now be included or excluded.
+ */
+function custom_page_menu_link_content_update(MenuLinkContentInterface $entity) {
+  // Do a quick check to see if the menu link entity's ableness has changed.
+  if ($entity->isEnabled() === $entity->original->isEnabled()) {
+    return;
+  }
+
+  /** @var \Drupal\joinup_menu\JoinupMenuHelperInterface $menu_helper */
+  $menu_helper = \Drupal::service('joinup_menu.menu_helper');
+  $linked_entities = $menu_helper->loadEntitiesFromMenuItems([$entity]);
+  $linked_entity = reset($linked_entities);
+  if ($linked_entity->getEntityTypeId() !== 'node' || $linked_entity->bundle() !== 'custom_page') {
+    return;
+  }
+
+  $group = JoinupGroupHelper::getGroup($linked_entity);
+  if (!empty($group)) {
+    ContentEntity::indexEntity($group);
   }
 }
 
