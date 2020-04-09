@@ -321,7 +321,7 @@ class LicenceComparerController extends ControllerBase {
           '#options' => $this->getLicenceOptions(),
           '#default_value' => '',
           '#attributes' => [
-            'class' => ['auto_submit'],
+            'class' => ['auto-submit'],
             'name' => 'Add licence',
           ],
           '#attached' => [
