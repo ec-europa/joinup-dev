@@ -318,8 +318,7 @@ class LicenceComparerController extends ControllerBase {
           '#type' => 'select',
           '#title' => $this->t('Add licence'),
           '#title_display' => 'invisible',
-          '#options' => ['' => $this->t('- Add licence -')]
-          + $this->getLicenceOptions(),
+          '#options' => $this->getLicenceOptions(),
           '#default_value' => '',
           '#attributes' => [
             'class' => ['auto_submit'],
@@ -394,7 +393,7 @@ class LicenceComparerController extends ControllerBase {
 
     // In any case, do not show licences that are not linked to an SPDX licence.
     $query->exists('field_licence_spdx_licence');
-    $options = [];
+    $options = ['' => $this->t('- Add licence -')];
     $ids = $query->execute();
     foreach ($rdf_storage->loadMultiple($ids) as $licence) {
       $spdx_licence = $licence->get('field_licence_spdx_licence')->entity;
