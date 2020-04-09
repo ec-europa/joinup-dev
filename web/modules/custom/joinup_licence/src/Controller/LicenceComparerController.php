@@ -322,7 +322,7 @@ class LicenceComparerController extends ControllerBase {
           '#default_value' => '',
           '#attributes' => [
             'class' => ['auto-submit'],
-            'name' => 'Add licence',
+            'name' => 'licence_search',
           ],
           '#attached' => [
             'library' => [
