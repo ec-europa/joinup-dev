@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb4a53af3b0fc7a7627e466e0929f896",
+    "content-hash": "85be3e67733659bf2291d835b5cdd916",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.134.5",
+            "version": "3.134.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f5a2d82660e73ed613643a5e7ad833d2569d5fdf"
+                "reference": "3ebf1d8b24dc38339d93d943971d7d3e1102327b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f5a2d82660e73ed613643a5e7ad833d2569d5fdf",
-                "reference": "f5a2d82660e73ed613643a5e7ad833d2569d5fdf",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3ebf1d8b24dc38339d93d943971d7d3e1102327b",
+                "reference": "3ebf1d8b24dc38339d93d943971d7d3e1102327b",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-04-07T18:11:11+00:00"
+            "time": "2020-04-08T18:27:07+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -359,16 +359,6 @@
                 "certificate",
                 "ssl",
                 "tls"
-            ],
-            "funding": [
-                {
-                    "url": "https://packagist.com",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-04-08T08:27:21+00:00"
         },
@@ -3132,10 +3122,10 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_update.git",
-                "reference": "4d843a0a3807eafd2eac44e193f6bdede9cde812"
+                "reference": "b286ac9e5e564f8b91fa4e945ab56c80ef580f52"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
@@ -3143,8 +3133,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.6+3-dev",
-                    "datestamp": "1563564485",
+                    "version": "8.x-1.6+5-dev",
+                    "datestamp": "1586352965",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3170,7 +3160,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/config_update"
             },
-            "time": "2019-11-25T15:59:42+00:00"
+            "time": "2020-04-08T13:35:24+00:00"
         },
         {
             "name": "drupal/core",
@@ -3178,12 +3168,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "6e9d3dea72537b3a557749c5e614abc92f55b8bf"
+                "reference": "013a24931991d6e7d09f9327bc4468dfff1c36fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/6e9d3dea72537b3a557749c5e614abc92f55b8bf",
-                "reference": "6e9d3dea72537b3a557749c5e614abc92f55b8bf",
+                "url": "https://api.github.com/repos/drupal/core/zipball/013a24931991d6e7d09f9327bc4468dfff1c36fa",
+                "reference": "013a24931991d6e7d09f9327bc4468dfff1c36fa",
                 "shasum": ""
             },
             "require": {
@@ -3420,11 +3410,11 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-03-19T11:39:59+00:00"
+            "time": "2020-04-09T13:28:10+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "8.9.0-beta1",
+            "version": "8.9.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -5586,9 +5576,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-3.0-alpha5",
                     "datestamp": "1559916365",
@@ -10835,20 +10822,6 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-27T16:54:36+00:00"
         },
         {
@@ -16451,20 +16424,6 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-15T09:38:08+00:00"
         },
         {
@@ -16643,20 +16602,6 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-29T19:12:22+00:00"
         },
         {
@@ -16876,6 +16821,7 @@
         "drupal/config_ignore": 20,
         "drupal/config_update": 20,
         "drupal/core": 20,
+        "drupal/core-composer-scaffold": 20,
         "drupal/matomo_reporting_api": 20,
         "drupal/phingdrushtask": 20,
         "drupal/simple_sitemap": 20,
@@ -16901,6 +16847,5 @@
     },
     "platform-overrides": {
         "php": "7.1.9"
-    },
-    "plugin-api-version": "1.1.0"
+    }
 }
