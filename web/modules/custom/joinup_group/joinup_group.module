@@ -36,7 +36,13 @@ function joinup_group_entity_bundle_field_info_alter(array &$fields, EntityTypeI
   $bundles = ['collection', 'solution'];
   if ($entity_type->id() === 'rdf_entity' && in_array($bundle, $bundles)) {
     if (!empty($fields['field_short_id'])) {
-      $fields['field_short_id']->addConstraint('UniqueField');
+      /** @var \Drupal\field\Entity\FieldConfig[] $fields */
+      $fields['field_short_id']->addConstraint('UniqueFieldInBundle', [
+        'bundles' => [$bundle],
+      ]);
+      $fields['field_short_id']->addPropertyConstraints('value', [
+        'Regex' => ['pattern' => '/^[A-Za-z0-9][A-Za-z0-9-]{2,24}[A-Za-z0-9]$/']
+      ]);
     }
   }
 }
