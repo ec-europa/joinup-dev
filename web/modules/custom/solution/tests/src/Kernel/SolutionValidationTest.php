@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\Tests\solution\Kernel;
 
 use Drupal\Core\Serialization\Yaml;
-use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
+use Drupal\Tests\joinup_core\Kernel\GroupValidationTestBase;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\rdf_entity\Entity\RdfEntityType;
@@ -16,7 +16,7 @@ use Drupal\sparql_entity_storage\Entity\SparqlMapping;
  *
  * @group entity_validation
  */
-class SolutionValidationTest extends RdfEntityValidationTestBase {
+class SolutionValidationTest extends GroupValidationTestBase {
 
   /**
    * {@inheritdoc}
@@ -28,6 +28,7 @@ class SolutionValidationTest extends RdfEntityValidationTestBase {
     'file',
     'file_url',
     'inline_entity_form',
+    'joinup_group',
     'joinup_workflow',
     'og',
     'options',

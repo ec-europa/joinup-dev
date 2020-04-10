@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Drupal\Tests\collection\Kernel;
 
-use Drupal\Tests\joinup_core\Kernel\RdfEntityValidationTestBase;
+use Drupal\Tests\joinup_core\Kernel\GroupValidationTestBase;
 
 /**
  * Tests the validation on the collection bundle entity.
  *
  * @group entity_validation
  */
-class CollectionValidationTest extends RdfEntityValidationTestBase {
+class CollectionValidationTest extends GroupValidationTestBase {
 
   /**
    * {@inheritdoc}

@@ -19,6 +19,7 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
     'comment',
     'image',
     'joinup_core',
+    'joinup_group',
     'node',
     'oe_newsroom_newsletter',
     'og',
@@ -34,7 +35,7 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->installConfig('joinup_core');
+    $this->installConfig(['joinup_core', 'joinup_group']);
   }
 
   /**
