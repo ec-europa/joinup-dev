@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fca5a0e3c3f2808684c1d29b7d4354a7",
+    "content-hash": "2623d33a0f6998343cfe06b515741167",
     "packages": [
         {
             "name": "SEMICeu/adms-ap_validator",
@@ -7598,11 +7598,6 @@
                 "shasum": ""
             },
             "type": "library",
-            "extra": {
-                "patches_applied": {
-                    "a": "resources/patch/v.patch"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Virtuoso\\": "src"
