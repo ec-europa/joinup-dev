@@ -13,7 +13,7 @@ Feature:
       | name                 | type    |
       | Organisation example | Company |
 
-    When I am logged in as a moderator
+    When I am logged in as an authenticated
     And I go to the propose collection form
 
     When I press "Add existing" at the "Owner" field
@@ -38,6 +38,24 @@ Feature:
     And I press "Propose"
     And I should see the heading "Structural Solar Traces"
 
+    When I go to the "Structural Solar Traces" collection edit form
+    Then the following fields should not be disabled "Short ID"
+
+    # Publish the collection.
+    When I am logged in as a moderator
+    And I go to the "Structural Solar Traces" collection edit form
+    And I press "Publish"
+    Then I should see the heading "Structural Solar Traces"
+
+    # Check that the "Short ID" field is not disabled for moderators.
+    When I click "Edit" in the "Entity actions" region
+    Then the following fields should not be disabled "Short ID"
+
+    # Check that the field is not editable for facilitators.
+    When I am logged in as a facilitator of the "Structural Solar Traces" collection
+    And I go to the "Structural Solar Traces" collection edit form
+    Then the following fields should be disabled "Short ID"
+
     Then I delete the "Structural Solar Traces" collection
     And I delete the "Contact person" contact information
 
@@ -52,7 +70,7 @@ Feature:
       | name                 | type    |
       | Organisation example | Company |
 
-    When I am logged in as a moderator
+    When I am logged in as a facilitator of the "Scientific Studies" collection
     And I go to the homepage of the "Scientific Studies" collection
     And I click "Add solution"
 
@@ -77,6 +95,24 @@ Feature:
     And I fill in "Short ID" with "SST-2020"
     And I press "Propose"
     Then I should see the heading "I know what a solution is"
+
+    When I go to the "I know what a solution is" solution edit form
+    Then the following fields should not be disabled "Short ID"
+
+    # Publish the solution.
+    When I am logged in as a moderator
+    And I go to the "I know what a solution is" solution edit form
+    And I press "Publish"
+    Then I should see the heading "I know what a solution is"
+
+    # Check that the "Short ID" field is not disabled for moderators.
+    When I click "Edit" in the "Entity actions" region
+    Then the following fields should not be disabled "Short ID"
+
+    # Check that the field is not editable for facilitators.
+    When I am logged in as a facilitator of the "I know what a solution is" solution
+    And I go to the "I know what a solution is" solution edit form
+    Then the following fields should be disabled "Short ID"
 
     Then I delete the "I know what a solution is" solution
     And I delete the "John Smith" contact information
