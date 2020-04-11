@@ -220,6 +220,7 @@ Feature: Homepage
   Scenario: Only specific social network links are available in the footer.
     When I am on the homepage
     Then I should see the link "LinkedIn" in the Footer region
+    And the "LinkedIn" link should point to "https://www.linkedin.com/groups/2600644/"
     And I should see the link "Twitter" in the Footer region
     But I should not see the link "Facebook" in the Footer region
 
