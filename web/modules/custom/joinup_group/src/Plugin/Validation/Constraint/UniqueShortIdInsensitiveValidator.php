@@ -41,6 +41,7 @@ class UniqueShortIdInsensitiveValidator extends ConstraintValidator {
     ];
 
     $item_value = Database::getConnection()->escapeLike($item->value);
+    $entity_id_where = $entity->isNew() ? '' : "FILTER (?entity_id NOT IN (<{$entity->id()}>))";
     $query = <<<QUERY
 SELECT DISTINCT(?entity_id)
 {$data[$bundle]['from']}
@@ -48,6 +49,7 @@ WHERE {
   ?entity_id a {$data[$bundle]['type']} .
   ?entity_id <http://purl.org/dc/terms/alternative> ?value .
   FILTER (lcase(?value) = lcase("{$item_value}")) .
+  $entity_id_where
 }
 QUERY;
     $count = \Drupal::getContainer()->get('sparql.endpoint')->query($query)->count();
