@@ -88,14 +88,20 @@ function joinup_group_entity_type_alter(array &$entity_types) {
 function joinup_group_form_rdf_entity_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   /** @var \Drupal\rdf_entity\Form\RdfForm $form_object */
   $form_object = $form_state->getFormObject();
-  /** @var \Drupal\rdf_entity\RdfInterface $rdf */
-  $rdf = $form_object->getEntity();
+  /** @var \Drupal\rdf_entity\RdfInterface $entity */
+  $entity = $form_object->getEntity();
 
   // Add submit callback when the current bundle is in the list and when we are
   // in an affected operation type.
   $operation_types = ['add', 'default', 'propose'];
-  if (JoinupGroupHelper::isGroup($rdf) && in_array($form_object->getOperation(), $operation_types)) {
+  if (JoinupGroupHelper::isGroup($entity) && in_array($form_object->getOperation(), $operation_types)) {
     $form['actions']['submit']['#submit'][] = 'joinup_group_propose_message_submit';
+  }
+
+  if (in_array($entity->bundle(), ['collection', 'solution'])) {
+    if (isset($form['field_short_id']) && $entity->hasGraph('default') && !\Drupal::currentUser()->hasPermission('edit short id after publication')) {
+      $form['field_short_id']['widget'][0]['value']['#attributes']['disabled'] = 'disabled';
+    }
   }
 }
 
