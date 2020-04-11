@@ -459,3 +459,15 @@ Feature: Global search
     Then I should see "No content found for your search."
     When I enter "Human Language" in the search bar and press enter
     Then I should see "No content found for your search."
+
+  Scenario: Collections are found by their keywords.
+    Given the following collection:
+      | title    | Collection sample       |
+      | keywords | unique, key-definitions |
+      | state    | validated               |
+
+    When I enter "key-definitions" in the search bar and press enter
+    Then the page should show only the tiles "Collection sample"
+
+    When I enter "unique" in the search bar and press enter
+    Then the page should show only the tiles "Collection sample"
