@@ -16,6 +16,12 @@ Feature:
     When I am logged in as an authenticated
     And I go to the propose collection form
 
+    # Assert the Short ID description.
+    Then I should see the following lines of text:
+      | Short URL is an abbreviated reference (It serves as a "nickname") for the collection, like an acronym. E.g. for a collection named "European Commission" it can be "EuCo". This value will be displayed in your browser's address bar. |
+      | This is not editable after the collection's initial publication.                                                                                                                                                                       |
+      | The value must be between 4 and 26 characters and can contain only alphanumeric characters and the dash(-) symbol.                                                                                                                     |
+
     When I press "Add existing" at the "Owner" field
     And I fill in the following:
       | Title       | Structural Solar Traces    |
@@ -73,6 +79,12 @@ Feature:
     When I am logged in as a facilitator of the "Scientific Studies" collection
     And I go to the homepage of the "Scientific Studies" collection
     And I click "Add solution"
+
+    # Assert the Short ID description.
+    Then I should see the following lines of text:
+      | Short URL is an abbreviated reference (It serves as a "nickname") for the solution, like an acronym. E.g. for a solution named "European Commission" it can be "EuCo". This value will be displayed in your browser's address bar. |
+      | This is not editable after the solution's initial publication.                                                                                                                                                                     |
+      | The value must be between 4 and 26 characters and can contain only alphanumeric characters and the dash(-) symbol.                                                                                                                 |
 
     When I press "Add existing" at the "Owner" field
     And I fill in the following:

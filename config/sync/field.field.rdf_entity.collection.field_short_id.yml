@@ -10,7 +10,7 @@ field_name: field_short_id
 entity_type: rdf_entity
 bundle: collection
 label: 'Short ID'
-description: "A small representing string for the collection, like an acronym. E.g. for a collection named \"European Commission\" it can be \"EComm\" or \"EuCo\".\r\nThe Short ID will be used in the URL of the collection instead of the name so that the URLs are user friendly.\r\nThis is not editable after the collection's initial publication."
+description: "Short URL is an abbreviated reference (It serves as a \"nickname\") for the collection, like an acronym. E.g. for a collection named \"European Commission\" it can be \"EuCo\". This value will be displayed in your browser's address bar.\r\n<br />This is not editable after the collection's initial publication.\r\n<br />The value must be between <strong>4 and 26 characters</strong> and can contain only <strong>alphanumeric characters and the dash(-) symbol</strong>. "
 required: false
 translatable: true
 default_value: {  }
