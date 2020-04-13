@@ -75,6 +75,7 @@ module:
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
+  joinup_paragraphs: 0
   joinup_rss: 0
   joinup_search: 0
   joinup_seo: 0

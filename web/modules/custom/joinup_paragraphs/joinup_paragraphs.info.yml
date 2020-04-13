@@ -5,8 +5,7 @@ core: 8.x
 package: Joinup
 
 dependencies:
-  modules:
-    - paragraphs:paragraphs
+  - paragraphs:paragraphs
 
 config_devel:
   install:
