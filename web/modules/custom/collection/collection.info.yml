@@ -30,8 +30,8 @@ dependencies:
 
 config_devel:
   install:
-    - core.base_field_override.rdf_entity.collection.label
     - collection.settings
+    - core.base_field_override.rdf_entity.collection.label
     - facets.facet.collection_policy_domain
     - facets.facet.collection_type
     - facets.facet_source.search_api_field__rdf_entity.field_collection_content
@@ -50,6 +50,7 @@ config_devel:
     - field.field.rdf_entity.collection.field_collection_content
     - field.field.rdf_entity.collection.field_newsletter
     - field.field.rdf_entity.collection.field_policy_domain
+    - field.field.rdf_entity.collection.field_short_id
     - field.field.rdf_entity.collection.field_site_featured
     - field.field.rdf_entity.collection.field_site_pinned
     - field.field.rdf_entity.collection.field_spatial_coverage
