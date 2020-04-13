@@ -5,10 +5,14 @@
  * Post update functions for the Joinup core module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Database\Database;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\file\Entity\File;
 use Drupal\og\Entity\OgRole;
 use Drupal\rdf_entity\RdfInterface;
@@ -66,10 +70,10 @@ function joinup_core_post_update_move_contact_form_attachments() {
       if (!file_exists($attachment->getFileUri())) {
         continue;
       }
-      $target = file_uri_target($attachment->getFileUri());
+      $target = StreamWrapperManager::getTarget($attachment->getFileUri());
       $uri = "private://$target";
       $destination_dir = $file_system->dirname($uri);
-      if (!file_prepare_directory($destination_dir, FILE_CREATE_DIRECTORY)) {
+      if (!$file_system->prepareDirectory($destination_dir, FileSystemInterface::CREATE_DIRECTORY)) {
         throw new \RuntimeException("Cannot create directory '$destination_dir'.");
       }
       if (!file_move($attachment, $uri)) {
@@ -79,7 +83,7 @@ function joinup_core_post_update_move_contact_form_attachments() {
   }
 
   // Finally, remove the empty public://contact_form directory.
-  file_unmanaged_delete_recursive('public://contact_form');
+  $file_system->deleteRecursive('public://contact_form');
 }
 
 /**
@@ -1112,4 +1116,21 @@ function joinup_core_post_update_update_support_memberships(&$sandbox) {
   $sandbox['count']++;
   $sandbox['#finished'] = (float) $sandbox['count'] / (float) $sandbox['max'];
   return "Processed {$sandbox['count']} out of {$sandbox['max']} collections";
+}
+
+/**
+ * Clears out some solutions tha are orphaned and not updated recently.
+ */
+function joinup_core_post_update_delete_orphaned_solutions() {
+  $solution_ids = [
+    'http://data.europa.eu/w21/b9f30715-8921-4b27-b906-a3fb9b72bf50',
+    'http://data.europa.eu/w21/cac5e29b-d3f9-4a07-b348-6a34ec233dd6',
+    'http://data.europa.eu/w21/0e51ed56-b06c-45cf-92d6-3612fdd2d0b4',
+  ];
+  $storage = \Drupal::entityTypeManager()->getStorage('rdf_entity');
+  foreach ($solution_ids as $solution_id) {
+    $solution = $storage->load($solution_id);
+    $solution->skip_notification = TRUE;
+    $solution->delete();
+  }
 }

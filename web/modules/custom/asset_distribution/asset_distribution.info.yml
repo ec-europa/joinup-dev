@@ -13,7 +13,6 @@ dependencies:
   - 'drupal:views'
   - 'field_group:field_group'
   - 'file_url:file_url'
-  - 'joinup:joinup_core'
   - 'joinup:joinup_user'
   - 'joinup:rdf_schema_field_validation'
   - 'rdf_entity:rdf_entity'
@@ -44,4 +43,5 @@ config_devel:
     - field.storage.rdf_entity.field_ad_repr_technique
     - rdf_entity.rdfentity.asset_distribution
     - sparql_entity_storage.mapping.rdf_entity.asset_distribution
+  optional:
     - views.view.asset_distribution_downloads

@@ -9,12 +9,12 @@ Feature: News API
       | name            |
       | Rufus Drumknott |
     And the following collection:
-      | title             | Le Foie Heureux |
-      | owner             | Rufus Drumknott |
-      | logo              | logo.png        |
-      | moderation        | yes             |
-      | elibrary creation | facilitators    |
-      | state             | validated       |
+      | title            | Le Foie Heureux |
+      | owner            | Rufus Drumknott |
+      | logo             | logo.png        |
+      | moderation       | yes             |
+      | content creation | facilitators    |
+      | state            | validated       |
     And news content:
       | title      | body                                     | collection      |
       | Dummy News | This is some dummy content like foo:bar. | Le Foie Heureux |

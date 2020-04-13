@@ -72,16 +72,19 @@ module:
   joinup_invite: 0
   joinup_legal: 0
   joinup_licence: 0
+  joinup_menu: 0
   joinup_news: 0
   joinup_newsletter: 0
   joinup_notification: 0
   joinup_rss: 0
   joinup_search: 0
+  joinup_seo: 0
   joinup_sparql: 0
   joinup_stats: 0
   joinup_subscription: 0
   joinup_user: 0
   joinup_video: 0
+  joinup_workflow: 0
   language: 0
   layout_builder: 0
   layout_discovery: 0
@@ -95,6 +98,8 @@ module:
   message_digest: 0
   message_notify: 0
   meta_entity: 0
+  metatag: 0
+  metatag_open_graph: 0
   moderation: 0
   nio: 0
   node: 0
@@ -103,6 +108,7 @@ module:
   oe_webtools_analytics: 0
   oe_webtools_cookie_consent: 0
   oe_webtools_geocoding: 0
+  oe_webtools_globan: 0
   oe_webtools_maps: 0
   og: 0
   og_comment: 0
@@ -117,7 +123,6 @@ module:
   path: 0
   path_alias: 0
   pipeline: 0
-  r4032login: 0
   rdf_draft: 0
   rdf_entity: 0
   rdf_entity_provenance: 0
@@ -127,6 +132,11 @@ module:
   redirect: 0
   redis: 0
   rest: 0
+  schema_article: 0
+  schema_digital_document: 0
+  schema_event: 0
+  schema_metatag: 0
+  schema_social_media_posting: 0
   search_api: 0
   search_api_arbitrary_facet: 0
   search_api_db: 0
@@ -134,6 +144,7 @@ module:
   search_api_solr: 0
   semic: 0
   serialization: 0
+  simple_sitemap: 0
   simplenews: 0
   smart_trim: 0
   social_media_links: 0

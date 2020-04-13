@@ -5,6 +5,8 @@
  * Contains joinup_document.module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**

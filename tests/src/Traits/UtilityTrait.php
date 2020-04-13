@@ -135,7 +135,7 @@ trait UtilityTrait {
    *   be reused. When specified, the source property gets unset from the
    *   object.
    */
-  protected static function convertObjectPropertyValues($object, string $property, array $mapping, string $destination = NULL): void {
+  protected static function convertObjectPropertyValues($object, string $property, array $mapping, ?string $destination = NULL): void {
     if (!property_exists($object, $property)) {
       return;
     }

@@ -18,10 +18,10 @@ Feature: Unpublished content of the website
       | Brenda Day     |       |
       | Phillip Shaw   |       |
     And the following collections:
-      | title               | description         | state     | elibrary creation | moderation | abstract     | policy domain     | owner           | contact information |
-      | Invisible Boyfriend | Invisible Boyfriend | validated | members           | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
-      | Grey Swords         | Invisible Boyfriend | proposed  | members           | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
-      | Nothing of Slaves   | Invisible Boyfriend | draft     | members           | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
+      | title               | description         | state     | content creation | moderation | abstract     | policy domain     | owner           | contact information |
+      | Invisible Boyfriend | Invisible Boyfriend | validated | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
+      | Grey Swords         | Invisible Boyfriend | proposed  | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
+      | Nothing of Slaves   | Invisible Boyfriend | draft     | members          | no         | Trusted host | Supplier exchange | Owner something | Published contact   |
     And the following collection user memberships:
       | collection          | user           | roles         |
       | Invisible Boyfriend | Ed Abbott      | authenticated |

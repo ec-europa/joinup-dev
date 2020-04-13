@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Traits;
 
 use Drupal\Core\Field\FieldItemListInterface;

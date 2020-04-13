@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_licence\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\rdf_entity\Entity\Rdf;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Displays an overview of the licence entities to the user.
@@ -117,10 +119,15 @@ class LicenceOverviewController extends ControllerBase {
 
   /**
    * Builds a table row for a licence rdf_entity.
+   *
+   * @return array
+   *   A table row.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\rdf_entity\Entity\Rdf */
-    $row['id'] = $entity->link();
+    $row['id'] = $entity->toLink()->toString();
     $row['rid'] = $entity->bundle();
     return $row;
   }

@@ -21,7 +21,7 @@ Feature: Document moderation
       | description         | The wolverine is a Marvel hero. |
       | logo                | logo.png                        |
       | banner              | banner.jpg                      |
-      | elibrary creation   | registered users                |
+      | content creation    | registered users                |
       | moderation          | no                              |
       | state               | validated                       |
       | owner               | thisisanowner                   |
@@ -33,10 +33,10 @@ Feature: Document moderation
       | The Naked Ashes | Kirk Collier    | facilitator |
 
   @javascript
-  Scenario: Available transitions change per eLibrary and moderation settings.
-    # For post-moderated collections with eLibrary set to allow all users to
-    # create content, authenticated users that are not members can create
-    # documents.
+  Scenario: Available transitions change to match content creation and moderation settings.
+    # For post-moderated collections with content creation set to allow all
+    # users to create content, authenticated users that are not members can
+    # create documents.
     When I am logged in as "Crab y Patties"
     And I go to the homepage of the "The Naked Ashes" collection
     And I click "Add document" in the plus button menu
@@ -69,9 +69,7 @@ Feature: Document moderation
     And I open the header local tasks menu
     And I click "Edit" in the "Entity actions" region
     And I click the "Additional fields" tab
-    And I check "Closed collection"
-    And I wait for AJAX to finish
-    And I select the radio button "Only members can create new content."
+    And I select the radio button "Only members can create content."
     And I press "Publish"
     # I should now have the possibility to add documents.
     When I open the plus button menu

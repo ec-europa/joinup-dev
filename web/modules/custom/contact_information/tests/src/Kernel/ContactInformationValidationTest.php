@@ -18,6 +18,9 @@ class ContactInformationValidationTest extends RdfEntityValidationTestBase {
    */
   public static $modules = [
     'contact_information',
+    'joinup_workflow',
+    'state_machine',
+    'workflow_state_permission',
   ];
 
   /**

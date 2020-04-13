@@ -81,7 +81,7 @@ class InviteToGroupForm extends InviteFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, RdfInterface $rdf_entity = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?RdfInterface $rdf_entity = NULL) {
     $this->rdfEntity = $rdf_entity;
 
     $form['role'] = [
@@ -119,7 +119,7 @@ class InviteToGroupForm extends InviteFormBase {
       $membership->save();
     }
 
-    drupal_set_message($this->t('Successfully added the role %role to the selected users.', [
+    $this->messenger()->addMessage($this->t('Successfully added the role %role to the selected users.', [
       '%role' => $role->label(),
     ]));
     $form_state->setRedirect('entity.rdf_entity.member_overview', [

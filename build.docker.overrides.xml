@@ -2,15 +2,15 @@
 
 <project name="Joinup" default="help">
 
-    <!-- Overrides the default target to remove the call to the `compile-sass`
-         target. SASS is compiled automatically when the container starts. -->
+    <!-- Overrides the default target to remove the call to the `compile-scss`
+         target. SCSS is compiled automatically when the container starts. -->
     <target
         name="build-dist"
         description="Build a distribution package."
         depends="install-composer-dependencies-dist" />
 
-    <!-- Overrides the default target to remove the call to the `compile-sass`
-         target. SASS is compiled automatically when the container starts. -->
+    <!-- Overrides the default target to remove the call to the `compile-scss`
+         target. SCSS is compiled automatically when the container starts. -->
     <target
         name="build-dev"
         description="Build a development environment."

@@ -29,27 +29,6 @@ class PhpUnitConfigurationTask extends \Task {
   private $configFile = '';
 
   /**
-   * Directories containing tests to run.
-   *
-   * @var array
-   */
-  private $directories = [];
-
-  /**
-   * Test files to run.
-   *
-   * @var array
-   */
-  private $files = [];
-
-  /**
-   * The name to give to the test suite.
-   *
-   * @var string
-   */
-  private $testsuiteName = 'project';
-
-  /**
    * The base URL to use in functional tests.
    *
    * @var string
@@ -69,13 +48,6 @@ class PhpUnitConfigurationTask extends \Task {
    * @var string
    */
   private $sparqlUrl = 'sparql://localhost:8890/';
-
-  /**
-   * The legacy database URL to use in kernel tests and functional tests.
-   *
-   * @var string
-   */
-  private $legacyDbUrl = 'mysql://root@localhost/d6_db';
 
   /**
    * The path to the directory where HTML output from browsertests is stored.
@@ -134,9 +106,6 @@ class PhpUnitConfigurationTask extends \Task {
     // Set the database URL.
     $this->setEnvironmentVariable('SIMPLETEST_SPARQL_DB', $this->sparqlUrl, $document);
 
-    // Set the legacy database URL.
-    $this->setEnvironmentVariable('SIMPLETEST_LEGACY_DB', $this->legacyDbUrl, $document);
-
     // Set the path to the browsertest output directory.
     $this->setEnvironmentVariable('BROWSERTEST_OUTPUT_DIRECTORY', $this->browsertestOutputDirectory, $document);
 
@@ -147,26 +116,6 @@ class PhpUnitConfigurationTask extends \Task {
     $this->setEnvironmentVariable('DTT_BASE_URL', $this->dttBaseUrl, $document);
     $this->setEnvironmentVariable('DTT_API_URL', $this->dttApiUrl, $document);
     $this->setEnvironmentVariable('DTT_MINK_DRIVER_ARGS', $this->dttMinkDriverArgs, $document);
-
-    // Add a test suite for the Drupal project.
-    $test_suite = $document->createElement('testsuite');
-    $test_suite->setAttribute('name', $this->testsuiteName);
-
-    // Append the list of test files.
-    foreach ($this->files as $file) {
-      $element = $document->createElement('file', $file);
-      $test_suite->appendChild($element);
-    }
-
-    // Append the list of test directories.
-    foreach ($this->directories as $directory) {
-      $element = $document->createElement('directory', $directory);
-      $test_suite->appendChild($element);
-    }
-
-    // Insert the test suite in the list of test suites.
-    $test_suites = $document->getElementsByTagName('testsuites')->item(0);
-    $test_suites->appendChild($test_suite);
 
     // Save the file.
     file_put_contents($this->configFile, $document->saveXML());
@@ -228,48 +177,6 @@ class PhpUnitConfigurationTask extends \Task {
   }
 
   /**
-   * Sets the list of directories containing test files to execute.
-   *
-   * @param string $directories
-   *   A list of directory paths, delimited by spaces, commas or semicolons.
-   */
-  public function setDirectories($directories) {
-    $this->directories = [];
-    $token = ' ,;';
-    $directory = strtok($directories, $token);
-    while ($directory !== FALSE) {
-      $this->directories[] = $directory;
-      $directory = strtok($token);
-    }
-  }
-
-  /**
-   * Sets the list of test files to execute.
-   *
-   * @param string $files
-   *   A list of file paths, delimited by spaces, commas or semicolons.
-   */
-  public function setFiles($files) {
-    $this->files = [];
-    $token = ' ,;';
-    $file = strtok($files, $token);
-    while ($file !== FALSE) {
-      $this->files[] = $file;
-      $file = strtok($token);
-    }
-  }
-
-  /**
-   * Sets the name of the test suite.
-   *
-   * @param string $testsuiteName
-   *   The name of the test suite.
-   */
-  public function setTestsuiteName($testsuiteName) {
-    $this->testsuiteName = $testsuiteName;
-  }
-
-  /**
    * Sets the base URL.
    *
    * @param string $baseUrl
@@ -297,16 +204,6 @@ class PhpUnitConfigurationTask extends \Task {
    */
   public function setSparqlUrl($dbUrl) {
     $this->sparqlUrl = $dbUrl;
-  }
-
-  /**
-   * Sets the legacy DB URL.
-   *
-   * @param string $legacyDbUrl
-   *   The legacy database URL.
-   */
-  public function setLegacyDbUrl($legacyDbUrl) {
-    $this->legacyDbUrl = $legacyDbUrl;
   }
 
   /**

@@ -1,0 +1,12 @@
+uuid: 74e2ac15-06ca-47d1-841e-478961393fd2
+langcode: en
+status: true
+dependencies:
+  module:
+    - solution
+id: change_collection
+label: 'Move to other collection'
+type: rdf_entity
+plugin: change_collection
+weight: 0
+configuration: {  }

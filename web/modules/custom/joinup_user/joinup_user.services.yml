@@ -16,6 +16,5 @@ services:
       - { name: 'context_provider' }
   joinup_user.route_subscriber:
     class: Drupal\joinup_user\Routing\RouteSubscriber
-    arguments: ['@entity.manager']
     tags:
      - { name: event_subscriber }

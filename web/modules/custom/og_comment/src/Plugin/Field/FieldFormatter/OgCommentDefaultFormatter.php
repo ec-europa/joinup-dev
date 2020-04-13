@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\og_comment\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityFormBuilderInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\comment\CommentManagerInterface;
 use Drupal\comment\Plugin\Field\FieldFormatter\CommentDefaultFormatter;
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityFormBuilderInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\og\GroupTypeManager;
 use Drupal\og\MembershipManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -64,7 +66,7 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
       $configuration['view_mode'],
       $configuration['third_party_settings'],
       $container->get('current_user'),
-      $container->get('entity.manager'),
+      $container->get('entity_type.manager'),
       $container->get('entity.form_builder'),
       $container->get('current_route_match'),
       $container->get('database'),
@@ -76,8 +78,8 @@ class OgCommentDefaultFormatter extends CommentDefaultFormatter {
   /**
    * {@inheritdoc}
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database, GroupTypeManager $group_type_manager, MembershipManagerInterface $membership_manager) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $entity_manager, $entity_form_builder, $route_match);
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, EntityFormBuilderInterface $entity_form_builder, RouteMatchInterface $route_match, Connection $database, GroupTypeManager $group_type_manager, MembershipManagerInterface $membership_manager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $entity_type_manager, $entity_form_builder, $route_match);
     $this->database = $database;
     $this->groupTypeManager = $group_type_manager;
     $this->membershipManager = $membership_manager;

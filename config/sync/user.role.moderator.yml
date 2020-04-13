@@ -9,6 +9,7 @@ is_admin: false
 permissions:
   - 'access contact form messages'
   - 'access dashboard'
+  - 'access distribution reports'
   - 'access draft community content'
   - 'access joinup reports'
   - 'access messages overview'
@@ -57,6 +58,7 @@ permissions:
   - 'feature entity'
   - 'filter membership overview'
   - 'manage newsroom newsletter subscriptions'
+  - 'manage solutions'
   - 'moderate entity parents'
   - 'pin entity'
   - 'reset joinup_collection pipeline'

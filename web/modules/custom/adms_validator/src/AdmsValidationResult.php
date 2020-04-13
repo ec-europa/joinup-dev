@@ -53,7 +53,7 @@ class AdmsValidationResult {
    * @return array
    *   Renderable data.
    */
-  public function toRows() : array {
+  public function toRows(): array {
     return array_map(function ($error) {
       return (array) $error;
     }, $this->errors);
@@ -65,7 +65,7 @@ class AdmsValidationResult {
    * @return int
    *   Error count.
    */
-  public function errorCount() : int {
+  public function errorCount(): int {
     return count($this->errors);
   }
 

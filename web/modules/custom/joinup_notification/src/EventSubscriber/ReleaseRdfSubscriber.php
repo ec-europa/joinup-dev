@@ -6,6 +6,7 @@ namespace Drupal\joinup_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\joinup_group\JoinupGroupHelper;
 use Drupal\joinup_notification\Event\NotificationEvent;
 use Drupal\joinup_notification\MessageArgumentGenerator;
 use Drupal\joinup_notification\NotificationEvents;
@@ -308,7 +309,7 @@ class ReleaseRdfSubscriber extends NotificationSubscriberBase implements EventSu
     $arguments['@entity:field_isr_release_number'] = !empty($entity->get('field_isr_release_number')->first()->value) ? $entity->get('field_isr_release_number')->first()->value : '';
 
     // Add arguments related to the parent collection or solution.
-    $parent = $this->relationManager->getParent($entity);
+    $parent = JoinupGroupHelper::getGroup($entity);
     if (!empty($parent)) {
       $arguments += MessageArgumentGenerator::getGroupArguments($parent);
       if (empty($arguments['@actor:role'])) {

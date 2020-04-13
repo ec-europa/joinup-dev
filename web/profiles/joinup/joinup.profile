@@ -5,6 +5,8 @@
  * Enables modules and site configuration for the Joinup profile.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Database;
@@ -213,7 +215,7 @@ function joinup_field_widget_inline_entity_form_complex_form_alter(&$element, Fo
     $entity_type = $element['form']['inline_entity_form']['#entity_type'];
     $bundle = $element['form']['inline_entity_form']['#bundle'];
 
-    $bundle_info = \Drupal::entityManager()->getBundleInfo($entity_type);
+    $bundle_info = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type);
     $element['form']['#title'] = $bundle_info[$bundle]['label'];
   }
 }

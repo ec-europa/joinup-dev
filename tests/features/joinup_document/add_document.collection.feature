@@ -60,6 +60,9 @@ Feature: "Add document" visibility options.
       | Title       | An amazing document |
       | Short title | Amazing document    |
     And I select "Document" from "Type"
+    # Regression test: Document is successfully displayed even when a publication date is not set.
+    And I clear the date of the "Publication date" widget
+    And I clear the time of the "Publication date" widget
     Then I upload the file "test.zip" to "Upload a new file or enter a URL"
     And I press "Save as draft"
     Then I should see the error message "Description field is required."

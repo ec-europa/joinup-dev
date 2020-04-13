@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_core\Kernel;
 
 use Drupal\Tests\rdf_entity\Kernel\RdfKernelTestBase;

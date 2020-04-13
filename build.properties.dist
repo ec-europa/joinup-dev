@@ -150,20 +150,8 @@ phpcs.prepush.destination = ${project.basedir}/.git/hooks/pre-push
 # The path to the configuration file template.
 phpunit.dist = ${project.basedir}/phpunit.xml.dist
 
-# The path to the generated configuration file. This is typically inside the web
-# root.
-phpunit.config = ${website.drupal.dir}/phpunit.xml
-
-# The name to give to the test suite of the project.
-phpunit.testsuite.name = ${project.name}
-
-# Comma-separated list of directories containing tests to execute. These are
-# relative to the Drupal root.
-phpunit.directories = ./modules/custom,./profiles,./themes/custom
-
-# Comma-separated list of test files to execute. These are relative to the
-# Drupal root.
-phpunit.files =
+# The path to the generated configuration file.
+phpunit.config = ${project.basedir}/phpunit.xml
 
 # The base URL to use in functional tests.
 phpunit.base_url = ${drupal.base_url}

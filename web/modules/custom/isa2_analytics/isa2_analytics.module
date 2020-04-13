@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains hooks and functions for the isa2_analytics modules.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_views_post_execute().
+ *
+ * Set the total rows in the current request attribute parameter bag so that it
+ * is retrievable in the analytics subscriber.
+ *
+ * @see \oe_webtools_analytics_page_attachments()
+ * @see \Drupal\isa2_analytics\EventSubscriber\WebtoolsAnalyticsSubscriber::setSearchData
+ */
+function isa2_analytics_views_post_execute(ViewExecutable $view) {
+  if ($view->id() === 'search' && !empty($view->total_rows)) {
+    \Drupal::requestStack()->getCurrentRequest()->attributes->set('total_rows', $view->total_rows);
+  }
+}

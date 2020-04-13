@@ -6,11 +6,9 @@ services:
       - { name: 'cache.context'}
   joinup.pin_service:
     class: Drupal\joinup\PinService
-    arguments: ['@joinup_core.relations_manager']
     lazy: true
   joinup.route_subscriber:
     class: Drupal\joinup\Routing\RouteSubscriber
-    arguments: ['@entity.manager']
     tags:
       - { name: event_subscriber }
   joinup.uid_1_only_access:

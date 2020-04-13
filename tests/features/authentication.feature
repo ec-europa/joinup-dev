@@ -30,6 +30,7 @@ Feature: User authentication
       | admin/legal-notice                                             |
       | admin/legal-notice/add                                         |
       | admin/people                                                   |
+      | admin/reporting/distribution-downloads                         |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
@@ -59,6 +60,15 @@ Feature: User authentication
       | rdf_entity/add/solution                                        |
       | user/subscriptions                                             |
 
+  Scenario Outline: Anonymous user cannot access restricted non-HTML URLs.
+    Given I am not logged in
+    When I go to "<path>"
+    Then the response status code should be 403
+
+    Examples:
+      | path                                       |
+      | admin/reporting/distribution-downloads/csv |
+
   @api
   Scenario Outline: Authenticated user can access pages they are authorized to
     Given I am logged in as a user with the "authenticated" role
@@ -86,6 +96,7 @@ Feature: User authentication
       | admin/legal-notice                                             |
       | admin/legal-notice/add                                         |
       | admin/people                                                   |
+      | admin/reporting/distribution-downloads                         |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
@@ -114,6 +125,16 @@ Feature: User authentication
       | rdf_entity/add/solution                                        |
 
   @api
+  Scenario Outline: Authenticated user cannot access restricted non-HTML URLs.
+    Given I am logged in as a user with the "authenticated" role
+    When I go to "<path>"
+    Then the response status code should be 403
+
+    Examples:
+      | path                                       |
+      | admin/reporting/distribution-downloads/csv |
+
+  @api
   Scenario Outline: Moderator can access pages they are authorized to
     Given I am logged in as a user with the "moderator" role
     Then I visit "<path>"
@@ -124,6 +145,8 @@ Feature: User authentication
       | admin/content/rdf                                              |
       | admin/legal-notice                                             |
       | admin/legal-notice/add                                         |
+      | admin/reporting/distribution-downloads                         |
+      | admin/reporting/distribution-downloads/csv                     |
       | admin/reporting/export-user-list                               |
       | admin/reporting/group-administrators/rdf_entity/collection     |
       | admin/reporting/group-administrators/rdf_entity/collection/csv |
@@ -171,9 +194,11 @@ Feature: User authentication
     Then I visit "<path>"
 
     Examples:
-      | path                         |
-      | admin/config/search/redirect |
-      | collections                  |
+      | path                                       |
+      | admin/config/search/redirect               |
+      | admin/reporting/distribution-downloads     |
+      | admin/reporting/distribution-downloads/csv |
+      | collections                                |
 
   @api
   Scenario Outline: Administrator cannot access pages intended for site building and development

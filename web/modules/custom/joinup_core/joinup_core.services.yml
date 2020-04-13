@@ -1,25 +1,10 @@
 services:
-  joinup_core.fulfillment_guard:
-    class: Drupal\joinup_core\Guard\NodeGuard
-    arguments: ['@joinup_core.relations_manager', '@config.factory', '@current_user', '@joinup_core.workflow.helper', '@workflow_state_permission.workflow_state_permission']
-    tags:
-      - { name: state_machine.guard, group: community_content }
   joinup_core.joinup_version:
     class: Drupal\joinup_core\JoinupVersion
-  joinup_core.node_workflow_access:
-    class: Drupal\joinup_core\NodeWorkflowAccessControlHandler
-    arguments: ['@entity_type.manager', '@og.membership_manager', '@joinup_core.relations_manager', '@current_user', '@config.factory', '@joinup_core.workflow.helper']
   joinup_core.og_subscriber:
     class: Drupal\joinup_core\EventSubscriber\JoinupCoreOgSubscriber
     tags:
       - name: event_subscriber
-  joinup_core.relations_manager:
-    class: Drupal\joinup_core\JoinupRelationManager
-    arguments: ['@og.membership_manager', '@entity_type.manager']
-    lazy: true
-  joinup_core.workflow.helper:
-    class: Drupal\joinup_core\WorkflowHelper
-    arguments: ['@current_user', '@account_switcher', '@entity_field.manager', '@og.membership_manager', '@workflow_state_permission.workflow_state_permission']
   joinup_core.vocabulary_fixtures.helper:
     class: Drupal\joinup_core\VocabularyFixturesHelper
     arguments: ['@sparql_endpoint']

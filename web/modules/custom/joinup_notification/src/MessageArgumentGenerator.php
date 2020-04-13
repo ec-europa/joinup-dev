@@ -34,7 +34,7 @@ class MessageArgumentGenerator {
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    *   Thrown when the first name or last name is not known.
    */
-  public static function getActorArguments(UserInterface $actor = NULL): array {
+  public static function getActorArguments(?UserInterface $actor = NULL): array {
     $arguments = [];
 
     // Default to the current user.

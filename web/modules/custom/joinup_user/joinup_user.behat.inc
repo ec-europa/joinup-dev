@@ -35,9 +35,11 @@ class JoinupUserSubContext extends DrupalSubContextBase implements DrupalSubCont
    *
    * @When I go to the (public )profile of :user
    * @When I visit the (public )profile of :user
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitUserPublicProfile(string $user): void {
-    $this->visitPath($this->getUserByName($user)->url());
+    $this->visitPath($this->getUserByName($user)->toUrl()->toString());
   }
 
   /**

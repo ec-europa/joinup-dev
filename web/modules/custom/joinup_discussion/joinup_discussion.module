@@ -5,6 +5,8 @@
  * Hook implementations for the Joinup Discussion module.
  */
 
+declare(strict_types = 1);
+
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
@@ -79,7 +81,7 @@ function joinup_discussion_node_view(array &$build, EntityInterface $entity, Ent
 /**
  * Implements hook_ENTITY_TYPE_predelete().
  */
-function joinup_discussion_node_predelete(EntityInterface $entity) : void {
+function joinup_discussion_node_predelete(EntityInterface $entity): void {
   if (!$entity instanceof NodeInterface || $entity->bundle() !== 'discussion') {
     return;
   }

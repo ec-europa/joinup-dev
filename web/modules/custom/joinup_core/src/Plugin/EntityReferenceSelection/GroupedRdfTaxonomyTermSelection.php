@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\joinup_core\Plugin\EntityReferenceSelection;
 
 use Drupal\taxonomy\Plugin\EntityReferenceSelection\TermSelection;
@@ -30,12 +32,12 @@ class GroupedRdfTaxonomyTermSelection extends TermSelection {
 
     $options = [];
 
-    $bundles = $this->entityManager->getBundleInfo('taxonomy_term');
+    $bundles = $this->entityTypeBundleInfo->getBundleInfo('taxonomy_term');
     $handler_settings = $this->configuration['handler_settings'];
     $bundle_names = !empty($handler_settings['target_bundles']) ? $handler_settings['target_bundles'] : array_keys($bundles);
 
     foreach ($bundle_names as $bundle) {
-      $terms = $this->entityManager
+      $terms = $this->entityTypeManager
         ->getStorage('taxonomy_term')
         ->loadTree($bundle, 0, NULL, TRUE);
       if ($terms) {

@@ -10,12 +10,14 @@ declare(strict_types = 1);
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
+use Drupal\asset_distribution\Entity\DownloadEvent;
+use Drupal\file_url\FileUrlHandler;
 use Drupal\joinup\Traits\EntityReferenceTrait;
 use Drupal\joinup\Traits\FileTrait;
 use Drupal\joinup\Traits\RdfEntityTrait;
-use Drupal\file_url\FileUrlHandler;
 use Drupal\joinup\Traits\SearchTrait;
 use Drupal\meta_entity\Entity\MetaEntity;
 use Drupal\rdf_entity\RdfInterface;
@@ -31,11 +33,11 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   use EntityReferenceTrait;
 
   /**
-   * Test asset distributions.
+   * Test entities.
    *
-   * @var \Drupal\rdf_entity\Entity\Rdf[]
+   * @var \Drupal\Core\Entity\ContentEntityInterface[][]
    */
-  protected $assetDistributions = [];
+  protected $entities = [];
 
   /**
    * Navigates to the canonical page display of an asset distribution.
@@ -47,11 +49,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I visit (the homepage of )the :asset_distribution distribution
    * @When I go to (the homepage of )the :asset_distribution asset distribution
    * @When I visit (the homepage of )the :asset_distribution asset distribution
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getAssetDistributionByName($asset_distribution);
-    $this->visitPath($entity->url());
+    $this->visitPath($entity->toUrl()->toString());
   }
 
   /**
@@ -62,11 +66,13 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    *
    * @When I go to the :asset_distribution asset distribution edit form
    * @When I visit the :asset_distribution asset distribution edit form
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function visitEditAssetDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getAssetDistributionByName($asset_distribution);
-    $path = $entity->url('edit-form');
+    $path = $entity->toUrl('edit-form')->toString();
     $this->visitPath($path);
   }
 
@@ -157,7 +163,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     }
 
     $asset_distribution = $this->createRdfEntity('asset_distribution', $values);
-    $this->assetDistributions[$asset_distribution->id()] = $asset_distribution;
+    $this->entities['rdf_entity'][$asset_distribution->id()] = $asset_distribution;
 
     return $asset_distribution;
   }
@@ -207,8 +213,8 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   public function deleteAssetDistribution(string $asset_distribution): void {
     /** @var \Drupal\rdf_entity\Entity\Rdf $entity */
     $entity = $this->getAssetDistributionByName($asset_distribution);
-    if (isset($this->assetDistributions[$entity->id()])) {
-      unset($this->assetDistributions[$entity->id()]);
+    if (isset($this->entities['rdf_entity'][$entity->id()])) {
+      unset($this->entities['rdf_entity'][$entity->id()]);
     }
     $entity->skip_notification = TRUE;
     $entity->delete();
@@ -267,12 +273,12 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
-   * Remove any created asset distributions.
+   * Remove any created test entities.
    *
    * @AfterScenario
    */
-  public function cleanAssetDistributions(): void {
-    if (empty($this->assetDistributions)) {
+  public function cleanTestingEntities(): void {
+    if (empty($this->entities)) {
       return;
     }
 
@@ -280,12 +286,15 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
     // feature to commit the index after every query.
     $this->disableCommitOnUpdate();
 
-    // Remove any asset distributions that were created.
-    foreach ($this->assetDistributions as $asset_distribution) {
-      $asset_distribution->skip_notification = TRUE;
-      $asset_distribution->delete();
+    foreach ($this->entities as $entities) {
+      if (!empty($entities)) {
+        foreach ($entities as $entity) {
+          $entity->skip_notification = TRUE;
+          $entity->delete();
+        }
+      }
     }
-    $this->assetDistributions = [];
+    $this->entities = [];
     $this->enableCommitOnUpdate();
   }
 
@@ -484,6 +493,40 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
   }
 
   /**
+   * Creates distribution download events.
+   *
+   * Table format:
+   * @codingStandardsIgnoreStart
+   * | user               | distribution |
+   * | Anonymous          | Distro one   |
+   * | Nickolas Underwood | Distro two   |
+   * @codingStandardsIgnoreEnd
+   * If the user is a valid email, it's considered to be an anonymous user.
+   *
+   * @param \Behat\Gherkin\Node\TableNode $table
+   *   The entries list.
+   *
+   * @Given the following distribution download events:
+   */
+  public function downloadEvents(TableNode $table): void {
+    foreach ($table->getColumnsHash() as $row) {
+      $distribution = $this->getRdfEntityByLabel($row['distribution'], 'asset_distribution');
+      /** @var \Drupal\file\FileInterface $file */
+      $file = FileUrlHandler::urlToFile($distribution->get('field_ad_access_url')->target_id);
+      $account = \Drupal::service('email.validator')->isValid($row['user']) ? new AnonymousUserSession() : user_load_by_name($row['user']);
+      $mail = $account->isAnonymous() ? $row['user'] : $account->getEmail();
+      $entity = DownloadEvent::create([
+        'uid' => $account->id(),
+        'mail' => $mail,
+        'file' => $file->id(),
+      ]);
+      $entity->save();
+      $this->entities['download_event'][$entity->id()] = $entity;
+    }
+
+  }
+
+  /**
    * Asserts the entries in the download event table.
    *
    * Table format:
@@ -517,7 +560,7 @@ class AssetDistributionSubContext extends DrupalSubContextBase implements Drupal
    * @When I go to the distribution downloads page
    */
   public function goToDistributionDownloadsPage(): void {
-    $this->visitPath('admin/statistics/distribution-downloads');
+    $this->visitPath('admin/reporting/distribution-downloads');
   }
 
   /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\joinup_core\Kernel;
 
 use Drupal\rdf_entity\Entity\Rdf;
@@ -14,22 +16,17 @@ abstract class RdfEntityValidationTestBase extends JoinupKernelTestBase {
    */
   public static $modules = [
     'allowed_formats',
-    'cached_computed_field',
     'comment',
     'image',
     'joinup_core',
-    'link',
     'node',
     'oe_newsroom_newsletter',
     'og',
-    'matomo_reporting_api',
     'rdf_taxonomy',
     'rdf_entity',
     'rdf_schema_field_validation',
-    'state_machine',
     'taxonomy',
     'tour',
-    'workflow_state_permission',
   ];
 
   /**

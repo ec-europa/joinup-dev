@@ -5,6 +5,8 @@
  * Post update functions for the Joinup Discussion module.
  */
 
+declare(strict_types = 1);
+
 /**
  * Enable the Changed Fields API module.
  */
