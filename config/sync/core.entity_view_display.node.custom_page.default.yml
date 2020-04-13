@@ -11,12 +11,12 @@ dependencies:
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - entity_reference_revisions
     - field_group
     - file
     - joinup
     - link
     - search_api_field
-    - text
     - user
 third_party_settings:
   field_group:
@@ -44,13 +44,6 @@ targetEntityType: node
 bundle: custom_page
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_attachment:
     weight: 51
     label: hidden
@@ -67,6 +60,15 @@ content:
     region: content
     label: hidden
     settings: {  }
+    third_party_settings: {  }
+  field_paragraphs_body:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
   links:
     weight: 0
@@ -91,8 +93,8 @@ content:
     third_party_settings: {  }
     type: link
 hidden:
+  body: true
   field_custom_page_logo: true
-  field_paragraphs_body: true
   langcode: true
   og_audience: true
   published_at: true
