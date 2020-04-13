@@ -37,8 +37,8 @@ function joinup_group_entity_bundle_field_info_alter(array &$fields, EntityTypeI
   if ($entity_type->id() === 'rdf_entity' && in_array($bundle, $bundles)) {
     if (!empty($fields['field_short_id'])) {
       /** @var \Drupal\field\Entity\FieldConfig[] $fields */
-      $fields['field_short_id']->addConstraint('UniqueFieldInBundle', [
-        'bundles' => [$bundle],
+      $fields['field_short_id']->addPropertyConstraints('value', [
+        'Regex' => ['pattern' => '/^[A-Za-z0-9-]{4,26}$/'],
       ]);
       $fields['field_short_id']->addConstraint('UniqueShortIdInsensitive');
     }
