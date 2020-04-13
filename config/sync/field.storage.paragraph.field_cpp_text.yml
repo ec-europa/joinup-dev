@@ -1,0 +1,20 @@
+uuid: 50a5d2cc-cda0-44e9-94a1-577641d63f55
+langcode: en
+status: true
+dependencies:
+  module:
+    - cached_computed_field
+    - paragraphs
+id: paragraph.field_cpp_text
+field_name: field_cpp_text
+entity_type: paragraph
+type: cached_computed_text
+settings:
+  max_length: 255
+module: cached_computed_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

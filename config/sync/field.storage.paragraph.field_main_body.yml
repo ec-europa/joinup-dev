@@ -1,0 +1,19 @@
+uuid: 3228652e-8e59-4148-8e65-dabbd961a015
+langcode: en
+status: true
+dependencies:
+  module:
+    - cached_computed_field
+    - paragraphs
+id: paragraph.field_main_body
+field_name: field_main_body
+entity_type: paragraph
+type: cached_computed_text_long
+settings: {  }
+module: cached_computed_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

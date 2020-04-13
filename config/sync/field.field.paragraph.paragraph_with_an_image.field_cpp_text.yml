@@ -1,0 +1,22 @@
+uuid: 5935fe38-58d7-43cc-9fe5-925e203f7269
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_cpp_text
+    - paragraphs.paragraphs_type.paragraph_with_an_image
+  module:
+    - cached_computed_field
+id: paragraph.paragraph_with_an_image.field_cpp_text
+field_name: field_cpp_text
+entity_type: paragraph
+bundle: paragraph_with_an_image
+label: Paragraph
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  cache-max-age: 3600
+field_type: cached_computed_text

@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.news.body
     - field.field.node.news.field_attachment
+    - field.field.node.news.field_body_new
     - field.field.node.news.field_comments
     - field.field.node.news.field_keywords
     - field.field.node.news.field_news_headline
@@ -17,6 +18,7 @@ dependencies:
     - field.field.node.news.field_site_featured
     - field.field.node.news.field_site_pinned
     - field.field.node.news.field_state
+    - field.field.node.news.layout_builder__layout
     - field.field.node.news.og_audience
     - image.style.thumbnail
     - node.type.news
@@ -27,6 +29,7 @@ dependencies:
     - image
     - joinup_core
     - link
+    - paragraphs
     - text
 id: node.news.default
 targetEntityType: node
@@ -48,7 +51,7 @@ content:
     region: content
   current_workflow_state:
     type: current_workflow_state_widget
-    weight: 14
+    weight: 15
     region: content
     settings:
       title: 'Current workflow state'
@@ -56,20 +59,39 @@ content:
       show_for_new_entities: false
     third_party_settings: {  }
   field_attachment:
-    weight: 11
+    weight: 12
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
+  field_body_new:
+    weight: 5
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: select
+      form_display_mode: default
+      default_paragraph_type: simple_body
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: '0'
+    third_party_settings: {  }
+    type: paragraphs
+    region: content
   field_comments:
-    weight: 9
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: comment_default
     region: content
   field_keywords:
-    weight: 8
+    weight: 9
     settings:
       size: 60
       placeholder: ''
@@ -93,7 +115,7 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
   field_news_referenced_solution:
-    weight: 10
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60
@@ -103,7 +125,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_news_source_url:
-    weight: 5
+    weight: 6
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -111,7 +133,7 @@ content:
     type: link_default
     region: content
   field_news_spatial_coverage:
-    weight: 6
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -121,13 +143,13 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_policy_domain:
-    weight: 7
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_state:
-    weight: 15
+    weight: 16
     settings:
       use_transition_label: 1
     third_party_settings: {  }
@@ -149,13 +171,13 @@ content:
     third_party_settings: {  }
     region: content
   transition_motivation:
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 12
+    weight: 13
     region: content
     settings:
       match_operator: CONTAINS
@@ -164,7 +186,7 @@ content:
       match_limit: 10
     third_party_settings: {  }
   url_redirects:
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -173,6 +195,7 @@ hidden:
   field_shared_in: true
   field_site_featured: true
   field_site_pinned: true
+  layout_builder__layout: true
   og_audience: true
   path: true
   promote: true

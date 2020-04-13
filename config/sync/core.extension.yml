@@ -37,12 +37,14 @@ module:
   email_registration: 0
   embed_block: 0
   entity_legal: 0
+  entity_reference_revisions: 0
   error_page: 0
   eu_sic: 0
   eupl: 0
   facets: 0
   field: 0
   field_group: 0
+  field_ui: 0
   file: 0
   file_url: 0
   filter: 0
@@ -84,6 +86,7 @@ module:
   joinup_video: 0
   joinup_workflow: 0
   language: 0
+  layout_builder: 0
   layout_discovery: 0
   link: 0
   linkit: 0
@@ -176,6 +179,7 @@ module:
   content_translation: 10
   externalauth: 10
   views: 10
+  paragraphs: 11
   publication_date: 99
   joinup: 1000
   joinup_debug: 1001

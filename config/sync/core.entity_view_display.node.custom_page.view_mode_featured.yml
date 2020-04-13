@@ -6,11 +6,13 @@ dependencies:
     - core.entity_view_mode.node.view_mode_featured
     - field.field.node.custom_page.body
     - field.field.node.custom_page.field_attachment
+    - field.field.node.custom_page.field_body_new
     - field.field.node.custom_page.field_cp_content_listing
     - field.field.node.custom_page.field_custom_page_logo
     - field.field.node.custom_page.og_audience
     - node.type.custom_page
   module:
+    - entity_reference_revisions
     - joinup
     - smart_trim
     - user
@@ -41,6 +43,15 @@ content:
       joinup:
         template_suggestion: ''
     region: content
+  field_body_new:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    region: content
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
 hidden:
   field_attachment: true
   field_cp_content_listing: true

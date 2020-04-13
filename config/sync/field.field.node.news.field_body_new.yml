@@ -1,0 +1,32 @@
+uuid: 93eaca3e-515c-45ae-bc03-6ebf231df251
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_body_new
+    - node.type.news
+  module:
+    - entity_reference_revisions
+id: node.news.field_body_new
+field_name: field_body_new
+entity_type: node
+bundle: news
+label: 'Body (New)'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles: null
+    target_bundles_drag_drop:
+      paragraph_with_an_image:
+        weight: 3
+        enabled: false
+      simple_body:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions
