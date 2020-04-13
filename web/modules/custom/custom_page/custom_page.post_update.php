@@ -186,7 +186,7 @@ function custom_page_post_update_0000_copy_body_to_paragraphs(&$sandbox) {
     ]);
     $paragraph->set('field_body', $custom_page->get('body')->getValue());
     $paragraph->save();
-    $custom_page->set('field_paragraphs_body', ['target_id' => $paragraph->id()]);
+    $custom_page->set('field_paragraphs_body', $paragraph);
     $custom_page->save();
     $sandbox['count']++;
   }
